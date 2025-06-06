@@ -1,0 +1,379 @@
+chaos_redux_mass_panic_decision_category = {
+	calm_people_decision = {
+		available = {
+			hidden_trigger = { NOT = { has_idea = galaxies_mix_failed } }
+		}
+		icon = GFX_decision_generic_political_address
+		days_remove = 50
+		cost = 20
+		
+		ai_will_do = {
+			factor = 5
+			modifier = {
+				add = 5
+				has_idea = galaxies_mix
+			}modifier = {
+				add = 4
+				has_idea = galaxies_mix_good_1
+			}modifier = {
+				add = 3
+				has_idea = galaxies_mix_good_2
+			}modifier = {
+				add = 2
+				has_idea = galaxies_mix_good_3
+			}modifier = {
+				add = 8
+				has_idea = galaxies_mix_bad_1
+			}modifier = {
+				add = 100 # just to make sure
+				has_idea = galaxies_mix_bad_2
+			}
+		}
+		
+		complete_effect = {
+			add_timed_idea = {
+				idea = calming_people
+				days = 50
+			}
+		}
+		remove_effect = {
+			if = { limit = { has_idea = galaxies_mix } 
+				clr_country_flag = critical_mass_panic
+				swap_ideas = {
+					remove_idea = galaxies_mix
+					add_idea = galaxies_mix_good_1
+				}
+			}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+				swap_ideas = {
+					remove_idea = galaxies_mix_good_1
+					add_idea = galaxies_mix_good_2
+				}
+			}else_if = { limit = { has_idea = galaxies_mix_good_2 } 
+				swap_ideas = {
+					remove_idea = galaxies_mix_good_2
+					add_idea = galaxies_mix_good_3
+				}
+			}else_if = { limit = { has_idea = galaxies_mix_good_3 } 
+				remove_ideas = galaxies_mix_good_3
+				country_event = { id = chaos_redux.111 }
+				clr_country_flag = mass_panic
+			}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+				swap_ideas = {
+					remove_idea = galaxies_mix_good_1
+					add_idea = galaxies_mix_good_2
+				}
+			}else_if = { limit = { has_idea = galaxies_mix_bad_1 }
+				swap_ideas = {
+					remove_idea = galaxies_mix_bad_1
+					add_idea = galaxies_mix
+				}
+			}else_if = { limit = { has_idea = galaxies_mix_bad_2 } 
+				swap_ideas = {
+					remove_idea = galaxies_mix_bad_2
+					add_idea = galaxies_mix_bad_1
+				}
+			}
+			
+		}
+	}
+	send_in_scientist_decision = {
+		available = {
+			hidden_trigger = { NOT = { OR = { has_idea = galaxies_mix_failed has_idea = galaxies_mix_bad_2 } } }
+		}
+		days_re_enable = 20
+		cost = 50
+		fixed_random_seed = no
+		icon = GFX_decision_generic_research
+		ai_will_do = {
+			factor = 4
+			modifier = {
+				add = 4
+				has_idea = galaxies_mix
+			}modifier = {
+				add = 3
+				has_idea = galaxies_mix_good_1
+			}modifier = {
+				add = 3
+				has_idea = galaxies_mix_good_2
+			}modifier = {
+				add = 2
+				has_idea = galaxies_mix_good_3
+			}modifier = {
+				add = 2
+				has_idea = galaxies_mix_bad_1
+			}modifier = {
+				factor = 0 # Why risk it?
+				has_idea = galaxies_mix_bad_2
+			}
+		}
+		complete_effect = {
+			if = { limit = { hidden_trigger = { is_ai = no } }
+				random_list = {
+					50 = {
+						if = { limit = { has_idea = galaxies_mix } 
+							clr_country_flag = critical_mass_panic
+							swap_ideas = {
+								remove_idea = galaxies_mix
+								add_idea = galaxies_mix_good_1
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_1
+								add_idea = galaxies_mix_good_2
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_2 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_2
+								add_idea = galaxies_mix_good_3
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_3 } 
+							remove_ideas = galaxies_mix_good_3
+							country_event = { id = chaos_redux.111 }
+							clr_country_flag = mass_panic
+						}else_if = { limit = { has_idea = galaxies_mix_bad_1 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_bad_1
+								add_idea = galaxies_mix
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_bad_2 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_bad_2
+								add_idea = galaxies_mix_bad_1
+							}
+						}
+					} 50 = {
+						if = { limit = { has_idea = galaxies_mix } 
+							swap_ideas = {
+								remove_idea = galaxies_mix
+								add_idea = galaxies_mix_bad_1
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_1
+								add_idea = galaxies_mix
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_2 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_2
+								add_idea = galaxies_mix_good_1
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_3 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_3
+								add_idea = galaxies_mix_good_2
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_bad_1 } 
+							if = { limit = { NOT = { has_country_flag = critical_mass_panic } } country_event = { id = chaos_redux.246 days = 1 } }
+							swap_ideas = {
+								remove_idea = galaxies_mix_bad_1
+								add_idea = galaxies_mix_bad_2
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_bad_2 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_bad_2
+								add_idea = galaxies_mix_failed
+							}
+						}
+					}
+				}
+			} else = {
+				hidden_effect = {
+					random_list = {
+						75 = {
+							if = { limit = { has_idea = galaxies_mix } 
+								clr_country_flag = critical_mass_panic
+								swap_ideas = {
+									remove_idea = galaxies_mix
+									add_idea = galaxies_mix_good_1
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_good_1
+									add_idea = galaxies_mix_good_2
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_good_2 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_good_2
+									add_idea = galaxies_mix_good_3
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_good_3 } 
+								remove_ideas = galaxies_mix_good_3
+								country_event = { id = chaos_redux.111 }
+								clr_country_flag = mass_panic
+							}else_if = { limit = { has_idea = galaxies_mix_bad_1 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_bad_1
+									add_idea = galaxies_mix
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_bad_2 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_bad_2
+									add_idea = galaxies_mix_bad_1
+								}
+							}
+						} 25 = {
+							if = { limit = { has_idea = galaxies_mix } 
+								swap_ideas = {
+									remove_idea = galaxies_mix
+									add_idea = galaxies_mix_bad_1
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_good_1
+									add_idea = galaxies_mix
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_good_2 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_good_2
+									add_idea = galaxies_mix_good_1
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_good_3 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_good_3
+									add_idea = galaxies_mix_good_2
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_bad_1 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_bad_1
+									add_idea = galaxies_mix_bad_2
+								}
+							}else_if = { limit = { has_idea = galaxies_mix_bad_2 } 
+								swap_ideas = {
+									remove_idea = galaxies_mix_bad_2
+									add_idea = galaxies_mix_failed
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	mass_panic_timeout = {
+		available = {
+			hidden_trigger = { NOT = { has_country_flag = mass_panic } }
+		}
+		activation = {
+			hidden_trigger = { has_country_flag = mass_panic } 
+		}
+		days_mission_timeout = 150
+		is_good = no
+		icon = GFX_decision_generic_political_rally
+		
+		timeout_effect = {
+			if = { limit = { has_country_flag = mass_panic } activate_mission = mass_panic_timeout }
+			hidden_effect = {
+				if = { limit = { is_ai = yes }
+					random = {
+						chance = 50 # Must be easier for the AI
+						if = { limit = { has_idea = galaxies_mix } 
+							swap_ideas = {
+								remove_idea = galaxies_mix
+								add_idea = galaxies_mix_bad_1
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_1
+								add_idea = galaxies_mix
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_2 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_2
+								add_idea = galaxies_mix_good_1
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_good_3 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_good_3
+								add_idea = galaxies_mix_good_2
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_bad_1 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_bad_1
+								add_idea = galaxies_mix_bad_2
+							}
+						}else_if = { limit = { has_idea = galaxies_mix_bad_2 } 
+							swap_ideas = {
+								remove_idea = galaxies_mix_bad_2
+								add_idea = galaxies_mix_failed
+							}
+						}
+					}
+				}
+			}
+			if = { limit = { is_ai = no }
+				if = { limit = { has_idea = galaxies_mix } 
+					swap_ideas = {
+						remove_idea = galaxies_mix
+						add_idea = galaxies_mix_bad_1
+					}
+				}else_if = { limit = { has_idea = galaxies_mix_good_1 } 
+					swap_ideas = {
+						remove_idea = galaxies_mix_good_1
+						add_idea = galaxies_mix
+					}
+				}else_if = { limit = { has_idea = galaxies_mix_good_2 } 
+					swap_ideas = {
+						remove_idea = galaxies_mix_good_2
+						add_idea = galaxies_mix_good_1
+					}
+				}else_if = { limit = { has_idea = galaxies_mix_good_3 } 
+					swap_ideas = {
+						remove_idea = galaxies_mix_good_3
+						add_idea = galaxies_mix_good_2
+					}
+				}else_if = { limit = { has_idea = galaxies_mix_bad_1 } 
+					if = { limit = { NOT = { has_country_flag = critical_mass_panic } } country_event = { id = chaos_redux.246 days = 1 } }
+					swap_ideas = {
+						remove_idea = galaxies_mix_bad_1
+						add_idea = galaxies_mix_bad_2
+					}
+				}else_if = { limit = { has_idea = galaxies_mix_bad_2 } 
+					swap_ideas = {
+						remove_idea = galaxies_mix_bad_2
+						add_idea = galaxies_mix_failed
+					}
+				}
+			}
+		}
+	}
+	mass_panic_failed_decision = {
+		visible = {
+			has_idea = galaxies_mix_failed
+		}
+		icon = GFX_decision_generic_political_discourse
+		fixed_random_seed = no
+		
+		ai_will_do = {
+			factor = 1
+		}
+		complete_effect = {
+			remove_ideas = galaxies_mix_failed
+			clr_country_flag = mass_panic
+			kill_country_leader = yes
+			create_country_leader = {
+				name = DOOMSDAY_NAME
+				desc = "DOOMSDAY_DESC"
+				picture = GFX_portrait_DOOMSDAY_anarchist_commune
+				ideology = anarchism
+				traits = {
+				}
+			}
+			add_political_power = -100
+			add_war_support = -1.00
+			set_equipment_fraction = 1.00
+			delete_unit = {}
+			country_lock_all_division_template = yes
+			set_cosmetic_tag = DOOMSDAY
+			set_popularities = {
+				neutrality = 100
+			}
+			set_politics = {
+				ruling_party = neutrality
+				elections_allowed = no
+				election_frequency = 48
+				long_name = doomsday_party_long
+				name = doomsday_party
+			}
+		}
+	}
+}

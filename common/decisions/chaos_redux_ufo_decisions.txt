@@ -1,0 +1,201 @@
+chaos_redux_ufo_decision_category = {
+	chaos_redux_ufo_decisions = {
+		visible = {
+			has_global_flag = ufo_race
+		}
+		available = {
+		}
+
+		days_re_enable = 5 
+		cost = 100
+		icon = GFX_decision_oppression
+		
+		ai_will_do = {
+			factor = 2
+			modifier = {
+				add = 2
+				has_war = no
+			}
+		}
+		
+		complete_effect = {
+			clear_array = global.ufo_infl_array # Needed to keep only relevant values.
+			add_to_variable = {
+				var = ufo_infl
+				value = 10
+				tooltip = "Gain [?10|.0G] influence points"
+			}
+			every_country = {
+				limit = { has_variable = ufo_infl }
+				add_to_array = { global.ufo_infl_array = ufo_infl }
+			}
+			find_highest_in_array = {
+				array = global.ufo_infl_array
+				value = temp_largest_infl
+			}
+			log = "Current value of ufo_infl in [FROM.GetName]: [?ufo_infl]"
+			every_country = {
+				limit = { has_variable = ufo_infl }
+				if = { 
+					limit = { 
+						check_variable = {
+							var = ufo_infl
+							value = temp_largest_infl
+							compare = equals
+						} 
+					} 
+					set_variable = { global.largest_ufo_infl = ufo_infl }
+					set_variable = { global.largest_ufo_infl_country = THIS.id }
+					log = "Highest ufo infl: [?global.largest_ufo_infl], [?global.largest_ufo_infl.GetName]"
+				}
+			}
+			if = { 
+				limit = {
+					check_variable = {
+						var = ufo_infl
+						value = 100
+						compare = greater_than_or_equals
+					}
+				}
+				clr_global_flag = ufo_race
+				country_event = { id = chaos_redux.57 days = 1 }
+			}
+		}
+	}
+	chaos_redux_ufo_decisions_army = {
+		visible = {
+			has_global_flag = ufo_race
+		}
+		available = {
+			has_manpower > 1000
+			has_equipment = {
+				infantry_equipment_1 > 999
+			}
+			any_character = {
+				is_army_leader = yes
+			}
+		}
+
+		days_re_enable = 5
+		cost = 50
+		fixed_random_seed = no
+		icon = GFX_decision_generic_military
+		
+		ai_will_do = {
+			factor = 2
+			modifier = {
+				add = 2
+				has_war = no
+			}
+			modifier = {
+				add = 2
+				has_manpower > 100000
+				has_equipment = {
+					infantry_equipment_1 > 10000
+				}
+			}
+		}
+		complete_effect = {
+			clear_array = global.ufo_infl_array
+			add_to_variable = {
+				var = ufo_infl
+				value = 5
+				tooltip = "Gain [?5|.0G] influence points"
+			}
+			every_country = {
+				limit = { has_variable = ufo_infl }
+				add_to_array = { global.ufo_infl_array = ufo_infl }
+			}
+			find_highest_in_array = {
+				array = global.ufo_infl_array
+				value = temp_largest_infl
+			}
+			log = "Current value of ufo_infl in [FROM.GetName]: [?ufo_infl]"
+			every_country = {
+				limit = { has_variable = ufo_infl }
+				if = { 
+					limit = { 
+						check_variable = {
+							var = ufo_infl
+							value = temp_largest_infl
+							compare = equals
+						} 
+					} 
+					set_variable = { global.largest_ufo_infl = ufo_infl }
+					set_variable = { global.largest_ufo_infl_country = THIS.id }
+					log = "Highest ufo infl: [?global.largest_ufo_infl], [?global.largest_ufo_infl.GetName]"
+				}
+			}
+			add_manpower = -1000
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = -1000
+			}
+			random_army_leader = {
+				add_trait = {
+					trait = in_antarctica
+				}
+			}
+			if = { 
+				limit = {
+					check_variable = {
+						var = ufo_infl
+						value = 100
+						compare = greater_than_or_equals
+					}
+				}
+				clr_global_flag = ufo_race
+				country_event = { id = chaos_redux.57 days = 1 }
+			}
+		}
+	}
+	chaos_redux_ufo_decisions_targeted = {
+		visible = {
+			has_global_flag = ufo_race
+		}
+		available = {
+		}
+		icon = GFX_decision_oppression
+		days_re_enable = 15
+		cost = 100
+		
+		ai_will_do = {
+			factor = 0
+		}
+
+		target_array = global.majors
+		
+		complete_effect = {
+			clear_array = global.ufo_infl_array
+			subtract_from_variable = {
+				var = FROM.ufo_infl
+				value = 10
+				tooltip = "[?-10|.0R] influence points for the selected country"
+			}
+			every_country = {
+				limit = { has_variable = ufo_infl }
+				add_to_array = { global.ufo_infl_array = ufo_infl }
+			}
+			find_highest_in_array = {
+				array = global.ufo_infl_array
+				value = temp_largest_infl
+			}
+			log = "Current value of ufo_infl in [FROM.GetName]: [?ufo_infl]"
+			every_country = {
+				limit = { has_variable = ufo_infl }
+				if = { 
+					limit = { 
+						check_variable = {
+							var = ufo_infl
+							value = temp_largest_infl
+							compare = equals
+						} 
+					} 
+					set_variable = { global.largest_ufo_infl = ufo_infl }
+					set_variable = { global.largest_ufo_infl_country = THIS.id }
+					log = "Highest ufo infl: [?global.largest_ufo_infl], [?global.largest_ufo_infl.GetName]"
+				}
+			}
+		}
+	}
+}

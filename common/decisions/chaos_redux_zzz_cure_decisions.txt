@@ -1,0 +1,210 @@
+chaos_redux_zzz_cure_category = {
+	find_cure = {
+		available = {
+			NOT = { has_idea = cure_activated }
+			check_variable = { zzz_cure < 100 }
+		}
+
+		cost = 20
+		days_remove = 60
+		icon = GFX_decision_generic_research
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				add = 4
+				has_war_with = ZZZ
+			}
+			modifier = {
+				add = 2
+				is_in_tech_sharing_group = cure_sharing
+			}
+		}
+		
+		complete_effect = {
+			add_timed_idea = {
+				idea = searching_for_cure
+				days = 60
+			}
+		}
+		
+		remove_effect = {
+			if = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				add_to_variable = {
+					var = global.zzz_cure
+					value = 5
+					tooltip = zzz_cure_global_tt
+				}
+				if = { limit = { check_variable = { global.zzz_cure > 99 } } 
+					every_country = {
+						limit = { is_in_tech_sharing_group = cure_sharing }
+						add_timed_idea = {
+							idea = cure_activated
+							days = 120
+						}
+						country_event = { id = chaos_redux.244 }
+					}
+					ZZZ = {
+						add_timed_idea = {
+							idea = cure_sharing_bonus
+							days = 120
+						}
+					}
+					set_variable = { global.zzz_cure = 0 }
+				}
+			} else = {
+				add_to_variable = {
+					var = zzz_cure
+					value = 5
+					tooltip = zzz_cure_tt
+				}
+			}
+		}
+		cancel_trigger = { 
+			hidden_trigger = { has_idea = cure_activated }
+		}
+		cancel_effect = { 
+			hidden_effect = { add_political_power = 20 }
+		}
+	}
+	
+	join_cure_sharing = {
+		visible = {
+			NOT = { is_in_tech_sharing_group = cure_sharing }
+		}
+
+		cost = 10
+		icon = GFX_decision_eng_trade_unions_support
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				add = 3
+				has_war_with = ZZZ
+			}
+			modifier = {
+				add = 1
+				any_country = { is_in_tech_sharing_group = cure_sharing NOT = { has_war_with = ROOT } }
+			}
+			modifier = {
+				factor = 0.20
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					has_government = democratic
+				}
+			}
+		}
+		
+		complete_effect = {
+			every_other_country = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = small_increase
+				}
+			}
+			add_to_variable = {
+				var = global.zzz_cure
+				value = zzz_cure
+				tooltip = join_cure_sharing_tt
+			} 
+			add_to_tech_sharing_group = cure_sharing
+			set_variable = { zzz_cure = 0 }
+		}
+	}
+	leave_cure_sharing = {
+		visible = {
+			is_in_tech_sharing_group = cure_sharing
+		}
+
+		cost = 20
+		icon = GFX_decision_oppression
+		
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				add = 2
+				any_country = { is_in_tech_sharing_group = cure_sharing has_war_with = ROOT }
+			}
+			modifier = {
+				add = 1
+				NOT = { has_war_with = ZZZ }
+			}
+			modifier = {
+				add = 1
+				is_major = yes
+			}
+			modifier = {
+				factor = 1.5
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					has_government = democratic
+				}
+			}
+		}
+		
+		complete_effect = {
+			every_other_country = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = medium_decrease
+				}
+			}
+			remove_from_tech_sharing_group = cure_sharing
+			set_variable = { zzz_cure = 0 }
+		}
+	}
+	
+	activate_the_cure = {
+		available = {
+			check_variable = { zzz_cure > 99 }
+			NOT = { has_idea = cure_activated }
+		}
+		visible = {
+			NOT = { is_in_tech_sharing_group = cure_sharing }
+		}
+
+		cost = 10
+		fire_only_once = yes
+		icon = GFX_decision_generic_research
+		
+		ai_will_do = {
+			factor = 3
+			modifier = {
+				add = 2
+				has_war_with = ZZZ
+			}
+			modifier = {
+				factor = 0.2
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+		}
+		
+		complete_effect = {
+			add_timed_idea = {
+				idea = cure_activated
+				days = 360
+			}
+			country_event = { id = chaos_redux.244 }
+			set_variable = { zzz_cure = 0 }
+			
+		}
+	}
+}
