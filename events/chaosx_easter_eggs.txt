@@ -1,0 +1,80 @@
+add_namespace = chaosx.easter_egg
+
+# Chamberlain is back
+country_event = {
+    id = chaosx.easter_egg.1
+    title = chaosx.easter_egg.1.t
+    desc = chaosx.easter_egg.1.d
+    picture = GFX_report_event_chamberlain
+
+    fire_only_once = yes
+
+    trigger = {
+        tag = ENG
+        is_subject = no
+        is_major = yes
+        is_faction_leader = yes
+        war_length_with = {
+            tag = GER
+            months > 36
+        }
+        has_government = democratic
+        has_defensive_war_with = GER
+        date > 1942.9.11
+        has_war_support < 0.5
+        enemies_strength_ratio > 0.5
+        casualties > 1000000
+        GER = { surrender_progress < 0.2 }
+    }
+    mean_time_to_happen = {
+        days = 100
+    }
+
+    option = {
+        name = chaosx.easter_egg.1.a
+        add_political_power = 100
+        ai_chance = { base = 80 }
+        retire_country_leader = yes
+        create_country_leader = {
+            name = "Chamberlain The Immortal"
+            desc = "POLITICS_NEVILLE_CHAMBERLAIN_DESC"
+            picture = GFX_portrait_ENG_neville_chamberlain_immortal
+            expire = "1965.1.1"
+            ideology = conservatism
+            traits = { chamberlain_the_immortal }
+        }
+        hidden_effect = {
+            news_event = { id = chaosx.news.1 days = 2 }
+            set_technology = {
+                atomic_research = 1
+            }
+            add_nuclear_bombs = 10
+            random_owned_controlled_state = {
+                add_building_construction = {
+                    type = commercial_nuclear_reactor
+                    level = 1
+                    instant_build = yes
+                }
+            }
+            random_owned_controlled_state = {
+                add_building_construction = {
+                    type = commercial_nuclear_reactor
+                    level = 1
+                    instant_build = yes
+                }
+            }
+            random_owned_controlled_state = {
+                add_building_construction = {
+                    type = commercial_nuclear_reactor
+                    level = 1
+                    instant_build = yes
+                }
+            }
+        }
+    }
+    option = {
+        name = chaosx.easter_egg.1.b
+        ai_chance = { base = 20 }
+        news_event = { id = chaosx.news.2 days = 2 }
+    }
+}

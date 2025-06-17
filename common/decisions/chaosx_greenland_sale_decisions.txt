@@ -1,0 +1,36 @@
+chaosx_greenland_sale_category = {
+    buy_greenland = {
+        visible = {
+            has_country_flag = greenland_sale
+            DEN = { owns_state = 101 }
+        }
+
+        cost = 250
+        fire_only_once = yes
+        icon = GFX_decision_ger_mefo_bills
+
+        ai_will_do = {
+            factor = 2
+            modifier = {
+                add = 2
+                has_war = no
+            }
+            modifier = {
+                add = 2
+                has_political_power > 200
+            }
+        }
+
+        complete_effect = {
+            DEN = {
+                add_political_power = 250
+            }
+            101 = { transfer_state_to = ROOT }
+            news_event = { id = chaosx.news.73 days = 2 }
+            every_country = {
+                limit = { has_country_flag = greenland_sale }
+                clr_country_flag = greenland_sale
+            }
+        }
+    }
+}

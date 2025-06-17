@@ -1,0 +1,717 @@
+# Smart event firing system - Effects
+# This file contains the logic for the smart event firing system
+# Provides functionality for:
+# - Event system initialization and weight management
+# - Event firing handlers for different event types
+# - Event counting and classification functions
+# - Debug logging and monitoring functions
+# - Event name management and lookup functions
+
+# ========================================
+# INITIALIZATION FUNCTIONS
+# ========================================
+
+# Initialize the event system variables
+initialize_event_system = {
+    if = {
+        limit = { always = yes }
+        # Initialize system flags
+        set_global_flag = event_system_initializing
+
+        # Clear and initialize arrays
+        clear_array = global.fired_events  # Contains all fired events
+        clear_array = global.event_weights  # Contains current weights for all events
+
+        # Initialize event category arrays
+        clear_array = global.major_events
+        clear_array = global.fire_once_events
+        clear_array = global.repeatable_events
+
+        # Initialize weights
+        set_variable = { global.default_event_weight = 1000 }
+        set_variable = { global.minor_event_recovery_rate = 40 }
+        set_variable = { global.major_event_weight_per_minor = 100 }
+
+        # Initialize counters and tracking variables
+        set_variable = { global.minor_events_since_major = 0 }
+        set_variable = { global.last_fired_event_id = -1 }
+        set_variable = { global.total_events_fired = 0 }
+        set_variable = { global.debug_log_count = 0 }
+
+        # Initialize all event system components
+        initialize_event_categories = yes
+
+        # Initialize event weights array with default values
+        initialize_event_weights = yes
+
+        set_global_flag = event_system_initialized
+        clr_global_flag = event_system_initializing
+    }
+}
+
+# Initialize event categories for easier maintenance
+initialize_event_categories = {
+    # Major events (fire once, start at weight 0, increase with minor events)
+    add_to_array = { global.major_events = 2 }   # ZZZ
+    add_to_array = { global.major_events = 25 }  # ALIENS ANTARCTICA UFO RACE
+    add_to_array = { global.major_events = 30 }  # TIME TRAVELER
+    add_to_array = { global.major_events = 44 }  # SPACE RACE
+    add_to_array = { global.major_events = 49 }  # MASS PANIC
+    add_to_array = { global.major_events = 70 }  # AFRICA GODS
+    add_to_array = { global.major_events = 80 }  # AIRSHIP
+    add_to_array = { global.major_events = 91 }  # THE REVOLUTION
+
+    # Fire-once events (start at weight 1000, become 0 permanently when fired)
+    add_to_array = { global.fire_once_events = 3 }   # THR
+    add_to_array = { global.fire_once_events = 5 }   # SOV COLLAPSE
+    add_to_array = { global.fire_once_events = 10 }  # WAR OR PEACE SYMBOL
+    add_to_array = { global.fire_once_events = 11 }  # ANTI-PLAYER PACT
+    add_to_array = { global.fire_once_events = 12 }  # AFR
+    add_to_array = { global.fire_once_events = 16 }  # BRILLIANT SCIENTIST
+    add_to_array = { global.fire_once_events = 20 }  # BLACK DEATH
+    add_to_array = { global.fire_once_events = 22 }  # 1391
+    add_to_array = { global.fire_once_events = 23 }  # SOV NUKES
+    add_to_array = { global.fire_once_events = 24 }  # HOI
+    add_to_array = { global.fire_once_events = 26 }  # MOVE INDUSTRY TO DESERT
+    add_to_array = { global.fire_once_events = 27 }  # DOCTRINE RESEARCH
+    add_to_array = { global.fire_once_events = 38 }  # MALTA CRUSADERS
+    add_to_array = { global.fire_once_events = 45 }  # THIRD BALKAN WAR
+    add_to_array = { global.fire_once_events = 48 }  # BUL AMBITIONS
+    add_to_array = { global.fire_once_events = 51 }  # HEAT WAVE
+    add_to_array = { global.fire_once_events = 59 }  # AI FOCUS AGGRESSIVE
+    add_to_array = { global.fire_once_events = 67 }  # GENERALISSIMO
+    add_to_array = { global.fire_once_events = 68 }  # ZIN
+    add_to_array = { global.fire_once_events = 69 }  # BOXER REBELLION
+    add_to_array = { global.fire_once_events = 71 }  # PERSIAN EMPIRE
+    add_to_array = { global.fire_once_events = 72 }  # IRE RECLAIMS NORTH
+    add_to_array = { global.fire_once_events = 73 }  # MONGOLS RISE
+    add_to_array = { global.fire_once_events = 74 }  # JAP CA
+    add_to_array = { global.fire_once_events = 75 }  # TAN JOINS ALLIES
+    add_to_array = { global.fire_once_events = 76 }  # USA TESTS WEAPONS
+    add_to_array = { global.fire_once_events = 81 }  # ENG TAX
+    add_to_array = { global.fire_once_events = 86 }  # WORLD CLAIMS
+    add_to_array = { global.fire_once_events = 88 }  # MINES
+    add_to_array = { global.fire_once_events = 89 }  # TECH SHARING GROUP
+    add_to_array = { global.fire_once_events = 90 }  # KAMIKAZE
+    add_to_array = { global.fire_once_events = 92 }  # GRN SALE
+    add_to_array = { global.fire_once_events = 93 }  # PORTUGAL GALICIA
+    add_to_array = { global.fire_once_events = 96 }  # DIVISIONS LOCK
+    add_to_array = { global.fire_once_events = 98 }  # NEW ORE
+    add_to_array = { global.fire_once_events = 99 }  # DESERT STORM
+
+    # Repeatable events (start at weight 1000, drop to 0 when fired, recover +40/month up to 1000)
+    add_to_array = { global.repeatable_events = 1 }   # COMMUNISM SPREADS
+    add_to_array = { global.repeatable_events = 4 }   # RAND WAR
+    add_to_array = { global.repeatable_events = 6 }   # INDP WAVE
+    add_to_array = { global.repeatable_events = 7 }   # RAND EXPANSION
+    add_to_array = { global.repeatable_events = 8 }   # +WORLD TENSION
+    add_to_array = { global.repeatable_events = 9 }   # WHITE PEACE
+    add_to_array = { global.repeatable_events = 13 }  # NATURAL DISASTERS
+    add_to_array = { global.repeatable_events = 14 }  # CANNIBALISM
+    add_to_array = { global.repeatable_events = 15 }  # -WORLD TENSION
+    add_to_array = { global.repeatable_events = 17 }  # JOIN FACTION
+    add_to_array = { global.repeatable_events = 18 }  # RAND RESOURCE
+    add_to_array = { global.repeatable_events = 19 }  # INF SPAWN
+    add_to_array = { global.repeatable_events = 21 }  # RAND CW
+    add_to_array = { global.repeatable_events = 28 }  # ASTEROID
+    add_to_array = { global.repeatable_events = 29 }  # RICHES FOUND
+    add_to_array = { global.repeatable_events = 31 }  # TERRORISTS
+    add_to_array = { global.repeatable_events = 32 }  # MISSILES
+    add_to_array = { global.repeatable_events = 33 }  # ACID RAIN
+    add_to_array = { global.repeatable_events = 34 }  # INDUSTRY BOOM
+    add_to_array = { global.repeatable_events = 35 }  # GREAT DEPRESSION
+    add_to_array = { global.repeatable_events = 36 }  # ALIEN SPACECRAFT
+    add_to_array = { global.repeatable_events = 37 }  # MYSTERIOUS POPULATION
+    add_to_array = { global.repeatable_events = 39 }  # MURDER MYSTERY
+    add_to_array = { global.repeatable_events = 40 }  # LAWRENCE OF ARABIA
+    add_to_array = { global.repeatable_events = 41 }  # DISEASE IN DIVISIONS
+    add_to_array = { global.repeatable_events = 42 }  # EQUIPMENT FROM HEAVENS
+    add_to_array = { global.repeatable_events = 43 }  # MASSIVE FLOOD
+    add_to_array = { global.repeatable_events = 46 }  # EARTH EARTHQUAKE
+    add_to_array = { global.repeatable_events = 47 }  # BOOM!
+    add_to_array = { global.repeatable_events = 50 }  # GREAT EMBARGO
+    add_to_array = { global.repeatable_events = 52 }  # INTELLIGENCE LEAK
+    add_to_array = { global.repeatable_events = 53 }  # MYSTERIOUS MAN
+    add_to_array = { global.repeatable_events = 54 }  # RAND TECH
+    add_to_array = { global.repeatable_events = 55 }  # GREAT INFR PROJECT
+    add_to_array = { global.repeatable_events = 56 }  # CREATE NAVY
+    add_to_array = { global.repeatable_events = 57 }  # RADARS
+    add_to_array = { global.repeatable_events = 58 }  # INDUSTRIAL COMPLEXES
+    add_to_array = { global.repeatable_events = 60 }  # RESEARCH FAILURE
+    add_to_array = { global.repeatable_events = 61 }  # 1/2 MILS INTO CIVS
+    add_to_array = { global.repeatable_events = 62 }  # ALLIES BACKSTAB
+    add_to_array = { global.repeatable_events = 63 }  # END SUBJECT STATUS
+    add_to_array = { global.repeatable_events = 64 }  # BORDER FORTS
+    add_to_array = { global.repeatable_events = 65 }  # RAND LEADER TRAIT
+    add_to_array = { global.repeatable_events = 66 }  # CIC
+    add_to_array = { global.repeatable_events = 77 }  # FREE EQ FROM MAJOR TO MINOR
+    add_to_array = { global.repeatable_events = 78 }  # BORDER CONFLICT
+    add_to_array = { global.repeatable_events = 79 }  # MANIPULATE MINOR
+    add_to_array = { global.repeatable_events = 82 }  # UPGRADE LAW
+    add_to_array = { global.repeatable_events = 83 }  # AGENCY UPGRADE
+    add_to_array = { global.repeatable_events = 84 }  # PP
+    add_to_array = { global.repeatable_events = 85 }  # XP
+    add_to_array = { global.repeatable_events = 87 }  # IT'S WW1
+    add_to_array = { global.repeatable_events = 94 }  # HALF GONE
+    add_to_array = { global.repeatable_events = 95 }  # OCCUPATION REVOLT
+    add_to_array = { global.repeatable_events = 97 }  # COLLABORATION
+}
+
+# Initialize weights for all events
+initialize_event_weights = {
+    # Clear and rebuild the weights array
+    clear_array = global.event_weights
+
+    log = "Initializing event weights array..."
+
+    # Initialize weights array to hold 1000 events (expandable for future updates)
+    set_temp_variable = { max_events = 1000 }
+
+    for_loop_effect = {
+        start = 0
+        end = max_events
+        value = i
+        add_to_array = { global.event_weights = global.default_event_weight } # Initialize to default weight (1000)
+    }    log = "Event weights array initialized with [?global.event_weights^num] entries"
+
+    # Set major events to weight 0 (they start inactive until minor events build them up)
+    for_loop_effect = {
+        start = 0
+        end = global.major_events^num
+        value = i
+        set_temp_variable = { event_id = global.major_events^i }
+        if = {
+            limit = { check_variable = { event_id < global.event_weights^num } }
+            set_variable = { global.event_weights^event_id = 0 }
+        }
+    }
+
+    log = "Major event weights set to 0"
+}
+
+# ========================================
+# WEIGHT MANAGEMENT FUNCTIONS
+# ========================================
+
+# Get weight for a specific event ID
+get_event_weight = {
+    # Input: temp variable event_id
+    # Output: temp variable event_weight
+    set_temp_variable = { event_weight = 0 }
+    if = {
+        limit = {
+            check_variable = { event_id > 0 }
+            check_variable = { event_id < global.event_weights^num }
+        }
+        set_temp_variable = { event_weight = global.event_weights^event_id }
+    }
+    else = {
+        log = "Warning: Tried to get weight for invalid event ID [?event_id]"
+    }
+}
+
+# Set weight for a specific event ID
+set_event_weight = {
+    # Input: temp variables event_id and new_weight
+    if = {
+        limit = {
+            check_variable = { event_id > 0 }
+            check_variable = { event_id < global.event_weights^num }
+        }
+        set_variable = { global.event_weights^event_id = new_weight }
+    }
+    else = {
+        log = "Warning: Tried to set weight for invalid event ID [?event_id] to [?new_weight]"
+    }
+}
+
+# ========================================
+# EVENT FIRING HANDLERS
+# ========================================
+
+# Execute when a fire-once event fires
+on_fire_once_event_fired = {
+    # Input: temp variable event_id
+    # Always update last fired event ID
+    set_variable = { global.last_fired_event_id = event_id }
+
+    # Always count the event firing and increment minor events counter
+    add_to_variable = { global.total_events_fired = 1 }
+    add_to_variable = { global.minor_events_since_major = 1 }
+
+    # Add to fired events array only the first time (to track unique events fired)
+    if = {
+        limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+        add_to_array = { global.fired_events = event_id }
+    }
+
+    # Set weight to 0 permanently
+    set_temp_variable = { new_weight = 0 }
+    set_event_weight = yes
+
+    # Update major event weights immediately after firing a minor event
+    update_major_event_weights = yes
+}
+
+# Execute when a repeatable minor event fires
+on_repeatable_event_fired = {
+    # Input: temp variable event_id
+    # Always update last fired event ID
+    set_variable = { global.last_fired_event_id = event_id }
+
+    # Always count the event firing and increment minor events counter
+    add_to_variable = { global.total_events_fired = 1 }
+    add_to_variable = { global.minor_events_since_major = 1 }
+
+    # Add to fired events array only the first time (to track unique events fired)
+    if = {
+        limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+        add_to_array = { global.fired_events = event_id }
+    }
+
+    # Set weight to 0 (will recover via monthly update)
+    set_temp_variable = { new_weight = 0 }
+    set_event_weight = yes
+
+    # Update major event weights immediately after firing a minor event
+    update_major_event_weights = yes
+}
+
+# Execute when a major event fires
+on_major_event_fired = {
+    # Input: temp variable event_id
+    # Always update last fired event ID
+    set_variable = { global.last_fired_event_id = event_id }
+
+    # Always count the event firing and reset minor events counter
+    add_to_variable = { global.total_events_fired = 1 }
+    set_variable = { global.minor_events_since_major = 0 }
+
+    # Add to fired events array only the first time (to track unique events fired)
+    if = {
+        limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+        add_to_array = { global.fired_events = event_id }
+    }
+
+    # Set the fired event weight to 0 permanently
+    set_temp_variable = { new_weight = 0 }
+    set_event_weight = yes
+
+    # Reset all other major event weights to 0 (but they can build up again)
+    reset_unfired_major_event_weights = yes
+}
+
+# Reset all unfired major event weights to 0 (called when a major event fires)
+reset_unfired_major_event_weights = {
+    for_loop_effect = {
+        start = 0
+        end = global.major_events^num
+        value = i
+        set_temp_variable = { check_event_id = global.major_events^i }
+
+        # Only reset if this major event hasn't been fired yet
+        if = {
+            limit = { NOT = { is_in_array = { global.fired_events = check_event_id } } }
+            set_temp_variable = { event_id = check_event_id }
+            set_temp_variable = { new_weight = 0 }
+            set_event_weight = yes
+        }
+    }
+}
+
+# ========================================
+# EVENT COUNTING AND CLASSIFICATION FUNCTIONS
+# ========================================
+
+# Count fired minor events (excluding majors)
+count_fired_minor_events = {
+    # Output: temp variable minor_events_count
+    set_temp_variable = { minor_events_count = 0 }
+
+    for_loop_effect = {
+        start = 0
+        end = global.fired_events^num
+        value = i
+
+        # Get the event ID at this index
+        set_temp_variable = { current_event_id = global.fired_events^i }
+
+        # Check if it's not a major event using the major events array
+        set_temp_variable = { is_major = 0 }
+        for_loop_effect = {
+            start = 0
+            end = global.major_events^num
+            value = j
+            if = {
+                limit = { check_variable = { current_event_id = global.major_events^j } }
+                set_temp_variable = { is_major = 1 }
+            }
+        }
+
+        if = {
+            limit = { check_variable = { is_major = 0 } }
+            add_to_temp_variable = { minor_events_count = 1 }
+        }
+    }
+}
+
+# Count fired major events
+count_fired_major_events = {
+    # Output: temp variable major_events_count
+    set_temp_variable = { major_events_count = 0 }
+
+    for_loop_effect = {
+        start = 0
+        end = global.fired_events^num
+        value = i
+
+        # Get the event ID at this index
+        set_temp_variable = { current_event_id = global.fired_events^i }
+
+        # Check if it's a major event using the major events array
+        set_temp_variable = { is_major = 0 }
+        for_loop_effect = {
+            start = 0
+            end = global.major_events^num
+            value = j
+            if = {
+                limit = { check_variable = { current_event_id = global.major_events^j } }
+                set_temp_variable = { is_major = 1 }
+            }
+        }
+
+        if = {
+            limit = { check_variable = { is_major = 1 } }
+            add_to_temp_variable = { major_events_count = 1 }
+        }
+    }
+}
+
+# Count fired minor repeatable events only
+count_fired_minor_repeatable_events = {
+    # Output: temp variable minor_repeatable_events_fired
+    set_temp_variable = { minor_repeatable_events_fired = 0 }
+
+    for_loop_effect = {
+        start = 0
+        end = global.fired_events^num
+        value = i
+        set_temp_variable = { current_event_id = global.fired_events^i }
+
+        # Check if it's in the repeatable events array
+        for_loop_effect = {
+            start = 0
+            end = global.repeatable_events^num
+            value = j
+            if = {
+                limit = { check_variable = { current_event_id = global.repeatable_events^j } }
+                add_to_temp_variable = { minor_repeatable_events_fired = 1 }
+            }
+        }
+    }
+}
+
+# Count fired minor fire-once events only
+count_fired_minor_fire_once_events = {
+    # Output: temp variable minor_fire_once_events_fired
+    set_temp_variable = { minor_fire_once_events_fired = 0 }
+
+    for_loop_effect = {
+        start = 0
+        end = global.fired_events^num
+        value = i
+        set_temp_variable = { current_event_id = global.fired_events^i }
+
+        # Check if it's in the fire-once events array
+        for_loop_effect = {
+            start = 0
+            end = global.fire_once_events^num
+            value = j
+            if = {
+                limit = { check_variable = { current_event_id = global.fire_once_events^j } }
+                add_to_temp_variable = { minor_fire_once_events_fired = 1 }
+            }
+        }
+    }
+}
+
+# Count unfired major events
+count_unfired_major_events = {
+    # Output: temp variable unfired_major_events
+    set_temp_variable = { unfired_major_events = 0 }
+
+    for_loop_effect = {
+        start = 0
+        end = global.major_events^num
+        value = i
+        set_temp_variable = { check_event_id = global.major_events^i }
+        if = {
+            limit = { NOT = { is_in_array = { global.fired_events = check_event_id } } }
+            add_to_temp_variable = { unfired_major_events = 1 }
+        }
+    }
+}
+
+# Count unfired fire-once events
+count_unfired_fire_once_events = {
+    # Output: temp variable unfired_fire_once_events
+    set_temp_variable = { unfired_fire_once_events = 0 }
+
+    for_loop_effect = {
+        start = 0
+        end = global.fire_once_events^num
+        value = i
+        set_temp_variable = { check_event_id = global.fire_once_events^i }
+        if = {
+            limit = { NOT = { is_in_array = { global.fired_events = check_event_id } } }
+            add_to_temp_variable = { unfired_fire_once_events = 1 }
+        }
+    }
+}
+
+# Count unfired repeatable events
+count_unfired_repeatable_events = {
+    # Output: temp variable unfired_repeatable_events
+    set_temp_variable = { unfired_repeatable_events = 0 }
+
+    for_loop_effect = {
+        start = 0
+        end = global.repeatable_events^num
+        value = i
+        set_temp_variable = { check_event_id = global.repeatable_events^i }
+
+        # Check if this repeatable event has ever been fired
+        set_temp_variable = { event_ever_fired = 0 }
+        for_loop_effect = {
+            start = 0
+            end = global.fired_events^num
+            value = j
+            if = {
+                limit = { check_variable = { global.fired_events^j = check_event_id } }
+                set_temp_variable = { event_ever_fired = 1 }
+            }
+        }
+        # If it has never been fired, count it
+        if = {
+            limit = { check_variable = { event_ever_fired = 0 } }
+            add_to_temp_variable = { unfired_repeatable_events = 1 }
+        }
+    }
+}
+
+# Count total unique events available
+count_total_events = {
+    # Output: temp variable total_events
+    set_temp_variable = { total_events = 0 }
+    add_to_temp_variable = { total_events = global.major_events^num }
+    add_to_temp_variable = { total_events = global.fire_once_events^num }
+    add_to_temp_variable = { total_events = global.repeatable_events^num }
+}
+
+# ========================================
+# WEIGHT UPDATE FUNCTIONS
+# ========================================
+
+# Update major event weights based on fired minor events since last major event
+update_major_event_weights = {
+    # Calculate new weight for major events based on minor events since last major event
+    set_temp_variable = { major_weight = global.minor_events_since_major }
+    multiply_temp_variable = { major_weight = global.major_event_weight_per_minor }
+
+    # Update all major event weights (only if they haven't fired yet)
+    for_loop_effect = {
+        start = 0
+        end = global.major_events^num
+        value = i
+        set_temp_variable = { event_id = global.major_events^i }
+        if = {
+            limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+            set_temp_variable = { new_weight = major_weight }
+            set_event_weight = yes
+        }
+    }
+}
+
+# Monthly update for repeatable event weights
+update_repeatable_event_weights = {
+    # Update each repeatable event weight using the array
+    for_loop_effect = {
+        start = 0
+        end = global.repeatable_events^num
+        value = i
+
+        set_temp_variable = { event_id = global.repeatable_events^i }
+        get_event_weight = yes
+
+        # If weight is less than 1000, increase by 40 (capped at 1000 for repeatable events)
+        if = {
+            limit = { check_variable = { event_weight < global.default_event_weight } }
+            add_to_temp_variable = { event_weight = global.minor_event_recovery_rate } # 40
+            set_temp_variable = { new_weight = event_weight }
+            set_event_weight = yes
+        }
+    }
+
+    # Also update major event weights
+    update_major_event_weights = yes
+}
+
+# ========================================
+# DEBUG AND MONITORING FUNCTIONS
+# ========================================
+
+# Debug logging for event weights and categories
+log_event_system_debug = {
+    # Increment debug counter
+    add_to_variable = { global.debug_log_count = 1 }
+
+    log = " "
+    log = "======================================================"
+    log = "CHAOS REDUX EVENT SYSTEM DEBUG START NR [?global.debug_log_count]"
+    log = "======================================================"
+    log = " "
+
+    count_fired_minor_events = yes
+    count_fired_major_events = yes
+    count_fired_minor_repeatable_events = yes
+    count_fired_minor_fire_once_events = yes
+    count_unfired_major_events = yes
+    count_unfired_fire_once_events = yes
+    count_unfired_repeatable_events = yes
+    count_total_events = yes
+
+    # Calculate current major event weight
+    set_temp_variable = { current_major_weight = global.minor_events_since_major }
+    multiply_temp_variable = { current_major_weight = global.major_event_weight_per_minor }
+
+    # Calculate total unfired events
+    set_temp_variable = { total_unfired_events = unfired_major_events }
+    add_to_temp_variable = { total_unfired_events = unfired_fire_once_events }
+    add_to_temp_variable = { total_unfired_events = unfired_repeatable_events }
+
+    log = "EVENTS FIRED:"
+    log = "Total events fired: [?global.total_events_fired]"
+    log = "Major events fired: [?major_events_count]"
+    log = "Minor events fired: [?minor_events_count]"
+    log = "  - Minor repeatable events fired: [?minor_repeatable_events_fired]"
+    log = "  - Minor fire-once events fired: [?minor_fire_once_events_fired]"
+    log = "------------------------------------------------------"
+
+    log = "UNIQUE EVENTS:"
+    log = "Total events in system: [?total_events]"
+    log = "Total unique events yet to be fired: [?total_unfired_events]"
+    log = "  - Major events unfired: [?unfired_major_events] / [?global.major_events^num]"
+    log = "  - Minor fire-once events unfired: [?unfired_fire_once_events] / [?global.fire_once_events^num]"
+    log = "  - Minor repeatable events unfired: [?unfired_repeatable_events] / [?global.repeatable_events^num]"
+    log = "------------------------------------------------------"
+
+    log = "MAJOR EVENT WEIGHTS:"
+    log = "Minor events fired since last major: [?global.minor_events_since_major]"
+    log = "Current major event weight: [?current_major_weight]"
+    log = "------------------------------------------------------"
+
+    log = "SYSTEM INFO:"
+    log = "Event weights array size: [?global.event_weights^num]"
+    log = "Default minor event weight: [?global.default_event_weight]"
+    log = "Minor event recovery rate: [?global.minor_event_recovery_rate]"
+    log = "Major event weight per minor: [?global.major_event_weight_per_minor]"
+    # Show details about the last fired event
+    if = {
+        limit = { check_variable = { global.last_fired_event_id > 0 } }
+        set_temp_variable = { event_id = global.last_fired_event_id }
+        get_event_type = yes
+        log = "Last fired event: ID: [?global.last_fired_event_id], Name: [GetEventName], Type: [?event_type] ([GetEventType])"
+    }
+    else = {
+        log = "Last fired event: None"
+    }
+    log = "------------------------------------------------------"
+    log = "MAJOR EVENTS DETAIL:"
+    for_loop_effect = {
+        start = 0
+        end = global.major_events^num
+        value = i
+        set_temp_variable = { event_id = global.major_events^i }
+        get_event_weight = yes
+
+        log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
+    }
+    log = "------------------------------------------------------"
+    log = "FIRE-ONCE EVENTS DETAIL:"
+    for_loop_effect = {
+        start = 0
+        end = global.fire_once_events^num
+        value = i
+        set_temp_variable = { event_id = global.fire_once_events^i }
+        get_event_weight = yes
+
+        log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
+    }
+    log = "------------------------------------------------------"
+    log = "REPEATABLE EVENTS DETAIL:"
+    for_loop_effect = {
+        start = 0
+        end = global.repeatable_events^num
+        value = i
+        set_temp_variable = { event_id = global.repeatable_events^i }
+        get_event_weight = yes
+
+        log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
+    }
+
+    log = " "
+    log = "======================================================"
+    log = "CHAOS REDUX EVENT SYSTEM DEBUG END NR [?global.debug_log_count]"
+    log = "======================================================"
+    log = " "
+}
+
+# ========================================
+# EVENT TYPE UTILITY FUNCTIONS
+# ========================================
+
+# Get event type by ID
+get_event_type = {
+    # Input: temp variable event_id
+    # Output: temp variable event_type (0=unknown, 1=major, 2=minor_repeatable, 3=minor_fire_once)
+    set_temp_variable = { event_type = 0 }  # Default: unknown
+
+    # Check if it's a major event
+    for_loop_effect = {
+        start = 0
+        end = global.major_events^num
+        value = i
+        if = {
+            limit = { check_variable = { event_id = global.major_events^i } }
+            set_temp_variable = { event_type = 1 }  # Major event
+        }
+    }
+    # Check if it's a repeatable event (if not already identified as major)
+    if = {
+        limit = { check_variable = { event_type = 0 } }
+        for_loop_effect = {
+            start = 0
+            end = global.repeatable_events^num
+            value = i
+            if = {
+                limit = { check_variable = { event_id = global.repeatable_events^i } }
+                set_temp_variable = { event_type = 2 }  # Minor repeatable event
+            }
+        }
+    }
+
+    # Check if it's a fire-once event (if not already identified)
+    if = {
+        limit = { check_variable = { event_type = 0 } }
+        for_loop_effect = {
+            start = 0
+            end = global.fire_once_events^num
+            value = i
+            if = {
+                limit = { check_variable = { event_id = global.fire_once_events^i } }
+                set_temp_variable = { event_type = 3 }  # Minor fire-once event
+            }
+        }
+    }
+
+}

@@ -1,0 +1,936 @@
+chaosx_space_race_decision_category = {
+    space_race_launch_decision = {
+
+        # Many things are done in on actions on daily
+
+        available = { # Checks whether it should be greyed out
+            has_tech = advanced_rocket_engines
+            has_tech = advanced_centimetric_radar
+            has_tech = advanced_computing_machine
+            if = { limit = { has_dlc = "Man the Guns" has_dlc = "La Resistance" }
+            has_tech = advanced_fire_control_system
+        }
+    }
+    icon = GFX_decision_space_race
+    cost = 50
+
+    ai_will_do = {
+        factor = 100 # If ai is able then it must
+    }
+
+    complete_effect = {
+        clr_global_flag = space_race
+        country_event = { id = chaosx.nr44.3 days = 2 }
+        hidden_effect = { remove_ideas = leading_space_race }
+    }
+}
+space_race_tech_bonus_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+    }
+
+    days_re_enable = 10
+    cost = 100
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.5
+            ahead_reduction = 0.5
+            uses = 2
+            category = electronics
+            category = rocketry
+        }
+    }
+}
+space_race_tech_bonus_radio_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = radio
+                is_researching_technology = radio
+            }
+        }
+        can_research = radio
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no # Can focus on other things
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = radio
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points } # If it's leading why not win?
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = radio
+        }
+    }
+}
+space_race_tech_bonus_mechanical_computing_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = mechanical_computing
+                is_researching_technology = mechanical_computing
+            }
+        }
+        can_research = mechanical_computing
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no # Can focus on other things
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = mechanical_computing
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points } # If it's leading why not win?
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = mechanical_computing
+        }
+    }
+}
+space_race_tech_bonus_radio_detection_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = radio_detection
+                is_researching_technology = radio_detection
+            }
+        }
+        can_research = radio_detection
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = radio_detection
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = radio_detection
+        }
+    }
+}
+space_race_tech_bonus_decimetric_radar_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = decimetric_radar
+                is_researching_technology = decimetric_radar
+            }
+        }
+        can_research = decimetric_radar
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = decimetric_radar
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = decimetric_radar
+        }
+    }
+}
+space_race_tech_bonus_improved_decimetric_radar_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = improved_decimetric_radar
+                is_researching_technology = improved_decimetric_radar
+            }
+        }
+        can_research = improved_decimetric_radar
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = improved_decimetric_radar
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = improved_decimetric_radar
+        }
+    }
+}space_race_tech_bonus_centimetric_radar_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = centimetric_radar
+                is_researching_technology = centimetric_radar
+            }
+        }
+        can_research = centimetric_radar
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = centimetric_radar
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = centimetric_radar
+        }
+    }
+}space_race_tech_bonus_improved_centimetric_radar_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = improved_centimetric_radar
+                is_researching_technology = improved_centimetric_radar
+            }
+        }
+        can_research = improved_centimetric_radar
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = improved_centimetric_radar
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            uses = 1
+            ahead_reduction = 0.5
+            technology = improved_centimetric_radar
+        }
+    }
+}space_race_tech_bonus_advanced_centimetric_radar_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = advanced_centimetric_radar
+                is_researching_technology = advanced_centimetric_radar
+            }
+        }
+        can_research = advanced_centimetric_radar
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = advanced_centimetric_radar
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = advanced_centimetric_radar
+        }
+    }
+}space_race_tech_bonus_computing_machine_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = computing_machine
+                is_researching_technology = computing_machine
+            }
+        }
+        can_research = computing_machine
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = computing_machine
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = computing_machine
+        }
+    }
+}space_race_tech_bonus_improved_computing_machine_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = improved_computing_machine
+                is_researching_technology = improved_computing_machine
+            }
+        }
+        can_research = improved_computing_machine
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = improved_computing_machine
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = improved_computing_machine
+        }
+    }
+}space_race_tech_bonus_advanced_computing_machine_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = advanced_computing_machine
+                is_researching_technology = advanced_computing_machine
+            }
+        }
+        can_research = advanced_computing_machine
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = advanced_computing_machine
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = advanced_computing_machine
+        }
+    }
+}space_race_tech_bonus_basic_fire_control_system_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = basic_fire_control_system
+                is_researching_technology = basic_fire_control_system
+            }
+        }
+        can_research = basic_fire_control_system
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = basic_fire_control_system
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = basic_fire_control_system
+        }
+    }
+}space_race_tech_bonus_improved_fire_control_system_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = improved_fire_control_system
+                is_researching_technology = improved_fire_control_system
+            }
+        }
+        can_research = improved_fire_control_system
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = improved_fire_control_system
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = improved_fire_control_system
+        }
+    }
+}space_race_tech_bonus_advanced_fire_control_system_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = advanced_fire_control_system
+                is_researching_technology = advanced_fire_control_system
+            }
+        }
+        can_research = advanced_fire_control_system
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = advanced_fire_control_system
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = advanced_fire_control_system
+        }
+    }
+}space_race_tech_bonus_experimental_rockets_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = experimental_rockets
+                is_researching_technology = experimental_rockets
+            }
+        }
+        can_research = experimental_rockets
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = experimental_rockets
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = experimental_rockets
+        }
+    }
+}space_race_tech_bonus_rocket_engines_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = rocket_engines
+                is_researching_technology = rocket_engines
+            }
+        }
+        can_research = rocket_engines
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = rocket_engines
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = rocket_engines
+        }
+    }
+}space_race_tech_bonus_improved_rocket_engines_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = improved_rocket_engines
+                is_researching_technology = improved_rocket_engines
+            }
+        }
+        can_research = improved_rocket_engines
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = improved_rocket_engines
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = improved_rocket_engines
+        }
+    }
+}space_race_tech_bonus_advanced_rocket_engines_decision = {
+    icon = GFX_decision_generic_electricity
+    visible = {
+        NOT = {
+            OR = {
+                has_tech = advanced_rocket_engines
+                is_researching_technology = advanced_rocket_engines
+            }
+        }
+        can_research = advanced_rocket_engines
+    }
+
+    days_re_enable = 5
+    cost = 20
+
+    ai_will_do = {
+        factor = 2
+        modifier = {
+            add = 2
+            has_war = no
+        }
+        modifier = {
+            add = 2
+            NOT = {
+                has_tech_bonus = {
+                    technology = advanced_rocket_engines
+                }
+            }
+        }
+        modifier = {
+            add = 2
+            check_variable = { space_race_points = global.most_space_race_points }
+        }
+        modifier = {
+            add = 5
+            amount_research_slots > 4
+        }
+    }
+    complete_effect = {
+        add_tech_bonus = {
+            bonus = 0.20
+            ahead_reduction = 0.5
+            uses = 1
+            technology = advanced_rocket_engines
+        }
+    }
+}
+
+space_race_steal_tech_targeted_decision = {
+    icon = GFX_decision_generic_electricity
+    available = {
+    }
+
+    days_re_enable = 20
+    cost = 100
+    fixed_random_seed = no
+
+    target_array = global.space_race_contenders
+
+    ai_will_do = {
+        factor = 0
+        modifier = {
+            add = 1
+            has_war = no
+        }
+        modifier = {
+            add = 1
+            NOT = { check_variable = { space_race_points = global.most_space_race_points } }
+        }
+        modifier = {
+            add = 2
+            check_variable = { FROM.space_race_points > space_race_points }
+        }
+        modifier = {
+            add = 1
+            FROM = { is_ai = no }
+        }
+    }
+
+    complete_effect = {
+        random = {
+            chance = 50
+            steal_random_tech_bonus = {
+                folder = electronics_folder
+                target = FROM
+                instant = yes
+            }
+        }
+    }
+}
+}
