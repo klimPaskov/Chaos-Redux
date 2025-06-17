@@ -6,6 +6,13 @@
 # - Event counting and classification functions
 # - Debug logging and monitoring functions
 # - Event name management and lookup functions
+# - Per-event cap management for repeatable events with 25% reduction per firing
+#
+# REPEATABLE EVENT CAP SYSTEM:
+# - Default cap: 1000, reduces by 25% each time the event fires (no minimum cap)
+# - Cap progression: 1000 -> 750 -> 500 -> 375 -> 281 -> 211 -> ... (continues indefinitely)
+# - Events recover at 40 weight per month up to their individual cap
+# - Cap reductions apply immediately when event fires, weight resets to 1 (minimum weight)
 
 # ========================================
 # INITIALIZATION FUNCTIONS
@@ -15,6 +22,7 @@
 initialize_event_system = {
     if = {
         limit = { always = yes }
+
         # Initialize system flags
         set_global_flag = event_system_initializing
 
@@ -27,10 +35,11 @@ initialize_event_system = {
         clear_array = global.fire_once_events
         clear_array = global.repeatable_events
 
-        # Initialize weights
+        # Initialize variables for event weights and caps
         set_variable = { global.default_event_weight = 1000 }
         set_variable = { global.minor_event_recovery_rate = 40 }
         set_variable = { global.major_event_weight_per_minor = 100 }
+        set_variable = { global.reduce_cap_factor = 0.75 } # 25%
 
         # Initialize counters and tracking variables
         set_variable = { global.minor_events_since_major = 0 }
@@ -69,7 +78,7 @@ initialize_event_categories = {
     add_to_array = { global.fire_once_events = 12 }  # AFR
     add_to_array = { global.fire_once_events = 16 }  # BRILLIANT SCIENTIST
     add_to_array = { global.fire_once_events = 20 }  # BLACK DEATH
-    add_to_array = { global.fire_once_events = 22 }  # 1391
+    add_to_array = { global.fire_once_events = 22 }  # 1391 (JEWS MASSACRE)
     add_to_array = { global.fire_once_events = 23 }  # SOV NUKES
     add_to_array = { global.fire_once_events = 24 }  # HOI
     add_to_array = { global.fire_once_events = 26 }  # MOVE INDUSTRY TO DESERT
@@ -87,7 +96,6 @@ initialize_event_categories = {
     add_to_array = { global.fire_once_events = 73 }  # MONGOLS RISE
     add_to_array = { global.fire_once_events = 74 }  # JAP CA
     add_to_array = { global.fire_once_events = 75 }  # TAN JOINS ALLIES
-    add_to_array = { global.fire_once_events = 76 }  # USA TESTS WEAPONS
     add_to_array = { global.fire_once_events = 81 }  # ENG TAX
     add_to_array = { global.fire_once_events = 86 }  # WORLD CLAIMS
     add_to_array = { global.fire_once_events = 88 }  # MINES
@@ -144,6 +152,7 @@ initialize_event_categories = {
     add_to_array = { global.repeatable_events = 64 }  # BORDER FORTS
     add_to_array = { global.repeatable_events = 65 }  # RAND LEADER TRAIT
     add_to_array = { global.repeatable_events = 66 }  # CIC
+    add_to_array = { global.repeatable_events = 76 }  # USA TESTS WEAPONS
     add_to_array = { global.repeatable_events = 77 }  # FREE EQ FROM MAJOR TO MINOR
     add_to_array = { global.repeatable_events = 78 }  # BORDER CONFLICT
     add_to_array = { global.repeatable_events = 79 }  # MANIPULATE MINOR
@@ -161,8 +170,9 @@ initialize_event_categories = {
 initialize_event_weights = {
     # Clear and rebuild the weights array
     clear_array = global.event_weights
+    clear_array = global.event_max_caps
 
-    log = "Initializing event weights array..."
+    log = "Initializing event weights and caps arrays..."
 
     # Initialize weights array to hold 1000 events (expandable for future updates)
     set_temp_variable = { max_events = 1000 }
@@ -172,7 +182,10 @@ initialize_event_weights = {
         end = max_events
         value = i
         add_to_array = { global.event_weights = global.default_event_weight } # Initialize to default weight (1000)
-    }    log = "Event weights array initialized with [?global.event_weights^num] entries"
+        add_to_array = { global.event_max_caps = global.default_event_weight } # Initialize caps to default (1000)
+    }
+
+    log = "Event weights array initialized with [?global.event_weights^num] entries"
 
     # Set major events to weight 0 (they start inactive until minor events build them up)
     for_loop_effect = {
@@ -213,6 +226,9 @@ get_event_weight = {
 # Set weight for a specific event ID
 set_event_weight = {
     # Input: temp variables event_id and new_weight
+    # Note: For fire-once events, weight 0 is allowed to permanently disable them
+    # For repeatable events, minimum weight should be 1
+
     if = {
         limit = {
             check_variable = { event_id > 0 }
@@ -222,6 +238,23 @@ set_event_weight = {
     }
     else = {
         log = "Warning: Tried to set weight for invalid event ID [?event_id] to [?new_weight]"
+    }
+}
+
+# Get maximum cap for a specific event ID
+get_event_cap = {
+    # Input: temp variable event_id
+    # Output: temp variable event_cap
+    set_temp_variable = { event_cap = global.default_event_weight } # Default fallback
+    if = {
+        limit = {
+            check_variable = { event_id > 0 }
+            check_variable = { event_id < global.event_max_caps^num }
+        }
+        set_temp_variable = { event_cap = global.event_max_caps^event_id }
+    }
+    else = {
+        log = "Warning: Tried to get cap for invalid event ID [?event_id]"
     }
 }
 
@@ -256,6 +289,7 @@ on_fire_once_event_fired = {
 # Execute when a repeatable minor event fires
 on_repeatable_event_fired = {
     # Input: temp variable event_id
+
     # Always update last fired event ID
     set_variable = { global.last_fired_event_id = event_id }
 
@@ -268,9 +302,19 @@ on_repeatable_event_fired = {
         limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
         add_to_array = { global.fired_events = event_id }
     }
+    # Reduce the maximum cap for this repeatable event by 25%
+    if = {
+        limit = { check_variable = { event_id < global.event_max_caps^num } }
+        set_temp_variable = { current_cap = global.event_max_caps^event_id }
+        set_temp_variable = { original_cap = current_cap } # Save for logging
+        # Calculate 75% of current cap
+        multiply_temp_variable = { current_cap = global.reduce_cap_factor }
+        set_variable = { global.event_max_caps^event_id = current_cap }
+        log = "Cap reduced for Event ID [?event_id] ([GetEventName]): [?original_cap] -> [?current_cap]"
+    }
 
-    # Set weight to 0 (will recover via monthly update)
-    set_temp_variable = { new_weight = 0 }
+    # Set weight to 1 (minimum weight, will recover via monthly update)
+    set_temp_variable = { new_weight = 1 }
     set_event_weight = yes
 
     # Update major event weights immediately after firing a minor event
@@ -543,10 +587,31 @@ update_repeatable_event_weights = {
         set_temp_variable = { event_id = global.repeatable_events^i }
         get_event_weight = yes
 
-        # If weight is less than 1000, increase by 40 (capped at 1000 for repeatable events)
+        # Get the current cap for this event
+        set_temp_variable = { event_cap = global.default_event_weight } # Default fallback
         if = {
-            limit = { check_variable = { event_weight < global.default_event_weight } }
-            add_to_temp_variable = { event_weight = global.minor_event_recovery_rate } # 40
+            limit = { check_variable = { event_id < global.event_max_caps^num } }
+            set_temp_variable = { event_cap = global.event_max_caps^event_id }
+        }
+        # If weight is less than the event's cap, increase to next multiple of 40 (capped at the event's individual cap)
+        if = {
+            limit = { check_variable = { event_weight < event_cap } }
+            # Calculate the next multiple of 40
+            # If weight is 1, next multiple is 40; if weight is 40, next is 80; etc.
+            if = {
+                limit = { check_variable = { event_weight <= 1 } }
+                set_temp_variable = { event_weight = global.minor_event_recovery_rate } # First step: 1 -> 40
+            }
+            else = {
+                # For weights > 1, calculate next multiple of 40
+                add_to_temp_variable = { event_weight = global.minor_event_recovery_rate } # Add 40
+            }
+
+            # Ensure we don't exceed the individual event's cap
+            if = {
+                limit = { check_variable = { event_weight > event_cap } }
+                set_temp_variable = { event_weight = event_cap }
+            }
             set_temp_variable = { new_weight = event_weight }
             set_event_weight = yes
         }
@@ -643,9 +708,7 @@ log_event_system_debug = {
         end = global.fire_once_events^num
         value = i
         set_temp_variable = { event_id = global.fire_once_events^i }
-        get_event_weight = yes
-
-        log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
+        get_event_weight = yes        log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
     }
     log = "------------------------------------------------------"
     log = "REPEATABLE EVENTS DETAIL:"
@@ -655,8 +718,9 @@ log_event_system_debug = {
         value = i
         set_temp_variable = { event_id = global.repeatable_events^i }
         get_event_weight = yes
+        get_event_cap = yes
 
-        log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
+        log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight], Cap: [?event_cap]"
     }
 
     log = " "
