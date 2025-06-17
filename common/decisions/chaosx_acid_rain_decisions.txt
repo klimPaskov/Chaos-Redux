@@ -1,0 +1,231 @@
+chaosx_acid_rain_decision_category = {
+    chaosx_acid_rain_timeout = {
+        available = {
+            hidden_trigger = {
+                OR = {
+                    is_ai = yes
+                    NOT = { has_global_flag = acid_rain }
+                }
+            }
+        }
+        activation = {
+            hidden_trigger = {
+                is_ai = no
+                has_global_flag = acid_rain
+            }
+        }
+        days_mission_timeout = 30
+        fixed_random_seed = no
+        is_good = no
+        icon = GFX_decision_acid
+
+        timeout_effect = {
+            every_state = {
+                limit = { has_dynamic_modifier = { modifier = acid_rain_state } }
+                remove_dynamic_modifier = { modifier = acid_rain_state } # just in case set times don't line up correctly
+            }
+
+            if = { limit = { check_variable = { global.acid_rain_continent = 1 } }
+            random_state = {
+                limit = { is_on_continent = europe }
+                custom_effect_tooltip = effect_tooltip_acid_rain_states
+                add_dynamic_modifier = { modifier = acid_rain_state days = 14 } # would be better to use constant value, sadly doesn't allow it
+                hidden_effect = {
+                    every_neighbor_state = {
+                        limit = { is_on_continent = europe }
+                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+                    }
+                }
+            }
+            every_country = {
+                limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+                country_event = { id = chaosx.nr33.2 days = 1 }
+            }
+        } else_if = { limit = { check_variable = { global.acid_rain_continent = 2 } }
+        random_state = {
+            limit = { is_on_continent = middle_east }
+            custom_effect_tooltip = effect_tooltip_acid_rain_states
+            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+            hidden_effect = {
+                every_neighbor_state = {
+                    limit = { is_on_continent = middle_east }
+                    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+                }
+            }
+        }
+        every_country = {
+            limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+            country_event = { id = chaosx.nr33.2 days = 1 }
+        }
+    } else_if = { limit = { check_variable = { global.acid_rain_continent = 3 } }
+    random_state = {
+        limit = { is_on_continent = asia }
+        custom_effect_tooltip = effect_tooltip_acid_rain_states
+        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+        hidden_effect = {
+            every_neighbor_state = {
+                limit = { is_on_continent = asia }
+                add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+            }
+        }
+    }
+    every_country = {
+        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+        country_event = { id = chaosx.nr33.2 days = 1 }
+    }
+} else_if = { limit = { check_variable = { global.acid_rain_continent = 4 } }
+random_state = {
+    limit = { is_on_continent = africa }
+    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+    hidden_effect = {
+        every_neighbor_state = {
+            limit = { is_on_continent = africa }
+            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+        }
+    }
+}
+every_country = {
+    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+    country_event = { id = chaosx.nr33.2 days = 1 }
+}
+} else_if = { limit = { check_variable = { global.acid_rain_continent = 5 } }
+random_state = {
+    limit = { is_on_continent = australia }
+    custom_effect_tooltip = effect_tooltip_acid_rain_states
+    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+    hidden_effect = {
+        every_neighbor_state = {
+            limit = { is_on_continent = australia }
+            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+        }
+    }
+}
+every_country = {
+    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+    country_event = { id = chaosx.nr33.2 days = 1 }
+}
+} else_if = { limit = { check_variable = { global.acid_rain_continent = 6 } }
+random_state = {
+    limit = { is_on_continent = north_america }
+    custom_effect_tooltip = effect_tooltip_acid_rain_states
+    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+    hidden_effect = {
+        every_neighbor_state = {
+            limit = { is_on_continent = north_america }
+            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+        }
+    }
+}
+every_country = {
+    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+    country_event = { id = chaosx.nr33.2 days = 1 }
+}
+} else_if = { limit = { check_variable = { global.acid_rain_continent = 7 } }
+random_state = {
+    limit = { is_on_continent = south_america }
+    custom_effect_tooltip = effect_tooltip_acid_rain_states
+    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+    hidden_effect = {
+        every_neighbor_state = {
+            limit = { is_on_continent = south_america }
+            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
+        }
+    }
+}
+every_country = {
+    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+    country_event = { id = chaosx.nr33.2 days = 1 }
+}
+}
+activate_mission = chaosx_acid_rain_timeout
+}
+}
+chaosx_acid_clouds_timeout = {
+    available = {
+        hidden_trigger = {
+            is_ai = yes
+        }
+    }
+    activation = {
+        hidden_trigger = {
+            is_ai = no
+            has_global_flag = acid_rain
+        }
+    }
+    days_mission_timeout = global.acid_clouds_time
+    is_good = no
+    icon = GFX_decision_acid
+
+    timeout_effect = {
+        every_state = {
+            limit = { OR = { has_dynamic_modifier = { modifier = acid_rain_state } has_dynamic_modifier = { modifier = acid_clouds_state } } }
+            hidden_effect = { remove_dynamic_modifier = { modifier = acid_rain_state } }
+            remove_dynamic_modifier = { modifier = acid_clouds_state }
+        }
+        if = {
+            limit = {
+                is_in_array = { global.acid_rain_continents = 1 }
+                is_in_array = { global.acid_rain_continents = 2 }
+                is_in_array = { global.acid_rain_continents = 3 }
+                is_in_array = { global.acid_rain_continents = 4 }
+                is_in_array = { global.acid_rain_continents = 5 }
+                is_in_array = { global.acid_rain_continents = 6 }
+                is_in_array = { global.acid_rain_continents = 7 }
+            }
+            clr_global_flag = acid_rain
+            news_event = { id = chaosx.news.38 days = 2 }
+        } else = {
+            while_loop_effect = {
+                limit = { is_in_array = { global.acid_rain_continents = global.acid_rain_continent } }
+                set_variable_to_random = {
+                    var = global.acid_rain_continent
+                    min = 1
+                    max = 7
+                    integer = yes
+                }
+            }
+            add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
+            clear_variable = global.acid_clouds_time
+            get_num_states_in_continent = yes
+            if = { limit = { check_variable = { global.acid_rain_continent = 1 } }
+            every_state = {
+                limit = { is_on_continent = europe }
+                add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
+            }
+        } else_if = { limit = { check_variable = { global.acid_rain_continent = 2 } }
+        every_state = {
+            limit = { is_on_continent = middle_east }
+            add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
+        }
+    }else_if = { limit = { check_variable = { global.acid_rain_continent = 3 } }
+    every_state = {
+        limit = { is_on_continent = asia }
+        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
+    }
+}else_if = { limit = { check_variable = { global.acid_rain_continent = 4 } }
+every_state = {
+    limit = { is_on_continent = africa }
+    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
+}
+}else_if = { limit = { check_variable = { global.acid_rain_continent = 5 } }
+every_state = {
+    limit = { is_on_continent = australia }
+    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
+}
+}else_if = { limit = { check_variable = { global.acid_rain_continent = 6 } }
+every_state = {
+    limit = { is_on_continent = north_america }
+    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
+}
+}else_if = { limit = { check_variable = { global.acid_rain_continent = 7 } }
+every_state = {
+    limit = { is_on_continent = south_america }
+    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
+}
+}
+activate_mission = chaosx_acid_clouds_timeout
+activate_mission = chaosx_acid_rain_timeout
+}
+}
+}
+}
