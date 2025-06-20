@@ -599,7 +599,7 @@ update_repeatable_event_weights = {
             # Calculate the next multiple of 40
             # If weight is 1, next multiple is 40; if weight is 40, next is 80; etc.
             if = {
-                limit = { check_variable = { event_weight <= 1 } }
+                limit = { OR = { check_variable = { event_weight < 1 } check_variable = { event_weight = 1 } } }
                 set_temp_variable = { event_weight = global.minor_event_recovery_rate } # First step: 1 -> 40
             }
             else = {

@@ -13,11 +13,11 @@ The mod is fully multiplayer compatible, allowing you to share the chaos with fr
 
 ## Feature request and bug report
 
-If you have ideas for our mod or you have a bug to report, do not hesitate to open an [Issue](https://github.com/klimPaskov/Random-Events-Mod/issues) with the appropriate label.
+If you have ideas for our mod or you have a bug to report, do not hesitate to open an [Issue](https://github.com/klimPaskov/Chaos-Redux/issues) with the appropriate label.
 
 ## Events documentation
 
-List of all the existing and upcoming events: https://1drv.ms/x/s!Apa2UiJp7njxj3z4s5i3INR5AmFP?e=JeUfFL&nav=MTVfezlBOUNGODhDLUIwNkYtNERCOS1BREVDLTlCRDA2NjAwMzY2N30
+List of all the existing and upcoming events: https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing
 
 ## Contributing
 
