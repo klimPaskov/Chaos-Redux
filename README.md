@@ -5,7 +5,13 @@ Chaos Redux presents the ultimate strategic challenge, forcing you to navigate a
 At the heart of the mod is the **Chaos Meter**, a dynamic system that tracks global turmoil. As world tension, wars, deaths, and strange events push the meter higher, the world descends deeper into madness.
 
 **Dynamic & Evolving Events**: Chaos Redux features a smart event system where your actions have consequences. Minor events chain into "Mini-Narratives,". Events that can evolve into a world-ending scenario if the Chaos Meter is high enough.
-**The Chaos Meter**: Take control of the world's destiny. Will you try to maintain order, or will you fan the flames and watch as the world spirals into insanity?
+
+**The Chaos Meter**:
+![chaos meter 0](https://github.com/klimPaskov/Chaos-Redux/blob/master/gfx/interface/chaos_meter/chaos_meter_0.png "Chaos Meter 1")
+![chaos meter 1](https://github.com/klimPaskov/Chaos-Redux/blob/master/gfx/interface/chaos_meter/chaos_meter_1.png "Chaos Meter 2")
+![chaos meter 2](https://github.com/klimPaskov/Chaos-Redux/blob/master/gfx/interface/chaos_meter/chaos_meter_2.png "Chaos Meter 3")
+
+Take control of the world's destiny. Will you try to maintain order, or will you fan the flames and watch as the world spirals into insanity?
 
 The mod is fully multiplayer compatible, allowing you to share the chaos with friends.
 
