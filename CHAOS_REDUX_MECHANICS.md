@@ -4,14 +4,15 @@
 
 1. [Core Event System](#core-event-system)
 2. [Smart Event Firing Logic](#smart-event-firing-logic)
-3. [Event Categories](#event-categories)
-4. [Chaos Meter (Danger Scaling)](#chaos-meter-danger-scaling)
-5. [Event Evolution System](#event-evolution-system)
-6. [Event Clusters](#event-clusters)
-7. [Multiplayer Compatibility](#multiplayer-compatibility)
-8. [Event Chain Timers (Mini-Narratives)](#event-chain-timers-mini-narratives)
-9. [Debug System](#debug-system)
-10. [Configuration Options](#configuration-options)
+3. [Dynamic Timer System](#dynamic-timer-system)
+4. [Event Categories](#event-categories)
+5. [Chaos Meter (Danger Scaling)](#chaos-meter-danger-scaling)
+6. [Event Evolution System](#event-evolution-system)
+7. [Event Clusters](#event-clusters)
+8. [Multiplayer Compatibility](#multiplayer-compatibility)
+9. [Event Chain Timers (Mini-Narratives)](#event-chain-timers-mini-narratives)
+10. [Debug System](#debug-system)
+11. [Configuration Options](#configuration-options)
 
 ---
 
@@ -57,6 +58,90 @@ Instead of pure randomness, events have **weight values** that determine firing 
 - **Reset Mechanism**: Major event firing resets the minor event counter
 
 ---
+
+## Dynamic Timer System
+
+### Overview
+
+The Dynamic Timer System replaces fixed monthly event timers with a daily, adaptive timer that responds to the types of events that have recently fired.
+
+### Core Timer Mechanics
+
+#### Initial Timer
+
+- **Startup Range**: 7-30 days (random on game initialization)
+- **Daily Check**: Timer decrements by 1 each day
+- **Event Firing**: When timer reaches 0, the event selection process triggers
+
+#### Base Timer Range
+
+- **Minimum Days**: 20 (configurable via `global.timer_min_days`)
+- **Maximum Days**: 30 (configurable via `global.timer_max_days`)
+- **Default Range**: Events fire every 20-30 days under normal conditions
+
+### Timer Modifiers
+
+#### Minor Event Acceleration
+
+When a minor event fires:
+
+1. **Day Decrement Increase**: Adds +1 to decrement value (max: 15)
+2. **Faster Next Event**: Subsequent timer will be reduced by current decrement
+3. **Cumulative Effect**: Each minor event makes the next event fire sooner
+
+#### Max Cap Reduction
+
+Every 3 minor events that fire:
+
+1. **Max Cap Reduction**: Reduces timer maximum by 1 day (max reduction: 5 days)
+2. **Range Compression**: Timer range becomes more compressed over time
+3. **Minimum Protection**: Range never goes below realistic values
+
+#### Major Event Reset
+
+When a major event fires:
+
+1. **Full Reset**: Both day decrement and max cap reduction reset to 0
+2. **Normal Timing**: Next event returns to standard 20-30 day range
+3. **Fresh Start**: System returns to baseline behavior
+
+### Example Timer Progression
+
+#### Normal Progression
+
+1. **Game Start**: Timer = 7-30 days (random)
+2. **First Event**: Timer = 20-30 days (normal range)
+3. **After Minor Event**: Timer = 19-29 days (decrement = 1)
+4. **After 2nd Minor**: Timer = 18-28 days (decrement = 2)
+5. **After 3rd Minor**: Timer = 17-26 days (decrement = 3, max reduced by 1)
+
+#### Maximum Acceleration
+
+After 15 minor events and max reductions:
+
+- **Timer Range**: 20-25 days (base range with -5 max reduction)
+- **Day Decrement**: -15 days
+- **Effective Range**: 5-10 days between events
+- **Result**: Very frequent event firing during chaotic periods
+
+### Timer Variables
+
+All timer behavior is controlled by global variables that can be modified:
+
+- `global.timer_min_days`: Minimum timer range (default: 20)
+- `global.timer_max_days`: Maximum timer range (default: 30)
+- `global.timer_day_decrement`: Current day reduction (max: 15)
+- `global.timer_max_cap_reduction`: Max range reduction (max: 5)
+- `global.event_timer_days`: Current countdown timer
+
+### Debug Information
+
+The debug system tracks all timer-related information:
+
+- Current timer countdown
+- Timer range settings
+- Current modifiers
+- Timer calculation details
 
 ## Event Categories
 
