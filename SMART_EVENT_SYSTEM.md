@@ -21,4 +21,4 @@ The Smart Event System is a dynamic, weight-based event firing system that provi
 ### 3. Minor Event Progression System
 
 - **Fire-once events**: Start at weight 1000, become 0 permanently when fired
-- **Repeatable events**: Start at weight 1000, drop to 0 when fired, recover +40/month until reaching 1000
+- **Repeatable events**: Start at weight 1000, drop to 0 when fired, recover +40/month until reaching new cap

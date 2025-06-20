@@ -7,7 +7,7 @@
 3. [Event Categories](#event-categories)
 4. [Chaos Meter (Danger Scaling)](#chaos-meter-danger-scaling)
 5. [Event Evolution System](#event-evolution-system)
-6. [Event Clusters & Party Nights](#event-clusters--party-nights)
+6. [Event Clusters](#event-clusters)
 7. [Multiplayer Compatibility](#multiplayer-compatibility)
 8. [Event Chain Timers (Mini-Narratives)](#event-chain-timers-mini-narratives)
 9. [Debug System](#debug-system)
@@ -20,6 +20,7 @@
 ### Overview
 
 Chaos Redux introduces an event system with a sophisticated, dynamic event firing mechanism that adapts to player actions, world state, and previous events.
+List of all the existing and upcoming events can be found here: https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing
 
 ### Key Features
 
@@ -151,37 +152,16 @@ Event must reach required danger level. Some evolutions require specific previou
 
 ---
 
-## Event Clusters & Party Nights
+## Event Clusters
 
-Instead of single events, multiple related events can fire in sequence during special "party nights." Events fire one after another. All events share common themes.
+Instead of single events, multiple related events can fire in sequence. They are based on chance. The higher the danger level, more likely these event clusters will happen.
 
 ---
 
 ## Multiplayer Compatibility
 
-### Shared Event System
-
-Players can experience events together through two mechanisms:
-
-#### Option 1: Ghost Events
-
-- **Primary Receiver**: One player gets the full event with consequences
-- **Ghost Recipients**: Other players see the event but choices do nothing
-- **Visual Indicator**: Ghost events clearly marked as "observational"
-- **Narrative Cohesion**: All players see the same world events
-
-#### Option 2: Independent Events
-
-- **Separate Pools**: Each player gets their own event system
-- **Synchronized Chaos**: Chaos Meter affects all players equally
-- **Cross-Player Effects**: Some events can affect other players' worlds
-
-### Implementation
-
-- **Host Configuration**: Game host chooses shared vs independent
-- **Network Synchronization**: Event states synchronized across clients
-- **Conflict Resolution**: System handles simultaneous event triggers
-- **Save Game Compatibility**: Multiplayer event state preserved
+- **Shared Pools**: Every player shares one event system
+- **Synchronized Chaos**: Chaos Meter affects all players
 
 ---
 
@@ -209,13 +189,6 @@ Events that create ongoing storylines with timed follow-ups based on player choi
 - **Choice Memory**: System remembers player decisions
 - **Branching Paths**: Different choices lead to different outcomes
 - **Escalation**: Ignored problems become worse over time
-
-### Common Chain Types
-
-- **Political Intrigue**: Missing officials, corruption investigations
-- **Military Affairs**: Desertion, rebellion, loyalty questions
-- **Economic Issues**: Market manipulation, resource shortages
-- **Supernatural**: Occult investigations, mysterious phenomena
 
 ---
 
