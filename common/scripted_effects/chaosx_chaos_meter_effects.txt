@@ -1,0 +1,323 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS METER EFFECTS
+# ============================================================================
+# This file contains all scripted effects for the chaos meter system
+# ============================================================================
+
+# ============================================================================
+# INITIALIZATION
+# ============================================================================
+
+initialize_chaos_meter_system = {
+    # Initialize chaos meter value
+    set_variable = { var = global.chaos_meter_value value = 0 }
+
+    # Initialize chaos meter configuration variables
+    set_variable = { var = global.chaos_per_world_tension value = 1 }
+    set_variable = { var = global.chaos_per_minor_war value = 2 }
+    set_variable = { var = global.chaos_per_major_war value = 10 }
+    set_variable = { var = global.chaos_per_minor_peace value = -1 }
+    set_variable = { var = global.chaos_per_major_peace value = -5 }
+    set_variable = { var = global.chaos_per_minor_annex value = 5 }
+    set_variable = { var = global.chaos_per_major_annex value = 10 }
+    set_variable = { var = global.chaos_per_puppet value = 3 }
+    set_variable = { var = global.chaos_per_liberate value = -2 }
+    set_variable = { var = global.chaos_per_liberate_democratic value = -5 }
+    set_variable = { var = global.chaos_per_release_free value = -5 }
+    set_variable = { var = global.chaos_per_subject_free value = -3 }
+    set_variable = { var = global.chaos_per_subject_annexed value = 3 }
+    set_variable = { var = global.chaos_per_nuke value = 5 }
+    set_variable = { var = global.chaos_per_first_nuke value = 30 }
+    set_variable = { var = global.casualties_per_chaos value = 100 } # 100k casualties = 1 chaos
+
+    # Initialize tracking variables
+    set_variable = { var = global.last_world_tension value = 0 }
+    set_variable = { var = global.last_casualty_count value = 0 }
+    set_variable = { var = global.first_nuke_dropped value = 0 }
+    set_variable = { var = global.chaos_timer_reduction value = 0 }
+
+    # Initialize chaos meter tiers
+    update_chaos_meter_tier = yes
+
+    log = "CHAOS METER: System initialized with value [?global.chaos_meter_value]"
+}
+
+# ============================================================================
+# CHAOS METER VALUE MANAGEMENT
+# ============================================================================
+
+add_chaos_meter_value = {
+    # Input: temp variable chaos_change
+    if = {
+        limit = { check_variable = { var = global.chaos_meter_value value = 1000 compare = less_than } }
+
+        # Round chaos_change to integer
+        round_temp_variable = chaos_change
+
+        add_to_variable = { var = global.chaos_meter_value value = chaos_change }
+
+        # Ensure chaos doesn't go below 0
+        if = {
+            limit = { check_variable = { var = global.chaos_meter_value value = 0 compare = less_than } }
+            set_variable = { var = global.chaos_meter_value value = 0 }
+        }
+
+        # Round final chaos meter value to integer
+        round_variable = global.chaos_meter_value
+
+        # Update tier flags
+        update_chaos_meter_tier = yes
+
+        if = {
+            limit = { check_variable = { var = chaos_change value = 0 compare = greater_than } }
+            log = "CHAOS METER: Increased by [?chaos_change] to [?global.chaos_meter_value]"
+        }
+        else = {
+            set_temp_variable = { var = abs_change value = chaos_change }
+            multiply_temp_variable = { var = abs_change value = -1 }
+            log = "CHAOS METER: Decreased by [?abs_change] to [?global.chaos_meter_value]"
+        }
+    }
+    else = {
+        log = "CHAOS METER: World Collapse active - chaos meter locked at [?global.chaos_meter_value]"
+    }
+}
+
+update_chaos_meter_tier = {
+    # Store current tier state before clearing
+    set_temp_variable = { old_tier_collapse = 0 }
+    set_temp_variable = { old_tier_critical = 0 }
+    set_temp_variable = { old_tier_chaos = 0 }
+    set_temp_variable = { old_tier_rising = 0 }
+    set_temp_variable = { old_tier_calm = 0 }
+
+    if = { limit = { has_global_flag = chaos_tier_collapse } set_temp_variable = { old_tier_collapse = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_critical } set_temp_variable = { old_tier_critical = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_chaos } set_temp_variable = { old_tier_chaos = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_rising } set_temp_variable = { old_tier_rising = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_calm } set_temp_variable = { old_tier_calm = 1 } }
+
+    # Clear all tier flags
+    clr_global_flag = chaos_tier_calm
+    clr_global_flag = chaos_tier_rising
+    clr_global_flag = chaos_tier_chaos
+    clr_global_flag = chaos_tier_critical
+    clr_global_flag = chaos_tier_collapse
+
+    # Set appropriate tier flag and log only if changed
+    if = {
+        limit = { check_variable = { var = global.chaos_meter_value value = 1000 compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_collapse
+        if = {
+            limit = { check_variable = { old_tier_collapse = 0 } }
+            log = "CHAOS METER: Tier changed to WORLD COLLAPSE"
+        }
+    }
+    else_if = {
+        limit = { check_variable = { var = global.chaos_meter_value value = 800 compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_critical
+        if = {
+            limit = { check_variable = { old_tier_critical = 0 } }
+            log = "CHAOS METER: Tier changed to CRITICAL CHAOS"
+        }
+    }
+    else_if = {
+        limit = { check_variable = { var = global.chaos_meter_value value = 500 compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_chaos
+        if = {
+            limit = { check_variable = { old_tier_chaos = 0 } }
+            log = "CHAOS METER: Tier changed to CHAOS TIER"
+        }
+    }
+    else_if = {
+        limit = { check_variable = { var = global.chaos_meter_value value = 200 compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_rising
+        if = {
+            limit = { check_variable = { old_tier_rising = 0 } }
+            log = "CHAOS METER: Tier changed to RISING CHAOS"
+        }
+    }
+    else = {
+        set_global_flag = chaos_tier_calm
+        if = {
+            limit = { check_variable = { old_tier_calm = 0 } }
+            log = "CHAOS METER: Tier changed to CALM WORLD"
+        }
+    }
+}
+
+# ============================================================================
+# ON ACTION HANDLERS
+# ============================================================================
+
+chaos_meter_on_war = {
+    # Check if country is major or minor
+    if = {
+        limit = { is_major = yes }
+        set_temp_variable = { var = chaos_change value = global.chaos_per_major_war }
+        log = "CHAOS METER: Major [THIS.GetName] entered war against [FROM.GetName] (+[?global.chaos_per_major_war] chaos)"
+    }
+    else = {
+        set_temp_variable = { var = chaos_change value = global.chaos_per_minor_war }
+        log = "CHAOS METER: Minor [THIS.GetName] entered war against [FROM.GetName] (+[?global.chaos_per_minor_war] chaos)"
+    }
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_peace = {
+    # Check if country is major or minor
+    if = {
+        limit = { is_major = yes }
+        set_temp_variable = { var = chaos_change value = global.chaos_per_major_peace }
+        log = "CHAOS METER: Major [THIS.GetName] made peace with [FROM.GetName] ([?global.chaos_per_major_peace] chaos)"
+    }
+    else = {
+        set_temp_variable = { var = chaos_change value = global.chaos_per_minor_peace }
+        log = "CHAOS METER: Minor [THIS.GetName] made peace with [FROM.GetName] ([?global.chaos_per_minor_peace] chaos)"
+    }
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_annex = {
+    # Check if annexed country is major or minor
+    if = {
+        limit = { FROM = { is_major = yes } }
+        set_temp_variable = { var = chaos_change value = global.chaos_per_major_annex }
+        log = "CHAOS METER: Major [FROM.GetName] was annexed by [THIS.GetName] (+[?global.chaos_per_major_annex] chaos)"
+    }
+    else = {
+        set_temp_variable = { var = chaos_change value = global.chaos_per_minor_annex }
+        log = "CHAOS METER: Minor [FROM.GetName] was annexed by [THIS.GetName] (+[?global.chaos_per_minor_annex] chaos)"
+    }
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_puppet = {
+    set_temp_variable = { var = chaos_change value = global.chaos_per_puppet }
+    log = "CHAOS METER: [FROM.GetName] was puppeted by [THIS.GetName] (+[?global.chaos_per_puppet] chaos)"
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_liberate = {
+    # Check if liberator is democratic
+    if = {
+        limit = { has_government = democratic }
+        set_temp_variable = { var = chaos_change value = global.chaos_per_liberate_democratic }
+        log = "CHAOS METER: Democratic [THIS.GetName] liberated [FROM.GetName] ([?global.chaos_per_liberate_democratic] chaos)"
+    }
+    else = {
+        set_temp_variable = { var = chaos_change value = global.chaos_per_liberate }
+        log = "CHAOS METER: [THIS.GetName] liberated [FROM.GetName] ([?global.chaos_per_liberate] chaos)"
+    }
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_release_as_free = {
+    set_temp_variable = { var = chaos_change value = global.chaos_per_release_free }
+    log = "CHAOS METER: [FROM.GetName] was released as free nation by [THIS.GetName] ([?global.chaos_per_release_free] chaos)"
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_subject_free = {
+    set_temp_variable = { var = chaos_change value = global.chaos_per_subject_free }
+    log = "CHAOS METER: [THIS.GetName] became free from subject status ([?global.chaos_per_subject_free] chaos)"
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_subject_annexed = {
+    set_temp_variable = { var = chaos_change value = global.chaos_per_subject_annexed }
+    log = "CHAOS METER: Subject [FROM.GetName] was annexed by [THIS.GetName] (+[?global.chaos_per_subject_annexed] chaos)"
+
+    add_chaos_meter_value = yes
+}
+
+chaos_meter_on_nuke_drop = {
+    # Check if this is the first nuke
+    if = {
+        limit = { check_variable = { var = global.first_nuke_dropped value = 0 } }
+        set_temp_variable = { var = chaos_change value = global.chaos_per_first_nuke }
+        set_variable = { var = global.first_nuke_dropped value = 1 }
+        log = "CHAOS METER: First nuclear weapon dropped by [THIS.GetName] on [FROM.GetName]! (+[?global.chaos_per_first_nuke] chaos)"
+    }
+    else = {
+        set_temp_variable = { var = chaos_change value = global.chaos_per_nuke }
+        log = "CHAOS METER: Nuclear weapon dropped by [THIS.GetName] on [FROM.GetName] (+[?global.chaos_per_nuke] chaos)"
+    }
+
+    add_chaos_meter_value = yes
+}
+
+# ============================================================================
+# DAILY UPDATES
+# ============================================================================
+
+chaos_meter_daily_update = {
+    # Update world tension contribution
+    chaos_meter_update_world_tension = yes
+
+    # Update casualty contribution
+    chaos_meter_update_casualties = yes
+}
+
+chaos_meter_update_world_tension = {
+    # Calculate world tension change
+    set_temp_variable = { var = current_world_tension value = world_tension }
+    set_temp_variable = { var = tension_change value = current_world_tension }
+    subtract_from_temp_variable = { var = tension_change value = global.last_world_tension }
+
+    # Only update if there's a change
+    if = {
+        limit = { NOT = { check_variable = { var = tension_change value = 0 } } }
+
+        # Calculate chaos change (1 chaos per 1% world tension)
+        set_temp_variable = { var = chaos_change value = tension_change }
+        multiply_temp_variable = { var = chaos_change value = global.chaos_per_world_tension }
+
+        add_chaos_meter_value = yes
+
+        # Update last world tension
+        set_variable = { var = global.last_world_tension value = current_world_tension }
+    }
+}
+
+chaos_meter_update_casualties = {
+    # Get current total casualties (in thousands)
+    set_temp_variable = { var = current_casualties value = 0 }
+
+    # Sum all countries' casualties
+    every_country = {
+        add_to_temp_variable = { var = current_casualties value = casualties }
+    }
+
+    # Convert to thousands and check for increase
+    divide_temp_variable = { var = current_casualties value = 1000 }
+    set_temp_variable = { var = casualty_increase value = current_casualties }
+    subtract_from_temp_variable = { var = casualty_increase value = global.last_casualty_count }
+
+    # Calculate chaos increase based on casualties
+    if = {
+        limit = { check_variable = { var = casualty_increase value = global.casualties_per_chaos compare = greater_than_or_equals } }
+
+        set_temp_variable = { var = chaos_from_casualties value = casualty_increase }
+        divide_temp_variable = { var = chaos_from_casualties value = global.casualties_per_chaos }
+
+        # Round down to integer
+        set_temp_variable = { var = chaos_change value = chaos_from_casualties }
+
+        if = {
+            limit = { check_variable = { var = chaos_change value = 1 compare = greater_than_or_equals } }
+            add_chaos_meter_value = yes
+            log = "CHAOS METER: Increased by [?chaos_change] due to [?casualty_increase]k new casualties"
+        }
+
+        # Update last casualty count
+        set_variable = { var = global.last_casualty_count value = current_casualties }
+    }
+}
