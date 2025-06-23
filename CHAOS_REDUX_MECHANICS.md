@@ -170,34 +170,14 @@ The debug system tracks all timer-related information:
 
 A global "Danger Meter" (0-1000+) that affects event firing patterns and enables special mechanics.
 
-### Danger Level Tiers
+### Chaos Meter Effects
 
-#### 0-199: Calm World
-
-- **Event Behavior**: Normal firing logic
-- **Available Events**: Standard event pool
-- **Special Mechanics**: None active
-- **World State**: Usually peaceful, stable
-
-#### 200-499: Rising Tension
-
-- **Event Behavior**: Increased major event chances
-- **Available Events**: More negative/challenging events
-- **Special Mechanics**: Event probability modifiers active
-- **World State**: Mounting pressure, political instability
-
-#### 500-799: Instability
-
-- **Event Behavior**: Weird/unexpected event spikes
-- **Available Events**: Bizarre and dangerous events unlock
-- **Special Mechanics**: Events evolve, cluster events
-- **World State**: Reality becoming unstable
-
-#### 800-1000: Chaos Tier
-
-- **Event Behavior**: Event chains stack and compound
-- **Available Events**: Major world-affecting events
-- **Special Mechanics**: Full event evolution
+The chaos meter value directly influences:
+- **Event Frequency**: Higher chaos reduces event timer cooldowns
+- **Event Selection**: Chaos affects which events can trigger
+- **Event Evolution**: Events can compound and stack at higher chaos values
+- **Special Mechanics**: Various mechanics activate based on chaos thresholds
+- **System Behavior**: When chaos exceeds 1000, the system disables itself and displays "1000+"
 - **World State**: World order collapsing
 
 #### 1000+: World Collapse
