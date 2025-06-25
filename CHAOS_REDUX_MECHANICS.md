@@ -39,8 +39,8 @@ List of all the existing and upcoming events can be found here: https://docs.goo
 Instead of pure randomness, events have **weight values** that determine firing probability:
 
 - **Initial Weight**: 1000 (default for new events)
-- **Weight Recovery**: +40 per month after firing
-- **Weight Caps**: Individual caps per event, reduced by 25% each firing
+- **Weight Recovery**: +20 per month after firing
+- **Weight Caps**: Individual caps per event, reduced by 50% each firing
 - **Minimum Weight**: 1 (repeatable events can always fire, but become more rare)
 
 ### Event Selection Process
@@ -154,7 +154,7 @@ The debug system tracks all timer-related information:
 
 - **Behavior**: Can fire multiple times with decreasing frequency
 - **Weight After Firing**: 1 (minimum), recovers to reduced cap
-- **Cap Reduction**: 25% per firing
+- **Cap Reduction**: 50% per firing
 
 ### 3. Major Events
 
@@ -173,6 +173,7 @@ A global "Danger Meter" (0-1000+) that affects event firing patterns and enables
 ### Chaos Meter Effects
 
 The chaos meter value directly influences:
+
 - **Event Frequency**: Higher chaos reduces event timer cooldowns
 - **Event Selection**: Chaos affects which events can trigger
 - **Event Evolution**: Events can compound and stack at higher chaos values
