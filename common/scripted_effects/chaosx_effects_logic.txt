@@ -24,7 +24,7 @@ initialize_event_system = {
         # System flags
         set_global_flag = event_system_initializing
 
-        # Clear all arrays
+        # Initialize arrays
         clear_array = global.fired_events
         clear_array = global.event_weights
         clear_array = global.major_events
@@ -48,6 +48,15 @@ initialize_event_system = {
         set_variable = { global.timer_max_days = 30 }
         set_variable = { global.timer_day_decrement = 0 }
         set_variable = { global.timer_max_cap_reduction = 0 }
+
+        # Chaos meter timer modifiers
+        set_variable = { global.chaos_timer_modifier_calm = 1.0 }
+        set_variable = { global.chaos_timer_modifier_gathering = 0.8 }
+        set_variable = { global.chaos_timer_modifier_rising = 0.7 }
+        set_variable = { global.chaos_timer_modifier_chaos = 0.6 }
+        set_variable = { global.chaos_timer_modifier_critical = 0.5 }
+        set_variable = { global.chaos_timer_modifier_collapse = 0.5 }
+        set_variable = { global.chaos_timer_modifier = 1.0 } # Current active modifier
 
         # Initialize timer with random startup value (7-30 days)
         set_variable_to_random = {
@@ -225,6 +234,56 @@ calculate_next_timer_value = {
     set_temp_variable = { temp_min_timer = global.timer_min_days }
     set_temp_variable = { temp_max_timer = global.timer_max_days }
     subtract_from_temp_variable = { temp_max_timer = global.timer_max_cap_reduction }
+
+    # Apply chaos meter timer reduction
+    set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_calm }
+    if = {
+        limit = { has_global_flag = chaos_tier_gathering }
+        set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_gathering }
+    }
+    else_if = {
+        limit = { has_global_flag = chaos_tier_rising }
+        set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_rising }
+    }
+    else_if = {
+        limit = { has_global_flag = chaos_tier_chaos }
+        set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_chaos }
+    }
+    else_if = {
+        limit = { has_global_flag = chaos_tier_critical }
+        set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_critical }
+    }
+    else_if = {
+        limit = { has_global_flag = chaos_tier_collapse }
+        set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_collapse }
+    }
+
+    # Apply chaos modifier to timer values
+    multiply_temp_variable = { temp_min_timer = global.chaos_timer_modifier }
+    multiply_temp_variable = { temp_max_timer = global.chaos_timer_modifier }
+
+    # Round to ensure integer values
+    set_temp_variable = { min_fraction = temp_min_timer }
+    modulo_temp_variable = { min_fraction = 1 }
+    if = {
+        limit = { check_variable = { min_fraction > 0 } }
+        # Has fractional part, round up
+        set_temp_variable = { min_integer = temp_min_timer }
+        subtract_from_temp_variable = { min_integer = min_fraction }
+        add_to_temp_variable = { min_integer = 1 }
+        set_temp_variable = { temp_min_timer = min_integer }
+    }
+
+    set_temp_variable = { max_fraction = temp_max_timer }
+    modulo_temp_variable = { max_fraction = 1 }
+    if = {
+        limit = { check_variable = { max_fraction > 0 } }
+        # Has fractional part, round up
+        set_temp_variable = { max_integer = temp_max_timer }
+        subtract_from_temp_variable = { max_integer = max_fraction }
+        add_to_temp_variable = { max_integer = 1 }
+        set_temp_variable = { temp_max_timer = max_integer }
+    }
 
     # Ensure min doesn't go below 1
     if = {
@@ -449,6 +508,19 @@ on_repeatable_event_fired = {
         limit = { check_variable = { event_id < global.event_max_caps^num } }
         set_temp_variable = { current_cap = global.event_max_caps^event_id }
         multiply_temp_variable = { current_cap = global.reduce_cap_factor }
+
+        # Round up to ensure integer values (62.5 -> 63)
+        set_temp_variable = { cap_fraction = current_cap }
+        modulo_temp_variable = { cap_fraction = 1 }
+        if = {
+            limit = { check_variable = { cap_fraction > 0 } }
+            # Has fractional part, round up
+            set_temp_variable = { cap_integer = current_cap }
+            subtract_from_temp_variable = { cap_integer = cap_fraction }
+            add_to_temp_variable = { cap_integer = 1 }
+            set_temp_variable = { current_cap = cap_integer }
+        }
+
         set_variable = { global.event_max_caps^event_id = current_cap }
     }
     # Clear the weight for this event and later set it to 1
@@ -801,6 +873,16 @@ log_event_system_debug = {
     log = "Timer range: [?global.timer_min_days] - [?global.timer_max_days] days"
     log = "Timer day decrement: [?global.timer_day_decrement] days"
     log = "Max cap reduction: [?global.timer_max_cap_reduction] days"
+
+    set_temp_variable = { temp_new_min_timer = global.timer_min_days }
+    subtract_from_temp_variable = { temp_new_min_timer = global.timer_day_decrement }
+    set_temp_variable = { temp_new_max_timer = global.timer_min_days }
+    subtract_from_temp_variable = { temp_new_max_timer = global.timer_day_decrement }
+    subtract_from_temp_variable = { temp_new_max_timer = global.timer_max_cap_reduction }
+
+    log = "Current timer range: [?temp_new_min_timer] - [?temp_new_max_timer] days"
+    log = "Current chaos tier: [GetChaosTierName]"
+    log = "Current chaos timer modifier: [?global.chaos_timer_modifier]x"
     log = "Current timer: [?global.event_timer_days] days"
     log = "------------------------------------------------------"
 

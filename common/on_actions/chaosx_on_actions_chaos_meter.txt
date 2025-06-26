@@ -10,8 +10,26 @@ on_actions = {
     on_daily = {
         effect = {
             if = {
-                limit = { has_global_flag = event_system_initialized }
+                limit = { # Ensure it runs only once
+                    has_global_flag = event_system_initialized
+                    any_country = { has_country_flag = is_multiplayer_host }
+                    has_country_flag = is_multiplayer_host
+                    is_ai = no
+                }
                 chaos_meter_daily_update = yes
+            }
+            else_if = { # In case tag switch was made
+                limit = {
+                    has_global_flag = event_system_initialized
+                    any_country = { has_country_flag = is_multiplayer_host }
+                    NOT = { has_country_flag = is_multiplayer_host }
+                    is_ai = no
+                }
+                every_country = {
+                    limit = { has_country_flag = is_multiplayer_host }
+                    clr_country_flag = is_multiplayer_host
+                }
+                set_country_flag = is_multiplayer_host
             }
         }
     }
