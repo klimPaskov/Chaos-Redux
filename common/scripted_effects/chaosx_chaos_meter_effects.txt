@@ -1,7 +1,7 @@
 # ============================================================================
 # CHAOS REDUX - CHAOS METER EFFECTS
 # ============================================================================
-# This file contains all scripted effects for the chaos meter system
+# This file contains all scripted effects for the chaos meter system.
 # ============================================================================
 
 # ============================================================================
@@ -13,8 +13,8 @@ initialize_chaos_meter_system = {
     set_variable = { var = global.chaos_meter_value value = 0 }
 
     set_variable = { global.chaos_per_world_tension = 1 }
-    set_variable = { global.chaos_per_minor_war = 2 }
-    set_variable = { global.chaos_per_major_war = 10 }
+    set_variable = { global.chaos_per_minor_war = 1 }
+    set_variable = { global.chaos_per_major_war = 5 }
     set_variable = { global.chaos_per_minor_peace = -2 }
     set_variable = { global.chaos_per_major_peace = -5 }
     set_variable = { global.chaos_per_minor_annex = 5 }
@@ -26,15 +26,14 @@ initialize_chaos_meter_system = {
     set_variable = { global.chaos_per_subject_free = -3 }
     set_variable = { global.chaos_per_subject_annexed = 2 }
     set_variable = { global.chaos_per_nuke = 2 }
-    set_variable = { global.chaos_per_first_nuke = 20 }
-    set_variable = { global.casualties_per_chaos = 100 } # 100k casualties = 1 chaos
+    set_variable = { global.casualties_per_chaos = 250 } # 250k casualties = 1 chaos
     set_variable = { global.chaos_per_mobilization_up_major = 1 }
     set_variable = { global.chaos_per_mobilization_down_major = -1 }
     set_variable = { global.chaos_per_coup_minor = 1 }
     set_variable = { global.chaos_per_coup_major = 3 }
     set_variable = { global.chaos_per_civil_war_minor = 1 }
     set_variable = { global.chaos_per_civil_war_major = 5 }
-    set_variable = { global.chaos_per_ideology_change_minor_democratic = -1 }
+    set_variable = { global.chaos_per_ideology_change_minor_democratic = -2 }
     set_variable = { global.chaos_per_ideology_change_minor_non_democratic = 1 }
     set_variable = { global.chaos_per_ideology_change_major_democratic = -5 }
     set_variable = { global.chaos_per_ideology_change_major_non_democratic = 5 }
@@ -68,18 +67,36 @@ initialize_chaos_meter_system = {
     set_variable = { global.chaos_per_exile_reinstated = -3 }
 
     set_variable = { global.mils_per_chaos_increase = 50 } # 50 mils = +1 chaos
+    set_variable = { global.divisions_per_chaos_increase = 100 } # 100 divisions = +1 chaos
+    set_variable = { global.stability_change_per_chaos = 0.01 } # 1% stability change = ±1 chaos
+
+    # Initialize chaos timer modifier variables (for integration with event system)
+    set_variable = { global.chaos_timer_modifier_calm = 1.0 }
+    set_variable = { global.chaos_timer_modifier_gathering_storm = 0.9 }
+    set_variable = { global.chaos_timer_modifier_rising_chaos = 0.8 }
+    set_variable = { global.chaos_timer_modifier_chaos_tier = 0.7 }
+    set_variable = { global.chaos_timer_modifier_totalen_chaos = 0.6 }
+    set_variable = { global.chaos_timer_modifier = 1.0 } # Current active modifier
 
     # Initialize tracking variables
-    set_variable = { global.last_world_tension = 0 }
     set_variable = { global.last_casualty_count = 0 }
-    set_variable = { global.first_nuke_dropped = 0 }
-
-    # Initialize factory baseline - count existing factories at game start
-    set_variable = { global.last_total_civs = 0 }
+    set_variable = { global.highest_world_tension_recorded = 0 }
+    set_variable = { global.current_world_tension = 0 }
     set_variable = { global.last_total_mils = 0 }
+    set_variable = { global.last_total_divisions = 0 }
+    set_variable = { global.last_average_stability = 0 }
+    set_variable = { global.total_countries_for_stability = 0 }
     every_country = {
-        add_to_variable = { global.last_total_civs = num_of_civilian_factories }
+        limit = { NOT = { tag = ZZZ } } # Exclude Zombies (because they pump out a lot of divisions)
+        add_to_variable = { global.last_total_divisions = num_armies }
+        add_to_variable = { global.last_average_stability = stability }
+        add_to_variable = { global.total_countries_for_stability = 1 }
         add_to_variable = { global.last_total_mils = num_of_military_factories }
+    }
+    # Calculate initial average stability
+    if = {
+        limit = { check_variable = { var = global.total_countries_for_stability value = 0 compare = greater_than } }
+        divide_variable = { var = global.last_average_stability value = global.total_countries_for_stability }
     }
 
     # Initialize chaos meter tiers
@@ -159,6 +176,8 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_collapse = 0 } }
             log = "CHAOS METER: Tier changed to WORLD COLLAPSE"
+            # Recalculate event timer due to chaos tier change
+            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -167,6 +186,8 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_critical = 0 } }
             log = "CHAOS METER: Tier changed to TOTALEN CHAOS"
+            # Recalculate event timer due to chaos tier change
+            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -175,6 +196,8 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_chaos = 0 } }
             log = "CHAOS METER: Tier changed to CHAOS TIER"
+            # Recalculate event timer due to chaos tier change
+            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -183,6 +206,8 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_rising = 0 } }
             log = "CHAOS METER: Tier changed to RISING CHAOS"
+            # Recalculate event timer due to chaos tier change
+            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -191,6 +216,8 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_gathering = 0 } }
             log = "CHAOS METER: Tier changed to GATHERING STORM"
+            # Recalculate event timer due to chaos tier change
+            calculate_next_timer_value = yes
         }
     }
     else = {
@@ -198,6 +225,8 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_calm = 0 } }
             log = "CHAOS METER: Tier changed to CALM WORLD"
+            # Recalculate event timer due to chaos tier change
+            calculate_next_timer_value = yes
         }
     }
 }
@@ -295,17 +324,8 @@ chaos_meter_on_subject_annexed = {
 }
 
 chaos_meter_on_nuke_drop = {
-    # Check if this is the first nuke
-    if = {
-        limit = { check_variable = { var = global.first_nuke_dropped value = 0 } }
-        set_temp_variable = { var = chaos_change value = global.chaos_per_first_nuke }
-        set_variable = { var = global.first_nuke_dropped value = 1 }
-        log = "CHAOS METER: First nuclear weapon dropped by [THIS.GetName] on [FROM.GetName]! (+[?global.chaos_per_first_nuke] chaos)"
-    }
-    else = {
-        set_temp_variable = { var = chaos_change value = global.chaos_per_nuke }
-        log = "CHAOS METER: Nuclear weapon dropped by [THIS.GetName] on [FROM.GetName] (+[?global.chaos_per_nuke] chaos)"
-    }
+    set_temp_variable = { var = chaos_change value = global.chaos_per_nuke }
+    log = "CHAOS METER: Nuclear weapon dropped by [THIS.GetName] on [FROM.GetName] (+[?global.chaos_per_nuke] chaos)"
 
     add_chaos_meter_value = yes
 }
@@ -551,129 +571,6 @@ chaos_meter_on_send_attache = {
     add_chaos_meter_value = yes
 }
 
-# ============================================================================
-# DAILY UPDATES
-# ============================================================================
-
-chaos_meter_daily_update = {
-    # Update world tension contribution
-    chaos_meter_update_world_tension = yes
-
-    # Update casualty contribution
-    chaos_meter_update_casualties = yes
-
-    # Update factory tracking
-    chaos_meter_update_factories = yes
-}
-
-chaos_meter_update_world_tension = {
-    # Calculate world tension change (global.threat is in decimals 0-1, convert to percentage 0-100)
-    set_temp_variable = { var = current_world_tension value = global.threat }
-    multiply_temp_variable = { var = current_world_tension value = 100 } # Convert to percentage
-
-    # Get integer part by using modulo trick: floor(x) = x - (x mod 1)
-    set_temp_variable = { var = current_tension_int value = current_world_tension }
-    set_temp_variable = { var = current_tension_frac value = current_world_tension }
-    modulo_temp_variable = { var = current_tension_frac value = 1 }
-    subtract_from_temp_variable = { var = current_tension_int value = current_tension_frac }
-
-    set_temp_variable = { var = last_tension_int value = global.last_world_tension }
-    set_temp_variable = { var = last_tension_frac value = global.last_world_tension }
-    modulo_temp_variable = { var = last_tension_frac value = 1 }
-    subtract_from_temp_variable = { var = last_tension_int value = last_tension_frac }
-
-    # Calculate the difference in integer percentages
-    set_temp_variable = { var = tension_int_change value = current_tension_int }
-    subtract_from_temp_variable = { var = tension_int_change value = last_tension_int }
-
-    # Only update if the integer percentage has changed (crossed a whole number threshold)
-    if = {
-        limit = {
-            NOT = { check_variable = { var = tension_int_change value = 0 } }
-        }
-
-        # Calculate chaos change (1 chaos per 1% world tension integer change)
-        set_temp_variable = { var = chaos_change value = tension_int_change }
-        multiply_temp_variable = { var = chaos_change value = global.chaos_per_world_tension }
-
-        add_chaos_meter_value = yes
-
-        # Update last world tension (store actual percentage for next comparison)
-        set_variable = { var = global.last_world_tension value = current_world_tension }
-
-        log = "CHAOS METER: World tension crossed threshold - was [?last_tension_int]%, now [?current_tension_int]% ([?chaos_change] chaos)"
-    }
-}
-
-chaos_meter_update_casualties = {
-    # Get current total casualties (in thousands)
-    set_temp_variable = { var = current_casualties value = 0 }
-
-    # Sum all countries' casualties
-    every_country = {
-        add_to_temp_variable = { var = current_casualties value = casualties }
-    }
-
-    # Convert to thousands and check for increase
-    divide_temp_variable = { var = current_casualties value = 1000 }
-    set_temp_variable = { var = casualty_increase value = current_casualties }
-    subtract_from_temp_variable = { var = casualty_increase value = global.last_casualty_count }
-
-    # Calculate chaos increase based on casualties
-    if = {
-        limit = { check_variable = { var = casualty_increase value = global.casualties_per_chaos compare = greater_than_or_equals } }
-
-        set_temp_variable = { var = chaos_from_casualties value = casualty_increase }
-        divide_temp_variable = { var = chaos_from_casualties value = global.casualties_per_chaos }
-
-        # Round down to integer
-        set_temp_variable = { var = chaos_change value = chaos_from_casualties }
-
-        if = {
-            limit = { check_variable = { var = chaos_change value = 1 compare = greater_than_or_equals } }
-            add_chaos_meter_value = yes
-            log = "CHAOS METER: Increased by [?chaos_change] due to [?casualty_increase]k new casualties"
-        }
-
-        # Update last casualty count
-        set_variable = { var = global.last_casualty_count value = current_casualties }
-    }
-}
-
-chaos_meter_update_factories = {
-    # Count total factories globally
-    set_temp_variable = { var = current_total_mils value = 0 }
-
-    every_country = {
-        add_to_temp_variable = { var = current_total_mils value = num_of_military_factories }
-    }
-
-    # Calculate military factory changes
-    set_temp_variable = { var = mil_change value = current_total_mils }
-    subtract_from_temp_variable = { var = mil_change value = global.last_total_mils }
-
-    if = {
-        limit = { check_variable = { var = mil_change value = global.mils_per_chaos_increase compare = greater_than_or_equals } }
-
-        set_temp_variable = { var = chaos_from_mils value = mil_change }
-        divide_temp_variable = { var = chaos_from_mils value = global.mils_per_chaos_increase }
-
-        # Military factories increase chaos (arms buildup)
-        set_temp_variable = { var = chaos_change value = chaos_from_mils }
-
-        if = {
-            limit = { check_variable = { var = chaos_change value = 1 compare = greater_than_or_equals } }
-            add_chaos_meter_value = yes
-            log = "CHAOS METER: Arms buildup from [?mil_change] new military factories (+[?chaos_change] chaos)"
-        }
-
-        set_variable = { var = global.last_total_mils value = current_total_mils }
-    }
-}
-
-# ============================================================================
-# SUBTLE ON ACTION HANDLERS (±1 chaos)
-# ============================================================================
 
 chaos_meter_on_lend_lease = {
     if = {
@@ -747,4 +644,264 @@ chaos_meter_on_exile_reinstated = {
     add_chaos_meter_value = yes
 }
 
-# ============================================================================
+
+
+
+
+
+
+##############################################################################################################
+
+#  ######     #    ### #       #     #    #     # ######  ######     #    ####### #######  #####
+#  #     #   # #    #  #        #   #     #     # #     # #     #   # #      #    #       #     #
+#  #     #  #   #   #  #         # #      #     # #     # #     #  #   #     #    #       #
+#  #     # #     #  #  #          #       #     # ######  #     # #     #    #    #####    #####
+#  #     # #######  #  #          #       #     # #       #     # #######    #    #             #
+#  #     # #     #  #  #          #       #     # #       #     # #     #    #    #       #     #
+#  ######  #     # ### #######    #        #####  #       ######  #     #    #    #######  #####
+
+##############################################################################################################
+
+
+chaos_meter_daily_update = {
+    chaos_meter_update_world_tension = yes
+    chaos_meter_update_casualties = yes
+    chaos_meter_update_factories = yes
+    chaos_meter_update_divisions = yes
+    chaos_meter_update_stability = yes
+}
+
+chaos_meter_update_world_tension = {
+    # Calculate current world tension as percentage (global.threat is 0-1, convert to 0-100)
+    set_temp_variable = { var = current_world_tension value = global.threat }
+    multiply_temp_variable = { var = current_world_tension value = 100 }
+
+    # Round to integer percentage for cleaner tracking
+    round_temp_variable = current_world_tension
+
+    # Update the current world tension variable
+    set_variable = { var = global.current_world_tension value = current_world_tension }
+
+    # Check if current tension is higher than our recorded peak
+    if = {
+        limit = { check_variable = { var = current_world_tension value = global.highest_world_tension_recorded compare = greater_than } }
+
+        # Calculate how much higher the tension got
+        set_temp_variable = { var = tension_increase value = current_world_tension }
+        subtract_from_temp_variable = { var = tension_increase value = global.highest_world_tension_recorded }
+
+        # Only count if the increase is at least 1% (to avoid sub-1% fluctuations)
+        if = {
+            limit = { check_variable = { var = tension_increase value = 1 compare = greater_than_or_equals } }
+
+            # Add chaos for the tension increase
+            set_temp_variable = { var = chaos_change value = tension_increase }
+            multiply_temp_variable = { var = chaos_change value = global.chaos_per_world_tension }
+
+            add_chaos_meter_value = yes
+
+            log = "CHAOS METER: World tension increased from [?global.highest_world_tension_recorded]% to [?current_world_tension]% (+[?chaos_change] chaos)"
+
+            # Update the highest recorded tension
+            set_variable = { var = global.highest_world_tension_recorded value = current_world_tension }
+        }
+    }
+    # Check if current tension is lower than our recorded peak
+    else_if = {
+        limit = { check_variable = { var = current_world_tension value = global.highest_world_tension_recorded compare = less_than } }
+
+        # Calculate how much the tension dropped from the peak
+        set_temp_variable = { var = tension_decrease value = global.highest_world_tension_recorded }
+        subtract_from_temp_variable = { var = tension_decrease value = current_world_tension }
+
+        # Only count if the decrease is at least 1% (to avoid sub-1% fluctuations)
+        if = {
+            limit = { check_variable = { var = tension_decrease value = 1 compare = greater_than_or_equals } }
+
+            # Round down the decrease to integer
+            round_temp_variable = tension_decrease
+
+            # Reduce chaos for the tension decrease
+            set_temp_variable = { var = chaos_change value = tension_decrease }
+            multiply_temp_variable = { var = chaos_change value = global.chaos_per_world_tension }
+            multiply_temp_variable = { var = chaos_change value = -1 } # Make it negative for decrease
+
+            add_chaos_meter_value = yes
+
+            set_temp_variable = { wt_decreased_from = current_world_tension }
+            add_to_temp_variable = { wt_decreased_from = tension_decrease }
+            log = "CHAOS METER: World tension decreased from [?wt_decreased_from]% to [?current_world_tension]% ([?chaos_change] chaos)"
+
+            # Update the highest recorded tension to current tension to prevent repeated decreases
+            # This ensures we only decrease chaos once for each drop, not repeatedly
+            set_variable = { var = global.highest_world_tension_recorded value = current_world_tension }
+        }
+    }
+}
+
+chaos_meter_update_casualties = {
+    # Get current total casualties (in thousands)
+    set_temp_variable = { var = current_casualties value = 0 }
+
+    # Sum all countries' casualties
+    every_country = {
+        add_to_temp_variable = { var = current_casualties value = casualties }
+    }
+
+    # Convert to thousands and check for increase
+    divide_temp_variable = { var = current_casualties value = 1000 }
+    set_temp_variable = { var = casualty_increase value = current_casualties }
+    subtract_from_temp_variable = { var = casualty_increase value = global.last_casualty_count }
+
+    # Calculate chaos increase based on casualties
+    if = {
+        limit = { check_variable = { var = casualty_increase value = global.casualties_per_chaos compare = greater_than_or_equals } }
+
+        set_temp_variable = { var = chaos_from_casualties value = casualty_increase }
+        divide_temp_variable = { var = chaos_from_casualties value = global.casualties_per_chaos }
+
+        # Round down to integer
+        set_temp_variable = { var = chaos_change value = chaos_from_casualties }
+
+        if = {
+            limit = { check_variable = { var = chaos_change value = 1 compare = greater_than_or_equals } }
+            add_chaos_meter_value = yes
+            log = "CHAOS METER: Increased by [?chaos_change] due to [?casualty_increase]k new casualties"
+        }
+
+        # Update last casualty count
+        set_variable = { var = global.last_casualty_count value = current_casualties }
+    }
+}
+
+chaos_meter_update_factories = {
+    # Count total factories globally
+    set_temp_variable = { var = current_total_mils value = 0 }
+
+    every_country = {
+        add_to_temp_variable = { var = current_total_mils value = num_of_military_factories }
+    }
+
+    # Calculate military factory changes
+    set_temp_variable = { var = mil_change value = current_total_mils }
+    subtract_from_temp_variable = { var = mil_change value = global.last_total_mils }
+
+    if = {
+        limit = { check_variable = { var = mil_change value = global.mils_per_chaos_increase compare = greater_than_or_equals } }
+
+        set_temp_variable = { var = chaos_from_mils value = mil_change }
+        divide_temp_variable = { var = chaos_from_mils value = global.mils_per_chaos_increase }
+
+        # Military factories increase chaos (arms buildup)
+        set_temp_variable = { var = chaos_change value = chaos_from_mils }
+
+        if = {
+            limit = { check_variable = { var = chaos_change value = 1 compare = greater_than_or_equals } }
+            add_chaos_meter_value = yes
+            log = "CHAOS METER: Arms buildup from [?mil_change] new military factories (+[?chaos_change] chaos)"
+        }
+
+        set_variable = { var = global.last_total_mils value = current_total_mils }
+    }
+}
+
+chaos_meter_update_divisions = {
+    # Count total divisions globally (excluding ZZZ tag)
+    set_temp_variable = { var = current_total_divisions value = 0 }
+
+    every_country = {
+        limit = { NOT = { tag = ZZZ } } # Exclude ZZZ tag
+        add_to_temp_variable = { var = current_total_divisions value = num_armies }
+    }
+
+    # Calculate division changes
+    set_temp_variable = { var = division_change value = current_total_divisions }
+    subtract_from_temp_variable = { var = division_change value = global.last_total_divisions }
+
+    if = {
+        limit = { check_variable = { var = division_change value = global.divisions_per_chaos_increase compare = greater_than_or_equals } }
+
+        set_temp_variable = { var = chaos_from_divisions value = division_change }
+        divide_temp_variable = { var = chaos_from_divisions value = global.divisions_per_chaos_increase }
+
+        # Round down to integer
+        round_temp_variable = chaos_from_divisions
+
+        # Division buildup increases chaos (militarization)
+        set_temp_variable = { var = chaos_change value = chaos_from_divisions }
+
+        if = {
+            limit = { check_variable = { var = chaos_change value = 1 compare = greater_than_or_equals } }
+            add_chaos_meter_value = yes
+            log = "CHAOS METER: Military buildup from [?division_change] new divisions (+[?chaos_change] chaos)"
+        }
+
+        set_variable = { var = global.last_total_divisions value = current_total_divisions }
+    }
+}
+
+chaos_meter_update_stability = {
+    # Calculate current world average stability
+    set_temp_variable = { var = current_total_stability value = 0 }
+    set_temp_variable = { var = current_country_count value = 0 }
+
+    every_country = {
+        limit = { NOT = { tag = ZZZ } } # Exclude Zombies
+        add_to_temp_variable = { var = current_total_stability value = stability }
+        add_to_temp_variable = { var = current_country_count value = 1 }
+    }
+
+    # Calculate current average stability
+    set_temp_variable = { var = current_average_stability value = 0 }
+    if = {
+        limit = { check_variable = { var = current_country_count value = 0 compare = greater_than } }
+        set_temp_variable = { var = current_average_stability value = current_total_stability }
+        divide_temp_variable = { var = current_average_stability value = current_country_count }
+    }
+
+    # Calculate stability change
+    set_temp_variable = { var = stability_change value = current_average_stability }
+    subtract_from_temp_variable = { var = stability_change value = global.last_average_stability }
+
+    # Check if stability changed by threshold amount (0.1 = 10%)
+    set_temp_variable = { var = abs_stability_change value = stability_change }
+    if = {
+        limit = { check_variable = { var = stability_change value = 0 compare = less_than } }
+        multiply_temp_variable = { var = abs_stability_change value = -1 }
+    }
+
+    if = {
+        limit = { check_variable = { var = abs_stability_change value = global.stability_change_per_chaos compare = greater_than_or_equals } }
+
+        # Calculate chaos change based on stability direction
+        set_temp_variable = { var = chaos_from_stability value = stability_change }
+        divide_temp_variable = { var = chaos_from_stability value = global.stability_change_per_chaos }
+
+        # Round to integer
+        round_temp_variable = chaos_from_stability
+
+        # Stability decrease = positive chaos, stability increase = negative chaos
+        set_temp_variable = { var = chaos_change value = chaos_from_stability }
+        multiply_temp_variable = { var = chaos_change value = -1 }
+
+        if = {
+            limit = {
+                OR = {
+                    check_variable = { var = chaos_change value = 1 compare = greater_than_or_equals }
+                    check_variable = { var = chaos_change value = -1 compare = less_than_or_equals }
+                }
+            }
+            add_chaos_meter_value = yes
+
+            if = {
+                limit = { check_variable = { var = stability_change value = 0 compare = greater_than } }
+                log = "CHAOS METER: World stability improved by [?abs_stability_change] ([?chaos_change] chaos)"
+            }
+            else = {
+                log = "CHAOS METER: World stability decreased by [?abs_stability_change] (+[?chaos_change] chaos)"
+            }
+        }
+
+        set_variable = { var = global.last_average_stability value = current_average_stability }
+    }
+}
