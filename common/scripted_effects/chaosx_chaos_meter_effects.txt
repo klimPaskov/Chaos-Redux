@@ -78,6 +78,13 @@ initialize_chaos_meter_system = {
     set_variable = { global.chaos_timer_modifier_totalen_chaos = 0.6 }
     set_variable = { global.chaos_timer_modifier = 1.0 } # Current active modifier
 
+    # Initialize chaos tier boundaries (dynamic values for entire system)
+    set_variable = { global.chaos_tier_gathering_boundary = 200 }
+    set_variable = { global.chaos_tier_rising_boundary = 400 }
+    set_variable = { global.chaos_tier_chaos_boundary = 600 }
+    set_variable = { global.chaos_tier_critical_boundary = 800 }
+    set_variable = { global.chaos_tier_collapse_boundary = 1000 }
+
     # Initialize tracking variables
     set_variable = { global.last_casualty_count = 0 }
     set_variable = { global.highest_world_tension_recorded = 0 }
@@ -171,7 +178,7 @@ update_chaos_meter_tier = {
     clr_global_flag = chaos_tier_collapse
 
     if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = 1000 compare = greater_than_or_equals } }
+        limit = { check_variable = { var = global.chaos_meter_value value = global.chaos_tier_collapse_boundary compare = greater_than_or_equals } }
         set_global_flag = chaos_tier_collapse
         if = {
             limit = { check_variable = { old_tier_collapse = 0 } }
@@ -181,7 +188,7 @@ update_chaos_meter_tier = {
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = 800 compare = greater_than_or_equals } }
+        limit = { check_variable = { var = global.chaos_meter_value value = global.chaos_tier_critical_boundary compare = greater_than_or_equals } }
         set_global_flag = chaos_tier_critical
         if = {
             limit = { check_variable = { old_tier_critical = 0 } }
@@ -191,7 +198,7 @@ update_chaos_meter_tier = {
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = 600 compare = greater_than_or_equals } }
+        limit = { check_variable = { var = global.chaos_meter_value value = global.chaos_tier_chaos_boundary compare = greater_than_or_equals } }
         set_global_flag = chaos_tier_chaos
         if = {
             limit = { check_variable = { old_tier_chaos = 0 } }
@@ -201,7 +208,7 @@ update_chaos_meter_tier = {
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = 400 compare = greater_than_or_equals } }
+        limit = { check_variable = { var = global.chaos_meter_value value = global.chaos_tier_rising_boundary compare = greater_than_or_equals } }
         set_global_flag = chaos_tier_rising
         if = {
             limit = { check_variable = { old_tier_rising = 0 } }
@@ -211,7 +218,7 @@ update_chaos_meter_tier = {
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = 200 compare = greater_than_or_equals } }
+        limit = { check_variable = { var = global.chaos_meter_value value = global.chaos_tier_gathering_boundary compare = greater_than_or_equals } }
         set_global_flag = chaos_tier_gathering
         if = {
             limit = { check_variable = { old_tier_gathering = 0 } }
