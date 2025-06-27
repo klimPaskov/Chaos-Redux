@@ -70,6 +70,8 @@ initialize_event_system = {
         initialize_event_categories = yes
         initialize_event_weights = yes
 
+        count_total_events = yes
+
         log = "CHAOS REDUX EVENT SYSTEM: System initialized successfully"
         log = "CHAOS REDUX EVENT SYSTEM: First event timer set to [?global.event_timer_days] days"
 
@@ -747,10 +749,10 @@ count_unfired_repeatable_events = {
 
 # Count total unique events available
 count_total_events = {
-    set_temp_variable = { total_events = 0 }
-    add_to_temp_variable = { total_events = global.major_events^num }
-    add_to_temp_variable = { total_events = global.fire_once_events^num }
-    add_to_temp_variable = { total_events = global.repeatable_events^num }
+    set_variable = { global.total_events = 0 }
+    add_to_variable = { global.total_events = global.major_events^num }
+    add_to_variable = { global.total_events = global.fire_once_events^num }
+    add_to_variable = { global.total_events = global.repeatable_events^num }
 }
 
 # ============================================================================
@@ -827,7 +829,6 @@ log_event_system_debug = {
     count_unfired_major_events = yes
     count_unfired_fire_once_events = yes
     count_unfired_repeatable_events = yes
-    count_total_events = yes
 
     # Calculate derived values
     set_temp_variable = { current_major_weight = global.minor_events_since_major }
@@ -847,7 +848,7 @@ log_event_system_debug = {
 
     # Event availability statistics
     log = "UNIQUE EVENTS:"
-    log = "Total events in system: [?total_events]"
+    log = "Total events in system: [?global.total_events]"
     log = "Total unique events yet to be fired: [?total_unfired_events]"
     log = "  - Major events unfired: [?unfired_major_events] / [?global.major_events^num]"
     log = "  - Minor fire-once events unfired: [?unfired_fire_once_events] / [?global.fire_once_events^num]"
@@ -876,7 +877,7 @@ log_event_system_debug = {
 
     set_temp_variable = { temp_new_min_timer = global.timer_min_days }
     subtract_from_temp_variable = { temp_new_min_timer = global.timer_day_decrement }
-    set_temp_variable = { temp_new_max_timer = global.timer_min_days }
+    set_temp_variable = { temp_new_max_timer = global.timer_max_days }
     subtract_from_temp_variable = { temp_new_max_timer = global.timer_day_decrement }
     subtract_from_temp_variable = { temp_new_max_timer = global.timer_max_cap_reduction }
 
