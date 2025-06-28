@@ -48,6 +48,14 @@ scripted_gui = {
                 toggle_events_view = yes
             }
 
+            event_filter_left_arrow_click = {
+                cycle_event_filter_prev = yes
+            }
+
+            event_filter_right_arrow_click = {
+                cycle_event_filter_next = yes
+            }
+
             event_id_decrease_click = {
                 decrease_event_id = yes
             }
@@ -68,15 +76,30 @@ scripted_gui = {
                 trigger_selected_event = yes
             }
 
+            trigger_event_button_right_click = {
+                force_trigger_selected_event = yes
+            }
+
             trigger_random_event_button_click = {
                 trigger_random_event = yes
             }
 
-            show_events_log_checkbox_click = {
-                toggle_events_log = yes
+            trigger_random_event_button_right_click = {
+                # Force mode - includes fired events
+                set_variable = { temp_force_mode = 1 }
+                trigger_random_event = yes
+                clear_variable = temp_force_mode
             }
 
-            disable_event_system_checkbox_click = {
+            # show_events_log_checkbox_click = {
+            #     toggle_events_log = yes
+            # }
+
+            force_trigger_button_click = {
+                toggle_force_trigger_mode = yes
+            }
+
+            disable_event_system_button_click = {
                 toggle_event_system = yes
             }
 
@@ -129,6 +152,16 @@ scripted_gui = {
                 has_country_flag = show_trigger_events_menu
             }
 
+            event_filter_left_arrow_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+            }
+
+            event_filter_right_arrow_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+            }
+
             event_id_decrease_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
@@ -153,19 +186,77 @@ scripted_gui = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
                 NOT = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } }
+                OR = {
+                    has_country_flag = force_trigger_mode_enabled  # Force mode enabled - always allow
+                    AND = {
+                        # Normal mode - only allow if event hasn't been fired (for major/fire-once events)
+                        NOT = { has_country_flag = force_trigger_mode_enabled }
+                        OR = {
+                            # Repeatable events are always available
+                            check_variable = { global.settings_event_type = 2 }
+                            # Major/fire-once events that haven't been fired yet
+                            AND = {
+                                OR = {
+                                    check_variable = { global.settings_event_type = 1 }  # Major
+                                    check_variable = { global.settings_event_type = 3 }  # Fire-once
+                                }
+                                NOT = { is_in_array = { global.fired_events = global.settings_selected_event_id } }
+                            }
+                        }
+                    }
+                }
+            }
+
+            trigger_event_button_right_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+                NOT = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } }
             }
 
             trigger_random_event_button_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
+                OR = {
+                    has_country_flag = force_trigger_mode_enabled  # Force mode enabled - always allow
+                    AND = {
+                        # Normal mode - only allow if there are events available to fire
+                        NOT = { has_country_flag = force_trigger_mode_enabled }
+                        OR = {
+                            # All events filter - always has repeatable events available
+                            check_variable = { global.settings_event_id_filter = 0 }
+                            # Repeatable events filter - always available
+                            check_variable = { global.settings_event_id_filter = 2 }
+                            # Major events filter - check if any major events haven't been fired
+                            AND = {
+                                check_variable = { global.settings_event_id_filter = 1 }
+                                check_variable = { global.unfired_major_events_count > 0 }
+                            }
+                            # Fire-once events filter - check if any fire-once events haven't been fired
+                            AND = {
+                                check_variable = { global.settings_event_id_filter = 3 }
+                                check_variable = { global.unfired_fire_once_events_count > 0 }
+                            }
+                        }
+                    }
+                }
             }
 
-            show_events_log_checkbox_click_enabled = {
+            trigger_random_event_button_right_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
             }
 
-            disable_event_system_checkbox_click_enabled = {
+            # show_events_log_checkbox_click_enabled = {
+            #     has_country_flag = show_trigger_events_menu
+            #     has_country_flag = show_events_view
+            # }
+
+            force_trigger_button_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+            }
+
+            disable_event_system_button_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
             }
@@ -198,6 +289,21 @@ scripted_gui = {
             }
 
             events_header_text_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+            }
+
+            event_filter_left_arrow_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+            }
+
+            event_filter_right_arrow_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+            }
+
+            event_filter_label_visible = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
             }
@@ -236,6 +342,10 @@ scripted_gui = {
                 has_country_flag = show_events_view
             }
 
+            selected_event_type_display_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+            }
             event_type_display_visible = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
@@ -271,17 +381,27 @@ scripted_gui = {
                 has_country_flag = show_events_view
             }
 
-            show_events_log_checkbox_visible = {
+            # show_events_log_checkbox_visible = {
+            #     has_country_flag = show_trigger_events_menu
+            #     has_country_flag = show_events_view
+            # }
+
+            # show_events_log_text_visible = {
+            #     has_country_flag = show_trigger_events_menu
+            #     has_country_flag = show_events_view
+            # }
+
+            force_trigger_button_visible = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
             }
 
-            show_events_log_text_visible = {
+            force_trigger_text_visible = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
             }
 
-            disable_event_system_checkbox_visible = {
+            disable_event_system_button_visible = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
             }
@@ -326,6 +446,16 @@ scripted_gui = {
 
             event_id_increase = {
                 image = "[GetIncrementSprite]"
+            }
+
+            # Dynamic sprite for the force trigger button
+            force_trigger_button = {
+                image = "[GetForceTriggerButtonSprite]"
+            }
+
+            # Dynamic sprite for the event system toggle button
+            disable_event_system_button = {
+                image = "[GetEventSystemButtonSprite]"
             }
         }
 

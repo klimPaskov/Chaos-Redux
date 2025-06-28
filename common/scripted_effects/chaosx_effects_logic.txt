@@ -74,6 +74,7 @@ initialize_event_system = {
 
         log = "CHAOS REDUX EVENT SYSTEM: System initialized successfully"
         log = "CHAOS REDUX EVENT SYSTEM: First event timer set to [?global.event_timer_days] days"
+        log = "CHAOS REDUX EVENT SYSTEM: Successfully loaded [?global.total_events] events"
 
         # Finalize initialization
         set_global_flag = event_system_initialized
@@ -488,6 +489,9 @@ on_fire_once_event_fired = {
     update_repeatable_event_weights = yes
     update_major_event_weights = yes
     on_minor_event_timer_update = yes
+
+    # Update unfired events counts for GUI button logic
+    update_unfired_events_counts = yes
 }
 
 # Handler for repeatable events
@@ -558,6 +562,9 @@ on_major_event_fired = {
     update_repeatable_event_weights = yes
     reset_unfired_major_event_weights = yes
     on_major_event_timer_update = yes
+
+    # Update unfired events counts for GUI button logic
+    update_unfired_events_counts = yes
 }
 
 # Reset all unfired major event weights to 0
