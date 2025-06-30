@@ -67,8 +67,8 @@ The Dynamic Timer System replaces fixed monthly event timers with a daily, adapt
 
 #### Base Timer Range
 
-- **Minimum Days**: 20 (configurable via `global.timer_min_days`)
-- **Maximum Days**: 30 (configurable via `global.timer_max_days`)
+- **Minimum Days**: 20 (configurable via `timer_min_days`)
+- **Maximum Days**: 30 (configurable via `timer_max_days`)
 - **Default Range**: Events fire every 20-30 days under normal conditions
 
 ### Timer Modifiers
@@ -118,11 +118,11 @@ After 15 minor events and max reductions:
 
 All timer behavior is controlled by global variables that can be modified:
 
-- `global.timer_min_days`: Minimum timer range (default: 20)
-- `global.timer_max_days`: Maximum timer range (default: 30)
-- `global.timer_day_decrement`: Current day reduction (max: 15)
-- `global.timer_max_cap_reduction`: Max range reduction (max: 5)
-- `global.event_timer_days`: Current countdown timer
+- `timer_min_days`: Minimum timer range (default: 20)
+- `timer_max_days`: Maximum timer range (default: 30)
+- `timer_day_decrement`: Current day reduction (max: 15)
+- `timer_max_cap_reduction`: Max range reduction (max: 5)
+- `event_timer_days`: Current countdown timer
 
 ### Debug Information
 
