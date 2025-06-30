@@ -8,23 +8,71 @@
 # MENU SYSTEM PLACEHOLDERS
 # ============================================================================
 
-# Menu system placeholders (future implementation)
+@DEFAULT_MIN_DAYS = 20
+@DEFAULT_MAX_DAYS = 30
+@DEFAULT_MIN_DECREMENT_CAP = 15
+@DEFAULT_MAX_DECREMENT_CAP = 5
+@DEFAULT_EVENT_WEIGHT = 1000
+@DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR = 150
+@DEFAULT_REDUCE_CAP_FACTOR = 0.5
+@DEFAULT_RECOVERY_RATE = 20
+
+# Dynamic Cap Calculation Constants:
+# - Default minValue = 20 → minDecrementCap = 15 (minValue - 5)
+# - Default maxValue = 30 → maxDecrementCap = 5 (base value for maxValue = 30)
+# - maxDecrementCap changes by 1 for every ±3 change in maxValue from 30
+# - maxDecrementCap floors at 0 for maxValue ≤ 15
+# - Constraint: minDecrementCap + maxDecrementCap ≤ maxValue (always enforced)
+
+@DEFAULT_CHAOS_MODIFIER_CALM = 1.0
+@DEFAULT_CHAOS_MODIFIER_GATHERING = 0.8
+@DEFAULT_CHAOS_MODIFIER_RISING = 0.7
+@DEFAULT_CHAOS_MODIFIER_CHAOS = 0.6
+@DEFAULT_CHAOS_MODIFIER_CRITICAL = 0.5
+@DEFAULT_CHAOS_MODIFIER_COLLAPSE = 0.5
+
+@DEFAULT_INCREMENT_MODE = 5
+
+# Open timer system menu
 open_timer_system_menu = {
-    # Placeholder - future implementation
-    log = "Timer System menu requested (not yet implemented)"
+    # Clear all other content flags first
+    clr_country_flag = show_trigger_events_menu
+    clr_country_flag = show_events_view
+    clr_country_flag = show_event_clusters_view
+
+    # Show timer system menu
+    set_country_flag = show_timer_system_menu
 }
 
 open_chaos_meter_menu = {
+    # Clear all other content flags first
+    clr_country_flag = show_trigger_events_menu
+    clr_country_flag = show_timer_system_menu
+    clr_country_flag = show_events_view
+    clr_country_flag = show_event_clusters_view
+
     # Placeholder - future implementation
     log = "Chaos Meter menu requested (not yet implemented)"
 }
 
 open_advanced_settings_menu = {
+    # Clear all other content flags first
+    clr_country_flag = show_trigger_events_menu
+    clr_country_flag = show_timer_system_menu
+    clr_country_flag = show_events_view
+    clr_country_flag = show_event_clusters_view
+
     # Placeholder - future implementation
     log = "Advanced Settings menu requested (not yet implemented)"
 }
 
 toggle_scenarios_menu = {
+    # Clear all other content flags first
+    clr_country_flag = show_trigger_events_menu
+    clr_country_flag = show_timer_system_menu
+    clr_country_flag = show_events_view
+    clr_country_flag = show_event_clusters_view
+
     # Placeholder - future implementation
     log = "Toggle Scenarios menu requested (not yet implemented)"
 }
@@ -41,6 +89,7 @@ open_chaosx_settings = {
     }
     else = {
         set_country_flag = chaosx_settings_open
+
         # Clear any menu selection flags so the right side starts empty
         clr_country_flag = show_trigger_events_menu
         clr_country_flag = show_events_view
@@ -48,26 +97,21 @@ open_chaosx_settings = {
 
         # Initialize settings variables
         if = {
-            limit = { NOT = { has_variable = global.settings_selected_event_id } }
-            set_variable = { global.settings_selected_event_id = 0 }
+            limit = { NOT = { has_variable = settings_selected_event_id } }
+            set_variable = { settings_selected_event_id = 0 }
         }
         if = {
-            limit = { NOT = { has_variable = global.settings_increment_mode } }
-            set_variable = { global.settings_increment_mode = 5 }
+            limit = { NOT = { has_variable = settings_events_increment_mode } }
+            set_variable = { settings_events_increment_mode = 5 }
         }
 
-        # Ensure event system starts as enabled (button shows unchecked)
         # When events_activated flag is present = system enabled = button unchecked
         # When events_activated flag is absent = system disabled = button checked
         set_country_flag = events_activated
 
-        # Ensure force trigger mode starts as disabled (unchecked)
         # When force_trigger_mode_enabled flag is present = force mode enabled = button checked
         # When force_trigger_mode_enabled flag is absent = force mode disabled = button unchecked
         clr_country_flag = force_trigger_mode_enabled
-
-        # Initialize trigger events settings (including total events constant)
-        initialize_trigger_events_settings = yes
     }
 }
 
@@ -76,6 +120,7 @@ close_chaosx_settings = {
     clr_country_flag = chaosx_settings_open
     # Clear all menu flags when closing
     clr_country_flag = show_trigger_events_menu
+    clr_country_flag = show_timer_system_menu
     clr_country_flag = show_events_view
     clr_country_flag = show_event_clusters_view
 }
@@ -86,105 +131,40 @@ close_chaosx_settings = {
 
 # Initialize settings system with default values
 initialize_settings_system = {
-    # Initialize event arrays first if not already done
-    if = {
-        limit = { NOT = { has_variable = global.total_events } }
-        initialize_event_categories = yes
-        count_total_events = yes
-    }
-
-    # Backup original values for reset functionality
-    if = {
-        limit = { NOT = { has_global_flag = settings_backup_created } }
-
-        # Timer system backups
-        set_variable = { global.settings_backup_timer_min = global.event_timer_min }
-        set_variable = { global.settings_backup_timer_max = global.event_timer_max }
-
-        # Chaos meter backup
-        set_variable = { global.settings_backup_chaos_value = global.chaos_meter_value }
-
-        # Event system backups
-        set_variable = { global.settings_backup_recovery_rate = global.minor_event_recovery_rate }
-
-        set_global_flag = settings_backup_created
-    }
-
-    # Initialize settings variables
-    # These will be used to track current settings values
-    set_variable = { global.settings_timer_min = global.event_timer_min }
-    set_variable = { global.settings_timer_max = global.event_timer_max }
-    set_variable = { global.settings_chaos_value = global.chaos_meter_value }
+    initialize_trigger_events_settings = yes
+    initialize_timer_system_settings = yes
 }
 
 # Reset all settings to their original values
 reset_all_settings = {
-    if = {
-        limit = { has_global_flag = settings_backup_created }
-
-        # Restore timer system
-        set_variable = { global.event_timer_min = global.settings_backup_timer_min }
-        set_variable = { global.event_timer_max = global.settings_backup_timer_max }
-        set_variable = { global.settings_timer_min = global.settings_backup_timer_min }
-        set_variable = { global.settings_timer_max = global.settings_backup_timer_max }
-
-        # # Restore chaos meter # don't reset chaos meter right now, it's more complex
-        # set_variable = { global.chaos_meter_value = global.settings_backup_chaos_value }
-        # set_variable = { global.settings_chaos_value = global.settings_backup_chaos_value }
-        # update_chaos_meter_tier = yes
-
-        # Restore event system
-        set_variable = { global.minor_event_recovery_rate = global.settings_backup_recovery_rate }
-
-        # Reset trigger events to defaults
-        set_variable = { global.settings_selected_event_id = 0 }
-        set_variable = { global.settings_event_id_filter = 0 }  # All Events
-        set_variable = { global.settings_increment_mode = 5 }
-        clr_global_flag = settings_increment_mode_1
-        clr_global_flag = settings_increment_mode_10
-
-        # Reset view to Events view (not Event Clusters)
-        set_country_flag = show_events_view
-        clr_country_flag = show_event_clusters_view
-
-        # Reset force trigger mode (default: disabled)
-        clr_country_flag = force_trigger_mode_enabled
-
-        # Re-enable systems if they were disabled
-        set_country_flag = events_activated
-
-        # Update event display to show "No event selected"
-        update_event_id_display = yes
-    }
+    reset_trigger_events = yes
+    reset_timer_to_defaults = yes
+    log = "CHAOS REDUX SETTINGS: All settings reset to default values"
 }
 
-# ============================================================================
-# TRIGGER EVENTS FUNCTIONALITY
-# ============================================================================
+
+
+
+###############################################################################################################
+
+#  ####### ######  ###  #####   #####  ####### ######     ####### #     # ####### #     # #######  #####
+#     #    #     #  #  #     # #     # #       #     #    #       #     # #       ##    #    #     #
+#     #    #     #  #  #       #       #       #     #    #       #     # #       # #   #    #    #
+#     #    ######   #  #  #### #  #### #####   ######     #####   #     # #####   #  #  #    #     #####
+#     #    #   #    #  #     # #     # #       #   #      #        #   #  #       #   # #    #          #
+#     #    #    #   #  #     # #     # #       #    #     #         # #   #       #    ##    #    #     #
+#     #    #     # ###  #####   #####  ####### #     #    #######    #    ####### #     #    #     #####
+
+###############################################################################################################
+
+
+
 
 # Initialize trigger events settings
 initialize_trigger_events_settings = {
-    # Initialize event arrays and total events count first
-    if = {
-        limit = { NOT = { has_variable = global.total_events } }
-        initialize_event_categories = yes
-        count_total_events = yes
-    }
-
-    # Set default values if not already set
-    if = {
-        limit = { NOT = { has_variable = global.settings_selected_event_id } }
-        set_variable = { global.settings_selected_event_id = 0 }
-    }
-    if = {
-        limit = { NOT = { has_variable = global.settings_increment_mode } }
-        set_variable = { global.settings_increment_mode = 5 }
-    }
-    # Initialize event filter type (0=All, 1=Major, 2=Repeatable, 3=Fire-once)
-    if = {
-        limit = { NOT = { has_variable = global.settings_event_id_filter } }
-        set_variable = { global.settings_event_id_filter = 0 }
-    }
+    set_variable = { settings_selected_event_id = 0 }
+    set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
+    set_variable = { settings_event_id_filter = 0 }
 
     # Set initial flags
     update_event_id_display = yes
@@ -193,6 +173,9 @@ initialize_trigger_events_settings = {
 
 # Open trigger events menu
 open_trigger_events_menu = {
+    # Clear all other content flags first
+    clr_country_flag = show_timer_system_menu
+
     # Show trigger events menu and default to Events view
     set_country_flag = show_trigger_events_menu
     set_country_flag = show_events_view
@@ -206,24 +189,24 @@ open_trigger_events_menu = {
 # Cycle to previous event filter type
 cycle_event_filter_prev = {
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = 0 } }
         # From All (0) to Fire-once (3)
-        set_variable = { global.settings_event_id_filter = 3 }
+        set_variable = { settings_event_id_filter = 3 }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # From Major (1) to All (0)
-        set_variable = { global.settings_event_id_filter = 0 }
+        set_variable = { settings_event_id_filter = 0 }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # From Repeatable (2) to Major (1)
-        set_variable = { global.settings_event_id_filter = 1 }
+        set_variable = { settings_event_id_filter = 1 }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # From Fire-once (3) to Repeatable (2)
-        set_variable = { global.settings_event_id_filter = 2 }
+        set_variable = { settings_event_id_filter = 2 }
     }
 
     # Update the current event ID to be valid for the new filter
@@ -234,24 +217,24 @@ cycle_event_filter_prev = {
 # Cycle to next event filter type
 cycle_event_filter_next = {
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = 0 } }
         # From All (0) to Major (1)
-        set_variable = { global.settings_event_id_filter = 1 }
+        set_variable = { settings_event_id_filter = 1 }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # From Major (1) to Repeatable (2)
-        set_variable = { global.settings_event_id_filter = 2 }
+        set_variable = { settings_event_id_filter = 2 }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # From Repeatable (2) to Fire-once (3)
-        set_variable = { global.settings_event_id_filter = 3 }
+        set_variable = { settings_event_id_filter = 3 }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # From Fire-once (3) to All (0)
-        set_variable = { global.settings_event_id_filter = 0 }
+        set_variable = { settings_event_id_filter = 0 }
     }
 
     # Update the current event ID to be valid for the new filter
@@ -263,22 +246,22 @@ cycle_event_filter_next = {
 adjust_event_id_for_filter = {
     # Get the first valid ID for the current filter and set it if current ID is invalid
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = 0 } }
         # All events - keep current ID if it's between 1 and total_events
         if = {
             limit = {
                 OR = {
-                    check_variable = { global.settings_selected_event_id < 1 }
-                    check_variable = { global.settings_selected_event_id > global.total_events }
+                    check_variable = { settings_selected_event_id < 1 }
+                    check_variable = { settings_selected_event_id > global.total_events }
                 }
             }
-            set_variable = { global.settings_selected_event_id = 1 }
+            set_variable = { settings_selected_event_id = 1 }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # Major events - set to first major event if current is not major
-        set_temp_variable = { temp_current_id = global.settings_selected_event_id }
+        set_temp_variable = { temp_current_id = settings_selected_event_id }
         set_temp_variable = { temp_is_major = 0 }
 
         # Check if current ID is in major events array
@@ -297,17 +280,17 @@ adjust_event_id_for_filter = {
             limit = { check_variable = { temp_is_major = 0 } }
             if = {
                 limit = { check_variable = { global.major_events^num > 0 } }
-                set_variable = { global.settings_selected_event_id = global.major_events^0 }
+                set_variable = { settings_selected_event_id = global.major_events^0 }
             }
             else = {
-                set_variable = { global.settings_selected_event_id = 2 }  # Default major event
+                set_variable = { settings_selected_event_id = 2 }  # Default major event
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # Repeatable events - set to first repeatable event if current is not repeatable
-        set_temp_variable = { temp_current_id = global.settings_selected_event_id }
+        set_temp_variable = { temp_current_id = settings_selected_event_id }
         set_temp_variable = { temp_is_repeatable = 0 }
 
         # Check if current ID is in repeatable events array
@@ -326,17 +309,17 @@ adjust_event_id_for_filter = {
             limit = { check_variable = { temp_is_repeatable = 0 } }
             if = {
                 limit = { check_variable = { global.repeatable_events^num > 0 } }
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^0 }
+                set_variable = { settings_selected_event_id = global.repeatable_events^0 }
             }
             else = {
-                set_variable = { global.settings_selected_event_id = 1 }  # Default repeatable event
+                set_variable = { settings_selected_event_id = 1 }  # Default repeatable event
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # Fire-once events - set to first fire-once event if current is not fire-once
-        set_temp_variable = { temp_current_id = global.settings_selected_event_id }
+        set_temp_variable = { temp_current_id = settings_selected_event_id }
         set_temp_variable = { temp_is_fire_once = 0 }
 
         # Check if current ID is in fire-once events array
@@ -355,10 +338,10 @@ adjust_event_id_for_filter = {
             limit = { check_variable = { temp_is_fire_once = 0 } }
             if = {
                 limit = { check_variable = { global.fire_once_events^num > 0 } }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^0 }
+                set_variable = { settings_selected_event_id = global.fire_once_events^0 }
             }
             else = {
-                set_variable = { global.settings_selected_event_id = 3 }  # Default fire-once event
+                set_variable = { settings_selected_event_id = 3 }  # Default fire-once event
             }
         }
     }
@@ -368,7 +351,7 @@ adjust_event_id_for_filter = {
 get_next_valid_event_id = {
     # Simple implementation: set to next array element or wrap to first
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # Major events - cycle through major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -380,7 +363,7 @@ get_next_valid_event_id = {
                 end = global.major_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.major_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.major_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -389,23 +372,23 @@ get_next_valid_event_id = {
             if = {
                 limit = { check_variable = { current_index = -1 } }
                 # Not found, go to first
-                set_variable = { global.settings_selected_event_id = global.major_events^0 }
+                set_variable = { settings_selected_event_id = global.major_events^0 }
             }
             else = {
                 add_to_temp_variable = { current_index = 1 }
                 if = {
                     limit = { check_variable = { current_index < global.major_events^num } }
-                    set_variable = { global.settings_selected_event_id = global.major_events^current_index }
+                    set_variable = { settings_selected_event_id = global.major_events^current_index }
                 }
                 else = {
                     # Wrap to first
-                    set_variable = { global.settings_selected_event_id = global.major_events^0 }
+                    set_variable = { settings_selected_event_id = global.major_events^0 }
                 }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # Repeatable events - cycle through repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -417,7 +400,7 @@ get_next_valid_event_id = {
                 end = global.repeatable_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.repeatable_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.repeatable_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -426,23 +409,23 @@ get_next_valid_event_id = {
             if = {
                 limit = { check_variable = { current_index = -1 } }
                 # Not found, go to first
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^0 }
+                set_variable = { settings_selected_event_id = global.repeatable_events^0 }
             }
             else = {
                 add_to_temp_variable = { current_index = 1 }
                 if = {
                     limit = { check_variable = { current_index < global.repeatable_events^num } }
-                    set_variable = { global.settings_selected_event_id = global.repeatable_events^current_index }
+                    set_variable = { settings_selected_event_id = global.repeatable_events^current_index }
                 }
                 else = {
                     # Wrap to first
-                    set_variable = { global.settings_selected_event_id = global.repeatable_events^0 }
+                    set_variable = { settings_selected_event_id = global.repeatable_events^0 }
                 }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # Fire-once events - cycle through fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -454,7 +437,7 @@ get_next_valid_event_id = {
                 end = global.fire_once_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.fire_once_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.fire_once_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -463,17 +446,17 @@ get_next_valid_event_id = {
             if = {
                 limit = { check_variable = { current_index = -1 } }
                 # Not found, go to first
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^0 }
+                set_variable = { settings_selected_event_id = global.fire_once_events^0 }
             }
             else = {
                 add_to_temp_variable = { current_index = 1 }
                 if = {
                     limit = { check_variable = { current_index < global.fire_once_events^num } }
-                    set_variable = { global.settings_selected_event_id = global.fire_once_events^current_index }
+                    set_variable = { settings_selected_event_id = global.fire_once_events^current_index }
                 }
                 else = {
                     # Wrap to first
-                    set_variable = { global.settings_selected_event_id = global.fire_once_events^0 }
+                    set_variable = { settings_selected_event_id = global.fire_once_events^0 }
                 }
             }
         }
@@ -484,7 +467,7 @@ get_next_valid_event_id = {
 get_previous_valid_event_id = {
     # Simple implementation: set to previous array element or wrap to last
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # Major events - cycle through major events array backwards
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -496,7 +479,7 @@ get_previous_valid_event_id = {
                 end = global.major_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.major_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.major_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -507,24 +490,24 @@ get_previous_valid_event_id = {
                 # Not found, go to last
                 set_temp_variable = { last_index = global.major_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.major_events^last_index }
+                set_variable = { settings_selected_event_id = global.major_events^last_index }
             }
             else_if = {
                 limit = { check_variable = { current_index = 0 } }
                 # At first, wrap to last
                 set_temp_variable = { last_index = global.major_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.major_events^last_index }
+                set_variable = { settings_selected_event_id = global.major_events^last_index }
             }
             else = {
                 # Move to previous
                 subtract_from_temp_variable = { current_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.major_events^current_index }
+                set_variable = { settings_selected_event_id = global.major_events^current_index }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # Repeatable events - cycle through repeatable events array backwards
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -536,7 +519,7 @@ get_previous_valid_event_id = {
                 end = global.repeatable_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.repeatable_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.repeatable_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -547,24 +530,24 @@ get_previous_valid_event_id = {
                 # Not found, go to last
                 set_temp_variable = { last_index = global.repeatable_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^last_index }
+                set_variable = { settings_selected_event_id = global.repeatable_events^last_index }
             }
             else_if = {
                 limit = { check_variable = { current_index = 0 } }
                 # At first, wrap to last
                 set_temp_variable = { last_index = global.repeatable_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^last_index }
+                set_variable = { settings_selected_event_id = global.repeatable_events^last_index }
             }
             else = {
                 # Move to previous
                 subtract_from_temp_variable = { current_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^current_index }
+                set_variable = { settings_selected_event_id = global.repeatable_events^current_index }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # Fire-once events - cycle through fire-once events array backwards
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -576,7 +559,7 @@ get_previous_valid_event_id = {
                 end = global.fire_once_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.fire_once_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.fire_once_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -587,19 +570,19 @@ get_previous_valid_event_id = {
                 # Not found, go to last
                 set_temp_variable = { last_index = global.fire_once_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^last_index }
+                set_variable = { settings_selected_event_id = global.fire_once_events^last_index }
             }
             else_if = {
                 limit = { check_variable = { current_index = 0 } }
                 # At first, wrap to last
                 set_temp_variable = { last_index = global.fire_once_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^last_index }
+                set_variable = { settings_selected_event_id = global.fire_once_events^last_index }
             }
             else = {
                 # Move to previous
                 subtract_from_temp_variable = { current_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^current_index }
+                set_variable = { settings_selected_event_id = global.fire_once_events^current_index }
             }
         }
     }
@@ -608,22 +591,22 @@ get_previous_valid_event_id = {
 # Decrease event ID
 decrease_event_id = {
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = 0 } }
         # All events - standard decrement with wrapping
-        set_temp_variable = { decrement_value = global.settings_increment_mode }
+        set_temp_variable = { decrement_value = settings_events_increment_mode }
 
         if = {
-            limit = { check_variable = { var = global.settings_selected_event_id value = decrement_value compare = greater_than_or_equals } }
-            subtract_from_variable = { global.settings_selected_event_id = decrement_value }
+            limit = { check_variable = { var = settings_selected_event_id value = decrement_value compare = greater_than_or_equals } }
+            subtract_from_variable = { settings_selected_event_id = decrement_value }
         }
         else = {
             # If trying to go below 0, wrap to 99
             if = {
-                limit = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } }
-                set_variable = { global.settings_selected_event_id = 99 }
+                limit = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
+                set_variable = { settings_selected_event_id = 99 }
             }
             else = {
-                set_variable = { global.settings_selected_event_id = 0 }
+                set_variable = { settings_selected_event_id = 0 }
             }
         }
     }
@@ -638,20 +621,20 @@ decrease_event_id = {
 # Increase event ID
 increase_event_id = {
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = 0 } }
         # All events - standard increment with wrapping
         set_temp_variable = { max_event_id = global.total_events }
-        set_temp_variable = { increment_value = global.settings_increment_mode }
-        set_temp_variable = { new_id = global.settings_selected_event_id }
+        set_temp_variable = { increment_value = settings_events_increment_mode }
+        set_temp_variable = { new_id = settings_selected_event_id }
         add_to_temp_variable = { new_id = increment_value }
 
         if = {
             limit = { check_variable = { var = new_id value = max_event_id compare = less_than_or_equals } }
-            set_variable = { global.settings_selected_event_id = new_id }
+            set_variable = { settings_selected_event_id = new_id }
         }
         else = {
             # If going past max, wrap to 1
-            set_variable = { global.settings_selected_event_id = 1 }
+            set_variable = { settings_selected_event_id = 1 }
         }
     }
     else = {
@@ -664,19 +647,19 @@ increase_event_id = {
 
 # Set increment mode to specific values (for modifier clicks)
 set_increment_mode_to_1 = {
-    set_variable = { global.settings_increment_mode = 1 }
+    set_variable = { settings_events_increment_mode = 1 }
     set_global_flag = settings_increment_mode_1
     clr_global_flag = settings_increment_mode_10
 }
 
 set_increment_mode_to_5 = {
-    set_variable = { global.settings_increment_mode = 5 }
+    set_variable = { settings_events_increment_mode = 5 }
     clr_global_flag = settings_increment_mode_1
     clr_global_flag = settings_increment_mode_10
 }
 
 set_increment_mode_to_10 = {
-    set_variable = { global.settings_increment_mode = 10 }
+    set_variable = { settings_events_increment_mode = 10 }
     clr_global_flag = settings_increment_mode_1
     set_global_flag = settings_increment_mode_10
 }
@@ -686,20 +669,20 @@ toggle_increment_mode = {
     if = {
         limit = { has_global_flag = settings_increment_mode_1 }
         # Switch from 1 to 5
-        set_variable = { global.settings_increment_mode = 5 }
+        set_variable = { settings_events_increment_mode = 5 }
         clr_global_flag = settings_increment_mode_1
         clr_global_flag = settings_increment_mode_10
     }
     else_if = {
         limit = { has_global_flag = settings_increment_mode_10 }
         # Switch from 10 to 1
-        set_variable = { global.settings_increment_mode = 1 }
+        set_variable = { settings_events_increment_mode = 1 }
         set_global_flag = settings_increment_mode_1
         clr_global_flag = settings_increment_mode_10
     }
     else = {
         # Switch from 5 to 10 (default case)
-        set_variable = { global.settings_increment_mode = 10 }
+        set_variable = { settings_events_increment_mode = 10 }
         clr_global_flag = settings_increment_mode_1
         set_global_flag = settings_increment_mode_10
     }
@@ -708,23 +691,24 @@ toggle_increment_mode = {
 # Update event ID display flags
 update_event_id_display = {
     if = {
-        limit = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } }
+        limit = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
         set_global_flag = settings_event_id_zero
+
         # Set default values for no event selected
-        set_variable = { global.settings_event_id = 0 }
-        set_variable = { global.settings_event_type = 0 }  # 0 = unknown/none
+        set_variable = { settings_event_id = 0 }
+        set_variable = { settings_event_type = 0 }  # 0 = unknown/none
     }
     else = {
         clr_global_flag = settings_event_id_zero
 
-        set_temp_variable = { event_id = global.settings_selected_event_id }
+        set_temp_variable = { event_id = settings_selected_event_id }
         get_event_type = yes
 
         # For display - set the global variable that the GUI triggers use
-        set_variable = { global.settings_event_id = global.settings_selected_event_id }
-        set_variable = { global.settings_event_type = event_type }
+        set_variable = { settings_event_id = settings_selected_event_id }
+        set_variable = { settings_event_type = event_type }
 
-        # log = "CHAOS REDUX DEBUG: update_event_id_display - Event ID [?event_id], event_type: [?event_type], settings_event_type: [?global.settings_event_type]"
+        # log = "CHAOS REDUX DEBUG: update_event_id_display - Event ID [?event_id], event_type: [?event_type], settings_event_type: [?settings_event_type]"
     }
 
     # Update unfired events counts for GUI button availability
@@ -735,9 +719,9 @@ update_event_id_display = {
 trigger_selected_event = {
     if = {
         limit = {
-            NOT = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } }
+            NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
         }
-        set_temp_variable = { event_id = global.settings_selected_event_id }
+        set_temp_variable = { event_id = settings_selected_event_id }
 
         # Check if force trigger mode is enabled OR if we have bypass flag
         if = {
@@ -749,23 +733,23 @@ trigger_selected_event = {
             }
             # Force mode enabled or bypass requested - bypass all checks and fire event
             fire_event_by_id = yes
-            log = "CHAOS REDUX SETTINGS: FORCE triggered event ID [?global.settings_selected_event_id]"
+            log = "CHAOS REDUX SETTINGS: FORCE triggered event ID [?settings_selected_event_id]"
         }
         else = {
             # Normal mode - check if event can be fired
             get_event_type = yes
             # Store event type in the settings variable for consistent access
-            set_variable = { global.settings_event_type = event_type }
+            set_variable = { settings_event_type = event_type }
 
-            log = "CHAOS REDUX DEBUG: Event ID [?event_id], Type: [?event_type], Settings Type: [?global.settings_event_type]"
+            log = "CHAOS REDUX DEBUG: Event ID [?event_id], Type: [?event_type], Settings Type: [?settings_event_type]"
 
             # Check if this is a fired major or fire-once event
             set_temp_variable = { can_fire = 1 }
             if = {
                 limit = {
                     OR = {
-                        check_variable = { global.settings_event_type = 1 }  # Major event
-                        check_variable = { global.settings_event_type = 3 }  # Fire-once event
+                        check_variable = { settings_event_type = 1 }  # Major event
+                        check_variable = { settings_event_type = 3 }  # Fire-once event
                     }
                 }
                 # Only check fired status if it's a major or fire-once event
@@ -781,7 +765,7 @@ trigger_selected_event = {
                 fire_event_by_id = yes
             }
             else = {
-                log = "CHAOS REDUX: Cannot fire event [?event_id] - already fired. Enable force trigger mode to bypass this restriction."
+                log = "CHAOS REDUX SETTINGS: Cannot fire event [?event_id] - already fired. Enable force trigger mode to bypass this restriction."
             }
         }
     }
@@ -790,12 +774,12 @@ trigger_selected_event = {
 # Force trigger selected event (ignores fired status)
 force_trigger_selected_event = {
     if = {
-        limit = { NOT = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } } }
+        limit = { NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } } }
         # Set temporary force flag to bypass checks in fire_event_by_id
         set_variable = { temp_bypass_checks = 1 }
         fire_event_by_id = yes
         clear_variable = temp_bypass_checks
-        log = "CHAOS REDUX SETTINGS: FORCE triggered event ID [?global.settings_selected_event_id]"
+        log = "CHAOS REDUX SETTINGS: FORCE triggered event ID [?settings_selected_event_id]"
     }
 }
 
@@ -814,7 +798,7 @@ trigger_random_event = {
     }
 
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = 0 } }
         # All events - need to respect fired status for major/fire-once events when not in force mode
         if = {
             limit = { check_variable = { include_fired_events = 0 } }
@@ -865,34 +849,30 @@ trigger_random_event = {
                     max = array_size
                     integer = yes
                 }
-                set_variable = { global.settings_selected_event_id = temp_available_events^temp_random_index }
+                set_variable = { settings_selected_event_id = temp_available_events^temp_random_index }
             }
             else = {
-                # Fallback - select from 1 to total_events
-                set_temp_variable = { max_events = global.total_events }
                 set_variable_to_random = {
                     var = temp_random_event_id
                     min = 1
-                    max = max_events
+                    max = global.total_events
                     integer = yes
                 }
-                set_variable = { global.settings_selected_event_id = temp_random_event_id }
+                set_variable = { settings_selected_event_id = temp_random_event_id }
             }
         }
         else = {
-            # Force mode - select from all events regardless of fired status
-            set_temp_variable = { max_events = global.total_events }
             set_variable_to_random = {
                 var = temp_random_event_id
                 min = 1
-                max = max_events
+                max = global.total_events
                 integer = yes
             }
-            set_variable = { global.settings_selected_event_id = temp_random_event_id }
+            set_variable = { settings_selected_event_id = temp_random_event_id }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # Major events - random from major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -924,7 +904,7 @@ trigger_random_event = {
                         max = array_size
                         integer = yes
                     }
-                    set_variable = { global.settings_selected_event_id = temp_available_events^temp_random_index }
+                    set_variable = { settings_selected_event_id = temp_available_events^temp_random_index }
                 }
                 else = {
                     # No unfired major events available, select from all major events
@@ -936,7 +916,7 @@ trigger_random_event = {
                         max = array_size
                         integer = yes
                     }
-                    set_variable = { global.settings_selected_event_id = global.major_events^temp_random_index }
+                    set_variable = { settings_selected_event_id = global.major_events^temp_random_index }
                 }
             }
             else = {
@@ -949,12 +929,12 @@ trigger_random_event = {
                     max = array_size
                     integer = yes
                 }
-                set_variable = { global.settings_selected_event_id = global.major_events^temp_random_index }
+                set_variable = { settings_selected_event_id = global.major_events^temp_random_index }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # Repeatable events - always available, no fired status filtering needed
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -966,11 +946,11 @@ trigger_random_event = {
                 max = array_size
                 integer = yes
             }
-            set_variable = { global.settings_selected_event_id = global.repeatable_events^temp_random_index }
+            set_variable = { settings_selected_event_id = global.repeatable_events^temp_random_index }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # Fire-once events - filter based on fired status unless force mode
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1002,7 +982,7 @@ trigger_random_event = {
                         max = array_size
                         integer = yes
                     }
-                    set_variable = { global.settings_selected_event_id = temp_available_events^temp_random_index }
+                    set_variable = { settings_selected_event_id = temp_available_events^temp_random_index }
                 }
                 else = {
                     # No unfired fire-once events available, select from all fire-once events
@@ -1014,7 +994,7 @@ trigger_random_event = {
                         max = array_size
                         integer = yes
                     }
-                    set_variable = { global.settings_selected_event_id = global.fire_once_events^temp_random_index }
+                    set_variable = { settings_selected_event_id = global.fire_once_events^temp_random_index }
                 }
             }
             else = {
@@ -1027,7 +1007,7 @@ trigger_random_event = {
                     max = array_size
                     integer = yes
                 }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^temp_random_index }
+                set_variable = { settings_selected_event_id = global.fire_once_events^temp_random_index }
             }
         }
     }
@@ -1042,9 +1022,9 @@ trigger_random_event = {
                 has_country_flag = force_trigger_mode_enabled  # Force mode checkbox enabled
             }
         }
-        set_temp_variable = { event_id = global.settings_selected_event_id }
+        set_temp_variable = { event_id = settings_selected_event_id }
         fire_selected_event = yes
-        log = "CHAOS REDUX SETTINGS: FORCE triggered random event ID [?global.settings_selected_event_id]"
+        log = "CHAOS REDUX SETTINGS: FORCE triggered random event ID [?settings_selected_event_id]"
     }
     else = {
         fire_event_by_id = yes
@@ -1053,8 +1033,8 @@ trigger_random_event = {
 
 # Fire event by ID
 fire_event_by_id = {
-    # Input: global.settings_selected_event_id
-    set_temp_variable = { event_id = global.settings_selected_event_id }
+    # Input: settings_selected_event_id
+    set_temp_variable = { event_id = settings_selected_event_id }
 
     # Get event type to determine how to handle it
     get_event_type = yes
@@ -1080,113 +1060,113 @@ fire_event_by_id = {
     fire_selected_event = yes
 
     # Update last fired event tracking
-    set_variable = { global.last_fired_event_id = global.settings_selected_event_id }
+    set_variable = { global.last_fired_event_id = settings_selected_event_id }
     update_last_fired_event_display = yes
 
-    log = "CHAOS REDUX SETTINGS: Manually triggered event ID [?global.settings_selected_event_id]"
+    log = "CHAOS REDUX SETTINGS: Manually triggered event ID [?settings_selected_event_id]"
 }
 
 # Fire selected event
 fire_selected_event = {
-    if = { limit = { check_variable = { global.settings_selected_event_id = 1 } } country_event = { id = chaosx.nr1.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 2 } } country_event = { id = chaosx.nr2.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 3 } } country_event = { id = chaosx.nr3.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 4 } } country_event = { id = chaosx.nr4.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 5 } } country_event = { id = chaosx.nr5.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 6 } } country_event = { id = chaosx.nr6.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 7 } } country_event = { id = chaosx.nr7.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 8 } } country_event = { id = chaosx.nr8.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 9 } } country_event = { id = chaosx.nr9.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 10 } } country_event = { id = chaosx.nr10.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 11 } } country_event = { id = chaosx.nr11.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 12 } } country_event = { id = chaosx.nr12.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 13 } } country_event = { id = chaosx.nr13.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 14 } } country_event = { id = chaosx.nr14.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 15 } } country_event = { id = chaosx.nr15.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 16 } } country_event = { id = chaosx.nr16.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 17 } } country_event = { id = chaosx.nr17.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 18 } } country_event = { id = chaosx.nr18.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 19 } } country_event = { id = chaosx.nr19.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 20 } } country_event = { id = chaosx.nr20.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 21 } } country_event = { id = chaosx.nr21.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 22 } } country_event = { id = chaosx.nr22.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 23 } } country_event = { id = chaosx.nr23.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 24 } } country_event = { id = chaosx.nr24.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 25 } } country_event = { id = chaosx.nr25.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 26 } } country_event = { id = chaosx.nr26.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 27 } } country_event = { id = chaosx.nr27.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 28 } } country_event = { id = chaosx.nr28.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 29 } } country_event = { id = chaosx.nr29.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 30 } } country_event = { id = chaosx.nr30.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 31 } } country_event = { id = chaosx.nr31.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 32 } } country_event = { id = chaosx.nr32.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 33 } } country_event = { id = chaosx.nr33.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 34 } } country_event = { id = chaosx.nr34.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 35 } } country_event = { id = chaosx.nr35.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 36 } } country_event = { id = chaosx.nr36.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 37 } } country_event = { id = chaosx.nr37.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 38 } } country_event = { id = chaosx.nr38.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 39 } } country_event = { id = chaosx.nr39.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 40 } } country_event = { id = chaosx.nr40.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 41 } } country_event = { id = chaosx.nr41.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 42 } } country_event = { id = chaosx.nr42.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 43 } } country_event = { id = chaosx.nr43.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 44 } } country_event = { id = chaosx.nr44.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 45 } } country_event = { id = chaosx.nr45.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 46 } } country_event = { id = chaosx.nr46.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 47 } } country_event = { id = chaosx.nr47.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 48 } } country_event = { id = chaosx.nr48.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 49 } } country_event = { id = chaosx.nr49.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 50 } } country_event = { id = chaosx.nr50.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 51 } } country_event = { id = chaosx.nr51.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 52 } } country_event = { id = chaosx.nr52.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 53 } } country_event = { id = chaosx.nr53.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 54 } } country_event = { id = chaosx.nr54.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 55 } } country_event = { id = chaosx.nr55.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 56 } } country_event = { id = chaosx.nr56.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 57 } } country_event = { id = chaosx.nr57.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 58 } } country_event = { id = chaosx.nr58.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 59 } } country_event = { id = chaosx.nr59.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 60 } } country_event = { id = chaosx.nr60.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 61 } } country_event = { id = chaosx.nr61.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 62 } } country_event = { id = chaosx.nr62.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 63 } } country_event = { id = chaosx.nr63.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 64 } } country_event = { id = chaosx.nr64.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 65 } } country_event = { id = chaosx.nr65.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 66 } } country_event = { id = chaosx.nr66.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 67 } } country_event = { id = chaosx.nr67.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 68 } } country_event = { id = chaosx.nr68.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 69 } } country_event = { id = chaosx.nr69.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 70 } } country_event = { id = chaosx.nr70.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 71 } } country_event = { id = chaosx.nr71.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 72 } } country_event = { id = chaosx.nr72.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 73 } } country_event = { id = chaosx.nr73.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 74 } } country_event = { id = chaosx.nr74.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 75 } } country_event = { id = chaosx.nr75.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 76 } } country_event = { id = chaosx.nr76.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 77 } } country_event = { id = chaosx.nr77.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 78 } } country_event = { id = chaosx.nr78.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 79 } } country_event = { id = chaosx.nr79.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 80 } } country_event = { id = chaosx.nr80.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 81 } } country_event = { id = chaosx.nr81.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 82 } } country_event = { id = chaosx.nr82.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 83 } } country_event = { id = chaosx.nr83.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 84 } } country_event = { id = chaosx.nr84.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 85 } } country_event = { id = chaosx.nr85.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 86 } } country_event = { id = chaosx.nr86.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 87 } } country_event = { id = chaosx.nr87.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 88 } } country_event = { id = chaosx.nr88.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 89 } } country_event = { id = chaosx.nr89.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 90 } } country_event = { id = chaosx.nr90.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 91 } } country_event = { id = chaosx.nr91.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 92 } } country_event = { id = chaosx.nr92.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 93 } } country_event = { id = chaosx.nr93.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 94 } } country_event = { id = chaosx.nr94.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 95 } } country_event = { id = chaosx.nr95.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 96 } } country_event = { id = chaosx.nr96.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 97 } } country_event = { id = chaosx.nr97.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 98 } } country_event = { id = chaosx.nr98.1 } }
-    else_if = { limit = { check_variable = { global.settings_selected_event_id = 99 } } country_event = { id = chaosx.nr99.1 } }
+    if = { limit = { check_variable = { settings_selected_event_id = 1 } } country_event = { id = chaosx.nr1.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 2 } } country_event = { id = chaosx.nr2.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 3 } } country_event = { id = chaosx.nr3.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 4 } } country_event = { id = chaosx.nr4.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 5 } } country_event = { id = chaosx.nr5.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 6 } } country_event = { id = chaosx.nr6.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 7 } } country_event = { id = chaosx.nr7.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 8 } } country_event = { id = chaosx.nr8.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 9 } } country_event = { id = chaosx.nr9.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 10 } } country_event = { id = chaosx.nr10.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 11 } } country_event = { id = chaosx.nr11.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 12 } } country_event = { id = chaosx.nr12.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 13 } } country_event = { id = chaosx.nr13.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 14 } } country_event = { id = chaosx.nr14.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 15 } } country_event = { id = chaosx.nr15.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 16 } } country_event = { id = chaosx.nr16.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 17 } } country_event = { id = chaosx.nr17.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 18 } } country_event = { id = chaosx.nr18.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 19 } } country_event = { id = chaosx.nr19.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 20 } } country_event = { id = chaosx.nr20.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 21 } } country_event = { id = chaosx.nr21.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 22 } } country_event = { id = chaosx.nr22.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 23 } } country_event = { id = chaosx.nr23.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 24 } } country_event = { id = chaosx.nr24.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 25 } } country_event = { id = chaosx.nr25.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 26 } } country_event = { id = chaosx.nr26.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 27 } } country_event = { id = chaosx.nr27.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 28 } } country_event = { id = chaosx.nr28.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 29 } } country_event = { id = chaosx.nr29.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 30 } } country_event = { id = chaosx.nr30.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 31 } } country_event = { id = chaosx.nr31.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 32 } } country_event = { id = chaosx.nr32.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 33 } } country_event = { id = chaosx.nr33.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 34 } } country_event = { id = chaosx.nr34.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 35 } } country_event = { id = chaosx.nr35.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 36 } } country_event = { id = chaosx.nr36.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 37 } } country_event = { id = chaosx.nr37.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 38 } } country_event = { id = chaosx.nr38.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 39 } } country_event = { id = chaosx.nr39.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 40 } } country_event = { id = chaosx.nr40.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 41 } } country_event = { id = chaosx.nr41.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 42 } } country_event = { id = chaosx.nr42.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 43 } } country_event = { id = chaosx.nr43.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 44 } } country_event = { id = chaosx.nr44.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 45 } } country_event = { id = chaosx.nr45.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 46 } } country_event = { id = chaosx.nr46.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 47 } } country_event = { id = chaosx.nr47.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 48 } } country_event = { id = chaosx.nr48.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 49 } } country_event = { id = chaosx.nr49.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 50 } } country_event = { id = chaosx.nr50.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 51 } } country_event = { id = chaosx.nr51.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 52 } } country_event = { id = chaosx.nr52.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 53 } } country_event = { id = chaosx.nr53.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 54 } } country_event = { id = chaosx.nr54.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 55 } } country_event = { id = chaosx.nr55.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 56 } } country_event = { id = chaosx.nr56.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 57 } } country_event = { id = chaosx.nr57.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 58 } } country_event = { id = chaosx.nr58.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 59 } } country_event = { id = chaosx.nr59.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 60 } } country_event = { id = chaosx.nr60.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 61 } } country_event = { id = chaosx.nr61.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 62 } } country_event = { id = chaosx.nr62.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 63 } } country_event = { id = chaosx.nr63.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 64 } } country_event = { id = chaosx.nr64.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 65 } } country_event = { id = chaosx.nr65.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 66 } } country_event = { id = chaosx.nr66.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 67 } } country_event = { id = chaosx.nr67.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 68 } } country_event = { id = chaosx.nr68.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 69 } } country_event = { id = chaosx.nr69.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 70 } } country_event = { id = chaosx.nr70.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 71 } } country_event = { id = chaosx.nr71.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 72 } } country_event = { id = chaosx.nr72.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 73 } } country_event = { id = chaosx.nr73.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 74 } } country_event = { id = chaosx.nr74.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 75 } } country_event = { id = chaosx.nr75.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 76 } } country_event = { id = chaosx.nr76.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 77 } } country_event = { id = chaosx.nr77.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 78 } } country_event = { id = chaosx.nr78.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 79 } } country_event = { id = chaosx.nr79.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 80 } } country_event = { id = chaosx.nr80.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 81 } } country_event = { id = chaosx.nr81.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 82 } } country_event = { id = chaosx.nr82.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 83 } } country_event = { id = chaosx.nr83.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 84 } } country_event = { id = chaosx.nr84.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 85 } } country_event = { id = chaosx.nr85.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 86 } } country_event = { id = chaosx.nr86.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 87 } } country_event = { id = chaosx.nr87.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 88 } } country_event = { id = chaosx.nr88.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 89 } } country_event = { id = chaosx.nr89.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 90 } } country_event = { id = chaosx.nr90.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 91 } } country_event = { id = chaosx.nr91.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 92 } } country_event = { id = chaosx.nr92.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 93 } } country_event = { id = chaosx.nr93.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 94 } } country_event = { id = chaosx.nr94.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 95 } } country_event = { id = chaosx.nr95.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 96 } } country_event = { id = chaosx.nr96.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 97 } } country_event = { id = chaosx.nr97.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 98 } } country_event = { id = chaosx.nr98.1 } }
+    else_if = { limit = { check_variable = { settings_selected_event_id = 99 } } country_event = { id = chaosx.nr99.1 } }
 }
 
 # Update last fired event display
@@ -1220,11 +1200,11 @@ toggle_event_system = {
     if = {
         limit = { has_country_flag = events_activated }
         clr_country_flag = events_activated
-        log = "CHAOS REDUX: Event system has been DISABLED for [This.GetName]"
+        log = "CHAOS REDUX SETTINGS: Event system has been DISABLED for [This.GetName]"
     }
     else = {
         set_country_flag = events_activated
-        log = "CHAOS REDUX: Event system has been ENABLED for [This.GetName]"
+        log = "CHAOS REDUX SETTINGS: Event system has been ENABLED for [This.GetName]"
     }
 }
 
@@ -1233,11 +1213,11 @@ toggle_force_trigger_mode = {
     if = {
         limit = { has_country_flag = force_trigger_mode_enabled }
         clr_country_flag = force_trigger_mode_enabled
-        log = "CHAOS REDUX: Force trigger mode has been DISABLED for [This.GetName]"
+        log = "CHAOS REDUX SETTINGS: Force trigger mode has been DISABLED for [This.GetName]"
     }
     else = {
         set_country_flag = force_trigger_mode_enabled
-        log = "CHAOS REDUX: Force trigger mode has been ENABLED for [This.GetName]"
+        log = "CHAOS REDUX SETTINGS: Force trigger mode has been ENABLED for [This.GetName]"
     }
 }
 
@@ -1273,10 +1253,10 @@ toggle_events_view = {
 
 # Get the next valid event ID by stepping through N positions in the filtered array
 get_next_valid_event_id_by_steps = {
-    set_temp_variable = { steps_to_move = global.settings_increment_mode }
+    set_temp_variable = { steps_to_move = settings_events_increment_mode }
 
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # Major events - move by N steps in major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -1288,7 +1268,7 @@ get_next_valid_event_id_by_steps = {
                 end = global.major_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.major_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.major_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -1298,7 +1278,7 @@ get_next_valid_event_id_by_steps = {
             if = {
                 limit = { check_variable = { current_index = -1 } }
                 # Not found, go to first
-                set_variable = { global.settings_selected_event_id = global.major_events^0 }
+                set_variable = { settings_selected_event_id = global.major_events^0 }
             }
             else = {
                 add_to_temp_variable = { current_index = steps_to_move }
@@ -1309,12 +1289,12 @@ get_next_valid_event_id_by_steps = {
                     subtract_from_temp_variable = { wrap_amount = global.major_events^num }
                     set_temp_variable = { current_index = wrap_amount }
                 }
-                set_variable = { global.settings_selected_event_id = global.major_events^current_index }
+                set_variable = { settings_selected_event_id = global.major_events^current_index }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # Repeatable events - move by N steps in repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -1326,7 +1306,7 @@ get_next_valid_event_id_by_steps = {
                 end = global.repeatable_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.repeatable_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.repeatable_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -1335,7 +1315,7 @@ get_next_valid_event_id_by_steps = {
             if = {
                 limit = { check_variable = { current_index = -1 } }
                 # Not found, go to first
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^0 }
+                set_variable = { settings_selected_event_id = global.repeatable_events^0 }
             }
             else = {
                 add_to_temp_variable = { current_index = steps_to_move }
@@ -1346,12 +1326,12 @@ get_next_valid_event_id_by_steps = {
                     subtract_from_temp_variable = { wrap_amount = global.repeatable_events^num }
                     set_temp_variable = { current_index = wrap_amount }
                 }
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^current_index }
+                set_variable = { settings_selected_event_id = global.repeatable_events^current_index }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # Fire-once events - move by N steps in fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1363,7 +1343,7 @@ get_next_valid_event_id_by_steps = {
                 end = global.fire_once_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.fire_once_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.fire_once_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -1372,7 +1352,7 @@ get_next_valid_event_id_by_steps = {
             if = {
                 limit = { check_variable = { current_index = -1 } }
                 # Not found, go to first
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^0 }
+                set_variable = { settings_selected_event_id = global.fire_once_events^0 }
             }
             else = {
                 add_to_temp_variable = { current_index = steps_to_move }
@@ -1383,7 +1363,7 @@ get_next_valid_event_id_by_steps = {
                     subtract_from_temp_variable = { wrap_amount = global.fire_once_events^num }
                     set_temp_variable = { current_index = wrap_amount }
                 }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^current_index }
+                set_variable = { settings_selected_event_id = global.fire_once_events^current_index }
             }
         }
     }
@@ -1391,10 +1371,10 @@ get_next_valid_event_id_by_steps = {
 
 # Get the previous valid event ID by stepping backward through N positions in the filtered array
 get_previous_valid_event_id_by_steps = {
-    set_temp_variable = { steps_to_move = global.settings_increment_mode }
+    set_temp_variable = { steps_to_move = settings_events_increment_mode }
 
     if = {
-        limit = { check_variable = { global.settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = 1 } }
         # Major events - move backward by N steps in major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -1406,7 +1386,7 @@ get_previous_valid_event_id_by_steps = {
                 end = global.major_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.major_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.major_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -1417,7 +1397,7 @@ get_previous_valid_event_id_by_steps = {
                 # Not found, go to last
                 set_temp_variable = { last_index = global.major_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.major_events^last_index }
+                set_variable = { settings_selected_event_id = global.major_events^last_index }
             }
             else = {
                 # Move backward with wrapping
@@ -1427,12 +1407,12 @@ get_previous_valid_event_id_by_steps = {
                     # Wrap around to end
                     add_to_temp_variable = { current_index = global.major_events^num }
                 }
-                set_variable = { global.settings_selected_event_id = global.major_events^current_index }
+                set_variable = { settings_selected_event_id = global.major_events^current_index }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = 2 } }
         # Repeatable events - move backward by N steps in repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -1444,7 +1424,7 @@ get_previous_valid_event_id_by_steps = {
                 end = global.repeatable_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.repeatable_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.repeatable_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -1455,7 +1435,7 @@ get_previous_valid_event_id_by_steps = {
                 # Not found, go to last
                 set_temp_variable = { last_index = global.repeatable_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^last_index }
+                set_variable = { settings_selected_event_id = global.repeatable_events^last_index }
             }
             else = {
                 # Move backward with wrapping
@@ -1465,12 +1445,12 @@ get_previous_valid_event_id_by_steps = {
                     # Wrap around to end
                     add_to_temp_variable = { current_index = global.repeatable_events^num }
                 }
-                set_variable = { global.settings_selected_event_id = global.repeatable_events^current_index }
+                set_variable = { settings_selected_event_id = global.repeatable_events^current_index }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { global.settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = 3 } }
         # Fire-once events - move backward by N steps in fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1482,7 +1462,7 @@ get_previous_valid_event_id_by_steps = {
                 end = global.fire_once_events^num
                 value = i
                 if = {
-                    limit = { check_variable = { global.settings_selected_event_id = global.fire_once_events^i } }
+                    limit = { check_variable = { settings_selected_event_id = global.fire_once_events^i } }
                     set_temp_variable = { current_index = i }
                 }
             }
@@ -1493,7 +1473,7 @@ get_previous_valid_event_id_by_steps = {
                 # Not found, go to last
                 set_temp_variable = { last_index = global.fire_once_events^num }
                 subtract_from_temp_variable = { last_index = 1 }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^last_index }
+                set_variable = { settings_selected_event_id = global.fire_once_events^last_index }
             }
             else = {
                 # Move backward with wrapping
@@ -1503,11 +1483,12 @@ get_previous_valid_event_id_by_steps = {
                     # Wrap around to end
                     add_to_temp_variable = { current_index = global.fire_once_events^num }
                 }
-                set_variable = { global.settings_selected_event_id = global.fire_once_events^current_index }
+                set_variable = { settings_selected_event_id = global.fire_once_events^current_index }
             }
         }
     }
 }
+
 
 # ============================================================================
 # RANDOM EVENT BUTTON AVAILABILITY SYSTEM
@@ -1543,3 +1524,356 @@ update_unfired_events_counts = {
 }
 
 # ============================================================================
+# RESET DEFAULTS
+# ============================================================================
+
+reset_trigger_events = {
+    # Reset trigger events to defaults (cosmetic)
+    set_variable = { settings_selected_event_id = 0 }
+    set_variable = { settings_event_id_filter = 0 }  # All Events
+    set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
+    clr_global_flag = settings_increment_mode_1
+    clr_global_flag = settings_increment_mode_10
+
+    # Reset view to Events view
+    set_country_flag = show_events_view
+    clr_country_flag = show_event_clusters_view
+
+    # Reset force trigger mode (default: disabled)
+    clr_country_flag = force_trigger_mode_enabled
+
+    # Re-enable systems if they were disabled
+    set_country_flag = events_activated
+
+    # Update event display to show "No event selected"
+    update_event_id_display = yes
+}
+
+
+###############################################################################################################
+
+#  #######                            #####
+#     #    # #    # ###### #####     #     # #   #  ####  ##### ###### #    #
+#     #    # ##  ## #      #    #    #        # #  #        #   #      ##  ##
+#     #    # # ## # #####  #    #     #####    #    ####    #   #####  # ## #
+#     #    # #    # #      #####           #   #        #   #   #      #    #
+#     #    # #    # #      #   #     #     #   #   #    #   #   #      #    #
+#     #    # #    # ###### #    #     #####    #    ####    #   ###### #    #
+
+###############################################################################################################
+
+
+@TIMER_MAX_VALUE = 125
+@TIMER_MIN_VALUE = 5
+
+# Initialize timer system settings
+initialize_timer_system_settings = {
+    # Initialize default timer settings
+    set_variable = { settings_timer_min_days = @DEFAULT_MIN_DAYS }
+    set_variable = { settings_timer_max_days = @DEFAULT_MAX_DAYS }
+    set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
+    set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
+    set_variable = { settings_timer_increment_mode = 1 }
+
+
+}
+
+# Update timer value from current settings using dynamic cap calculation
+update_timer_from_settings = {
+    # Update timer system variables from settings
+    set_variable = { timer_min_days = settings_timer_min_days }
+    set_variable = { timer_max_days = settings_timer_max_days }
+
+    # Calculate caps using the new dynamic system
+    calculate_dynamic_caps = yes
+
+    # Update timer system variables
+    set_variable = { timer_min_decrement_cap = settings_timer_min_decrement_cap }
+    set_variable = { timer_max_decrement_cap = settings_timer_max_decrement_cap }
+
+    # Recalculate next timer value if system is active
+    if = {
+        limit = { has_global_flag = event_system_initialized }
+        calculate_next_timer_value = yes
+        log = "CHAOS REDUX TIMER: Timer updated - new value: [?event_timer_days] min:[?settings_timer_min_days] max:[?settings_timer_max_days] min_cap:[?settings_timer_min_decrement_cap] max_cap:[?settings_timer_max_decrement_cap]"
+    }
+}
+
+# Decrease minimum timer value
+decrease_timer_min = {
+    set_temp_variable = { decrement_value = settings_timer_increment_mode }
+    set_temp_variable = { new_min = settings_timer_min_days }
+    subtract_from_temp_variable = { new_min = decrement_value }
+
+    # Ensure min doesn't go below 5
+    if = {
+        limit = { check_variable = { new_min < @TIMER_MIN_VALUE } }
+        set_temp_variable = { new_min = @TIMER_MIN_VALUE }
+    }
+
+    # Update min value
+    set_variable = { settings_timer_min_days = new_min }
+
+    # Recalculate caps using dynamic system
+    calculate_dynamic_caps = yes
+
+}
+
+# Increase minimum timer value
+increase_timer_min = {
+    set_temp_variable = { increment_value = settings_timer_increment_mode }
+    set_temp_variable = { new_min = settings_timer_min_days }
+    add_to_temp_variable = { new_min = increment_value }
+
+    # Ensure min doesn't exceed max
+    if = {
+        limit = { check_variable = { new_min > settings_timer_max_days } }
+        set_temp_variable = { new_min = settings_timer_max_days }
+    }
+
+    # Update min value
+    set_variable = { settings_timer_min_days = new_min }
+
+    # Recalculate caps using dynamic system
+    calculate_dynamic_caps = yes
+
+}
+
+# Decrease maximum timer value
+decrease_timer_max = {
+    set_temp_variable = { decrement_value = settings_timer_increment_mode }
+    set_temp_variable = { new_max = settings_timer_max_days }
+    subtract_from_temp_variable = { new_max = decrement_value }
+
+    # Ensure max doesn't go below min value
+    if = {
+        limit = { check_variable = { new_max < settings_timer_min_days } }
+        set_temp_variable = { new_max = settings_timer_min_days }
+    }
+
+    # Update max value
+    set_variable = { settings_timer_max_days = new_max }
+
+    # Recalculate caps using dynamic system
+    calculate_dynamic_caps = yes
+
+}
+
+# Increase maximum timer value
+increase_timer_max = {
+    set_temp_variable = { increment_value = settings_timer_increment_mode }
+    set_temp_variable = { new_max = settings_timer_max_days }
+    add_to_temp_variable = { new_max = increment_value }
+
+    # Ensure max doesn't exceed set max value
+    if = {
+        limit = { check_variable = { new_max > @TIMER_MAX_VALUE } }
+        set_temp_variable = { new_max = @TIMER_MAX_VALUE }
+    }
+
+    # Update max value
+    set_variable = { settings_timer_max_days = new_max }
+
+
+
+    # Recalculate caps using dynamic system
+    calculate_dynamic_caps = yes
+
+}
+
+# Toggle timer system increment mode
+toggle_timer_increment_mode = {
+    if = {
+        limit = { has_global_flag = settings_timer_increment_mode_1 }
+        # Switch from 1 to 5
+        set_variable = { settings_timer_increment_mode = 5 }
+        clr_global_flag = settings_timer_increment_mode_1
+        clr_global_flag = settings_timer_increment_mode_10
+    }
+    else_if = {
+        limit = { has_global_flag = settings_timer_increment_mode_10 }
+        # Switch from 10 to 1
+        set_variable = { settings_timer_increment_mode = 1 }
+        set_global_flag = settings_timer_increment_mode_1
+        clr_global_flag = settings_timer_increment_mode_10
+    }
+    else = {
+        # Switch from 5 to 10 (default case)
+        set_variable = { settings_timer_increment_mode = 10 }
+        clr_global_flag = settings_timer_increment_mode_1
+        set_global_flag = settings_timer_increment_mode_10
+    }
+}
+
+# Toggle timer window visibility
+toggle_timer_window = {
+    if = {
+        limit = { has_country_flag = timer_window_enabled }
+        clr_country_flag = timer_window_enabled
+        log = "CHAOS REDUX SETTINGS: Timer window has been HIDDEN for [This.GetName]"
+    }
+    else = {
+        set_country_flag = timer_window_enabled
+        log = "CHAOS REDUX SETTINGS: Timer window has been SHOWN for [This.GetName]"
+    }
+}
+
+# Reset timer to default values
+reset_timer_to_defaults = {
+    # Restore timer system
+    set_variable = { timer_min_days = @DEFAULT_MIN_DAYS }
+    set_variable = { timer_max_days = @DEFAULT_MAX_DAYS }
+    set_variable = { timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
+    set_variable = { timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
+    set_variable = { timer_day_decrement = 0 }
+    set_variable = { timer_max_cap_reduction = 0 }
+
+    # Reset timer settings to defaults
+    set_variable = { settings_timer_min_days = @DEFAULT_MIN_DAYS }
+    set_variable = { settings_timer_max_days = @DEFAULT_MAX_DAYS }
+    set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
+    set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
+
+    # Reset timer increment mode to 1
+    set_variable = { settings_timer_increment_mode = 1 }
+    set_global_flag = settings_timer_increment_mode_1
+    clr_global_flag = settings_timer_increment_mode_10
+
+    # Hide timer window
+    # clr_country_flag = timer_window_enabled
+
+    log = "CHAOS REDUX SETTINGS: Timer system reset to default values"
+}
+
+# ============================================================================
+# DYNAMIC CAP CALCULATION SYSTEM
+# ============================================================================
+# Implements the comprehensive dynamic cap calculation based on:
+# - minDecrementCap = minValue - 5
+# - maxDecrementCap based on deviation from maxValue = 30 (in steps of 3)
+# - Gap-based adjustment: reduce maxDecrementCap as gap between min/max shrinks
+# - Constraint: minDecrementCap + maxDecrementCap ≤ maxValue
+# ============================================================================
+
+# Calculate dynamic caps based on minValue and maxValue inputs
+calculate_dynamic_caps = {
+    # Input variables: settings_timer_min_days, settings_timer_max_days
+    # Output variables: settings_timer_min_decrement_cap, settings_timer_max_decrement_cap
+
+    set_temp_variable = { min_value = settings_timer_min_days }
+    set_temp_variable = { max_value = settings_timer_max_days }
+
+    # ============================================================================
+    # PART 1: Calculate minDecrementCap
+    # Formula: minDecrementCap = minValue - 5 (floor at 0)
+    # ============================================================================
+    set_temp_variable = { calculated_min_cap = min_value }
+    subtract_from_temp_variable = { calculated_min_cap = 5 }
+
+    # Ensure minDecrementCap doesn't go below 0
+    if = {
+        limit = { check_variable = { calculated_min_cap < 0 } }
+        set_temp_variable = { calculated_min_cap = 0 }
+    }
+
+    # ============================================================================
+    # PART 2: Calculate maxDecrementCap based on maxValue
+    # Formula: (maxValue - 30) // 3 + 5, with floor at 0 for maxValue ≤ 15
+    # ============================================================================
+
+    # Check if maxValue is at or below the floor threshold (≤ 15)
+    if = {
+        limit = { check_variable = { max_value < 16 } }
+        # maxValue ≤ 15: cap is frozen at 0
+        set_temp_variable = { calculated_max_cap = 0 }
+    }
+    else = {
+        # Calculate deviation from 30
+        set_temp_variable = { deviation = max_value }
+        subtract_from_temp_variable = { deviation = 30 }
+
+        # Calculate steps: deviation // 3
+        set_temp_variable = { steps = 0 }
+        set_temp_variable = { abs_deviation = deviation }
+
+        # Handle negative deviation (below 30)
+        if = {
+            limit = { check_variable = { deviation < 0 } }
+            set_temp_variable = { abs_deviation = 0 }
+            subtract_from_temp_variable = { abs_deviation = deviation }
+        }
+
+        # Integer division by 3 using repeated subtraction
+        while_loop_effect = {
+            limit = { check_variable = { abs_deviation > 2 } }
+            add_to_temp_variable = { steps = 1 }
+            subtract_from_temp_variable = { abs_deviation = 3 }
+        }
+
+        # Apply the formula: base 5 + (or -) steps
+        set_temp_variable = { calculated_max_cap = 5 }
+
+        if = {
+            limit = { check_variable = { deviation < 0 } }
+            # Below 30: subtract steps
+            subtract_from_temp_variable = { calculated_max_cap = steps }
+        }
+        else = {
+            # Above 30: add steps
+            add_to_temp_variable = { calculated_max_cap = steps }
+        }
+
+        # Ensure cap doesn't go below 0
+        if = {
+            limit = { check_variable = { calculated_max_cap < 0 } }
+            set_temp_variable = { calculated_max_cap = 0 }
+        }
+    }
+
+    # ============================================================================
+    # PART 3: Apply gap-based clamping
+    # The maxDecrementCap is clamped down based on the gap between min and max
+    # ============================================================================
+    set_temp_variable = { gap = max_value }
+    subtract_from_temp_variable = { gap = min_value }
+
+    # Apply gap-based clamping to maxDecrementCap
+    # As the gap shrinks, the maxDecrementCap must be reduced
+    if = {
+        limit = { check_variable = { calculated_max_cap > gap } }
+        set_temp_variable = { calculated_max_cap = gap }
+    }
+
+    # ============================================================================
+    # PART 4: Apply the final constraint (minDecrementCap + maxDecrementCap ≤ maxValue)
+    # ============================================================================
+    set_temp_variable = { total_caps = calculated_min_cap }
+    add_to_temp_variable = { total_caps = calculated_max_cap }
+
+    if = {
+        limit = { check_variable = { total_caps > max_value } }
+
+        # Constraint violated - need to reduce caps
+        # Priority: reduce maxDecrementCap first, then minDecrementCap if necessary
+
+        set_temp_variable = { allowed_max_cap = max_value }
+        subtract_from_temp_variable = { allowed_max_cap = calculated_min_cap }
+
+        if = {
+            limit = { check_variable = { allowed_max_cap < 0 } }
+            # Even with maxCap = 0, constraint still violated
+            # Need to reduce minCap as well
+            set_temp_variable = { allowed_max_cap = 0 }
+            set_temp_variable = { calculated_min_cap = max_value }
+        }
+
+        set_temp_variable = { calculated_max_cap = allowed_max_cap }
+    }
+
+    # ============================================================================
+    # PART 5: Set final calculated values
+    # ============================================================================
+    set_variable = { settings_timer_min_decrement_cap = calculated_min_cap }
+    set_variable = { settings_timer_max_decrement_cap = calculated_max_cap }
+
+}

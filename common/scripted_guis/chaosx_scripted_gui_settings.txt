@@ -103,6 +103,51 @@ scripted_gui = {
                 toggle_event_system = yes
             }
 
+            # Timer System Interface Effects
+            timer_min_decrease_click = {
+                decrease_timer_min = yes
+            }
+
+            timer_min_decrease_right_click = {
+                toggle_timer_increment_mode = yes
+            }
+
+            timer_min_increase_click = {
+                increase_timer_min = yes
+            }
+
+            timer_min_increase_right_click = {
+                toggle_timer_increment_mode = yes
+            }
+
+            timer_max_decrease_click = {
+                decrease_timer_max = yes
+            }
+
+            timer_max_decrease_right_click = {
+                toggle_timer_increment_mode = yes
+            }
+
+            timer_max_increase_click = {
+                increase_timer_max = yes
+            }
+
+            timer_max_increase_right_click = {
+                toggle_timer_increment_mode = yes
+            }
+
+            timer_window_checkbox_click = {
+                toggle_timer_window = yes
+            }
+
+            timer_reset_defaults_button_click = {
+                reset_timer_to_defaults = yes
+            }
+
+            timer_update_button_click = {
+                update_timer_from_settings = yes
+            }
+
             # Event Clusters Interface Effects
             clusters_header_left_arrow_click = {
                 toggle_events_view = yes
@@ -120,7 +165,7 @@ scripted_gui = {
             }
 
             timer_system_button_click_enabled = {
-                always = yes
+                has_country_flag = events_activated
             }
 
             chaos_meter_button_click_enabled = {
@@ -185,7 +230,7 @@ scripted_gui = {
             trigger_event_button_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
-                NOT = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } }
+                NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
                 OR = {
                     has_country_flag = force_trigger_mode_enabled  # Force mode enabled - always allow
                     AND = {
@@ -193,14 +238,14 @@ scripted_gui = {
                         NOT = { has_country_flag = force_trigger_mode_enabled }
                         OR = {
                             # Repeatable events are always available
-                            check_variable = { global.settings_event_type = 2 }
+                            check_variable = { settings_event_type = 2 }
                             # Major/fire-once events that haven't been fired yet
                             AND = {
                                 OR = {
-                                    check_variable = { global.settings_event_type = 1 }  # Major
-                                    check_variable = { global.settings_event_type = 3 }  # Fire-once
+                                    check_variable = { settings_event_type = 1 }  # Major
+                                    check_variable = { settings_event_type = 3 }  # Fire-once
                                 }
-                                NOT = { is_in_array = { global.fired_events = global.settings_selected_event_id } }
+                                NOT = { is_in_array = { global.fired_events = settings_selected_event_id } }
                             }
                         }
                     }
@@ -210,7 +255,7 @@ scripted_gui = {
             trigger_event_button_right_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
-                NOT = { check_variable = { var = global.settings_selected_event_id value = 0 compare = equals } }
+                NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
             }
 
             trigger_random_event_button_click_enabled = {
@@ -223,18 +268,18 @@ scripted_gui = {
                         NOT = { has_country_flag = force_trigger_mode_enabled }
                         OR = {
                             # All events filter - always has repeatable events available
-                            check_variable = { global.settings_event_id_filter = 0 }
+                            check_variable = { settings_event_id_filter = 0 }
                             # Repeatable events filter - always available
-                            check_variable = { global.settings_event_id_filter = 2 }
+                            check_variable = { settings_event_id_filter = 2 }
                             # Major events filter - check if any major events haven't been fired
                             AND = {
-                                check_variable = { global.settings_event_id_filter = 1 }
-                                check_variable = { global.unfired_major_events_count > 0 }
+                                check_variable = { settings_event_id_filter = 1 }
+                                check_variable = { var = global.unfired_major_events_count value = 0 compare = greater_than }
                             }
                             # Fire-once events filter - check if any fire-once events haven't been fired
                             AND = {
-                                check_variable = { global.settings_event_id_filter = 3 }
-                                check_variable = { global.unfired_fire_once_events_count > 0 }
+                                check_variable = { settings_event_id_filter = 3 }
+                                check_variable = { var = global.unfired_fire_once_events_count value = 0 compare = greater_than }
                             }
                         }
                     }
@@ -261,15 +306,54 @@ scripted_gui = {
                 has_country_flag = show_events_view
             }
 
-            # Event Clusters Interface Triggers
-            clusters_header_left_arrow_click_enabled = {
-                has_country_flag = show_trigger_events_menu
-                has_country_flag = show_event_clusters_view
+            # Timer System Interface Triggers
+            timer_min_decrease_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                NOT = { check_variable = { settings_timer_min_days = 5 } }
             }
 
-            clusters_header_right_arrow_click_enabled = {
-                has_country_flag = show_trigger_events_menu
-                has_country_flag = show_event_clusters_view
+            timer_min_decrease_right_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_min_increase_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                NOT = { check_variable = { settings_timer_min_days = 125 } }
+                NOT = { check_variable = { settings_timer_min_days = settings_timer_max_days } }
+            }
+
+            timer_min_increase_right_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_max_decrease_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                NOT = { check_variable = { settings_timer_max_days = settings_timer_min_days } }
+            }
+
+            timer_max_decrease_right_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_max_increase_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                NOT = { check_variable = { settings_timer_max_days = 125 } }
+            }
+
+            timer_max_increase_right_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_window_checkbox_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_reset_defaults_button_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_update_button_click_enabled = {
+                has_country_flag = show_timer_system_menu
             }
 
             # Visibility triggers for trigger events content
@@ -436,6 +520,88 @@ scripted_gui = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_event_clusters_view
             }
+
+            # Timer System Content Visibility
+            timer_system_content_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            # Timer System Individual Element Visibility
+            timer_interval_header_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_min_label_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_min_decrease_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_min_bg_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_min_value_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_min_increase_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_max_label_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_max_decrease_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_max_bg_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_max_value_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_max_increase_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_current_settings_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_decrement_info_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_window_checkbox_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_window_text_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_reset_defaults_button_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_reset_defaults_text_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_update_button_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_update_text_visible = {
+                has_country_flag = show_timer_system_menu
+            }
         }
 
         properties = {
@@ -456,6 +622,28 @@ scripted_gui = {
             # Dynamic sprite for the event system toggle button
             disable_event_system_button = {
                 image = "[GetEventSystemButtonSprite]"
+            }
+
+            # Dynamic sprites for timer system increment/decrement buttons
+            timer_min_decrease = {
+                image = "[GetTimerDecrementSprite]"
+            }
+
+            timer_min_increase = {
+                image = "[GetTimerIncrementSprite]"
+            }
+
+            timer_max_decrease = {
+                image = "[GetTimerDecrementSprite]"
+            }
+
+            timer_max_increase = {
+                image = "[GetTimerIncrementSprite]"
+            }
+
+            # Dynamic sprite for timer window checkbox
+            timer_window_checkbox = {
+                image = "[GetTimerWindowCheckboxSprite]"
             }
         }
 
@@ -487,6 +675,20 @@ scripted_gui = {
             }
         }
 
+        ai_enabled = {
+            always = no
+        }
+    }
+
+    # Timer Window GUI
+    chaosx_timer_window_gui = {
+        window_name = "chaosx_timer_window"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            has_country_flag = timer_window_enabled
+        }
         ai_enabled = {
             always = no
         }

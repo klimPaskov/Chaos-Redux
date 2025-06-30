@@ -70,14 +70,6 @@ initialize_chaos_meter_system = {
     set_variable = { global.divisions_per_chaos_increase = 100 } # 100 divisions = +1 chaos
     set_variable = { global.stability_change_per_chaos = 0.01 } # 1% stability change = ±1 chaos
 
-    # Initialize chaos timer modifier variables (for integration with event system)
-    set_variable = { global.chaos_timer_modifier_calm = 1.0 }
-    set_variable = { global.chaos_timer_modifier_gathering_storm = 0.9 }
-    set_variable = { global.chaos_timer_modifier_rising_chaos = 0.8 }
-    set_variable = { global.chaos_timer_modifier_chaos_tier = 0.7 }
-    set_variable = { global.chaos_timer_modifier_totalen_chaos = 0.6 }
-    set_variable = { global.chaos_timer_modifier = 1.0 } # Current active modifier
-
     # Initialize chaos tier boundaries (dynamic values for entire system)
     set_variable = { global.chaos_tier_gathering_boundary = 200 }
     set_variable = { global.chaos_tier_rising_boundary = 400 }
@@ -183,8 +175,6 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_collapse = 0 } }
             log = "CHAOS METER: Tier changed to WORLD COLLAPSE"
-            # Recalculate event timer due to chaos tier change
-            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -193,8 +183,6 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_critical = 0 } }
             log = "CHAOS METER: Tier changed to TOTALEN CHAOS"
-            # Recalculate event timer due to chaos tier change
-            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -203,8 +191,6 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_chaos = 0 } }
             log = "CHAOS METER: Tier changed to CHAOS TIER"
-            # Recalculate event timer due to chaos tier change
-            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -213,8 +199,6 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_rising = 0 } }
             log = "CHAOS METER: Tier changed to RISING CHAOS"
-            # Recalculate event timer due to chaos tier change
-            calculate_next_timer_value = yes
         }
     }
     else_if = {
@@ -223,8 +207,6 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_gathering = 0 } }
             log = "CHAOS METER: Tier changed to GATHERING STORM"
-            # Recalculate event timer due to chaos tier change
-            calculate_next_timer_value = yes
         }
     }
     else = {
@@ -232,8 +214,6 @@ update_chaos_meter_tier = {
         if = {
             limit = { check_variable = { old_tier_calm = 0 } }
             log = "CHAOS METER: Tier changed to CALM WORLD"
-            # Recalculate event timer due to chaos tier change
-            calculate_next_timer_value = yes
         }
     }
 }
