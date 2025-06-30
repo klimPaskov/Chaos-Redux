@@ -23,7 +23,6 @@ damage_buildings_in_state = {
     every_controlled_state = {
         add_to_temp_variable = { var = num_controlled_states value = 1 }
     }
-    log = "number of controlled states: [?num_controlled_states]"
 
     set_temp_variable = { var = num_states_to_target value = var:num_controlled_states }
     if = { limit = { check_variable = { percent_of_states_to_target = 0 } }
@@ -36,7 +35,7 @@ damage_buildings_in_state = {
     set_temp_variable = { num_states_to_target = 1 }
 }
 round_temp_variable = num_states_to_target
-log = "number of states that is targeted: [?num_states_to_target]"
+log = "EVENT: number of states that is targeted: [?num_states_to_target]"
 }
 
 if = {
@@ -48,7 +47,7 @@ if = {
     set_temp_variable = { buildings_to_damage_per_state = 3 }
 }
 
-log = "number of buildings that is targeted: [?buildings_to_damage_per_state]"
+log = "EVENT: number of buildings that is targeted: [?buildings_to_damage_per_state]"
 
 multiply_temp_variable = { state_population_percent = 1000 }
 if = {
@@ -88,7 +87,7 @@ for_loop_effect = {
         set_temp_variable = { pop_loss = state_population_k }
         round_temp_variable = pop_loss
         multiply_temp_variable = { pop_loss = state_population_percent }
-        log = "Population loss: [?pop_loss]"
+        log = "EVENT: population loss: [?pop_loss]"
         add_manpower = pop_loss
 
 
