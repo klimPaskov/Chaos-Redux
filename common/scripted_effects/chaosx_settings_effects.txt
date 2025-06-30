@@ -5,9 +5,10 @@
 # ============================================================================
 
 # ============================================================================
-# MENU SYSTEM PLACEHOLDERS
+# CONSTANTS
 # ============================================================================
 
+# Event System Defaults
 @DEFAULT_MIN_DAYS = 20
 @DEFAULT_MAX_DAYS = 30
 @DEFAULT_MIN_DECREMENT_CAP = 15
@@ -16,14 +17,9 @@
 @DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR = 150
 @DEFAULT_REDUCE_CAP_FACTOR = 0.5
 @DEFAULT_RECOVERY_RATE = 20
+@DEFAULT_INCREMENT_MODE = 5
 
-# Dynamic Cap Calculation Constants:
-# - Default minValue = 20 → minDecrementCap = 15 (minValue - 5)
-# - Default maxValue = 30 → maxDecrementCap = 5 (base value for maxValue = 30)
-# - maxDecrementCap changes by 1 for every ±3 change in maxValue from 30
-# - maxDecrementCap floors at 0 for maxValue ≤ 15
-# - Constraint: minDecrementCap + maxDecrementCap ≤ maxValue (always enforced)
-
+# Chaos Meter Timer Modifiers
 @DEFAULT_CHAOS_MODIFIER_CALM = 1.0
 @DEFAULT_CHAOS_MODIFIER_GATHERING = 0.8
 @DEFAULT_CHAOS_MODIFIER_RISING = 0.7
@@ -31,49 +27,60 @@
 @DEFAULT_CHAOS_MODIFIER_CRITICAL = 0.5
 @DEFAULT_CHAOS_MODIFIER_COLLAPSE = 0.5
 
-@DEFAULT_INCREMENT_MODE = 5
+# Event Type Constants
+@EVENT_TYPE_UNKNOWN = 0
+@EVENT_TYPE_MAJOR = 1
+@EVENT_TYPE_REPEATABLE = 2
+@EVENT_TYPE_FIRE_ONCE = 3
+
+# Event Filter Constants
+@FILTER_ALL_EVENTS = 0
+@FILTER_MAJOR_EVENTS = 1
+@FILTER_REPEATABLE_EVENTS = 2
+@FILTER_FIRE_ONCE_EVENTS = 3
+
+# Timer System Constants
+@TIMER_MAX_MAX_VALUE = 125
+@TIMER_MIN_MIN_VALUE = 5
+@TIMER_MINIMUM_DAYS = 2
+@TIMER_RANDOM_INITIAL_MIN = 7
+
+# Dynamic cap management constants
+@DYNAMIC_CAP_BASE_VALUE = 30
+@DYNAMIC_CAP_STEP_SIZE = 3
+@DYNAMIC_CAP_BASE_FACTOR = 5
+@DYNAMIC_CAP_FLOOR_THRESHOLD = 16
+
+# ============================================================================
+# MENU SYSTEM PLACEHOLDERS
+# ============================================================================
+
+# Clear all menu content flags
+clear_all_menu_flags = {
+    clr_country_flag = show_trigger_events_menu
+    clr_country_flag = show_timer_system_menu
+    clr_country_flag = show_events_view
+    clr_country_flag = show_event_clusters_view
+}
 
 # Open timer system menu
 open_timer_system_menu = {
-    # Clear all other content flags first
-    clr_country_flag = show_trigger_events_menu
-    clr_country_flag = show_events_view
-    clr_country_flag = show_event_clusters_view
-
-    # Show timer system menu
+    clear_all_menu_flags = yes
     set_country_flag = show_timer_system_menu
 }
 
 open_chaos_meter_menu = {
-    # Clear all other content flags first
-    clr_country_flag = show_trigger_events_menu
-    clr_country_flag = show_timer_system_menu
-    clr_country_flag = show_events_view
-    clr_country_flag = show_event_clusters_view
-
-    # Placeholder - future implementation
+    clear_all_menu_flags = yes
     log = "Chaos Meter menu requested (not yet implemented)"
 }
 
 open_advanced_settings_menu = {
-    # Clear all other content flags first
-    clr_country_flag = show_trigger_events_menu
-    clr_country_flag = show_timer_system_menu
-    clr_country_flag = show_events_view
-    clr_country_flag = show_event_clusters_view
-
-    # Placeholder - future implementation
+    clear_all_menu_flags = yes
     log = "Advanced Settings menu requested (not yet implemented)"
 }
 
 toggle_scenarios_menu = {
-    # Clear all other content flags first
-    clr_country_flag = show_trigger_events_menu
-    clr_country_flag = show_timer_system_menu
-    clr_country_flag = show_events_view
-    clr_country_flag = show_event_clusters_view
-
-    # Placeholder - future implementation
+    clear_all_menu_flags = yes
     log = "Toggle Scenarios menu requested (not yet implemented)"
 }
 
@@ -89,28 +96,19 @@ open_chaosx_settings = {
     }
     else = {
         set_country_flag = chaosx_settings_open
+        clear_all_menu_flags = yes
 
-        # Clear any menu selection flags so the right side starts empty
-        clr_country_flag = show_trigger_events_menu
-        clr_country_flag = show_events_view
-        clr_country_flag = show_event_clusters_view
-
-        # Initialize settings variables
+        # Initialize settings variables if needed
         if = {
             limit = { NOT = { has_variable = settings_selected_event_id } }
-            set_variable = { settings_selected_event_id = 0 }
+            set_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN }
         }
         if = {
             limit = { NOT = { has_variable = settings_events_increment_mode } }
-            set_variable = { settings_events_increment_mode = 5 }
+            set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
         }
 
-        # When events_activated flag is present = system enabled = button unchecked
-        # When events_activated flag is absent = system disabled = button checked
         set_country_flag = events_activated
-
-        # When force_trigger_mode_enabled flag is present = force mode enabled = button checked
-        # When force_trigger_mode_enabled flag is absent = force mode disabled = button unchecked
         clr_country_flag = force_trigger_mode_enabled
     }
 }
@@ -118,11 +116,7 @@ open_chaosx_settings = {
 # Close settings window
 close_chaosx_settings = {
     clr_country_flag = chaosx_settings_open
-    # Clear all menu flags when closing
-    clr_country_flag = show_trigger_events_menu
-    clr_country_flag = show_timer_system_menu
-    clr_country_flag = show_events_view
-    clr_country_flag = show_event_clusters_view
+    clear_all_menu_flags = yes
 }
 
 # ============================================================================
@@ -162,21 +156,17 @@ reset_all_settings = {
 
 # Initialize trigger events settings
 initialize_trigger_events_settings = {
-    set_variable = { settings_selected_event_id = 0 }
+    set_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN }
     set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
-    set_variable = { settings_event_id_filter = 0 }
+    set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
 
-    # Set initial flags
     update_event_id_display = yes
     update_last_fired_event_display = yes
 }
 
 # Open trigger events menu
 open_trigger_events_menu = {
-    # Clear all other content flags first
     clr_country_flag = show_timer_system_menu
-
-    # Show trigger events menu and default to Events view
     set_country_flag = show_trigger_events_menu
     set_country_flag = show_events_view
     clr_country_flag = show_event_clusters_view
@@ -189,27 +179,13 @@ open_trigger_events_menu = {
 # Cycle to previous event filter type
 cycle_event_filter_prev = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = 0 } }
-        # From All (0) to Fire-once (3)
-        set_variable = { settings_event_id_filter = 3 }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
+        set_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS }
     }
-    else_if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
-        # From Major (1) to All (0)
-        set_variable = { settings_event_id_filter = 0 }
-    }
-    else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
-        # From Repeatable (2) to Major (1)
-        set_variable = { settings_event_id_filter = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
-        # From Fire-once (3) to Repeatable (2)
-        set_variable = { settings_event_id_filter = 2 }
+    else = {
+        subtract_from_variable = { settings_event_id_filter = 1 }
     }
 
-    # Update the current event ID to be valid for the new filter
     adjust_event_id_for_filter = yes
     update_event_id_display = yes
 }
@@ -217,131 +193,127 @@ cycle_event_filter_prev = {
 # Cycle to next event filter type
 cycle_event_filter_next = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = 0 } }
-        # From All (0) to Major (1)
-        set_variable = { settings_event_id_filter = 1 }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
     }
-    else_if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
-        # From Major (1) to Repeatable (2)
-        set_variable = { settings_event_id_filter = 2 }
-    }
-    else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
-        # From Repeatable (2) to Fire-once (3)
-        set_variable = { settings_event_id_filter = 3 }
-    }
-    else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
-        # From Fire-once (3) to All (0)
-        set_variable = { settings_event_id_filter = 0 }
+    else = {
+        add_to_variable = { settings_event_id_filter = 1 }
     }
 
-    # Update the current event ID to be valid for the new filter
     adjust_event_id_for_filter = yes
     update_event_id_display = yes
 }
 
-# Adjust the current event ID to be valid for the selected filter
-adjust_event_id_for_filter = {
-    # Get the first valid ID for the current filter and set it if current ID is invalid
-    if = {
-        limit = { check_variable = { settings_event_id_filter = 0 } }
-        # All events - keep current ID if it's between 1 and total_events
-        if = {
-            limit = {
-                OR = {
-                    check_variable = { settings_selected_event_id < 1 }
-                    check_variable = { settings_selected_event_id > global.total_events }
-                }
-            }
-            set_variable = { settings_selected_event_id = 1 }
-        }
-    }
-    else_if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
-        # Major events - set to first major event if current is not major
-        set_temp_variable = { temp_current_id = settings_selected_event_id }
-        set_temp_variable = { temp_is_major = 0 }
+# Find index of event in specified array
+find_event_in_array = {
+    # Input: event_id, array_filter_type (1=major, 2=repeatable, 3=fire_once)
+    # Output: temp_event_index (-1 if not found)
 
-        # Check if current ID is in major events array
+    set_temp_variable = { temp_event_index = -1 }
+
+    if = {
+        limit = { check_variable = { array_filter_type = @FILTER_MAJOR_EVENTS } }
+        # Major events
         for_loop_effect = {
             start = 0
             end = global.major_events^num
             value = i
             if = {
-                limit = { check_variable = { temp_current_id = global.major_events^i } }
-                set_temp_variable = { temp_is_major = 1 }
-            }
-        }
-
-        # If not major, set to first major event
-        if = {
-            limit = { check_variable = { temp_is_major = 0 } }
-            if = {
-                limit = { check_variable = { global.major_events^num > 0 } }
-                set_variable = { settings_selected_event_id = global.major_events^0 }
-            }
-            else = {
-                set_variable = { settings_selected_event_id = 2 }  # Default major event
+                limit = { check_variable = { event_id = global.major_events^i } }
+                set_temp_variable = { temp_event_index = i }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
-        # Repeatable events - set to first repeatable event if current is not repeatable
-        set_temp_variable = { temp_current_id = settings_selected_event_id }
-        set_temp_variable = { temp_is_repeatable = 0 }
-
-        # Check if current ID is in repeatable events array
+        limit = { check_variable = { array_filter_type = @FILTER_REPEATABLE_EVENTS } }
+        # Repeatable events
         for_loop_effect = {
             start = 0
             end = global.repeatable_events^num
             value = i
             if = {
-                limit = { check_variable = { temp_current_id = global.repeatable_events^i } }
-                set_temp_variable = { temp_is_repeatable = 1 }
-            }
-        }
-
-        # If not repeatable, set to first repeatable event
-        if = {
-            limit = { check_variable = { temp_is_repeatable = 0 } }
-            if = {
-                limit = { check_variable = { global.repeatable_events^num > 0 } }
-                set_variable = { settings_selected_event_id = global.repeatable_events^0 }
-            }
-            else = {
-                set_variable = { settings_selected_event_id = 1 }  # Default repeatable event
+                limit = { check_variable = { event_id = global.repeatable_events^i } }
+                set_temp_variable = { temp_event_index = i }
             }
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
-        # Fire-once events - set to first fire-once event if current is not fire-once
-        set_temp_variable = { temp_current_id = settings_selected_event_id }
-        set_temp_variable = { temp_is_fire_once = 0 }
-
-        # Check if current ID is in fire-once events array
+        limit = { check_variable = { array_filter_type = @FILTER_FIRE_ONCE_EVENTS } }
+        # Fire-once events
         for_loop_effect = {
             start = 0
             end = global.fire_once_events^num
             value = i
             if = {
-                limit = { check_variable = { temp_current_id = global.fire_once_events^i } }
-                set_temp_variable = { temp_is_fire_once = 1 }
+                limit = { check_variable = { event_id = global.fire_once_events^i } }
+                set_temp_variable = { temp_event_index = i }
             }
         }
+    }
+}
 
-        # If not fire-once, set to first fire-once event
+# Adjust the current event ID to be valid for the selected filter
+adjust_event_id_for_filter = {
+    if = {
+        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
+        # All events - ensure ID is within valid range
+        clamp_variable = {
+            var = settings_selected_event_id
+            min = 1
+            max = global.total_events
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
+        # Major events - check if current ID is major, if not set to first major
+        set_temp_variable = { event_id = settings_selected_event_id }
+        set_temp_variable = { array_filter_type = @FILTER_MAJOR_EVENTS }
+        find_event_in_array = yes
+
         if = {
-            limit = { check_variable = { temp_is_fire_once = 0 } }
+            limit = { check_variable = { temp_event_index = -1 } }
+            if = {
+                limit = { check_variable = { global.major_events^num > 0 } }
+                set_variable = { settings_selected_event_id = global.major_events^0 }
+            }
+            else = {
+                set_variable = { settings_selected_event_id = global.major_events^0 }
+            }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
+        # Repeatable events
+        set_temp_variable = { event_id = settings_selected_event_id }
+        set_temp_variable = { array_filter_type = @FILTER_REPEATABLE_EVENTS }
+        find_event_in_array = yes
+
+        if = {
+            limit = { check_variable = { temp_event_index = -1 } }
+            if = {
+                limit = { check_variable = { global.repeatable_events^num > 0 } }
+                set_variable = { settings_selected_event_id = global.repeatable_events^0 }
+            }
+            else = {
+                set_variable = { settings_selected_event_id = global.repeatable_events^0 }
+            }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        # Fire-once events
+        set_temp_variable = { event_id = settings_selected_event_id }
+        set_temp_variable = { array_filter_type = @FILTER_FIRE_ONCE_EVENTS }
+        find_event_in_array = yes
+
+        if = {
+            limit = { check_variable = { temp_event_index = -1 } }
             if = {
                 limit = { check_variable = { global.fire_once_events^num > 0 } }
                 set_variable = { settings_selected_event_id = global.fire_once_events^0 }
             }
             else = {
-                set_variable = { settings_selected_event_id = 3 }  # Default fire-once event
+                set_variable = { settings_selected_event_id = global.fire_once_events^0 }
             }
         }
     }
@@ -351,7 +323,7 @@ adjust_event_id_for_filter = {
 get_next_valid_event_id = {
     # Simple implementation: set to next array element or wrap to first
     if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
         # Major events - cycle through major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -388,7 +360,7 @@ get_next_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
         # Repeatable events - cycle through repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -425,7 +397,7 @@ get_next_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
         # Fire-once events - cycle through fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -467,7 +439,7 @@ get_next_valid_event_id = {
 get_previous_valid_event_id = {
     # Simple implementation: set to previous array element or wrap to last
     if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
         # Major events - cycle through major events array backwards
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -507,7 +479,7 @@ get_previous_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
         # Repeatable events - cycle through repeatable events array backwards
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -547,7 +519,7 @@ get_previous_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
         # Fire-once events - cycle through fire-once events array backwards
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -591,27 +563,20 @@ get_previous_valid_event_id = {
 # Decrease event ID
 decrease_event_id = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
         # All events - standard decrement with wrapping
-        set_temp_variable = { decrement_value = settings_events_increment_mode }
+        set_temp_variable = { new_id = settings_selected_event_id }
+        subtract_from_temp_variable = { new_id = settings_events_increment_mode }
 
         if = {
-            limit = { check_variable = { var = settings_selected_event_id value = decrement_value compare = greater_than_or_equals } }
-            subtract_from_variable = { settings_selected_event_id = decrement_value }
+            limit = { check_variable = { new_id < 1 } }
+            set_variable = { settings_selected_event_id = global.total_events }
         }
         else = {
-            # If trying to go below 0, wrap to 99
-            if = {
-                limit = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
-                set_variable = { settings_selected_event_id = 99 }
-            }
-            else = {
-                set_variable = { settings_selected_event_id = 0 }
-            }
+            set_variable = { settings_selected_event_id = new_id }
         }
     }
     else = {
-        # Filtered mode - move by increment_mode steps
         get_previous_valid_event_id_by_steps = yes
     }
 
@@ -621,24 +586,20 @@ decrease_event_id = {
 # Increase event ID
 increase_event_id = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
         # All events - standard increment with wrapping
-        set_temp_variable = { max_event_id = global.total_events }
-        set_temp_variable = { increment_value = settings_events_increment_mode }
         set_temp_variable = { new_id = settings_selected_event_id }
-        add_to_temp_variable = { new_id = increment_value }
+        add_to_temp_variable = { new_id = settings_events_increment_mode }
 
         if = {
-            limit = { check_variable = { var = new_id value = max_event_id compare = less_than_or_equals } }
-            set_variable = { settings_selected_event_id = new_id }
+            limit = { check_variable = { new_id > global.total_events } }
+            set_variable = { settings_selected_event_id = 1 }
         }
         else = {
-            # If going past max, wrap to 1
-            set_variable = { settings_selected_event_id = 1 }
+            set_variable = { settings_selected_event_id = new_id }
         }
     }
     else = {
-        # Filtered mode - move by increment_mode steps
         get_next_valid_event_id_by_steps = yes
     }
 
@@ -691,39 +652,30 @@ toggle_increment_mode = {
 # Update event ID display flags
 update_event_id_display = {
     if = {
-        limit = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
+        limit = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } }
         set_global_flag = settings_event_id_zero
-
-        # Set default values for no event selected
-        set_variable = { settings_event_id = 0 }
-        set_variable = { settings_event_type = 0 }  # 0 = unknown/none
+        set_variable = { settings_event_id = @EVENT_TYPE_UNKNOWN }
+        set_variable = { settings_event_type = @EVENT_TYPE_UNKNOWN }
     }
     else = {
         clr_global_flag = settings_event_id_zero
-
         set_temp_variable = { event_id = settings_selected_event_id }
         get_event_type = yes
 
-        # For display - set the global variable that the GUI triggers use
         set_variable = { settings_event_id = settings_selected_event_id }
         set_variable = { settings_event_type = event_type }
-
-        # log = "CHAOS REDUX DEBUG: update_event_id_display - Event ID [?event_id], event_type: [?event_type], settings_event_type: [?settings_event_type]"
     }
 
-    # Update unfired events counts for GUI button availability
     update_unfired_events_counts = yes
 }
 
 # Trigger selected event (checks if event can be fired unless force mode is enabled)
 trigger_selected_event = {
     if = {
-        limit = {
-            NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
-        }
+        limit = { NOT = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } } }
+
         set_temp_variable = { event_id = settings_selected_event_id }
 
-        # Check if force trigger mode is enabled OR if we have bypass flag
         if = {
             limit = {
                 OR = {
@@ -731,37 +683,29 @@ trigger_selected_event = {
                     has_variable = temp_bypass_checks
                 }
             }
-            # Force mode enabled or bypass requested - bypass all checks and fire event
             fire_event_by_id = yes
             log = "CHAOS REDUX SETTINGS: FORCE triggered event ID [?settings_selected_event_id]"
         }
         else = {
-            # Normal mode - check if event can be fired
             get_event_type = yes
-            # Store event type in the settings variable for consistent access
             set_variable = { settings_event_type = event_type }
 
-            log = "CHAOS REDUX DEBUG: Event ID [?event_id], Type: [?event_type], Settings Type: [?settings_event_type]"
-
-            # Check if this is a fired major or fire-once event
             set_temp_variable = { can_fire = 1 }
             if = {
                 limit = {
                     OR = {
-                        check_variable = { settings_event_type = 1 }  # Major event
-                        check_variable = { settings_event_type = 3 }  # Fire-once event
+                        check_variable = { settings_event_type = @EVENT_TYPE_MAJOR }
+                        check_variable = { settings_event_type = @EVENT_TYPE_FIRE_ONCE }
                     }
                 }
-                # Only check fired status if it's a major or fire-once event
                 if = {
                     limit = { is_in_array = { global.fired_events = event_id } }
                     set_temp_variable = { can_fire = 0 }
-                    log = "CHAOS REDUX DEBUG: Event [?event_id] is already fired, blocking"
                 }
             }
 
             if = {
-                limit = { check_variable = { var = can_fire value = 1 compare = equals } }
+                limit = { check_variable = { can_fire = 1 } }
                 fire_event_by_id = yes
             }
             else = {
@@ -774,8 +718,8 @@ trigger_selected_event = {
 # Force trigger selected event (ignores fired status)
 force_trigger_selected_event = {
     if = {
-        limit = { NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } } }
-        # Set temporary force flag to bypass checks in fire_event_by_id
+        limit = { NOT = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } } }
+
         set_variable = { temp_bypass_checks = 1 }
         fire_event_by_id = yes
         clear_variable = temp_bypass_checks
@@ -798,7 +742,7 @@ trigger_random_event = {
     }
 
     if = {
-        limit = { check_variable = { settings_event_id_filter = 0 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
         # All events - need to respect fired status for major/fire-once events when not in force mode
         if = {
             limit = { check_variable = { include_fired_events = 0 } }
@@ -872,7 +816,7 @@ trigger_random_event = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
         # Major events - random from major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -934,7 +878,7 @@ trigger_random_event = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
         # Repeatable events - always available, no fired status filtering needed
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -950,7 +894,7 @@ trigger_random_event = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
         # Fire-once events - filter based on fired status unless force mode
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1256,7 +1200,7 @@ get_next_valid_event_id_by_steps = {
     set_temp_variable = { steps_to_move = settings_events_increment_mode }
 
     if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
         # Major events - move by N steps in major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -1294,7 +1238,7 @@ get_next_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
         # Repeatable events - move by N steps in repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -1331,7 +1275,7 @@ get_next_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
         # Fire-once events - move by N steps in fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1374,7 +1318,7 @@ get_previous_valid_event_id_by_steps = {
     set_temp_variable = { steps_to_move = settings_events_increment_mode }
 
     if = {
-        limit = { check_variable = { settings_event_id_filter = 1 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
         # Major events - move backward by N steps in major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -1412,7 +1356,7 @@ get_previous_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 2 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
         # Repeatable events - move backward by N steps in repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -1450,7 +1394,7 @@ get_previous_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = 3 } }
+        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
         # Fire-once events - move backward by N steps in fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1529,8 +1473,8 @@ update_unfired_events_counts = {
 
 reset_trigger_events = {
     # Reset trigger events to defaults (cosmetic)
-    set_variable = { settings_selected_event_id = 0 }
-    set_variable = { settings_event_id_filter = 0 }  # All Events
+    set_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN }
+    set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
     set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
     clr_global_flag = settings_increment_mode_1
     clr_global_flag = settings_increment_mode_10
@@ -1563,19 +1507,13 @@ reset_trigger_events = {
 ###############################################################################################################
 
 
-@TIMER_MAX_VALUE = 125
-@TIMER_MIN_VALUE = 5
-
 # Initialize timer system settings
 initialize_timer_system_settings = {
-    # Initialize default timer settings
     set_variable = { settings_timer_min_days = @DEFAULT_MIN_DAYS }
     set_variable = { settings_timer_max_days = @DEFAULT_MAX_DAYS }
     set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
     set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
     set_variable = { settings_timer_increment_mode = 1 }
-
-
 }
 
 # Update timer value from current settings using dynamic cap calculation
@@ -1584,14 +1522,11 @@ update_timer_from_settings = {
     set_variable = { timer_min_days = settings_timer_min_days }
     set_variable = { timer_max_days = settings_timer_max_days }
 
-    # Calculate caps using the new dynamic system
     calculate_dynamic_caps = yes
 
-    # Update timer system variables
     set_variable = { timer_min_decrement_cap = settings_timer_min_decrement_cap }
     set_variable = { timer_max_decrement_cap = settings_timer_max_decrement_cap }
 
-    # Recalculate next timer value if system is active
     if = {
         limit = { has_global_flag = event_system_initialized }
         calculate_next_timer_value = yes
@@ -1601,84 +1536,62 @@ update_timer_from_settings = {
 
 # Decrease minimum timer value
 decrease_timer_min = {
-    set_temp_variable = { decrement_value = settings_timer_increment_mode }
     set_temp_variable = { new_min = settings_timer_min_days }
-    subtract_from_temp_variable = { new_min = decrement_value }
+    subtract_from_temp_variable = { new_min = settings_timer_increment_mode }
 
-    # Ensure min doesn't go below 5
-    if = {
-        limit = { check_variable = { new_min < @TIMER_MIN_VALUE } }
-        set_temp_variable = { new_min = @TIMER_MIN_VALUE }
+    clamp_temp_variable = {
+        var = new_min
+        min = @TIMER_MIN_MIN_VALUE
+        max = settings_timer_max_days
     }
 
-    # Update min value
     set_variable = { settings_timer_min_days = new_min }
-
-    # Recalculate caps using dynamic system
     calculate_dynamic_caps = yes
-
 }
 
 # Increase minimum timer value
 increase_timer_min = {
-    set_temp_variable = { increment_value = settings_timer_increment_mode }
     set_temp_variable = { new_min = settings_timer_min_days }
-    add_to_temp_variable = { new_min = increment_value }
+    add_to_temp_variable = { new_min = settings_timer_increment_mode }
 
-    # Ensure min doesn't exceed max
-    if = {
-        limit = { check_variable = { new_min > settings_timer_max_days } }
-        set_temp_variable = { new_min = settings_timer_max_days }
+    clamp_temp_variable = {
+        var = new_min
+        min = @TIMER_MIN_MIN_VALUE
+        max = settings_timer_max_days
     }
 
-    # Update min value
     set_variable = { settings_timer_min_days = new_min }
-
-    # Recalculate caps using dynamic system
     calculate_dynamic_caps = yes
-
 }
 
 # Decrease maximum timer value
 decrease_timer_max = {
-    set_temp_variable = { decrement_value = settings_timer_increment_mode }
     set_temp_variable = { new_max = settings_timer_max_days }
-    subtract_from_temp_variable = { new_max = decrement_value }
+    subtract_from_temp_variable = { new_max = settings_timer_increment_mode }
 
-    # Ensure max doesn't go below min value
-    if = {
-        limit = { check_variable = { new_max < settings_timer_min_days } }
-        set_temp_variable = { new_max = settings_timer_min_days }
+    clamp_temp_variable = {
+        var = new_max
+        min = settings_timer_min_days
+        max = @TIMER_MAX_MAX_VALUE
     }
 
-    # Update max value
     set_variable = { settings_timer_max_days = new_max }
-
-    # Recalculate caps using dynamic system
     calculate_dynamic_caps = yes
-
 }
 
 # Increase maximum timer value
 increase_timer_max = {
-    set_temp_variable = { increment_value = settings_timer_increment_mode }
     set_temp_variable = { new_max = settings_timer_max_days }
-    add_to_temp_variable = { new_max = increment_value }
+    add_to_temp_variable = { new_max = settings_timer_increment_mode }
 
-    # Ensure max doesn't exceed set max value
-    if = {
-        limit = { check_variable = { new_max > @TIMER_MAX_VALUE } }
-        set_temp_variable = { new_max = @TIMER_MAX_VALUE }
+    clamp_temp_variable = {
+        var = new_max
+        min = settings_timer_min_days
+        max = @TIMER_MAX_MAX_VALUE
     }
 
-    # Update max value
     set_variable = { settings_timer_max_days = new_max }
-
-
-
-    # Recalculate caps using dynamic system
     calculate_dynamic_caps = yes
-
 }
 
 # Toggle timer system increment mode
@@ -1748,12 +1661,6 @@ reset_timer_to_defaults = {
 # ============================================================================
 # DYNAMIC CAP CALCULATION SYSTEM
 # ============================================================================
-# Implements the comprehensive dynamic cap calculation based on:
-# - minDecrementCap = minValue - 5
-# - maxDecrementCap based on deviation from maxValue = 30 (in steps of 3)
-# - Gap-based adjustment: reduce maxDecrementCap as gap between min/max shrinks
-# - Constraint: minDecrementCap + maxDecrementCap ≤ maxValue
-# ============================================================================
 
 # Calculate dynamic caps based on minValue and maxValue inputs
 calculate_dynamic_caps = {
@@ -1763,117 +1670,90 @@ calculate_dynamic_caps = {
     set_temp_variable = { min_value = settings_timer_min_days }
     set_temp_variable = { max_value = settings_timer_max_days }
 
-    # ============================================================================
-    # PART 1: Calculate minDecrementCap
-    # Formula: minDecrementCap = minValue - 5 (floor at 0)
-    # ============================================================================
+    # Calculate minDecrementCap = minValue - 5 (floor at 0)
     set_temp_variable = { calculated_min_cap = min_value }
-    subtract_from_temp_variable = { calculated_min_cap = 5 }
+    subtract_from_temp_variable = { calculated_min_cap = @DEFAULT_MAX_DECREMENT_CAP }
 
-    # Ensure minDecrementCap doesn't go below 0
-    if = {
-        limit = { check_variable = { calculated_min_cap < 0 } }
-        set_temp_variable = { calculated_min_cap = 0 }
+    clamp_temp_variable = {
+        var = calculated_min_cap
+        min = 0
     }
 
-    # ============================================================================
-    # PART 2: Calculate maxDecrementCap based on maxValue
-    # Formula: (maxValue - 30) // 3 + 5, with floor at 0 for maxValue ≤ 15
-    # ============================================================================
-
-    # Check if maxValue is at or below the floor threshold (≤ 15)
+    # Calculate maxDecrementCap based on maxValue
     if = {
-        limit = { check_variable = { max_value < 16 } }
-        # maxValue ≤ 15: cap is frozen at 0
+        limit = { check_variable = { max_value < @DYNAMIC_CAP_FLOOR_THRESHOLD } }
         set_temp_variable = { calculated_max_cap = 0 }
     }
     else = {
-        # Calculate deviation from 30
+        # Calculate deviation from base value (30)
         set_temp_variable = { deviation = max_value }
-        subtract_from_temp_variable = { deviation = 30 }
+        subtract_from_temp_variable = { deviation = @DYNAMIC_CAP_BASE_VALUE }
 
         # Calculate steps: deviation // 3
         set_temp_variable = { steps = 0 }
         set_temp_variable = { abs_deviation = deviation }
 
-        # Handle negative deviation (below 30)
         if = {
             limit = { check_variable = { deviation < 0 } }
-            set_temp_variable = { abs_deviation = 0 }
-            subtract_from_temp_variable = { abs_deviation = deviation }
+            multiply_temp_variable = { abs_deviation = -1 }
         }
 
         # Integer division by 3 using repeated subtraction
         while_loop_effect = {
             limit = { check_variable = { abs_deviation > 2 } }
             add_to_temp_variable = { steps = 1 }
-            subtract_from_temp_variable = { abs_deviation = 3 }
+            subtract_from_temp_variable = { abs_deviation = @DYNAMIC_CAP_STEP_SIZE }
         }
 
         # Apply the formula: base 5 + (or -) steps
-        set_temp_variable = { calculated_max_cap = 5 }
+        set_temp_variable = { calculated_max_cap = @DYNAMIC_CAP_BASE_FACTOR }
 
         if = {
             limit = { check_variable = { deviation < 0 } }
-            # Below 30: subtract steps
             subtract_from_temp_variable = { calculated_max_cap = steps }
         }
         else = {
-            # Above 30: add steps
             add_to_temp_variable = { calculated_max_cap = steps }
         }
 
-        # Ensure cap doesn't go below 0
-        if = {
-            limit = { check_variable = { calculated_max_cap < 0 } }
-            set_temp_variable = { calculated_max_cap = 0 }
+        clamp_temp_variable = {
+            var = calculated_max_cap
+            min = 0
         }
     }
 
-    # ============================================================================
-    # PART 3: Apply gap-based clamping
-    # The maxDecrementCap is clamped down based on the gap between min and max
-    # ============================================================================
+    # Apply gap-based clamping
     set_temp_variable = { gap = max_value }
     subtract_from_temp_variable = { gap = min_value }
 
-    # Apply gap-based clamping to maxDecrementCap
-    # As the gap shrinks, the maxDecrementCap must be reduced
-    if = {
-        limit = { check_variable = { calculated_max_cap > gap } }
-        set_temp_variable = { calculated_max_cap = gap }
+    clamp_temp_variable = {
+        var = calculated_max_cap
+        max = gap
     }
 
-    # ============================================================================
-    # PART 4: Apply the final constraint (minDecrementCap + maxDecrementCap ≤ maxValue)
-    # ============================================================================
+    # Apply final constraint (minDecrementCap + maxDecrementCap ≤ maxValue)
     set_temp_variable = { total_caps = calculated_min_cap }
     add_to_temp_variable = { total_caps = calculated_max_cap }
 
     if = {
         limit = { check_variable = { total_caps > max_value } }
-
-        # Constraint violated - need to reduce caps
-        # Priority: reduce maxDecrementCap first, then minDecrementCap if necessary
-
         set_temp_variable = { allowed_max_cap = max_value }
         subtract_from_temp_variable = { allowed_max_cap = calculated_min_cap }
 
+        clamp_temp_variable = {
+            var = allowed_max_cap
+            min = 0
+        }
+
         if = {
-            limit = { check_variable = { allowed_max_cap < 0 } }
-            # Even with maxCap = 0, constraint still violated
-            # Need to reduce minCap as well
-            set_temp_variable = { allowed_max_cap = 0 }
+            limit = { check_variable = { allowed_max_cap = 0 } }
             set_temp_variable = { calculated_min_cap = max_value }
         }
 
         set_temp_variable = { calculated_max_cap = allowed_max_cap }
     }
 
-    # ============================================================================
-    # PART 5: Set final calculated values
-    # ============================================================================
+    # Set final calculated values
     set_variable = { settings_timer_min_decrement_cap = calculated_min_cap }
     set_variable = { settings_timer_max_decrement_cap = calculated_max_cap }
-
 }
