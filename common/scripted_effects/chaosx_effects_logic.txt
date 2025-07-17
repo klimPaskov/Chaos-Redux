@@ -17,8 +17,8 @@
 # ============================================================================
 
 # Timer System Defaults
-@DEFAULT_MIN_DAYS = 20
-@DEFAULT_MAX_DAYS = 30
+@DEFAULT_MIN_DAYS = 25
+@DEFAULT_MAX_DAYS = 35
 @DEFAULT_MIN_DECREMENT_CAP = 15
 @DEFAULT_MAX_DECREMENT_CAP = 5
 @DEFAULT_EVENT_WEIGHT = 1000
@@ -94,21 +94,12 @@ initialize_event_system = {
 }
 
 initialize_dynamic_timer = {
-    set_variable_to_random = {
-        var = event_timer_days
-        min = @MIN_TIMER_RANDOM_START
-        max = @MAX_TIMER_RANDOM_START
-        integer = yes
-    }
-
     set_variable = { timer_min_days = @DEFAULT_MIN_DAYS }
     set_variable = { timer_max_days = @DEFAULT_MAX_DAYS }
     set_variable = { timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
     set_variable = { timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
     set_variable = { timer_day_decrement = 0 }
     set_variable = { timer_max_cap_reduction = 0 }
-
-    log = "CHAOS REDUX EVENT SYSTEM: First event timer set to [?event_timer_days] days for [THIS.GetName]"
 }
 
 # Define event categories for the system
@@ -900,7 +891,7 @@ log_event_system_debug = {
     subtract_from_temp_variable = { temp_new_max_timer = timer_day_decrement }
     subtract_from_temp_variable = { temp_new_max_timer = timer_max_cap_reduction }
 
-    log = "Current timer range: [?temp_new_min_timer] - [?temp_new_max_timer] days"
+    log = "Current timer range after decrements: [?temp_new_min_timer] - [?temp_new_max_timer] days"
     log = "Current chaos tier: [GetChaosTierName]"
     log = "Current chaos timer modifier: [?global.chaos_timer_modifier]x"
     log = "Current timer: [?event_timer_days] days"
