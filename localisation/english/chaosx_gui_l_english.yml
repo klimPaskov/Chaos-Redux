@@ -11,10 +11,10 @@ chaosx.settings.trigger_events: "Trigger Events"
 chaosx.settings.trigger_events.tt: "Open the event triggering interface"
 
 chaosx.settings.timer_system: "Timer System"
-chaosx.settings.timer_system.tt: "Adjust event timer intervals and settings"
+chaosx.settings.timer_system.tt: "Adjust event timer intervals and manage tags"
 
 chaosx.settings.chaos_meter: "Chaos Meter"
-chaosx.settings.chaos_meter.tt: "Configure chaos meter settings and tiers"
+chaosx.settings.chaos_meter.tt: "Adjust chaos meter value"
 
 chaosx.settings.advanced_settings: "Advanced Settings"
 chaosx.settings.advanced_settings.tt: "Modify advanced system parameters"
@@ -58,6 +58,7 @@ chaosx.trigger_events.clusters_placeholder: "Event Clusters view\n\n(Future impl
 
 # Timer System Interface
 chaosx.timer_system.interval_header: "§YTimer Interval§!"
+chaosx.timer_system.tag_management_header: "§YTag Management§!"
 chaosx.timer_system.min_label: "Min:"
 chaosx.timer_system.max_label: "Max:"
 chaosx.timer_system.min_value: "[GetTimerMinValue]"
@@ -66,29 +67,92 @@ chaosx.timer_system.min_decrease.tt: "§YDecrease Min Timer by [GetTimerIncremen
 chaosx.timer_system.min_increase.tt: "§YIncrease Min Timer by [GetTimerIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! +[GetTimerIncrementValue]\n §WRight Click:§! Change increment mode\n\n§YMin cannot exceed Max value§!"
 chaosx.timer_system.max_decrease.tt: "§YDecrease Max Timer by [GetTimerIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! -[GetTimerIncrementValue]\n §WRight Click:§! Change increment mode\n\n§YMax value cannot go below min value§!"
 chaosx.timer_system.max_increase.tt: "§YIncrease Max Timer by [GetTimerIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! +[GetTimerIncrementValue]\n §WRight Click:§! Change increment mode"
-chaosx.timer_system.current_settings: "[GetTimerCurrentSettings]"
-chaosx.timer_system.decrement_info: "[GetTimerDecrementInfo]"
+chaosx.timer_system.current_settings: "Current: [?timer_min_days] - [?timer_max_days] days"
+chaosx.timer_system.note: "§YNOTE:§! Each country has their own timer system. Settings here are country scoped."
 chaosx.timer_system.show_timer_window: "Show Timer Window"
-chaosx.timer_system.show_timer_window.tt: "§YShow Timer Window§!\n\nDisplays a moveable window showing days until next event"
+chaosx.timer_system.show_timer_window.tt: "§YShow Timer Window§!\n\nDisplays a window showing days until next event. Default is hidden."
 chaosx.timer_system.update_timer: "Update Timer"
 chaosx.timer_system.update_timer.tt: "§YUpdate Timer Value§!\n\nRecalculates the timer value based on current min/max settings"
 chaosx.timer_system.reset_defaults: "Restore Defaults"
 chaosx.timer_system.reset_defaults.tt: "§YResets timer system settings to their default values§!"
 
-# Timer Window
-chaosx.timer_window.countdown: "days until next event: §Y[?event_timer_days]§!"
-chaosx.timer_window.countdown.never: "days until next event: §YNever§!"
+# Tag Management Interface
+chaosx.tag_management.enable_firing_label: "Enable firing for:"
+chaosx.tag_management.current_filter: "[GetCurrentCountryFilter]"
+chaosx.tag_management.filter_prev.tt: "Cycle to previous country filter mode"
+chaosx.tag_management.filter_next.tt: "Cycle to next country filter mode"
+chaosx.tag_management.current_sort: "[GetCurrentContinentSort]"
+chaosx.tag_management.sort_prev.tt: "Cycle to previous continent sort mode"
+chaosx.tag_management.sort_next.tt: "Cycle to next continent sort mode"
+chaosx.tag_management.selected_tag: "§Y[GetSelectedTag]§!"
+chaosx.tag_management.selected_tag_name: "[GetSelectedTagName]"
+chaosx.tag_management.tag_decrease.tt: "§YDecrease Tag§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! Decrease by current increment mode\n §WRight Click:§! Change increment mode (1/5/10)\n\n§YNavigates through countries based on current filter and sort§!"
+chaosx.tag_management.tag_increase.tt: "§YIncrease Tag§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! Increase by current increment mode\n §WRight Click:§! Change increment mode (1/5/10)\n\n§YNavigates through countries based on current filter and sort§!"
+chaosx.tag_management.enable_for_selected: "Enable Selected"
+chaosx.tag_management.enable_for_selected.tt: "§YEnable Event System§!\n\nEnables automatic event firing for the selected country"
+chaosx.tag_management.disable_for_selected: "Disable Selected"
+chaosx.tag_management.disable_for_selected.tt: "§YDisable Event System§!\n\nDisables automatic event firing for the selected country"
+chaosx.tag_management.auto_enable_switch: "Auto-Enable on Tag Switch"
+chaosx.tag_management.auto_enable_switch.tt: "§YAuto-Enable on Tag Switch§!\n\nWhen checked, automatically enables the event system when you switch to control a new country (takes a day)"
+chaosx.tag_management.disable_previous: "Disable Previous Tag"
+chaosx.tag_management.disable_previous.tt: "§YDisable Previous Tag§!\n\nWhen checked, automatically disables the event system for your previous country when switching to a new one (takes a day)"
+chaosx.tag_management.currently_enabled: "Currently enabled for:"
+chaosx.tag_management.enabled_list: "[GetEnabledCountriesList]"
+chaosx.tag_management.no_countries_enabled: "No countries enabled"
+chaosx.tag_management.no_countries_found: "No country is selected!"
+chaosx.tag_management.none_selected: "§YNone§!"
 
 settings.major.colored: "§RMajor§!"
 settings.minor_repeatable.colored: "§GRepeatable§!"
 settings.minor_fire_once.colored: "§YFire-Once§!"
 settings.all_events.colored: "§WAll Events§!"
 
+# Country Filter Values
+settings.country_filter.all: "§WAll§!"
+settings.country_filter.enabled: "§GEnabled Only§!"
+settings.country_filter.disabled: "§RDisabled Only§!"
+
+# Continent Sort Values
+settings.continent_sort.alphabetical: "§WAll Continents§!"
+settings.continent_sort.europe: "§YEurope§!"
+settings.continent_sort.asia: "§OAsia§!"
+settings.continent_sort.africa: "§LAfrica§!"
+settings.continent_sort.north_america: "§GNorth America§!"
+settings.continent_sort.south_america: "§RSouth America§!"
+settings.continent_sort.oceania: "§BOceania§!"
+settings.continent_sort.middle_east: "§8Middle- East§!"
+
+# Tag Management Filter Tooltips
+chaosx.tag_management.filter_prev.tt: "Cycle to previous country filter mode"
+chaosx.tag_management.filter_next.tt: "Cycle to next country filter mode"
+chaosx.tag_management.sort_prev.tt: "Cycle to previous continent sort mode"
+chaosx.tag_management.sort_next.tt: "Cycle to next continent sort mode"
+
 # Debug/Log Keys
 CHAOS_REDUX_SEPARATOR: "======================================================"
 CHAOS_REDUX_SUBSECTION: "------------------------------------------------------"
 
-# Timer System Dynamic Text
-timer_current_settings: "Current: [?timer_min_days] - [?timer_max_days] days"
-timer_decrement_info: "Min cap: [?settings_timer_min_decrement_cap] | Max cap: [?settings_timer_max_decrement_cap]"
-timer_window_countdown: "[?event_timer_days] days"
+# Timer Window
+chaosx.timer_window.countdown: "days until next event: §Y[?event_timer_days]§!"
+chaosx.timer_window.countdown.never: "days until next event: §YNever§!"
+
+# Warning Message
+chaosx.warning_text: "§YAutomatic event firing is disabled!§!"
+
+# Chaos Meter Interface
+chaosx.chaos_meter.header: "§YChaos Meter§!"
+chaosx.chaos_meter.value_label: "Chaos Value:"
+chaosx.chaos_meter.current_value: "[GetSettingsChaosValue]"
+chaosx.chaos_meter.decrease.tt: "§YDecrease Chaos Value by [GetChaosIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! -[GetChaosIncrementValue]\n §WRight Click:§! Change increment mode (1/5/10)"
+chaosx.chaos_meter.increase.tt: "§YIncrease Chaos Value by [GetChaosIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! +[GetChaosIncrementValue]\n §WRight Click:§! Change increment mode (1/5/10)"
+chaosx.chaos_meter.tier_label: "Tier:"
+chaosx.chaos_meter.current_tier: "[GetSettingsChaosTierName]"
+chaosx.chaos_meter.tier_prev.tt: "§YSwitch to Previous Tier§!\n\n§GClick to cycle through chaos tiers:§!\n §WCalm World (0)§!\n §WWorld Collapse (1000+)§!\n §WCritical (800)§!\n §WChaos Tier (600)§!\n §WRising Chaos (400)§!\n §WGathering Storm (200)§!"
+chaosx.chaos_meter.tier_next.tt: "§YSwitch to Next Tier§!\n\n§GClick to cycle through chaos tiers:§!\n §WCalm World (0)§!\n §WGathering Storm (200)§!\n §WRising Chaos (400)§!\n §WChaos Tier (600)§!\n §WCritical (800)§!\n §WWorld Collapse (1000+)§!"
+chaosx.chaos_meter.preview_header: "Preview:"
+chaosx.chaos_meter.update_button: "Update Chaos Meter"
+chaosx.chaos_meter.update_button.tt: "Applies the current settings values to the actual chaos meter"
+chaosx.chaos_meter.disable_checkbox: "Disable Chaos Meter"
+chaosx.chaos_meter.disable_checkbox.tt: "When checked, the chaos meter mechanics will be disabled and it will stop updating"
+chaosx.chaos_meter.actual_value: "[GetActualChaosValue]"
+chaosx.chaos_meter.info_note: "§YNOTE:§! Chaos Meter is global"

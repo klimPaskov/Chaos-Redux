@@ -1,13 +1,156 @@
+@MIN_TIMER_RANDOM_START = 7
+@MAX_TIMER_RANDOM_START = 30
+
+@DEFAULT_AUTO_ENABLE_ON_SWITCH = 1
+@DEFAULT_DISABLE_PREVIOUS_TAG = 1
+
 on_actions = {
-    # Daily check for dynamic event timer
+
+    # Initialization and activation of the event system
+    on_startup = {
+        effect = {
+            # Global initialization
+            random_country = {
+                initialize_event_system = yes
+                initialize_chaos_meter_system = yes
+
+                set_variable = { global.settings_auto_enable_on_switch = @DEFAULT_AUTO_ENABLE_ON_SWITCH }
+                set_variable = { global.settings_disable_previous_tag = @DEFAULT_DISABLE_PREVIOUS_TAG }
+
+                # Initialize continent arrays (Tag Management)
+                update_filtered_countries_list = yes
+                # log = "CHAOS REDUX TAG MANAGEMENT: Continent arrays populated - Europe: [?global.europe_countries^num], Asia: [?global.asia_countries^num], Africa: [?global.africa_countries^num], North America: [?global.north_america_countries^num], South America: [?global.south_america_countries^num], Oceania: [?global.oceania_countries^num], Middle-East: [?global.middle_east_countries^num]"
+            }
+
+            # Player(s) initialization
+            every_country = {
+                limit = { is_ai = no }
+                if = {
+                    limit = { has_global_flag = event_system_initialized }
+                    country_event = chaosx.activation.1
+                }
+
+                # Initialize tag switch detection variable for current human players
+                set_variable = { was_human_yesterday = 1 }
+            }
+
+            # All countries initialization
+            every_possible_country = {
+                limit = { always = yes }
+
+                set_variable_to_random = {
+                    var = event_timer_days
+                    min = @MIN_TIMER_RANDOM_START
+                    max = @MAX_TIMER_RANDOM_START
+                    integer = yes
+                }
+                if = {
+                    limit = { is_ai = no }
+                    log = "CHAOS REDUX EVENT SYSTEM: First event timer set to [?event_timer_days] days for [THIS.GetName]"
+                }
+
+                initialize_dynamic_timer = yes
+                initialize_settings_system = yes
+            }
+
+            random_country = {
+                limit = { is_ai = no }
+                set_country_flag = is_multiplayer_host
+            }
+        }
+    }
+
+    # Daily check (for every country)
     on_daily = {
         effect = {
+            # Tag switch detection system
+            if = {
+                limit = { has_global_flag = event_system_initialized }
+
+                if = {
+                    limit = {
+                        OR = {
+                            check_variable = { global.settings_auto_enable_on_switch = 1 }
+                            check_variable = { global.settings_disable_previous_tag = 1 }
+                        }
+                    }
+
+                    # Initialize tracking variable if not set
+                    if = {
+                        limit = { NOT = { has_variable = was_human_yesterday } }
+                        set_variable = { was_human_yesterday = 0 }
+                    }
+
+                    # Check for tag switch TO this country (now human, wasn't yesterday)
+                    if = {
+                        limit = {
+                            is_ai = no
+                            check_variable = { was_human_yesterday = 0 }
+                            check_variable = { global.settings_auto_enable_on_switch = 1 }
+                        }
+
+                        log = "CHAOS REDUX TAG MANAGEMENT: New human player detected for [This.GetTag] ([This.GetName])"
+
+                        # Auto-enable events for new human player
+                        if = {
+                            limit = { NOT = { has_country_flag = events_activated } }
+
+                            set_country_flag = events_activated
+
+                            # Add to enabled countries list
+                            if = {
+                                limit = { NOT = { is_in_array = { array = global.enabled_countries_list value = THIS } } }
+                                add_to_array = { array = global.enabled_countries_list value = THIS }
+                                add_to_variable = { global.enabled_countries_count = 1 }
+                            }
+
+                            log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for new human player [This.GetTag] ([This.GetName])"
+                        }
+                    }
+
+                    # Check for tag switch FROM this country (now AI, was human yesterday)
+                    if = {
+                        limit = {
+                            is_ai = yes
+                            check_variable = { was_human_yesterday = 1 }
+                            check_variable = { global.settings_disable_previous_tag = 1 }
+                        }
+
+                        log = "CHAOS REDUX TAG MANAGEMENT: Former human player detected for [This.GetTag] ([This.GetName])"
+
+                        # Auto-disable events for former human player
+                        if = {
+                            limit = { has_country_flag = events_activated }
+
+                            clr_country_flag = events_activated
+
+                            # Remove from enabled countries list
+                            if = {
+                                limit = { is_in_array = { array = global.enabled_countries_list value = THIS } }
+                                remove_from_array = { array = global.enabled_countries_list value = THIS }
+                                subtract_from_variable = { global.enabled_countries_count = 1 }
+                            }
+
+                            log = "CHAOS REDUX TAG MANAGEMENT: Auto-disabled event system for former human player [This.GetTag] ([This.GetName])"
+                        }
+                    }
+
+                    # Update tracking variable for next day
+                    if = {
+                        limit = { is_ai = no }
+                        set_variable = { was_human_yesterday = 1 }
+                    }
+                    else = {
+                        set_variable = { was_human_yesterday = 0 }
+                    }
+                }
+            }
+
+            # Handle event timers for countries with events activated
             if = {
                 limit = {
-                    # TODO: events_activated is now a country flag. When tag switch happens, event system won't be firing events for the player.
                     has_country_flag = events_activated
                     has_global_flag = event_system_initialized
-                    is_ai = no
                 }
 
                 # Handle dynamic event timer
@@ -958,11 +1101,8 @@ on_actions = {
                     NOT = { has_global_flag = event_system_initialized }
                     is_ai = no
                 }
-                every_country = {
-                    limit = { is_ai = no }
-                    log = "Warning: Event system not initialized, initializing now..."
-                    initialize_event_system = yes
-                }
+                log = "Warning: Event system not initialized, initializing now..."
+                initialize_event_system = yes
             }
         }
     }

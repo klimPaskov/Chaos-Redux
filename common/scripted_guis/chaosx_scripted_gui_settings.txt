@@ -21,6 +21,8 @@ scripted_gui = {
 
             timer_system_button_click = {
                 open_timer_system_menu = yes
+                # Update the enabled countries list when opening timer system
+                update_enabled_countries_list = yes
             }
 
             chaos_meter_button_click = {
@@ -39,13 +41,20 @@ scripted_gui = {
                 toggle_scenarios_menu = yes
             }
 
-            # Trigger Events Interface Effects
             events_header_left_arrow_click = {
-                toggle_events_view = yes
+                switch_trigger_events_headers = yes  # Back to trigger events from clusters
             }
 
             events_header_right_arrow_click = {
-                toggle_events_view = yes
+                switch_trigger_events_headers = yes  # Go to clusters from trigger events
+            }
+
+            clusters_header_left_arrow_click = {
+                switch_trigger_events_headers = yes  # Back to trigger events from clusters
+            }
+
+            clusters_header_right_arrow_click = {
+                switch_trigger_events_headers = yes  # Back to trigger events from clusters (same as left)
             }
 
             event_filter_left_arrow_click = {
@@ -148,13 +157,107 @@ scripted_gui = {
                 update_timer_from_settings = yes
             }
 
+            event_firing_checkbox_click = {
+                toggle_event_system = yes
+            }
+
+            # Tag Management Interface Effects
+            timer_header_left_arrow_click = {
+                toggle_timer_system_view = yes
+            }
+
+            timer_header_right_arrow_click = {
+                toggle_timer_system_view = yes
+            }
+
+            country_filter_left_arrow_click = {
+                cycle_country_filter_prev = yes
+            }
+
+            country_filter_right_arrow_click = {
+                cycle_country_filter_next = yes
+            }
+
+            continent_sort_left_arrow_click = {
+                cycle_continent_sort_prev = yes
+            }
+
+            continent_sort_right_arrow_click = {
+                cycle_continent_sort_next = yes
+            }
+
+            tag_decrease_click = {
+                decrease_tag_index = yes
+            }
+
+            tag_decrease_right_click = {
+                toggle_tag_increment_mode = yes
+            }
+
+            tag_increase_click = {
+                increase_tag_index = yes
+            }
+
+            tag_increase_right_click = {
+                toggle_tag_increment_mode = yes
+            }
+
+            enable_for_selected_tag_button_click = {
+                enable_for_selected_tag = yes
+            }
+
+            disable_for_selected_tag_button_click = {
+                disable_for_selected_tag = yes
+            }
+
+            auto_enable_switch_checkbox_click = {
+                toggle_auto_enable_on_switch = yes
+            }
+
+            disable_previous_tag_checkbox_click = {
+                toggle_disable_previous_tag = yes
+            }
+
             # Event Clusters Interface Effects
             clusters_header_left_arrow_click = {
-                toggle_events_view = yes
+                switch_trigger_events_headers = yes  # Back to trigger events from clusters
             }
 
             clusters_header_right_arrow_click = {
-                toggle_events_view = yes
+                switch_trigger_events_headers = yes
+            }
+
+            # Chaos Meter Interface Effects
+            chaos_value_decrease_click = {
+                decrease_chaos_meter_value = yes
+            }
+
+            chaos_value_decrease_right_click = {
+                toggle_chaos_increment_mode = yes
+            }
+
+            chaos_value_increase_click = {
+                increase_chaos_meter_value = yes
+            }
+
+            chaos_value_increase_right_click = {
+                toggle_chaos_increment_mode = yes
+            }
+
+            chaos_tier_prev_click = {
+                cycle_chaos_tier_prev = yes
+            }
+
+            chaos_tier_next_click = {
+                cycle_chaos_tier_next = yes
+            }
+
+            chaos_update_button_click = {
+                update_actual_chaos_meter = yes
+            }
+
+            chaos_disable_checkbox_click = {
+                toggle_chaos_meter_disabled = yes
             }
         }
 
@@ -165,7 +268,7 @@ scripted_gui = {
             }
 
             timer_system_button_click_enabled = {
-                has_country_flag = events_activated
+                always = yes
             }
 
             chaos_meter_button_click_enabled = {
@@ -191,10 +294,20 @@ scripted_gui = {
             # Trigger Events Interface Triggers
             events_header_left_arrow_click_enabled = {
                 has_country_flag = show_trigger_events_menu
+                # Always enabled - left arrow switches between views
             }
 
             events_header_right_arrow_click_enabled = {
                 has_country_flag = show_trigger_events_menu
+                # Always enabled - right arrow switches between views
+            }
+
+            clusters_header_left_arrow_click_enabled = {
+                always = no  # Disabled - using main header arrows instead
+            }
+
+            clusters_header_right_arrow_click_enabled = {
+                always = no  # Disabled - using main header arrows instead
             }
 
             event_filter_left_arrow_click_enabled = {
@@ -307,53 +420,180 @@ scripted_gui = {
             }
 
             # Timer System Interface Triggers
+            timer_header_left_arrow_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_header_right_arrow_click_enabled = {
+                has_country_flag = show_timer_system_menu
+            }
+
             timer_min_decrease_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
                 NOT = { check_variable = { settings_timer_min_days = 5 } }
             }
 
             timer_min_decrease_right_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_min_increase_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
                 NOT = { check_variable = { settings_timer_min_days = 125 } }
                 NOT = { check_variable = { settings_timer_min_days = settings_timer_max_days } }
             }
 
             timer_min_increase_right_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_max_decrease_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
                 NOT = { check_variable = { settings_timer_max_days = settings_timer_min_days } }
             }
 
             timer_max_decrease_right_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_max_increase_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
                 NOT = { check_variable = { settings_timer_max_days = 125 } }
             }
 
             timer_max_increase_right_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_window_checkbox_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+            }
+
+            event_firing_checkbox_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_reset_defaults_button_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_update_button_click_enabled = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+                has_country_flag = events_activated
+            }
+
+            # Tag Management Interface Triggers
+            country_filter_left_arrow_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            country_filter_right_arrow_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            continent_sort_left_arrow_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            continent_sort_right_arrow_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_decrease_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_decrease_right_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_increase_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_increase_right_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            enable_for_selected_tag_button_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+                # Only enabled if a country is selected and doesn't already have events activated
+                has_variable = settings_current_selected_country
+                var:settings_current_selected_country = { NOT = { has_country_flag = events_activated } }
+            }
+
+            disable_for_selected_tag_button_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+                # Only enabled if a country is selected and has events activated
+                has_variable = settings_current_selected_country
+                var:settings_current_selected_country = { has_country_flag = events_activated }
+            }
+
+            auto_enable_switch_checkbox_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            disable_previous_tag_checkbox_click_enabled = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            # Chaos Meter Interface Triggers
+            chaos_value_decrease_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+                NOT = { check_variable = { settings_chaos_meter_value = 0 } }
+            }
+
+            chaos_value_decrease_right_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_value_increase_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+                NOT = { check_variable = { settings_chaos_meter_value = 9999 } }
+            }
+
+            chaos_value_increase_right_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_tier_prev_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_tier_next_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_update_button_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_disable_checkbox_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
             }
 
             # Visibility triggers for trigger events content
@@ -361,108 +601,119 @@ scripted_gui = {
                 has_country_flag = show_trigger_events_menu
             }
 
-            # Individual element visibility (only show when in Events view)
+            # Events content container visibility (only show when NOT in clusters view)
+            events_content_visible = {
+                has_country_flag = show_trigger_events_menu
+                NOT = { has_country_flag = show_event_clusters_view }  # Hide when in clusters view
+            }
+
+            # Individual element visibility (both arrows always show when in trigger events menu)
             events_header_left_arrow_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                # Always visible when in trigger events menu
             }
 
             events_header_right_arrow_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                # Always visible when in trigger events menu
             }
 
             events_header_text_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }  # Show when NOT in clusters view
+            }
+
+            event_clusters_header_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view  # Only show when in clusters view
             }
 
             event_filter_left_arrow_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }  # Hide when in clusters view
             }
 
             event_filter_right_arrow_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }  # Hide when in clusters view
             }
 
             event_filter_label_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }  # Hide when in clusters view
             }
 
             event_id_label_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             event_id_decrease_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             event_id_increase_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             event_id_value_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
             event_id_bg_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             event_id_increment_text_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             event_name_display_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             selected_event_type_display_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
             event_type_display_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             trigger_event_button_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             trigger_event_text_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             trigger_random_event_button_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             trigger_random_event_text_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             last_fired_header_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             last_fired_info_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             # show_events_log_checkbox_visible = {
@@ -477,22 +728,22 @@ scripted_gui = {
 
             force_trigger_button_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             force_trigger_text_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             disable_event_system_button_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             disable_event_system_text_visible = {
                 has_country_flag = show_trigger_events_menu
-                has_country_flag = show_events_view
+                NOT = { has_country_flag = show_event_clusters_view }
             }
 
             # Event Clusters visibility
@@ -502,13 +753,11 @@ scripted_gui = {
             }
 
             clusters_header_left_arrow_visible = {
-                has_country_flag = show_trigger_events_menu
-                has_country_flag = show_event_clusters_view
+                always = no  # Hidden - using main header arrows instead
             }
 
             clusters_header_right_arrow_visible = {
-                has_country_flag = show_trigger_events_menu
-                has_country_flag = show_event_clusters_view
+                always = no  # Hidden - using main header arrows instead
             }
 
             clusters_header_text_visible = {
@@ -526,81 +775,367 @@ scripted_gui = {
                 has_country_flag = show_timer_system_menu
             }
 
+            # Timer Interval Content Visibility
+            timer_interval_content_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+            }
+
+            # Tag Management Content Visibility
+            tag_management_content_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
             # Timer System Individual Element Visibility
             timer_interval_header_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+            }
+
+            tag_management_header_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            timer_header_left_arrow_visible = {
+                has_country_flag = show_timer_system_menu
+            }
+
+            timer_header_right_arrow_visible = {
                 has_country_flag = show_timer_system_menu
             }
 
             timer_min_label_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_min_decrease_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_min_bg_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_min_value_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_min_increase_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_max_label_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_max_decrease_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_max_bg_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_max_value_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_max_increase_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_current_settings_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+            }
+            days_until_next_event_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
-            timer_decrement_info_visible = {
+            timer_system_note_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_window_checkbox_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+            }
+
+            event_firing_checkbox_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+            }
+
+            event_firing_text_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_window_text_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_reset_defaults_button_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_reset_defaults_text_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_update_button_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
             }
 
             timer_update_text_visible = {
                 has_country_flag = show_timer_system_menu
+                has_country_flag = show_timer_interval_view
+            }
+
+            # Tag Management Individual Element Visibility
+            tag_enable_firing_label_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            country_filter_left_arrow_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            country_filter_label_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            country_filter_right_arrow_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            continent_sort_left_arrow_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            continent_sort_label_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            continent_sort_right_arrow_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_label_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_decrease_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_selected_tag_name_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+            tag_selected_tag_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_bg_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_value_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_increase_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            selected_tag_name_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            selected_tag_status_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_status_display_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            tag_decrement_info_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            enable_for_selected_tag_button_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            enable_for_selected_tag_text_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            disable_for_selected_tag_button_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            disable_for_selected_tag_text_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            enabled_list_label_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            enabled_list_display_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            currently_enabled_label_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            enabled_list_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            auto_enable_switch_checkbox_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            auto_enable_switch_text_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            disable_previous_tag_checkbox_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            disable_previous_tag_text_visible = {
+                has_country_flag = show_timer_system_menu
+                has_country_flag = show_tag_management_view
+            }
+
+            # Chaos Meter Content Visibility
+            chaos_meter_content_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            # Individual Chaos Meter Element Visibility
+            chaos_meter_header_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_value_label_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_value_decrease_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_value_bg_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_value_display_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_value_increase_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_tier_label_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_tier_prev_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_tier_display_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_tier_next_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_preview_header_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_preview_meter_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_update_button_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_update_text_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_current_actual_value_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_disable_checkbox_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_disable_text_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
+            chaos_info_note_visible = {
+                has_country_flag = show_chaos_meter_menu
             }
         }
 
@@ -644,6 +1179,57 @@ scripted_gui = {
             # Dynamic sprite for timer window checkbox
             timer_window_checkbox = {
                 image = "[GetTimerWindowCheckboxSprite]"
+            }
+
+            # Dynamic sprite for event firing checkbox
+            event_firing_checkbox = {
+                image = "[GetEventSystemButtonSprite]"
+            }
+
+            # Dynamic sprites for tag management increment/decrement buttons
+            tag_decrease = {
+                image = "[GetTagDecrementSprite]"
+            }
+
+            tag_increase = {
+                image = "[GetTagIncrementSprite]"
+            }
+
+            # Dynamic sprites for tag management checkboxes
+            auto_enable_switch_checkbox = {
+                image = "[GetAutoEnableSwitchCheckboxSprite]"
+            }
+
+            disable_previous_tag_checkbox = {
+                image = "[GetDisablePreviousTagCheckboxSprite]"
+            }
+
+            # Dynamic sprites for enable/disable buttons based on selected tag state
+            enable_for_selected_tag_button = {
+                frame = "[GetSelectedTagEnableButtonFrame]"
+            }
+
+            disable_for_selected_tag_button = {
+                frame = "[GetSelectedTagDisableButtonFrame]"
+            }
+
+            # Dynamic sprites for chaos meter increment/decrement buttons
+            chaos_value_decrease = {
+                image = "[GetChaosDecrementSprite]"
+            }
+
+            chaos_value_increase = {
+                image = "[GetChaosIncrementSprite]"
+            }
+
+            # Dynamic sprite for chaos meter preview
+            chaos_preview_meter = {
+                image = "[GetSettingsChaosMeterSprite]"
+            }
+
+            # Dynamic sprite for chaos meter disable checkbox
+            chaos_disable_checkbox = {
+                image = "[GetChaosMeterDisabledCheckboxSprite]"
             }
         }
 
@@ -689,6 +1275,32 @@ scripted_gui = {
         visible = {
             has_country_flag = timer_window_enabled
         }
+        ai_enabled = {
+            always = no
+        }
+    }
+    chaosx_warning_window_gui = {
+        window_name = "chaosx_warning_window"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            NOT = { has_country_flag = events_activated }
+        }
+
+        effects = {
+            chaosx_reenable_button_click = {
+                set_country_flag = events_activated
+                log = "CHAOS REDUX WARNING: Event system re-enabled via warning window"
+            }
+        }
+
+        triggers = {
+            chaosx_reenable_button_click_enabled = {
+                always = yes
+            }
+        }
+
         ai_enabled = {
             always = no
         }

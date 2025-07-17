@@ -9,8 +9,8 @@
 # ============================================================================
 
 # Event System Defaults
-@DEFAULT_MIN_DAYS = 20
-@DEFAULT_MAX_DAYS = 30
+@DEFAULT_MIN_DAYS = 25
+@DEFAULT_MAX_DAYS = 35
 @DEFAULT_MIN_DECREMENT_CAP = 15
 @DEFAULT_MAX_DECREMENT_CAP = 5
 @DEFAULT_EVENT_WEIGHT = 1000
@@ -46,10 +46,53 @@
 @TIMER_RANDOM_INITIAL_MIN = 7
 
 # Dynamic cap management constants
-@DYNAMIC_CAP_BASE_VALUE = 30
 @DYNAMIC_CAP_STEP_SIZE = 3
+@DYNAMIC_CAP_FLOOR_THRESHOLD = 21
 @DYNAMIC_CAP_BASE_FACTOR = 5
-@DYNAMIC_CAP_FLOOR_THRESHOLD = 16
+
+# Tag Management Constants
+@DEFAULT_TAG_MANAGEMENT_MODE = 5
+@DEFAULT_AUTO_ENABLE_ON_SWITCH = 1
+@DEFAULT_DISABLE_PREVIOUS_TAG = 1
+
+# Country Filter Constants
+@COUNTRY_FILTER_ALL = 0
+@COUNTRY_FILTER_ENABLED_ONLY = 1
+@COUNTRY_FILTER_DISABLED_ONLY = 2
+
+# Continent Sorting Constants
+@CONTINENT_SORT_ALPHABETICAL = 0
+@CONTINENT_SORT_EUROPE = 1
+@CONTINENT_SORT_ASIA = 2
+@CONTINENT_SORT_AFRICA = 3
+@CONTINENT_SORT_NORTH_AMERICA = 4
+@CONTINENT_SORT_SOUTH_AMERICA = 5
+@CONTINENT_SORT_OCEANIA = 6
+@CONTINENT_SORT_MIDDLE_EAST = 7
+
+# Chaos Meter Constants
+@CHAOS_TIER_CALM_MIN = 0
+@CHAOS_TIER_CALM_MAX = 199
+@CHAOS_TIER_GATHERING_MIN = 200
+@CHAOS_TIER_GATHERING_MAX = 399
+@CHAOS_TIER_RISING_MIN = 400
+@CHAOS_TIER_RISING_MAX = 599
+@CHAOS_TIER_CHAOS_MIN = 600
+@CHAOS_TIER_CHAOS_MAX = 799
+@CHAOS_TIER_CRITICAL_MIN = 800
+@CHAOS_TIER_CRITICAL_MAX = 999
+@CHAOS_TIER_COLLAPSE_MIN = 1000
+@CHAOS_TIER_COLLAPSE_PLUS = 1001
+
+@CHAOS_TIER_CALM = 0
+@CHAOS_TIER_GATHERING = 1
+@CHAOS_TIER_RISING = 2
+@CHAOS_TIER_CHAOS = 3
+@CHAOS_TIER_CRITICAL = 4
+@CHAOS_TIER_COLLAPSE = 5
+
+@DEFAULT_CHAOS_INCREMENT_MODE = 5
+@DEFAULT_CHAOS_METER_DISABLED = 0
 
 # ============================================================================
 # MENU SYSTEM PLACEHOLDERS
@@ -59,19 +102,30 @@
 clear_all_menu_flags = {
     clr_country_flag = show_trigger_events_menu
     clr_country_flag = show_timer_system_menu
+    clr_country_flag = show_chaos_meter_menu
     clr_country_flag = show_events_view
     clr_country_flag = show_event_clusters_view
+    clr_country_flag = show_timer_interval_view
+    clr_country_flag = show_tag_management_view
 }
 
 # Open timer system menu
 open_timer_system_menu = {
     clear_all_menu_flags = yes
     set_country_flag = show_timer_system_menu
+    set_country_flag = show_timer_interval_view
+    clr_country_flag = show_tag_management_view
 }
 
 open_chaos_meter_menu = {
     clear_all_menu_flags = yes
-    log = "Chaos Meter menu requested (not yet implemented)"
+    set_country_flag = show_chaos_meter_menu
+
+    # Initialize if not already done
+    if = {
+        limit = { NOT = { has_variable = settings_chaos_meter_value } }
+        initialize_chaos_meter_settings = yes
+    }
 }
 
 open_advanced_settings_menu = {
@@ -107,9 +161,6 @@ open_chaosx_settings = {
             limit = { NOT = { has_variable = settings_events_increment_mode } }
             set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
         }
-
-        set_country_flag = events_activated
-        clr_country_flag = force_trigger_mode_enabled
     }
 }
 
@@ -127,12 +178,16 @@ close_chaosx_settings = {
 initialize_settings_system = {
     initialize_trigger_events_settings = yes
     initialize_timer_system_settings = yes
+    initialize_tag_management_settings = yes
+    initialize_chaos_meter_settings = yes
 }
 
 # Reset all settings to their original values
 reset_all_settings = {
     reset_trigger_events = yes
     reset_timer_to_defaults = yes
+    reset_tag_management_to_defaults = yes
+    reset_chaos_meter_to_defaults = yes
     log = "CHAOS REDUX SETTINGS: All settings reset to default values"
 }
 
@@ -161,12 +216,11 @@ initialize_trigger_events_settings = {
     set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
 
     update_event_id_display = yes
-    update_last_fired_event_display = yes
 }
 
 # Open trigger events menu
 open_trigger_events_menu = {
-    clr_country_flag = show_timer_system_menu
+    clear_all_menu_flags = yes
     set_country_flag = show_trigger_events_menu
     set_country_flag = show_events_view
     clr_country_flag = show_event_clusters_view
@@ -609,43 +663,43 @@ increase_event_id = {
 # Set increment mode to specific values (for modifier clicks)
 set_increment_mode_to_1 = {
     set_variable = { settings_events_increment_mode = 1 }
-    set_global_flag = settings_increment_mode_1
-    clr_global_flag = settings_increment_mode_10
+    set_country_flag = settings_events_increment_mode_1
+    clr_country_flag = settings_events_increment_mode_10
 }
 
 set_increment_mode_to_5 = {
     set_variable = { settings_events_increment_mode = 5 }
-    clr_global_flag = settings_increment_mode_1
-    clr_global_flag = settings_increment_mode_10
+    clr_country_flag = settings_events_increment_mode_1
+    clr_country_flag = settings_events_increment_mode_10
 }
 
 set_increment_mode_to_10 = {
     set_variable = { settings_events_increment_mode = 10 }
-    clr_global_flag = settings_increment_mode_1
-    set_global_flag = settings_increment_mode_10
+    clr_country_flag = settings_events_increment_mode_1
+    set_country_flag = settings_events_increment_mode_10
 }
 
 # Toggle increment mode (1 -> 5 -> 10 -> 1)
 toggle_increment_mode = {
     if = {
-        limit = { has_global_flag = settings_increment_mode_1 }
+        limit = { has_country_flag = settings_events_increment_mode_1 }
         # Switch from 1 to 5
         set_variable = { settings_events_increment_mode = 5 }
-        clr_global_flag = settings_increment_mode_1
-        clr_global_flag = settings_increment_mode_10
+        clr_country_flag = settings_events_increment_mode_1
+        clr_country_flag = settings_events_increment_mode_10
     }
     else_if = {
-        limit = { has_global_flag = settings_increment_mode_10 }
+        limit = { has_country_flag = settings_events_increment_mode_10 }
         # Switch from 10 to 1
         set_variable = { settings_events_increment_mode = 1 }
-        set_global_flag = settings_increment_mode_1
-        clr_global_flag = settings_increment_mode_10
+        set_country_flag = settings_events_increment_mode_1
+        clr_country_flag = settings_events_increment_mode_10
     }
     else = {
         # Switch from 5 to 10 (default case)
         set_variable = { settings_events_increment_mode = 10 }
-        clr_global_flag = settings_increment_mode_1
-        set_global_flag = settings_increment_mode_10
+        clr_country_flag = settings_events_increment_mode_1
+        set_country_flag = settings_events_increment_mode_10
     }
 }
 
@@ -653,12 +707,12 @@ toggle_increment_mode = {
 update_event_id_display = {
     if = {
         limit = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } }
-        set_global_flag = settings_event_id_zero
+        set_country_flag = settings_event_id_zero
         set_variable = { settings_event_id = @EVENT_TYPE_UNKNOWN }
         set_variable = { settings_event_type = @EVENT_TYPE_UNKNOWN }
     }
     else = {
-        clr_global_flag = settings_event_id_zero
+        clr_country_flag = settings_event_id_zero
         set_temp_variable = { event_id = settings_selected_event_id }
         get_event_type = yes
 
@@ -1012,105 +1066,14 @@ fire_event_by_id = {
 
 # Fire selected event
 fire_selected_event = {
-    if = { limit = { check_variable = { settings_selected_event_id = 1 } } country_event = { id = chaosx.nr1.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 2 } } country_event = { id = chaosx.nr2.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 3 } } country_event = { id = chaosx.nr3.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 4 } } country_event = { id = chaosx.nr4.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 5 } } country_event = { id = chaosx.nr5.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 6 } } country_event = { id = chaosx.nr6.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 7 } } country_event = { id = chaosx.nr7.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 8 } } country_event = { id = chaosx.nr8.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 9 } } country_event = { id = chaosx.nr9.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 10 } } country_event = { id = chaosx.nr10.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 11 } } country_event = { id = chaosx.nr11.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 12 } } country_event = { id = chaosx.nr12.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 13 } } country_event = { id = chaosx.nr13.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 14 } } country_event = { id = chaosx.nr14.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 15 } } country_event = { id = chaosx.nr15.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 16 } } country_event = { id = chaosx.nr16.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 17 } } country_event = { id = chaosx.nr17.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 18 } } country_event = { id = chaosx.nr18.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 19 } } country_event = { id = chaosx.nr19.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 20 } } country_event = { id = chaosx.nr20.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 21 } } country_event = { id = chaosx.nr21.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 22 } } country_event = { id = chaosx.nr22.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 23 } } country_event = { id = chaosx.nr23.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 24 } } country_event = { id = chaosx.nr24.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 25 } } country_event = { id = chaosx.nr25.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 26 } } country_event = { id = chaosx.nr26.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 27 } } country_event = { id = chaosx.nr27.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 28 } } country_event = { id = chaosx.nr28.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 29 } } country_event = { id = chaosx.nr29.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 30 } } country_event = { id = chaosx.nr30.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 31 } } country_event = { id = chaosx.nr31.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 32 } } country_event = { id = chaosx.nr32.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 33 } } country_event = { id = chaosx.nr33.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 34 } } country_event = { id = chaosx.nr34.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 35 } } country_event = { id = chaosx.nr35.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 36 } } country_event = { id = chaosx.nr36.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 37 } } country_event = { id = chaosx.nr37.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 38 } } country_event = { id = chaosx.nr38.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 39 } } country_event = { id = chaosx.nr39.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 40 } } country_event = { id = chaosx.nr40.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 41 } } country_event = { id = chaosx.nr41.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 42 } } country_event = { id = chaosx.nr42.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 43 } } country_event = { id = chaosx.nr43.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 44 } } country_event = { id = chaosx.nr44.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 45 } } country_event = { id = chaosx.nr45.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 46 } } country_event = { id = chaosx.nr46.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 47 } } country_event = { id = chaosx.nr47.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 48 } } country_event = { id = chaosx.nr48.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 49 } } country_event = { id = chaosx.nr49.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 50 } } country_event = { id = chaosx.nr50.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 51 } } country_event = { id = chaosx.nr51.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 52 } } country_event = { id = chaosx.nr52.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 53 } } country_event = { id = chaosx.nr53.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 54 } } country_event = { id = chaosx.nr54.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 55 } } country_event = { id = chaosx.nr55.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 56 } } country_event = { id = chaosx.nr56.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 57 } } country_event = { id = chaosx.nr57.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 58 } } country_event = { id = chaosx.nr58.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 59 } } country_event = { id = chaosx.nr59.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 60 } } country_event = { id = chaosx.nr60.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 61 } } country_event = { id = chaosx.nr61.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 62 } } country_event = { id = chaosx.nr62.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 63 } } country_event = { id = chaosx.nr63.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 64 } } country_event = { id = chaosx.nr64.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 65 } } country_event = { id = chaosx.nr65.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 66 } } country_event = { id = chaosx.nr66.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 67 } } country_event = { id = chaosx.nr67.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 68 } } country_event = { id = chaosx.nr68.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 69 } } country_event = { id = chaosx.nr69.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 70 } } country_event = { id = chaosx.nr70.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 71 } } country_event = { id = chaosx.nr71.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 72 } } country_event = { id = chaosx.nr72.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 73 } } country_event = { id = chaosx.nr73.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 74 } } country_event = { id = chaosx.nr74.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 75 } } country_event = { id = chaosx.nr75.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 76 } } country_event = { id = chaosx.nr76.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 77 } } country_event = { id = chaosx.nr77.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 78 } } country_event = { id = chaosx.nr78.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 79 } } country_event = { id = chaosx.nr79.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 80 } } country_event = { id = chaosx.nr80.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 81 } } country_event = { id = chaosx.nr81.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 82 } } country_event = { id = chaosx.nr82.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 83 } } country_event = { id = chaosx.nr83.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 84 } } country_event = { id = chaosx.nr84.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 85 } } country_event = { id = chaosx.nr85.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 86 } } country_event = { id = chaosx.nr86.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 87 } } country_event = { id = chaosx.nr87.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 88 } } country_event = { id = chaosx.nr88.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 89 } } country_event = { id = chaosx.nr89.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 90 } } country_event = { id = chaosx.nr90.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 91 } } country_event = { id = chaosx.nr91.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 92 } } country_event = { id = chaosx.nr92.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 93 } } country_event = { id = chaosx.nr93.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 94 } } country_event = { id = chaosx.nr94.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 95 } } country_event = { id = chaosx.nr95.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 96 } } country_event = { id = chaosx.nr96.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 97 } } country_event = { id = chaosx.nr97.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 98 } } country_event = { id = chaosx.nr98.1 } }
-    else_if = { limit = { check_variable = { settings_selected_event_id = 99 } } country_event = { id = chaosx.nr99.1 } }
+    meta_effect = {
+        text = {
+            country_event = {
+                id = chaosx.nr[EVENT_ID].1
+            }
+        }
+        EVENT_ID = "[?settings_selected_event_id]"
+    }
 }
 
 # Update last fired event display
@@ -1127,16 +1090,18 @@ update_last_fired_event_display = {
     }
 }
 
-# Switch to event clusters view
-switch_to_event_clusters = {
-    clr_country_flag = show_events_view
-    set_country_flag = show_event_clusters_view
-}
-
-# Switch to events view
-switch_to_events = {
-    set_country_flag = show_events_view
-    clr_country_flag = show_event_clusters_view
+switch_trigger_events_headers = {
+    if = {
+        limit = { has_country_flag = show_events_view }
+        # Already in events view, switch to clusters
+        clr_country_flag = show_events_view
+        set_country_flag = show_event_clusters_view
+    }
+    else = {
+        # Switch to events view
+        clr_country_flag = show_event_clusters_view
+        set_country_flag = show_events_view
+    }
 }
 
 # Toggle event system for current country
@@ -1150,6 +1115,7 @@ toggle_event_system = {
         set_country_flag = events_activated
         log = "CHAOS REDUX SETTINGS: Event system has been ENABLED for [This.GetName]"
     }
+    update_enabled_countries_list = yes
 }
 
 # Toggle force trigger mode for current country
@@ -1476,8 +1442,8 @@ reset_trigger_events = {
     set_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN }
     set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
     set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
-    clr_global_flag = settings_increment_mode_1
-    clr_global_flag = settings_increment_mode_10
+    clr_country_flag = settings_events_increment_mode_1
+    clr_country_flag = settings_events_increment_mode_10
 
     # Reset view to Events view
     set_country_flag = show_events_view
@@ -1514,6 +1480,14 @@ initialize_timer_system_settings = {
     set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
     set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
     set_variable = { settings_timer_increment_mode = 1 }
+
+    # Set default timer increment mode flags
+    set_country_flag = settings_timer_increment_mode_1
+    clr_country_flag = settings_timer_increment_mode_10
+
+    # Set default view to Timer Interval
+    set_country_flag = show_timer_interval_view
+    clr_country_flag = show_tag_management_view
 }
 
 # Update timer value from current settings using dynamic cap calculation
@@ -1597,24 +1571,24 @@ increase_timer_max = {
 # Toggle timer system increment mode
 toggle_timer_increment_mode = {
     if = {
-        limit = { has_global_flag = settings_timer_increment_mode_1 }
+        limit = { has_country_flag = settings_timer_increment_mode_1 }
         # Switch from 1 to 5
         set_variable = { settings_timer_increment_mode = 5 }
-        clr_global_flag = settings_timer_increment_mode_1
-        clr_global_flag = settings_timer_increment_mode_10
+        clr_country_flag = settings_timer_increment_mode_1
+        clr_country_flag = settings_timer_increment_mode_10
     }
     else_if = {
-        limit = { has_global_flag = settings_timer_increment_mode_10 }
+        limit = { has_country_flag = settings_timer_increment_mode_10 }
         # Switch from 10 to 1
         set_variable = { settings_timer_increment_mode = 1 }
-        set_global_flag = settings_timer_increment_mode_1
-        clr_global_flag = settings_timer_increment_mode_10
+        set_country_flag = settings_timer_increment_mode_1
+        clr_country_flag = settings_timer_increment_mode_10
     }
     else = {
         # Switch from 5 to 10 (default case)
         set_variable = { settings_timer_increment_mode = 10 }
-        clr_global_flag = settings_timer_increment_mode_1
-        set_global_flag = settings_timer_increment_mode_10
+        clr_country_flag = settings_timer_increment_mode_1
+        set_country_flag = settings_timer_increment_mode_10
     }
 }
 
@@ -1649,13 +1623,13 @@ reset_timer_to_defaults = {
 
     # Reset timer increment mode to 1
     set_variable = { settings_timer_increment_mode = 1 }
-    set_global_flag = settings_timer_increment_mode_1
-    clr_global_flag = settings_timer_increment_mode_10
+    set_country_flag = settings_timer_increment_mode_1
+    clr_country_flag = settings_timer_increment_mode_10
 
     # Hide timer window
-    # clr_country_flag = timer_window_enabled
+    clr_country_flag = timer_window_enabled
 
-    log = "CHAOS REDUX SETTINGS: Timer system reset to default values"
+    set_country_flag = events_activated
 }
 
 # ============================================================================
@@ -1670,9 +1644,9 @@ calculate_dynamic_caps = {
     set_temp_variable = { min_value = settings_timer_min_days }
     set_temp_variable = { max_value = settings_timer_max_days }
 
-    # Calculate minDecrementCap = minValue - 5 (floor at 0)
+    # Calculate minDecrementCap = minValue - 10 (floor at 0)
     set_temp_variable = { calculated_min_cap = min_value }
-    subtract_from_temp_variable = { calculated_min_cap = @DEFAULT_MAX_DECREMENT_CAP }
+    subtract_from_temp_variable = { calculated_min_cap = 10 }
 
     clamp_temp_variable = {
         var = calculated_min_cap
@@ -1685,9 +1659,9 @@ calculate_dynamic_caps = {
         set_temp_variable = { calculated_max_cap = 0 }
     }
     else = {
-        # Calculate deviation from base value (30)
+        # Calculate deviation from base value (35)
         set_temp_variable = { deviation = max_value }
-        subtract_from_temp_variable = { deviation = @DYNAMIC_CAP_BASE_VALUE }
+        subtract_from_temp_variable = { deviation = @DEFAULT_MAX_DAYS }
 
         # Calculate steps: deviation // 3
         set_temp_variable = { steps = 0 }
@@ -1756,4 +1730,974 @@ calculate_dynamic_caps = {
     # Set final calculated values
     set_variable = { settings_timer_min_decrement_cap = calculated_min_cap }
     set_variable = { settings_timer_max_decrement_cap = calculated_max_cap }
+}
+
+###############################################################################################################
+
+#  #######
+#     #      ##    ####     #    #   ##   #    #   ##    ####  ###### #    # ###### #    # #####
+#     #     #  #  #    #    ##  ##  #  #  ##   #  #  #  #    # #      ##  ## #      ##   #    #
+#     #    #    # #         # ## # #    # # #  # #    # #      #####  # ## # #####  # #  #    #
+#     #    ###### #  ###    #    # ###### #  # # ###### #  ### #      #    # #      #  # #    #
+#     #    #    # #    #    #    # #    # #   ## #    # #    # #      #    # #      #   ##    #
+#     #    #    #  ####     #    # #    # #    # #    #  ####  ###### #    # ###### #    #    #
+
+###############################################################################################################
+
+
+# Initialize tag management settings
+initialize_tag_management_settings = {
+    set_variable = { settings_selected_tag_index = 0 }
+    set_variable = { settings_tag_increment_mode = @DEFAULT_TAG_MANAGEMENT_MODE }
+    set_variable = { global.settings_auto_enable_on_switch = @DEFAULT_AUTO_ENABLE_ON_SWITCH }
+    set_variable = { global.settings_disable_previous_tag = @DEFAULT_DISABLE_PREVIOUS_TAG }
+    set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
+    set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
+}
+
+# Switch to Timer Interval view
+switch_to_timer_interval = {
+    set_country_flag = show_timer_interval_view
+    clr_country_flag = show_tag_management_view
+}
+
+# Switch to Tag Management view
+switch_to_tag_management = {
+    clr_country_flag = show_timer_interval_view
+    set_country_flag = show_tag_management_view
+}
+
+# Toggle between Timer Interval and Tag Management views
+toggle_timer_system_view = {
+    if = {
+        limit = { has_country_flag = show_timer_interval_view }
+        # Switch to tag management
+        clr_country_flag = show_timer_interval_view
+        set_country_flag = show_tag_management_view
+    }
+    else = {
+        # Switch to timer interval
+        set_country_flag = show_timer_interval_view
+        clr_country_flag = show_tag_management_view
+    }
+}
+
+# Get the current filtered country list based on filter and sort settings
+get_current_filtered_country_list = {
+    # First ensure continent arrays are populated
+    update_filtered_countries_list = yes
+
+    # Build the current filtered list based on continent sort setting
+    resize_array = { temp_working_countries_list = 0 }
+
+    if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL } }
+        for_loop_effect = {
+            start = 0
+            end = global.countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.countries^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_EUROPE } }
+        # Use Europe countries array
+        for_loop_effect = {
+            start = 0
+            end = global.europe_countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.europe_countries^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_ASIA } }
+        # Use Asia countries array
+        for_loop_effect = {
+            start = 0
+            end = global.asia_countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.asia_countries^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_AFRICA } }
+        # Use Africa countries array
+        for_loop_effect = {
+            start = 0
+            end = global.africa_countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.africa_countries^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_NORTH_AMERICA } }
+        # Use North America countries array
+        for_loop_effect = {
+            start = 0
+            end = global.north_america_countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.north_america_countries^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_SOUTH_AMERICA } }
+        # Use South America countries array
+        for_loop_effect = {
+            start = 0
+            end = global.south_america_countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.south_america_countries^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_OCEANIA } }
+        # Use Oceania countries array
+        for_loop_effect = {
+            start = 0
+            end = global.oceania_countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.oceania_countries^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_MIDDLE_EAST } }
+        for_loop_effect = {
+            start = 0
+            end = global.middle_east_countries^num
+            value = i
+            add_to_array = { temp_working_countries_list = global.middle_east_countries^i }
+        }
+    }
+
+    # Now apply country filter (All/Enabled Only/Disabled Only)
+    resize_array = { temp_final_countries_list = 0 }
+
+    if = {
+        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_ALL } }
+        # All Countries - use the working list as-is
+        for_loop_effect = {
+            start = 0
+            end = temp_working_countries_list^num
+            value = i
+            add_to_array = { temp_final_countries_list = temp_working_countries_list^i }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_ENABLED_ONLY } }
+        # Enabled Only - filter for countries with events_activated flag
+        for_loop_effect = {
+            start = 0
+            end = temp_working_countries_list^num
+            value = i
+            set_temp_variable = { check_country = temp_working_countries_list^i }
+            var:check_country = {
+                if = {
+                    limit = { has_country_flag = events_activated }
+                    ROOT = { add_to_array = { temp_final_countries_list = PREV } }
+                }
+            }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_DISABLED_ONLY } }
+        # Disabled Only - filter for countries without events_activated flag
+        for_loop_effect = {
+            start = 0
+            end = temp_working_countries_list^num
+            value = i
+            set_temp_variable = { check_country = temp_working_countries_list^i }
+            var:check_country = {
+                if = {
+                    limit = { NOT = { has_country_flag = events_activated } }
+                    ROOT = { add_to_array = { temp_final_countries_list = PREV } }
+                }
+            }
+        }
+    }
+
+    # Set the final list size for navigation
+    set_temp_variable = { temp_current_list_size = temp_final_countries_list^num }
+
+    # log = "CHAOS REDUX TAG MANAGEMENT: Using country filter [?settings_country_filter] and continent sort [?settings_continent_sort] with [?temp_current_list_size] countries"
+}
+
+# Decrease selected tag index
+decrease_tag_index = {
+    # Get the active filtered list
+    get_current_filtered_country_list = yes
+
+    # Handle empty list case
+    if = {
+        limit = { check_variable = { temp_current_list_size = 0 } }
+        set_variable = { settings_selected_tag_index = 0 }
+        log = "CHAOS REDUX TAG MANAGEMENT: Cannot navigate - no countries in current filtered list"
+    }
+    else = {
+        set_temp_variable = { new_index = settings_selected_tag_index }
+        subtract_from_temp_variable = { new_index = settings_tag_increment_mode }
+
+        if = {
+            limit = { check_variable = { new_index < 0 } }
+            # Wrap to last country in current filtered list
+            set_temp_variable = { last_index = temp_current_list_size }
+            subtract_from_temp_variable = { last_index = 1 }
+            set_variable = { settings_selected_tag_index = last_index }
+        }
+        else = {
+            set_variable = { settings_selected_tag_index = new_index }
+        }
+    }
+
+    update_selected_tag_info = yes
+}
+
+# Increase selected tag index
+increase_tag_index = {
+    # Get the active filtered list
+    get_current_filtered_country_list = yes
+
+    # Handle empty list case
+    if = {
+        limit = { check_variable = { temp_current_list_size = 0 } }
+        set_variable = { settings_selected_tag_index = 0 }
+        log = "CHAOS REDUX TAG MANAGEMENT: Cannot navigate - no countries in current filtered list"
+    }
+    else = {
+        set_temp_variable = { new_index = settings_selected_tag_index }
+        add_to_temp_variable = { new_index = settings_tag_increment_mode }
+
+        if = {
+            limit = { OR = {
+                check_variable = { new_index = temp_current_list_size }
+                check_variable = { new_index > temp_current_list_size }
+            } }
+            # Wrap to first country in current filtered list
+            set_variable = { settings_selected_tag_index = 0 }
+        }
+        else = {
+            set_variable = { settings_selected_tag_index = new_index }
+        }
+    }
+
+    update_selected_tag_info = yes
+}
+
+# Toggle tag management increment mode
+toggle_tag_increment_mode = {
+    if = {
+        limit = { check_variable = { settings_tag_increment_mode = 1 } }
+        # Switch from 1 to 5
+        set_variable = { settings_tag_increment_mode = 5 }
+    }
+    else_if = {
+        limit = { check_variable = { settings_tag_increment_mode = 10 } }
+        # Switch from 10 to 1
+        set_variable = { settings_tag_increment_mode = 1 }
+    }
+    else = {
+        # Switch from 5 to 10 (default case)
+        set_variable = { settings_tag_increment_mode = 10 }
+    }
+}
+
+# Update selected tag information
+update_selected_tag_info = {
+    # Get the current filtered list first
+    get_current_filtered_country_list = yes
+
+    # Handle empty filtered list case
+    if = {
+        limit = { check_variable = { temp_current_list_size = 0 } }
+        set_variable = { settings_selected_tag_index = 0 }
+        clear_variable = settings_current_selected_country
+        log = "CHAOS REDUX TAG MANAGEMENT: No countries match current filter/sort criteria"
+    }
+    else = {
+        # Validate tag index bounds for current filtered list
+        if = {
+            limit = {
+                OR = {
+                    check_variable = { settings_selected_tag_index < 0 }
+                    check_variable = { settings_selected_tag_index = temp_current_list_size }
+                    check_variable = { settings_selected_tag_index > temp_current_list_size }
+                }
+            }
+            set_variable = { settings_selected_tag_index = 0 }
+        }
+
+        # Store the currently selected country tag for easy access from the filtered list
+        set_variable = { settings_current_selected_country = temp_final_countries_list^settings_selected_tag_index }
+
+        # Log the current selection for debugging
+        if = {
+            limit = { has_variable = settings_current_selected_country }
+            var:settings_current_selected_country = {
+                ROOT = {
+                    log = "CHAOS REDUX TAG MANAGEMENT: Selected tag [PREV.GetTag] ([PREV.GetName]) at index [?settings_selected_tag_index] from filtered list of [?temp_current_list_size] countries"
+                }
+            }
+        }
+    }
+
+    update_enabled_countries_list = yes
+}
+
+# ============================================================================
+# COUNTRY FILTER AND SORTING SYSTEM
+# ============================================================================
+
+# Cycle to previous country filter
+cycle_country_filter_prev = {
+    if = {
+        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_ALL } }
+        set_variable = { settings_country_filter = @COUNTRY_FILTER_DISABLED_ONLY }
+    }
+    else = {
+        subtract_from_variable = { settings_country_filter = 1 }
+    }
+
+    # Reset selection to first country in new filtered list and update
+    set_variable = { settings_selected_tag_index = 0 }
+    update_selected_tag_info = yes
+    log = "CHAOS REDUX TAG MANAGEMENT: Country filter changed to [?settings_country_filter]"
+}
+
+# Cycle to next country filter
+cycle_country_filter_next = {
+    if = {
+        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_DISABLED_ONLY } }
+        set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
+    }
+    else = {
+        add_to_variable = { settings_country_filter = 1 }
+    }
+
+    # Reset selection to first country in new filtered list and update
+    set_variable = { settings_selected_tag_index = 0 }
+    update_selected_tag_info = yes
+    log = "CHAOS REDUX TAG MANAGEMENT: Country filter changed to [?settings_country_filter]"
+}
+
+# Cycle to previous continent sort
+cycle_continent_sort_prev = {
+    if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL } }
+        set_variable = { settings_continent_sort = @CONTINENT_SORT_MIDDLE_EAST }
+    }
+    else = {
+        subtract_from_variable = { settings_continent_sort = 1 }
+    }
+
+    # Reset selection to first country in new filtered list and update
+    set_variable = { settings_selected_tag_index = 0 }
+    update_selected_tag_info = yes
+    log = "CHAOS REDUX TAG MANAGEMENT: Continent sort changed to [?settings_continent_sort]"
+}
+
+# Cycle to next continent sort
+cycle_continent_sort_next = {
+    if = {
+        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_MIDDLE_EAST } }
+        set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
+    }
+    else = {
+        add_to_variable = { settings_continent_sort = 1 }
+    }
+
+    # Reset selection to first country in new filtered list and update
+    set_variable = { settings_selected_tag_index = 0 }
+    update_selected_tag_info = yes
+    log = "CHAOS REDUX TAG MANAGEMENT: Continent sort changed to [?settings_continent_sort]"
+}
+
+# Create continent-based country arrays for navigation
+update_filtered_countries_list = {
+    resize_array = { global.europe_countries = 0 }
+    resize_array = { global.asia_countries = 0 }
+    resize_array = { global.africa_countries = 0 }
+    resize_array = { global.north_america_countries = 0 }
+    resize_array = { global.south_america_countries = 0 }
+    resize_array = { global.oceania_countries = 0 }
+    resize_array = { global.middle_east_countries = 0 }
+
+    # Populate continent arrays by checking each country from global.countries
+    for_loop_effect = {
+        start = 0
+        end = global.countries^num
+        value = i
+
+        # Get the country at this index
+        set_temp_variable = { current_country = global.countries^i }
+
+        # Check which continent this country belongs to using capital state
+        var:current_country = {
+            if = {
+                limit = { any_core_state = { is_on_continent = europe } }
+                if = {
+                    limit = { capital_scope = { is_on_continent = europe }  }
+                    add_to_array = { global.europe_countries = THIS }
+                }
+            }
+            else_if = {
+                limit = { any_core_state = { is_on_continent = asia } }
+                if = {
+                    limit = { capital_scope = { is_on_continent = asia }  }
+                    add_to_array = { global.asia_countries = THIS }
+                }
+            }
+            else_if = {
+                limit = { any_core_state = { is_on_continent = africa } }
+                if = {
+                    limit = { capital_scope = { is_on_continent = africa }  }
+                    add_to_array = { global.africa_countries = THIS }
+                }
+            }
+            else_if = {
+                limit = { any_core_state = { is_on_continent = north_america } }
+                if = {
+                    limit = { capital_scope = { is_on_continent = north_america }  }
+                    add_to_array = { global.north_america_countries = THIS }
+                }
+            }
+            else_if = {
+                limit = { any_core_state = { is_on_continent = south_america } }
+                if = {
+                    limit = { capital_scope = { is_on_continent = south_america }  }
+                    add_to_array = { global.south_america_countries = THIS }
+                }
+            }
+            else_if = {
+                limit = { any_core_state = { is_on_continent = australia } }
+                if = {
+                    limit = { capital_scope = { is_on_continent = australia }  }
+                    add_to_array = { global.oceania_countries = THIS }
+                }
+            }
+            else_if = {
+                limit = { any_core_state = { is_on_continent = middle_east } }
+                if = {
+                    limit = { capital_scope = { is_on_continent = middle_east }  }
+                    add_to_array = { global.middle_east_countries = THIS }
+                }
+            }
+        }
+    }
+}
+
+# ============================================================================
+# TAG MANAGEMENT OPERATIONS
+# ============================================================================
+
+# Enable event system for selected tag
+enable_for_selected_tag = {
+    if = {
+        limit = { has_variable = settings_current_selected_country }
+        # Use the stored selected country
+        var:settings_current_selected_country = {
+            set_country_flag = events_activated
+            log = "CHAOS REDUX TAG MANAGEMENT: Event system ENABLED for [This.GetTag] ([This.GetName])"
+
+            # Add to enabled countries list if not already there
+            if = {
+                limit = { NOT = { is_in_array = { global.enabled_countries_list = THIS } } }
+                ROOT = {
+                    add_to_array = { global.enabled_countries_list = PREV }
+                    add_to_variable = { global.enabled_countries_count = 1 }
+                }
+            }
+        }
+        update_enabled_countries_list = yes
+    }
+    else = {
+        log = "CHAOS REDUX TAG MANAGEMENT: Cannot enable - no country selected in current filter"
+    }
+}
+
+# Disable event system for selected tag
+disable_for_selected_tag = {
+    if = {
+        limit = { has_variable = settings_current_selected_country }
+        # Use the stored selected country
+        var:settings_current_selected_country = {
+            clr_country_flag = events_activated
+            log = "CHAOS REDUX TAG MANAGEMENT: Event system DISABLED for [This.GetTag] ([This.GetName])"
+
+            # Remove from enabled countries list
+            if = {
+                limit = { is_in_array = { global.enabled_countries_list = THIS } }
+                ROOT = {
+                    remove_from_array = { global.enabled_countries_list = PREV }
+                    subtract_from_variable = { global.enabled_countries_count = 1 }
+                }
+            }
+        }
+
+        update_enabled_countries_list = yes
+
+        # Handle disable previous tag functionality if this was the current player
+        if = {
+            limit = {
+                check_variable = { global.settings_disable_previous_tag = 1 }
+                check_variable = { settings_current_selected_country = THIS }
+            }
+            log = "CHAOS REDUX TAG MANAGEMENT: Disabled event system for current player tag as requested"
+        }
+    }
+    else = {
+        log = "CHAOS REDUX TAG MANAGEMENT: Cannot disable - no country selected in current filter"
+    }
+}
+
+# Toggle event system for selected tag
+toggle_event_system_for_selected_tag = {
+    if = {
+        limit = { has_variable = settings_current_selected_country }
+        # Check if this country is currently enabled
+        var:settings_current_selected_country = {
+            if = {
+                limit = { has_country_flag = events_activated }
+                ROOT = { disable_for_selected_tag = yes }
+            }
+            else = {
+                ROOT = { enable_for_selected_tag = yes }
+            }
+        }
+    }
+    else = {
+        log = "CHAOS REDUX TAG MANAGEMENT: Cannot toggle - no country selected in current filter"
+    }
+}
+
+# Toggle auto enable on tag switch setting
+toggle_auto_enable_on_switch = {
+    if = {
+        limit = { check_variable = { global.settings_auto_enable_on_switch = 1 } }
+        set_variable = { global.settings_auto_enable_on_switch = 0 }
+        log = "CHAOS REDUX TAG MANAGEMENT: Auto-enable on tag switch DISABLED (checkbox unchecked)"
+    }
+    else = {
+        set_variable = { global.settings_auto_enable_on_switch = 1 }
+        log = "CHAOS REDUX TAG MANAGEMENT: Auto-enable on tag switch ENABLED (checkbox checked)"
+    }
+
+    # Update global enabled countries list after changing settings
+    update_enabled_countries_list = yes
+}
+
+# Toggle disable previous tag setting
+toggle_disable_previous_tag = {
+    if = {
+        limit = { check_variable = { global.settings_disable_previous_tag = 1 } }
+        set_variable = { global.settings_disable_previous_tag = 0 }
+        log = "CHAOS REDUX TAG MANAGEMENT: Disable previous tag DISABLED (checkbox unchecked)"
+    }
+    else = {
+        set_variable = { global.settings_disable_previous_tag = 1 }
+        log = "CHAOS REDUX TAG MANAGEMENT: Disable previous tag ENABLED (checkbox checked)"
+    }
+
+    # Update global enabled countries list after changing settings
+    update_enabled_countries_list = yes
+}
+
+# Update enabled countries list for display
+update_enabled_countries_list = {
+    set_variable = { global.enabled_countries_count = 0 }
+    clear_array = global.enabled_countries_list
+
+    every_possible_country = {
+        limit = { has_country_flag = events_activated }
+        add_to_array = { global.enabled_countries_list = THIS }
+        add_to_variable = { global.enabled_countries_count = 1 }
+    }
+
+}
+
+# Reset tag management to default values
+reset_tag_management_to_defaults = {
+    set_variable = { settings_selected_tag_index = 0 }
+    set_variable = { settings_tag_increment_mode = @DEFAULT_TAG_MANAGEMENT_MODE }
+    set_variable = { global.settings_auto_enable_on_switch = @DEFAULT_AUTO_ENABLE_ON_SWITCH }
+    set_variable = { global.settings_disable_previous_tag = @DEFAULT_DISABLE_PREVIOUS_TAG }
+    set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
+    set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
+
+    # Re-initialize continent arrays
+    update_filtered_countries_list = yes
+    update_selected_tag_info = yes
+}
+
+# ============================================================================
+# PLAYER TAG SWITCH HANDLING
+# ============================================================================
+
+# Check if the player has switched countries and handle auto-enable/disable settings
+check_for_player_tag_switch = {
+}
+
+# Handle player tag switch based on settings (called manually from GUI)
+handle_player_tag_switch = {
+    # Handle auto-enable on switch
+    if = {
+        limit = { check_variable = { global.settings_auto_enable_on_switch = 1 } }
+        set_country_flag = events_activated
+        # Add to enabled countries list if not already there
+        if = {
+            limit = { NOT = { is_in_array = { global.enabled_countries_list = THIS } } }
+            add_to_array = { global.enabled_countries_list = THIS }
+            add_to_variable = { global.enabled_countries_count = 1 }
+        }
+        log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for [This.GetTag] ([This.GetName]) on tag switch"
+    }
+
+    # Update the enabled countries list
+    update_enabled_countries_list = yes
+}
+
+
+
+
+
+
+
+
+###############################################################################################################
+
+#   #####                                 #     #
+#  #     # #    #   ##    ####   ####     ##   ## ###### ##### ###### #####
+#  #       #    #  #  #  #    # #         # # # # #        #   #      #    #
+#  #       ###### #    # #    #  ####     #  #  # #####    #   #####  #    #
+#  #       #    # ###### #    #      #    #     # #        #   #      #####
+#  #     # #    # #    # #    # #    #    #     # #        #   #      #   #
+#   #####  #    # #    #  ####   ####     #     # ######   #   ###### #    #
+
+###############################################################################################################
+
+# ============================================================================
+# CHAOS METER SYSTEM
+# ============================================================================
+
+# Initialize chaos meter settings
+initialize_chaos_meter_settings = {
+    # Initialize settings chaos meter value to current actual chaos meter value
+    if = {
+        limit = { has_variable = global.chaos_meter_value }
+        set_variable = { var = settings_chaos_meter_value value = global.chaos_meter_value }
+    }
+    else = {
+        set_variable = { settings_chaos_meter_value = 0 }
+    }
+
+    # Initialize increment mode
+    set_variable = { settings_chaos_increment_mode = @DEFAULT_CHAOS_INCREMENT_MODE }
+
+    # Initialize disabled state
+    if = {
+        limit = { NOT = { has_variable = global.settings_chaos_meter_disabled } }
+        set_variable = { global.settings_chaos_meter_disabled = @DEFAULT_CHAOS_METER_DISABLED }
+    }
+
+    # Initialize tier based on current value
+    update_settings_chaos_tier = yes
+
+    set_country_flag = settings_chaos_increment_mode_5
+    clr_country_flag = settings_chaos_increment_mode_10
+}
+
+# ============================================================================
+# CHAOS METER VALUE MANAGEMENT
+# ============================================================================
+
+# Decrease chaos meter value
+decrease_chaos_meter_value = {
+    set_temp_variable = { new_value = settings_chaos_meter_value }
+    subtract_from_temp_variable = { var = new_value value = settings_chaos_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = 0
+    }
+
+    set_variable = { var = settings_chaos_meter_value value = new_value }
+    update_settings_chaos_tier = yes
+}
+
+# Increase chaos meter value
+increase_chaos_meter_value = {
+    set_temp_variable = { new_value = settings_chaos_meter_value }
+    add_to_temp_variable = { var = new_value value = settings_chaos_increment_mode }
+
+    # Cap at 1500 for practical reasons
+    clamp_temp_variable = {
+        var = new_value
+        max = 1500
+    }
+
+    set_variable = { var = settings_chaos_meter_value value = new_value }
+    update_settings_chaos_tier = yes
+}
+
+# Toggle chaos meter increment mode (5 -> 10 -> 1 -> 5)
+toggle_chaos_increment_mode = {
+    if = {
+        limit = { has_country_flag = settings_chaos_increment_mode_5 }
+        # Switch from 5 to 10
+        set_variable = { settings_chaos_increment_mode = 10 }
+        clr_country_flag = settings_chaos_increment_mode_5
+        set_country_flag = settings_chaos_increment_mode_10
+        clr_country_flag = settings_chaos_increment_mode_1
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_increment_mode_10 }
+        # Switch from 10 to 1
+        set_variable = { settings_chaos_increment_mode = 1 }
+        clr_country_flag = settings_chaos_increment_mode_5
+        clr_country_flag = settings_chaos_increment_mode_10
+        set_country_flag = settings_chaos_increment_mode_1
+    }
+    else = {
+        # Switch from 1 to 5 (default case)
+        set_variable = { settings_chaos_increment_mode = 5 }
+        set_country_flag = settings_chaos_increment_mode_5
+        clr_country_flag = settings_chaos_increment_mode_10
+        clr_country_flag = settings_chaos_increment_mode_1
+    }
+}
+
+# ============================================================================
+# CHAOS TIER MANAGEMENT
+# ============================================================================
+
+# Update settings chaos tier based on current settings value
+update_settings_chaos_tier = {
+    # Clear all tier flags first
+    clr_country_flag = settings_chaos_tier_calm
+    clr_country_flag = settings_chaos_tier_gathering
+    clr_country_flag = settings_chaos_tier_rising
+    clr_country_flag = settings_chaos_tier_chaos
+    clr_country_flag = settings_chaos_tier_critical
+    clr_country_flag = settings_chaos_tier_collapse
+
+    # Set appropriate tier flag and value
+    if = {
+        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_CRITICAL_MAX } }
+        set_country_flag = settings_chaos_tier_collapse
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_COLLAPSE }
+    }
+    else_if = {
+        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_CHAOS_MAX } }
+        set_country_flag = settings_chaos_tier_critical
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CRITICAL }
+    }
+    else_if = {
+        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_RISING_MAX } }
+        set_country_flag = settings_chaos_tier_chaos
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CHAOS }
+    }
+    else_if = {
+        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_GATHERING_MAX } }
+        set_country_flag = settings_chaos_tier_rising
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_RISING }
+    }
+    else_if = {
+        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_CALM_MAX } }
+        set_country_flag = settings_chaos_tier_gathering
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_GATHERING }
+    }
+    else = {
+        set_country_flag = settings_chaos_tier_calm
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CALM }
+    }
+}
+
+# Cycle to previous chaos tier
+cycle_chaos_tier_prev = {
+    if = {
+        limit = { has_country_flag = settings_chaos_tier_calm }
+        # From Calm to World Collapse
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_COLLAPSE_PLUS }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_COLLAPSE }
+        clr_country_flag = settings_chaos_tier_calm
+        set_country_flag = settings_chaos_tier_collapse
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_gathering }
+        # From Gathering Storm to Calm World
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CALM_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CALM }
+        clr_country_flag = settings_chaos_tier_gathering
+        set_country_flag = settings_chaos_tier_calm
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_rising }
+        # From Rising Chaos to Gathering Storm
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_GATHERING_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_GATHERING }
+        clr_country_flag = settings_chaos_tier_rising
+        set_country_flag = settings_chaos_tier_gathering
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_chaos }
+        # From Chaos Tier to Rising Chaos
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_RISING_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_RISING }
+        clr_country_flag = settings_chaos_tier_chaos
+        set_country_flag = settings_chaos_tier_rising
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_critical }
+        # From Critical to Chaos Tier
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CHAOS_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CHAOS }
+        clr_country_flag = settings_chaos_tier_critical
+        set_country_flag = settings_chaos_tier_chaos
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_collapse }
+        # From World Collapse to Critical
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CRITICAL_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CRITICAL }
+        clr_country_flag = settings_chaos_tier_collapse
+        set_country_flag = settings_chaos_tier_critical
+    }
+}
+
+# Cycle to next chaos tier
+cycle_chaos_tier_next = {
+    if = {
+        limit = { has_country_flag = settings_chaos_tier_calm }
+        # From Calm to Gathering Storm
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_GATHERING_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_GATHERING }
+        clr_country_flag = settings_chaos_tier_calm
+        set_country_flag = settings_chaos_tier_gathering
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_gathering }
+        # From Gathering Storm to Rising Chaos
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_RISING_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_RISING }
+        clr_country_flag = settings_chaos_tier_gathering
+        set_country_flag = settings_chaos_tier_rising
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_rising }
+        # From Rising Chaos to Chaos Tier
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CHAOS_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CHAOS }
+        clr_country_flag = settings_chaos_tier_rising
+        set_country_flag = settings_chaos_tier_chaos
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_chaos }
+        # From Chaos Tier to Critical
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CRITICAL_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CRITICAL }
+        clr_country_flag = settings_chaos_tier_chaos
+        set_country_flag = settings_chaos_tier_critical
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_critical }
+        # From Critical to World Collapse
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_COLLAPSE_PLUS }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_COLLAPSE }
+        clr_country_flag = settings_chaos_tier_critical
+        set_country_flag = settings_chaos_tier_collapse
+    }
+    else_if = {
+        limit = { has_country_flag = settings_chaos_tier_collapse }
+        # From World Collapse to Calm World
+        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CALM_MIN }
+        set_variable = { settings_chaos_tier = @CHAOS_TIER_CALM }
+        clr_country_flag = settings_chaos_tier_collapse
+        set_country_flag = settings_chaos_tier_calm
+    }
+}
+
+# ============================================================================
+# CHAOS METER UPDATE SYSTEM
+# ============================================================================
+
+# Update actual chaos meter to match preview settings
+update_actual_chaos_meter = {
+    if = {
+        limit = { has_global_flag = event_system_initialized }
+
+        # Set the actual chaos meter value
+        set_variable = { var = global.chaos_meter_value value = settings_chaos_meter_value }
+
+        # Update actual chaos meter tier
+        update_chaos_meter_tier = yes
+
+        log = "CHAOS REDUX SETTINGS: Chaos meter updated to [?settings_chaos_meter_value] via settings panel"
+    }
+    else = {
+        log = "CHAOS REDUX SETTINGS: Cannot update chaos meter - event system not initialized"
+    }
+}
+
+# Toggle chaos meter disabled state
+toggle_chaos_meter_disabled = {
+    if = {
+        limit = { check_variable = { global.settings_chaos_meter_disabled = 1 } }
+        # Re-enabling chaos meter
+        set_variable = { global.settings_chaos_meter_disabled = 0 }
+
+        # Restore the chaos meter value from backup if it exists
+        if = {
+            limit = { has_variable = global.chaos_meter_backup_value }
+            set_variable = { var = global.chaos_meter_value value = global.chaos_meter_backup_value }
+            clear_variable = global.chaos_meter_backup_value
+
+            # Update chaos meter tier after restoring value
+            update_chaos_meter_tier = yes
+        }
+
+        log = "CHAOS REDUX SETTINGS: Chaos meter ENABLED - value restored to [?global.chaos_meter_value]"
+    }
+    else = {
+        # Disabling chaos meter
+        set_variable = { global.settings_chaos_meter_disabled = 1 }
+
+        # Backup current chaos meter value before setting to 0
+        if = {
+            limit = { has_variable = global.chaos_meter_value }
+            set_variable = { var = global.chaos_meter_backup_value value = global.chaos_meter_value }
+        }
+        else = {
+            set_variable = { global.chaos_meter_backup_value = 0 }
+        }
+
+        # Set chaos meter to 0 temporarily
+        set_variable = { global.chaos_meter_value = 0 }
+
+        update_chaos_meter_tier = yes
+
+        log = "CHAOS REDUX SETTINGS: Chaos meter DISABLED - backed up value [?global.chaos_meter_backup_value] and set to 0"
+    }
+}
+
+# Reset chaos meter settings to defaults
+reset_chaos_meter_to_defaults = {
+    # Reset to current actual chaos meter value, or 0 if not initialized
+    if = {
+        limit = { has_variable = global.chaos_meter_value }
+        set_variable = { var = settings_chaos_meter_value value = global.chaos_meter_value }
+    }
+    else = {
+        set_variable = { settings_chaos_meter_value = 0 }
+    }
+
+    # Reset increment mode to default (5)
+    set_variable = { settings_chaos_increment_mode = @DEFAULT_CHAOS_INCREMENT_MODE }
+    set_country_flag = settings_chaos_increment_mode_5
+    clr_country_flag = settings_chaos_increment_mode_10
+    clr_country_flag = settings_chaos_increment_mode_1
+
+    set_variable = { global.settings_chaos_meter_disabled = @DEFAULT_CHAOS_METER_DISABLED }
+
+    # Update tier
+    update_settings_chaos_tier = yes
+
+    log = "CHAOS REDUX SETTINGS: Chaos meter settings reset to defaults"
 }
