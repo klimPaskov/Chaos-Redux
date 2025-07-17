@@ -134,12 +134,6 @@ open_timer_system_menu = {
 open_chaos_meter_menu = {
     clear_all_menu_flags = yes
     set_country_flag = show_chaos_meter_menu
-
-    # Initialize if not already done
-    if = {
-        limit = { NOT = { has_variable = settings_chaos_meter_value } }
-        initialize_chaos_meter_settings = yes
-    }
 }
 
 open_advanced_settings_menu = {
@@ -1544,11 +1538,8 @@ update_timer_from_settings = {
     set_variable = { timer_min_decrement_cap = settings_timer_min_decrement_cap }
     set_variable = { timer_max_decrement_cap = settings_timer_max_decrement_cap }
 
-    if = {
-        limit = { has_global_flag = event_system_initialized }
-        calculate_next_timer_value = yes
-        log = "CHAOS REDUX TIMER: Timer updated - new value: [?event_timer_days] min:[?settings_timer_min_days] max:[?settings_timer_max_days] min_cap:[?settings_timer_min_decrement_cap] max_cap:[?settings_timer_max_decrement_cap]"
-    }
+    calculate_next_timer_value = yes
+    log = "CHAOS REDUX TIMER: Timer updated - new value: [?event_timer_days] min:[?settings_timer_min_days] max:[?settings_timer_max_days] min_cap:[?settings_timer_min_decrement_cap] max_cap:[?settings_timer_max_decrement_cap]"
 }
 
 # Decrease minimum timer value
@@ -2655,20 +2646,13 @@ cycle_chaos_tier_next = {
 
 # Update actual chaos meter to match preview settings
 update_actual_chaos_meter = {
-    if = {
-        limit = { has_global_flag = event_system_initialized }
+    # Set the actual chaos meter value
+    set_variable = { global.chaos_meter_value = settings_chaos_meter_value }
 
-        # Set the actual chaos meter value
-        set_variable = { global.chaos_meter_value = settings_chaos_meter_value }
+    # Update actual chaos meter tier
+    update_chaos_meter_tier = yes
 
-        # Update actual chaos meter tier
-        update_chaos_meter_tier = yes
-
-        log = "CHAOS REDUX SETTINGS: Chaos meter updated to [?settings_chaos_meter_value] via settings panel"
-    }
-    else = {
-        log = "CHAOS REDUX SETTINGS: Cannot update chaos meter - event system not initialized"
-    }
+    log = "CHAOS REDUX SETTINGS: Chaos meter updated to [?settings_chaos_meter_value] via settings panel"
 }
 
 # Toggle chaos meter disabled state
