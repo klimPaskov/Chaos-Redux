@@ -521,19 +521,7 @@ on_repeatable_event_fired = {
         limit = { check_variable = { event_id < global.event_max_caps^num } }
         set_temp_variable = { current_cap = global.event_max_caps^event_id }
         multiply_temp_variable = { current_cap = global.reduce_cap_factor }
-
-        # Round up to ensure integer values (62.5 -> 63)
-        set_temp_variable = { cap_fraction = current_cap }
-        modulo_temp_variable = { cap_fraction = 1 }
-        if = {
-            limit = { check_variable = { cap_fraction > 0 } }
-            # Has fractional part, round up
-            set_temp_variable = { cap_integer = current_cap }
-            subtract_from_temp_variable = { cap_integer = cap_fraction }
-            add_to_temp_variable = { cap_integer = 1 }
-            set_temp_variable = { current_cap = cap_integer }
-        }
-
+        round_temp_variable = current_cap
         set_variable = { global.event_max_caps^event_id = current_cap }
     }
     # Clear the weight for this event and later set it to 1
@@ -876,6 +864,7 @@ log_event_system_debug = {
     log = "SYSTEM INFO:"
     log = "Minor event weight: [?global.default_event_weight]"
     log = "Minor event recovery rate: [?global.minor_event_recovery_rate]"
+    log = "Minor repeatable event cap reduction: [?global.reduce_cap_factor]"
     log = "Major event weight per minor: [?global.major_event_weight_per_minor]"
     log = "CHAOS_REDUX_SUBSECTION"
 

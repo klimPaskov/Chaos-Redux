@@ -408,25 +408,12 @@ defined_text = {
         localization_key = "[?global.enabled_countries_list^0.GetTag], [?global.enabled_countries_list^1.GetTag], [?global.enabled_countries_list^2.GetTag], [?global.enabled_countries_list^3.GetTag], [?global.enabled_countries_list^4.GetTag], [?global.enabled_countries_list^5.GetTag], [?global.enabled_countries_list^6.GetTag]"
     }
     text = {
-        trigger = { check_variable = { global.enabled_countries_count = 8 } }
-        localization_key = "[?global.enabled_countries_list^0.GetTag], [?global.enabled_countries_list^1.GetTag], [?global.enabled_countries_list^2.GetTag], [?global.enabled_countries_list^3.GetTag], [?global.enabled_countries_list^4.GetTag], [?global.enabled_countries_list^5.GetTag], [?global.enabled_countries_list^6.GetTag], [?global.enabled_countries_list^7.GetTag]"
-    }
-    text = {
-        trigger = { check_variable = { global.enabled_countries_count = 9 } }
-        localization_key = "[?global.enabled_countries_list^0.GetTag], [?global.enabled_countries_list^1.GetTag], [?global.enabled_countries_list^2.GetTag], [?global.enabled_countries_list^3.GetTag], [?global.enabled_countries_list^4.GetTag], [?global.enabled_countries_list^5.GetTag], [?global.enabled_countries_list^6.GetTag], [?global.enabled_countries_list^7.GetTag], [?global.enabled_countries_list^8.GetTag]"
-    }
-    text = {
-        trigger = { check_variable = { global.enabled_countries_count = 10 } }
-        localization_key = "[?global.enabled_countries_list^0.GetTag], [?global.enabled_countries_list^1.GetTag], [?global.enabled_countries_list^2.GetTag], [?global.enabled_countries_list^3.GetTag], [?global.enabled_countries_list^4.GetTag], [?global.enabled_countries_list^5.GetTag], [?global.enabled_countries_list^6.GetTag], [?global.enabled_countries_list^7.GetTag], [?global.enabled_countries_list^8.GetTag], [?global.enabled_countries_list^9.GetTag]"
-    }
-
-    text = {
         trigger = {
-            check_variable = { global.enabled_countries_count > 10 }
+            check_variable = { global.enabled_countries_count > 8 }
             set_temp_variable = { i = global.enabled_countries_count }
             subtract_from_temp_variable = { i = 10 }
         }
-        localization_key = "[?global.enabled_countries_list^0.GetTag], [?global.enabled_countries_list^1.GetTag], [?global.enabled_countries_list^2.GetTag], [?global.enabled_countries_list^3.GetTag], [?global.enabled_countries_list^4.GetTag], [?global.enabled_countries_list^5.GetTag], [?global.enabled_countries_list^6.GetTag], [?global.enabled_countries_list^7.GetTag], [?global.enabled_countries_list^8.GetTag], [?global.enabled_countries_list^9.GetTag] and [?i] more..."
+        localization_key = "[?global.enabled_countries_list^0.GetTag], [?global.enabled_countries_list^1.GetTag], [?global.enabled_countries_list^2.GetTag], [?global.enabled_countries_list^3.GetTag], [?global.enabled_countries_list^4.GetTag], [?global.enabled_countries_list^5.GetTag], [?global.enabled_countries_list^6.GetTag], [?global.enabled_countries_list^7.GetTag], and [?i] more..."
     }
     text = {
         trigger = { always = yes }
@@ -9365,6 +9352,174 @@ defined_text = {
     text = {
         trigger = { always = yes }
         localization_key = "Chaos value: 0 (Not initialized)"
+    }
+}
+
+# Recovery Rate Display
+defined_text = {
+    name = GetRecoveryRateValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.settings_recovery_rate]"
+    }
+}
+
+# Cap Reduction Display (as percentage)
+defined_text = {
+    name = GetCapReductionValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[GetCapReductionPercent]%"
+    }
+}
+
+defined_text = {
+    name = GetCapReductionPercent
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.cap_reduction_percent]"
+    }
+}
+
+# Major Weight Per Minor Display
+defined_text = {
+    name = GetMajorWeightPerMinorValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.settings_major_weight_per_minor]"
+    }
+}
+
+# Current Active Values Display Functions
+defined_text = {
+    name = GetActiveRecoveryRateValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.minor_event_recovery_rate]"
+    }
+}
+
+defined_text = {
+    name = GetActiveCapReductionValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.reduce_cap_factor]"
+    }
+}
+
+defined_text = {
+    name = GetActiveCapReductionPercent
+    text = {
+        trigger = { always = yes }
+        localization_key = "[GetActiveCapReductionPercentValue]"
+    }
+}
+
+defined_text = {
+    name = GetActiveCapReductionPercentValue
+    text = {
+        trigger = {
+            has_variable = temp_active_cap_percent
+
+        }
+        localization_key = "[?actual_percent]"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "50"
+    }
+}
+
+defined_text = {
+    name = GetActiveMajorWeightValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.major_event_weight_per_minor]"
+    }
+}
+
+# Event Weight Display
+defined_text = {
+    name = GetEventWeightValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.settings_event_weight]"
+    }
+}
+
+# Timer Modifier Display
+defined_text = {
+    name = GetTimerModifierValue
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.settings_timer_modifier]"
+    }
+}
+
+# Advanced Settings Increment Mode Display
+defined_text = {
+    name = GetAdvancedIncrementValue
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 1 } }
+        localization_key = "1"
+    }
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 10 } }
+        localization_key = "10"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "5"
+    }
+}
+
+# Advanced Settings Increment Mode Text Display
+defined_text = {
+    name = GetAdvancedIncrementModeText
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 1 } }
+        localization_key = "Fine tuning (±1)"
+    }
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 10 } }
+        localization_key = "Fast adjustment (±10)"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "Normal adjustment (±5)"
+    }
+}
+
+# Advanced Settings Button Sprites
+defined_text = {
+    name = GetAdvancedDecrementSprite
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 1 } }
+        localization_key = "GFX_chaosx_subtract_one"
+    }
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 10 } }
+        localization_key = "GFX_chaosx_subtract_10"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "GFX_chaosx_subtract_5"
+    }
+}
+
+defined_text = {
+    name = GetAdvancedIncrementSprite
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 1 } }
+        localization_key = "GFX_chaosx_add_one"
+    }
+    text = {
+        trigger = { check_variable = { settings_advanced_increment_mode = 10 } }
+        localization_key = "GFX_chaosx_add_10"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "GFX_chaosx_add_5"
     }
 }
 
