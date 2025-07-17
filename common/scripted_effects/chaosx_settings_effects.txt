@@ -70,6 +70,19 @@
 @CONTINENT_SORT_OCEANIA = 6
 @CONTINENT_SORT_MIDDLE_EAST = 7
 
+# Advanced Settings Constants
+@DEFAULT_ADVANCED_INCREMENT_MODE = 5
+@ADVANCED_MIN_RECOVERY_RATE = 0
+@ADVANCED_MAX_RECOVERY_RATE = 10000
+@ADVANCED_MIN_CAP_REDUCTION = 0
+@ADVANCED_MAX_CAP_REDUCTION = 0.9
+@ADVANCED_MIN_MAJOR_WEIGHT_PER_MINOR = 0
+@ADVANCED_MAX_MAJOR_WEIGHT_PER_MINOR = 10000
+@ADVANCED_MIN_EVENT_WEIGHT = 100
+@ADVANCED_MAX_EVENT_WEIGHT = 5000
+@ADVANCED_MIN_TIMER_MODIFIER = 0.1
+@ADVANCED_MAX_TIMER_MODIFIER = 2.0
+
 # Chaos Meter Constants
 @CHAOS_TIER_CALM_MIN = 0
 @CHAOS_TIER_CALM_MAX = 199
@@ -103,6 +116,7 @@ clear_all_menu_flags = {
     clr_country_flag = show_trigger_events_menu
     clr_country_flag = show_timer_system_menu
     clr_country_flag = show_chaos_meter_menu
+    clr_country_flag = show_advanced_settings_menu
     clr_country_flag = show_events_view
     clr_country_flag = show_event_clusters_view
     clr_country_flag = show_timer_interval_view
@@ -130,7 +144,11 @@ open_chaos_meter_menu = {
 
 open_advanced_settings_menu = {
     clear_all_menu_flags = yes
-    log = "Advanced Settings menu requested (not yet implemented)"
+    set_country_flag = show_advanced_settings_menu
+
+    # Always calculate cap reduction percentage for display
+    calculate_cap_reduction_percentage = yes
+    calculate_active_cap_reduction_percentage = yes
 }
 
 toggle_scenarios_menu = {
@@ -174,21 +192,46 @@ close_chaosx_settings = {
 # SETTINGS INITIALIZATION
 # ============================================================================
 
-# Initialize settings system with default values
+# Initialize settings system with default values (country scoped)
 initialize_settings_system = {
     initialize_trigger_events_settings = yes
     initialize_timer_system_settings = yes
     initialize_tag_management_settings = yes
     initialize_chaos_meter_settings = yes
+    initialize_advanced_settings = yes
+}
+
+initialize_global_settings_system = {
+    # Tag management
+    set_variable = { global.settings_auto_enable_on_switch = @DEFAULT_AUTO_ENABLE_ON_SWITCH }
+    set_variable = { global.settings_disable_previous_tag = @DEFAULT_DISABLE_PREVIOUS_TAG }
+    update_filtered_countries_list = yes
+
+    # chaos meter settings
+    set_variable = { global.settings_chaos_meter_disabled = 0 }
+
+    # Advanced settings
+    set_variable = { global.settings_recovery_rate = global.minor_event_recovery_rate }
+    set_variable = { global.settings_cap_reduction = global.reduce_cap_factor }
+    set_variable = { global.settings_major_weight_per_minor = global.major_event_weight_per_minor }
+    set_variable = { global.settings_event_weight = global.default_event_weight }
+    set_variable = { global.settings_timer_modifier = global.chaos_timer_modifier_calm }
+
+    # Calculate initial cap reduction percentage for display
+    calculate_cap_reduction_percentage = yes
+    calculate_active_cap_reduction_percentage = yes
 }
 
 # Reset all settings to their original values
 reset_all_settings = {
     reset_trigger_events = yes
     reset_timer_to_defaults = yes
+    update_timer_from_settings = yes
     reset_tag_management_to_defaults = yes
     reset_chaos_meter_to_defaults = yes
-    log = "CHAOS REDUX SETTINGS: All settings reset to default values"
+    reset_advanced_settings_to_defaults = yes
+    update_advanced_settings_values = yes
+    log = "CHAOS REDUX SETTINGS: All settings reset and applied to default values"
 }
 
 
@@ -1039,17 +1082,17 @@ fire_event_by_id = {
 
     # Update tracking and weights based on event type
     if = {
-        limit = { check_variable = { var = event_type value = 1 } }
+        limit = { check_variable = { event_type = 1 } }
         # Major event
         on_major_event_fired = yes
     }
     else_if = {
-        limit = { check_variable = { var = event_type value = 2 } }
+        limit = { check_variable = { event_type = 2 } }
         # Minor repeatable event
         on_repeatable_event_fired = yes
     }
     else_if = {
-        limit = { check_variable = { var = event_type value = 3 } }
+        limit = { check_variable = { event_type = 3 } }
         # Minor fire-once event
         on_fire_once_event_fired = yes
     }
@@ -1749,8 +1792,6 @@ calculate_dynamic_caps = {
 initialize_tag_management_settings = {
     set_variable = { settings_selected_tag_index = 0 }
     set_variable = { settings_tag_increment_mode = @DEFAULT_TAG_MANAGEMENT_MODE }
-    set_variable = { global.settings_auto_enable_on_switch = @DEFAULT_AUTO_ENABLE_ON_SWITCH }
-    set_variable = { global.settings_disable_previous_tag = @DEFAULT_DISABLE_PREVIOUS_TAG }
     set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
     set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
 }
@@ -2382,7 +2423,7 @@ initialize_chaos_meter_settings = {
     # Initialize settings chaos meter value to current actual chaos meter value
     if = {
         limit = { has_variable = global.chaos_meter_value }
-        set_variable = { var = settings_chaos_meter_value value = global.chaos_meter_value }
+        set_variable = { settings_chaos_meter_value = global.chaos_meter_value }
     }
     else = {
         set_variable = { settings_chaos_meter_value = 0 }
@@ -2390,12 +2431,6 @@ initialize_chaos_meter_settings = {
 
     # Initialize increment mode
     set_variable = { settings_chaos_increment_mode = @DEFAULT_CHAOS_INCREMENT_MODE }
-
-    # Initialize disabled state
-    if = {
-        limit = { NOT = { has_variable = global.settings_chaos_meter_disabled } }
-        set_variable = { global.settings_chaos_meter_disabled = @DEFAULT_CHAOS_METER_DISABLED }
-    }
 
     # Initialize tier based on current value
     update_settings_chaos_tier = yes
@@ -2411,21 +2446,21 @@ initialize_chaos_meter_settings = {
 # Decrease chaos meter value
 decrease_chaos_meter_value = {
     set_temp_variable = { new_value = settings_chaos_meter_value }
-    subtract_from_temp_variable = { var = new_value value = settings_chaos_increment_mode }
+    subtract_from_temp_variable = { new_value = settings_chaos_increment_mode }
 
     clamp_temp_variable = {
         var = new_value
         min = 0
     }
 
-    set_variable = { var = settings_chaos_meter_value value = new_value }
+    set_variable = { settings_chaos_meter_value = new_value }
     update_settings_chaos_tier = yes
 }
 
 # Increase chaos meter value
 increase_chaos_meter_value = {
     set_temp_variable = { new_value = settings_chaos_meter_value }
-    add_to_temp_variable = { var = new_value value = settings_chaos_increment_mode }
+    add_to_temp_variable = { new_value = settings_chaos_increment_mode }
 
     # Cap at 1500 for practical reasons
     clamp_temp_variable = {
@@ -2433,7 +2468,7 @@ increase_chaos_meter_value = {
         max = 1500
     }
 
-    set_variable = { var = settings_chaos_meter_value value = new_value }
+    set_variable = { settings_chaos_meter_value = new_value }
     update_settings_chaos_tier = yes
 }
 
@@ -2624,7 +2659,7 @@ update_actual_chaos_meter = {
         limit = { has_global_flag = event_system_initialized }
 
         # Set the actual chaos meter value
-        set_variable = { var = global.chaos_meter_value value = settings_chaos_meter_value }
+        set_variable = { global.chaos_meter_value = settings_chaos_meter_value }
 
         # Update actual chaos meter tier
         update_chaos_meter_tier = yes
@@ -2646,7 +2681,7 @@ toggle_chaos_meter_disabled = {
         # Restore the chaos meter value from backup if it exists
         if = {
             limit = { has_variable = global.chaos_meter_backup_value }
-            set_variable = { var = global.chaos_meter_value value = global.chaos_meter_backup_value }
+            set_variable = { global.chaos_meter_value = global.chaos_meter_backup_value }
             clear_variable = global.chaos_meter_backup_value
 
             # Update chaos meter tier after restoring value
@@ -2662,7 +2697,7 @@ toggle_chaos_meter_disabled = {
         # Backup current chaos meter value before setting to 0
         if = {
             limit = { has_variable = global.chaos_meter_value }
-            set_variable = { var = global.chaos_meter_backup_value value = global.chaos_meter_value }
+            set_variable = { global.chaos_meter_backup_value = global.chaos_meter_value }
         }
         else = {
             set_variable = { global.chaos_meter_backup_value = 0 }
@@ -2682,7 +2717,7 @@ reset_chaos_meter_to_defaults = {
     # Reset to current actual chaos meter value, or 0 if not initialized
     if = {
         limit = { has_variable = global.chaos_meter_value }
-        set_variable = { var = settings_chaos_meter_value value = global.chaos_meter_value }
+        set_variable = { settings_chaos_meter_value = global.chaos_meter_value }
     }
     else = {
         set_variable = { settings_chaos_meter_value = 0 }
@@ -2698,6 +2733,361 @@ reset_chaos_meter_to_defaults = {
 
     # Update tier
     update_settings_chaos_tier = yes
+}
 
-    log = "CHAOS REDUX SETTINGS: Chaos meter settings reset to defaults"
+###############################################################################################################
+
+#     #                                                         #####
+#    # #   #####  #    #   ##   #    #  ####  ###### #####     #     # ###### ##### ##### # #    #  ####   ####
+#   #   #  #    # #    #  #  #  ##   # #    # #      #    #    #       #        #     #   # ##   # #    # #
+#  #     # #    # #    # #    # # #  # #      #####  #    #     #####  #####    #     #   # # #  # #       ####
+#  ####### #    # #    # ###### #  # # #      #      #    #          # #        #     #   # #  # # #  ###      #
+#  #     # #    #  #  #  #    # #   ## #    # #      #    #    #     # #        #     #   # #   ## #    # #    #
+#  #     # #####    ##   #    # #    #  ####  ###### #####      #####  ######   #     #   # #    #  ####   ####
+
+###############################################################################################################
+
+# Initialize advanced settings
+initialize_advanced_settings = {
+    # Set default increment mode
+    set_variable = { settings_advanced_increment_mode = @DEFAULT_ADVANCED_INCREMENT_MODE }
+}
+
+# ============================================================================
+# RECOVERY RATE MANAGEMENT
+# ============================================================================
+
+# Decrease recovery rate
+decrease_recovery_rate = {
+    set_temp_variable = { new_value = global.settings_recovery_rate }
+    subtract_from_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_RECOVERY_RATE
+    }
+
+    set_variable = { global.settings_recovery_rate = new_value }
+}
+
+# Increase recovery rate
+increase_recovery_rate = {
+    set_temp_variable = { new_value = global.settings_recovery_rate }
+    add_to_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_RECOVERY_RATE
+    }
+
+    set_variable = { global.settings_recovery_rate = new_value }
+}
+
+# ============================================================================
+# CAP REDUCTION MANAGEMENT
+# ============================================================================
+
+# Decrease cap reduction
+decrease_cap_reduction = {
+    set_temp_variable = { new_value = global.settings_cap_reduction }
+    subtract_from_temp_variable = { new_value = 0.1 }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_CAP_REDUCTION
+    }
+
+    set_variable = { global.settings_cap_reduction = new_value }
+    calculate_cap_reduction_percentage = yes
+}
+
+# Increase cap reduction
+increase_cap_reduction = {
+    set_temp_variable = { new_value = global.settings_cap_reduction }
+    add_to_temp_variable = { new_value = 0.1 }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_CAP_REDUCTION
+    }
+
+    set_variable = { global.settings_cap_reduction = new_value }
+    calculate_cap_reduction_percentage = yes
+}
+
+# ============================================================================
+# MAJOR WEIGHT PER MINOR MANAGEMENT
+# ============================================================================
+
+# Decrease major weight per minor
+decrease_major_weight_per_minor = {
+    set_temp_variable = { new_value = global.settings_major_weight_per_minor }
+    subtract_from_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_MAJOR_WEIGHT_PER_MINOR
+    }
+
+    set_variable = { global.settings_major_weight_per_minor = new_value }
+}
+
+# Increase major weight per minor
+increase_major_weight_per_minor = {
+    set_temp_variable = { new_value = global.settings_major_weight_per_minor }
+    add_to_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_MAJOR_WEIGHT_PER_MINOR
+    }
+
+    set_variable = { global.settings_major_weight_per_minor = new_value }
+}
+
+# ============================================================================
+# EVENT WEIGHT MANAGEMENT
+# ============================================================================
+
+# Decrease event weight
+decrease_event_weight = {
+    set_temp_variable = { new_value = global.settings_event_weight }
+    subtract_from_temp_variable = { new_value = 100 }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_EVENT_WEIGHT
+    }
+
+    set_variable = { global.settings_event_weight = new_value }
+}
+
+# Increase event weight
+increase_event_weight = {
+    set_temp_variable = { new_value = global.settings_event_weight }
+    add_to_temp_variable = { new_value = 100 }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_EVENT_WEIGHT
+    }
+
+    set_variable = { global.settings_event_weight = new_value }
+}
+
+# ============================================================================
+# TIMER MODIFIER MANAGEMENT
+# ============================================================================
+
+# Decrease timer modifier
+decrease_timer_modifier = {
+    set_temp_variable = { new_value = global.settings_timer_modifier }
+    subtract_from_temp_variable = { new_value = 0.1 }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_TIMER_MODIFIER
+    }
+
+    set_variable = { global.settings_timer_modifier = new_value }
+}
+
+# Increase timer modifier
+increase_timer_modifier = {
+    set_temp_variable = { new_value = global.settings_timer_modifier }
+    add_to_temp_variable = { new_value = 0.1 }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_TIMER_MODIFIER
+    }
+
+    set_variable = { global.settings_timer_modifier = new_value }
+}
+
+# Update all timer modifiers based on settings value
+update_all_timer_modifiers = {
+    set_variable = { global.chaos_timer_modifier_calm = global.settings_timer_modifier }
+
+    set_temp_variable = { gathering_mod = global.settings_timer_modifier }
+    multiply_temp_variable = { gathering_mod = 0.8 }
+    set_variable = { global.chaos_timer_modifier_gathering = gathering_mod }
+
+    set_temp_variable = { rising_mod = global.settings_timer_modifier }
+    multiply_temp_variable = { rising_mod = 0.7 }
+    set_variable = { global.chaos_timer_modifier_rising = rising_mod }
+
+    set_temp_variable = { chaos_mod = global.settings_timer_modifier }
+    multiply_temp_variable = { chaos_mod = 0.6 }
+    set_variable = { global.chaos_timer_modifier_chaos = chaos_mod }
+
+    set_temp_variable = { critical_mod = global.settings_timer_modifier }
+    multiply_temp_variable = { critical_mod = 0.5 }
+    set_variable = { global.chaos_timer_modifier_critical = critical_mod }
+    set_variable = { global.chaos_timer_modifier_collapse = critical_mod }
+}
+
+# ============================================================================
+# ADVANCED SETTINGS INCREMENT MODE MANAGEMENT
+# ============================================================================
+
+# Toggle advanced settings increment mode
+toggle_advanced_settings_increment_mode = {
+    if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 1 } }
+        set_variable = { settings_advanced_increment_mode = 5 }
+    }
+    else_if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 5 } }
+        set_variable = { settings_advanced_increment_mode = 10 }
+    }
+    else = {
+        set_variable = { settings_advanced_increment_mode = 1 }
+    }
+}
+
+# ============================================================================
+# ADVANCED SETTINGS INDIVIDUAL CONTROLS
+# ============================================================================
+
+# Recovery Rate Controls
+decrease_advanced_recovery_rate = {
+    set_temp_variable = { new_value = global.settings_recovery_rate }
+    subtract_from_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_RECOVERY_RATE
+    }
+
+    set_variable = { global.settings_recovery_rate = new_value }
+}
+
+increase_advanced_recovery_rate = {
+    set_temp_variable = { new_value = global.settings_recovery_rate }
+    add_to_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_RECOVERY_RATE
+    }
+
+    set_variable = { global.settings_recovery_rate = new_value }
+}
+
+# Cap Reduction Controls (10% increments)
+decrease_advanced_cap_reduction = {
+    set_temp_variable = { new_value = global.settings_cap_reduction }
+    subtract_from_temp_variable = { new_value = 0.1 }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_CAP_REDUCTION
+    }
+
+    set_variable = { global.settings_cap_reduction = new_value }
+    calculate_cap_reduction_percentage = yes
+}
+
+increase_advanced_cap_reduction = {
+    set_temp_variable = { new_value = global.settings_cap_reduction }
+    add_to_temp_variable = { new_value = 0.1 }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_CAP_REDUCTION
+    }
+
+    set_variable = { global.settings_cap_reduction = new_value }
+    calculate_cap_reduction_percentage = yes
+}
+
+# Major Weight Controls
+decrease_advanced_major_weight = {
+    set_temp_variable = { new_value = global.settings_major_weight_per_minor }
+    subtract_from_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        min = @ADVANCED_MIN_MAJOR_WEIGHT_PER_MINOR
+    }
+
+    set_variable = { global.settings_major_weight_per_minor = new_value }
+}
+
+increase_advanced_major_weight = {
+    set_temp_variable = { new_value = global.settings_major_weight_per_minor }
+    add_to_temp_variable = { new_value = settings_advanced_increment_mode }
+
+    clamp_temp_variable = {
+        var = new_value
+        max = @ADVANCED_MAX_MAJOR_WEIGHT_PER_MINOR
+    }
+
+    set_variable = { global.settings_major_weight_per_minor = new_value }
+}
+
+# Advanced Settings Increment Mode Toggle
+toggle_advanced_increment_mode = {
+    if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 1 } }
+        set_variable = { settings_advanced_increment_mode = 5 }
+    }
+    else_if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 5 } }
+        set_variable = { settings_advanced_increment_mode = 10 }
+    }
+    else = {
+        set_variable = { settings_advanced_increment_mode = 1 }
+    }
+}
+
+# Update Advanced Settings Values - Apply current settings to actual system
+update_advanced_settings_values = {
+    # Apply recovery rate
+    set_variable = { global.minor_event_recovery_rate = global.settings_recovery_rate }
+
+    # Apply cap reduction
+    set_variable = { global.reduce_cap_factor = global.settings_cap_reduction }
+
+    # Apply major weight per minor
+    set_variable = { global.major_event_weight_per_minor = global.settings_major_weight_per_minor }
+
+    # Apply event weight if it exists in settings
+    if = {
+        limit = { has_variable = global.settings_event_weight }
+        set_variable = { global.default_event_weight = global.settings_event_weight }
+    }
+
+    # Apply timer modifier if it exists in settings
+    if = {
+        limit = { has_variable = global.settings_timer_modifier }
+        update_all_timer_modifiers = yes
+    }
+
+    # Calculate cap reduction percentage for display
+    calculate_cap_reduction_percentage = yes
+    calculate_active_cap_reduction_percentage = yes
+}
+
+# Reset advanced settings to defaults
+reset_advanced_settings_to_defaults = {
+    set_variable = { global.settings_recovery_rate = @DEFAULT_RECOVERY_RATE }
+    set_variable = { global.settings_cap_reduction = @DEFAULT_REDUCE_CAP_FACTOR }
+    set_variable = { global.settings_major_weight_per_minor = @DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR }
+    set_variable = { settings_advanced_increment_mode = @DEFAULT_ADVANCED_INCREMENT_MODE }
+    calculate_cap_reduction_percentage = yes
+    calculate_active_cap_reduction_percentage = yes
+}
+
+# Calculate cap reduction percentage for display
+calculate_cap_reduction_percentage = {
+    set_variable = { global.cap_reduction_percent = global.settings_cap_reduction }
+    multiply_variable = { global.cap_reduction_percent = 100 }
+}
+
+# Calculate active cap reduction percentage for display
+calculate_active_cap_reduction_percentage = {
+    set_variable = { temp_active_cap_percent = global.reduce_cap_factor }
+    multiply_variable = { temp_active_cap_percent = 100 }
 }
