@@ -14,6 +14,7 @@ on_actions = {
                     any_country = { has_country_flag = is_multiplayer_host }
                     has_country_flag = is_multiplayer_host
                     is_ai = no
+                    NOT = { has_global_flag = settings_chaos_meter_disabled }
                 }
                 chaos_meter_daily_update = yes
             }
@@ -22,6 +23,7 @@ on_actions = {
                     any_country = { has_country_flag = is_multiplayer_host }
                     NOT = { has_country_flag = is_multiplayer_host }
                     is_ai = no
+                    NOT = { has_global_flag = settings_chaos_meter_disabled }
                 }
                 every_country = {
                     limit = { has_country_flag = is_multiplayer_host }
@@ -29,163 +31,255 @@ on_actions = {
                 }
                 set_country_flag = is_multiplayer_host
             }
+            else_if = { # In case there is no player controlled country (spectator mode compatibility in the future maybe)
+                limit = {
+                    NOT = { any_country = { has_country_flag = is_multiplayer_host } }
+                    NOT = { has_country_flag = is_multiplayer_host }
+                    is_ai = yes
+                    NOT = { has_global_flag = settings_chaos_meter_disabled }
+                }
+                if = {
+                    limit = { NOT = { has_country_flag = is_multiplayer_host } }
+                    set_country_flag = is_multiplayer_host
+                }
+
+                chaos_meter_daily_update = yes
+            }
+
         }
     }
 
     # Chaos Meter On Actions
     on_war_relation_added = {
         effect = {
-            chaos_meter_on_war_relation_added = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_war_relation_added = yes
+            }
         }
     }
 
     on_peace = {
         effect = {
-            chaos_meter_on_peace = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_peace = yes
+            }
         }
     }
 
     on_annex = {
         effect = {
-            chaos_meter_on_annex = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_annex = yes
+            }
         }
     }
 
     on_puppet = {
         effect = {
-            chaos_meter_on_puppet = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_puppet = yes
+            }
         }
     }
 
     on_liberate = {
         effect = {
-            chaos_meter_on_liberate = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_liberate = yes
+            }
         }
     }
 
     on_release_as_free = {
         effect = {
-            chaos_meter_on_release_as_free = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_release_as_free = yes
+            }
         }
     }
 
     on_subject_free = {
         effect = {
-            chaos_meter_on_subject_free = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_subject_free = yes
+            }
         }
     }
 
     on_subject_annexed = {
         effect = {
-            chaos_meter_on_subject_annexed = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_subject_annexed = yes
+            }
         }
     }
     on_nuke_drop = {
         effect = {
-            chaos_meter_on_nuke_drop = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_nuke_drop = yes
+            }
         }
     }
 
     on_ruling_party_change = {
         effect = {
-            chaos_meter_on_ideology_change = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_ideology_change = yes
+            }
         }
     }
 
     on_join_faction = {
         effect = {
-            chaos_meter_on_faction_join = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_faction_join = yes
+            }
         }
     }
 
     on_leave_faction = {
         effect = {
-            chaos_meter_on_faction_leave = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_faction_leave = yes
+            }
         }
     }
 
     on_justifying_wargoal_pulse = {
         effect = {
-            chaos_meter_on_justifying_wargoal = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_justifying_wargoal = yes
+            }
         }
     }
 
     on_guarantee = {
         effect = {
-            chaos_meter_on_guarantee = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_guarantee = yes
+            }
         }
     }
 
     on_wargoal_expire = {
         effect = {
-            chaos_meter_on_wargoal_expire = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_wargoal_expire = yes
+            }
         }
     }
 
-    # Subtle On Actions (±1 chaos) - Only valid HOI4 on_actions
     on_lend_lease = {
         effect = {
-            chaos_meter_on_lend_lease = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_lend_lease = yes
+            }
         }
     }
 
     on_call_allies = {
         effect = {
-            chaos_meter_on_call_allies = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_call_allies = yes
+            }
         }
     }
 
     on_join_allies = {
         effect = {
-            chaos_meter_on_join_allies = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_join_allies = yes
+            }
         }
     }
 
     on_new_term_election = {
         effect = {
-            chaos_meter_on_new_term_election = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_new_term_election = yes
+            }
         }
     }
 
     on_stage_coup = {
         effect = {
-            chaos_meter_on_stage_coup = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_stage_coup = yes
+            }
         }
     }
 
     on_coup_succeeded = {
         effect = {
-            chaos_meter_on_coup_succeeded = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_coup_succeeded = yes
+            }
         }
     }
 
     on_capitulation = {
         effect = {
-            chaos_meter_on_capitulation = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_capitulation = yes
+            }
         }
     }
 
     on_uncapitulation = {
         effect = {
-            chaos_meter_on_uncapitulation = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_uncapitulation = yes
+            }
         }
     }
 
     on_government_exiled = {
         effect = {
-            chaos_meter_on_government_exiled = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_government_exiled = yes
+            }
         }
     }
 
     on_exile_government_reinstated = {
         effect = {
-            chaos_meter_on_exile_reinstated = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_exile_reinstated = yes
+            }
         }
     }
 
     on_create_faction = {
         effect = {
-            chaos_meter_on_faction_created = yes
+            if = {
+                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+                chaos_meter_on_faction_created = yes
+            }
         }
     }
 

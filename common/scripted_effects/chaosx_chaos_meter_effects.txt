@@ -74,8 +74,9 @@
 # Economic Thresholds
 @MILS_PER_CHAOS_INCREASE = 50
 @DIVISIONS_PER_CHAOS_INCREASE = 100
-@CASUALTIES_PER_CHAOS = 250
+@CASUALTIES_PER_CHAOS = 250 # 250k casualties per chaos point
 @STABILITY_CHANGE_PER_CHAOS = 0.01
+@DEMOCRACY_CHANGE_PER_CHAOS = 0.01
 
 # Chaos Tier Boundaries
 @CHAOS_TIER_GATHERING_BOUNDARY = 200
@@ -106,18 +107,31 @@ initialize_chaos_meter_system = {
     set_variable = { global.last_total_divisions = 0 }
     set_variable = { global.last_average_stability = 0 }
     set_variable = { global.total_countries_for_stability = 0 }
+    set_variable = { global.last_average_democracy = 0 }
+    set_variable = { global.total_countries_for_democracy = 0 }
 
     every_country = {
-        limit = { NOT = { tag = ZZZ } }
         add_to_variable = { global.last_total_divisions = num_armies }
         add_to_variable = { global.last_average_stability = stability }
         add_to_variable = { global.total_countries_for_stability = 1 }
         add_to_variable = { global.last_total_mils = num_of_military_factories }
+
+        # Add democracy tracking
+        if = {
+            limit = { has_government = democratic }
+            add_to_variable = { global.last_average_democracy = 1 }
+        }
+        add_to_variable = { global.total_countries_for_democracy = 1 }
     }
 
     if = {
         limit = { check_variable = { global.total_countries_for_stability > 0 } }
         divide_variable = { global.last_average_stability = global.total_countries_for_stability }
+    }
+
+    if = {
+        limit = { check_variable = { global.total_countries_for_democracy > 0 } }
+        divide_variable = { global.last_average_democracy = global.total_countries_for_democracy }
     }
 
     update_chaos_meter_tier = yes
@@ -639,16 +653,13 @@ chaos_meter_on_exile_reinstated = {
 chaos_meter_daily_update = {
     # Check if chaos meter is disabled
     if = {
-        limit = { has_global_flag = settings_chaos_meter_disabled }
-        # Chaos meter is disabled - skip daily updates
-        log = "CHAOS METER: Daily update skipped - chaos meter disabled"
-    }
-    else = {
+        limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
         chaos_meter_update_world_tension = yes
         chaos_meter_update_casualties = yes
         chaos_meter_update_factories = yes
         chaos_meter_update_divisions = yes
         chaos_meter_update_stability = yes
+        chaos_meter_update_democracy = yes
     }
 }
 
@@ -747,7 +758,6 @@ chaos_meter_update_factories = {
 chaos_meter_update_divisions = {
     set_temp_variable = { current_total_divisions = 0 }
     every_country = {
-        limit = { NOT = { tag = ZZZ } }
         add_to_temp_variable = { current_total_divisions = num_armies }
     }
 
@@ -776,7 +786,6 @@ chaos_meter_update_stability = {
     set_temp_variable = { current_country_count = 0 }
 
     every_country = {
-        limit = { NOT = { tag = ZZZ } }
         add_to_temp_variable = { current_total_stability = stability }
         add_to_temp_variable = { current_country_count = 1 }
     }
@@ -829,5 +838,68 @@ chaos_meter_update_stability = {
         }
 
         set_variable = { global.last_average_stability = current_average_stability }
+    }
+}
+
+chaos_meter_update_democracy = {
+    set_temp_variable = { current_total_democracy = 0 }
+    set_temp_variable = { current_country_count = 0 }
+
+    every_country = {
+        if = {
+            limit = { has_government = democratic }
+            add_to_temp_variable = { current_total_democracy = 1 }
+        }
+        add_to_temp_variable = { current_country_count = 1 }
+    }
+
+    set_temp_variable = { current_average_democracy = 0 }
+    if = {
+        limit = { check_variable = { current_country_count > 0 } }
+        set_temp_variable = { current_average_democracy = current_total_democracy }
+        divide_temp_variable = { current_average_democracy = current_country_count }
+    }
+
+    set_temp_variable = { democracy_change = current_average_democracy }
+    subtract_from_temp_variable = { democracy_change = global.last_average_democracy }
+    set_temp_variable = { abs_democracy_change = democracy_change }
+
+    if = {
+        limit = { check_variable = { democracy_change < 0 } }
+        multiply_temp_variable = { abs_democracy_change = -1 }
+    }
+
+    if = {
+        limit = { check_variable = { abs_democracy_change > @DEMOCRACY_CHANGE_PER_CHAOS } }
+        set_temp_variable = { chaos_from_democracy = democracy_change }
+        divide_temp_variable = { chaos_from_democracy = @DEMOCRACY_CHANGE_PER_CHAOS }
+        round_temp_variable = chaos_from_democracy
+        set_temp_variable = { chaos_change = chaos_from_democracy }
+        multiply_temp_variable = { chaos_change = -1 } # Inverted: more democracy = less chaos
+
+        if = {
+            limit = {
+                OR = {
+                    check_variable = { var = chaos_change value = @MIN_CASUALTY_CHANGE_K compare = greater_than_or_equals }
+                    AND = {
+                        check_variable = { chaos_change < 0 }
+                        set_temp_variable = { neg_threshold = @MIN_CASUALTY_CHANGE_K }
+                        multiply_temp_variable = { neg_threshold = -1 }
+                        check_variable = { var = chaos_change value = neg_threshold compare = less_than_or_equals }
+                    }
+                }
+            }
+            add_chaos_meter_value = yes
+
+            if = {
+                limit = { check_variable = { democracy_change > 0 } }
+                log = "CHAOS METER: World democracy increased by [?abs_democracy_change|.0%] ([?chaos_change|=] chaos)"
+            }
+            else = {
+                log = "CHAOS METER: World democracy decreased by [?abs_democracy_change|.0%] ([?chaos_change|=] chaos)"
+            }
+        }
+
+        set_variable = { global.last_average_democracy = current_average_democracy }
     }
 }
