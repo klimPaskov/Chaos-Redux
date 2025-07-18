@@ -1,6 +1,7 @@
 
 
 # GitHub page: https://github.com/klimPaskov/Chaos-Redux
+# Discord server: https://discord.com/invite/rAXesGcT2t
 # Events list: https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing
 
 
@@ -25,7 +26,7 @@
 #	.##....##.##.....##.##.....##.##.....##.##....##....##....##..##.......##.....##.##.....##..##...##.
 #	..######..##.....##.##.....##..#######...######.....##.....##.########.########...#######..##.....##
 #
-#	....##.........#####..
+#	....##.........#####
 #	..####........##...##.
 #	....##.......##.....##
 #	....##.......##.....##
@@ -36,12 +37,6 @@
 ###############################################################################################################
 ###############################################################################################################
 ###############################################################################################################
-
-
-
-
-
-
 
 
 
@@ -416,6 +411,7 @@ country_event = {
         hidden_effect = {
             random_state = {
                 limit = { is_island_state = no state_population_k > 1000 NOT = { is_controlled_by = ZZZ } } # At least 1 million
+                save_global_event_target_as = zombie_state
                 transfer_state_to = ZZZ # Sets ZZZ owner of the state
                 add_core_of = ZZZ
                 ZZZ = {
@@ -435,12 +431,40 @@ country_event = {
                     producer = CHI
                 }
             }
-            if = { limit = { NOT = { has_global_flag = zombies_first_appereance } }
-            news_event = { id = chaosx.news.3 days = 2 }
+
+            if = {
+                limit = { NOT = { has_global_flag = has_zombie_outbreak } }
+                set_global_flag = has_zombie_outbreak
+            }
+
         }
-        set_global_flag = zombies_first_appereance
     }
 }
+
+country_event = {
+    id = chaosx.nr2.3
+
+    trigger = {
+        has_global_flag = has_zombie_outbreak
+        is_ai = no
+    }
+
+    mean_time_to_happen = {
+        days = 7
+    }
+
+    fire_only_once = yes
+    hidden = yes
+
+    immediate = {
+        play_song = "zombies"
+
+        set_global_flag = {
+            flag = super_event_visible
+            days = 30
+            value = 1
+        }
+    }
 }
 
 

@@ -1,5 +1,7 @@
 # Chaos Redux
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20Community-7289da?logo=discord&logoColor=white)](https://discord.gg/rAXesGcT2t)
+
 Chaos Redux presents the ultimate strategic challenge, forcing you to navigate an increasingly unstable and unpredictable world that actively resists your control.
 
 At the heart of the mod is the **Chaos Meter**, a dynamic system that tracks global turmoil. As world tension, wars, deaths, and strange events push the meter higher, the world descends deeper into madness.
