@@ -95,11 +95,8 @@
 initialize_chaos_meter_system = {
     set_variable = { global.chaos_meter_value = 0 }
 
-    # Initialize disabled state to enabled (0 = enabled, 1 = disabled)
-    if = {
-        limit = { NOT = { has_variable = global.settings_chaos_meter_disabled } }
-        set_variable = { global.settings_chaos_meter_disabled = 0 }
-    }
+    # Initialize disabled state to enabled (clear flag = enabled, set flag = disabled)
+    clr_global_flag = settings_chaos_meter_disabled
 
     # Initialize tracking variables
     set_variable = { global.last_casualty_count = 0 }
@@ -136,7 +133,7 @@ add_chaos_meter_value = {
 
     # Check if chaos meter is disabled
     if = {
-        limit = { check_variable = { global.settings_chaos_meter_disabled = 1 } }
+        limit = { has_global_flag = settings_chaos_meter_disabled }
         log = "CHAOS METER: Update blocked - chaos meter is disabled"
     }
     else_if = {
@@ -254,11 +251,11 @@ chaos_meter_on_war_relation_added = {
     if = {
         limit = { ROOT = { is_major = yes } }
         set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_WAR }
-        log = "CHAOS METER: Major [ROOT.GetName] declared war on [FROM.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Major [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_MINOR_WAR }
-        log = "CHAOS METER: Minor [ROOT.GetName] declared war on [FROM.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Minor [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -269,11 +266,11 @@ chaos_meter_on_peace = {
     if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_PEACE }
-        log = "CHAOS METER: Major [THIS.GetName] made peace ([?chaos_change] chaos)"
+        log = "CHAOS METER: Major [THIS.GetName] made peace ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_MINOR_PEACE }
-        log = "CHAOS METER: Minor [THIS.GetName] made peace ([?chaos_change] chaos)"
+        log = "CHAOS METER: Minor [THIS.GetName] made peace ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -284,11 +281,11 @@ chaos_meter_on_annex = {
     if = {
         limit = { FROM = { is_major = yes } }
         set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_ANNEX }
-        log = "CHAOS METER: Major [FROM.GetName] was annexed by [THIS.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Major [FROM.GetName] was annexed by [THIS.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_MINOR_ANNEX }
-        log = "CHAOS METER: Minor [FROM.GetName] was annexed by [THIS.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Minor [FROM.GetName] was annexed by [THIS.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -296,7 +293,7 @@ chaos_meter_on_annex = {
 
 chaos_meter_on_puppet = {
     set_temp_variable = { chaos_change = @CHAOS_PER_PUPPET }
-    log = "CHAOS METER: [FROM.GetName] was puppeted by [THIS.GetName] (+[?chaos_change] chaos)"
+    log = "CHAOS METER: [FROM.GetName] was puppeted by [THIS.GetName] ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
@@ -306,11 +303,11 @@ chaos_meter_on_liberate = {
     if = {
         limit = { has_government = democratic }
         set_temp_variable = { chaos_change = @CHAOS_PER_LIBERATE_DEMOCRATIC }
-        log = "CHAOS METER: Democratic [THIS.GetName] liberated [FROM.GetName] ([?chaos_change] chaos)"
+        log = "CHAOS METER: Democratic [THIS.GetName] liberated [FROM.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_LIBERATE }
-        log = "CHAOS METER: [THIS.GetName] liberated [FROM.GetName] ([?chaos_change] chaos)"
+        log = "CHAOS METER: [THIS.GetName] liberated [FROM.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -318,28 +315,28 @@ chaos_meter_on_liberate = {
 
 chaos_meter_on_release_as_free = {
     set_temp_variable = { chaos_change = @CHAOS_PER_RELEASE_FREE }
-    log = "CHAOS METER: [FROM.GetName] was released as free nation by [THIS.GetName] ([?chaos_change] chaos)"
+    log = "CHAOS METER: [FROM.GetName] was released as free nation by [THIS.GetName] ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_subject_free = {
     set_temp_variable = { chaos_change = @CHAOS_PER_SUBJECT_FREE }
-    log = "CHAOS METER: [THIS.GetName] became free from subject status ([?chaos_change] chaos)"
+    log = "CHAOS METER: [THIS.GetName] became free from subject status ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_subject_annexed = {
     set_temp_variable = { chaos_change = @CHAOS_PER_SUBJECT_ANNEXED }
-    log = "CHAOS METER: Subject [FROM.GetName] was annexed by [THIS.GetName] (+[?chaos_change] chaos)"
+    log = "CHAOS METER: Subject [FROM.GetName] was annexed by [THIS.GetName] ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_nuke_drop = {
     set_temp_variable = { chaos_change = @CHAOS_PER_NUKE }
-    log = "CHAOS METER: Nuclear weapon dropped by [THIS.GetName] on [FROM.GetName] (+[?chaos_change] chaos)"
+    log = "CHAOS METER: Nuclear weapon dropped by [THIS.GetName] on [FROM.GetName] ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
@@ -348,11 +345,11 @@ chaos_meter_on_mobilization_law_change = {
     if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_MOBILIZATION_UP_MAJOR }
-        log = "CHAOS METER: Major [THIS.GetName] increased mobilization law (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Major [THIS.GetName] increased mobilization law ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_MOBILIZATION_UP_MAJOR }
-        log = "CHAOS METER: Minor [THIS.GetName] increased mobilization law (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Minor [THIS.GetName] increased mobilization law ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -362,11 +359,11 @@ chaos_meter_on_coup = {
     if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_COUP_MAJOR }
-        log = "CHAOS METER: Coup in major power [THIS.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Coup in major power [THIS.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_COUP_MINOR }
-        log = "CHAOS METER: Coup in minor power [THIS.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Coup in minor power [THIS.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -376,11 +373,11 @@ chaos_meter_on_civil_war = {
     if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_CIVIL_WAR_MAJOR }
-        log = "CHAOS METER: Civil war started in major power [THIS.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Civil war started in major power [THIS.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_CIVIL_WAR_MINOR }
-        log = "CHAOS METER: Civil war started in minor power [THIS.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Civil war started in minor power [THIS.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -394,21 +391,21 @@ chaos_meter_on_ideology_change = {
             has_government = democratic
         }
         set_temp_variable = { chaos_change = @CHAOS_PER_IDEOLOGY_CHANGE_MAJOR_DEMOCRATIC }
-        log = "CHAOS METER: Major power [THIS.GetName] changed to democratic ideology ([?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] changed to democratic ideology ([?chaos_change|=] chaos)"
     }
     else_if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_IDEOLOGY_CHANGE_MAJOR_NON_DEMOCRATIC }
-        log = "CHAOS METER: Major power [THIS.GetName] changed to non-democratic ideology (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] changed to non-democratic ideology ([?chaos_change|=] chaos)"
     }
     else_if = {
         limit = { has_government = democratic }
         set_temp_variable = { chaos_change = @CHAOS_PER_IDEOLOGY_CHANGE_MINOR_DEMOCRATIC }
-        log = "CHAOS METER: Minor power [THIS.GetName] changed to democratic ideology ([?chaos_change] chaos)"
+        log = "CHAOS METER: Minor power [THIS.GetName] changed to democratic ideology ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_IDEOLOGY_CHANGE_MINOR_NON_DEMOCRATIC }
-        log = "CHAOS METER: Minor power [THIS.GetName] changed to non-democratic ideology (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Minor power [THIS.GetName] changed to non-democratic ideology ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -416,14 +413,14 @@ chaos_meter_on_ideology_change = {
 
 chaos_meter_on_faction_created = {
     set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_CREATE }
-    log = "CHAOS METER: [THIS.GetName] created a faction (+[?chaos_change] chaos)"
+    log = "CHAOS METER: [THIS.GetName] created a faction ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_faction_disbanded = {
     set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_DISBAND }
-    log = "CHAOS METER: Faction disbanded ([?chaos_change] chaos)"
+    log = "CHAOS METER: Faction disbanded ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
@@ -445,23 +442,23 @@ chaos_meter_on_faction_join = {
             check_variable = { both_democratic = 1 }
         }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MAJOR }
-        log = "CHAOS METER: Major democratic power [THIS.GetName] joined democratic faction led by [faction_leader.GetName] ([?chaos_change] chaos)"
+        log = "CHAOS METER: Major democratic power [THIS.GetName] joined democratic faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
     }
     else_if = {
         limit = {
             check_variable = { both_democratic = 1 }
         }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MINOR }
-        log = "CHAOS METER: Minor democratic power [THIS.GetName] joined democratic faction led by [faction_leader.GetName] ([?chaos_change] chaos)"
+        log = "CHAOS METER: Minor democratic power [THIS.GetName] joined democratic faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
     }
     else_if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] joined faction led by [faction_leader.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] joined faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_MINOR }
-        log = "CHAOS METER: Minor power [THIS.GetName] joined faction led by [faction_leader.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Minor power [THIS.GetName] joined faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -495,7 +492,7 @@ chaos_meter_on_faction_leave = {
             check_variable = { both_democratic = 1 }
         }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_LEAVE_BOTH_DEMOCRATIC_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] left democratic faction ([?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] left democratic faction ([?chaos_change|=] chaos)"
         add_chaos_meter_value = yes
     }
     else_if = {
@@ -503,18 +500,18 @@ chaos_meter_on_faction_leave = {
             check_variable = { both_democratic = 1 }
         }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_LEAVE_BOTH_DEMOCRATIC_MINOR }
-        log = "CHAOS METER: Minor power [THIS.GetName] left democratic faction ([?chaos_change] chaos)"
+        log = "CHAOS METER: Minor power [THIS.GetName] left democratic faction ([?chaos_change|=] chaos)"
         add_chaos_meter_value = yes
     }
     else_if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_LEAVE_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] left faction ([?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] left faction ([?chaos_change|=] chaos)"
         add_chaos_meter_value = yes
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_LEAVE_MINOR }
-        log = "CHAOS METER: Minor power [THIS.GetName] left faction ([?chaos_change] chaos)"
+        log = "CHAOS METER: Minor power [THIS.GetName] left faction ([?chaos_change|=] chaos)"
         add_chaos_meter_value = yes
     }
 }
@@ -523,7 +520,7 @@ chaos_meter_on_justifying_wargoal = {
     if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_JUSTIFYING_WARGOAL_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] is justifying war goal against [FROM.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] is justifying war goal against [FROM.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -533,7 +530,7 @@ chaos_meter_on_guarantee = {
     if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_GUARANTEE_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] guaranteed independence of [FROM.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] guaranteed independence of [FROM.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -543,7 +540,7 @@ chaos_meter_on_wargoal_expire = {
     if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_WARGOAL_EXPIRE_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] had war goal against [FROM.GetName] expire ([?chaos_change] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] had war goal against [FROM.GetName] expire ([?chaos_change|=] chaos)"
     }
     add_chaos_meter_value = yes
 }
@@ -552,7 +549,7 @@ chaos_meter_on_lend_lease = {
     if = {
         limit = { ROOT = { is_major = yes } }
         set_temp_variable = { chaos_change = @CHAOS_PER_LEND_LEASE }
-        log = "CHAOS METER: [THIS.GetName] provided lend-lease to [FROM.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: [THIS.GetName] provided lend-lease to [FROM.GetName] ([?chaos_change|=] chaos)"
         add_chaos_meter_value = yes
     }
 }
@@ -561,7 +558,7 @@ chaos_meter_on_call_allies = {
     if = {
         limit = { FROM = { is_subject = no } }
         set_temp_variable = { chaos_change = @CHAOS_PER_CALL_ALLIES }
-        log = "CHAOS METER: [THIS.GetName] called allies into war against [FROM.GetName] (+[?chaos_change] chaos)"
+        log = "CHAOS METER: [THIS.GetName] called allies into war against [FROM.GetName] ([?chaos_change|=] chaos)"
         add_chaos_meter_value = yes
     }
 }
@@ -570,53 +567,53 @@ chaos_meter_on_join_allies = {
     if = {
         limit = { ROOT = { is_subject = no } }
         set_temp_variable = { chaos_change = @CHAOS_PER_JOIN_ALLIES }
-        log = "CHAOS METER: [THIS.GetName] joined allies in war (+[?chaos_change] chaos)"
+        log = "CHAOS METER: [THIS.GetName] joined allies in war ([?chaos_change|=] chaos)"
         add_chaos_meter_value = yes
     }
 }
 
 chaos_meter_on_new_term_election = {
     set_temp_variable = { chaos_change = @CHAOS_PER_NEW_TERM_ELECTION }
-    log = "CHAOS METER: [THIS.GetName] held democratic elections ([?chaos_change] chaos)"
+    log = "CHAOS METER: [THIS.GetName] held democratic elections ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_stage_coup = {
     set_temp_variable = { chaos_change = @CHAOS_PER_STAGE_COUP }
-    log = "CHAOS METER: [THIS.GetName] staged coup attempt in [FROM.GetName] (+[?chaos_change] chaos)"
+    log = "CHAOS METER: [THIS.GetName] staged coup attempt in [FROM.GetName] ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_coup_succeeded = {
     set_temp_variable = { chaos_change = @CHAOS_PER_COUP_SUCCEEDED }
-    log = "CHAOS METER: Coup succeeded in [THIS.GetName] (+[?chaos_change] chaos)"
+    log = "CHAOS METER: Coup succeeded in [THIS.GetName] ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_capitulation = {
     set_temp_variable = { chaos_change = @CHAOS_PER_CAPITULATION }
-    log = "CHAOS METER: [THIS.GetName] capitulated to [FROM.GetName] (+[?chaos_change] chaos)"
+    log = "CHAOS METER: [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_uncapitulation = {
     # on_uncapitulation: ROOT = country affected (no FROM)
     set_temp_variable = { chaos_change = @CHAOS_PER_UNCAPITULATION }
-    log = "CHAOS METER: [ROOT.GetName] was liberated from capitulation ([?chaos_change] chaos)"
+    log = "CHAOS METER: [ROOT.GetName] was liberated from capitulation ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_government_exiled = {
     # on_government_exiled: ROOT = exile government, FROM = host country
     set_temp_variable = { chaos_change = @CHAOS_PER_GOVERNMENT_EXILED }
-    log = "CHAOS METER: Government of [ROOT.GetName] went into exile in [FROM.GetName] (+[?chaos_change] chaos)"
+    log = "CHAOS METER: Government of [ROOT.GetName] went into exile in [FROM.GetName] ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_exile_reinstated = {
     # on_exile_government_reinstated: ROOT = government, FROM = former host
     set_temp_variable = { chaos_change = @CHAOS_PER_EXILE_REINSTATED }
-    log = "CHAOS METER: Exiled government of [ROOT.GetName] was reinstated from [FROM.GetName] ([?chaos_change] chaos)"
+    log = "CHAOS METER: Exiled government of [ROOT.GetName] was reinstated from [FROM.GetName] ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
@@ -642,7 +639,7 @@ chaos_meter_on_exile_reinstated = {
 chaos_meter_daily_update = {
     # Check if chaos meter is disabled
     if = {
-        limit = { check_variable = { global.settings_chaos_meter_disabled = 1 } }
+        limit = { has_global_flag = settings_chaos_meter_disabled }
         # Chaos meter is disabled - skip daily updates
         log = "CHAOS METER: Daily update skipped - chaos meter disabled"
     }
@@ -671,7 +668,7 @@ chaos_meter_update_world_tension = {
             set_temp_variable = { chaos_change = tension_increase }
             multiply_temp_variable = { chaos_change = @CHAOS_PER_WORLD_TENSION }
             add_chaos_meter_value = yes
-            log = "CHAOS METER: World tension increased from [?global.highest_world_tension_recorded]% to [?current_world_tension]% (+[?chaos_change] chaos)"
+            log = "CHAOS METER: World tension increased from [?global.highest_world_tension_recorded]% to [?current_world_tension]% ([?chaos_change|=] chaos)"
             set_variable = { global.highest_world_tension_recorded = current_world_tension }
         }
     }
@@ -690,7 +687,7 @@ chaos_meter_update_world_tension = {
 
             set_temp_variable = { wt_decreased_from = current_world_tension }
             add_to_temp_variable = { wt_decreased_from = tension_decrease }
-            log = "CHAOS METER: World tension decreased from [?wt_decreased_from]% to [?current_world_tension]% ([?chaos_change] chaos)"
+            log = "CHAOS METER: World tension decreased from [?wt_decreased_from]% to [?current_world_tension]% ([?chaos_change|=] chaos)"
             set_variable = { global.highest_world_tension_recorded = current_world_tension }
         }
     }
@@ -740,7 +737,7 @@ chaos_meter_update_factories = {
         if = {
             limit = { check_variable = { var = chaos_change value = @MIN_CASUALTY_CHANGE_K compare = greater_than_or_equals } }
             add_chaos_meter_value = yes
-            log = "CHAOS METER: Arms buildup from [?mil_change] new military factories (+[?chaos_change] chaos)"
+            log = "CHAOS METER: Arms buildup from [?mil_change] new military factories ([?chaos_change|=] chaos)"
         }
 
         set_variable = { global.last_total_mils = current_total_mils }
@@ -767,7 +764,7 @@ chaos_meter_update_divisions = {
         if = {
             limit = { check_variable = { var = chaos_change value = @MIN_CASUALTY_CHANGE_K compare = greater_than_or_equals } }
             add_chaos_meter_value = yes
-            log = "CHAOS METER: Military buildup from [?division_change] new divisions (+[?chaos_change] chaos)"
+            log = "CHAOS METER: Military buildup from [?division_change] new divisions ([?chaos_change|=] chaos)"
         }
 
         set_variable = { global.last_total_divisions = current_total_divisions }
@@ -824,10 +821,10 @@ chaos_meter_update_stability = {
 
             if = {
                 limit = { check_variable = { stability_change > 0 } }
-                log = "CHAOS METER: World stability improved by [?abs_stability_change] ([?chaos_change] chaos)"
+                log = "CHAOS METER: World stability improved by [?abs_stability_change] ([?chaos_change|=] chaos)"
             }
             else = {
-                log = "CHAOS METER: World stability decreased by [?abs_stability_change] (+[?chaos_change] chaos)"
+                log = "CHAOS METER: World stability decreased by [?abs_stability_change] ([?chaos_change|=] chaos)"
             }
         }
 
