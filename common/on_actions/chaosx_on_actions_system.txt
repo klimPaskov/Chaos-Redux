@@ -1,9 +1,6 @@
 @MIN_TIMER_RANDOM_START = 7
 @MAX_TIMER_RANDOM_START = 30
 
-@DEFAULT_AUTO_ENABLE_ON_SWITCH = 1
-@DEFAULT_DISABLE_PREVIOUS_TAG = 1
-
 on_actions = {
 
     # Initialization and activation of the event system
@@ -23,7 +20,7 @@ on_actions = {
                 country_event = chaosx.activation.1 # Welcome event
 
                 # Initialize tag switch detection variable for current human players
-                set_variable = { was_human_yesterday = 1 }
+                set_country_flag = was_human_yesterday
             }
 
             # All countries initialization
@@ -59,23 +56,23 @@ on_actions = {
             if = {
                 limit = {
                     OR = {
-                        check_variable = { global.settings_auto_enable_on_switch = 1 }
-                        check_variable = { global.settings_disable_previous_tag = 1 }
+                        has_global_flag = settings_auto_enable_on_switch
+                        has_global_flag = settings_disable_previous_tag
                     }
                 }
 
-                # Initialize tracking variable if not set
+                # Initialize tracking flag if not set
                 if = {
-                    limit = { NOT = { has_variable = was_human_yesterday } }
-                    set_variable = { was_human_yesterday = 0 }
+                    limit = { NOT = { has_country_flag = was_human_yesterday } }
+                    clr_country_flag = was_human_yesterday
                 }
 
                 # Check for tag switch TO this country (now human, wasn't yesterday)
                 if = {
                     limit = {
                         is_ai = no
-                        check_variable = { was_human_yesterday = 0 }
-                        check_variable = { global.settings_auto_enable_on_switch = 1 }
+                        NOT = { has_country_flag = was_human_yesterday }
+                        has_global_flag = settings_auto_enable_on_switch
                     }
 
                     log = "CHAOS REDUX TAG MANAGEMENT: New human player detected for [This.GetTag] ([This.GetName])"
@@ -101,8 +98,8 @@ on_actions = {
                 if = {
                     limit = {
                         is_ai = yes
-                        check_variable = { was_human_yesterday = 1 }
-                        check_variable = { global.settings_disable_previous_tag = 1 }
+                        has_country_flag = was_human_yesterday
+                        has_global_flag = settings_disable_previous_tag
                     }
 
                     log = "CHAOS REDUX TAG MANAGEMENT: Former human player detected for [This.GetTag] ([This.GetName])"
@@ -124,13 +121,13 @@ on_actions = {
                     }
                 }
 
-                # Update tracking variable for next day
+                # Update tracking flag for next day
                 if = {
                     limit = { is_ai = no }
-                    set_variable = { was_human_yesterday = 1 }
+                    set_country_flag = was_human_yesterday
                 }
                 else = {
-                    set_variable = { was_human_yesterday = 0 }
+                    clr_country_flag = was_human_yesterday
                 }
             }
 

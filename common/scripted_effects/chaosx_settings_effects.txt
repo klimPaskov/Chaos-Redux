@@ -51,9 +51,7 @@
 @DYNAMIC_CAP_BASE_FACTOR = 5
 
 # Tag Management Constants
-@DEFAULT_TAG_MANAGEMENT_MODE = 5
-@DEFAULT_AUTO_ENABLE_ON_SWITCH = 1
-@DEFAULT_DISABLE_PREVIOUS_TAG = 1
+@DEFAULT_TAG_MANAGEMENT_MODE = 1
 
 # Country Filter Constants
 @COUNTRY_FILTER_ALL = 0
@@ -71,11 +69,11 @@
 @CONTINENT_SORT_MIDDLE_EAST = 7
 
 # Advanced Settings Constants
-@DEFAULT_ADVANCED_INCREMENT_MODE = 5
+@DEFAULT_ADVANCED_INCREMENT_MODE = 10
 @ADVANCED_MIN_RECOVERY_RATE = 0
 @ADVANCED_MAX_RECOVERY_RATE = 10000
 @ADVANCED_MIN_CAP_REDUCTION = 0
-@ADVANCED_MAX_CAP_REDUCTION = 0.9
+@ADVANCED_MAX_CAP_REDUCTION = 1.0
 @ADVANCED_MIN_MAJOR_WEIGHT_PER_MINOR = 0
 @ADVANCED_MAX_MAJOR_WEIGHT_PER_MINOR = 10000
 @ADVANCED_MIN_EVENT_WEIGHT = 100
@@ -104,7 +102,7 @@
 @CHAOS_TIER_CRITICAL = 4
 @CHAOS_TIER_COLLAPSE = 5
 
-@DEFAULT_CHAOS_INCREMENT_MODE = 5
+@DEFAULT_CHAOS_INCREMENT_MODE = 10
 @DEFAULT_CHAOS_METER_DISABLED = 0
 
 # ============================================================================
@@ -139,10 +137,6 @@ open_chaos_meter_menu = {
 open_advanced_settings_menu = {
     clear_all_menu_flags = yes
     set_country_flag = show_advanced_settings_menu
-
-    # Always calculate cap reduction percentage for display
-    calculate_cap_reduction_percentage = yes
-    calculate_active_cap_reduction_percentage = yes
 }
 
 toggle_scenarios_menu = {
@@ -196,13 +190,14 @@ initialize_settings_system = {
 }
 
 initialize_global_settings_system = {
-    # Tag management
-    set_variable = { global.settings_auto_enable_on_switch = @DEFAULT_AUTO_ENABLE_ON_SWITCH }
-    set_variable = { global.settings_disable_previous_tag = @DEFAULT_DISABLE_PREVIOUS_TAG }
+    # Tag management - both defaults are 1, so set the flags
+    set_global_flag = settings_auto_enable_on_switch
+    set_global_flag = settings_disable_previous_tag
+
     update_filtered_countries_list = yes
 
-    # chaos meter settings
-    set_variable = { global.settings_chaos_meter_disabled = 0 }
+    # chaos meter settings - default is disabled = false, so don't set the flag
+    clr_global_flag = settings_chaos_meter_disabled
 
     # Advanced settings
     set_variable = { global.settings_recovery_rate = global.minor_event_recovery_rate }
@@ -210,10 +205,6 @@ initialize_global_settings_system = {
     set_variable = { global.settings_major_weight_per_minor = global.major_event_weight_per_minor }
     set_variable = { global.settings_event_weight = global.default_event_weight }
     set_variable = { global.settings_timer_modifier = global.chaos_timer_modifier_calm }
-
-    # Calculate initial cap reduction percentage for display
-    calculate_cap_reduction_percentage = yes
-    calculate_active_cap_reduction_percentage = yes
 }
 
 # Reset all settings to their original values
@@ -2269,7 +2260,7 @@ disable_for_selected_tag = {
         # Handle disable previous tag functionality if this was the current player
         if = {
             limit = {
-                check_variable = { global.settings_disable_previous_tag = 1 }
+                has_global_flag = settings_disable_previous_tag
                 check_variable = { settings_current_selected_country = THIS }
             }
             log = "CHAOS REDUX TAG MANAGEMENT: Disabled event system for current player tag as requested"
@@ -2303,12 +2294,12 @@ toggle_event_system_for_selected_tag = {
 # Toggle auto enable on tag switch setting
 toggle_auto_enable_on_switch = {
     if = {
-        limit = { check_variable = { global.settings_auto_enable_on_switch = 1 } }
-        set_variable = { global.settings_auto_enable_on_switch = 0 }
+        limit = { has_global_flag = settings_auto_enable_on_switch }
+        clr_global_flag = settings_auto_enable_on_switch
         log = "CHAOS REDUX TAG MANAGEMENT: Auto-enable on tag switch DISABLED (checkbox unchecked)"
     }
     else = {
-        set_variable = { global.settings_auto_enable_on_switch = 1 }
+        set_global_flag = settings_auto_enable_on_switch
         log = "CHAOS REDUX TAG MANAGEMENT: Auto-enable on tag switch ENABLED (checkbox checked)"
     }
 
@@ -2319,12 +2310,12 @@ toggle_auto_enable_on_switch = {
 # Toggle disable previous tag setting
 toggle_disable_previous_tag = {
     if = {
-        limit = { check_variable = { global.settings_disable_previous_tag = 1 } }
-        set_variable = { global.settings_disable_previous_tag = 0 }
+        limit = { has_global_flag = settings_disable_previous_tag }
+        clr_global_flag = settings_disable_previous_tag
         log = "CHAOS REDUX TAG MANAGEMENT: Disable previous tag DISABLED (checkbox unchecked)"
     }
     else = {
-        set_variable = { global.settings_disable_previous_tag = 1 }
+        set_global_flag = settings_disable_previous_tag
         log = "CHAOS REDUX TAG MANAGEMENT: Disable previous tag ENABLED (checkbox checked)"
     }
 
@@ -2349,8 +2340,8 @@ update_enabled_countries_list = {
 reset_tag_management_to_defaults = {
     set_variable = { settings_selected_tag_index = 0 }
     set_variable = { settings_tag_increment_mode = @DEFAULT_TAG_MANAGEMENT_MODE }
-    set_variable = { global.settings_auto_enable_on_switch = @DEFAULT_AUTO_ENABLE_ON_SWITCH }
-    set_variable = { global.settings_disable_previous_tag = @DEFAULT_DISABLE_PREVIOUS_TAG }
+    set_global_flag = settings_auto_enable_on_switch
+    set_global_flag = settings_disable_previous_tag
     set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
     set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
 
@@ -2371,7 +2362,7 @@ check_for_player_tag_switch = {
 handle_player_tag_switch = {
     # Handle auto-enable on switch
     if = {
-        limit = { check_variable = { global.settings_auto_enable_on_switch = 1 } }
+        limit = { has_global_flag = settings_auto_enable_on_switch }
         set_country_flag = events_activated
         # Add to enabled countries list if not already there
         if = {
@@ -2658,9 +2649,9 @@ update_actual_chaos_meter = {
 # Toggle chaos meter disabled state
 toggle_chaos_meter_disabled = {
     if = {
-        limit = { check_variable = { global.settings_chaos_meter_disabled = 1 } }
+        limit = { has_global_flag = settings_chaos_meter_disabled }
         # Re-enabling chaos meter
-        set_variable = { global.settings_chaos_meter_disabled = 0 }
+        clr_global_flag = settings_chaos_meter_disabled
 
         # Restore the chaos meter value from backup if it exists
         if = {
@@ -2676,7 +2667,7 @@ toggle_chaos_meter_disabled = {
     }
     else = {
         # Disabling chaos meter
-        set_variable = { global.settings_chaos_meter_disabled = 1 }
+        set_global_flag = settings_chaos_meter_disabled
 
         # Backup current chaos meter value before setting to 0
         if = {
@@ -2713,7 +2704,7 @@ reset_chaos_meter_to_defaults = {
     clr_country_flag = settings_chaos_increment_mode_10
     clr_country_flag = settings_chaos_increment_mode_1
 
-    set_variable = { global.settings_chaos_meter_disabled = @DEFAULT_CHAOS_METER_DISABLED }
+    clr_global_flag = settings_chaos_meter_disabled
 
     # Update tier
     update_settings_chaos_tier = yes
@@ -2774,7 +2765,20 @@ increase_recovery_rate = {
 # Decrease cap reduction
 decrease_cap_reduction = {
     set_temp_variable = { new_value = global.settings_cap_reduction }
-    subtract_from_temp_variable = { new_value = 0.1 }
+
+    # Calculate increment based on mode: 1% = 0.01, 5% = 0.05, 10% = 0.10
+    if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 1 } }
+        subtract_from_temp_variable = { new_value = 0.01 }
+    }
+    else_if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 5 } }
+        subtract_from_temp_variable = { new_value = 0.05 }
+    }
+    else = {
+        # Mode 10 or default
+        subtract_from_temp_variable = { new_value = 0.10 }
+    }
 
     clamp_temp_variable = {
         var = new_value
@@ -2782,13 +2786,25 @@ decrease_cap_reduction = {
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
-    calculate_cap_reduction_percentage = yes
 }
 
 # Increase cap reduction
 increase_cap_reduction = {
     set_temp_variable = { new_value = global.settings_cap_reduction }
-    add_to_temp_variable = { new_value = 0.1 }
+
+    # Calculate increment based on mode: 1% = 0.01, 5% = 0.05, 10% = 0.10
+    if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 1 } }
+        add_to_temp_variable = { new_value = 0.01 }
+    }
+    else_if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 5 } }
+        add_to_temp_variable = { new_value = 0.05 }
+    }
+    else = {
+        # Mode 10 or default
+        add_to_temp_variable = { new_value = 0.10 }
+    }
 
     clamp_temp_variable = {
         var = new_value
@@ -2796,7 +2812,6 @@ increase_cap_reduction = {
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
-    calculate_cap_reduction_percentage = yes
 }
 
 # ============================================================================
@@ -2959,10 +2974,23 @@ increase_advanced_recovery_rate = {
     set_variable = { global.settings_recovery_rate = new_value }
 }
 
-# Cap Reduction Controls (10% increments)
+# Cap Reduction Controls (uses increment mode: 1% for mode 1, 5% for mode 5, 10% for mode 10)
 decrease_advanced_cap_reduction = {
     set_temp_variable = { new_value = global.settings_cap_reduction }
-    subtract_from_temp_variable = { new_value = 0.1 }
+
+    # Calculate increment based on mode: 1% = 0.01, 5% = 0.05, 10% = 0.10
+    if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 1 } }
+        subtract_from_temp_variable = { new_value = 0.01 }
+    }
+    else_if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 5 } }
+        subtract_from_temp_variable = { new_value = 0.05 }
+    }
+    else = {
+        # Mode 10 or default
+        subtract_from_temp_variable = { new_value = 0.10 }
+    }
 
     clamp_temp_variable = {
         var = new_value
@@ -2970,12 +2998,24 @@ decrease_advanced_cap_reduction = {
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
-    calculate_cap_reduction_percentage = yes
 }
 
 increase_advanced_cap_reduction = {
     set_temp_variable = { new_value = global.settings_cap_reduction }
-    add_to_temp_variable = { new_value = 0.1 }
+
+    # Calculate increment based on mode: 1% = 0.01, 5% = 0.05, 10% = 0.10
+    if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 1 } }
+        add_to_temp_variable = { new_value = 0.01 }
+    }
+    else_if = {
+        limit = { check_variable = { settings_advanced_increment_mode = 5 } }
+        add_to_temp_variable = { new_value = 0.05 }
+    }
+    else = {
+        # Mode 10 or default
+        add_to_temp_variable = { new_value = 0.10 }
+    }
 
     clamp_temp_variable = {
         var = new_value
@@ -2983,7 +3023,6 @@ increase_advanced_cap_reduction = {
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
-    calculate_cap_reduction_percentage = yes
 }
 
 # Major Weight Controls
@@ -3048,10 +3087,6 @@ update_advanced_settings_values = {
         limit = { has_variable = global.settings_timer_modifier }
         update_all_timer_modifiers = yes
     }
-
-    # Calculate cap reduction percentage for display
-    calculate_cap_reduction_percentage = yes
-    calculate_active_cap_reduction_percentage = yes
 }
 
 # Reset advanced settings to defaults
@@ -3060,18 +3095,4 @@ reset_advanced_settings_to_defaults = {
     set_variable = { global.settings_cap_reduction = @DEFAULT_REDUCE_CAP_FACTOR }
     set_variable = { global.settings_major_weight_per_minor = @DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR }
     set_variable = { settings_advanced_increment_mode = @DEFAULT_ADVANCED_INCREMENT_MODE }
-    calculate_cap_reduction_percentage = yes
-    calculate_active_cap_reduction_percentage = yes
-}
-
-# Calculate cap reduction percentage for display
-calculate_cap_reduction_percentage = {
-    set_variable = { global.cap_reduction_percent = global.settings_cap_reduction }
-    multiply_variable = { global.cap_reduction_percent = 100 }
-}
-
-# Calculate active cap reduction percentage for display
-calculate_active_cap_reduction_percentage = {
-    set_variable = { temp_active_cap_percent = global.reduce_cap_factor }
-    multiply_variable = { temp_active_cap_percent = 100 }
 }
