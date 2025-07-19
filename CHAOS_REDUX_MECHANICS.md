@@ -140,6 +140,8 @@ Repeatable events gradually recover weight over time:
 
 A global meter (0-1000+) that tracks world instability and drives system behavior.
 
+<img width="480" height="80" alt="chaos_meter_0" src="https://github.com/user-attachments/assets/315ecf14-8e84-4e42-9f85-1cfccbf78a9f" />
+
 ### Chaos Tiers
 
 - **Calm World** (0-199): Normal event frequency, stable conditions
