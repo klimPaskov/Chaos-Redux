@@ -82,24 +82,24 @@
 @ADVANCED_MAX_TIMER_MODIFIER = 2.0
 
 # Chaos Meter Constants
-@CHAOS_TIER_CALM_MIN = 0
-@CHAOS_TIER_CALM_MAX = 199
-@CHAOS_TIER_GATHERING_MIN = 200
-@CHAOS_TIER_GATHERING_MAX = 399
-@CHAOS_TIER_RISING_MIN = 400
-@CHAOS_TIER_RISING_MAX = 599
-@CHAOS_TIER_CHAOS_MIN = 600
-@CHAOS_TIER_CHAOS_MAX = 799
-@CHAOS_TIER_CRITICAL_MIN = 800
-@CHAOS_TIER_CRITICAL_MAX = 999
-@CHAOS_TIER_COLLAPSE_MIN = 1000
-@CHAOS_TIER_COLLAPSE_PLUS = 1001
-@CHAOS_TIER_CALM = 0
-@CHAOS_TIER_GATHERING = 1
-@CHAOS_TIER_RISING = 2
-@CHAOS_TIER_CHAOS = 3
-@CHAOS_TIER_CRITICAL = 4
-@CHAOS_TIER_COLLAPSE = 5
+@chaos_tier_0_MIN = 0
+@chaos_tier_0_MAX = 199
+@chaos_tier_1_MIN = 200
+@chaos_tier_1_MAX = 399
+@chaos_tier_2_MIN = 400
+@chaos_tier_2_MAX = 599
+@chaos_tier_3_MIN = 600
+@chaos_tier_3_MAX = 799
+@chaos_tier_4_MIN = 800
+@chaos_tier_4_MAX = 999
+@chaos_tier_final_MIN = 1000
+@chaos_tier_final_PLUS = 1001
+@chaos_tier_0 = 0
+@chaos_tier_1 = 1
+@chaos_tier_2 = 2
+@chaos_tier_3 = 3
+@chaos_tier_4 = 4
+@chaos_tier_final = 5
 @DEFAULT_CHAOS_INCREMENT_MODE = 10
 
 # ============================================================================
@@ -688,43 +688,31 @@ increase_event_id = {
 # Set increment mode to specific values (for modifier clicks)
 set_increment_mode_to_1 = {
     set_variable = { settings_events_increment_mode = 1 }
-    set_country_flag = settings_events_increment_mode_1
-    clr_country_flag = settings_events_increment_mode_10
 }
 
 set_increment_mode_to_5 = {
     set_variable = { settings_events_increment_mode = 5 }
-    clr_country_flag = settings_events_increment_mode_1
-    clr_country_flag = settings_events_increment_mode_10
 }
 
 set_increment_mode_to_10 = {
     set_variable = { settings_events_increment_mode = 10 }
-    clr_country_flag = settings_events_increment_mode_1
-    set_country_flag = settings_events_increment_mode_10
 }
 
 # Toggle increment mode (1 -> 5 -> 10 -> 1)
 toggle_increment_mode = {
     if = {
-        limit = { has_country_flag = settings_events_increment_mode_1 }
+        limit = { check_variable = { settings_events_increment_mode = 1 } }
         # Switch from 1 to 5
         set_variable = { settings_events_increment_mode = 5 }
-        clr_country_flag = settings_events_increment_mode_1
-        clr_country_flag = settings_events_increment_mode_10
     }
     else_if = {
-        limit = { has_country_flag = settings_events_increment_mode_10 }
+        limit = { check_variable = { settings_events_increment_mode = 10 } }
         # Switch from 10 to 1
         set_variable = { settings_events_increment_mode = 1 }
-        set_country_flag = settings_events_increment_mode_1
-        clr_country_flag = settings_events_increment_mode_10
     }
     else = {
         # Switch from 5 to 10 (default case)
         set_variable = { settings_events_increment_mode = 10 }
-        clr_country_flag = settings_events_increment_mode_1
-        set_country_flag = settings_events_increment_mode_10
     }
 }
 
@@ -1467,8 +1455,6 @@ reset_trigger_events = {
     set_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN }
     set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
     set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
-    clr_country_flag = settings_events_increment_mode_1
-    clr_country_flag = settings_events_increment_mode_10
 
     # Reset view to Events view
     set_country_flag = show_events_view
@@ -1505,10 +1491,6 @@ initialize_timer_system_settings = {
     set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
     set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
     set_variable = { settings_timer_increment_mode = 1 }
-
-    # Set default timer increment mode flags
-    set_country_flag = settings_timer_increment_mode_1
-    clr_country_flag = settings_timer_increment_mode_10
 
     # Set default view to Timer Interval
     set_country_flag = show_timer_interval_view
@@ -1593,24 +1575,18 @@ increase_timer_max = {
 # Toggle timer system increment mode
 toggle_timer_increment_mode = {
     if = {
-        limit = { has_country_flag = settings_timer_increment_mode_1 }
+        limit = { check_variable = { settings_timer_increment_mode = 1 } }
         # Switch from 1 to 5
         set_variable = { settings_timer_increment_mode = 5 }
-        clr_country_flag = settings_timer_increment_mode_1
-        clr_country_flag = settings_timer_increment_mode_10
     }
     else_if = {
-        limit = { has_country_flag = settings_timer_increment_mode_10 }
+        limit = { check_variable = { settings_timer_increment_mode = 10 } }
         # Switch from 10 to 1
         set_variable = { settings_timer_increment_mode = 1 }
-        set_country_flag = settings_timer_increment_mode_1
-        clr_country_flag = settings_timer_increment_mode_10
     }
     else = {
         # Switch from 5 to 10 (default case)
         set_variable = { settings_timer_increment_mode = 10 }
-        clr_country_flag = settings_timer_increment_mode_1
-        set_country_flag = settings_timer_increment_mode_10
     }
 }
 
@@ -1645,8 +1621,6 @@ reset_timer_to_defaults = {
 
     # Reset timer increment mode to 1
     set_variable = { settings_timer_increment_mode = 1 }
-    set_country_flag = settings_timer_increment_mode_1
-    clr_country_flag = settings_timer_increment_mode_10
 
     # Hide timer window
     clr_country_flag = timer_window_enabled
@@ -2413,9 +2387,6 @@ initialize_chaos_meter_settings = {
 
     # Initialize tier based on current value
     update_settings_chaos_tier = yes
-
-    set_country_flag = settings_chaos_increment_mode_5
-    clr_country_flag = settings_chaos_increment_mode_10
 }
 
 # ============================================================================
@@ -2454,27 +2425,18 @@ increase_chaos_meter_value = {
 # Toggle chaos meter increment mode (5 -> 10 -> 1 -> 5)
 toggle_chaos_increment_mode = {
     if = {
-        limit = { has_country_flag = settings_chaos_increment_mode_5 }
+        limit = { check_variable = { settings_chaos_increment_mode = 5 } }
         # Switch from 5 to 10
         set_variable = { settings_chaos_increment_mode = 10 }
-        clr_country_flag = settings_chaos_increment_mode_5
-        set_country_flag = settings_chaos_increment_mode_10
-        clr_country_flag = settings_chaos_increment_mode_1
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_increment_mode_10 }
+        limit = { check_variable = { settings_chaos_increment_mode = 10 } }
         # Switch from 10 to 1
         set_variable = { settings_chaos_increment_mode = 1 }
-        clr_country_flag = settings_chaos_increment_mode_5
-        clr_country_flag = settings_chaos_increment_mode_10
-        set_country_flag = settings_chaos_increment_mode_1
     }
     else = {
         # Switch from 1 to 5 (default case)
         set_variable = { settings_chaos_increment_mode = 5 }
-        set_country_flag = settings_chaos_increment_mode_5
-        clr_country_flag = settings_chaos_increment_mode_10
-        clr_country_flag = settings_chaos_increment_mode_1
     }
 }
 
@@ -2485,146 +2447,146 @@ toggle_chaos_increment_mode = {
 # Update settings chaos tier based on current settings value
 update_settings_chaos_tier = {
     # Clear all tier flags first
-    clr_country_flag = settings_chaos_tier_calm
-    clr_country_flag = settings_chaos_tier_gathering
-    clr_country_flag = settings_chaos_tier_rising
-    clr_country_flag = settings_chaos_tier_chaos
-    clr_country_flag = settings_chaos_tier_critical
-    clr_country_flag = settings_chaos_tier_collapse
+    clr_country_flag = settings_chaos_tier_0
+    clr_country_flag = settings_chaos_tier_1
+    clr_country_flag = settings_chaos_tier_2
+    clr_country_flag = settings_chaos_tier_3
+    clr_country_flag = settings_chaos_tier_4
+    clr_country_flag = settings_chaos_tier_final
 
     # Set appropriate tier flag and value
     if = {
-        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_CRITICAL_MAX } }
-        set_country_flag = settings_chaos_tier_collapse
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_COLLAPSE }
+        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_4_MAX } }
+        set_country_flag = settings_chaos_tier_final
+        set_variable = { settings_chaos_tier = @chaos_tier_final }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_CHAOS_MAX } }
-        set_country_flag = settings_chaos_tier_critical
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CRITICAL }
+        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_3_MAX } }
+        set_country_flag = settings_chaos_tier_4
+        set_variable = { settings_chaos_tier = @chaos_tier_4 }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_RISING_MAX } }
-        set_country_flag = settings_chaos_tier_chaos
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CHAOS }
+        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_2_MAX } }
+        set_country_flag = settings_chaos_tier_3
+        set_variable = { settings_chaos_tier = @chaos_tier_3 }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_GATHERING_MAX } }
-        set_country_flag = settings_chaos_tier_rising
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_RISING }
+        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_1_MAX } }
+        set_country_flag = settings_chaos_tier_2
+        set_variable = { settings_chaos_tier = @chaos_tier_2 }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @CHAOS_TIER_CALM_MAX } }
-        set_country_flag = settings_chaos_tier_gathering
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_GATHERING }
+        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_0_MAX } }
+        set_country_flag = settings_chaos_tier_1
+        set_variable = { settings_chaos_tier = @chaos_tier_1 }
     }
     else = {
-        set_country_flag = settings_chaos_tier_calm
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CALM }
+        set_country_flag = settings_chaos_tier_0
+        set_variable = { settings_chaos_tier = @chaos_tier_0 }
     }
 }
 
 # Cycle to previous chaos tier
 cycle_chaos_tier_prev = {
     if = {
-        limit = { has_country_flag = settings_chaos_tier_calm }
+        limit = { has_country_flag = settings_chaos_tier_0 }
         # From Calm to World Collapse
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_COLLAPSE_PLUS }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_COLLAPSE }
-        clr_country_flag = settings_chaos_tier_calm
-        set_country_flag = settings_chaos_tier_collapse
+        set_variable = { settings_chaos_meter_value = @chaos_tier_final_PLUS }
+        set_variable = { settings_chaos_tier = @chaos_tier_final }
+        clr_country_flag = settings_chaos_tier_0
+        set_country_flag = settings_chaos_tier_final
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_gathering }
+        limit = { has_country_flag = settings_chaos_tier_1 }
         # From Gathering Storm to Calm World
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CALM_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CALM }
-        clr_country_flag = settings_chaos_tier_gathering
-        set_country_flag = settings_chaos_tier_calm
+        set_variable = { settings_chaos_meter_value = @chaos_tier_0_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_0 }
+        clr_country_flag = settings_chaos_tier_1
+        set_country_flag = settings_chaos_tier_0
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_rising }
+        limit = { has_country_flag = settings_chaos_tier_2 }
         # From Rising Chaos to Gathering Storm
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_GATHERING_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_GATHERING }
-        clr_country_flag = settings_chaos_tier_rising
-        set_country_flag = settings_chaos_tier_gathering
+        set_variable = { settings_chaos_meter_value = @chaos_tier_1_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_1 }
+        clr_country_flag = settings_chaos_tier_2
+        set_country_flag = settings_chaos_tier_1
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_chaos }
+        limit = { has_country_flag = settings_chaos_tier_3 }
         # From Chaos Tier to Rising Chaos
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_RISING_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_RISING }
-        clr_country_flag = settings_chaos_tier_chaos
-        set_country_flag = settings_chaos_tier_rising
+        set_variable = { settings_chaos_meter_value = @chaos_tier_2_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_2 }
+        clr_country_flag = settings_chaos_tier_3
+        set_country_flag = settings_chaos_tier_2
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_critical }
+        limit = { has_country_flag = settings_chaos_tier_4 }
         # From Critical to Chaos Tier
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CHAOS_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CHAOS }
-        clr_country_flag = settings_chaos_tier_critical
-        set_country_flag = settings_chaos_tier_chaos
+        set_variable = { settings_chaos_meter_value = @chaos_tier_3_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_3 }
+        clr_country_flag = settings_chaos_tier_4
+        set_country_flag = settings_chaos_tier_3
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_collapse }
+        limit = { has_country_flag = settings_chaos_tier_final }
         # From World Collapse to Critical
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CRITICAL_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CRITICAL }
-        clr_country_flag = settings_chaos_tier_collapse
-        set_country_flag = settings_chaos_tier_critical
+        set_variable = { settings_chaos_meter_value = @chaos_tier_4_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_4 }
+        clr_country_flag = settings_chaos_tier_final
+        set_country_flag = settings_chaos_tier_4
     }
 }
 
 # Cycle to next chaos tier
 cycle_chaos_tier_next = {
     if = {
-        limit = { has_country_flag = settings_chaos_tier_calm }
+        limit = { has_country_flag = settings_chaos_tier_0 }
         # From Calm to Gathering Storm
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_GATHERING_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_GATHERING }
-        clr_country_flag = settings_chaos_tier_calm
-        set_country_flag = settings_chaos_tier_gathering
+        set_variable = { settings_chaos_meter_value = @chaos_tier_1_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_1 }
+        clr_country_flag = settings_chaos_tier_0
+        set_country_flag = settings_chaos_tier_1
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_gathering }
+        limit = { has_country_flag = settings_chaos_tier_1 }
         # From Gathering Storm to Rising Chaos
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_RISING_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_RISING }
-        clr_country_flag = settings_chaos_tier_gathering
-        set_country_flag = settings_chaos_tier_rising
+        set_variable = { settings_chaos_meter_value = @chaos_tier_2_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_2 }
+        clr_country_flag = settings_chaos_tier_1
+        set_country_flag = settings_chaos_tier_2
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_rising }
+        limit = { has_country_flag = settings_chaos_tier_2 }
         # From Rising Chaos to Chaos Tier
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CHAOS_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CHAOS }
-        clr_country_flag = settings_chaos_tier_rising
-        set_country_flag = settings_chaos_tier_chaos
+        set_variable = { settings_chaos_meter_value = @chaos_tier_3_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_3 }
+        clr_country_flag = settings_chaos_tier_2
+        set_country_flag = settings_chaos_tier_3
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_chaos }
+        limit = { has_country_flag = settings_chaos_tier_3 }
         # From Chaos Tier to Critical
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CRITICAL_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CRITICAL }
-        clr_country_flag = settings_chaos_tier_chaos
-        set_country_flag = settings_chaos_tier_critical
+        set_variable = { settings_chaos_meter_value = @chaos_tier_4_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_4 }
+        clr_country_flag = settings_chaos_tier_3
+        set_country_flag = settings_chaos_tier_4
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_critical }
+        limit = { has_country_flag = settings_chaos_tier_4 }
         # From Critical to World Collapse
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_COLLAPSE_PLUS }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_COLLAPSE }
-        clr_country_flag = settings_chaos_tier_critical
-        set_country_flag = settings_chaos_tier_collapse
+        set_variable = { settings_chaos_meter_value = @chaos_tier_final_PLUS }
+        set_variable = { settings_chaos_tier = @chaos_tier_final }
+        clr_country_flag = settings_chaos_tier_4
+        set_country_flag = settings_chaos_tier_final
     }
     else_if = {
-        limit = { has_country_flag = settings_chaos_tier_collapse }
+        limit = { has_country_flag = settings_chaos_tier_final }
         # From World Collapse to Calm World
-        set_variable = { settings_chaos_meter_value = @CHAOS_TIER_CALM_MIN }
-        set_variable = { settings_chaos_tier = @CHAOS_TIER_CALM }
-        clr_country_flag = settings_chaos_tier_collapse
-        set_country_flag = settings_chaos_tier_calm
+        set_variable = { settings_chaos_meter_value = @chaos_tier_0_MIN }
+        set_variable = { settings_chaos_tier = @chaos_tier_0 }
+        clr_country_flag = settings_chaos_tier_final
+        set_country_flag = settings_chaos_tier_0
     }
 }
 
@@ -2695,11 +2657,8 @@ reset_chaos_meter_to_defaults = {
         set_variable = { settings_chaos_meter_value = 0 }
     }
 
-    # Reset increment mode to default (5)
+    # Reset increment mode to default (10)
     set_variable = { settings_chaos_increment_mode = @DEFAULT_CHAOS_INCREMENT_MODE }
-    set_country_flag = settings_chaos_increment_mode_5
-    clr_country_flag = settings_chaos_increment_mode_10
-    clr_country_flag = settings_chaos_increment_mode_1
 
     clr_global_flag = settings_chaos_meter_disabled
 

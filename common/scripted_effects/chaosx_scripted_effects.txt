@@ -13,9 +13,40 @@
 ###############################################################################################################
 ###############################################################################################################
 
+modify_value_based_on_chaos_tier = {
+    # Input: base_value, add_value
+    # Output: modified_value
+    set_temp_variable = { modified_value = base_value }
+    if = {
+        limit = { has_global_flag = chaos_tier_0 }
+        multiply_temp_variable = { add_value = 0 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = chaos_tier_1 }
+        multiply_temp_variable = { add_value = 1 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = chaos_tier_2 }
+        multiply_temp_variable = { add_value = 2 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = chaos_tier_3 }
+        multiply_temp_variable = { add_value = 3 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { OR = { has_global_flag = chaos_tier_4 has_global_flag = chaos_tier_final } }
+        multiply_temp_variable = { add_value = 4 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+
+}
 
 # Can define variables 'buildings_to_damage_per_state', 'percent_of_states_to_target', and 'damage_modifier' to control how many buildings are damaged per state, how many buildings to damage, and how much damage is applied. Also 'state_population_percent' to control how much population is killed in the state.
-damage_buildings_in_state = {
+damage_buildings_in_random_states = {
     # THIS refers to the country executing the script.
 
     # First, count the total number of states.
@@ -35,11 +66,10 @@ damage_buildings_in_state = {
     set_temp_variable = { num_states_to_target = 1 }
 }
 round_temp_variable = num_states_to_target
-log = "EVENT: number of states that is targeted: [?num_states_to_target]"
 }
 
 if = {
-    limit = { check_variable = { damage_modifier < 1 } }
+    limit = { check_variable = { damage_modifier = 0 } }
     set_temp_variable = { damage_modifier = 0.25 }
 }
 if = {
@@ -47,7 +77,6 @@ if = {
     set_temp_variable = { buildings_to_damage_per_state = 3 }
 }
 
-log = "EVENT: number of buildings that is targeted: [?buildings_to_damage_per_state]"
 
 multiply_temp_variable = { state_population_percent = 1000 }
 if = {
@@ -87,7 +116,6 @@ for_loop_effect = {
         set_temp_variable = { pop_loss = state_population_k }
         round_temp_variable = pop_loss
         multiply_temp_variable = { pop_loss = state_population_percent }
-        log = "EVENT: population loss: [?pop_loss]"
         add_manpower = pop_loss
 
 
@@ -95,133 +123,138 @@ for_loop_effect = {
         for_loop_effect = {
             end = buildings_to_damage_per_state # Temp variables work with any scope.
 
-            random_list = {
-                1 = {
-                    modifier = {
-                        factor = 0
-                        infrastructure < 1
+            meta_effect = {
+                text = {
+                    random_list = {
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                infrastructure < 1
+                            }
+                            damage_building = { type = infrastructure damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                arms_factory < 1
+                            }
+                            damage_building = { type = arms_factory damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                industrial_complex < 1
+                            }
+                            damage_building = { type = industrial_complex damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                air_base < 1
+                            }
+                            damage_building = { type = air_base damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                supply_node < 1
+                            }
+                            damage_building = { type = supply_node damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                rail_way < 1
+                            }
+                            damage_building = { type = rail_way damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                naval_base < 1
+                            }
+                            damage_building = { type = naval_base damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                bunker < 1
+                            }
+                            damage_building = { type = bunker damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                coastal_bunker < 1
+                            }
+                            damage_building = { type = coastal_bunker damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                dockyard < 1
+                            }
+                            damage_building = { type = dockyard damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                anti_air_building < 1
+                            }
+                            damage_building = { type = anti_air_building damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                synthetic_refinery < 1
+                            }
+                            damage_building = { type = synthetic_refinery damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                fuel_silo < 1
+                            }
+                            damage_building = { type = fuel_silo damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                radar_station < 1
+                            }
+                            damage_building = { type = radar_station damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                rocket_site < 1
+                            }
+                            damage_building = { type = rocket_site damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                nuclear_reactor < 1
+                            }
+                            damage_building = { type = nuclear_reactor damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                nuclear_reactor_heavy_water < 1
+                            }
+                            damage_building = { type = nuclear_reactor_heavy_water damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                commercial_nuclear_reactor < 1
+                            }
+                            damage_building = { type = commercial_nuclear_reactor damage = [DMG] }
+                        }
                     }
-                    damage_building = { type = infrastructure damage = 0.25 }
                 }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        arms_factory < 1
-                    }
-                    damage_building = { type = arms_factory damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        industrial_complex < 1
-                    }
-                    damage_building = { type = industrial_complex damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        air_base < 1
-                    }
-                    damage_building = { type = air_base damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        supply_node < 1
-                    }
-                    damage_building = { type = supply_node damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        rail_way < 1
-                    }
-                    damage_building = { type = rail_way damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        naval_base < 1
-                    }
-                    damage_building = { type = naval_base damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        bunker < 1
-                    }
-                    damage_building = { type = bunker damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        coastal_bunker < 1
-                    }
-                    damage_building = { type = coastal_bunker damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        dockyard < 1
-                    }
-                    damage_building = { type = dockyard damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        anti_air_building < 1
-                    }
-                    damage_building = { type = anti_air_building damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        synthetic_refinery < 1
-                    }
-                    damage_building = { type = synthetic_refinery damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        fuel_silo < 1
-                    }
-                    damage_building = { type = fuel_silo damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        radar_station < 1
-                    }
-                    damage_building = { type = radar_station damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        rocket_site < 1
-                    }
-                    damage_building = { type = rocket_site damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        nuclear_reactor < 1
-                    }
-                    damage_building = { type = nuclear_reactor damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        nuclear_reactor_heavy_water < 1
-                    }
-                    damage_building = { type = nuclear_reactor_heavy_water damage = 0.25 }
-                }
-                1 = {
-                    modifier = {
-                        factor = 0
-                        commercial_nuclear_reactor < 1
-                    }
-                    damage_building = { type = commercial_nuclear_reactor damage = 0.25 }
-                }
+                DMG = "[?damage_modifier]"
             }
         }
     }
@@ -233,10 +266,6 @@ for_loop_effect = {
 # clear_variable = buildings_to_damage_per_state
 # clear_variable = state_population_percent
 }
-
-###############################################################################################################
-###############################################################################################################
-###############################################################################################################
 
 get_random_sea_region = {
     random_list = {
@@ -345,10 +374,6 @@ get_random_sea_region = {
     }
 }
 
-###############################################################################################################
-###############################################################################################################
-###############################################################################################################
-
 # Can take a specified percentage of the state's population and reduce/increase it. Defaults to -0.1% (one thousandth of the population).
 # STATE SCOPE
 modify_state_population_by_percent = {
@@ -363,19 +388,6 @@ modify_state_population_by_percent = {
     log = "Population loss: [?pop_loss]"
     add_manpower = pop_loss
 }
-
-###############################################################################################################
-###############################################################################################################
-###############################################################################################################
-
-
-
-
-
-
-
-
-
 
 ###############################################################################################################
 ###############################################################################################################
