@@ -163,12 +163,12 @@ add_namespace = chaosx.nr100
 #	##    ## ##     ##     ######
 ###############################################################################################################
 #   #####                                                         #####
-#  #     #  ####  #    # #    # #    # #    # #  ####  #    #    #     # #####  #####  ######   ##   #####   ####
-#  #       #    # ##  ## ##  ## #    # ##   # # #      ##  ##    #       #    # #    # #       #  #  #    # #
-#  #       #    # # ## # # ## # #    # # #  # #  ####  # ## #     #####  #    # #    # #####  #    # #    #  ####
-#  #       #    # #    # #    # #    # #  # # #      # #    #          # #####  #####  #      ###### #    #      #
-#  #     # #    # #    # #    # #    # #   ## # #    # #    #    #     # #      #   #  #      #    # #    # #    #
-#   #####   ####  #    # #    #  ####  #    # #  ####  #    #     #####  #      #    # ###### #    # #####   ####
+#  #     #  ####  #    # #    # #    # #    # #  ####  #    #    #     # #####  #####  ######   ##   #####
+#  #       #    # ##  ## ##  ## #    # ##   # # #      ##  ##    #       #    # #    # #       #  #  #    #
+#  #       #    # # ## # # ## # #    # # #  # #  ####  # ## #     #####  #    # #    # #####  #    # #    #
+#  #       #    # #    # #    # #    # #  # # #      # #    #          # #####  #####  #      ###### #    #
+#  #     # #    # #    # #    # #    # #   ## # #    # #    #    #     # #      #   #  #      #    # #    #
+#   #####   ####  #    # #    #  ####  #    # #  ####  #    #     #####  #      #    # ###### #    # #####
 ###############################################################################################################
 
 
@@ -180,24 +180,42 @@ country_event = {
     picture = GFX_report_event_stalin_propaganda
 
     is_triggered_only = yes
+    major = yes
 
     immediate = {
         hidden_effect = {
-            every_country = {
-                add_popularity = {
-                    ideology = communism
-                    popularity = 0.10
-                }
+            set_temp_variable = { base_value = 0.10 }
+            set_temp_variable = { base_add = 0.02 }
+            modify_value_based_on_chaos_tier = yes
+            add_popularity = {
+                ideology = communism
+                popularity = var:modified_value
             }
+            set_global_flag = communism_spread
         }
     }
 
     option = {
+        trigger = {
+            NOT = { has_government = communism }
+        }
         name = chaosx.nr1.1.a
         effect_tooltip = {
             add_popularity = {
                 ideology = communism
-                popularity = 0.10
+                popularity = var:modified_value
+            }
+        }
+    }
+    option = {
+        trigger = {
+            has_government = communism
+        }
+        name = chaosx.nr1.1.b
+        effect_tooltip = {
+            add_popularity = {
+                ideology = communism
+                popularity = var:modified_value
             }
         }
     }
@@ -214,9 +232,7 @@ country_event = {
     trigger = {
         NOT = { has_government = communism }
         communism > 0.10
-        has_stability < 0.40
-        threat > 0.10
-        date > 1938.1.1
+        has_global_flag = communism_spread
     }
 
     mean_time_to_happen = {
@@ -225,25 +241,21 @@ country_event = {
 
     option = { # OK, do nothing
         name = chaosx.nr1.2.a
-        ai_chance = { base = 50 }
-        custom_effect_tooltip = chaosx_tt_sub1a
+        ai_chance = { base = 80 }
+        custom_effect_tooltip = chaosx_tt_1_2a
         hidden_effect = {
-            set_temp_variable = { state_population_percent = -0.001 } # defaults to 0.1% anyways
+            set_temp_variable = { state_population_percent = -0.001 } # 0.1% of state population
             set_temp_variable = { buildings_to_damage_per_state = 3 }
-            set_temp_variable = { damage_modifier = 0.25 } # Doesn't do anything because hoi4 script is so badly optimized. Damage buildings won't take a variable for it's damage value. Maybe it does, but haven't figured it out. Of course I could just check what damage value has been set and use bunch of if statements, but that would be too much work for such a small event.
+            set_temp_variable = { damage_modifier = 0.25 }
             set_temp_variable = { percent_of_states_to_target = 0.1 }
-            damage_buildings_in_state = yes
-        }
-        add_popularity = {
-            ideology = communism
-            popularity = 0.01
+            damage_buildings_in_random_states = yes
         }
     }
 
     option = { # Try to subdue the strikes
         name = chaosx.nr1.2.b
         ai_chance = {
-            base = 50
+            base = 20
             # More likely to suppress strikes if:
             modifier = {
                 add = 10
@@ -251,15 +263,11 @@ country_event = {
             }
             modifier = {
                 add = 10
-                has_stability < 0.3 # Very low stability
+                has_stability < 0.2 # Very low stability
             }
             modifier = {
-                add = 10
-                has_political_power > 100 # Has PP to spare
-            }
-            modifier = {
-                add = 20
-                communism < 0.2 # Low communist support
+                add = 50
+                communism < 0.12 # Low communist support
             }
             # Less likely if:
             modifier = {
@@ -268,11 +276,11 @@ country_event = {
             }
             modifier = {
                 factor = 0.25
-                communism > 0.4 # High communist support (let them take over if the support is high)
+                communism > 0.3 # High communist support
             }
         }
         add_stability = -0.02
-        add_political_power = -50
+        add_political_power = -20
         add_manpower = -5000
         add_popularity = {
             ideology = communism
@@ -297,9 +305,9 @@ country_event = {
     trigger = {
         has_civil_war = no
         NOT = { has_government = communism }
-        communism > 0.30
-        has_stability < 0.15
-        date > 1938.1.1
+        communism > 0.4
+        has_global_flag = communism_spread
+        has_stability < 0.2
     }
 
     mean_time_to_happen = {
@@ -326,7 +334,7 @@ country_event = {
             base = 34
             modifier = {
                 factor = 0
-                communism > 0.5
+                communism > 0.6
             }
             modifier = {
                 factor = 0.25
@@ -338,7 +346,7 @@ country_event = {
         add_political_power = 100
         hidden_effect = {
             set_temp_variable = { communist_civil_war_size = party_popularity@communism }
-            if = { limit = { check_variable = { communist_civil_war_size > 0.5 } } set_temp_variable = { communist_civil_war_size = 0.5 } }
+            if = { limit = { check_variable = { communist_civil_war_size > 0.6 } } set_temp_variable = { communist_civil_war_size = 0.6 } }
         }
         start_civil_war = {
             ideology = communism
@@ -362,10 +370,7 @@ country_event = {
             }
         }
         add_stability = -0.20
-        add_popularity = {
-            ideology = communism
-            popularity = 0.20
-        }
+        add_ruling_to_com = yes
         set_politics = {
             ruling_party = communism
             elections_allowed = no
@@ -450,7 +455,7 @@ country_event = {
     }
 
     mean_time_to_happen = {
-        days = 7
+        days = 10
     }
 
     fire_only_once = yes

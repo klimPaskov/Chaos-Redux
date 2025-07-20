@@ -6,7 +6,7 @@ Chaos Redux presents the ultimate strategic challenge, forcing you to navigate a
 
 At the heart of the mod is the **Chaos Meter**, a dynamic system that tracks global turmoil. As world tension, wars, deaths, and strange events push the meter higher, the world descends deeper into madness.
 
-**Dynamic & Evolving Events**: Chaos Redux features a smart event system where your actions have consequences. Events that can evolve into a world-ending scenario if the Chaos Meter is high enough.
+**Dynamic & Evolving Events**: Chaos Redux features a smart event system where your actions have consequences. Events that can evolve into a world-ending scenario if the Chaos Meter is high enough. Full breakdown of the mechanics can be found here: [CHAOS_REDUX_MECHANICS.md](CHAOS_REDUX_MECHANICS.md)
 
 **The Chaos Meter**:
 

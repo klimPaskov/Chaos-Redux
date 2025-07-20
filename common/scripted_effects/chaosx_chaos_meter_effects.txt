@@ -79,11 +79,11 @@
 @DEMOCRACY_CHANGE_PER_CHAOS = 0.01
 
 # Chaos Tier Boundaries
-@CHAOS_TIER_GATHERING_BOUNDARY = 200
-@CHAOS_TIER_RISING_BOUNDARY = 400
-@CHAOS_TIER_CHAOS_BOUNDARY = 600
-@CHAOS_TIER_CRITICAL_BOUNDARY = 800
-@CHAOS_TIER_COLLAPSE_BOUNDARY = 1000
+@chaos_tier_1_BOUNDARY = 200
+@chaos_tier_2_BOUNDARY = 400
+@chaos_tier_3_BOUNDARY = 600
+@chaos_tier_4_BOUNDARY = 800
+@chaos_tier_final_BOUNDARY = 1000
 
 # Update Thresholds
 @MIN_TENSION_CHANGE = 1
@@ -151,7 +151,7 @@ add_chaos_meter_value = {
         log = "CHAOS METER: Update blocked - chaos meter is disabled"
     }
     else_if = {
-        limit = { check_variable = { global.chaos_meter_value < @CHAOS_TIER_COLLAPSE_BOUNDARY } }
+        limit = { check_variable = { global.chaos_meter_value < @chaos_tier_final_BOUNDARY } }
 
         round_temp_variable = chaos_change
         add_to_variable = { global.chaos_meter_value = chaos_change }
@@ -181,12 +181,12 @@ add_chaos_meter_value = {
 
 # Clear all tier flags
 clear_all_tier_flags = {
-    clr_global_flag = chaos_tier_calm
-    clr_global_flag = chaos_tier_gathering
-    clr_global_flag = chaos_tier_rising
-    clr_global_flag = chaos_tier_chaos
-    clr_global_flag = chaos_tier_critical
-    clr_global_flag = chaos_tier_collapse
+    clr_global_flag = chaos_tier_0
+    clr_global_flag = chaos_tier_1
+    clr_global_flag = chaos_tier_2
+    clr_global_flag = chaos_tier_3
+    clr_global_flag = chaos_tier_4
+    clr_global_flag = chaos_tier_final
 }
 
 update_chaos_meter_tier = {
@@ -198,57 +198,57 @@ update_chaos_meter_tier = {
     set_temp_variable = { old_tier_gathering = 0 }
     set_temp_variable = { old_tier_calm = 0 }
 
-    if = { limit = { has_global_flag = chaos_tier_collapse } set_temp_variable = { old_tier_collapse = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_critical } set_temp_variable = { old_tier_critical = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_chaos } set_temp_variable = { old_tier_chaos = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_rising } set_temp_variable = { old_tier_rising = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_gathering } set_temp_variable = { old_tier_gathering = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_calm } set_temp_variable = { old_tier_calm = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_final } set_temp_variable = { old_tier_collapse = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_4 } set_temp_variable = { old_tier_critical = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_3 } set_temp_variable = { old_tier_chaos = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_2 } set_temp_variable = { old_tier_rising = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_1 } set_temp_variable = { old_tier_gathering = 1 } }
+    if = { limit = { has_global_flag = chaos_tier_0 } set_temp_variable = { old_tier_calm = 1 } }
 
     clear_all_tier_flags = yes
 
     if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = @CHAOS_TIER_COLLAPSE_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_collapse
+        limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_final_BOUNDARY compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_final
         if = {
             limit = { check_variable = { old_tier_collapse = 0 } }
             log = "CHAOS METER: Tier changed to WORLD COLLAPSE"
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = @CHAOS_TIER_CRITICAL_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_critical
+        limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_4_BOUNDARY compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_4
         if = {
             limit = { check_variable = { old_tier_critical = 0 } }
             log = "CHAOS METER: Tier changed to TOTALEN CHAOS"
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = @CHAOS_TIER_CHAOS_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_chaos
+        limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_3_BOUNDARY compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_3
         if = {
             limit = { check_variable = { old_tier_chaos = 0 } }
             log = "CHAOS METER: Tier changed to CHAOS TIER"
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = @CHAOS_TIER_RISING_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_rising
+        limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_2_BOUNDARY compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_2
         if = {
             limit = { check_variable = { old_tier_rising = 0 } }
             log = "CHAOS METER: Tier changed to RISING CHAOS"
         }
     }
     else_if = {
-        limit = { check_variable = { var = global.chaos_meter_value value = @CHAOS_TIER_GATHERING_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_gathering
+        limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_1_BOUNDARY compare = greater_than_or_equals } }
+        set_global_flag = chaos_tier_1
         if = {
             limit = { check_variable = { old_tier_gathering = 0 } }
             log = "CHAOS METER: Tier changed to GATHERING STORM"
         }
     }
     else = {
-        set_global_flag = chaos_tier_calm
+        set_global_flag = chaos_tier_0
         if = {
             limit = { check_variable = { old_tier_calm = 0 } }
             log = "CHAOS METER: Tier changed to CALM WORLD"

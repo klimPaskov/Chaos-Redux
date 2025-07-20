@@ -92,6 +92,7 @@ When a major event fires:
 
 - **Frequency**: Trigger exactly once per campaign
 - **Weight After Firing**: Permanently set to 0
+- **Purpose**: Events that have a minor impact on the world at first, usually regional, but can become global.
 
 ### Repeatable Events
 
@@ -99,6 +100,7 @@ When a major event fires:
 - **Weight Recovery**: +20 per month after firing
 - **Cap Reduction**: Maximum weight reduced by 50% each firing
 - **Weight Progression**: 1000 → 500 → 250 → 125 → 63 → 32 → 16 → 8 → 4 → 2 → 1
+- **Purpose**: Events that have a minor impact on the world and can be fired multiple times during a game.
 
 ### Major Events
 
@@ -106,7 +108,12 @@ When a major event fires:
 - **Activation**: Weight increases by 150 per minor event fired
 - **Firing Condition**: Compete with other events based on accumulated weight
 - **Weight After Firing**: Permanently set to 0 for the fired event and all unfired major events reset to 0 weight
+- **Purpose**: Events that have a major impact on the world right away
 - **Super Events**: Major events are displayed as Super Events
+
+### Super Event Example
+
+<img width="910" height="595" alt="super_event_preview" src="https://github.com/user-attachments/assets/ac4d2961-ee6b-4ea3-8d06-1e668bbf0fe0" />
 
 ---
 
@@ -135,6 +142,8 @@ Repeatable events gradually recover weight over time:
 ### Chaos Meter Overview
 
 A global meter (0-1000+) that tracks world instability and drives system behavior.
+
+<img width="480" height="80" alt="chaos_meter_0" src="https://github.com/user-attachments/assets/315ecf14-8e84-4e42-9f85-1cfccbf78a9f" />
 
 ### Chaos Tiers
 
@@ -216,13 +225,6 @@ Mini-narratives with timed follow-ups based on player choices:
 
 ## Configuration and Settings
 
-### Timer System Settings
-
-- **Minimum Days**: 5-125 days (default: 25)
-- **Maximum Days**: Must be ≥ minimum (default: 35)
-- **Increment Modes**: 1, 5, or 10 day adjustments
-- **Timer Window**: Optional display of countdown
-
 ### Event Trigger Settings
 
 - **Event System Toggle**: Enable/disable per country
@@ -231,12 +233,19 @@ Mini-narratives with timed follow-ups based on player choices:
 - **Manual Triggering**: Direct event selection and firing
 - **Random Event**: Random selection with filters
 
-### Tag Management
+https://github.com/user-attachments/assets/c60e12a0-5fee-424d-8768-2b89a261ccfe
 
+### Timer System and Tag Management Settings
+
+- **Timer**: Adjust the timer range
+- **Timer Window**: Optional display of countdown
+- **Bulk Operations**: Enable/disable for selected countries
 - **Country Filtering**: All/Enabled Only/Disabled Only
 - **Continent Sorting**: All countries or by continent
 - **Auto-Enable on Switch**: Automatically enable for new player countries
-- **Bulk Operations**: Enable/disable for selected countries
+- **Disable for the previous country**: Automatically disables the event system for the previous country on tag switch.
+
+https://github.com/user-attachments/assets/d23b0a7b-de94-4f8e-aedb-99ad13a3d887
 
 ### Chaos Meter Configuration
 
@@ -244,12 +253,16 @@ Mini-narratives with timed follow-ups based on player choices:
 - **Tier Selection**: Jump to specific chaos tiers
 - **System Toggle**: Enable/disable chaos meter effects
 
+https://github.com/user-attachments/assets/83ccc354-9396-4341-bfe2-dc9a066ad1ab
+
 ### Advanced Settings
 
 - **Recovery Rate**: 0-10000 weight recovery per month (default: 20)
 - **Cap Reduction Factor**: 0-100% weight cap reduction per firing (default: 50%)
 - **Major Event Weight**: 0-10000 weight per minor event (default: 150)
 - **Timer Modifiers**: 0.1x-2.0x chaos tier multipliers
+
+https://github.com/user-attachments/assets/cd4a3168-5f4f-47c8-96d0-e968a3007138
 
 ---
 

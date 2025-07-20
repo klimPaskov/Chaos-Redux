@@ -162,7 +162,6 @@ on_actions = {
                                 factor = 0
                                 OR = {
                                     any_country = { is_neighbor_of = ZZZ }
-                                    has_game_rule = { rule = chaosx_ZZZ option = no }
                                 }
                             }
                             set_temp_variable = { event_id = 2 }
@@ -979,11 +978,8 @@ on_actions = {
                         global.event_weights^91 = {
                             modifier = {
                                 factor = 0
-                                OR = {
-                                    threat < 0.9
-                                    date > 1938.1.1
-                                    has_game_rule = { rule = chaosx_REV option = no }
-                                }
+                                NOT = { has_global_flag = communism_spread }
+                                NOT = { has_global_flag = chaos_tier_0 }
                             }
                             set_temp_variable = { event_id = 91 }
                             on_major_event_fired = yes
