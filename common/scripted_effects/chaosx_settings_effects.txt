@@ -1144,6 +1144,20 @@ toggle_force_trigger_mode = {
     }
 }
 
+# Toggle event disabled state for selected event
+toggle_event_disabled = {
+    if = {
+        limit = { NOT = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } } }
+        if = {
+            limit = { is_in_array = { global.disabled_events = settings_selected_event_id } }
+            remove_from_array = { global.disabled_events = settings_selected_event_id }
+        }
+        else = {
+            add_to_array = { global.disabled_events = settings_selected_event_id }
+        }
+    }
+}
+
 # Toggle events log display
 toggle_events_log = {
     if = {
@@ -2023,14 +2037,14 @@ update_selected_tag_info = {
         set_variable = { settings_current_selected_country = temp_final_countries_list^settings_selected_tag_index }
 
         # Log the current selection for debugging
-        if = {
-            limit = { has_variable = settings_current_selected_country }
-            var:settings_current_selected_country = {
-                ROOT = {
-                    log = "CHAOS REDUX TAG MANAGEMENT: Selected tag [PREV.GetTag] ([PREV.GetName]) at index [?settings_selected_tag_index] from filtered list of [?temp_current_list_size] countries"
-                }
-            }
-        }
+        # if = {
+        #     limit = { has_variable = settings_current_selected_country }
+        #     var:settings_current_selected_country = {
+        #         ROOT = {
+        #             log = "CHAOS REDUX TAG MANAGEMENT: Selected tag [PREV.GetTag] ([PREV.GetName]) at index [?settings_selected_tag_index] from filtered list of [?temp_current_list_size] countries"
+        #         }
+        #     }
+        # }
     }
 
     update_enabled_countries_list = yes

@@ -88,6 +88,11 @@ on_actions = {
                             limit = { NOT = { is_in_array = { array = global.enabled_countries_list value = THIS } } }
                             add_to_array = { array = global.enabled_countries_list value = THIS }
                             add_to_variable = { global.enabled_countries_count = 1 }
+                            if = {
+                                limit = { check_variable = { global.enabled_countries_count > 7 } }
+                                set_temp_variable = { i = global.enabled_countries_count }
+                                subtract_from_temp_variable = { i = 7 }
+                            }
                         }
 
                         log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for new human player [This.GetTag] ([This.GetName])"
@@ -149,11 +154,16 @@ on_actions = {
                         # NR 1 # COMMUNISM SPREADS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^1 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 1 }
+                                }
+                            }
                             set_temp_variable = { event_id = 1 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr1.1 }
                         }
-
                         ##############################################################################################################
                         # NR 2 # ZZZ (MAJOR)
                         ##############################################################################################################
@@ -161,6 +171,7 @@ on_actions = {
                             modifier = {
                                 factor = 0
                                 OR = {
+                                    is_in_array = { global.disabled_events = 2 }
                                     any_country = { is_neighbor_of = ZZZ }
                                 }
                             }
@@ -173,6 +184,12 @@ on_actions = {
                         # NR 3 # THR (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^3 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 3 }
+                                }
+                            }
                             set_temp_variable = { event_id = 3 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr3.1 }
@@ -182,14 +199,27 @@ on_actions = {
                         # NR 4 # RAND WAR (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^4 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 4 }
+                                }
+                            }
                             set_temp_variable = { event_id = 4 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr4.1 }
                         }
+
                         ##############################################################################################################
                         # NR 5 # SOV COLLAPSE (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^5 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 5 }
+                                }
+                            }
                             set_temp_variable = { event_id = 5 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr5.1 }
@@ -199,6 +229,12 @@ on_actions = {
                         # NR 6 # INDP WAVE (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^6 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 6 }
+                                }
+                            }
                             set_temp_variable = { event_id = 6 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr6.1 }
@@ -208,6 +244,12 @@ on_actions = {
                         # NR 7 # RAND EXPANSION (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^7 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 7 }
+                                }
+                            }
                             set_temp_variable = { event_id = 7 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr7.1 }
@@ -217,6 +259,12 @@ on_actions = {
                         # NR 8 # +WORLD TENSION (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^8 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 8 }
+                                }
+                            }
                             set_temp_variable = { event_id = 8 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr8.1 }
@@ -226,6 +274,12 @@ on_actions = {
                         # NR 9 # WHITE PEACE (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^9 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 9 }
+                                }
+                            }
                             set_temp_variable = { event_id = 9 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr9.1 }
@@ -235,14 +289,27 @@ on_actions = {
                         # NR 10 # WAR OR PEACE SYMBOL (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^10 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 10 }
+                                }
+                            }
                             set_temp_variable = { event_id = 10 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr10.1 }
                         }
+
                         ##############################################################################################################
                         # NR 11 # ANTI-PLAYER PACT (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^11 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 11 }
+                                }
+                            }
                             set_temp_variable = { event_id = 11 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr11.1 }
@@ -252,6 +319,12 @@ on_actions = {
                         # NR 12 # AFR (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^12 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 12 }
+                                }
+                            }
                             set_temp_variable = { event_id = 12 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr12.1 }
@@ -261,6 +334,12 @@ on_actions = {
                         # NR 13 # NATURAL DISASTERS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^13 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 13 }
+                                }
+                            }
                             set_temp_variable = { event_id = 13 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr13.1 }
@@ -272,7 +351,10 @@ on_actions = {
                         global.event_weights^14 = {
                             modifier = {
                                 factor = 0
-                                all_country = { has_war = no }
+                                OR = {
+                                    is_in_array = { global.disabled_events = 14 }
+                                    all_country = { has_war = no }
+                                }
                             }
                             set_temp_variable = { event_id = 14 }
                             on_repeatable_event_fired = yes
@@ -283,6 +365,12 @@ on_actions = {
                         # NR 15 # -WORLD TENSION (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^15 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 15 }
+                                }
+                            }
                             set_temp_variable = { event_id = 15 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr15.1 }
@@ -292,6 +380,12 @@ on_actions = {
                         # NR 16 # BRILLIANT SCIENTIST (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^16 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 16 }
+                                }
+                            }
                             set_temp_variable = { event_id = 16 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr16.1 }
@@ -301,6 +395,12 @@ on_actions = {
                         # NR 17 # JOIN FACTION (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^17 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 17 }
+                                }
+                            }
                             set_temp_variable = { event_id = 17 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr17.1 }
@@ -310,6 +410,12 @@ on_actions = {
                         # NR 18 # RAND RESOURCE (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^18 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 18 }
+                                }
+                            }
                             set_temp_variable = { event_id = 18 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr18.1 }
@@ -319,6 +425,12 @@ on_actions = {
                         # NR 19 # INF SPAWN (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^19 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 19 }
+                                }
+                            }
                             set_temp_variable = { event_id = 19 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr19.1 }
@@ -328,14 +440,27 @@ on_actions = {
                         # NR 20 # BLACK DEATH (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^20 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 20 }
+                                }
+                            }
                             set_temp_variable = { event_id = 20 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr20.1 }
                         }
+
                         ##############################################################################################################
                         # NR 21 # RAND CW (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^21 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 21 }
+                                }
+                            }
                             set_temp_variable = { event_id = 21 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr21.1 }
@@ -345,6 +470,12 @@ on_actions = {
                         # NR 22 # 1391 (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^22 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 22 }
+                                }
+                            }
                             set_temp_variable = { event_id = 22 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr22.1 }
@@ -354,6 +485,12 @@ on_actions = {
                         # NR 23 # SOV NUKES (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^23 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 23 }
+                                }
+                            }
                             set_temp_variable = { event_id = 23 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr23.1 }
@@ -363,6 +500,12 @@ on_actions = {
                         # NR 24 # HOI (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^24 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 24 }
+                                }
+                            }
                             set_temp_variable = { event_id = 24 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr24.1 }
@@ -372,6 +515,12 @@ on_actions = {
                         # NR 25 # ALIENS ANTARCTICA UFO RACE (MAJOR)
                         ##############################################################################################################
                         global.event_weights^25 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 25 }
+                                }
+                            }
                             set_temp_variable = { event_id = 25 }
                             on_major_event_fired = yes
                             country_event = { id = chaosx.nr25.1 }
@@ -381,6 +530,12 @@ on_actions = {
                         # NR 26 # MOVE INDUSTRY TO DESERT (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^26 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 26 }
+                                }
+                            }
                             set_temp_variable = { event_id = 26 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr26.1 }
@@ -390,6 +545,12 @@ on_actions = {
                         # NR 27 # DOCTRINE RESEARCH (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^27 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 27 }
+                                }
+                            }
                             set_temp_variable = { event_id = 27 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr27.1 }
@@ -399,6 +560,12 @@ on_actions = {
                         # NR 28 # ASTEROID (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^28 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 28 }
+                                }
+                            }
                             set_temp_variable = { event_id = 28 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr28.1 }
@@ -408,14 +575,27 @@ on_actions = {
                         # NR 29 # RICHES FOUND (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^29 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 29 }
+                                }
+                            }
                             set_temp_variable = { event_id = 29 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr29.1 }
                         }
+
                         ##############################################################################################################
                         # NR 30 # TIME TRAVELER (MAJOR)
                         ##############################################################################################################
                         global.event_weights^30 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 30 }
+                                }
+                            }
                             set_temp_variable = { event_id = 30 }
                             on_major_event_fired = yes
                             country_event = { id = chaosx.nr30.1 }
@@ -425,6 +605,12 @@ on_actions = {
                         # NR 31 # TERRORISTS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^31 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 31 }
+                                }
+                            }
                             set_temp_variable = { event_id = 31 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr31.1 }
@@ -434,6 +620,12 @@ on_actions = {
                         # NR 32 # MISSILES (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^32 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 32 }
+                                }
+                            }
                             set_temp_variable = { event_id = 32 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr32.1 }
@@ -445,7 +637,10 @@ on_actions = {
                         global.event_weights^33 = {
                             modifier = {
                                 factor = 0
-                                has_global_flag = acid_rain
+                                OR = {
+                                    has_global_flag = acid_rain
+                                    is_in_array = { global.disabled_events = 33 }
+                                }
                             }
                             set_temp_variable = { event_id = 33 }
                             on_repeatable_event_fired = yes
@@ -456,14 +651,27 @@ on_actions = {
                         # NR 34 # INDUSTRY BOOM (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^34 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 34 }
+                                }
+                            }
                             set_temp_variable = { event_id = 34 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr34.1 }
                         }
+
                         ##############################################################################################################
                         # NR 35 # GREAT DEPRESSION (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^35 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 35 }
+                                }
+                            }
                             set_temp_variable = { event_id = 35 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr35.1 }
@@ -473,6 +681,12 @@ on_actions = {
                         # NR 36 # ALIEN SPACECRAFT (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^36 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 36 }
+                                }
+                            }
                             set_temp_variable = { event_id = 36 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr36.1 }
@@ -482,6 +696,12 @@ on_actions = {
                         # NR 37 # MYSTERIOUS POPULATION (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^37 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 37 }
+                                }
+                            }
                             set_temp_variable = { event_id = 37 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr37.1 }
@@ -491,6 +711,12 @@ on_actions = {
                         # NR 38 # MALTA CRUSADERS (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^38 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 38 }
+                                }
+                            }
                             set_temp_variable = { event_id = 38 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr38.1 }
@@ -500,6 +726,12 @@ on_actions = {
                         # NR 39 # MURDER MYSTERY (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^39 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 39 }
+                                }
+                            }
                             set_temp_variable = { event_id = 39 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr39.1 }
@@ -509,6 +741,12 @@ on_actions = {
                         # NR 40 # LAWRENCE OF ARABIA (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^40 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 40 }
+                                }
+                            }
                             set_temp_variable = { event_id = 40 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr40.1 }
@@ -518,6 +756,12 @@ on_actions = {
                         # NR 41 # DISEASE IN DIVISIONS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^41 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 41 }
+                                }
+                            }
                             set_temp_variable = { event_id = 41 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr41.1 }
@@ -527,6 +771,12 @@ on_actions = {
                         # NR 42 # EQUIPMENT FROM HEAVENS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^42 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 42 }
+                                }
+                            }
                             set_temp_variable = { event_id = 42 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr42.1 }
@@ -536,6 +786,12 @@ on_actions = {
                         # NR 43 # MASSIVE FLOOD (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^43 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 43 }
+                                }
+                            }
                             set_temp_variable = { event_id = 43 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr43.1 }
@@ -545,14 +801,27 @@ on_actions = {
                         # NR 44 # SPACE RACE (MAJOR)
                         ##############################################################################################################
                         global.event_weights^44 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 44 }
+                                }
+                            }
                             set_temp_variable = { event_id = 44 }
                             on_major_event_fired = yes
                             country_event = { id = chaosx.nr44.1 }
                         }
+
                         ##############################################################################################################
                         # NR 45 # THIRD BALKAN WAR (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^45 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 45 }
+                                }
+                            }
                             set_temp_variable = { event_id = 45 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr45.1 }
@@ -562,6 +831,12 @@ on_actions = {
                         # NR 46 # EARTH EARTHQUAKE (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^46 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 46 }
+                                }
+                            }
                             set_temp_variable = { event_id = 46 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr46.1 }
@@ -571,6 +846,12 @@ on_actions = {
                         # NR 47 # BOOM! (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^47 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 47 }
+                                }
+                            }
                             set_temp_variable = { event_id = 47 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr47.1 }
@@ -580,6 +861,12 @@ on_actions = {
                         # NR 48 # BUL AMBITIONS (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^48 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 48 }
+                                }
+                            }
                             set_temp_variable = { event_id = 48 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr48.1 }
@@ -593,6 +880,7 @@ on_actions = {
                                 factor = 0
                                 OR = {
                                     threat < 0.5
+                                    is_in_array = { global.disabled_events = 49 }
                                 }
                             }
                             set_temp_variable = { event_id = 49 }
@@ -604,6 +892,12 @@ on_actions = {
                         # NR 50 # GREAT EMBARGO (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^50 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 50 }
+                                }
+                            }
                             set_temp_variable = { event_id = 50 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr50.1 }
@@ -613,6 +907,12 @@ on_actions = {
                         # NR 51 # HEAT WAVE (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^51 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 51 }
+                                }
+                            }
                             set_temp_variable = { event_id = 51 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr51.1 }
@@ -622,6 +922,12 @@ on_actions = {
                         # NR 52 # INTELLIGENCE LEAK (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^52 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 52 }
+                                }
+                            }
                             set_temp_variable = { event_id = 52 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr52.1 }
@@ -631,6 +937,12 @@ on_actions = {
                         # NR 53 # MYSTERIOUS MAN (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^53 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 53 }
+                                }
+                            }
                             set_temp_variable = { event_id = 53 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr53.1 }
@@ -640,14 +952,27 @@ on_actions = {
                         # NR 54 # RAND TECH (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^54 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 54 }
+                                }
+                            }
                             set_temp_variable = { event_id = 54 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr54.1 }
                         }
+
                         ##############################################################################################################
                         # NR 55 # GREAT INFR PROJECT (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^55 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 55 }
+                                }
+                            }
                             set_temp_variable = { event_id = 55 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr55.1 }
@@ -657,6 +982,12 @@ on_actions = {
                         # NR 56 # CREATE NAVY (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^56 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 56 }
+                                }
+                            }
                             set_temp_variable = { event_id = 56 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr56.1 }
@@ -666,6 +997,12 @@ on_actions = {
                         # NR 57 # RADARS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^57 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 57 }
+                                }
+                            }
                             set_temp_variable = { event_id = 57 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr57.1 }
@@ -675,6 +1012,12 @@ on_actions = {
                         # NR 58 # INDUSTRIAL COMPLEXES (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^58 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 58 }
+                                }
+                            }
                             set_temp_variable = { event_id = 58 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr58.1 }
@@ -684,6 +1027,12 @@ on_actions = {
                         # NR 59 # AI FOCUS AGGRESSIVE (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^59 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 59 }
+                                }
+                            }
                             set_temp_variable = { event_id = 59 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr59.1 }
@@ -693,6 +1042,12 @@ on_actions = {
                         # NR 60 # RESEARCH FAILURE (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^60 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 60 }
+                                }
+                            }
                             set_temp_variable = { event_id = 60 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr60.1 }
@@ -702,6 +1057,12 @@ on_actions = {
                         # NR 61 # 1/2 MILS INTO CIVS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^61 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 61 }
+                                }
+                            }
                             set_temp_variable = { event_id = 61 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr61.1 }
@@ -711,6 +1072,12 @@ on_actions = {
                         # NR 62 # ALLIES BACKSTAB (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^62 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 62 }
+                                }
+                            }
                             set_temp_variable = { event_id = 62 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr62.1 }
@@ -720,6 +1087,12 @@ on_actions = {
                         # NR 63 # END SUBJECT STATUS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^63 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 63 }
+                                }
+                            }
                             set_temp_variable = { event_id = 63 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr63.1 }
@@ -729,14 +1102,27 @@ on_actions = {
                         # NR 64 # BORDER FORTS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^64 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 64 }
+                                }
+                            }
                             set_temp_variable = { event_id = 64 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr64.1 }
                         }
+
                         ##############################################################################################################
                         # NR 65 # RAND LEADER TRAIT (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^65 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 65 }
+                                }
+                            }
                             set_temp_variable = { event_id = 65 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr65.1 }
@@ -746,6 +1132,12 @@ on_actions = {
                         # NR 66 # CIC (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^66 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 66 }
+                                }
+                            }
                             set_temp_variable = { event_id = 66 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr66.1 }
@@ -755,6 +1147,12 @@ on_actions = {
                         # NR 67 # GENERALISSIMO (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^67 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 67 }
+                                }
+                            }
                             set_temp_variable = { event_id = 67 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr67.1 }
@@ -764,6 +1162,12 @@ on_actions = {
                         # NR 68 # ZIN (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^68 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 68 }
+                                }
+                            }
                             set_temp_variable = { event_id = 68 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr68.1 }
@@ -773,6 +1177,12 @@ on_actions = {
                         # NR 69 # BOXER REBELLION (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^69 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 69 }
+                                }
+                            }
                             set_temp_variable = { event_id = 69 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr69.1 }
@@ -782,6 +1192,12 @@ on_actions = {
                         # NR 70 # AFRICA GODS (MAJOR)
                         ##############################################################################################################
                         global.event_weights^70 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 70 }
+                                }
+                            }
                             set_temp_variable = { event_id = 70 }
                             on_major_event_fired = yes
                             country_event = { id = chaosx.nr70.1 }
@@ -791,6 +1207,12 @@ on_actions = {
                         # NR 71 # PERSIAN EMPIRE (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^71 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 71 }
+                                }
+                            }
                             set_temp_variable = { event_id = 71 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr71.1 }
@@ -800,6 +1222,12 @@ on_actions = {
                         # NR 72 # IRE RECLAIMS NORTH (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^72 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 72 }
+                                }
+                            }
                             set_temp_variable = { event_id = 72 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr72.1 }
@@ -809,6 +1237,12 @@ on_actions = {
                         # NR 73 # MONGOLS RISE (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^73 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 73 }
+                                }
+                            }
                             set_temp_variable = { event_id = 73 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr73.1 }
@@ -818,14 +1252,27 @@ on_actions = {
                         # NR 74 # JAP CA (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^74 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 74 }
+                                }
+                            }
                             set_temp_variable = { event_id = 74 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr74.1 }
                         }
+
                         ##############################################################################################################
                         # NR 75 # TAN JOINS ALLIES (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^75 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 75 }
+                                }
+                            }
                             set_temp_variable = { event_id = 75 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr75.1 }
@@ -835,6 +1282,12 @@ on_actions = {
                         # NR 76 # USA TESTS WEAPONS (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^76 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 76 }
+                                }
+                            }
                             set_temp_variable = { event_id = 76 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr76.1 }
@@ -844,6 +1297,12 @@ on_actions = {
                         # NR 77 # FREE EQ FROM MAJOR TO MINOR (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^77 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 77 }
+                                }
+                            }
                             set_temp_variable = { event_id = 77 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr77.1 }
@@ -853,6 +1312,12 @@ on_actions = {
                         # NR 78 # BORDER CONFLICT (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^78 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 78 }
+                                }
+                            }
                             set_temp_variable = { event_id = 78 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr78.1 }
@@ -862,6 +1327,12 @@ on_actions = {
                         # NR 79 # MANIPULATE MINOR (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^79 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 79 }
+                                }
+                            }
                             set_temp_variable = { event_id = 79 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr79.1 }
@@ -875,6 +1346,7 @@ on_actions = {
                                 factor = 0
                                 OR = {
                                     USA = { exists = no }
+                                    is_in_array = { global.disabled_events = 80 }
                                 }
                             }
                             set_temp_variable = { event_id = 80 }
@@ -886,6 +1358,12 @@ on_actions = {
                         # NR 81 # ENG TAX (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^81 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 81 }
+                                }
+                            }
                             set_temp_variable = { event_id = 81 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr81.1 }
@@ -895,6 +1373,12 @@ on_actions = {
                         # NR 82 # UPGRADE LAW (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^82 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 82 }
+                                }
+                            }
                             set_temp_variable = { event_id = 82 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr82.1 }
@@ -904,6 +1388,12 @@ on_actions = {
                         # NR 83 # AGENCY UPGRADE (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^83 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 83 }
+                                }
+                            }
                             set_temp_variable = { event_id = 83 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr83.1 }
@@ -913,6 +1403,12 @@ on_actions = {
                         # NR 84 # PP (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^84 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 84 }
+                                }
+                            }
                             set_temp_variable = { event_id = 84 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr84.1 }
@@ -922,6 +1418,12 @@ on_actions = {
                         # NR 85 # XP (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^85 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 85 }
+                                }
+                            }
                             set_temp_variable = { event_id = 85 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr85.1 }
@@ -931,6 +1433,12 @@ on_actions = {
                         # NR 86 # WORLD CLAIMS (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^86 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 86 }
+                                }
+                            }
                             set_temp_variable = { event_id = 86 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr86.1 }
@@ -940,6 +1448,12 @@ on_actions = {
                         # NR 87 # IT'S WW1 (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^87 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 87 }
+                                }
+                            }
                             set_temp_variable = { event_id = 87 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr87.1 }
@@ -949,6 +1463,12 @@ on_actions = {
                         # NR 88 # MINES (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^88 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 88 }
+                                }
+                            }
                             set_temp_variable = { event_id = 88 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr88.1 }
@@ -958,6 +1478,12 @@ on_actions = {
                         # NR 89 # TECH SHARING GROUP (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^89 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 89 }
+                                }
+                            }
                             set_temp_variable = { event_id = 89 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr89.1 }
@@ -967,6 +1493,12 @@ on_actions = {
                         # NR 90 # KAMIKAZE (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^90 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 90 }
+                                }
+                            }
                             set_temp_variable = { event_id = 90 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr90.1 }
@@ -978,8 +1510,13 @@ on_actions = {
                         global.event_weights^91 = {
                             modifier = {
                                 factor = 0
-                                NOT = { has_global_flag = communism_spread }
-                                NOT = { has_global_flag = chaos_tier_0 }
+                                OR = {
+                                    AND = {
+                                        NOT = { has_global_flag = communism_spread }
+                                        NOT = { has_global_flag = chaos_tier_0 }
+                                    }
+                                    is_in_array = { global.disabled_events = 91 }
+                                }
                             }
                             set_temp_variable = { event_id = 91 }
                             on_major_event_fired = yes
@@ -994,6 +1531,7 @@ on_actions = {
                                 factor = 0
                                 OR = {
                                     NOT = { DEN = { owns_state = 101 } }
+                                    is_in_array = { global.disabled_events = 92 }
                                 }
                             }
                             set_temp_variable = { event_id = 92 }
@@ -1009,6 +1547,7 @@ on_actions = {
                                 factor = 0
                                 OR = {
                                     SPR = { has_civil_war = no }
+                                    is_in_array = { global.disabled_events = 93 }
                                 }
                             }
                             set_temp_variable = { event_id = 93 }
@@ -1020,6 +1559,12 @@ on_actions = {
                         # NR 94 # HALF GONE (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^94 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 94 }
+                                }
+                            }
                             set_temp_variable = { event_id = 94 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr94.1 }
@@ -1029,6 +1574,12 @@ on_actions = {
                         # NR 95 # OCCUPATION REVOLT (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^95 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 95 }
+                                }
+                            }
                             set_temp_variable = { event_id = 95 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr95.1 }
@@ -1038,6 +1589,12 @@ on_actions = {
                         # NR 96 # DIVISIONS LOCK (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^96 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 96 }
+                                }
+                            }
                             set_temp_variable = { event_id = 96 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr96.1 }
@@ -1047,6 +1604,12 @@ on_actions = {
                         # NR 97 # COLLABORATION (REPEATABLE)
                         ##############################################################################################################
                         global.event_weights^97 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 97 }
+                                }
+                            }
                             set_temp_variable = { event_id = 97 }
                             on_repeatable_event_fired = yes
                             country_event = { id = chaosx.nr97.1 }
@@ -1056,6 +1619,12 @@ on_actions = {
                         # NR 98 # NEW ORE (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^98 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 98 }
+                                }
+                            }
                             set_temp_variable = { event_id = 98 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr98.1 }
@@ -1065,6 +1634,12 @@ on_actions = {
                         # NR 99 # DESERT STORM (FIRE ONCE)
                         ##############################################################################################################
                         global.event_weights^99 = {
+                            modifier = {
+                                factor = 0
+                                OR = {
+                                    is_in_array = { global.disabled_events = 99 }
+                                }
+                            }
                             set_temp_variable = { event_id = 99 }
                             on_fire_once_event_fired = yes
                             country_event = { id = chaosx.nr99.1 }

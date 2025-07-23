@@ -111,6 +111,10 @@ scripted_gui = {
                 toggle_event_system = yes
             }
 
+            disable_selected_event_button_click = {
+                toggle_event_disabled = yes
+            }
+
             # Timer System Interface Effects
             timer_min_decrease_click = {
                 decrease_timer_min = yes
@@ -399,7 +403,7 @@ scripted_gui = {
             trigger_event_button_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
-                NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
+                NOT = { check_variable = { settings_selected_event_id = 0 } }
                 OR = {
                     has_country_flag = force_trigger_mode_enabled  # Force mode enabled - always allow
                     AND = {
@@ -424,7 +428,7 @@ scripted_gui = {
             trigger_event_button_right_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
-                NOT = { check_variable = { var = settings_selected_event_id value = 0 compare = equals } }
+                NOT = { check_variable = { settings_selected_event_id = 0 } }
             }
 
             trigger_random_event_button_click_enabled = {
@@ -473,6 +477,12 @@ scripted_gui = {
             disable_event_system_button_click_enabled = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_events_view
+            }
+
+            disable_selected_event_button_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_events_view
+                NOT = { check_variable = { settings_selected_event_id = 0 } }
             }
 
             # Timer System Interface Triggers
@@ -861,6 +871,16 @@ scripted_gui = {
             }
 
             disable_event_system_text_visible = {
+                has_country_flag = show_trigger_events_menu
+                NOT = { has_country_flag = show_event_clusters_view }
+            }
+
+            disable_selected_event_button_visible = {
+                has_country_flag = show_trigger_events_menu
+                NOT = { has_country_flag = show_event_clusters_view }
+            }
+
+            disable_selected_event_text_visible = {
                 has_country_flag = show_trigger_events_menu
                 NOT = { has_country_flag = show_event_clusters_view }
             }
@@ -1376,6 +1396,11 @@ scripted_gui = {
                 image = "[GetEventSystemButtonSprite]"
             }
 
+            # Dynamic sprite for the disable selected event button
+            disable_selected_event_button = {
+                image = "[GetDisableSelectedEventButtonSprite]"
+            }
+
             # Dynamic sprites for timer system increment/decrement buttons
             timer_min_decrease = {
                 image = "[GetTimerDecrementSprite]"
@@ -1447,6 +1472,11 @@ scripted_gui = {
             # Dynamic sprite for chaos meter disable checkbox
             chaos_disable_checkbox = {
                 image = "[GetChaosMeterDisabledCheckboxSprite]"
+            }
+
+            # Dynamic sprites for disabled event
+            disable_selected_event_button = {
+                image = "[GetEventDisabledCheckboxSprite]"
             }
 
             # Dynamic sprites for advanced settings increment/decrement buttons
