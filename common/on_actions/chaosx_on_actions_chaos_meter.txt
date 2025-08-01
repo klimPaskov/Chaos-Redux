@@ -74,6 +74,43 @@ on_actions = {
                 limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
                 chaos_meter_on_annex = yes
             }
+
+            # Handle communist rebel victory transformation
+            if = {
+                limit = {
+                    FROM = { has_country_flag = communist_rebel_state }
+                    ROOT = {
+                        original_tag = FROM.original_country_id
+                    }
+                }
+                # The rebel state has defeated the original country
+                FROM = {
+                    # Transform back into the original country but under full communist control
+                    change_tag_from = THIS
+
+                    # Set to 100% communist rule
+                    set_politics = {
+                        ruling_party = communism
+                        elections_allowed = no
+                    }
+
+                    # Ensure communist popularity is at 100%
+                    add_popularity = {
+                        ideology = communism
+                        popularity = 1.0
+                    }
+
+                    # Clear the rebel state flag
+                    clr_country_flag = communist_rebel_state
+
+                    # Update the communist spread idea to reflect total victory
+                    update_communism_spread_idea = yes
+
+                    # Add some stability and war support for the communist victory
+                    add_stability = 0.1
+                    add_war_support = 0.2
+                }
+            }
         }
     }
 
@@ -184,14 +221,14 @@ on_actions = {
         }
     }
 
-    on_lend_lease = {
-        effect = {
-            if = {
-                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
-                chaos_meter_on_lend_lease = yes
-            }
-        }
-    }
+    # on_lend_lease = {
+    #     effect = {
+    #         if = {
+    #             limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+    #             chaos_meter_on_lend_lease = yes
+    #         }
+    #     }
+    # }
 
     on_call_allies = {
         effect = {

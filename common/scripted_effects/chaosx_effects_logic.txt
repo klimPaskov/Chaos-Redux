@@ -115,6 +115,7 @@ initialize_event_categories = {
     add_to_array = { global.major_events = 91 }  # THE REVOLUTION
 
     # Fire-once events (start at weight 1000, become 0 permanently when fired)
+    add_to_array = { global.fire_once_events = 1 }   # COMMUNISM SPREAD
     add_to_array = { global.fire_once_events = 3 }   # THR
     add_to_array = { global.fire_once_events = 5 }   # SOV COLLAPSE
     add_to_array = { global.fire_once_events = 10 }  # WAR OR PEACE SYMBOL
@@ -152,7 +153,6 @@ initialize_event_categories = {
     add_to_array = { global.fire_once_events = 99 }  # DESERT STORM
 
     # Repeatable events (start at weight 1000, recover over time with diminishing caps)
-    add_to_array = { global.repeatable_events = 1 }   # COMMUNISM SPREADS
     add_to_array = { global.repeatable_events = 4 }   # RAND WAR
     add_to_array = { global.repeatable_events = 6 }   # INDP WAVE
     add_to_array = { global.repeatable_events = 7 }   # RAND EXPANSION
@@ -277,23 +277,23 @@ calculate_next_timer_value = {
     # Update chaos timer modifier based on current tier
     set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_calm }
     if = {
-        limit = { has_global_flag = chaos_tier_1 }
+        limit = { has_global_flag = { flag = chaos_tier value = 1 } }
         set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_gathering }
     }
     else_if = {
-        limit = { has_global_flag = chaos_tier_2 }
+        limit = { has_global_flag = { flag = chaos_tier value = 2 } }
         set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_rising }
     }
     else_if = {
-        limit = { has_global_flag = chaos_tier_3 }
+        limit = { has_global_flag = { flag = chaos_tier value = 3 } }
         set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_chaos }
     }
     else_if = {
-        limit = { has_global_flag = chaos_tier_4 }
+        limit = { has_global_flag = { flag = chaos_tier value = 4 } }
         set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_critical }
     }
     else_if = {
-        limit = { has_global_flag = chaos_tier_final }
+        limit = { has_global_flag = { flag = chaos_tier value = 5 } }
         set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_collapse }
     }
 

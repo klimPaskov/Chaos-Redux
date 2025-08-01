@@ -1,11 +1,13 @@
+
+# all on_daily, on_weekly, on_monthly, are evaluated for all countries separately
 on_actions = {
     # Zombie Outbreak
-    on_daily_ZZZ = { # Checks daily if there is a neighbor to declare war on
+    on_daily = { # Checks daily if there is a neighbor to declare war on
         effect = {
-            if = { limit = { ZZZ = { exists = yes } }
+            if = { limit = { original_tag = ZZZ exists = yes }
             every_country = {
-                limit = { is_neighbor_of = ZZZ NOT = { has_war_with = ZZZ } }
-                ZZZ = {
+                limit = { is_neighbor_of = ROOT NOT = { has_war_with = ROOT } }
+                ROOT = {
                     declare_war_on = {
                         target = PREV
                         type = annex_everything
@@ -13,13 +15,64 @@ on_actions = {
                 }
             }
             every_state = { # Anything zombies occupy, becomes core state
-                limit = { is_controlled_by = ZZZ NOT = { is_core_of = ZZZ } }
-                add_core_of = ZZZ
+                limit = { is_controlled_by = ROOT NOT = { is_core_of = ROOT } }
+                add_core_of = ROOT
+            }
+        }
+        if = {
+            limit = {
+                tag = ZZZ
+                exists = yes
+                has_global_flag = has_zombie_outbreak
+
+                # Check if any dynamic zombie country connects to ZZZ now
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            every_country = {
+                limit = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    OR = {
+                        any_owned_state = {
+                            any_neighbor_state = {
+                                is_controlled_by = ZZZ
+                            }
+                        }
+                        NOT = {
+                            any_neighbor_country = {
+                                exists = yes
+                            }
+                        }
+                    }
+                }
+
+                ZZZ = {
+                    annex_country = {
+                        target = PREV
+                        transfer_troops = yes
+                    }
+                }
             }
         }
     }
 }
 
+on_weekly = {
+    effect = {
+        if = {
+            limit = {
+                has_global_flag = has_zombie_outbreak
+            }
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+}
 # Space Race
 on_daily = { # Checks for every country separately!
     effect = {
@@ -33,21 +86,21 @@ on_daily = { # Checks for every country separately!
     if = { limit = { has_tech = radio_detection }
     add_to_variable = { space_race_points = 2 }
 }
-if = { limit = { has_tech = decimetric_radar }
-add_to_variable = { space_race_points = 2 }
-}
-if = { limit = { has_tech = improved_decimetric_radar }
-add_to_variable = { space_race_points = 3 }
-}
-if = { limit = { has_tech = centimetric_radar }
-add_to_variable = { space_race_points = 4 }
-}
-if = { limit = { has_tech = improved_centimetric_radar }
-add_to_variable = { space_race_points = 5 }
-}
-if = { limit = { has_tech = advanced_centimetric_radar }
-add_to_variable = { space_race_points = 10 }
-}
+# if = { limit = { has_tech = decimetric_radar }
+# add_to_variable = { space_race_points = 2 }
+# }
+# if = { limit = { has_tech = improved_decimetric_radar }
+# add_to_variable = { space_race_points = 3 }
+# }
+# if = { limit = { has_tech = centimetric_radar }
+# add_to_variable = { space_race_points = 4 }
+# }
+# if = { limit = { has_tech = improved_centimetric_radar }
+# add_to_variable = { space_race_points = 5 }
+# }
+# if = { limit = { has_tech = advanced_centimetric_radar }
+# add_to_variable = { space_race_points = 10 }
+# }
 
 # Computing
 if = { limit = { has_tech = mechanical_computing }
@@ -515,9 +568,9 @@ every_owned_state = {
 on_capitulation = {
     effect = {
         # ZZZ
-        if = { limit = { tag = ZZZ }
+        if = { limit = { original_tag = ZZZ }
         every_core_state = {
-            remove_core_of = ZZZ
+            remove_core_of = PREV
         }
     }
 
@@ -607,6 +660,31 @@ on_monthly_MON = {
 }
 }
 
+}
+
+# Update communism spread ideas monthly
+on_monthly = {
+    effect = {
+        if = {
+            limit = { has_global_flag = communism_spread NOT = { has_government = communism } communism > 0.01 }
+            update_communism_spread_idea = yes
+        }
+    }
+}
+
+on_annex = {
+    effect = {
+        if = {
+            limit = { has_global_flag = communism_spread }
+            if = {
+                limit = { ROOT = { has_country_flag = fighting_communist_rebels } FROM = { has_country_flag = communist_rebel_state } }
+                clr_country_flag = fighting_communist_rebels
+                clr_country_flag = communist_rebel_state
+            }
+
+        }
+
+    }
 }
 
 }

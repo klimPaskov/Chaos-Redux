@@ -179,78 +179,67 @@ add_chaos_meter_value = {
     }
 }
 
-# Clear all tier flags
+# Clear all tier flags (no longer needed with integer flag system)
 clear_all_tier_flags = {
-    clr_global_flag = chaos_tier_0
-    clr_global_flag = chaos_tier_1
-    clr_global_flag = chaos_tier_2
-    clr_global_flag = chaos_tier_3
-    clr_global_flag = chaos_tier_4
-    clr_global_flag = chaos_tier_final
+    clr_global_flag = chaos_tier
 }
 
 update_chaos_meter_tier = {
     # Store current tier state for change detection
-    set_temp_variable = { old_tier_collapse = 0 }
-    set_temp_variable = { old_tier_critical = 0 }
-    set_temp_variable = { old_tier_chaos = 0 }
-    set_temp_variable = { old_tier_rising = 0 }
-    set_temp_variable = { old_tier_gathering = 0 }
-    set_temp_variable = { old_tier_calm = 0 }
+    set_temp_variable = { old_tier_value = 0 }
+    if = { limit = { has_global_flag = { flag = chaos_tier value = 5 } } set_temp_variable = { old_tier_value = 5 } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 4 } } set_temp_variable = { old_tier_value = 4 } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 3 } } set_temp_variable = { old_tier_value = 3 } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 2 } } set_temp_variable = { old_tier_value = 2 } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 1 } } set_temp_variable = { old_tier_value = 1 } }
 
-    if = { limit = { has_global_flag = chaos_tier_final } set_temp_variable = { old_tier_collapse = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_4 } set_temp_variable = { old_tier_critical = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_3 } set_temp_variable = { old_tier_chaos = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_2 } set_temp_variable = { old_tier_rising = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_1 } set_temp_variable = { old_tier_gathering = 1 } }
-    if = { limit = { has_global_flag = chaos_tier_0 } set_temp_variable = { old_tier_calm = 1 } }
-
-    clear_all_tier_flags = yes
+    # Clear the flag and set new value
+    clr_global_flag = chaos_tier
 
     if = {
         limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_final_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_final
+        set_global_flag = { flag = chaos_tier value = 5 }
         if = {
-            limit = { check_variable = { old_tier_collapse = 0 } }
+            limit = { NOT = { check_variable = { old_tier_value = 5 } } }
             log = "CHAOS METER: Tier changed to WORLD COLLAPSE"
         }
     }
     else_if = {
         limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_4_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_4
+        set_global_flag = { flag = chaos_tier value = 4 }
         if = {
-            limit = { check_variable = { old_tier_critical = 0 } }
+            limit = { NOT = { check_variable = { old_tier_value = 4 } } }
             log = "CHAOS METER: Tier changed to TOTALEN CHAOS"
         }
     }
     else_if = {
         limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_3_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_3
+        set_global_flag = { flag = chaos_tier value = 3 }
         if = {
-            limit = { check_variable = { old_tier_chaos = 0 } }
+            limit = { NOT = { check_variable = { old_tier_value = 3 } } }
             log = "CHAOS METER: Tier changed to CHAOS TIER"
         }
     }
     else_if = {
         limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_2_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_2
+        set_global_flag = { flag = chaos_tier value = 2 }
         if = {
-            limit = { check_variable = { old_tier_rising = 0 } }
+            limit = { NOT = { check_variable = { old_tier_value = 2 } } }
             log = "CHAOS METER: Tier changed to RISING CHAOS"
         }
     }
     else_if = {
         limit = { check_variable = { var = global.chaos_meter_value value = @chaos_tier_1_BOUNDARY compare = greater_than_or_equals } }
-        set_global_flag = chaos_tier_1
+        set_global_flag = { flag = chaos_tier value = 1 }
         if = {
-            limit = { check_variable = { old_tier_gathering = 0 } }
+            limit = { NOT = { check_variable = { old_tier_value = 1 } } }
             log = "CHAOS METER: Tier changed to GATHERING STORM"
         }
     }
     else = {
-        set_global_flag = chaos_tier_0
+        set_global_flag = { flag = chaos_tier value = 0 }
         if = {
-            limit = { check_variable = { old_tier_calm = 0 } }
+            limit = { NOT = { check_variable = { old_tier_value = 0 } } }
             log = "CHAOS METER: Tier changed to CALM WORLD"
         }
     }
@@ -445,7 +434,7 @@ chaos_meter_on_faction_join = {
     if = {
         limit = {
             has_government = democratic
-            faction_leader = { has_government = democratic }
+            FROM = { has_government = democratic }
         }
         set_temp_variable = { both_democratic = 1 }
     }
@@ -456,23 +445,23 @@ chaos_meter_on_faction_join = {
             check_variable = { both_democratic = 1 }
         }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MAJOR }
-        log = "CHAOS METER: Major democratic power [THIS.GetName] joined democratic faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
+        log = "CHAOS METER: Major democratic power [THIS.GetName] joined democratic faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
     }
     else_if = {
         limit = {
             check_variable = { both_democratic = 1 }
         }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MINOR }
-        log = "CHAOS METER: Minor democratic power [THIS.GetName] joined democratic faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
+        log = "CHAOS METER: Minor democratic power [THIS.GetName] joined democratic faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
     }
     else_if = {
         limit = { is_major = yes }
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] joined faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
+        log = "CHAOS METER: Major power [THIS.GetName] joined faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
         set_temp_variable = { chaos_change = @CHAOS_PER_FACTION_JOIN_MINOR }
-        log = "CHAOS METER: Minor power [THIS.GetName] joined faction led by [faction_leader.GetName] ([?chaos_change|=] chaos)"
+        log = "CHAOS METER: Minor power [THIS.GetName] joined faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
     }
 
     add_chaos_meter_value = yes
@@ -484,13 +473,10 @@ chaos_meter_on_faction_leave = {
     if = {
         limit = {
             has_government = democratic
-            faction_leader = { has_government = democratic }
+            FROM = { has_government = democratic }
         }
         set_temp_variable = { both_democratic = 1 }
     }
-
-    # Store faction leader name for logging
-    set_temp_variable = { faction_leader_tag = faction_leader }
 
     # No effect for democratic countries leaving democratic factions
     if = {
@@ -558,16 +544,6 @@ chaos_meter_on_wargoal_expire = {
     }
     add_chaos_meter_value = yes
 }
-
-chaos_meter_on_lend_lease = {
-    if = {
-        limit = { ROOT = { is_major = yes } }
-        set_temp_variable = { chaos_change = @CHAOS_PER_LEND_LEASE }
-        log = "CHAOS METER: [THIS.GetName] provided lend-lease to [FROM.GetName] ([?chaos_change|=] chaos)"
-        add_chaos_meter_value = yes
-    }
-}
-
 chaos_meter_on_call_allies = {
     if = {
         limit = { FROM = { is_subject = no } }
