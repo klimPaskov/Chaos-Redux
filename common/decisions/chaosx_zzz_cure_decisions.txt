@@ -1,5 +1,10 @@
 chaosx_zzz_cure_category = {
-    find_cure = {
+    find_cure_tier_0 = {
+        visible = {
+            has_global_flag = has_zombie_outbreak
+            ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+        }
+
         available = {
             NOT = { has_idea = cure_activated }
             check_variable = { zzz_cure < 100 }
@@ -19,6 +24,90 @@ chaosx_zzz_cure_category = {
                 add = 2
                 is_in_tech_sharing_group = cure_sharing
             }
+            # Chaos tier modifiers - higher chaos = more urgent research
+            modifier = {
+                add = 1
+                has_global_flag = { flag = chaos_tier value = 1 }
+            }
+            modifier = {
+                add = 2
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                add = 3
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                add = 4
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                add = 5
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - higher zombie evolution = more urgent
+            modifier = {
+                add = 1
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 0 }
+                }
+            }
+            modifier = {
+                add = 2
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                add = 3
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple zombie outbreaks increase urgency
+            modifier = {
+                add = 2
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Stability and war situation modifiers
+            modifier = {
+                add = 2
+                has_stability < 0.5
+            }
+            modifier = {
+                add = 1
+                has_war = yes
+                NOT = { has_war_with = ZZZ }
+            }
+            # Major powers prioritize research more
+            modifier = {
+                add = 2
+                is_major = yes
+            }
+            # Democratic countries are more cooperative
+            modifier = {
+                add = 1
+                has_government = democratic
+            }
+            # Resource availability modifiers
+            modifier = {
+                factor = 0.5
+                has_political_power < 100
+            }
+            modifier = {
+                add = 1
+                num_of_civilian_factories > 20
+            }
         }
 
         complete_effect = {
@@ -36,6 +125,166 @@ chaosx_zzz_cure_category = {
                     value = 5
                     tooltip = zzz_cure_global_tt
                 }
+                if = {
+                    limit = { check_variable = { global.zzz_cure > 99 } }
+                    every_country = {
+                        limit = { is_in_tech_sharing_group = cure_sharing }
+                        add_timed_idea = {
+                            idea = cure_activated
+                            days = 120
+                        }
+                        country_event = { id = chaosx.nr2.2 }
+                    }
+                    every_country = {
+                        limit = { original_tag = ZZZ }
+                        add_timed_idea = {
+                            idea = cure_sharing_bonus
+                            days = 120
+                        }
+                    }
+                    set_variable = { global.zzz_cure = 0 }
+                }
+            }
+            else = {
+                add_to_variable = {
+                    var = zzz_cure
+                    value = 5
+                    tooltip = zzz_cure_tt
+                }
+            }
+        }
+        cancel_trigger = {
+            hidden_trigger = { has_idea = cure_activated }
+        }
+        cancel_effect = {
+            hidden_effect = { add_political_power = 20 }
+        }
+    }
+
+    find_cure_tier_1 = {
+        visible = {
+            has_global_flag = has_zombie_outbreak
+            ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } }
+        }
+
+        available = {
+            NOT = { has_idea = cure_activated }
+            check_variable = { zzz_cure < 100 }
+        }
+
+        cost = 30
+        days_remove = 90
+        icon = GFX_decision_generic_research
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                add = 4
+                has_war_with = ZZZ
+            }
+            modifier = {
+                add = 2
+                is_in_tech_sharing_group = cure_sharing
+            }
+            # Chaos tier modifiers - higher chaos = more urgent research
+            modifier = {
+                add = 1
+                has_global_flag = { flag = chaos_tier value = 1 }
+            }
+            modifier = {
+                add = 2
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                add = 3
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                add = 4
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                add = 5
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - higher zombie evolution = more urgent
+            modifier = {
+                add = 2
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                add = 3
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple zombie outbreaks increase urgency
+            modifier = {
+                add = 3
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Stability and war situation modifiers
+            modifier = {
+                add = 3
+                has_stability < 0.5
+            }
+            modifier = {
+                add = 2
+                has_war = yes
+                NOT = { has_war_with = ZZZ }
+            }
+            # Major powers prioritize research more
+            modifier = {
+                add = 3
+                is_major = yes
+            }
+            # Democratic countries are more cooperative
+            modifier = {
+                add = 2
+                has_government = democratic
+            }
+            # Resource availability modifiers
+            modifier = {
+                factor = 0.3
+                has_political_power < 150
+            }
+            modifier = {
+                add = 2
+                num_of_civilian_factories > 30
+            }
+            # Tier 1 zombies require more advanced research
+            modifier = {
+                add = 2
+                has_tech = advanced_machine_tools
+            }
+        }
+
+        complete_effect = {
+            add_timed_idea = {
+                idea = searching_for_cure_tier_1
+                days = 90
+            }
+        }
+
+        remove_effect = {
+            if = {
+                limit = { is_in_tech_sharing_group = cure_sharing }
+                add_to_variable = {
+                    var = global.zzz_cure
+                    value = 4
+                    tooltip = zzz_cure_global_tt
+                }
                 if = { limit = { check_variable = { global.zzz_cure > 99 } }
                 every_country = {
                     limit = { is_in_tech_sharing_group = cure_sharing }
@@ -45,10 +294,11 @@ chaosx_zzz_cure_category = {
                     }
                     country_event = { id = chaosx.nr2.2 }
                 }
-                ZZZ = {
+                every_country = {
+                    limit = { original_tag = ZZZ }
                     add_timed_idea = {
-                        idea = cure_sharing_bonus
-                        days = 120
+                        idea = cure_sharing_bonus_tier_1
+                        days = 90
                     }
                 }
                 set_variable = { global.zzz_cure = 0 }
@@ -56,7 +306,7 @@ chaosx_zzz_cure_category = {
         } else = {
             add_to_variable = {
                 var = zzz_cure
-                value = 5
+                value = 4
                 tooltip = zzz_cure_tt
             }
         }
@@ -65,8 +315,378 @@ chaosx_zzz_cure_category = {
         hidden_trigger = { has_idea = cure_activated }
     }
     cancel_effect = {
-        hidden_effect = { add_political_power = 20 }
+        hidden_effect = { add_political_power = 30 }
     }
+}
+
+find_cure_tier_2 = {
+    visible = {
+        has_global_flag = has_zombie_outbreak
+        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } }
+    }
+
+    available = {
+        NOT = { has_idea = cure_activated }
+        check_variable = { zzz_cure < 100 }
+    }
+
+    cost = 40
+    days_remove = 120
+    icon = GFX_decision_generic_research
+
+    ai_will_do = {
+        factor = 1
+        modifier = {
+            add = 4
+            has_war_with = ZZZ
+        }
+        modifier = {
+            add = 2
+            is_in_tech_sharing_group = cure_sharing
+        }
+        # Chaos tier modifiers - higher chaos = more urgent research
+        modifier = {
+            add = 2
+            has_global_flag = { flag = chaos_tier value = 1 }
+        }
+        modifier = {
+            add = 3
+            has_global_flag = { flag = chaos_tier value = 2 }
+        }
+        modifier = {
+            add = 4
+            has_global_flag = { flag = chaos_tier value = 3 }
+        }
+        modifier = {
+            add = 5
+            has_global_flag = { flag = chaos_tier value = 4 }
+        }
+        modifier = {
+            add = 6
+            has_global_flag = { flag = chaos_tier value = 5 }
+        }
+        # Tier 2 zombies are very dangerous
+        modifier = {
+            add = 4
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value = 2 }
+            }
+        }
+        modifier = {
+            add = 5
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value = 3 }
+            }
+        }
+        # Multiple zombie outbreaks increase urgency dramatically
+        modifier = {
+            add = 4
+            any_country = {
+                has_country_flag = zombie_outbreak_dynamic_country
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+        }
+        # Stability and war situation modifiers
+        modifier = {
+            add = 4
+            has_stability < 0.5
+        }
+        modifier = {
+            add = 3
+            has_war = yes
+            NOT = { has_war_with = ZZZ }
+        }
+        # Major powers prioritize research more
+        modifier = {
+            add = 4
+            is_major = yes
+        }
+        # Democratic countries are more cooperative
+        modifier = {
+            add = 3
+            has_government = democratic
+        }
+        # Resource availability modifiers - tier 2 research is expensive
+        modifier = {
+            factor = 0.2
+            has_political_power < 200
+        }
+        modifier = {
+            add = 3
+            num_of_civilian_factories > 40
+        }
+        # Advanced research requirements
+        modifier = {
+            add = 3
+            has_tech = computing_machine
+        }
+        modifier = {
+            add = 2
+            has_tech = radio
+        }
+        # Desperation modifiers
+        modifier = {
+            add = 5
+            any_owned_state = {
+                any_neighbor_state = {
+                    is_controlled_by = ZZZ
+                }
+            }
+        }
+    }
+
+    complete_effect = {
+        add_timed_idea = {
+            idea = searching_for_cure_tier_2
+            days = 120
+        }
+    }
+
+    remove_effect = {
+        if = {
+            limit = { is_in_tech_sharing_group = cure_sharing }
+            add_to_variable = {
+                var = global.zzz_cure
+                value = 3
+                tooltip = zzz_cure_global_tt
+            }
+            if = { limit = { check_variable = { global.zzz_cure > 99 } }
+            every_country = {
+                limit = { is_in_tech_sharing_group = cure_sharing }
+                add_timed_idea = {
+                    idea = cure_activated
+                    days = 120
+                }
+                country_event = { id = chaosx.nr2.2 }
+            }
+            every_country = {
+                limit = { original_tag = ZZZ }
+                add_timed_idea = {
+                    idea = cure_sharing_bonus_tier_2
+                    days = 60
+                }
+            }
+            set_variable = { global.zzz_cure = 0 }
+        }
+    } else = {
+        add_to_variable = {
+            var = zzz_cure
+            value = 3
+            tooltip = zzz_cure_tt
+        }
+    }
+}
+cancel_trigger = {
+    hidden_trigger = { has_idea = cure_activated }
+}
+cancel_effect = {
+    hidden_effect = { add_political_power = 40 }
+}
+}
+
+find_cure_tier_3 = {
+    visible = {
+        has_global_flag = has_zombie_outbreak
+        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+    }
+
+    available = {
+        NOT = { has_idea = cure_activated }
+        check_variable = { zzz_cure < 100 }
+    }
+
+    cost = 50
+    days_remove = 150
+    icon = GFX_decision_generic_research
+
+    ai_will_do = {
+        factor = 2  # Base factor higher for ultimate tier
+        modifier = {
+            add = 6
+            has_war_with = ZZZ
+        }
+        modifier = {
+            add = 4
+            is_in_tech_sharing_group = cure_sharing
+        }
+        # Chaos tier modifiers - at tier 3 zombies, all chaos is critical
+        modifier = {
+            add = 3
+            has_global_flag = { flag = chaos_tier value = 1 }
+        }
+        modifier = {
+            add = 5
+            has_global_flag = { flag = chaos_tier value = 2 }
+        }
+        modifier = {
+            add = 7
+            has_global_flag = { flag = chaos_tier value = 3 }
+        }
+        modifier = {
+            add = 9
+            has_global_flag = { flag = chaos_tier value = 4 }
+        }
+        modifier = {
+            add = 12
+            has_global_flag = { flag = chaos_tier value = 5 }
+        }
+        # Tier 3 zombies are apocalyptic
+        modifier = {
+            add = 8
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value = 3 }
+            }
+        }
+        # Multiple zombie outbreaks at tier 3 = world ending
+        modifier = {
+            add = 10
+            any_country = {
+                has_country_flag = zombie_outbreak_dynamic_country
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+        }
+        # Stability and war situation modifiers - desperation level
+        modifier = {
+            add = 8
+            has_stability < 0.5
+        }
+        modifier = {
+            add = 6
+            has_stability < 0.3
+        }
+        modifier = {
+            add = 5
+            has_war = yes
+            NOT = { has_war_with = ZZZ }
+        }
+        # Major powers absolutely must prioritize this
+        modifier = {
+            add = 8
+            is_major = yes
+        }
+        # All governments cooperate at this level
+        modifier = {
+            add = 4
+            has_government = democratic
+        }
+        modifier = {
+            add = 2
+            has_government = communism
+        }
+        modifier = {
+            add = 2
+            has_government = fascism
+        }
+        # Resource availability modifiers - tier 3 research is extremely expensive
+        modifier = {
+            factor = 0.1
+            has_political_power < 250
+        }
+        modifier = {
+            add = 5
+            num_of_civilian_factories > 50
+        }
+        modifier = {
+            add = 3
+            num_of_military_factories > 30
+        }
+        # Advanced research requirements - need cutting edge tech
+        modifier = {
+            add = 5
+            has_tech = computing_machine
+        }
+        modifier = {
+            add = 4
+            has_tech = basic_machine_tools
+        }
+        modifier = {
+            add = 3
+            has_tech = radio
+        }
+        # Existential threat modifiers
+        modifier = {
+            add = 15
+            any_owned_state = {
+                any_neighbor_state = {
+                    is_controlled_by = ZZZ
+                }
+            }
+        }
+        modifier = {
+            add = 10
+            capital_scope = {
+                any_neighbor_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+        }
+        # Manpower considerations - desperate times
+        modifier = {
+            add = 3
+            has_manpower < 100000
+        }
+    }
+
+    complete_effect = {
+        add_timed_idea = {
+            idea = searching_for_cure_tier_3
+            days = 150
+        }
+    }
+
+    remove_effect = {
+        if = {
+            limit = { is_in_tech_sharing_group = cure_sharing }
+            add_to_variable = {
+                var = global.zzz_cure
+                value = 2
+                tooltip = zzz_cure_global_tt
+            }
+            if = { limit = { check_variable = { global.zzz_cure > 99 } }
+            every_country = {
+                limit = { is_in_tech_sharing_group = cure_sharing }
+                add_timed_idea = {
+                    idea = cure_activated
+                    days = 120
+                }
+                country_event = { id = chaosx.nr2.2 }
+            }
+            every_country = {
+                limit = { original_tag = ZZZ }
+                add_timed_idea = {
+                    idea = cure_sharing_bonus_tier_3
+                    days = 30
+                }
+            }
+            set_variable = { global.zzz_cure = 0 }
+        }
+    } else = {
+        add_to_variable = {
+            var = zzz_cure
+            value = 2
+            tooltip = zzz_cure_tt
+        }
+    }
+}
+cancel_trigger = {
+    hidden_trigger = { has_idea = cure_activated }
+}
+cancel_effect = {
+    hidden_effect = { add_political_power = 50 }
+}
 }
 
 join_cure_sharing = {
@@ -100,6 +720,107 @@ join_cure_sharing = {
                 has_government = democratic
             }
         }
+        # Chaos tier modifiers - higher chaos = more cooperation
+        modifier = {
+            add = 1
+            has_global_flag = { flag = chaos_tier value = 1 }
+        }
+        modifier = {
+            add = 2
+            has_global_flag = { flag = chaos_tier value = 2 }
+        }
+        modifier = {
+            add = 4
+            has_global_flag = { flag = chaos_tier value = 3 }
+        }
+        modifier = {
+            add = 6
+            has_global_flag = { flag = chaos_tier value = 4 }
+        }
+        modifier = {
+            add = 8
+            has_global_flag = { flag = chaos_tier value = 5 }
+        }
+        # Zombie tier modifiers - higher threat = more cooperation
+        modifier = {
+            add = 2
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value > 0 }
+            }
+        }
+        modifier = {
+            add = 3
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value > 1 }
+            }
+        }
+        modifier = {
+            add = 5
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value = 3 }
+            }
+        }
+        # Multiple zombie outbreaks = urgent cooperation
+        modifier = {
+            add = 4
+            any_country = {
+                has_country_flag = zombie_outbreak_dynamic_country
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+        }
+        # Proximity to threat increases cooperation
+        modifier = {
+            add = 5
+            any_owned_state = {
+                any_neighbor_state = {
+                    is_controlled_by = ZZZ
+                }
+            }
+        }
+        # Stability considerations
+        modifier = {
+            add = 2
+            has_stability < 0.5
+        }
+        # Faction considerations
+        modifier = {
+            add = 2
+            any_country = {
+                is_in_tech_sharing_group = cure_sharing
+                is_in_faction_with = ROOT
+            }
+        }
+        # Major powers more likely to lead cooperation
+        modifier = {
+            add = 2
+            is_major = yes
+        }
+        # Democratic tradition of cooperation
+        modifier = {
+            add = 3
+            has_government = democratic
+            any_country = {
+                is_in_tech_sharing_group = cure_sharing
+                has_government = democratic
+            }
+        }
+        # Research capability modifiers
+        modifier = {
+            add = 1
+            num_of_civilian_factories > 15
+        }
+        modifier = {
+            add = 2
+            num_of_civilian_factories > 30
+        }
+
     }
 
     complete_effect = {
@@ -154,6 +875,96 @@ leave_cure_sharing = {
                 has_government = democratic
             }
         }
+        # Chaos tier modifiers - higher chaos = less likely to leave
+        modifier = {
+            factor = 0.8
+            has_global_flag = { flag = chaos_tier value = 1 }
+        }
+        modifier = {
+            factor = 0.6
+            has_global_flag = { flag = chaos_tier value = 2 }
+        }
+        modifier = {
+            factor = 0.4
+            has_global_flag = { flag = chaos_tier value = 3 }
+        }
+        modifier = {
+            factor = 0.2
+            has_global_flag = { flag = chaos_tier value = 4 }
+        }
+        modifier = {
+            factor = 0.1
+            has_global_flag = { flag = chaos_tier value = 5 }
+        }
+        # Zombie tier modifiers - higher threat = less likely to leave
+        modifier = {
+            factor = 0.7
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value > 0 }
+            }
+        }
+        modifier = {
+            factor = 0.5
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value > 1 }
+            }
+        }
+        modifier = {
+            factor = 0.2
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value = 3 }
+            }
+        }
+        # Multiple zombie outbreaks = never leave
+        modifier = {
+            factor = 0.1
+            any_country = {
+                has_country_flag = zombie_outbreak_dynamic_country
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+        }
+        # Proximity to threat discourages leaving
+        modifier = {
+            factor = 0.1
+            any_owned_state = {
+                any_neighbor_state = {
+                    is_controlled_by = ZZZ
+                }
+            }
+        }
+        # Stability considerations - desperate countries stay
+        modifier = {
+            factor = 0.3
+            has_stability < 0.5
+        }
+        # Major powers might go solo if they have resources
+        modifier = {
+            add = 2
+            is_major = yes
+            num_of_civilian_factories > 50
+            check_variable = { zzz_cure > 50 }
+        }
+        # Autocratic regimes more likely to leave
+        modifier = {
+            add = 2
+            OR = {
+                has_government = fascism
+                has_government = communism
+            }
+            NOT = {
+                any_country = {
+                    is_in_tech_sharing_group = cure_sharing
+                    has_same_ideology = yes
+                }
+            }
+        }
     }
 
     complete_effect = {
@@ -183,9 +994,9 @@ activate_the_cure = {
     icon = GFX_decision_generic_research
 
     ai_will_do = {
-        factor = 3
+        factor = 10  # High base priority for completing cure
         modifier = {
-            add = 2
+            add = 10
             has_war_with = ZZZ
         }
         modifier = {
@@ -194,6 +1005,105 @@ activate_the_cure = {
                 has_government = fascism
                 has_government = communism
             }
+        }
+        # Chaos tier modifiers - all tiers urgently activate
+        modifier = {
+            add = 5
+            has_global_flag = { flag = chaos_tier value = 1 }
+        }
+        modifier = {
+            add = 8
+            has_global_flag = { flag = chaos_tier value = 2 }
+        }
+        modifier = {
+            add = 12
+            has_global_flag = { flag = chaos_tier value = 3 }
+        }
+        modifier = {
+            add = 15
+            has_global_flag = { flag = chaos_tier value = 4 }
+        }
+        modifier = {
+            add = 20
+            has_global_flag = { flag = chaos_tier value = 5 }
+        }
+        # Zombie tier modifiers - higher threat = immediate activation
+        modifier = {
+            add = 8
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value > 0 }
+            }
+        }
+        modifier = {
+            add = 12
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value > 1 }
+            }
+        }
+        modifier = {
+            add = 20
+            any_country = {
+                original_tag = ZZZ
+                has_country_flag = { flag = zombie_current_tier value = 3 }
+            }
+        }
+        # Multiple zombie outbreaks = activate immediately
+        modifier = {
+            add = 15
+            any_country = {
+                has_country_flag = zombie_outbreak_dynamic_country
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+        }
+        # Proximity = urgent activation
+        modifier = {
+            add = 25
+            any_owned_state = {
+                any_neighbor_state = {
+                    is_controlled_by = ZZZ
+                }
+            }
+        }
+        # Stability considerations
+        modifier = {
+            add = 10
+            has_stability < 0.5
+        }
+        # Major powers activate faster
+        modifier = {
+            add = 5
+            is_major = yes
+        }
+        # Democratic countries prioritize saving the world
+        modifier = {
+            add = 8
+            has_government = democratic
+        }
+        # Authoritarian regimes might hoard the cure initially
+        modifier = {
+            factor = 0.3
+            OR = {
+                has_government = fascism
+                has_government = communism
+            }
+            NOT = {
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+        }
+        # Resource considerations don't matter when cure is ready
+        modifier = {
+            factor = 2
+            has_political_power > 100
         }
     }
 
@@ -207,4 +1117,1123 @@ activate_the_cure = {
 
     }
 }
+}
+
+chaosx_outbreak_prevention_category = {
+
+    enforce_hygiene_measures = {
+        icon = GFX_decision_generic_research
+
+        visible = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = hygiene_measures_enforced }
+        }
+
+        available = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = hygiene_measures_enforced }
+        }
+
+        cost = 50
+        days_remove = 30
+
+        ai_will_do = {
+            factor = 3
+            modifier = {
+                factor = 2
+                has_war_with = ZZZ
+            }
+            # Chaos tier modifiers - higher chaos = more preparation
+            modifier = {
+                add = 1
+                has_global_flag = { flag = chaos_tier value = 1 }
+            }
+            modifier = {
+                add = 2
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                add = 3
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                add = 4
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                add = 5
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - higher zombie evolution = more precautions
+            modifier = {
+                add = 2
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 0 }
+                }
+            }
+            modifier = {
+                add = 3
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                add = 4
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple zombie outbreaks = immediate action
+            modifier = {
+                add = 4
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Proximity to zombies
+            modifier = {
+                add = 6
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+            modifier = {
+                add = 3
+                capital_scope = {
+                    any_neighbor_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Government type considerations
+            modifier = {
+                add = 2
+                has_government = democratic
+            }
+            modifier = {
+                add = 1
+                has_government = fascism  # Authoritarian efficiency
+            }
+            # Stability considerations
+            modifier = {
+                add = 2
+                has_stability > 0.7  # Stable countries can implement better
+            }
+            modifier = {
+                factor = 0.7
+                has_stability < 0.3  # Unstable countries struggle
+            }
+            # Economic considerations
+            modifier = {
+                factor = 0.5
+                has_political_power < 75
+            }
+            modifier = {
+                add = 1
+                num_of_civilian_factories > 10
+            }
+            # Major powers lead prevention efforts
+            modifier = {
+                add = 2
+                is_major = yes
+            }
+            # Island nations are more cautious
+            modifier = {
+                add = 2
+                capital_scope = { is_island_state = yes }
+            }
+            # High population density = more concern
+            modifier = {
+                add = 1
+                any_owned_state = {
+                    state_population_k > 2000
+                }
+            }
+        }
+
+        remove_effect = {
+            set_country_flag = hygiene_measures_enforced
+            add_ideas = outbreak_prevention_hygiene_measures
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    restrict_migration = {
+        icon = GFX_decision_generic_industry
+
+        visible = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = migration_restricted }
+        }
+
+        available = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = migration_restricted }
+        }
+
+        cost = 75
+        days_remove = 45
+
+        ai_will_do = {
+            factor = 2
+            modifier = {
+                factor = 3
+                has_war_with = ZZZ
+            }
+            # Chaos tier modifiers - higher chaos = more restrictions
+            modifier = {
+                add = 1
+                has_global_flag = { flag = chaos_tier value = 1 }
+            }
+            modifier = {
+                add = 3
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                add = 5
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                add = 7
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                add = 9
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - higher zombie evolution = more restrictions
+            modifier = {
+                add = 3
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 0 }
+                }
+            }
+            modifier = {
+                add = 5
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                add = 7
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple zombie outbreaks = severe restrictions
+            modifier = {
+                add = 6
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Proximity to zombies - increasingly urgent
+            modifier = {
+                add = 8
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+            modifier = {
+                add = 4
+                capital_scope = {
+                    any_neighbor_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Government type considerations - authoritarians restrict more easily
+            modifier = {
+                add = 3
+                has_government = fascism
+            }
+            modifier = {
+                add = 2
+                has_government = communism
+            }
+            modifier = {
+                factor = 0.7
+                has_government = democratic  # Democratic hesitation about restrictions
+            }
+            # Stability and security considerations
+            modifier = {
+                add = 3
+                has_stability > 0.6  # Stable countries can implement restrictions
+            }
+            modifier = {
+                factor = 0.5
+                has_stability < 0.3  # Unstable countries can't enforce well
+            }
+            # Economic considerations - restrictions cost trade
+            modifier = {
+                factor = 0.6
+                has_political_power < 100
+            }
+            modifier = {
+                add = 2
+                num_of_civilian_factories > 20
+            }
+            # Major powers can afford restrictions
+            modifier = {
+                add = 3
+                is_major = yes
+            }
+            # Island nations naturally restrict anyway
+            modifier = {
+                add = 4
+                capital_scope = { is_island_state = yes }
+            }
+            # Countries with large borders are more concerned
+            modifier = {
+                add = 2
+                num_of_controlled_states > 10
+            }
+            # Already have basic hygiene measures
+            modifier = {
+                add = 2
+                has_country_flag = hygiene_measures_enforced
+            }
+        }
+
+        remove_effect = {
+            set_country_flag = migration_restricted
+            add_ideas = outbreak_prevention_migration_restricted
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    quarantine_protocols = {
+        icon = GFX_decision_generic_operation
+
+        visible = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = quarantine_protocols_active }
+        }
+
+        available = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = quarantine_protocols_active }
+        }
+
+        cost = 100
+        days_remove = 60
+
+        ai_will_do = {
+            factor = 2
+            modifier = {
+                factor = 4
+                has_war_with = ZZZ
+            }
+            # Chaos tier modifiers - higher chaos = more quarantine
+            modifier = {
+                add = 2
+                has_global_flag = { flag = chaos_tier value = 1 }
+            }
+            modifier = {
+                add = 4
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                add = 6
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                add = 8
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                add = 10
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - advanced zombies require stronger measures
+            modifier = {
+                add = 4
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 0 }
+                }
+            }
+            modifier = {
+                add = 6
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                add = 8
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple zombie outbreaks = extensive quarantine
+            modifier = {
+                add = 7
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Proximity to zombies - critical quarantine needs
+            modifier = {
+                add = 10
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+            modifier = {
+                add = 6
+                capital_scope = {
+                    any_neighbor_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Government type considerations - authoritarians implement easier
+            modifier = {
+                add = 4
+                has_government = fascism
+            }
+            modifier = {
+                add = 3
+                has_government = communism
+            }
+            modifier = {
+                factor = 0.6
+                has_government = democratic  # Democratic resistance to quarantine
+            }
+            # Stability requirements - quarantine needs stable authority
+            modifier = {
+                add = 4
+                has_stability > 0.7
+            }
+            modifier = {
+                factor = 0.4
+                has_stability < 0.4
+            }
+            # Economic and infrastructure requirements
+            modifier = {
+                factor = 0.3
+                has_political_power < 150
+            }
+            modifier = {
+                add = 3
+                num_of_civilian_factories > 30
+            }
+            modifier = {
+                add = 2
+                num_of_military_factories > 15  # Military helps enforce quarantine
+            }
+            # Major powers can implement comprehensive quarantine
+            modifier = {
+                add = 4
+                is_major = yes
+            }
+            # Island nations find quarantine easier
+            modifier = {
+                add = 5
+                capital_scope = { is_island_state = yes }
+            }
+            # Previous measures make quarantine more likely
+            modifier = {
+                add = 3
+                has_country_flag = hygiene_measures_enforced
+            }
+            modifier = {
+                add = 4
+                has_country_flag = migration_restricted
+            }
+            # High population areas need quarantine more
+            modifier = {
+                add = 2
+                any_owned_state = {
+                    state_population_k > 3000
+                }
+            }
+            # Countries with good tech can implement better quarantine
+            modifier = {
+                add = 2
+                has_tech = radio
+            }
+        }
+
+        remove_effect = {
+            set_country_flag = quarantine_protocols_active
+            add_ideas = outbreak_prevention_quarantine_protocols
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    close_borders_completely = {
+        icon = GFX_decision_generic_nationalism
+
+        visible = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = borders_completely_closed }
+        }
+
+        available = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = borders_completely_closed }
+        }
+
+        cost = 150
+        days_remove = 90
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 5
+                has_war_with = ZZZ
+            }
+            modifier = {
+                factor = 0.1
+                is_major = no
+            }
+            # Chaos tier modifiers - higher chaos = more border closure
+            modifier = {
+                add = 2
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                add = 4
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                add = 6
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                add = 8
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - advanced zombies force border closure
+            modifier = {
+                add = 3
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 0 }
+                }
+            }
+            modifier = {
+                add = 6
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                add = 10
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple zombie outbreaks = immediate border closure
+            modifier = {
+                add = 8
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Proximity to zombies - critical border security
+            modifier = {
+                add = 15
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+            modifier = {
+                add = 8
+                capital_scope = {
+                    any_neighbor_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Government type considerations - authoritarians close borders easier
+            modifier = {
+                add = 5
+                has_government = fascism
+            }
+            modifier = {
+                add = 4
+                has_government = communism
+            }
+            modifier = {
+                factor = 0.5
+                has_government = democratic  # Democratic reluctance to close borders
+            }
+            # Stability requirements - need strong government to enforce
+            modifier = {
+                add = 3
+                has_stability > 0.8
+            }
+            modifier = {
+                factor = 0.3
+                has_stability < 0.5
+            }
+            # Economic considerations - border closure is expensive
+            modifier = {
+                factor = 0.2
+                has_political_power < 200
+            }
+            modifier = {
+                add = 4
+                num_of_civilian_factories > 40
+            }
+            modifier = {
+                add = 3
+                num_of_military_factories > 20  # Military needed for border control
+            }
+            # Major powers can afford to close borders
+            modifier = {
+                factor = 2
+                is_major = yes
+            }
+            # Island nations already have natural borders
+            modifier = {
+                add = 8
+                capital_scope = { is_island_state = yes }
+            }
+            # Previous escalating measures make this more likely
+            modifier = {
+                add = 4
+                has_country_flag = hygiene_measures_enforced
+            }
+            modifier = {
+                add = 5
+                has_country_flag = migration_restricted
+            }
+            modifier = {
+                add = 6
+                has_country_flag = quarantine_protocols_active
+            }
+            # Countries with long borders are more hesitant (except in crisis)
+            modifier = {
+                factor = 0.7
+                num_of_controlled_states > 15
+                NOT = {
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+
+            # War weariness makes countries more protective
+            modifier = {
+                add = 2
+                has_war_support < 0.5
+            }
+        }
+
+        remove_effect = {
+            set_country_flag = borders_completely_closed
+            add_ideas = outbreak_prevention_borders_closed
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    extreme_martial_law = {
+        icon = GFX_decision_generic_ignite_civil_war
+
+        visible = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = extreme_martial_law_active }
+        }
+
+        available = {
+            has_global_flag = has_zombie_outbreak
+            NOT = { has_country_flag = extreme_martial_law_active }
+            has_country_flag = hygiene_measures_enforced
+            has_country_flag = migration_restricted
+            has_country_flag = quarantine_protocols_active
+            has_country_flag = borders_completely_closed
+        }
+
+        cost = 250
+        days_remove = 120
+
+        ai_will_do = {
+            factor = 0.5
+            modifier = {
+                factor = 10
+                has_war_with = ZZZ
+                strength_ratio = { tag = ZZZ ratio < 0.5 }
+            }
+            # Chaos tier modifiers - higher chaos = more extreme measures
+            modifier = {
+                add = 1
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                add = 3
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                add = 6
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                add = 10
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - extreme zombies require extreme measures
+            modifier = {
+                add = 4
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                add = 8
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple zombie outbreaks = martial law necessary
+            modifier = {
+                add = 10
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Proximity to zombies - existential threat requires extreme response
+            modifier = {
+                add = 20
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+            modifier = {
+                add = 12
+                capital_scope = {
+                    any_neighbor_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+            }
+            # Government type considerations - authoritarians more likely to use martial law
+            modifier = {
+                add = 8
+                has_government = fascism
+            }
+            modifier = {
+                add = 6
+                has_government = communism
+            }
+            modifier = {
+                factor = 0.2
+                has_government = democratic  # Democratic strong reluctance
+            }
+            # Stability requirements - need very stable regime for martial law
+            modifier = {
+                factor = 0.1
+                has_stability < 0.6
+            }
+            modifier = {
+                add = 5
+                has_stability > 0.8
+            }
+            # Military and economic requirements - martial law is very expensive
+            modifier = {
+                factor = 0.1
+                has_political_power < 300
+            }
+            modifier = {
+                add = 5
+                num_of_military_factories > 25
+            }
+            # Major powers more capable of martial law
+            modifier = {
+                add = 6
+                is_major = yes
+            }
+            # Desperation modifiers
+            modifier = {
+                add = 8
+                has_stability < 0.4  # Desperate times
+            }
+            modifier = {
+                add = 10
+                has_manpower < 50000  # Running out of people
+            }
+            modifier = {
+                add = 15
+                capital_scope = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+            # Military tradition and capability
+            modifier = {
+                add = 4
+                has_idea = general_staff
+            }
+            modifier = {
+                add = 3
+                has_tech = basic_machine_tools  # Industrial capacity for enforcement
+            }
+            # War situation
+            modifier = {
+                add = 5
+                has_war = yes
+                casualties > 100000
+            }
+            # Last resort - when other measures insufficient
+            modifier = {
+                add = 8
+                OR = {
+                    any_owned_state = {
+                        resistance > 50
+                    }
+                    has_civil_war = yes
+                }
+            }
+        }
+
+        remove_effect = {
+            set_country_flag = extreme_martial_law_active
+            add_ideas = outbreak_prevention_extreme_martial_law
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    revoke_hygiene_measures = {
+        icon = GFX_decision_generic_civil_support
+
+        visible = {
+            has_country_flag = hygiene_measures_enforced
+        }
+
+        available = {
+            has_country_flag = hygiene_measures_enforced
+            OR = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+                has_idea = cure_activated
+                NOT = { has_war_with = ZZZ }
+            }
+        }
+
+        cost = 10
+        days_remove = 15
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 3
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+            modifier = {
+                factor = 2
+                has_idea = cure_activated
+            }
+            modifier = {
+                factor = 0.1
+                has_war_with = ZZZ
+            }
+            # Chaos tier modifiers - less likely to revoke during high chaos
+            modifier = {
+                factor = 0.8
+                has_global_flag = { flag = chaos_tier value = 1 }
+            }
+            modifier = {
+                factor = 0.6
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                factor = 0.4
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                factor = 0.2
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                factor = 0.1
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+            # Zombie tier modifiers - higher threats = keep measures
+            modifier = {
+                factor = 0.5
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value > 1 }
+                }
+            }
+            modifier = {
+                factor = 0.2
+                any_country = {
+                    original_tag = ZZZ
+                    has_country_flag = { flag = zombie_current_tier value = 3 }
+                }
+            }
+            # Multiple outbreaks = never revoke
+            modifier = {
+                factor = 0.1
+                any_country = {
+                    has_country_flag = zombie_outbreak_dynamic_country
+                }
+            }
+            # Economic pressure to revoke
+            modifier = {
+                add = 2
+                has_political_power < 50
+            }
+            # Democratic governments under public pressure
+            modifier = {
+                add = 1
+                has_government = democratic
+                has_stability > 0.7
+            }
+        }
+
+        remove_effect = {
+            clr_country_flag = hygiene_measures_enforced
+            remove_ideas = outbreak_prevention_hygiene_measures
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    revoke_migration_restrictions = {
+        icon = GFX_decision_generic_democracy
+
+        visible = {
+            has_country_flag = migration_restricted
+        }
+
+        available = {
+            has_country_flag = migration_restricted
+            OR = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+                has_idea = cure_activated
+                NOT = { has_war_with = ZZZ }
+            }
+        }
+
+        cost = 10
+        days_remove = 20
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 3
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+            modifier = {
+                factor = 2
+                has_idea = cure_activated
+            }
+            modifier = {
+                factor = 0.1
+                has_war_with = ZZZ
+            }
+        }
+
+        remove_effect = {
+            clr_country_flag = migration_restricted
+            remove_ideas = outbreak_prevention_migration_restricted
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    revoke_quarantine_protocols = {
+        icon = GFX_decision_generic_prepare_civil_war
+
+        visible = {
+            has_country_flag = quarantine_protocols_active
+        }
+
+        available = {
+            has_country_flag = quarantine_protocols_active
+            OR = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+                has_idea = cure_activated
+                NOT = { has_war_with = ZZZ }
+            }
+        }
+
+        cost = 10
+        days_remove = 30
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 3
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+            modifier = {
+                factor = 2
+                has_idea = cure_activated
+            }
+            modifier = {
+                factor = 0.1
+                has_war_with = ZZZ
+            }
+        }
+
+        remove_effect = {
+            clr_country_flag = quarantine_protocols_active
+            remove_ideas = outbreak_prevention_quarantine_protocols
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    reopen_borders = {
+        icon = GFX_decision_generic_break_treaty
+
+        visible = {
+            has_country_flag = borders_completely_closed
+        }
+
+        available = {
+            has_country_flag = borders_completely_closed
+            OR = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+                has_idea = cure_activated
+                NOT = { has_war_with = ZZZ }
+            }
+        }
+
+        cost = 75
+        days_remove = 45
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 3
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+            modifier = {
+                factor = 2
+                has_idea = cure_activated
+            }
+            modifier = {
+                factor = 0.1
+                has_war_with = ZZZ
+            }
+            modifier = {
+                factor = 2
+                is_major = yes
+            }
+        }
+
+        remove_effect = {
+            clr_country_flag = borders_completely_closed
+            remove_ideas = outbreak_prevention_borders_closed
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
+
+    revoke_extreme_martial_law = {
+        icon = GFX_decision_generic_political_discourse
+
+        visible = {
+            has_country_flag = extreme_martial_law_active
+        }
+
+        available = {
+            has_country_flag = extreme_martial_law_active
+            OR = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+                has_idea = cure_activated
+                NOT = { has_war_with = ZZZ }
+            }
+        }
+
+        cost = 20
+        days_remove = 60
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 5
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+            modifier = {
+                factor = 3
+                has_idea = cure_activated
+            }
+            modifier = {
+                factor = 0.05
+                has_war_with = ZZZ
+            }
+            modifier = {
+                factor = 2
+                has_government = democratic
+            }
+        }
+
+        remove_effect = {
+            clr_country_flag = extreme_martial_law_active
+            remove_ideas = outbreak_prevention_extreme_martial_law
+            # Recalculate zombie outbreak chance
+            calculate_zombie_outbreak_chance = yes
+        }
+    }
 }

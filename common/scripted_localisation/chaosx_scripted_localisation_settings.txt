@@ -109,7 +109,7 @@ defined_text = {
     }
     text = {
         trigger = { always = yes }
-        localization_key = "ID: [?global.last_fired_event_id] - [GetLastEventName]"
+        localization_key = "ID: [GetLastFiredIDColoured] - [GetLastEventName]"
     }
 }
 
@@ -599,6 +599,27 @@ defined_text = {
         localization_key = "Unknown"
     }
 }
+# Event types
+defined_text = {
+    name = GetLastFiredIDColoured
+    text = {
+        trigger = { is_in_array = { global.major_events = global.last_fired_event_id } }
+        localization_key = settings.last_fired_id.major.colored
+    }
+    text = {
+        trigger = { is_in_array = { global.repeatable_events = global.last_fired_event_id } }
+        localization_key = settings.last_fired_id.minor_repeatable.colored
+    }
+    text = {
+        trigger = { is_in_array = { global.fire_once_events = global.last_fired_event_id } }
+        localization_key = settings.last_fired_id.minor_fire_once.colored
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "[?global.last_fired_event_id]"
+    }
+}
+
 defined_text = {
     name = GetSettingsEventName
     text = {

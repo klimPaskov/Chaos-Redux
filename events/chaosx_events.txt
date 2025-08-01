@@ -40,6 +40,7 @@
 
 
 
+add_namespace = chaosx.news
 
 add_namespace = chaosx.nr1
 add_namespace = chaosx.nr2
@@ -180,10 +181,17 @@ country_event = {
     picture = GFX_report_event_stalin_propaganda
 
     is_triggered_only = yes
-    major = yes
 
     immediate = {
         hidden_effect = {
+            if = {
+                limit = { NOT = { has_global_flag = communism_spread } }
+                set_global_flag = communism_spread
+                every_other_country = {
+                    country_event = { id = chaosx.nr1.1 }
+                }
+            }
+
             set_temp_variable = { base_value = 0.10 }
             set_temp_variable = { base_add = 0.02 }
             modify_value_based_on_chaos_tier = yes
@@ -191,8 +199,9 @@ country_event = {
                 ideology = communism
                 popularity = var:modified_value
             }
-            set_global_flag = communism_spread
+            add_ideas = communism_spread_idea # don't update the idea right away
         }
+
     }
 
     option = {
@@ -201,6 +210,9 @@ country_event = {
         }
         name = chaosx.nr1.1.a
         effect_tooltip = {
+            set_temp_variable = { base_value = 0.10 }
+            set_temp_variable = { base_add = 0.02 }
+            modify_value_based_on_chaos_tier = yes
             add_popularity = {
                 ideology = communism
                 popularity = var:modified_value
@@ -213,6 +225,9 @@ country_event = {
         }
         name = chaosx.nr1.1.b
         effect_tooltip = {
+            set_temp_variable = { base_value = 0.10 }
+            set_temp_variable = { base_add = 0.02 }
+            modify_value_based_on_chaos_tier = yes
             add_popularity = {
                 ideology = communism
                 popularity = var:modified_value
@@ -286,6 +301,7 @@ country_event = {
             ideology = communism
             popularity = -0.02
         }
+        update_communism_spread_idea = yes
     }
 }
 
@@ -307,11 +323,11 @@ country_event = {
         NOT = { has_government = communism }
         communism > 0.4
         has_global_flag = communism_spread
-        has_stability < 0.2
+        has_stability < 0.3
     }
 
     mean_time_to_happen = {
-        days = 150 # base mean time 1(100%)/days
+        days = 180 # base mean time 1(100%)/days
     }
 
     option = { # Cool down the situation
@@ -324,8 +340,9 @@ country_event = {
         add_political_power = -100
         add_popularity = {
             ideology = communism
-            popularity = -0.05
+            popularity = -0.02
         }
+        update_communism_spread_idea = yes
     }
 
     option = { # Start civil war
@@ -357,6 +374,44 @@ country_event = {
                 ideology = communism
                 popularity = -0.5
             }
+
+            # If rebels exist, the communist civil war side annexes them
+            if = {
+                limit = {
+                    any_country = {
+                        has_country_flag = communist_rebel_state
+                        has_war_with = ROOT
+                        original_tag = ROOT
+                    }
+                }
+
+                # Find the communist civil war side and have it annex the rebels
+                every_country = {
+                    limit = {
+                        has_government = communism
+                        original_tag = ROOT
+                    }
+
+                    # Find and annex the rebel country
+                    every_country = {
+                        limit = {
+                            has_country_flag = communist_rebel_state
+                            has_war_with = ROOT
+                            original_tag = ROOT
+                        }
+
+                        PREV = {
+                            annex_country = {
+                                target = PREV
+                                transfer_troops = yes
+                            }
+                            add_stability = 0.05
+                            add_war_support = 0.1
+                            add_manpower = 5000
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -365,24 +420,498 @@ country_event = {
         ai_chance = {
             base = 33
             modifier = {
-                factor = 2
+                add = 10
                 communism > 0.6
             }
+            modifier = {
+                factor = 2
+                has_country_flag = fighting_communist_rebels
+            }
         }
-        add_stability = -0.20
+        add_stability = -0.25
+        add_war_support = -0.25
         add_ruling_to_com = yes
         set_politics = {
             ruling_party = communism
             elections_allowed = no
         }
+        # Find and annex the rebel country
+        every_country = {
+            limit = {
+                has_country_flag = communist_rebel_state
+                has_war_with = ROOT
+                original_tag = ROOT
+            }
+            ROOT = {
+                annex_country = {
+                    target = PREV
+                    transfer_troops = no
+                }
+            }
+        }
+
     }
 }
 
 
+# Communist influence grows stronger - progression events
+country_event = {
+    id = chaosx.nr1.4
+    title = chaosx.nr1.4.t
+    desc = chaosx.nr1.4.d
+    picture = GFX_report_event_stalin_propaganda
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr1.4.a
+        # Acknowledge the growing communist threat
+    }
+}
+
+# Communist influence grows weaker - regression events
+country_event = {
+    id = chaosx.nr1.5
+    title = chaosx.nr1.5.t
+    desc = chaosx.nr1.5.d
+    picture = GFX_report_event_generic_sign_treaty2
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr1.5.a
+        # Acknowledge the weakening communist threat
+    }
+}
+
+# Communist threat becomes critical (reaching tier 4 or 5)
+country_event = {
+    id = chaosx.nr1.6
+    title = chaosx.nr1.6.t
+    desc = chaosx.nr1.6.d
+    picture = GFX_report_event_worker_protests
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr1.6.a
+        add_stability = -0.05
+        add_war_support = -0.05
+        # The situation becomes extremely serious
+    }
+}
+
+# Communist threat significantly reduced (dropping to tier 1 or eliminated)
+country_event = {
+    id = chaosx.nr1.7
+    title = chaosx.nr1.7.t
+    desc = chaosx.nr1.7.d
+    picture = GFX_report_event_generic_rally
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr1.7.a
+        add_stability = 0.05
+        add_war_support = 0.05
+        # The communist threat is greatly diminished
+    }
+}
 
 
+# Communist rebel groups form and seize territory
+country_event = {
+    id = chaosx.nr1.8
+    title = chaosx.nr1.8.t
+    desc = chaosx.nr1.8.d
+    picture = GFX_report_event_worker_protests
+
+    trigger = {
+        has_civil_war = no
+        NOT = { has_government = communism }
+        has_stability < 0.5
+        communism > 0.1
+        has_global_flag = communism_spread
+        has_global_flag = { flag = chaos_tier value > 0 }
+        num_of_controlled_states > 1
+        NOT = { has_country_flag = fighting_communist_rebels }
+    }
+
+    mean_time_to_happen = {
+        days = 100 # base mean time 1(100%)/days
+    }
+
+    immediate = {
+        hidden_effect = {
+            set_country_flag = fighting_communist_rebels
+        }
+    }
+
+    option = { # Fight the rebels - they form a dynamic country
+        name = chaosx.nr1.8.b
+
+        hidden_effect = {
+            # Calculate percentage of states to occupy based on communist support
+            # Base 5% + 1% for every 2% communist support above 10%
+            set_temp_variable = { rebel_state_percentage = 5 }
+            set_temp_variable = { communist_bonus = party_popularity@communism }
+            subtract_from_temp_variable = { communist_bonus = 0.1 }
+            multiply_temp_variable = { communist_bonus = 50 } # Convert to percentage and divide by 2
+            add_to_temp_variable = { rebel_state_percentage = communist_bonus }
+
+            # Ensure minimum is 5%
+            if = {
+                limit = { check_variable = { rebel_state_percentage < 5 } }
+                set_temp_variable = { rebel_state_percentage = 5 }
+            }
+
+            # Calculate number of states to occupy
+            set_temp_variable = { total_states = num_of_controlled_states }
+            set_temp_variable = { states_to_occupy = total_states }
+            multiply_temp_variable = { states_to_occupy = rebel_state_percentage }
+            divide_temp_variable = { states_to_occupy = 100 }
+
+            # Ensure at least 1 state if percentage gives less than 0.5
+            if = {
+                limit = { check_variable = { states_to_occupy < 0.5 } }
+                set_temp_variable = { states_to_occupy = 1 }
+            }
+
+            # Round to nearest integer
+            round_temp_variable = states_to_occupy
+
+            # Calculate divisions per state based on stability
+            # Base 2 divisions + 1 for every 5% stability below 50%
+            set_temp_variable = { divisions_per_state = 2 }
+            set_temp_variable = { stability_penalty = 0.5 }
+            subtract_from_temp_variable = { stability_penalty = stability }
+            multiply_temp_variable = { stability_penalty = 20 } # Convert to penalty per 5%
+            add_to_temp_variable = { divisions_per_state = stability_penalty }
+
+            # Ensure minimum of 2 divisions per state
+            if = {
+                limit = { check_variable = { divisions_per_state < 2 } }
+                set_temp_variable = { divisions_per_state = 2 }
+            }
+
+            round_temp_variable = divisions_per_state
 
 
+            # Create the rebel communist country
+            create_dynamic_country = {
+                original_tag = ROOT
+
+                # Set up the rebel state
+                set_politics = {
+                    ruling_party = communism
+                    elections_allowed = no
+                }
+
+                # Create custom leader for the rebels
+                create_country_leader = {
+                    name = "Communist Rebels"
+                    picture = "GFX_portrait_communist_rebels"
+                    ideology = marxism
+                }
+
+                add_manpower = 10000
+
+                # Set flag to identify this as a rebel state
+                set_country_flag = communist_rebel_state
+
+                # Create division templates based on chaos tier
+                if = {
+                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 1 } } }
+                    division_template = {
+                        name = "Communist Militia"
+                        regiments = {
+                            infantry = { x = 0 y = 0 }
+                            infantry = { x = 0 y = 1 }
+                            infantry = { x = 0 y = 2 }
+                            infantry = { x = 1 y = 0 }
+                            infantry = { x = 1 y = 1 }
+                            infantry = { x = 1 y = 2 }
+                        }
+                    }
+                }
+                else_if = {
+                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 2 } } }
+                    division_template = {
+                        name = "Communist Guards"
+                        regiments = {
+                            infantry = { x = 0 y = 0 }
+                            infantry = { x = 0 y = 1 }
+                            infantry = { x = 0 y = 2 }
+                            infantry = { x = 1 y = 0 }
+                            infantry = { x = 1 y = 1 }
+                            infantry = { x = 1 y = 2 }
+                            infantry = { x = 2 y = 0 }
+                        }
+                        support = {
+                            engineer = { x = 0 y = 0 }
+                        }
+                    }
+                }
+                else_if = {
+                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 3 } } }
+                    division_template = {
+                        name = "Communist Brigade"
+                        regiments = {
+                            infantry = { x = 0 y = 0 }
+                            infantry = { x = 0 y = 1 }
+                            infantry = { x = 0 y = 2 }
+                            infantry = { x = 1 y = 0 }
+                            infantry = { x = 1 y = 1 }
+                            infantry = { x = 1 y = 2 }
+                            infantry = { x = 2 y = 0 }
+                            infantry = { x = 2 y = 1 }
+                        }
+                        support = {
+                            engineer = { x = 0 y = 0 }
+                            artillery = { x = 0 y = 1 }
+                        }
+                    }
+                }
+                else_if = {
+                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 4 } } }
+                    division_template = {
+                        name = "Communist Regiment"
+                        regiments = {
+                            infantry = { x = 0 y = 0 }
+                            infantry = { x = 0 y = 1 }
+                            infantry = { x = 0 y = 2 }
+                            infantry = { x = 1 y = 0 }
+                            infantry = { x = 1 y = 1 }
+                            infantry = { x = 1 y = 2 }
+                            infantry = { x = 2 y = 0 }
+                            infantry = { x = 2 y = 1 }
+                            infantry = { x = 2 y = 2 }
+                            artillery_brigade = { x = 3 y = 0 }
+                        }
+                        support = {
+                            engineer = { x = 0 y = 0 }
+                            artillery = { x = 0 y = 1 }
+                            anti_tank = { x = 0 y = 2 }
+                        }
+                    }
+                }
+                else = { # Chaos tier 5 or higher
+                    division_template = {
+                        name = "Communist Army"
+                        regiments = {
+                            infantry = { x = 0 y = 0 }
+                            infantry = { x = 0 y = 1 }
+                            infantry = { x = 0 y = 2 }
+                            infantry = { x = 1 y = 0 }
+                            infantry = { x = 1 y = 1 }
+                            infantry = { x = 1 y = 2 }
+                            infantry = { x = 2 y = 0 }
+                            infantry = { x = 2 y = 1 }
+                            infantry = { x = 2 y = 2 }
+                            artillery_brigade = { x = 3 y = 0 }
+                            artillery_brigade = { x = 3 y = 1 }
+                        }
+                        support = {
+                            engineer = { x = 0 y = 0 }
+                            artillery = { x = 0 y = 1 }
+                            anti_tank = { x = 0 y = 2 }
+                            anti_air = { x = 0 y = 3 }
+                        }
+                    }
+                }
+
+                # Transfer calculated number of states to rebels
+                set_temp_variable = { states_transferred = 0 }
+                while_loop_effect = {
+                    limit = { check_variable = { states_transferred < states_to_occupy } }
+
+                    ROOT = {
+                        random_controlled_state = {
+                            limit = {
+                                is_core_of = ROOT
+                                NOT = { is_capital = yes }
+                                NOT = { has_state_flag = rebel_occupied }
+                            }
+                            set_state_flag = rebel_occupied
+                            transfer_state_to = PREV.PREV
+
+                            # Spawn divisions in this state
+                            set_temp_variable = { divisions_spawned = 0 }
+                            while_loop_effect = {
+                                limit = { check_variable = { divisions_spawned < divisions_per_state } }
+
+                                add_to_temp_variable = { divisions_spawned = 1 }
+                                meta_effect = {
+                                    text = {
+                                        if = {
+                                            limit = { ROOT = { OR = { has_global_flag = { flag = chaos_tier value = 1 } has_global_flag = { flag = chaos_tier value = 0 } } } }
+                                            create_unit = {
+                                                division = "name = \"Communist Militia [COUNT]\" division_template = \"Communist Militia\" start_experience_factor = 0.5"
+                                                owner = PREV.PREV
+                                            }
+                                        }
+                                        else_if = {
+                                            limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 2 } } }
+                                            create_unit = {
+                                                division = "name = \"Communist Guards [COUNT]\" division_template = \"Communist Guards\" start_experience_factor = 1.0"
+                                                owner = PREV.PREV
+                                            }
+                                        }
+                                        else_if = {
+                                            limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 3 } } }
+                                            create_unit = {
+                                                division = "name = \"Communist Brigade [COUNT]\" division_template = \"Communist Brigade\" start_experience_factor = 1.0"
+                                                owner = PREV.PREV
+                                            }
+                                        }
+                                        else_if = {
+                                            limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 4 } } }
+                                            create_unit = {
+                                                division = "name = \"Communist Regiment [COUNT]\" division_template = \"Communist Regiment\" start_experience_factor = 1.0"
+                                                owner = PREV.PREV
+                                            }
+                                        }
+                                        else = { # Chaos tier 5+
+                                            create_unit = {
+                                                division = "name = \"Communist Army [COUNT]\" division_template = \"Communist Army\" start_experience_factor = 1.0"
+                                                owner = PREV.PREV
+                                            }
+                                        }
+                                    }
+                                    COUNT = "[?divisions_spawned|0]"
+                                }
+
+                            }
+                        }
+                        add_to_temp_variable = { states_transferred = 1 }
+                    }
+
+                }
+
+                # Clear state flags
+                every_controlled_state = {
+                    clr_state_flag = rebel_occupied
+                }
+
+                # Start war with original country
+                declare_war_on = {
+                    target = ROOT
+                    type = annex_everything
+                }
+            }
+        }
+
+        # Effects on original country
+        add_war_support = 0.1
+        add_stability = -0.1
+        add_popularity = {
+            ideology = communism
+            popularity = -0.05
+        }
+        update_communism_spread_idea = yes
+    }
+
+    option = { # Give in to rebel demands
+        name = chaosx.nr1.8.c
+        ai_chance = {
+            base = 10
+            modifier = {
+                factor = 3
+                communism > 0.4
+            }
+            modifier = {
+                factor = 0.1
+                has_war = yes
+            }
+        }
+        clr_country_flag = fighting_communist_rebels
+        add_stability = -0.15
+        add_political_power = -100
+        add_popularity = {
+            ideology = communism
+            popularity = 0.1
+        }
+        update_communism_spread_idea = yes
+
+        # Chance to go communist if support is very high
+        if = {
+            limit = { communism > 0.5 has_stability < 0.5 }
+            random_list = {
+                30 = {
+                    set_politics = {
+                        ruling_party = communism
+                        elections_allowed = no
+                    }
+                }
+                70 = { # Stay current government but appeased rebels
+                }
+            }
+        }
+    }
+}
+
+# Military intervention against communists - Success
+country_event = {
+    id = chaosx.nr1.9
+    title = chaosx.nr1.9.t
+    desc = chaosx.nr1.9.d
+    picture = GFX_report_event_generic_rally
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr1.9.a
+        add_popularity = {
+            ideology = communism
+            popularity = -0.05
+        }
+        add_stability = -0.01
+        add_war_support = 0.01
+        update_communism_spread_idea = yes
+    }
+}
+
+# Military intervention against communists - Failure
+country_event = {
+    id = chaosx.nr1.10
+    title = chaosx.nr1.10.t
+    desc = chaosx.nr1.10.d
+    picture = GFX_report_event_worker_protests
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr1.10.a
+        add_popularity = {
+            ideology = communism
+            popularity = -0.02
+        }
+        add_stability = -0.02
+        add_war_support = -0.02
+        update_communism_spread_idea = yes
+    }
+}
+
+# Military intervention against communists - Complete Failure
+country_event = {
+    id = chaosx.nr1.11
+    title = chaosx.nr1.11.t
+    desc = chaosx.nr1.11.d
+    picture = GFX_report_event_journalists_speech
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr1.11.a
+        add_popularity = {
+            ideology = communism
+            popularity = 0.02
+        }
+        add_stability = -0.04
+        add_war_support = -0.04
+        update_communism_spread_idea = yes
+    }
+}
 
 
 ###############################################################################################################
@@ -404,7 +933,8 @@ country_event = {
 
 ###############################################################################################################
 
-# TODO: Make zombies more realistic: Diplomatic actions should be limited, no alliances, no factions, no diplomacy, no trade, no lend lease, no volunteers, no military access, no peace deals. Zombies should have hostile relations with every country. The generals should be zombies. Basically remove anything human about them. The more danger there is, the more intelligent the zombies are and the more technology they can use. Also zombies become more powerful. Maybe make it so that zombies are weaker during day and stronger during the night. Zombies must attack no matter what, they can't stay idle. Even if offensive is likely unsuccessful, they should still attack.
+
+
 country_event = {
     id = chaosx.nr2.1
     title = chaosx.nr2.1.t
@@ -420,11 +950,12 @@ country_event = {
                 transfer_state_to = ZZZ # Sets ZZZ owner of the state
                 add_core_of = ZZZ
                 ZZZ = {
+                    set_major = yes
                     load_oob = "ZZZ_1936" # Get Brainzz Horde template
                 }
                 create_unit = {
                     division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
-                    count = 10
+                    count = 20
                     owner = ZZZ
                 }
             }
@@ -432,20 +963,99 @@ country_event = {
             ZZZ = {
                 add_equipment_to_stockpile = {
                     type = infantry_equipment
-                    amount = 1000 # Since Zombies require 1 piece of equipment to deploy a division
+                    amount = 10000 # Since Zombies require 1 piece of equipment to deploy a division
                     producer = CHI
+                }
+
+                upgrade_economy_law = yes
+                upgrade_economy_law = yes
+                upgrade_economy_law = yes
+                upgrade_economy_law = yes
+
+                # Add default zombie idea
+                add_ideas = {
+                    zombies_idea_0
+                }
+                # Set zombie evolution target based on current chaos tier
+                if = {
+                    limit = { has_global_flag = { flag = chaos_tier value = 0 } }
+                    set_country_flag = { flag = zombie_target_tier value = 0 }
+                }
+                else_if = {
+                    limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+                    set_country_flag = { flag = zombie_target_tier value = 1 }
+                }
+                else_if = {
+                    limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+                    set_country_flag = { flag = zombie_target_tier value = 2 }
+                }
+                else_if = {
+                    limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+                    set_country_flag = { flag = zombie_target_tier value = 3 }
+                }
+                else = {
+                    set_country_flag = { flag = zombie_target_tier value = 3 } # Cap at tier 3
+                }
+                # Set current zombie tier to 0
+                set_country_flag = { flag = zombie_current_tier value = 0 }
+
+                every_possible_country = {
+                    limit = { NOT = { original_tag = ZZZ } }
+                    add_opinion_modifier = {
+                        target = ZZZ
+                        modifier = zombie_hostile
+                    }
+                    ZZZ = {
+                        add_opinion_modifier = {
+                            target = PREV
+                            modifier = zombie_hostile
+                        }
+                    }
                 }
             }
 
             if = {
                 limit = { NOT = { has_global_flag = has_zombie_outbreak } }
                 set_global_flag = has_zombie_outbreak
+
+                # Initialize zombie outbreak chance calculations for all countries
+                update_all_zombie_outbreak_chances = yes
             }
 
         }
     }
 }
 
+country_event = { # Cure activated
+    id = chaosx.nr2.2
+    title = chaosx.nr2.2.t
+    desc = chaosx.nr2.2.d
+    picture = GFX_report_event_generic_research_lab
+
+    is_triggered_only = yes
+
+    option = {
+        effect_tooltip = {
+            if = {
+                limit = { is_in_tech_sharing_group = cure_sharing }
+                add_timed_idea = {
+                    idea = cure_activated
+                    days = 120
+                }
+            }
+            else = {
+                add_timed_idea = {
+                    idea = cure_activated
+                    days = 360
+                }
+            }
+        }
+        name = chaosx.nr2.2.a
+    }
+}
+
+
+# Super Event
 country_event = {
     id = chaosx.nr2.3
 
@@ -472,37 +1082,556 @@ country_event = {
     }
 }
 
+# Zombie Evolution Event
+country_event = {
+    id = chaosx.nr2.4
 
-##############################################################################################################
+    hidden = yes
 
-
-
-
-
-country_event = { # Cure activated
-    id = chaosx.nr2.2
-    title = chaosx.nr2.2.t
-    desc = chaosx.nr2.2.d
-    picture = GFX_report_event_generic_research_lab
-
-    is_triggered_only = yes
-
-    option = {
-        effect_tooltip = {
-            if = { limit = { is_in_tech_sharing_group = cure_sharing }
-            add_timed_idea = {
-                idea = cure_activated
-                days = 120
+    trigger = {
+        original_tag = ZZZ
+        has_global_flag = has_zombie_outbreak
+        OR = {
+            AND = {
+                has_country_flag = { flag = zombie_current_tier value = 0 }
+                has_country_flag = { flag = zombie_target_tier value > 0 }
             }
-        } else = {
-            add_timed_idea = {
-                idea = cure_activated
-                days = 360
+            AND = {
+                has_country_flag = { flag = zombie_current_tier value = 1 }
+                has_country_flag = { flag = zombie_target_tier value > 1 }
+            }
+            AND = {
+                has_country_flag = { flag = zombie_current_tier value = 2 }
+                has_country_flag = { flag = zombie_target_tier value > 2 }
             }
         }
     }
-    name = chaosx.nr2.2.a
+
+    mean_time_to_happen = {
+        days = 100
+    }
+
+    immediate = {
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = { flag = zombie_current_tier value = 0 }
+                    has_country_flag = { flag = zombie_target_tier value > 0 }
+                }
+                # Evolution from tier 0 to tier 1
+                swap_ideas = { remove_idea = zombies_idea_0 add_idea = zombies_idea_1 }
+                set_country_flag = { flag = zombie_current_tier value = 1 }
+                kill_country_leader = yes
+                promote_character = ZZZ_leader_1
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = { flag = zombie_current_tier value = 1 }
+                    has_country_flag = { flag = zombie_target_tier value > 1 }
+                }
+                # Evolution from tier 1 to tier 2
+                swap_ideas = { remove_idea = zombies_idea_1 add_idea = zombies_idea_2 }
+                set_country_flag = { flag = zombie_current_tier value = 2 }
+                kill_country_leader = yes
+                promote_character = ZZZ_leader_2
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = { flag = zombie_current_tier value = 2 }
+                    has_country_flag = { flag = zombie_target_tier value > 2 }
+                }
+                # Evolution from tier 2 to tier 3
+                swap_ideas = { remove_idea = zombies_idea_2 add_idea = zombies_idea_3 }
+                set_country_flag = { flag = zombie_current_tier value = 3 }
+                kill_country_leader = yes
+                promote_character = ZZZ_leader_3
+            }
+        }
+    }
 }
+
+# Chaos Tier Change Response Event - Only increases target tier, never decreases
+country_event = {
+    id = chaosx.nr2.5
+
+    hidden = yes
+
+    trigger = {
+        original_tag = ZZZ
+        has_global_flag = has_zombie_outbreak
+        OR = {
+            AND = {
+                has_country_flag = { flag = zombie_target_tier value = 0 }
+                has_global_flag = { flag = chaos_tier value > 0 }
+            }
+            AND = {
+                has_country_flag = { flag = zombie_target_tier value = 1 }
+                has_global_flag = { flag = chaos_tier value > 1 }
+            }
+            AND = {
+                has_country_flag = { flag = zombie_target_tier value = 2 }
+                OR = {
+                    has_global_flag = { flag = chaos_tier value = 3 }
+                    has_global_flag = { flag = chaos_tier value = 4 }
+                    has_global_flag = { flag = chaos_tier value = 5 }
+                }
+            }
+        }
+    }
+
+    mean_time_to_happen = {
+        days = 30
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Update target tier based on current chaos tier - only increase, never decrease
+            if = {
+                limit = {
+                    has_global_flag = { flag = chaos_tier value = 1 }
+                    has_country_flag = { flag = zombie_target_tier value = 0 }
+                }
+                set_country_flag = { flag = zombie_target_tier value = 1 }
+            }
+            else_if = {
+                limit = {
+                    has_global_flag = { flag = chaos_tier value = 2 }
+                    has_country_flag = { flag = zombie_target_tier value < 2 }
+                }
+                set_country_flag = { flag = zombie_target_tier value = 2 }
+            }
+            else_if = {
+                limit = {
+                    OR = {
+                        has_global_flag = { flag = chaos_tier value = 3 }
+                        has_global_flag = { flag = chaos_tier value = 4 }
+                        has_global_flag = { flag = chaos_tier value = 5 }
+                    }
+                    has_country_flag = { flag = zombie_target_tier value < 3 }
+                }
+                set_country_flag = { flag = zombie_target_tier value = 3 }
+            }
+        }
+    }
+}
+
+# Random overseas zombie outbreak - triggers for all countries
+country_event = {
+    id = chaosx.nr2.6
+
+    hidden = yes
+    trigger = {
+        has_global_flag = has_zombie_outbreak
+        NOT = { original_tag = ZZZ }
+        num_of_controlled_states > 1
+
+        # Check if country has full protection (all measures active)
+        NOT = {
+            OR = {
+                has_country_flag = hygiene_measures_enforced
+                has_country_flag = migration_restricted
+                has_country_flag = quarantine_protocols_active
+                has_country_flag = borders_completely_closed
+                has_country_flag = extreme_martial_law_active
+            }
+        }
+    }
+
+    mean_time_to_happen = {
+        days = 2555 # 7 years base mean time
+
+        # Zombie evolution increases outbreak chance
+        modifier = {
+            factor = 0.8
+            ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
+        }
+        modifier = {
+            factor = 0.6
+            ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
+        }
+        modifier = {
+            factor = 0.4
+            ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+        }
+
+        # Prevention measures reduce chance
+        modifier = {
+            factor = 1.5
+            has_country_flag = hygiene_measures_enforced
+        }
+        modifier = {
+            factor = 1.8
+            has_country_flag = migration_restricted
+        }
+        modifier = {
+            factor = 2.2
+            has_country_flag = quarantine_protocols_active
+        }
+        modifier = {
+            factor = 3.0
+            has_country_flag = borders_completely_closed
+        }
+
+        # Island nations are safer
+        modifier = {
+            factor = 2.0
+            capital_scope = { is_island_state = yes }
+        }
+
+        # Major powers are more at risk due to trade/travel
+        modifier = {
+            factor = 0.7
+            is_major = yes
+        }
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Check if outbreak state connects to ZZZ capital by land
+            random_owned_state = {
+                limit = {
+                    NOT = {
+                        any_neighbor_state = {
+                            is_controlled_by = ZZZ
+                        }
+                    }
+                }
+                save_global_event_target_as = outbreak_state
+            }
+
+            # Create dynamic zombie country - scope changes to the new country
+            create_dynamic_country = {
+                original_tag = ZZZ
+                copy_tag = ZZZ
+
+                # Load zombie division templates
+                load_oob = "ZZZ_1936"
+
+                division_template = {
+                    name = "Brainzz Horde"
+                    regiments = {
+                        zombies = { x = 0 y = 0 }
+                        zombies = { x = 0 y = 1 }
+                        zombies = { x = 0 y = 2 }
+                        zombies = { x = 0 y = 3 }
+                        zombies = { x = 1 y = 0 }
+                        zombies = { x = 1 y = 1 }
+                        zombies = { x = 1 y = 2 }
+                        zombies = { x = 1 y = 3 }
+                        zombies = { x = 2 y = 0 }
+                        zombies = { x = 2 y = 1 }
+                        zombies = { x = 2 y = 2 }
+                        zombies = { x = 2 y = 3 }
+                        zombies = { x = 3 y = 0 }
+                        zombies = { x = 3 y = 1 }
+                        zombies = { x = 3 y = 2 }
+                        zombies = { x = 3 y = 3 }
+                    }
+                }
+
+                add_equipment_to_stockpile = {
+                    type = infantry_equipment
+                    amount = 2000 # Since Zombies require 1 piece of equipment to deploy a division
+                    producer = CHI
+                }
+
+                event_target:outbreak_state = {
+                    transfer_state_to = PREV
+                    add_core_of = PREV
+
+                    # Create zombie forces
+                    if = {
+                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
+                        create_unit = {
+                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+                            count = 10
+                            owner = PREV
+                        }
+                    }
+                    else_if = {
+                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
+                        create_unit = {
+                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
+                            count = 10
+                            owner = PREV
+                        }
+                    }
+                    else_if = {
+                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
+                        create_unit = {
+                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
+                            count = 10
+                            owner = PREV
+                        }
+                    }
+                    else_if = {
+                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
+                        create_unit = {
+                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
+                            count = 15
+                            owner = PREV
+                        }
+                    }
+                }
+
+                set_politics = {
+                    ruling_party = neutrality
+                    elections_allowed = no
+                }
+                set_popularities = {
+                    neutrality = 100
+                }
+
+                # Create a custom leader for the zombie outbreak
+                create_country_leader = {
+                    name = "Zombie Horde"
+                    picture = "GFX_portrait_ZZZ_leader_1"
+                    ideology = anarchism
+                }
+
+                # Add the core zombie ideas
+                add_ideas = {
+                    never_ending_hunger
+                    tot_economic_mobilisation
+                    scraping_the_barrel
+                }
+
+                every_possible_country = {
+                    limit = { NOT = { original_tag = ZZZ } }
+                    add_opinion_modifier = {
+                        target = PREV
+                        modifier = zombie_hostile
+                    }
+                    PREV = {
+                        add_opinion_modifier = {
+                            target = PREV
+                            modifier = zombie_hostile
+                        }
+                    }
+                }
+
+                # Copy zombie ideas and flags from main ZZZ
+                ZZZ = {
+                    if = {
+                        limit = { has_idea = zombies_idea_0 }
+                        PREV = { add_ideas = zombies_idea_0 }
+                    }
+                    if = {
+                        limit = { has_idea = zombies_idea_1 }
+                        PREV = { add_ideas = zombies_idea_1 }
+                    }
+                    if = {
+                        limit = { has_idea = zombies_idea_2 }
+                        PREV = { add_ideas = zombies_idea_2 }
+                    }
+                    if = {
+                        limit = { has_idea = zombies_idea_3 }
+                        PREV = { add_ideas = zombies_idea_3 }
+                    }
+
+                    # Copy zombie tier flags
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+                        PREV = { set_country_flag = { flag = zombie_current_tier value = 0 } }
+                    }
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_current_tier value = 1 } }
+                        PREV = { set_country_flag = { flag = zombie_current_tier value = 1 } }
+                    }
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_current_tier value = 2 } }
+                        PREV = { set_country_flag = { flag = zombie_current_tier value = 2 } }
+                    }
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+                        PREV = { set_country_flag = { flag = zombie_current_tier value = 3 } }
+                    }
+                }
+
+                add_ai_strategy = {
+                    type = build_army
+                    id = zombies
+                    value = 1000
+                }
+
+                add_ai_strategy = {
+                    type = force_build_armies
+                    value = 1000
+                }
+
+                # Never stockpile equipment - always use it immediately
+                add_ai_strategy = {
+                    type = equipment_stockpile_surplus_ratio
+                    value = -1000
+                }
+
+                # Ignore army incompetence - attack regardless of experience
+                add_ai_strategy = {
+                    type = ignore_army_incompetence
+                    value = 1000
+                }
+
+                # Extreme aggression - minimal garrison, maximum attack
+                add_ai_strategy = {
+                    type = garrison
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = spare_unit_factor
+                    value = 1000  # Use ALL spare units for attacks
+                }
+
+                # Prioritize zombie training and template improvement
+                add_ai_strategy = {
+                    type = land_xp_spend_priority
+                    id = division_template
+                    value = 1000
+                }
+
+                add_ai_strategy = {
+                    type = template_prio
+                    id = zombies
+                    value = 1000
+                }
+
+                # Force maximum aggression on all fronts
+                add_ai_strategy = {
+                    type = front_unit_request
+                    value = 1000  # Request maximum units for all fronts
+                }
+
+                # Make AI extremely aggressive in all major population centers
+                add_ai_strategy = {
+                    type = area_priority
+                    id = europe
+                    value = 1000
+                }
+
+                add_ai_strategy = {
+                    type = area_priority
+                    id = north_america
+                    value = 1000
+                }
+
+                add_ai_strategy = {
+                    type = area_priority
+                    id = asia
+                    value = 1000
+                }
+
+                add_ai_strategy = {
+                    type = area_priority
+                    id = africa
+                    value = 1000
+                }
+
+                add_ai_strategy = {
+                    type = area_priority
+                    id = oceania
+                    value = 1000
+                }
+
+                add_ai_strategy = {
+                    type = area_priority
+                    id = middle_east
+                    value = 1000
+                }
+
+                # Force concentration on all fronts for maximum aggression
+                add_ai_strategy = {
+                    type = force_concentration_factor
+                    value = 100  # Use maximum concentration for attacks
+                }
+
+                # Maximize zombie unit production ratio
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = zombies
+                    value = 10
+                }
+
+                # Minimize all other unit types to focus purely on zombies
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = garrison
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = paratroopers
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = mountaineers
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = marines
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = cavalry
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = motorized
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = mechanized
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = armor
+                    value = -1000
+                }
+
+                add_ai_strategy = {
+                    type = role_ratio
+                    id = infantry
+                    value = -1000
+                }
+
+                # Force AI to want maximum divisions
+                add_ai_strategy = {
+                    type = ai_wanted_divisions_factor
+                    value = 1000
+                }
+
+                set_country_flag = zombie_outbreak_dynamic_country
+            }
+            news_event = { id = chaosx.news.3 days = 3 }
+        }
+    }
+}
+
+# News event about overseas zombie outbreak
+news_event = {
+    id = chaosx.news.3
+    title = chaosx.news.3.t
+    desc = chaosx.news.3.d
+    picture = GFX_news_zombie_outbreak
+
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = chaosx.news.3.a
+    }
 }
 
 
@@ -558,15 +1687,17 @@ country_event = {
     hidden = yes
 
     immediate = {
-        if = { limit = { OR = { BHU = { is_ai = no } TIB = { is_ai = no } NEP = { is_ai = no } } }
-        country_event = { id = chaosx.nr3.2 days = 1 }
-    } else = {
-        random_country = {
-            limit = { OR = { tag = BHU tag = TIB tag = NEP } }
+        if = {
+            limit = { OR = { BHU = { is_ai = no } TIB = { is_ai = no } NEP = { is_ai = no } } }
             country_event = { id = chaosx.nr3.2 days = 1 }
         }
+        else = {
+            random_country = {
+                limit = { OR = { tag = BHU tag = TIB tag = NEP } }
+                country_event = { id = chaosx.nr3.2 days = 1 }
+            }
+        }
     }
-}
 }
 
 
@@ -800,7 +1931,7 @@ country_event = {
     immediate = {
         clear_array = global.indp_countries
         every_possible_country = {
-            limit = { exists = no any_state = { is_core_of = PREV } NOT = { OR = { tag = UKR tag = BEL } } }
+            limit = { exists = no any_state = { is_core_of = PREV } NOT = { tag = UKR tag = BEL } }
             random_select_amount = 3
             add_to_array = { global.indp_countries = THIS }
         }
@@ -1112,7 +2243,7 @@ country_event = {
 
     immediate = {
         random_country = {
-            limit = { any_country = { has_war_with = PREV NOT = { tag = ZZZ } } NOT = { tag = ZZZ } }
+            limit = { any_country = { has_war_with = PREV } NOT = { original_tag = ZZZ } }
             country_event = { id = chaosx.nr9.2 days = 1 }
         }
     }
@@ -2835,21 +3966,38 @@ country_event = {
         random_country = {
             random_list = {
                 25 = {
+                    modifier = {
+                        factor = 0
+                        has_government = fascism
+                    }
                     start_civil_war = {
                         ideology = fascism
                         size = 0.5
                     }
                 } 25 = {
+                    modifier = {
+                        factor = 0
+                        has_government = democratic
+                    }
                     start_civil_war = {
                         ideology = democratic
                         size = 0.5
                     }
                 } 25 = {
+                    modifier = {
+                        factor = 0
+                        has_global_flag = communism_spread
+                        has_government = communism
+                    }
                     start_civil_war = {
                         ideology = communism
                         size = 0.5
                     }
                 } 25 = {
+                    modifier = {
+                        factor = 0
+                        has_government = neutrality
+                    }
                     start_civil_war = {
                         ideology = neutrality
                         size = 0.5
@@ -6192,11 +7340,11 @@ country_event = {
                         1 = { if = { limit = { can_research = radio } set_technology = { radio = 1 } set_country_flag = rand_tech} }
                         1 = { if = { limit = { can_research = mechanical_computing } set_technology = { mechanical_computing = 1 } set_country_flag = rand_tech} }
                         1 = { if = { limit = { can_research = radio_detection } set_technology = { radio_detection = 1 } set_country_flag = rand_tech} }
-                        1 = { if = { limit = { can_research = decimetric_radar } set_technology = { decimetric_radar = 1 } set_country_flag = rand_tech} }
-                        1 = { if = { limit = { can_research = improved_decimetric_radar } set_technology = { improved_decimetric_radar = 1 } set_country_flag = rand_tech} }
+                        # 1 = { if = { limit = { can_research = decimetric_radar } set_technology = { decimetric_radar = 1 } set_country_flag = rand_tech} }
+                        # 1 = { if = { limit = { can_research = improved_decimetric_radar } set_technology = { improved_decimetric_radar = 1 } set_country_flag = rand_tech} }
                         1 = { if = { limit = { can_research = centimetric_radar } set_technology = { centimetric_radar = 1 } set_country_flag = rand_tech} }
-                        1 = { if = { limit = { can_research = improved_centimetric_radar } set_technology = { improved_centimetric_radar = 1 } set_country_flag = rand_tech} }
-                        1 = { if = { limit = { can_research = advanced_centimetric_radar } set_technology = { advanced_centimetric_radar = 1 } set_country_flag = rand_tech} }
+                        # 1 = { if = { limit = { can_research = improved_centimetric_radar } set_technology = { improved_centimetric_radar = 1 } set_country_flag = rand_tech} }
+                        # 1 = { if = { limit = { can_research = advanced_centimetric_radar } set_technology = { advanced_centimetric_radar = 1 } set_country_flag = rand_tech} }
                         1 = { if = { limit = { can_research = computing_machine } set_technology = { computing_machine = 1 } set_country_flag = rand_tech} }
                         1 = { if = { limit = { can_research = basic_fire_control_system } set_technology = { basic_fire_control_system = 1 } set_country_flag = rand_tech} }
                         1 = { if = { limit = { can_research = improved_computing_machine } set_technology = { improved_computing_machine = 1 } set_country_flag = rand_tech} }
@@ -6714,9 +7862,9 @@ country_event = {
 
     option = {
         name = chaosx.nr57.2.a
-        set_technology = {
-            decimetric_radar = 1
-        }
+        # set_technology = {
+        #     decimetric_radar = 1
+        # }
         if = {
             limit = {
                 NOT = {
@@ -11827,6 +12975,35 @@ country_event = {
             limit = { is_core_of = SOV }
             add_claim_by = REV
         }
+
+        # Annex all communist rebel states
+        every_country = {
+            limit = {
+                has_country_flag = communist_rebel_state
+                exists = yes
+            }
+
+            every_controlled_state = {
+                add_core_of = REV
+            }
+
+            every_unit_leader = {
+                set_nationality = REV
+            }
+
+
+            # The Revolution annexes the rebel country completely
+            REV = {
+                annex_country = {
+                    target = PREV
+                    transfer_troops = yes
+                }
+                add_war_support = 0.05
+                add_stability = 0.05
+            }
+
+        }
+
         every_country = {
             limit = { NOT = { has_government = communism } }
             country_event = { id = chaosx.nr91.2 }
@@ -11835,6 +13012,7 @@ country_event = {
             limit = { has_government = communism }
             country_event = { id = chaosx.nr91.3 }
         }
+        clr_global_flag = communism_spread
     }
 }
 
@@ -11993,7 +13171,7 @@ country_event = { # for communists
         add_war_support = 0.05
         add_political_power = 50
         REV = { add_to_faction = ROOT }
-        name = chaosx.nr91.3.a
+        name = chaosx.nr91.3.b
         ai_chance = {
             factor = 50
             modifier = {
@@ -12452,7 +13630,6 @@ country_event = {
 
     option = {
         country_lock_all_division_template = no
-        remove_from_array = { global.fire_once_events = 96 }
         name = chaosx.nr96.3.a
         ai_chance = { base = 100 }
     }
@@ -12754,4 +13931,1442 @@ country_event = {
 
 
 ##############################################################################################################
+
+
+# Note for Coding Agent: Don't place news events into this section, instead place them where they are appropriate within the event section.
+
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+#
+#    ##    ## ######## ##      ##  ######     ######## ##     ## ######## ##    ## ########  ######
+#    ###   ## ##       ##  ##  ## ##    ##    ##       ##     ## ##       ###   ##    ##    ##    ##
+#    ####  ## ##       ##  ##  ## ##          ##       ##     ## ##       ####  ##    ##    ##
+#    ## ## ## ######   ##  ##  ##  ######     ######   ##     ## ######   ## ## ##    ##     ######
+#    ##  #### ##       ##  ##  ##       ##    ##        ##   ##  ##       ##  ####    ##          ##
+#    ##   ### ##       ##  ##  ## ##    ##    ##         ## ##   ##       ##   ###    ##    ##    ##
+#    ##    ## ########  ###  ###   ######     ########    ###    ######## ##    ##    ##     ######
+#
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+
+
+# Chamberlain appointed
+news_event = {
+    id = chaosx.news.1
+    title = chaosx.news.1.t
+    desc = chaosx.news.1.d
+    picture = GFX_news_chamberlain_immortal
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.1.a
+    }
+}
+
+###############################################################################################################
+
+
+# Chamberlain rejected
+news_event = {
+    id = chaosx.news.2
+    title = chaosx.news.2.t
+    desc = chaosx.news.2.d
+    picture = GFX_news_chamberlain_immortal
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.2.a
+    }
+}
+
+
+###############################################################################################################
+
+# Join faction
+news_event = {
+    id = chaosx.news.4
+    title = chaosx.news.4.t
+    desc = chaosx.news.4.d
+    picture = GFX_news_event_hitler_handshake
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.4.a
+    }
+}
+
+###############################################################################################################
+
+
+
+# Soviet Union collapse
+news_event = {
+    id = chaosx.news.5
+    title = chaosx.news.5.t
+    desc = chaosx.news.5.d
+    picture = GFX_news_soviet_union_collapse
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.5.a
+    }
+}
+
+###############################################################################################################
+
+
+# Independence wave
+news_event = {
+    id = chaosx.news.6
+    title = chaosx.news.6.t
+    desc = chaosx.news.6.d
+    picture = GFX_news_event_dutch_soldiers_indonesia
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.6.a
+    }
+}
+
+###############################################################################################################
+
+
+# Symbol of war
+news_event = {
+    id = chaosx.news.7
+    title = chaosx.news.7.t
+    desc = chaosx.news.7.d
+    picture = GFX_news_symbol_of_war
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.7.a
+    }
+}
+
+###############################################################################################################
+
+
+# Symbol of peace
+news_event = {
+    id = chaosx.news.8
+    title = chaosx.news.8.t
+    desc = chaosx.news.8.d
+    picture = GFX_news_symbol_of_peace
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.8.a
+    }
+}
+
+###############################################################################################################
+
+
+# THR forms
+news_event = {
+    id = chaosx.news.9
+    title = chaosx.news.9.t
+    desc = chaosx.news.9.d
+    picture = GFX_news_the_holy_realm
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.9.a
+    }
+}
+
+###############################################################################################################
+
+
+# Africa
+news_event = {
+    id = chaosx.news.10
+    title = chaosx.news.10.t
+    desc = chaosx.news.10.d
+    picture = GFX_news_event_generic_african_unity
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.10.a
+    }
+}
+
+###############################################################################################################
+
+
+# Natural Disasters
+news_event = { # EQ
+    id = chaosx.news.11
+    title = chaosx.news.11.t
+    desc = chaosx.news.11.d
+    picture = GFX_news_event_generic_ruins
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.11.a
+    }
+}
+
+###############################################################################################################
+
+
+news_event = { # F
+    id = chaosx.news.12
+    title = chaosx.news.12.t
+    desc = chaosx.news.12.d
+    picture = GFX_news_event_generic_ruins
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.12.a
+    }
+}
+
+###############################################################################################################
+
+
+news_event = { # T
+    id = chaosx.news.13
+    title = chaosx.news.13.t
+    desc = chaosx.news.13.d
+    picture = GFX_news_event_generic_ruins
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.13.a
+    }
+}
+
+###############################################################################################################
+
+
+news_event = { # W
+    id = chaosx.news.14
+    title = chaosx.news.14.t
+    desc = chaosx.news.14.d
+    picture = GFX_news_event_generic_ruins
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.14.a
+    }
+}
+
+###############################################################################################################
+
+
+news_event = { # LS
+    id = chaosx.news.15
+    title = chaosx.news.15.t
+    desc = chaosx.news.15.d
+    picture = GFX_news_event_generic_ruins
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.15.a
+    }
+}
+
+###############################################################################################################
+
+
+news_event = { # H
+    id = chaosx.news.16
+    title = chaosx.news.16.t
+    desc = chaosx.news.16.d
+    picture = GFX_news_event_generic_ruins
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.16.a
+    }
+}
+
+###############################################################################################################
+
+
+# Cannibalism
+news_event = {
+    id = chaosx.news.17
+    title = chaosx.news.17.t
+    desc = chaosx.news.17.d
+    picture = GFX_news_cannibalism
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.17.a
+    }
+}
+
+###############################################################################################################
+
+
+# Brilliant Scientist
+news_event = {
+    id = chaosx.news.18
+    title = chaosx.news.18.t
+    desc = chaosx.news.18.d
+    picture = GFX_news_event_generic_research_lab
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.18.a
+    }
+}
+
+###############################################################################################################
+
+
+# UK collapse
+news_event = {
+    id = chaosx.news.19
+    title = chaosx.news.19.t
+    desc = chaosx.news.19.d
+    picture = GFX_news_event_eng_decolonization
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.19.a
+    }
+}
+
+###############################################################################################################
+
+
+# Random resource
+news_event = {
+    id = chaosx.news.20
+    title = chaosx.news.20.t
+    desc = chaosx.news.20.d
+    picture = GFX_news_random_resource
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.20.a
+    }
+}
+
+###############################################################################################################
+
+
+# Black Plague
+news_event = {
+    id = chaosx.news.21
+    title = chaosx.news.21.t
+    desc = chaosx.news.21.d
+    picture = GFX_news_event_indian_famine
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.21.a
+    }
+}
+
+###############################################################################################################
+
+
+# 1391; Spain war on jews
+news_event = {
+    id = chaosx.news.22
+    title = chaosx.news.22.t
+    desc = chaosx.news.22.d
+    picture = GFX_news_dead_jews
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.22.a
+    }
+}
+
+###############################################################################################################
+
+
+# SOV Nukes
+news_event = {
+    id = chaosx.news.23
+    title = chaosx.news.23.t
+    desc = chaosx.news.23.d
+    picture = GFX_news_event_nuke
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.23.a
+    }
+}
+
+###############################################################################################################
+
+
+# Sweden video game hoi
+news_event = {
+    id = chaosx.news.24
+    title = chaosx.news.24.t
+    desc = chaosx.news.24.d
+    picture = GFX_news_hoi
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.24.a
+    }
+}
+
+###############################################################################################################
+
+
+# Alien technology in Antarctica; Alien UFO crashed in antarctica
+news_event = {
+    id = chaosx.news.25
+    title = chaosx.news.25.t
+    desc = chaosx.news.25.d
+    picture = GFX_news_antarctica
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.25.a
+    }
+}
+
+###############################################################################################################
+
+
+news_event = {
+    id = chaosx.news.26
+    title = chaosx.news.26.t
+    desc = chaosx.news.26.d
+    picture = GFX_news_ufo
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.26.a
+    }
+}
+
+###############################################################################################################
+
+
+# Move industry to desert
+news_event = {
+    id = chaosx.news.27
+    title = chaosx.news.27.t
+    desc = chaosx.news.27.d
+    picture = GFX_news_desert
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.27.a
+    }
+}
+
+###############################################################################################################
+
+
+# Master of doctrines
+news_event = {
+    id = chaosx.news.28
+    title = chaosx.news.28.t
+    desc = chaosx.news.28.d
+    picture = GFX_news_event_military_planning
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.28.a
+    }
+}
+
+###############################################################################################################
+
+
+# Asteroid Incoming
+news_event = {
+    id = chaosx.news.29
+    title = chaosx.news.29.t
+    desc = chaosx.news.29.d
+    picture = GFX_news_asteroid
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.29.a
+    }
+}
+
+###############################################################################################################
+
+
+# Asteroid prediction correct
+news_event = {
+    id = chaosx.news.30
+    title = chaosx.news.30.t
+    desc = chaosx.news.30.d
+    picture = GFX_news_asteroid
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.30.a
+    }
+}
+
+###############################################################################################################
+
+
+# Riches found
+news_event = {
+    id = chaosx.news.31
+    title = chaosx.news.31.t
+    desc = chaosx.news.31.d
+    picture = GFX_news_random_resource
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.31.a
+    }
+}
+
+###############################################################################################################
+
+
+# Asteroid impact
+news_event = {
+    id = chaosx.news.32
+    title = chaosx.news.32.t
+    desc = chaosx.news.32.d
+    picture = GFX_news_asteroid_impact
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.32.a
+    }
+}
+
+###############################################################################################################
+
+
+# Time Traveler
+news_event = {
+    id = chaosx.news.33
+    title = chaosx.news.33.t
+    desc = chaosx.news.33.d
+    picture = GFX_news_time_traveler
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.33.a
+    }
+}
+
+###############################################################################################################
+
+
+# Berlin-Moscow
+news_event = {
+    id = chaosx.news.34
+    title = chaosx.news.34.t
+    desc = chaosx.news.34.d
+    picture = GFX_news_event_hitler_handshake
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.34.a
+    }
+}
+
+###############################################################################################################
+
+
+# USA intel
+news_event = {
+    id = chaosx.news.35
+    title = chaosx.news.35.t
+    desc = chaosx.news.35.d
+    picture = GFX_news_event_usa_japan_at_war
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.35.a
+    }
+}
+
+###############################################################################################################
+
+
+# Terrorists
+news_event = {
+    id = chaosx.news.36
+    title = chaosx.news.36.t
+    desc = chaosx.news.36.d
+    picture = GFX_news_event_generic_riot
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.36.a
+    }
+}
+
+###############################################################################################################
+
+
+# Acid Rain start
+news_event = {
+    id = chaosx.news.37
+    title = chaosx.news.37.t
+    desc = chaosx.news.37.d
+    picture = GFX_news_acid_rain
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.37.a
+    }
+}
+
+###############################################################################################################
+
+
+# Acid Rain end
+news_event = {
+    id = chaosx.news.38
+    title = chaosx.news.38.t
+    desc = chaosx.news.38.d
+    picture = GFX_news_acid_rain_end
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.38.a
+    }
+}
+
+###############################################################################################################
+
+
+# Industrial Boom
+news_event = {
+    id = chaosx.news.39
+    title = chaosx.news.39.t
+    desc = chaosx.news.39.d
+    picture = GFX_news_event_050
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.39.a
+    }
+}
+
+###############################################################################################################
+
+
+# Great Depression
+news_event = {
+    id = chaosx.news.40
+    title = chaosx.news.40.t
+    desc = chaosx.news.40.d
+    picture = GFX_news_event_gathering_protest
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.40.a
+    }
+}
+
+###############################################################################################################
+
+
+# Alien Spacecraft
+news_event = {
+    id = chaosx.news.41
+    title = chaosx.news.41.t
+    desc = chaosx.news.41.d
+    picture = GFX_news_alien_spacecraft
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.41.a
+    }
+}
+
+###############################################################################################################
+
+
+# Mysterious population
+news_event = {
+    id = chaosx.news.42
+    title = chaosx.news.42.t
+    desc = chaosx.news.42.d
+    picture = GFX_news_mysterious_population
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.42.a
+    }
+}
+
+###############################################################################################################
+
+
+# Malta Crusaders
+news_event = {
+    id = chaosx.news.43
+    title = chaosx.news.43.t
+    desc = chaosx.news.43.d
+    picture = GFX_news_crusaders
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.43.a
+    }
+}
+
+###############################################################################################################
+
+
+# Murder Mystery
+news_event = {
+    id = chaosx.news.44
+    title = chaosx.news.44.t
+    desc = chaosx.news.44.d
+    picture = GFX_news_event_german_inspect_troops
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.44.a
+    }
+}
+
+###############################################################################################################
+
+
+# Lawrence of Arabia
+news_event = {
+    id = chaosx.news.45
+    title = chaosx.news.45.t
+    desc = chaosx.news.45.d
+    picture = GFX_news_desert
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.45.a
+    }
+}
+
+###############################################################################################################
+
+
+# Disease in divisions
+news_event = {
+    id = chaosx.news.46
+    title = chaosx.news.46.t
+    desc = chaosx.news.46.d
+    picture = GFX_news_event_ETH_ethiopian_warriors
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.46.a
+    }
+}
+
+###############################################################################################################
+
+
+# Equipment from heavens
+news_event = {
+    id = chaosx.news.47
+    title = chaosx.news.47.t
+    desc = chaosx.news.47.d
+    picture = GFX_news_equipment_heavens
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.47.a
+    }
+}
+
+###############################################################################################################
+
+
+# Space race over
+news_event = {
+    id = chaosx.news.48
+    title = chaosx.news.48.t
+    desc = chaosx.news.48.d
+    picture = GFX_news_space_race_end
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.48.a
+    }
+}
+
+###############################################################################################################
+
+
+# Third Balkan war
+news_event = {
+    id = chaosx.news.49
+    title = chaosx.news.49.t
+    desc = chaosx.news.49.d
+    picture = GFX_news_event_ETH_ethiopian_warriors
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.49.a
+    }
+}
+
+###############################################################################################################
+
+
+# BOOM!
+news_event = {
+    id = chaosx.news.50
+    title = chaosx.news.50.t
+    desc = chaosx.news.50.d
+    picture = GFX_news_event_nuke
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.50.a
+    }
+}
+
+###############################################################################################################
+
+
+# Bulgaria ambitions
+news_event = {
+    id = chaosx.news.51
+    title = chaosx.news.51.t
+    desc = chaosx.news.51.d
+    picture = GFX_news_old_great_bulgaria
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.51.a
+    }
+}
+
+###############################################################################################################
+
+
+# Great embargo
+news_event = {
+    id = chaosx.news.52
+    title = chaosx.news.52.t
+    desc = chaosx.news.52.d
+    picture = GFX_news_event_020
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.52.a
+    }
+}
+
+###############################################################################################################
+
+
+# Intel leak
+news_event = {
+    id = chaosx.news.53
+    title = chaosx.news.53.t
+    desc = chaosx.news.53.d
+    picture = GFX_news_intel_leak
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.53.a
+    }
+}
+
+###############################################################################################################
+
+
+# Great Infr project
+news_event = {
+    id = chaosx.news.54
+    title = chaosx.news.54.t
+    desc = chaosx.news.54.d
+    picture = GFX_news_infrastructure_project
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.54.a
+    }
+}
+
+###############################################################################################################
+
+
+# Great navy
+news_event = {
+    id = chaosx.news.55
+    title = chaosx.news.55.t
+    desc = chaosx.news.55.d
+    picture = GFX_news_event_020
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.55.a
+    }
+}
+
+###############################################################################################################
+
+
+# Aggressive AI
+news_event = {
+    id = chaosx.news.56
+    title = chaosx.news.56.t
+    desc = chaosx.news.56.d
+    picture = GFX_news_event_generic_rally_3
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.56.a
+    }
+}
+
+###############################################################################################################
+
+
+# End puppet
+news_event = {
+    id = chaosx.news.57
+    title = chaosx.news.57.t
+    desc = chaosx.news.57.d
+    picture = GFX_news_event_003
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.57.a
+    }
+}
+
+###############################################################################################################
+
+
+# CIC
+news_event = {
+    id = chaosx.news.58
+    title = chaosx.news.58.t
+    desc = chaosx.news.58.d
+    picture = GFX_news_event_tank_factory
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.58.a
+    }
+}
+
+###############################################################################################################
+
+
+# Generalissimo
+news_event = {
+    id = chaosx.news.59
+    title = chaosx.news.59.t
+    desc = chaosx.news.59.d
+    picture = GFX_news_generalissimo
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.59.a
+    }
+}
+
+###############################################################################################################
+
+
+# ZIN
+news_event = {
+    id = chaosx.news.60
+    title = chaosx.news.60.t
+    desc = chaosx.news.60.d
+    picture = GFX_news_zin
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.60.a
+    }
+}
+
+###############################################################################################################
+
+
+# Boxer rebellion
+news_event = {
+    id = chaosx.news.61
+    title = chaosx.news.61.t
+    desc = chaosx.news.61.d
+    picture = GFX_news_event_chinese_soldiers_march
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.61.a
+    }
+}
+
+###############################################################################################################
+
+
+# Gods predictions failed; Moon falls into earth
+news_event = {
+    id = chaosx.news.62
+    title = chaosx.news.62.t
+    desc = chaosx.news.62.d
+    picture = GFX_news_gods_of_africa
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.62.a
+    }
+}
+
+###############################################################################################################
+
+
+# Ireland claims north
+news_event = {
+    id = chaosx.news.63
+    title = chaosx.news.63.t
+    desc = chaosx.news.63.d
+    picture = GFX_news_event_generic_army
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.63.a
+    }
+}
+
+###############################################################################################################
+
+
+# Mongols rise
+news_event = {
+    id = chaosx.news.64
+    title = chaosx.news.64.t
+    desc = chaosx.news.64.d
+    picture = GFX_news_mongols_rise
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.64.a
+    }
+}
+
+###############################################################################################################
+
+
+# Japan lands in California
+news_event = {
+    id = chaosx.news.65
+    title = chaosx.news.65.t
+    desc = chaosx.news.65.d
+    picture = GFX_news_california
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.65.a
+    }
+}
+
+###############################################################################################################
+
+
+# Master
+news_event = {
+    id = chaosx.news.66
+    title = chaosx.news.66.t
+    desc = chaosx.news.66.d
+    picture = GFX_news_event_indonesia_handover
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.66.a
+    }
+}
+
+###############################################################################################################
+
+
+# Equipment transfer
+news_event = {
+    id = chaosx.news.67
+    title = chaosx.news.67.t
+    desc = chaosx.news.67.d
+    picture = GFX_news_event_glorious_vehicle
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.67.a
+    }
+}
+
+###############################################################################################################
+
+
+# Research failure
+news_event = {
+    id = chaosx.news.68
+    title = chaosx.news.68.t
+    desc = chaosx.news.68.d
+    picture = GFX_news_failed_research
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.68.a
+    }
+}
+
+###############################################################################################################
+
+
+# Airship arrives back
+news_event = {
+    id = chaosx.news.69
+    title = chaosx.news.69.t
+    desc = chaosx.news.69.d
+    picture = GFX_news_airship_back
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.69.a
+    }
+}
+
+###############################################################################################################
+
+
+# Airship crashed
+news_event = {
+    id = chaosx.news.70
+    title = chaosx.news.70.t
+    desc = chaosx.news.70.d
+    picture = GFX_news_event_026
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.70.a
+    }
+}
+
+###############################################################################################################
+
+
+# British tax
+news_event = {
+    id = chaosx.news.71
+    title = chaosx.news.71.t
+    desc = chaosx.news.71.d
+    picture = GFX_news_event_009
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.71.a
+    }
+}
+
+###############################################################################################################
+
+
+# Claiming the world
+news_event = {
+    id = chaosx.news.72
+    title = chaosx.news.72.t
+    desc = chaosx.news.72.d
+    picture = GFX_news_world_claims
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.72.a
+    }
+}
+
+###############################################################################################################
+
+
+# Greenland sold
+news_event = {
+    id = chaosx.news.73
+    title = chaosx.news.73.t
+    desc = chaosx.news.73.d
+    picture = GFX_news_greenland_sold
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.73.a
+    }
+}
+
+###############################################################################################################
+
+
+# Galicia ceded
+news_event = {
+    id = chaosx.news.74
+    title = chaosx.news.74.t
+    desc = chaosx.news.74.d
+    picture = GFX_news_galicia
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.74.a
+    }
+}
+
+###############################################################################################################
+
+
+# Half gone
+news_event = {
+    id = chaosx.news.75
+    title = chaosx.news.75.t
+    desc = chaosx.news.75.d
+    picture = GFX_news_event_023
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.75.a
+    }
+}
+
+###############################################################################################################
+
+
+# Occupation revolt
+news_event = {
+    id = chaosx.news.76
+    title = chaosx.news.76.t
+    desc = chaosx.news.76.d
+    picture = GFX_news_event_034
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.76.a
+    }
+}
+
+###############################################################################################################
+
+
+# New special ore
+news_event = {
+    id = chaosx.news.77
+    title = chaosx.news.77.t
+    desc = chaosx.news.77.d
+    picture = GFX_news_new_ore
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.77.a
+    }
+}
+
+###############################################################################################################
+
+
+# Border War
+news_event = {
+    id = chaosx.news.78
+    title = chaosx.news.78.t
+    desc = chaosx.news.78.d
+    picture = GFX_news_event_generic_army
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.78.a
+    }
+}
+
+###############################################################################################################
+
+
+
+news_event = {
+    id = chaosx.news.79
+    title = chaosx.news.79.t
+    desc = chaosx.news.79.d
+    picture = GFX_news_event_generic_army
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.79.a
+    }
+}
+
+###############################################################################################################
+
+
+
+news_event = {
+    id = chaosx.news.80
+    title = chaosx.news.80.t
+    desc = chaosx.news.80.d
+    picture = GFX_news_event_generic_army
+
+    major = yes
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.news.80.a
+    }
+}
+
+###############################################################################################################
+
+
 

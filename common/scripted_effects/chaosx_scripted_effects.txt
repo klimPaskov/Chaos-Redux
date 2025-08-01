@@ -18,31 +18,30 @@ modify_value_based_on_chaos_tier = {
     # Output: modified_value
     set_temp_variable = { modified_value = base_value }
     if = {
-        limit = { has_global_flag = chaos_tier_0 }
+        limit = { has_global_flag = { flag = chaos_tier value = 0 } }
         multiply_temp_variable = { add_value = 0 }
         add_to_temp_variable = { modified_value = add_value }
     }
     else_if = {
-        limit = { has_global_flag = chaos_tier_1 }
+        limit = { has_global_flag = { flag = chaos_tier value = 1 } }
         multiply_temp_variable = { add_value = 1 }
         add_to_temp_variable = { modified_value = add_value }
     }
     else_if = {
-        limit = { has_global_flag = chaos_tier_2 }
+        limit = { has_global_flag = { flag = chaos_tier value = 2 } }
         multiply_temp_variable = { add_value = 2 }
         add_to_temp_variable = { modified_value = add_value }
     }
     else_if = {
-        limit = { has_global_flag = chaos_tier_3 }
+        limit = { has_global_flag = { flag = chaos_tier value = 3 } }
         multiply_temp_variable = { add_value = 3 }
         add_to_temp_variable = { modified_value = add_value }
     }
     else_if = {
-        limit = { OR = { has_global_flag = chaos_tier_4 has_global_flag = chaos_tier_final } }
+        limit = { has_global_flag = { flag = chaos_tier value > 3 } }
         multiply_temp_variable = { add_value = 4 }
         add_to_temp_variable = { modified_value = add_value }
     }
-
 }
 
 # Can define variables 'buildings_to_damage_per_state', 'percent_of_states_to_target', and 'damage_modifier' to control how many buildings are damaged per state, how many buildings to damage, and how much damage is applied. Also 'state_population_percent' to control how much population is killed in the state.
@@ -1406,6 +1405,291 @@ send_chosen_equipment = {
     }
 }
 
+# Manages communism spread idea tiers based on current communist support percentage
+# COUNTRY SCOPE
+update_communism_spread_idea = {
+    if = {
+        limit = {
+            has_global_flag = communism_spread
+            NOT = { has_government = communism }
+        }
+
+        # Store previous idea tier for comparison
+        set_temp_variable = { previous_tier = 0 }
+        if = { limit = { has_idea = communism_spread_idea } set_temp_variable = { previous_tier = 1 } }
+        else_if = { limit = { has_idea = communism_spread_idea_2 } set_temp_variable = { previous_tier = 2 } }
+        else_if = { limit = { has_idea = communism_spread_idea_3 } set_temp_variable = { previous_tier = 3 } }
+        else_if = { limit = { has_idea = communism_spread_idea_4 } set_temp_variable = { previous_tier = 4 } }
+        else_if = { limit = { has_idea = communism_spread_idea_5 } set_temp_variable = { previous_tier = 5 } }
+
+        # Determine target tier based on communist support
+        set_temp_variable = { target_tier = 0 }
+        if = { limit = { communism > 0.5 } set_temp_variable = { target_tier = 5 } }
+        else_if = { limit = { communism > 0.4 } set_temp_variable = { target_tier = 4 } }
+        else_if = { limit = { communism > 0.25 } set_temp_variable = { target_tier = 3 } }
+        else_if = { limit = { communism > 0.2 } set_temp_variable = { target_tier = 2 } }
+        else_if = { limit = { communism > 0.1 } set_temp_variable = { target_tier = 1 } }
+
+        # Apply the idea changes
+        if = {
+            limit = { communism > 0.5 }
+            # Target is idea_5
+            if = { limit = { has_idea = communism_spread_idea }
+            swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_5 }
+        }
+        else_if = { limit = { has_idea = communism_spread_idea_2 }
+        swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_5 }
+    }
+    else_if = { limit = { has_idea = communism_spread_idea_3 }
+    swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_5 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_4 }
+swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_5 }
+}
+else_if = { limit = { NOT = { has_idea = communism_spread_idea_5 } }
+add_ideas = communism_spread_idea_5
+}
+}
+else_if = {
+    limit = { communism > 0.4 }
+    # Target is idea_4
+    if = { limit = { has_idea = communism_spread_idea }
+    swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_4 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_2 }
+swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_4 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_3 }
+swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_4 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_5 }
+swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_4 }
+}
+else_if = { limit = { NOT = { has_idea = communism_spread_idea_4 } }
+add_ideas = communism_spread_idea_4
+}
+}
+else_if = {
+    limit = { communism > 0.25 }
+    # Target is idea_3
+    if = { limit = { has_idea = communism_spread_idea }
+    swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_3 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_2 }
+swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_3 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_4 }
+swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_3 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_5 }
+swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_3 }
+}
+else_if = { limit = { NOT = { has_idea = communism_spread_idea_3 } }
+add_ideas = communism_spread_idea_3
+}
+}
+else_if = {
+    limit = { communism > 0.2 }
+    # Target is idea_2
+    if = { limit = { has_idea = communism_spread_idea }
+    swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_2 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_3 }
+swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_2 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_4 }
+swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_2 }
+}
+else_if = { limit = { has_idea = communism_spread_idea_5 }
+swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_2 }
+}
+else_if = { limit = { NOT = { has_idea = communism_spread_idea_2 } }
+add_ideas = communism_spread_idea_2
+}
+}
+else_if = {
+    limit = { communism > 0.1 }
+    # Target is idea_1
+    if = { limit = { has_idea = communism_spread_idea_2 }
+    swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea }
+}
+else_if = { limit = { has_idea = communism_spread_idea_3 }
+swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea }
+}
+else_if = { limit = { has_idea = communism_spread_idea_4 }
+swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea }
+}
+else_if = { limit = { has_idea = communism_spread_idea_5 }
+swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea }
+}
+else_if = { limit = { NOT = { has_idea = communism_spread_idea } }
+add_ideas = communism_spread_idea
+}
+}
+else_if = {
+    limit = { communism < 0.01 }
+    # Communist support is 0.01 or below, remove all ideas
+    if = { limit = { has_idea = communism_spread_idea } remove_ideas = communism_spread_idea }
+    if = { limit = { has_idea = communism_spread_idea_2 } remove_ideas = communism_spread_idea_2 }
+    if = { limit = { has_idea = communism_spread_idea_3 } remove_ideas = communism_spread_idea_3 }
+    if = { limit = { has_idea = communism_spread_idea_4 } remove_ideas = communism_spread_idea_4 }
+    if = { limit = { has_idea = communism_spread_idea_5 } remove_ideas = communism_spread_idea_5 }
+}
+
+# Fire events based on tier changes
+if = {
+    limit = {
+        NOT = { check_variable = { previous_tier = target_tier } }
+        NOT = { AND = { check_variable = { previous_tier = 0 } check_variable = { target_tier = 0 } } }
+    }
+
+    # Determine if getting better or worse
+    if = {
+        limit = { check_variable = { target_tier > previous_tier } }
+        # Communist influence is growing
+        if = {
+            limit = { OR = { check_variable = { target_tier = 4 } check_variable = { target_tier = 5 } } }
+            # Critical threat reached
+            country_event = { id = chaosx.nr1.6 days = 1 }
+        }
+        else = {
+            # General progression
+            country_event = { id = chaosx.nr1.4 days = 1 }
+        }
+    }
+    else_if = {
+        limit = { check_variable = { target_tier < previous_tier } }
+        # Communist influence is weakening
+        if = {
+            limit = { OR = { check_variable = { target_tier = 1 } check_variable = { target_tier = 0 } } }
+            # Threat greatly reduced
+            country_event = { id = chaosx.nr1.7 days = 1 }
+        }
+        else = {
+            # General regression
+            country_event = { id = chaosx.nr1.5 days = 1 }
+        }
+    }
+}
+}
+}###############################################################################################################
 ###############################################################################################################
 ###############################################################################################################
-###############################################################################################################
+
+# Calculate zombie outbreak chance for a country (mimics chaosx.nr2.6 mean_time_to_happen calculation)
+calculate_zombie_outbreak_chance = {
+    set_variable = { zombie_outbreak_days = 2555 } # Default 7 years
+
+    # Check if this country is eligible for zombie outbreaks
+    if = {
+        limit = {
+            NOT = { original_tag = ZZZ }
+            num_of_controlled_states > 1
+        }
+
+        # If zombie outbreak is NOT active, set very low risk
+        if = {
+            limit = { NOT = { has_global_flag = has_zombie_outbreak } }
+            set_variable = { zombie_outbreak_days = 3650 } # 10 years - very low risk
+        }
+        # If zombie outbreak IS active, calculate proper risk
+        else = {
+            # Check if country has full protection (all measures + extreme martial law)
+            if = {
+                limit = {
+                    has_country_flag = hygiene_measures_enforced
+                    has_country_flag = migration_restricted
+                    has_country_flag = quarantine_protocols_active
+                    has_country_flag = borders_completely_closed
+                    has_country_flag = extreme_martial_law_active
+                }
+                set_variable = { zombie_outbreak_days = 99999 } # Full protection = no risk
+            }
+            else = {
+                # Apply zombie evolution modifiers - check if ZZZ exists first
+                if = {
+                    limit = {
+                        any_country = { original_tag = ZZZ exists = yes }
+                        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
+                    }
+                    multiply_variable = { zombie_outbreak_days = 0.8 }
+                }
+                if = {
+                    limit = {
+                        any_country = { original_tag = ZZZ exists = yes }
+                        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
+                    }
+                    multiply_variable = { zombie_outbreak_days = 0.6 }
+                }
+                if = {
+                    limit = {
+                        any_country = { original_tag = ZZZ exists = yes }
+                        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+                    }
+                    multiply_variable = { zombie_outbreak_days = 0.4 }
+                }
+
+                # Apply prevention measures modifiers
+                if = {
+                    limit = { has_country_flag = hygiene_measures_enforced }
+                    multiply_variable = { zombie_outbreak_days = 1.5 }
+                }
+                if = {
+                    limit = { has_country_flag = migration_restricted }
+                    multiply_variable = { zombie_outbreak_days = 1.8 }
+                }
+                if = {
+                    limit = { has_country_flag = quarantine_protocols_active }
+                    multiply_variable = { zombie_outbreak_days = 2.2 }
+                }
+                if = {
+                    limit = { has_country_flag = borders_completely_closed }
+                    multiply_variable = { zombie_outbreak_days = 3.0 }
+                }
+
+                # Island nations are safer
+                if = {
+                    limit = { capital_scope = { is_island_state = yes } }
+                    multiply_variable = { zombie_outbreak_days = 2.0 }
+                }
+
+                # Major powers are more at risk
+                if = {
+                    limit = { is_major = yes }
+                    multiply_variable = { zombie_outbreak_days = 0.7 }
+                }
+            }
+        }
+
+        # Convert to months for display (approximate)
+        set_variable = { zombie_outbreak_months = zombie_outbreak_days }
+        divide_variable = { zombie_outbreak_months = 30.4 } # Average days per month
+        round_variable = zombie_outbreak_months
+
+        # Ensure minimum of 1 month for display
+        if = {
+            limit = { check_variable = { zombie_outbreak_months < 1 } }
+            set_variable = { zombie_outbreak_months = 1 }
+        }
+
+        # Handle special cases for display
+        if = {
+            limit = { check_variable = { zombie_outbreak_days > 50000 } }
+            set_variable = { zombie_outbreak_months = 999 } # Special value for "No Risk"
+        }
+    }
+    else = {
+        # ZZZ country or countries with no states get no risk
+        set_variable = { zombie_outbreak_days = 99999 }
+        set_variable = { zombie_outbreak_months = 999 } # Special value for "No Risk"
+    }
+}# Update zombie outbreak chance for all countries (weekly effect)
+update_all_zombie_outbreak_chances = {
+    every_country = {
+        limit = {
+            exists = yes
+            NOT = { original_tag = ZZZ }
+        }
+        calculate_zombie_outbreak_chance = yes
+    }
+}

@@ -20,6 +20,16 @@ The mod is fully multiplayer compatible, allowing you to share the chaos with fr
 
 **_Will you act as police, or will you become an agent of chaos itself?_**
 
+## Donation
+
+If you’ve enjoyed my mod and would like to see more in the future, please consider making a donation: https://ko-fi.com/klimpaskov
+
+This project was made with care and love, and it’s that same love that brings out the best in what we create and share. Love allows us to see the unseen in one another, to believe in potential before it becomes reality. By offering your support, you help that unseen possibility take form. Your support, no matter the amount, shows that this work meant something, and that truly means a lot to me.
+
+Every contribution helps me continue, and reminds me that the time and heart I’ve put into this wasn’t a waste.
+
+Thank you for your kindness, and for taking the time to read this.
+
 ## Feature request and bug report
 
 If you have ideas for our mod or you have a bug to report, do not hesitate to open an [Issue](https://github.com/klimPaskov/Chaos-Redux/issues) with the appropriate label.
