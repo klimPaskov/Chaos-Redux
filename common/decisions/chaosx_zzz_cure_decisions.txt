@@ -1,3 +1,10 @@
+
+# Faster research times for Anti Zombie League members
+#60 = 45   # 25% faster
+#90 = 68   # 25% faster
+#120 = 90   # 25% faster
+#150 = 113  # 25% faster
+
 chaosx_zzz_cure_category = {
     find_cure_tier_0 = {
         visible = {
@@ -11,7 +18,7 @@ chaosx_zzz_cure_category = {
         }
 
         cost = 20
-        days_remove = 60
+        days_remove = var:cure_research_days_0?60
         icon = GFX_decision_generic_research
 
         ai_will_do = {
@@ -100,10 +107,7 @@ chaosx_zzz_cure_category = {
                 has_government = democratic
             }
             # Resource availability modifiers
-            modifier = {
-                factor = 0.5
-                has_political_power < 100
-            }
+
             modifier = {
                 add = 1
                 num_of_civilian_factories > 20
@@ -127,6 +131,10 @@ chaosx_zzz_cure_category = {
                 }
                 if = {
                     limit = { check_variable = { global.zzz_cure > 99 } }
+                    # Reduce chaos when cure is found
+                    set_temp_variable = { chaos_change = -4 }
+                    add_chaos_meter_value = yes
+
                     every_country = {
                         limit = { is_in_tech_sharing_group = cure_sharing }
                         add_timed_idea = {
@@ -173,7 +181,7 @@ chaosx_zzz_cure_category = {
         }
 
         cost = 30
-        days_remove = 90
+        days_remove = var:cure_research_days_1?90
         icon = GFX_decision_generic_research
 
         ai_will_do = {
@@ -255,10 +263,7 @@ chaosx_zzz_cure_category = {
                 has_government = democratic
             }
             # Resource availability modifiers
-            modifier = {
-                factor = 0.3
-                has_political_power < 150
-            }
+
             modifier = {
                 add = 2
                 num_of_civilian_factories > 30
@@ -286,6 +291,10 @@ chaosx_zzz_cure_category = {
                     tooltip = zzz_cure_global_tt
                 }
                 if = { limit = { check_variable = { global.zzz_cure > 99 } }
+                # Reduce chaos when cure is found
+                set_temp_variable = { chaos_change = -10 }
+                add_chaos_meter_value = yes
+
                 every_country = {
                     limit = { is_in_tech_sharing_group = cure_sharing }
                     add_timed_idea = {
@@ -297,8 +306,8 @@ chaosx_zzz_cure_category = {
                 every_country = {
                     limit = { original_tag = ZZZ }
                     add_timed_idea = {
-                        idea = cure_sharing_bonus_tier_1
-                        days = 90
+                        idea = cure_sharing_bonus
+                        days = 120
                     }
                 }
                 set_variable = { global.zzz_cure = 0 }
@@ -331,7 +340,7 @@ find_cure_tier_2 = {
     }
 
     cost = 40
-    days_remove = 120
+    days_remove = var:cure_research_days_2?120
     icon = GFX_decision_generic_research
 
     ai_will_do = {
@@ -413,10 +422,7 @@ find_cure_tier_2 = {
             has_government = democratic
         }
         # Resource availability modifiers - tier 2 research is expensive
-        modifier = {
-            factor = 0.2
-            has_political_power < 200
-        }
+
         modifier = {
             add = 3
             num_of_civilian_factories > 40
@@ -447,7 +453,6 @@ find_cure_tier_2 = {
             days = 120
         }
     }
-
     remove_effect = {
         if = {
             limit = { is_in_tech_sharing_group = cure_sharing }
@@ -457,6 +462,10 @@ find_cure_tier_2 = {
                 tooltip = zzz_cure_global_tt
             }
             if = { limit = { check_variable = { global.zzz_cure > 99 } }
+            # Reduce chaos when cure is found
+            set_temp_variable = { chaos_change = -10 }
+            add_chaos_meter_value = yes
+
             every_country = {
                 limit = { is_in_tech_sharing_group = cure_sharing }
                 add_timed_idea = {
@@ -468,8 +477,8 @@ find_cure_tier_2 = {
             every_country = {
                 limit = { original_tag = ZZZ }
                 add_timed_idea = {
-                    idea = cure_sharing_bonus_tier_2
-                    days = 60
+                    idea = cure_sharing_bonus
+                    days = 120
                 }
             }
             set_variable = { global.zzz_cure = 0 }
@@ -502,7 +511,7 @@ find_cure_tier_3 = {
     }
 
     cost = 50
-    days_remove = 150
+    days_remove = var:cure_research_days_3?150
     icon = GFX_decision_generic_research
 
     ai_will_do = {
@@ -589,10 +598,7 @@ find_cure_tier_3 = {
             has_government = fascism
         }
         # Resource availability modifiers - tier 3 research is extremely expensive
-        modifier = {
-            factor = 0.1
-            has_political_power < 250
-        }
+
         modifier = {
             add = 5
             num_of_civilian_factories > 50
@@ -646,7 +652,6 @@ find_cure_tier_3 = {
             days = 150
         }
     }
-
     remove_effect = {
         if = {
             limit = { is_in_tech_sharing_group = cure_sharing }
@@ -656,6 +661,10 @@ find_cure_tier_3 = {
                 tooltip = zzz_cure_global_tt
             }
             if = { limit = { check_variable = { global.zzz_cure > 99 } }
+            # Reduce chaos when cure is found
+            set_temp_variable = { chaos_change = -10 }
+            add_chaos_meter_value = yes
+
             every_country = {
                 limit = { is_in_tech_sharing_group = cure_sharing }
                 add_timed_idea = {
@@ -667,8 +676,8 @@ find_cure_tier_3 = {
             every_country = {
                 limit = { original_tag = ZZZ }
                 add_timed_idea = {
-                    idea = cure_sharing_bonus_tier_3
-                    days = 30
+                    idea = cure_sharing_bonus
+                    days = 120
                 }
             }
             set_variable = { global.zzz_cure = 0 }
@@ -700,7 +709,7 @@ join_cure_sharing = {
     ai_will_do = {
         factor = 1
         modifier = {
-            add = 3
+            factor = 3
             has_war_with = ZZZ
         }
         modifier = {
@@ -708,7 +717,7 @@ join_cure_sharing = {
             any_country = { is_in_tech_sharing_group = cure_sharing NOT = { has_war_with = ROOT } }
         }
         modifier = {
-            factor = 0.20
+            factor = 0.1
             OR = {
                 has_government = fascism
                 has_government = communism
@@ -791,7 +800,7 @@ join_cure_sharing = {
         }
         # Faction considerations
         modifier = {
-            add = 2
+            factor = 10
             any_country = {
                 is_in_tech_sharing_group = cure_sharing
                 is_in_faction_with = ROOT
@@ -799,7 +808,7 @@ join_cure_sharing = {
         }
         # Major powers more likely to lead cooperation
         modifier = {
-            add = 2
+            factor = 2
             is_major = yes
         }
         # Democratic tradition of cooperation
@@ -918,9 +927,9 @@ leave_cure_sharing = {
                 has_country_flag = { flag = zombie_current_tier value = 3 }
             }
         }
-        # Multiple zombie outbreaks = never leave
+        # Multiple zombie outbreaks
         modifier = {
-            factor = 0.1
+            factor = 0.5
             any_country = {
                 has_country_flag = zombie_outbreak_dynamic_country
                 any_owned_state = {
@@ -953,7 +962,7 @@ leave_cure_sharing = {
         }
         # Autocratic regimes more likely to leave
         modifier = {
-            add = 2
+            factor = 2
             OR = {
                 has_government = fascism
                 has_government = communism
@@ -1100,14 +1109,13 @@ activate_the_cure = {
                 }
             }
         }
-        # Resource considerations don't matter when cure is ready
-        modifier = {
-            factor = 2
-            has_political_power > 100
-        }
     }
 
     complete_effect = {
+        # Reduce chaos when cure is found
+        set_temp_variable = { chaos_change = -10 }
+        add_chaos_meter_value = yes
+
         add_timed_idea = {
             idea = cure_activated
             days = 360
@@ -1234,11 +1242,6 @@ chaosx_outbreak_prevention_category = {
             modifier = {
                 factor = 0.7
                 has_stability < 0.3  # Unstable countries struggle
-            }
-            # Economic considerations
-            modifier = {
-                factor = 0.5
-                has_political_power < 75
             }
             modifier = {
                 add = 1
@@ -1389,11 +1392,7 @@ chaosx_outbreak_prevention_category = {
                 factor = 0.5
                 has_stability < 0.3  # Unstable countries can't enforce well
             }
-            # Economic considerations - restrictions cost trade
-            modifier = {
-                factor = 0.6
-                has_political_power < 100
-            }
+
             modifier = {
                 add = 2
                 num_of_civilian_factories > 20
@@ -1546,11 +1545,7 @@ chaosx_outbreak_prevention_category = {
                 factor = 0.4
                 has_stability < 0.4
             }
-            # Economic and infrastructure requirements
-            modifier = {
-                factor = 0.3
-                has_political_power < 150
-            }
+
             modifier = {
                 add = 3
                 num_of_civilian_factories > 30
@@ -1619,7 +1614,7 @@ chaosx_outbreak_prevention_category = {
         ai_will_do = {
             factor = 1
             modifier = {
-                factor = 5
+                factor = 2
                 has_war_with = ZZZ
             }
             modifier = {
@@ -1677,9 +1672,9 @@ chaosx_outbreak_prevention_category = {
                     }
                 }
             }
-            # Proximity to zombies - critical border security
+            # Proximity to zombies
             modifier = {
-                add = 15
+                add = 5
                 any_owned_state = {
                     any_neighbor_state = {
                         is_controlled_by = ZZZ
@@ -1711,18 +1706,14 @@ chaosx_outbreak_prevention_category = {
             }
             # Stability requirements - need strong government to enforce
             modifier = {
-                add = 3
+                add = 2
                 has_stability > 0.8
             }
             modifier = {
                 factor = 0.3
                 has_stability < 0.5
             }
-            # Economic considerations - border closure is expensive
-            modifier = {
-                factor = 0.2
-                has_political_power < 200
-            }
+
             modifier = {
                 add = 4
                 num_of_civilian_factories > 40
@@ -1743,15 +1734,15 @@ chaosx_outbreak_prevention_category = {
             }
             # Previous escalating measures make this more likely
             modifier = {
-                add = 4
+                add = 2
                 has_country_flag = hygiene_measures_enforced
             }
             modifier = {
-                add = 5
+                add = 3
                 has_country_flag = migration_restricted
             }
             modifier = {
-                add = 6
+                add = 4
                 has_country_flag = quarantine_protocols_active
             }
             # Countries with long borders are more hesitant (except in crisis)
@@ -1895,10 +1886,7 @@ chaosx_outbreak_prevention_category = {
                 has_stability > 0.8
             }
             # Military and economic requirements - martial law is very expensive
-            modifier = {
-                factor = 0.1
-                has_political_power < 300
-            }
+
             modifier = {
                 add = 5
                 num_of_military_factories > 25
@@ -1986,11 +1974,7 @@ chaosx_outbreak_prevention_category = {
                 NOT = { has_global_flag = has_zombie_outbreak }
             }
             modifier = {
-                factor = 2
-                has_idea = cure_activated
-            }
-            modifier = {
-                factor = 0.1
+                factor = 0
                 has_war_with = ZZZ
             }
             # Chaos tier modifiers - less likely to revoke during high chaos
@@ -2036,11 +2020,7 @@ chaosx_outbreak_prevention_category = {
                     has_country_flag = zombie_outbreak_dynamic_country
                 }
             }
-            # Economic pressure to revoke
-            modifier = {
-                add = 2
-                has_political_power < 50
-            }
+
             # Democratic governments under public pressure
             modifier = {
                 add = 1
@@ -2083,11 +2063,7 @@ chaosx_outbreak_prevention_category = {
                 NOT = { has_global_flag = has_zombie_outbreak }
             }
             modifier = {
-                factor = 2
-                has_idea = cure_activated
-            }
-            modifier = {
-                factor = 0.1
+                factor = 0
                 has_war_with = ZZZ
             }
         }
@@ -2126,11 +2102,7 @@ chaosx_outbreak_prevention_category = {
                 NOT = { has_global_flag = has_zombie_outbreak }
             }
             modifier = {
-                factor = 2
-                has_idea = cure_activated
-            }
-            modifier = {
-                factor = 0.1
+                factor = 0
                 has_war_with = ZZZ
             }
         }
@@ -2159,7 +2131,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        cost = 75
+        cost = 10
         days_remove = 45
 
         ai_will_do = {
@@ -2169,11 +2141,7 @@ chaosx_outbreak_prevention_category = {
                 NOT = { has_global_flag = has_zombie_outbreak }
             }
             modifier = {
-                factor = 2
-                has_idea = cure_activated
-            }
-            modifier = {
-                factor = 0.1
+                factor = 0
                 has_war_with = ZZZ
             }
             modifier = {
@@ -2212,15 +2180,15 @@ chaosx_outbreak_prevention_category = {
         ai_will_do = {
             factor = 1
             modifier = {
-                factor = 5
+                factor = 10
                 NOT = { has_global_flag = has_zombie_outbreak }
             }
             modifier = {
-                factor = 3
+                factor = 2
                 has_idea = cure_activated
             }
             modifier = {
-                factor = 0.05
+                factor = 0
                 has_war_with = ZZZ
             }
             modifier = {

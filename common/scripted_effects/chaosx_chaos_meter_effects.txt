@@ -12,11 +12,11 @@
 @CHAOS_PER_WORLD_TENSION = 1
 @CHAOS_PER_MINOR_WAR = 1
 @CHAOS_PER_MAJOR_WAR = 5
-@CHAOS_PER_MINOR_PEACE = -2
-@CHAOS_PER_MAJOR_PEACE = -5
+@CHAOS_PER_MINOR_PEACE = -1
+@CHAOS_PER_MAJOR_PEACE = -3
 
 # Annexation & Territory Changes
-@CHAOS_PER_MINOR_ANNEX = 5
+@CHAOS_PER_MINOR_ANNEX = 2
 @CHAOS_PER_MAJOR_ANNEX = 10
 @CHAOS_PER_PUPPET = 3
 @CHAOS_PER_LIBERATE = -2
@@ -43,16 +43,16 @@
 @CHAOS_PER_IDEOLOGY_CHANGE_MAJOR_NON_DEMOCRATIC = 5
 
 # Faction Changes
-@CHAOS_PER_FACTION_CREATE = 3
-@CHAOS_PER_FACTION_DISBAND = -3
+@CHAOS_PER_FACTION_CREATE = 2
+@CHAOS_PER_FACTION_DISBAND = -2
 @CHAOS_PER_FACTION_JOIN_MINOR = 1
-@CHAOS_PER_FACTION_JOIN_MAJOR = 5
+@CHAOS_PER_FACTION_JOIN_MAJOR = 3
 @CHAOS_PER_FACTION_LEAVE_MINOR = -1
 @CHAOS_PER_FACTION_LEAVE_MAJOR = -5
 @CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MINOR = -1
-@CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MAJOR = -5
-@CHAOS_PER_FACTION_LEAVE_BOTH_DEMOCRATIC_MINOR = -1
-@CHAOS_PER_FACTION_LEAVE_BOTH_DEMOCRATIC_MAJOR = -5
+@CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MAJOR = -3
+@CHAOS_PER_FACTION_LEAVE_BOTH_DEMOCRATIC_MINOR = 0
+@CHAOS_PER_FACTION_LEAVE_BOTH_DEMOCRATIC_MAJOR = 0
 
 # Diplomacy
 @CHAOS_PER_JUSTIFYING_WARGOAL_MAJOR = 1
@@ -69,10 +69,10 @@
 @CHAOS_PER_CAPITULATION = 1
 @CHAOS_PER_UNCAPITULATION = -1
 @CHAOS_PER_GOVERNMENT_EXILED = 1
-@CHAOS_PER_EXILE_REINSTATED = -3
+@CHAOS_PER_EXILE_REINSTATED = -1
 
 # Economic Thresholds
-@MILS_PER_CHAOS_INCREASE = 50
+@MILS_PER_CHAOS_INCREASE = 100
 @DIVISIONS_PER_CHAOS_INCREASE = 100
 @CASUALTIES_PER_CHAOS = 250 # 250k casualties per chaos point
 @STABILITY_CHANGE_PER_CHAOS = 0.01
@@ -185,6 +185,7 @@ clear_all_tier_flags = {
 }
 
 update_chaos_meter_tier = {
+
     # Store current tier state for change detection
     set_temp_variable = { old_tier_value = 0 }
     if = { limit = { has_global_flag = { flag = chaos_tier value = 5 } } set_temp_variable = { old_tier_value = 5 } }
@@ -245,6 +246,11 @@ update_chaos_meter_tier = {
     }
 }
 
+world_end_scenario_triggered = {
+
+
+}
+
 # ============================================================================
 # ON ACTION HANDLERS
 # ============================================================================
@@ -252,16 +258,34 @@ update_chaos_meter_tier = {
 chaos_meter_on_war_relation_added = {
     # on_war_relation_added: ROOT = attacker, FROM = defender
     if = {
-        limit = { ROOT = { is_major = yes } }
-        set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_WAR }
-        log = "CHAOS METER: Major [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
+        limit = {
+            NOT = {
+                ROOT = {
+                    OR = {
+                        original_tag = ZZZ
+                        has_country_flag = zombie_outbreak_dynamic_country
+                    }
+                }
+            }
+
+        }
+        if = {
+            limit = { ROOT = { is_major = yes } FROM = { is_major = yes } }
+            set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_WAR }
+            log = "CHAOS METER: Major [ROOT.GetName] declared war on Major [FROM.GetName] ([?chaos_change|=] chaos)"
+            add_chaos_meter_value = yes
+        }
+        else_if = {
+            limit = { NOT = { OR = { ROOT = { is_subject = yes } FROM = { is_subject = yes } is_in_faction = yes } } }
+            set_temp_variable = { chaos_change = @CHAOS_PER_MINOR_WAR }
+            log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
+            add_chaos_meter_value = yes
+        }
+
     }
     else = {
-        set_temp_variable = { chaos_change = @CHAOS_PER_MINOR_WAR }
-        log = "CHAOS METER: Minor [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
+        log = "CHAOS METER: Zombie [ROOT.GetName] declared war on [FROM.GetName] - no chaos increase from zombie wars"
     }
-
-    add_chaos_meter_value = yes
 }
 
 chaos_meter_on_peace = {
@@ -544,14 +568,14 @@ chaos_meter_on_wargoal_expire = {
     }
     add_chaos_meter_value = yes
 }
-chaos_meter_on_call_allies = {
-    if = {
-        limit = { FROM = { is_subject = no } }
-        set_temp_variable = { chaos_change = @CHAOS_PER_CALL_ALLIES }
-        log = "CHAOS METER: [THIS.GetName] called allies into war against [FROM.GetName] ([?chaos_change|=] chaos)"
-        add_chaos_meter_value = yes
-    }
-}
+# chaos_meter_on_call_allies = {
+#     if = {
+#         limit = { FROM = { is_subject = no } }
+#         set_temp_variable = { chaos_change = @CHAOS_PER_CALL_ALLIES }
+#         log = "CHAOS METER: [THIS.GetName] called allies into war against [FROM.GetName] ([?chaos_change|=] chaos)"
+#         add_chaos_meter_value = yes
+#     }
+# }
 
 chaos_meter_on_join_allies = {
     if = {
@@ -564,7 +588,7 @@ chaos_meter_on_join_allies = {
 
 chaos_meter_on_new_term_election = {
     set_temp_variable = { chaos_change = @CHAOS_PER_NEW_TERM_ELECTION }
-    log = "CHAOS METER: [THIS.GetName] held democratic elections ([?chaos_change|=] chaos)"
+    log = "CHAOS METER: Major [THIS.GetName] held democratic elections ([?chaos_change|=] chaos)"
     add_chaos_meter_value = yes
 }
 
@@ -581,8 +605,15 @@ chaos_meter_on_coup_succeeded = {
 }
 
 chaos_meter_on_capitulation = {
-    set_temp_variable = { chaos_change = @CHAOS_PER_CAPITULATION }
-    log = "CHAOS METER: [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
+    if = {
+        limit = { THIS = { is_major = yes } }
+        set_temp_variable = { chaos_change = 3 }
+        log = "CHAOS METER: Major [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
+    }
+    else = {
+        set_temp_variable = { chaos_change = @CHAOS_PER_CAPITULATION }
+        log = "CHAOS METER: Minor [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
+    }
     add_chaos_meter_value = yes
 }
 

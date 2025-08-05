@@ -1,0 +1,698 @@
+
+
+chaosx_anti_zombie_league_category = {
+
+    form_anti_zombie_league = {
+        icon = GFX_decision_generic_operation
+
+        visible = {
+            # Only show if conditions are met and no league exists yet
+            NOT = { has_global_flag = anti_zombie_league_formed }
+            has_global_flag = has_zombie_outbreak
+            date > 1937.1.1
+            # Basic eligibility check
+            OR = { is_major = yes is_ai = no }
+            any_country = {
+                original_tag = ZZZ
+                num_of_controlled_states > 50
+                num_divisions > 300
+            }
+            has_global_flag = { flag = chaos_tier value > 0 }
+        }
+
+        available = {
+            # Must be eligible to lead
+            is_major = yes
+            NOT = { original_tag = ZZZ }
+            NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+            OR = {
+                has_country_flag = hygiene_measures_enforced
+                has_country_flag = quarantine_protocols_active
+                has_country_flag = borders_completely_closed
+                has_country_flag = extreme_martial_law_active
+                has_country_flag = migration_restricted
+            }
+            # Must be in cure sharing
+            is_in_tech_sharing_group = cure_sharing
+        }
+
+        cost = 50
+        days_remove = 10
+        fire_only_once = yes
+
+        ai_will_do = {
+            factor = 10
+            modifier = {
+                factor = 3
+                has_war_with = ZZZ
+            }
+            modifier = {
+                add = 5
+                has_global_flag = { flag = chaos_tier value > 1 }
+            }
+            modifier = {
+                factor = 0.2
+                NOT = { has_government = democratic }
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = azl_formation_in_progress
+        }
+
+        remove_effect = {
+            if = {
+                limit = { NOT = { has_country_flag = hygiene_measures_enforced } }
+                set_country_flag = hygiene_measures_enforced
+                add_ideas = outbreak_prevention_hygiene_measures
+            }
+
+            if = {
+                limit = { NOT = { has_country_flag = quarantine_protocols_active } }
+                set_country_flag = quarantine_protocols_active
+                add_ideas = outbreak_prevention_quarantine_protocols
+            }
+            # Create the faction
+            create_faction = anti_zombie_league
+            set_global_flag = anti_zombie_league_formed
+            set_country_flag = azl_leader
+
+            # Add the member idea to self
+            add_ideas = anti_zombie_league_member_level_0
+
+            # Apply chaos reduction for major power forming league
+            set_temp_variable = { chaos_change = -2 }
+            add_chaos_meter_value = yes
+
+            # Set flag for zombie event system to trigger league formation subevent
+            set_global_flag = azl_formation_announced
+
+            clr_country_flag = azl_formation_in_progress
+
+            save_global_event_target_as = azl_faction_leader
+        }
+
+        cancel_effect = {
+            clr_country_flag = azl_formation_in_progress
+            add_political_power = 100
+        }
+    }
+
+    join_anti_zombie_league = {
+        icon = GFX_decision_generic_prepare_civil_war
+
+        visible = {
+            has_global_flag = anti_zombie_league_formed
+            NOT = { has_idea = anti_zombie_league_member_level_0 }
+            NOT = { original_tag = ZZZ }
+            NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+
+            exists = yes
+
+
+            is_subject = no
+
+            # Check if leader exists and has the faction
+            any_country = {
+                has_country_flag = azl_leader
+                is_faction_leader = yes
+            }
+        }
+
+        available = {
+            hidden_trigger = {
+                NOT = { original_tag = ZZZ }
+                NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+                NOT = { has_idea = anti_zombie_league_member_level_0 }
+                exists = yes
+                is_subject = no
+            }
+        }
+
+
+        ai_will_do = {
+            factor = 1
+
+            # Base factors
+            modifier = {
+                factor = 3
+                has_war_with = ZZZ
+            }
+
+            modifier = {
+                factor = 5
+                has_government = democratic
+            }
+
+            modifier = {
+                factor = 1.5
+                is_major = yes
+            }
+
+            modifier = {
+                add = 1
+                has_country_flag = hygiene_measures_enforced
+            }
+
+            modifier = {
+                add = 1
+                has_country_flag = quarantine_protocols_active
+            }
+
+            modifier = {
+                add = 2
+                is_in_tech_sharing_group = cure_sharing
+            }
+
+            modifier = {
+                add = 2
+                any_owned_state = {
+                    any_neighbor_state = {
+                        is_controlled_by = ZZZ
+                    }
+                }
+            }
+
+            modifier = {
+                add = 1
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+
+            modifier = {
+                add = 2
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+
+            modifier = {
+                add = 3
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+
+            modifier = {
+                add = 4
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+
+            # Penalties
+            modifier = {
+                factor = 0.5
+                NOT = { has_country_flag = hygiene_measures_enforced }
+            }
+
+            modifier = {
+                factor = 0.3
+                NOT = { has_country_flag = quarantine_protocols_active }
+            }
+
+            modifier = {
+                factor = 0.7
+                NOT = { is_in_tech_sharing_group = cure_sharing }
+            }
+
+            modifier = {
+                factor = 0.3
+                NOT = { has_government = democratic }
+            }
+        }
+
+        complete_effect = {
+            # Auto-implement required measures if needed
+            if = {
+                limit = { NOT = { has_country_flag = hygiene_measures_enforced } }
+                set_country_flag = hygiene_measures_enforced
+                add_ideas = outbreak_prevention_hygiene_measures
+            }
+
+            if = {
+                limit = { NOT = { has_country_flag = quarantine_protocols_active } }
+                set_country_flag = quarantine_protocols_active
+                add_ideas = outbreak_prevention_quarantine_protocols
+            }
+
+            if = {
+                limit = { NOT = { is_in_tech_sharing_group = cure_sharing } }
+                add_to_variable = { zzz_cure = 0 }
+                add_to_tech_sharing_group = cure_sharing
+                set_variable = { zzz_cure = 0 }
+            }
+
+            # Add to faction
+            random_country = {
+                limit = {
+                    has_country_flag = azl_leader
+                    is_faction_leader = yes
+                }
+                add_to_faction = PREV
+            }
+
+            # Add member idea
+            add_ideas = anti_zombie_league_member_level_0
+
+            # Apply cure research speed bonus
+            apply_azl_cure_research_bonus = yes
+
+        }
+
+    }
+
+    leave_anti_zombie_league = {
+        icon = GFX_decision_generic_nationalism
+
+        visible = {
+            has_idea = anti_zombie_league_member_level_0
+            is_in_faction = yes
+        }
+
+        available = {
+            has_idea = anti_zombie_league_member_level_0
+            is_in_faction = yes
+        }
+
+        cost = 10
+
+        ai_will_do = {
+            factor = 0
+
+            # Much more likely to leave when zombies are very weak (less than 50 divisions)
+            modifier = {
+                add = 5
+                ZZZ = {
+                    num_divisions < 50
+                }
+                has_idea = cure_activated
+            }
+
+            # Even more likely when zombies are extremely weak (less than 20 divisions)
+            modifier = {
+                add = 10
+                ZZZ = {
+                    num_divisions < 20
+                }
+            }
+
+            # Authoritarians much more likely to leave when threat is reduced
+            modifier = {
+                add = 8
+                NOT = { has_government = democratic }
+                ZZZ = {
+                    num_divisions < 50
+                }
+            }
+
+            # Never leave if at war with zombies
+            modifier = {
+                factor = 0
+                has_war_with = ZZZ
+            }
+
+            # Less likely to leave if investment level is high (sunk cost)
+            modifier = {
+                factor = 0.5
+                check_variable = { global.azl_global_investment > 50 }
+            }
+        }
+
+        complete_effect = {
+            # Leave faction
+            leave_faction = yes
+
+
+            hidden_effect = {
+
+                if = {
+                    limit = { check_variable = { global.azl_global_investment > 179 } }
+                    remove_ideas = anti_zombie_league_member_level_18
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 169 } }
+                    remove_ideas = anti_zombie_league_member_level_17
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 159 } }
+                    remove_ideas = anti_zombie_league_member_level_16
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 149 } }
+                    remove_ideas = anti_zombie_league_member_level_15
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 139 } }
+                    remove_ideas = anti_zombie_league_member_level_14
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 129 } }
+                    remove_ideas = anti_zombie_league_member_level_13
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 119 } }
+                    remove_ideas = anti_zombie_league_member_level_12
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 109 } }
+                    remove_ideas = anti_zombie_league_member_level_11
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 99 } }
+                    remove_ideas = anti_zombie_league_member_level_10
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 89 } }
+                    remove_ideas = anti_zombie_league_member_level_9
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 79 } }
+                    remove_ideas = anti_zombie_league_member_level_8
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 69 } }
+                    remove_ideas = anti_zombie_league_member_level_7
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 59 } }
+                    remove_ideas = anti_zombie_league_member_level_6
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 49 } }
+                    remove_ideas = anti_zombie_league_member_level_5
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 39 } }
+                    remove_ideas = anti_zombie_league_member_level_4
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 29 } }
+                    remove_ideas = anti_zombie_league_member_level_3
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 19 } }
+                    remove_ideas = anti_zombie_league_member_level_2
+
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 9 } }
+                    remove_ideas = anti_zombie_league_member_level_1
+                }
+                else = {
+                    remove_ideas = anti_zombie_league_member_level_0
+                }
+
+
+
+                # Remove cure research speed bonus
+                apply_azl_cure_research_bonus = yes
+
+            }
+        }
+    }
+
+    invest_in_league_research = {
+        icon = GFX_decision_generic_research
+
+        visible = {
+            has_global_flag = anti_zombie_league_formed
+        }
+
+        available = {
+            NOT = { has_global_flag = azl_investment_maxed }
+            hidden_trigger = { has_political_power > 49 }
+            NOT = { has_idea = azl_investment_penalty }
+        }
+
+        cost = 15
+        days_remove = 30
+
+        ai_will_do = {
+            factor = 5
+
+            modifier = {
+                factor = 2
+                has_war_with = ZZZ
+            }
+
+            modifier = {
+                factor = 3
+                is_major = yes
+            }
+
+            modifier = {
+                factor = 2
+                has_global_flag = { flag = chaos_tier value > 2 }
+            }
+
+            modifier = {
+                factor = 0.3
+                num_of_civilian_factories < 10
+            }
+
+            modifier = {
+                factor = 0.75
+                check_variable = { global.azl_global_investment > 50 }
+            }
+        }
+
+        complete_effect = {
+            # Add research and production penalties for the investing country
+            add_timed_idea = {
+                idea = azl_investment_penalty
+                days = 30
+            }
+        }
+
+        remove_effect = {
+
+            hidden_effect = {
+                # Add investment points: 1 for minor, 3 for major
+                if = {
+                    limit = { is_major = yes }
+                    add_to_variable = { global.azl_global_investment = 3 }
+                }
+                else = {
+                    add_to_variable = { global.azl_global_investment = 1 }
+                }
+
+                # Check investment level and upgrade league member ideas globally
+                # Calculate the target level: investment points divided by 10, plus 1 for base level
+                if = {
+                    limit = { check_variable = { global.azl_global_investment > 179 } }
+                    set_variable = { global.target_level = 18 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 169 } }
+                    set_variable = { global.target_level = 17 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 159 } }
+                    set_variable = { global.target_level = 16 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 149 } }
+                    set_variable = { global.target_level = 15 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 139 } }
+                    set_variable = { global.target_level = 14 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 129 } }
+                    set_variable = { global.target_level = 13 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 119 } }
+                    set_variable = { global.target_level = 12 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 109 } }
+                    set_variable = { global.target_level = 11 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 99 } }
+                    set_variable = { global.target_level = 10 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 89 } }
+                    set_variable = { global.target_level = 9 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 79 } }
+                    set_variable = { global.target_level = 8 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 69 } }
+                    set_variable = { global.target_level = 7 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 59 } }
+                    set_variable = { global.target_level = 6 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 49 } }
+                    set_variable = { global.target_level = 5 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 39 } }
+                    set_variable = { global.target_level = 4 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 29 } }
+                    set_variable = { global.target_level = 3 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 19 } }
+                    set_variable = { global.target_level = 2 }
+                }
+                else_if = {
+                    limit = { check_variable = { global.azl_global_investment > 9 } }
+                    set_variable = { global.target_level = 1 }
+                }
+
+
+
+                if = {
+                    limit = { NOT = { check_variable = { global.target_level = 0 } } }
+                    set_temp_variable = { previous_level = global.target_level }
+                    subtract_from_temp_variable = { previous_level = 1 }
+                }
+                # Update all league members to the appropriate level
+                every_country = {
+                    limit = {
+                        meta_trigger = {
+                            text = {
+                                has_idea = anti_zombie_league_member_level_[PREV_LEVEL]
+                            }
+                            PREV_LEVEL = "[?previous_level]"
+                        }
+                    }
+                    meta_effect = {
+                        text = {
+                            swap_ideas = {
+                                remove_idea = anti_zombie_league_member_level_[PREV_LEVEL]
+                                add_idea = anti_zombie_league_member_level_[LEVEL]
+                            }
+                        }
+                        LEVEL = "[?global.target_level]"
+                        PREV_LEVEL = "[?previous_level]"
+                    }
+                }
+
+                # Set the max flag when we reach 85 investment points (17*5 = 85% bonus, next level is 100%)
+                if = {
+                    limit = { check_variable = { global.azl_global_investment > 84 } }
+                    set_global_flag = azl_investment_maxed
+                }
+            }
+        }
+    }
+
+    # Endgame automatic league dissolution when zombies are very weak
+    disband_anti_zombie_league = {
+        icon = GFX_decision_generic_nationalism
+
+        visible = {
+            has_country_flag = azl_leader
+            is_faction_leader = yes
+            has_global_flag = anti_zombie_league_formed
+            # Only show when zombies have 10 or fewer divisions
+            any_country = {
+                original_tag = ZZZ
+                num_divisions < 11
+            }
+        }
+
+        available = {
+            has_country_flag = azl_leader
+            is_faction_leader = yes
+            # Zombies are extremely weak
+            any_country = {
+                original_tag = ZZZ
+                num_divisions < 11
+            }
+            # Low chaos
+            NOT = {
+                has_global_flag = { flag = chaos_tier value > 1 }
+            }
+        }
+
+        cost = 10
+        days_remove = 7
+        fire_only_once = yes
+
+        ai_will_do = {
+            factor = 10
+
+            # More likely if zombies are really weak
+            modifier = {
+                factor = 0
+                any_country = {
+                    original_tag = ZZZ
+                    num_divisions > 20
+                }
+            }
+
+            # Less likely if still at war
+            modifier = {
+                factor = 0.5
+                has_war_with = ZZZ
+            }
+
+            # Democratic nations more willing to disband when threat is gone
+            modifier = {
+                factor = 3
+                has_government = democratic
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = azl_disbanding_league
+        }
+
+        remove_effect = {
+            # Global effect to dissolve the league
+            clr_global_flag = anti_zombie_league_formed
+            set_global_flag = azl_league_dissolved
+
+            if = {
+                limit = { NOT = { check_variable = { global.target_level = 0 } } }
+                set_temp_variable = { previous_level = global.target_level }
+                subtract_from_temp_variable = { previous_level = 1 }
+            }
+
+
+            # Remove all league members from faction and remove their ideas
+            every_country = {
+                limit = {
+                    meta_trigger = {
+                        text = {
+                            has_idea = anti_zombie_league_member_level_[LEVEL]
+                        }
+                        LEVEL = "[?previous_level]"
+                    }
+                }
+                meta_effect = {
+                    text = {
+                        remove_idea = anti_zombie_league_member_level_[LEVEL]
+                    }
+                    LEVEL = "[?previous_level]"
+                }
+                if = {
+                    limit = { is_in_faction = yes }
+                    leave_faction = yes
+                }
+                # Remove cure research bonuses
+                apply_azl_cure_research_bonus = yes
+            }
+            # Clear leader flag
+            clr_country_flag = azl_leader
+            clr_country_flag = azl_disbanding_league
+            set_global_flag = azl_dissolved
+        }
+
+        cancel_trigger = {
+            OR = {
+                NOT = { has_country_flag = azl_leader }
+                NOT = { is_faction_leader = yes }
+                NOT = { has_global_flag = anti_zombie_league_formed }
+            }
+        }
+
+    }
+}

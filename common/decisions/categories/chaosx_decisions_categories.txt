@@ -1,7 +1,6 @@
 chaosx_decision_category = {
     visible = {
         is_ai = no
-        has_country_flag = events_activated
         always = no
     }
     icon = GFX_decision_category_generic_crisis
@@ -114,4 +113,34 @@ chaosx_outbreak_prevention_category = {
     }
     icon = GFX_decision_category_generic_crisis
     priority = 99
+}
+
+chaosx_anti_zombie_league_category = {
+    visible = {
+        has_global_flag = has_zombie_outbreak
+        NOT = { has_country_flag = azl_refused_to_join}
+        NOT = { original_tag = ZZZ }
+        NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+        NOT = { has_global_flag = azl_dissolved }
+        OR = {
+            # Show for formation candidates
+            AND = {
+                NOT = { has_global_flag = anti_zombie_league_formed }
+                OR = {
+                    is_major = yes
+                    is_ai = no
+                }
+                date > 1937.1.1
+            }
+            # Show for joining candidates
+            AND = {
+                has_global_flag = anti_zombie_league_formed
+                NOT = { has_idea = anti_zombie_league_member_level_0 }
+            }
+            # Show for current members
+            has_idea = anti_zombie_league_member_level_0
+        }
+    }
+    icon = GFX_decision_category_generic_prepare_civil_war
+    priority = 100
 }

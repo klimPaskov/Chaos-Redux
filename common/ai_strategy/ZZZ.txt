@@ -1,26 +1,16 @@
 ZZZ_unit_production = {
     allowed = {
-        original_tag = ZZZ
-    }
-    enable = {
         always = yes
     }
+    enable = {
+        OR = {
+            original_tag = ZZZ
+            has_country_flag = zombie_outbreak_dynamic_country
+        }
 
-    abort = {
-        always = no
     }
 
-    # Force maximum zombie production
-    ai_strategy = {
-        type = build_army
-        id = zombies
-        value = 1000
-    }
-
-    ai_strategy = {
-        type = force_build_armies
-        value = 1000
-    }
+    abort_when_not_enabled = yes
 
     # Never stockpile equipment - always use it immediately
     ai_strategy = {
@@ -45,23 +35,10 @@ ZZZ_unit_production = {
         value = 1000  # Use ALL spare units for attacks
     }
 
-    # Prioritize zombie training and template improvement
-    ai_strategy = {
-        type = land_xp_spend_priority
-        id = division_template
-        value = 1000
-    }
-
     ai_strategy = {
         type = template_prio
         id = zombies
         value = 1000
-    }
-
-    # Force maximum aggression on all fronts
-    ai_strategy = {
-        type = front_unit_request
-        value = 1000  # Request maximum units for all fronts
     }
 
     # Make AI extremely aggressive in all major population centers
@@ -111,7 +88,7 @@ ZZZ_unit_production = {
     ai_strategy = {
         type = role_ratio
         id = zombies
-        value = 10
+        value = 1
     }
 
     # Minimize all other unit types to focus purely on zombies
