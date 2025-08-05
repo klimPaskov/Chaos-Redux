@@ -1776,18 +1776,11 @@ switch_to_tag_management = {
 }
 
 # Toggle between Timer Interval and Tag Management views
-toggle_timer_system_view = {
-    if = {
-        limit = { has_country_flag = show_timer_interval_view }
-        # Switch to tag management
-        clr_country_flag = show_timer_interval_view
-        set_country_flag = show_tag_management_view
-    }
-    else = {
-        # Switch to timer interval
-        set_country_flag = show_timer_interval_view
-        clr_country_flag = show_tag_management_view
-    }
+open_tag_management_menu = {
+    clear_all_menu_flags = yes
+    clr_country_flag = show_timer_system_menu # A bit of a mess, but ok, i had to move the tag management into a separate menu. Just making sure that it will work properly, maybe these clearings are not needed.
+    clr_country_flag = show_timer_interval_view
+    set_country_flag = show_tag_management_view
 }
 
 # Get the current filtered country list based on filter and sort settings
@@ -2678,6 +2671,35 @@ reset_chaos_meter_to_defaults = {
 
     # Update tier
     update_settings_chaos_tier = yes
+}
+
+toggle_world_end = {
+
+
+    if = {
+        limit = { NOT = { has_global_flag = world_end_disabled } }
+        set_global_flag = world_end_disabled
+        # Backup the world end flag
+        if = {
+            limit = { has_global_flag = world_end }
+            set_variable = { global.world_end_backup = 1 }
+            clr_global_flag = world_end
+        }
+        else = {
+            set_variable = { global.world_end_backup = 0 }
+        }
+
+        log = "CHAOS REDUX SETTINGS: World end scenario mechanic has been DISABLED"
+    }
+    else = {
+        clr_global_flag = world_end_disabled
+        if = {
+            limit = { check_variable = { global.world_end_backup = 1 } }
+            set_global_flag = world_end
+        }
+
+        log = "CHAOS REDUX SETTINGS: World end scenario mechanic has been ENABLED"
+    }
 }
 
 ###############################################################################################################

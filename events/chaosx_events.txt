@@ -1072,7 +1072,7 @@ country_event = {
     hidden = yes
 
     immediate = {
-        play_song = "zombies"
+        play_song = "zombies_music"
 
         set_global_flag = {
             flag = super_event_visible
@@ -1089,7 +1089,10 @@ country_event = {
     hidden = yes
 
     trigger = {
-        original_tag = ZZZ
+        OR = {
+            original_tag = ZZZ
+            has_country_flag = zombie_outbreak_dynamic_country
+        }
         has_global_flag = has_zombie_outbreak
         OR = {
             AND = {
@@ -1122,7 +1125,17 @@ country_event = {
                 swap_ideas = { remove_idea = zombies_idea_0 add_idea = zombies_idea_1 }
                 set_country_flag = { flag = zombie_current_tier value = 1 }
                 kill_country_leader = yes
-                promote_character = ZZZ_leader_1
+                if = {
+                    limit = { tag = ZZZ}
+                    promote_character = ZZZ_leader_1
+                }
+                else = {
+                    create_country_leader = {
+                        name = "Zombie Horde"
+                        picture = "GFX_portrait_ZZZ_leader_2"
+                        ideology = anarchism
+                    }
+                }
             }
             else_if = {
                 limit = {
@@ -1133,7 +1146,18 @@ country_event = {
                 swap_ideas = { remove_idea = zombies_idea_1 add_idea = zombies_idea_2 }
                 set_country_flag = { flag = zombie_current_tier value = 2 }
                 kill_country_leader = yes
-                promote_character = ZZZ_leader_2
+                if = {
+                    limit = { tag = ZZZ}
+                    promote_character = ZZZ_leader_2
+                }
+                else = {
+                    create_country_leader = {
+                        name = "Zombie Horde"
+                        picture = "GFX_portrait_ZZZ_leader_3"
+                        ideology = anarchism
+                    }
+
+                }
             }
             else_if = {
                 limit = {
@@ -1144,7 +1168,17 @@ country_event = {
                 swap_ideas = { remove_idea = zombies_idea_2 add_idea = zombies_idea_3 }
                 set_country_flag = { flag = zombie_current_tier value = 3 }
                 kill_country_leader = yes
-                promote_character = ZZZ_leader_3
+                if = {
+                    limit = { tag = ZZZ}
+                    promote_character = ZZZ_leader_3
+                }
+                else = {
+                    create_country_leader = {
+                        name = "Zombie Horde"
+                        picture = "GFX_portrait_ZZZ_leader_4"
+                        ideology = anarchism
+                    }
+                }
             }
         }
     }
@@ -1157,7 +1191,10 @@ country_event = {
     hidden = yes
 
     trigger = {
-        original_tag = ZZZ
+        OR = {
+            original_tag = ZZZ
+            has_country_flag = zombie_outbreak_dynamic_country
+        }
         has_global_flag = has_zombie_outbreak
         OR = {
             AND = {
@@ -1227,18 +1264,12 @@ country_event = {
 
         # Check if country has full protection (all measures active)
         NOT = {
-            OR = {
-                has_country_flag = hygiene_measures_enforced
-                has_country_flag = migration_restricted
-                has_country_flag = quarantine_protocols_active
-                has_country_flag = borders_completely_closed
-                has_country_flag = extreme_martial_law_active
-            }
+            has_country_flag = extreme_martial_law_active
         }
     }
 
     mean_time_to_happen = {
-        days = 2555 # 7 years base mean time
+        days = 1825 # 5 years base mean time (matching scripted effect calculation)
 
         # Zombie evolution increases outbreak chance
         modifier = {
@@ -1272,6 +1303,36 @@ country_event = {
             has_country_flag = borders_completely_closed
         }
 
+        # Population-based risk - higher population = higher risk
+        modifier = {
+            factor = 0.6
+            check_variable = { max_manpower_k > 500000 } # Very high population (500M+)
+        }
+        modifier = {
+            factor = 0.7
+            check_variable = { max_manpower_k > 200000 } # High population (200M+)
+            NOT = { check_variable = { max_manpower_k > 500000 } }
+        }
+        modifier = {
+            factor = 0.8
+            check_variable = { max_manpower_k > 100000 } # Medium-high population (100M+)
+            NOT = { check_variable = { max_manpower_k > 200000 } }
+        }
+        modifier = {
+            factor = 0.9
+            check_variable = { max_manpower_k > 50000 } # Medium population (50M+)
+            NOT = { check_variable = { max_manpower_k > 100000 } }
+        }
+        modifier = {
+            factor = 1.1
+            check_variable = { max_manpower_k > 10000 } # Low population (10M+)
+            NOT = { check_variable = { max_manpower_k > 50000 } }
+        }
+        modifier = {
+            factor = 1.3
+            NOT = { check_variable = { max_manpower_k > 10000 } } # Very low population (under 10M)
+        }
+
         # Island nations are safer
         modifier = {
             factor = 2.0
@@ -1280,12 +1341,19 @@ country_event = {
 
         # Major powers are more at risk due to trade/travel
         modifier = {
-            factor = 0.7
+            factor = 0.8
             is_major = yes
+        }
+
+        # Reduce chance for countries with very few states
+        modifier = {
+            factor = 2.0
+            num_of_controlled_states < 5
         }
     }
 
     immediate = {
+
         hidden_effect = {
             # Check if outbreak state connects to ZZZ capital by land
             random_owned_state = {
@@ -1306,6 +1374,12 @@ country_event = {
 
                 # Load zombie division templates
                 load_oob = "ZZZ_1936"
+
+                ZZZ = {
+                    every_core_state = {
+                        remove_core_of = PREV
+                    }
+                }
 
                 division_template = {
                     name = "Brainzz Horde"
@@ -1343,7 +1417,7 @@ country_event = {
                     if = {
                         limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
                         create_unit = {
-                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
                             count = 10
                             owner = PREV
                         }
@@ -1351,7 +1425,7 @@ country_event = {
                     else_if = {
                         limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
                         create_unit = {
-                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
+                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
                             count = 10
                             owner = PREV
                         }
@@ -1359,15 +1433,15 @@ country_event = {
                     else_if = {
                         limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
                         create_unit = {
-                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
-                            count = 10
+                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
+                            count = 12
                             owner = PREV
                         }
                     }
                     else_if = {
                         limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
                         create_unit = {
-                            division = "name = \"Brainzz Horde Isolated\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
+                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
                             count = 15
                             owner = PREV
                         }
@@ -1393,7 +1467,7 @@ country_event = {
                 add_ideas = {
                     never_ending_hunger
                     tot_economic_mobilisation
-                    scraping_the_barrel
+                    extensive_conscription
                 }
 
                 every_possible_country = {
@@ -1446,172 +1520,25 @@ country_event = {
                         limit = { has_country_flag = { flag = zombie_current_tier value = 3 } }
                         PREV = { set_country_flag = { flag = zombie_current_tier value = 3 } }
                     }
-                }
 
-                add_ai_strategy = {
-                    type = build_army
-                    id = zombies
-                    value = 1000
+                    # Copy zombie target tier flags
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_target_tier value = 0 } }
+                        PREV = { set_country_flag = { flag = zombie_target_tier value = 0 } }
+                    }
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_target_tier value = 1 } }
+                        PREV = { set_country_flag = { flag = zombie_target_tier value = 1 } }
+                    }
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_target_tier value = 2 } }
+                        PREV = { set_country_flag = { flag = zombie_target_tier value = 2 } }
+                    }
+                    if = {
+                        limit = { has_country_flag = { flag = zombie_target_tier value = 3 } }
+                        PREV = { set_country_flag = { flag = zombie_target_tier value = 3 } }
+                    }
                 }
-
-                add_ai_strategy = {
-                    type = force_build_armies
-                    value = 1000
-                }
-
-                # Never stockpile equipment - always use it immediately
-                add_ai_strategy = {
-                    type = equipment_stockpile_surplus_ratio
-                    value = -1000
-                }
-
-                # Ignore army incompetence - attack regardless of experience
-                add_ai_strategy = {
-                    type = ignore_army_incompetence
-                    value = 1000
-                }
-
-                # Extreme aggression - minimal garrison, maximum attack
-                add_ai_strategy = {
-                    type = garrison
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = spare_unit_factor
-                    value = 1000  # Use ALL spare units for attacks
-                }
-
-                # Prioritize zombie training and template improvement
-                add_ai_strategy = {
-                    type = land_xp_spend_priority
-                    id = division_template
-                    value = 1000
-                }
-
-                add_ai_strategy = {
-                    type = template_prio
-                    id = zombies
-                    value = 1000
-                }
-
-                # Force maximum aggression on all fronts
-                add_ai_strategy = {
-                    type = front_unit_request
-                    value = 1000  # Request maximum units for all fronts
-                }
-
-                # Make AI extremely aggressive in all major population centers
-                add_ai_strategy = {
-                    type = area_priority
-                    id = europe
-                    value = 1000
-                }
-
-                add_ai_strategy = {
-                    type = area_priority
-                    id = north_america
-                    value = 1000
-                }
-
-                add_ai_strategy = {
-                    type = area_priority
-                    id = asia
-                    value = 1000
-                }
-
-                add_ai_strategy = {
-                    type = area_priority
-                    id = africa
-                    value = 1000
-                }
-
-                add_ai_strategy = {
-                    type = area_priority
-                    id = oceania
-                    value = 1000
-                }
-
-                add_ai_strategy = {
-                    type = area_priority
-                    id = middle_east
-                    value = 1000
-                }
-
-                # Force concentration on all fronts for maximum aggression
-                add_ai_strategy = {
-                    type = force_concentration_factor
-                    value = 100  # Use maximum concentration for attacks
-                }
-
-                # Maximize zombie unit production ratio
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = zombies
-                    value = 10
-                }
-
-                # Minimize all other unit types to focus purely on zombies
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = garrison
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = paratroopers
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = mountaineers
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = marines
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = cavalry
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = motorized
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = mechanized
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = armor
-                    value = -1000
-                }
-
-                add_ai_strategy = {
-                    type = role_ratio
-                    id = infantry
-                    value = -1000
-                }
-
-                # Force AI to want maximum divisions
-                add_ai_strategy = {
-                    type = ai_wanted_divisions_factor
-                    value = 1000
-                }
-
                 set_country_flag = zombie_outbreak_dynamic_country
             }
             news_event = { id = chaosx.news.3 days = 3 }
@@ -1635,27 +1562,392 @@ news_event = {
 }
 
 
-##############################################################################################################
 
 
+# Anti Zombie League Formation Event - Global invitation to join
+country_event = {
+    id = chaosx.nr2.7
+    title = chaosx.nr2.7.t
+    desc = chaosx.nr2.7.d
+    picture = GFX_report_event_generic_sign_treaty2
+
+    trigger = {
+        has_global_flag = azl_formation_announced
+        NOT = { has_country_flag = azl_formation_event_fired }
+        NOT = { original_tag = ZZZ }
+        NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+        NOT = { has_idea = anti_zombie_league_member_level_0 }
+        NOT = { has_country_flag = azl_leader }
+    }
+
+    mean_time_to_happen = {
+        days = 7
+    }
+
+    immediate = {
+        hidden_effect = {
+            set_country_flag = azl_formation_event_fired
+            # Check if zombies have overwhelming force (>500 divisions)
+            set_temp_variable = { total_zombie_divisions = 0 }
+            if = {
+                limit = { country_exists = ZZZ }
+                ZZZ = {
+                    set_temp_variable = { zzz_divisions = num_divisions }
+                    PREV = { add_to_temp_variable = { var = total_zombie_divisions value = zzz_divisions } }
+                }
+            }
+            every_country = {
+                limit = { has_country_flag = zombie_outbreak_dynamic_country }
+                set_temp_variable = { dynamic_divisions = num_divisions }
+                PREV = { add_to_temp_variable = { var = total_zombie_divisions value = dynamic_divisions } }
+            }
+
+            # If zombies have >500 divisions, set flag for overwhelming force
+            if = {
+                limit = { check_variable = { var = total_zombie_divisions value > 500 } ZZZ = { check_variable = { num_controlled_states > 50 } } }
+                set_country_flag = zombie_overwhelming_force
+            }
+        }
+    }
 
 
+    # Option A: Join the Anti Zombie League immediately
+    option = {
+        name = chaosx.nr2.7.a
 
 
+        ai_chance = {
+            base = 10
+
+            # Base factors for joining
+            modifier = {
+                factor = 5
+                has_war_with = ZZZ
+            }
+
+            # Government type modifiers
+            modifier = {
+                factor = 3
+                has_government = democratic
+            }
+            modifier = {
+                factor = 1
+                has_government = neutrality
+            }
+            modifier = {
+                factor = 0.5
+                has_government = communism
+            }
+            modifier = {
+                factor = 0.2
+                has_government = fascism
+            }
+
+            # Prevention measures boost willingness
+            modifier = {
+                factor = 1.5
+                has_country_flag = hygiene_measures_enforced
+            }
+            modifier = {
+                factor = 2
+                has_country_flag = quarantine_protocols_active
+            }
+
+            # Cure sharing participation
+            modifier = {
+                factor = 2.5
+                is_in_tech_sharing_group = cure_sharing
+            }
+
+            # Proximity to zombie threat
+            modifier = {
+                factor = 3
+                any_owned_state = {
+                    any_neighbor_state = {
+                        OR = {
+                            is_controlled_by = ZZZ
+                            controller = { has_country_flag = zombie_outbreak_dynamic_country }
+                        }
+                    }
+                }
+            }
+
+            # Chaos tier escalation
+            modifier = {
+                factor = 1.5
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                factor = 2
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                factor = 3
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                factor = 4
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+
+            # Major powers more likely to lead cooperation
+            modifier = {
+                factor = 1.8
+                is_major = yes
+            }
+
+            # Penalties for not having measures
+            modifier = {
+                factor = 0.3
+                NOT = { has_country_flag = hygiene_measures_enforced }
+            }
+            modifier = {
+                factor = 0.5
+                NOT = { is_in_tech_sharing_group = cure_sharing }
+            }
+
+            # Less likely if winning an offensive war
+            modifier = {
+                factor = 0.2
+                has_war = yes
+                NOT = { has_war_with = ZZZ }
+                NOT = { has_defensive_war = yes }
+                surrender_progress < 0.1
+            }
+
+            # Island nations are less concerned
+            modifier = {
+                factor = 0.7
+                capital_scope = { is_island_state = yes }
+            }
+
+            # Overwhelming zombie force - everyone must join
+            modifier = {
+                factor = 100
+                check_variable = { var = total_zombie_divisions value > 500 }
+            }
+        }
+
+        activate_decision = join_anti_zombie_league
+
+        if = {
+            limit = { has_country_flag = zombie_overwhelming_force }
+            custom_effect_tooltip = azl_zombie_overwhelming_force_tt
+        }
+    }
+
+    # Option B: Consider joining later
+    option = {
+        name = chaosx.nr2.7.b
+
+        ai_chance = {
+            base = 100
+
+            # Reduce chance if very willing to join
+            modifier = {
+                factor = 0.1
+                has_war_with = ZZZ
+            }
+
+            # Government type modifiers (inverse of join willingness)
+            modifier = {
+                factor = 0.3
+                has_government = democratic
+            }
+            modifier = {
+                factor = 0.7
+                has_government = neutrality
+            }
+            modifier = {
+                factor = 1.2
+                has_government = communism
+            }
+            modifier = {
+                factor = 1.5
+                has_government = fascism
+            }
+
+            # Less likely to delay if already prepared
+            modifier = {
+                factor = 0.5
+                has_country_flag = hygiene_measures_enforced
+                has_country_flag = quarantine_protocols_active
+                is_in_tech_sharing_group = cure_sharing
+            }
+
+            # More likely to delay if threat seems distant
+            modifier = {
+                factor = 2
+                capital_scope = { is_island_state = yes }
+                NOT = {
+                    any_owned_state = {
+                        any_neighbor_state = {
+                            OR = {
+                                is_controlled_by = ZZZ
+                                controller = { has_country_flag = zombie_outbreak_dynamic_country }
+                            }
+                        }
+                    }
+                }
+            }
+
+            # Less likely to delay as chaos increases
+            modifier = {
+                factor = 0.8
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                factor = 0.6
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                factor = 0.4
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                factor = 0.2
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+
+            # Cannot delay if zombies are overwhelming
+            modifier = {
+                factor = 0
+                check_variable = { var = total_zombie_divisions value > 500 }
+            }
+        }
+
+        add_political_power = 25
+        custom_effect_tooltip = azl_can_join_later_tt
+    }
+
+    # Option C: Refuse to join (only if zombies aren't overwhelming)
+    option = {
+        name = chaosx.nr2.7.c
+        trigger = {
+            NOT = { has_country_flag = zombie_overwhelming_force }
+        }
+
+        ai_chance = {
+            base = 5
+
+            # Fascists and authoritarians more likely to refuse
+            modifier = {
+                factor = 4
+                has_government = fascism
+            }
+            modifier = {
+                factor = 2
+                has_government = communism
+            }
+
+            # More likely to refuse if in a winning war
+            modifier = {
+                factor = 3
+                has_war = yes
+                NOT = { has_war_with = ZZZ }
+                NOT = { has_defensive_war = yes }
+                surrender_progress < 0.1
+            }
+
+            # Island nations feel safer going alone
+            modifier = {
+                factor = 2
+                capital_scope = { is_island_state = yes }
+            }
+
+            # Major powers might think they can handle it alone
+            modifier = {
+                factor = 1.5
+                is_major = yes
+                NOT = { has_war_with = ZZZ }
+            }
+
+            # Less likely to refuse if unprepared
+            modifier = {
+                factor = 0.3
+                NOT = { has_country_flag = hygiene_measures_enforced }
+                NOT = { has_country_flag = quarantine_protocols_active }
+            }
+
+            # Less likely to refuse if neighbors are infected
+            modifier = {
+                factor = 0.2
+                any_owned_state = {
+                    any_neighbor_state = {
+                        OR = {
+                            is_controlled_by = ZZZ
+                            controller = { has_country_flag = zombie_outbreak_dynamic_country }
+                        }
+                    }
+                }
+            }
+
+            # Much less likely to refuse as chaos increases
+            modifier = {
+                factor = 0.8
+                has_global_flag = { flag = chaos_tier value = 2 }
+            }
+            modifier = {
+                factor = 0.5
+                has_global_flag = { flag = chaos_tier value = 3 }
+            }
+            modifier = {
+                factor = 0.2
+                has_global_flag = { flag = chaos_tier value = 4 }
+            }
+            modifier = {
+                factor = 0.1
+                has_global_flag = { flag = chaos_tier value = 5 }
+            }
+
+            # Cannot refuse if zombies are overwhelming
+            modifier = {
+                factor = 0
+                check_variable = { var = total_zombie_divisions value > 500 }
+            }
+        }
+
+        add_political_power = 50
+        set_country_flag = azl_refused_to_join
+        custom_effect_tooltip = azl_refused_to_join_tt
+    }
+}
 
 
+# World End Scenario Event - triggered by global chaos reaching maximum
+country_event = {
+    id = chaosx.nr2.8
 
+    hidden = yes
 
+    trigger = {
+        has_global_flag = { flag = chaos_tier value = 5 }
+        has_global_flag = anti_zombie_league_formed
+        NOT = { has_global_flag = world_end }
+        ZZZ = { num_divisions > 500 }
+    }
 
+    mean_time_to_happen = {
+        days = 100
 
+    }
 
+    immediate = {
+        hidden_effect = {
+            play_song = "zombies_music"
 
+            set_global_flag = {
+                flag = super_event_visible
+                days = 30
+                value = 3
+            }
 
+            set_global_flag = world_end
 
-
-
-
-
+            set_global_flag = world_end_zombies
+        }
+    }
+}
 
 ##############################################################################################################
 #    ##    ## ########      #######

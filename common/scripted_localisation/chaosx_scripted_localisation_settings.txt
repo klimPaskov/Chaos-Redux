@@ -279,11 +279,11 @@ defined_text = {
 defined_text = {
     name = GetTimerWindowText
     text = {
-        trigger = { has_country_flag = events_activated }
+        trigger = { OR = { has_country_flag = events_activated has_global_flag = world_end } }
         localization_key = chaosx.timer_window.countdown
     }
     text = {
-        trigger = { NOT = { has_country_flag = events_activated } }
+        trigger = { always = yes }
         localization_key = chaosx.timer_window.countdown.never
     }
 }
@@ -8731,6 +8731,10 @@ defined_text = {
     name = GetSettingsChaosMeterSprite
 
     text = {
+        trigger = { has_global_flag = world_end }
+        localization_key = "GFX_settings_chaos_meter_max"
+    }
+    text = {
         trigger = { has_global_flag = settings_chaos_meter_disabled }
         localization_key = "GFX_settings_chaos_meter_disabled"
     }
@@ -9353,6 +9357,17 @@ defined_text = {
         localization_key = "GFX_chaosx_checkbox_unchecked"
     }
 }
+defined_text = {
+    name = GetWorldEndDisabledCheckboxSprite
+    text = {
+        trigger = { has_global_flag = world_end_disabled }
+        localization_key = "GFX_chaosx_checkbox_checked"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "GFX_chaosx_checkbox_unchecked"
+    }
+}
 
 # Disable Selected Event checkbox sprite
 defined_text = {
@@ -9372,7 +9387,12 @@ defined_text = {
     name = GetActualChaosValue
     text = {
         trigger = {
-            has_variable = global.chaos_meter_backup_value
+            has_global_flag = world_end
+        }
+        localization_key = chaos_tier_end
+    }
+    text = {
+        trigger = {
             has_global_flag = settings_chaos_meter_disabled
         }
         localization_key = "Chaos value: [?global.chaos_meter_backup_value] (Disabled)"

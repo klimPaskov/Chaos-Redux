@@ -140,22 +140,24 @@ ideas = {
                 send_volunteer_factor = -100.0 # Cannot send volunteers
                 disabled_ideas = 1 # Disable changing ideas/ministers
                 trade_opinion_factor = -100.0 # Make trading unattractive
-                consumer_goods_factor = 2.00
+                consumer_goods_factor = 10.00
                 ai_get_ally_desire_factor = -100
                 ai_join_ally_desire_factor = -100
                 join_faction_tension = 100
                 equipment_capture = 0.1
                 surrender_limit = 1.00 # Zombies don't surrender
-                ai_desired_divisions_factor = 10000 # yes
+                ai_desired_divisions_factor = 1000 # yes
                 ai_focus_aggressive_factor = 1000
                 political_power_cost = 100
                 enemy_justify_war_goal_time = -10.00
                 neutrality_drift = 100
-                local_resources_factor = -10.00
                 attrition = -10.00
                 max_dig_in_factor = -10.00
                 mobilization_speed = 1000.00
                 annex_cost_factor = -0.5
+                production_speed_buildings_factor = -10.00
+                production_factory_max_efficiency_factor = -10.00
+                experience_gain_army = -10.00
             }
         }
     }
@@ -177,7 +179,7 @@ ideas = {
             modifier = {
                 # percentual
                 supply_consumption_factor = -0.25
-                conscription = 0.50
+                conscription = 0.5
                 defence = -0.50
                 army_attack_speed_factor = 0.5
                 no_supply_grace = 240
@@ -254,7 +256,7 @@ ideas = {
             modifier = {
                 # percentual
                 supply_consumption_factor = -0.9
-                conscription = 0.9
+                conscription = 0.75
                 army_attack_speed_factor = 1.00
                 no_supply_grace = 400
                 out_of_supply_factor = 0.9
@@ -263,7 +265,6 @@ ideas = {
             }
         }
     }
-
 
     country = {
         searching_for_cure = {
@@ -352,72 +353,6 @@ ideas = {
                 army_attack_factor = -0.25
                 army_speed_factor = -0.25
                 conscription = -0.25
-            }
-        }
-    }
-    country = {
-        cure_sharing_bonus_tier_1 = {
-            picture = generic_research_bonus
-
-            allowed = {
-                original_tag = ZZZ
-            }
-
-            allowed_civil_war = {
-                always = yes
-            }
-
-            modifier = {
-                defence = -0.35
-                army_attack_factor = -0.35
-                army_speed_factor = -0.35
-                conscription = -0.35
-                army_org_factor = -0.1
-            }
-        }
-    }
-    country = {
-        cure_sharing_bonus_tier_2 = {
-            picture = generic_research_bonus
-
-            allowed = {
-                original_tag = ZZZ
-            }
-
-            allowed_civil_war = {
-                always = yes
-            }
-
-            modifier = {
-                defence = -0.45
-                army_attack_factor = -0.45
-                army_speed_factor = -0.45
-                conscription = -0.45
-                army_org_factor = -0.2
-                land_night_attack = -0.5
-            }
-        }
-    }
-    country = {
-        cure_sharing_bonus_tier_3 = {
-            picture = generic_research_bonus
-
-            allowed = {
-                original_tag = ZZZ
-            }
-
-            allowed_civil_war = {
-                always = yes
-            }
-
-            modifier = {
-                defence = -0.6
-                army_attack_factor = -0.6
-                army_speed_factor = -0.6
-                conscription = -0.6
-                army_org_factor = -0.3
-                land_night_attack = -1.0
-                supply_consumption_factor = 0.25
             }
         }
     }
@@ -1355,10 +1290,18 @@ ideas = {
     # Outbreak Prevention Measures
     country = {
         outbreak_prevention_hygiene_measures = {
-            picture = generic_research_bonus
+            picture = ARG_social_welfare_fund_ns
 
             allowed_civil_war = {
                 always = yes
+            }
+
+            on_add = {
+                set_country_flag = hygiene_measures_enforced
+            }
+
+            on_remove = {
+                clr_country_flag = hygiene_measures_enforced
             }
 
             modifier = {
@@ -1376,17 +1319,25 @@ ideas = {
 
     country = {
         outbreak_prevention_migration_restricted = {
-            picture = generic_intel_bonus
+            picture = generic_air_payment
 
             allowed_civil_war = {
                 always = yes
             }
 
+            on_add = {
+                set_country_flag = migration_restricted
+            }
+
+            on_remove = {
+                clr_country_flag = migration_restricted
+            }
+
             modifier = {
                 monthly_population = -0.15  # Reduced population growth due to restricted movement
-                production_factory_max_efficiency_factor = -0.08  # Industrial capacity reduction
+                production_factory_max_efficiency_factor = -0.05  # Industrial capacity reduction
                 trade_opinion_factor = -0.15  # Trade relations worsened
-                stability_weekly = -0.002  # Ongoing stability penalty
+                stability_weekly = -0.0015  # Ongoing stability penalty
                 political_power_gain = -0.05  # Administrative burden
             }
 
@@ -1404,12 +1355,20 @@ ideas = {
                 always = yes
             }
 
+            on_add = {
+                set_country_flag = quarantine_protocols_active
+            }
+
+            on_remove = {
+                clr_country_flag = quarantine_protocols_active
+            }
+
             modifier = {
                 production_factory_max_efficiency_factor = -0.15  # Significant industrial output penalty
                 trade_opinion_factor = -0.25  # Major trade restrictions
                 research_speed_factor = -0.1  # Research hampered by restrictions
-                stability_weekly = -0.003  # Significant stability penalty
-                war_support_weekly = -0.002  # Population discontent
+                stability_weekly = -0.0015  # Significant stability penalty
+                war_support_weekly = -0.001  # Population discontent
                 monthly_population = -0.25  # Reduced population growth
             }
 
@@ -1427,14 +1386,22 @@ ideas = {
                 always = yes
             }
 
+            on_add = {
+                set_country_flag = borders_completely_closed
+            }
+
+            on_remove = {
+                clr_country_flag = borders_completely_closed
+            }
+
             modifier = {
                 monthly_population = -0.5  # Major population growth penalty
                 trade_opinion_factor = -0.50  # Severe trade penalties
-                production_factory_max_efficiency_factor = -0.25  # Major industrial capacity reduction
+                production_factory_max_efficiency_factor = -0.15  # Major industrial capacity reduction
                 consumer_goods_factor = 0.1  # Increased consumer goods needs due to hoarding
-                stability_weekly = -0.005  # Major stability penalty
-                war_support_weekly = -0.003  # Significant population discontent
-                political_power_gain = -0.15  # Heavy administrative burden
+                stability_weekly = -0.002  # Major stability penalty
+                war_support_weekly = -0.001  # Significant population discontent
+                political_power_gain = -0.05  # Heavy administrative burden
             }
 
             cancel = {
@@ -1451,11 +1418,19 @@ ideas = {
                 always = yes
             }
 
+            on_add = {
+                set_country_flag = extreme_martial_law_active
+            }
+
+            on_remove = {
+                clr_country_flag = extreme_martial_law_active
+            }
+
             modifier = {
                 monthly_population = -0.8  # Extreme population growth reduction
-                production_factory_max_efficiency_factor = -0.4  # Extreme industrial penalties
+                production_factory_max_efficiency_factor = -0.25  # Extreme industrial penalties
                 consumer_goods_factor = 0.2  # Major increase in consumer goods needs
-                stability_weekly = -0.01  # Extreme stability penalty
+                stability_weekly = -0.002  # Extreme stability penalty
                 war_support_weekly = -0.005  # Major population discontent
                 political_power_gain = -0.3  # Extreme administrative burden
                 # Military benefits to offset the extreme measures
@@ -1466,6 +1441,404 @@ ideas = {
 
             cancel = {
                 NOT = { has_global_flag = has_zombie_outbreak }
+            }
+        }
+    }
+
+    # Anti Zombie League member idea
+    country = {
+        anti_zombie_league_member_level_0 = {
+            picture = jap_supremacy_of_technology
+
+            allowed_civil_war = {
+                always = yes
+            }
+
+            modifier = {
+                # Penalties for committing to the league
+                research_speed_factor = -0.15  # Research diverted to zombie containment
+                political_power_gain = -0.2   # Administrative burden
+                consumer_goods_factor = 0.05  # Resource allocation to league efforts
+                production_factory_max_efficiency_factor = -0.05  # Industrial focus on containment
+
+                # Enhanced cure research (when in cure sharing)
+                # Additional bonuses applied via scripted effects
+            }
+
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.15   # Base 15% vs zombies
+                defense_bonus_against = 0.15  # Base 15% defense vs zombies
+                breakthrough_bonus_against = 0.15
+            }
+
+            cancel = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+        }
+
+        # Enhanced Anti-Zombie League combat bonuses (investment levels)
+        anti_zombie_league_member_level_1 = {
+            picture = jap_supremacy_of_technology
+
+            allowed_civil_war = {
+                always = yes
+            }
+
+            modifier = {
+                # Same penalties as base level
+                research_speed_factor = -0.16
+                political_power_gain = -0.21
+                consumer_goods_factor = 0.06
+                production_factory_max_efficiency_factor = -0.06
+            }
+
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.20   # 20% vs zombies (15% + 5%)
+                defense_bonus_against = 0.20  # 20% defense vs zombies
+                breakthrough_bonus_against = 0.20
+            }
+
+            cancel = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+        }
+
+        anti_zombie_league_member_level_2 = {
+            picture = jap_supremacy_of_technology
+
+            allowed_civil_war = {
+                always = yes
+            }
+
+            modifier = {
+                research_speed_factor = -0.17
+                political_power_gain = -0.22
+                consumer_goods_factor = 0.07
+                production_factory_max_efficiency_factor = -0.07
+            }
+
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.25   # 25% vs zombies
+                defense_bonus_against = 0.25
+                breakthrough_bonus_against = 0.25
+            }
+
+            cancel = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+        }
+
+        anti_zombie_league_member_level_3 = {
+            picture = jap_supremacy_of_technology
+
+            allowed_civil_war = {
+                always = yes
+            }
+
+            modifier = {
+                research_speed_factor = -0.18
+                political_power_gain = -0.23
+                consumer_goods_factor = 0.08
+                production_factory_max_efficiency_factor = -0.08
+            }
+
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.30   # 30% vs zombies
+                defense_bonus_against = 0.30
+                breakthrough_bonus_against = 0.30
+            }
+
+            cancel = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+        }
+
+        anti_zombie_league_member_level_4 = {
+            picture = jap_supremacy_of_technology
+
+            allowed_civil_war = {
+                always = yes
+            }
+
+            modifier = {
+                research_speed_factor = -0.19
+                political_power_gain = -0.24
+                consumer_goods_factor = 0.09
+                production_factory_max_efficiency_factor = -0.09
+            }
+
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.35   # 35% vs zombies
+                defense_bonus_against = 0.35
+                breakthrough_bonus_against = 0.35
+            }
+
+            cancel = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+        }
+
+        anti_zombie_league_member_level_5 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.20
+                political_power_gain = -0.25
+                consumer_goods_factor = 0.10
+                production_factory_max_efficiency_factor = -0.10
+            }
+
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.40
+                defense_bonus_against = 0.40
+                breakthrough_bonus_against = 0.40
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_6 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.22
+                political_power_gain = -0.27
+                consumer_goods_factor = 0.12
+                production_factory_max_efficiency_factor = -0.12
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.45
+                defense_bonus_against = 0.45
+                breakthrough_bonus_against = 0.45
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_7 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.25
+                political_power_gain = -0.30
+                consumer_goods_factor = 0.15
+                production_factory_max_efficiency_factor = -0.15
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.50
+                defense_bonus_against = 0.50
+                breakthrough_bonus_against = 0.50
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_8 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.27
+                political_power_gain = -0.32
+                consumer_goods_factor = 0.17
+                production_factory_max_efficiency_factor = -0.17
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.55
+                defense_bonus_against = 0.55
+                breakthrough_bonus_against = 0.55
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_9 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.30
+                political_power_gain = -0.35
+                consumer_goods_factor = 0.20
+                production_factory_max_efficiency_factor = -0.20
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.60
+                defense_bonus_against = 0.60
+                breakthrough_bonus_against = 0.60
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_10 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.33
+                political_power_gain = -0.38
+                consumer_goods_factor = 0.23
+                production_factory_max_efficiency_factor = -0.23
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.65
+                defense_bonus_against = 0.65
+                breakthrough_bonus_against = 0.65
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_11 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.37
+                political_power_gain = -0.42
+                consumer_goods_factor = 0.27
+                production_factory_max_efficiency_factor = -0.27
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.70
+                defense_bonus_against = 0.70
+                breakthrough_bonus_against = 0.70
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_12 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.30
+                political_power_gain = -0.45
+                consumer_goods_factor = 0.30
+                production_factory_max_efficiency_factor = -0.30
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.75
+                defense_bonus_against = 0.75
+                breakthrough_bonus_against = 0.75
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_13 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.33
+                political_power_gain = -0.48
+                consumer_goods_factor = 0.33
+                production_factory_max_efficiency_factor = -0.33
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.80
+                defense_bonus_against = 0.80
+                breakthrough_bonus_against = 0.80
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_14 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.35
+                political_power_gain = -0.50
+                consumer_goods_factor = 0.35
+                production_factory_max_efficiency_factor = -0.35
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.85
+                defense_bonus_against = 0.85
+                breakthrough_bonus_against = 0.85
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_15 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.37
+                political_power_gain = -0.52
+                consumer_goods_factor = 0.37
+                production_factory_max_efficiency_factor = -0.37
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.90
+                defense_bonus_against = 0.90
+                breakthrough_bonus_against = 0.90
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_16 = {
+            picture = jap_supremacy_of_technology
+            allowed_civil_war = { always = yes }
+            modifier = {
+                research_speed_factor = -0.40
+                political_power_gain = -0.55
+                consumer_goods_factor = 0.40
+                production_factory_max_efficiency_factor = -0.40
+            }
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 0.95
+                defense_bonus_against = 0.95
+                breakthrough_bonus_against = 0.95
+            }
+            cancel = { NOT = { has_global_flag = has_zombie_outbreak } }
+        }
+
+        anti_zombie_league_member_level_17 = {
+            picture = jap_supremacy_of_technology
+
+            allowed_civil_war = {
+                always = yes
+            }
+
+            modifier = {
+                research_speed_factor = -0.45
+                political_power_gain = -0.60
+                consumer_goods_factor = 0.45
+                production_factory_max_efficiency_factor = -0.45
+            }
+
+            targeted_modifier = {
+                tag = ZZZ
+                attack_bonus_against = 1.00   # 100% vs zombies (maximum)
+                defense_bonus_against = 1.00
+                breakthrough_bonus_against = 1.00
+            }
+
+            cancel = {
+                NOT = { has_global_flag = has_zombie_outbreak }
+            }
+        }
+
+        # Investment penalty for countries that contribute to league research
+        azl_investment_penalty = {
+            picture = jap_duplicate_research
+
+            allowed_civil_war = {
+                always = yes
+            }
+
+            modifier = {
+                research_speed_factor = -0.20
+                production_factory_max_efficiency_factor = -0.20
+                production_factory_efficiency_gain_factor = -0.20
+                consumer_goods_factor = 0.20
             }
         }
     }

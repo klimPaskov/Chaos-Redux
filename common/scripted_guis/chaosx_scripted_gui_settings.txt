@@ -20,7 +20,10 @@ scripted_gui = {
 
             timer_system_button_click = {
                 open_timer_system_menu = yes
-                # Update the enabled countries list when opening timer system
+            }
+            tag_management_button_click = {
+                open_tag_management_menu = yes
+                # Update the enabled countries list when opening tag management system
                 update_enabled_countries_list = yes
             }
 
@@ -165,14 +168,6 @@ scripted_gui = {
             }
 
             # Tag Management Interface Effects
-            timer_header_left_arrow_click = {
-                toggle_timer_system_view = yes
-            }
-
-            timer_header_right_arrow_click = {
-                toggle_timer_system_view = yes
-            }
-
             country_filter_left_arrow_click = {
                 cycle_country_filter_prev = yes
             }
@@ -262,6 +257,9 @@ scripted_gui = {
             chaos_disable_checkbox_click = {
                 toggle_chaos_meter_disabled = yes
             }
+            chaos_world_end_checkbox_click = {
+                toggle_world_end = yes
+            }
 
             # Advanced Settings Interface Effects
             recovery_rate_decrease_click = {
@@ -328,6 +326,9 @@ scripted_gui = {
             }
 
             timer_system_button_click_enabled = {
+                always = yes
+            }
+            tag_management_button_click_enabled = {
                 always = yes
             }
 
@@ -486,13 +487,7 @@ scripted_gui = {
             }
 
             # Timer System Interface Triggers
-            timer_header_left_arrow_click_enabled = {
-                has_country_flag = show_timer_system_menu
-            }
 
-            timer_header_right_arrow_click_enabled = {
-                has_country_flag = show_timer_system_menu
-            }
 
             timer_min_decrease_click_enabled = {
                 has_country_flag = show_timer_system_menu
@@ -562,47 +557,38 @@ scripted_gui = {
 
             # Tag Management Interface Triggers
             country_filter_left_arrow_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             country_filter_right_arrow_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             continent_sort_left_arrow_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             continent_sort_right_arrow_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_decrease_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_decrease_right_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_increase_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_increase_right_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             enable_for_selected_tag_button_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
                 # Only enabled if a country is selected and doesn't already have events activated
                 has_variable = settings_current_selected_country
@@ -610,7 +596,6 @@ scripted_gui = {
             }
 
             disable_for_selected_tag_button_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
                 # Only enabled if a country is selected and has events activated
                 has_variable = settings_current_selected_country
@@ -618,12 +603,10 @@ scripted_gui = {
             }
 
             auto_enable_switch_checkbox_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             disable_previous_tag_checkbox_click_enabled = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
@@ -656,11 +639,17 @@ scripted_gui = {
             chaos_update_button_click_enabled = {
                 has_country_flag = show_chaos_meter_menu
                 NOT = { has_global_flag = settings_chaos_meter_disabled }
+                NOT = { has_global_flag = world_end }
             }
 
             chaos_disable_checkbox_click_enabled = {
                 has_country_flag = show_chaos_meter_menu
+                NOT = { has_global_flag = world_end }
             }
+            chaos_world_end_checkbox_click_enabled = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
 
             # Advanced Settings Interface Triggers
             recovery_rate_decrease_click_enabled = {
@@ -909,11 +898,6 @@ scripted_gui = {
                 has_country_flag = show_event_clusters_view
             }
 
-            # Timer System Content Visibility
-            timer_system_content_visible = {
-                has_country_flag = show_timer_system_menu
-            }
-
             # Timer Interval Content Visibility
             timer_interval_content_visible = {
                 has_country_flag = show_timer_system_menu
@@ -922,7 +906,6 @@ scripted_gui = {
 
             # Tag Management Content Visibility
             tag_management_content_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
@@ -933,16 +916,7 @@ scripted_gui = {
             }
 
             tag_management_header_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
-            }
-
-            timer_header_left_arrow_visible = {
-                has_country_flag = show_timer_system_menu
-            }
-
-            timer_header_right_arrow_visible = {
-                has_country_flag = show_timer_system_menu
             }
 
             timer_min_label_visible = {
@@ -1051,151 +1025,121 @@ scripted_gui = {
 
             # Tag Management Individual Element Visibility
             tag_enable_firing_label_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             country_filter_left_arrow_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             country_filter_label_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             country_filter_right_arrow_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             continent_sort_left_arrow_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             continent_sort_label_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             continent_sort_right_arrow_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_label_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_decrease_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_selected_tag_name_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
             tag_selected_tag_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_bg_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_value_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_increase_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             selected_tag_name_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             selected_tag_status_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_status_display_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             tag_decrement_info_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             enable_for_selected_tag_button_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             enable_for_selected_tag_text_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             disable_for_selected_tag_button_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             disable_for_selected_tag_text_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             enabled_list_label_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             enabled_list_display_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             currently_enabled_label_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             enabled_list_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             auto_enable_switch_checkbox_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             auto_enable_switch_text_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             disable_previous_tag_checkbox_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
             disable_previous_tag_text_visible = {
-                has_country_flag = show_timer_system_menu
                 has_country_flag = show_tag_management_view
             }
 
@@ -1269,7 +1213,14 @@ scripted_gui = {
                 has_country_flag = show_chaos_meter_menu
             }
 
+            chaos_world_end_checkbox_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+
             chaos_disable_text_visible = {
+                has_country_flag = show_chaos_meter_menu
+            }
+            chaos_world_end_text_visible = {
                 has_country_flag = show_chaos_meter_menu
             }
 
@@ -1472,6 +1423,9 @@ scripted_gui = {
             # Dynamic sprite for chaos meter disable checkbox
             chaos_disable_checkbox = {
                 image = "[GetChaosMeterDisabledCheckboxSprite]"
+            }
+            chaos_world_end_checkbox = {
+                image = "[GetWorldEndDisabledCheckboxSprite]"
             }
 
             # Dynamic sprites for disabled event

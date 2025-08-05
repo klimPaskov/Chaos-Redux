@@ -1578,7 +1578,7 @@ if = {
 
 # Calculate zombie outbreak chance for a country (mimics chaosx.nr2.6 mean_time_to_happen calculation)
 calculate_zombie_outbreak_chance = {
-    set_variable = { zombie_outbreak_days = 2555 } # Default 7 years
+    set_variable = { zombie_outbreak_days = 1825 } # Default 5 years (updated to match new MTTH)
 
     # Check if this country is eligible for zombie outbreaks
     if = {
@@ -1590,7 +1590,7 @@ calculate_zombie_outbreak_chance = {
         # If zombie outbreak is NOT active, set very low risk
         if = {
             limit = { NOT = { has_global_flag = has_zombie_outbreak } }
-            set_variable = { zombie_outbreak_days = 3650 } # 10 years - very low risk
+            set_variable = { zombie_outbreak_days = 10950 } # 30 years - very low risk
         }
         # If zombie outbreak IS active, calculate proper risk
         else = {
@@ -1647,6 +1647,31 @@ calculate_zombie_outbreak_chance = {
                     multiply_variable = { zombie_outbreak_days = 3.0 }
                 }
 
+                # Higher population = higher risk (more people = more potential infected)
+                if = {
+                    limit = { check_variable = { max_manpower_k > 500000 } } # Very high population (500M+)
+                    multiply_variable = { zombie_outbreak_days = 0.6 }
+                }
+                else_if = {
+                    limit = { check_variable = { max_manpower_k > 200000 } } # High population (200M+)
+                    multiply_variable = { zombie_outbreak_days = 0.7 }
+                }
+                else_if = {
+                    limit = { check_variable = { max_manpower_k > 100000 } } # Medium-high population (100M+)
+                    multiply_variable = { zombie_outbreak_days = 0.8 }
+                }
+                else_if = {
+                    limit = { check_variable = { max_manpower_k > 50000 } } # Medium population (50M+)
+                    multiply_variable = { zombie_outbreak_days = 0.9 }
+                }
+                else_if = {
+                    limit = { check_variable = { max_manpower_k > 10000 } } # Low population (10M+)
+                    multiply_variable = { zombie_outbreak_days = 1.1 }
+                }
+                else = { # Very low population (under 10M)
+                    multiply_variable = { zombie_outbreak_days = 1.3 }
+                }
+
                 # Island nations are safer
                 if = {
                     limit = { capital_scope = { is_island_state = yes } }
@@ -1656,14 +1681,20 @@ calculate_zombie_outbreak_chance = {
                 # Major powers are more at risk
                 if = {
                     limit = { is_major = yes }
-                    multiply_variable = { zombie_outbreak_days = 0.7 }
+                    multiply_variable = { zombie_outbreak_days = 0.8 }
+                }
+
+                # Reduce chance for countries with very few states
+                if = {
+                    limit = { num_of_controlled_states < 5 }
+                    multiply_variable = { zombie_outbreak_days = 2.0 }
                 }
             }
         }
 
         # Convert to months for display (approximate)
         set_variable = { zombie_outbreak_months = zombie_outbreak_days }
-        divide_variable = { zombie_outbreak_months = 30.4 } # Average days per month
+        divide_variable = { zombie_outbreak_months = 30 } # Average days per month
         round_variable = zombie_outbreak_months
 
         # Ensure minimum of 1 month for display
@@ -1683,7 +1714,8 @@ calculate_zombie_outbreak_chance = {
         set_variable = { zombie_outbreak_days = 99999 }
         set_variable = { zombie_outbreak_months = 999 } # Special value for "No Risk"
     }
-}# Update zombie outbreak chance for all countries (weekly effect)
+}
+# Update zombie outbreak chance for all countries (weekly effect)
 update_all_zombie_outbreak_chances = {
     every_country = {
         limit = {
@@ -1691,5 +1723,28 @@ update_all_zombie_outbreak_chances = {
             NOT = { original_tag = ZZZ }
         }
         calculate_zombie_outbreak_chance = yes
+    }
+}
+
+
+# Enhanced cure research speed for Anti Zombie League members
+apply_azl_cure_research_bonus = {
+    if = {
+        limit = { has_idea = anti_zombie_league_member_level_0 }
+
+        # Set faster research time variables for AZL members
+        set_variable = { cure_research_days_0 = 45 }
+        set_variable = { cure_research_days_1 = 68 }
+        set_variable = { cure_research_days_2 = 90 }
+        set_variable = { cure_research_days_3 = 113 }
+
+        # Get the appropriate cure sharing bonus based on zombie tier
+    }
+    else = {
+        # Clear research speed variables for non-AZL members
+        clear_variable = cure_research_days_0
+        clear_variable = cure_research_days_1
+        clear_variable = cure_research_days_2
+        clear_variable = cure_research_days_3
     }
 }
