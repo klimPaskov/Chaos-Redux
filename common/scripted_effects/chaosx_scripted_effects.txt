@@ -13,6 +13,7 @@
 ###############################################################################################################
 ###############################################################################################################
 
+
 modify_value_based_on_chaos_tier = {
     # Input: base_value, add_value
     # Output: modified_value
@@ -1746,5 +1747,40 @@ apply_azl_cure_research_bonus = {
         clear_variable = cure_research_days_1
         clear_variable = cure_research_days_2
         clear_variable = cure_research_days_3
+    }
+}
+
+# Dynamic cure research value calculation effects
+# Simple system: cure value = research slots + biowarfare facilities
+
+# Calculate the cure research value based on research slots and facilities
+calculate_cure_research_value = {
+    # Start with research slots
+    set_temp_variable = { cure_value = amount_research_slots }
+
+    # Count biowarfare facilities
+    set_temp_variable = { facility_count = 0 }
+    every_owned_state = {
+        if = {
+            limit = { biowarfare_facility > 0 }
+            ROOT = { add_to_temp_variable = { facility_count = 1 } }
+        }
+    }
+
+    # Add facilities to cure value
+    add_to_temp_variable = { cure_value = facility_count }
+
+    # Store the result
+    set_variable = { cure_research_value = cure_value }
+}
+
+# Update all countries' cure research values
+update_all_cure_research_values = {
+    every_country = {
+        limit = {
+            NOT = { original_tag = ZZZ }
+            NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+        }
+        calculate_cure_research_value = yes
     }
 }

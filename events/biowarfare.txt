@@ -1,0 +1,95 @@
+add_namespace = biowarfare
+
+country_event = {
+    id = biowarfare.1
+    title = biowarfare.1.t
+    desc = biowarfare.1.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = biowarfare.1.a
+        ai_chance = {
+            base = 0
+            modifier = {
+                add = 100
+                has_government = fascism
+            }
+        }
+        random_controlled_state = {
+            limit = { state = 88 }
+            add_building_construction = {
+                type = biowarfare_facility
+                level = 1
+                instant_build = yes
+                province = {
+                    id = 9412 # Auschwitz approximately
+                }
+            }
+        }
+    }
+    option = {
+        name = biowarfare.1.b
+        add_stability = 0.05
+        ai_chance = {
+            base = 100
+            modifier = {
+                factor = 0
+                has_government = fascism
+            }
+        }
+    }
+}
+
+
+country_event = {
+    id = biowarfare.4
+    title = biowarfare.4.t
+    desc = biowarfare.4.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = biowarfare.4.a
+        add_war_support = -0.01
+        retire_character = POL_franciszek_witaszek
+    }
+}
+
+country_event = {
+    id = biowarfare.3
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                any_core_state = {
+                    is_controlled_by = GER
+                }
+            }
+            country_event = { id = biowarfare.4 }
+        }
+    }
+}
+
+country_event = {
+    id = biowarfare.2
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                any_controlled_state = {
+                    state = 88
+                }
+            }
+            country_event = { id = biowarfare.4 }
+        }
+    }
+}
