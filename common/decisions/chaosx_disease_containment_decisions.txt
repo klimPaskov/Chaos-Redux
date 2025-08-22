@@ -1,0 +1,739 @@
+chaosx_disease_containment_category = {
+
+    deploy_field_hospitals = {
+        state_target = any_controlled_state
+        target_trigger = {
+            FROM = {
+                OR = {
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                    has_dynamic_modifier = { modifier = plague_contaminated_state }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                }
+            }
+        }
+        on_map_mode = map_only
+        icon = GFX_decision_deploy_field_hospitals
+        days_remove = 8
+
+        available = {
+            # Requires Field Hospital support company researched
+            has_tech = tech_field_hospital
+
+            hidden_trigger = {
+                FROM = {
+                    OR = {
+                        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                        has_dynamic_modifier = { modifier = plague_contaminated_state }
+                        has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    }
+                }
+            }
+            # Must have the state selected and contaminated
+
+
+            # Resource requirements
+            command_power > 9
+            has_equipment = { support_equipment > 99 }
+        }
+
+        visible = {
+            FROM = { NOT = { has_state_flag = field_hospitals_deployed } }
+        }
+
+        custom_cost_trigger = {
+            command_power > 9
+            has_equipment = { support_equipment > 99 }
+        }
+        custom_cost_text = deploy_field_hospitals_cost
+        ai_hint_pp_cost = 5
+
+        ai_will_do = {
+            base = 10
+            modifier = {
+                factor = 2
+                has_tech = tech_field_hospital2
+            }
+            modifier = {
+                factor = 2
+                has_tech = tech_field_hospital3
+            }
+            modifier = {
+                factor = 2
+                has_tech = tech_field_hospital4
+            }
+            modifier = {
+                factor = 0.25
+                stockpile_ratio = {
+                    archetype = support_equipment
+                    ratio > 0.2
+                }
+            }
+        }
+
+        complete_effect = {
+            # Pay the equipment cost
+            add_equipment_to_stockpile = { type = support_equipment amount = -150 }
+            add_command_power = -10
+        }
+
+        remove_effect = {
+            # Apply to the targeted state
+            FROM = {
+                set_state_flag = field_hospitals_deployed
+
+                # Calculate contamination reduction based on field hospital level
+                # Base reduction: 20%
+                # +10% per level of field hospital support company
+                set_temp_variable = { contamination_reduction = 0.2 }
+
+                # Check for field hospital upgrades (assuming tech progression)
+                if = {
+                    limit = { ROOT = { has_tech = tech_field_hospital2 } }
+                    add_to_temp_variable = { contamination_reduction = 0.1 }
+                }
+                if = {
+                    limit = { ROOT = { has_tech = tech_field_hospital3 } }
+                    add_to_temp_variable = { contamination_reduction = 0.1 }
+                }
+                if = {
+                    limit = { ROOT = { has_tech = tech_field_hospital4 } }
+                    add_to_temp_variable = { contamination_reduction = 0.1 }
+                }
+
+                # Store the reduction value for future calculations
+                set_variable = { field_hospital_effectiveness = contamination_reduction }
+
+                # Apply contamination reduction directly to state variables
+                reduce_contamination_effects = yes
+                force_update_dynamic_modifier = yes
+            }
+        }
+    }
+
+    quarantine_measures = {
+        state_target = any_controlled_state
+        target_trigger = {
+            FROM = {
+                OR = {
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                    has_dynamic_modifier = { modifier = plague_contaminated_state }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                }
+            }
+        }
+        on_map_mode = map_only
+        icon = GFX_decision_generic_arrest
+        days_remove = 15
+
+        available = {
+            # Must have the state selected and contaminated
+            FROM = {
+                OR = {
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                    has_dynamic_modifier = { modifier = plague_contaminated_state }
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                }
+            }
+
+            # Political power requirement
+            hidden_trigger = { check_variable = { political_power > 9 } }
+        }
+
+        visible = {
+            FROM = { NOT = { has_state_flag = quarantine_measures_active } }
+        }
+
+        cost = 10 # Political power cost
+
+        ai_will_do = {
+            factor = 5
+            modifier = {
+                factor = 0.5
+                check_variable = { stability < 0.4 }
+            }
+        }
+
+        remove_effect = {
+            # Apply to the targeted state
+            FROM = {
+                set_state_flag = quarantine_measures_active
+                add_dynamic_modifier = { modifier = quarantined_contaminated_state }
+
+                # Store contamination reduction value
+                set_variable = { quarantine_effectiveness = 0.2 }
+
+                # Apply contamination reduction directly to state variables
+                reduce_contamination_effects = yes
+            }
+        }
+    }
+
+    anthrax_antibiotics_mass_production = {
+        icon = GFX_decision_generic_industry
+        days_remove = 100
+
+        available = {
+            # Must have developed antibiotics during anthrax research
+            has_country_flag = anthrax_antibiotics_research_started
+
+            # Must have completed anthrax bomb project
+            is_special_project_completed = sp:anthrax_bomb
+
+            # Must have at least 10 civilian factories (minimum for 10% base effectiveness)
+            num_of_civilian_factories > 9
+
+            # Must not already be producing antibiotics
+            NOT = { has_idea = anthrax_antibiotics_mass_production_idea }
+            NOT = { has_country_flag = anthrax_antibiotics_production_in_progress }
+        }
+
+        visible = {
+            is_special_project_completed = sp:anthrax_bomb
+            any_controlled_state = {
+                has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+            }
+            has_country_flag = anthrax_antibiotics_research_started
+        }
+
+        ai_will_do = {
+            factor = 5
+            modifier = {
+                factor = 2
+                num_of_civilian_factories > 15
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = anthrax_antibiotics_production_in_progress
+        }
+
+        remove_effect = {
+            # Add the antibiotics production idea
+            add_ideas = anthrax_antibiotics_mass_production_idea
+            clr_country_flag = anthrax_antibiotics_production_in_progress
+        }
+    }
+
+    develop_anthrax_antibiotics_retroactively = {
+        icon = GFX_decision_generic_research
+        days_remove = 120
+
+        available = {
+            # Must have completed anthrax bomb project
+            is_special_project_completed = sp:anthrax_bomb
+
+            # Must NOT have developed antibiotics during research
+            NOT = { has_country_flag = anthrax_antibiotics_research_started }
+
+            # Must have at least 10 civilian factories (minimum for 10% base effectiveness)
+            num_of_civilian_factories > 9
+
+            # Must not already be producing antibiotics or developing them
+            NOT = { has_idea = anthrax_antibiotics_mass_production_idea }
+            NOT = { has_country_flag = anthrax_antibiotics_production_in_progress }
+            NOT = { has_country_flag = developing_anthrax_antibiotics_retroactively }
+        }
+
+        visible = {
+            # Always visible once anthrax bomb is researched
+            NOT = { has_country_flag = anthrax_antibiotics_research_started }
+            any_controlled_state = {
+                has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+            }
+        }
+
+        ai_will_do = {
+            factor = 2
+            modifier = {
+                factor = 3
+                num_of_civilian_factories > 15
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = developing_anthrax_antibiotics_retroactively
+
+            # Apply research slowdown during development
+            add_timed_idea = {
+                idea = developing_anthrax_antibiotics_research_slowdown
+                days = 120  # Same duration as the decision
+            }
+        }
+
+        remove_effect = {
+            # Set the antibiotics research flag and add the production idea
+            set_country_flag = anthrax_antibiotics_research_started
+            add_ideas = anthrax_antibiotics_mass_production_idea
+            clr_country_flag = developing_anthrax_antibiotics_retroactively
+        }
+    }
+
+    revoke_anthrax_antibiotics_mass_production = {
+        icon = GFX_decision_generic_industry
+        days_remove = 20
+
+        available = {
+            # Must currently have antibiotics production active
+            has_idea = anthrax_antibiotics_mass_production_idea
+        }
+
+        visible = {
+            # Always visible when antibiotics production is active
+            has_idea = anthrax_antibiotics_mass_production_idea
+        }
+
+        ai_will_do = {
+            base = 4
+            modifier = {
+                factor = 0
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                }
+            }
+            modifier = {
+                factor = 0.2
+                has_war = yes
+                any_enemy_country = { has_country_flag = used_anthrax_weapon }
+            }
+            modifier = {
+                # More likely to revoke if economy is struggling
+                factor = 2
+                num_of_civilian_factories < 15
+            }
+            modifier = {
+                factor = 2
+                has_stability < 0.3
+            }
+        }
+
+        complete_effect = {
+            # No immediate effect, just start the shutdown process
+        }
+
+        remove_effect = {
+            # Remove the antibiotics production idea
+            remove_ideas = anthrax_antibiotics_mass_production_idea
+        }
+    }
+
+    plague_antibiotics_mass_production = {
+        icon = GFX_decision_generic_industry
+        days_remove = 120
+
+        available = {
+            # Must have developed antibiotics during plague research
+            has_country_flag = plague_antibiotics_research_started
+
+            # Must have completed plague bomb project
+            is_special_project_completed = sp:plague_bomb
+
+            # Must have at least 15 civilian factories (higher requirement for plague)
+            num_of_civilian_factories > 14
+
+            # Must not already be producing antibiotics
+            NOT = { has_idea = plague_antibiotics_mass_production_idea }
+            NOT = { has_country_flag = plague_antibiotics_production_in_progress }
+        }
+
+        visible = {
+            any_controlled_state = {
+                has_dynamic_modifier = { modifier = plague_contaminated_state }
+            }
+            has_country_flag = plague_antibiotics_research_started
+        }
+
+        ai_will_do = {
+            factor = 8
+            modifier = {
+                factor = 2
+                num_of_civilian_factories > 25
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = plague_antibiotics_production_in_progress
+        }
+
+        remove_effect = {
+            # Add the antibiotics production idea
+            add_ideas = plague_antibiotics_mass_production_idea
+            clr_country_flag = plague_antibiotics_production_in_progress
+        }
+    }
+
+    develop_plague_antibiotics_retroactively = {
+        icon = GFX_decision_generic_research
+        days_remove = 180
+
+        available = {
+            # Must have completed plague bomb project
+            is_special_project_completed = sp:plague_bomb
+
+            # Must NOT have developed antibiotics during research
+            NOT = { has_country_flag = plague_antibiotics_research_started }
+
+            # Must have at least 15 civilian factories (higher requirement for plague)
+            num_of_civilian_factories > 14
+
+            # Must not already be producing antibiotics or developing them
+            NOT = { has_idea = plague_antibiotics_mass_production_idea }
+            NOT = { has_country_flag = plague_antibiotics_production_in_progress }
+            NOT = { has_country_flag = developing_plague_antibiotics_retroactively }
+        }
+
+        visible = {
+            # Always visible once plague bomb is researched
+            NOT = { has_country_flag = plague_antibiotics_research_started }
+            any_controlled_state = {
+                has_dynamic_modifier = { modifier = plague_contaminated_state }
+            }
+        }
+
+        ai_will_do = {
+            factor = 5
+            modifier = {
+                factor = 3
+                num_of_civilian_factories > 25
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = developing_plague_antibiotics_retroactively
+
+            # Apply research slowdown during development
+            add_timed_idea = {
+                idea = developing_plague_antibiotics_research_slowdown
+                days = 180  # Same duration as the decision
+            }
+        }
+
+        remove_effect = {
+            # Set the antibiotics research flag and add the production idea
+            set_country_flag = plague_antibiotics_research_started
+            add_ideas = plague_antibiotics_mass_production_idea
+            clr_country_flag = developing_plague_antibiotics_retroactively
+        }
+    }
+
+    revoke_plague_antibiotics_mass_production = {
+        icon = GFX_decision_generic_industry
+        days_remove = 30
+
+        available = {
+            # Must currently have antibiotics production active
+            has_idea = plague_antibiotics_mass_production_idea
+        }
+
+        visible = {
+            # Always visible when antibiotics production is active
+            has_idea = plague_antibiotics_mass_production_idea
+        }
+
+        ai_will_do = {
+            base = 2
+            modifier = {
+                factor = 0
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = plague_contaminated_state }
+                }
+            }
+            modifier = {
+                factor = 0.1
+                has_war = yes
+                any_enemy_country = { has_country_flag = used_plague_weapon }
+            }
+            modifier = {
+                # More likely to revoke if economy is struggling
+                factor = 3
+                num_of_civilian_factories < 20
+            }
+            modifier = {
+                factor = 3
+                has_stability < 0.25
+            }
+        }
+
+        complete_effect = {
+            # No immediate effect, just start the shutdown process
+        }
+
+        remove_effect = {
+            # Remove the antibiotics production idea
+            remove_ideas = plague_antibiotics_mass_production_idea
+        }
+    }
+
+    # Tularemia antibiotics decisions
+    tularemia_antibiotics_mass_production = {
+        icon = GFX_decision_generic_industry
+        days_remove = 50  # Faster than anthrax/plague due to easier research
+
+        available = {
+            # Must have researched antibiotics during project or retroactively
+            has_country_flag = tularemia_antibiotics_research_started
+        }
+
+        visible = {
+            # Must have tularemia bioweapon available and contamination present or potential threat
+            OR = {
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                }
+                any_enemy_country = { has_country_flag = used_tularemia_weapon }
+            }
+            has_country_flag = tularemia_antibiotics_research_started
+            NOT = { has_idea = tularemia_antibiotics_mass_production_idea }
+            NOT = { has_country_flag = tularemia_antibiotics_production_in_progress }
+        }
+
+        ai_will_do = {
+            base = 50
+            modifier = {
+                factor = 10
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                }
+            }
+            modifier = {
+                factor = 5
+                any_enemy_country = { has_country_flag = used_tularemia_weapon }
+            }
+            modifier = {
+                factor = 0.1
+                num_of_civilian_factories < 10
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = tularemia_antibiotics_production_in_progress
+        }
+
+        remove_effect = {
+            # Start tularemia antibiotics production
+            add_ideas = tularemia_antibiotics_mass_production_idea
+            clr_country_flag = tularemia_antibiotics_production_in_progress
+        }
+    }
+
+    develop_tularemia_antibiotics_retroactively = {
+        icon = GFX_decision_generic_research
+        days_remove = 75  # Shorter research time than anthrax/plague
+
+        available = {
+            # Must have tularemia weapons but not yet researched antibiotics
+            is_special_project_completed = sp:tularemia_bomb
+            NOT = { has_country_flag = tularemia_antibiotics_research_started }
+        }
+
+        visible = {
+            NOT = { has_idea = tularemia_antibiotics_mass_production_idea }
+            NOT = { has_country_flag = tularemia_antibiotics_production_in_progress }
+            NOT = { has_country_flag = developing_tularemia_antibiotics_retroactively }
+            NOT = { has_country_flag = tularemia_antibiotics_research_started }
+        }
+
+        ai_will_do = {
+            base = 25
+            modifier = {
+                factor = 5
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                }
+            }
+            modifier = {
+                factor = 3
+                any_enemy_country = { has_country_flag = used_tularemia_weapon }
+            }
+            modifier = {
+                factor = 0.1
+                num_of_civilian_factories < 15
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = developing_tularemia_antibiotics_retroactively
+            # Add research slowdown idea
+            swap_ideas = {
+                remove_idea = developing_tularemia_antibiotics_research_slowdown
+                add_idea = developing_tularemia_antibiotics_research_slowdown
+            }
+        }
+
+        remove_effect = {
+            # Set the antibiotics research flag and add the production idea
+            set_country_flag = tularemia_antibiotics_research_started
+            add_ideas = tularemia_antibiotics_mass_production_idea
+            clr_country_flag = developing_tularemia_antibiotics_retroactively
+        }
+    }
+
+    revoke_tularemia_antibiotics_mass_production = {
+        icon = GFX_decision_generic_industry
+        days_remove = 20  # Faster shutdown than anthrax/plague
+
+        available = {
+            # Must currently have antibiotics production active
+            has_idea = tularemia_antibiotics_mass_production_idea
+        }
+
+        visible = {
+            # Always visible when antibiotics production is active
+            has_idea = tularemia_antibiotics_mass_production_idea
+        }
+
+        ai_will_do = {
+            base = 3
+            modifier = {
+                factor = 0
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                }
+            }
+            modifier = {
+                factor = 0.1
+                has_war = yes
+                any_enemy_country = { has_country_flag = used_tularemia_weapon }
+            }
+            modifier = {
+                # More likely to revoke if economy is struggling
+                factor = 4
+                num_of_civilian_factories < 15
+            }
+            modifier = {
+                factor = 2
+                has_stability < 0.30
+            }
+        }
+
+        complete_effect = {
+            # No immediate effect, just start the shutdown process
+        }
+
+        remove_effect = {
+            # Remove the antibiotics production idea
+            remove_ideas = tularemia_antibiotics_mass_production_idea
+        }
+    }
+
+    # Smallpox vaccination decisions
+    smallpox_vaccination_mass_program = {
+        icon = GFX_decision_generic_medical
+        days_remove = 180  # Long vaccination campaign
+
+        visible = {
+            # Must have smallpox threat or contamination present
+            OR = {
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                }
+                any_enemy_country = { has_country_flag = used_smallpox_weapon }
+                any_allied_country = {
+                    any_controlled_state = {
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    }
+                }
+            }
+            NOT = { has_idea = smallpox_vaccination_program_idea }
+            NOT = { has_country_flag = smallpox_vaccination_program_in_progress }
+        }
+
+        cost = 150  # Very expensive - strategic defensive measure
+
+        ai_will_do = {
+            base = 1  # Very high priority
+            modifier = {
+                factor = 20
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                }
+            }
+            modifier = {
+                factor = 10
+                any_enemy_country = { has_country_flag = used_smallpox_weapon }
+            }
+            modifier = {
+                factor = 5
+                any_country = { is_special_project_completed = sp:smallpox_bomb }
+            }
+            modifier = {
+                factor = 0.1
+                num_of_civilian_factories < 20  # Need substantial industrial base
+            }
+        }
+
+        complete_effect = {
+            set_country_flag = smallpox_vaccination_program_in_progress
+        }
+
+        remove_effect = {
+            # Start smallpox vaccination program
+            add_ideas = smallpox_vaccination_program_idea
+            clr_country_flag = smallpox_vaccination_program_in_progress
+        }
+    }
+
+    revoke_smallpox_vaccination_program = {
+        icon = GFX_decision_generic_industry
+        days_remove = 30  # Takes time to shut down vaccination infrastructure
+
+        available = {
+            # Must currently have vaccination program active
+            has_idea = smallpox_vaccination_program_idea
+        }
+
+        visible = {
+            # Always visible when vaccination program is active
+            has_idea = smallpox_vaccination_program_idea
+
+        }
+
+        ai_will_do = {
+            base = 1  # Very low - almost never revoke vaccination
+            modifier = {
+                factor = 0  # Never revoke if contamination exists
+                any_controlled_state = {
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                }
+            }
+            modifier = {
+                factor = 0  # Never revoke during wartime with smallpox threat
+                has_war = yes
+                any_enemy_country = { has_country_flag = used_smallpox_weapon }
+            }
+            modifier = {
+                factor = 0.5  # Rarely revoke if any country has smallpox
+                any_country = { is_special_project_completed = sp:smallpox_bomb }
+            }
+            modifier = {
+                factor = 3
+                num_of_civilian_factories < 10
+                has_stability < 0.2
+            }
+            modifier = {
+                factor = 5
+                has_war = no
+            }
+            modifier = {
+                factor = 10
+                NOT = {
+                    any_controlled_state = {
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    }
+                }
+            }
+        }
+
+        complete_effect = {
+            # No immediate effect, just start the shutdown process
+        }
+
+        remove_effect = {
+            # Remove the vaccination program idea
+            remove_ideas = smallpox_vaccination_program_idea
+        }
+    }
+}

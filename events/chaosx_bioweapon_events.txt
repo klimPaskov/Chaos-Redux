@@ -1,0 +1,1571 @@
+add_namespace = chaosx_bioweapon
+
+# Laboratory anthrax outbreak during development (MTTH event)
+country_event = {
+    id = chaosx_bioweapon.1
+    title = chaosx_bioweapon.1.t
+    desc = chaosx_bioweapon.1.d
+    picture = GFX_report_event_generic_biowarfare
+
+    mean_time_to_happen = {
+        years = 1
+    }
+
+    trigger = {
+        # Only trigger if country is researching anthrax and chose risky option
+        has_country_flag = anthrax_risky_research_chosen
+        NOT = { is_special_project_completed = sp:anthrax_bomb }
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Find the facility state for the outbreak
+            random_controlled_state = {
+                limit = { biowarfare_facility > 0 }
+                save_event_target_as = facility_outbreak_state
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.1.a
+
+        # Apply contamination to the facility state
+        event_target:facility_outbreak_state = {
+            set_temp_variable = { contamination_days = 60 }
+            apply_anthrax_contamination = yes
+        }
+
+        # Country effects
+        add_stability = -0.02
+        add_war_support = -0.02
+
+        # Clear the risky research flag to prevent multiple outbreaks
+        clr_country_flag = anthrax_risky_research_chosen
+        set_country_flag = bioweapon_target
+    }
+}
+
+# Anthrax field testing success event
+country_event = {
+    id = chaosx_bioweapon.2
+    title = chaosx_bioweapon.2.t
+    desc = chaosx_bioweapon.2.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.2.a
+
+        # Research boost already applied by the prototype reward
+        custom_effect_tooltip = bioweapon_field_test_consequences_tt
+
+        hidden_effect = {
+            # Apply consequences if tested on enemy territory
+            if = {
+                limit = { has_country_flag = field_test_on_enemy }
+                set_country_flag = used_anthrax_weapon
+                # Diplomatic penalties with democratic nations
+                every_other_country = {
+                    limit = {
+                        exists = yes
+                        has_government = democratic
+                        NOT = { is_subject_of = PREV }
+                    }
+                    add_opinion_modifier = {
+                        target = PREV
+                        modifier = bioweapon_field_tester
+                    }
+                }
+                clr_country_flag = field_test_on_enemy
+            }
+
+            # Apply consequences if tested on own territory
+            if = {
+                limit = { has_country_flag = field_test_on_own }
+                # Domestic consequences
+                add_stability = -0.03
+                add_war_support = -0.01
+                clr_country_flag = field_test_on_own
+            }
+        }
+    }
+}
+
+# Anthrax field testing outbreak event (when testing on own territory)
+country_event = {
+    id = chaosx_bioweapon.3
+    title = chaosx_bioweapon.3.t
+    desc = chaosx_bioweapon.3.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.3.a
+
+        # Apply contamination to the test state
+        event_target:field_test_state = {
+            set_temp_variable = { contamination_days = 90 }
+            apply_anthrax_contamination = yes
+        }
+
+        # Domestic consequences
+        add_stability = -0.02
+        add_war_support = -0.02
+        add_political_power = -25
+        set_country_flag = bioweapon_target
+    }
+}
+
+# Anthrax lab accident from stockpile (MTTH event)
+country_event = {
+    id = chaosx_bioweapon.4
+    title = chaosx_bioweapon.4.t
+    desc = chaosx_bioweapon.4.d
+    picture = GFX_report_event_generic_bioweapon
+
+    mean_time_to_happen = {
+        years = 5
+
+        # The more anthrax bombs, the higher the chance
+        modifier = {
+            factor = 0.9
+            has_equipment = { anthrax_bomb_1 > 99 }
+        }
+        modifier = {
+            factor = 0.8
+            has_equipment = { anthrax_bomb_1 > 299 }
+        }
+        modifier = {
+            factor = 0.7
+            has_equipment = { anthrax_bomb_1 > 499 }
+        }
+        modifier = {
+            factor = 0.6
+            has_equipment = { anthrax_bomb_1 > 999 }
+        }
+        modifier = {
+            factor = 0.5
+            has_equipment = { anthrax_bomb_1 > 1999 }
+        }
+        modifier = {
+            factor = 0.4
+            has_equipment = { anthrax_bomb_1 > 2999 }
+        }
+        modifier = {
+            factor = 0.3
+            has_equipment = { anthrax_bomb_1 > 3999 }
+        }
+        modifier = {
+            factor = 0.2
+            has_equipment = { anthrax_bomb_1 > 4999 }
+        }
+        modifier = {
+            factor = 0.1
+            has_equipment = { anthrax_bomb_1 > 9999 }
+        }
+    }
+
+    trigger = {
+        # Must have anthrax bombs in stockpile
+        has_equipment = { anthrax_bomb_1 > 0 }
+        # Must have completed the anthrax bomb project
+        is_special_project_completed = sp:anthrax_bomb
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Calculate bombs lost (5% of stockpile)
+            set_temp_variable = { bombs_in_stockpile = 0 }
+            if = {
+                limit = { has_equipment = { anthrax_bomb_1 > 0 } }
+                set_temp_variable = { bombs_in_stockpile = num_equipment@anthrax_bomb_1 }
+            }
+            multiply_temp_variable = { bombs_in_stockpile = 0.05 }
+            round_temp_variable = bombs_in_stockpile
+
+            # Ensure at least 1 bomb is lost
+            if = {
+                limit = { check_variable = { bombs_in_stockpile < 1 } }
+                set_temp_variable = { bombs_in_stockpile = 1 }
+            }
+
+            # Find a random home state for the outbreak
+            random_controlled_state = {
+                limit = { is_core_of = ROOT arms_factory > 0 }
+                save_event_target_as = lab_accident_state
+            }
+
+            # If no core state, use any controlled state
+            if = {
+                limit = { NOT = { has_event_target = lab_accident_state } }
+                random_controlled_state = {
+                    save_event_target_as = lab_accident_state
+                }
+            }
+            # Lose 5% of bombs (negative amount to remove)
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = anthrax_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.4.a
+
+        # Lose 5% of bombs (negative amount to remove)
+        effect_tooltip = {
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = anthrax_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+
+        # Apply contamination to the accident state
+        event_target:lab_accident_state = {
+            set_temp_variable = { contamination_days = 150 }
+            apply_anthrax_contamination = yes
+        }
+
+        custom_effect_tooltip = anthrax_lab_accident_consequences_tt
+    }
+}
+
+# Anthrax infection spreads to neighboring states (MTTH event)
+state_event = {
+    id = chaosx_bioweapon.5
+    title = chaosx_bioweapon.5.t
+    desc = chaosx_bioweapon.5.d
+    picture = GFX_report_event_generic_bioweapon
+
+    mean_time_to_happen = {
+        years = 3 # Anthrax isn't highly contagious, so long base time
+
+        # Dynamic defense effectiveness reduces spread time based on actual defense values
+        modifier = {
+            factor = 1.5
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.1 }
+        }
+        modifier = {
+            factor = 2.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.25 }
+        }
+        modifier = {
+            factor = 2.5
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.40 }
+        }
+        modifier = {
+            factor = 3.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.60 }
+        }
+        modifier = {
+            factor = 4.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.80 }
+        }
+
+        # Population increases spread chance (reduces time)
+        modifier = {
+            factor = 0.95
+            state_population_k > 100
+        }
+        modifier = {
+            factor = 0.9
+            state_population_k > 500
+        }
+        modifier = {
+            factor = 0.85
+            state_population_k > 1000
+        }
+        modifier = {
+            factor = 0.8
+            state_population_k > 2000
+        }
+        modifier = {
+            factor = 0.7
+            state_population_k > 5000
+        }
+
+        # Low infrastructure increases spread
+        modifier = {
+            factor = 0.9
+            infrastructure < 5
+            infrastructure > 3
+        }
+        modifier = {
+            factor = 0.8
+            infrastructure < 4
+            infrastructure > 2
+        }
+        modifier = {
+            factor = 0.7
+            infrastructure < 3
+            infrastructure > 1
+        }
+        modifier = {
+            factor = 0.6
+            infrastructure < 2
+            infrastructure > 0
+        }
+
+        # Low stability increases spread
+        modifier = {
+            factor = 0.9
+            controller = { has_stability < 0.5 }
+        }
+
+        # Rural states spread faster (worse healthcare)
+        modifier = {
+            factor = 0.8
+            has_state_category = rural
+        }
+
+        # Urban states spread slower
+        modifier = {
+            factor = 1.2
+            OR = {
+                has_state_category = city
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+        }
+    }
+
+    trigger = {
+        # Must be contaminated with anthrax
+        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+        # Must have neighboring friendly states to spread to
+        any_neighbor_state = {
+            is_fully_controlled_by = ROOT.controller
+            NOT = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+        }
+        # Must not be completely contained (dynamic check based on actual effectiveness)
+        NOT = {
+            AND = {
+                has_variable = contamination_defense_effectiveness
+                check_variable = { contamination_defense_effectiveness > 0.90 }
+            }
+        }
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Calculate current defense effectiveness for this state
+            calculate_contamination_defense_effectiveness = yes
+
+            # Find a neighboring state to spread to
+            random_neighbor_state = {
+                limit = {
+                    is_fully_controlled_by = ROOT.controller
+                    NOT = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+                }
+                save_event_target_as = spread_target_state
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.5.a
+
+        # Apply contamination to neighboring state
+        event_target:spread_target_state = {
+            set_temp_variable = { contamination_days = 120 }
+            apply_anthrax_contamination = yes
+        }
+
+        # Minor stability hit for the spread
+        controller = {
+            custom_effect_tooltip = infection_spread_consequences_tt
+        }
+    }
+}
+
+# Laboratory plague outbreak during development (MTTH event)
+country_event = {
+    id = chaosx_bioweapon.6
+    title = chaosx_bioweapon.6.t
+    desc = chaosx_bioweapon.6.d
+    picture = GFX_report_event_generic_biowarfare
+
+    mean_time_to_happen = {
+        years = 1
+    }
+
+    trigger = {
+        # Only trigger if country is researching plague and chose risky option
+        has_country_flag = plague_risky_research_chosen
+        NOT = { is_special_project_completed = sp:plague_bomb }
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Find the facility state for the outbreak
+            random_controlled_state = {
+                limit = { biowarfare_facility > 0 }
+                save_event_target_as = facility_outbreak_state
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.6.a
+
+        # Apply contamination to the facility state
+        event_target:facility_outbreak_state = {
+            set_temp_variable = { contamination_days = 180 }
+            apply_plague_contamination = yes
+        }
+
+        # Country effects (more severe than anthrax)
+        add_stability = -0.03
+        add_war_support = -0.03
+
+        # Clear the risky research flag to prevent multiple outbreaks
+        clr_country_flag = plague_risky_research_chosen
+        set_country_flag = bioweapon_target
+    }
+}
+
+# Plague field testing success event
+country_event = {
+    id = chaosx_bioweapon.7
+    title = chaosx_bioweapon.7.t
+    desc = chaosx_bioweapon.7.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.7.a
+
+        # Research boost already applied by the prototype reward
+        # Add diplomatic consequences
+        custom_effect_tooltip = bioweapon_field_test_consequences_tt
+
+        hidden_effect = {
+            # Apply consequences if tested on enemy territory
+            if = {
+                limit = { has_country_flag = field_test_on_enemy }
+
+                set_country_flag = used_plague_weapon
+
+                # Stronger diplomatic penalties for plague
+                every_other_country = {
+                    limit = {
+                        exists = yes
+                        has_government = democratic
+                        NOT = { is_subject_of = PREV }
+                    }
+                    add_opinion_modifier = {
+                        target = PREV
+                        modifier = bioweapon_field_tester
+                    }
+                }
+                clr_country_flag = field_test_on_enemy
+            }
+
+            # Apply consequences if tested on own territory
+            if = {
+                limit = { has_country_flag = field_test_on_own }
+
+                # Domestic consequences (more severe for plague)
+                add_stability = -0.05
+                add_war_support = -0.02
+
+                clr_country_flag = field_test_on_own
+            }
+        }
+    }
+}
+
+# Plague field testing outbreak event (when testing on own territory)
+country_event = {
+    id = chaosx_bioweapon.8
+    title = chaosx_bioweapon.8.t
+    desc = chaosx_bioweapon.8.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.8.a
+
+        # Apply contamination to the test state
+        event_target:field_test_state = {
+            set_temp_variable = { contamination_days = 180 }
+            apply_plague_contamination = yes
+        }
+
+        # Domestic consequences (severe for plague)
+        add_stability = -0.05
+        add_war_support = -0.03
+        add_political_power = -50
+
+        set_country_flag = bioweapon_target
+
+    }
+}
+
+# Plague lab accident from stockpile (MTTH event)
+country_event = {
+    id = chaosx_bioweapon.9
+    title = chaosx_bioweapon.9.t
+    desc = chaosx_bioweapon.9.d
+    picture = GFX_report_event_generic_bioweapon
+
+    mean_time_to_happen = {
+        years = 7
+
+        # The more plague bombs, the higher the chance
+        modifier = {
+            factor = 0.9
+            has_equipment = { plague_bomb_1 > 49 }
+        }
+        modifier = {
+            factor = 0.8
+            has_equipment = { plague_bomb_1 > 149 }
+        }
+        modifier = {
+            factor = 0.7
+            has_equipment = { plague_bomb_1 > 249 }
+        }
+        modifier = {
+            factor = 0.6
+            has_equipment = { plague_bomb_1 > 499 }
+        }
+        modifier = {
+            factor = 0.5
+            has_equipment = { plague_bomb_1 > 999 }
+        }
+        modifier = {
+            factor = 0.4
+            has_equipment = { plague_bomb_1 > 1499 }
+        }
+        modifier = {
+            factor = 0.3
+            has_equipment = { plague_bomb_1 > 1999 }
+        }
+        modifier = {
+            factor = 0.2
+            has_equipment = { plague_bomb_1 > 2499 }
+        }
+        modifier = {
+            factor = 0.1
+            has_equipment = { plague_bomb_1 > 4999 }
+        }
+    }
+
+    trigger = {
+        # Must have plague bombs in stockpile
+        has_equipment = { plague_bomb_1 > 0 }
+        # Must have completed the plague bomb project
+        is_special_project_completed = sp:plague_bomb
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Calculate bombs lost (10% of stockpile - higher than anthrax due to danger)
+            set_temp_variable = { bombs_in_stockpile = 0 }
+            if = {
+                limit = { has_equipment = { plague_bomb_1 > 0 } }
+                set_temp_variable = { bombs_in_stockpile = num_equipment@plague_bomb_1 }
+            }
+            multiply_temp_variable = { bombs_in_stockpile = 0.1 }
+            round_temp_variable = bombs_in_stockpile
+
+            # Ensure at least 1 bomb is lost
+            if = {
+                limit = { check_variable = { bombs_in_stockpile < 1 } }
+                set_temp_variable = { bombs_in_stockpile = 1 }
+            }
+
+            # Find a random home state for the outbreak
+            random_controlled_state = {
+                limit = { is_core_of = ROOT arms_factory > 0 }
+                save_event_target_as = lab_accident_state
+            }
+
+            # If no core state, use any controlled state
+            if = {
+                limit = { NOT = { has_event_target = lab_accident_state } }
+                random_controlled_state = {
+                    save_event_target_as = lab_accident_state
+                }
+            }
+            # Lose 10% of bombs (negative amount to remove)
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = plague_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.9.a
+
+        # Lose 10% of bombs (negative amount to remove)
+        effect_tooltip = {
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = plague_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+
+        # Apply contamination to the accident state (very long lasting)
+        event_target:lab_accident_state = {
+            set_temp_variable = { contamination_days = 180 }
+            apply_plague_contamination = yes
+        }
+
+        custom_effect_tooltip = plague_lab_accident_consequences_tt
+    }
+}
+
+# Plague infection spreads to neighboring states (MTTH event)
+state_event = {
+    id = chaosx_bioweapon.10
+    title = chaosx_bioweapon.10.t
+    desc = chaosx_bioweapon.10.d
+    picture = GFX_report_event_generic_bioweapon
+
+    mean_time_to_happen = {
+        years = 2 # Plague spreads faster than anthrax due to higher contagiousness
+
+        # Dynamic defense effectiveness reduces spread time based on actual defense values
+        modifier = {
+            factor = 1.5
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.1 }
+        }
+        modifier = {
+            factor = 2.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.25 }
+        }
+        modifier = {
+            factor = 2.5
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.40 }
+        }
+        modifier = {
+            factor = 3.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.60 }
+        }
+        modifier = {
+            factor = 4.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.80 }
+        }
+
+        # Population increases spread chance (reduces time) - more dramatic for plague
+        modifier = {
+            factor = 0.9
+            state_population_k > 100
+        }
+        modifier = {
+            factor = 0.85
+            state_population_k > 500
+        }
+        modifier = {
+            factor = 0.8
+            state_population_k > 1000
+        }
+        modifier = {
+            factor = 0.75
+            state_population_k > 2000
+        }
+        modifier = {
+            factor = 0.65
+            state_population_k > 5000
+        }
+
+        # Low infrastructure increases spread more dramatically
+        modifier = {
+            factor = 0.85
+            infrastructure < 5
+            infrastructure > 3
+        }
+        modifier = {
+            factor = 0.75
+            infrastructure < 4
+            infrastructure > 2
+        }
+        modifier = {
+            factor = 0.65
+            infrastructure < 3
+            infrastructure > 1
+        }
+        modifier = {
+            factor = 0.55
+            infrastructure < 2
+            infrastructure > 0
+        }
+
+        # Low stability increases spread significantly
+        modifier = {
+            factor = 0.85
+            controller = { has_stability < 0.5 }
+        }
+        modifier = {
+            factor = 0.75
+            controller = { has_stability < 0.3 }
+        }
+
+        # Rural states spread much faster (worse healthcare infrastructure)
+        modifier = {
+            factor = 0.75
+            has_state_category = rural
+        }
+
+        # Urban states spread slower but still faster than anthrax
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_state_category = city
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+        }
+
+        # War conditions increase spread
+        modifier = {
+            factor = 0.85
+            controller = { has_war = yes }
+        }
+    }
+
+    trigger = {
+        # Must be contaminated with plague
+        has_dynamic_modifier = { modifier = plague_contaminated_state }
+        # Must have neighboring friendly states to spread to
+        any_neighbor_state = {
+            is_fully_controlled_by = ROOT.controller
+            NOT = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+        }
+        # Must not be completely contained (dynamic check based on actual effectiveness)
+        NOT = {
+            AND = {
+                has_variable = contamination_defense_effectiveness
+                check_variable = { contamination_defense_effectiveness > 0.90 }
+            }
+        }
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Calculate current defense effectiveness for this state
+            calculate_contamination_defense_effectiveness = yes
+
+            # Find a neighboring state to spread to
+            random_neighbor_state = {
+                limit = {
+                    is_fully_controlled_by = ROOT.controller
+                    NOT = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+                }
+                save_event_target_as = spread_target_state
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.10.a
+
+        # Apply contamination to neighboring state (longer duration for plague)
+        event_target:spread_target_state = {
+            set_temp_variable = { contamination_days = 150 }
+            apply_plague_contamination = yes
+        }
+
+        # More severe consequences for plague spread
+        controller = {
+            add_stability = -0.02
+            custom_effect_tooltip = plague_epidemic_spread_consequences_tt
+        }
+    }
+}
+
+# Tularemia field testing success event
+country_event = {
+    id = chaosx_bioweapon.100
+    title = chaosx_bioweapon.100.t
+    desc = chaosx_bioweapon.100.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.100.a
+
+        # Gain some experience
+        add_political_power = 5
+    }
+}
+
+# Tularemia field testing outbreak event (when testing on own territory)
+country_event = {
+    id = chaosx_bioweapon.101
+    title = chaosx_bioweapon.101.t
+    desc = chaosx_bioweapon.101.d
+    picture = GFX_report_event_generic_biowarfare
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.101.a
+
+        # Apply contamination to the test state (shorter duration than anthrax/plague)
+        event_target:field_test_state = {
+            set_temp_variable = { contamination_days = 30 }
+            apply_tularemia_contamination = yes
+        }
+
+        # Domestic consequences (mild compared to anthrax/plague)
+        add_stability = -0.02
+        add_war_support = -0.01
+        add_political_power = -20
+
+        set_country_flag = bioweapon_target
+    }
+}
+
+# Tularemia lab accident from stockpile (MTTH event)
+country_event = {
+    id = chaosx_bioweapon.102
+    title = chaosx_bioweapon.102.t
+    desc = chaosx_bioweapon.102.d
+    picture = GFX_report_event_generic_bioweapon
+
+    mean_time_to_happen = {
+        years = 10  # Longer than anthrax/plague due to lower danger
+
+        # The more tularemia bombs, the higher the chance
+        modifier = {
+            factor = 0.95
+            has_equipment = { tularemia_bomb_1 > 99 }
+        }
+        modifier = {
+            factor = 0.9
+            has_equipment = { tularemia_bomb_1 > 199 }
+        }
+        modifier = {
+            factor = 0.85
+            has_equipment = { tularemia_bomb_1 > 399 }
+        }
+        modifier = {
+            factor = 0.8
+            has_equipment = { tularemia_bomb_1 > 799 }
+        }
+        modifier = {
+            factor = 0.75
+            has_equipment = { tularemia_bomb_1 > 1599 }
+        }
+        modifier = {
+            factor = 0.7
+            has_equipment = { tularemia_bomb_1 > 2399 }
+        }
+        modifier = {
+            factor = 0.65
+            has_equipment = { tularemia_bomb_1 > 3199 }
+        }
+        modifier = {
+            factor = 0.6
+            has_equipment = { tularemia_bomb_1 > 3999 }
+        }
+        modifier = {
+            factor = 0.5
+            has_equipment = { tularemia_bomb_1 > 7999 }
+        }
+    }
+
+    trigger = {
+        # Must have tularemia bombs in stockpile
+        has_equipment = { tularemia_bomb_1 > 0 }
+        # Must have completed the tularemia bomb project
+        is_special_project_completed = sp:tularemia_bomb
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Calculate bombs lost (5% of stockpile - lower than anthrax/plague due to lower danger)
+            set_temp_variable = { bombs_in_stockpile = 0 }
+            if = {
+                limit = { has_equipment = { tularemia_bomb_1 > 0 } }
+                set_temp_variable = { bombs_in_stockpile = num_equipment@tularemia_bomb_1 }
+            }
+            multiply_temp_variable = { bombs_in_stockpile = 0.05 }
+            round_temp_variable = bombs_in_stockpile
+
+            # Ensure at least 1 bomb is lost
+            if = {
+                limit = { check_variable = { bombs_in_stockpile < 1 } }
+                set_temp_variable = { bombs_in_stockpile = 1 }
+            }
+
+            # Find a random home state for the outbreak
+            random_controlled_state = {
+                limit = { is_core_of = ROOT arms_factory > 0 }
+                save_event_target_as = lab_accident_state
+            }
+
+            # If no core state, use any controlled state
+            if = {
+                limit = { NOT = { has_event_target = lab_accident_state } }
+                random_controlled_state = {
+                    save_event_target_as = lab_accident_state
+                }
+            }
+            # Lose 5% of bombs (negative amount to remove)
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = tularemia_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.102.a
+
+        # Lose 5% of bombs (negative amount to remove)
+        effect_tooltip = {
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = tularemia_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+
+        # Apply contamination to the accident state (short duration)
+        event_target:lab_accident_state = {
+            set_temp_variable = { contamination_days = 30 }
+            apply_tularemia_contamination = yes
+        }
+
+        custom_effect_tooltip = tularemia_lab_accident_consequences_tt
+    }
+}
+
+# Smallpox Laboratory Outbreak Event (triggered events)
+country_event = {
+    id = chaosx_bioweapon.200
+    title = chaosx_bioweapon.200.t
+    desc = chaosx_bioweapon.200.d
+    picture = GFX_report_event_generic_bioweapon
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = {
+            # Get a random owned state
+            random_owned_state = {
+                limit = { is_fully_controlled_by = ROOT }
+                save_event_target_as = facility_outbreak_state
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.200.a
+
+        # Apply severe contamination to outbreak state (permanent until vaccination)
+        event_target:facility_outbreak_state = {
+            set_temp_variable = { contamination_days = 3652 } # Permanent
+            apply_smallpox_contamination = yes
+
+            # High chance of spreading to neighbors
+            every_neighbor_state = {
+                limit = {
+                    is_fully_controlled_by = ROOT
+                    NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+                }
+                random_list = {
+                    60 = {
+                        set_temp_variable = { contamination_days = 3652 } # Permanent
+                        apply_smallpox_contamination = yes
+                    }
+                    40 = { }
+                }
+            }
+        }
+
+        # Set flag to prevent repeated triggers
+        set_country_flag = smallpox_lab_accident_survivor
+    }
+}
+
+# Smallpox Field Test Results Event
+country_event = {
+    id = chaosx_bioweapon.201
+    title = chaosx_bioweapon.201.t
+    desc = chaosx_bioweapon.201.d
+    picture = GFX_report_event_generic_bioweapon
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = {
+            # Check if we have enemy territory to test on
+            if = {
+                limit = {
+                    any_country = {
+                        has_war_with = ROOT
+                        any_owned_state = { is_fully_controlled_by = PREV }
+                    }
+                }
+                random_country = {
+                    limit = {
+                        has_war_with = ROOT
+                        any_owned_state = { is_fully_controlled_by = PREV }
+                    }
+                    random_owned_state = {
+                        limit = { is_fully_controlled_by = PREV }
+                        save_event_target_as = field_test_state
+                        PREV = { save_event_target_as = enemy_country }
+                    }
+                }
+            }
+            else = {
+                # Test on our own territory if no enemies available
+                random_owned_state = {
+                    limit = { is_fully_controlled_by = ROOT }
+                    save_event_target_as = field_test_state
+                }
+                ROOT = { save_event_target_as = enemy_country }
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.201.a
+
+        # Research boost for successful test
+        add_research_slot = 1
+
+        custom_effect_tooltip = bioweapon_field_test_consequences_tt
+
+        # Apply contamination to test site
+        event_target:field_test_state = {
+            set_temp_variable = { contamination_days = 3652 } # Permanent
+            apply_smallpox_contamination = yes
+        }
+
+        # Diplomatic consequences if tested on enemy
+        if = {
+            limit = { event_target:enemy_country = { NOT = { tag = ROOT } } }
+            every_other_country = {
+                limit = {
+                    NOT = { tag = ROOT }
+                    NOT = { tag = event_target:enemy_country }
+                    is_major = yes
+                }
+                add_opinion_modifier = {
+                    target = ROOT
+                    modifier = strategic_bioweapon_user
+                }
+            }
+            event_target:enemy_country = {
+                every_other_country = {
+                    limit = {
+                        NOT = { tag = ROOT }
+                        NOT = { tag = PREV }
+                        is_major = yes
+                    }
+                    add_opinion_modifier = {
+                        target = PREV
+                        modifier = strategic_bioweapon_victim_sympathy
+                    }
+                }
+            }
+        }
+
+        # Clear flag
+        set_country_flag = smallpox_field_test_completed
+    }
+}
+
+# Smallpox Field Test Epidemic Event
+country_event = {
+    id = chaosx_bioweapon.202
+    title = chaosx_bioweapon.202.t
+    desc = chaosx_bioweapon.202.d
+    picture = GFX_report_event_generic_bioweapon
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = {
+            random_owned_state = {
+                limit = { is_fully_controlled_by = ROOT }
+                save_event_target_as = field_test_state
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.202.a
+
+        # Apply severe contamination to test state
+        event_target:field_test_state = {
+            set_temp_variable = { contamination_days = 3652 } # Permanent
+            apply_smallpox_contamination = yes
+
+            # Very high chance of spreading to all neighbors
+            every_neighbor_state = {
+                limit = {
+                    is_fully_controlled_by = ROOT
+                    NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+                }
+                random_list = {
+                    80 = {
+                        set_temp_variable = { contamination_days = 3652 } # Permanent
+                        apply_smallpox_contamination = yes
+                    }
+                    20 = { }
+                }
+            }
+        }
+
+        # International condemnation
+        every_other_country = {
+            limit = { is_major = yes }
+            add_opinion_modifier = {
+                target = ROOT
+                modifier = strategic_bioweapon_user
+            }
+        }
+
+        set_country_flag = smallpox_domestic_epidemic
+    }
+}
+
+# Smallpox lab accident from stockpile (MTTH event)
+country_event = {
+    id = chaosx_bioweapon.203
+    title = chaosx_bioweapon.203.t
+    desc = chaosx_bioweapon.203.d
+    picture = GFX_report_event_generic_bioweapon
+
+    mean_time_to_happen = {
+        years = 4
+
+        # The more smallpox bombs, the higher the chance
+        modifier = {
+            factor = 0.9
+            has_equipment = { smallpox_bomb_1 > 24 }
+        }
+        modifier = {
+            factor = 0.8
+            has_equipment = { smallpox_bomb_1 > 49 }
+        }
+        modifier = {
+            factor = 0.7
+            has_equipment = { smallpox_bomb_1 > 99 }
+        }
+        modifier = {
+            factor = 0.6
+            has_equipment = { smallpox_bomb_1 > 199 }
+        }
+        modifier = {
+            factor = 0.5
+            has_equipment = { smallpox_bomb_1 > 399 }
+        }
+        modifier = {
+            factor = 0.4
+            has_equipment = { smallpox_bomb_1 > 599 }
+        }
+        modifier = {
+            factor = 0.3
+            has_equipment = { smallpox_bomb_1 > 799 }
+        }
+        modifier = {
+            factor = 0.2
+            has_equipment = { smallpox_bomb_1 > 999 }
+        }
+        modifier = {
+            factor = 0.1
+            has_equipment = { smallpox_bomb_1 > 1999 }
+        }
+    }
+
+    trigger = {
+        # Must have smallpox bombs in stockpile
+        has_equipment = { smallpox_bomb_1 > 0 }
+        # Must have completed the smallpox bomb project
+        is_special_project_completed = sp:smallpox_bomb
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Calculate bombs lost (20% of stockpile - highest loss due to extreme danger)
+            set_temp_variable = { bombs_in_stockpile = 0 }
+            if = {
+                limit = { has_equipment = { smallpox_bomb_1 > 0 } }
+                set_temp_variable = { bombs_in_stockpile = num_equipment@smallpox_bomb_1 }
+            }
+            multiply_temp_variable = { bombs_in_stockpile = 0.2 }
+            round_temp_variable = bombs_in_stockpile
+
+            # Ensure at least 1 bomb is lost
+            if = {
+                limit = { check_variable = { bombs_in_stockpile < 1 } }
+                set_temp_variable = { bombs_in_stockpile = 1 }
+            }
+
+            # Find a random home state for the outbreak
+            random_controlled_state = {
+                limit = { is_core_of = ROOT arms_factory > 0 }
+                save_event_target_as = lab_accident_state
+            }
+
+            # If no core state, use any controlled state
+            if = {
+                limit = { NOT = { has_event_target = lab_accident_state } }
+                random_controlled_state = {
+                    save_event_target_as = lab_accident_state
+                }
+            }
+
+            # Lose 20% of bombs (negative amount to remove)
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = smallpox_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.203.a
+
+        # Lose 20% of bombs (negative amount to remove)
+        effect_tooltip = {
+            multiply_temp_variable = { bombs_in_stockpile = -1 }
+            add_equipment_to_stockpile = {
+                type = smallpox_bomb_1
+                amount = bombs_in_stockpile
+                producer = ROOT
+            }
+        }
+
+        # Apply catastrophic contamination to accident state (permanent)
+        event_target:lab_accident_state = {
+            set_temp_variable = { contamination_days = 3652 } # Permanent
+            apply_smallpox_contamination = yes
+
+            # Epidemic spreads rapidly to all neighbors
+            every_neighbor_state = {
+                limit = {
+                    is_fully_controlled_by = ROOT
+                    NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+                }
+                set_temp_variable = { contamination_days = 3652 } # Permanent
+                apply_smallpox_contamination = yes
+            }
+        }
+
+        # National emergency consequences
+        add_stability = -0.03
+        add_war_support = -0.03
+
+        custom_effect_tooltip = smallpox_lab_accident_consequences_tt
+        set_country_flag = smallpox_national_emergency
+    }
+}
+
+# Smallpox Epidemic Spreads Event
+state_event = {
+    id = chaosx_bioweapon.204
+
+    hidden = yes
+
+    mean_time_to_happen = {
+        months = 1  # Base 1 month spread time - much faster than anthrax due to high contagiousness
+
+        # Vaccination protection significantly reduces spread time (higher resistance than other bioweapons)
+        modifier = {
+            factor = 2.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.1 }
+        }
+        modifier = {
+            factor = 3.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.25 }
+        }
+        modifier = {
+            factor = 4.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.40 }
+        }
+        modifier = {
+            factor = 5.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.60 }
+        }
+        modifier = {
+            factor = 8.0
+            has_variable = contamination_defense_effectiveness
+            check_variable = { contamination_defense_effectiveness > 0.80 }
+        }
+
+        # Population increases spread chance (reduces time) - more dramatic for smallpox
+        modifier = {
+            factor = 0.9
+            state_population_k > 100
+        }
+        modifier = {
+            factor = 0.8
+            state_population_k > 500
+        }
+        modifier = {
+            factor = 0.7
+            state_population_k > 1000
+        }
+        modifier = {
+            factor = 0.6
+            state_population_k > 2000
+        }
+        modifier = {
+            factor = 0.5
+            state_population_k > 5000
+        }
+
+        # Low infrastructure increases spread dramatically
+        modifier = {
+            factor = 0.8
+            infrastructure < 5
+            infrastructure > 3
+        }
+        modifier = {
+            factor = 0.7
+            infrastructure < 4
+            infrastructure > 2
+        }
+        modifier = {
+            factor = 0.6
+            infrastructure < 3
+            infrastructure > 1
+        }
+        modifier = {
+            factor = 0.5
+            infrastructure < 2
+            infrastructure > 0
+        }
+
+        # Low stability increases spread significantly
+        modifier = {
+            factor = 0.8
+            controller = { has_stability < 0.5 }
+        }
+        modifier = {
+            factor = 0.7
+            controller = { has_stability < 0.3 }
+        }
+
+        # Rural states spread much faster (worse healthcare infrastructure)
+        modifier = {
+            factor = 0.7
+            has_state_category = rural
+        }
+
+        # Urban states spread slower but still faster than anthrax
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_state_category = city
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+        }
+
+        # War conditions increase spread
+        modifier = {
+            factor = 0.8
+            controller = { has_war = yes }
+        }
+    }
+
+    trigger = {
+        # Must be contaminated with smallpox
+        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+        # Must have neighboring friendly states to spread to
+        any_neighbor_state = {
+            is_fully_controlled_by = ROOT.controller
+            NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+        }
+        # Must not be completely contained (vaccination effectiveness check)
+        NOT = {
+            AND = {
+                has_variable = contamination_defense_effectiveness
+                check_variable = { contamination_defense_effectiveness > 0.90 }
+            }
+        }
+    }
+
+    immediate = {
+        hidden_effect = {
+            # Calculate current defense effectiveness for this state
+            calculate_contamination_defense_effectiveness = yes
+
+            # Find a neighboring state to spread to
+            random_neighbor_state = {
+                limit = {
+                    is_fully_controlled_by = ROOT.controller
+                    NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+                }
+                save_event_target_as = spread_target_state
+            }
+            # Spread epidemic to neighboring state (permanent contamination)
+            event_target:spread_target_state = {
+                set_temp_variable = { contamination_days = 3652 } # Permanent
+                apply_smallpox_contamination = yes
+            }
+
+            controller = {
+                if = {
+                    limit = { NOT = { has_country_flag = smallpox_victim } }
+                    country_event = { id = chaosx_bioweapon.208 }
+                    set_country_flag = smallpox_victim
+                }
+            }
+        }
+    }
+}
+
+# Vaccination Program Success Event
+country_event = {
+    id = chaosx_bioweapon.205
+    title = chaosx_bioweapon.205.t
+    desc = chaosx_bioweapon.205.d
+    picture = GFX_report_event_generic_bioweapon
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = {
+            random_owned_state = {
+                limit = {
+                    has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                }
+                save_event_target_as = vaccination_success_state
+            }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.205.a
+
+        # Remove contamination from successfully vaccinated state
+        event_target:vaccination_success_state = {
+            remove_dynamic_modifier = { modifier = smallpox_contaminated_state }
+        }
+
+        # Positive consequences for stopping epidemic
+        add_stability = 0.05
+        add_political_power = 50
+
+        custom_effect_tooltip = smallpox_vaccination_success_tt
+    }
+}
+
+# Pre-War Vaccination Program Event
+country_event = {
+    id = chaosx_bioweapon.206
+    title = chaosx_bioweapon.206.t
+    desc = chaosx_bioweapon.206.d
+    picture = GFX_report_event_generic_bioweapon
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.206.a
+
+        add_political_power = -100
+        add_ideas = smallpox_vaccination_program_idea
+
+        set_country_flag = smallpox_vaccination_decision_made
+    }
+
+    option = {
+        name = chaosx_bioweapon.206.b
+
+        add_political_power = 25
+        add_stability = -0.02
+
+        set_country_flag = smallpox_vaccination_decision_made
+        set_country_flag = rejected_smallpox_vaccination
+    }
+}
+
+# First Use of Smallpox as Weapon - Global News Event
+news_event = {
+    id = chaosx_bioweapon.207
+    title = chaosx_bioweapon.207.t
+    desc = chaosx_bioweapon.207.d
+    picture = GFX_report_event_generic_bioweapon
+
+    is_triggered_only = yes
+
+    major = yes
+
+    option = {
+        name = chaosx_bioweapon.207.a
+
+        # International community is horrified
+        trigger = {
+            NOT = { tag = FROM }
+            NOT = { is_subject_of = FROM }
+        }
+    }
+
+    option = {
+        name = chaosx_bioweapon.207.b
+
+        # For the attacking country
+        trigger = {
+            OR = {
+                tag = FROM
+                is_subject_of = FROM
+            }
+        }
+    }
+}
+
+# Smallpox Reaches Country - Notification Event
+country_event = {
+    id = chaosx_bioweapon.208
+    title = chaosx_bioweapon.208.t
+    desc = chaosx_bioweapon.208.d
+    picture = GFX_report_event_generic_bioweapon
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx_bioweapon.208.a
+
+        # Emergency measures
+        add_political_power = -50
+        add_stability = -0.05
+
+        custom_effect_tooltip = smallpox_first_arrival_consequences_tt
+    }
+}

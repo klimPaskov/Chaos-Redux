@@ -1,0 +1,88 @@
+# this mtth entries can be used as variables
+# example set_variable = { a = mtth:entry_name }
+# and define entry_name here
+
+zombie_outbreak_chance = {
+    # Base time until next outbreak (in days)
+    base = 1825 # 5 years base mean time (matching scripted effect calculation)
+
+    # Zombie evolution increases outbreak chance
+    modifier = {
+        factor = 0.8
+        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
+    }
+    modifier = {
+        factor = 0.6
+        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
+    }
+    modifier = {
+        factor = 0.4
+        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+    }
+
+    # Prevention measures reduce chance
+    modifier = {
+        factor = 1.5
+        has_country_flag = hygiene_measures_enforced
+    }
+    modifier = {
+        factor = 1.8
+        has_country_flag = migration_restricted
+    }
+    modifier = {
+        factor = 2.2
+        has_country_flag = quarantine_protocols_active
+    }
+    modifier = {
+        factor = 3.0
+        has_country_flag = borders_completely_closed
+    }
+
+    # Population-based risk - higher population = higher risk
+    modifier = {
+        factor = 0.6
+        check_variable = { max_manpower_k > 500000 } # Very high population (500M+)
+    }
+    modifier = {
+        factor = 0.7
+        check_variable = { max_manpower_k > 200000 } # High population (200M+)
+        NOT = { check_variable = { max_manpower_k > 500000 } }
+    }
+    modifier = {
+        factor = 0.8
+        check_variable = { max_manpower_k > 100000 } # Medium-high population (100M+)
+        NOT = { check_variable = { max_manpower_k > 200000 } }
+    }
+    modifier = {
+        factor = 0.9
+        check_variable = { max_manpower_k > 50000 } # Medium population (50M+)
+        NOT = { check_variable = { max_manpower_k > 100000 } }
+    }
+    modifier = {
+        factor = 1.1
+        check_variable = { max_manpower_k > 10000 } # Low population (10M+)
+        NOT = { check_variable = { max_manpower_k > 50000 } }
+    }
+    modifier = {
+        factor = 1.3
+        NOT = { check_variable = { max_manpower_k > 10000 } } # Very low population (under 10M)
+    }
+
+    # Island nations are safer
+    modifier = {
+        factor = 2.0
+        capital_scope = { is_island_state = yes }
+    }
+
+    # Major powers are more at risk due to trade/travel
+    modifier = {
+        factor = 0.8
+        is_major = yes
+    }
+
+    # Reduce chance for countries with very few states
+    modifier = {
+        factor = 2.0
+        num_of_controlled_states < 5
+    }
+}
