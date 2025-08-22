@@ -1,0 +1,1043 @@
+types = {
+
+
+    ###############################################################################################################
+
+    #        ###    ##    ## ######## ########  ##     ##    ###    ##     ##
+    #       ## ##   ###   ##    ##    ##     ## ##     ##   ## ##    ##   ##
+    #      ##   ##  ####  ##    ##    ##     ## ##     ##  ##   ##    ## ##
+    #     ##     ## ## ## ##    ##    ########  ######### ##     ##    ###
+    #     ######### ##  ####    ##    ##   ##   ##     ## #########   ## ##
+    #     ##     ## ##   ###    ##    ##    ##  ##     ## ##     ##  ##   ##
+    #     ##     ## ##    ##    ##    ##     ## ##     ## ##     ## ##     ##
+
+    ###############################################################################################################
+
+
+    anthrax_strike = {
+        days_to_prepare = 10
+
+        category = biological_raids
+
+        equipment_icon = GFX_anthrax_bomb_equipment_medium
+
+        command_power = 10 # command power allocation cost
+
+        ai_will_do = {
+            base = 1
+            modifier = {
+                # Don't target anyone who is not a potential enemy
+                factor = 0
+                NOT = {
+                    is_in_array = {
+                        array = potential_and_current_enemies
+                        value = FROM  # Target country
+                    }
+                }
+            }
+            modifier = {
+                factor = 2
+                FROM = {
+                    is_major = yes
+                }
+            }
+            modifier = {
+                factor = 2
+                ROOT = {
+                    tag = JAP
+                    has_government = fascism
+                }
+            }
+            modifier = {
+                factor = 2
+                ROOT = {
+                    tag = JAP
+                    has_government = fascism
+                }
+                FROM = {
+                    tag = CHI
+                }
+            }
+
+            modifier = {
+                factor = 0.25
+                NOT = { has_war_with = FROM }
+                FROM = { is_major = no }
+            }
+            modifier = {
+                factor = 5 # retaliation
+                FROM = { has_country_flag = used_bioweapon }
+            }
+            modifier = {
+                factor = 0.25
+                has_government = democratic
+            }
+        }
+
+        allowed = {
+
+        }
+        # Raid Type is visible
+        visible = {
+            is_special_project_completed = sp:anthrax_bomb
+        }
+        # Specific Target is visible
+        show_target = {
+            NOT = {
+                is_in_faction_with = FROM
+            }
+        }
+
+        # Can prepare
+        available = {
+            #has_war_with = FROM
+        }
+        launchable = {
+            has_war_with = FROM
+        }
+
+        launch_sound = raid_launch_nuclear_strike
+
+        target_type = {
+            province = any
+        }
+        target_icon = GFX_other_target_icon
+
+        # Multiple unit_requirements entries means that one has to be met to launch the raid
+        unit_requirements = {
+            equipment = {
+                type = { cas }
+                amount = { min = 50 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { strategic_bomber }
+                amount = { min = 10 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { tactical_bomber }
+                amount = { min = 25 }
+            }
+        }
+
+        essential_equipment = {
+            anthrax_bomb_equipment = 200
+        }
+
+        starting_point = {
+            types = { air_base }
+        }
+
+        arrow = {
+            type = air
+        }
+        unit_model = {
+            type = equipment
+        }
+
+        success_factors = {
+            success = {
+                base = 0.5
+                experience = {
+                    weight = 0.1
+                    start_weight = -0.1
+                    reference = 1.0
+                }
+                air_defence = {
+                    reference = 100
+                    start_weight = -0.05
+                    weight = 0.05
+                }
+                air_agility = {
+                    reference = 100
+                    start_weight = -0.1
+                    weight = 0.1
+                }
+                reliability = {
+                    start_weight = -0.1
+                    weight = 0.1
+                }
+                air_superiority = {
+                    reference = 1.0
+                    start_weight = -0.25
+                    weight = 0.25
+                }
+                # Target
+                interception = {
+                    reference = 10
+                    weight = -0.25
+                }
+                anti_air = {
+                    weight = -0.05
+                }
+                radar = {
+                    weight = -0.05
+                }
+                intel = {
+                    weight = 0.2
+                    #start_reference = 50
+                    reference = 100
+                }
+            }
+        }
+
+        success_levels = {
+            failure = {
+                actor_effects = {
+                    var:actor_country = {
+                        custom_effect_tooltip = raid_aborted_tt
+                        add_political_power = -10
+                        add_war_support = -0.005
+                    }
+                    raid_damage_units = {
+                        plane_loss = 0.75
+                        ratio = yes
+                    }
+
+                }
+            }
+            limited_success = {
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.5
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.1
+
+                    # Apply national and diplomatic consequences
+                    apply_anthrax_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_anthrax_strike_tt
+                        set_temp_variable = { contamination_days = 90 }
+                        apply_anthrax_contamination = yes
+                    }
+                }
+                # visual_effect = {
+                #     entity = "air_raids_1_limited_success_entity"
+                #     animation = "attack"
+                # }
+            }
+            success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.1
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.35
+
+                    # Apply national and diplomatic consequences
+                    apply_anthrax_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_anthrax_strike_tt
+                        set_temp_variable = { contamination_days = 180 }
+                        apply_anthrax_contamination = yes
+                    }
+                }
+                # visual_effect = {
+                #     entity = "air_raids_1_limited_success_entity"
+                #     animation = "attack"
+                # }
+            }
+            critical_success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_add_unit_experience = 0.5
+
+                    # Apply national and diplomatic consequences
+                    apply_anthrax_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_anthrax_strike_tt
+                        set_temp_variable = { contamination_days = 360 }
+                        apply_anthrax_contamination = yes
+                    }
+
+                }
+                # visual_effect = {
+                #     entity = "air_raids_1_limited_success_entity"
+                #     animation = "attack"
+                # }
+            }
+        }
+
+    }
+
+    plague_strike = {
+        days_to_prepare = 20
+
+        category = biological_raids
+
+        equipment_icon = GFX_plague_bomb_equipment_medium
+
+        command_power = 15 # command power allocation cost
+
+        ai_will_do = {
+            base = 1
+            modifier = {
+                # Don't target anyone who is not a potential enemy
+                factor = 0
+                NOT = {
+                    is_in_array = {
+                        array = potential_and_current_enemies
+                        value = FROM  # Target country
+                    }
+                }
+            }
+            modifier = {
+                factor = 3
+                FROM = {
+                    is_major = yes
+                }
+            }
+            modifier = {
+                factor = 1.5
+                ROOT = {
+                    tag = JAP
+                    has_government = fascism
+                }
+            }
+            modifier = {
+                factor = 0.1
+                NOT = { has_war_with = FROM }
+                FROM = { is_major = no }
+            }
+            modifier = {
+                factor = 10 # strong retaliation for plague use
+                FROM = { has_country_flag = used_bioweapon }
+            }
+            modifier = {
+                factor = 0.1
+                has_government = democratic
+            }
+            modifier = { # Historical use case
+                factor = 2
+                ROOT = {
+                    tag = JAP
+                    has_government = fascism
+                }
+                FROM = {
+                    tag = CHI
+                }
+            }
+        }
+
+        allowed = {
+
+        }
+        # Raid Type is visible
+        visible = {
+            is_special_project_completed = sp:plague_bomb
+        }
+        # Specific Target is visible
+        show_target = {
+            NOT = {
+                is_in_faction_with = FROM
+            }
+        }
+
+        # Can prepare
+        available = {
+            #has_war_with = FROM
+        }
+        launchable = {
+            has_war_with = FROM
+        }
+
+        launch_sound = raid_launch_nuclear_strike
+
+        target_type = {
+            province = any
+        }
+        target_icon = GFX_other_target_icon
+
+        # Multiple unit_requirements entries means that one has to be met to launch the raid
+        unit_requirements = {
+            equipment = {
+                type = { cas }
+                amount = { min = 100 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { strategic_bomber }
+                amount = { min = 20 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { tactical_bomber }
+                amount = { min = 50 }
+            }
+        }
+
+        essential_equipment = {
+            plague_bomb_equipment = 100
+        }
+
+        starting_point = {
+            types = { air_base }
+        }
+
+        arrow = {
+            type = air
+        }
+        unit_model = {
+            type = equipment
+        }
+
+        success_factors = {
+            success = {
+                base = 0.4
+                experience = {
+                    weight = 0.1
+                    start_weight = -0.1
+                    reference = 1.0
+                }
+                air_defence = {
+                    reference = 100
+                    start_weight = -0.05
+                    weight = 0.05
+                }
+                air_agility = {
+                    reference = 100
+                    start_weight = -0.1
+                    weight = 0.1
+                }
+                reliability = {
+                    start_weight = -0.1
+                    weight = 0.1
+                }
+                air_superiority = {
+                    reference = 1.0
+                    start_weight = -0.25
+                    weight = 0.25
+                }
+                # Target
+                interception = {
+                    reference = 10
+                    weight = -0.25
+                }
+                anti_air = {
+                    weight = -0.05
+                }
+                radar = {
+                    weight = -0.05
+                }
+                intel = {
+                    weight = 0.2
+                    #start_reference = 50
+                    reference = 100
+                }
+            }
+        }
+
+        success_levels = {
+            failure = {
+                actor_effects = {
+                    var:actor_country = {
+                        custom_effect_tooltip = raid_aborted_tt
+                        add_political_power = -15
+                        add_war_support = -0.01
+                    }
+                    raid_damage_units = {
+                        plane_loss = 0.8
+                        ratio = yes
+                    }
+
+                }
+            }
+            limited_success = {
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.6
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.1
+
+                    # Apply national and diplomatic consequences
+                    apply_plague_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_plague_strike_tt
+                        set_temp_variable = { contamination_days = 365 } # 1 year
+                        apply_plague_contamination = yes
+                    }
+                }
+            }
+            success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.15
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.35
+
+                    # Apply national and diplomatic consequences
+                    apply_plague_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_plague_strike_tt
+                        set_temp_variable = { contamination_days = 730 } # 2 years
+                        apply_plague_contamination = yes
+                    }
+                }
+            }
+            critical_success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_add_unit_experience = 0.5
+
+                    # Apply national and diplomatic consequences
+                    apply_plague_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_plague_strike_tt
+                        set_temp_variable = { contamination_days = 1095 } # 3 years
+                        apply_plague_contamination = yes
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    tularemia_strike = {
+        days_to_prepare = 5
+
+        category = biological_raids
+
+        equipment_icon = GFX_tularemia_bomb_equipment_medium
+
+        command_power = 8 # command power allocation cost
+
+        ai_will_do = {
+            base = 1
+            modifier = {
+                # Don't target anyone who is not a potential enemy
+                factor = 0
+                NOT = {
+                    is_in_array = {
+                        array = potential_and_current_enemies
+                        value = FROM  # Target country
+                    }
+                }
+            }
+            modifier = {
+                factor = 2
+                FROM = {
+                    is_major = yes
+                }
+            }
+            modifier = {
+                factor = 3
+                ROOT = {
+                    tag = JAP
+                    has_government = fascism
+                }
+            }
+            modifier = { # Historical use case in Stalingrad
+                factor = 5
+                ROOT = {
+                    has_government = communism
+                    tag = SOV
+                }
+                FROM = {
+                    tag = GER
+                    has_government = fascism
+                }
+                date > 1942.1.1
+            }
+            modifier = {
+                factor = 0.5
+                NOT = { has_war_with = FROM }
+                FROM = { is_major = no }
+            }
+            modifier = {
+                factor = 10 # retaliation for tularemia use
+                FROM = { has_country_flag = used_bioweapon }
+            }
+            modifier = {
+                factor = 0.25
+                has_government = democratic
+            }
+        }
+
+        allowed = {
+
+        }
+        # Raid Type is visible
+        visible = {
+            is_special_project_completed = sp:tularemia_bomb
+        }
+        # Specific Target is visible
+        show_target = {
+            NOT = {
+                is_in_faction_with = FROM
+            }
+        }
+
+        # Can prepare
+        available = {
+            #has_war_with = FROM
+        }
+        launchable = {
+            has_war_with = FROM
+        }
+
+        launch_sound = raid_launch_nuclear_strike
+
+        target_type = {
+            province = any
+        }
+        target_icon = GFX_other_target_icon
+
+        # Multiple unit_requirements entries means that one has to be met to launch the raid
+        unit_requirements = {
+            equipment = {
+                type = { cas }
+                amount = { min = 25 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { strategic_bomber }
+                amount = { min = 5 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { tactical_bomber }
+                amount = { min = 15 }
+            }
+        }
+
+        essential_equipment = {
+            tularemia_bomb_equipment = 100
+        }
+
+        starting_point = {
+            types = { air_base }
+        }
+
+        arrow = {
+            type = air
+        }
+        unit_model = {
+            type = equipment
+        }
+
+        success_factors = {
+            success = {
+                base = 0.7  # Higher base success due to tactical nature
+                experience = {
+                    weight = 0.1
+                    start_weight = -0.1
+                    reference = 1.0
+                }
+                air_defence = {
+                    reference = 100
+                    start_weight = -0.05
+                    weight = 0.05
+                }
+                air_agility = {
+                    reference = 100
+                    start_weight = -0.1
+                    weight = 0.1
+                }
+                reliability = {
+                    start_weight = -0.1
+                    weight = 0.1
+                }
+                air_superiority = {
+                    reference = 1.0
+                    start_weight = -0.25
+                    weight = 0.25
+                }
+                # Target
+                interception = {
+                    reference = 10
+                    weight = -0.25
+                }
+                anti_air = {
+                    weight = -0.05
+                }
+                radar = {
+                    weight = -0.05
+                }
+                intel = {
+                    weight = 0.2
+                    #start_reference = 50
+                    reference = 100
+                }
+            }
+        }
+
+        success_levels = {
+            failure = {
+                actor_effects = {
+                    var:actor_country = {
+                        custom_effect_tooltip = raid_aborted_tt
+                        add_political_power = -5
+                        add_war_support = -0.003
+                    }
+                    raid_damage_units = {
+                        plane_loss = 0.5
+                        ratio = yes
+                    }
+
+                }
+            }
+            limited_success = {
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.3
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.15
+
+                    # Apply national and diplomatic consequences
+                    apply_tularemia_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_tularemia_strike_tt
+                        set_temp_variable = { contamination_days = 30 }
+                        apply_tularemia_contamination = yes
+                    }
+                }
+            }
+            success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.05
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.35
+
+                    # Apply national and diplomatic consequences
+                    apply_tularemia_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_tularemia_strike_tt
+                        set_temp_variable = { contamination_days = 90 }
+                        apply_tularemia_contamination = yes
+                    }
+                }
+            }
+            critical_success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_add_unit_experience = 0.5
+
+                    # Apply national and diplomatic consequences
+                    apply_tularemia_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_tularemia_strike_tt
+                        set_temp_variable = { contamination_days = 180 }
+                        apply_tularemia_contamination = yes
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    smallpox_strike = {
+        days_to_prepare = 30  # Longest preparation time - strategic weapon
+
+        category = biological_raids
+
+        equipment_icon = GFX_smallpox_bomb_equipment_medium
+
+        command_power = 25 # Highest command power allocation cost
+
+        ai_will_do = {
+            base = 0.5  # Very low base chance - weapon of last resort
+            modifier = {
+                # Don't target anyone who is not a potential enemy
+                factor = 0
+                NOT = {
+                    is_in_array = {
+                        array = potential_and_current_enemies
+                        value = FROM  # Target country
+                    }
+                }
+            }
+            modifier = {
+                factor = 10  # Only when truly desperate
+                FROM = {
+                    is_major = yes
+                }
+                ROOT = {
+                    # Only when losing badly
+                    any_enemy_country = {
+                        strength_ratio = {
+                            tag = ROOT
+                            ratio > 2.0
+                        }
+                    }
+                }
+            }
+            modifier = {
+                factor = 0.05  # Almost never use on minor powers
+                FROM = { is_major = no }
+            }
+            modifier = {
+                factor = 50  # Massive retaliation for smallpox use
+                FROM = { has_country_flag = used_smallpox_weapon }
+            }
+            modifier = {
+                factor = 0.01  # Extremely unlikely for democratic nations
+                has_government = democratic
+            }
+            modifier = { # Never use unless at war
+                factor = 0
+                NOT = { has_war_with = FROM }
+            }
+        }
+
+        allowed = {
+
+        }
+        # Raid Type is visible
+        visible = {
+            is_special_project_completed = sp:smallpox_bomb
+        }
+        # Specific Target is visible
+        show_target = {
+            NOT = {
+                is_in_faction_with = FROM
+            }
+        }
+
+        # Can prepare
+        available = {
+            #has_war_with = FROM
+        }
+        launchable = {
+            has_war_with = FROM
+        }
+
+        launch_sound = raid_launch_nuclear_strike
+
+        target_type = {
+            province = any
+        }
+        target_icon = GFX_other_target_icon
+
+        # Multiple unit_requirements entries means that one has to be met to launch the raid
+        unit_requirements = {
+            equipment = {
+                type = { cas }
+                amount = { min = 50 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { strategic_bomber }
+                amount = { min = 10 }
+            }
+        }
+        unit_requirements = {
+            equipment = {
+                type = { tactical_bomber }
+                amount = { min = 25 }
+            }
+        }
+
+        essential_equipment = {
+            smallpox_bomb_equipment = 50
+        }
+
+        starting_point = {
+            types = { air_base }
+        }
+
+        arrow = {
+            type = air
+        }
+        unit_model = {
+            type = equipment
+        }
+
+        success_factors = {
+            success = {
+                base = 0.3  # Lower base success due to complexity and danger
+                experience = {
+                    weight = 0.1
+                    start_weight = -0.1
+                    reference = 1.0
+                }
+                air_defence = {
+                    reference = 100
+                    start_weight = -0.05
+                    weight = 0.05
+                }
+                air_agility = {
+                    reference = 100
+                    start_weight = -0.1
+                    weight = 0.1
+                }
+                reliability = {
+                    start_weight = -0.15  # Higher reliability importance
+                    weight = 0.15
+                }
+                air_superiority = {
+                    reference = 1.0
+                    start_weight = -0.35  # Critical air superiority requirement
+                    weight = 0.35
+                }
+                # Target
+                interception = {
+                    reference = 10
+                    weight = -0.35  # Heavy penalty for interception
+                }
+                anti_air = {
+                    weight = -0.1
+                }
+                radar = {
+                    weight = -0.1
+                }
+                intel = {
+                    weight = 0.25  # High intelligence requirement
+                    reference = 100
+                }
+            }
+        }
+
+        success_levels = {
+            failure = {
+                actor_effects = {
+                    var:actor_country = {
+                        custom_effect_tooltip = raid_aborted_tt
+                        add_political_power = -25  # Severe political cost
+                        add_war_support = -0.02
+                        add_stability = -0.03  # Population horrified by attempt
+                    }
+                    raid_damage_units = {
+                        plane_loss = 0.9  # Massive losses on failure
+                        ratio = yes
+                    }
+
+                }
+            }
+            limited_success = {
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.7  # Heavy losses even on partial success
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.1
+
+                    # Apply severe national and diplomatic consequences
+                    apply_smallpox_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_smallpox_strike_tt
+                        set_temp_variable = { contamination_days = 3652 } # Permanent - starts epidemic
+                        apply_smallpox_contamination = yes
+                    }
+                }
+            }
+            success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.3  # Moderate losses on success
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.35
+
+                    # Apply severe national and diplomatic consequences
+                    apply_smallpox_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_smallpox_strike_tt
+                        set_temp_variable = { contamination_days = 3652 } # Permanent - major epidemic
+                        apply_smallpox_contamination = yes
+
+                        # Trigger spreading to neighboring states
+                        every_neighbor_state = {
+                            limit = {
+                                NOT = { has_state_flag = smallpox_contaminated }
+                                is_controlled_by = PREV.controller
+                            }
+                            random_list = {
+                                30 = {
+                                    set_temp_variable = { contamination_days = 3652 }
+                                    apply_smallpox_contamination = yes
+                                }
+                                70 = { }
+                            }
+                        }
+                    }
+                }
+            }
+            critical_success = {
+                custom_sound = generic_bioweapon_aerosol
+                actor_effects = {
+                    raid_damage_units = {
+                        plane_loss = 0.1  # Minimal losses on critical success
+                        ratio = yes
+                    }
+                    raid_add_unit_experience = 0.5
+
+                    # Apply severe national and diplomatic consequences
+                    apply_smallpox_bioweapon_consequences = yes
+                }
+                victim_effects = {
+                    var:target_state = {
+                        custom_effect_tooltip = raid_smallpox_strike_tt
+                        set_temp_variable = { contamination_days = 3652 } # Permanent - massive epidemic
+                        apply_smallpox_contamination = yes
+
+                        # Trigger widespread contamination
+                        controller = {
+                            every_controlled_state = {
+                                limit = {
+                                    NOT = { has_state_flag = smallpox_contaminated }
+                                    OR = {
+                                        any_neighbor_state = { has_state_flag = smallpox_contaminated }
+                                        is_capital = yes  # Capital always at risk
+                                        industrial_complex > 2  # Major industrial centers
+                                    }
+                                }
+                                random_list = {
+                                    60 = {
+                                        set_temp_variable = { contamination_days = 3652 }
+                                        apply_smallpox_contamination = yes
+                                    }
+                                    40 = { }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+    }
+
+}

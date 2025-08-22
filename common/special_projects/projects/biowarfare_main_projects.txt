@@ -19,8 +19,8 @@
 # 	* Complexity :
 # 	How much progress is gained each prototype iteration. Once reaching 100 the prototype phase is completed.
 
-# # Example of project
-
+# FROM - country
+# ROOT - project
 zombie_cure_bomb = {
     # Mandatory
     # Category of Special Projects containing this project
@@ -30,19 +30,19 @@ zombie_cure_bomb = {
     # Trigger evaluated at startup for every countries to fill the pool of potential projects
     # if triggers returns true, an instance of this Project is created for this country
     # scope: country. only tag, original_tag and has_dlc allowed.
-    allowed = {  }
+    allowed = { }
 
     # Optional
     # Trigger evaluated when displaying the Project
     # if trigger returns false, the project is disabled and greyed-out
     # scope: project. FROM: country
-    available = {  }
+    available = { }
 
     # Optional
     # Trigger evaluated when displaying the Project
     # if trigger returns false, the project is hidden
     # scope: project. FROM: country
-    visible = {  }
+    visible = { FROM = { has_global_flag = has_zombie_outbreak } }
 
     # Optional
     # Cost of breakthrough points to start project.
@@ -50,8 +50,8 @@ zombie_cure_bomb = {
     # If omitted it will default to 0 for the project specialization.
     # Can also add script to modify the value (Country Scope).
     breakthrough_cost = {
-        # specialization_air = 2
-        # specialization_nuclear = 1
+        specialization_air = 1
+        specialization_biowarfare = 2
         # specialization_land = {
         # 	base = 1
         # 	modifier = {
@@ -62,28 +62,6 @@ zombie_cure_bomb = {
     }
 
     # for AI and script, a Project is considered enabled if it is both visible and available
-
-    # Optional
-    narrative = {
-        # Optional
-        # Localization key used for the name of the Project
-        # The localization key is localized with the following localization scope objects:
-        #    * Country: The country that owns the project.
-        name = zombie_cure_bomb
-        # if name provided, use TAG_name_loc_key if it exists. if not use name_loc_key (where TAG is the tag of the project owner)
-        # if localization key TAG_my_project_token exists, use it
-        # else use loc key my_project_token
-
-        # Optional
-        # Localization key used for the long description of the Project
-        # The localization key is localized with the following localization scope objects:
-        #    * SpecialProjet: The project.
-        #    * Country: The country that owns the project
-        desc = zombie_cure_bomb_desc
-        # if name provided, use TAG_desc_loc_key if it exists. if not use desc_loc_key (where TAG is the tag of the project owner)
-        # if localization key TAG_my_project_token_desc exists, use it (!! Note the _desc suffix)
-        # else use loc key my_project_token_desc
-    }
 
     # Optional
     # GFX key of the icon used to illustrate the Project
@@ -101,7 +79,7 @@ zombie_cure_bomb = {
     # At least 1 is Mandatory (and not 0)
     # Number of days needed to complete each phase
     # default is 0
-    prototype_time = 3
+    prototype_time = sp_time.prototype.short
 
     # Optional
     # Resources drained during basic research & prototyping phases
@@ -143,21 +121,50 @@ zombie_cure_bomb = {
     # current Project scope - FROM = country
     # For documentation, see examples of ai_will_do throughout the content
     ai_will_do = {
-        base = 1
+        base = 2
+        modifier = {
+            factor = 4
+            ROOT = { has_war_with = ZZZ }
+        }
+        # modifier = { # causes a crash
+        #     factor = 2
+        #     FROM = { is_in_tech_sharing_group = cure_sharing }
+        # }
+        modifier = {
+            factor = 3
+            ROOT = { has_idea = cure_activated }
+        }
+    }
+
+
+    resource_cost = {
+        resources = {
+            tungsten = 2
+            rubber = 4
+        }
     }
 
     # Optional
     # Project will appear only if all parents are completed
     # use other Projects' token
-    special_project_parent = {
-        # my_other_project_token
-        # another_project_token
-    }
+    # special_project_parent = {
+    #     # my_other_project_token
+    #     # another_project_token
+    # }
 
     # Optional
     # Bonus given when the Project is fully researched (i.e. at the end of the last Prototyping phase)
     project_output = {
         # output content, detailed below
+        # TODO
+        country_effects = {
+            hidden_effect = {
+                if = {
+                    limit = { NOT = { has_country_flag = bioweapon_available } }
+                    set_country_flag = bioweapon_available
+                }
+            }
+        }
     }
 
     # Optional array
@@ -165,23 +172,158 @@ zombie_cure_bomb = {
     # "Unique rewards" are only reachable by the containing project.
     # Specification for content for a prototype reward can be found in documentation
     # for generic prototype rewards.
-    unique_prototype_rewards = {
-        # Optional - Repeatable
-        # Dynamic token that identifies the reward
-        # Same specification as for prototype rewards.
-        # dynamic_token1 = { ... }
-        # Optional - Repeatable
-        # Anonymous prototype reward (not accessible except from effects)
-        # Same specification inside definition as for all other prototype rewards.
-        # { ... }
-    }
+    # unique_prototype_rewards = {
+    # Optional - Repeatable
+    # Dynamic token that identifies the reward
+    # Same specification as for prototype rewards.
+    # dynamic_token1 = { ... }
+    # Optional - Repeatable
+    # Anonymous prototype reward (not accessible except from effects)
+    # Same specification inside definition as for all other prototype rewards.
+    # { ... }
+
+
+    #   token = { # Dynamic token for the reward (i.e. identifier for the reward)
+    #         # Optional
+    #         narrative = {
+    #             # Optional
+    #             # Localization key used for the name of the Project
+    #             # The localization key is localized with the following localization scope objects:
+    #             #    * Country: The country that owns the project.
+    #             name = name_loc_key
+    #             # if name provided, use TAG_name_loc_key if it exists. if not use name_loc_key (where TAG is the tag of the project owner)
+    #             # if localization key TAG_my_reward_token exists, use it
+    #             # else use loc key my_reward_token
+
+    #             # Optional
+    #             # Localization key used for the long description of the Project
+    #             # The localization key is localized with the following localization scope objects:
+    #             #    * SpecialProjet: The project.
+    #             #    * Character: The scientist assigned to the project.
+    #             #    * State: The state that the facility belongs to.
+    #             #    * Country: The country that owns the project
+    #             desc = desc_loc_key
+    #             # if desc provided, use TAG_desc_loc_key if it exists. if not use desc_loc_key (where TAG is the tag of the project owner)
+    #             # if localization key TAG_my_reward_token_desc exists, use it (!! Note the _desc suffix)
+    #             # else use loc key my_reward_token_desc
+    #         }
+
+    #         # Optional
+    #         # GFX key of the icon used to illustrate the Project
+    #         icon = GFX_icon
+    #         # if icon provided, use GFX_icon
+    #         # if gfx key GFX_TAG_my_reward_token exists, use it
+    #         # if gfx key GFX_my_reward_token exists, use it
+    #         # else use GFX_PLACEHOLDER_sp_project_picture
+
+    #         # Optional
+    #         # Determine if the reward can only be obtained once - or several times
+    #         # Default is no
+    #         fire_only_once = yes
+
+    #         # Optional
+    #         # (Min, Max]. Meaning Min value is considered inside the threshold but max is not.
+    #         # In the example below this reward would be triggered when the prototype progress is a value from 0 to and not including 60
+    #         # default is "always eligible"
+    #         threshold = {
+    #             min = 0
+    #             max = 60
+    #         }
+
+    #         # Optional
+    #         # The weight for the probability of the reward being choosen
+    #         # default is set by define NProject::ITERATION_REWARD_DEFAULT_WEIGHT
+    #         # scriptable weight similar to ai_will_do
+    #         # ROOT is the project
+    #         # FROM is the Country
+    #         # var:facility_state is the State where the facility is (ensured to be set in this case)
+    #         # var:facility_province_id is the province ID where the facility is (ensured to be set in this case)
+    #         # var:scientist is the Scientist (ensured to be set in this case)
+    #         weight = {
+    #             base = 1.0
+    #             modifier = {
+    #                 factor = 42.0
+    #                 [...triggers...]
+    #             }
+    #             modifier = {
+    #                 add = 12.0
+    #                 [...triggers...]
+    #             }
+    #         }
+
+    #         # Optional
+    #         # Set an allowed trigger for the reward - Defaults to true
+    #         allowed = { original_tag = GER }
+
+    #         # Repeatable - at least 1 mandatory
+    #         option = {
+    #             # Mandatory - must be unique within the same Reward
+    #             token = my_option_token
+
+    #             # Optional
+    #             # Whether or not this option is the default one when timing out
+    #             # Only 1 option should have default = yes
+    #             # If none has it, the first one is the default one
+    #             default = yes
+
+    #             # Optional
+    #             narrative = {
+    #                 # Optional
+    #                 # Localization key used for the name of the Project
+    #                 # The localization key is localized with the following localization scope objects:
+    #                 #    * Country: The country that owns the project.
+    #                 #    * (Nullable) Character: The scientist working on the project, if one exist (effects may miss character).
+    #                 #    * (Nullable) State: The state that the scientist is in, if one exist (effects may miss state).
+    #                 #    * (Nullable) Project: The project that the option was completed from (effects may miss project).
+    #                 name = name_loc_key
+    #                 # if name provided, use TAG_name_loc_key if it exists. if not use name_loc_key (where TAG is the tag of the project owner)
+    #                 # if localization key TAG_my_option_token exists, use it
+    #                 # else use loc key my_option_token
+    #             }
+
+    #             # Optional
+    #             # Bonus given when a prototype phase ends up with this reward and this option is chosen
+    #             iteration_output = {
+    #                 # output content, detailed in special project documentation
+    #                 [...]
+    #             }
+    #         }
+    # }
+
+    # prototype_reward = {
+    #     token = reward2
+
+    #     # Reward can only be received once. Defaults to 'no'
+    #     fire_only_once = yes
+
+    #     threshold = {
+    #         min = 60
+    #         max = 100
+    #     }
+
+    #     iteration_output = {
+    #         # output content, detailed in special project documentation
+    #         [...]
+    #     }
+    # }
+    # }
 
     # Optional array
     # "Generic rewards" are coming from the prototype reward DB and can be used in several projects
     # (cf. game/common/special_projects/prototype_rewards)
     generic_prototype_rewards = {
-        # Repeatable - Any number of generic prototype reward tokens
-        # generic_prototype_reward_token
+        sp_biowarfare_generic_reward_scientist_xp_1
+        sp_biowarfare_generic_reward_scientist_xp_2
+        sp_biowarfare_generic_reward_scientist_xp_3
+        sp_biowarfare_generic_reward_major_progress_1
+        sp_biowarfare_generic_reward_major_progress_2
+        sp_biowarfare_generic_reward_major_progress_3
+        sp_biowarfare_generic_reward_test_failure_1
+        sp_biowarfare_generic_reward_test_failure_2
+        sp_biowarfare_generic_reward_test_failure_3
+        sp_biowarfare_generic_reward_resource_scarcity
+        sp_biowarfare_generic_reward_critical_failure
+        sp_biowarfare_political_interference_generic_reward
     }
 }
 
@@ -277,3 +419,829 @@ zombie_cure_bomb = {
 # 	}
 # }
 # ```
+
+anthrax_bomb = {
+    specialization = specialization_biowarfare
+
+    available = { }
+    allowed = { }
+    visible = { }
+
+    breakthrough_cost = {
+        specialization_biowarfare = 0
+    }
+
+    icon = GFX_sp_anthrax_bomb
+
+    prototype_time = sp_time.prototype.medium
+
+    resource_cost = {
+        resources = {
+            steel = 2
+            tungsten = 3
+            chromium = 2
+            rubber = 1
+        }
+    }
+
+    complexity = sp_complexity.medium
+
+
+    ai_will_do = {
+        base = 1
+        modifier = {
+            factor = 1.5
+            ROOT = { has_war = yes }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { num_of_factories > 30 }
+        }
+        modifier = {
+            factor = 0.5
+            ROOT = { has_government = democratic }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { is_major = yes }
+        }
+        modifier = {
+            factor = 5
+            ROOT = { tag = JAP }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { tag = ENG }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { tag = USA }
+        }
+    }
+
+    project_output = {
+        enable_equipments = {
+            anthrax_bomb_1
+        }
+        country_effects = {
+            custom_effect_tooltip = anthrax_bomb_unlocked_tooltip
+            hidden_effect = {
+                if = {
+                    limit = { NOT = { has_country_flag = bioweapon_available } }
+                    set_country_flag = bioweapon_available
+                }
+            }
+        }
+    }
+
+    unique_prototype_rewards = {
+        sp_anthrax_reward_caution = {
+            icon = GFX_PLACEHOLDER_sp_project_picture # TODO: maybe add a custom picture? Can't find base game pictures.
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 0
+                max = 100
+            }
+
+            weight = {
+                base = 10
+            }
+
+            option = {
+                token = sp_anthrax_reward_caution_careful
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = anthrax_careful_research_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.medium
+                        }
+                        set_country_flag = anthrax_careful_research_chosen
+                    }
+                }
+            }
+            option = {
+                token = sp_anthrax_reward_caution_risky
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = anthrax_risky_research_tt
+                        set_country_flag = anthrax_risky_research_chosen
+                    }
+                }
+            }
+        }
+
+        sp_anthrax_reward_field_testing = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 40
+                max = 100
+            }
+
+            weight = {
+                base = 10
+            }
+
+            option = {
+                token = sp_anthrax_reward_field_testing_conduct
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = anthrax_field_testing_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.gain.high
+                        }
+                        conduct_anthrax_field_test = yes
+                    }
+                }
+            }
+            option = {
+                token = sp_anthrax_reward_field_testing_skip
+
+                default = yes
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = anthrax_skip_field_testing_tt
+                        # No effects, just skip
+                    }
+                }
+            }
+        }
+
+        sp_anthrax_reward_antibiotics = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 60
+                max = 100
+            }
+
+            weight = {
+                base = 1000
+            }
+
+            option = {
+                token = sp_anthrax_reward_antibiotics_produce
+
+                default = yes
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = anthrax_produce_antibiotics_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.high
+                        }
+                        set_country_flag = anthrax_antibiotics_research_started
+                        # Will enable antibiotics production decisions later
+                    }
+                }
+            }
+            option = {
+                token = sp_anthrax_reward_antibiotics_skip
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = anthrax_skip_antibiotics_tt
+                        add_stability = -0.02
+                    }
+                }
+            }
+        }
+    }
+
+    generic_prototype_rewards = {
+        sp_biowarfare_generic_reward_scientist_xp_1
+        sp_biowarfare_generic_reward_scientist_xp_2
+        sp_biowarfare_generic_reward_scientist_xp_3
+        sp_biowarfare_generic_reward_major_progress_1
+        sp_biowarfare_generic_reward_major_progress_2
+        sp_biowarfare_generic_reward_major_progress_3
+        sp_biowarfare_generic_reward_test_failure_1
+        sp_biowarfare_generic_reward_test_failure_2
+        sp_biowarfare_generic_reward_test_failure_3
+        sp_biowarfare_generic_reward_resource_scarcity
+        sp_biowarfare_generic_reward_critical_failure
+        sp_biowarfare_political_interference_generic_reward
+    }
+}
+
+plague_bomb = {
+    specialization = specialization_biowarfare
+
+    available = { }
+    allowed = { }
+    visible = { }
+
+    breakthrough_cost = {
+        specialization_biowarfare = 1
+    }
+
+    icon = GFX_sp_plague_bomb
+
+    prototype_time = sp_time.prototype.long
+
+    resource_cost = {
+        resources = {
+            steel = 3
+            tungsten = 4
+            chromium = 3
+            rubber = 2
+        }
+    }
+
+    complexity = sp_complexity.large
+
+    ai_will_do = {
+        base = 1
+        modifier = {
+            factor = 1.5
+            ROOT = { has_war = yes }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { num_of_factories > 30 }
+        }
+        modifier = {
+            factor = 0.25
+            ROOT = { has_government = democratic }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { is_major = yes }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { tag = JAP }
+        }
+        modifier = {
+            factor = 1.5
+            ROOT = { is_special_project_completed = sp:anthrax_bomb }
+        }
+    }
+
+    project_output = {
+        enable_equipments = {
+            plague_bomb_1
+        }
+        country_effects = {
+            custom_effect_tooltip = plague_bomb_unlocked_tooltip
+            hidden_effect = {
+                if = {
+                    limit = { NOT = { has_country_flag = bioweapon_available } }
+                    set_country_flag = bioweapon_available
+                }
+            }
+        }
+    }
+
+    unique_prototype_rewards = {
+        sp_plague_reward_caution = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 0
+                max = 100
+            }
+
+            weight = {
+                base = 10
+            }
+
+            option = {
+                token = sp_plague_reward_caution_careful
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = plague_careful_research_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.medium
+                        }
+                        set_country_flag = plague_careful_research_chosen
+                    }
+                }
+            }
+            option = {
+                token = sp_plague_reward_caution_risky
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = plague_risky_research_tt
+                        set_country_flag = plague_risky_research_chosen
+                    }
+                }
+            }
+        }
+
+        sp_plague_reward_field_testing = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 40
+                max = 100
+            }
+
+            weight = {
+                base = 10
+            }
+
+            option = {
+                token = sp_plague_reward_field_testing_conduct
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = plague_field_testing_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.gain.high
+                        }
+                        conduct_plague_field_test = yes
+                    }
+                }
+            }
+            option = {
+                token = sp_plague_reward_field_testing_skip
+
+                default = yes
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = plague_skip_field_testing_tt
+                        # No effects, just skip
+                    }
+                }
+            }
+        }
+
+        sp_plague_reward_antibiotics = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 60
+                max = 100
+            }
+
+            weight = {
+                base = 1000
+            }
+
+            option = {
+                token = sp_plague_reward_antibiotics_produce
+
+                default = yes
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = plague_produce_antibiotics_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.high
+                        }
+                        set_country_flag = plague_antibiotics_research_started
+                        # Will enable antibiotics production decisions later
+                    }
+                }
+            }
+            option = {
+                token = sp_plague_reward_antibiotics_skip
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = plague_skip_antibiotics_tt
+                        add_stability = -0.03
+                    }
+                }
+            }
+        }
+    }
+
+    generic_prototype_rewards = {
+        sp_biowarfare_generic_reward_scientist_xp_1
+        sp_biowarfare_generic_reward_scientist_xp_2
+        sp_biowarfare_generic_reward_scientist_xp_3
+        sp_biowarfare_generic_reward_major_progress_1
+        sp_biowarfare_generic_reward_major_progress_2
+        sp_biowarfare_generic_reward_major_progress_3
+        sp_biowarfare_generic_reward_test_failure_1
+        sp_biowarfare_generic_reward_test_failure_2
+        sp_biowarfare_generic_reward_test_failure_3
+        sp_biowarfare_generic_reward_resource_scarcity
+        sp_biowarfare_generic_reward_critical_failure
+        sp_biowarfare_political_interference_generic_reward
+    }
+}
+
+tularemia_bomb = {
+    specialization = specialization_biowarfare
+
+    available = { }
+    allowed = { }
+    visible = { }
+
+    breakthrough_cost = {
+        specialization_biowarfare = 0
+    }
+
+    icon = GFX_sp_tularemia_bomb
+
+    prototype_time = sp_time.prototype.short
+
+    resource_cost = {
+        resources = {
+            steel = 1
+            tungsten = 2
+            rubber = 1
+        }
+    }
+
+    complexity = sp_complexity.small
+
+    ai_will_do = {
+        base = 1
+        modifier = {
+            factor = 2
+            ROOT = { has_war = yes }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { num_of_factories > 20 }
+        }
+        modifier = {
+            factor = 0.25
+            ROOT = { has_government = democratic }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { is_major = yes }
+        }
+        modifier = {
+            factor = 6
+            ROOT = { tag = JAP }
+        }
+        modifier = {
+            factor = 2
+            ROOT = {
+                OR = {
+                    is_special_project_completed = sp:anthrax_bomb
+                    is_special_project_completed = sp:plague_bomb
+                }
+            }
+        }
+    }
+
+    project_output = {
+        enable_equipments = {
+            tularemia_bomb_1
+        }
+        country_effects = {
+            custom_effect_tooltip = tularemia_bomb_unlocked_tooltip
+            hidden_effect = {
+                if = {
+                    limit = { NOT = { has_country_flag = bioweapon_available } }
+                    set_country_flag = bioweapon_available
+                }
+            }
+        }
+    }
+
+    unique_prototype_rewards = {
+        sp_tularemia_reward_caution = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 0
+                max = 100
+            }
+
+            weight = {
+                base = 10
+            }
+
+            option = {
+                token = sp_tularemia_reward_caution_careful
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = tularemia_careful_research_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.low
+                        }
+                        set_country_flag = tularemia_careful_research_chosen
+                    }
+                }
+            }
+            option = {
+                token = sp_tularemia_reward_caution_risky
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = tularemia_risky_research_tt
+                        set_country_flag = tularemia_risky_research_chosen
+                    }
+                }
+            }
+        }
+
+        sp_tularemia_reward_field_testing = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 30
+                max = 100
+            }
+
+            weight = {
+                base = 10
+            }
+
+            option = {
+                token = sp_tularemia_reward_field_testing_conduct
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = tularemia_field_testing_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.gain.medium
+                        }
+                        conduct_tularemia_field_test = yes
+                    }
+                }
+            }
+            option = {
+                token = sp_tularemia_reward_field_testing_skip
+
+                default = yes
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = tularemia_skip_field_testing_tt
+                        # No effects, just skip
+                    }
+                }
+            }
+        }
+
+        sp_tularemia_reward_antibiotics = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 50
+                max = 100
+            }
+
+            weight = {
+                base = 1000
+            }
+
+            option = {
+                token = sp_tularemia_reward_antibiotics_produce
+
+                default = yes
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = tularemia_produce_antibiotics_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.low
+                        }
+                        set_country_flag = tularemia_antibiotics_research_started
+                        # Will enable antibiotics production decisions later
+                    }
+                }
+            }
+            option = {
+                token = sp_tularemia_reward_antibiotics_skip
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = tularemia_skip_antibiotics_tt
+                        add_stability = -0.01
+                    }
+                }
+            }
+        }
+    }
+
+    generic_prototype_rewards = {
+        sp_biowarfare_generic_reward_scientist_xp_1
+        sp_biowarfare_generic_reward_scientist_xp_2
+        sp_biowarfare_generic_reward_scientist_xp_3
+        sp_biowarfare_generic_reward_major_progress_1
+        sp_biowarfare_generic_reward_major_progress_2
+        sp_biowarfare_generic_reward_major_progress_3
+        sp_biowarfare_generic_reward_test_failure_1
+        sp_biowarfare_generic_reward_test_failure_2
+        sp_biowarfare_generic_reward_test_failure_3
+        sp_biowarfare_generic_reward_resource_scarcity
+        sp_biowarfare_generic_reward_critical_failure
+        sp_biowarfare_political_interference_generic_reward
+    }
+}
+
+smallpox_bomb = {
+    specialization = specialization_biowarfare
+
+    available = { }
+    allowed = { }
+    visible = { }
+
+    breakthrough_cost = {
+        specialization_biowarfare = 2  # Highest breakthrough cost - strategic weapon
+    }
+
+    icon = GFX_sp_smallpox_bomb
+
+    prototype_time = sp_time.prototype.very_long  # Longest development time
+
+    resource_cost = {
+        resources = {
+            steel = 4
+            tungsten = 5
+            chromium = 4
+            rubber = 3
+        }
+    }
+
+    complexity = sp_complexity.insane  # Highest complexity
+
+    ai_will_do = {
+        base = 1  # Low base weight - only for desperate situations
+        modifier = {
+            factor = 5
+            ROOT = {
+                has_war = yes
+                # Only when losing badly - check relative strength
+                any_enemy_country = {
+                    strength_ratio = {
+                        tag = ROOT
+                        ratio > 1.5
+                    }
+                }
+            }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { num_of_factories > 50 }  # Need massive industrial base
+        }
+        modifier = {
+            factor = 0.1  # Very unlikely for democratic nations
+            ROOT = { has_government = democratic }
+        }
+        modifier = {
+            factor = 2
+            ROOT = { is_major = yes }
+        }
+        modifier = {
+            factor = 5
+            ROOT = { tag = JAP }
+        }
+        modifier = {
+            factor = 2
+            ROOT = {
+                AND = {
+                    is_special_project_completed = sp:anthrax_bomb
+                    is_special_project_completed = sp:plague_bomb
+                }
+            }
+        }
+        modifier = {
+            factor = 0  # Never develop if at peace and doing well
+            ROOT = {
+                NOT = { has_war = yes }
+                has_stability > 0.6
+            }
+        }
+    }
+
+    project_output = {
+        enable_equipments = {
+            smallpox_bomb_1
+        }
+        country_effects = {
+            custom_effect_tooltip = smallpox_bomb_unlocked_tooltip
+            hidden_effect = {
+                if = {
+                    limit = { NOT = { has_country_flag = bioweapon_available } }
+                    set_country_flag = bioweapon_available
+                }
+            }
+        }
+    }
+
+    unique_prototype_rewards = {
+        sp_smallpox_reward_caution = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 0
+                max = 100
+            }
+
+            weight = {
+                base = 15  # Higher than other bioweapons due to extreme danger
+            }
+
+            option = {
+                token = sp_smallpox_reward_caution_careful
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = smallpox_careful_research_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.high
+                        }
+                        set_country_flag = smallpox_careful_research_chosen
+                    }
+                }
+            }
+            option = {
+                token = sp_smallpox_reward_caution_risky
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = smallpox_risky_research_tt
+                        set_country_flag = smallpox_risky_research_chosen
+                        # Higher risk of accidents
+                        add_stability = -0.03
+                    }
+                }
+            }
+        }
+
+        sp_smallpox_reward_field_testing = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 50  # Later in development due to extreme danger
+                max = 100
+            }
+
+            weight = {
+                base = 8  # Lower weight - very dangerous
+            }
+
+            option = {
+                token = sp_smallpox_reward_field_testing_conduct
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = smallpox_field_testing_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.gain.high
+                        }
+                        conduct_smallpox_field_test = yes
+                    }
+                }
+            }
+            option = {
+                token = sp_smallpox_reward_field_testing_skip
+
+                default = yes
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = smallpox_skip_field_testing_tt
+                        # No field test - slower progress but safer
+                    }
+                }
+            }
+        }
+    }
+
+    generic_prototype_rewards = {
+        sp_biowarfare_generic_reward_scientist_xp_1
+        sp_biowarfare_generic_reward_scientist_xp_2
+        sp_biowarfare_generic_reward_scientist_xp_3
+        sp_biowarfare_generic_reward_major_progress_1
+        sp_biowarfare_generic_reward_major_progress_2
+        sp_biowarfare_generic_reward_major_progress_3
+        sp_biowarfare_generic_reward_test_failure_1
+        sp_biowarfare_generic_reward_test_failure_2
+        sp_biowarfare_generic_reward_test_failure_3
+        sp_biowarfare_generic_reward_resource_scarcity
+        sp_biowarfare_generic_reward_critical_failure
+        sp_biowarfare_political_interference_generic_reward
+    }
+}

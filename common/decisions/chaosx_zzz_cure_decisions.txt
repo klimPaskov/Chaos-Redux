@@ -134,10 +134,6 @@ chaosx_zzz_cure_category = {
                 }
                 if = {
                     limit = { check_variable = { global.zzz_cure > 99 } }
-                    # Reduce chaos when cure is found
-                    set_temp_variable = { chaos_change = -4 }
-                    add_chaos_meter_value = yes
-
                     every_country = {
                         limit = { is_in_tech_sharing_group = cure_sharing }
                         add_timed_idea = {
@@ -297,9 +293,6 @@ chaosx_zzz_cure_category = {
                     tooltip = zzz_cure_global_tt
                 }
                 if = { limit = { check_variable = { global.zzz_cure > 99 } }
-                # Reduce chaos when cure is found
-                set_temp_variable = { chaos_change = -10 }
-                add_chaos_meter_value = yes
 
                 every_country = {
                     limit = { is_in_tech_sharing_group = cure_sharing }
@@ -471,9 +464,6 @@ find_cure_tier_2 = {
                 tooltip = zzz_cure_global_tt
             }
             if = { limit = { check_variable = { global.zzz_cure > 99 } }
-            # Reduce chaos when cure is found
-            set_temp_variable = { chaos_change = -10 }
-            add_chaos_meter_value = yes
 
             every_country = {
                 limit = { is_in_tech_sharing_group = cure_sharing }
@@ -673,9 +663,6 @@ find_cure_tier_3 = {
                 tooltip = zzz_cure_global_tt
             }
             if = { limit = { check_variable = { global.zzz_cure > 99 } }
-            # Reduce chaos when cure is found
-            set_temp_variable = { chaos_change = -10 }
-            add_chaos_meter_value = yes
 
             every_country = {
                 limit = { is_in_tech_sharing_group = cure_sharing }
@@ -1015,9 +1002,9 @@ activate_the_cure = {
     icon = GFX_decision_generic_research
 
     ai_will_do = {
-        factor = 10  # High base priority for completing cure
+        base = 5
         modifier = {
-            add = 10
+            factor = 2
             has_war_with = ZZZ
         }
         modifier = {
@@ -1124,10 +1111,6 @@ activate_the_cure = {
     }
 
     complete_effect = {
-        # Reduce chaos when cure is found
-        set_temp_variable = { chaos_change = -10 }
-        add_chaos_meter_value = yes
-
         add_timed_idea = {
             idea = cure_activated
             days = 360

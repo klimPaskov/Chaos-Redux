@@ -1,0 +1,1779 @@
+
+
+
+
+
+###############################################################################################################
+
+#       ########  ####  #######  ##      ##    ###    ########  ########    ###    ########  ########
+#       ##     ##  ##  ##     ## ##  ##  ##   ## ##   ##     ## ##         ## ##   ##     ## ##
+#       ##     ##  ##  ##     ## ##  ##  ##  ##   ##  ##     ## ##        ##   ##  ##     ## ##
+#       ########   ##  ##     ## ##  ##  ## ##     ## ########  ######   ##     ## ########  ######
+#       ##     ##  ##  ##     ## ##  ##  ## ######### ##   ##   ##       ######### ##   ##   ##
+#       ##     ##  ##  ##     ## ##  ##  ## ##     ## ##    ##  ##       ##     ## ##    ##  ##
+#       ########  ####  #######   ###  ###  ##     ## ##     ## ##       ##     ## ##     ## ########
+
+###############################################################################################################
+
+
+# Anthrax Constants - Standard bioweapon
+@ANTHRAX_MANPOWER_MODIFIER = -0.5
+@ANTHRAX_RESOURCES_MODIFIER = -0.3
+@ANTHRAX_SUPPLIES_MODIFIER = -0.3
+@ANTHRAX_PRODUCTION_MODIFIER = -0.3
+@ANTHRAX_ATTRITION_MODIFIER = 0.3
+@ANTHRAX_SPEED_MODIFIER = -0.3
+
+# Plague Constants - More lethal than anthrax
+@PLAGUE_MANPOWER_MODIFIER = -0.9
+@PLAGUE_RESOURCES_MODIFIER = -0.75
+@PLAGUE_SUPPLIES_MODIFIER = -0.9
+@PLAGUE_PRODUCTION_MODIFIER = -0.75
+@PLAGUE_ATTRITION_MODIFIER = 0.9
+@PLAGUE_SPEED_MODIFIER = -0.9
+
+# Tularemia Constants - Tactical weapon, affects military more than civilians
+@TULAREMIA_MANPOWER_MODIFIER = -0.05
+@TULAREMIA_RESOURCES_MODIFIER = -0.10
+@TULAREMIA_SUPPLIES_MODIFIER = -0.20
+@TULAREMIA_PRODUCTION_MODIFIER = -0.08
+@TULAREMIA_ATTRITION_MODIFIER = 0.20
+@TULAREMIA_SPEED_MODIFIER = -0.25
+@TULAREMIA_ORG_MODIFIER = -0.25
+
+# Smallpox Constants - Strategic weapon for total war
+@SMALLPOX_MANPOWER_MODIFIER = -0.8
+@SMALLPOX_RESOURCES_MODIFIER = -0.6
+@SMALLPOX_SUPPLIES_MODIFIER = -0.8
+@SMALLPOX_PRODUCTION_MODIFIER = -0.7
+@SMALLPOX_ATTRITION_MODIFIER = 0.8
+@SMALLPOX_SPEED_MODIFIER = -0.7
+
+# Antibiotics Effectiveness Constants
+@ANTHRAX_ANTIBIOTICS_CAP = 0.30
+@PLAGUE_ANTIBIOTICS_CAP = 0.25
+@TULAREMIA_ANTIBIOTICS_CAP = 0.40
+@ANTHRAX_ANTIBIOTICS_RATE = 0.01
+@PLAGUE_ANTIBIOTICS_RATE = 0.01
+@TULAREMIA_ANTIBIOTICS_RATE = 0.015
+
+# Smallpox Vaccination Constants - Weekly system
+@SMALLPOX_VACCINATION_WEEKLY_BASE = 0.01      # Base 1% weekly progress
+@SMALLPOX_VACCINATION_WEEKLY_PER_10CIV = 0.01 # 1% per 10 civilian factories
+@SMALLPOX_VACCINATION_WEEKLY_CAP = 0.06       # Maximum 6% weekly progress
+@SMALLPOX_VACCINATION_TOTAL_CAP = 0.60        # Maximum 60% total progress
+@SMALLPOX_CONTAMINATION_REMOVAL_THRESHOLD = 0.99 # 100% protection removes contamination
+
+# Pre-war vaccination protection levels
+@SMALLPOX_MAJOR_PROTECTION = 0.50  # USA, CAN, SOV, JAP, GER, FRA, ENG
+@SMALLPOX_MINOR_PROTECTION = 0.25  # Other European countries
+
+# War Support Penalties (country-level)
+@ANTHRAX_WAR_SUPPORT_PENALTY = -0.01
+@PLAGUE_WAR_SUPPORT_PENALTY = -0.015
+@TULAREMIA_WAR_SUPPORT_PENALTY = -0.005
+@SMALLPOX_WAR_SUPPORT_PENALTY = -0.02
+
+# Field Test Duration Constants (in days)
+@ANTHRAX_FIELD_TEST_DURATION = 60
+@PLAGUE_FIELD_TEST_DURATION = 90
+@TULAREMIA_FIELD_TEST_DURATION = 30
+@SMALLPOX_FIELD_TEST_DURATION = 120
+
+# Field Test Outbreak Chances (0.0 to 1.0)
+@ANTHRAX_OUTBREAK_ENEMY = 0.1
+@ANTHRAX_OUTBREAK_OWN = 0.25
+@PLAGUE_OUTBREAK_ENEMY = 0.15
+@PLAGUE_OUTBREAK_OWN = 0.35
+@TULAREMIA_OUTBREAK_ENEMY = 0.05
+@TULAREMIA_OUTBREAK_OWN = 0.10
+@SMALLPOX_OUTBREAK_ENEMY = 0.2
+@SMALLPOX_OUTBREAK_OWN = 0.45
+
+# Spreading Constants - Base time in months for mean_time_to_happen
+@ANTHRAX_SPREAD_BASE_MONTHS = 36   # 3 years - slow spread
+@PLAGUE_SPREAD_BASE_MONTHS = 24    # 2 years - faster spread
+@TULAREMIA_SPREAD_BASE_MONTHS = 48 # 4 years - slowest spread
+@SMALLPOX_SPREAD_BASE_MONTHS = 1   # 1 month - very fast spread
+
+# Contamination Defense Multipliers
+@CONTAINMENT_MULTIPLIER = 3.0  # How much defense measures slow spread
+
+# Apply anthrax contamination to a state
+# Should be called in state scope with contamination_days temp variable set
+apply_anthrax_contamination = {
+    # Base anthrax disease effects using constants
+    set_variable = { anthrax_manpower_modifier = @ANTHRAX_MANPOWER_MODIFIER }
+    set_variable = { anthrax_resources_modifier = @ANTHRAX_RESOURCES_MODIFIER }
+    set_variable = { anthrax_supplies_modifier = @ANTHRAX_SUPPLIES_MODIFIER }
+    set_variable = { anthrax_production_modifier = @ANTHRAX_PRODUCTION_MODIFIER }
+    set_variable = { anthrax_attrition_modifier = @ANTHRAX_ATTRITION_MODIFIER }
+    set_variable = { anthrax_speed_modifier = @ANTHRAX_SPEED_MODIFIER }
+
+    # Apply the dynamic modifier with the duration from contamination_days
+    add_dynamic_modifier = {
+        modifier = anthrax_contaminated_state
+        days = contamination_days
+    }
+
+    # If the controlling country has antibiotics production active, apply protection immediately
+    if = {
+        limit = {
+            THIS.controller = { has_idea = anthrax_antibiotics_mass_production_idea }
+        }
+        THIS.controller = {
+            # Calculate antibiotics effectiveness based on civilian factories
+            if = {
+                limit = { num_of_civilian_factories > 0 }
+                set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+                multiply_temp_variable = { civ_factory_bonus = @ANTHRAX_ANTIBIOTICS_RATE }
+
+                # Cap the bonus
+                if = {
+                    limit = { check_variable = { civ_factory_bonus > @ANTHRAX_ANTIBIOTICS_CAP } }
+                    set_temp_variable = { civ_factory_bonus = @ANTHRAX_ANTIBIOTICS_CAP }
+                }
+
+                add_to_temp_variable = { anthrax_antibiotics_effectiveness = civ_factory_bonus }
+            }
+
+            # Apply protection to this newly contaminated state
+            PREV = {
+                set_state_flag = anthrax_antibiotics_protection_active
+                set_variable = { anthrax_antibiotics_protection_effectiveness = PREV.anthrax_antibiotics_effectiveness }
+                reduce_contamination_effects = yes
+                force_update_dynamic_modifier = yes
+            }
+        }
+    }
+
+    THIS.controller = {
+        set_country_flag = bioweapon_target
+        add_to_variable = { bioweapon_contaminated_states = 1 }
+    }
+
+    # Set state flags
+    set_state_flag = anthrax_contaminated
+    set_state_flag = bioweapon_contaminated
+
+    # Calculate initial defense effectiveness for the contaminated state
+    calculate_contamination_defense_effectiveness = yes
+}
+
+# Apply plague contamination to a state
+# Should be called in state scope with contamination_days temp variable set
+apply_plague_contamination = {
+    # Base plague disease effects using constants (much stronger than anthrax)
+    set_variable = { plague_manpower_modifier = @PLAGUE_MANPOWER_MODIFIER }
+    set_variable = { plague_resources_modifier = @PLAGUE_RESOURCES_MODIFIER }
+    set_variable = { plague_supplies_modifier = @PLAGUE_SUPPLIES_MODIFIER }
+    set_variable = { plague_production_modifier = @PLAGUE_PRODUCTION_MODIFIER }
+    set_variable = { plague_attrition_modifier = @PLAGUE_ATTRITION_MODIFIER }
+    set_variable = { plague_speed_modifier = @PLAGUE_SPEED_MODIFIER }
+
+    # Apply the dynamic modifier with the duration from contamination_days
+    add_dynamic_modifier = {
+        modifier = plague_contaminated_state
+        days = contamination_days
+    }
+
+    # If the controlling country has antibiotics production active, apply protection immediately
+    if = {
+        limit = {
+            THIS.controller = { has_idea = plague_antibiotics_mass_production_idea }
+        }
+        THIS.controller = {
+            # Calculate antibiotics effectiveness based on civilian factories
+            if = {
+                limit = { num_of_civilian_factories > 0 }
+                set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+                multiply_temp_variable = { civ_factory_bonus = @PLAGUE_ANTIBIOTICS_RATE }
+
+                # Cap the bonus (lower than anthrax due to plague's higher virulence)
+                if = {
+                    limit = { check_variable = { civ_factory_bonus > @PLAGUE_ANTIBIOTICS_CAP } }
+                    set_temp_variable = { civ_factory_bonus = @PLAGUE_ANTIBIOTICS_CAP }
+                }
+
+                add_to_temp_variable = { plague_antibiotics_effectiveness = civ_factory_bonus }
+            }
+
+            # Apply protection to this newly contaminated state
+            PREV = {
+                set_state_flag = plague_antibiotics_protection_active
+                set_variable = { plague_antibiotics_protection_effectiveness = PREV.plague_antibiotics_effectiveness }
+                reduce_contamination_effects = yes
+                force_update_dynamic_modifier = yes
+            }
+        }
+    }
+
+    THIS.controller = {
+        set_country_flag = bioweapon_target
+        add_to_variable = { bioweapon_contaminated_states = 1 }
+    }
+
+    # Set state flags
+    set_state_flag = plague_contaminated
+    set_state_flag = bioweapon_contaminated
+
+    # Calculate initial defense effectiveness for the contaminated state
+    calculate_contamination_defense_effectiveness = yes
+}
+
+
+# Apply national and diplomatic consequences for successful anthrax bioweapon use
+# Should be called in raid scope with var:actor_country and var:victim_country available
+apply_anthrax_bioweapon_consequences = {
+    # National effects on the attacking country
+    var:actor_country = {
+        # Set the bioweapon user flag for diplomatic tracking
+        if = {
+            limit = { NOT = { has_country_flag = used_anthrax_weapon } }
+            set_country_flag = used_anthrax_weapon
+        }
+        # Set generic bioweapon flag for retaliation justification
+        if = {
+            limit = { NOT = { has_country_flag = used_bioweapon } }
+            set_country_flag = used_bioweapon
+        }
+
+        # Track number of bioweapon uses for scaling effects
+        if = {
+            limit = { NOT = { has_variable = bioweapon_uses } }
+            set_variable = { bioweapon_uses = 0 }
+        }
+        add_to_variable = { bioweapon_uses = 1 }
+
+        # War Support penalty using constant
+        add_war_support = @ANTHRAX_WAR_SUPPORT_PENALTY
+
+        # Apply diplomatic consequences with all democratic nations
+        every_other_country = {
+            limit = {
+                exists = yes
+                has_government = democratic
+                NOT = { is_subject_of = PREV }
+            }
+
+            # Opinion penalty for using bioweapons
+            # Use stronger modifier for repeat offenders (3+ uses)
+            if = {
+                limit = { PREV = { check_variable = { bioweapon_uses > 3 } } }
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = bioweapon_repeat_offender
+                }
+            }
+            else = {
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = bioweapon_user
+                }
+            }
+        }
+        var:victim_country = {
+            add_opinion_modifier = {
+                target = PREV
+                modifier = bioweapon_user
+            }
+        }
+    }
+
+    # National effects on the target country
+    var:victim_country = {
+        # Mark as bioweapon target for justification purposes
+        set_country_flag = bioweapon_target
+
+        # Gain sympathy from democratic nations
+        every_other_country = {
+            limit = {
+                exists = yes
+                has_government = democratic
+                NOT = { tag = var:actor_country }
+                NOT = { is_subject_of = var:actor_country }
+            }
+
+            add_opinion_modifier = {
+                target = PREV
+                modifier = bioweapon_victim_sympathy
+            }
+        }
+    }
+}
+
+# Apply national and diplomatic consequences for successful plague bioweapon use
+# Should be called in raid scope with var:actor_country and var:victim_country available
+apply_plague_bioweapon_consequences = {
+    # National effects on the attacking country
+    var:actor_country = {
+        # Set the bioweapon user flag for diplomatic tracking
+        if = {
+            limit = { NOT = { has_country_flag = used_plague_weapon } }
+            set_country_flag = used_plague_weapon
+        }
+        # Set generic bioweapon flag for retaliation justification
+        if = {
+            limit = { NOT = { has_country_flag = used_bioweapon } }
+            set_country_flag = used_bioweapon
+        }
+
+        # Track number of bioweapon uses for scaling effects
+        if = {
+            limit = { NOT = { has_variable = bioweapon_uses } }
+            set_variable = { bioweapon_uses = 0 }
+        }
+        add_to_variable = { bioweapon_uses = 1 }
+
+        # War Support penalty using constant (higher for plague)
+        add_war_support = @PLAGUE_WAR_SUPPORT_PENALTY
+
+        # Apply diplomatic consequences with all democratic nations
+        every_other_country = {
+            limit = {
+                exists = yes
+                has_government = democratic
+                NOT = { is_subject_of = PREV }
+            }
+
+            # Opinion penalty for using bioweapons
+            # Use stronger modifier for repeat offenders (3+ uses)
+            if = {
+                limit = { PREV = { check_variable = { bioweapon_uses > 3 } } }
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = bioweapon_repeat_offender
+                }
+            }
+            else = {
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = bioweapon_user
+                }
+            }
+        }
+        var:victim_country = {
+            add_opinion_modifier = {
+                target = PREV
+                modifier = bioweapon_user
+            }
+        }
+    }
+
+    # National effects on the target country
+    var:victim_country = {
+        # Mark as bioweapon target for justification purposes
+        set_country_flag = bioweapon_target
+
+        # Gain sympathy from democratic nations
+        every_other_country = {
+            limit = {
+                exists = yes
+                has_government = democratic
+                NOT = { tag = var:actor_country }
+                NOT = { is_subject_of = var:actor_country }
+            }
+
+            add_opinion_modifier = {
+                target = PREV
+                modifier = bioweapon_victim_sympathy
+            }
+        }
+    }
+}
+
+
+
+
+
+# Reduce contamination effects in a state based on defensive measures
+# Should be called in state scope
+reduce_contamination_effects = {
+    set_temp_variable = { total_reduction = 0 }
+
+    # Check for field hospital effectiveness
+    if = {
+        limit = { has_state_flag = field_hospitals_deployed }
+        if = {
+            limit = { has_variable = field_hospital_effectiveness }
+            add_to_temp_variable = { total_reduction = field_hospital_effectiveness }
+        }
+        else = {
+            add_to_temp_variable = { total_reduction = 0.2 }
+        }
+    }
+
+    # Check for quarantine effectiveness
+    if = {
+        limit = { has_state_flag = quarantine_measures_active }
+        if = {
+            limit = { has_variable = quarantine_effectiveness }
+            add_to_temp_variable = { total_reduction = quarantine_effectiveness }
+        }
+        else = {
+            add_to_temp_variable = { total_reduction = 0.2 }
+        }
+    }
+
+    # Check for antibiotics protection
+    if = {
+        limit = { has_state_flag = anthrax_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = anthrax_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = anthrax_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for plague antibiotics protection
+    if = {
+        limit = { has_state_flag = plague_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = plague_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = plague_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for tularemia antibiotics protection
+    if = {
+        limit = { has_state_flag = tularemia_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = tularemia_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = tularemia_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for smallpox vaccination protection
+    if = {
+        limit = { has_state_flag = smallpox_vaccination_protection_active }
+        if = {
+            limit = { has_variable = smallpox_vaccination_protection_effectiveness }
+            add_to_temp_variable = { total_reduction = smallpox_vaccination_protection_effectiveness }
+        }
+    }
+
+    # Apply reduced contamination effects based on measures taken
+    if = {
+        limit = { check_variable = { var:total_reduction > 0 } }
+
+        # Apply the reduction percentage
+        set_temp_variable = { total_reduction_in_percentage = 1 }
+        subtract_from_temp_variable = { total_reduction_in_percentage = total_reduction }
+
+        # Anthrax
+        multiply_variable = { anthrax_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { anthrax_speed_modifier = total_reduction_in_percentage }
+
+        # Plague
+        multiply_variable = { plague_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { plague_speed_modifier = total_reduction_in_percentage }
+
+        # Tularemia - update variable names for consistency
+        multiply_variable = { tularemia_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_speed_modifier = total_reduction_in_percentage }
+        multiply_variable = { tularemia_org_modifier = total_reduction_in_percentage }
+
+        # Smallpox - strategic weapon effects reduction
+        multiply_variable = { smallpox_manpower_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_resources_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_supplies_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_production_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_attrition_modifier = total_reduction_in_percentage }
+        multiply_variable = { smallpox_speed_modifier = total_reduction_in_percentage }
+    }
+}
+
+# ==================== BIOWEAPON CLEANUP AND MAINTENANCE EFFECTS ====================
+
+# Clean up defense state flags when contamination ends
+# Should be called in state scope
+cleanup_contamination_defense_flags = {
+    # Check if contamination has ended
+    if = {
+        limit = {
+            NOT = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+            NOT = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+            NOT = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+            NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+        }
+
+        # Remove field hospital flags and effects
+        if = {
+            limit = { has_state_flag = field_hospitals_deployed }
+            clr_state_flag = field_hospitals_deployed
+            clear_variable = field_hospital_effectiveness
+        }
+
+        # Remove quarantine flags and effects
+        if = {
+            limit = { has_state_flag = quarantine_measures_active }
+            clr_state_flag = quarantine_measures_active
+            clear_variable = quarantine_effectiveness
+        }
+
+        # Remove antibiotics protection flags (but not the idea itself)
+        if = {
+            limit = { has_state_flag = anthrax_antibiotics_protection_active }
+            clr_state_flag = anthrax_antibiotics_protection_active
+            clear_variable = anthrax_antibiotics_protection_effectiveness
+        }
+        if = {
+            limit = { has_state_flag = plague_antibiotics_protection_active }
+            clr_state_flag = plague_antibiotics_protection_active
+            clear_variable = plague_antibiotics_protection_effectiveness
+        }
+        if = {
+            limit = { has_state_flag = tularemia_antibiotics_protection_active }
+            clr_state_flag = tularemia_antibiotics_protection_active
+            clear_variable = tularemia_antibiotics_protection_effectiveness
+        }
+
+        # Remove smallpox vaccination protection flags
+        if = {
+            limit = { has_state_flag = smallpox_vaccination_protection_active }
+            clr_state_flag = smallpox_vaccination_protection_active
+            clear_variable = smallpox_vaccination_protection_effectiveness
+        }
+    }
+}
+
+# Check all states for cleanup opportunities (weekly effect)
+check_all_states_for_contamination_cleanup = {
+    every_controlled_state = {
+        limit = {
+            OR = {
+                has_state_flag = field_hospitals_deployed
+                has_state_flag = quarantine_measures_active
+            }
+        }
+
+        # Calculate current defense effectiveness for contaminated states
+        if = {
+            limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+            calculate_contamination_defense_effectiveness = yes
+        }
+
+        # Clean up ended contamination
+        cleanup_contamination_defense_flags = yes
+    }
+    if = {
+        limit = { NOT = { any_controlled_state = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } } } }
+        clr_country_flag = bioweapon_target
+    }
+}
+
+# ==================== BIOWEAPON FIELD TEST CONDUCT EFFECTS ====================
+
+# Conduct field testing of bioweapon
+# Called from prototype rewards - finds appropriate test site and applies effects
+conduct_anthrax_field_test = {
+    set_temp_variable = { test_success = 1 }
+    set_temp_variable = { outbreak_chance = 0 }
+
+    hidden_effect = {
+        # Try to find enemy territory first
+        if = {
+            limit = {
+                any_neighbor_country = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+            }
+
+            # Test on enemy territory
+            random_neighbor_country = {
+                limit = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+
+                random_controlled_state = {
+                    limit = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_enemy
+            set_temp_variable = { outbreak_chance = @ANTHRAX_OUTBREAK_ENEMY }
+
+            # Apply contamination to enemy state
+            event_target:field_test_state = {
+                set_temp_variable = { contamination_days = @ANTHRAX_FIELD_TEST_DURATION }
+                apply_anthrax_contamination = yes
+            }
+        }
+        else = {
+            # No enemies available, test on own territory
+            random_controlled_state = {
+                limit = {
+                    NOT = { is_capital = yes }
+                }
+                save_event_target_as = field_test_state
+            }
+
+            # If no suitable non-capital state, use any state
+            if = {
+                limit = { NOT = { has_event_target = field_test_state } }
+                random_controlled_state = {
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_own
+            set_temp_variable = { outbreak_chance = @ANTHRAX_OUTBREAK_OWN }
+        }
+
+        # Random chance for outbreak during testing
+        if = {
+            limit = {
+                check_variable = { var:outbreak_chance > 0 }
+            }
+
+            random_list = {
+                75 = {
+                    # Successful test without outbreak
+                    country_event = { id = chaosx_bioweapon.2 }
+                }
+                25 = {
+                    # Test causes outbreak
+                    if = {
+                        limit = { has_country_flag = field_test_on_own }
+                        country_event = { id = chaosx_bioweapon.3 }
+                    }
+                    else = {
+                        # Still successful but with diplomatic consequences
+                        country_event = { id = chaosx_bioweapon.2 }
+                    }
+                }
+            }
+        }
+        else = {
+            # No outbreak risk, just success
+            country_event = { id = chaosx_bioweapon.2 }
+        }
+    }
+}
+
+# Conduct field testing of plague bioweapon
+# Called from prototype rewards - finds appropriate test site and applies effects
+conduct_plague_field_test = {
+    set_temp_variable = { test_success = 1 }
+    set_temp_variable = { outbreak_chance = 0 }
+
+    hidden_effect = {
+        # Try to find enemy territory first
+        if = {
+            limit = {
+                any_neighbor_country = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+            }
+
+            # Test on enemy territory
+            random_neighbor_country = {
+                limit = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+
+                random_controlled_state = {
+                    limit = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_enemy
+            set_temp_variable = { outbreak_chance = @PLAGUE_OUTBREAK_ENEMY }
+
+            # Apply contamination to enemy state
+            event_target:field_test_state = {
+                set_temp_variable = { contamination_days = @PLAGUE_FIELD_TEST_DURATION }
+                apply_plague_contamination = yes
+            }
+        }
+        else = {
+            # No enemies available, test on own territory
+            random_controlled_state = {
+                limit = {
+                    NOT = { is_capital = yes }
+                }
+                save_event_target_as = field_test_state
+            }
+
+            # If no suitable non-capital state, use any state
+            if = {
+                limit = { NOT = { has_event_target = field_test_state } }
+                random_controlled_state = {
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_own
+            set_temp_variable = { outbreak_chance = @PLAGUE_OUTBREAK_OWN }
+
+            # Apply contamination to own state (dangerous but necessary for testing)
+            event_target:field_test_state = {
+                set_temp_variable = { contamination_days = @PLAGUE_FIELD_TEST_DURATION }
+                apply_plague_contamination = yes
+            }
+        }
+
+        # Random chance for outbreak during testing (higher for plague due to its lethality)
+        if = {
+            limit = {
+                check_variable = { var:outbreak_chance > 0 }
+            }
+
+            random_list = {
+                65 = {
+                    # Successful test without outbreak
+                    country_event = { id = chaosx_bioweapon.7 }
+                }
+                35 = {
+                    # Test causes outbreak
+                    if = {
+                        limit = { has_country_flag = field_test_on_own }
+                        country_event = { id = chaosx_bioweapon.8 }
+                    }
+                    else = {
+                        # Still successful but with diplomatic consequences
+                        country_event = { id = chaosx_bioweapon.7 }
+                    }
+                }
+            }
+        }
+        else = {
+            # No outbreak risk, just success
+            country_event = { id = chaosx_bioweapon.7 }
+        }
+    }
+}
+
+# Apply antibiotics protection to all contaminated states
+# Should be called in country scope when antibiotics production starts
+apply_anthrax_antibiotics_protection = {
+    # Calculate antibiotics effectiveness based on civilian factories using constants
+
+    if = {
+        limit = { num_of_civilian_factories > 0 }
+        set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+        multiply_temp_variable = { civ_factory_bonus = @ANTHRAX_ANTIBIOTICS_RATE }
+
+        # Cap the bonus
+        if = {
+            limit = { check_variable = { civ_factory_bonus > @ANTHRAX_ANTIBIOTICS_CAP } }
+            set_temp_variable = { civ_factory_bonus = @ANTHRAX_ANTIBIOTICS_CAP }
+        }
+
+        add_to_temp_variable = { anthrax_antibiotics_effectiveness = civ_factory_bonus }
+    }
+
+    # Store the effectiveness value for use by the idea
+    set_variable = { anthrax_antibiotics_effectiveness = anthrax_antibiotics_effectiveness }
+
+    # Apply reduction to all contaminated states
+    every_controlled_state = {
+        limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+
+        # Set antibiotics protection flag and effectiveness
+        set_state_flag = anthrax_antibiotics_protection_active
+        set_variable = { anthrax_antibiotics_protection_effectiveness = ROOT.anthrax_antibiotics_effectiveness }
+
+        # Apply the reduction immediately
+        reduce_contamination_effects = yes
+        force_update_dynamic_modifier = yes
+    }
+}
+
+# Remove antibiotics protection from all states
+# Should be called in country scope when antibiotics production stops
+remove_anthrax_antibiotics_protection = {
+    every_controlled_state = {
+        limit = { has_state_flag = anthrax_antibiotics_protection_active }
+
+        # Remove protection
+        clr_state_flag = anthrax_antibiotics_protection_active
+        clear_variable = anthrax_antibiotics_protection_effectiveness
+
+        # Reapply contamination effects at full strength
+        if = {
+            limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+            # Reset contamination variables to full strength using constants
+            set_variable = { anthrax_manpower_modifier = @ANTHRAX_MANPOWER_MODIFIER }
+            set_variable = { anthrax_resources_modifier = @ANTHRAX_RESOURCES_MODIFIER }
+            set_variable = { anthrax_supplies_modifier = @ANTHRAX_SUPPLIES_MODIFIER }
+            set_variable = { anthrax_production_modifier = @ANTHRAX_PRODUCTION_MODIFIER }
+            set_variable = { anthrax_attrition_modifier = @ANTHRAX_ATTRITION_MODIFIER }
+            set_variable = { anthrax_speed_modifier = @ANTHRAX_SPEED_MODIFIER }
+
+            # Reapply any other active measures
+            reduce_contamination_effects = yes
+            force_update_dynamic_modifier = yes
+        }
+    }
+
+    # Clear country-level variable
+    clear_variable = anthrax_antibiotics_effectiveness
+}
+
+# Calculate contamination defense effectiveness for spreading mechanics
+# Should be called in state scope
+calculate_contamination_defense_effectiveness = {
+    set_temp_variable = { total_effectiveness = 0 }
+
+    # Check for field hospital effectiveness
+    if = {
+        limit = { has_state_flag = field_hospitals_deployed }
+        if = {
+            limit = { has_variable = field_hospital_effectiveness }
+            add_to_temp_variable = { total_effectiveness = field_hospital_effectiveness }
+        }
+        else = {
+            add_to_temp_variable = { total_effectiveness = 0.2 }
+        }
+    }
+
+    # Check for quarantine effectiveness
+    if = {
+        limit = { has_state_flag = quarantine_measures_active }
+        if = {
+            limit = { has_variable = quarantine_effectiveness }
+            add_to_temp_variable = { total_effectiveness = quarantine_effectiveness }
+        }
+        else = {
+            add_to_temp_variable = { total_effectiveness = 0.2 }
+        }
+    }
+
+    # Check for antibiotics protection
+    if = {
+        limit = { has_state_flag = anthrax_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = anthrax_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_effectiveness = anthrax_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for plague antibiotics protection
+    if = {
+        limit = { has_state_flag = plague_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = plague_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_effectiveness = plague_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for tularemia antibiotics protection
+    if = {
+        limit = { has_state_flag = tularemia_antibiotics_protection_active }
+        if = {
+            limit = { has_variable = tularemia_antibiotics_protection_effectiveness }
+            add_to_temp_variable = { total_effectiveness = tularemia_antibiotics_protection_effectiveness }
+        }
+    }
+
+    # Check for smallpox vaccination protection
+    if = {
+        limit = { has_state_flag = smallpox_vaccination_protection_active }
+        if = {
+            limit = { has_variable = smallpox_vaccination_protection_effectiveness }
+            add_to_temp_variable = { total_effectiveness = smallpox_vaccination_protection_effectiveness }
+        }
+    }
+
+    # Store the result as a variable for use in triggers
+    set_variable = { contamination_defense_effectiveness = total_effectiveness }
+}
+
+# Apply plague antibiotics protection to all contaminated states
+# Should be called in country scope when plague antibiotics production starts
+apply_plague_antibiotics_protection = {
+    # Calculate antibiotics effectiveness based on civilian factories using constants
+
+    if = {
+        limit = { num_of_civilian_factories > 0 }
+        set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+        multiply_temp_variable = { civ_factory_bonus = @PLAGUE_ANTIBIOTICS_RATE }
+
+        # Cap the bonus (lower than anthrax due to plague's higher virulence)
+        if = {
+            limit = { check_variable = { civ_factory_bonus > @PLAGUE_ANTIBIOTICS_CAP } }
+            set_temp_variable = { civ_factory_bonus = @PLAGUE_ANTIBIOTICS_CAP }
+        }
+
+        add_to_temp_variable = { plague_antibiotics_effectiveness = civ_factory_bonus }
+    }
+
+    # Store the effectiveness value for use by the idea
+    set_variable = { plague_antibiotics_effectiveness = plague_antibiotics_effectiveness }
+
+    # Apply reduction to all contaminated states
+    every_controlled_state = {
+        limit = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+
+        # Set antibiotics protection flag and effectiveness
+        set_state_flag = plague_antibiotics_protection_active
+        set_variable = { plague_antibiotics_protection_effectiveness = ROOT.plague_antibiotics_effectiveness }
+
+        # Apply the reduction immediately
+        reduce_contamination_effects = yes
+        force_update_dynamic_modifier = yes
+    }
+}
+
+# Remove plague antibiotics protection from all states
+# Should be called in country scope when plague antibiotics production stops
+remove_plague_antibiotics_protection = {
+    every_controlled_state = {
+        limit = { has_state_flag = plague_antibiotics_protection_active }
+
+        # Remove protection
+        clr_state_flag = plague_antibiotics_protection_active
+        clear_variable = plague_antibiotics_protection_effectiveness
+
+        # Reapply contamination effects at full strength
+        if = {
+            limit = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+            # Reset contamination variables to full strength using constants
+            set_variable = { plague_manpower_modifier = @PLAGUE_MANPOWER_MODIFIER }
+            set_variable = { plague_resources_modifier = @PLAGUE_RESOURCES_MODIFIER }
+            set_variable = { plague_supplies_modifier = @PLAGUE_SUPPLIES_MODIFIER }
+            set_variable = { plague_production_modifier = @PLAGUE_PRODUCTION_MODIFIER }
+            set_variable = { plague_attrition_modifier = @PLAGUE_ATTRITION_MODIFIER }
+            set_variable = { plague_speed_modifier = @PLAGUE_SPEED_MODIFIER }
+
+            # Reapply any other active measures
+            reduce_contamination_effects = yes
+            force_update_dynamic_modifier = yes
+        }
+    }
+
+    # Clear country-level variable
+    clear_variable = plague_antibiotics_effectiveness
+}
+
+# Conduct field testing of tularemia bioweapon
+# Called from prototype rewards - finds appropriate test site and applies effects
+conduct_tularemia_field_test = {
+    set_temp_variable = { test_success = 1 }
+    set_temp_variable = { outbreak_chance = 0 }
+
+    hidden_effect = {
+        # Try to find enemy territory first
+        if = {
+            limit = {
+                any_neighbor_country = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+            }
+
+            # Test on enemy territory
+            random_neighbor_country = {
+                limit = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+
+                random_controlled_state = {
+                    limit = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_enemy
+            set_temp_variable = { outbreak_chance = @TULAREMIA_OUTBREAK_ENEMY }
+
+            # Apply tularemia contamination to enemy state (tactical focus - short duration)
+            event_target:field_test_state = {
+                set_temp_variable = { contamination_days = @TULAREMIA_FIELD_TEST_DURATION }
+                apply_tularemia_contamination = yes
+            }
+        }
+        else = {
+            # No enemies available, test on own territory
+            random_controlled_state = {
+                limit = {
+                    NOT = { is_capital = yes }
+                }
+                save_event_target_as = field_test_state
+            }
+
+            # If no suitable non-capital state, use any state
+            if = {
+                limit = { NOT = { has_event_target = field_test_state } }
+                random_controlled_state = {
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_own
+            set_temp_variable = { outbreak_chance = @TULAREMIA_OUTBREAK_OWN }
+
+            # Apply contamination to own state (necessary for testing)
+            event_target:field_test_state = {
+                set_temp_variable = { contamination_days = @TULAREMIA_FIELD_TEST_DURATION }
+                apply_tularemia_contamination = yes
+            }
+        }
+
+        # Random chance for outbreak during testing (lower for tularemia due to its tactical nature)
+        if = {
+            limit = {
+                check_variable = { var:outbreak_chance > 0 }
+            }
+
+            random_list = {
+                85 = {
+                    # Successful test without outbreak
+                    country_event = { id = chaosx_bioweapon.100 }
+                }
+                15 = {
+                    # Test causes minor outbreak (less severe than anthrax/plague)
+                    if = {
+                        limit = { has_country_flag = field_test_on_own }
+                        country_event = { id = chaosx_bioweapon.101 }
+                    }
+                    else = {
+                        # Still successful but with minor diplomatic consequences
+                        country_event = { id = chaosx_bioweapon.100 }
+                    }
+                }
+            }
+        }
+        else = {
+            # No outbreak risk, just success
+            country_event = { id = chaosx_bioweapon.100 }
+        }
+    }
+}
+
+# Conduct field testing of smallpox bioweapon
+# Called from prototype rewards - finds appropriate test site and applies effects
+conduct_smallpox_field_test = {
+    set_temp_variable = { test_success = 1 }
+    set_temp_variable = { outbreak_chance = 0 }
+
+    hidden_effect = {
+        # Try to find enemy territory first (extremely dangerous)
+        if = {
+            limit = {
+                any_neighbor_country = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+            }
+
+            # Test on enemy territory
+            random_neighbor_country = {
+                limit = {
+                    has_war_with = ROOT
+                    any_controlled_state = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+
+                random_controlled_state = {
+                    limit = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_enemy
+            set_temp_variable = { outbreak_chance = @SMALLPOX_OUTBREAK_ENEMY }
+
+            # Apply smallpox contamination to enemy state (strategic weapon - long duration)
+            event_target:field_test_state = {
+                set_temp_variable = { contamination_days = @SMALLPOX_FIELD_TEST_DURATION }
+                apply_smallpox_contamination = yes
+            }
+        }
+        else = {
+            # No enemies available, test on own territory (VERY dangerous)
+            random_controlled_state = {
+                limit = {
+                    NOT = { is_capital = yes }
+                    NOT = { is_core_of = ROOT }  # Try to avoid core states
+                }
+                save_event_target_as = field_test_state
+            }
+
+            # If no suitable non-core state, use any non-capital state
+            if = {
+                limit = { NOT = { has_event_target = field_test_state } }
+                random_controlled_state = {
+                    limit = {
+                        NOT = { is_capital = yes }
+                    }
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            # If still no state, use any state
+            if = {
+                limit = { NOT = { has_event_target = field_test_state } }
+                random_controlled_state = {
+                    save_event_target_as = field_test_state
+                }
+            }
+
+            set_country_flag = field_test_on_own
+            set_temp_variable = { outbreak_chance = @SMALLPOX_OUTBREAK_OWN }
+        }
+
+        # High chance for outbreak during testing (very dangerous strategic weapon)
+        if = {
+            limit = {
+                check_variable = { var:outbreak_chance > 0 }
+            }
+
+            random_list = {
+                55 = {
+                    # Successful test without major outbreak
+                    country_event = { id = chaosx_bioweapon.200 }
+                }
+                45 = {
+                    # Test causes significant outbreak
+                    if = {
+                        limit = { has_country_flag = field_test_on_own }
+                        country_event = { id = chaosx_bioweapon.201 }
+                    }
+                    else = {
+                        # Still successful but with severe diplomatic consequences
+                        country_event = { id = chaosx_bioweapon.200 }
+                    }
+                }
+            }
+        }
+        else = {
+            # No outbreak risk, just success
+            country_event = { id = chaosx_bioweapon.200 }
+        }
+    }
+}
+
+# Apply tularemia contamination to a state
+# Should be called in state scope with contamination_days temp variable set
+apply_tularemia_contamination = {
+    # Set contamination start date
+    set_variable = { contamination_start_date = current_date_in_days }
+
+    # Base tularemia disease effects using constants (tactical focus - affects divisions more than civilians)
+    set_variable = { tularemia_manpower_modifier = @TULAREMIA_MANPOWER_MODIFIER }
+    set_variable = { tularemia_resources_modifier = @TULAREMIA_RESOURCES_MODIFIER }
+    set_variable = { tularemia_supplies_modifier = @TULAREMIA_SUPPLIES_MODIFIER }
+    set_variable = { tularemia_production_modifier = @TULAREMIA_PRODUCTION_MODIFIER }
+    set_variable = { tularemia_attrition_modifier = @TULAREMIA_ATTRITION_MODIFIER }
+    set_variable = { tularemia_speed_modifier = @TULAREMIA_SPEED_MODIFIER }
+    set_variable = { tularemia_org_modifier = @TULAREMIA_ORG_MODIFIER }
+    set_variable = { tularemia_contamination_duration = contamination_days }
+
+    # Apply the dynamic modifier
+    add_dynamic_modifier = {
+        modifier = tularemia_contaminated_state
+        days = contamination_days
+    }
+
+    # If the controlling country has antibiotics production active, apply protection immediately
+    if = {
+        limit = {
+            THIS.controller = { has_idea = tularemia_antibiotics_mass_production_idea }
+        }
+        THIS.controller = {
+            # Calculate antibiotics effectiveness based on civilian factories
+            if = {
+                limit = { num_of_civilian_factories > 0 }
+                set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+                multiply_temp_variable = { civ_factory_bonus = @TULAREMIA_ANTIBIOTICS_RATE }
+
+                # Cap the bonus (higher than anthrax/plague due to easier treatment)
+                if = {
+                    limit = { check_variable = { civ_factory_bonus > @TULAREMIA_ANTIBIOTICS_CAP } }
+                    set_temp_variable = { civ_factory_bonus = @TULAREMIA_ANTIBIOTICS_CAP }
+                }
+
+                add_to_temp_variable = { tularemia_antibiotics_effectiveness = civ_factory_bonus }
+            }
+
+            # Apply protection to this newly contaminated state
+            PREV = {
+                set_state_flag = tularemia_antibiotics_protection_active
+                set_variable = { tularemia_antibiotics_protection_effectiveness = PREV.tularemia_antibiotics_effectiveness }
+                reduce_contamination_effects = yes
+                force_update_dynamic_modifier = yes
+            }
+        }
+    }
+
+    THIS.controller = {
+        set_country_flag = bioweapon_target
+        add_to_variable = { bioweapon_contaminated_states = 1 }
+    }
+
+    # Set state flags
+    set_state_flag = tularemia_contaminated
+    set_state_flag = bioweapon_contaminated
+
+    # Calculate initial defense effectiveness for the contaminated state
+    calculate_contamination_defense_effectiveness = yes
+}
+
+# Apply smallpox contamination to a state
+# Should be called in state scope with contamination_days temp variable set
+apply_smallpox_contamination = {
+    # Set contamination start date and initial severity
+    set_variable = { contamination_start_date = current_date_in_days }
+    set_variable = { smallpox_severity = 1 }  # Will grow over time
+
+    # Base smallpox disease effects using constants (strategic focus - devastating country-wide effects)
+    set_variable = { smallpox_manpower_modifier = @SMALLPOX_MANPOWER_MODIFIER }
+    set_variable = { smallpox_resources_modifier = @SMALLPOX_RESOURCES_MODIFIER }
+    set_variable = { smallpox_supplies_modifier = @SMALLPOX_SUPPLIES_MODIFIER }
+    set_variable = { smallpox_production_modifier = @SMALLPOX_PRODUCTION_MODIFIER }
+    set_variable = { smallpox_attrition_modifier = @SMALLPOX_ATTRITION_MODIFIER }
+    set_variable = { smallpox_speed_modifier = @SMALLPOX_SPEED_MODIFIER }
+    set_variable = { smallpox_contamination_duration = contamination_days }
+
+    # Apply the dynamic modifier (permanent until 100% vaccination achieved)
+    add_dynamic_modifier = {
+        modifier = smallpox_contaminated_state
+        days = contamination_days
+    }
+
+    # Check for existing vaccination protection
+    if = {
+        limit = {
+            THIS.controller = { has_idea = smallpox_vaccination_program_idea }
+        }
+        THIS.controller = {
+            # Calculate vaccination effectiveness based on civilian factories
+            if = {
+                limit = { num_of_civilian_factories > 0 }
+                set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+                multiply_temp_variable = { civ_factory_bonus = @SMALLPOX_VACCINATION_WEEKLY_PER_10CIV }
+
+                # Cap the bonus
+                if = {
+                    limit = { check_variable = { civ_factory_bonus > @SMALLPOX_VACCINATION_WEEKLY_CAP } }
+                    set_temp_variable = { civ_factory_bonus = @SMALLPOX_VACCINATION_WEEKLY_CAP }
+                }
+
+                add_to_temp_variable = { smallpox_vaccination_effectiveness = civ_factory_bonus }
+            }
+
+            # Apply protection to this newly contaminated state
+            PREV = {
+                set_state_flag = smallpox_vaccination_protection_active
+                set_variable = { smallpox_vaccination_protection_effectiveness = PREV.smallpox_vaccination_effectiveness }
+                reduce_contamination_effects = yes
+                force_update_dynamic_modifier = yes
+            }
+        }
+    }
+
+    THIS.controller = {
+        set_country_flag = bioweapon_target
+        add_to_variable = { bioweapon_contaminated_states = 1 }
+
+        # Trigger country-wide panic and health crisis
+        add_stability = -0.05
+        add_war_support = -0.03
+    }
+
+    # Set state flags
+    set_state_flag = smallpox_contaminated
+    set_state_flag = bioweapon_contaminated
+
+    # Calculate initial defense effectiveness for the contaminated state
+    calculate_contamination_defense_effectiveness = yes
+}
+
+# Apply tularemia bioweapon consequences (country-level effects)
+# Should be called in raid scope with var:actor_country and var:victim_country available
+apply_tularemia_bioweapon_consequences = {
+    # National effects on the attacking country
+    var:actor_country = {
+        # Set the bioweapon user flag for diplomatic tracking
+        if = {
+            limit = { NOT = { has_country_flag = used_tularemia_weapon } }
+            set_country_flag = used_tularemia_weapon
+        }
+        # Set generic bioweapon flag for retaliation justification
+        if = {
+            limit = { NOT = { has_country_flag = used_bioweapon } }
+            set_country_flag = used_bioweapon
+        }
+
+        # Track number of bioweapon uses for scaling effects
+        if = {
+            limit = { NOT = { has_variable = bioweapon_uses } }
+            set_variable = { bioweapon_uses = 0 }
+        }
+        add_to_variable = { bioweapon_uses = 1 }
+
+        # War Support penalty using constant (lower for tularemia as it's tactical)
+        add_war_support = @TULAREMIA_WAR_SUPPORT_PENALTY
+
+        # Apply diplomatic consequences with all democratic nations (milder than anthrax/plague)
+        every_other_country = {
+            limit = {
+                exists = yes
+                has_government = democratic
+                NOT = { is_subject_of = PREV }
+            }
+
+            # Opinion penalty for using bioweapons
+            # Use stronger modifier for repeat offenders (3+ uses)
+            if = {
+                limit = { PREV = { check_variable = { bioweapon_uses > 3 } } }
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = bioweapon_repeat_offender
+                }
+            }
+            else = {
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = bioweapon_user
+                }
+            }
+        }
+        var:victim_country = {
+            add_opinion_modifier = {
+                target = PREV
+                modifier = bioweapon_user
+            }
+        }
+    }
+
+    # National effects on the target country
+    var:victim_country = {
+        # Mark as bioweapon target for justification purposes
+        set_country_flag = bioweapon_target
+
+        # Gain sympathy from democratic nations
+        every_other_country = {
+            limit = {
+                exists = yes
+                has_government = democratic
+                NOT = { tag = var:actor_country }
+                NOT = { is_subject_of = var:actor_country }
+            }
+
+            add_opinion_modifier = {
+                target = PREV
+                modifier = bioweapon_victim_sympathy
+            }
+        }
+    }
+}
+
+# Apply smallpox bioweapon consequences (country-level effects)
+# Should be called in raid scope with var:actor_country and var:victim_country available
+apply_smallpox_bioweapon_consequences = {
+    # National effects on the attacking country
+    var:actor_country = {
+        # Set the bioweapon user flag for diplomatic tracking
+        if = {
+            limit = { NOT = { has_country_flag = used_smallpox_weapon } }
+            set_country_flag = used_smallpox_weapon
+
+            # Trigger global news event for first use of smallpox as weapon
+            news_event = { id = chaosx_bioweapon.207 }
+        }
+        # Set generic bioweapon flag for retaliation justification
+        if = {
+            limit = { NOT = { has_country_flag = used_bioweapon } }
+            set_country_flag = used_bioweapon
+        }
+
+        # Track number of bioweapon uses for scaling effects
+        if = {
+            limit = { NOT = { has_variable = bioweapon_uses } }
+            set_variable = { bioweapon_uses = 0 }
+        }
+        add_to_variable = { bioweapon_uses = 1 }
+
+        # War Support penalty using constant (highest penalty for strategic weapon)
+        add_war_support = @SMALLPOX_WAR_SUPPORT_PENALTY
+
+        # Apply severe diplomatic consequences with ALL nations (strategic weapon = war crime)
+        every_other_country = {
+            limit = {
+                exists = yes
+                NOT = { is_subject_of = PREV }
+            }
+
+            # Extreme opinion penalty for using strategic bioweapons
+            # Even worse for repeat offenders (2+ uses for smallpox)
+            if = {
+                limit = { PREV = { check_variable = { bioweapon_uses > 2 } } }
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = strategic_bioweapon_repeat_offender
+                }
+            }
+            else = {
+                add_opinion_modifier = {
+                    target = PREV
+                    modifier = strategic_bioweapon_user
+                }
+            }
+        }
+        var:victim_country = {
+            add_opinion_modifier = {
+                target = PREV
+                modifier = strategic_bioweapon_user
+            }
+        }
+    }
+
+    # National effects on the target country
+    var:victim_country = {
+        # Mark as bioweapon target for justification purposes
+        set_country_flag = bioweapon_target
+
+        # Check if this is the first time smallpox reaches this country
+        if = {
+            limit = { NOT = { has_country_flag = smallpox_victim } }
+            set_country_flag = smallpox_victim  # Special flag for strategic weapon
+
+            # Trigger notification event for first smallpox contamination
+            country_event = { id = chaosx_bioweapon.208 }
+        }
+
+        # Gain massive sympathy from all nations
+        every_other_country = {
+            limit = {
+                exists = yes
+                NOT = { tag = var:actor_country }
+                NOT = { is_subject_of = var:actor_country }
+            }
+
+            add_opinion_modifier = {
+                target = PREV
+                modifier = strategic_bioweapon_victim_sympathy
+            }
+        }
+    }
+}
+
+# Apply tularemia antibiotics protection to all contaminated states
+# Should be called in country scope when tularemia antibiotics production starts
+apply_tularemia_antibiotics_protection = {
+    # Calculate antibiotics effectiveness based on civilian factories using constants
+
+    if = {
+        limit = { num_of_civilian_factories > 0 }
+        set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+        multiply_temp_variable = { civ_factory_bonus = @TULAREMIA_ANTIBIOTICS_RATE }
+
+        # Cap the bonus (higher than anthrax/plague due to easier treatment)
+        if = {
+            limit = { check_variable = { civ_factory_bonus > @TULAREMIA_ANTIBIOTICS_CAP } }
+            set_temp_variable = { civ_factory_bonus = @TULAREMIA_ANTIBIOTICS_CAP }
+        }
+
+        add_to_temp_variable = { tularemia_antibiotics_effectiveness = civ_factory_bonus }
+    }
+
+    # Store the effectiveness value for use by the idea
+    set_variable = { tularemia_antibiotics_effectiveness = tularemia_antibiotics_effectiveness }
+
+    # Apply reduction to all contaminated states
+    every_controlled_state = {
+        limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+
+        # Set antibiotics protection flag and effectiveness
+        set_state_flag = tularemia_antibiotics_protection_active
+        set_variable = { tularemia_antibiotics_protection_effectiveness = ROOT.tularemia_antibiotics_effectiveness }
+
+        # Apply the reduction immediately
+        reduce_contamination_effects = yes
+        force_update_dynamic_modifier = yes
+    }
+}
+
+# Remove tularemia antibiotics protection from all states
+# Should be called in country scope when tularemia antibiotics production stops
+remove_tularemia_antibiotics_protection = {
+    every_controlled_state = {
+        limit = { has_state_flag = tularemia_antibiotics_protection_active }
+
+        # Remove protection
+        clr_state_flag = tularemia_antibiotics_protection_active
+        clear_variable = tularemia_antibiotics_protection_effectiveness
+
+        # Reapply contamination effects at full strength using constants
+        if = {
+            limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+            # Reset contamination variables to full strength using constants
+            set_variable = { tularemia_manpower_modifier = @TULAREMIA_MANPOWER_MODIFIER }
+            set_variable = { tularemia_resources_modifier = @TULAREMIA_RESOURCES_MODIFIER }
+            set_variable = { tularemia_supplies_modifier = @TULAREMIA_SUPPLIES_MODIFIER }
+            set_variable = { tularemia_production_modifier = @TULAREMIA_PRODUCTION_MODIFIER }
+            set_variable = { tularemia_attrition_modifier = @TULAREMIA_ATTRITION_MODIFIER }
+            set_variable = { tularemia_speed_modifier = @TULAREMIA_SPEED_MODIFIER }
+            set_variable = { tularemia_org_modifier = @TULAREMIA_ORG_MODIFIER }
+
+            # Reapply any other active measures
+            reduce_contamination_effects = yes
+            force_update_dynamic_modifier = yes
+        }
+    }
+
+    # Clear country-level variable
+    clear_variable = tularemia_antibiotics_effectiveness
+}
+
+# Apply smallpox vaccination protection to all contaminated states
+# Should be called in country scope when vaccination program starts
+apply_smallpox_vaccination_protection = {
+    # Calculate vaccination effectiveness based on civilian factories using constants
+
+    if = {
+        limit = { num_of_civilian_factories > 0 }
+        set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+        multiply_temp_variable = { civ_factory_bonus = @SMALLPOX_VACCINATION_WEEKLY_PER_10CIV }
+
+        # Cap the bonus (lower rate due to complex vaccination program)
+        if = {
+            limit = { check_variable = { civ_factory_bonus > @SMALLPOX_VACCINATION_WEEKLY_CAP } }
+            set_temp_variable = { civ_factory_bonus = @SMALLPOX_VACCINATION_WEEKLY_CAP }
+        }
+
+        add_to_temp_variable = { smallpox_vaccination_effectiveness = civ_factory_bonus }
+    }
+
+    # Store the effectiveness value for use by the idea
+    set_variable = { smallpox_vaccination_effectiveness = smallpox_vaccination_effectiveness }
+
+    # Apply reduction to all contaminated states
+    every_controlled_state = {
+        limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+
+        # Set vaccination protection flag and effectiveness
+        set_state_flag = smallpox_vaccination_protection_active
+        set_variable = { smallpox_vaccination_protection_effectiveness = ROOT.smallpox_vaccination_effectiveness }
+
+        # Apply the reduction immediately
+        reduce_contamination_effects = yes
+        force_update_dynamic_modifier = yes
+    }
+}
+
+# Remove smallpox vaccination protection from all states
+# Should be called in country scope when vaccination program stops
+remove_smallpox_vaccination_protection = {
+    every_controlled_state = {
+        limit = { has_state_flag = smallpox_vaccination_protection_active }
+
+        # Remove protection
+        clr_state_flag = smallpox_vaccination_protection_active
+        clear_variable = smallpox_vaccination_protection_effectiveness
+
+        # Reapply contamination effects at full strength using constants
+        if = {
+            limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+            # Reset contamination variables to full strength using constants
+            set_variable = { smallpox_manpower_modifier = @SMALLPOX_MANPOWER_MODIFIER }
+            set_variable = { smallpox_resources_modifier = @SMALLPOX_RESOURCES_MODIFIER }
+            set_variable = { smallpox_supplies_modifier = @SMALLPOX_SUPPLIES_MODIFIER }
+            set_variable = { smallpox_production_modifier = @SMALLPOX_PRODUCTION_MODIFIER }
+            set_variable = { smallpox_attrition_modifier = @SMALLPOX_ATTRITION_MODIFIER }
+            set_variable = { smallpox_speed_modifier = @SMALLPOX_SPEED_MODIFIER }
+
+            # Reapply any other active measures
+            reduce_contamination_effects = yes
+            force_update_dynamic_modifier = yes
+        }
+    }
+
+    # Clear country-level variable
+    clear_variable = smallpox_vaccination_effectiveness
+}
+
+# Initialize smallpox vaccination protection for countries that had pre-war programs
+# Should be called during game start or when researching smallpox weapons
+initialize_smallpox_vaccination_protection = {
+    # Major powers with strong vaccination programs (50% protection)
+    if = {
+        limit = {
+            OR = {
+                original_tag = USA
+                original_tag = CAN
+                original_tag = SOV
+                original_tag = JAP
+                original_tag = GER
+                original_tag = FRA
+                original_tag = ENG
+            }
+        }
+        set_variable = { smallpox_vaccination_protection_base = @SMALLPOX_MAJOR_PROTECTION }
+        set_country_flag = has_smallpox_vaccination_program
+    }
+
+    # European countries with moderate vaccination programs (25% protection)
+    else_if = {
+        limit = {
+            capital_scope = { is_on_continent = europe }
+        }
+        set_variable = { smallpox_vaccination_protection_base = @SMALLPOX_MINOR_PROTECTION }
+        set_country_flag = has_smallpox_vaccination_program
+    }
+
+    # Apply initial protection to all states if contamination exists
+    if = {
+        limit = {
+            has_country_flag = has_smallpox_vaccination_program
+            any_controlled_state = {
+                has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+            }
+        }
+
+        every_controlled_state = {
+            limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+
+            set_state_flag = smallpox_vaccination_protection_active
+            set_variable = { smallpox_vaccination_protection_effectiveness = ROOT.smallpox_vaccination_protection_base }
+            reduce_contamination_effects = yes
+            force_update_dynamic_modifier = yes
+        }
+    }
+}
+
+# Weekly vaccination progress effect - should be called by on_actions or events
+progress_smallpox_vaccination = {
+    # Only countries with vaccination programs can make progress
+    if = {
+        limit = { has_idea = smallpox_vaccination_program_idea }
+
+        # Calculate weekly progress
+        set_temp_variable = { weekly_progress = @SMALLPOX_VACCINATION_WEEKLY_BASE }
+
+        # Add bonus based on civilian factories (1% per 10 factories)
+        if = {
+            limit = { num_of_civilian_factories > 0 }
+            set_temp_variable = { civ_bonus = num_of_civilian_factories }
+            divide_temp_variable = { civ_bonus = 10 }
+            multiply_temp_variable = { civ_bonus = @SMALLPOX_VACCINATION_WEEKLY_PER_10CIV }
+
+            # Cap the civilian factory bonus
+            if = {
+                limit = { check_variable = { civ_bonus > @SMALLPOX_VACCINATION_WEEKLY_CAP } }
+                set_temp_variable = { civ_bonus = @SMALLPOX_VACCINATION_WEEKLY_CAP }
+            }
+
+            add_to_temp_variable = { weekly_progress = civ_bonus }
+        }
+
+        # Cap total weekly progress
+        if = {
+            limit = { check_variable = { weekly_progress > @SMALLPOX_VACCINATION_WEEKLY_CAP } }
+            set_temp_variable = { weekly_progress = @SMALLPOX_VACCINATION_WEEKLY_CAP }
+        }
+
+        # Apply progress to all contaminated states
+        every_controlled_state = {
+            limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+
+            # Initialize vaccination progress if not set
+            if = {
+                limit = { NOT = { has_variable = smallpox_vaccination_progress } }
+                set_variable = { smallpox_vaccination_progress = 0 }
+            }
+
+            # Add weekly progress
+            add_to_variable = { smallpox_vaccination_progress = ROOT.weekly_progress }
+
+            # Cap total progress at 60%
+            if = {
+                limit = { check_variable = { smallpox_vaccination_progress > @SMALLPOX_VACCINATION_TOTAL_CAP } }
+                set_variable = { smallpox_vaccination_progress = @SMALLPOX_VACCINATION_TOTAL_CAP }
+            }
+
+            # Update vaccination protection effectiveness
+            set_variable = { smallpox_vaccination_protection_effectiveness = smallpox_vaccination_progress }
+
+            # Check if we've reached 100% protection (contamination removal threshold)
+            if = {
+                limit = { check_variable = { smallpox_vaccination_progress > @SMALLPOX_CONTAMINATION_REMOVAL_THRESHOLD } }
+
+                # Remove contamination completely
+                remove_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                clr_state_flag = smallpox_contaminated
+                clr_state_flag = bioweapon_contaminated
+                clr_state_flag = smallpox_vaccination_protection_active
+                clear_variable = smallpox_vaccination_progress
+                clear_variable = smallpox_vaccination_protection_effectiveness
+
+                # Trigger success event
+                ROOT = { country_event = { id = chaosx_bioweapon.205 } }
+            }
+            else = {
+                # Update contamination reduction effects
+                reduce_contamination_effects = yes
+                force_update_dynamic_modifier = yes
+            }
+        }
+    }
+}
+

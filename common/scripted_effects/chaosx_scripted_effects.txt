@@ -1573,126 +1573,16 @@ if = {
     }
 }
 }
-}###############################################################################################################
-###############################################################################################################
-###############################################################################################################
+}
+
+
 
 # Calculate zombie outbreak chance for a country (mimics chaosx.nr2.6 mean_time_to_happen calculation)
 calculate_zombie_outbreak_chance = {
-    set_variable = { zombie_outbreak_days = 1825 } # Default 5 years (updated to match new MTTH)
+    set_variable = { zombie_outbreak_days = mtth:zombie_outbreak_chance } # Default 5 years (updated to match new MTTH)
 
-    # Check if this country is eligible for zombie outbreaks
     if = {
-        limit = {
-            NOT = { original_tag = ZZZ }
-            num_of_controlled_states > 1
-        }
-
-        # If zombie outbreak is NOT active, set very low risk
-        if = {
-            limit = { NOT = { has_global_flag = has_zombie_outbreak } }
-            set_variable = { zombie_outbreak_days = 10950 } # 30 years - very low risk
-        }
-        # If zombie outbreak IS active, calculate proper risk
-        else = {
-            # Check if country has full protection (all measures + extreme martial law)
-            if = {
-                limit = {
-                    has_country_flag = hygiene_measures_enforced
-                    has_country_flag = migration_restricted
-                    has_country_flag = quarantine_protocols_active
-                    has_country_flag = borders_completely_closed
-                    has_country_flag = extreme_martial_law_active
-                }
-                set_variable = { zombie_outbreak_days = 99999 } # Full protection = no risk
-            }
-            else = {
-                # Apply zombie evolution modifiers - check if ZZZ exists first
-                if = {
-                    limit = {
-                        any_country = { original_tag = ZZZ exists = yes }
-                        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
-                    }
-                    multiply_variable = { zombie_outbreak_days = 0.8 }
-                }
-                if = {
-                    limit = {
-                        any_country = { original_tag = ZZZ exists = yes }
-                        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
-                    }
-                    multiply_variable = { zombie_outbreak_days = 0.6 }
-                }
-                if = {
-                    limit = {
-                        any_country = { original_tag = ZZZ exists = yes }
-                        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
-                    }
-                    multiply_variable = { zombie_outbreak_days = 0.4 }
-                }
-
-                # Apply prevention measures modifiers
-                if = {
-                    limit = { has_country_flag = hygiene_measures_enforced }
-                    multiply_variable = { zombie_outbreak_days = 1.5 }
-                }
-                if = {
-                    limit = { has_country_flag = migration_restricted }
-                    multiply_variable = { zombie_outbreak_days = 1.8 }
-                }
-                if = {
-                    limit = { has_country_flag = quarantine_protocols_active }
-                    multiply_variable = { zombie_outbreak_days = 2.2 }
-                }
-                if = {
-                    limit = { has_country_flag = borders_completely_closed }
-                    multiply_variable = { zombie_outbreak_days = 3.0 }
-                }
-
-                # Higher population = higher risk (more people = more potential infected)
-                if = {
-                    limit = { check_variable = { max_manpower_k > 500000 } } # Very high population (500M+)
-                    multiply_variable = { zombie_outbreak_days = 0.6 }
-                }
-                else_if = {
-                    limit = { check_variable = { max_manpower_k > 200000 } } # High population (200M+)
-                    multiply_variable = { zombie_outbreak_days = 0.7 }
-                }
-                else_if = {
-                    limit = { check_variable = { max_manpower_k > 100000 } } # Medium-high population (100M+)
-                    multiply_variable = { zombie_outbreak_days = 0.8 }
-                }
-                else_if = {
-                    limit = { check_variable = { max_manpower_k > 50000 } } # Medium population (50M+)
-                    multiply_variable = { zombie_outbreak_days = 0.9 }
-                }
-                else_if = {
-                    limit = { check_variable = { max_manpower_k > 10000 } } # Low population (10M+)
-                    multiply_variable = { zombie_outbreak_days = 1.1 }
-                }
-                else = { # Very low population (under 10M)
-                    multiply_variable = { zombie_outbreak_days = 1.3 }
-                }
-
-                # Island nations are safer
-                if = {
-                    limit = { capital_scope = { is_island_state = yes } }
-                    multiply_variable = { zombie_outbreak_days = 2.0 }
-                }
-
-                # Major powers are more at risk
-                if = {
-                    limit = { is_major = yes }
-                    multiply_variable = { zombie_outbreak_days = 0.8 }
-                }
-
-                # Reduce chance for countries with very few states
-                if = {
-                    limit = { num_of_controlled_states < 5 }
-                    multiply_variable = { zombie_outbreak_days = 2.0 }
-                }
-            }
-        }
-
+        limit = { NOT = { original_tag = ZZZ } num_of_controlled_states > 1 }
         # Convert to months for display (approximate)
         set_variable = { zombie_outbreak_months = zombie_outbreak_days }
         divide_variable = { zombie_outbreak_months = 30 } # Average days per month
@@ -1702,12 +1592,6 @@ calculate_zombie_outbreak_chance = {
         if = {
             limit = { check_variable = { zombie_outbreak_months < 1 } }
             set_variable = { zombie_outbreak_months = 1 }
-        }
-
-        # Handle special cases for display
-        if = {
-            limit = { check_variable = { zombie_outbreak_days > 50000 } }
-            set_variable = { zombie_outbreak_months = 999 } # Special value for "No Risk"
         }
     }
     else = {
@@ -1784,3 +1668,4 @@ update_all_cure_research_values = {
         calculate_cure_research_value = yes
     }
 }
+

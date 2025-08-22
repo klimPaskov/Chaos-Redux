@@ -1,6 +1,15 @@
 
 # all on_daily, on_weekly, on_monthly, are evaluated for all countries separately
 on_actions = {
+
+    on_startup = {
+        effect = {
+            every_country = {
+                initialize_smallpox_vaccination_protection = yes
+            }
+        }
+    }
+
     # Zombie Outbreak
     on_daily = { # Checks daily if there is a neighbor to declare war on
         effect = {
@@ -187,6 +196,19 @@ on_weekly = {
                 has_global_flag = has_zombie_outbreak
             }
             calculate_zombie_outbreak_chance = yes
+        }
+        if = {
+            limit = {
+                has_country_flag = bioweapon_target
+            }
+            check_all_states_for_contamination_cleanup = yes
+        }
+        # Process weekly vaccination progress for smallpox
+        if = {
+            limit = {
+                has_idea = smallpox_vaccination_program_idea
+            }
+            progress_smallpox_vaccination = yes
         }
     }
 }
