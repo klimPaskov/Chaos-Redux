@@ -18,15 +18,17 @@
 # Annexation & Territory Changes
 @CHAOS_PER_MINOR_ANNEX = 2
 @CHAOS_PER_MAJOR_ANNEX = 10
-@CHAOS_PER_PUPPET = 3
+@CHAOS_PER_PUPPET = 1
+@CHAOS_PER_MAJOR_PUPPET = 3
 @CHAOS_PER_LIBERATE = -2
 @CHAOS_PER_LIBERATE_DEMOCRATIC = -5
-@CHAOS_PER_RELEASE_FREE = -5
-@CHAOS_PER_SUBJECT_FREE = -3
+@CHAOS_PER_RELEASE_FREE = -3
+@CHAOS_PER_SUBJECT_FREE = -1
+@CHAOS_PER_MAJOR_SUBJECT_FREE = -3
 @CHAOS_PER_SUBJECT_ANNEXED = 2
 
 # Military Actions
-@CHAOS_PER_NUKE = 2 # Low, so it's not abused
+@CHAOS_PER_NUKE = 1 # Low, so it's not abused
 @CHAOS_PER_MOBILIZATION_UP_MAJOR = 1
 @CHAOS_PER_MOBILIZATION_DOWN_MAJOR = -1
 
@@ -48,7 +50,7 @@
 @CHAOS_PER_FACTION_JOIN_MINOR = 1
 @CHAOS_PER_FACTION_JOIN_MAJOR = 3
 @CHAOS_PER_FACTION_LEAVE_MINOR = -1
-@CHAOS_PER_FACTION_LEAVE_MAJOR = -5
+@CHAOS_PER_FACTION_LEAVE_MAJOR = -3
 @CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MINOR = -1
 @CHAOS_PER_FACTION_JOIN_BOTH_DEMOCRATIC_MAJOR = -3
 @CHAOS_PER_FACTION_LEAVE_BOTH_DEMOCRATIC_MINOR = 0
@@ -319,9 +321,15 @@ chaos_meter_on_annex = {
 }
 
 chaos_meter_on_puppet = {
-    set_temp_variable = { chaos_change = @CHAOS_PER_PUPPET }
-    log = "CHAOS METER: [FROM.GetName] was puppeted by [THIS.GetName] ([?chaos_change|=] chaos)"
-
+    if = {
+        limit = { FROM = { is_major = yes } }
+        set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_PUPPET }
+        log = "CHAOS METER: Major [FROM.GetName] was puppeted by [THIS.GetName] ([?chaos_change|=] chaos)"
+    }
+    else = {
+        set_temp_variable = { chaos_change = @CHAOS_PER_PUPPET }
+        log = "CHAOS METER: [FROM.GetName] was puppeted by [THIS.GetName] ([?chaos_change|=] chaos)"
+    }
     add_chaos_meter_value = yes
 }
 
@@ -348,8 +356,16 @@ chaos_meter_on_release_as_free = {
 }
 
 chaos_meter_on_subject_free = {
-    set_temp_variable = { chaos_change = @CHAOS_PER_SUBJECT_FREE }
-    log = "CHAOS METER: [THIS.GetName] became free from subject status ([?chaos_change|=] chaos)"
+    if = {
+        limit = { is_major = yes }
+        set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_SUBJECT_FREE }
+        log = "CHAOS METER: Major [THIS.GetName] became free from subject status ([?chaos_change|=] chaos)"
+    }
+    else = {
+        set_temp_variable = { chaos_change = @CHAOS_PER_SUBJECT_FREE }
+        log = "CHAOS METER: [THIS.GetName] became free from subject status ([?chaos_change|=] chaos)"
+    }
+
 
     add_chaos_meter_value = yes
 }
@@ -396,19 +412,19 @@ chaos_meter_on_coup = {
     add_chaos_meter_value = yes
 }
 
-chaos_meter_on_civil_war = {
-    if = {
-        limit = { is_major = yes }
-        set_temp_variable = { chaos_change = @CHAOS_PER_CIVIL_WAR_MAJOR }
-        log = "CHAOS METER: Civil war started in major power [THIS.GetName] ([?chaos_change|=] chaos)"
-    }
-    else = {
-        set_temp_variable = { chaos_change = @CHAOS_PER_CIVIL_WAR_MINOR }
-        log = "CHAOS METER: Civil war started in minor power [THIS.GetName] ([?chaos_change|=] chaos)"
-    }
+# chaos_meter_on_civil_war = {
+#     if = {
+#         limit = { is_major = yes }
+#         set_temp_variable = { chaos_change = @CHAOS_PER_CIVIL_WAR_MAJOR }
+#         log = "CHAOS METER: Civil war started in major power [THIS.GetName] ([?chaos_change|=] chaos)"
+#     }
+#     else = {
+#         set_temp_variable = { chaos_change = @CHAOS_PER_CIVIL_WAR_MINOR }
+#         log = "CHAOS METER: Civil war started in minor power [THIS.GetName] ([?chaos_change|=] chaos)"
+#     }
 
-    add_chaos_meter_value = yes
-}
+#     add_chaos_meter_value = yes
+# }
 
 chaos_meter_on_ideology_change = {
     # The ruling party change triggers after the change, so we detect the new ideology

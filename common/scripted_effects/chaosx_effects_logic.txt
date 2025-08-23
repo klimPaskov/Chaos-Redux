@@ -17,8 +17,8 @@
 # ============================================================================
 
 # Timer System Defaults
-@DEFAULT_MIN_DAYS = 25
-@DEFAULT_MAX_DAYS = 35
+@DEFAULT_MIN_DAYS = 45
+@DEFAULT_MAX_DAYS = 60
 @DEFAULT_MIN_DECREMENT_CAP = 15
 @DEFAULT_MAX_DECREMENT_CAP = 5
 @DEFAULT_EVENT_WEIGHT = 1000
@@ -83,11 +83,11 @@ initialize_event_system = {
 
     initialize_event_categories = yes
     initialize_all_events_array = yes
-    count_total_events = yes
+    count_total_events_plus_one = yes
     initialize_event_weights = yes
 
     log = "CHAOS REDUX EVENT SYSTEM: System initialized successfully"
-    log = "CHAOS REDUX EVENT SYSTEM: Successfully loaded [?global.total_events] events"
+    log = "CHAOS REDUX EVENT SYSTEM: Successfully loaded [?global.all_events^num] events"
 
     set_global_flag = event_system_initialized
     clr_global_flag = event_system_initializing
@@ -489,7 +489,7 @@ on_fire_once_event_fired = {
         add_to_array = { global.fired_events = event_id }
     }
     # Set weight to 0 permanently
-    set_temp_variable = { new_weight = 0 }
+    set_temp_variable = { new_weight = 1 }
     set_event_weight = yes
 
     # Update system state
@@ -553,7 +553,7 @@ on_major_event_fired = {
     }
 
     # Set fired event weight to 0 permanently
-    set_temp_variable = { new_weight = 0 }
+    set_temp_variable = { new_weight = 1 } # Can't set to zero, because cause undefined 'event_weight' error.
     set_event_weight = yes
 
     # Reset system state
@@ -577,7 +577,7 @@ reset_unfired_major_event_weights = {
         if = {
             limit = { NOT = { is_in_array = { global.fired_events = check_event_id } } }
             set_temp_variable = { event_id = check_event_id }
-            set_temp_variable = { new_weight = 0 }
+            set_temp_variable = { new_weight = 1 }
             set_event_weight = yes
         }
     }
@@ -753,8 +753,9 @@ count_unfired_repeatable_events = {
 }
 
 # Count total unique events available
-count_total_events = {
-    add_to_variable = { global.total_events = global.all_events^num }
+count_total_events_plus_one = {
+    set_variable = { global.total_events = global.all_events^num }
+    add_to_variable = { global.total_events = 1 }
 }
 
 # ============================================================================
@@ -847,7 +848,7 @@ log_event_system_debug = {
 
     # Event availability statistics
     log = "UNIQUE EVENTS:"
-    log = "Total events in system: [?global.total_events]"
+    log = "Total events in system: [?global.all_events^num]"
     log = "Total unique events yet to be fired: [?total_unfired_events]"
     log = "  - Major events unfired: [?unfired_major_events] / [?global.major_events^num]"
     log = "  - Minor fire-once events unfired: [?unfired_fire_once_events] / [?global.fire_once_events^num]"
@@ -907,6 +908,10 @@ log_event_system_debug = {
         value = i
         set_temp_variable = { event_id = global.major_events^i }
         get_event_weight = yes
+        if = {
+            limit = { is_in_array = { global.fired_events = event_id } }
+            set_temp_variable = { event_weight = 0 } # For cosmetic purposes
+        }
         log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
     }
     log = "CHAOS_REDUX_SUBSECTION"
@@ -919,6 +924,10 @@ log_event_system_debug = {
         value = i
         set_temp_variable = { event_id = global.fire_once_events^i }
         get_event_weight = yes
+        if = {
+            limit = { is_in_array = { global.fired_events = event_id } }
+            set_temp_variable = { event_weight = 0 } # For cosmetic purposes
+        }
         log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
     }
     log = "CHAOS_REDUX_SUBSECTION"
