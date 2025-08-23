@@ -9,7 +9,9 @@
 # ============================================================================
 
 # Event System Defaults
-@DEFAULT_MIN_DAYS = 25
+@STARTING_MIN_DAYS = 45
+@STARTING_MAX_DAYS = 60
+@DEFAULT_MIN_DAYS = 25  # Remains unchanged due how the dynamic caps are calculated
 @DEFAULT_MAX_DAYS = 35
 @DEFAULT_MIN_DECREMENT_CAP = 15
 @DEFAULT_MAX_DECREMENT_CAP = 5
@@ -329,7 +331,7 @@ adjust_event_id_for_filter = {
         clamp_variable = {
             var = settings_selected_event_id
             min = 1
-            max = global.total_events
+            max = global.all_events^num
         }
     }
     else_if = {
@@ -639,7 +641,7 @@ decrease_event_id = {
 
         if = {
             limit = { check_variable = { new_id < 1 } }
-            set_variable = { settings_selected_event_id = global.total_events }
+            set_variable = { settings_selected_event_id = global.all_events^num }
         }
         else = {
             set_variable = { settings_selected_event_id = new_id }
@@ -661,7 +663,7 @@ increase_event_id = {
         add_to_temp_variable = { new_id = settings_events_increment_mode }
 
         if = {
-            limit = { check_variable = { new_id > global.total_events } }
+            limit = { check_variable = { new_id > global.all_events^num } }
             set_variable = { settings_selected_event_id = 1 }
         }
         else = {
@@ -1490,10 +1492,12 @@ reset_trigger_events = {
 
 # Initialize timer system settings
 initialize_timer_system_settings = {
-    set_variable = { settings_timer_min_days = @DEFAULT_MIN_DAYS }
-    set_variable = { settings_timer_max_days = @DEFAULT_MAX_DAYS }
-    set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
-    set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
+    set_variable = { settings_timer_min_days = @STARTING_MIN_DAYS }
+    set_variable = { settings_timer_max_days = @STARTING_MAX_DAYS }
+    calculate_dynamic_caps = yes
+    set_variable = { timer_min_decrement_cap = settings_timer_min_decrement_cap }
+    set_variable = { timer_max_decrement_cap = settings_timer_max_decrement_cap }
+
     set_variable = { settings_timer_increment_mode = 1 }
 
     # Set default view to Timer Interval
@@ -1610,16 +1614,16 @@ toggle_timer_window = {
 # Reset timer to default values
 reset_timer_to_defaults = {
     # Restore timer system
-    set_variable = { timer_min_days = @DEFAULT_MIN_DAYS }
-    set_variable = { timer_max_days = @DEFAULT_MAX_DAYS }
+    set_variable = { timer_min_days = @STARTING_MIN_DAYS }
+    set_variable = { timer_max_days = @STARTING_MAX_DAYS }
     set_variable = { timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
     set_variable = { timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
     set_variable = { timer_day_decrement = 0 }
     set_variable = { timer_max_cap_reduction = 0 }
 
     # Reset timer settings to defaults
-    set_variable = { settings_timer_min_days = @DEFAULT_MIN_DAYS }
-    set_variable = { settings_timer_max_days = @DEFAULT_MAX_DAYS }
+    set_variable = { settings_timer_min_days = @STARTING_MIN_DAYS }
+    set_variable = { settings_timer_max_days = @STARTING_MAX_DAYS }
     set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
     set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
 
@@ -1659,7 +1663,7 @@ calculate_dynamic_caps = {
         set_temp_variable = { calculated_max_cap = 0 }
     }
     else = {
-        # Calculate deviation from base value (35)
+        # Calculate deviation from base value
         set_temp_variable = { deviation = max_value }
         subtract_from_temp_variable = { deviation = @DEFAULT_MAX_DAYS }
 
@@ -2363,6 +2367,9 @@ handle_player_tag_switch = {
 #   #####  #    # #    #  ####   ####     #     # ######   #   ###### #    #
 
 ###############################################################################################################
+
+
+
 
 # ============================================================================
 # CHAOS METER SYSTEM

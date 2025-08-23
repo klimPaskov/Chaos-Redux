@@ -5,8 +5,8 @@
 1. [Core Event System](#core-event-system)
 2. [Dynamic Timer System](#dynamic-timer-system)
 3. [Event Classification](#event-classification)
-4. [Weight-Based Event Selection](#weight-based-event-selection)
-5. [Chaos Meter System](#chaos-meter-system)
+4. [Chaos Meter System](#chaos-meter-system)
+5. [World End Scenario Mechanic](#world-end-scenario-mechanic)
 6. [Event Evolution and Clusters](#event-evolution-and-clusters)
 7. [Configuration and Settings](#configuration-and-settings)
 8. [Multiplayer Compatibility](#multiplayer-compatibility)
@@ -39,7 +39,7 @@ The system uses a dynamic timer that replaces traditional fixed monthly interval
 
 - **Daily Updates**: Timer decreases by 1 each day
 - **Event Trigger**: When timer reaches 0, event selection begins
-- **Base Range**: 25-35 days between events (configurable)
+- **Base Range**: 45-60 days between events (configurable)
 - **Initial Timer**: 7-30 days on game start
 
 ### Timer Acceleration
@@ -48,7 +48,7 @@ The system uses a dynamic timer that replaces traditional fixed monthly interval
 
 Each minor event that fires:
 
-- Increases daily decrement by +1 (maximum: 15)
+- Increases daily decrement by +1 (maximum: 35)
 - Makes subsequent events fire sooner
 - Effect accumulates across multiple minor events
 
@@ -56,7 +56,7 @@ Each minor event that fires:
 
 Every 3 minor events:
 
-- Reduces maximum timer by 1 day (maximum reduction: 5 days)
+- Reduces maximum timer by 1 day (maximum reduction: 13 days)
 - Compresses the overall timer range
 - Creates faster event cycles during active periods
 
@@ -65,24 +65,24 @@ Every 3 minor events:
 When a major event fires:
 
 - Resets both decrement and compression to 0
-- Returns timer to standard 25-35 day range
+- Returns timer to standard 45-60 day range
 - Provides breathing room after significant events
 
 ### Timer Examples
 
 **Standard Progression:**
 
-- Event 1: 25-35 days
-- After minor event: 24-34 days (decrement +1)
-- After 2nd minor: 23-33 days (decrement +2)
-- After 3rd minor: 22-31 days (decrement +3, max -1)
+- Event 1: 45-60 days
+- After minor event: 44-59 days (decrement +1)
+- After 2nd minor: 43-58 days (decrement +2)
+- After 3rd minor: 42-56 days (decrement +3, max -1)
 
 **Maximum Acceleration:**
 
-- Base range: 25-35 days
-- Maximum decrement: -15 days
-- Maximum compression: -5 days
-- Effective range: 10-15 days
+- Base range: 45-60 days
+- Maximum decrement: -35 days
+- Maximum compression: -13 days
+- Effective range: 10-12 days
 
 ---
 
@@ -117,26 +117,6 @@ When a major event fires:
 
 ---
 
-## Weight-Based Event Selection
-
-### Weight System
-
-Events are selected through weighted probability rather than pure randomness:
-
-- **Default Weight**: 1000 for new events
-- **Weight Competition**: Higher weight = higher selection probability
-- **Dynamic Adjustment**: Weights change based on firing history and world state
-
-### Recovery Mechanism
-
-Repeatable events gradually recover weight over time:
-
-- **Recovery Rate**: +20 per month (configurable)
-- **Recovery Limit**: Cannot exceed current maximum cap
-- **Cap Management**: Maximum cap decreases each time event fires
-
----
-
 ## Chaos Meter System
 
 ### Chaos Meter Overview
@@ -160,14 +140,15 @@ A global meter (0-1000+) that tracks world instability and drives system behavio
 
 - Major power wars: +5 chaos
 - Major annexations: +10 chaos
-- Major power civil wars: +5 chaos
 - Major power ideology changes to non-democratic: +5 chaos
 
 #### Moderate Increases
 
 - Minor power wars: +1 chaos
-- Minor annexations: +5 chaos
-- Puppeting: +3 chaos
+- Minor annexations: +2 chaos
+- Puppeting: +1 to +3 chaos
+- Faction joining: +1 to +3 chaos
+- Nuke: +1 chaos (so it's not abused)
 - World tension increases: +1 per percentage point
 - Military buildup: +1 per 50 military factories or 100 divisions
 - Casualties: +1 per 250,000 casualties
@@ -176,10 +157,13 @@ A global meter (0-1000+) that tracks world instability and drives system behavio
 
 - Peace agreements: -2 to -5 chaos
 - Liberation by democratic powers: -5 chaos
-- Freeing subjects: -3 to -5 chaos
-- Democratic elections: -1 chaos
+- Freeing countries: -2 to -5 chaos
+- Faction leaving: -1 to -3 chaos
 - High world stability: variable reduction
 - Increased global democracy: variable reduction
+- Monthly Decay: -1
+
+Chaos changes can also happen from events.
 
 ### Chaos Effects on Timing
 
@@ -191,6 +175,22 @@ Each chaos tier applies a multiplier to event timers:
 - **Chaos Tier**: 0.6x (40% faster)
 - **Totalen Chaos**: 0.5x (50% faster)
 - **World Collapse**: 0.5x (events prepare for end-game)
+
+---
+
+## World End Scenario Mechanic
+
+When the **Chaos Meter** exceeds 1000, the system triggers a **World End Scenario**.  
+This represents the logical conclusion of the campaign and prevents indefinite gameplay.
+
+![Chaos Meter 1000+](gfx\interface\chaos_meter\chaos_meter_max.png)
+
+### Key Rules
+
+- **Trigger Condition**: Chaos > 1000  
+- **Scenario Selection**: Based on world state (e.g., zombie apocalypse if outbreak dominates, or other endgame disasters depending on conditions).  
+- **Event Freeze**: Automatic event firing stops for all countries.  
+- **Purpose**: Ensures campaigns reach a dramatic, conclusive end and prevents late-game slowdown.
 
 ---
 
@@ -206,20 +206,11 @@ Events can transform into more dangerous versions when chaos levels are sufficie
 
 ### Event Clusters
 
-Related events can fire in sequence to create narrative chains:
+Related events can fire in sequence:
 
 - **Cluster Probability**: Increases with higher chaos levels
 - **Thematic Connections**: Events within clusters share themes or consequences
 - **Escalating Sequences**: Later events in clusters tend to be more severe
-
-### Event Chain Timers
-
-Mini-narratives with timed follow-ups based on player choices:
-
-- **Choice Memory**: System remembers player decisions
-- **Branching Consequences**: Different choices lead to different outcomes
-- **Escalation Mechanics**: Ignored problems worsen over time (or get better)
-- **Resolution Timers**: Events schedule their own follow-ups
 
 ---
 
