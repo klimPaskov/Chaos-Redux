@@ -278,7 +278,7 @@ chaos_meter_on_war_relation_added = {
             add_chaos_meter_value = yes
         }
         else_if = {
-            limit = { NOT = { OR = { ROOT = { is_subject = yes } FROM = { is_subject = yes } is_in_faction = yes } } }
+            limit = { ROOT = { OR = { is_subject = no is_in_faction = no } } FROM = { is_subject = no } }
             set_temp_variable = { chaos_change = @CHAOS_PER_MINOR_WAR }
             log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
             add_chaos_meter_value = yes
@@ -297,7 +297,8 @@ chaos_meter_on_peace = {
         set_temp_variable = { chaos_change = @CHAOS_PER_MAJOR_PEACE }
         log = "CHAOS METER: Major [THIS.GetName] made peace ([?chaos_change|=] chaos)"
     }
-    else = {
+    else_if = {
+        limit = { is_subject = no }
         set_temp_variable = { chaos_change = @CHAOS_PER_MINOR_PEACE }
         log = "CHAOS METER: Minor [THIS.GetName] made peace ([?chaos_change|=] chaos)"
     }
@@ -556,15 +557,15 @@ chaos_meter_on_faction_leave = {
     }
 }
 
-chaos_meter_on_justifying_wargoal = {
-    if = {
-        limit = { is_major = yes }
-        set_temp_variable = { chaos_change = @CHAOS_PER_JUSTIFYING_WARGOAL_MAJOR }
-        log = "CHAOS METER: Major power [THIS.GetName] is justifying war goal against [FROM.GetName] ([?chaos_change|=] chaos)"
-    }
+# chaos_meter_on_justifying_wargoal = {
+#     if = {
+#         limit = { is_major = yes }
+#         set_temp_variable = { chaos_change = @CHAOS_PER_JUSTIFYING_WARGOAL_MAJOR }
+#         log = "CHAOS METER: Major power [THIS.GetName] is justifying war goal against [FROM.GetName] ([?chaos_change|=] chaos)"
+#     }
 
-    add_chaos_meter_value = yes
-}
+#     add_chaos_meter_value = yes
+# }
 
 chaos_meter_on_guarantee = {
     if = {
