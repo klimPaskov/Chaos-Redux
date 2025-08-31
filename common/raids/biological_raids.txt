@@ -49,7 +49,17 @@ types = {
                 }
             }
             modifier = {
-                factor = 2
+                factor = 100
+                ROOT = {
+                    tag = ENG
+                }
+                FROM = {
+                    tag = JAP
+                    has_government = fascism
+                }
+            }
+            modifier = {
+                factor = 10
                 ROOT = {
                     tag = JAP
                     has_government = fascism
@@ -311,7 +321,7 @@ types = {
                 FROM = { is_major = no }
             }
             modifier = {
-                factor = 10 # strong retaliation for plague use
+                factor = 100 # strong retaliation for plague use
                 FROM = { has_country_flag = used_bioweapon }
             }
             modifier = {
@@ -319,7 +329,7 @@ types = {
                 has_government = democratic
             }
             modifier = { # Historical use case
-                factor = 2
+                factor = 1000
                 ROOT = {
                     tag = JAP
                     has_government = fascism
@@ -543,14 +553,14 @@ types = {
                 }
             }
             modifier = {
-                factor = 3
+                factor = 10
                 ROOT = {
                     tag = JAP
                     has_government = fascism
                 }
             }
             modifier = { # Historical use case in Stalingrad
-                factor = 5
+                factor = 100
                 ROOT = {
                     has_government = communism
                     tag = SOV
@@ -559,7 +569,6 @@ types = {
                     tag = GER
                     has_government = fascism
                 }
-                date > 1942.1.1
             }
             modifier = {
                 factor = 0.5
@@ -567,7 +576,7 @@ types = {
                 FROM = { is_major = no }
             }
             modifier = {
-                factor = 10 # retaliation for tularemia use
+                factor = 50 # retaliation for tularemia use
                 FROM = { has_country_flag = used_bioweapon }
             }
             modifier = {
@@ -771,7 +780,7 @@ types = {
         command_power = 25 # Highest command power allocation cost
 
         ai_will_do = {
-            base = 0.5  # Very low base chance - weapon of last resort
+            base = 1  # Very low base chance - weapon of last resort
             modifier = {
                 # Don't target anyone who is not a potential enemy
                 factor = 0
@@ -783,36 +792,40 @@ types = {
                 }
             }
             modifier = {
-                factor = 10  # Only when truly desperate
+                factor = 100  # Only when truly desperate
                 FROM = {
                     is_major = yes
+                    NOT = { has_government = democratic }
                 }
                 ROOT = {
                     # Only when losing badly
                     any_enemy_country = {
                         strength_ratio = {
                             tag = ROOT
-                            ratio > 2.0
+                            ratio > 3.0
                         }
                     }
                 }
             }
             modifier = {
-                factor = 0.05  # Almost never use on minor powers
-                FROM = { is_major = no }
-            }
-            modifier = {
-                factor = 50  # Massive retaliation for smallpox use
+                factor = 1000  # Massive retaliation for smallpox use
                 FROM = { has_country_flag = used_smallpox_weapon }
             }
             modifier = {
-                factor = 0.01  # Extremely unlikely for democratic nations
+                factor = 0.05  # Extremely unlikely for democratic nations
                 has_government = democratic
             }
-            modifier = { # Never use unless at war
-                factor = 0
-                NOT = { has_war_with = FROM }
+            modifier = { # Almost historical use case
+                factor = 100
+                ROOT = {
+                    tag = JAP
+                    has_government = fascism
+                }
+                FROM = {
+                    tag = CHI
+                }
             }
+
         }
 
         allowed = {
