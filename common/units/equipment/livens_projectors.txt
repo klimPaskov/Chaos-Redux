@@ -1,0 +1,90 @@
+equipments = {
+
+    # Livens Projector Chassis System - Based on WWI British Chemical Weapon Mortar
+
+    livens_projector_chassis = {
+        year = 1918
+        is_archetype = yes
+        is_buildable = no
+
+        # active = yes
+
+        can_be_produced = {
+            always = yes
+        }
+
+        type = armor
+        interface_category = interface_category_land
+        group_by = archetype
+        priority = 2000
+
+        module_slots = {
+            # Chemical projectile slot - MANDATORY (like tank turrets)
+            projectile_slot = {
+                required = yes
+                allowed_module_categories = {
+                    livens_projectile_type
+                }
+            }
+        }
+
+        # Cannot be produced without a projectile
+        default_modules = {
+            projectile_slot = empty
+        }
+
+        # Base stats - simple mortar-like weapon
+        fuel_consumption = 0
+        maximum_speed = 4  # Same as infantry
+        build_cost_ic = 0.05  # Base IC cost
+        reliability = 0.6  # WWI technology, somewhat unreliable
+
+        resources = {
+            steel = 1
+        }
+
+        manpower = 3  # Small crew to operate
+    }
+
+    # Basic Livens Projector - 1918 model
+    livens_projector_equipment_1 = {
+        visual_level = 0
+        year = 1918
+        archetype = livens_projector_chassis
+        priority = 2000
+        module_slots = inherit
+        # active = yes
+    }
+
+    # Improved Livens Projector - 1936 model
+    livens_projector_equipment_2 = {
+        visual_level = 1
+        year = 1936
+        archetype = livens_projector_chassis
+        parent = livens_projector_equipment_1
+        priority = 2000
+        module_slots = inherit
+        # active = yes
+
+        # Improved stats
+        maximum_speed = 4
+        build_cost_ic = 0.10
+        reliability = 0.8
+    }
+
+    # Advanced Livens Projector - 1940 model
+    livens_projector_equipment_3 = {
+        visual_level = 2
+        year = 1940
+        archetype = livens_projector_chassis
+        parent = livens_projector_equipment_2
+        priority = 2000
+        module_slots = inherit
+        # active = yes
+
+        # Advanced stats
+        maximum_speed = 4.5
+        build_cost_ic = 0.25
+        reliability = 0.95
+    }
+}
