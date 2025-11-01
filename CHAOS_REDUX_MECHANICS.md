@@ -90,12 +90,14 @@ When a major event fires:
 
 ### Fire-Once Events
 
+- **Initial State**: Weight starts at 1000
 - **Frequency**: Trigger exactly once per campaign
 - **Weight After Firing**: Permanently set to 0
 - **Purpose**: Events that have a minor impact on the world at first, usually regional, but can become global.
 
 ### Repeatable Events
 
+- **Initial State**: Weight starts at 1000
 - **Frequency**: Can fire multiple times with diminishing returns
 - **Weight Recovery**: +20 per month after firing
 - **Cap Reduction**: Maximum weight reduced by 50% each firing
@@ -183,14 +185,15 @@ Each chaos tier applies a multiplier to event timers:
 When the **Chaos Meter** exceeds 1000, the system triggers a **World End Scenario**.  
 This represents the logical conclusion of the campaign and prevents indefinite gameplay.
 
-![Chaos Meter 1000+](gfx\interface\chaos_meter\chaos_meter_max.png)
+<img width="480" height="80" alt="chaos_meter_max" src="https://github.com/klimPaskov/Chaos-Redux/blob/master/gfx/interface/chaos_meter/chaos_meter_max.png" />
 
 ### Key Rules
 
 - **Trigger Condition**: Chaos > 1000  
 - **Scenario Selection**: Based on world state (e.g., zombie apocalypse if outbreak dominates, or other endgame disasters depending on conditions).  
-- **Event Freeze**: Automatic event firing stops for all countries.  
+- **Event Freeze**: Automatic event firing stops for all countries.
 - **Purpose**: Ensures campaigns reach a dramatic, conclusive end and prevents late-game slowdown.
+- **Super Event**: Each world end scenario has a custom super event.
 
 ---
 
