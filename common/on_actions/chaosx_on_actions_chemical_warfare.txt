@@ -1,0 +1,32 @@
+# Cosmetic on_actions for chemical warfare tooltips.
+on_actions = {
+	on_army_leader_daily = {
+		effect = {
+				if = {
+					limit = {
+						OR = {
+							has_trait = chemical_cylinder_active_chlorine
+							has_trait = chemical_cylinder_active_phosgene
+							has_trait = chemical_cylinder_active_mustard
+							has_trait = chemical_cylinder_active_lewisite
+						}
+					}
+					FROM = { save_event_target_as = chem_state_dispersal_owner_country }
+					chem_apply_state_dispersal = yes
+				}
+			if = {
+				limit = {
+					FROM = {
+						OR = {
+							has_tech = chlorine_gas
+							has_tech = phosgene
+							has_tech = mustard_gas
+							has_tech = lewisite
+						}
+					}
+				}
+				chem_update_cylinder_previews = yes
+			}
+		}
+	}
+}

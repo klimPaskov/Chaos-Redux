@@ -1,0 +1,306 @@
+@CHEM_CYLINDER_RATIO_EMPTY = 0.05
+@CHEM_CYLINDER_RATIO_VERY_LOW = 0.25
+@CHEM_CYLINDER_RATIO_LOW = 0.50
+@CHEM_CYLINDER_RATIO_LACKING = 0.75
+@CHEM_CYLINDER_RATIO_MISSING = 0.90
+@CHEM_CYLINDER_RATIO_ALMOST = 0.99
+
+@CHEM_WIND_STATE_FAVOR = 1
+@CHEM_WIND_STATE_NEUTRAL = 0
+@CHEM_WIND_STATE_AGAINST = -1
+@CHEM_WIND_STATE_STRONG_FAVOR = 2
+
+defined_text = {
+	name = ChemGasMaskProtection
+	text = {
+		trigger = { OWNER = { has_tech = advanced_gas_masks } }
+		localization_key = CHEM_ABILITY_GAS_MASK_ADVANCED
+	}
+	text = {
+		trigger = { OWNER = { has_tech = improved_gas_masks } }
+		localization_key = CHEM_ABILITY_GAS_MASK_IMPROVED
+	}
+	text = {
+		trigger = { OWNER = { has_tech = basic_gas_masks } }
+		localization_key = CHEM_ABILITY_GAS_MASK_BASIC
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_GAS_MASK_NONE
+	}
+}
+
+defined_text = {
+	name = ChemWindTechStatus
+	text = {
+		trigger = { OWNER = { has_tech = upper_air_soundings } }
+		localization_key = CHEM_ABILITY_WIND_TECH_SOUNDINGS
+	}
+	text = {
+		trigger = { OWNER = { has_tech = meteorological_stations } }
+		localization_key = CHEM_ABILITY_WIND_TECH_STATIONS
+	}
+	text = {
+		trigger = { OWNER = { has_tech = portable_anemometer } }
+		localization_key = CHEM_ABILITY_WIND_TECH_VANES
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_WIND_TECH_NONE
+	}
+}
+
+defined_text = {
+	name = ChemWindStatus
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
+				OWNER = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
+			}
+		}
+		localization_key = CHEM_ABILITY_WIND_STRONG_FAVORABLE
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
+				OWNER = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals } }
+			}
+		}
+		localization_key = CHEM_ABILITY_WIND_FAVORABLE
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
+				OWNER = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals } }
+			}
+		}
+		localization_key = CHEM_ABILITY_WIND_AGAINST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_WIND_NEUTRAL
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatus
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = @CHEM_CYLINDER_RATIO_EMPTY compare = less_than_or_equals }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = @CHEM_CYLINDER_RATIO_VERY_LOW compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = @CHEM_CYLINDER_RATIO_LOW compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = @CHEM_CYLINDER_RATIO_LACKING compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = @CHEM_CYLINDER_RATIO_MISSING compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			check_variable = { var = chem_ratio_loc value = @CHEM_CYLINDER_RATIO_ALMOST compare = less_than }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusChlorine
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = @CHEM_CYLINDER_RATIO_EMPTY compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = @CHEM_CYLINDER_RATIO_VERY_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = @CHEM_CYLINDER_RATIO_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = @CHEM_CYLINDER_RATIO_LACKING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = @CHEM_CYLINDER_RATIO_MISSING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_chlorine value = @CHEM_CYLINDER_RATIO_ALMOST compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusPhosgene
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = @CHEM_CYLINDER_RATIO_EMPTY compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = @CHEM_CYLINDER_RATIO_VERY_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = @CHEM_CYLINDER_RATIO_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = @CHEM_CYLINDER_RATIO_LACKING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = @CHEM_CYLINDER_RATIO_MISSING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_phosgene value = @CHEM_CYLINDER_RATIO_ALMOST compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusMustard
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = @CHEM_CYLINDER_RATIO_EMPTY compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = @CHEM_CYLINDER_RATIO_VERY_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = @CHEM_CYLINDER_RATIO_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = @CHEM_CYLINDER_RATIO_LACKING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = @CHEM_CYLINDER_RATIO_MISSING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_mustard value = @CHEM_CYLINDER_RATIO_ALMOST compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}
+
+defined_text = {
+	name = ChemCylinderStatusLewisite
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = @CHEM_CYLINDER_RATIO_EMPTY compare = less_than_or_equals } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_EMPTY
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = @CHEM_CYLINDER_RATIO_VERY_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_VERY_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = @CHEM_CYLINDER_RATIO_LOW compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LOW
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = @CHEM_CYLINDER_RATIO_LACKING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_LACKING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = @CHEM_CYLINDER_RATIO_MISSING compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_MISSING
+	}
+	text = {
+		trigger = {
+			ROOT = { check_variable = { var = chem_ratio_loc_lewisite value = @CHEM_CYLINDER_RATIO_ALMOST compare = less_than } }
+		}
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_ALMOST
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = CHEM_ABILITY_CYLINDER_STATUS_READY
+	}
+}

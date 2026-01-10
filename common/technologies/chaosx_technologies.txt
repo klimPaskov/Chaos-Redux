@@ -1,8 +1,29 @@
 technologies = {
-    # Biowarfare Technology Tree
-    biowarfare_basics = {
+
+
+
+    ###############################################################################################################
+
+    #       ########  ####  #######  ##      ##    ###    ########  ########    ###    ########  ########
+    #       ##     ##  ##  ##     ## ##  ##  ##   ## ##   ##     ## ##         ## ##   ##     ## ##
+    #       ##     ##  ##  ##     ## ##  ##  ##  ##   ##  ##     ## ##        ##   ##  ##     ## ##
+    #       ########   ##  ##     ## ##  ##  ## ##     ## ########  ######   ##     ## ########  ######
+    #       ##     ##  ##  ##     ## ##  ##  ## ######### ##   ##   ##       ######### ##   ##   ##
+    #       ##     ##  ##  ##     ## ##  ##  ## ##     ## ##    ##  ##       ##     ## ##    ##  ##
+    #       ########  ####  #######   ###  ###  ##     ## ##     ## ##       ##     ## ##     ## ########
+
+    ###############################################################################################################
+
+
+    # Bioweapon stockpile safety technologies
+    pathogen_handling_protocols = {
         research_cost = 1
         start_year = 1936
+
+        path = {
+            leads_to_tech = sealed_containment_laboratories
+            research_cost_coeff = 1
+        }
 
         categories = {
             biowarfare_tech
@@ -10,7 +31,58 @@ technologies = {
 
         folder = {
             name = biowarfare_folder
-            position = { x = 0 y = 0 }
+            position = { x = 0 y = 1 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    sealed_containment_laboratories = {
+        research_cost = 1
+        start_year = 1938
+
+        path = {
+            leads_to_tech = fail_safe_containment_facilities
+            research_cost_coeff = 1
+        }
+
+        dependencies = {
+            pathogen_handling_protocols = 1
+        }
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 3 y = 1 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    fail_safe_containment_facilities = {
+        research_cost = 1
+        start_year = 1940
+
+        dependencies = {
+            sealed_containment_laboratories = 1
+        }
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 6 y = 1 }
         }
 
         ai_will_do = {
@@ -53,7 +125,7 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = 0 y = 6 }
+            position = { x = 1 y = 6 }
         }
 
         ai_will_do = {
@@ -88,7 +160,7 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = 0 y = 0 }
+            position = { x = 1 y = 0 }
         }
 
         ai_will_do = {
@@ -109,6 +181,10 @@ technologies = {
             chemical_phosgene_payload_cylinder_1
         }
 
+        dependencies = {
+            chlorine_gas = 1
+        }
+
         categories = {
             chemical_warfare_tech
             choking_agents_tech
@@ -116,7 +192,7 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = 0 y = 2 }
+            position = { x = 1 y = 2 }
         }
 
         ai_will_do = {
@@ -149,7 +225,7 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = 0 y = 4 }
+            position = { x = 1 y = 4 }
         }
 
         ai_will_do = {
@@ -180,7 +256,7 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = 3 y = 4 }
+            position = { x = 4 y = 4 }
         }
 
         ai_will_do = {
@@ -213,7 +289,7 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = 4 y = 6 }
+            position = { x = 5 y = 6 }
         }
 
         ai_will_do = {
@@ -241,7 +317,7 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = 8 y = 6 }
+            position = { x = 9 y = 6 }
         }
 
         ai_will_do = {
@@ -319,5 +395,76 @@ technologies = {
             factor = 1
         }
         special_project_specialization = { specialization_cw }
+    }
+
+    # Wind Detection Technologies
+    portable_anemometer = {
+        research_cost = 1
+        start_year = 1918
+
+        path = {
+            leads_to_tech = meteorological_stations
+            research_cost_coeff = 1
+        }
+
+        categories = {
+            chemical_warfare_tech
+            wind_detection_tech
+        }
+
+        folder = {
+            name = chemical_warfare_folder
+            position = { x = 0 y = 10 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_cw specialization_air }
+    }
+
+    meteorological_stations = {
+        research_cost = 1
+        start_year = 1936
+
+        path = {
+            leads_to_tech = upper_air_soundings
+            research_cost_coeff = 1
+        }
+
+        categories = {
+            chemical_warfare_tech
+            wind_detection_tech
+        }
+
+        folder = {
+            name = chemical_warfare_folder
+            position = { x = 3 y = 10 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_cw specialization_air }
+    }
+
+    upper_air_soundings = {
+        research_cost = 1
+        start_year = 1940
+
+        categories = {
+            chemical_warfare_tech
+            wind_detection_tech
+        }
+
+        folder = {
+            name = chemical_warfare_folder
+            position = { x = 8 y = 10 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_cw specialization_air }
     }
 }
