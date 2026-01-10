@@ -99,6 +99,39 @@
 # Contamination Defense Multipliers
 @CONTAINMENT_MULTIPLIER = 3.0  # How much defense measures slow spread
 
+# Stockpile "doomsday release" decision parameters.
+@BIO_DOOM_ACUTE_WEIGHT_ANTHRAX = 1.0
+@BIO_DOOM_ACUTE_WEIGHT_PLAGUE = 1.6
+@BIO_DOOM_ACUTE_WEIGHT_TULAREMIA = 0.7
+@BIO_DOOM_ACUTE_WEIGHT_SMALLPOX = 2.0
+
+@BIO_DOOM_ACUTE_ORG_SCALE = 15000
+@BIO_DOOM_ACUTE_STR_SCALE = 35000
+@BIO_DOOM_ORG_DAMAGE_MAX = 0.55
+@BIO_DOOM_STR_DAMAGE_MAX = 0.30
+
+@BIO_DOOM_DAYS_BASE_ANTHRAX = 60
+@BIO_DOOM_DAYS_BASE_PLAGUE = 90
+@BIO_DOOM_DAYS_BASE_TULAREMIA = 45
+@BIO_DOOM_DAYS_BASE_SMALLPOX = 120
+@BIO_DOOM_DAYS_DIV_ANTHRAX = 20
+@BIO_DOOM_DAYS_DIV_PLAGUE = 15
+@BIO_DOOM_DAYS_DIV_TULAREMIA = 30
+@BIO_DOOM_DAYS_DIV_SMALLPOX = 10
+@BIO_DOOM_DAYS_MAX_ANTHRAX = 540
+@BIO_DOOM_DAYS_MAX_PLAGUE = 900
+@BIO_DOOM_DAYS_MAX_TULAREMIA = 420
+@BIO_DOOM_DAYS_MAX_SMALLPOX = 900
+
+@BIO_DOOM_INTENSITY_DIV_ANTHRAX = 2000
+@BIO_DOOM_INTENSITY_DIV_PLAGUE = 800
+@BIO_DOOM_INTENSITY_DIV_TULAREMIA = 1500
+@BIO_DOOM_INTENSITY_DIV_SMALLPOX = 200
+@BIO_DOOM_INTENSITY_MAX_ANTHRAX = 3.0
+@BIO_DOOM_INTENSITY_MAX_PLAGUE = 3.5
+@BIO_DOOM_INTENSITY_MAX_TULAREMIA = 3.0
+@BIO_DOOM_INTENSITY_MAX_SMALLPOX = 4.5
+
 # Apply anthrax contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_anthrax_contamination = {
@@ -160,6 +193,51 @@ apply_anthrax_contamination = {
     calculate_contamination_defense_effectiveness = yes
 }
 
+apply_anthrax_contamination_scaled = {
+	set_variable = { anthrax_manpower_modifier = @ANTHRAX_MANPOWER_MODIFIER }
+	set_variable = { anthrax_resources_modifier = @ANTHRAX_RESOURCES_MODIFIER }
+	set_variable = { anthrax_supplies_modifier = @ANTHRAX_SUPPLIES_MODIFIER }
+	set_variable = { anthrax_production_modifier = @ANTHRAX_PRODUCTION_MODIFIER }
+	set_variable = { anthrax_attrition_modifier = @ANTHRAX_ATTRITION_MODIFIER }
+	set_variable = { anthrax_speed_modifier = @ANTHRAX_SPEED_MODIFIER }
+
+	multiply_variable = { anthrax_manpower_modifier = bio_intensity_mult }
+	multiply_variable = { anthrax_resources_modifier = bio_intensity_mult }
+	multiply_variable = { anthrax_supplies_modifier = bio_intensity_mult }
+	multiply_variable = { anthrax_production_modifier = bio_intensity_mult }
+	multiply_variable = { anthrax_attrition_modifier = bio_intensity_mult }
+	multiply_variable = { anthrax_speed_modifier = bio_intensity_mult }
+
+	add_dynamic_modifier = { modifier = anthrax_contaminated_state days = contamination_days }
+
+	if = {
+		limit = { THIS.controller = { has_idea = anthrax_antibiotics_mass_production_idea } }
+		THIS.controller = {
+			if = {
+				limit = { num_of_civilian_factories > 0 }
+				set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+				multiply_temp_variable = { civ_factory_bonus = @ANTHRAX_ANTIBIOTICS_RATE }
+				if = { limit = { check_variable = { civ_factory_bonus > @ANTHRAX_ANTIBIOTICS_CAP } } set_temp_variable = { civ_factory_bonus = @ANTHRAX_ANTIBIOTICS_CAP } }
+				add_to_temp_variable = { anthrax_antibiotics_effectiveness = civ_factory_bonus }
+			}
+			PREV = {
+				set_state_flag = anthrax_antibiotics_protection_active
+				set_variable = { anthrax_antibiotics_protection_effectiveness = PREV.anthrax_antibiotics_effectiveness }
+				reduce_contamination_effects = yes
+				force_update_dynamic_modifier = yes
+			}
+		}
+	}
+
+	THIS.controller = {
+		set_country_flag = bioweapon_target
+		add_to_variable = { bioweapon_contaminated_states = 1 }
+	}
+	set_state_flag = anthrax_contaminated
+	set_state_flag = bioweapon_contaminated
+	calculate_contamination_defense_effectiveness = yes
+}
+
 # Apply plague contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_plague_contamination = {
@@ -219,6 +297,51 @@ apply_plague_contamination = {
 
     # Calculate initial defense effectiveness for the contaminated state
     calculate_contamination_defense_effectiveness = yes
+}
+
+apply_plague_contamination_scaled = {
+	set_variable = { plague_manpower_modifier = @PLAGUE_MANPOWER_MODIFIER }
+	set_variable = { plague_resources_modifier = @PLAGUE_RESOURCES_MODIFIER }
+	set_variable = { plague_supplies_modifier = @PLAGUE_SUPPLIES_MODIFIER }
+	set_variable = { plague_production_modifier = @PLAGUE_PRODUCTION_MODIFIER }
+	set_variable = { plague_attrition_modifier = @PLAGUE_ATTRITION_MODIFIER }
+	set_variable = { plague_speed_modifier = @PLAGUE_SPEED_MODIFIER }
+
+	multiply_variable = { plague_manpower_modifier = bio_intensity_mult }
+	multiply_variable = { plague_resources_modifier = bio_intensity_mult }
+	multiply_variable = { plague_supplies_modifier = bio_intensity_mult }
+	multiply_variable = { plague_production_modifier = bio_intensity_mult }
+	multiply_variable = { plague_attrition_modifier = bio_intensity_mult }
+	multiply_variable = { plague_speed_modifier = bio_intensity_mult }
+
+	add_dynamic_modifier = { modifier = plague_contaminated_state days = contamination_days }
+
+	if = {
+		limit = { THIS.controller = { has_idea = plague_antibiotics_mass_production_idea } }
+		THIS.controller = {
+			if = {
+				limit = { num_of_civilian_factories > 0 }
+				set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+				multiply_temp_variable = { civ_factory_bonus = @PLAGUE_ANTIBIOTICS_RATE }
+				if = { limit = { check_variable = { civ_factory_bonus > @PLAGUE_ANTIBIOTICS_CAP } } set_temp_variable = { civ_factory_bonus = @PLAGUE_ANTIBIOTICS_CAP } }
+				add_to_temp_variable = { plague_antibiotics_effectiveness = civ_factory_bonus }
+			}
+			PREV = {
+				set_state_flag = plague_antibiotics_protection_active
+				set_variable = { plague_antibiotics_protection_effectiveness = PREV.plague_antibiotics_effectiveness }
+				reduce_contamination_effects = yes
+				force_update_dynamic_modifier = yes
+			}
+		}
+	}
+
+	THIS.controller = {
+		set_country_flag = bioweapon_target
+		add_to_variable = { bioweapon_contaminated_states = 1 }
+	}
+	set_state_flag = plague_contaminated
+	set_state_flag = bioweapon_contaminated
+	calculate_contamination_defense_effectiveness = yes
 }
 
 
@@ -1276,6 +1399,53 @@ apply_tularemia_contamination = {
     calculate_contamination_defense_effectiveness = yes
 }
 
+apply_tularemia_contamination_scaled = {
+	set_variable = { tularemia_manpower_modifier = @TULAREMIA_MANPOWER_MODIFIER }
+	set_variable = { tularemia_resources_modifier = @TULAREMIA_RESOURCES_MODIFIER }
+	set_variable = { tularemia_supplies_modifier = @TULAREMIA_SUPPLIES_MODIFIER }
+	set_variable = { tularemia_production_modifier = @TULAREMIA_PRODUCTION_MODIFIER }
+	set_variable = { tularemia_attrition_modifier = @TULAREMIA_ATTRITION_MODIFIER }
+	set_variable = { tularemia_speed_modifier = @TULAREMIA_SPEED_MODIFIER }
+	set_variable = { tularemia_org_modifier = @TULAREMIA_ORG_MODIFIER }
+
+	multiply_variable = { tularemia_manpower_modifier = bio_intensity_mult }
+	multiply_variable = { tularemia_resources_modifier = bio_intensity_mult }
+	multiply_variable = { tularemia_supplies_modifier = bio_intensity_mult }
+	multiply_variable = { tularemia_production_modifier = bio_intensity_mult }
+	multiply_variable = { tularemia_attrition_modifier = bio_intensity_mult }
+	multiply_variable = { tularemia_speed_modifier = bio_intensity_mult }
+	multiply_variable = { tularemia_org_modifier = bio_intensity_mult }
+
+	add_dynamic_modifier = { modifier = tularemia_contaminated_state days = contamination_days }
+
+	if = {
+		limit = { THIS.controller = { has_idea = tularemia_antibiotics_mass_production_idea } }
+		THIS.controller = {
+			if = {
+				limit = { num_of_civilian_factories > 0 }
+				set_temp_variable = { civ_factory_bonus = num_of_civilian_factories }
+				multiply_temp_variable = { civ_factory_bonus = @TULAREMIA_ANTIBIOTICS_RATE }
+				if = { limit = { check_variable = { civ_factory_bonus > @TULAREMIA_ANTIBIOTICS_CAP } } set_temp_variable = { civ_factory_bonus = @TULAREMIA_ANTIBIOTICS_CAP } }
+				add_to_temp_variable = { tularemia_antibiotics_effectiveness = civ_factory_bonus }
+			}
+			PREV = {
+				set_state_flag = tularemia_antibiotics_protection_active
+				set_variable = { tularemia_antibiotics_protection_effectiveness = PREV.tularemia_antibiotics_effectiveness }
+				reduce_contamination_effects = yes
+				force_update_dynamic_modifier = yes
+			}
+		}
+	}
+
+	THIS.controller = {
+		set_country_flag = bioweapon_target
+		add_to_variable = { bioweapon_contaminated_states = 1 }
+	}
+	set_state_flag = tularemia_contaminated
+	set_state_flag = bioweapon_contaminated
+	calculate_contamination_defense_effectiveness = yes
+}
+
 # Apply smallpox contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_smallpox_contamination = {
@@ -1344,6 +1514,154 @@ apply_smallpox_contamination = {
 
     # Calculate initial defense effectiveness for the contaminated state
     calculate_contamination_defense_effectiveness = yes
+}
+
+apply_smallpox_contamination_scaled = {
+	set_variable = { smallpox_manpower_modifier = @SMALLPOX_MANPOWER_MODIFIER }
+	set_variable = { smallpox_resources_modifier = @SMALLPOX_RESOURCES_MODIFIER }
+	set_variable = { smallpox_supplies_modifier = @SMALLPOX_SUPPLIES_MODIFIER }
+	set_variable = { smallpox_production_modifier = @SMALLPOX_PRODUCTION_MODIFIER }
+	set_variable = { smallpox_attrition_modifier = @SMALLPOX_ATTRITION_MODIFIER }
+	set_variable = { smallpox_speed_modifier = @SMALLPOX_SPEED_MODIFIER }
+
+	multiply_variable = { smallpox_manpower_modifier = bio_intensity_mult }
+	multiply_variable = { smallpox_resources_modifier = bio_intensity_mult }
+	multiply_variable = { smallpox_supplies_modifier = bio_intensity_mult }
+	multiply_variable = { smallpox_production_modifier = bio_intensity_mult }
+	multiply_variable = { smallpox_attrition_modifier = bio_intensity_mult }
+	multiply_variable = { smallpox_speed_modifier = bio_intensity_mult }
+
+	add_dynamic_modifier = { modifier = smallpox_contaminated_state days = contamination_days }
+
+	if = {
+		limit = { has_state_flag = smallpox_vaccination_protection_active }
+		reduce_contamination_effects = yes
+		force_update_dynamic_modifier = yes
+	}
+
+	THIS.controller = {
+		set_country_flag = bioweapon_target
+		add_to_variable = { bioweapon_contaminated_states = 1 }
+	}
+	set_state_flag = smallpox_contaminated
+	set_state_flag = bioweapon_contaminated
+	calculate_contamination_defense_effectiveness = yes
+}
+
+bio_unleash_stockpile_doomsday = {
+	set_temp_variable = { var = bio_doom_stock_anthrax value = num_equipment@anthrax_bomb_1 }
+	set_temp_variable = { var = bio_doom_stock_plague value = num_equipment@plague_bomb_1 }
+	set_temp_variable = { var = bio_doom_stock_tularemia value = num_equipment@tularemia_bomb_1 }
+	set_temp_variable = { var = bio_doom_stock_smallpox value = num_equipment@smallpox_bomb_1 }
+
+	set_temp_variable = { var = bio_doom_points_acute value = 0 }
+	set_temp_variable = { var = bio_doom_tmp value = bio_doom_stock_anthrax }
+	multiply_temp_variable = { var = bio_doom_tmp value = @BIO_DOOM_ACUTE_WEIGHT_ANTHRAX }
+	add_to_temp_variable = { var = bio_doom_points_acute value = bio_doom_tmp }
+	set_temp_variable = { var = bio_doom_tmp value = bio_doom_stock_plague }
+	multiply_temp_variable = { var = bio_doom_tmp value = @BIO_DOOM_ACUTE_WEIGHT_PLAGUE }
+	add_to_temp_variable = { var = bio_doom_points_acute value = bio_doom_tmp }
+	set_temp_variable = { var = bio_doom_tmp value = bio_doom_stock_tularemia }
+	multiply_temp_variable = { var = bio_doom_tmp value = @BIO_DOOM_ACUTE_WEIGHT_TULAREMIA }
+	add_to_temp_variable = { var = bio_doom_points_acute value = bio_doom_tmp }
+	set_temp_variable = { var = bio_doom_tmp value = bio_doom_stock_smallpox }
+	multiply_temp_variable = { var = bio_doom_tmp value = @BIO_DOOM_ACUTE_WEIGHT_SMALLPOX }
+	add_to_temp_variable = { var = bio_doom_points_acute value = bio_doom_tmp }
+
+	set_temp_variable = { var = bio_doom_org_damage_ratio value = bio_doom_points_acute }
+	divide_temp_variable = { var = bio_doom_org_damage_ratio value = @BIO_DOOM_ACUTE_ORG_SCALE }
+	clamp_temp_variable = { var = bio_doom_org_damage_ratio min = 0 max = @BIO_DOOM_ORG_DAMAGE_MAX }
+	set_temp_variable = { var = bio_doom_str_damage_ratio value = bio_doom_points_acute }
+	divide_temp_variable = { var = bio_doom_str_damage_ratio value = @BIO_DOOM_ACUTE_STR_SCALE }
+	clamp_temp_variable = { var = bio_doom_str_damage_ratio min = 0 max = @BIO_DOOM_STR_DAMAGE_MAX }
+
+	set_temp_variable = { var = bio_doom_days_anthrax value = bio_doom_stock_anthrax }
+	divide_temp_variable = { var = bio_doom_days_anthrax value = @BIO_DOOM_DAYS_DIV_ANTHRAX }
+	round_temp_variable = bio_doom_days_anthrax
+	add_to_temp_variable = { var = bio_doom_days_anthrax value = @BIO_DOOM_DAYS_BASE_ANTHRAX }
+	clamp_temp_variable = { var = bio_doom_days_anthrax min = @BIO_DOOM_DAYS_BASE_ANTHRAX max = @BIO_DOOM_DAYS_MAX_ANTHRAX }
+	set_temp_variable = { var = bio_doom_intensity_anthrax value = bio_doom_stock_anthrax }
+	divide_temp_variable = { var = bio_doom_intensity_anthrax value = @BIO_DOOM_INTENSITY_DIV_ANTHRAX }
+	add_to_temp_variable = { var = bio_doom_intensity_anthrax value = 1 }
+	clamp_temp_variable = { var = bio_doom_intensity_anthrax min = 1 max = @BIO_DOOM_INTENSITY_MAX_ANTHRAX }
+
+	set_temp_variable = { var = bio_doom_days_plague value = bio_doom_stock_plague }
+	divide_temp_variable = { var = bio_doom_days_plague value = @BIO_DOOM_DAYS_DIV_PLAGUE }
+	round_temp_variable = bio_doom_days_plague
+	add_to_temp_variable = { var = bio_doom_days_plague value = @BIO_DOOM_DAYS_BASE_PLAGUE }
+	clamp_temp_variable = { var = bio_doom_days_plague min = @BIO_DOOM_DAYS_BASE_PLAGUE max = @BIO_DOOM_DAYS_MAX_PLAGUE }
+	set_temp_variable = { var = bio_doom_intensity_plague value = bio_doom_stock_plague }
+	divide_temp_variable = { var = bio_doom_intensity_plague value = @BIO_DOOM_INTENSITY_DIV_PLAGUE }
+	add_to_temp_variable = { var = bio_doom_intensity_plague value = 1 }
+	clamp_temp_variable = { var = bio_doom_intensity_plague min = 1 max = @BIO_DOOM_INTENSITY_MAX_PLAGUE }
+
+	set_temp_variable = { var = bio_doom_days_tularemia value = bio_doom_stock_tularemia }
+	divide_temp_variable = { var = bio_doom_days_tularemia value = @BIO_DOOM_DAYS_DIV_TULAREMIA }
+	round_temp_variable = bio_doom_days_tularemia
+	add_to_temp_variable = { var = bio_doom_days_tularemia value = @BIO_DOOM_DAYS_BASE_TULAREMIA }
+	clamp_temp_variable = { var = bio_doom_days_tularemia min = @BIO_DOOM_DAYS_BASE_TULAREMIA max = @BIO_DOOM_DAYS_MAX_TULAREMIA }
+	set_temp_variable = { var = bio_doom_intensity_tularemia value = bio_doom_stock_tularemia }
+	divide_temp_variable = { var = bio_doom_intensity_tularemia value = @BIO_DOOM_INTENSITY_DIV_TULAREMIA }
+	add_to_temp_variable = { var = bio_doom_intensity_tularemia value = 1 }
+	clamp_temp_variable = { var = bio_doom_intensity_tularemia min = 1 max = @BIO_DOOM_INTENSITY_MAX_TULAREMIA }
+
+	set_temp_variable = { var = bio_doom_days_smallpox value = bio_doom_stock_smallpox }
+	divide_temp_variable = { var = bio_doom_days_smallpox value = @BIO_DOOM_DAYS_DIV_SMALLPOX }
+	round_temp_variable = bio_doom_days_smallpox
+	add_to_temp_variable = { var = bio_doom_days_smallpox value = @BIO_DOOM_DAYS_BASE_SMALLPOX }
+	clamp_temp_variable = { var = bio_doom_days_smallpox min = @BIO_DOOM_DAYS_BASE_SMALLPOX max = @BIO_DOOM_DAYS_MAX_SMALLPOX }
+	set_temp_variable = { var = bio_doom_intensity_smallpox value = bio_doom_stock_smallpox }
+	divide_temp_variable = { var = bio_doom_intensity_smallpox value = @BIO_DOOM_INTENSITY_DIV_SMALLPOX }
+	add_to_temp_variable = { var = bio_doom_intensity_smallpox value = 1 }
+	clamp_temp_variable = { var = bio_doom_intensity_smallpox min = 1 max = @BIO_DOOM_INTENSITY_MAX_SMALLPOX }
+
+	every_controlled_state = {
+		damage_units = {
+			state = THIS
+			org_damage = bio_doom_org_damage_ratio
+			str_damage = bio_doom_str_damage_ratio
+			ratio = yes
+			army = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = bio_doom_stock_anthrax value = 0 compare = greater_than } }
+			set_temp_variable = { var = contamination_days value = bio_doom_days_anthrax }
+			set_temp_variable = { var = bio_intensity_mult value = bio_doom_intensity_anthrax }
+			apply_anthrax_contamination_scaled = yes
+		}
+		if = {
+			limit = { check_variable = { var = bio_doom_stock_plague value = 0 compare = greater_than } }
+			set_temp_variable = { var = contamination_days value = bio_doom_days_plague }
+			set_temp_variable = { var = bio_intensity_mult value = bio_doom_intensity_plague }
+			apply_plague_contamination_scaled = yes
+		}
+		if = {
+			limit = { check_variable = { var = bio_doom_stock_tularemia value = 0 compare = greater_than } }
+			set_temp_variable = { var = contamination_days value = bio_doom_days_tularemia }
+			set_temp_variable = { var = bio_intensity_mult value = bio_doom_intensity_tularemia }
+			apply_tularemia_contamination_scaled = yes
+		}
+		if = {
+			limit = { check_variable = { var = bio_doom_stock_smallpox value = 0 compare = greater_than } }
+			set_temp_variable = { var = contamination_days value = bio_doom_days_smallpox }
+			set_temp_variable = { var = bio_intensity_mult value = bio_doom_intensity_smallpox }
+			apply_smallpox_contamination_scaled = yes
+		}
+	}
+
+	set_temp_variable = { var = bio_doom_remove value = bio_doom_stock_anthrax }
+	multiply_temp_variable = { var = bio_doom_remove value = -1 }
+	add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_doom_remove }
+	set_temp_variable = { var = bio_doom_remove value = bio_doom_stock_plague }
+	multiply_temp_variable = { var = bio_doom_remove value = -1 }
+	add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_doom_remove }
+	set_temp_variable = { var = bio_doom_remove value = bio_doom_stock_tularemia }
+	multiply_temp_variable = { var = bio_doom_remove value = -1 }
+	add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_doom_remove }
+	set_temp_variable = { var = bio_doom_remove value = bio_doom_stock_smallpox }
+	multiply_temp_variable = { var = bio_doom_remove value = -1 }
+	add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_doom_remove }
 }
 
 # Apply tularemia bioweapon consequences (country-level effects)
@@ -1776,4 +2094,3 @@ progress_smallpox_vaccination = {
         }
     }
 }
-

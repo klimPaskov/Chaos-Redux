@@ -1,0 +1,392 @@
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+#
+#    #####  #   # #    #   ##   #    # #  ####     ###### ###### ###### ######  ####  #####  ####
+#    #    #  # #  ##   #  #  #  ##  ## # #    #    #      #      #      #      #    #   #   #
+#    #    #   #   # #  # #    # # ## # # #         #####  #####  #####  #####  #        #    ####
+#    #    #   #   #  # # ###### #    # # #         #      #      #      #      #        #        #
+#    #    #   #   #   ## #    # #    # # #    #    #      #      #      #      #    #   #   #    #
+#    #####    #   #    # #    # #    # #  ####     ###### #      #      ######  ####    #    ####
+#
+###############################################################################################################
+###############################################################################################################
+###############################################################################################################
+
+
+modify_value_based_on_chaos_tier = {
+    # Input: base_value, add_value
+    # Output: modified_value
+    set_temp_variable = { modified_value = base_value }
+    if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 0 } }
+        multiply_temp_variable = { add_value = 0 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+        multiply_temp_variable = { add_value = 1 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+        multiply_temp_variable = { add_value = 2 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+        multiply_temp_variable = { add_value = 3 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+    else_if = {
+        limit = { has_global_flag = { flag = chaos_tier value > 3 } }
+        multiply_temp_variable = { add_value = 4 }
+        add_to_temp_variable = { modified_value = add_value }
+    }
+}
+
+# Can define variables 'buildings_to_damage_per_state', 'percent_of_states_to_target', and 'damage_modifier' to control how many buildings are damaged per state, how many buildings to damage, and how much damage is applied. Also 'state_population_percent' to control how much of population % is killed in the selected random state(s).
+damage_buildings_in_random_states = {
+    # Input: buildings_to_damage_per_state, percent_of_states_to_target, damage_modifier, state_population_percent
+
+    # THIS refers to the country executing the script.
+
+    # First, count the total number of states.
+    set_temp_variable = { num_controlled_states = 1 }
+    every_controlled_state = {
+        add_to_temp_variable = { num_controlled_states = 1 }
+    }
+
+    set_temp_variable = { num_states_to_target = var:num_controlled_states }
+    if = { limit = { check_variable = { percent_of_states_to_target = 0 } }
+    set_temp_variable = { percent_of_states_to_target = 0.1 } }
+
+    if = { limit = { check_variable = { num_states_to_target > 0 } } # In case target country even has any controlled states.
+    # caclulate the number of states to target based on the percentage.
+    multiply_temp_variable = { num_states_to_target = percent_of_states_to_target }
+    if = { limit = { check_variable = { num_states_to_target < 1 } }
+    set_temp_variable = { num_states_to_target = 1 }
+}
+round_temp_variable = num_states_to_target
+}
+
+if = {
+    limit = { check_variable = { damage_modifier = 0 } }
+    set_temp_variable = { damage_modifier = 0.25 }
+}
+if = {
+    limit = { check_variable = { buildings_to_damage_per_state < 1 } }
+    set_temp_variable = { buildings_to_damage_per_state = 3 }
+}
+
+
+multiply_temp_variable = { state_population_percent = 1000 }
+if = {
+    limit = { check_variable = { state_population_percent < 1 } }
+    set_temp_variable = { state_population_percent = -1 }
+}
+
+for_loop_effect = {
+    end = var:num_states_to_target
+
+    # Select a random controlled state that has at least one of the targetable buildings.
+    random_owned_controlled_state = {
+        limit = {
+            OR = {
+                infrastructure > 0
+                arms_factory > 0
+                industrial_complex > 0
+                air_base > 0
+                supply_node > 0
+                rail_way > 0
+                naval_base > 0
+                bunker > 0
+                coastal_bunker > 0
+                dockyard > 0
+                anti_air_building > 0
+                synthetic_refinery > 0
+                fuel_silo > 0
+                radar_station > 0
+                rocket_site > 0
+                nuclear_reactor > 0
+                nuclear_reactor_heavy_water > 0
+                commercial_nuclear_reactor > 0
+            }
+        }
+
+
+        set_temp_variable = { pop_loss = state_population_k }
+        round_temp_variable = pop_loss
+        multiply_temp_variable = { pop_loss = state_population_percent }
+        add_manpower = pop_loss
+
+
+        # 3. Loop and damage a random building each time.
+        for_loop_effect = {
+            end = buildings_to_damage_per_state # Temp variables work with any scope.
+
+            meta_effect = {
+                text = {
+                    random_list = {
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                infrastructure < 1
+                            }
+                            damage_building = { type = infrastructure damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                arms_factory < 1
+                            }
+                            damage_building = { type = arms_factory damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                industrial_complex < 1
+                            }
+                            damage_building = { type = industrial_complex damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                air_base < 1
+                            }
+                            damage_building = { type = air_base damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                supply_node < 1
+                            }
+                            damage_building = { type = supply_node damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                rail_way < 1
+                            }
+                            damage_building = { type = rail_way damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                naval_base < 1
+                            }
+                            damage_building = { type = naval_base damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                bunker < 1
+                            }
+                            damage_building = { type = bunker damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                coastal_bunker < 1
+                            }
+                            damage_building = { type = coastal_bunker damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                dockyard < 1
+                            }
+                            damage_building = { type = dockyard damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                anti_air_building < 1
+                            }
+                            damage_building = { type = anti_air_building damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                synthetic_refinery < 1
+                            }
+                            damage_building = { type = synthetic_refinery damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                fuel_silo < 1
+                            }
+                            damage_building = { type = fuel_silo damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                radar_station < 1
+                            }
+                            damage_building = { type = radar_station damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                rocket_site < 1
+                            }
+                            damage_building = { type = rocket_site damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                nuclear_reactor < 1
+                            }
+                            damage_building = { type = nuclear_reactor damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                nuclear_reactor_heavy_water < 1
+                            }
+                            damage_building = { type = nuclear_reactor_heavy_water damage = [DMG] }
+                        }
+                        1 = {
+                            modifier = {
+                                factor = 0
+                                commercial_nuclear_reactor < 1
+                            }
+                            damage_building = { type = commercial_nuclear_reactor damage = [DMG] }
+                        }
+                    }
+                }
+                DMG = "[?damage_modifier]"
+            }
+        }
+    }
+}
+# clear_variable = damage_modifier
+# clear_variable = num_controlled_states
+# clear_variable = num_states_to_target
+# clear_variable = percent_of_states_to_target
+# clear_variable = buildings_to_damage_per_state
+# clear_variable = state_population_percent
+}
+
+get_random_sea_region = {
+    random_list = {
+        1 = { set_variable = { global.rand_sea_region = 9 } }
+        1 = { set_variable = { global.rand_sea_region = 16 } }
+        1 = { set_variable = { global.rand_sea_region = 18 } }
+        1 = { set_variable = { global.rand_sea_region = 29 } }
+        1 = { set_variable = { global.rand_sea_region = 30 } }
+        1 = { set_variable = { global.rand_sea_region = 32 } }
+        1 = { set_variable = { global.rand_sea_region = 42 } }
+        1 = { set_variable = { global.rand_sea_region = 43 } }
+        1 = { set_variable = { global.rand_sea_region = 44 } }
+        1 = { set_variable = { global.rand_sea_region = 45 } }
+        1 = { set_variable = { global.rand_sea_region = 46 } }
+        1 = { set_variable = { global.rand_sea_region = 47 } }
+        1 = { set_variable = { global.rand_sea_region = 48 } }
+        1 = { set_variable = { global.rand_sea_region = 49 } }
+        1 = { set_variable = { global.rand_sea_region = 50 } }
+        1 = { set_variable = { global.rand_sea_region = 51 } }
+        1 = { set_variable = { global.rand_sea_region = 52 } }
+        1 = { set_variable = { global.rand_sea_region = 53 } }
+        1 = { set_variable = { global.rand_sea_region = 54 } }
+        1 = { set_variable = { global.rand_sea_region = 55 } }
+        1 = { set_variable = { global.rand_sea_region = 56 } }
+        1 = { set_variable = { global.rand_sea_region = 57 } }
+        1 = { set_variable = { global.rand_sea_region = 58 } }
+        1 = { set_variable = { global.rand_sea_region = 59 } }
+        1 = { set_variable = { global.rand_sea_region = 60 } }
+        1 = { set_variable = { global.rand_sea_region = 61 } }
+        1 = { set_variable = { global.rand_sea_region = 62 } }
+        1 = { set_variable = { global.rand_sea_region = 63 } }
+        1 = { set_variable = { global.rand_sea_region = 64 } }
+        1 = { set_variable = { global.rand_sea_region = 65 } }
+        1 = { set_variable = { global.rand_sea_region = 66 } }
+        1 = { set_variable = { global.rand_sea_region = 67 } }
+        1 = { set_variable = { global.rand_sea_region = 68 } }
+        1 = { set_variable = { global.rand_sea_region = 69 } }
+        1 = { set_variable = { global.rand_sea_region = 71 } }
+        1 = { set_variable = { global.rand_sea_region = 72 } }
+        1 = { set_variable = { global.rand_sea_region = 73 } }
+        1 = { set_variable = { global.rand_sea_region = 74 } }
+        1 = { set_variable = { global.rand_sea_region = 75 } }
+        1 = { set_variable = { global.rand_sea_region = 76 } }
+        1 = { set_variable = { global.rand_sea_region = 77 } }
+        1 = { set_variable = { global.rand_sea_region = 78 } }
+        1 = { set_variable = { global.rand_sea_region = 79 } }
+        1 = { set_variable = { global.rand_sea_region = 80 } }
+        1 = { set_variable = { global.rand_sea_region = 81 } }
+        1 = { set_variable = { global.rand_sea_region = 82 } }
+        1 = { set_variable = { global.rand_sea_region = 83 } }
+        1 = { set_variable = { global.rand_sea_region = 84 } }
+        1 = { set_variable = { global.rand_sea_region = 85 } }
+        1 = { set_variable = { global.rand_sea_region = 86 } }
+        1 = { set_variable = { global.rand_sea_region = 87 } }
+        1 = { set_variable = { global.rand_sea_region = 88 } }
+        1 = { set_variable = { global.rand_sea_region = 89 } }
+        1 = { set_variable = { global.rand_sea_region = 90 } }
+        1 = { set_variable = { global.rand_sea_region = 91 } }
+        1 = { set_variable = { global.rand_sea_region = 92 } }
+        1 = { set_variable = { global.rand_sea_region = 93 } }
+        1 = { set_variable = { global.rand_sea_region = 94 } }
+        1 = { set_variable = { global.rand_sea_region = 95 } }
+        1 = { set_variable = { global.rand_sea_region = 96 } }
+        1 = { set_variable = { global.rand_sea_region = 97 } }
+        1 = { set_variable = { global.rand_sea_region = 98 } }
+        1 = { set_variable = { global.rand_sea_region = 99 } }
+        1 = { set_variable = { global.rand_sea_region = 100 } }
+        1 = { set_variable = { global.rand_sea_region = 101 } }
+        1 = { set_variable = { global.rand_sea_region = 102 } }
+        1 = { set_variable = { global.rand_sea_region = 103 } }
+        1 = { set_variable = { global.rand_sea_region = 104 } }
+        1 = { set_variable = { global.rand_sea_region = 105 } }
+        1 = { set_variable = { global.rand_sea_region = 106 } }
+        1 = { set_variable = { global.rand_sea_region = 107 } }
+        1 = { set_variable = { global.rand_sea_region = 108 } }
+        1 = { set_variable = { global.rand_sea_region = 109 } }
+        1 = { set_variable = { global.rand_sea_region = 110 } }
+        1 = { set_variable = { global.rand_sea_region = 110 } }
+        1 = { set_variable = { global.rand_sea_region = 111 } }
+        1 = { set_variable = { global.rand_sea_region = 112 } }
+        1 = { set_variable = { global.rand_sea_region = 113 } }
+        1 = { set_variable = { global.rand_sea_region = 114 } }
+        1 = { set_variable = { global.rand_sea_region = 115 } }
+        1 = { set_variable = { global.rand_sea_region = 166 } }
+        1 = { set_variable = { global.rand_sea_region = 168 } }
+        1 = { set_variable = { global.rand_sea_region = 169 } }
+        1 = { set_variable = { global.rand_sea_region = 170 } }
+        1 = { set_variable = { global.rand_sea_region = 171 } }
+        1 = { set_variable = { global.rand_sea_region = 172 } }
+        1 = { set_variable = { global.rand_sea_region = 173 } }
+        1 = { set_variable = { global.rand_sea_region = 174 } }
+        1 = { set_variable = { global.rand_sea_region = 175 } }
+        1 = { set_variable = { global.rand_sea_region = 176 } }
+        1 = { set_variable = { global.rand_sea_region = 177 } }
+        1 = { set_variable = { global.rand_sea_region = 202 } }
+        1 = { set_variable = { global.rand_sea_region = 203 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 207 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 206 } }
+        1 = { set_variable = { global.rand_sea_region = 279 } }
+    }
+}
+
+# Can take a specified percentage of the state's population and reduce/increase it. Defaults to -0.1% (one thousandth of the population).
+# STATE SCOPE
+modify_state_population_by_percent = {
+    multiply_temp_variable = { state_population_percent = 1000 }
+    if = {
+        limit = { check_variable = { state_population_percent < 1 } }
+        set_temp_variable = { state_population_percent = -1 }
+    }
+
+    set_temp_variable = { pop_loss = state_population_k }
+    multiply_temp_variable = { pop_loss = state_population_percent }
+    log = "Population loss: [?pop_loss]"
+    add_manpower = pop_loss
+}
