@@ -1,0 +1,966 @@
+# Chemical cylinder unit leader abilities.
+
+@CHEM_DURATION_HOURS = 168
+@CHEM_DURATION_DAYS = 7
+
+@CHEM_COMMAND_POWER_CHLORINE_COST = 0.2
+@CHEM_COMMAND_POWER_PHOSGENE_COST = 0.3
+@CHEM_COMMAND_POWER_MUSTARD_COST = 0.25
+@CHEM_COMMAND_POWER_LEWISITE_COST = 0.4
+
+@CHEM_CHLORINE_CYLINDERS_PER_BATTALION = 30
+@CHEM_PHOSGENE_CYLINDERS_PER_BATTALION = 30
+@CHEM_MUSTARD_CYLINDERS_PER_BATTALION = 30
+@CHEM_LEWISITE_CYLINDERS_PER_BATTALION = 30
+
+@CHEM_RATIO_MIN = 0.10
+
+@CHEM_TYPE_CHLORINE = 1
+@CHEM_TYPE_PHOSGENE = 2
+@CHEM_TYPE_MUSTARD = 3
+@CHEM_TYPE_LEWISITE = 4
+
+@CHEM_UNIT_SPEED_FACTOR = -0.05
+@CHEM_UNIT_URBAN_ATTACK = 0.10
+
+@CHEM_CHLORINE_OFFENSE = 0.24
+@CHEM_CHLORINE_BREAKTHROUGH = 0.24
+@CHEM_CHLORINE_DEFENSE = 0.06
+@CHEM_CHLORINE_ORG_DAMAGE = 0.18
+@CHEM_CHLORINE_STR_DAMAGE = 0.08
+@CHEM_CHLORINE_WAR_SUPPORT = 0.14
+
+@CHEM_PHOSGENE_OFFENSE = 0.36
+@CHEM_PHOSGENE_BREAKTHROUGH = 0.36
+@CHEM_PHOSGENE_DEFENSE = 0.10
+@CHEM_PHOSGENE_ORG_DAMAGE = 0.28
+@CHEM_PHOSGENE_STR_DAMAGE = 0.14
+@CHEM_PHOSGENE_WAR_SUPPORT = 0.2
+
+@CHEM_MUSTARD_OFFENSE = 0.28
+@CHEM_MUSTARD_BREAKTHROUGH = 0.20
+@CHEM_MUSTARD_DEFENSE = 0.06
+@CHEM_MUSTARD_ORG_DAMAGE = 0.24
+@CHEM_MUSTARD_STR_DAMAGE = 0.12
+@CHEM_MUSTARD_WAR_SUPPORT = 0.16
+
+@CHEM_LEWISITE_OFFENSE = 0.48
+@CHEM_LEWISITE_BREAKTHROUGH = 0.48
+@CHEM_LEWISITE_DEFENSE = 0.12
+@CHEM_LEWISITE_ORG_DAMAGE = 0.36
+@CHEM_LEWISITE_STR_DAMAGE = 0.18
+@CHEM_LEWISITE_WAR_SUPPORT = 0.24
+
+@CHEM_CONDEMNATION_BASE_CHLORINE = 0.25
+@CHEM_CONDEMNATION_BASE_PHOSGENE = 0.4
+@CHEM_CONDEMNATION_BASE_MUSTARD = 0.35
+@CHEM_CONDEMNATION_BASE_LEWISITE = 0.6
+
+@CHEM_CONDEMNATION_PER_UNIT_CHLORINE = 0.001
+@CHEM_CONDEMNATION_PER_UNIT_PHOSGENE = 0.0015
+@CHEM_CONDEMNATION_PER_UNIT_MUSTARD = 0.0013
+@CHEM_CONDEMNATION_PER_UNIT_LEWISITE = 0.002
+
+@CHEM_AI_RETALIATE_LOW = 2
+@CHEM_AI_RETALIATE_MED = 5
+@CHEM_AI_RETALIATE_HIGH = 10
+
+@CHEM_AI_RETALIATE_ADD_LOW = 2
+@CHEM_AI_RETALIATE_ADD_MED = 5
+@CHEM_AI_RETALIATE_ADD_HIGH = 10
+
+@CHEM_AI_CP_CHLORINE = 0.8
+@CHEM_AI_CP_PHOSGENE = 1.0
+@CHEM_AI_CP_MUSTARD = 1.0
+@CHEM_AI_CP_LEWISITE = 1.25
+
+@CHEM_AI_WS_CHLORINE = 0.10
+@CHEM_AI_WS_PHOSGENE = 0.20
+@CHEM_AI_WS_MUSTARD = 0.20
+@CHEM_AI_WS_LEWISITE = 0.30
+
+@CHEM_AI_OFFENSIVE_LOW = 4
+@CHEM_AI_OFFENSIVE_HIGH = 8
+@CHEM_AI_DEFENSIVE_LOW = 6
+@CHEM_AI_OFFENSIVE_STATUS_MIN = 0.45
+@CHEM_AI_DEFENSIVE_STATUS_MAX = 0.35
+@CHEM_AI_TERRAIN_PRESSURE = 3
+@CHEM_AI_CLIMATE_PRESSURE = 6
+
+@CHEM_AI_PRESSURE_ADD_HIGH = 2
+@CHEM_AI_PRESSURE_ADD_MED = 1
+@CHEM_AI_TERRAIN_PRESSURE_ADD = 0.5
+@CHEM_AI_CLIMATE_PENALTY_ADD = -0.5
+
+@CHEM_AI_GAS_MASK_ADV_ADD = 0.6
+@CHEM_AI_GAS_MASK_IMPROVED_ADD = 0.4
+@CHEM_AI_GAS_MASK_BASIC_ADD = 0.2
+
+@CHEM_WIND_STATE_STRONG_FAVOR = 2
+@CHEM_WIND_STATE_FAVOR = 1
+@CHEM_WIND_STATE_NEUTRAL = 0
+@CHEM_WIND_STATE_AGAINST = -1
+
+@CHEM_AI_IDEOLOGY_DEMOCRATIC = -1.0
+@CHEM_AI_IDEOLOGY_COMMUNIST = 0.3
+@CHEM_AI_IDEOLOGY_FASCIST = 0.6
+@CHEM_AI_IDEOLOGY_NEUTRAL = 0.1
+
+@CHEM_AI_WIND_STRONG_FAVOR_ADD = 0.8
+@CHEM_AI_WIND_FAVOR_ADD = 0.4
+@CHEM_AI_WIND_AGAINST_ADD = -0.8
+
+@CHEM_AI_COUNTRY_JAPAN_ADD = 10.0
+
+ability = {
+    chemical_chlorine_attack = {
+        name = CHEM_ABILITY_CHLORINE_NAME
+        desc = CHEM_ABILITY_CHLORINE_DESC
+        icon = GFX_ability_chlorine_attack
+        sound_effect = chem_attack_chlorine_sound
+        type = army_leader
+
+        allowed = {
+            is_leading_army_group = no
+            is_border_war = no
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_CHLORINE_TECH_TT
+                OWNER = { has_tech = chlorine_gas }
+            }
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_ALREADY_ACTIVE_TT
+                NOT = {
+                    OR = {
+                        has_trait = chemical_cylinder_active_chlorine
+                        has_trait = chemical_cylinder_active_phosgene
+                        has_trait = chemical_cylinder_active_mustard
+                        has_trait = chemical_cylinder_active_lewisite
+                    }
+                }
+            }
+        }
+
+        cost = @CHEM_COMMAND_POWER_CHLORINE_COST
+        duration = @CHEM_DURATION_HOURS
+		unit_modifiers = {
+			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
+			urban = {
+				attack = @CHEM_UNIT_URBAN_ATTACK
+			}
+		}
+
+        one_time_effect = {
+            add_timed_unit_leader_trait = {
+                trait = chemical_cylinder_active_chlorine
+                days = @CHEM_DURATION_DAYS
+            }
+            set_unit_leader_flag = chem_ability_calculating
+            set_variable = { var = chem_active_type value = @CHEM_TYPE_CHLORINE }
+            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_CHLORINE }
+            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_CHLORINE }
+
+            if = {
+                limit = { NOT = { has_variable = chem_offense_total_chlorine } }
+                chem_update_chlorine_preview = yes
+            }
+            set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
+            hidden_effect = {
+                chem_use_wind_forecast = yes
+                chem_apply_wind_miscalculation = yes
+            }
+            chem_set_final_chlorine_effects = yes
+            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+
+            if = {
+                limit = { has_unit_leader_flag = chem_ability_calculating }
+                hidden_effect = {
+                    meta_effect = {
+                        text = {
+                            add_temporary_buff_to_units = {
+                                combat_offense = [CHEM_OFFENSE]
+                                combat_breakthrough = [CHEM_BREAKTHROUGH]
+                                combat_defense = [CHEM_DEFENSE]
+                                org_damage_multiplier = [CHEM_ORG_DAMAGE]
+                                str_damage_multiplier = [CHEM_STR_DAMAGE]
+                                war_support_reduction_on_damage = [CHEM_WAR_SUPPORT]
+                                days = [CHEM_DURATION_DAYS]
+                            }
+                        }
+                        CHEM_OFFENSE = "[?chem_offense]"
+                        CHEM_BREAKTHROUGH = "[?chem_breakthrough]"
+                        CHEM_DEFENSE = "[?chem_defense]"
+                        CHEM_ORG_DAMAGE = "[?chem_org_damage]"
+                        CHEM_STR_DAMAGE = "[?chem_str_damage]"
+                        CHEM_WAR_SUPPORT = "[?chem_war_support]"
+                        CHEM_DURATION_DAYS = "[?chem_duration_days]"
+                    }
+                }
+            }
+            set_temp_variable = { var = chem_consumed_amount value = 0 }
+            set_temp_variable = { var = chem_required_amount value = 0 }
+            hidden_effect = { chem_consume_chlorine_cylinders = yes }
+            chem_warfare_register_attack_use = yes
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_CHLORINE_VALUE
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_CHLORINE
+            custom_effect_tooltip = CHEM_ABILITY_CHLORINE_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_CHLORINE_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_CHLORINE_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
+            custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
+            custom_effect_tooltip = CHEM_ABILITY_CHLORINE_WIND_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CHLORINE_COMBINED_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
+            clr_unit_leader_flag = chem_ability_calculating
+        }
+
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > @CHEM_AI_CP_CHLORINE
+                    has_war_support > @CHEM_AI_WS_CHLORINE
+                }
+                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_LOW }
+                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
+                add = @CHEM_AI_PRESSURE_ADD_HIGH
+            }
+            modifier = {
+                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_HIGH }
+                add = @CHEM_AI_PRESSURE_ADD_MED
+            }
+            modifier = {
+                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
+                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
+                add = @CHEM_AI_PRESSURE_ADD_MED
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@forest > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@jungle > @CHEM_AI_TERRAIN_PRESSURE }
+                }
+                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = @CHEM_AI_IDEOLOGY_FASCIST
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+            }
+            modifier = {
+                FROM = { tag = JAP }
+                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
+                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
+                add = @CHEM_AI_WIND_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
+                add = @CHEM_AI_WIND_AGAINST_ADD
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = @CHEM_AI_GAS_MASK_ADV_ADD
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_LOW
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_MED
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_HIGH
+            }
+        }
+    }
+
+    chemical_phosgene_attack = {
+        name = CHEM_ABILITY_PHOSGENE_NAME
+        desc = CHEM_ABILITY_PHOSGENE_DESC
+        icon = GFX_ability_phosgene_attack
+        sound_effect = chem_attack_phosgene_sound
+        type = army_leader
+
+        allowed = {
+            is_leading_army_group = no
+            is_border_war = no
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_PHOSGENE_TECH_TT
+                OWNER = { has_tech = phosgene }
+            }
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_ALREADY_ACTIVE_TT
+                NOT = {
+                    OR = {
+                        has_trait = chemical_cylinder_active_chlorine
+                        has_trait = chemical_cylinder_active_phosgene
+                        has_trait = chemical_cylinder_active_mustard
+                        has_trait = chemical_cylinder_active_lewisite
+                    }
+                }
+            }
+        }
+
+        cost = @CHEM_COMMAND_POWER_PHOSGENE_COST
+        duration = @CHEM_DURATION_HOURS
+		unit_modifiers = {
+			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
+			urban = {
+				attack = @CHEM_UNIT_URBAN_ATTACK
+			}
+		}
+
+        one_time_effect = {
+            add_timed_unit_leader_trait = {
+                trait = chemical_cylinder_active_phosgene
+                days = @CHEM_DURATION_DAYS
+            }
+            set_unit_leader_flag = chem_ability_calculating
+            set_variable = { var = chem_active_type value = @CHEM_TYPE_PHOSGENE }
+            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_PHOSGENE }
+            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_PHOSGENE }
+
+            if = {
+                limit = { NOT = { has_variable = chem_offense_total_phosgene } }
+                chem_update_phosgene_preview = yes
+            }
+            set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
+            hidden_effect = {
+                chem_use_wind_forecast = yes
+                chem_apply_wind_miscalculation = yes
+            }
+            chem_set_final_phosgene_effects = yes
+            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+
+            if = {
+                limit = { has_unit_leader_flag = chem_ability_calculating }
+                hidden_effect = {
+                    meta_effect = {
+                        text = {
+                            add_temporary_buff_to_units = {
+                                combat_offense = [CHEM_OFFENSE]
+                                combat_breakthrough = [CHEM_BREAKTHROUGH]
+                                combat_defense = [CHEM_DEFENSE]
+                                org_damage_multiplier = [CHEM_ORG_DAMAGE]
+                                str_damage_multiplier = [CHEM_STR_DAMAGE]
+                                war_support_reduction_on_damage = [CHEM_WAR_SUPPORT]
+                                days = [CHEM_DURATION_DAYS]
+                            }
+                        }
+                        CHEM_OFFENSE = "[?chem_offense]"
+                        CHEM_BREAKTHROUGH = "[?chem_breakthrough]"
+                        CHEM_DEFENSE = "[?chem_defense]"
+                        CHEM_ORG_DAMAGE = "[?chem_org_damage]"
+                        CHEM_STR_DAMAGE = "[?chem_str_damage]"
+                        CHEM_WAR_SUPPORT = "[?chem_war_support]"
+                        CHEM_DURATION_DAYS = "[?chem_duration_days]"
+                    }
+                }
+            }
+            set_temp_variable = { var = chem_consumed_amount value = 0 }
+            set_temp_variable = { var = chem_required_amount value = 0 }
+            hidden_effect = { chem_consume_phosgene_cylinders = yes }
+            chem_warfare_register_attack_use = yes
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_PHOSGENE_VALUE
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_PHOSGENE
+            custom_effect_tooltip = CHEM_ABILITY_PHOSGENE_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_PHOSGENE_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_PHOSGENE_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
+            custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
+            custom_effect_tooltip = CHEM_ABILITY_PHOSGENE_WIND_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_PHOSGENE_COMBINED_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
+            clr_unit_leader_flag = chem_ability_calculating
+        }
+
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > @CHEM_AI_CP_PHOSGENE
+                    has_war_support > @CHEM_AI_WS_PHOSGENE
+                }
+                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_HIGH }
+                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
+                add = @CHEM_AI_PRESSURE_ADD_HIGH
+            }
+            modifier = {
+                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
+                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
+                add = @CHEM_AI_PRESSURE_ADD_MED
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@hills > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@mountain > @CHEM_AI_TERRAIN_PRESSURE }
+                }
+                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = @CHEM_AI_IDEOLOGY_FASCIST
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+            }
+            modifier = {
+                FROM = { tag = JAP }
+                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
+                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
+                add = @CHEM_AI_WIND_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
+                add = @CHEM_AI_WIND_AGAINST_ADD
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = @CHEM_AI_GAS_MASK_ADV_ADD
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_LOW
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_MED
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_HIGH
+            }
+        }
+    }
+
+    chemical_mustard_attack = {
+        name = CHEM_ABILITY_MUSTARD_NAME
+        desc = CHEM_ABILITY_MUSTARD_DESC
+        icon = GFX_ability_mustard_attack
+        sound_effect = chem_attack_mustard_sound
+        type = army_leader
+
+        allowed = {
+            is_leading_army_group = no
+            is_border_war = no
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_MUSTARD_TECH_TT
+                OWNER = { has_tech = mustard_gas }
+            }
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_ALREADY_ACTIVE_TT
+                NOT = {
+                    OR = {
+                        has_trait = chemical_cylinder_active_chlorine
+                        has_trait = chemical_cylinder_active_phosgene
+                        has_trait = chemical_cylinder_active_mustard
+                        has_trait = chemical_cylinder_active_lewisite
+                    }
+                }
+            }
+        }
+
+        cost = @CHEM_COMMAND_POWER_MUSTARD_COST
+        duration = @CHEM_DURATION_HOURS
+		unit_modifiers = {
+			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
+			urban = {
+				attack = @CHEM_UNIT_URBAN_ATTACK
+			}
+		}
+
+        one_time_effect = {
+            add_timed_unit_leader_trait = {
+                trait = chemical_cylinder_active_mustard
+                days = @CHEM_DURATION_DAYS
+            }
+            set_unit_leader_flag = chem_ability_calculating
+            set_variable = { var = chem_active_type value = @CHEM_TYPE_MUSTARD }
+            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_MUSTARD }
+            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_MUSTARD }
+
+            if = {
+                limit = { NOT = { has_variable = chem_offense_total_mustard } }
+                chem_update_mustard_preview = yes
+            }
+            set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
+            hidden_effect = {
+                chem_use_wind_forecast = yes
+                chem_apply_wind_miscalculation = yes
+            }
+            chem_set_final_mustard_effects = yes
+            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+            if = {
+                limit = { has_unit_leader_flag = chem_ability_calculating }
+                hidden_effect = {
+                    meta_effect = {
+                        text = {
+                            add_temporary_buff_to_units = {
+                                combat_offense = [CHEM_OFFENSE]
+                                combat_breakthrough = [CHEM_BREAKTHROUGH]
+                                combat_defense = [CHEM_DEFENSE]
+                                org_damage_multiplier = [CHEM_ORG_DAMAGE]
+                                str_damage_multiplier = [CHEM_STR_DAMAGE]
+                                war_support_reduction_on_damage = [CHEM_WAR_SUPPORT]
+                                days = [CHEM_DURATION_DAYS]
+                            }
+                        }
+                        CHEM_OFFENSE = "[?chem_offense]"
+                        CHEM_BREAKTHROUGH = "[?chem_breakthrough]"
+                        CHEM_DEFENSE = "[?chem_defense]"
+                        CHEM_ORG_DAMAGE = "[?chem_org_damage]"
+                        CHEM_STR_DAMAGE = "[?chem_str_damage]"
+                        CHEM_WAR_SUPPORT = "[?chem_war_support]"
+                        CHEM_DURATION_DAYS = "[?chem_duration_days]"
+                    }
+                }
+            }
+            set_temp_variable = { var = chem_consumed_amount value = 0 }
+            set_temp_variable = { var = chem_required_amount value = 0 }
+            hidden_effect = { chem_consume_mustard_cylinders = yes }
+            chem_warfare_register_attack_use = yes
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_MUSTARD_VALUE
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_MUSTARD
+            custom_effect_tooltip = CHEM_ABILITY_MUSTARD_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_MUSTARD_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_MUSTARD_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
+            custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
+            custom_effect_tooltip = CHEM_ABILITY_MUSTARD_WIND_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_MUSTARD_COMBINED_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
+            clr_unit_leader_flag = chem_ability_calculating
+        }
+
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > @CHEM_AI_CP_MUSTARD
+                    has_war_support > @CHEM_AI_WS_MUSTARD
+                }
+                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
+                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
+                add = @CHEM_AI_PRESSURE_ADD_HIGH
+            }
+            modifier = {
+                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_LOW }
+                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
+                add = @CHEM_AI_PRESSURE_ADD_MED
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@forest > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@jungle > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@marsh > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
+                }
+                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = @CHEM_AI_IDEOLOGY_FASCIST
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+            }
+            modifier = {
+                FROM = { tag = JAP }
+                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
+                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
+                add = @CHEM_AI_WIND_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
+                add = @CHEM_AI_WIND_AGAINST_ADD
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = @CHEM_AI_GAS_MASK_ADV_ADD
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_LOW
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_MED
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_HIGH
+            }
+        }
+    }
+
+    chemical_lewisite_attack = {
+        name = CHEM_ABILITY_LEWISITE_NAME
+        desc = CHEM_ABILITY_LEWISITE_DESC
+        icon = GFX_ability_lewisite_attack
+        sound_effect = chem_attack_lewisite_sound
+        type = army_leader
+
+        allowed = {
+            is_leading_army_group = no
+            is_border_war = no
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_LEWISITE_TECH_TT
+                OWNER = { has_tech = lewisite }
+            }
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_ALREADY_ACTIVE_TT
+                NOT = {
+                    OR = {
+                        has_trait = chemical_cylinder_active_chlorine
+                        has_trait = chemical_cylinder_active_phosgene
+                        has_trait = chemical_cylinder_active_mustard
+                        has_trait = chemical_cylinder_active_lewisite
+                    }
+                }
+            }
+        }
+
+        cost = @CHEM_COMMAND_POWER_LEWISITE_COST
+        duration = @CHEM_DURATION_HOURS
+		unit_modifiers = {
+			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
+			urban = {
+				attack = @CHEM_UNIT_URBAN_ATTACK
+			}
+		}
+
+        one_time_effect = {
+            add_timed_unit_leader_trait = {
+                trait = chemical_cylinder_active_lewisite
+                days = @CHEM_DURATION_DAYS
+            }
+            set_unit_leader_flag = chem_ability_calculating
+            set_variable = { var = chem_active_type value = @CHEM_TYPE_LEWISITE }
+            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_LEWISITE }
+            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_LEWISITE }
+
+            if = {
+                limit = { NOT = { has_variable = chem_offense_total_lewisite } }
+                chem_update_lewisite_preview = yes
+            }
+            set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
+            hidden_effect = {
+                chem_use_wind_forecast = yes
+                chem_apply_wind_miscalculation = yes
+            }
+            chem_set_final_lewisite_effects = yes
+            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+            if = {
+                limit = { has_unit_leader_flag = chem_ability_calculating }
+                hidden_effect = {
+                    meta_effect = {
+                        text = {
+                            add_temporary_buff_to_units = {
+                                combat_offense = [CHEM_OFFENSE]
+                                combat_breakthrough = [CHEM_BREAKTHROUGH]
+                                combat_defense = [CHEM_DEFENSE]
+                                org_damage_multiplier = [CHEM_ORG_DAMAGE]
+                                str_damage_multiplier = [CHEM_STR_DAMAGE]
+                                war_support_reduction_on_damage = [CHEM_WAR_SUPPORT]
+                                days = [CHEM_DURATION_DAYS]
+                            }
+                        }
+                        CHEM_OFFENSE = "[?chem_offense]"
+                        CHEM_BREAKTHROUGH = "[?chem_breakthrough]"
+                        CHEM_DEFENSE = "[?chem_defense]"
+                        CHEM_ORG_DAMAGE = "[?chem_org_damage]"
+                        CHEM_STR_DAMAGE = "[?chem_str_damage]"
+                        CHEM_WAR_SUPPORT = "[?chem_war_support]"
+                        CHEM_DURATION_DAYS = "[?chem_duration_days]"
+                    }
+                }
+            }
+            set_temp_variable = { var = chem_consumed_amount value = 0 }
+            set_temp_variable = { var = chem_required_amount value = 0 }
+            hidden_effect = { chem_consume_lewisite_cylinders = yes }
+            chem_warfare_register_attack_use = yes
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_LEWISITE_VALUE
+            custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_LEWISITE
+            custom_effect_tooltip = CHEM_ABILITY_LEWISITE_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_LEWISITE_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_LEWISITE_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
+            custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
+            custom_effect_tooltip = CHEM_ABILITY_LEWISITE_WIND_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_LEWISITE_COMBINED_EFFECTS_TT
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
+            clr_unit_leader_flag = chem_ability_calculating
+        }
+
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > @CHEM_AI_CP_LEWISITE
+                    has_war_support > @CHEM_AI_WS_LEWISITE
+                }
+                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_HIGH }
+                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
+                add = @CHEM_AI_PRESSURE_ADD_HIGH
+            }
+            modifier = {
+                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
+                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
+                add = @CHEM_AI_PRESSURE_ADD_MED
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@hills > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@mountain > @CHEM_AI_TERRAIN_PRESSURE }
+                }
+                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
+                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = @CHEM_AI_IDEOLOGY_FASCIST
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+            }
+            modifier = {
+                FROM = { tag = JAP }
+                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
+                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
+                add = @CHEM_AI_WIND_FAVOR_ADD
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
+                add = @CHEM_AI_WIND_AGAINST_ADD
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = @CHEM_AI_GAS_MASK_ADV_ADD
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_LOW
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_MED
+            }
+            modifier = {
+                FROM = {
+                    any_enemy_country = {
+                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                    }
+                }
+                add = @CHEM_AI_RETALIATE_ADD_HIGH
+            }
+        }
+    }
+}

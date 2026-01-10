@@ -1,0 +1,119 @@
+@CHEM_DOOM_DECISION_PP_COST = 100
+@CHEM_DOOM_DECISION_COOLDOWN_DAYS = 14
+@CHEM_DOOM_DECISION_SURRENDER_THRESHOLD = 0.8
+
+@CHEM_DOOM_AI_BASE = 0
+@CHEM_DOOM_AI_ADD_BASE = 5
+@CHEM_DOOM_AI_ADD_HIGH_MORALE = 25
+@CHEM_DOOM_AI_STABILITY_THRESHOLD = 0.60
+@CHEM_DOOM_AI_WAR_SUPPORT_THRESHOLD = 0.60
+@CHEM_DOOM_AI_STOCKPILE_THRESHOLD = 2500
+@CHEM_DOOM_AI_ADD_BIG_STOCKPILE = 15
+
+@BIO_DOOM_AI_BASE = 0
+@BIO_DOOM_AI_ADD_BASE = 5
+@BIO_DOOM_AI_ADD_HIGH_MORALE = 25
+@BIO_DOOM_AI_STABILITY_THRESHOLD = 0.60
+@BIO_DOOM_AI_WAR_SUPPORT_THRESHOLD = 0.60
+@BIO_DOOM_AI_STOCKPILE_THRESHOLD = 250
+@BIO_DOOM_AI_ADD_BIG_STOCKPILE = 15
+
+chaosx_cbw_doom_category = {
+	chem_unleash_stockpiled_cylinders = {
+		icon = GFX_decision_chaos_doom
+		cost = @CHEM_DOOM_DECISION_PP_COST
+		days_re_enable = @CHEM_DOOM_DECISION_COOLDOWN_DAYS
+
+		available = {
+			has_government = fascism
+			has_war = yes
+			NOT = { has_capitulated = yes }
+			surrender_progress > @CHEM_DOOM_DECISION_SURRENDER_THRESHOLD
+			OR = {
+				has_equipment = { chemical_chlorine_payload_cylinder_1 > 0 }
+				has_equipment = { chemical_phosgene_payload_cylinder_1 > 0 }
+				has_equipment = { chemical_mustard_payload_cylinder_1 > 0 }
+				has_equipment = { chemical_lewisite_payload_cylinder_1 > 0 }
+			}
+		}
+
+		ai_will_do = {
+			base = @CHEM_DOOM_AI_BASE
+			modifier = {
+				add = @CHEM_DOOM_AI_ADD_BASE
+				is_ai = yes
+			}
+			modifier = {
+				add = @CHEM_DOOM_AI_ADD_HIGH_MORALE
+				check_variable = { stability > @CHEM_DOOM_AI_STABILITY_THRESHOLD }
+				check_variable = { war_support > @CHEM_DOOM_AI_WAR_SUPPORT_THRESHOLD }
+			}
+			modifier = {
+				add = @CHEM_DOOM_AI_ADD_BIG_STOCKPILE
+				OR = {
+					has_equipment = { chemical_chlorine_payload_cylinder_1 > @CHEM_DOOM_AI_STOCKPILE_THRESHOLD }
+					has_equipment = { chemical_phosgene_payload_cylinder_1 > @CHEM_DOOM_AI_STOCKPILE_THRESHOLD }
+					has_equipment = { chemical_mustard_payload_cylinder_1 > @CHEM_DOOM_AI_STOCKPILE_THRESHOLD }
+					has_equipment = { chemical_lewisite_payload_cylinder_1 > @CHEM_DOOM_AI_STOCKPILE_THRESHOLD }
+				}
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = chem_unleash_stockpiled_cylinders_tt
+			hidden_effect = {
+				chem_unleash_stockpile_doomsday = yes
+			}
+			news_event = { id = chaosx_cbw_doom.1 }
+		}
+	}
+
+	bio_unleash_stockpiled_pathogens = {
+		icon = GFX_decision_chaos_doom
+		cost = @CHEM_DOOM_DECISION_PP_COST
+		days_re_enable = @CHEM_DOOM_DECISION_COOLDOWN_DAYS
+
+		available = {
+			has_government = fascism
+			has_war = yes
+			NOT = { has_capitulated = yes }
+			surrender_progress > @CHEM_DOOM_DECISION_SURRENDER_THRESHOLD
+			OR = {
+				has_equipment = { anthrax_bomb_1 > 0 }
+				has_equipment = { plague_bomb_1 > 0 }
+				has_equipment = { tularemia_bomb_1 > 0 }
+				has_equipment = { smallpox_bomb_1 > 0 }
+			}
+		}
+
+		ai_will_do = {
+			base = @BIO_DOOM_AI_BASE
+			modifier = {
+				add = @BIO_DOOM_AI_ADD_BASE
+				is_ai = yes
+			}
+			modifier = {
+				add = @BIO_DOOM_AI_ADD_HIGH_MORALE
+				check_variable = { stability > @BIO_DOOM_AI_STABILITY_THRESHOLD }
+				check_variable = { war_support > @BIO_DOOM_AI_WAR_SUPPORT_THRESHOLD }
+			}
+			modifier = {
+				add = @BIO_DOOM_AI_ADD_BIG_STOCKPILE
+				OR = {
+					has_equipment = { anthrax_bomb_1 > @BIO_DOOM_AI_STOCKPILE_THRESHOLD }
+					has_equipment = { plague_bomb_1 > @BIO_DOOM_AI_STOCKPILE_THRESHOLD }
+					has_equipment = { tularemia_bomb_1 > @BIO_DOOM_AI_STOCKPILE_THRESHOLD }
+					has_equipment = { smallpox_bomb_1 > @BIO_DOOM_AI_STOCKPILE_THRESHOLD }
+				}
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = bio_unleash_stockpiled_pathogens_tt
+			hidden_effect = {
+				bio_unleash_stockpile_doomsday = yes
+			}
+			news_event = { id = chaosx_cbw_doom.2 }
+		}
+	}
+}

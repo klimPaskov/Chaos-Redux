@@ -1,0 +1,67 @@
+# Generic chemical warfare scripted effects.
+#
+# chem_warfare_register_attack_use
+# -------------------------------
+# Behavior:
+# - Computes a condemnation increment based on supplied potency and consumption inputs.
+# - Adds the result to OWNER.chem_warfare_condemnation (creates it if missing).
+#
+# Inputs (set by caller before invoking):
+# - chem_condemnation_base (temp variable): flat condemnation per use (default 0 if missing).
+# - chem_condemnation_per_unit (temp variable): condemnation per unit consumed (default 0 if missing).
+# - Consumption path A:
+#     - chem_consumed_amount (temp variable): exact consumable units used (shells, cylinders, rounds).
+# - Consumption path B:
+#     - chem_required_amount (temp variable): full requirement for a full-strength attack.
+#     - chem_attack_scale (temp variable, 0–1): preferred scale for requirement-based usage.
+#     - chem_ratio_loc (temp variable, 0–1): fallback scale if chem_attack_scale is not set.
+#
+# Output:
+# - OWNER.chem_warfare_condemnation (country variable) increases by:
+#     chem_condemnation_base + (consumed_or_scaled_requirement * chem_condemnation_per_unit)
+#
+# Scope requirement:
+# - OWNER must be the attacking country. Wrap the call if needed.
+
+chem_warfare_register_attack_use = {
+	if = {
+		limit = { NOT = { has_variable = chem_condemnation_base } }
+		set_temp_variable = { var = chem_condemnation_base value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = chem_condemnation_per_unit } }
+		set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
+	}
+	set_temp_variable = { var = chem_condemnation_add value = chem_condemnation_base }
+
+	if = {
+		limit = { has_variable = chem_consumed_amount }
+		set_temp_variable = { var = chem_condemnation_scale value = chem_consumed_amount }
+	}
+	else_if = {
+		limit = { has_variable = chem_required_amount }
+		set_temp_variable = { var = chem_condemnation_scale value = chem_required_amount }
+		if = {
+			limit = { has_variable = chem_attack_scale }
+			multiply_temp_variable = { var = chem_condemnation_scale value = chem_attack_scale }
+		}
+		else_if = {
+			limit = { has_variable = chem_ratio_loc }
+			multiply_temp_variable = { var = chem_condemnation_scale value = chem_ratio_loc }
+		}
+	}
+	else = {
+		set_temp_variable = { var = chem_condemnation_scale value = 0 }
+	}
+
+	multiply_temp_variable = { var = chem_condemnation_scale value = chem_condemnation_per_unit }
+	add_to_temp_variable = { var = chem_condemnation_add value = chem_condemnation_scale }
+
+	OWNER = {
+		if = {
+			limit = { NOT = { has_variable = chem_warfare_condemnation } }
+			set_variable = { chem_warfare_condemnation = 0 }
+		}
+		add_to_variable = { chem_warfare_condemnation = chem_condemnation_add }
+	}
+}

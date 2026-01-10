@@ -1,0 +1,417 @@
+# AI strategy: chemical warfare tech research guidance.
+
+@CHEM_AI_RESEARCH_CONDEMNATION_LOW = 2
+@CHEM_AI_RESEARCH_CONDEMNATION_MED = 5
+@CHEM_AI_RESEARCH_CONDEMNATION_HIGH = 10
+
+@CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_BASE = 10
+@CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_LOW = 50
+@CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_MED = 100
+@CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_HIGH = 200
+
+@CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_BASE = 5
+@CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_LOW = 40
+@CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_MED = 80
+@CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_HIGH = 160
+
+@CHEM_AI_RESEARCH_WEIGHT_AGENTS_BASE = 0
+@CHEM_AI_RESEARCH_WEIGHT_AGENTS_LOW = 40
+@CHEM_AI_RESEARCH_WEIGHT_AGENTS_MED = 80
+@CHEM_AI_RESEARCH_WEIGHT_AGENTS_HIGH = 160
+
+@CHEM_AI_RESEARCH_WEIGHT_JAPAN_BASE = 20
+@CHEM_AI_RESEARCH_WEIGHT_JAPAN_THREAT = 120
+
+@CHEM_AI_RESEARCH_FORCE_POSITIVE = 100
+
+chem_research_gas_masks_major_base = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_BASE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_BASE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_BASE
+	}
+}
+
+chem_research_gas_masks_major_threat_weight_low = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_LOW compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_LOW
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_LOW
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_LOW
+	}
+}
+
+chem_research_gas_masks_major_threat_weight_med = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_MED compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_MED
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_MED
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_MED
+	}
+}
+
+chem_research_gas_masks_major_threat_weight_high = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_HIGH compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_HIGH
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_HIGH
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_gas_masks
+		value = @CHEM_AI_RESEARCH_WEIGHT_GAS_MASKS_HIGH
+	}
+}
+
+chem_research_gas_masks_major_threat_force_basic = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		NOT = { has_tech = basic_gas_masks }
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_MED compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = basic_gas_masks
+		value = @CHEM_AI_RESEARCH_FORCE_POSITIVE
+	}
+}
+
+chem_research_gas_masks_major_threat_force_improved = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = basic_gas_masks
+		NOT = { has_tech = improved_gas_masks }
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_HIGH compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = improved_gas_masks
+		value = @CHEM_AI_RESEARCH_FORCE_POSITIVE
+	}
+}
+
+chem_research_gas_masks_major_threat_force_advanced = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = improved_gas_masks
+		NOT = { has_tech = advanced_gas_masks }
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_HIGH compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = advanced_gas_masks
+		value = @CHEM_AI_RESEARCH_FORCE_POSITIVE
+	}
+}
+
+chem_research_wind_detection_major_base = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = portable_anemometer
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_BASE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = meteorological_stations
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_BASE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = upper_air_soundings
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_BASE
+	}
+}
+
+chem_research_wind_detection_major_threat_weight_low = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_LOW compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = portable_anemometer
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_LOW
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = meteorological_stations
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_LOW
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = upper_air_soundings
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_LOW
+	}
+}
+
+chem_research_wind_detection_major_threat_weight_med = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_MED compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = portable_anemometer
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_MED
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = meteorological_stations
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_MED
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = upper_air_soundings
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_MED
+	}
+}
+
+chem_research_wind_detection_major_threat_weight_high = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_HIGH compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = portable_anemometer
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_HIGH
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = meteorological_stations
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_HIGH
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = upper_air_soundings
+		value = @CHEM_AI_RESEARCH_WEIGHT_WIND_DETECTION_HIGH
+	}
+}
+
+# Agent research focus: keep majors on 1-2 historically plausible agents.
+
+chem_research_agents_major_phosgene_focus = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_LOW compare = greater_than }
+		}
+		OR = {
+			tag = GER
+			tag = ENG
+			tag = FRA
+			tag = SOV
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = phosgene
+		value = @CHEM_AI_RESEARCH_WEIGHT_AGENTS_LOW
+	}
+}
+
+chem_research_agents_major_mustard_focus = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_LOW compare = greater_than }
+		}
+		OR = {
+			tag = GER
+			tag = ENG
+			tag = FRA
+			tag = SOV
+			tag = ITA
+			tag = JAP
+			tag = USA
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CHEM_AI_RESEARCH_WEIGHT_AGENTS_LOW
+	}
+}
+
+chem_research_agents_usa_lewisite_focus = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		tag = USA
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_MED compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = lewisite
+		value = @CHEM_AI_RESEARCH_WEIGHT_AGENTS_MED
+	}
+}
+
+chem_research_agents_japan_priority = {
+	allowed = { original_tag = JAP }
+	enable = {
+		is_major = yes
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CHEM_AI_RESEARCH_WEIGHT_JAPAN_BASE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = portable_anemometer
+		value = @CHEM_AI_RESEARCH_WEIGHT_JAPAN_BASE
+	}
+}
+
+chem_research_agents_japan_threat_priority = {
+	allowed = { original_tag = JAP }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RESEARCH_CONDEMNATION_LOW compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = mustard_gas
+		value = @CHEM_AI_RESEARCH_WEIGHT_JAPAN_THREAT
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = portable_anemometer
+		value = @CHEM_AI_RESEARCH_WEIGHT_JAPAN_THREAT
+	}
+}

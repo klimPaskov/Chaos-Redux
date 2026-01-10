@@ -11,6 +11,7 @@
 7. [Configuration and Settings](#configuration-and-settings)
 8. [Multiplayer Compatibility](#multiplayer-compatibility)
 9. [Debug and Monitoring](#debug-and-monitoring)
+10. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
 
 ---
 
@@ -20,7 +21,7 @@
 
 Chaos Redux implements an adaptive event system that responds to player actions, world state, and previous events. The system uses weight-based probability, dynamic timing, and chaos-driven escalation to create an unpredictable and challenging experience.
 
-Complete event documentation: https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing
+Complete event documentation: <https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing>
 
 ### Core Principles
 
@@ -227,7 +228,7 @@ Related events can fire in sequence:
 - **Manual Triggering**: Direct event selection and firing
 - **Random Event**: Random selection with filters
 
-https://github.com/user-attachments/assets/c60e12a0-5fee-424d-8768-2b89a261ccfe
+<https://github.com/user-attachments/assets/c60e12a0-5fee-424d-8768-2b89a261ccfe>
 
 ### Timer System and Tag Management Settings
 
@@ -239,7 +240,7 @@ https://github.com/user-attachments/assets/c60e12a0-5fee-424d-8768-2b89a261ccfe
 - **Auto-Enable on Switch**: Automatically enable for new player countries
 - **Disable for the previous country**: Automatically disables the event system for the previous country on tag switch.
 
-https://github.com/user-attachments/assets/d23b0a7b-de94-4f8e-aedb-99ad13a3d887
+<https://github.com/user-attachments/assets/d23b0a7b-de94-4f8e-aedb-99ad13a3d887>
 
 ### Chaos Meter Configuration
 
@@ -247,7 +248,7 @@ https://github.com/user-attachments/assets/d23b0a7b-de94-4f8e-aedb-99ad13a3d887
 - **Tier Selection**: Jump to specific chaos tiers
 - **System Toggle**: Enable/disable chaos meter effects
 
-https://github.com/user-attachments/assets/83ccc354-9396-4341-bfe2-dc9a066ad1ab
+<https://github.com/user-attachments/assets/83ccc354-9396-4341-bfe2-dc9a066ad1ab>
 
 ### Advanced Settings
 
@@ -256,7 +257,7 @@ https://github.com/user-attachments/assets/83ccc354-9396-4341-bfe2-dc9a066ad1ab
 - **Major Event Weight**: 0-10000 weight per minor event (default: 150)
 - **Timer Modifiers**: 0.1x-2.0x chaos tier multipliers
 
-https://github.com/user-attachments/assets/cd4a3168-5f4f-47c8-96d0-e968a3007138
+<https://github.com/user-attachments/assets/cd4a3168-5f4f-47c8-96d0-e968a3007138>
 
 ---
 
@@ -355,3 +356,203 @@ Available through the settings interface:
   ======================================================
 
 ```
+
+---
+
+## Chemical and Biological Warfare
+
+Chaos Redux adds high-risk warfare tools that trade short-term battlefield power for long-term consequences. These systems reward preparation and timing, and they can backfire if used recklessly.
+
+<!-- IMAGE PLACEHOLDER: Chemical and biological warfare overview (UI entry points) -->
+
+### Chemical Warfare
+
+### Chemical Cylinder Abilities
+
+Chemical attacks appear as special abilities on your generals once you research them. Each chemical type has its own ability.
+
+What it is:
+
+- A short, controlled chemical release that boosts your army for a limited time.
+- Powered by command power and your stored chemical cylinders.
+
+How it works in play:
+
+- You activate the ability on a general.
+- It affects every division under that general for a set duration.
+- The ability’s power depends on how many cylinders you have available compared to how many your army needs.
+- While active, your troops become slower overall, but they fight better when attacking in cities for example.
+- Weather, terrain, and wind can change the result. Bad conditions can greatly reduce the value of the attack. You can research special wind techs to get more favorable wind forecasts.
+- You cannot chain different chemical abilities on the same general at the same time.
+
+What the player does:
+
+1. Research a chemical type.
+2. Produce and stockpile cylinders for that chemical.
+3. Choose the right general and timing, then activate the ability.
+4. Watch the forecast and battlefield conditions before committing.
+
+What changes in outcomes:
+
+- With good preparation and good conditions, chemical abilities can create breakthroughs.
+- With low stockpiles or bad conditions, the attack is much weaker and may cause heavy self-inflicted disruption.
+
+<!-- IMAGE PLACEHOLDER: Example chemical ability tooltip showing stockpile, forecast, and final effects -->
+
+#### Gas Masks and Protection
+
+Gas masks reduce how much your troops suffer from chemical attacks.
+
+How it works in play:
+
+- Better protection means fewer losses and less disruption during chemical fighting.
+- Protection is strongest when you have researched more advanced gas mask equipment.
+
+What the player does:
+
+- Research gas mask improvements if you plan to use chemicals often, or if you expect the enemy to do so.
+
+<!-- IMAGE PLACEHOLDER: Gas mask research and its effect on chemical attacks -->
+
+#### Wind Forecast (Weekly)
+
+Chemical attacks are heavily affected by wind. The game provides a wind forecast that updates each week.
+
+How it works in play:
+
+- Most of the time the wind is neutral and changes nothing.
+- Sometimes the wind is favorable and your chemical attack becomes stronger.
+- Sometimes the wind is against you and the attack becomes weaker and more harmful to your own troops.
+- There is also a small chance the forecast is wrong, causing an unpleasant surprise after you commit.
+
+What the player does:
+
+- Use wind detection research to improve the odds of favorable wind and reduce forecast mistakes.
+- Prefer using chemical attacks when the forecast is favorable and the terrain is suitable.
+
+<!-- IMAGE PLACEHOLDER: Wind forecast bar (Against / Neutral / Favorable / Strong) -->
+
+#### Frontline Contamination (Temporary State Effects)
+
+While a chemical ability is active, chemical contamination can build up in areas where your affected divisions are operating near the enemy.
+
+How it works in play:
+
+- Contamination builds gradually over the duration.
+- The longer you keep pressure up in the same region, the worse the contamination becomes.
+- Contamination affects everyone in the area, not just one side.
+
+What the player does:
+
+- Decide whether the short-term gains are worth making a region harder to fight in for everyone.
+
+<!-- IMAGE PLACEHOLDER: State modifier icon and a state view showing contamination effects -->
+
+#### Doomsday Protocols (Chemical Release)
+
+When a fascist country is close to capitulation, it can unlock a desperate last-resort decision to release its entire chemical stockpile at once.
+
+How it works in play:
+
+- It harms armies in all states you control, including allies and friendly troops present.
+- It leaves widespread contamination that can severely damage your ability to fight and supply your forces.
+- It consumes your entire stockpile.
+
+What the player does:
+
+- Use only as a last resort when collapse is imminent, and you want to trade long-term damage for one final chance. (or you are just mad)
+
+<!-- IMAGE PLACEHOLDER: Doomsday Protocol decision and its warning tooltip -->
+
+### Biological Warfare
+
+### Bioweapon Development (Special Projects)
+
+Bioweapons are developed through special research projects.
+
+- Completing a bioweapon project unlocks new bioweapon stockpiles you can build up.
+- Some development choices are safer but slower.
+- Riskier choices can speed things up, but can also cause serious accidents at home.
+
+<!-- IMAGE PLACEHOLDER: Biowarfare special projects screen -->
+
+#### Bioweapon Strikes (Raids)
+
+Once unlocked, bioweapons can be delivered through special strike missions.
+
+How it works in play:
+
+- You select a target and launch a strike if you have the required aircraft and bioweapon stockpiles.
+- A strike can fail, partially succeed, or succeed strongly.
+- Successful strikes contaminate the target area and can trigger international backlash.
+
+What the player does:
+
+- Use strikes to cripple key enemy regions, but plan for consequences and retaliation.
+
+<!-- IMAGE PLACEHOLDER: Bioweapon raid selection and target map -->
+
+#### Outbreaks and Spread
+
+Contamination is not always contained to one place.
+
+How it works in play:
+
+- Some bioweapons can spread from one area to neighboring areas over time.
+- Spread is more likely when conditions are chaotic and containment is weak.
+- The most dangerous diseases can escalate into large outbreaks if not contained.
+
+What the player does:
+
+- Treat bioweapons as more than a one-time strike: a successful hit can become an ongoing crisis.
+
+<!-- IMAGE PLACEHOLDER: Multiple neighboring states showing a spreading outbreak -->
+
+#### Countermeasures (Hospitals, Quarantine, Medicine, Vaccination)
+
+Biowarfare has dedicated defensive tools.
+
+How it works in play:
+
+- You can deploy emergency measures to reduce the damage of contamination.
+- Medical programs can reduce long-term harm and slow the spread.
+- Some threats require long-term national programs to fully remove.
+
+What the player does:
+
+- Use containment decisions quickly when an outbreak begins.
+- Maintain defensive programs if you expect repeated attacks.
+
+<!-- IMAGE PLACEHOLDER: Containment decisions (field hospitals, quarantine) and active effects -->
+
+#### Stockpile Accidents and Containment Safety
+
+Holding large bioweapon stockpiles is dangerous.
+
+How it works in play:
+
+- The more bioweapons you store, the higher the risk of accidents.
+- Accidents can cause outbreaks in your own territory.
+- Containment safety research reduces this risk, and the highest level can prevent stockpile accidents entirely.
+
+What the player does:
+
+- Balance “more stockpile” against “more risk”.
+- Invest in containment safety through research if you want large reserves.
+
+<!-- IMAGE PLACEHOLDER: Containment safety research and an example accident warning -->
+
+#### Doomsday Protocols (Biological Release)
+
+Like chemical warfare, biological warfare also has a last-resort “unleash everything” decision for desperate situations.
+
+How it works in play:
+
+- It consumes your entire bioweapon stockpile.
+- It causes immediate harm across your controlled territory and can trigger widespread outbreaks.
+
+What the player does:
+
+- Use only in extreme desperation when conventional defense is collapsing. (or you are completely mad)
+
+<!-- IMAGE PLACEHOLDER: Bioweapon doomsday decision and the resulting news popup -->
