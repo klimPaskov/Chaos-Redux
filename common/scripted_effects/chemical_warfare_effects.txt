@@ -23,6 +23,48 @@
 # Scope requirement:
 # - OWNER must be the attacking country. Wrap the call if needed.
 
+@CHEM_FIRST_USE_SURPRISE_DURATION_DAYS = 30
+
+chem_grant_first_use_surprise = {
+	if = {
+		limit = { NOT = { has_country_flag = chem_first_use_surprise_consumed } }
+		set_country_flag = chem_first_use_surprise_consumed
+		add_timed_idea = {
+			idea = chemical_first_use_surprise_idea
+			days = @CHEM_FIRST_USE_SURPRISE_DURATION_DAYS
+		}
+	}
+}
+
+chem_set_livens_integration_values = {
+	set_temp_variable = { var = chem_livens_cylinder_mult value = 1 }
+	set_temp_variable = { var = chem_livens_condemnation_mult value = 1 }
+	set_temp_variable = { var = chem_livens_state_dose_mult value = 1 }
+	set_temp_variable = { var = chem_livens_state_duration_mult value = 1 }
+
+	if = {
+		limit = { OWNER = { has_tech = advanced_livens_projector } }
+		set_temp_variable = { var = chem_livens_cylinder_mult value = constant:chem_livens.cylinder_mult.advanced }
+		set_temp_variable = { var = chem_livens_condemnation_mult value = constant:chem_livens.condemnation_mult.advanced }
+		set_temp_variable = { var = chem_livens_state_dose_mult value = constant:chem_livens.state_dose_mult.advanced }
+		set_temp_variable = { var = chem_livens_state_duration_mult value = constant:chem_livens.state_duration_mult.advanced }
+	}
+	else_if = {
+		limit = { OWNER = { has_tech = improved_livens_projector } }
+		set_temp_variable = { var = chem_livens_cylinder_mult value = constant:chem_livens.cylinder_mult.improved }
+		set_temp_variable = { var = chem_livens_condemnation_mult value = constant:chem_livens.condemnation_mult.improved }
+		set_temp_variable = { var = chem_livens_state_dose_mult value = constant:chem_livens.state_dose_mult.improved }
+		set_temp_variable = { var = chem_livens_state_duration_mult value = constant:chem_livens.state_duration_mult.improved }
+	}
+	else_if = {
+		limit = { OWNER = { has_tech = livens_projector_tech } }
+		set_temp_variable = { var = chem_livens_cylinder_mult value = constant:chem_livens.cylinder_mult.base }
+		set_temp_variable = { var = chem_livens_condemnation_mult value = constant:chem_livens.condemnation_mult.base }
+		set_temp_variable = { var = chem_livens_state_dose_mult value = constant:chem_livens.state_dose_mult.base }
+		set_temp_variable = { var = chem_livens_state_duration_mult value = constant:chem_livens.state_duration_mult.base }
+	}
+}
+
 chem_warfare_register_attack_use = {
 	if = {
 		limit = { NOT = { has_variable = chem_condemnation_base } }
@@ -56,6 +98,8 @@ chem_warfare_register_attack_use = {
 
 	multiply_temp_variable = { var = chem_condemnation_scale value = chem_condemnation_per_unit }
 	add_to_temp_variable = { var = chem_condemnation_add value = chem_condemnation_scale }
+	chem_set_livens_integration_values = yes
+	multiply_temp_variable = { var = chem_condemnation_add value = chem_livens_condemnation_mult }
 
 	OWNER = {
 		if = {
@@ -63,5 +107,272 @@ chem_warfare_register_attack_use = {
 			set_variable = { chem_warfare_condemnation = 0 }
 		}
 		add_to_variable = { chem_warfare_condemnation = chem_condemnation_add }
+		chem_apply_condemnation_diplomatic_consequences = yes
+	}
+}
+
+chem_register_livens_support_combat_condemnation_won = {
+	set_temp_variable = { var = chem_condemnation_base value = constant:chem_livens.combat_condemnation.won }
+	set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
+	set_temp_variable = { var = chem_consumed_amount value = 0 }
+	set_temp_variable = { var = chem_required_amount value = 0 }
+	chem_warfare_register_attack_use = yes
+}
+
+chem_register_livens_support_combat_condemnation_lost = {
+	set_temp_variable = { var = chem_condemnation_base value = constant:chem_livens.combat_condemnation.lost }
+	set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
+	set_temp_variable = { var = chem_consumed_amount value = 0 }
+	set_temp_variable = { var = chem_required_amount value = 0 }
+	chem_warfare_register_attack_use = yes
+}
+
+chem_apply_condemnation_diplomatic_consequences = {
+	if = {
+		limit = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_condemnation_diplomacy.threshold.low compare = greater_than }
+			NOT = { has_country_flag = chem_condemnation_diplomacy_low_applied }
+		}
+		set_country_flag = chem_condemnation_diplomacy_low_applied
+		every_other_country = {
+			limit = {
+				exists = yes
+				has_government = democratic
+				NOT = { is_subject_of = PREV }
+			}
+			add_opinion_modifier = {
+				target = PREV
+				modifier = chemical_warfare_condemnation_low
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_condemnation_diplomacy.threshold.med compare = greater_than }
+			NOT = { has_country_flag = chem_condemnation_diplomacy_med_applied }
+		}
+		set_country_flag = chem_condemnation_diplomacy_med_applied
+		every_other_country = {
+			limit = {
+				exists = yes
+				has_government = democratic
+				NOT = { is_subject_of = PREV }
+			}
+			add_opinion_modifier = {
+				target = PREV
+				modifier = chemical_warfare_condemnation_med
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_condemnation_diplomacy.threshold.high compare = greater_than }
+			NOT = { has_country_flag = chem_condemnation_diplomacy_high_applied }
+		}
+		set_country_flag = chem_condemnation_diplomacy_high_applied
+		every_other_country = {
+			limit = {
+				exists = yes
+				has_government = democratic
+				NOT = { is_subject_of = PREV }
+			}
+			add_opinion_modifier = {
+				target = PREV
+				modifier = chemical_warfare_condemnation_high
+			}
+			send_embargo = PREV
+		}
+	}
+}
+
+chem_warfare_register_attack_use_no_livens = {
+	if = {
+		limit = { NOT = { has_variable = chem_condemnation_base } }
+		set_temp_variable = { var = chem_condemnation_base value = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = chem_condemnation_per_unit } }
+		set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
+	}
+	set_temp_variable = { var = chem_condemnation_add value = chem_condemnation_base }
+
+	if = {
+		limit = { has_variable = chem_consumed_amount }
+		set_temp_variable = { var = chem_condemnation_scale value = chem_consumed_amount }
+	}
+	else_if = {
+		limit = { has_variable = chem_required_amount }
+		set_temp_variable = { var = chem_condemnation_scale value = chem_required_amount }
+		if = {
+			limit = { has_variable = chem_attack_scale }
+			multiply_temp_variable = { var = chem_condemnation_scale value = chem_attack_scale }
+		}
+		else_if = {
+			limit = { has_variable = chem_ratio_loc }
+			multiply_temp_variable = { var = chem_condemnation_scale value = chem_ratio_loc }
+		}
+	}
+	else = {
+		set_temp_variable = { var = chem_condemnation_scale value = 0 }
+	}
+
+	multiply_temp_variable = { var = chem_condemnation_scale value = chem_condemnation_per_unit }
+	add_to_temp_variable = { var = chem_condemnation_add value = chem_condemnation_scale }
+
+	if = {
+		limit = { NOT = { has_variable = chem_warfare_condemnation } }
+		set_variable = { chem_warfare_condemnation = 0 }
+	}
+	add_to_variable = { chem_warfare_condemnation = chem_condemnation_add }
+	chem_apply_condemnation_diplomatic_consequences = yes
+}
+
+chem_register_nerve_raid_condemnation_sarin = {
+	set_temp_variable = { var = chem_condemnation_base value = constant:chem_nerve_raid.condemnation_base.sarin }
+	set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_nerve_raid.condemnation_per_unit.sarin }
+	set_temp_variable = { var = chem_consumed_amount value = constant:chem_nerve_raid.consumed.sarin }
+	set_temp_variable = { var = chem_required_amount value = 0 }
+	chem_warfare_register_attack_use_no_livens = yes
+}
+
+chem_register_nerve_raid_condemnation_soman = {
+	set_temp_variable = { var = chem_condemnation_base value = constant:chem_nerve_raid.condemnation_base.soman }
+	set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_nerve_raid.condemnation_per_unit.soman }
+	set_temp_variable = { var = chem_consumed_amount value = constant:chem_nerve_raid.consumed.soman }
+	set_temp_variable = { var = chem_required_amount value = 0 }
+	chem_warfare_register_attack_use_no_livens = yes
+}
+
+chem_apply_nerve_raid_state_effect_sarin = {
+	set_temp_variable = { var = chem_dose_each value = constant:chem_nerve_raid.state_dose.sarin }
+	set_temp_variable = { var = chem_state_duration_add value = constant:chem_nerve_raid.state_duration_days.sarin }
+	chem_apply_state_contamination = yes
+}
+
+chem_apply_nerve_raid_state_effect_soman = {
+	set_temp_variable = { var = chem_dose_each value = constant:chem_nerve_raid.state_dose.soman }
+	set_temp_variable = { var = chem_state_duration_add value = constant:chem_nerve_raid.state_duration_days.soman }
+	chem_apply_state_contamination = yes
+}
+
+chem_apply_nerve_raid_unit_damage_sarin_limited = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.unit_org_damage.sarin }
+	set_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.unit_str_damage.sarin }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.outcome_mult.limited }
+	multiply_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.outcome_mult.limited }
+	var:victim_country = {
+		var:target_state = {
+			damage_units = {
+				province = var:ROOT.target_province
+				state = THIS
+				org_damage = chem_raid_org_damage
+				str_damage = chem_raid_str_damage
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
+	}
+}
+
+chem_apply_nerve_raid_unit_damage_sarin_success = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.unit_org_damage.sarin }
+	set_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.unit_str_damage.sarin }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.outcome_mult.success }
+	multiply_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.outcome_mult.success }
+	var:victim_country = {
+		var:target_state = {
+			damage_units = {
+				province = var:ROOT.target_province
+				state = THIS
+				org_damage = chem_raid_org_damage
+				str_damage = chem_raid_str_damage
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
+	}
+}
+
+chem_apply_nerve_raid_unit_damage_sarin_critical = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.unit_org_damage.sarin }
+	set_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.unit_str_damage.sarin }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.outcome_mult.critical }
+	multiply_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.outcome_mult.critical }
+	var:victim_country = {
+		var:target_state = {
+			damage_units = {
+				province = var:ROOT.target_province
+				state = THIS
+				org_damage = chem_raid_org_damage
+				str_damage = chem_raid_str_damage
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
+	}
+}
+
+chem_apply_nerve_raid_unit_damage_soman_limited = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.unit_org_damage.soman }
+	set_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.unit_str_damage.soman }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.outcome_mult.limited }
+	multiply_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.outcome_mult.limited }
+	var:victim_country = {
+		var:target_state = {
+			damage_units = {
+				province = var:ROOT.target_province
+				state = THIS
+				org_damage = chem_raid_org_damage
+				str_damage = chem_raid_str_damage
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
+	}
+}
+
+chem_apply_nerve_raid_unit_damage_soman_success = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.unit_org_damage.soman }
+	set_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.unit_str_damage.soman }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.outcome_mult.success }
+	multiply_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.outcome_mult.success }
+	var:victim_country = {
+		var:target_state = {
+			damage_units = {
+				province = var:ROOT.target_province
+				state = THIS
+				org_damage = chem_raid_org_damage
+				str_damage = chem_raid_str_damage
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
+	}
+}
+
+chem_apply_nerve_raid_unit_damage_soman_critical = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.unit_org_damage.soman }
+	set_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.unit_str_damage.soman }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_nerve_raid.outcome_mult.critical }
+	multiply_temp_variable = { var = chem_raid_str_damage value = constant:chem_nerve_raid.outcome_mult.critical }
+	var:victim_country = {
+		var:target_state = {
+			damage_units = {
+				province = var:ROOT.target_province
+				state = THIS
+				org_damage = chem_raid_org_damage
+				str_damage = chem_raid_str_damage
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
 	}
 }

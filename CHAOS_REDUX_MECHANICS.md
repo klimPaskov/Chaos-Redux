@@ -12,6 +12,7 @@
 8. [Multiplayer Compatibility](#multiplayer-compatibility)
 9. [Debug and Monitoring](#debug-and-monitoring)
 10. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
+11. [Chaos Warfare](#chaos-warfare)
 
 ---
 
@@ -27,7 +28,7 @@ Complete event documentation: <https://docs.google.com/spreadsheets/d/1A-N5TvU9E
 
 - **Dynamic Adaptation**: Event frequency and selection adapt to current world state
 - **Historical Memory**: System tracks all fired events and adjusts future probabilities
-- **Escalating Difficulty**: Higher chaos levels increase event frequency and severity
+- **Escalating Difficulty**: Higher chaos levels increase event frequency and severity (evolution)
 - **Player Agency**: Settings allow customization of system behavior
 
 ---
@@ -287,14 +288,6 @@ Comprehensive logging system tracks:
 - **Weight Tracking**: Current weights, caps, recovery status
 - **Chaos Monitoring**: Current level, recent changes, tier effects
 
-### Debug Commands
-
-Available through the settings interface:
-
-- **System Reset**: Return all settings to defaults
-- **Manual Event Firing**: Direct event triggering with bypass options
-- **Timer Testing**: Immediate timer recalculation and adjustment
-
 ### Diagnostic Information
 
 ```
@@ -367,6 +360,8 @@ Chaos Redux adds high-risk warfare tools that trade short-term battlefield power
 
 ### Chemical Warfare
 
+Standard chemical weapons are unlocked through research, and more advanced and special chemical weapons are developed through special research projects.
+
 ### Chemical Cylinder Abilities
 
 Chemical attacks appear as special abilities on your generals once you research them. Each chemical type has its own ability.
@@ -399,21 +394,6 @@ What changes in outcomes:
 
 <!-- IMAGE PLACEHOLDER: Example chemical ability tooltip showing stockpile, forecast, and final effects -->
 
-#### Gas Masks and Protection
-
-Gas masks reduce how much your troops suffer from chemical attacks.
-
-How it works in play:
-
-- Better protection means fewer losses and less disruption during chemical fighting.
-- Protection is strongest when you have researched more advanced gas mask equipment.
-
-What the player does:
-
-- Research gas mask improvements if you plan to use chemicals often, or if you expect the enemy to do so.
-
-<!-- IMAGE PLACEHOLDER: Gas mask research and its effect on chemical attacks -->
-
 #### Wind Forecast (Weekly)
 
 Chemical attacks are heavily affected by wind. The game provides a wind forecast that updates each week.
@@ -432,6 +412,11 @@ What the player does:
 
 <!-- IMAGE PLACEHOLDER: Wind forecast bar (Against / Neutral / Favorable / Strong) -->
 
+#### Weather
+
+- Colder conditions preserve effects longer.
+- Hotter conditions shorten persistence.
+
 #### Frontline Contamination (Temporary State Effects)
 
 While a chemical ability is active, chemical contamination can build up in areas where your affected divisions are operating near the enemy.
@@ -448,7 +433,52 @@ What the player does:
 
 <!-- IMAGE PLACEHOLDER: State modifier icon and a state view showing contamination effects -->
 
-#### Doomsday Protocols (Chemical Release)
+### Support Companies
+
+#### Tanks
+
+Chemical tank support companies and provide chemical battlefield pressure through tank-supported delivery.
+
+Each chemical tank support company needs:
+
+- normal tank chassis equipment (by its class),
+- matching chemical payload stock.
+
+#### Livens Projector
+
+Each Livens chemical support company needs:
+
+- Livens projector equipment,
+- matching chemical payload stock.
+
+#### Contamination
+
+Support companies can contribute to contamination when they are actively participating in combat. They are also weather-sensitive.
+
+#### Diplomacy and Condemnation
+
+Using chemical supports in combat increases international condemnation.
+
+Heavy repeated use can trigger escalating diplomatic fallout.
+
+### Chemical Planes
+
+You can apply chemical air bomb modules to your planes. The planes behave as CAS, but cause more damage and add contamination to states.
+This is under-development content.
+
+### Raids
+
+You can create raids with chemical weapons, similar to nuke raids.
+
+### Gas Masks and Protection
+
+Gas masks reduce how much your troops suffer from chemical attacks. Better protection means fewer losses and less disruption during chemical fighting.
+Research gas mask improvements if you plan to use chemicals often, or if you expect the enemy to do so.
+There's also dimercaprol, which reduces the effects of blister agents.
+
+<!-- IMAGE PLACEHOLDER: Gas mask research and its effect on chemical attacks -->
+
+### Doomsday Protocols (Chemical Release)
 
 When a fascist country is close to capitulation, it can unlock a desperate last-resort decision to release its entire chemical stockpile at once.
 
@@ -460,13 +490,11 @@ How it works in play:
 
 What the player does:
 
-- Use only as a last resort when collapse is imminent, and you want to trade long-term damage for one final chance. (or you are just mad)
+- Use only as a last resort when collapse is imminent, and you want to trade long-term damage for one final chance. (or you are just a madman)
 
 <!-- IMAGE PLACEHOLDER: Doomsday Protocol decision and its warning tooltip -->
 
 ### Biological Warfare
-
-### Bioweapon Development (Special Projects)
 
 Bioweapons are developed through special research projects.
 
@@ -476,23 +504,23 @@ Bioweapons are developed through special research projects.
 
 <!-- IMAGE PLACEHOLDER: Biowarfare special projects screen -->
 
-#### Bioweapon Strikes (Raids)
+### Bioweapon Strikes (Raids)
 
 Once unlocked, bioweapons can be delivered through special strike missions.
 
 How it works in play:
 
 - You select a target and launch a strike if you have the required aircraft and bioweapon stockpiles.
-- A strike can fail, partially succeed, or succeed strongly.
+- A strike can fail, partially succeed, or succeed.
 - Successful strikes contaminate the target area and can trigger international backlash.
 
 What the player does:
 
-- Use strikes to cripple key enemy regions, but plan for consequences and retaliation.
+- Use strikes to cripple key enemy regions and war effort (or mostly just kill population), but plan for consequences and retaliation.
 
 <!-- IMAGE PLACEHOLDER: Bioweapon raid selection and target map -->
 
-#### Outbreaks and Spread
+### Outbreaks and Spread
 
 Contamination is not always contained to one place.
 
@@ -542,7 +570,7 @@ What the player does:
 
 <!-- IMAGE PLACEHOLDER: Containment safety research and an example accident warning -->
 
-#### Doomsday Protocols (Biological Release)
+### Doomsday Protocols (Biological Release)
 
 Like chemical warfare, biological warfare also has a last-resort “unleash everything” decision for desperate situations.
 
@@ -553,6 +581,12 @@ How it works in play:
 
 What the player does:
 
-- Use only in extreme desperation when conventional defense is collapsing. (or you are completely mad)
+- Use only in extreme desperation when conventional defense is collapsing. (or you are a complete madman)
 
 <!-- IMAGE PLACEHOLDER: Bioweapon doomsday decision and the resulting news popup -->
+
+---
+
+## Chaos Warfare
+
+Placeholder

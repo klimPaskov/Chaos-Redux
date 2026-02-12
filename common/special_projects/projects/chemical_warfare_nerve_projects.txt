@@ -1,0 +1,217 @@
+# Chemical warfare nerve-agent special projects. These projects unlock sarin and soman through facilities once tabun is researched.
+
+sp_cw_sarin_program = {
+    specialization = specialization_cw
+    icon = GFX_sp_cw_sarin_program
+
+    allowed = { }
+
+    available = {
+        FROM = { has_tech = tabun }
+    }
+
+    visible = { }
+
+    breakthrough_cost = {
+        specialization_cw = 1
+    }
+
+    prototype_time = sp_time.prototype.short
+
+    resource_cost = {
+        resources = {
+            steel = 2
+            tungsten = 2
+            rubber = 2
+        }
+    }
+
+    complexity = sp_complexity.medium
+
+    ai_will_do = {
+        base = 1
+        modifier = {
+            factor = 2
+            FROM = { is_major = yes }
+        }
+        modifier = {
+            factor = 1.5
+            FROM = { has_war = yes }
+        }
+    }
+
+    project_output = {
+        country_effects = {
+            set_technology = {
+                sarin = 1
+                popup = no
+            }
+            custom_effect_tooltip = sarin_unlocked_tooltip
+        }
+    }
+
+    unique_prototype_rewards = {
+        sp_cw_sarin_reward_safety_review = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 20
+                max = 80
+            }
+
+            weight = {
+                base = 1000
+            }
+
+            option = {
+                token = sp_cw_sarin_reward_safety_review_careful
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = sp_cw_sarin_reward_safety_review_careful_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.low
+                        }
+                    }
+                }
+            }
+
+            option = {
+                token = sp_cw_sarin_reward_safety_review_risky
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = sp_cw_sarin_reward_safety_review_risky_tt
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.gain.low
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    generic_prototype_rewards = {
+        sp_cw_generic_reward_scientist_xp
+        sp_cw_generic_reward_major_progress
+        sp_cw_generic_reward_breakthrough
+        sp_cw_generic_reward_chemistry_insights
+        sp_cw_generic_reward_test_failure
+        sp_cw_generic_reward_resource_scarcity
+    }
+}
+
+sp_cw_soman_program = {
+    specialization = specialization_cw
+    icon = GFX_sp_cw_soman_program
+
+    allowed = { }
+
+    available = {
+        FROM = {
+            has_tech = tabun
+            has_tech = sarin
+        }
+    }
+
+    visible = { }
+
+    special_project_parent = {
+        sp_cw_sarin_program
+    }
+
+    breakthrough_cost = {
+        specialization_cw = 2
+    }
+
+    prototype_time = sp_time.prototype.medium
+
+    resource_cost = {
+        resources = {
+            steel = 3
+            tungsten = 3
+            chromium = 2
+            rubber = 2
+        }
+    }
+
+    complexity = sp_complexity.large
+
+    ai_will_do = {
+        base = 1
+        modifier = {
+            factor = 2
+            FROM = { is_major = yes }
+        }
+        modifier = {
+            factor = 1.5
+            FROM = { has_war = yes }
+        }
+    }
+
+    project_output = {
+        country_effects = {
+            set_technology = {
+                soman = 1
+                popup = no
+            }
+            custom_effect_tooltip = soman_unlocked_tooltip
+        }
+    }
+
+    unique_prototype_rewards = {
+        sp_cw_soman_reward_stabilization = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
+
+            fire_only_once = yes
+
+            threshold = {
+                min = 25
+                max = 90
+            }
+
+            weight = {
+                base = 1000
+            }
+
+            option = {
+                token = sp_cw_soman_reward_stabilization_careful
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = sp_cw_soman_reward_stabilization_careful_tt
+                        add_stability = 0.01
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.loss.low
+                        }
+                    }
+                }
+            }
+
+            option = {
+                token = sp_cw_soman_reward_stabilization_aggressive
+
+                iteration_output = {
+                    country_effects = {
+                        custom_effect_tooltip = sp_cw_soman_reward_stabilization_aggressive_tt
+                        add_stability = -0.01
+                        FROM = {
+                            add_project_progress_ratio = constant:sp_progress.gain.low
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    generic_prototype_rewards = {
+        sp_cw_generic_reward_scientist_xp
+        sp_cw_generic_reward_major_progress
+        sp_cw_generic_reward_breakthrough
+        sp_cw_generic_reward_chemistry_insights
+        sp_cw_generic_reward_test_failure
+        sp_cw_generic_reward_resource_scarcity
+    }
+}

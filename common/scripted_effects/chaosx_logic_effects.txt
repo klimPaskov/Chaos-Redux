@@ -15,36 +15,7 @@
 # ============================================================================
 # CONSTANTS
 # ============================================================================
-
-# Timer System Defaults
-@DEFAULT_MIN_DAYS = 45
-@DEFAULT_MAX_DAYS = 60
-@DEFAULT_MIN_DECREMENT_CAP = 15
-@DEFAULT_MAX_DECREMENT_CAP = 5
-@DEFAULT_EVENT_WEIGHT = 1000
-@DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR = 150
-@DEFAULT_REDUCE_CAP_FACTOR = 0.5
-@DEFAULT_RECOVERY_RATE = 20
-
-# Chaos Timer Modifiers
-@DEFAULT_CHAOS_MODIFIER_CALM = 1.0
-@DEFAULT_CHAOS_MODIFIER_GATHERING = 0.8
-@DEFAULT_CHAOS_MODIFIER_RISING = 0.7
-@DEFAULT_CHAOS_MODIFIER_CHAOS = 0.6
-@DEFAULT_CHAOS_MODIFIER_CRITICAL = 0.5
-@DEFAULT_CHAOS_MODIFIER_COLLAPSE = 0.5
-
-# Event Types
-@EVENT_TYPE_UNKNOWN = 0
-@EVENT_TYPE_MAJOR = 1
-@EVENT_TYPE_MINOR_REPEATABLE = 2
-@EVENT_TYPE_MINOR_FIRE_ONCE = 3
-
-# Timer Limits
-@MIN_TIMER_DAYS = 2
-@MAX_TIMER_RANDOM_START = 30
-@MIN_TIMER_RANDOM_START = 7
-@MINOR_EVENT_TIMER_INCREMENT = 3
+# Centralized in `common/script_constants/event_system_constants.txt`.
 
 
 # ============================================================================
@@ -62,10 +33,10 @@ initialize_event_system = {
     clear_array = global.repeatable_events
     clear_array = global.all_events
 
-    set_variable = { global.default_event_weight = @DEFAULT_EVENT_WEIGHT }
-    set_variable = { global.minor_event_recovery_rate = @DEFAULT_RECOVERY_RATE }
-    set_variable = { global.major_event_weight_per_minor = @DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR }
-    set_variable = { global.reduce_cap_factor = @DEFAULT_REDUCE_CAP_FACTOR }
+    set_variable = { global.default_event_weight = constant:event_system_defaults.event_weight }
+    set_variable = { global.minor_event_recovery_rate = constant:event_system_defaults.recovery_rate }
+    set_variable = { global.major_event_weight_per_minor = constant:event_system_defaults.major_event_weight_per_minor }
+    set_variable = { global.reduce_cap_factor = constant:event_system_defaults.reduce_cap_factor }
 
     set_variable = { global.minor_events_since_major = 0 }
     set_variable = { global.last_fired_event_id = -1 }
@@ -73,12 +44,12 @@ initialize_event_system = {
     set_variable = { global.debug_log_count = 0 }
     set_variable = { global.total_events = 0 }
 
-    set_variable = { global.chaos_timer_modifier_calm = @DEFAULT_CHAOS_MODIFIER_CALM }
-    set_variable = { global.chaos_timer_modifier_gathering = @DEFAULT_CHAOS_MODIFIER_GATHERING }
-    set_variable = { global.chaos_timer_modifier_rising = @DEFAULT_CHAOS_MODIFIER_RISING }
-    set_variable = { global.chaos_timer_modifier_chaos = @DEFAULT_CHAOS_MODIFIER_CHAOS }
-    set_variable = { global.chaos_timer_modifier_critical = @DEFAULT_CHAOS_MODIFIER_CRITICAL }
-    set_variable = { global.chaos_timer_modifier_collapse = @DEFAULT_CHAOS_MODIFIER_COLLAPSE }
+    set_variable = { global.chaos_timer_modifier_calm = constant:event_system_timer_modifier_default.calm }
+    set_variable = { global.chaos_timer_modifier_gathering = constant:event_system_timer_modifier_default.gathering }
+    set_variable = { global.chaos_timer_modifier_rising = constant:event_system_timer_modifier_default.rising }
+    set_variable = { global.chaos_timer_modifier_chaos = constant:event_system_timer_modifier_default.chaos }
+    set_variable = { global.chaos_timer_modifier_critical = constant:event_system_timer_modifier_default.critical }
+    set_variable = { global.chaos_timer_modifier_collapse = constant:event_system_timer_modifier_default.collapse }
     set_variable = { global.chaos_timer_modifier = 1.0 }
 
     initialize_event_categories = yes
@@ -94,10 +65,10 @@ initialize_event_system = {
 }
 
 initialize_dynamic_timer = {
-    set_variable = { timer_min_days = @DEFAULT_MIN_DAYS }
-    set_variable = { timer_max_days = @DEFAULT_MAX_DAYS }
-    set_variable = { timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
-    set_variable = { timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
+    set_variable = { timer_min_days = constant:event_system_timer_defaults.min_days }
+    set_variable = { timer_max_days = constant:event_system_timer_defaults.max_days }
+    set_variable = { timer_min_decrement_cap = constant:event_system_timer_defaults.min_decrement_cap }
+    set_variable = { timer_max_decrement_cap = constant:event_system_timer_defaults.max_decrement_cap }
     set_variable = { timer_day_decrement = 0 }
     set_variable = { timer_max_cap_reduction = 0 }
 }
@@ -319,7 +290,7 @@ calculate_next_timer_value = {
 
     clamp_variable = {
         var = event_timer_days
-        min = @MIN_TIMER_DAYS
+        min = constant:event_system_timer_defaults.minimum_days
     }
 }
 
@@ -332,7 +303,7 @@ on_minor_event_timer_update = {
     }
 
     set_temp_variable = { temp_check = global.minor_events_since_major }
-    modulo_temp_variable = { temp_check = @MINOR_EVENT_TIMER_INCREMENT }
+    modulo_temp_variable = { temp_check = constant:event_system_timer_defaults.minor_event_timer_increment }
 
     if = {
         limit = {
@@ -766,7 +737,7 @@ count_total_events_plus_one = {
 get_event_type = {
     # Input: temp variable event_id
     # Output: temp variable event_type (0=unknown, 1=major, 2=minor_repeatable, 3=minor_fire_once)
-    set_temp_variable = { event_type = @EVENT_TYPE_UNKNOWN }
+    set_temp_variable = { event_type = constant:event_system_event_type.unknown }
 
     for_loop_effect = {
         start = 0
@@ -774,32 +745,32 @@ get_event_type = {
         value = i
         if = {
             limit = { check_variable = { event_id = global.major_events^i } }
-            set_temp_variable = { event_type = @EVENT_TYPE_MAJOR }
+            set_temp_variable = { event_type = constant:event_system_event_type.major }
         }
     }
 
     if = {
-        limit = { check_variable = { event_type = @EVENT_TYPE_UNKNOWN } }
+        limit = { check_variable = { event_type = constant:event_system_event_type.unknown } }
         for_loop_effect = {
             start = 0
             end = global.repeatable_events^num
             value = i
             if = {
                 limit = { check_variable = { event_id = global.repeatable_events^i } }
-                set_temp_variable = { event_type = @EVENT_TYPE_MINOR_REPEATABLE }
+                set_temp_variable = { event_type = constant:event_system_event_type.repeatable }
             }
         }
     }
 
     if = {
-        limit = { check_variable = { event_type = @EVENT_TYPE_UNKNOWN } }
+        limit = { check_variable = { event_type = constant:event_system_event_type.unknown } }
         for_loop_effect = {
             start = 0
             end = global.fire_once_events^num
             value = i
             if = {
                 limit = { check_variable = { event_id = global.fire_once_events^i } }
-                set_temp_variable = { event_type = @EVENT_TYPE_MINOR_FIRE_ONCE }
+                set_temp_variable = { event_type = constant:event_system_event_type.fire_once }
             }
         }
     }

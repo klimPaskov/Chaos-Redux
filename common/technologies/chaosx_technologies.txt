@@ -15,6 +15,127 @@ technologies = {
     ###############################################################################################################
 
 
+    # Bioweapon bomb technologies (special project unlocks)
+    anthrax_bomb_delivery_systems = {
+        research_cost = 1
+        start_year = 1918
+
+        enable_equipments = {
+            anthrax_bomb_1
+        }
+
+        allow = {
+            ROOT = {
+                is_special_project_completed = sp:anthrax_bomb
+            }
+        }
+        is_special_project_tech = yes
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 1 y = 0 }
+        }
+
+        ai_will_do = {
+            factor = 0
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    plague_bomb_delivery_systems = {
+        research_cost = 1
+        start_year = 1936
+
+        enable_equipments = {
+            plague_bomb_1
+        }
+
+        allow = {
+            ROOT = {
+                is_special_project_completed = sp:plague_bomb
+            }
+        }
+        is_special_project_tech = yes
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 1 y = 0 }
+        }
+
+        ai_will_do = {
+            factor = 0
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    tularemia_bomb_delivery_systems = {
+        research_cost = 1
+        start_year = 1938
+
+        enable_equipments = {
+            tularemia_bomb_1
+        }
+
+        allow = {
+            ROOT = {
+                is_special_project_completed = sp:tularemia_bomb
+            }
+        }
+        is_special_project_tech = yes
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 1 y = 0 }
+        }
+
+        ai_will_do = {
+            factor = 0
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    smallpox_bomb_delivery_systems = {
+        research_cost = 1
+        start_year = 1940
+
+        enable_equipments = {
+            smallpox_bomb_1
+        }
+
+        allow = {
+            ROOT = {
+                is_special_project_completed = sp:smallpox_bomb
+            }
+        }
+        is_special_project_tech = yes
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 1 y = 0 }
+        }
+
+        ai_will_do = {
+            factor = 0
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
     # Bioweapon stockpile safety technologies
     pathogen_handling_protocols = {
         research_cost = 1
@@ -31,7 +152,7 @@ technologies = {
 
         folder = {
             name = biowarfare_folder
-            position = { x = 0 y = 1 }
+            position = { x = 3 y = 2 }
         }
 
         ai_will_do = {
@@ -59,7 +180,7 @@ technologies = {
 
         folder = {
             name = biowarfare_folder
-            position = { x = 3 y = 1 }
+            position = { x = 5 y = 2 }
         }
 
         ai_will_do = {
@@ -82,7 +203,83 @@ technologies = {
 
         folder = {
             name = biowarfare_folder
-            position = { x = 6 y = 1 }
+            position = { x = 8 y = 2 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    # Outbreak prevention technologies
+    bio_surveillance_networks = {
+        research_cost = 1
+        start_year = 1936
+
+        path = {
+            leads_to_tech = rapid_outbreak_response
+            research_cost_coeff = 1
+        }
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 3 y = 2 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    rapid_outbreak_response = {
+        research_cost = 1
+        start_year = 1938
+
+        path = {
+            leads_to_tech = integrated_epidemic_control
+            research_cost_coeff = 1
+        }
+
+        dependencies = {
+            bio_surveillance_networks = 1
+        }
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 5 y = 2 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_biowarfare }
+    }
+
+    integrated_epidemic_control = {
+        research_cost = 1
+        start_year = 1940
+
+        dependencies = {
+            rapid_outbreak_response = 1
+        }
+
+        categories = {
+            biowarfare_tech
+        }
+
+        folder = {
+            name = biowarfare_folder
+            position = { x = 8 y = 2 }
         }
 
         ai_will_do = {
@@ -140,12 +337,22 @@ technologies = {
     chlorine_gas = {
         research_cost = 1
         start_year = 1918
+        on_research_complete = {
+            unlock_tactic = tactic_chemical_shelling
+        }
 
         enable_equipment_modules = {
             livens_chlorine_projectile
+            chem_air_bomb_chlorine
         }
         enable_equipments = {
             chemical_chlorine_payload_cylinder_1
+        }
+        enable_subunits = {
+            livens_projector_support_chlorine
+            light_chemical_tank_support_chlorine
+            medium_chemical_tank_support_chlorine
+            heavy_chemical_tank_support_chlorine
         }
 
         path = {
@@ -173,12 +380,22 @@ technologies = {
     phosgene = {
         research_cost = 1
         start_year = 1918
+        on_research_complete = {
+            unlock_tactic = tactic_chemical_shelling
+        }
 
         enable_equipment_modules = {
             livens_phosgene_projectile
+            chem_air_bomb_phosgene
         }
         enable_equipments = {
             chemical_phosgene_payload_cylinder_1
+        }
+        enable_subunits = {
+            livens_projector_support_phosgene
+            light_chemical_tank_support_phosgene
+            medium_chemical_tank_support_phosgene
+            heavy_chemical_tank_support_phosgene
         }
 
         dependencies = {
@@ -205,12 +422,22 @@ technologies = {
     mustard_gas = {
         research_cost = 1
         start_year = 1918
+        on_research_complete = {
+            unlock_tactic = tactic_chemical_shelling
+        }
 
         enable_equipment_modules = {
             livens_mustard_projectile
+            chem_air_bomb_mustard
         }
         enable_equipments = {
             chemical_mustard_payload_cylinder_1
+        }
+        enable_subunits = {
+            livens_projector_support_mustard
+            light_chemical_tank_support_mustard
+            medium_chemical_tank_support_mustard
+            heavy_chemical_tank_support_mustard
         }
 
         path = {
@@ -236,17 +463,32 @@ technologies = {
 
     lewisite = {
         research_cost = 1
-        start_year = 1936
+        start_year = 1937
+        on_research_complete = {
+            unlock_tactic = tactic_chemical_shelling
+        }
 
         enable_equipment_modules = {
             livens_lewisite_projectile
+            chem_air_bomb_lewisite
         }
         enable_equipments = {
             chemical_lewisite_payload_cylinder_1
         }
+        enable_subunits = {
+            livens_projector_support_lewisite
+            light_chemical_tank_support_lewisite
+            medium_chemical_tank_support_lewisite
+            heavy_chemical_tank_support_lewisite
+        }
 
         dependencies = {
             mustard_gas = 1
+        }
+
+        path = {
+            leads_to_tech = dimercaprol
+            research_cost_coeff = 1
         }
 
         categories = {
@@ -265,10 +507,206 @@ technologies = {
         special_project_specialization = { specialization_cw }
     }
 
+    dimercaprol = {
+        research_cost = 1
+        start_year = 1939
+
+        dependencies = {
+            lewisite = 1
+        }
+
+        categories = {
+            chemical_warfare_tech
+            blister_agents_tech
+            gas_masks_tech
+        }
+
+        folder = {
+            name = chemical_warfare_folder
+            position = { x = 7 y = 4 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_cw }
+    }
+
+    # Nerve Agents
+    tabun = {
+        research_cost = 1
+        start_year = 1937
+        force_use_small_tech_layout = yes
+
+        path = {
+            leads_to_tech = sarin
+            research_cost_coeff = 1
+        }
+
+        categories = {
+            chemical_warfare_tech
+            nerve_agents_tech
+        }
+
+        folder = {
+            name = chemical_warfare_folder
+            position = { x = 4 y = 2 }
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+        special_project_specialization = { specialization_cw }
+    }
+
+    sarin = {
+        research_cost = 1
+        start_year = 1939
+        on_research_complete = {
+            unlock_tactic = tactic_chemical_shelling
+        }
+
+        enable_equipment_modules = {
+            livens_sarin_projectile
+            chem_air_bomb_sarin
+        }
+        enable_equipments = {
+            chemical_sarin_payload_cylinder_1
+        }
+        enable_subunits = {
+            livens_projector_support_sarin
+            light_chemical_tank_support_sarin
+            medium_chemical_tank_support_sarin
+            heavy_chemical_tank_support_sarin
+        }
+
+        path = {
+            leads_to_tech = soman
+            research_cost_coeff = 1
+        }
+
+        dependencies = {
+            tabun = 1
+        }
+
+        allow = {
+            ROOT = {
+                is_special_project_completed = sp:sp_cw_sarin_program
+            }
+        }
+        is_special_project_tech = yes
+
+        categories = {
+            chemical_warfare_tech
+            nerve_agents_tech
+        }
+
+        folder = {
+            name = chemical_warfare_folder
+            position = { x = 7 y = 2 }
+        }
+
+        ai_will_do = {
+            factor = 0
+        }
+        special_project_specialization = { specialization_cw }
+    }
+
+    soman = {
+        research_cost = 1
+        start_year = 1941
+        on_research_complete = {
+            unlock_tactic = tactic_chemical_shelling
+        }
+
+        enable_equipment_modules = {
+            livens_soman_projectile
+            chem_air_bomb_soman
+        }
+        enable_equipments = {
+            chemical_soman_payload_cylinder_1
+        }
+        enable_subunits = {
+            livens_projector_support_soman
+            light_chemical_tank_support_soman
+            medium_chemical_tank_support_soman
+            heavy_chemical_tank_support_soman
+        }
+
+        dependencies = {
+            sarin = 1
+        }
+
+        allow = {
+            ROOT = {
+                is_special_project_completed = sp:sp_cw_soman_program
+            }
+        }
+        is_special_project_tech = yes
+
+        categories = {
+            chemical_warfare_tech
+            nerve_agents_tech
+        }
+
+        folder = {
+            name = chemical_warfare_folder
+            position = { x = 11 y = 2 }
+        }
+
+        ai_will_do = {
+            factor = 0
+        }
+        special_project_specialization = { specialization_cw }
+    }
+
     # Improved Livens Projector Technology
     improved_livens_projector = {
         research_cost = 2
         start_year = 1936
+
+        livens_projector_support_chlorine = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_phosgene = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_mustard = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_lewisite = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_tabun = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_sarin = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_soman = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
 
         enable_equipments = {
             livens_projector_equipment_2
@@ -302,6 +740,49 @@ technologies = {
     advanced_livens_projector = {
         research_cost = 3
         start_year = 1940
+
+        livens_projector_support_chlorine = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_phosgene = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_mustard = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_lewisite = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_tabun = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_sarin = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
+        livens_projector_support_soman = {
+            soft_attack = 0.10
+            hard_attack = 0.10
+            defense = 0.10
+            breakthrough = 0.10
+        }
 
         enable_equipments = {
             livens_projector_equipment_3
@@ -375,6 +856,9 @@ technologies = {
     basic_gas_masks = {
         research_cost = 1
         start_year = 1918
+        on_research_complete = {
+            unlock_tactic = tactic_gas_mask_defense
+        }
 
         path = {
             leads_to_tech = improved_gas_masks
