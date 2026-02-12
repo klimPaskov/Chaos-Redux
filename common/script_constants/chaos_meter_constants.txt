@@ -1,0 +1,178 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS METER SCRIPT CONSTANTS
+# ============================================================================
+# Shared constants for the chaos meter system (tiers / thresholds used by both
+# the meter logic and the settings UI).
+# ============================================================================
+
+chaos_meter_tier_range = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = int
+			}
+		}
+	}
+
+	tier_0 = { min = 0 max = 199 }
+	tier_1 = { min = 200 max = 399 }
+	tier_2 = { min = 400 max = 599 }
+	tier_3 = { min = 600 max = 799 }
+	tier_4 = { min = 800 max = 999 }
+
+	# Final tier has no max; plus is a sentinel value used by the settings UI.
+	tier_final = { min = 1000 plus = 1001 }
+}
+
+chaos_meter_tier_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tier_0 = 0
+	tier_1 = 1
+	tier_2 = 2
+	tier_3 = 3
+	tier_4 = 4
+	tier_final = 5
+}
+
+chaos_meter_delta = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	world_tension = { base = 1 }
+
+	war = {
+		minor = 1
+		major = 5
+	}
+	peace = {
+		minor = -1
+		major = -3
+	}
+
+	annex = {
+		minor = 2
+		major = 10
+	}
+	puppet = {
+		minor = 1
+		major = 3
+	}
+	liberate = {
+		base = -2
+		democratic = -5
+	}
+	release = {
+		free = -3
+	}
+	subject = {
+		free_minor = -1
+		free_major = -3
+		annexed = 2
+	}
+
+	nuke = { base = 1 }
+	mobilization = {
+		up_major = 1
+		down_major = -1
+	}
+
+	coup = {
+		minor = 1
+		major = 3
+	}
+
+	civil_war = {
+		minor = 1
+		major = 5
+	}
+
+	ideology_change = {
+		minor_democratic = -2
+		minor_non_democratic = 1
+		major_democratic = -5
+		major_non_democratic = 5
+	}
+
+	faction = {
+		create = 2
+		disband = -2
+		join_minor = 1
+		join_major = 3
+		leave_minor = -1
+		leave_major = -3
+		join_both_democratic_minor = -1
+		join_both_democratic_major = -3
+		leave_both_democratic_minor = 0
+		leave_both_democratic_major = 0
+	}
+
+	diplomacy = {
+		justify_wargoal_major = 1
+		guarantee_major = 1
+		wargoal_expire_major = -1
+	}
+
+	subtle = {
+		lend_lease = 1
+		call_allies = 1
+		join_allies = 1
+		new_term_election = -1
+		stage_coup = 1
+		coup_succeeded = 1
+		capitulation = 1
+		uncapitulation = -1
+		government_exiled = 1
+		exile_reinstated = -1
+	}
+}
+
+chaos_meter_scale = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	per = {
+		mils_increase = 100
+		divisions_increase = 100
+		casualties = 250
+	}
+}
+
+chaos_meter_scale_fp = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stability_change = 0.01
+	democracy_change = 0.01
+}
+
+chaos_meter_update_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	min_tension_change = 1
+	min_casualty_change_k = 1
+}

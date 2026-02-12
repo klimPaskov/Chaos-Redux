@@ -1,0 +1,213 @@
+# Generic prototype rewards for chemical warfare special projects.
+# Reward tuning is defined in `common/script_constants/chemical_warfare_constants.txt`.
+
+sp_cw_generic_reward_scientist_xp = {
+    fire_only_once = no
+
+    threshold = {
+        min = 0
+        max = 100
+    }
+
+    weight = {
+        base = constant:chem_prototype_reward_weight.base
+        modifier = {
+            factor = constant:chem_prototype_reward_weight.theme_repeat_factor
+            has_project_flag = sp_cw_generic_reward_scientist_xp_flag
+        }
+        modifier = {
+            factor = 0
+            var:scientist = {
+                has_scientist_level = {
+                    level > 4
+                    specialization = specialization_cw
+                }
+            }
+        }
+    }
+
+    option = {
+        token = sp_cw_generic_reward_option_scientist_xp
+
+        iteration_output = {
+            scientist_effects = {
+                if = {
+                    limit = {
+                        has_scientist_level = {
+                            level < 5
+                            specialization = specialization_cw
+                        }
+                    }
+                    add_scientist_xp = {
+                        experience = constant:sp_scientist_xp_gain.medium
+                        specialization = specialization_cw
+                    }
+                }
+                FROM = { set_project_flag = sp_cw_generic_reward_scientist_xp_flag }
+            }
+        }
+    }
+}
+
+sp_cw_generic_reward_major_progress = {
+    fire_only_once = no
+
+    threshold = {
+        min = 0
+        max = 100
+    }
+
+    weight = {
+        base = constant:chem_prototype_reward_weight.base
+        modifier = {
+            factor = constant:chem_prototype_reward_weight.theme_repeat_factor
+            has_project_flag = sp_cw_generic_reward_major_progress_flag
+        }
+    }
+
+    option = {
+        token = sp_cw_generic_reward_option_major_breakthrough
+
+        iteration_output = {
+            country_effects = {
+                FROM = {
+                    add_project_progress_ratio = constant:sp_progress.gain.low
+                    set_project_flag = sp_cw_generic_reward_major_progress_flag
+                }
+            }
+        }
+    }
+}
+
+sp_cw_generic_reward_breakthrough = {
+    fire_only_once = no
+
+    threshold = {
+        min = 0
+        max = 100
+    }
+
+    weight = {
+        base = constant:chem_prototype_reward_weight.base
+        modifier = {
+            factor = constant:chem_prototype_reward_weight.theme_repeat_factor
+            has_project_flag = sp_cw_generic_reward_breakthrough_flag
+        }
+    }
+
+    option = {
+        token = sp_cw_generic_reward_option_breakthrough
+
+        iteration_output = {
+            country_effects = {
+                FROM = {
+                    add_project_progress_ratio = constant:sp_progress.gain.medium
+                    set_project_flag = sp_cw_generic_reward_breakthrough_flag
+                }
+            }
+
+            scientist_effects = {
+                if = {
+                    limit = {
+                        has_scientist_level = {
+                            level < 5
+                            specialization = specialization_cw
+                        }
+                    }
+                    add_scientist_xp = {
+                        experience = constant:sp_scientist_xp_gain.low
+                        specialization = specialization_cw
+                    }
+                }
+            }
+        }
+    }
+}
+
+sp_cw_generic_reward_chemistry_insights = {
+    fire_only_once = no
+
+    threshold = {
+        min = 0
+        max = 100
+    }
+
+    weight = {
+        base = constant:chem_prototype_reward_weight.base
+        modifier = {
+            factor = constant:chem_prototype_reward_weight.theme_repeat_factor
+            has_project_flag = sp_cw_generic_reward_chemistry_insights_flag
+        }
+    }
+
+    option = {
+        token = sp_cw_generic_reward_option_chemistry_insights
+
+        iteration_output = {
+            country_effects = {
+                add_tech_bonus = {
+                    name = sp_cw_generic_reward_option_chemistry_insights_name
+                    bonus = 0.15
+                    uses = 1
+                    category = chemical_warfare_tech
+                }
+                FROM = { set_project_flag = sp_cw_generic_reward_chemistry_insights_flag }
+            }
+        }
+    }
+}
+
+sp_cw_generic_reward_test_failure = {
+    fire_only_once = no
+
+    threshold = {
+        min = 0
+        max = 85
+    }
+
+    weight = {
+        base = constant:chem_prototype_reward_weight.base
+        modifier = {
+            factor = constant:chem_prototype_reward_weight.theme_repeat_factor
+            has_project_flag = sp_cw_generic_reward_test_failure_flag
+        }
+    }
+
+    option = {
+        token = sp_cw_generic_reward_option_test_failure
+
+        iteration_output = {
+            country_effects = {
+                FROM = {
+                    add_project_progress_ratio = constant:sp_progress.loss.low
+                    set_project_flag = sp_cw_generic_reward_test_failure_flag
+                }
+            }
+        }
+    }
+}
+
+sp_cw_generic_reward_resource_scarcity = {
+    fire_only_once = yes
+
+    threshold = {
+        min = 10
+        max = 90
+    }
+
+    weight = {
+        base = 1
+    }
+
+    option = {
+        token = sp_cw_generic_reward_option_resource_scarcity
+
+        iteration_output = {
+            country_effects = {
+                FROM = {
+                    add_project_progress_ratio = constant:sp_progress.loss.medium
+                }
+            }
+        }
+    }
+}

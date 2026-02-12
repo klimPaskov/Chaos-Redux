@@ -1,4 +1,12 @@
 equipment_modules = {
+	@LIVENS_MODULE_COST_CHLORINE = 0.20
+	@LIVENS_MODULE_COST_PHOSGENE = 0.40
+	@LIVENS_MODULE_COST_MUSTARD = 0.80
+	@LIVENS_MODULE_COST_LEWISITE = 1.50
+	@LIVENS_MODULE_COST_TABUN = 1.90
+	@LIVENS_MODULE_COST_SARIN = 2.30
+	@LIVENS_MODULE_COST_SOMAN = 2.70
+
     # Chlorine Gas Projectile - Requires chlorine_gas technology
     livens_chlorine_projectile = {
         abbreviation = "cl_proj"
@@ -6,9 +14,9 @@ equipment_modules = {
 
         # Add IC cost when selected
         add_stats = {
-            build_cost_ic = 0.20  # Additional IC cost for chlorine projectile
-            soft_attack = 10      # Chlorine gas effectiveness
-            defense = -1
+            build_cost_ic = @LIVENS_MODULE_COST_CHLORINE  # Additional IC cost for chlorine projectile
+            soft_attack = 12      # Choking agent: lower lethality than phosgene
+            defense = -1          # Crews and nearby troops fight in masks
         }
         xp_cost = 1
 
@@ -23,9 +31,10 @@ equipment_modules = {
 
         # Add IC cost when selected
         add_stats = {
-            build_cost_ic = 0.5   # Higher IC cost for phosgene
-            soft_attack = 20      # More effective than chlorine
-            # defense = 0           # More persistent than chlorine
+            build_cost_ic = @LIVENS_MODULE_COST_PHOSGENE   # Higher IC cost for phosgene
+            soft_attack = 22      # Choking agent: significantly more lethal than chlorine
+            defense = -1          # Mask burden still applies; not a persistent agent
+            breakthrough = 1      # Sudden high concentration can disrupt defenses
         }
         xp_cost = 2
 
@@ -40,10 +49,10 @@ equipment_modules = {
 
         # Add IC cost when selected
         add_stats = {
-            build_cost_ic = 1.5   # High IC cost for mustard gas
-            soft_attack = 35      # Very effective blister agent
-            defense = 2           # Persistent on ground
-            breakthrough = 5      # Area denial capability
+            build_cost_ic = @LIVENS_MODULE_COST_MUSTARD   # High IC cost for mustard gas
+            soft_attack = 18      # Blister agent: high casualty/incapacitation, slower onset
+            defense = 2           # Persistent contamination limits counterattacks
+            breakthrough = 4      # Area denial and trench clearing
         }
         xp_cost = 2
 
@@ -51,21 +60,72 @@ equipment_modules = {
         sfx = sfx_ui_sd_module_turret
     }
 
-    # Lewisite Projectile - Requires lewisite technology
-    livens_lewisite_projectile = {
+	# Lewisite Projectile - Requires lewisite technology
+	livens_lewisite_projectile = {
         abbreviation = "lw_proj"
         category = livens_projectile_type
 
         # Add IC cost when selected
         add_stats = {
-            build_cost_ic = 5.0   # Very high IC cost for lewisite
-            soft_attack = 50      # Most effective chemical weapon
-            defense = 3           # Highly persistent
-            breakthrough = 10     # Excellent area denial
+            build_cost_ic = @LIVENS_MODULE_COST_LEWISITE   # Very high IC cost for lewisite
+            soft_attack = 24      # Blister agent: faster-acting and more acutely toxic than mustard
+            defense = 1           # Typically less persistent than mustard
+            breakthrough = 5      # Strong shock/denial effect
         }
         xp_cost = 3
 
-        # Visual and description
-        sfx = sfx_ui_sd_module_turret
-    }
+		# Visual and description
+		sfx = sfx_ui_sd_module_turret
+	}
+
+	# Tabun Projectile - Requires tabun technology
+	livens_tabun_projectile = {
+		abbreviation = "tb_proj"
+		category = livens_projectile_type
+
+		add_stats = {
+			build_cost_ic = @LIVENS_MODULE_COST_TABUN
+			soft_attack = 28
+			hard_attack = 2
+			breakthrough = 6
+			defense = -2
+		}
+		xp_cost = 3
+
+		sfx = sfx_ui_sd_module_turret
+	}
+
+	# Sarin Projectile - Requires sarin technology
+	livens_sarin_projectile = {
+		abbreviation = "sa_proj"
+		category = livens_projectile_type
+
+		add_stats = {
+			build_cost_ic = @LIVENS_MODULE_COST_SARIN
+			soft_attack = 32
+			hard_attack = 3
+			breakthrough = 8
+			defense = -2
+		}
+		xp_cost = 4
+
+		sfx = sfx_ui_sd_module_turret
+	}
+
+	# Soman Projectile - Requires soman technology
+	livens_soman_projectile = {
+		abbreviation = "so_proj"
+		category = livens_projectile_type
+
+		add_stats = {
+			build_cost_ic = @LIVENS_MODULE_COST_SOMAN
+			soft_attack = 36
+			hard_attack = 4
+			breakthrough = 9
+			defense = -2
+		}
+		xp_cost = 4
+
+		sfx = sfx_ui_sd_module_turret
+	}
 }

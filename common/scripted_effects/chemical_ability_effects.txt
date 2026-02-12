@@ -1,164 +1,20 @@
 # Chemical ability weather, terrain, and gas mask adjustments.
-# Keep in sync with @CHEM_DURATION_DAYS in common/abilities/chemical_abilities.txt.
-@CHEM_ABILITY_DURATION_DAYS = 7
 
-@CHEM_WEATHER_BLIZZARD_OFFENSE = -0.005
-@CHEM_WEATHER_BLIZZARD_BREAKTHROUGH = -0.005
-@CHEM_WEATHER_BLIZZARD_ORG_DAMAGE = 0.008
+# Wind forecast and miscalculation handling for chemical abilities is defined in
+# `common/script_constants/chemical_warfare_constants.txt` (see `chem_wind`).
 
-@CHEM_WEATHER_SANDSTORM_OFFENSE = -0.005
-@CHEM_WEATHER_SANDSTORM_STR_DAMAGE = 0.01
-@CHEM_WEATHER_SANDSTORM_ORG_DAMAGE = 0.008
+# State-level dispersal parameters are defined in
+# `common/script_constants/chemical_warfare_constants.txt` (see `chem_state`).
 
-@CHEM_WEATHER_EXTREME_THRESHOLD = 0.6
-@CHEM_WEATHER_EXTREME_COLD_OFFENSE = -0.005
-@CHEM_WEATHER_EXTREME_COLD_BREAKTHROUGH = -0.005
-@CHEM_WEATHER_EXTREME_COLD_ORG_DAMAGE = 0.01
-@CHEM_WEATHER_EXTREME_HEAT_OFFENSE = -0.005
-@CHEM_WEATHER_EXTREME_HEAT_STR_DAMAGE = 0.01
-@CHEM_WEATHER_EXTREME_HEAT_ORG_DAMAGE = 0.008
-
-# Wind forecast and miscalculation handling for chemical abilities.
-@CHEM_WIND_STATE_FAVOR = 1
-@CHEM_WIND_STATE_NEUTRAL = 0
-@CHEM_WIND_STATE_AGAINST = -1
-@CHEM_WIND_STATE_STRONG_FAVOR = 2
-
-@CHEM_WIND_CHANCE_SCALE = 100
-@CHEM_WIND_SEVERE_THRESHOLD = 0.35
-@CHEM_WIND_FAVOR_BASE = 8
-@CHEM_WIND_FAVOR_CLEAR_BONUS = 6
-@CHEM_WIND_FAVOR_OPEN_BONUS = 6
-@CHEM_WIND_FAVOR_ROUGH_PENALTY = -6
-@CHEM_WIND_FAVOR_SEVERE_PENALTY = -7
-@CHEM_WIND_FAVOR_EXTREME_PENALTY = -5
-@CHEM_WIND_FAVOR_URBAN_PENALTY = -4
-@CHEM_WIND_FAVOR_HIGHLAND_PENALTY = -3
-@CHEM_WIND_AGAINST_BASE = 8
-@CHEM_WIND_AGAINST_CLEAR_PENALTY = -5
-@CHEM_WIND_AGAINST_SEVERE_BONUS = 24
-@CHEM_WIND_AGAINST_EXTREME_BONUS = 12
-@CHEM_WIND_AGAINST_EXTREME_BONUS_EXTRA = 8
-@CHEM_WIND_AGAINST_ROUGH_BONUS = 8
-@CHEM_WIND_AGAINST_URBAN_BONUS = 6
-@CHEM_WIND_AGAINST_HIGHLAND_BONUS = 5
-
-@CHEM_WIND_FAVOR_TECH_VANES = 12
-@CHEM_WIND_FAVOR_TECH_STATIONS = 20
-@CHEM_WIND_FAVOR_TECH_SOUNDINGS = 28
-@CHEM_WIND_STRONG_FAVOR_TECH_STATIONS = 10
-@CHEM_WIND_STRONG_FAVOR_TECH_SOUNDINGS = 18
-@CHEM_WIND_AGAINST_TECH_VANES = -4
-@CHEM_WIND_AGAINST_TECH_STATIONS = -8
-@CHEM_WIND_AGAINST_TECH_SOUNDINGS = -12
-
-@CHEM_WIND_POSITIVE_FAVOR_MULT = 1.30
-@CHEM_WIND_NEGATIVE_FAVOR_MULT = 0.70
-@CHEM_WIND_POSITIVE_STRONG_FAVOR_MULT = 1.60
-@CHEM_WIND_NEGATIVE_STRONG_FAVOR_MULT = 0.50
-@CHEM_WIND_POSITIVE_NEUTRAL_MULT = 1.0
-@CHEM_WIND_NEGATIVE_NEUTRAL_MULT = 1.0
-@CHEM_WIND_POSITIVE_AGAINST_MULT = 0.70
-@CHEM_WIND_NEGATIVE_AGAINST_MULT = 1.25
-
-@CHEM_WIND_MISCALC_BASE = 0.15
-@CHEM_WIND_MISCALC_VANES = 0.10
-@CHEM_WIND_MISCALC_STATIONS = 0.05
-@CHEM_WIND_MISCALC_SOUNDINGS = 0.02
-
-@CHEM_WIND_FORECAST_DAYS = 7
-
-# State-level dispersal parameters.
-@CHEM_STATE_STRENGTH_SCALE = 4
-@CHEM_STATE_DURATION_SCALE = 4
-
-@CHEM_STATE_MAX_STRENGTH_BASE = -0.20
-@CHEM_STATE_MAX_DURATION_DAYS_BASE = 21
-
-@CHEM_STATE_CHLORINE_DOSE_PER_DIV = -0.0004
-@CHEM_STATE_CHLORINE_DURATION_ADD = 1
-@CHEM_STATE_PHOSGENE_DOSE_PER_DIV = -0.0006
-@CHEM_STATE_PHOSGENE_DURATION_ADD = 1
-@CHEM_STATE_MUSTARD_DOSE_PER_DIV = -0.00025
-@CHEM_STATE_MUSTARD_DURATION_ADD = 3
-@CHEM_STATE_LEWISITE_DOSE_PER_DIV = -0.0003
-@CHEM_STATE_LEWISITE_DURATION_ADD = 4
-
-@CHEM_STATE_SUPPLY_MULT = 1.0
-@CHEM_STATE_SUPPLY_IMPACT_MULT = -1.25
-@CHEM_STATE_SPEED_MULT = 0.5
-@CHEM_STATE_TRUCK_ATTRITION_MULT = -0.4
-@CHEM_STATE_ATTACK_MULT = 0.4
-@CHEM_STATE_BREAKTHROUGH_MULT = 0.5
-
-# Stockpile "doomsday release" decision parameters.
-@CHEM_DOOM_ACUTE_WEIGHT_CHLORINE = 1.0
-@CHEM_DOOM_ACUTE_WEIGHT_PHOSGENE = 1.6
-@CHEM_DOOM_ACUTE_WEIGHT_MUSTARD = 0.9
-@CHEM_DOOM_ACUTE_WEIGHT_LEWISITE = 1.1
-
-@CHEM_DOOM_PERSIST_WEIGHT_CHLORINE = 0.2
-@CHEM_DOOM_PERSIST_WEIGHT_PHOSGENE = 0.3
-@CHEM_DOOM_PERSIST_WEIGHT_MUSTARD = 1.5
-@CHEM_DOOM_PERSIST_WEIGHT_LEWISITE = 1.7
-
-@CHEM_DOOM_ACUTE_ORG_SCALE = 200000
-@CHEM_DOOM_ACUTE_STR_SCALE = 420000
-@CHEM_DOOM_ORG_DAMAGE_MAX = 0.45
-@CHEM_DOOM_STR_DAMAGE_MAX = 0.22
-
-@CHEM_DOOM_STATE_DOSE_SCALE = 500000
-@CHEM_DOOM_STATE_DOSE_MAX = 0.80
-@CHEM_DOOM_STATE_DURATION_SCALE = 2000
-@CHEM_DOOM_STATE_DURATION_ADD_MAX = 140
-
-@CHEM_DOOM_STATE_MAX_DURATION_DAYS_BASE = 60
-@CHEM_DOOM_STATE_MAX_DURATION_SCALE = 4
-
-@CHEM_TYPE_CHLORINE = 1
-@CHEM_TYPE_PHOSGENE = 2
-@CHEM_TYPE_MUSTARD = 3
-@CHEM_TYPE_LEWISITE = 4
+# Stockpile "doomsday release" decision parameters are defined in
+# `common/script_constants/chemical_warfare_constants.txt` (see `chem_doom`).
 
 # Unit modifier extras (keep in sync with common/abilities/chemical_abilities.txt).
-@CHEM_UNIT_SPEED_FACTOR = -0.05
-@CHEM_UNIT_URBAN_ATTACK = 0.10
 
-# Keep cylinder-per-battalion values in sync with common/abilities/chemical_abilities.txt.
-@CHEM_PREVIEW_CHLORINE_CYLINDERS_PER_BATTALION = 30
-@CHEM_PREVIEW_PHOSGENE_CYLINDERS_PER_BATTALION = 30
-@CHEM_PREVIEW_MUSTARD_CYLINDERS_PER_BATTALION = 30
-@CHEM_PREVIEW_LEWISITE_CYLINDERS_PER_BATTALION = 30
-@CHEM_PREVIEW_DURATION_DAYS = 7
-@CHEM_PREVIEW_RATIO_MIN = 0.10
+# Ability + preview (UI / helper) tuning is defined in
+# `common/script_constants/chemical_warfare_constants.txt` (see `chem_ability_*`).
 
-@CHEM_PREVIEW_CHLORINE_OFFENSE = 0.24
-@CHEM_PREVIEW_CHLORINE_BREAKTHROUGH = 0.24
-@CHEM_PREVIEW_CHLORINE_DEFENSE = 0.06
-@CHEM_PREVIEW_CHLORINE_ORG_DAMAGE = 0.18
-@CHEM_PREVIEW_CHLORINE_STR_DAMAGE = 0.08
-@CHEM_PREVIEW_CHLORINE_WAR_SUPPORT = 0.14
-
-@CHEM_PREVIEW_PHOSGENE_OFFENSE = 0.36
-@CHEM_PREVIEW_PHOSGENE_BREAKTHROUGH = 0.36
-@CHEM_PREVIEW_PHOSGENE_DEFENSE = 0.10
-@CHEM_PREVIEW_PHOSGENE_ORG_DAMAGE = 0.28
-@CHEM_PREVIEW_PHOSGENE_STR_DAMAGE = 0.14
-@CHEM_PREVIEW_PHOSGENE_WAR_SUPPORT = 0.20
-
-@CHEM_PREVIEW_MUSTARD_OFFENSE = 0.28
-@CHEM_PREVIEW_MUSTARD_BREAKTHROUGH = 0.20
-@CHEM_PREVIEW_MUSTARD_DEFENSE = 0.06
-@CHEM_PREVIEW_MUSTARD_ORG_DAMAGE = 0.24
-@CHEM_PREVIEW_MUSTARD_STR_DAMAGE = 0.12
-@CHEM_PREVIEW_MUSTARD_WAR_SUPPORT = 0.16
-
-@CHEM_PREVIEW_LEWISITE_OFFENSE = 0.48
-@CHEM_PREVIEW_LEWISITE_BREAKTHROUGH = 0.48
-@CHEM_PREVIEW_LEWISITE_DEFENSE = 0.12
-@CHEM_PREVIEW_LEWISITE_ORG_DAMAGE = 0.36
-@CHEM_PREVIEW_LEWISITE_STR_DAMAGE = 0.18
-@CHEM_PREVIEW_LEWISITE_WAR_SUPPORT = 0.24
+@CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT = 1.50
 
 chem_roll_wind_state = {
     set_temp_variable = { var = chem_wind_total_units value = num_units }
@@ -264,74 +120,74 @@ chem_roll_wind_state = {
     set_temp_variable = { var = chem_wind_severity_squared value = chem_wind_severity }
     multiply_temp_variable = { var = chem_wind_severity_squared value = chem_wind_severity }
     set_temp_variable = { var = chem_wind_extreme_ratio value = chem_wind_severity }
-    set_temp_variable = { var = chem_wind_severe_threshold value = @CHEM_WIND_SEVERE_THRESHOLD }
+    set_temp_variable = { var = chem_wind_severe_threshold value = constant:chem_wind.core.severe_threshold }
     multiply_temp_variable = { var = chem_wind_severe_threshold value = -1 }
     add_to_temp_variable = { var = chem_wind_extreme_ratio value = chem_wind_severe_threshold }
     clamp_temp_variable = { var = chem_wind_extreme_ratio min = 0 max = 1 }
 
-    set_temp_variable = { var = chem_wind_favor_chance value = @CHEM_WIND_FAVOR_BASE }
-    set_temp_variable = { var = chem_wind_favor_add value = @CHEM_WIND_FAVOR_CLEAR_BONUS }
+    set_temp_variable = { var = chem_wind_favor_chance value = constant:chem_wind.favor.base }
+    set_temp_variable = { var = chem_wind_favor_add value = constant:chem_wind.favor.clear_bonus }
     multiply_temp_variable = { var = chem_wind_favor_add value = chem_wind_clear }
     add_to_temp_variable = { var = chem_wind_favor_chance value = chem_wind_favor_add }
-    set_temp_variable = { var = chem_wind_favor_add value = @CHEM_WIND_FAVOR_OPEN_BONUS }
+    set_temp_variable = { var = chem_wind_favor_add value = constant:chem_wind.favor.open_bonus }
     multiply_temp_variable = { var = chem_wind_favor_add value = chem_wind_open_ratio }
     add_to_temp_variable = { var = chem_wind_favor_chance value = chem_wind_favor_add }
-    set_temp_variable = { var = chem_wind_favor_add value = @CHEM_WIND_FAVOR_ROUGH_PENALTY }
+    set_temp_variable = { var = chem_wind_favor_add value = constant:chem_wind.favor.rough_penalty }
     multiply_temp_variable = { var = chem_wind_favor_add value = chem_wind_rough_ratio }
     add_to_temp_variable = { var = chem_wind_favor_chance value = chem_wind_favor_add }
-    set_temp_variable = { var = chem_wind_favor_add value = @CHEM_WIND_FAVOR_SEVERE_PENALTY }
+    set_temp_variable = { var = chem_wind_favor_add value = constant:chem_wind.favor.severe_penalty }
     multiply_temp_variable = { var = chem_wind_favor_add value = chem_wind_severity }
     add_to_temp_variable = { var = chem_wind_favor_chance value = chem_wind_favor_add }
-    set_temp_variable = { var = chem_wind_favor_add value = @CHEM_WIND_FAVOR_EXTREME_PENALTY }
+    set_temp_variable = { var = chem_wind_favor_add value = constant:chem_wind.favor.extreme_penalty }
     multiply_temp_variable = { var = chem_wind_favor_add value = chem_wind_extreme_ratio }
     add_to_temp_variable = { var = chem_wind_favor_chance value = chem_wind_favor_add }
-    set_temp_variable = { var = chem_wind_favor_add value = @CHEM_WIND_FAVOR_URBAN_PENALTY }
+    set_temp_variable = { var = chem_wind_favor_add value = constant:chem_wind.favor.urban_penalty }
     multiply_temp_variable = { var = chem_wind_favor_add value = chem_wind_urban_ratio }
     add_to_temp_variable = { var = chem_wind_favor_chance value = chem_wind_favor_add }
-    set_temp_variable = { var = chem_wind_favor_add value = @CHEM_WIND_FAVOR_HIGHLAND_PENALTY }
+    set_temp_variable = { var = chem_wind_favor_add value = constant:chem_wind.favor.highland_penalty }
     multiply_temp_variable = { var = chem_wind_favor_add value = chem_wind_highland_ratio }
     add_to_temp_variable = { var = chem_wind_favor_chance value = chem_wind_favor_add }
 
-    set_temp_variable = { var = chem_wind_against_chance value = @CHEM_WIND_AGAINST_BASE }
-    set_temp_variable = { var = chem_wind_against_add value = @CHEM_WIND_AGAINST_CLEAR_PENALTY }
+    set_temp_variable = { var = chem_wind_against_chance value = constant:chem_wind.against.base }
+    set_temp_variable = { var = chem_wind_against_add value = constant:chem_wind.against.clear_penalty }
     multiply_temp_variable = { var = chem_wind_against_add value = chem_wind_clear }
     add_to_temp_variable = { var = chem_wind_against_chance value = chem_wind_against_add }
-    set_temp_variable = { var = chem_wind_against_add value = @CHEM_WIND_AGAINST_SEVERE_BONUS }
+    set_temp_variable = { var = chem_wind_against_add value = constant:chem_wind.against.severe_bonus }
     multiply_temp_variable = { var = chem_wind_against_add value = chem_wind_severity }
     add_to_temp_variable = { var = chem_wind_against_chance value = chem_wind_against_add }
-    set_temp_variable = { var = chem_wind_against_add value = @CHEM_WIND_AGAINST_EXTREME_BONUS }
+    set_temp_variable = { var = chem_wind_against_add value = constant:chem_wind.against.extreme_bonus }
     multiply_temp_variable = { var = chem_wind_against_add value = chem_wind_severity_squared }
     add_to_temp_variable = { var = chem_wind_against_chance value = chem_wind_against_add }
-    set_temp_variable = { var = chem_wind_against_add value = @CHEM_WIND_AGAINST_EXTREME_BONUS_EXTRA }
+    set_temp_variable = { var = chem_wind_against_add value = constant:chem_wind.against.extreme_bonus_extra }
     multiply_temp_variable = { var = chem_wind_against_add value = chem_wind_extreme_ratio }
     add_to_temp_variable = { var = chem_wind_against_chance value = chem_wind_against_add }
-    set_temp_variable = { var = chem_wind_against_add value = @CHEM_WIND_AGAINST_ROUGH_BONUS }
+    set_temp_variable = { var = chem_wind_against_add value = constant:chem_wind.against.rough_bonus }
     multiply_temp_variable = { var = chem_wind_against_add value = chem_wind_rough_ratio }
     add_to_temp_variable = { var = chem_wind_against_chance value = chem_wind_against_add }
-    set_temp_variable = { var = chem_wind_against_add value = @CHEM_WIND_AGAINST_URBAN_BONUS }
+    set_temp_variable = { var = chem_wind_against_add value = constant:chem_wind.against.urban_bonus }
     multiply_temp_variable = { var = chem_wind_against_add value = chem_wind_urban_ratio }
     add_to_temp_variable = { var = chem_wind_against_chance value = chem_wind_against_add }
-    set_temp_variable = { var = chem_wind_against_add value = @CHEM_WIND_AGAINST_HIGHLAND_BONUS }
+    set_temp_variable = { var = chem_wind_against_add value = constant:chem_wind.against.highland_bonus }
     multiply_temp_variable = { var = chem_wind_against_add value = chem_wind_highland_ratio }
     add_to_temp_variable = { var = chem_wind_against_chance value = chem_wind_against_add }
 
     set_temp_variable = { var = chem_wind_strong_favor_chance value = 0 }
     if = {
         limit = { OWNER = { has_tech = upper_air_soundings } }
-        add_to_temp_variable = { var = chem_wind_favor_chance value = @CHEM_WIND_FAVOR_TECH_SOUNDINGS }
-        set_temp_variable = { var = chem_wind_strong_favor_chance value = @CHEM_WIND_STRONG_FAVOR_TECH_SOUNDINGS }
-        add_to_temp_variable = { var = chem_wind_against_chance value = @CHEM_WIND_AGAINST_TECH_SOUNDINGS }
+        add_to_temp_variable = { var = chem_wind_favor_chance value = constant:chem_wind.tech.favor_soundings }
+        set_temp_variable = { var = chem_wind_strong_favor_chance value = constant:chem_wind.tech.strong_favor_soundings }
+        add_to_temp_variable = { var = chem_wind_against_chance value = constant:chem_wind.tech.against_soundings }
     }
     else_if = {
         limit = { OWNER = { has_tech = meteorological_stations } }
-        add_to_temp_variable = { var = chem_wind_favor_chance value = @CHEM_WIND_FAVOR_TECH_STATIONS }
-        set_temp_variable = { var = chem_wind_strong_favor_chance value = @CHEM_WIND_STRONG_FAVOR_TECH_STATIONS }
-        add_to_temp_variable = { var = chem_wind_against_chance value = @CHEM_WIND_AGAINST_TECH_STATIONS }
+        add_to_temp_variable = { var = chem_wind_favor_chance value = constant:chem_wind.tech.favor_stations }
+        set_temp_variable = { var = chem_wind_strong_favor_chance value = constant:chem_wind.tech.strong_favor_stations }
+        add_to_temp_variable = { var = chem_wind_against_chance value = constant:chem_wind.tech.against_stations }
     }
     else_if = {
         limit = { OWNER = { has_tech = portable_anemometer } }
-        add_to_temp_variable = { var = chem_wind_favor_chance value = @CHEM_WIND_FAVOR_TECH_VANES }
-        add_to_temp_variable = { var = chem_wind_against_chance value = @CHEM_WIND_AGAINST_TECH_VANES }
+        add_to_temp_variable = { var = chem_wind_favor_chance value = constant:chem_wind.tech.favor_vanes }
+        add_to_temp_variable = { var = chem_wind_against_chance value = constant:chem_wind.tech.against_vanes }
     }
 
     if = {
@@ -343,15 +199,15 @@ chem_roll_wind_state = {
         set_temp_variable = { var = chem_wind_strong_favor_chance value = chem_wind_strong_favor_add }
     }
 
-    clamp_temp_variable = { var = chem_wind_favor_chance min = 0 max = @CHEM_WIND_CHANCE_SCALE }
-    clamp_temp_variable = { var = chem_wind_against_chance min = 0 max = @CHEM_WIND_CHANCE_SCALE }
-    clamp_temp_variable = { var = chem_wind_strong_favor_chance min = 0 max = @CHEM_WIND_CHANCE_SCALE }
+    clamp_temp_variable = { var = chem_wind_favor_chance min = 0 max = constant:chem_wind.core.chance_scale }
+    clamp_temp_variable = { var = chem_wind_against_chance min = 0 max = constant:chem_wind.core.chance_scale }
+    clamp_temp_variable = { var = chem_wind_strong_favor_chance min = 0 max = constant:chem_wind.core.chance_scale }
 
-    set_temp_variable = { var = chem_wind_state_roll value = @CHEM_WIND_STATE_NEUTRAL }
-    set_temp_variable = { var = chem_wind_positive_mult value = @CHEM_WIND_POSITIVE_NEUTRAL_MULT }
-    set_temp_variable = { var = chem_wind_negative_mult value = @CHEM_WIND_NEGATIVE_NEUTRAL_MULT }
+    set_temp_variable = { var = chem_wind_state_roll value = constant:chem_wind_state.neutral }
+    set_temp_variable = { var = chem_wind_positive_mult value = constant:chem_wind.mult.positive_neutral }
+    set_temp_variable = { var = chem_wind_negative_mult value = constant:chem_wind.mult.negative_neutral }
     set_temp_variable_to_random = { var = chem_wind_roll }
-    multiply_temp_variable = { var = chem_wind_roll value = @CHEM_WIND_CHANCE_SCALE }
+    multiply_temp_variable = { var = chem_wind_roll value = constant:chem_wind.core.chance_scale }
     set_temp_variable = { var = chem_wind_threshold_strong value = chem_wind_strong_favor_chance }
     set_temp_variable = { var = chem_wind_threshold_favor value = chem_wind_threshold_strong }
     add_to_temp_variable = { var = chem_wind_threshold_favor value = chem_wind_favor_chance }
@@ -359,21 +215,21 @@ chem_roll_wind_state = {
     add_to_temp_variable = { var = chem_wind_threshold_against value = chem_wind_against_chance }
     if = {
         limit = { check_variable = { var = chem_wind_roll value = chem_wind_threshold_strong compare = less_than } }
-        set_temp_variable = { var = chem_wind_state_roll value = @CHEM_WIND_STATE_STRONG_FAVOR }
-        set_temp_variable = { var = chem_wind_positive_mult value = @CHEM_WIND_POSITIVE_STRONG_FAVOR_MULT }
-        set_temp_variable = { var = chem_wind_negative_mult value = @CHEM_WIND_NEGATIVE_STRONG_FAVOR_MULT }
+        set_temp_variable = { var = chem_wind_state_roll value = constant:chem_wind_state.strong_favor }
+        set_temp_variable = { var = chem_wind_positive_mult value = constant:chem_wind.mult.positive_strong_favor }
+        set_temp_variable = { var = chem_wind_negative_mult value = constant:chem_wind.mult.negative_strong_favor }
     }
     else_if = {
         limit = { check_variable = { var = chem_wind_roll value = chem_wind_threshold_favor compare = less_than } }
-        set_temp_variable = { var = chem_wind_state_roll value = @CHEM_WIND_STATE_FAVOR }
-        set_temp_variable = { var = chem_wind_positive_mult value = @CHEM_WIND_POSITIVE_FAVOR_MULT }
-        set_temp_variable = { var = chem_wind_negative_mult value = @CHEM_WIND_NEGATIVE_FAVOR_MULT }
+        set_temp_variable = { var = chem_wind_state_roll value = constant:chem_wind_state.favor }
+        set_temp_variable = { var = chem_wind_positive_mult value = constant:chem_wind.mult.positive_favor }
+        set_temp_variable = { var = chem_wind_negative_mult value = constant:chem_wind.mult.negative_favor }
     }
     else_if = {
         limit = { check_variable = { var = chem_wind_roll value = chem_wind_threshold_against compare = less_than } }
-        set_temp_variable = { var = chem_wind_state_roll value = @CHEM_WIND_STATE_AGAINST }
-        set_temp_variable = { var = chem_wind_positive_mult value = @CHEM_WIND_POSITIVE_AGAINST_MULT }
-        set_temp_variable = { var = chem_wind_negative_mult value = @CHEM_WIND_NEGATIVE_AGAINST_MULT }
+        set_temp_variable = { var = chem_wind_state_roll value = constant:chem_wind_state.against }
+        set_temp_variable = { var = chem_wind_positive_mult value = constant:chem_wind.mult.positive_against }
+        set_temp_variable = { var = chem_wind_negative_mult value = constant:chem_wind.mult.negative_against }
     }
     set_variable = { var = chem_wind_state value = chem_wind_state_roll }
     set_variable = { var = chem_wind_positive_mult_value value = chem_wind_positive_mult }
@@ -391,11 +247,11 @@ chem_roll_wind_state_weekly = {
         add_to_variable = { var = chem_wind_days_since_roll value = 1 }
     }
     else = {
-        set_variable = { var = chem_wind_days_since_roll value = @CHEM_WIND_FORECAST_DAYS }
+        set_variable = { var = chem_wind_days_since_roll value = constant:chem_wind.core.forecast_days }
         OWNER = { set_variable = { var = chem_wind_days_since_roll value = ROOT.chem_wind_days_since_roll } }
     }
     if = {
-        limit = { check_variable = { var = chem_wind_days_since_roll value = @CHEM_WIND_FORECAST_DAYS compare = greater_than_or_equals } }
+        limit = { check_variable = { var = chem_wind_days_since_roll value = constant:chem_wind.core.forecast_days compare = greater_than_or_equals } }
         chem_roll_wind_state = yes
         set_variable = { var = chem_wind_days_since_roll value = 0 }
         OWNER = { set_variable = { var = chem_wind_days_since_roll value = ROOT.chem_wind_days_since_roll } }
@@ -431,28 +287,28 @@ chem_use_wind_forecast = {
 chem_apply_wind_miscalculation = {
     set_temp_variable = { var = chem_wind_miscalc_happened value = 0 }
     if = {
-        limit = { check_variable = { var = chem_wind_state_roll value = @CHEM_WIND_STATE_AGAINST compare = greater_than } }
-        set_temp_variable = { var = chem_wind_miscalc_chance value = @CHEM_WIND_MISCALC_BASE }
+        limit = { check_variable = { var = chem_wind_state_roll value = constant:chem_wind_state.against compare = greater_than } }
+        set_temp_variable = { var = chem_wind_miscalc_chance value = constant:chem_wind.miscalc.base }
         if = {
             limit = { OWNER = { has_tech = upper_air_soundings } }
-            set_temp_variable = { var = chem_wind_miscalc_chance value = @CHEM_WIND_MISCALC_SOUNDINGS }
+            set_temp_variable = { var = chem_wind_miscalc_chance value = constant:chem_wind.miscalc.soundings }
         }
         else_if = {
             limit = { OWNER = { has_tech = meteorological_stations } }
-            set_temp_variable = { var = chem_wind_miscalc_chance value = @CHEM_WIND_MISCALC_STATIONS }
+            set_temp_variable = { var = chem_wind_miscalc_chance value = constant:chem_wind.miscalc.stations }
         }
         else_if = {
             limit = { OWNER = { has_tech = portable_anemometer } }
-            set_temp_variable = { var = chem_wind_miscalc_chance value = @CHEM_WIND_MISCALC_VANES }
+            set_temp_variable = { var = chem_wind_miscalc_chance value = constant:chem_wind.miscalc.vanes }
         }
         clamp_temp_variable = { var = chem_wind_miscalc_chance min = 0 max = 1 }
         set_temp_variable_to_random = { var = chem_wind_miscalc_roll }
         if = {
             limit = { check_variable = { var = chem_wind_miscalc_roll value = chem_wind_miscalc_chance compare = less_than } }
             set_temp_variable = { var = chem_wind_miscalc_happened value = 1 }
-            set_temp_variable = { var = chem_wind_state_roll value = @CHEM_WIND_STATE_AGAINST }
-            set_temp_variable = { var = chem_wind_positive_mult value = @CHEM_WIND_POSITIVE_AGAINST_MULT }
-            set_temp_variable = { var = chem_wind_negative_mult value = @CHEM_WIND_NEGATIVE_AGAINST_MULT }
+            set_temp_variable = { var = chem_wind_state_roll value = constant:chem_wind_state.against }
+            set_temp_variable = { var = chem_wind_positive_mult value = constant:chem_wind.mult.positive_against }
+            set_temp_variable = { var = chem_wind_negative_mult value = constant:chem_wind.mult.negative_against }
             set_variable = { var = chem_wind_state value = chem_wind_state_roll }
             set_variable = { var = chem_wind_positive_mult_value value = chem_wind_positive_mult }
             set_variable = { var = chem_wind_negative_mult_value value = chem_wind_negative_mult }
@@ -480,12 +336,54 @@ chem_apply_wind_preview_modifiers = {
     multiply_temp_variable = { var = chem_war_support_preview value = chem_wind_negative_mult_value }
 }
 
+chem_apply_chaos_warfare_doctrine_preview_bonus = {
+    if = {
+        limit = { OWNER = { has_doctrine = chaos_warfare } }
+        multiply_temp_variable = { var = chem_offense_total value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_breakthrough_total value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_defense_total value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_org_damage_total value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_str_damage_total value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_war_support_total value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+    }
+    if = {
+        limit = { OWNER = { has_idea = chemical_first_use_surprise_idea } }
+        multiply_temp_variable = { var = chem_offense_total value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_breakthrough_total value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_defense_total value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_org_damage_total value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_str_damage_total value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_war_support_total value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+    }
+}
+
+chem_apply_chaos_warfare_doctrine_final_bonus = {
+    if = {
+        limit = { OWNER = { has_doctrine = chaos_warfare } }
+        multiply_temp_variable = { var = chem_offense value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_breakthrough value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_defense value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_org_damage value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_str_damage value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+        multiply_temp_variable = { var = chem_war_support value = constant:chem_chaos_warfare_doctrine.cylinder_ability.mult }
+    }
+    if = {
+        limit = { OWNER = { has_idea = chemical_first_use_surprise_idea } }
+        multiply_temp_variable = { var = chem_offense value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_breakthrough value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_defense value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_org_damage value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_str_damage value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+        multiply_temp_variable = { var = chem_war_support value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
+    }
+}
+
 chem_apply_state_contamination = {
     set_temp_variable = { var = chem_current_day value = global.num_days }
-    set_temp_variable = { var = chem_max_strength value = @CHEM_STATE_MAX_STRENGTH_BASE }
-    multiply_temp_variable = { var = chem_max_strength value = @CHEM_STATE_STRENGTH_SCALE }
-    set_temp_variable = { var = chem_max_duration_days value = @CHEM_STATE_MAX_DURATION_DAYS_BASE }
-    multiply_temp_variable = { var = chem_max_duration_days value = @CHEM_STATE_DURATION_SCALE }
+    set_temp_variable = { var = chem_max_strength value = constant:chem_state.core.max_strength_base }
+    multiply_temp_variable = { var = chem_max_strength value = constant:chem_state.core.strength_scale }
+    set_temp_variable = { var = chem_max_duration_days value = constant:chem_state.core.max_duration_days_base }
+    multiply_temp_variable = { var = chem_max_duration_days value = constant:chem_state.core.duration_scale }
     round_temp_variable = chem_max_duration_days
     clamp_temp_variable = { var = chem_max_duration_days min = 1 max = 9999 }
 
@@ -508,22 +406,22 @@ chem_apply_state_contamination = {
     }
     set_variable = { var = chem_state_contamination_strength value = chem_new_strength }
     set_temp_variable = { var = chem_supply_effect value = chem_new_strength }
-    multiply_temp_variable = { var = chem_supply_effect value = @CHEM_STATE_SUPPLY_MULT }
+    multiply_temp_variable = { var = chem_supply_effect value = constant:chem_state.mult.supply }
     set_variable = { var = chem_state_contamination_supplies value = chem_supply_effect }
     set_temp_variable = { var = chem_supply_impact value = chem_new_strength }
-    multiply_temp_variable = { var = chem_supply_impact value = @CHEM_STATE_SUPPLY_IMPACT_MULT }
+    multiply_temp_variable = { var = chem_supply_impact value = constant:chem_state.mult.supply_impact }
     set_variable = { var = chem_state_contamination_supply_impact value = chem_supply_impact }
     set_temp_variable = { var = chem_speed_effect value = chem_new_strength }
-    multiply_temp_variable = { var = chem_speed_effect value = @CHEM_STATE_SPEED_MULT }
+    multiply_temp_variable = { var = chem_speed_effect value = constant:chem_state.mult.speed }
     set_variable = { var = chem_state_contamination_speed value = chem_speed_effect }
     set_temp_variable = { var = chem_truck_attrition value = chem_new_strength }
-    multiply_temp_variable = { var = chem_truck_attrition value = @CHEM_STATE_TRUCK_ATTRITION_MULT }
+    multiply_temp_variable = { var = chem_truck_attrition value = constant:chem_state.mult.truck_attrition }
     set_variable = { var = chem_state_contamination_truck_attrition value = chem_truck_attrition }
     set_temp_variable = { var = chem_attack_effect value = chem_new_strength }
-    multiply_temp_variable = { var = chem_attack_effect value = @CHEM_STATE_ATTACK_MULT }
+    multiply_temp_variable = { var = chem_attack_effect value = constant:chem_state.mult.attack }
     set_variable = { var = chem_state_contamination_attack value = chem_attack_effect }
     set_temp_variable = { var = chem_breakthrough_effect value = chem_new_strength }
-    multiply_temp_variable = { var = chem_breakthrough_effect value = @CHEM_STATE_BREAKTHROUGH_MULT }
+    multiply_temp_variable = { var = chem_breakthrough_effect value = constant:chem_state.mult.breakthrough }
     set_variable = { var = chem_state_contamination_breakthrough value = chem_breakthrough_effect }
 
     set_temp_variable = { var = chem_new_expiry value = chem_existing_expiry }
@@ -546,133 +444,133 @@ chem_apply_state_contamination = {
 }
 
 chem_apply_state_contamination_doomsday = {
-	set_temp_variable = { var = chem_current_day value = global.num_days }
-	set_temp_variable = { var = chem_max_strength value = @CHEM_STATE_MAX_STRENGTH_BASE }
-	multiply_temp_variable = { var = chem_max_strength value = @CHEM_STATE_STRENGTH_SCALE }
-	set_temp_variable = { var = chem_max_duration_days value = @CHEM_DOOM_STATE_MAX_DURATION_DAYS_BASE }
-	multiply_temp_variable = { var = chem_max_duration_days value = @CHEM_DOOM_STATE_MAX_DURATION_SCALE }
-	round_temp_variable = chem_max_duration_days
-	clamp_temp_variable = { var = chem_max_duration_days min = 1 max = 9999 }
+    set_temp_variable = { var = chem_current_day value = global.num_days }
+    set_temp_variable = { var = chem_max_strength value = constant:chem_state.core.max_strength_base }
+    multiply_temp_variable = { var = chem_max_strength value = constant:chem_state.core.strength_scale }
+    set_temp_variable = { var = chem_max_duration_days value = constant:chem_doom.base.state_max_duration_days }
+    multiply_temp_variable = { var = chem_max_duration_days value = constant:chem_doom.scale.state_max_duration }
+    round_temp_variable = chem_max_duration_days
+    clamp_temp_variable = { var = chem_max_duration_days min = 1 max = 9999 }
 
-	set_temp_variable = { var = chem_existing_strength value = chem_state_contamination_strength }
-	set_temp_variable = { var = chem_existing_expiry value = chem_state_contamination_expiry_day }
-	if = {
-		limit = { check_variable = { var = chem_existing_expiry value = chem_current_day compare = less_than_or_equals } }
-		set_temp_variable = { var = chem_existing_strength value = 0 }
-		set_temp_variable = { var = chem_existing_expiry value = chem_current_day }
-	}
-	set_temp_variable = { var = chem_new_strength value = chem_existing_strength }
-	add_to_temp_variable = { var = chem_new_strength value = chem_dose_each }
-	if = {
-		limit = { check_variable = { var = chem_new_strength value = 0 compare = greater_than } }
-		set_temp_variable = { var = chem_new_strength value = 0 }
-	}
-	if = {
-		limit = { check_variable = { var = chem_new_strength value = chem_max_strength compare = less_than } }
-		set_temp_variable = { var = chem_new_strength value = chem_max_strength }
-	}
-	set_variable = { var = chem_state_contamination_strength value = chem_new_strength }
-	set_temp_variable = { var = chem_supply_effect value = chem_new_strength }
-	multiply_temp_variable = { var = chem_supply_effect value = @CHEM_STATE_SUPPLY_MULT }
-	set_variable = { var = chem_state_contamination_supplies value = chem_supply_effect }
-	set_temp_variable = { var = chem_supply_impact value = chem_new_strength }
-	multiply_temp_variable = { var = chem_supply_impact value = @CHEM_STATE_SUPPLY_IMPACT_MULT }
-	set_variable = { var = chem_state_contamination_supply_impact value = chem_supply_impact }
-	set_temp_variable = { var = chem_speed_effect value = chem_new_strength }
-	multiply_temp_variable = { var = chem_speed_effect value = @CHEM_STATE_SPEED_MULT }
-	set_variable = { var = chem_state_contamination_speed value = chem_speed_effect }
-	set_temp_variable = { var = chem_truck_attrition value = chem_new_strength }
-	multiply_temp_variable = { var = chem_truck_attrition value = @CHEM_STATE_TRUCK_ATTRITION_MULT }
-	set_variable = { var = chem_state_contamination_truck_attrition value = chem_truck_attrition }
-	set_temp_variable = { var = chem_attack_effect value = chem_new_strength }
-	multiply_temp_variable = { var = chem_attack_effect value = @CHEM_STATE_ATTACK_MULT }
-	set_variable = { var = chem_state_contamination_attack value = chem_attack_effect }
-	set_temp_variable = { var = chem_breakthrough_effect value = chem_new_strength }
-	multiply_temp_variable = { var = chem_breakthrough_effect value = @CHEM_STATE_BREAKTHROUGH_MULT }
-	set_variable = { var = chem_state_contamination_breakthrough value = chem_breakthrough_effect }
+    set_temp_variable = { var = chem_existing_strength value = chem_state_contamination_strength }
+    set_temp_variable = { var = chem_existing_expiry value = chem_state_contamination_expiry_day }
+    if = {
+        limit = { check_variable = { var = chem_existing_expiry value = chem_current_day compare = less_than_or_equals } }
+        set_temp_variable = { var = chem_existing_strength value = 0 }
+        set_temp_variable = { var = chem_existing_expiry value = chem_current_day }
+    }
+    set_temp_variable = { var = chem_new_strength value = chem_existing_strength }
+    add_to_temp_variable = { var = chem_new_strength value = chem_dose_each }
+    if = {
+        limit = { check_variable = { var = chem_new_strength value = 0 compare = greater_than } }
+        set_temp_variable = { var = chem_new_strength value = 0 }
+    }
+    if = {
+        limit = { check_variable = { var = chem_new_strength value = chem_max_strength compare = less_than } }
+        set_temp_variable = { var = chem_new_strength value = chem_max_strength }
+    }
+    set_variable = { var = chem_state_contamination_strength value = chem_new_strength }
+    set_temp_variable = { var = chem_supply_effect value = chem_new_strength }
+    multiply_temp_variable = { var = chem_supply_effect value = constant:chem_state.mult.supply }
+    set_variable = { var = chem_state_contamination_supplies value = chem_supply_effect }
+    set_temp_variable = { var = chem_supply_impact value = chem_new_strength }
+    multiply_temp_variable = { var = chem_supply_impact value = constant:chem_state.mult.supply_impact }
+    set_variable = { var = chem_state_contamination_supply_impact value = chem_supply_impact }
+    set_temp_variable = { var = chem_speed_effect value = chem_new_strength }
+    multiply_temp_variable = { var = chem_speed_effect value = constant:chem_state.mult.speed }
+    set_variable = { var = chem_state_contamination_speed value = chem_speed_effect }
+    set_temp_variable = { var = chem_truck_attrition value = chem_new_strength }
+    multiply_temp_variable = { var = chem_truck_attrition value = constant:chem_state.mult.truck_attrition }
+    set_variable = { var = chem_state_contamination_truck_attrition value = chem_truck_attrition }
+    set_temp_variable = { var = chem_attack_effect value = chem_new_strength }
+    multiply_temp_variable = { var = chem_attack_effect value = constant:chem_state.mult.attack }
+    set_variable = { var = chem_state_contamination_attack value = chem_attack_effect }
+    set_temp_variable = { var = chem_breakthrough_effect value = chem_new_strength }
+    multiply_temp_variable = { var = chem_breakthrough_effect value = constant:chem_state.mult.breakthrough }
+    set_variable = { var = chem_state_contamination_breakthrough value = chem_breakthrough_effect }
 
-	set_temp_variable = { var = chem_new_expiry value = chem_existing_expiry }
-	add_to_temp_variable = { var = chem_new_expiry value = chem_state_duration_add }
-	set_temp_variable = { var = chem_expiry_cap value = chem_current_day }
-	add_to_temp_variable = { var = chem_expiry_cap value = chem_max_duration_days }
-	if = {
-		limit = { check_variable = { var = chem_new_expiry value = chem_expiry_cap compare = greater_than } }
-		set_temp_variable = { var = chem_new_expiry value = chem_expiry_cap }
-	}
-	set_variable = { var = chem_state_contamination_expiry_day value = chem_new_expiry }
-	set_temp_variable = { var = chem_days_left value = chem_new_expiry }
-	set_temp_variable = { var = chem_current_day_neg value = chem_current_day }
-	multiply_temp_variable = { var = chem_current_day_neg value = -1 }
-	add_to_temp_variable = { var = chem_days_left value = chem_current_day_neg }
-	clamp_temp_variable = { var = chem_days_left min = 1 max = chem_max_duration_days }
-	add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
-	force_update_dynamic_modifier = yes
+    set_temp_variable = { var = chem_new_expiry value = chem_existing_expiry }
+    add_to_temp_variable = { var = chem_new_expiry value = chem_state_duration_add }
+    set_temp_variable = { var = chem_expiry_cap value = chem_current_day }
+    add_to_temp_variable = { var = chem_expiry_cap value = chem_max_duration_days }
+    if = {
+        limit = { check_variable = { var = chem_new_expiry value = chem_expiry_cap compare = greater_than } }
+        set_temp_variable = { var = chem_new_expiry value = chem_expiry_cap }
+    }
+    set_variable = { var = chem_state_contamination_expiry_day value = chem_new_expiry }
+    set_temp_variable = { var = chem_days_left value = chem_new_expiry }
+    set_temp_variable = { var = chem_current_day_neg value = chem_current_day }
+    multiply_temp_variable = { var = chem_current_day_neg value = -1 }
+    add_to_temp_variable = { var = chem_days_left value = chem_current_day_neg }
+    clamp_temp_variable = { var = chem_days_left min = 1 max = chem_max_duration_days }
+    add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
+    force_update_dynamic_modifier = yes
 }
 
 chem_unleash_stockpile_doomsday = {
-	set_temp_variable = { var = chem_doom_stock_chlorine value = num_equipment@chemical_chlorine_payload_cylinder_1 }
-	set_temp_variable = { var = chem_doom_stock_phosgene value = num_equipment@chemical_phosgene_payload_cylinder_1 }
-	set_temp_variable = { var = chem_doom_stock_mustard value = num_equipment@chemical_mustard_payload_cylinder_1 }
+    set_temp_variable = { var = chem_doom_stock_chlorine value = num_equipment@chemical_chlorine_payload_cylinder_1 }
+    set_temp_variable = { var = chem_doom_stock_phosgene value = num_equipment@chemical_phosgene_payload_cylinder_1 }
+    set_temp_variable = { var = chem_doom_stock_mustard value = num_equipment@chemical_mustard_payload_cylinder_1 }
     set_temp_variable = { var = chem_doom_stock_lewisite value = num_equipment@chemical_lewisite_payload_cylinder_1 }
 
     set_temp_variable = { var = chem_doom_points_acute value = 0 }
     set_temp_variable = { var = chem_doom_points_persist value = 0 }
 
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_chlorine }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_ACUTE_WEIGHT_CHLORINE }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.acute_weight.chlorine }
     add_to_temp_variable = { var = chem_doom_points_acute value = chem_doom_tmp }
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_phosgene }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_ACUTE_WEIGHT_PHOSGENE }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.acute_weight.phosgene }
     add_to_temp_variable = { var = chem_doom_points_acute value = chem_doom_tmp }
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_mustard }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_ACUTE_WEIGHT_MUSTARD }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.acute_weight.mustard }
     add_to_temp_variable = { var = chem_doom_points_acute value = chem_doom_tmp }
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_lewisite }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_ACUTE_WEIGHT_LEWISITE }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.acute_weight.lewisite }
     add_to_temp_variable = { var = chem_doom_points_acute value = chem_doom_tmp }
 
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_chlorine }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_PERSIST_WEIGHT_CHLORINE }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.persist_weight.chlorine }
     add_to_temp_variable = { var = chem_doom_points_persist value = chem_doom_tmp }
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_phosgene }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_PERSIST_WEIGHT_PHOSGENE }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.persist_weight.phosgene }
     add_to_temp_variable = { var = chem_doom_points_persist value = chem_doom_tmp }
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_mustard }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_PERSIST_WEIGHT_MUSTARD }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.persist_weight.mustard }
     add_to_temp_variable = { var = chem_doom_points_persist value = chem_doom_tmp }
     set_temp_variable = { var = chem_doom_tmp value = chem_doom_stock_lewisite }
-    multiply_temp_variable = { var = chem_doom_tmp value = @CHEM_DOOM_PERSIST_WEIGHT_LEWISITE }
+    multiply_temp_variable = { var = chem_doom_tmp value = constant:chem_doom.persist_weight.lewisite }
     add_to_temp_variable = { var = chem_doom_points_persist value = chem_doom_tmp }
 
     set_temp_variable = { var = chem_doom_org_damage_ratio value = chem_doom_points_acute }
-    divide_temp_variable = { var = chem_doom_org_damage_ratio value = @CHEM_DOOM_ACUTE_ORG_SCALE }
-    clamp_temp_variable = { var = chem_doom_org_damage_ratio min = 0 max = @CHEM_DOOM_ORG_DAMAGE_MAX }
+    divide_temp_variable = { var = chem_doom_org_damage_ratio value = constant:chem_doom.scale.acute_org }
+    clamp_temp_variable = { var = chem_doom_org_damage_ratio min = 0 max = constant:chem_doom.cap.org_damage_max }
     set_temp_variable = { var = chem_doom_str_damage_ratio value = chem_doom_points_acute }
-    divide_temp_variable = { var = chem_doom_str_damage_ratio value = @CHEM_DOOM_ACUTE_STR_SCALE }
-    clamp_temp_variable = { var = chem_doom_str_damage_ratio min = 0 max = @CHEM_DOOM_STR_DAMAGE_MAX }
+    divide_temp_variable = { var = chem_doom_str_damage_ratio value = constant:chem_doom.scale.acute_str }
+    clamp_temp_variable = { var = chem_doom_str_damage_ratio min = 0 max = constant:chem_doom.cap.str_damage_max }
 
     set_temp_variable = { var = chem_doom_state_dose_each value = chem_doom_points_acute }
-    divide_temp_variable = { var = chem_doom_state_dose_each value = @CHEM_DOOM_STATE_DOSE_SCALE }
-    clamp_temp_variable = { var = chem_doom_state_dose_each min = 0 max = @CHEM_DOOM_STATE_DOSE_MAX }
+    divide_temp_variable = { var = chem_doom_state_dose_each value = constant:chem_doom.scale.state_dose }
+    clamp_temp_variable = { var = chem_doom_state_dose_each min = 0 max = constant:chem_doom.cap.state_dose_max }
     multiply_temp_variable = { var = chem_doom_state_dose_each value = -1 }
 
     set_temp_variable = { var = chem_doom_state_duration_add value = chem_doom_points_persist }
-    divide_temp_variable = { var = chem_doom_state_duration_add value = @CHEM_DOOM_STATE_DURATION_SCALE }
+    divide_temp_variable = { var = chem_doom_state_duration_add value = constant:chem_doom.scale.state_duration }
     round_temp_variable = chem_doom_state_duration_add
-    clamp_temp_variable = { var = chem_doom_state_duration_add min = 1 max = @CHEM_DOOM_STATE_DURATION_ADD_MAX }
+    clamp_temp_variable = { var = chem_doom_state_duration_add min = 1 max = constant:chem_doom.cap.state_duration_add_max }
 
-	every_controlled_state = {
-		damage_units = {
-			state = THIS
-			org_damage = chem_doom_org_damage_ratio
+    every_controlled_state = {
+        damage_units = {
+            state = THIS
+            org_damage = chem_doom_org_damage_ratio
             str_damage = chem_doom_str_damage_ratio
             ratio = yes
             army = yes
-		}
-		set_temp_variable = { var = chem_dose_each value = chem_doom_state_dose_each }
-		set_temp_variable = { var = chem_state_duration_add value = chem_doom_state_duration_add }
-		chem_apply_state_contamination_doomsday = yes
-	}
+        }
+        set_temp_variable = { var = chem_dose_each value = chem_doom_state_dose_each }
+        set_temp_variable = { var = chem_state_duration_add value = chem_doom_state_duration_add }
+        chem_apply_state_contamination_doomsday = yes
+    }
 
     set_temp_variable = { var = chem_doom_remove value = chem_doom_stock_chlorine }
     multiply_temp_variable = { var = chem_doom_remove value = -1 }
@@ -695,30 +593,33 @@ chem_apply_state_dispersal = {
     set_temp_variable = { var = chem_state_duration_add value = 0 }
     if = {
         limit = { has_trait = chemical_cylinder_active_chlorine }
-        set_temp_variable = { var = chem_state_dose_per_div value = @CHEM_STATE_CHLORINE_DOSE_PER_DIV }
-        set_temp_variable = { var = chem_state_duration_add value = @CHEM_STATE_CHLORINE_DURATION_ADD }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.chlorine }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.chlorine }
         # log = "CHEM_STATE: type=chlorine"
     }
     else_if = {
         limit = { has_trait = chemical_cylinder_active_phosgene }
-        set_temp_variable = { var = chem_state_dose_per_div value = @CHEM_STATE_PHOSGENE_DOSE_PER_DIV }
-        set_temp_variable = { var = chem_state_duration_add value = @CHEM_STATE_PHOSGENE_DURATION_ADD }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.phosgene }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.phosgene }
         # log = "CHEM_STATE: type=phosgene"
     }
     else_if = {
         limit = { has_trait = chemical_cylinder_active_mustard }
-        set_temp_variable = { var = chem_state_dose_per_div value = @CHEM_STATE_MUSTARD_DOSE_PER_DIV }
-        set_temp_variable = { var = chem_state_duration_add value = @CHEM_STATE_MUSTARD_DURATION_ADD }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.mustard }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.mustard }
         # log = "CHEM_STATE: type=mustard"
     }
     else_if = {
         limit = { has_trait = chemical_cylinder_active_lewisite }
-        set_temp_variable = { var = chem_state_dose_per_div value = @CHEM_STATE_LEWISITE_DOSE_PER_DIV }
-        set_temp_variable = { var = chem_state_duration_add value = @CHEM_STATE_LEWISITE_DURATION_ADD }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.lewisite }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.lewisite }
         # log = "CHEM_STATE: type=lewisite"
     }
-    multiply_temp_variable = { var = chem_state_dose_per_div value = @CHEM_STATE_STRENGTH_SCALE }
-    multiply_temp_variable = { var = chem_state_duration_add value = @CHEM_STATE_DURATION_SCALE }
+    chem_set_livens_integration_values = yes
+    multiply_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.core.strength_scale }
+    multiply_temp_variable = { var = chem_state_dose_per_div value = chem_livens_state_dose_mult }
+    multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_state.core.duration_scale }
+    multiply_temp_variable = { var = chem_state_duration_add value = chem_livens_state_duration_mult }
     round_temp_variable = chem_state_duration_add
     if = {
         limit = { check_variable = { var = chem_state_duration_add value = 0 compare = greater_than } }
@@ -796,7 +697,7 @@ chem_apply_state_dispersal_from_controlled_states = {
 }
 
 chem_prepare_weather_terrain_penalties = {
-    set_temp_variable = { var = chem_duration_days value = @CHEM_ABILITY_DURATION_DAYS }
+    set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
     set_temp_variable = { var = chem_combined_offense value = 0 }
     set_temp_variable = { var = chem_combined_breakthrough value = 0 }
     set_temp_variable = { var = chem_combined_org_damage value = 0 }
@@ -817,32 +718,32 @@ chem_apply_weather_ability_modifiers = {
         limit = { check_variable = { var = chem_cold_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_cold_ratio value = chem_cold_units }
         divide_temp_variable = { var = chem_cold_ratio value = chem_total_units }
-        set_temp_variable = { var = chem_weather_offense value = @CHEM_WEATHER_BLIZZARD_OFFENSE }
+        set_temp_variable = { var = chem_weather_offense value = constant:chem_weather_effect.blizzard.offense }
         multiply_temp_variable = { var = chem_weather_offense value = chem_ratio }
         multiply_temp_variable = { var = chem_weather_offense value = chem_cold_ratio }
-        set_temp_variable = { var = chem_weather_breakthrough value = @CHEM_WEATHER_BLIZZARD_BREAKTHROUGH }
+        set_temp_variable = { var = chem_weather_breakthrough value = constant:chem_weather_effect.blizzard.breakthrough }
         multiply_temp_variable = { var = chem_weather_breakthrough value = chem_ratio }
         multiply_temp_variable = { var = chem_weather_breakthrough value = chem_cold_ratio }
-        set_temp_variable = { var = chem_weather_org_damage value = @CHEM_WEATHER_BLIZZARD_ORG_DAMAGE }
+        set_temp_variable = { var = chem_weather_org_damage value = constant:chem_weather_effect.blizzard.org_damage }
         multiply_temp_variable = { var = chem_weather_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_weather_org_damage value = chem_cold_ratio }
         add_to_temp_variable = { var = chem_combined_offense value = chem_weather_offense }
         add_to_temp_variable = { var = chem_combined_breakthrough value = chem_weather_breakthrough }
         add_to_temp_variable = { var = chem_combined_org_damage value = chem_weather_org_damage }
         set_temp_variable = { var = chem_extreme_cold_ratio value = chem_cold_ratio }
-        set_temp_variable = { var = chem_extreme_threshold value = @CHEM_WEATHER_EXTREME_THRESHOLD }
+        set_temp_variable = { var = chem_extreme_threshold value = constant:chem_weather_threshold.extreme }
         multiply_temp_variable = { var = chem_extreme_threshold value = -1 }
         add_to_temp_variable = { var = chem_extreme_cold_ratio value = chem_extreme_threshold }
         clamp_temp_variable = { var = chem_extreme_cold_ratio min = 0 max = 1 }
         if = {
             limit = { check_variable = { var = chem_extreme_cold_ratio value = 0 compare = greater_than } }
-            set_temp_variable = { var = chem_weather_offense value = @CHEM_WEATHER_EXTREME_COLD_OFFENSE }
+            set_temp_variable = { var = chem_weather_offense value = constant:chem_weather_effect.extreme_cold.offense }
             multiply_temp_variable = { var = chem_weather_offense value = chem_ratio }
             multiply_temp_variable = { var = chem_weather_offense value = chem_extreme_cold_ratio }
-            set_temp_variable = { var = chem_weather_breakthrough value = @CHEM_WEATHER_EXTREME_COLD_BREAKTHROUGH }
+            set_temp_variable = { var = chem_weather_breakthrough value = constant:chem_weather_effect.extreme_cold.breakthrough }
             multiply_temp_variable = { var = chem_weather_breakthrough value = chem_ratio }
             multiply_temp_variable = { var = chem_weather_breakthrough value = chem_extreme_cold_ratio }
-            set_temp_variable = { var = chem_weather_org_damage value = @CHEM_WEATHER_EXTREME_COLD_ORG_DAMAGE }
+            set_temp_variable = { var = chem_weather_org_damage value = constant:chem_weather_effect.extreme_cold.org_damage }
             multiply_temp_variable = { var = chem_weather_org_damage value = chem_ratio }
             multiply_temp_variable = { var = chem_weather_org_damage value = chem_extreme_cold_ratio }
             add_to_temp_variable = { var = chem_combined_offense value = chem_weather_offense }
@@ -856,32 +757,32 @@ chem_apply_weather_ability_modifiers = {
         limit = { check_variable = { var = chem_hot_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_hot_ratio value = chem_hot_units }
         divide_temp_variable = { var = chem_hot_ratio value = chem_total_units }
-        set_temp_variable = { var = chem_weather_offense value = @CHEM_WEATHER_SANDSTORM_OFFENSE }
+        set_temp_variable = { var = chem_weather_offense value = constant:chem_weather_effect.sandstorm.offense }
         multiply_temp_variable = { var = chem_weather_offense value = chem_ratio }
         multiply_temp_variable = { var = chem_weather_offense value = chem_hot_ratio }
-        set_temp_variable = { var = chem_weather_str_damage value = @CHEM_WEATHER_SANDSTORM_STR_DAMAGE }
+        set_temp_variable = { var = chem_weather_str_damage value = constant:chem_weather_effect.sandstorm.str_damage }
         multiply_temp_variable = { var = chem_weather_str_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_weather_str_damage value = chem_hot_ratio }
-        set_temp_variable = { var = chem_weather_org_damage value = @CHEM_WEATHER_SANDSTORM_ORG_DAMAGE }
+        set_temp_variable = { var = chem_weather_org_damage value = constant:chem_weather_effect.sandstorm.org_damage }
         multiply_temp_variable = { var = chem_weather_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_weather_org_damage value = chem_hot_ratio }
         add_to_temp_variable = { var = chem_combined_offense value = chem_weather_offense }
         add_to_temp_variable = { var = chem_combined_org_damage value = chem_weather_org_damage }
         add_to_temp_variable = { var = chem_combined_str_damage value = chem_weather_str_damage }
         set_temp_variable = { var = chem_extreme_hot_ratio value = chem_hot_ratio }
-        set_temp_variable = { var = chem_extreme_threshold value = @CHEM_WEATHER_EXTREME_THRESHOLD }
+        set_temp_variable = { var = chem_extreme_threshold value = constant:chem_weather_threshold.extreme }
         multiply_temp_variable = { var = chem_extreme_threshold value = -1 }
         add_to_temp_variable = { var = chem_extreme_hot_ratio value = chem_extreme_threshold }
         clamp_temp_variable = { var = chem_extreme_hot_ratio min = 0 max = 1 }
         if = {
             limit = { check_variable = { var = chem_extreme_hot_ratio value = 0 compare = greater_than } }
-            set_temp_variable = { var = chem_weather_offense value = @CHEM_WEATHER_EXTREME_HEAT_OFFENSE }
+            set_temp_variable = { var = chem_weather_offense value = constant:chem_weather_effect.extreme_heat.offense }
             multiply_temp_variable = { var = chem_weather_offense value = chem_ratio }
             multiply_temp_variable = { var = chem_weather_offense value = chem_extreme_hot_ratio }
-            set_temp_variable = { var = chem_weather_str_damage value = @CHEM_WEATHER_EXTREME_HEAT_STR_DAMAGE }
+            set_temp_variable = { var = chem_weather_str_damage value = constant:chem_weather_effect.extreme_heat.str_damage }
             multiply_temp_variable = { var = chem_weather_str_damage value = chem_ratio }
             multiply_temp_variable = { var = chem_weather_str_damage value = chem_extreme_hot_ratio }
-            set_temp_variable = { var = chem_weather_org_damage value = @CHEM_WEATHER_EXTREME_HEAT_ORG_DAMAGE }
+            set_temp_variable = { var = chem_weather_org_damage value = constant:chem_weather_effect.extreme_heat.org_damage }
             multiply_temp_variable = { var = chem_weather_org_damage value = chem_ratio }
             multiply_temp_variable = { var = chem_weather_org_damage value = chem_extreme_hot_ratio }
             add_to_temp_variable = { var = chem_combined_offense value = chem_weather_offense }
@@ -891,28 +792,8 @@ chem_apply_weather_ability_modifiers = {
     }
 }
 
-@CHEM_TERRAIN_WOODS_OFFENSE = -0.005
-@CHEM_TERRAIN_WOODS_BREAKTHROUGH = -0.005
-@CHEM_TERRAIN_WOODS_ORG_DAMAGE = 0.01
-
-@CHEM_TERRAIN_HILLS_BREAKTHROUGH = -0.006
-@CHEM_TERRAIN_HILLS_ORG_DAMAGE = 0.01
-
-@CHEM_TERRAIN_URBAN_ORG_DAMAGE = 0.012
-@CHEM_TERRAIN_URBAN_STR_DAMAGE = 0.015
-
-@CHEM_TERRAIN_MARSH_BREAKTHROUGH = -0.005
-@CHEM_TERRAIN_MARSH_ORG_DAMAGE = 0.01
-
-@CHEM_TERRAIN_PLAINS_OFFENSE = -0.004
-@CHEM_TERRAIN_PLAINS_BREAKTHROUGH = -0.004
-@CHEM_TERRAIN_PLAINS_ORG_DAMAGE = 0.008
-@CHEM_TERRAIN_PLAINS_STR_DAMAGE = 0.005
-
-@CHEM_TERRAIN_DESERT_OFFENSE = -0.005
-@CHEM_TERRAIN_DESERT_BREAKTHROUGH = -0.005
-@CHEM_TERRAIN_DESERT_ORG_DAMAGE = 0.01
-@CHEM_TERRAIN_DESERT_STR_DAMAGE = 0.008
+# Terrain adjustments are defined in `common/script_constants/chemical_warfare_constants.txt`
+# (see `chem_terrain_effect`).
 
 chem_apply_terrain_ability_modifiers = {
     set_temp_variable = { var = chem_total_combat_units value = num_units_in_combat }
@@ -932,16 +813,16 @@ chem_apply_terrain_ability_modifiers = {
         limit = { check_variable = { var = chem_terrain_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_terrain_ratio value = chem_terrain_units }
         divide_temp_variable = { var = chem_terrain_ratio value = chem_total_combat_units }
-        set_temp_variable = { var = chem_terrain_offense value = @CHEM_TERRAIN_PLAINS_OFFENSE }
+        set_temp_variable = { var = chem_terrain_offense value = constant:chem_terrain_effect.plains.offense }
         multiply_temp_variable = { var = chem_terrain_offense value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_offense value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_breakthrough value = @CHEM_TERRAIN_PLAINS_BREAKTHROUGH }
+        set_temp_variable = { var = chem_terrain_breakthrough value = constant:chem_terrain_effect.plains.breakthrough }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_org_damage value = @CHEM_TERRAIN_PLAINS_ORG_DAMAGE }
+        set_temp_variable = { var = chem_terrain_org_damage value = constant:chem_terrain_effect.plains.org_damage }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_str_damage value = @CHEM_TERRAIN_PLAINS_STR_DAMAGE }
+        set_temp_variable = { var = chem_terrain_str_damage value = constant:chem_terrain_effect.plains.str_damage }
         multiply_temp_variable = { var = chem_terrain_str_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_str_damage value = chem_terrain_ratio }
         add_to_temp_variable = { var = chem_combined_offense value = chem_terrain_offense }
@@ -959,16 +840,16 @@ chem_apply_terrain_ability_modifiers = {
         limit = { check_variable = { var = chem_terrain_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_terrain_ratio value = chem_terrain_units }
         divide_temp_variable = { var = chem_terrain_ratio value = chem_total_combat_units }
-        set_temp_variable = { var = chem_terrain_offense value = @CHEM_TERRAIN_DESERT_OFFENSE }
+        set_temp_variable = { var = chem_terrain_offense value = constant:chem_terrain_effect.desert.offense }
         multiply_temp_variable = { var = chem_terrain_offense value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_offense value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_breakthrough value = @CHEM_TERRAIN_DESERT_BREAKTHROUGH }
+        set_temp_variable = { var = chem_terrain_breakthrough value = constant:chem_terrain_effect.desert.breakthrough }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_org_damage value = @CHEM_TERRAIN_DESERT_ORG_DAMAGE }
+        set_temp_variable = { var = chem_terrain_org_damage value = constant:chem_terrain_effect.desert.org_damage }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_str_damage value = @CHEM_TERRAIN_DESERT_STR_DAMAGE }
+        set_temp_variable = { var = chem_terrain_str_damage value = constant:chem_terrain_effect.desert.str_damage }
         multiply_temp_variable = { var = chem_terrain_str_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_str_damage value = chem_terrain_ratio }
         add_to_temp_variable = { var = chem_combined_offense value = chem_terrain_offense }
@@ -990,13 +871,13 @@ chem_apply_terrain_ability_modifiers = {
         limit = { check_variable = { var = chem_terrain_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_terrain_ratio value = chem_terrain_units }
         divide_temp_variable = { var = chem_terrain_ratio value = chem_total_combat_units }
-        set_temp_variable = { var = chem_terrain_offense value = @CHEM_TERRAIN_WOODS_OFFENSE }
+        set_temp_variable = { var = chem_terrain_offense value = constant:chem_terrain_effect.woods.offense }
         multiply_temp_variable = { var = chem_terrain_offense value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_offense value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_breakthrough value = @CHEM_TERRAIN_WOODS_BREAKTHROUGH }
+        set_temp_variable = { var = chem_terrain_breakthrough value = constant:chem_terrain_effect.woods.breakthrough }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_org_damage value = @CHEM_TERRAIN_WOODS_ORG_DAMAGE }
+        set_temp_variable = { var = chem_terrain_org_damage value = constant:chem_terrain_effect.woods.org_damage }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_terrain_ratio }
         add_to_temp_variable = { var = chem_combined_offense value = chem_terrain_offense }
@@ -1017,10 +898,10 @@ chem_apply_terrain_ability_modifiers = {
         limit = { check_variable = { var = chem_terrain_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_terrain_ratio value = chem_terrain_units }
         divide_temp_variable = { var = chem_terrain_ratio value = chem_total_combat_units }
-        set_temp_variable = { var = chem_terrain_breakthrough value = @CHEM_TERRAIN_HILLS_BREAKTHROUGH }
+        set_temp_variable = { var = chem_terrain_breakthrough value = constant:chem_terrain_effect.hills.breakthrough }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_org_damage value = @CHEM_TERRAIN_HILLS_ORG_DAMAGE }
+        set_temp_variable = { var = chem_terrain_org_damage value = constant:chem_terrain_effect.hills.org_damage }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_terrain_ratio }
         add_to_temp_variable = { var = chem_combined_breakthrough value = chem_terrain_breakthrough }
@@ -1036,10 +917,10 @@ chem_apply_terrain_ability_modifiers = {
         limit = { check_variable = { var = chem_terrain_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_terrain_ratio value = chem_terrain_units }
         divide_temp_variable = { var = chem_terrain_ratio value = chem_total_combat_units }
-        set_temp_variable = { var = chem_terrain_org_damage value = @CHEM_TERRAIN_URBAN_ORG_DAMAGE }
+        set_temp_variable = { var = chem_terrain_org_damage value = constant:chem_terrain_effect.urban.org_damage }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_str_damage value = @CHEM_TERRAIN_URBAN_STR_DAMAGE }
+        set_temp_variable = { var = chem_terrain_str_damage value = constant:chem_terrain_effect.urban.str_damage }
         multiply_temp_variable = { var = chem_terrain_str_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_str_damage value = chem_terrain_ratio }
         add_to_temp_variable = { var = chem_combined_org_damage value = chem_terrain_org_damage }
@@ -1055,10 +936,10 @@ chem_apply_terrain_ability_modifiers = {
         limit = { check_variable = { var = chem_terrain_units value = 0 compare = greater_than } }
         set_temp_variable = { var = chem_terrain_ratio value = chem_terrain_units }
         divide_temp_variable = { var = chem_terrain_ratio value = chem_total_combat_units }
-        set_temp_variable = { var = chem_terrain_breakthrough value = @CHEM_TERRAIN_MARSH_BREAKTHROUGH }
+        set_temp_variable = { var = chem_terrain_breakthrough value = constant:chem_terrain_effect.marsh.breakthrough }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_breakthrough value = chem_terrain_ratio }
-        set_temp_variable = { var = chem_terrain_org_damage value = @CHEM_TERRAIN_MARSH_ORG_DAMAGE }
+        set_temp_variable = { var = chem_terrain_org_damage value = constant:chem_terrain_effect.marsh.org_damage }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_ratio }
         multiply_temp_variable = { var = chem_terrain_org_damage value = chem_terrain_ratio }
         add_to_temp_variable = { var = chem_combined_breakthrough value = chem_terrain_breakthrough }
@@ -1077,9 +958,8 @@ chem_apply_combined_weather_terrain_penalties = {
 }
 
 
-@CHEM_MASK_REDUCTION_BASIC = 0.25
-@CHEM_MASK_REDUCTION_IMPROVED = 0.5
-@CHEM_MASK_REDUCTION_ADVANCED = 0.75
+# Gas mask damage reductions are defined in `common/script_constants/chemical_warfare_constants.txt`
+# (see `chem_mask_reduction`).
 
 chem_apply_mask_mitigation = {
     if = {
@@ -1089,29 +969,54 @@ chem_apply_mask_mitigation = {
         if = {
             limit = { OWNER = { has_tech = advanced_gas_masks } }
             set_temp_variable = { var = chem_mask_org value = chem_org_damage }
-            multiply_temp_variable = { var = chem_mask_org value = @CHEM_MASK_REDUCTION_ADVANCED }
+            multiply_temp_variable = { var = chem_mask_org value = constant:chem_mask_reduction.advanced }
             multiply_temp_variable = { var = chem_mask_org value = -1 }
             set_temp_variable = { var = chem_mask_str value = chem_str_damage }
-            multiply_temp_variable = { var = chem_mask_str value = @CHEM_MASK_REDUCTION_ADVANCED }
+            multiply_temp_variable = { var = chem_mask_str value = constant:chem_mask_reduction.advanced }
             multiply_temp_variable = { var = chem_mask_str value = -1 }
         }
         else_if = {
             limit = { OWNER = { has_tech = improved_gas_masks } }
             set_temp_variable = { var = chem_mask_org value = chem_org_damage }
-            multiply_temp_variable = { var = chem_mask_org value = @CHEM_MASK_REDUCTION_IMPROVED }
+            multiply_temp_variable = { var = chem_mask_org value = constant:chem_mask_reduction.improved }
             multiply_temp_variable = { var = chem_mask_org value = -1 }
             set_temp_variable = { var = chem_mask_str value = chem_str_damage }
-            multiply_temp_variable = { var = chem_mask_str value = @CHEM_MASK_REDUCTION_IMPROVED }
+            multiply_temp_variable = { var = chem_mask_str value = constant:chem_mask_reduction.improved }
             multiply_temp_variable = { var = chem_mask_str value = -1 }
         }
         else_if = {
             limit = { OWNER = { has_tech = basic_gas_masks } }
             set_temp_variable = { var = chem_mask_org value = chem_org_damage }
-            multiply_temp_variable = { var = chem_mask_org value = @CHEM_MASK_REDUCTION_BASIC }
+            multiply_temp_variable = { var = chem_mask_org value = constant:chem_mask_reduction.basic }
             multiply_temp_variable = { var = chem_mask_org value = -1 }
             set_temp_variable = { var = chem_mask_str value = chem_str_damage }
-            multiply_temp_variable = { var = chem_mask_str value = @CHEM_MASK_REDUCTION_BASIC }
+            multiply_temp_variable = { var = chem_mask_str value = constant:chem_mask_reduction.basic }
             multiply_temp_variable = { var = chem_mask_str value = -1 }
+        }
+        if = {
+            limit = { OWNER = { has_tech = dimercaprol } }
+            set_temp_variable = { var = chem_dimercaprol_org value = chem_org_damage }
+            multiply_temp_variable = { var = chem_dimercaprol_org value = constant:chem_dimercaprol_mitigation.generic }
+            set_temp_variable = { var = chem_dimercaprol_str value = chem_str_damage }
+            multiply_temp_variable = { var = chem_dimercaprol_str value = constant:chem_dimercaprol_mitigation.generic }
+            if = {
+                limit = {
+                    OR = {
+                        has_trait = chemical_cylinder_active_mustard
+                        has_trait = chemical_cylinder_active_lewisite
+                    }
+                }
+                set_temp_variable = { var = chem_dimercaprol_extra value = chem_org_damage }
+                multiply_temp_variable = { var = chem_dimercaprol_extra value = constant:chem_dimercaprol_mitigation.blister_bonus }
+                add_to_temp_variable = { var = chem_dimercaprol_org value = chem_dimercaprol_extra }
+                set_temp_variable = { var = chem_dimercaprol_extra value = chem_str_damage }
+                multiply_temp_variable = { var = chem_dimercaprol_extra value = constant:chem_dimercaprol_mitigation.blister_bonus }
+                add_to_temp_variable = { var = chem_dimercaprol_str value = chem_dimercaprol_extra }
+            }
+            multiply_temp_variable = { var = chem_dimercaprol_org value = -1 }
+            multiply_temp_variable = { var = chem_dimercaprol_str value = -1 }
+            add_to_temp_variable = { var = chem_mask_org value = chem_dimercaprol_org }
+            add_to_temp_variable = { var = chem_mask_str value = chem_dimercaprol_str }
         }
         add_to_temp_variable = { var = chem_org_damage value = chem_mask_org }
         add_to_temp_variable = { var = chem_str_damage value = chem_mask_str }
@@ -1120,7 +1025,17 @@ chem_apply_mask_mitigation = {
 
 chem_consume_chlorine_cylinders = {
     set_temp_variable = { var = chem_required_amount value = num_battalions }
-    multiply_temp_variable = { var = chem_required_amount value = @CHEM_PREVIEW_CHLORINE_CYLINDERS_PER_BATTALION }
+    multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.chlorine }
+    chem_set_livens_integration_values = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    round_temp_variable = chem_required_amount
+    if = {
+        limit = {
+            check_variable = { var = num_battalions value = 0 compare = greater_than }
+            check_variable = { var = chem_required_amount value = 1 compare = less_than }
+        }
+        set_temp_variable = { var = chem_required_amount value = 1 }
+    }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_chlorine_payload_cylinder_1 }
@@ -1211,7 +1126,17 @@ chem_consume_chlorine_cylinders = {
 
 chem_consume_phosgene_cylinders = {
     set_temp_variable = { var = chem_required_amount value = num_battalions }
-    multiply_temp_variable = { var = chem_required_amount value = @CHEM_PREVIEW_PHOSGENE_CYLINDERS_PER_BATTALION }
+    multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.phosgene }
+    chem_set_livens_integration_values = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    round_temp_variable = chem_required_amount
+    if = {
+        limit = {
+            check_variable = { var = num_battalions value = 0 compare = greater_than }
+            check_variable = { var = chem_required_amount value = 1 compare = less_than }
+        }
+        set_temp_variable = { var = chem_required_amount value = 1 }
+    }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_phosgene_payload_cylinder_1 }
@@ -1302,7 +1227,17 @@ chem_consume_phosgene_cylinders = {
 
 chem_consume_mustard_cylinders = {
     set_temp_variable = { var = chem_required_amount value = num_battalions }
-    multiply_temp_variable = { var = chem_required_amount value = @CHEM_PREVIEW_MUSTARD_CYLINDERS_PER_BATTALION }
+    multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.mustard }
+    chem_set_livens_integration_values = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    round_temp_variable = chem_required_amount
+    if = {
+        limit = {
+            check_variable = { var = num_battalions value = 0 compare = greater_than }
+            check_variable = { var = chem_required_amount value = 1 compare = less_than }
+        }
+        set_temp_variable = { var = chem_required_amount value = 1 }
+    }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_mustard_payload_cylinder_1 }
@@ -1393,7 +1328,17 @@ chem_consume_mustard_cylinders = {
 
 chem_consume_lewisite_cylinders = {
     set_temp_variable = { var = chem_required_amount value = num_battalions }
-    multiply_temp_variable = { var = chem_required_amount value = @CHEM_PREVIEW_LEWISITE_CYLINDERS_PER_BATTALION }
+    multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.lewisite }
+    chem_set_livens_integration_values = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    round_temp_variable = chem_required_amount
+    if = {
+        limit = {
+            check_variable = { var = num_battalions value = 0 compare = greater_than }
+            check_variable = { var = chem_required_amount value = 1 compare = less_than }
+        }
+        set_temp_variable = { var = chem_required_amount value = 1 }
+    }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_lewisite_payload_cylinder_1 }
@@ -1484,8 +1429,8 @@ chem_consume_lewisite_cylinders = {
 
 
 chem_update_cylinder_previews = {
-    set_variable = { var = chem_duration_days_preview value = @CHEM_PREVIEW_DURATION_DAYS }
-    FROM = { set_variable = { var = chem_duration_days_preview value = @CHEM_PREVIEW_DURATION_DAYS } }
+    set_variable = { var = chem_duration_days_preview value = constant:chem_ability_core.duration_days }
+    FROM = { set_variable = { var = chem_duration_days_preview value = constant:chem_ability_core.duration_days } }
     chem_roll_wind_state_weekly = yes
     FROM = { set_variable = { var = chem_wind_state value = ROOT.chem_wind_state } }
     if = {
@@ -1782,25 +1727,32 @@ chem_update_chlorine_preview = {
     set_temp_variable = { var = chem_ratio_preview value = 0 }
     if = {
         limit = { check_variable = { var = chem_required value = 0 compare = greater_than } }
-        multiply_temp_variable = { var = chem_required value = @CHEM_PREVIEW_CHLORINE_CYLINDERS_PER_BATTALION }
+        multiply_temp_variable = { var = chem_required value = constant:chem_ability_cylinders_per_battalion.chlorine }
+        chem_set_livens_integration_values = yes
+        multiply_temp_variable = { var = chem_required value = chem_livens_cylinder_mult }
+        round_temp_variable = chem_required
+        if = {
+            limit = { check_variable = { var = chem_required value = 1 compare = less_than } }
+            set_temp_variable = { var = chem_required value = 1 }
+        }
         set_variable = { var = chem_required_chlorine value = chem_required }
         set_temp_variable = { var = chem_ratio value = chem_available }
         divide_temp_variable = { var = chem_ratio value = chem_required }
         clamp_temp_variable = { var = chem_ratio min = 0 max = 1 }
         set_variable = { var = chem_ratio_loc_chlorine value = chem_ratio }
         set_temp_variable = { var = chem_ratio_preview value = chem_ratio }
-        clamp_temp_variable = { var = chem_ratio_preview min = @CHEM_PREVIEW_RATIO_MIN max = 1 }
-        set_temp_variable = { var = chem_offense_preview value = @CHEM_PREVIEW_CHLORINE_OFFENSE }
+        clamp_temp_variable = { var = chem_ratio_preview min = constant:chem_ability_core.ratio_min max = 1 }
+        set_temp_variable = { var = chem_offense_preview value = constant:chem_ability_stat.chlorine.offense }
         multiply_temp_variable = { var = chem_offense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_breakthrough_preview value = @CHEM_PREVIEW_CHLORINE_BREAKTHROUGH }
+        set_temp_variable = { var = chem_breakthrough_preview value = constant:chem_ability_stat.chlorine.breakthrough }
         multiply_temp_variable = { var = chem_breakthrough_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_defense_preview value = @CHEM_PREVIEW_CHLORINE_DEFENSE }
+        set_temp_variable = { var = chem_defense_preview value = constant:chem_ability_stat.chlorine.defense }
         multiply_temp_variable = { var = chem_defense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_org_damage_preview value = @CHEM_PREVIEW_CHLORINE_ORG_DAMAGE }
+        set_temp_variable = { var = chem_org_damage_preview value = constant:chem_ability_stat.chlorine.org_damage }
         multiply_temp_variable = { var = chem_org_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_str_damage_preview value = @CHEM_PREVIEW_CHLORINE_STR_DAMAGE }
+        set_temp_variable = { var = chem_str_damage_preview value = constant:chem_ability_stat.chlorine.str_damage }
         multiply_temp_variable = { var = chem_str_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_war_support_preview value = @CHEM_PREVIEW_CHLORINE_WAR_SUPPORT }
+        set_temp_variable = { var = chem_war_support_preview value = constant:chem_ability_stat.chlorine.war_support }
         multiply_temp_variable = { var = chem_war_support_preview value = chem_ratio_preview }
     }
     else = {
@@ -1871,6 +1823,7 @@ chem_update_chlorine_preview = {
     chem_prepare_weather_terrain_penalties = yes
     chem_apply_weather_ability_modifiers = yes
     chem_apply_terrain_ability_modifiers = yes
+    set_temp_variable = { var = chem_mask_blister_bonus value = 0 }
     chem_apply_mask_preview_modifiers = yes
     set_temp_variable = { var = chem_mask_org_display value = chem_mask_org_preview }
     set_temp_variable = { var = chem_mask_str_display value = chem_mask_str_preview }
@@ -1892,6 +1845,7 @@ chem_update_chlorine_preview = {
     add_to_temp_variable = { var = chem_str_damage_total value = chem_combined_str_damage }
     add_to_temp_variable = { var = chem_str_damage_total value = chem_mask_str_preview }
     set_temp_variable = { var = chem_war_support_total value = chem_war_support_preview }
+    chem_apply_chaos_warfare_doctrine_preview_bonus = yes
     set_variable = { var = chem_available_chlorine value = chem_available }
     set_variable = { var = chem_combined_offense_chlorine value = chem_combined_offense }
     set_variable = { var = chem_combined_breakthrough_chlorine value = chem_combined_breakthrough }
@@ -1903,10 +1857,10 @@ chem_update_chlorine_preview = {
     set_variable = { var = chem_org_damage_total_chlorine value = chem_org_damage_total }
     set_variable = { var = chem_str_damage_total_chlorine value = chem_str_damage_total }
     set_variable = { var = chem_war_support_total_chlorine value = chem_war_support_total }
-    set_variable = { var = chem_unit_speed_chlorine value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_chlorine value = @CHEM_UNIT_URBAN_ATTACK }
-    set_variable = { var = chem_unit_speed_total_chlorine value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_total_chlorine value = @CHEM_UNIT_URBAN_ATTACK }
+    set_variable = { var = chem_unit_speed_chlorine value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_chlorine value = constant:chem_unit_modifier.urban_attack }
+    set_variable = { var = chem_unit_speed_total_chlorine value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_total_chlorine value = constant:chem_unit_modifier.urban_attack }
     OWNER = {
         set_variable = { var = chem_required_chlorine value = chem_required }
         set_variable = { var = chem_available_chlorine value = chem_available }
@@ -1921,10 +1875,10 @@ chem_update_chlorine_preview = {
         set_variable = { var = chem_org_damage_total_chlorine value = chem_org_damage_total }
         set_variable = { var = chem_str_damage_total_chlorine value = chem_str_damage_total }
         set_variable = { var = chem_war_support_total_chlorine value = chem_war_support_total }
-        set_variable = { var = chem_unit_speed_chlorine value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_chlorine value = @CHEM_UNIT_URBAN_ATTACK }
-        set_variable = { var = chem_unit_speed_total_chlorine value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_total_chlorine value = @CHEM_UNIT_URBAN_ATTACK }
+        set_variable = { var = chem_unit_speed_chlorine value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_chlorine value = constant:chem_unit_modifier.urban_attack }
+        set_variable = { var = chem_unit_speed_total_chlorine value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_total_chlorine value = constant:chem_unit_modifier.urban_attack }
     }
     # log = "CHEM_PREVIEW_CHLORINE battalions=[?chem_required|.0] available=[?chem_available|.0] ratio=[?chem_ratio|.3]"
 }
@@ -1941,25 +1895,32 @@ chem_update_phosgene_preview = {
     set_temp_variable = { var = chem_ratio_preview value = 0 }
     if = {
         limit = { check_variable = { var = chem_required value = 0 compare = greater_than } }
-        multiply_temp_variable = { var = chem_required value = @CHEM_PREVIEW_PHOSGENE_CYLINDERS_PER_BATTALION }
+        multiply_temp_variable = { var = chem_required value = constant:chem_ability_cylinders_per_battalion.phosgene }
+        chem_set_livens_integration_values = yes
+        multiply_temp_variable = { var = chem_required value = chem_livens_cylinder_mult }
+        round_temp_variable = chem_required
+        if = {
+            limit = { check_variable = { var = chem_required value = 1 compare = less_than } }
+            set_temp_variable = { var = chem_required value = 1 }
+        }
         set_variable = { var = chem_required_phosgene value = chem_required }
         set_temp_variable = { var = chem_ratio value = chem_available }
         divide_temp_variable = { var = chem_ratio value = chem_required }
         clamp_temp_variable = { var = chem_ratio min = 0 max = 1 }
         set_variable = { var = chem_ratio_loc_phosgene value = chem_ratio }
         set_temp_variable = { var = chem_ratio_preview value = chem_ratio }
-        clamp_temp_variable = { var = chem_ratio_preview min = @CHEM_PREVIEW_RATIO_MIN max = 1 }
-        set_temp_variable = { var = chem_offense_preview value = @CHEM_PREVIEW_PHOSGENE_OFFENSE }
+        clamp_temp_variable = { var = chem_ratio_preview min = constant:chem_ability_core.ratio_min max = 1 }
+        set_temp_variable = { var = chem_offense_preview value = constant:chem_ability_stat.phosgene.offense }
         multiply_temp_variable = { var = chem_offense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_breakthrough_preview value = @CHEM_PREVIEW_PHOSGENE_BREAKTHROUGH }
+        set_temp_variable = { var = chem_breakthrough_preview value = constant:chem_ability_stat.phosgene.breakthrough }
         multiply_temp_variable = { var = chem_breakthrough_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_defense_preview value = @CHEM_PREVIEW_PHOSGENE_DEFENSE }
+        set_temp_variable = { var = chem_defense_preview value = constant:chem_ability_stat.phosgene.defense }
         multiply_temp_variable = { var = chem_defense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_org_damage_preview value = @CHEM_PREVIEW_PHOSGENE_ORG_DAMAGE }
+        set_temp_variable = { var = chem_org_damage_preview value = constant:chem_ability_stat.phosgene.org_damage }
         multiply_temp_variable = { var = chem_org_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_str_damage_preview value = @CHEM_PREVIEW_PHOSGENE_STR_DAMAGE }
+        set_temp_variable = { var = chem_str_damage_preview value = constant:chem_ability_stat.phosgene.str_damage }
         multiply_temp_variable = { var = chem_str_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_war_support_preview value = @CHEM_PREVIEW_PHOSGENE_WAR_SUPPORT }
+        set_temp_variable = { var = chem_war_support_preview value = constant:chem_ability_stat.phosgene.war_support }
         multiply_temp_variable = { var = chem_war_support_preview value = chem_ratio_preview }
     }
     else = {
@@ -2030,6 +1991,7 @@ chem_update_phosgene_preview = {
     chem_prepare_weather_terrain_penalties = yes
     chem_apply_weather_ability_modifiers = yes
     chem_apply_terrain_ability_modifiers = yes
+    set_temp_variable = { var = chem_mask_blister_bonus value = 0 }
     chem_apply_mask_preview_modifiers = yes
     set_temp_variable = { var = chem_mask_org_display value = chem_mask_org_preview }
     set_temp_variable = { var = chem_mask_str_display value = chem_mask_str_preview }
@@ -2051,6 +2013,7 @@ chem_update_phosgene_preview = {
     add_to_temp_variable = { var = chem_str_damage_total value = chem_combined_str_damage }
     add_to_temp_variable = { var = chem_str_damage_total value = chem_mask_str_preview }
     set_temp_variable = { var = chem_war_support_total value = chem_war_support_preview }
+    chem_apply_chaos_warfare_doctrine_preview_bonus = yes
     set_variable = { var = chem_available_phosgene value = chem_available }
     set_variable = { var = chem_combined_offense_phosgene value = chem_combined_offense }
     set_variable = { var = chem_combined_breakthrough_phosgene value = chem_combined_breakthrough }
@@ -2062,10 +2025,10 @@ chem_update_phosgene_preview = {
     set_variable = { var = chem_org_damage_total_phosgene value = chem_org_damage_total }
     set_variable = { var = chem_str_damage_total_phosgene value = chem_str_damage_total }
     set_variable = { var = chem_war_support_total_phosgene value = chem_war_support_total }
-    set_variable = { var = chem_unit_speed_phosgene value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_phosgene value = @CHEM_UNIT_URBAN_ATTACK }
-    set_variable = { var = chem_unit_speed_total_phosgene value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_total_phosgene value = @CHEM_UNIT_URBAN_ATTACK }
+    set_variable = { var = chem_unit_speed_phosgene value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_phosgene value = constant:chem_unit_modifier.urban_attack }
+    set_variable = { var = chem_unit_speed_total_phosgene value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_total_phosgene value = constant:chem_unit_modifier.urban_attack }
     OWNER = {
         set_variable = { var = chem_required_phosgene value = chem_required }
         set_variable = { var = chem_available_phosgene value = chem_available }
@@ -2080,10 +2043,10 @@ chem_update_phosgene_preview = {
         set_variable = { var = chem_org_damage_total_phosgene value = chem_org_damage_total }
         set_variable = { var = chem_str_damage_total_phosgene value = chem_str_damage_total }
         set_variable = { var = chem_war_support_total_phosgene value = chem_war_support_total }
-        set_variable = { var = chem_unit_speed_phosgene value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_phosgene value = @CHEM_UNIT_URBAN_ATTACK }
-        set_variable = { var = chem_unit_speed_total_phosgene value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_total_phosgene value = @CHEM_UNIT_URBAN_ATTACK }
+        set_variable = { var = chem_unit_speed_phosgene value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_phosgene value = constant:chem_unit_modifier.urban_attack }
+        set_variable = { var = chem_unit_speed_total_phosgene value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_total_phosgene value = constant:chem_unit_modifier.urban_attack }
     }
 }
 
@@ -2093,29 +2056,49 @@ chem_apply_mask_preview_modifiers = {
     if = {
         limit = { OWNER = { has_tech = advanced_gas_masks } }
         set_temp_variable = { var = chem_mask_org_preview value = chem_org_damage_preview }
-        multiply_temp_variable = { var = chem_mask_org_preview value = @CHEM_MASK_REDUCTION_ADVANCED }
+        multiply_temp_variable = { var = chem_mask_org_preview value = constant:chem_mask_reduction.advanced }
         multiply_temp_variable = { var = chem_mask_org_preview value = -1 }
         set_temp_variable = { var = chem_mask_str_preview value = chem_str_damage_preview }
-        multiply_temp_variable = { var = chem_mask_str_preview value = @CHEM_MASK_REDUCTION_ADVANCED }
+        multiply_temp_variable = { var = chem_mask_str_preview value = constant:chem_mask_reduction.advanced }
         multiply_temp_variable = { var = chem_mask_str_preview value = -1 }
     }
     else_if = {
         limit = { OWNER = { has_tech = improved_gas_masks } }
         set_temp_variable = { var = chem_mask_org_preview value = chem_org_damage_preview }
-        multiply_temp_variable = { var = chem_mask_org_preview value = @CHEM_MASK_REDUCTION_IMPROVED }
+        multiply_temp_variable = { var = chem_mask_org_preview value = constant:chem_mask_reduction.improved }
         multiply_temp_variable = { var = chem_mask_org_preview value = -1 }
         set_temp_variable = { var = chem_mask_str_preview value = chem_str_damage_preview }
-        multiply_temp_variable = { var = chem_mask_str_preview value = @CHEM_MASK_REDUCTION_IMPROVED }
+        multiply_temp_variable = { var = chem_mask_str_preview value = constant:chem_mask_reduction.improved }
         multiply_temp_variable = { var = chem_mask_str_preview value = -1 }
     }
     else_if = {
         limit = { OWNER = { has_tech = basic_gas_masks } }
         set_temp_variable = { var = chem_mask_org_preview value = chem_org_damage_preview }
-        multiply_temp_variable = { var = chem_mask_org_preview value = @CHEM_MASK_REDUCTION_BASIC }
+        multiply_temp_variable = { var = chem_mask_org_preview value = constant:chem_mask_reduction.basic }
         multiply_temp_variable = { var = chem_mask_org_preview value = -1 }
         set_temp_variable = { var = chem_mask_str_preview value = chem_str_damage_preview }
-        multiply_temp_variable = { var = chem_mask_str_preview value = @CHEM_MASK_REDUCTION_BASIC }
+        multiply_temp_variable = { var = chem_mask_str_preview value = constant:chem_mask_reduction.basic }
         multiply_temp_variable = { var = chem_mask_str_preview value = -1 }
+    }
+    if = {
+        limit = { OWNER = { has_tech = dimercaprol } }
+        set_temp_variable = { var = chem_dimercaprol_org_preview value = chem_org_damage_preview }
+        multiply_temp_variable = { var = chem_dimercaprol_org_preview value = constant:chem_dimercaprol_mitigation.generic }
+        set_temp_variable = { var = chem_dimercaprol_str_preview value = chem_str_damage_preview }
+        multiply_temp_variable = { var = chem_dimercaprol_str_preview value = constant:chem_dimercaprol_mitigation.generic }
+        if = {
+            limit = { check_variable = { var = chem_mask_blister_bonus value = 0 compare = greater_than } }
+            set_temp_variable = { var = chem_dimercaprol_extra_preview value = chem_org_damage_preview }
+            multiply_temp_variable = { var = chem_dimercaprol_extra_preview value = constant:chem_dimercaprol_mitigation.blister_bonus }
+            add_to_temp_variable = { var = chem_dimercaprol_org_preview value = chem_dimercaprol_extra_preview }
+            set_temp_variable = { var = chem_dimercaprol_extra_preview value = chem_str_damage_preview }
+            multiply_temp_variable = { var = chem_dimercaprol_extra_preview value = constant:chem_dimercaprol_mitigation.blister_bonus }
+            add_to_temp_variable = { var = chem_dimercaprol_str_preview value = chem_dimercaprol_extra_preview }
+        }
+        multiply_temp_variable = { var = chem_dimercaprol_org_preview value = -1 }
+        multiply_temp_variable = { var = chem_dimercaprol_str_preview value = -1 }
+        add_to_temp_variable = { var = chem_mask_org_preview value = chem_dimercaprol_org_preview }
+        add_to_temp_variable = { var = chem_mask_str_preview value = chem_dimercaprol_str_preview }
     }
 }
 
@@ -2173,6 +2156,7 @@ chem_set_final_chlorine_effects = {
         set_temp_variable = { var = chem_str_damage value = chem_str_damage_total_chlorine }
         set_temp_variable = { var = chem_war_support value = chem_war_support_total_chlorine }
     }
+    chem_apply_chaos_warfare_doctrine_final_bonus = yes
 }
 
 chem_set_final_phosgene_effects = {
@@ -2229,6 +2213,7 @@ chem_set_final_phosgene_effects = {
         set_temp_variable = { var = chem_str_damage value = chem_str_damage_total_phosgene }
         set_temp_variable = { var = chem_war_support value = chem_war_support_total_phosgene }
     }
+    chem_apply_chaos_warfare_doctrine_final_bonus = yes
 }
 
 chem_set_final_mustard_effects = {
@@ -2285,6 +2270,7 @@ chem_set_final_mustard_effects = {
         set_temp_variable = { var = chem_str_damage value = chem_str_damage_total_mustard }
         set_temp_variable = { var = chem_war_support value = chem_war_support_total_mustard }
     }
+    chem_apply_chaos_warfare_doctrine_final_bonus = yes
 }
 
 chem_set_final_lewisite_effects = {
@@ -2341,6 +2327,7 @@ chem_set_final_lewisite_effects = {
         set_temp_variable = { var = chem_str_damage value = chem_str_damage_total_lewisite }
         set_temp_variable = { var = chem_war_support value = chem_war_support_total_lewisite }
     }
+    chem_apply_chaos_warfare_doctrine_final_bonus = yes
 }
 
 chem_update_mustard_preview = {
@@ -2355,25 +2342,32 @@ chem_update_mustard_preview = {
     set_temp_variable = { var = chem_ratio_preview value = 0 }
     if = {
         limit = { check_variable = { var = chem_required value = 0 compare = greater_than } }
-        multiply_temp_variable = { var = chem_required value = @CHEM_PREVIEW_MUSTARD_CYLINDERS_PER_BATTALION }
+        multiply_temp_variable = { var = chem_required value = constant:chem_ability_cylinders_per_battalion.mustard }
+        chem_set_livens_integration_values = yes
+        multiply_temp_variable = { var = chem_required value = chem_livens_cylinder_mult }
+        round_temp_variable = chem_required
+        if = {
+            limit = { check_variable = { var = chem_required value = 1 compare = less_than } }
+            set_temp_variable = { var = chem_required value = 1 }
+        }
         set_variable = { var = chem_required_mustard value = chem_required }
         set_temp_variable = { var = chem_ratio value = chem_available }
         divide_temp_variable = { var = chem_ratio value = chem_required }
         clamp_temp_variable = { var = chem_ratio min = 0 max = 1 }
         set_variable = { var = chem_ratio_loc_mustard value = chem_ratio }
         set_temp_variable = { var = chem_ratio_preview value = chem_ratio }
-        clamp_temp_variable = { var = chem_ratio_preview min = @CHEM_PREVIEW_RATIO_MIN max = 1 }
-        set_temp_variable = { var = chem_offense_preview value = @CHEM_PREVIEW_MUSTARD_OFFENSE }
+        clamp_temp_variable = { var = chem_ratio_preview min = constant:chem_ability_core.ratio_min max = 1 }
+        set_temp_variable = { var = chem_offense_preview value = constant:chem_ability_stat.mustard.offense }
         multiply_temp_variable = { var = chem_offense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_breakthrough_preview value = @CHEM_PREVIEW_MUSTARD_BREAKTHROUGH }
+        set_temp_variable = { var = chem_breakthrough_preview value = constant:chem_ability_stat.mustard.breakthrough }
         multiply_temp_variable = { var = chem_breakthrough_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_defense_preview value = @CHEM_PREVIEW_MUSTARD_DEFENSE }
+        set_temp_variable = { var = chem_defense_preview value = constant:chem_ability_stat.mustard.defense }
         multiply_temp_variable = { var = chem_defense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_org_damage_preview value = @CHEM_PREVIEW_MUSTARD_ORG_DAMAGE }
+        set_temp_variable = { var = chem_org_damage_preview value = constant:chem_ability_stat.mustard.org_damage }
         multiply_temp_variable = { var = chem_org_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_str_damage_preview value = @CHEM_PREVIEW_MUSTARD_STR_DAMAGE }
+        set_temp_variable = { var = chem_str_damage_preview value = constant:chem_ability_stat.mustard.str_damage }
         multiply_temp_variable = { var = chem_str_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_war_support_preview value = @CHEM_PREVIEW_MUSTARD_WAR_SUPPORT }
+        set_temp_variable = { var = chem_war_support_preview value = constant:chem_ability_stat.mustard.war_support }
         multiply_temp_variable = { var = chem_war_support_preview value = chem_ratio_preview }
     }
     else = {
@@ -2444,6 +2438,7 @@ chem_update_mustard_preview = {
     chem_prepare_weather_terrain_penalties = yes
     chem_apply_weather_ability_modifiers = yes
     chem_apply_terrain_ability_modifiers = yes
+    set_temp_variable = { var = chem_mask_blister_bonus value = 1 }
     chem_apply_mask_preview_modifiers = yes
     set_temp_variable = { var = chem_mask_org_display value = chem_mask_org_preview }
     set_temp_variable = { var = chem_mask_str_display value = chem_mask_str_preview }
@@ -2465,6 +2460,7 @@ chem_update_mustard_preview = {
     add_to_temp_variable = { var = chem_str_damage_total value = chem_combined_str_damage }
     add_to_temp_variable = { var = chem_str_damage_total value = chem_mask_str_preview }
     set_temp_variable = { var = chem_war_support_total value = chem_war_support_preview }
+    chem_apply_chaos_warfare_doctrine_preview_bonus = yes
     set_variable = { var = chem_available_mustard value = chem_available }
     set_variable = { var = chem_combined_offense_mustard value = chem_combined_offense }
     set_variable = { var = chem_combined_breakthrough_mustard value = chem_combined_breakthrough }
@@ -2476,10 +2472,10 @@ chem_update_mustard_preview = {
     set_variable = { var = chem_org_damage_total_mustard value = chem_org_damage_total }
     set_variable = { var = chem_str_damage_total_mustard value = chem_str_damage_total }
     set_variable = { var = chem_war_support_total_mustard value = chem_war_support_total }
-    set_variable = { var = chem_unit_speed_mustard value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_mustard value = @CHEM_UNIT_URBAN_ATTACK }
-    set_variable = { var = chem_unit_speed_total_mustard value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_total_mustard value = @CHEM_UNIT_URBAN_ATTACK }
+    set_variable = { var = chem_unit_speed_mustard value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_mustard value = constant:chem_unit_modifier.urban_attack }
+    set_variable = { var = chem_unit_speed_total_mustard value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_total_mustard value = constant:chem_unit_modifier.urban_attack }
     OWNER = {
         set_variable = { var = chem_required_mustard value = chem_required }
         set_variable = { var = chem_available_mustard value = chem_available }
@@ -2494,10 +2490,10 @@ chem_update_mustard_preview = {
         set_variable = { var = chem_org_damage_total_mustard value = chem_org_damage_total }
         set_variable = { var = chem_str_damage_total_mustard value = chem_str_damage_total }
         set_variable = { var = chem_war_support_total_mustard value = chem_war_support_total }
-        set_variable = { var = chem_unit_speed_mustard value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_mustard value = @CHEM_UNIT_URBAN_ATTACK }
-        set_variable = { var = chem_unit_speed_total_mustard value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_total_mustard value = @CHEM_UNIT_URBAN_ATTACK }
+        set_variable = { var = chem_unit_speed_mustard value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_mustard value = constant:chem_unit_modifier.urban_attack }
+        set_variable = { var = chem_unit_speed_total_mustard value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_total_mustard value = constant:chem_unit_modifier.urban_attack }
     }
 }
 
@@ -2513,25 +2509,32 @@ chem_update_lewisite_preview = {
     set_temp_variable = { var = chem_ratio_preview value = 0 }
     if = {
         limit = { check_variable = { var = chem_required value = 0 compare = greater_than } }
-        multiply_temp_variable = { var = chem_required value = @CHEM_PREVIEW_LEWISITE_CYLINDERS_PER_BATTALION }
+        multiply_temp_variable = { var = chem_required value = constant:chem_ability_cylinders_per_battalion.lewisite }
+        chem_set_livens_integration_values = yes
+        multiply_temp_variable = { var = chem_required value = chem_livens_cylinder_mult }
+        round_temp_variable = chem_required
+        if = {
+            limit = { check_variable = { var = chem_required value = 1 compare = less_than } }
+            set_temp_variable = { var = chem_required value = 1 }
+        }
         set_variable = { var = chem_required_lewisite value = chem_required }
         set_temp_variable = { var = chem_ratio value = chem_available }
         divide_temp_variable = { var = chem_ratio value = chem_required }
         clamp_temp_variable = { var = chem_ratio min = 0 max = 1 }
         set_variable = { var = chem_ratio_loc_lewisite value = chem_ratio }
         set_temp_variable = { var = chem_ratio_preview value = chem_ratio }
-        clamp_temp_variable = { var = chem_ratio_preview min = @CHEM_PREVIEW_RATIO_MIN max = 1 }
-        set_temp_variable = { var = chem_offense_preview value = @CHEM_PREVIEW_LEWISITE_OFFENSE }
+        clamp_temp_variable = { var = chem_ratio_preview min = constant:chem_ability_core.ratio_min max = 1 }
+        set_temp_variable = { var = chem_offense_preview value = constant:chem_ability_stat.lewisite.offense }
         multiply_temp_variable = { var = chem_offense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_breakthrough_preview value = @CHEM_PREVIEW_LEWISITE_BREAKTHROUGH }
+        set_temp_variable = { var = chem_breakthrough_preview value = constant:chem_ability_stat.lewisite.breakthrough }
         multiply_temp_variable = { var = chem_breakthrough_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_defense_preview value = @CHEM_PREVIEW_LEWISITE_DEFENSE }
+        set_temp_variable = { var = chem_defense_preview value = constant:chem_ability_stat.lewisite.defense }
         multiply_temp_variable = { var = chem_defense_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_org_damage_preview value = @CHEM_PREVIEW_LEWISITE_ORG_DAMAGE }
+        set_temp_variable = { var = chem_org_damage_preview value = constant:chem_ability_stat.lewisite.org_damage }
         multiply_temp_variable = { var = chem_org_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_str_damage_preview value = @CHEM_PREVIEW_LEWISITE_STR_DAMAGE }
+        set_temp_variable = { var = chem_str_damage_preview value = constant:chem_ability_stat.lewisite.str_damage }
         multiply_temp_variable = { var = chem_str_damage_preview value = chem_ratio_preview }
-        set_temp_variable = { var = chem_war_support_preview value = @CHEM_PREVIEW_LEWISITE_WAR_SUPPORT }
+        set_temp_variable = { var = chem_war_support_preview value = constant:chem_ability_stat.lewisite.war_support }
         multiply_temp_variable = { var = chem_war_support_preview value = chem_ratio_preview }
     }
     else = {
@@ -2602,6 +2605,7 @@ chem_update_lewisite_preview = {
     chem_prepare_weather_terrain_penalties = yes
     chem_apply_weather_ability_modifiers = yes
     chem_apply_terrain_ability_modifiers = yes
+    set_temp_variable = { var = chem_mask_blister_bonus value = 1 }
     chem_apply_mask_preview_modifiers = yes
     set_temp_variable = { var = chem_mask_org_display value = chem_mask_org_preview }
     set_temp_variable = { var = chem_mask_str_display value = chem_mask_str_preview }
@@ -2623,6 +2627,7 @@ chem_update_lewisite_preview = {
     add_to_temp_variable = { var = chem_str_damage_total value = chem_combined_str_damage }
     add_to_temp_variable = { var = chem_str_damage_total value = chem_mask_str_preview }
     set_temp_variable = { var = chem_war_support_total value = chem_war_support_preview }
+    chem_apply_chaos_warfare_doctrine_preview_bonus = yes
     set_variable = { var = chem_available_lewisite value = chem_available }
     set_variable = { var = chem_combined_offense_lewisite value = chem_combined_offense }
     set_variable = { var = chem_combined_breakthrough_lewisite value = chem_combined_breakthrough }
@@ -2634,10 +2639,10 @@ chem_update_lewisite_preview = {
     set_variable = { var = chem_org_damage_total_lewisite value = chem_org_damage_total }
     set_variable = { var = chem_str_damage_total_lewisite value = chem_str_damage_total }
     set_variable = { var = chem_war_support_total_lewisite value = chem_war_support_total }
-    set_variable = { var = chem_unit_speed_lewisite value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_lewisite value = @CHEM_UNIT_URBAN_ATTACK }
-    set_variable = { var = chem_unit_speed_total_lewisite value = @CHEM_UNIT_SPEED_FACTOR }
-    set_variable = { var = chem_urban_attack_total_lewisite value = @CHEM_UNIT_URBAN_ATTACK }
+    set_variable = { var = chem_unit_speed_lewisite value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_lewisite value = constant:chem_unit_modifier.urban_attack }
+    set_variable = { var = chem_unit_speed_total_lewisite value = constant:chem_unit_modifier.speed_factor }
+    set_variable = { var = chem_urban_attack_total_lewisite value = constant:chem_unit_modifier.urban_attack }
     OWNER = {
         set_variable = { var = chem_required_lewisite value = chem_required }
         set_variable = { var = chem_available_lewisite value = chem_available }
@@ -2652,9 +2657,9 @@ chem_update_lewisite_preview = {
         set_variable = { var = chem_org_damage_total_lewisite value = chem_org_damage_total }
         set_variable = { var = chem_str_damage_total_lewisite value = chem_str_damage_total }
         set_variable = { var = chem_war_support_total_lewisite value = chem_war_support_total }
-        set_variable = { var = chem_unit_speed_lewisite value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_lewisite value = @CHEM_UNIT_URBAN_ATTACK }
-        set_variable = { var = chem_unit_speed_total_lewisite value = @CHEM_UNIT_SPEED_FACTOR }
-        set_variable = { var = chem_urban_attack_total_lewisite value = @CHEM_UNIT_URBAN_ATTACK }
+        set_variable = { var = chem_unit_speed_lewisite value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_lewisite value = constant:chem_unit_modifier.urban_attack }
+        set_variable = { var = chem_unit_speed_total_lewisite value = constant:chem_unit_modifier.speed_factor }
+        set_variable = { var = chem_urban_attack_total_lewisite value = constant:chem_unit_modifier.urban_attack }
     }
 }

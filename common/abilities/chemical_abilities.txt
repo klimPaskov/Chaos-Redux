@@ -1,116 +1,19 @@
 # Chemical cylinder unit leader abilities.
 
-@CHEM_DURATION_HOURS = 168
-@CHEM_DURATION_DAYS = 7
+@CHEM_ABILITY_COST_CHLORINE = 0.20
+@CHEM_ABILITY_COST_PHOSGENE = 0.30
+@CHEM_ABILITY_COST_MUSTARD = 0.35
+@CHEM_ABILITY_COST_LEWISITE = 0.40
 
-@CHEM_COMMAND_POWER_CHLORINE_COST = 0.2
-@CHEM_COMMAND_POWER_PHOSGENE_COST = 0.3
-@CHEM_COMMAND_POWER_MUSTARD_COST = 0.25
-@CHEM_COMMAND_POWER_LEWISITE_COST = 0.4
+@CHEM_ABILITY_DURATION_HOURS = 168
+@CHEM_ABILITY_ARMY_SPEED_FACTOR = -0.05
+@CHEM_ABILITY_URBAN_ATTACK = 0.10
 
-@CHEM_CHLORINE_CYLINDERS_PER_BATTALION = 30
-@CHEM_PHOSGENE_CYLINDERS_PER_BATTALION = 30
-@CHEM_MUSTARD_CYLINDERS_PER_BATTALION = 30
-@CHEM_LEWISITE_CYLINDERS_PER_BATTALION = 30
-
-@CHEM_RATIO_MIN = 0.10
-
-@CHEM_TYPE_CHLORINE = 1
-@CHEM_TYPE_PHOSGENE = 2
-@CHEM_TYPE_MUSTARD = 3
-@CHEM_TYPE_LEWISITE = 4
-
-@CHEM_UNIT_SPEED_FACTOR = -0.05
-@CHEM_UNIT_URBAN_ATTACK = 0.10
-
-@CHEM_CHLORINE_OFFENSE = 0.24
-@CHEM_CHLORINE_BREAKTHROUGH = 0.24
-@CHEM_CHLORINE_DEFENSE = 0.06
-@CHEM_CHLORINE_ORG_DAMAGE = 0.18
-@CHEM_CHLORINE_STR_DAMAGE = 0.08
-@CHEM_CHLORINE_WAR_SUPPORT = 0.14
-
-@CHEM_PHOSGENE_OFFENSE = 0.36
-@CHEM_PHOSGENE_BREAKTHROUGH = 0.36
-@CHEM_PHOSGENE_DEFENSE = 0.10
-@CHEM_PHOSGENE_ORG_DAMAGE = 0.28
-@CHEM_PHOSGENE_STR_DAMAGE = 0.14
-@CHEM_PHOSGENE_WAR_SUPPORT = 0.2
-
-@CHEM_MUSTARD_OFFENSE = 0.28
-@CHEM_MUSTARD_BREAKTHROUGH = 0.20
-@CHEM_MUSTARD_DEFENSE = 0.06
-@CHEM_MUSTARD_ORG_DAMAGE = 0.24
-@CHEM_MUSTARD_STR_DAMAGE = 0.12
-@CHEM_MUSTARD_WAR_SUPPORT = 0.16
-
-@CHEM_LEWISITE_OFFENSE = 0.48
-@CHEM_LEWISITE_BREAKTHROUGH = 0.48
-@CHEM_LEWISITE_DEFENSE = 0.12
-@CHEM_LEWISITE_ORG_DAMAGE = 0.36
-@CHEM_LEWISITE_STR_DAMAGE = 0.18
-@CHEM_LEWISITE_WAR_SUPPORT = 0.24
-
-@CHEM_CONDEMNATION_BASE_CHLORINE = 0.25
-@CHEM_CONDEMNATION_BASE_PHOSGENE = 0.4
-@CHEM_CONDEMNATION_BASE_MUSTARD = 0.35
-@CHEM_CONDEMNATION_BASE_LEWISITE = 0.6
-
-@CHEM_CONDEMNATION_PER_UNIT_CHLORINE = 0.001
-@CHEM_CONDEMNATION_PER_UNIT_PHOSGENE = 0.0015
-@CHEM_CONDEMNATION_PER_UNIT_MUSTARD = 0.0013
-@CHEM_CONDEMNATION_PER_UNIT_LEWISITE = 0.002
-
-@CHEM_AI_RETALIATE_LOW = 2
-@CHEM_AI_RETALIATE_MED = 5
-@CHEM_AI_RETALIATE_HIGH = 10
-
-@CHEM_AI_RETALIATE_ADD_LOW = 2
-@CHEM_AI_RETALIATE_ADD_MED = 5
-@CHEM_AI_RETALIATE_ADD_HIGH = 10
-
-@CHEM_AI_CP_CHLORINE = 0.8
-@CHEM_AI_CP_PHOSGENE = 1.0
-@CHEM_AI_CP_MUSTARD = 1.0
-@CHEM_AI_CP_LEWISITE = 1.25
-
-@CHEM_AI_WS_CHLORINE = 0.10
-@CHEM_AI_WS_PHOSGENE = 0.20
-@CHEM_AI_WS_MUSTARD = 0.20
-@CHEM_AI_WS_LEWISITE = 0.30
-
-@CHEM_AI_OFFENSIVE_LOW = 4
-@CHEM_AI_OFFENSIVE_HIGH = 8
-@CHEM_AI_DEFENSIVE_LOW = 6
-@CHEM_AI_OFFENSIVE_STATUS_MIN = 0.45
-@CHEM_AI_DEFENSIVE_STATUS_MAX = 0.35
-@CHEM_AI_TERRAIN_PRESSURE = 3
-@CHEM_AI_CLIMATE_PRESSURE = 6
-
-@CHEM_AI_PRESSURE_ADD_HIGH = 2
-@CHEM_AI_PRESSURE_ADD_MED = 1
-@CHEM_AI_TERRAIN_PRESSURE_ADD = 0.5
-@CHEM_AI_CLIMATE_PENALTY_ADD = -0.5
-
-@CHEM_AI_GAS_MASK_ADV_ADD = 0.6
-@CHEM_AI_GAS_MASK_IMPROVED_ADD = 0.4
-@CHEM_AI_GAS_MASK_BASIC_ADD = 0.2
-
-@CHEM_WIND_STATE_STRONG_FAVOR = 2
-@CHEM_WIND_STATE_FAVOR = 1
-@CHEM_WIND_STATE_NEUTRAL = 0
-@CHEM_WIND_STATE_AGAINST = -1
-
-@CHEM_AI_IDEOLOGY_DEMOCRATIC = -1.0
-@CHEM_AI_IDEOLOGY_COMMUNIST = 0.3
-@CHEM_AI_IDEOLOGY_FASCIST = 0.6
-@CHEM_AI_IDEOLOGY_NEUTRAL = 0.1
-
-@CHEM_AI_WIND_STRONG_FAVOR_ADD = 0.8
-@CHEM_AI_WIND_FAVOR_ADD = 0.4
-@CHEM_AI_WIND_AGAINST_ADD = -0.8
-
-@CHEM_AI_COUNTRY_JAPAN_ADD = 10.0
+#
+# Most tuning values are centralized in:
+# `common/script_constants/chemical_warfare_constants.txt` (see `chem_ability_*` and `chem_unit_modifier`).
+# NOTE: ability `cost`/`duration` and `unit_modifiers` do not parse script constants in this context,
+# so those specific values are mirrored as file-local `@` constants above.
 
 ability = {
     chemical_chlorine_attack = {
@@ -140,24 +43,24 @@ ability = {
             }
         }
 
-        cost = @CHEM_COMMAND_POWER_CHLORINE_COST
-        duration = @CHEM_DURATION_HOURS
-		unit_modifiers = {
-			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
-			urban = {
-				attack = @CHEM_UNIT_URBAN_ATTACK
+        cost = @CHEM_ABILITY_COST_CHLORINE
+        duration = @CHEM_ABILITY_DURATION_HOURS
+			unit_modifiers = {
+				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
+				urban = {
+					attack = @CHEM_ABILITY_URBAN_ATTACK
+				}
 			}
-		}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
                 trait = chemical_cylinder_active_chlorine
-                days = @CHEM_DURATION_DAYS
+                days = constant:chem_ability_core.duration_days
             }
             set_unit_leader_flag = chem_ability_calculating
-            set_variable = { var = chem_active_type value = @CHEM_TYPE_CHLORINE }
-            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_CHLORINE }
-            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_CHLORINE }
+            set_variable = { var = chem_active_type value = constant:chem_type.chlorine }
+            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.chlorine }
+            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.chlorine }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_chlorine } }
@@ -169,7 +72,7 @@ ability = {
                 chem_apply_wind_miscalculation = yes
             }
             chem_set_final_chlorine_effects = yes
-            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+            set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
 
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
@@ -216,6 +119,7 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CHLORINE_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
@@ -225,106 +129,106 @@ ability = {
             modifier = {
                 FROM = {
                     has_war = yes
-                    command_power > @CHEM_AI_CP_CHLORINE
-                    has_war_support > @CHEM_AI_WS_CHLORINE
+                    command_power > constant:chem_ability_ai.min_command_power.chlorine
+                    has_war_support > constant:chem_ability_ai.min_war_support.chlorine
                 }
-                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_LOW }
-                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
-                add = @CHEM_AI_PRESSURE_ADD_HIGH
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_low }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.high
             }
             modifier = {
-                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_HIGH }
-                add = @CHEM_AI_PRESSURE_ADD_MED
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
+                add = constant:chem_ability_ai.pressure_add.med
             }
             modifier = {
-                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
-                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
-                add = @CHEM_AI_PRESSURE_ADD_MED
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.med
             }
             modifier = {
                 OR = {
-                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@forest > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@jungle > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@forest > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@jungle > constant:chem_ability_ai.pressure.terrain_pressure }
                 }
-                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+                add = constant:chem_ability_ai.terrain_pressure_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
                 FROM = { has_government = democratic }
-                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+                add = constant:chem_ability_ai.ideology_add.democratic
             }
             modifier = {
                 FROM = { has_government = fascism }
-                add = @CHEM_AI_IDEOLOGY_FASCIST
+                add = constant:chem_ability_ai.ideology_add.fascist
             }
             modifier = {
                 FROM = { has_government = communism }
-                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+                add = constant:chem_ability_ai.ideology_add.communist
             }
             modifier = {
                 FROM = { has_government = neutrality }
-                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+                add = constant:chem_ability_ai.ideology_add.neutral
             }
             modifier = {
                 FROM = { tag = JAP }
-                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+                add = constant:chem_ability_ai.country_add.japan
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
-                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
-                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
-                add = @CHEM_AI_WIND_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
-                add = @CHEM_AI_WIND_AGAINST_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
             }
             modifier = {
                 FROM = { has_tech = advanced_gas_masks }
-                add = @CHEM_AI_GAS_MASK_ADV_ADD
+                add = constant:chem_ability_ai.gas_mask_add.advanced
             }
             modifier = {
                 FROM = { has_tech = improved_gas_masks }
-                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+                add = constant:chem_ability_ai.gas_mask_add.improved
             }
             modifier = {
                 FROM = { has_tech = basic_gas_masks }
-                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+                add = constant:chem_ability_ai.gas_mask_add.basic
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.low compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_LOW
+                add = constant:chem_ability_ai.retaliate_add.low
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.med compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_MED
+                add = constant:chem_ability_ai.retaliate_add.med
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_HIGH
+                add = constant:chem_ability_ai.retaliate_add.high
             }
         }
     }
@@ -356,24 +260,24 @@ ability = {
             }
         }
 
-        cost = @CHEM_COMMAND_POWER_PHOSGENE_COST
-        duration = @CHEM_DURATION_HOURS
-		unit_modifiers = {
-			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
-			urban = {
-				attack = @CHEM_UNIT_URBAN_ATTACK
+        cost = @CHEM_ABILITY_COST_PHOSGENE
+        duration = @CHEM_ABILITY_DURATION_HOURS
+			unit_modifiers = {
+				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
+				urban = {
+					attack = @CHEM_ABILITY_URBAN_ATTACK
+				}
 			}
-		}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
                 trait = chemical_cylinder_active_phosgene
-                days = @CHEM_DURATION_DAYS
+                days = constant:chem_ability_core.duration_days
             }
             set_unit_leader_flag = chem_ability_calculating
-            set_variable = { var = chem_active_type value = @CHEM_TYPE_PHOSGENE }
-            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_PHOSGENE }
-            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_PHOSGENE }
+            set_variable = { var = chem_active_type value = constant:chem_type.phosgene }
+            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.phosgene }
+            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.phosgene }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_phosgene } }
@@ -385,7 +289,7 @@ ability = {
                 chem_apply_wind_miscalculation = yes
             }
             chem_set_final_phosgene_effects = yes
-            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+            set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
 
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
@@ -432,6 +336,7 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_PHOSGENE_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
@@ -441,102 +346,102 @@ ability = {
             modifier = {
                 FROM = {
                     has_war = yes
-                    command_power > @CHEM_AI_CP_PHOSGENE
-                    has_war_support > @CHEM_AI_WS_PHOSGENE
+                    command_power > constant:chem_ability_ai.min_command_power.phosgene
+                    has_war_support > constant:chem_ability_ai.min_war_support.phosgene
                 }
-                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_HIGH }
-                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
-                add = @CHEM_AI_PRESSURE_ADD_HIGH
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.high
             }
             modifier = {
-                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
-                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
-                add = @CHEM_AI_PRESSURE_ADD_MED
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.med
             }
             modifier = {
                 OR = {
-                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@hills > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@mountain > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@hills > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@mountain > constant:chem_ability_ai.pressure.terrain_pressure }
                 }
-                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+                add = constant:chem_ability_ai.terrain_pressure_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
                 FROM = { has_government = democratic }
-                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+                add = constant:chem_ability_ai.ideology_add.democratic
             }
             modifier = {
                 FROM = { has_government = fascism }
-                add = @CHEM_AI_IDEOLOGY_FASCIST
+                add = constant:chem_ability_ai.ideology_add.fascist
             }
             modifier = {
                 FROM = { has_government = communism }
-                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+                add = constant:chem_ability_ai.ideology_add.communist
             }
             modifier = {
                 FROM = { has_government = neutrality }
-                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+                add = constant:chem_ability_ai.ideology_add.neutral
             }
             modifier = {
                 FROM = { tag = JAP }
-                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+                add = constant:chem_ability_ai.country_add.japan
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
-                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
-                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
-                add = @CHEM_AI_WIND_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
-                add = @CHEM_AI_WIND_AGAINST_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
             }
             modifier = {
                 FROM = { has_tech = advanced_gas_masks }
-                add = @CHEM_AI_GAS_MASK_ADV_ADD
+                add = constant:chem_ability_ai.gas_mask_add.advanced
             }
             modifier = {
                 FROM = { has_tech = improved_gas_masks }
-                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+                add = constant:chem_ability_ai.gas_mask_add.improved
             }
             modifier = {
                 FROM = { has_tech = basic_gas_masks }
-                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+                add = constant:chem_ability_ai.gas_mask_add.basic
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.low compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_LOW
+                add = constant:chem_ability_ai.retaliate_add.low
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.med compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_MED
+                add = constant:chem_ability_ai.retaliate_add.med
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_HIGH
+                add = constant:chem_ability_ai.retaliate_add.high
             }
         }
     }
@@ -568,24 +473,24 @@ ability = {
             }
         }
 
-        cost = @CHEM_COMMAND_POWER_MUSTARD_COST
-        duration = @CHEM_DURATION_HOURS
-		unit_modifiers = {
-			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
-			urban = {
-				attack = @CHEM_UNIT_URBAN_ATTACK
+        cost = @CHEM_ABILITY_COST_MUSTARD
+        duration = @CHEM_ABILITY_DURATION_HOURS
+			unit_modifiers = {
+				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
+				urban = {
+					attack = @CHEM_ABILITY_URBAN_ATTACK
+				}
 			}
-		}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
                 trait = chemical_cylinder_active_mustard
-                days = @CHEM_DURATION_DAYS
+                days = constant:chem_ability_core.duration_days
             }
             set_unit_leader_flag = chem_ability_calculating
-            set_variable = { var = chem_active_type value = @CHEM_TYPE_MUSTARD }
-            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_MUSTARD }
-            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_MUSTARD }
+            set_variable = { var = chem_active_type value = constant:chem_type.mustard }
+            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.mustard }
+            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.mustard }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_mustard } }
@@ -597,7 +502,7 @@ ability = {
                 chem_apply_wind_miscalculation = yes
             }
             chem_set_final_mustard_effects = yes
-            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+            set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
                 hidden_effect = {
@@ -632,10 +537,16 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_MUSTARD
             custom_effect_tooltip = CHEM_ABILITY_MUSTARD_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
-            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_MUSTARD_TT
-            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_MUSTARD_TT
+			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_MUSTARD_TT
+			if = {
+				limit = {
+					OWNER = { has_tech = dimercaprol }
+				}
+				custom_effect_tooltip = CHEM_ABILITY_DIMERCAPROL_BLISTER_TT
+			}
+			custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+			custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_MUSTARD_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
             custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
@@ -643,6 +554,7 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_MUSTARD_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
@@ -652,103 +564,103 @@ ability = {
             modifier = {
                 FROM = {
                     has_war = yes
-                    command_power > @CHEM_AI_CP_MUSTARD
-                    has_war_support > @CHEM_AI_WS_MUSTARD
+                    command_power > constant:chem_ability_ai.min_command_power.mustard
+                    has_war_support > constant:chem_ability_ai.min_war_support.mustard
                 }
-                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
-                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
-                add = @CHEM_AI_PRESSURE_ADD_HIGH
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.high
             }
             modifier = {
-                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_LOW }
-                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
-                add = @CHEM_AI_PRESSURE_ADD_MED
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_low }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.med
             }
             modifier = {
                 OR = {
-                    check_variable = { num_units_offensive_combats_against@forest > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@jungle > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@marsh > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@forest > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@jungle > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@marsh > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
                 }
-                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+                add = constant:chem_ability_ai.terrain_pressure_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
                 FROM = { has_government = democratic }
-                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+                add = constant:chem_ability_ai.ideology_add.democratic
             }
             modifier = {
                 FROM = { has_government = fascism }
-                add = @CHEM_AI_IDEOLOGY_FASCIST
+                add = constant:chem_ability_ai.ideology_add.fascist
             }
             modifier = {
                 FROM = { has_government = communism }
-                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+                add = constant:chem_ability_ai.ideology_add.communist
             }
             modifier = {
                 FROM = { has_government = neutrality }
-                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+                add = constant:chem_ability_ai.ideology_add.neutral
             }
             modifier = {
                 FROM = { tag = JAP }
-                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+                add = constant:chem_ability_ai.country_add.japan
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
-                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
-                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
-                add = @CHEM_AI_WIND_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
-                add = @CHEM_AI_WIND_AGAINST_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
             }
             modifier = {
                 FROM = { has_tech = advanced_gas_masks }
-                add = @CHEM_AI_GAS_MASK_ADV_ADD
+                add = constant:chem_ability_ai.gas_mask_add.advanced
             }
             modifier = {
                 FROM = { has_tech = improved_gas_masks }
-                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+                add = constant:chem_ability_ai.gas_mask_add.improved
             }
             modifier = {
                 FROM = { has_tech = basic_gas_masks }
-                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+                add = constant:chem_ability_ai.gas_mask_add.basic
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.low compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_LOW
+                add = constant:chem_ability_ai.retaliate_add.low
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.med compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_MED
+                add = constant:chem_ability_ai.retaliate_add.med
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_HIGH
+                add = constant:chem_ability_ai.retaliate_add.high
             }
         }
     }
@@ -780,24 +692,24 @@ ability = {
             }
         }
 
-        cost = @CHEM_COMMAND_POWER_LEWISITE_COST
-        duration = @CHEM_DURATION_HOURS
-		unit_modifiers = {
-			army_speed_factor = @CHEM_UNIT_SPEED_FACTOR
-			urban = {
-				attack = @CHEM_UNIT_URBAN_ATTACK
+        cost = @CHEM_ABILITY_COST_LEWISITE
+        duration = @CHEM_ABILITY_DURATION_HOURS
+			unit_modifiers = {
+				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
+				urban = {
+					attack = @CHEM_ABILITY_URBAN_ATTACK
+				}
 			}
-		}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
                 trait = chemical_cylinder_active_lewisite
-                days = @CHEM_DURATION_DAYS
+                days = constant:chem_ability_core.duration_days
             }
             set_unit_leader_flag = chem_ability_calculating
-            set_variable = { var = chem_active_type value = @CHEM_TYPE_LEWISITE }
-            set_temp_variable = { var = chem_condemnation_base value = @CHEM_CONDEMNATION_BASE_LEWISITE }
-            set_temp_variable = { var = chem_condemnation_per_unit value = @CHEM_CONDEMNATION_PER_UNIT_LEWISITE }
+            set_variable = { var = chem_active_type value = constant:chem_type.lewisite }
+            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.lewisite }
+            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.lewisite }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_lewisite } }
@@ -809,7 +721,7 @@ ability = {
                 chem_apply_wind_miscalculation = yes
             }
             chem_set_final_lewisite_effects = yes
-            set_temp_variable = { var = chem_duration_days value = @CHEM_DURATION_DAYS }
+            set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
                 hidden_effect = {
@@ -844,10 +756,16 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_LEWISITE
             custom_effect_tooltip = CHEM_ABILITY_LEWISITE_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
-            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_LEWISITE_TT
-            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_LEWISITE_TT
+			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_LEWISITE_TT
+			if = {
+				limit = {
+					OWNER = { has_tech = dimercaprol }
+				}
+				custom_effect_tooltip = CHEM_ABILITY_DIMERCAPROL_BLISTER_TT
+			}
+			custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+			custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_LEWISITE_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
             custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
@@ -855,6 +773,7 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_LEWISITE_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
@@ -864,102 +783,102 @@ ability = {
             modifier = {
                 FROM = {
                     has_war = yes
-                    command_power > @CHEM_AI_CP_LEWISITE
-                    has_war_support > @CHEM_AI_WS_LEWISITE
+                    command_power > constant:chem_ability_ai.min_command_power.lewisite
+                    has_war_support > constant:chem_ability_ai.min_war_support.lewisite
                 }
-                check_variable = { num_units_offensive_combats > @CHEM_AI_OFFENSIVE_HIGH }
-                check_variable = { avg_offensive_combat_status > @CHEM_AI_OFFENSIVE_STATUS_MIN }
-                add = @CHEM_AI_PRESSURE_ADD_HIGH
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.high
             }
             modifier = {
-                check_variable = { num_units_defensive_combats > @CHEM_AI_DEFENSIVE_LOW }
-                check_variable = { avg_defensive_combat_status < @CHEM_AI_DEFENSIVE_STATUS_MAX }
-                add = @CHEM_AI_PRESSURE_ADD_MED
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.med
             }
             modifier = {
                 OR = {
-                    check_variable = { num_units_offensive_combats_against@urban > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@hills > @CHEM_AI_TERRAIN_PRESSURE }
-                    check_variable = { num_units_offensive_combats_against@mountain > @CHEM_AI_TERRAIN_PRESSURE }
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@hills > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@mountain > constant:chem_ability_ai.pressure.terrain_pressure }
                 }
-                add = @CHEM_AI_TERRAIN_PRESSURE_ADD
+                add = constant:chem_ability_ai.terrain_pressure_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@cold_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
-                check_variable = { num_units_on_climate@hot_climate > @CHEM_AI_CLIMATE_PRESSURE }
-                add = @CHEM_AI_CLIMATE_PENALTY_ADD
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
             }
             modifier = {
                 FROM = { has_government = democratic }
-                add = @CHEM_AI_IDEOLOGY_DEMOCRATIC
+                add = constant:chem_ability_ai.ideology_add.democratic
             }
             modifier = {
                 FROM = { has_government = fascism }
-                add = @CHEM_AI_IDEOLOGY_FASCIST
+                add = constant:chem_ability_ai.ideology_add.fascist
             }
             modifier = {
                 FROM = { has_government = communism }
-                add = @CHEM_AI_IDEOLOGY_COMMUNIST
+                add = constant:chem_ability_ai.ideology_add.communist
             }
             modifier = {
                 FROM = { has_government = neutrality }
-                add = @CHEM_AI_IDEOLOGY_NEUTRAL
+                add = constant:chem_ability_ai.ideology_add.neutral
             }
             modifier = {
                 FROM = { tag = JAP }
-                add = @CHEM_AI_COUNTRY_JAPAN_ADD
+                add = constant:chem_ability_ai.country_add.japan
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals }
-                add = @CHEM_AI_WIND_STRONG_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_FAVOR compare = greater_than_or_equals }
-                NOT = { check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_STRONG_FAVOR compare = greater_than_or_equals } }
-                add = @CHEM_AI_WIND_FAVOR_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
             }
             modifier = {
-                check_variable = { var = chem_wind_state value = @CHEM_WIND_STATE_AGAINST compare = less_than_or_equals }
-                add = @CHEM_AI_WIND_AGAINST_ADD
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
             }
             modifier = {
                 FROM = { has_tech = advanced_gas_masks }
-                add = @CHEM_AI_GAS_MASK_ADV_ADD
+                add = constant:chem_ability_ai.gas_mask_add.advanced
             }
             modifier = {
                 FROM = { has_tech = improved_gas_masks }
-                add = @CHEM_AI_GAS_MASK_IMPROVED_ADD
+                add = constant:chem_ability_ai.gas_mask_add.improved
             }
             modifier = {
                 FROM = { has_tech = basic_gas_masks }
-                add = @CHEM_AI_GAS_MASK_BASIC_ADD
+                add = constant:chem_ability_ai.gas_mask_add.basic
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_LOW compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.low compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_LOW
+                add = constant:chem_ability_ai.retaliate_add.low
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_MED compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.med compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_MED
+                add = constant:chem_ability_ai.retaliate_add.med
             }
             modifier = {
                 FROM = {
                     any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = @CHEM_AI_RETALIATE_HIGH compare = greater_than }
+                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
                     }
                 }
-                add = @CHEM_AI_RETALIATE_ADD_HIGH
+                add = constant:chem_ability_ai.retaliate_add.high
             }
         }
     }

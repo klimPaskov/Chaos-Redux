@@ -1,0 +1,310 @@
+# ============================================================================
+# CHAOS REDUX - BIOWARFARE SCRIPT CONSTANTS
+# ============================================================================
+# Shared constants for the biowarfare / pathogen / contamination system.
+# Keep tuning values centralized here so multiple files stay in sync.
+# ============================================================================
+
+bio_disease_modifier = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	anthrax = {
+		manpower = -0.5
+		resources = -0.3
+		supplies = -0.3
+		production = -0.3
+		attrition = 0.3
+		speed = -0.3
+	}
+
+	plague = {
+		manpower = -0.9
+		resources = -0.75
+		supplies = -0.9
+		production = -0.75
+		attrition = 0.9
+		speed = -0.9
+	}
+
+	tularemia = {
+		manpower = -0.05
+		resources = -0.10
+		supplies = -0.20
+		production = -0.08
+		attrition = 0.20
+		speed = -0.25
+		org = -0.25
+	}
+
+	smallpox = {
+		manpower = -0.8
+		resources = -0.6
+		supplies = -0.8
+		production = -0.7
+		attrition = 0.8
+		speed = -0.7
+	}
+}
+
+bio_antibiotics = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	anthrax = { cap = 0.30 rate = 0.01 }
+	plague = { cap = 0.25 rate = 0.01 }
+	tularemia = { cap = 0.40 rate = 0.015 }
+}
+
+smallpox_vaccination = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	weekly_base = 0.01
+	weekly_per_10civ = 0.01
+	weekly_cap = 0.06
+	total_cap = 0.60
+
+	contamination_removal_threshold = 0.99
+
+	major_protection = 0.50
+	minor_protection = 0.25
+}
+
+bio_war_support_penalty = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = -0.01
+	plague = -0.015
+	tularemia = -0.005
+	smallpox = -0.02
+}
+
+bio_field_test_duration_days = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 60
+	plague = 90
+	tularemia = 30
+	smallpox = 120
+}
+
+bio_field_test_outbreak_chance = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	anthrax = { enemy = 0.1 own = 0.25 }
+	plague = { enemy = 0.15 own = 0.35 }
+	tularemia = { enemy = 0.05 own = 0.10 }
+	smallpox = { enemy = 0.2 own = 0.45 }
+}
+
+bio_spread_base_months = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 36
+	plague = 24
+	tularemia = 48
+	smallpox = 1
+}
+
+bio_containment = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	multiplier = 3.0
+}
+
+bio_outbreak_prevention = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	t1 = 1.10
+	t2 = 1.25
+	t3 = 1.45
+}
+
+bio_doom_acute_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 1.0
+	plague = 1.6
+	tularemia = 0.7
+	smallpox = 2.0
+}
+
+bio_doom_scale = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	acute_org = 15000
+	acute_str = 35000
+}
+
+bio_doom_cap = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	org_damage_max = 0.55
+	str_damage_max = 0.30
+}
+
+bio_doom_days_base = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 60
+	plague = 90
+	tularemia = 45
+	smallpox = 120
+}
+
+bio_doom_days_div = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 20
+	plague = 15
+	tularemia = 30
+	smallpox = 10
+}
+
+bio_doom_days_max = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 540
+	plague = 900
+	tularemia = 420
+	smallpox = 900
+}
+
+bio_doom_intensity_div = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 2000
+	plague = 800
+	tularemia = 1500
+	smallpox = 200
+}
+
+bio_doom_intensity_max = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 3.0
+	plague = 3.5
+	tularemia = 3.0
+	smallpox = 4.5
+}
+
+bio_doom_ai = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				key = base
+				data = int
+			}
+			{
+				key = add_base
+				data = int
+			}
+			{
+				key = add_high_morale
+				data = int
+			}
+			{
+				key = stability_threshold
+				data = fixed_point
+			}
+			{
+				key = war_support_threshold
+				data = fixed_point
+			}
+			{
+				key = stockpile_threshold
+				data = int
+			}
+			{
+				key = add_big_stockpile
+				data = int
+			}
+		}
+	}
+
+	defaults = {
+		base = 0
+		add_base = 5
+		add_high_morale = 25
+		stability_threshold = 0.60
+		war_support_threshold = 0.60
+		stockpile_threshold = 250
+		add_big_stockpile = 15
+	}
+}
+
+bio_prototype_reward_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Special projects: prototype reward weights.
+	base = 2
+	theme_repeat_factor = 0.25
+}

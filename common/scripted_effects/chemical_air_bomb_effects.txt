@@ -1,0 +1,450 @@
+# Chemical air-bomb effects:
+# - Weekly region-pressure contamination from chemical air usage.
+# - Reuses existing chemical state contamination modifier and condemnation pipeline.
+
+chem_air_bomb_set_active_profile = {
+	set_temp_variable = { var = chem_air_profile_active value = 0 }
+	set_temp_variable = { var = chem_air_dose_per_pressure value = 0 }
+	set_temp_variable = { var = chem_air_duration_base value = 0 }
+	set_temp_variable = { var = chem_air_duration_per_pressure value = 0 }
+	set_temp_variable = { var = chem_air_condemnation_base value = 0 }
+	set_temp_variable = { var = chem_air_condemnation_per_pressure value = 0 }
+
+	if = {
+		limit = { has_tech = lewisite }
+		set_temp_variable = { var = chem_air_profile_active value = 1 }
+		set_temp_variable = { var = chem_air_dose_per_pressure value = constant:chem_air_bomb_state.dose_per_pressure.lewisite }
+		set_temp_variable = { var = chem_air_duration_base value = constant:chem_air_bomb_state.duration_base_days.lewisite }
+		set_temp_variable = { var = chem_air_duration_per_pressure value = constant:chem_air_bomb_state.duration_per_pressure.lewisite }
+		set_temp_variable = { var = chem_air_condemnation_base value = constant:chem_air_bomb_condemnation.base.lewisite }
+		set_temp_variable = { var = chem_air_condemnation_per_pressure value = constant:chem_air_bomb_condemnation.per_pressure.lewisite }
+	}
+	else_if = {
+		limit = { has_tech = mustard_gas }
+		set_temp_variable = { var = chem_air_profile_active value = 1 }
+		set_temp_variable = { var = chem_air_dose_per_pressure value = constant:chem_air_bomb_state.dose_per_pressure.mustard }
+		set_temp_variable = { var = chem_air_duration_base value = constant:chem_air_bomb_state.duration_base_days.mustard }
+		set_temp_variable = { var = chem_air_duration_per_pressure value = constant:chem_air_bomb_state.duration_per_pressure.mustard }
+		set_temp_variable = { var = chem_air_condemnation_base value = constant:chem_air_bomb_condemnation.base.mustard }
+		set_temp_variable = { var = chem_air_condemnation_per_pressure value = constant:chem_air_bomb_condemnation.per_pressure.mustard }
+	}
+	else_if = {
+		limit = { has_tech = phosgene }
+		set_temp_variable = { var = chem_air_profile_active value = 1 }
+		set_temp_variable = { var = chem_air_dose_per_pressure value = constant:chem_air_bomb_state.dose_per_pressure.phosgene }
+		set_temp_variable = { var = chem_air_duration_base value = constant:chem_air_bomb_state.duration_base_days.phosgene }
+		set_temp_variable = { var = chem_air_duration_per_pressure value = constant:chem_air_bomb_state.duration_per_pressure.phosgene }
+		set_temp_variable = { var = chem_air_condemnation_base value = constant:chem_air_bomb_condemnation.base.phosgene }
+		set_temp_variable = { var = chem_air_condemnation_per_pressure value = constant:chem_air_bomb_condemnation.per_pressure.phosgene }
+	}
+	else_if = {
+		limit = { has_tech = chlorine_gas }
+		set_temp_variable = { var = chem_air_profile_active value = 1 }
+		set_temp_variable = { var = chem_air_dose_per_pressure value = constant:chem_air_bomb_state.dose_per_pressure.chlorine }
+		set_temp_variable = { var = chem_air_duration_base value = constant:chem_air_bomb_state.duration_base_days.chlorine }
+		set_temp_variable = { var = chem_air_duration_per_pressure value = constant:chem_air_bomb_state.duration_per_pressure.chlorine }
+		set_temp_variable = { var = chem_air_condemnation_base value = constant:chem_air_bomb_condemnation.base.chlorine }
+		set_temp_variable = { var = chem_air_condemnation_per_pressure value = constant:chem_air_bomb_condemnation.per_pressure.chlorine }
+	}
+
+	if = {
+		limit = {
+			check_variable = { var = chem_air_profile_active value = 0 compare = greater_than }
+			has_doctrine = chaos_warfare
+		}
+		multiply_temp_variable = { var = chem_air_dose_per_pressure value = constant:chem_chaos_warfare_doctrine.air_bomb.dose_mult }
+		multiply_temp_variable = { var = chem_air_duration_base value = constant:chem_chaos_warfare_doctrine.air_bomb.duration_base_mult }
+		multiply_temp_variable = { var = chem_air_duration_per_pressure value = constant:chem_chaos_warfare_doctrine.air_bomb.duration_per_pressure_mult }
+	}
+}
+
+chem_air_bomb_process_region = {
+	set_temp_variable = { var = chem_region_pressure value = 0 }
+
+	# Approximation layer: HOI4 script does not expose a robust trigger for
+	# "air wings with this exact module currently flying mission in region".
+	# We estimate pressure from stationed planes in frontline regions and
+	# scale by deployed strike-aircraft share with staged confirmation.
+	meta_effect = {
+		text = {
+			if = {
+				limit = {
+					any_controlled_state = {
+						region = [REGION_ID]
+						any_neighbor_state = {
+							region = [REGION_ID]
+							CONTROLLER = { has_war_with = ROOT }
+							NOT = { is_controlled_by = ROOT }
+						}
+					}
+					any_state = {
+						region = [REGION_ID]
+						CONTROLLER = { has_war_with = ROOT }
+						NOT = { is_controlled_by = ROOT }
+					}
+				}
+
+				if = {
+					limit = {
+						ROOT = {
+							num_planes_stationed_in_regions = {
+								value > constant:chem_air_bomb_region.planes_threshold.very_low
+								regions = { [REGION_ID] }
+							}
+						}
+					}
+					add_to_temp_variable = { var = chem_region_pressure value = constant:chem_air_bomb_region.pressure_add.very_low }
+				}
+				if = {
+					limit = {
+						ROOT = {
+							num_planes_stationed_in_regions = {
+								value > constant:chem_air_bomb_region.planes_threshold.low
+								regions = { [REGION_ID] }
+							}
+						}
+					}
+					add_to_temp_variable = { var = chem_region_pressure value = constant:chem_air_bomb_region.pressure_add.low }
+				}
+				if = {
+					limit = {
+						ROOT = {
+							num_planes_stationed_in_regions = {
+								value > constant:chem_air_bomb_region.planes_threshold.med
+								regions = { [REGION_ID] }
+							}
+						}
+					}
+					add_to_temp_variable = { var = chem_region_pressure value = constant:chem_air_bomb_region.pressure_add.med }
+				}
+				if = {
+					limit = {
+						ROOT = {
+							num_planes_stationed_in_regions = {
+								value > constant:chem_air_bomb_region.planes_threshold.high
+								regions = { [REGION_ID] }
+							}
+						}
+					}
+					add_to_temp_variable = { var = chem_region_pressure value = constant:chem_air_bomb_region.pressure_add.high }
+				}
+				if = {
+					limit = {
+						ROOT = {
+							num_planes_stationed_in_regions = {
+								value > constant:chem_air_bomb_region.planes_threshold.very_high
+								regions = { [REGION_ID] }
+							}
+						}
+					}
+					add_to_temp_variable = { var = chem_region_pressure value = constant:chem_air_bomb_region.pressure_add.very_high }
+				}
+				if = {
+					limit = {
+						ROOT = {
+							num_planes_stationed_in_regions = {
+								value > constant:chem_air_bomb_region.planes_threshold.extreme
+								regions = { [REGION_ID] }
+							}
+						}
+					}
+					add_to_temp_variable = { var = chem_region_pressure value = constant:chem_air_bomb_region.pressure_add.extreme }
+				}
+
+				if = {
+					limit = {
+						ROOT = {
+							check_variable = { var = chem_air_chemical_deployed_ratio value = 0 compare = greater_than }
+						}
+					}
+					multiply_temp_variable = { var = chem_region_pressure value = ROOT.chem_air_chemical_deployed_ratio }
+				}
+
+				# Normalize pressure by active frontline-state density in the region.
+				set_temp_variable = { var = chem_region_frontline_states value = 0 }
+				every_state = {
+					limit = {
+						region = [REGION_ID]
+						is_controlled_by = ROOT
+						any_neighbor_state = {
+							region = [REGION_ID]
+							CONTROLLER = { has_war_with = ROOT }
+							NOT = { is_controlled_by = ROOT }
+						}
+					}
+					add_to_temp_variable = { var = chem_region_frontline_states value = 1 }
+				}
+
+				set_temp_variable = { var = chem_region_density_mult value = constant:chem_air_bomb_detection.frontline_density.mult.one }
+				if = {
+					limit = {
+						check_variable = {
+							var = chem_region_frontline_states
+							value = constant:chem_air_bomb_detection.frontline_density.threshold.low_states
+							compare = greater_than_or_equals
+						}
+					}
+					set_temp_variable = { var = chem_region_density_mult value = constant:chem_air_bomb_detection.frontline_density.mult.low }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = chem_region_frontline_states
+							value = constant:chem_air_bomb_detection.frontline_density.threshold.med_states
+							compare = greater_than_or_equals
+						}
+					}
+					set_temp_variable = { var = chem_region_density_mult value = constant:chem_air_bomb_detection.frontline_density.mult.med }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = chem_region_frontline_states
+							value = constant:chem_air_bomb_detection.frontline_density.threshold.high_states
+							compare = greater_than_or_equals
+						}
+					}
+					set_temp_variable = { var = chem_region_density_mult value = constant:chem_air_bomb_detection.frontline_density.mult.high }
+				}
+				multiply_temp_variable = { var = chem_region_pressure value = chem_region_density_mult }
+
+				# Per-region persistence for two-stage confirmation + hysteresis + cooldown.
+				set_temp_variable = { var = chem_region_stage_prev value = ROOT.[REGION_STAGE_VAR] }
+				set_temp_variable = { var = chem_region_active_prev value = ROOT.[REGION_ACTIVE_VAR] }
+				set_temp_variable = { var = chem_region_cooldown_prev value = ROOT.[REGION_COOLDOWN_VAR] }
+
+				if = {
+					limit = { check_variable = { var = chem_region_cooldown_prev value = 0 compare = greater_than } }
+					add_to_temp_variable = { var = chem_region_cooldown_prev value = -1 }
+					clamp_temp_variable = { var = chem_region_cooldown_prev min = 0 }
+					set_variable = { var = [REGION_COOLDOWN_VAR] value = chem_region_cooldown_prev }
+				}
+
+				set_temp_variable = { var = chem_region_should_process value = 0 }
+				if = {
+					limit = { check_variable = { var = chem_region_cooldown_prev value = 0 compare = less_than_or_equals } }
+					if = {
+						limit = {
+							check_variable = { var = chem_region_active_prev value = 0 compare = greater_than }
+								check_variable = {
+									var = chem_region_pressure
+									value = constant:chem_air_bomb_detection.hysteresis.continue_pressure.value
+									compare = greater_than_or_equals
+								}
+						}
+						set_temp_variable = { var = chem_region_should_process value = 1 }
+					}
+					if = {
+						limit = {
+							check_variable = { var = chem_region_active_prev value = 0 compare = less_than_or_equals }
+								check_variable = {
+									var = chem_region_pressure
+									value = constant:chem_air_bomb_detection.hysteresis.start_pressure.value
+									compare = greater_than_or_equals
+								}
+						}
+						set_temp_variable = { var = chem_region_should_process value = 1 }
+					}
+				}
+
+				if = {
+					limit = { check_variable = { var = chem_region_should_process value = 0 compare = greater_than } }
+					if = {
+						limit = { check_variable = { var = chem_region_stage_prev value = 0 compare = greater_than } }
+						set_variable = { var = [REGION_STAGE_VAR] value = 1 }
+						set_variable = { var = [REGION_ACTIVE_VAR] value = 1 }
+						clear_variable = [REGION_COOLDOWN_VAR]
+
+						set_variable = { var = chem_air_region_dose_each value = chem_region_pressure }
+						multiply_variable = { var = chem_air_region_dose_each value = chem_air_dose_per_pressure }
+
+						set_variable = { var = chem_air_region_duration_days value = chem_region_pressure }
+						multiply_variable = { var = chem_air_region_duration_days value = chem_air_duration_per_pressure }
+						round_variable = chem_air_region_duration_days
+						add_to_variable = { var = chem_air_region_duration_days value = chem_air_duration_base }
+						clamp_variable = { var = chem_air_region_duration_days min = 1 max = constant:chem_air_bomb_state.max_duration_days.base }
+
+						every_state = {
+							limit = {
+								region = [REGION_ID]
+								OR = {
+									is_controlled_by = ROOT
+									CONTROLLER = { has_war_with = ROOT }
+								}
+							}
+							if = {
+								limit = { is_controlled_by = ROOT }
+								set_temp_variable = { var = chem_dose_each value = ROOT.chem_air_region_dose_each }
+								multiply_temp_variable = { var = chem_dose_each value = constant:chem_air_bomb_state.friendly_mult.dose }
+								set_temp_variable = { var = chem_state_duration_add value = ROOT.chem_air_region_duration_days }
+								multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_air_bomb_state.friendly_mult.duration }
+								round_temp_variable = chem_state_duration_add
+								clamp_temp_variable = { var = chem_state_duration_add min = 1 max = constant:chem_air_bomb_state.max_duration_days.base }
+								chem_apply_state_contamination = yes
+								add_to_variable = { ROOT.chem_air_bomb_states_affected = 1 }
+							}
+							else_if = {
+								limit = { CONTROLLER = { has_war_with = ROOT } }
+								set_temp_variable = { var = chem_dose_each value = ROOT.chem_air_region_dose_each }
+								set_temp_variable = { var = chem_state_duration_add value = ROOT.chem_air_region_duration_days }
+								chem_apply_state_contamination = yes
+								add_to_variable = { ROOT.chem_air_bomb_states_affected = 1 }
+							}
+						}
+
+						add_to_variable = { chem_air_bomb_activity_points = chem_region_pressure }
+						add_to_variable = { chem_air_bomb_active_regions = 1 }
+					}
+					else = {
+						set_variable = { var = [REGION_STAGE_VAR] value = 1 }
+						set_variable = { var = [REGION_ACTIVE_VAR] value = 1 }
+						clear_variable = [REGION_COOLDOWN_VAR]
+						add_to_variable = { ROOT.chem_air_bomb_suspected_regions = 1 }
+					}
+				}
+				else = {
+					if = {
+						limit = {
+							OR = {
+								check_variable = { var = chem_region_stage_prev value = 0 compare = greater_than }
+								check_variable = { var = chem_region_active_prev value = 0 compare = greater_than }
+							}
+						}
+							set_variable = { var = [REGION_COOLDOWN_VAR] value = constant:chem_air_bomb_detection.hysteresis.cooldown_weeks.value }
+					}
+					clear_variable = [REGION_STAGE_VAR]
+					clear_variable = [REGION_ACTIVE_VAR]
+				}
+			}
+		}
+		REGION_ID = "[?chem_region_id|.0]"
+		REGION_STAGE_VAR = "chem_air_region_stage_[?chem_region_id|.0]"
+		REGION_ACTIVE_VAR = "chem_air_region_active_[?chem_region_id|.0]"
+		REGION_COOLDOWN_VAR = "chem_air_region_cooldown_[?chem_region_id|.0]"
+	}
+}
+
+chem_air_bomb_register_ground_ops_heat_won = {
+	if = {
+		limit = {
+			has_war = yes
+			OR = {
+				has_tech = chlorine_gas
+				has_tech = phosgene
+				has_tech = mustard_gas
+				has_tech = lewisite
+			}
+		}
+		add_to_variable = {
+			var = chem_air_ground_ops_heat
+			value = constant:chem_air_bomb_detection.ground_ops.heat_add.won
+		}
+	}
+}
+
+chem_air_bomb_register_ground_ops_heat_lost = {
+	if = {
+		limit = {
+			has_war = yes
+			OR = {
+				has_tech = chlorine_gas
+				has_tech = phosgene
+				has_tech = mustard_gas
+				has_tech = lewisite
+			}
+		}
+		add_to_variable = {
+			var = chem_air_ground_ops_heat
+			value = constant:chem_air_bomb_detection.ground_ops.heat_add.lost
+		}
+	}
+}
+
+chem_air_bomb_weekly_tick = {
+	chem_air_bomb_set_active_profile = yes
+
+	if = {
+		limit = {
+			has_war = yes
+			check_variable = { var = chem_air_profile_active value = 0 compare = greater_than }
+		}
+		if = {
+			limit = { check_variable = { var = chem_air_ground_ops_heat value = 0 compare = greater_than } }
+				multiply_variable = { var = chem_air_ground_ops_heat value = constant:chem_air_bomb_detection.ground_ops.weekly_decay.value }
+		}
+		if = {
+			limit = {
+					check_variable = {
+						var = chem_air_ground_ops_heat
+						value = constant:chem_air_bomb_detection.ground_ops.clear_below.value
+						compare = less_than_or_equals
+					}
+			}
+			clear_variable = chem_air_ground_ops_heat
+		}
+
+			set_variable = { var = chem_air_total_deployed value = num_deployed_planes }
+			set_variable = { var = chem_air_cas_deployed value = num_deployed_planes_with_type@cas }
+			set_variable = { var = chem_air_tactical_deployed value = num_deployed_planes_with_type@tactical_bomber }
+			set_variable = { var = chem_air_chemical_deployed value = chem_air_cas_deployed }
+			add_to_variable = { var = chem_air_chemical_deployed value = chem_air_tactical_deployed }
+		set_variable = { var = chem_air_chemical_deployed_ratio value = 0 }
+
+		if = {
+			limit = {
+				check_variable = { var = chem_air_total_deployed value = 0 compare = greater_than }
+				check_variable = {
+					var = chem_air_chemical_deployed
+					value = constant:chem_air_bomb_region.core.min_chemical_deployed
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { var = chem_air_chemical_deployed_ratio value = chem_air_chemical_deployed }
+			divide_variable = { var = chem_air_chemical_deployed_ratio value = chem_air_total_deployed }
+			clamp_variable = { var = chem_air_chemical_deployed_ratio min = 0 max = 1 }
+		}
+
+		set_variable = { var = chem_air_bomb_activity_points value = 0 }
+		set_variable = { var = chem_air_bomb_active_regions value = 0 }
+		set_variable = { var = chem_air_bomb_states_affected value = 0 }
+		set_variable = { var = chem_air_bomb_suspected_regions value = 0 }
+
+		if = {
+			limit = {
+				check_variable = { var = chem_air_chemical_deployed_ratio value = 0 compare = greater_than }
+					check_variable = {
+						var = chem_air_ground_ops_heat
+						value = constant:chem_air_bomb_detection.ground_ops.min_heat_to_run.value
+						compare = greater_than_or_equals
+					}
+			}
+			for_loop_effect = {
+				start = 1
+				end = constant:chem_air_bomb_region.core.max_id
+				compare = less_than_or_equals
+				value = chem_region_id
+				chem_air_bomb_process_region = yes
+			}
+		}
+
+		if = {
+			limit = { check_variable = { var = chem_air_bomb_active_regions value = 0 compare = greater_than } }
+			set_temp_variable = { var = chem_condemnation_base value = chem_air_condemnation_base }
+			set_temp_variable = { var = chem_condemnation_per_unit value = chem_air_condemnation_per_pressure }
+			set_temp_variable = { var = chem_consumed_amount value = chem_air_bomb_activity_points }
+			chem_warfare_register_attack_use_no_livens = yes
+		}
+
+		clear_variable = chem_air_bomb_activity_points
+		clear_variable = chem_air_bomb_active_regions
+		clear_variable = chem_air_bomb_states_affected
+		clear_variable = chem_air_bomb_suspected_regions
+			clear_variable = chem_air_region_dose_each
+			clear_variable = chem_air_region_duration_days
+			clear_variable = chem_air_total_deployed
+			clear_variable = chem_air_cas_deployed
+			clear_variable = chem_air_tactical_deployed
+			clear_variable = chem_air_chemical_deployed
+			clear_variable = chem_air_chemical_deployed_ratio
+	}
+}
