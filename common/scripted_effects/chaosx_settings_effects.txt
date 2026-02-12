@@ -7,102 +7,10 @@
 # ============================================================================
 # CONSTANTS
 # ============================================================================
-
-# Event System Defaults
-@STARTING_MIN_DAYS = 45
-@STARTING_MAX_DAYS = 60
-@DEFAULT_MIN_DAYS = 25  # Remains unchanged due how the dynamic caps are calculated
-@DEFAULT_MAX_DAYS = 35
-@DEFAULT_MIN_DECREMENT_CAP = 15
-@DEFAULT_MAX_DECREMENT_CAP = 5
-@DEFAULT_EVENT_WEIGHT = 1000
-@DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR = 150
-@DEFAULT_REDUCE_CAP_FACTOR = 0.5
-@DEFAULT_RECOVERY_RATE = 20
-@DEFAULT_INCREMENT_MODE = 5
-
-# Chaos Meter Timer Modifiers
-@DEFAULT_CHAOS_MODIFIER_CALM = 1.0
-@DEFAULT_CHAOS_MODIFIER_GATHERING = 0.8
-@DEFAULT_CHAOS_MODIFIER_RISING = 0.7
-@DEFAULT_CHAOS_MODIFIER_CHAOS = 0.6
-@DEFAULT_CHAOS_MODIFIER_CRITICAL = 0.5
-@DEFAULT_CHAOS_MODIFIER_COLLAPSE = 0.5
-
-# Event Type Constants
-@EVENT_TYPE_UNKNOWN = 0
-@EVENT_TYPE_MAJOR = 1
-@EVENT_TYPE_REPEATABLE = 2
-@EVENT_TYPE_FIRE_ONCE = 3
-
-# Event Filter Constants
-@FILTER_ALL_EVENTS = 0
-@FILTER_MAJOR_EVENTS = 1
-@FILTER_REPEATABLE_EVENTS = 2
-@FILTER_FIRE_ONCE_EVENTS = 3
-
-# Timer System Constants
-@TIMER_MAX_MAX_VALUE = 125
-@TIMER_MIN_MIN_VALUE = 5
-@TIMER_MINIMUM_DAYS = 2
-@TIMER_RANDOM_INITIAL_MIN = 7
-
-# Dynamic cap management constants
-@DYNAMIC_CAP_STEP_SIZE = 3
-@DYNAMIC_CAP_FLOOR_THRESHOLD = 21
-@DYNAMIC_CAP_BASE_FACTOR = 5
-
-# Tag Management Constants
-@DEFAULT_TAG_MANAGEMENT_MODE = 1
-
-# Country Filter Constants
-@COUNTRY_FILTER_ALL = 0
-@COUNTRY_FILTER_ENABLED_ONLY = 1
-@COUNTRY_FILTER_DISABLED_ONLY = 2
-
-# Continent Sorting Constants
-@CONTINENT_SORT_ALPHABETICAL = 0
-@CONTINENT_SORT_EUROPE = 1
-@CONTINENT_SORT_ASIA = 2
-@CONTINENT_SORT_AFRICA = 3
-@CONTINENT_SORT_NORTH_AMERICA = 4
-@CONTINENT_SORT_SOUTH_AMERICA = 5
-@CONTINENT_SORT_OCEANIA = 6
-@CONTINENT_SORT_MIDDLE_EAST = 7
-
-# Advanced Settings Constants
-@DEFAULT_ADVANCED_INCREMENT_MODE = 10
-@ADVANCED_MIN_RECOVERY_RATE = 0
-@ADVANCED_MAX_RECOVERY_RATE = 10000
-@ADVANCED_MIN_CAP_REDUCTION = 0
-@ADVANCED_MAX_CAP_REDUCTION = 1.0
-@ADVANCED_MIN_MAJOR_WEIGHT_PER_MINOR = 0
-@ADVANCED_MAX_MAJOR_WEIGHT_PER_MINOR = 10000
-@ADVANCED_MIN_EVENT_WEIGHT = 100
-@ADVANCED_MAX_EVENT_WEIGHT = 5000
-@ADVANCED_MIN_TIMER_MODIFIER = 0.1
-@ADVANCED_MAX_TIMER_MODIFIER = 2.0
-
-# Chaos Meter Constants
-@chaos_tier_0_MIN = 0
-@chaos_tier_0_MAX = 199
-@chaos_tier_1_MIN = 200
-@chaos_tier_1_MAX = 399
-@chaos_tier_2_MIN = 400
-@chaos_tier_2_MAX = 599
-@chaos_tier_3_MIN = 600
-@chaos_tier_3_MAX = 799
-@chaos_tier_4_MIN = 800
-@chaos_tier_4_MAX = 999
-@chaos_tier_final_MIN = 1000
-@chaos_tier_final_PLUS = 1001
-@chaos_tier_0 = 0
-@chaos_tier_1 = 1
-@chaos_tier_2 = 2
-@chaos_tier_3 = 3
-@chaos_tier_4 = 4
-@chaos_tier_final = 5
-@DEFAULT_CHAOS_INCREMENT_MODE = 10
+# Tuning constants are defined in:
+# - `common/script_constants/settings_constants.txt`
+# - `common/script_constants/event_system_constants.txt`
+# - `common/script_constants/chaos_meter_constants.txt`
 
 # ============================================================================
 # MENU SYSTEM PLACEHOLDERS
@@ -228,9 +136,9 @@ reset_all_settings = {
 
 # Initialize trigger events settings
 initialize_trigger_events_settings = {
-    set_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN }
-    set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
-    set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
+    set_variable = { settings_selected_event_id = constant:event_system_event_type.unknown }
+    set_variable = { settings_events_increment_mode = constant:settings_defaults.events_increment_mode }
+    set_variable = { settings_event_id_filter = constant:settings_event_filter.all }
 
     update_event_id_display = yes
 }
@@ -250,8 +158,8 @@ open_trigger_events_menu = {
 # Cycle to previous event filter type
 cycle_event_filter_prev = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
-        set_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.all } }
+        set_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once }
     }
     else = {
         subtract_from_variable = { settings_event_id_filter = 1 }
@@ -264,8 +172,8 @@ cycle_event_filter_prev = {
 # Cycle to next event filter type
 cycle_event_filter_next = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
-        set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
+        set_variable = { settings_event_id_filter = constant:settings_event_filter.all }
     }
     else = {
         add_to_variable = { settings_event_id_filter = 1 }
@@ -283,7 +191,7 @@ find_event_in_array = {
     set_temp_variable = { temp_event_index = -1 }
 
     if = {
-        limit = { check_variable = { array_filter_type = @FILTER_MAJOR_EVENTS } }
+        limit = { check_variable = { array_filter_type = constant:settings_event_filter.major } }
         # Major events
         for_loop_effect = {
             start = 0
@@ -296,7 +204,7 @@ find_event_in_array = {
         }
     }
     else_if = {
-        limit = { check_variable = { array_filter_type = @FILTER_REPEATABLE_EVENTS } }
+        limit = { check_variable = { array_filter_type = constant:settings_event_filter.repeatable } }
         # Repeatable events
         for_loop_effect = {
             start = 0
@@ -309,7 +217,7 @@ find_event_in_array = {
         }
     }
     else_if = {
-        limit = { check_variable = { array_filter_type = @FILTER_FIRE_ONCE_EVENTS } }
+        limit = { check_variable = { array_filter_type = constant:settings_event_filter.fire_once } }
         # Fire-once events
         for_loop_effect = {
             start = 0
@@ -326,7 +234,7 @@ find_event_in_array = {
 # Adjust the current event ID to be valid for the selected filter
 adjust_event_id_for_filter = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.all } }
         # All events - ensure ID is within valid range
         clamp_variable = {
             var = settings_selected_event_id
@@ -335,10 +243,10 @@ adjust_event_id_for_filter = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
         # Major events - check if current ID is major, if not set to first major
         set_temp_variable = { event_id = settings_selected_event_id }
-        set_temp_variable = { array_filter_type = @FILTER_MAJOR_EVENTS }
+        set_temp_variable = { array_filter_type = constant:settings_event_filter.major }
         find_event_in_array = yes
 
         if = {
@@ -353,10 +261,10 @@ adjust_event_id_for_filter = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
         # Repeatable events
         set_temp_variable = { event_id = settings_selected_event_id }
-        set_temp_variable = { array_filter_type = @FILTER_REPEATABLE_EVENTS }
+        set_temp_variable = { array_filter_type = constant:settings_event_filter.repeatable }
         find_event_in_array = yes
 
         if = {
@@ -371,10 +279,10 @@ adjust_event_id_for_filter = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
         # Fire-once events
         set_temp_variable = { event_id = settings_selected_event_id }
-        set_temp_variable = { array_filter_type = @FILTER_FIRE_ONCE_EVENTS }
+        set_temp_variable = { array_filter_type = constant:settings_event_filter.fire_once }
         find_event_in_array = yes
 
         if = {
@@ -394,7 +302,7 @@ adjust_event_id_for_filter = {
 get_next_valid_event_id = {
     # Simple implementation: set to next array element or wrap to first
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
         # Major events - cycle through major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -431,7 +339,7 @@ get_next_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
         # Repeatable events - cycle through repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -468,7 +376,7 @@ get_next_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
         # Fire-once events - cycle through fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -510,7 +418,7 @@ get_next_valid_event_id = {
 get_previous_valid_event_id = {
     # Simple implementation: set to previous array element or wrap to last
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
         # Major events - cycle through major events array backwards
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -550,7 +458,7 @@ get_previous_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
         # Repeatable events - cycle through repeatable events array backwards
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -590,7 +498,7 @@ get_previous_valid_event_id = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
         # Fire-once events - cycle through fire-once events array backwards
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -634,7 +542,7 @@ get_previous_valid_event_id = {
 # Decrease event ID
 decrease_event_id = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.all } }
         # All events - standard decrement with wrapping
         set_temp_variable = { new_id = settings_selected_event_id }
         subtract_from_temp_variable = { new_id = settings_events_increment_mode }
@@ -657,7 +565,7 @@ decrease_event_id = {
 # Increase event ID
 increase_event_id = {
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.all } }
         # All events - standard increment with wrapping
         set_temp_variable = { new_id = settings_selected_event_id }
         add_to_temp_variable = { new_id = settings_events_increment_mode }
@@ -711,10 +619,10 @@ toggle_increment_mode = {
 # Update event ID display flags
 update_event_id_display = {
     if = {
-        limit = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } }
+        limit = { check_variable = { settings_selected_event_id = constant:event_system_event_type.unknown } }
         set_country_flag = settings_event_id_zero
-        set_variable = { settings_event_id = @EVENT_TYPE_UNKNOWN }
-        set_variable = { settings_event_type = @EVENT_TYPE_UNKNOWN }
+        set_variable = { settings_event_id = constant:event_system_event_type.unknown }
+        set_variable = { settings_event_type = constant:event_system_event_type.unknown }
     }
     else = {
         clr_country_flag = settings_event_id_zero
@@ -731,7 +639,7 @@ update_event_id_display = {
 # Trigger selected event (checks if event can be fired unless force mode is enabled)
 trigger_selected_event = {
     if = {
-        limit = { NOT = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } } }
+        limit = { NOT = { check_variable = { settings_selected_event_id = constant:event_system_event_type.unknown } } }
 
         set_temp_variable = { event_id = settings_selected_event_id }
 
@@ -753,8 +661,8 @@ trigger_selected_event = {
             if = {
                 limit = {
                     OR = {
-                        check_variable = { settings_event_type = @EVENT_TYPE_MAJOR }
-                        check_variable = { settings_event_type = @EVENT_TYPE_FIRE_ONCE }
+                        check_variable = { settings_event_type = constant:event_system_event_type.major }
+                        check_variable = { settings_event_type = constant:event_system_event_type.fire_once }
                     }
                 }
                 if = {
@@ -777,7 +685,7 @@ trigger_selected_event = {
 # Force trigger selected event (ignores fired status)
 force_trigger_selected_event = {
     if = {
-        limit = { NOT = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } } }
+        limit = { NOT = { check_variable = { settings_selected_event_id = constant:event_system_event_type.unknown } } }
 
         set_variable = { temp_bypass_checks = 1 }
         fire_event_by_id = yes
@@ -801,7 +709,7 @@ trigger_random_event = {
     }
 
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.all } }
         # All events - need to respect fired status for major/fire-once events when not in force mode
         if = {
             limit = { check_variable = { include_fired_events = 0 } }
@@ -875,7 +783,7 @@ trigger_random_event = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
         # Major events - random from major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -937,7 +845,7 @@ trigger_random_event = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
         # Repeatable events - always available, no fired status filtering needed
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -953,7 +861,7 @@ trigger_random_event = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
         # Fire-once events - filter based on fired status unless force mode
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1139,7 +1047,7 @@ toggle_force_trigger_mode = {
 # Toggle event disabled state for selected event
 toggle_event_disabled = {
     if = {
-        limit = { NOT = { check_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN } } }
+        limit = { NOT = { check_variable = { settings_selected_event_id = constant:event_system_event_type.unknown } } }
         if = {
             limit = { is_in_array = { global.disabled_events = settings_selected_event_id } }
             remove_from_array = { global.disabled_events = settings_selected_event_id }
@@ -1185,7 +1093,7 @@ get_next_valid_event_id_by_steps = {
     set_temp_variable = { steps_to_move = settings_events_increment_mode }
 
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
         # Major events - move by N steps in major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -1223,7 +1131,7 @@ get_next_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
         # Repeatable events - move by N steps in repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -1260,7 +1168,7 @@ get_next_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
         # Fire-once events - move by N steps in fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1303,7 +1211,7 @@ get_previous_valid_event_id_by_steps = {
     set_temp_variable = { steps_to_move = settings_events_increment_mode }
 
     if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_MAJOR_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.major } }
         # Major events - move backward by N steps in major events array
         if = {
             limit = { check_variable = { global.major_events^num > 0 } }
@@ -1341,7 +1249,7 @@ get_previous_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_REPEATABLE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.repeatable } }
         # Repeatable events - move backward by N steps in repeatable events array
         if = {
             limit = { check_variable = { global.repeatable_events^num > 0 } }
@@ -1379,7 +1287,7 @@ get_previous_valid_event_id_by_steps = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_event_id_filter = @FILTER_FIRE_ONCE_EVENTS } }
+        limit = { check_variable = { settings_event_id_filter = constant:settings_event_filter.fire_once } }
         # Fire-once events - move backward by N steps in fire-once events array
         if = {
             limit = { check_variable = { global.fire_once_events^num > 0 } }
@@ -1458,9 +1366,9 @@ update_unfired_events_counts = {
 
 reset_trigger_events = {
     # Reset trigger events to defaults (cosmetic)
-    set_variable = { settings_selected_event_id = @EVENT_TYPE_UNKNOWN }
-    set_variable = { settings_event_id_filter = @FILTER_ALL_EVENTS }
-    set_variable = { settings_events_increment_mode = @DEFAULT_INCREMENT_MODE }
+    set_variable = { settings_selected_event_id = constant:event_system_event_type.unknown }
+    set_variable = { settings_event_id_filter = constant:settings_event_filter.all }
+    set_variable = { settings_events_increment_mode = constant:settings_defaults.events_increment_mode }
 
     # Reset view to Events view
     set_country_flag = show_events_view
@@ -1492,8 +1400,8 @@ reset_trigger_events = {
 
 # Initialize timer system settings
 initialize_timer_system_settings = {
-    set_variable = { settings_timer_min_days = @STARTING_MIN_DAYS }
-    set_variable = { settings_timer_max_days = @STARTING_MAX_DAYS }
+    set_variable = { settings_timer_min_days = constant:event_system_timer_defaults.min_days }
+    set_variable = { settings_timer_max_days = constant:event_system_timer_defaults.max_days }
     calculate_dynamic_caps = yes
     set_variable = { timer_min_decrement_cap = settings_timer_min_decrement_cap }
     set_variable = { timer_max_decrement_cap = settings_timer_max_decrement_cap }
@@ -1527,7 +1435,7 @@ decrease_timer_min = {
 
     clamp_temp_variable = {
         var = new_min
-        min = @TIMER_MIN_MIN_VALUE
+        min = constant:settings_timer_limit.min_min_value
         max = settings_timer_max_days
     }
 
@@ -1542,7 +1450,7 @@ increase_timer_min = {
 
     clamp_temp_variable = {
         var = new_min
-        min = @TIMER_MIN_MIN_VALUE
+        min = constant:settings_timer_limit.min_min_value
         max = settings_timer_max_days
     }
 
@@ -1558,7 +1466,7 @@ decrease_timer_max = {
     clamp_temp_variable = {
         var = new_max
         min = settings_timer_min_days
-        max = @TIMER_MAX_MAX_VALUE
+        max = constant:settings_timer_limit.max_max_value
     }
 
     set_variable = { settings_timer_max_days = new_max }
@@ -1573,7 +1481,7 @@ increase_timer_max = {
     clamp_temp_variable = {
         var = new_max
         min = settings_timer_min_days
-        max = @TIMER_MAX_MAX_VALUE
+        max = constant:settings_timer_limit.max_max_value
     }
 
     set_variable = { settings_timer_max_days = new_max }
@@ -1614,18 +1522,18 @@ toggle_timer_window = {
 # Reset timer to default values
 reset_timer_to_defaults = {
     # Restore timer system
-    set_variable = { timer_min_days = @STARTING_MIN_DAYS }
-    set_variable = { timer_max_days = @STARTING_MAX_DAYS }
-    set_variable = { timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
-    set_variable = { timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
+    set_variable = { timer_min_days = constant:event_system_timer_defaults.min_days }
+    set_variable = { timer_max_days = constant:event_system_timer_defaults.max_days }
+    set_variable = { timer_min_decrement_cap = constant:event_system_timer_defaults.min_decrement_cap }
+    set_variable = { timer_max_decrement_cap = constant:event_system_timer_defaults.max_decrement_cap }
     set_variable = { timer_day_decrement = 0 }
     set_variable = { timer_max_cap_reduction = 0 }
 
     # Reset timer settings to defaults
-    set_variable = { settings_timer_min_days = @STARTING_MIN_DAYS }
-    set_variable = { settings_timer_max_days = @STARTING_MAX_DAYS }
-    set_variable = { settings_timer_min_decrement_cap = @DEFAULT_MIN_DECREMENT_CAP }
-    set_variable = { settings_timer_max_decrement_cap = @DEFAULT_MAX_DECREMENT_CAP }
+    set_variable = { settings_timer_min_days = constant:event_system_timer_defaults.min_days }
+    set_variable = { settings_timer_max_days = constant:event_system_timer_defaults.max_days }
+    set_variable = { settings_timer_min_decrement_cap = constant:event_system_timer_defaults.min_decrement_cap }
+    set_variable = { settings_timer_max_decrement_cap = constant:event_system_timer_defaults.max_decrement_cap }
 
     # Reset timer increment mode to 1
     set_variable = { settings_timer_increment_mode = 1 }
@@ -1659,13 +1567,13 @@ calculate_dynamic_caps = {
 
     # Calculate maxDecrementCap based on maxValue
     if = {
-        limit = { check_variable = { max_value < @DYNAMIC_CAP_FLOOR_THRESHOLD } }
+        limit = { check_variable = { max_value < constant:settings_dynamic_cap.floor_threshold } }
         set_temp_variable = { calculated_max_cap = 0 }
     }
     else = {
         # Calculate deviation from base value
         set_temp_variable = { deviation = max_value }
-        subtract_from_temp_variable = { deviation = @DEFAULT_MAX_DAYS }
+        subtract_from_temp_variable = { deviation = constant:settings_defaults.events_max_days }
 
         # Calculate steps: deviation // 3
         set_temp_variable = { steps = 0 }
@@ -1680,11 +1588,11 @@ calculate_dynamic_caps = {
         while_loop_effect = {
             limit = { check_variable = { abs_deviation > 2 } }
             add_to_temp_variable = { steps = 1 }
-            subtract_from_temp_variable = { abs_deviation = @DYNAMIC_CAP_STEP_SIZE }
+            subtract_from_temp_variable = { abs_deviation = constant:settings_dynamic_cap.step_size }
         }
 
         # Apply the formula: base 5 + (or -) steps
-        set_temp_variable = { calculated_max_cap = @DYNAMIC_CAP_BASE_FACTOR }
+        set_temp_variable = { calculated_max_cap = constant:settings_dynamic_cap.base_factor }
 
         if = {
             limit = { check_variable = { deviation < 0 } }
@@ -1752,9 +1660,9 @@ calculate_dynamic_caps = {
 # Initialize tag management settings
 initialize_tag_management_settings = {
     set_variable = { settings_selected_tag_index = 0 }
-    set_variable = { settings_tag_increment_mode = @DEFAULT_TAG_MANAGEMENT_MODE }
-    set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
-    set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
+    set_variable = { settings_tag_increment_mode = constant:settings_defaults.tag_management_mode }
+    set_variable = { settings_country_filter = constant:settings_country_filter.all }
+    set_variable = { settings_continent_sort = constant:settings_continent_sort.alphabetical }
 }
 
 # Switch to Timer Interval view
@@ -1786,7 +1694,7 @@ get_current_filtered_country_list = {
     resize_array = { temp_working_countries_list = 0 }
 
     if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.alphabetical } }
         for_loop_effect = {
             start = 0
             end = global.countries^num
@@ -1795,7 +1703,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_EUROPE } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.europe } }
         # Use Europe countries array
         for_loop_effect = {
             start = 0
@@ -1805,7 +1713,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_ASIA } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.asia } }
         # Use Asia countries array
         for_loop_effect = {
             start = 0
@@ -1815,7 +1723,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_AFRICA } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.africa } }
         # Use Africa countries array
         for_loop_effect = {
             start = 0
@@ -1825,7 +1733,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_NORTH_AMERICA } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.north_america } }
         # Use North America countries array
         for_loop_effect = {
             start = 0
@@ -1835,7 +1743,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_SOUTH_AMERICA } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.south_america } }
         # Use South America countries array
         for_loop_effect = {
             start = 0
@@ -1845,7 +1753,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_OCEANIA } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.oceania } }
         # Use Oceania countries array
         for_loop_effect = {
             start = 0
@@ -1855,7 +1763,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_MIDDLE_EAST } }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.middle_east } }
         for_loop_effect = {
             start = 0
             end = global.middle_east_countries^num
@@ -1868,7 +1776,7 @@ get_current_filtered_country_list = {
     resize_array = { temp_final_countries_list = 0 }
 
     if = {
-        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_ALL } }
+        limit = { check_variable = { settings_country_filter = constant:settings_country_filter.all } }
         # All Countries - use the working list as-is
         for_loop_effect = {
             start = 0
@@ -1878,7 +1786,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_ENABLED_ONLY } }
+        limit = { check_variable = { settings_country_filter = constant:settings_country_filter.enabled_only } }
         # Enabled Only - filter for countries with events_activated flag
         for_loop_effect = {
             start = 0
@@ -1894,7 +1802,7 @@ get_current_filtered_country_list = {
         }
     }
     else_if = {
-        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_DISABLED_ONLY } }
+        limit = { check_variable = { settings_country_filter = constant:settings_country_filter.disabled_only } }
         # Disabled Only - filter for countries without events_activated flag
         for_loop_effect = {
             start = 0
@@ -2044,8 +1952,8 @@ update_selected_tag_info = {
 # Cycle to previous country filter
 cycle_country_filter_prev = {
     if = {
-        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_ALL } }
-        set_variable = { settings_country_filter = @COUNTRY_FILTER_DISABLED_ONLY }
+        limit = { check_variable = { settings_country_filter = constant:settings_country_filter.all } }
+        set_variable = { settings_country_filter = constant:settings_country_filter.disabled_only }
     }
     else = {
         subtract_from_variable = { settings_country_filter = 1 }
@@ -2060,8 +1968,8 @@ cycle_country_filter_prev = {
 # Cycle to next country filter
 cycle_country_filter_next = {
     if = {
-        limit = { check_variable = { settings_country_filter = @COUNTRY_FILTER_DISABLED_ONLY } }
-        set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
+        limit = { check_variable = { settings_country_filter = constant:settings_country_filter.disabled_only } }
+        set_variable = { settings_country_filter = constant:settings_country_filter.all }
     }
     else = {
         add_to_variable = { settings_country_filter = 1 }
@@ -2076,8 +1984,8 @@ cycle_country_filter_next = {
 # Cycle to previous continent sort
 cycle_continent_sort_prev = {
     if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL } }
-        set_variable = { settings_continent_sort = @CONTINENT_SORT_MIDDLE_EAST }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.alphabetical } }
+        set_variable = { settings_continent_sort = constant:settings_continent_sort.middle_east }
     }
     else = {
         subtract_from_variable = { settings_continent_sort = 1 }
@@ -2092,8 +2000,8 @@ cycle_continent_sort_prev = {
 # Cycle to next continent sort
 cycle_continent_sort_next = {
     if = {
-        limit = { check_variable = { settings_continent_sort = @CONTINENT_SORT_MIDDLE_EAST } }
-        set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
+        limit = { check_variable = { settings_continent_sort = constant:settings_continent_sort.middle_east } }
+        set_variable = { settings_continent_sort = constant:settings_continent_sort.alphabetical }
     }
     else = {
         add_to_variable = { settings_continent_sort = 1 }
@@ -2311,11 +2219,11 @@ update_enabled_countries_list = {
 # Reset tag management to default values
 reset_tag_management_to_defaults = {
     set_variable = { settings_selected_tag_index = 0 }
-    set_variable = { settings_tag_increment_mode = @DEFAULT_TAG_MANAGEMENT_MODE }
+    set_variable = { settings_tag_increment_mode = constant:settings_defaults.tag_management_mode }
     set_global_flag = settings_auto_enable_on_switch
     set_global_flag = settings_disable_previous_tag
-    set_variable = { settings_country_filter = @COUNTRY_FILTER_ALL }
-    set_variable = { settings_continent_sort = @CONTINENT_SORT_ALPHABETICAL }
+    set_variable = { settings_country_filter = constant:settings_country_filter.all }
+    set_variable = { settings_continent_sort = constant:settings_continent_sort.alphabetical }
 
     # Re-initialize continent arrays
     update_filtered_countries_list = yes
@@ -2387,7 +2295,7 @@ initialize_chaos_meter_settings = {
     }
 
     # Initialize increment mode
-    set_variable = { settings_chaos_increment_mode = @DEFAULT_CHAOS_INCREMENT_MODE }
+    set_variable = { settings_chaos_increment_mode = constant:settings_defaults.chaos_increment_mode }
 
     # Initialize tier based on current value
     update_settings_chaos_tier = yes
@@ -2460,33 +2368,33 @@ update_settings_chaos_tier = {
 
     # Set appropriate tier flag and value
     if = {
-        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_4_MAX } }
+        limit = { check_variable = { settings_chaos_meter_value > constant:chaos_meter_tier_range.tier_4.max } }
         set_country_flag = settings_chaos_tier_final
-        set_variable = { settings_chaos_tier = @chaos_tier_final }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_final }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_3_MAX } }
+        limit = { check_variable = { settings_chaos_meter_value > constant:chaos_meter_tier_range.tier_3.max } }
         set_country_flag = settings_chaos_tier_4
-        set_variable = { settings_chaos_tier = @chaos_tier_4 }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_4 }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_2_MAX } }
+        limit = { check_variable = { settings_chaos_meter_value > constant:chaos_meter_tier_range.tier_2.max } }
         set_country_flag = settings_chaos_tier_3
-        set_variable = { settings_chaos_tier = @chaos_tier_3 }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_3 }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_1_MAX } }
+        limit = { check_variable = { settings_chaos_meter_value > constant:chaos_meter_tier_range.tier_1.max } }
         set_country_flag = settings_chaos_tier_2
-        set_variable = { settings_chaos_tier = @chaos_tier_2 }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_2 }
     }
     else_if = {
-        limit = { check_variable = { settings_chaos_meter_value > @chaos_tier_0_MAX } }
+        limit = { check_variable = { settings_chaos_meter_value > constant:chaos_meter_tier_range.tier_0.max } }
         set_country_flag = settings_chaos_tier_1
-        set_variable = { settings_chaos_tier = @chaos_tier_1 }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_1 }
     }
     else = {
         set_country_flag = settings_chaos_tier_0
-        set_variable = { settings_chaos_tier = @chaos_tier_0 }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_0 }
     }
 }
 
@@ -2495,48 +2403,48 @@ cycle_chaos_tier_prev = {
     if = {
         limit = { has_country_flag = settings_chaos_tier_0 }
         # From Calm to World Collapse
-        set_variable = { settings_chaos_meter_value = @chaos_tier_final_PLUS }
-        set_variable = { settings_chaos_tier = @chaos_tier_final }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_final.plus }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_final }
         clr_country_flag = settings_chaos_tier_0
         set_country_flag = settings_chaos_tier_final
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_1 }
         # From Gathering Storm to Calm World
-        set_variable = { settings_chaos_meter_value = @chaos_tier_0_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_0 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_0.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_0 }
         clr_country_flag = settings_chaos_tier_1
         set_country_flag = settings_chaos_tier_0
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_2 }
         # From Rising Chaos to Gathering Storm
-        set_variable = { settings_chaos_meter_value = @chaos_tier_1_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_1 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_1.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_1 }
         clr_country_flag = settings_chaos_tier_2
         set_country_flag = settings_chaos_tier_1
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_3 }
         # From Chaos Tier to Rising Chaos
-        set_variable = { settings_chaos_meter_value = @chaos_tier_2_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_2 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_2.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_2 }
         clr_country_flag = settings_chaos_tier_3
         set_country_flag = settings_chaos_tier_2
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_4 }
         # From Critical to Chaos Tier
-        set_variable = { settings_chaos_meter_value = @chaos_tier_3_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_3 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_3.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_3 }
         clr_country_flag = settings_chaos_tier_4
         set_country_flag = settings_chaos_tier_3
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_final }
         # From World Collapse to Critical
-        set_variable = { settings_chaos_meter_value = @chaos_tier_4_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_4 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_4.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_4 }
         clr_country_flag = settings_chaos_tier_final
         set_country_flag = settings_chaos_tier_4
     }
@@ -2547,48 +2455,48 @@ cycle_chaos_tier_next = {
     if = {
         limit = { has_country_flag = settings_chaos_tier_0 }
         # From Calm to Gathering Storm
-        set_variable = { settings_chaos_meter_value = @chaos_tier_1_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_1 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_1.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_1 }
         clr_country_flag = settings_chaos_tier_0
         set_country_flag = settings_chaos_tier_1
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_1 }
         # From Gathering Storm to Rising Chaos
-        set_variable = { settings_chaos_meter_value = @chaos_tier_2_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_2 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_2.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_2 }
         clr_country_flag = settings_chaos_tier_1
         set_country_flag = settings_chaos_tier_2
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_2 }
         # From Rising Chaos to Chaos Tier
-        set_variable = { settings_chaos_meter_value = @chaos_tier_3_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_3 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_3.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_3 }
         clr_country_flag = settings_chaos_tier_2
         set_country_flag = settings_chaos_tier_3
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_3 }
         # From Chaos Tier to Critical
-        set_variable = { settings_chaos_meter_value = @chaos_tier_4_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_4 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_4.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_4 }
         clr_country_flag = settings_chaos_tier_3
         set_country_flag = settings_chaos_tier_4
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_4 }
         # From Critical to World Collapse
-        set_variable = { settings_chaos_meter_value = @chaos_tier_final_PLUS }
-        set_variable = { settings_chaos_tier = @chaos_tier_final }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_final.plus }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_final }
         clr_country_flag = settings_chaos_tier_4
         set_country_flag = settings_chaos_tier_final
     }
     else_if = {
         limit = { has_country_flag = settings_chaos_tier_final }
         # From World Collapse to Calm World
-        set_variable = { settings_chaos_meter_value = @chaos_tier_0_MIN }
-        set_variable = { settings_chaos_tier = @chaos_tier_0 }
+        set_variable = { settings_chaos_meter_value = constant:chaos_meter_tier_range.tier_0.min }
+        set_variable = { settings_chaos_tier = constant:chaos_meter_tier_id.tier_0 }
         clr_country_flag = settings_chaos_tier_final
         set_country_flag = settings_chaos_tier_0
     }
@@ -2662,7 +2570,7 @@ reset_chaos_meter_to_defaults = {
     }
 
     # Reset increment mode to default (10)
-    set_variable = { settings_chaos_increment_mode = @DEFAULT_CHAOS_INCREMENT_MODE }
+    set_variable = { settings_chaos_increment_mode = constant:settings_defaults.chaos_increment_mode }
 
     clr_global_flag = settings_chaos_meter_disabled
 
@@ -2714,7 +2622,7 @@ toggle_world_end = {
 # Initialize advanced settings
 initialize_advanced_settings = {
     # Set default increment mode
-    set_variable = { settings_advanced_increment_mode = @DEFAULT_ADVANCED_INCREMENT_MODE }
+    set_variable = { settings_advanced_increment_mode = constant:settings_defaults.advanced_increment_mode }
 }
 
 # ============================================================================
@@ -2728,7 +2636,7 @@ decrease_recovery_rate = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_RECOVERY_RATE
+        min = constant:settings_advanced_bounds.recovery_rate.min
     }
 
     set_variable = { global.settings_recovery_rate = new_value }
@@ -2741,7 +2649,7 @@ increase_recovery_rate = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_RECOVERY_RATE
+        max = constant:settings_advanced_bounds.recovery_rate.max
     }
 
     set_variable = { global.settings_recovery_rate = new_value }
@@ -2771,7 +2679,7 @@ decrease_cap_reduction = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_CAP_REDUCTION
+        min = constant:settings_advanced_bounds.cap_reduction.min
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
@@ -2797,7 +2705,7 @@ increase_cap_reduction = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_CAP_REDUCTION
+        max = constant:settings_advanced_bounds.cap_reduction.max
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
@@ -2814,7 +2722,7 @@ decrease_major_weight_per_minor = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_MAJOR_WEIGHT_PER_MINOR
+        min = constant:settings_advanced_bounds.major_weight_per_minor.min
     }
 
     set_variable = { global.settings_major_weight_per_minor = new_value }
@@ -2827,7 +2735,7 @@ increase_major_weight_per_minor = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_MAJOR_WEIGHT_PER_MINOR
+        max = constant:settings_advanced_bounds.major_weight_per_minor.max
     }
 
     set_variable = { global.settings_major_weight_per_minor = new_value }
@@ -2844,7 +2752,7 @@ decrease_event_weight = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_EVENT_WEIGHT
+        min = constant:settings_advanced_bounds.event_weight.min
     }
 
     set_variable = { global.settings_event_weight = new_value }
@@ -2857,7 +2765,7 @@ increase_event_weight = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_EVENT_WEIGHT
+        max = constant:settings_advanced_bounds.event_weight.max
     }
 
     set_variable = { global.settings_event_weight = new_value }
@@ -2874,7 +2782,7 @@ decrease_timer_modifier = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_TIMER_MODIFIER
+        min = constant:settings_advanced_bounds.timer_modifier.min
     }
 
     set_variable = { global.settings_timer_modifier = new_value }
@@ -2887,7 +2795,7 @@ increase_timer_modifier = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_TIMER_MODIFIER
+        max = constant:settings_advanced_bounds.timer_modifier.max
     }
 
     set_variable = { global.settings_timer_modifier = new_value }
@@ -2945,7 +2853,7 @@ decrease_advanced_recovery_rate = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_RECOVERY_RATE
+        min = constant:settings_advanced_bounds.recovery_rate.min
     }
 
     set_variable = { global.settings_recovery_rate = new_value }
@@ -2957,7 +2865,7 @@ increase_advanced_recovery_rate = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_RECOVERY_RATE
+        max = constant:settings_advanced_bounds.recovery_rate.max
     }
 
     set_variable = { global.settings_recovery_rate = new_value }
@@ -2983,7 +2891,7 @@ decrease_advanced_cap_reduction = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_CAP_REDUCTION
+        min = constant:settings_advanced_bounds.cap_reduction.min
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
@@ -3008,7 +2916,7 @@ increase_advanced_cap_reduction = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_CAP_REDUCTION
+        max = constant:settings_advanced_bounds.cap_reduction.max
     }
 
     set_variable = { global.settings_cap_reduction = new_value }
@@ -3021,7 +2929,7 @@ decrease_advanced_major_weight = {
 
     clamp_temp_variable = {
         var = new_value
-        min = @ADVANCED_MIN_MAJOR_WEIGHT_PER_MINOR
+        min = constant:settings_advanced_bounds.major_weight_per_minor.min
     }
 
     set_variable = { global.settings_major_weight_per_minor = new_value }
@@ -3033,7 +2941,7 @@ increase_advanced_major_weight = {
 
     clamp_temp_variable = {
         var = new_value
-        max = @ADVANCED_MAX_MAJOR_WEIGHT_PER_MINOR
+        max = constant:settings_advanced_bounds.major_weight_per_minor.max
     }
 
     set_variable = { global.settings_major_weight_per_minor = new_value }
@@ -3080,8 +2988,8 @@ update_advanced_settings_values = {
 
 # Reset advanced settings to defaults
 reset_advanced_settings_to_defaults = {
-    set_variable = { global.settings_recovery_rate = @DEFAULT_RECOVERY_RATE }
-    set_variable = { global.settings_cap_reduction = @DEFAULT_REDUCE_CAP_FACTOR }
-    set_variable = { global.settings_major_weight_per_minor = @DEFAULT_MAJOR_EVENT_WEIGHT_PER_MINOR }
-    set_variable = { settings_advanced_increment_mode = @DEFAULT_ADVANCED_INCREMENT_MODE }
+    set_variable = { global.settings_recovery_rate = constant:event_system_defaults.recovery_rate }
+    set_variable = { global.settings_cap_reduction = constant:event_system_defaults.reduce_cap_factor }
+    set_variable = { global.settings_major_weight_per_minor = constant:event_system_defaults.major_event_weight_per_minor }
+    set_variable = { settings_advanced_increment_mode = constant:settings_defaults.advanced_increment_mode }
 }

@@ -1,0 +1,411 @@
+# Chemical Livens support scripted effects:
+# - Reads support-company composition from the active army leader battalions.
+# - Applies only when Livens supports are guaranteed to be in combat.
+# - Keeps a legacy fallback path for old generic Livens support battalions.
+
+@CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT = 1.50
+
+chem_livens_support_collect_support_counts = {
+	set_temp_variable = { var = chem_livens_units_chlorine value = num_battalions_with_type@livens_projector_support_chlorine }
+	set_temp_variable = { var = chem_livens_units_phosgene value = num_battalions_with_type@livens_projector_support_phosgene }
+	set_temp_variable = { var = chem_livens_units_mustard value = num_battalions_with_type@livens_projector_support_mustard }
+	set_temp_variable = { var = chem_livens_units_lewisite value = num_battalions_with_type@livens_projector_support_lewisite }
+	set_temp_variable = { var = chem_livens_units_tabun value = num_battalions_with_type@livens_projector_support_tabun }
+	set_temp_variable = { var = chem_livens_units_sarin value = num_battalions_with_type@livens_projector_support_sarin }
+	set_temp_variable = { var = chem_livens_units_soman value = num_battalions_with_type@livens_projector_support_soman }
+	set_temp_variable = { var = chem_livens_units_legacy value = num_battalions_with_type@livens_projector_support }
+
+	set_temp_variable = { var = chem_livens_support_total value = chem_livens_units_chlorine }
+	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_phosgene }
+	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_mustard }
+	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_lewisite }
+	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_tabun }
+	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_sarin }
+	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_soman }
+	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_legacy }
+}
+
+chem_livens_support_set_profile_from_support_counts = {
+	set_temp_variable = { var = chem_livens_profile_dose value = 0 }
+	set_temp_variable = { var = chem_livens_profile_duration value = 0 }
+	set_temp_variable = { var = chem_livens_profile_condemnation_base value = 0 }
+	set_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = 0 }
+
+	if = {
+		limit = { check_variable = { var = chem_livens_support_total value = 0 compare = greater_than } }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_chlorine }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.chlorine }
+		add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_chlorine }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.chlorine }
+		add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_chlorine }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.chlorine }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_chlorine }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.chlorine }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_phosgene }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.phosgene }
+		add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_phosgene }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.phosgene }
+		add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_phosgene }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.phosgene }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_phosgene }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.phosgene }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_mustard }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.mustard }
+		add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_mustard }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.mustard }
+		add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_mustard }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.mustard }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_mustard }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.mustard }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_lewisite }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.lewisite }
+		add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_lewisite }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.lewisite }
+		add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_lewisite }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.lewisite }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_lewisite }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.lewisite }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_tabun }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.tabun }
+		add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_tabun }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.tabun }
+		add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_tabun }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.tabun }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_tabun }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.tabun }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_sarin }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.sarin }
+		add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_sarin }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.sarin }
+		add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_sarin }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.sarin }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_sarin }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.sarin }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_soman }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.soman }
+		add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_soman }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.soman }
+		add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_soman }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.soman }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+		set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_soman }
+		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.soman }
+		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+
+		if = {
+			limit = { check_variable = { var = chem_livens_units_legacy value = 0 compare = greater_than } }
+			if = {
+				limit = { OWNER = { has_tech = soman } }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.soman }
+				add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.soman }
+				add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.soman }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.soman }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+			}
+			else_if = {
+				limit = { OWNER = { has_tech = sarin } }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.sarin }
+				add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.sarin }
+				add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.sarin }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.sarin }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+			}
+			else_if = {
+				limit = { OWNER = { has_tech = tabun } }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.tabun }
+				add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.tabun }
+				add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.tabun }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.tabun }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+			}
+			else_if = {
+				limit = { OWNER = { has_tech = lewisite } }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.lewisite }
+				add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.lewisite }
+				add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.lewisite }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.lewisite }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+			}
+			else_if = {
+				limit = { OWNER = { has_tech = mustard_gas } }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.mustard }
+				add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.mustard }
+				add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.mustard }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.mustard }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+			}
+			else_if = {
+				limit = { OWNER = { has_tech = phosgene } }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.phosgene }
+				add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.phosgene }
+				add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.phosgene }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.phosgene }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+			}
+			else = {
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.dose_per_div.chlorine }
+				add_to_temp_variable = { var = chem_livens_profile_dose value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.duration_days.chlorine }
+				add_to_temp_variable = { var = chem_livens_profile_duration value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_base.chlorine }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_profile_add }
+				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
+				multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.chlorine }
+				add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
+			}
+		}
+
+		divide_temp_variable = { var = chem_livens_profile_dose value = chem_livens_support_total }
+		divide_temp_variable = { var = chem_livens_profile_duration value = chem_livens_support_total }
+		divide_temp_variable = { var = chem_livens_profile_condemnation_base value = chem_livens_support_total }
+		divide_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_support_total }
+
+		if = {
+			limit = { OWNER = { has_idea = chemical_first_use_surprise_idea } }
+			multiply_temp_variable = { var = chem_livens_profile_dose value = @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT }
+			multiply_temp_variable = { var = chem_livens_profile_duration value = @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT }
+			multiply_temp_variable = { var = chem_livens_profile_condemnation_base value = @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT }
+			multiply_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT }
+		}
+	}
+}
+
+chem_livens_support_calculate_guaranteed_support_in_combat = {
+	set_temp_variable = { var = chem_livens_total_units value = num_units }
+	clamp_temp_variable = { var = chem_livens_total_units min = 0 }
+	set_temp_variable = { var = chem_livens_units_in_combat value = num_units_in_combat }
+	clamp_temp_variable = { var = chem_livens_units_in_combat min = 0 }
+
+	set_temp_variable = { var = chem_livens_non_support_units value = chem_livens_support_total }
+	multiply_temp_variable = { var = chem_livens_non_support_units value = -1 }
+	add_to_temp_variable = { var = chem_livens_non_support_units value = chem_livens_total_units }
+	clamp_temp_variable = { var = chem_livens_non_support_units min = 0 }
+
+	set_temp_variable = { var = chem_livens_guaranteed_support_combat value = chem_livens_non_support_units }
+	multiply_temp_variable = { var = chem_livens_guaranteed_support_combat value = -1 }
+	add_to_temp_variable = { var = chem_livens_guaranteed_support_combat value = chem_livens_units_in_combat }
+	clamp_temp_variable = { var = chem_livens_guaranteed_support_combat min = 0 }
+	if = {
+		limit = { check_variable = { var = chem_livens_guaranteed_support_combat value = chem_livens_support_total compare = greater_than } }
+		set_temp_variable = { var = chem_livens_guaranteed_support_combat value = chem_livens_support_total }
+	}
+}
+
+chem_livens_support_calculate_guaranteed_support_offensive = {
+	set_temp_variable = { var = chem_livens_total_units value = num_units }
+	clamp_temp_variable = { var = chem_livens_total_units min = 0 }
+	set_temp_variable = { var = chem_livens_offensive_units value = num_units_offensive_combats }
+	clamp_temp_variable = { var = chem_livens_offensive_units min = 0 }
+
+	set_temp_variable = { var = chem_livens_non_support_units value = chem_livens_support_total }
+	multiply_temp_variable = { var = chem_livens_non_support_units value = -1 }
+	add_to_temp_variable = { var = chem_livens_non_support_units value = chem_livens_total_units }
+	clamp_temp_variable = { var = chem_livens_non_support_units min = 0 }
+
+	set_temp_variable = { var = chem_livens_guaranteed_support_offensive value = chem_livens_non_support_units }
+	multiply_temp_variable = { var = chem_livens_guaranteed_support_offensive value = -1 }
+	add_to_temp_variable = { var = chem_livens_guaranteed_support_offensive value = chem_livens_offensive_units }
+	clamp_temp_variable = { var = chem_livens_guaranteed_support_offensive min = 0 }
+	if = {
+		limit = { check_variable = { var = chem_livens_guaranteed_support_offensive value = chem_livens_support_total compare = greater_than } }
+		set_temp_variable = { var = chem_livens_guaranteed_support_offensive value = chem_livens_support_total }
+	}
+}
+
+chem_livens_support_apply_state_dispersal = {
+	save_event_target_as = chem_state_dispersal_leader
+	if = {
+		limit = { NOT = { has_event_target = chem_state_dispersal_owner_country } }
+		OWNER = { save_event_target_as = chem_state_dispersal_owner_country }
+	}
+
+	chem_livens_support_collect_support_counts = yes
+	chem_livens_support_calculate_guaranteed_support_in_combat = yes
+	if = {
+		limit = { check_variable = { var = chem_livens_guaranteed_support_combat value = 0 compare = greater_than } }
+		OWNER = { chem_grant_first_use_surprise = yes }
+	}
+	chem_livens_support_set_profile_from_support_counts = yes
+	chem_set_livens_integration_values = yes
+	chem_tank_shell_apply_weather_duration_mult = yes
+
+	if = {
+		limit = {
+			check_variable = {
+				var = chem_livens_guaranteed_support_combat
+				value = constant:chem_livens.combat_state.min_units_in_combat
+				compare = greater_than_or_equals
+			}
+			check_variable = { var = chem_livens_profile_duration value = 0 compare = greater_than }
+		}
+		set_temp_variable = { var = chem_livens_support_combat_ratio value = chem_livens_guaranteed_support_combat }
+		divide_temp_variable = { var = chem_livens_support_combat_ratio value = chem_livens_units_in_combat }
+		clamp_temp_variable = { var = chem_livens_support_combat_ratio min = 0 max = 1 }
+
+		set_temp_variable = { var = chem_state_dose_per_div value = chem_livens_profile_dose }
+		multiply_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.core.strength_scale }
+		multiply_temp_variable = { var = chem_state_dose_per_div value = chem_livens_state_dose_mult }
+		multiply_temp_variable = { var = chem_state_dose_per_div value = constant:chem_livens.combat_state.dose_mult }
+		multiply_temp_variable = { var = chem_state_dose_per_div value = chem_livens_support_combat_ratio }
+
+		set_temp_variable = { var = chem_state_duration_add value = chem_livens_profile_duration }
+		multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_state.core.duration_scale }
+		multiply_temp_variable = { var = chem_state_duration_add value = chem_livens_state_duration_mult }
+		multiply_temp_variable = { var = chem_state_duration_add value = chem_tank_duration_mult }
+		multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_livens.combat_state.duration_mult }
+		round_temp_variable = chem_state_duration_add
+		clamp_temp_variable = {
+			var = chem_state_duration_add
+			min = 1
+			max = constant:chem_livens.combat_state.max_duration_days
+		}
+
+		event_target:chem_state_dispersal_owner_country = {
+			set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
+			set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
+			chem_apply_state_dispersal_from_controlled_states = yes
+			every_allied_country = {
+				set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
+				set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
+				chem_apply_state_dispersal_from_controlled_states = yes
+			}
+		}
+	}
+}
+
+chem_livens_support_register_combat_condemnation_won = {
+	chem_livens_support_collect_support_counts = yes
+	chem_livens_support_calculate_guaranteed_support_offensive = yes
+
+	if = {
+		limit = { check_variable = { var = chem_livens_guaranteed_support_offensive value = 0 compare = greater_than } }
+		OWNER = { chem_grant_first_use_surprise = yes }
+		chem_livens_support_set_profile_from_support_counts = yes
+		set_temp_variable = { var = chem_livens_support_offensive_ratio value = chem_livens_guaranteed_support_offensive }
+		divide_temp_variable = { var = chem_livens_support_offensive_ratio value = chem_livens_offensive_units }
+		clamp_temp_variable = { var = chem_livens_support_offensive_ratio min = 0 max = 1 }
+
+		set_temp_variable = { var = chem_condemnation_base value = chem_livens_profile_condemnation_base }
+		multiply_temp_variable = { var = chem_condemnation_base value = constant:chem_tank_shell.condemnation.won_base_mult }
+		multiply_temp_variable = { var = chem_condemnation_base value = chem_livens_support_offensive_ratio }
+		set_temp_variable = { var = chem_condemnation_per_unit value = chem_livens_profile_condemnation_per_unit }
+		multiply_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_tank_shell.condemnation.won_per_unit_mult }
+		set_temp_variable = { var = chem_consumed_amount value = chem_livens_guaranteed_support_offensive }
+		multiply_temp_variable = { var = chem_consumed_amount value = constant:chem_tank_shell.condemnation.consumed_per_combat_unit }
+		clamp_temp_variable = {
+			var = chem_consumed_amount
+			min = constant:chem_tank_shell.condemnation.min_consumed
+			max = constant:chem_tank_shell.condemnation.max_consumed
+		}
+		set_temp_variable = { var = chem_required_amount value = 0 }
+
+		OWNER = { chem_warfare_register_attack_use_no_livens = yes }
+	}
+}
+
+chem_livens_support_register_combat_condemnation_lost = {
+	chem_livens_support_collect_support_counts = yes
+	chem_livens_support_calculate_guaranteed_support_offensive = yes
+
+	if = {
+		limit = { check_variable = { var = chem_livens_guaranteed_support_offensive value = 0 compare = greater_than } }
+		OWNER = { chem_grant_first_use_surprise = yes }
+		chem_livens_support_set_profile_from_support_counts = yes
+		set_temp_variable = { var = chem_livens_support_offensive_ratio value = chem_livens_guaranteed_support_offensive }
+		divide_temp_variable = { var = chem_livens_support_offensive_ratio value = chem_livens_offensive_units }
+		clamp_temp_variable = { var = chem_livens_support_offensive_ratio min = 0 max = 1 }
+
+		set_temp_variable = { var = chem_condemnation_base value = chem_livens_profile_condemnation_base }
+		multiply_temp_variable = { var = chem_condemnation_base value = constant:chem_tank_shell.condemnation.lost_base_mult }
+		multiply_temp_variable = { var = chem_condemnation_base value = chem_livens_support_offensive_ratio }
+		set_temp_variable = { var = chem_condemnation_per_unit value = chem_livens_profile_condemnation_per_unit }
+		multiply_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_tank_shell.condemnation.lost_per_unit_mult }
+		set_temp_variable = { var = chem_consumed_amount value = chem_livens_guaranteed_support_offensive }
+		multiply_temp_variable = { var = chem_consumed_amount value = constant:chem_tank_shell.condemnation.consumed_per_combat_unit }
+		clamp_temp_variable = {
+			var = chem_consumed_amount
+			min = constant:chem_tank_shell.condemnation.min_consumed
+			max = constant:chem_tank_shell.condemnation.max_consumed
+		}
+		set_temp_variable = { var = chem_required_amount value = 0 }
+
+		OWNER = { chem_warfare_register_attack_use_no_livens = yes }
+	}
+}

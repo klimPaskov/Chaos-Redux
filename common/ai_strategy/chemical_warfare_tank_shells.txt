@@ -1,0 +1,124 @@
+# AI strategy: chemical tank-support adoption for support companies.
+# NOTE: `ai_strategy.value` in this context does not parse script constants.
+
+@CHEM_AI_TANK_SHELL_PROD_BASE = 1
+@CHEM_AI_TANK_SHELL_PROD_THREAT_LOW = 2
+@CHEM_AI_TANK_SHELL_PROD_THREAT_MED = 3
+@CHEM_AI_TANK_SHELL_XP_TEMPLATE_FOCUS = 30
+
+chem_tank_shell_production_major_base = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = tabun
+			has_tech = sarin
+			has_tech = soman
+		}
+	}
+	abort_when_not_enabled = yes
+
+		ai_strategy = {
+			type = equipment_production_min_factories_archetype
+			id = light_tank_chassis
+			value = @CHEM_AI_TANK_SHELL_PROD_BASE
+		}
+		ai_strategy = {
+			type = equipment_production_min_factories_archetype
+			id = medium_tank_chassis
+			value = @CHEM_AI_TANK_SHELL_PROD_BASE
+		}
+		ai_strategy = {
+			type = equipment_production_min_factories_archetype
+			id = heavy_tank_chassis
+			value = @CHEM_AI_TANK_SHELL_PROD_BASE
+		}
+}
+
+chem_tank_shell_production_major_threat_low = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
+		}
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = tabun
+			has_tech = sarin
+			has_tech = soman
+		}
+	}
+	abort_when_not_enabled = yes
+
+		ai_strategy = {
+			type = equipment_production_min_factories_archetype
+			id = light_tank_chassis
+			value = @CHEM_AI_TANK_SHELL_PROD_THREAT_LOW
+		}
+}
+
+chem_tank_shell_production_major_threat_med = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
+		}
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = tabun
+			has_tech = sarin
+			has_tech = soman
+		}
+	}
+	abort_when_not_enabled = yes
+
+		ai_strategy = {
+			type = equipment_production_min_factories_archetype
+			id = medium_tank_chassis
+			value = @CHEM_AI_TANK_SHELL_PROD_THREAT_MED
+		}
+		ai_strategy = {
+			type = equipment_production_min_factories_archetype
+			id = heavy_tank_chassis
+			value = @CHEM_AI_TANK_SHELL_PROD_THREAT_LOW
+		}
+}
+
+chem_tank_shell_template_design_focus = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = tabun
+			has_tech = sarin
+			has_tech = soman
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = land_xp_spend_priority
+		id = division_template
+		value = @CHEM_AI_TANK_SHELL_XP_TEMPLATE_FOCUS
+	}
+}

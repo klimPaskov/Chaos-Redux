@@ -1,0 +1,229 @@
+# AI strategy: Livens projector adoption for research, production, and template XP focus.
+# NOTE: `ai_strategy.value` does not parse script constants in this context,
+# so the values here are mirrored as file-local `@` constants.
+
+@CHEM_AI_LIVENS_RESEARCH_BASE = 25
+@CHEM_AI_LIVENS_RESEARCH_THREAT = 100
+@CHEM_AI_LIVENS_RESEARCH_FORCE = 100
+@CHEM_AI_LIVENS_RESEARCH_JAPAN_BONUS = 30
+
+@CHEM_AI_LIVENS_PRODUCTION_BASE = 1
+@CHEM_AI_LIVENS_PRODUCTION_THREAT_LOW = 2
+@CHEM_AI_LIVENS_PRODUCTION_THREAT_MED = 3
+@CHEM_AI_LIVENS_PRODUCTION_JAPAN_BONUS = 1
+
+@CHEM_AI_LIVENS_XP_TEMPLATE_FOCUS = 40
+
+chem_livens_research_major_base = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+		}
+		NOT = { has_tech = livens_projector_tech }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = livens_projector_tech
+		value = @CHEM_AI_LIVENS_RESEARCH_BASE
+	}
+}
+
+chem_livens_research_major_threat = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		NOT = { has_tech = livens_projector_tech }
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_ai_research_condemnation_threshold.low compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = livens_projector_tech
+		value = @CHEM_AI_LIVENS_RESEARCH_THREAT
+	}
+}
+
+chem_livens_research_major_force = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		NOT = { has_tech = livens_projector_tech }
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_ai_research_condemnation_threshold.med compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = livens_projector_tech
+		value = @CHEM_AI_LIVENS_RESEARCH_FORCE
+	}
+}
+
+chem_livens_research_upgrade_weights = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = livens_projector_tech
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_livens_projector
+		value = @CHEM_AI_LIVENS_RESEARCH_BASE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = advanced_livens_projector
+		value = @CHEM_AI_LIVENS_RESEARCH_BASE
+	}
+}
+
+chem_livens_research_upgrade_force = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = livens_projector_tech
+		NOT = { has_tech = improved_livens_projector }
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_ai_research_condemnation_threshold.high compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_tech
+		id = improved_livens_projector
+		value = @CHEM_AI_LIVENS_RESEARCH_FORCE
+	}
+}
+
+chem_livens_research_japan_bonus = {
+	allowed = { original_tag = JAP }
+	enable = {
+		is_major = yes
+		has_war = yes
+		NOT = { has_tech = advanced_livens_projector }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = livens_projector_tech
+		value = @CHEM_AI_LIVENS_RESEARCH_JAPAN_BONUS
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_livens_projector
+		value = @CHEM_AI_LIVENS_RESEARCH_JAPAN_BONUS
+	}
+}
+
+chem_livens_production_major_base = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = livens_projector_tech
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = livens_projector_chassis
+		value = @CHEM_AI_LIVENS_PRODUCTION_BASE
+	}
+}
+
+chem_livens_production_major_threat_low = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = livens_projector_tech
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = livens_projector_chassis
+		value = @CHEM_AI_LIVENS_PRODUCTION_THREAT_LOW
+	}
+}
+
+chem_livens_production_major_threat_med = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = livens_projector_tech
+		any_enemy_country = {
+			check_variable = { var = chem_warfare_condemnation value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = livens_projector_chassis
+		value = @CHEM_AI_LIVENS_PRODUCTION_THREAT_MED
+	}
+}
+
+chem_livens_production_japan_bonus = {
+	allowed = { original_tag = JAP }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = livens_projector_tech
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = livens_projector_chassis
+		value = @CHEM_AI_LIVENS_PRODUCTION_JAPAN_BONUS
+	}
+}
+
+chem_livens_template_design_focus = {
+	allowed = { always = yes }
+	enable = {
+		is_major = yes
+		has_war = yes
+		has_tech = livens_projector_tech
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = land_xp_spend_priority
+		id = division_template
+		value = @CHEM_AI_LIVENS_XP_TEMPLATE_FOCUS
+	}
+}

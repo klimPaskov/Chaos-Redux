@@ -2,853 +2,853 @@
 # all on_daily, on_weekly, and on_monthly evaluate for all countries by default.
 on_actions = {
 
-    on_startup = {
-        effect = {
-            every_country = {
-                initialize_smallpox_vaccination_protection = yes
-            }
-        }
-    }
+	on_startup = {
+		effect = {
+			every_country = {
+				initialize_smallpox_vaccination_protection = yes
+			}
+		}
+	}
 
-    # Zombie Outbreak
-    on_daily = { # Checks daily if there is a neighbor to declare war on
-        effect = {
-            if = {
-                limit = { original_tag = ZZZ exists = yes }
-                every_country = {
-                    limit = { is_neighbor_of = ROOT NOT = { has_war_with = ROOT } NOT = { original_tag = ZZZ } }
-                    if = { limit = { NOT = { is_subject_of = ZZZ }}
-                    ROOT = {
-                        declare_war_on = {
-                            target = PREV
-                            type = annex_everything
-                        }
-                    }
-                } else = {
-                    ROOT = {
-                        annex_country = {
-                            target = PREV
-                            transfer_troops = no
-                        }
-                    }
-                }
-            }
-            every_state = { # Anything zombies occupy, becomes core state
-                limit = { is_controlled_by = ROOT NOT = { is_core_of = ROOT } }
-                add_core_of = ROOT
-            }
+	# Zombie Outbreak
+	on_daily = { # Checks daily if there is a neighbor to declare war on
+		effect = {
+			if = {
+				limit = { original_tag = ZZZ exists = yes }
+				every_country = {
+					limit = { is_neighbor_of = ROOT NOT = { has_war_with = ROOT } NOT = { original_tag = ZZZ } }
+					if = { limit = { NOT = { is_subject_of = ZZZ }}
+						ROOT = {
+							declare_war_on = {
+								target = PREV
+								type = annex_everything
+							}
+						}
+					} else = {
+						ROOT = {
+							annex_country = {
+								target = PREV
+								transfer_troops = no
+							}
+						}
+					}
+				}
+				every_state = { # Anything zombies occupy, becomes core state
+					limit = { is_controlled_by = ROOT NOT = { is_core_of = ROOT } }
+					add_core_of = ROOT
+				}
 
-            # Stop monroe doctrine white peace
-            if = {
-                limit = { any_country = { has_war_with = ROOT OR = { capital_scope = { is_on_continent = south_america } capital_scope = { is_on_continent = north_america } } } NOT = { has_war_with = USA } }
-                declare_war_on = {
-                    target = USA
-                    type = annex_everything
-                }
-            }
-        }
-        if = {
-            limit = {
-                tag = ZZZ
-                exists = yes
-                has_global_flag = has_zombie_outbreak
+				# Stop monroe doctrine white peace
+				if = {
+					limit = { any_country = { has_war_with = ROOT OR = { capital_scope = { is_on_continent = south_america } capital_scope = { is_on_continent = north_america } } } NOT = { has_war_with = USA } }
+					declare_war_on = {
+						target = USA
+						type = annex_everything
+					}
+				}
+			}
+			if = {
+				limit = {
+					tag = ZZZ
+					exists = yes
+					has_global_flag = has_zombie_outbreak
 
-                # Check if any dynamic zombie country connects to ZZZ now
-                any_country = {
-                    has_country_flag = zombie_outbreak_dynamic_country
-                    any_controlled_state = {
-                        any_neighbor_state = {
-                            is_controlled_by = ZZZ
-                        }
-                    }
-                }
-            }
-            every_country = {
-                limit = {
-                    has_country_flag = zombie_outbreak_dynamic_country
-                    OR = {
-                        any_controlled_state = {
-                            any_neighbor_state = {
-                                is_controlled_by = ZZZ
-                            }
-                        }
+					# Check if any dynamic zombie country connects to ZZZ now
+					any_country = {
+						has_country_flag = zombie_outbreak_dynamic_country
+						any_controlled_state = {
+							any_neighbor_state = {
+								is_controlled_by = ZZZ
+							}
+						}
+					}
+				}
+				every_country = {
+					limit = {
+						has_country_flag = zombie_outbreak_dynamic_country
+						OR = {
+							any_controlled_state = {
+								any_neighbor_state = {
+									is_controlled_by = ZZZ
+								}
+							}
 
-                    }
-                }
+						}
+					}
 
-                ZZZ = {
-                    annex_country = {
-                        target = PREV
-                        transfer_troops = yes
-                    }
-                }
-            }
-        }
-        else_if = {
-            limit = {
-                original_tag = ZZZ
-                exists = yes
-                has_global_flag = has_zombie_outbreak
+					ZZZ = {
+						annex_country = {
+							target = PREV
+							transfer_troops = yes
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					original_tag = ZZZ
+					exists = yes
+					has_global_flag = has_zombie_outbreak
 
-                # Check if any dynamic zombie country connects to ZZZ now
-                any_country = {
-                    has_country_flag = zombie_outbreak_dynamic_country
-                    any_controlled_state = {
-                        any_neighbor_state = {
-                            is_controlled_by = ROOT
-                        }
-                    }
-                }
-            }
-            every_country = {
-                limit = {
-                    has_country_flag = zombie_outbreak_dynamic_country
-                    is_neighbor_of = ROOT
-                }
+					# Check if any dynamic zombie country connects to ZZZ now
+					any_country = {
+						has_country_flag = zombie_outbreak_dynamic_country
+						any_controlled_state = {
+							any_neighbor_state = {
+								is_controlled_by = ROOT
+							}
+						}
+					}
+				}
+				every_country = {
+					limit = {
+						has_country_flag = zombie_outbreak_dynamic_country
+						is_neighbor_of = ROOT
+					}
 
-                ROOT = {
-                    annex_country = {
-                        target = PREV
-                        transfer_troops = yes
-                    }
-                }
-            }
-        }
-        # If dynamic zombie country has no neighbors, get annexed  by ZZZ
-        if = {
-            limit = {
-                original_tag = ZZZ
-                has_country_flag = zombie_outbreak_dynamic_country
-                exists = yes
-                has_global_flag = has_zombie_outbreak
+					ROOT = {
+						annex_country = {
+							target = PREV
+							transfer_troops = yes
+						}
+					}
+				}
+			}
+			# If dynamic zombie country has no neighbors, get annexed  by ZZZ
+			if = {
+				limit = {
+					original_tag = ZZZ
+					has_country_flag = zombie_outbreak_dynamic_country
+					exists = yes
+					has_global_flag = has_zombie_outbreak
 
-                NOT = {
-                    any_neighbor_country = {
-                        exists = yes
-                    }
-                }
+					NOT = {
+						any_neighbor_country = {
+							exists = yes
+						}
+					}
 
-            }
-            ZZZ = {
-                annex_country = {
-                    target = PREV
-                    transfer_troops = yes
-                }
-            }
-        }
-        # If ZZZ has no neighbors, but dynamic zombie country has and controls a coastal state, annex it
-        if = {
-            limit = {
-                tag = ZZZ
-                exists = yes
-                has_global_flag = has_zombie_outbreak
+				}
+				ZZZ = {
+					annex_country = {
+						target = PREV
+						transfer_troops = yes
+					}
+				}
+			}
+			# If ZZZ has no neighbors, but dynamic zombie country has and controls a coastal state, annex it
+			if = {
+				limit = {
+					tag = ZZZ
+					exists = yes
+					has_global_flag = has_zombie_outbreak
 
-                any_country = {
-                    has_country_flag = zombie_outbreak_dynamic_country
-                    any_controlled_state = { is_coastal = yes }
-                }
+					any_country = {
+						has_country_flag = zombie_outbreak_dynamic_country
+						any_controlled_state = { is_coastal = yes }
+					}
 
-                NOT = {
-                    any_neighbor_country = {
-                        exists = yes
-                    }
-                }
+					NOT = {
+						any_neighbor_country = {
+							exists = yes
+						}
+					}
 
-            }
-            every_country = {
-                limit = {
-                    has_country_flag = zombie_outbreak_dynamic_country
-                    any_controlled_state = { is_coastal = yes }
-                }
-                ZZZ = {
-                    annex_country = {
-                        target = PREV
-                        transfer_troops = yes
-                    }
-                }
-            }
-        }
+				}
+				every_country = {
+					limit = {
+						has_country_flag = zombie_outbreak_dynamic_country
+						any_controlled_state = { is_coastal = yes }
+					}
+					ZZZ = {
+						annex_country = {
+							target = PREV
+							transfer_troops = yes
+						}
+					}
+				}
+			}
 
-        if = {
-            limit = {
-                has_country_flag = azl_leader
-                num_faction_members > 1
-                NOT = { has_global_flag = azl_super_event_fired }
-            }
+			if = {
+				limit = {
+					has_country_flag = azl_leader
+					num_faction_members > 1
+					NOT = { has_global_flag = azl_super_event_fired }
+				}
 
-            play_song = "zombies_music"
+				play_song = "zombies_music"
 
-            set_global_flag = {
-                flag = super_event_visible
-                days = 30
-                value = 2
-            }
-            set_global_flag = azl_super_event_fired
+				set_global_flag = {
+					flag = super_event_visible
+					days = 30
+					value = 2
+				}
+				set_global_flag = azl_super_event_fired
 
-        }
-    }
-}
+			}
+		}
+	}
 
-on_weekly = {
-    effect = {
-        if = {
-            limit = {
-                has_global_flag = has_zombie_outbreak
-            }
-            calculate_zombie_outbreak_chance = yes
-        }
-        if = {
-            limit = {
-                has_country_flag = bioweapon_target
-            }
-            check_all_states_for_contamination_cleanup = yes
-        }
-        # Process weekly vaccination progress for smallpox
-        if = {
-            limit = {
-                has_idea = smallpox_vaccination_program_idea
-            }
-            progress_smallpox_vaccination = yes
-        }
-    }
-}
-# Space Race
-on_daily = { # Checks for every country separately!
-    effect = {
-        if = { limit = { has_global_flag = space_race OR = { is_major = yes is_ai = no } }
-        set_variable = { space_race_points = 0 }
+	on_weekly = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = has_zombie_outbreak
+				}
+				calculate_zombie_outbreak_chance = yes
+			}
+			if = {
+				limit = {
+					has_country_flag = bioweapon_target
+				}
+				check_all_states_for_contamination_cleanup = yes
+			}
+			# Process weekly vaccination progress for smallpox
+			if = {
+				limit = {
+					has_idea = smallpox_vaccination_program_idea
+				}
+				progress_smallpox_vaccination = yes
+			}
+		}
+	}
+	# Space Race
+	on_daily = { # Checks for every country separately!
+		effect = {
+			if = { limit = { has_global_flag = space_race OR = { is_major = yes is_ai = no } }
+				set_variable = { space_race_points = 0 }
 
-        # Radars
-        if = { limit = { has_tech = radio }
-        add_to_variable = { space_race_points = 1 }
-    }
-    if = { limit = { has_tech = radio_detection }
-    add_to_variable = { space_race_points = 2 }
-}
-# if = { limit = { has_tech = decimetric_radar }
-# add_to_variable = { space_race_points = 2 }
-# }
-# if = { limit = { has_tech = improved_decimetric_radar }
-# add_to_variable = { space_race_points = 3 }
-# }
-# if = { limit = { has_tech = centimetric_radar }
-# add_to_variable = { space_race_points = 4 }
-# }
-# if = { limit = { has_tech = improved_centimetric_radar }
-# add_to_variable = { space_race_points = 5 }
-# }
-# if = { limit = { has_tech = advanced_centimetric_radar }
-# add_to_variable = { space_race_points = 10 }
-# }
+				# Radars
+				if = { limit = { has_tech = radio }
+					add_to_variable = { space_race_points = 1 }
+				}
+				if = { limit = { has_tech = radio_detection }
+					add_to_variable = { space_race_points = 2 }
+				}
+				# if = { limit = { has_tech = decimetric_radar }
+				# add_to_variable = { space_race_points = 2 }
+				# }
+				# if = { limit = { has_tech = improved_decimetric_radar }
+				# add_to_variable = { space_race_points = 3 }
+				# }
+				# if = { limit = { has_tech = centimetric_radar }
+				# add_to_variable = { space_race_points = 4 }
+				# }
+				# if = { limit = { has_tech = improved_centimetric_radar }
+				# add_to_variable = { space_race_points = 5 }
+				# }
+				# if = { limit = { has_tech = advanced_centimetric_radar }
+				# add_to_variable = { space_race_points = 10 }
+				# }
 
-# Computing
-if = { limit = { has_tech = mechanical_computing }
-add_to_variable = { space_race_points = 1 }
-}
-if = { limit = { has_tech = computing_machine }
-add_to_variable = { space_race_points = 3 }
-}
-if = { limit = { has_tech = improved_computing_machine }
-add_to_variable = { space_race_points = 5 }
-}
-if = { limit = { has_tech = advanced_computing_machine }
-add_to_variable = { space_race_points = 10 }
-}
+				# Computing
+				if = { limit = { has_tech = mechanical_computing }
+					add_to_variable = { space_race_points = 1 }
+				}
+				if = { limit = { has_tech = computing_machine }
+					add_to_variable = { space_race_points = 3 }
+				}
+				if = { limit = { has_tech = improved_computing_machine }
+					add_to_variable = { space_race_points = 5 }
+				}
+				if = { limit = { has_tech = advanced_computing_machine }
+					add_to_variable = { space_race_points = 10 }
+				}
 
-# Fire control
-if = { limit = { has_tech = basic_fire_control_system }
-add_to_variable = { space_race_points = 2 }
-}
-if = { limit = { has_tech = improved_fire_control_system }
-add_to_variable = { space_race_points = 3 }
-}
-if = { limit = { has_tech = advanced_fire_control_system }
-add_to_variable = { space_race_points = 5 }
-}
+				# Fire control
+				if = { limit = { has_tech = basic_fire_control_system }
+					add_to_variable = { space_race_points = 2 }
+				}
+				if = { limit = { has_tech = improved_fire_control_system }
+					add_to_variable = { space_race_points = 3 }
+				}
+				if = { limit = { has_tech = advanced_fire_control_system }
+					add_to_variable = { space_race_points = 5 }
+				}
 
-# Rockets
-if = { limit = { has_tech = experimental_rockets }
-add_to_variable = { space_race_points = 4 }
-}
-if = { limit = { has_tech = rocket_engines }
-add_to_variable = { space_race_points = 5 }
-}
-if = { limit = { has_tech = improved_rocket_engines }
-add_to_variable = { space_race_points = 15 }
-}
-if = { limit = { has_tech = advanced_rocket_engines }
-add_to_variable = { space_race_points = 20 }
-}
+				# Rockets
+				if = { limit = { has_tech = experimental_rockets }
+					add_to_variable = { space_race_points = 4 }
+				}
+				if = { limit = { has_tech = rocket_engines }
+					add_to_variable = { space_race_points = 5 }
+				}
+				if = { limit = { has_tech = improved_rocket_engines }
+					add_to_variable = { space_race_points = 15 }
+				}
+				if = { limit = { has_tech = advanced_rocket_engines }
+					add_to_variable = { space_race_points = 20 }
+				}
 
-hidden_effect = {
-    add_to_array = { global.space_race_array = space_race_points }
-    find_highest_in_array = { # might be affecting performance slightly. Anyways, computers are fast
-        array = global.space_race_array
-        value = temp_most_space_race_points
-    }
-    set_variable = { global.most_space_race_points = temp_most_space_race_points } # All values are considered within last country check only
-    if = { limit = { check_variable = { space_race_points = global.most_space_race_points } }
-    set_variable = { global.leading_space_race_country = THIS.id }
-    add_ideas = leading_space_race
-} else = {
-    every_country = {
-        limit = { OR = { is_major = yes is_ai = no } NOT = { tag = global.leading_space_race_country } }
-        remove_ideas = leading_space_race
-    }
-}
-}
-}
-}
-}
+				hidden_effect = {
+					add_to_array = { global.space_race_array = space_race_points }
+					find_highest_in_array = { # might be affecting performance slightly. Anyways, computers are fast
+						array = global.space_race_array
+						value = temp_most_space_race_points
+					}
+					set_variable = { global.most_space_race_points = temp_most_space_race_points } # All values are considered within last country check only
+					if = { limit = { check_variable = { space_race_points = global.most_space_race_points } }
+						set_variable = { global.leading_space_race_country = THIS.id }
+						add_ideas = leading_space_race
+					} else = {
+						every_country = {
+							limit = { OR = { is_major = yes is_ai = no } NOT = { tag = global.leading_space_race_country } }
+							remove_ideas = leading_space_race
+						}
+					}
+				}
+			}
+		}
+	}
 
-# Devastation from the gods of ZIN
-on_daily_ZIN = {
-    effect = {
-        if = { limit = { ZIN = { has_capitulated = yes } }
-        remove_ideas = punishment_from_gods
-    }
-    if = { limit = { ZIN = { has_war = yes } }
-    create_unit = {
-        division = "name = \"Servants of the Gods\" division_template = \"Guardians of ZIN\" start_experience_factor = 0.1"
-        count = 2
-        owner = ZIN
-    }
-    create_unit = {
-        division = "name = \"Spawn of the Gods\" division_template = \"Cavalry of ZIN\" start_experience_factor = 0.1"
-        count = 1
-        owner = ZIN
-    }
-    every_other_country = {
-        limit = { has_war_with = ZIN }
-        if = { limit = { NOT = { has_idea = punishment_from_gods } }
-        add_ideas = punishment_from_gods
-    }
-    hidden_effect = {
-        random_list = { # could use 'random_events' function instead
-            10 = { country_event = { id = chaosx.nr13.2 days = 1 } } # Earthquake
-            10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
-            country_event = { id = chaosx.nr13.3 days = 1 } # Flood
-        } else = {
-            country_event = { id = chaosx.nr13.2 days = 1 }
-        }
-    }
-    10 = { country_event = { id = chaosx.nr13.4 days = 1 } } # Tornado
-    10 = { country_event = { id = chaosx.nr13.5 days = 1 } } # Wildfire
-    10 = { country_event = { id = chaosx.nr13.6 days = 1 } } # Lightning Storm
-    10 = { country_event = { id = chaosx.nr13.7 days = 1 } } # Hurricane
-}
-random_owned_state = {
-    ZIN = {
-        launch_nuke = {
-            state = PREV
-            controller = PREV.PREV
-            use_nuke = no
-        }
-    }
-}
-}
-}
-}
-}
-}
-on_monthly_ZIN = {
-    effect = {
-        if = { limit = { ZIN = { has_war = yes } }
-        every_other_country = {
-            limit = { has_war_with = ZIN }
-            country_event = { id = chaosx.nr68.3 }
-        }
-    }
-}
-}
-# The master decisions
-on_daily = {
-    effect = {
-        if = { limit = { is_ai = no has_country_flag = fight_for_minor }
-        if = { limit = { has_government = fascism }
-        var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@fascism } }
-    } else_if = { limit = { has_government = communism }
-    var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@communism } }
-} else_if = { limit = { has_government = democratic }
-var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@democratic } }
-} else = {
-    var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@neutrality } }
-}
-}
-}
-}
+	# Devastation from the gods of ZIN
+	on_daily_ZIN = {
+		effect = {
+			if = { limit = { ZIN = { has_capitulated = yes } }
+				remove_ideas = punishment_from_gods
+			}
+			if = { limit = { ZIN = { has_war = yes } }
+				create_unit = {
+					division = "name = \"Servants of the Gods\" division_template = \"Guardians of ZIN\" start_experience_factor = 0.1"
+					count = 2
+					owner = ZIN
+				}
+				create_unit = {
+					division = "name = \"Spawn of the Gods\" division_template = \"Cavalry of ZIN\" start_experience_factor = 0.1"
+					count = 1
+					owner = ZIN
+				}
+				every_other_country = {
+					limit = { has_war_with = ZIN }
+					if = { limit = { NOT = { has_idea = punishment_from_gods } }
+						add_ideas = punishment_from_gods
+					}
+					hidden_effect = {
+						random_list = { # could use 'random_events' function instead
+							10 = { country_event = { id = chaosx.nr13.2 days = 1 } } # Earthquake
+							10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+									country_event = { id = chaosx.nr13.3 days = 1 } # Flood
+								} else = {
+									country_event = { id = chaosx.nr13.2 days = 1 }
+								}
+							}
+							10 = { country_event = { id = chaosx.nr13.4 days = 1 } } # Tornado
+							10 = { country_event = { id = chaosx.nr13.5 days = 1 } } # Wildfire
+							10 = { country_event = { id = chaosx.nr13.6 days = 1 } } # Lightning Storm
+							10 = { country_event = { id = chaosx.nr13.7 days = 1 } } # Hurricane
+						}
+						random_owned_state = {
+							ZIN = {
+								launch_nuke = {
+									state = PREV
+									controller = PREV.PREV
+									use_nuke = no
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	on_monthly_ZIN = {
+		effect = {
+			if = { limit = { ZIN = { has_war = yes } }
+				every_other_country = {
+					limit = { has_war_with = ZIN }
+					country_event = { id = chaosx.nr68.3 }
+				}
+			}
+		}
+	}
+	# The master decisions
+	on_daily = {
+		effect = {
+			if = { limit = { is_ai = no has_country_flag = fight_for_minor }
+				if = { limit = { has_government = fascism }
+					var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@fascism } }
+				} else_if = { limit = { has_government = communism }
+					var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@communism } }
+				} else_if = { limit = { has_government = democratic }
+					var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@democratic } }
+				} else = {
+					var:global.minor_to_attract = { set_variable = { ROOT.propaganda_success = party_popularity_100@neutrality } }
+				}
+			}
+		}
+	}
 
-# Airship
-on_daily = {
-    effect = {
-        if = { limit = { has_global_flag = airship NOT = { tag = USA } }
-        # execute the chance every day for every country
-        if = { limit = { has_country_flag = airship_country }
-        log = "Value of 'as_crash_chance' in [ROOT.GetName]: [?as_crash_chance|.0]"
-        random = {
-            chance = as_crash_chance
-            log = "Value of 'as_crash_chance' during the crash in [ROOT.GetName]: [?as_crash_chance|.0]"
-            # crash effects
-            clr_global_flag = airship
-            every_country = {
-                limit = { OR = { has_country_flag = airship_country has_country_flag = airship_above } }
-                clr_country_flag = airship_country
-                clr_country_flag = airship_above
-            }
-            random_owned_state = {
-                limit = { is_in_airship_region = yes }
-                ROOT = {
-                    launch_nuke = {
-                        state = PREV
-                        controller = ROOT
-                        use_nuke = no
-                    }
-                }
-                every_country = {
-                    limit = { is_ai = no }
-                    goto_state = PREV
-                }
-                damage_building = {
-                    type = infrastructure
-                    damage = 2
-                }damage_building = {
-                    type = industrial_complex
-                    damage = 0.75
-                }damage_building = {
-                    type = arms_factory
-                    damage = 0.75
-                }
-                add_manpower = -5000
-            }
-            country_event = { id = chaosx.nr80.4 }
-        }
-    }
-    clear_variable = as_crash_chance
-    subtract_from_variable = { as_crash_chance = as_decrease }
-    add_to_variable = { as_crash_chance = as_increase }
-    # if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after decreases and increases: [?as_crash_chance|.0]" }
+	# Airship
+	on_daily = {
+		effect = {
+			if = { limit = { has_global_flag = airship NOT = { tag = USA } }
+				# execute the chance every day for every country
+				if = { limit = { has_country_flag = airship_country }
+					log = "Value of 'as_crash_chance' in [ROOT.GetName]: [?as_crash_chance|.0]"
+					random = {
+						chance = as_crash_chance
+						log = "Value of 'as_crash_chance' during the crash in [ROOT.GetName]: [?as_crash_chance|.0]"
+						# crash effects
+						clr_global_flag = airship
+						every_country = {
+							limit = { OR = { has_country_flag = airship_country has_country_flag = airship_above } }
+							clr_country_flag = airship_country
+							clr_country_flag = airship_above
+						}
+						random_owned_state = {
+							limit = { is_in_airship_region = yes }
+							ROOT = {
+								launch_nuke = {
+									state = PREV
+									controller = ROOT
+									use_nuke = no
+								}
+							}
+							every_country = {
+								limit = { is_ai = no }
+								goto_state = PREV
+							}
+							damage_building = {
+								type = infrastructure
+								damage = 2
+							}damage_building = {
+								type = industrial_complex
+								damage = 0.75
+							}damage_building = {
+								type = arms_factory
+								damage = 0.75
+							}
+							add_manpower = -5000
+						}
+						country_event = { id = chaosx.nr80.4 }
+					}
+				}
+				clear_variable = as_crash_chance
+				subtract_from_variable = { as_crash_chance = as_decrease }
+				add_to_variable = { as_crash_chance = as_increase }
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after decreases and increases: [?as_crash_chance|.0]" }
 
-    ## chance modifiers:
-    # check opinion status
-    if = { limit = { has_opinion = { target = USA value = -9 } }
-    set_temp_variable = { as_opinion_usa = opinion@USA }
-    divide_temp_variable = { as_opinion_usa = -10 }
-    round_temp_variable = as_opinion_usa
-    add_to_variable = { as_crash_chance = as_opinion_usa }
-    if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after checking relations: [?as_crash_chance|.0]" }
-}
+				## chance modifiers:
+				# check opinion status
+				if = { limit = { has_opinion = { target = USA value = -9 } }
+					set_temp_variable = { as_opinion_usa = opinion@USA }
+					divide_temp_variable = { as_opinion_usa = -10 }
+					round_temp_variable = as_opinion_usa
+					add_to_variable = { as_crash_chance = as_opinion_usa }
+					if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after checking relations: [?as_crash_chance|.0]" }
+				}
 
-# check if there is resistance in the region
-every_controlled_state = {
-    limit = { resistance > 0 is_in_airship_region = yes }
-    add_to_variable = { ROOT.as_crash_chance = 1 }
-}every_controlled_state = {
-    limit = { resistance > 9 is_in_airship_region = yes }
-    add_to_variable = { ROOT.as_crash_chance = 1 }
-}every_controlled_state = {
-    limit = { resistance > 19 is_in_airship_region = yes }
-    add_to_variable = { ROOT.as_crash_chance = 1 }
-}every_controlled_state = {
-    limit = { resistance > 29 is_in_airship_region = yes }
-    add_to_variable = { ROOT.as_crash_chance = 1 }
-}every_controlled_state = {
-    limit = { resistance > 39 is_in_airship_region = yes }
-    add_to_variable = { ROOT.as_crash_chance = 1 }
-}every_controlled_state = {
-    limit = { resistance > 49 is_in_airship_region = yes }
-    add_to_variable = { ROOT.as_crash_chance = 1 }
-}every_controlled_state = {
-    limit = { resistance > 59 is_in_airship_region = yes }
-    add_to_variable = { ROOT.as_crash_chance = 1 }
-}
-# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after resistance checks: [?as_crash_chance|.0]" }
+				# check if there is resistance in the region
+				every_controlled_state = {
+					limit = { resistance > 0 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 9 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 19 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 29 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 39 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 49 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 59 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after resistance checks: [?as_crash_chance|.0]" }
 
-# use state flags for more options
+				# use state flags for more options
 
-# check political status whether to increase the chance
-set_temp_variable = { as_stability = 1 }
-subtract_from_temp_variable = { as_stability = stability }
-multiply_temp_variable = { as_stability = 5 } # 10 maybe too harsh?
-round_temp_variable = as_stability
-add_to_variable = { as_crash_chance = as_stability }
-# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after stability check: [?as_crash_chance|.0]" }
+				# check political status whether to increase the chance
+				set_temp_variable = { as_stability = 1 }
+				subtract_from_temp_variable = { as_stability = stability }
+				multiply_temp_variable = { as_stability = 5 } # 10 maybe too harsh?
+				round_temp_variable = as_stability
+				add_to_variable = { as_crash_chance = as_stability }
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after stability check: [?as_crash_chance|.0]" }
 
-# check acid rain (hint: weather)
-if = { limit = { any_owned_state = { is_in_airship_region = yes has_dynamic_modifier = { modifier = acid_clouds_state }	} }
-add_to_variable = { as_crash_chance = 2 }
-}
-if = { limit = { any_owned_state = { is_in_airship_region = yes has_dynamic_modifier = { modifier = acid_rain_state } } }
-add_to_variable = { as_crash_chance = 5 }
-}
-# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after acid rain check: [?as_crash_chance|.0]" }
+				# check acid rain (hint: weather)
+				if = { limit = { any_owned_state = { is_in_airship_region = yes has_dynamic_modifier = { modifier = acid_clouds_state }	} }
+					add_to_variable = { as_crash_chance = 2 }
+				}
+				if = { limit = { any_owned_state = { is_in_airship_region = yes has_dynamic_modifier = { modifier = acid_rain_state } } }
+					add_to_variable = { as_crash_chance = 5 }
+				}
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after acid rain check: [?as_crash_chance|.0]" }
 
-# check if there is war in the region
-if = { limit = { has_war = yes any_owned_state = { is_in_airship_region = yes } }
-for_each_loop = {
-    array = global.airship_regions
-    value = region_id
-    meta_effect = {
-        text = {
-            if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 0
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 0
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 1 }
-            }
-            if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 49
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 49
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 1 } # in total 2 will be incremented to the chance
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 99
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 99
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 1 } #
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 199
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 199
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 2 }
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 299
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 299
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 2 }
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 399
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 399
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 3 }
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 499
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 499
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 3 }
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 599
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 599
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 4 }
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 699
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 699
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 4 }
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 799
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 799
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 5 }
-            }if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 899
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 899
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 5 }
-            }
-            if = {
-                limit = {
-                    OR = {
-                        num_planes_stationed_in_regions = {
-                            value > 999 # probable in late game
-                            regions = { [REGION_ID] }
-                        }
-                        any_enemy_country = {
-                            num_planes_stationed_in_regions = {
-                                value > 999
-                                regions = { [REGION_ID] }
-                            }
-                        }
-                    }
-                }
-                add_to_variable = { as_crash_chance = 6 } # capped here, 37% in total
-            }
-        }
-        REGION_ID = "[?region_id|.0]"
-    }
-}
-# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after deployed planes in region check: [?as_crash_chance|.0]" }
-every_owned_state = {
-    limit = { is_in_airship_region = yes }
-    every_state_division = {
-        limit = { division_has_battalion_in_template = anti_air }
-        add_to_variable = { ROOT.as_crash_chance = 1 }
-    }
+				# check if there is war in the region
+				if = { limit = { has_war = yes any_owned_state = { is_in_airship_region = yes } }
+					for_each_loop = {
+						array = global.airship_regions
+						value = region_id
+						meta_effect = {
+							text = {
+								if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 0
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 0
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 1 }
+								}
+								if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 49
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 49
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 1 } # in total 2 will be incremented to the chance
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 99
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 99
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 1 } #
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 199
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 199
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 2 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 299
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 299
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 2 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 399
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 399
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 3 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 499
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 499
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 3 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 599
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 599
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 4 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 699
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 699
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 4 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 799
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 799
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 5 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 899
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 899
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 5 }
+								}
+								if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 999 # probable in late game
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 999
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 6 } # capped here, 37% in total
+								}
+							}
+							REGION_ID = "[?region_id|.0]"
+						}
+					}
+					# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after deployed planes in region check: [?as_crash_chance|.0]" }
+					every_owned_state = {
+						limit = { is_in_airship_region = yes }
+						every_state_division = {
+							limit = { division_has_battalion_in_template = anti_air }
+							add_to_variable = { ROOT.as_crash_chance = 1 }
+						}
 
-}
-# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after anti-air battalions check: [?as_crash_chance|.0]" }
-}
-}
-}
-}
+					}
+					# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after anti-air battalions check: [?as_crash_chance|.0]" }
+				}
+			}
+		}
+	}
 
-on_capitulation = {
-    effect = {
-        # ZZZ
-        if = { limit = { original_tag = ZZZ }
+	on_capitulation = {
+		effect = {
+			# ZZZ
+			if = { limit = { original_tag = ZZZ }
 
-        every_core_state = {
-            remove_core_of = PREV
-        }
+				every_core_state = {
+					remove_core_of = PREV
+				}
 
-        if = { limit = { tag = ZZZ }
-        random_country = {
-            limit = { has_country_flag = zombie_outbreak_dynamic_country }
-            ZZZ = {
-                annex_country = {
-                    target = PREV
-                    transfer_troops = yes
-                }
-            }
+				if = { limit = { tag = ZZZ }
+					random_country = {
+						limit = { has_country_flag = zombie_outbreak_dynamic_country }
+						ZZZ = {
+							annex_country = {
+								target = PREV
+								transfer_troops = yes
+							}
+						}
 
-            every_core_state = {
-                add_core_of = ZZZ
-                remove_core_of = PREV
-            }
+						every_core_state = {
+							add_core_of = ZZZ
+							remove_core_of = PREV
+						}
 
-        }
-    }
-}
+					}
+				}
+			}
 
-if = { limit = { FROM = { original_tag = ZZZ } }
-every_owned_state = {
-    limit = { is_core_of = ROOT }
-    transfer_state_to = FROM
-}
-}
+			if = { limit = { FROM = { original_tag = ZZZ } }
+				every_owned_state = {
+					limit = { is_core_of = ROOT }
+					transfer_state_to = FROM
+				}
+			}
 
-# REV
-if = { limit = { country_exists = REV }
-if = { limit = { FROM = { tag = REV } }
-every_core_state = {
-    add_core_of = FROM
-}
-}
-}
-}
-}
+			# REV
+			if = { limit = { country_exists = REV }
+				if = { limit = { FROM = { tag = REV } }
+					every_core_state = {
+						add_core_of = FROM
+					}
+				}
+			}
+		}
+	}
 
-on_uncapitulation = {
-    effect = {
-        if = { limit = { country_exists = REV }
-        if = { limit = { ROOT = { has_war_with = REV } }
-        every_core_state = {
-            remove_core_of = REV
-        }
-    }
-}
-}
-}
-on_monthly_REV = {
-    effect = {
-        if = { limit = { country_exists = REV }
-        if = { limit = { all_country = { has_government = communism } }
-        every_other_country = {
-            country_event = { id = chaosx.nr93.1 }
-        }
-    }
-}
-}
-}
-# Acid rain
-on_daily = {
-    effect = {
-        if = { limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-        every_owned_state = {
-            limit = { has_dynamic_modifier = { modifier = acid_rain_state } }
-            damage_building = {
-                type = infrastructure
-                damage = 0.15
-            }damage_building = {
-                type = industrial_complex
-                damage = 0.15
-            }damage_building = {
-                type = arms_factory
-                damage = 0.15
-            }
-            damage_units = {
-                state = THIS
-                limit = { always = no }
-                org_damage = 0.15
-                str_damage = 0.15
-                ratio = yes
-                army = yes
-                navy = no
-            }
-        }
-    }
-}
-}
-on_monthly_MON = {
-    effect = {
-        if = { limit = { has_idea = legacy_of_khan }
-        every_neighbor_country = {
-            limit = { NOT = { ROOT = { has_wargoal_against = PREV } } any_owned_state = { OR = { is_on_continent = europe is_on_continent = asia is_on_continent = middle_east } } }
-            MON = {
-                create_wargoal = {
-                    type = annex_everything
-                    target = PREV
-                }
-            }
-        }
-    }
-    if = { limit = { has_template = "Glorious Genghis Khan's Cavalry" }
-    capital_scope = {
-        create_unit = {
-            division = "name = \"Glorious Genghis Khan's Cavalry\" division_template = \"Glorious Genghis Khan's Cavalry\" start_experience_factor = 0.3"
-            count = 2
-            owner = MON
-        }
-    }
-}
-}
+	on_uncapitulation = {
+		effect = {
+			if = { limit = { country_exists = REV }
+				if = { limit = { ROOT = { has_war_with = REV } }
+					every_core_state = {
+						remove_core_of = REV
+					}
+				}
+			}
+		}
+	}
+	on_monthly_REV = {
+		effect = {
+			if = { limit = { country_exists = REV }
+				if = { limit = { all_country = { has_government = communism } }
+					every_other_country = {
+						country_event = { id = chaosx.nr93.1 }
+					}
+				}
+			}
+		}
+	}
+	# Acid rain
+	on_daily = {
+		effect = {
+			if = { limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
+				every_owned_state = {
+					limit = { has_dynamic_modifier = { modifier = acid_rain_state } }
+					damage_building = {
+						type = infrastructure
+						damage = 0.15
+					}damage_building = {
+						type = industrial_complex
+						damage = 0.15
+					}damage_building = {
+						type = arms_factory
+						damage = 0.15
+					}
+					damage_units = {
+						state = THIS
+						limit = { always = no }
+						org_damage = 0.15
+						str_damage = 0.15
+						ratio = yes
+						army = yes
+						navy = no
+					}
+				}
+			}
+		}
+	}
+	on_monthly_MON = {
+		effect = {
+			if = { limit = { has_idea = legacy_of_khan }
+				every_neighbor_country = {
+					limit = { NOT = { ROOT = { has_wargoal_against = PREV } } any_owned_state = { OR = { is_on_continent = europe is_on_continent = asia is_on_continent = middle_east } } }
+					MON = {
+						create_wargoal = {
+							type = annex_everything
+							target = PREV
+						}
+					}
+				}
+			}
+			if = { limit = { has_template = "Glorious Genghis Khan's Cavalry" }
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Glorious Genghis Khan's Cavalry\" division_template = \"Glorious Genghis Khan's Cavalry\" start_experience_factor = 0.3"
+						count = 2
+						owner = MON
+					}
+				}
+			}
+		}
 
-}
+	}
 
-# Update communism spread ideas monthly
-on_monthly = {
-    effect = {
-        if = {
-            limit = { has_global_flag = communism_spread NOT = { has_government = communism } communism > 0.01 }
-            update_communism_spread_idea = yes
-        }
-    }
-}
+	# Update communism spread ideas monthly
+	on_monthly = {
+		effect = {
+			if = {
+				limit = { has_global_flag = communism_spread NOT = { has_government = communism } communism > 0.01 }
+				update_communism_spread_idea = yes
+			}
+		}
+	}
 
-on_annex = {
-    effect = {
-        if = {
-            limit = { has_global_flag = communism_spread }
-            if = {
-                limit = { ROOT = { has_country_flag = fighting_communist_rebels } FROM = { has_country_flag = communist_rebel_state } }
-                clr_country_flag = fighting_communist_rebels
-                clr_country_flag = communist_rebel_state
-            }
+	on_annex = {
+		effect = {
+			if = {
+				limit = { has_global_flag = communism_spread }
+				if = {
+					limit = { ROOT = { has_country_flag = fighting_communist_rebels } FROM = { has_country_flag = communist_rebel_state } }
+					clr_country_flag = fighting_communist_rebels
+					clr_country_flag = communist_rebel_state
+				}
 
-        }
+			}
 
-    }
-}
+		}
+	}
 
 }
