@@ -1,0 +1,443 @@
+# Chaos Warfare infantry scripted effects:
+# - Applies strong state contamination when chaos battalions are actively in combat.
+# - Applies direct enemy unit attrition in contested frontline states.
+# - Uses existing chemical state contamination pipeline for stacking/expiry behavior.
+
+@CHAOS_BATTALION_STATE_DOSE_PER_DIV = -0.025
+@CHAOS_BATTALION_STATE_DURATION_ADD = 14
+@CHAOS_BATTALION_STATE_RATIO_MIN = 0.10
+@CHAOS_BATTALION_STATE_RATIO_MAX = 4.00
+@CHAOS_BATTALION_STATE_DURATION_MAX = 40
+@CHAOS_BATTALION_TERMINAL_CONTAGION_MULT = 2.00
+
+@CHAOS_BATTALION_ENEMY_ORG_DAMAGE_PER_UNIT = 0.040
+@CHAOS_BATTALION_ENEMY_STR_DAMAGE_PER_UNIT = 0.016
+@CHAOS_BATTALION_ENEMY_ORG_DAMAGE_MAX = 0.20
+@CHAOS_BATTALION_ENEMY_STR_DAMAGE_MAX = 0.08
+@CHAOS_BATTALION_ENEMY_DAMAGE_TERMINAL_MULT = 1.40
+@CHAOS_BATTALION_FRIENDLY_DAMAGE_MULT = 0.55
+@CHAOS_BATTALION_FRIENDLY_ORG_DAMAGE_MAX = 0.12
+@CHAOS_BATTALION_FRIENDLY_STR_DAMAGE_MAX = 0.05
+
+@CHAOS_BATTALION_BIO_OUTBREAK_BASE_CHANCE = 2
+@CHAOS_BATTALION_BIO_OUTBREAK_DENSITY_CHANCE = 3
+@CHAOS_BATTALION_BIO_OUTBREAK_TERMINAL_CHANCE = 4
+@CHAOS_BATTALION_BIO_OUTBREAK_TULAREMIA_DAYS = 30
+@CHAOS_BATTALION_BIO_OUTBREAK_ANTHRAX_DAYS = 45
+@CHAOS_BATTALION_BIO_OUTBREAK_PLAGUE_DAYS = 90
+
+@CHAOS_BATTALION_CONDEMNATION_BASE_WON = 3
+@CHAOS_BATTALION_CONDEMNATION_BASE_LOST = 1
+@CHAOS_BATTALION_CONDEMNATION_PER_UNIT = 0.5
+@CHAOS_BATTALION_CONDEMNATION_RATIO_MAX = 4.00
+@CHAOS_BATTALION_CONDEMNATION_CONSUMED_PER_COMBAT_UNIT = 1.00
+@CHAOS_BATTALION_CONDEMNATION_CONSUMED_MIN = 1
+@CHAOS_BATTALION_CONDEMNATION_CONSUMED_MAX = 64
+@CHAOS_BATTALION_STATE_COUNT_MAX = 1000
+
+chaos_battalion_apply_state_dispersal = {
+    save_event_target_as = chem_state_dispersal_leader
+    if = {
+        limit = { NOT = { has_event_target = chem_state_dispersal_owner_country } }
+        OWNER = { save_event_target_as = chem_state_dispersal_owner_country }
+    }
+    chem_set_contaminant_firebases_contamination_mult_from_owner_target = yes
+    chem_set_chaos_division_spirit_chemical_modifiers = yes
+
+    set_temp_variable = { var = chaos_battalion_total value = num_battalions_with_type@chaos_battalion }
+    clamp_temp_variable = { var = chaos_battalion_total min = 0 }
+    set_temp_variable = { var = chaos_battalion_total_units value = num_units }
+    clamp_temp_variable = { var = chaos_battalion_total_units min = 0 }
+    set_temp_variable = { var = chaos_battalion_units_in_combat value = num_units_in_combat }
+    clamp_temp_variable = { var = chaos_battalion_units_in_combat min = 0 }
+
+    set_temp_variable = { var = chaos_battalion_non_chaos_units value = chaos_battalion_total }
+    multiply_temp_variable = { var = chaos_battalion_non_chaos_units value = -1 }
+    add_to_temp_variable = { var = chaos_battalion_non_chaos_units value = chaos_battalion_total_units }
+    clamp_temp_variable = { var = chaos_battalion_non_chaos_units min = 0 }
+
+    set_temp_variable = { var = chaos_battalion_guaranteed_in_combat value = chaos_battalion_non_chaos_units }
+    multiply_temp_variable = { var = chaos_battalion_guaranteed_in_combat value = -1 }
+    add_to_temp_variable = { var = chaos_battalion_guaranteed_in_combat value = chaos_battalion_units_in_combat }
+    clamp_temp_variable = { var = chaos_battalion_guaranteed_in_combat min = 0 }
+    if = {
+        limit = {
+            check_variable = {
+                var = chaos_battalion_guaranteed_in_combat
+                value = chaos_battalion_total
+                compare = greater_than
+            }
+        }
+        set_temp_variable = { var = chaos_battalion_guaranteed_in_combat value = chaos_battalion_total }
+    }
+
+    if = {
+        limit = {
+            check_variable = { var = chaos_battalion_guaranteed_in_combat value = 0 compare = greater_than }
+            check_variable = { var = chaos_battalion_total value = 0 compare = greater_than }
+            check_variable = { var = chaos_battalion_units_in_combat value = 0 compare = greater_than }
+        }
+        set_temp_variable = { var = chaos_battalion_combat_fraction value = chaos_battalion_guaranteed_in_combat }
+        divide_temp_variable = { var = chaos_battalion_combat_fraction value = chaos_battalion_total }
+        clamp_temp_variable = {
+            var = chaos_battalion_combat_fraction
+            min = 0
+            max = 1
+        }
+
+        set_temp_variable = { var = chem_state_dose_per_div value = @CHAOS_BATTALION_STATE_DOSE_PER_DIV }
+        multiply_temp_variable = { var = chem_state_dose_per_div value = chaos_battalion_combat_fraction }
+        set_temp_variable = { var = chem_state_duration_add value = @CHAOS_BATTALION_STATE_DURATION_ADD }
+        multiply_temp_variable = { var = chem_state_duration_add value = chaos_battalion_combat_fraction }
+
+        set_temp_variable = { var = chaos_battalion_enemy_org_damage_per_unit value = @CHAOS_BATTALION_ENEMY_ORG_DAMAGE_PER_UNIT }
+        set_temp_variable = { var = chaos_battalion_enemy_str_damage_per_unit value = @CHAOS_BATTALION_ENEMY_STR_DAMAGE_PER_UNIT }
+        multiply_temp_variable = { var = chaos_battalion_enemy_org_damage_per_unit value = chaos_battalion_combat_fraction }
+        multiply_temp_variable = { var = chaos_battalion_enemy_str_damage_per_unit value = chaos_battalion_combat_fraction }
+
+        if = {
+            limit = { event_target:chem_state_dispersal_owner_country = { has_country_flag = chaos_battalion_terminal_contagion_unlocked } }
+            multiply_temp_variable = { var = chem_state_dose_per_div value = @CHAOS_BATTALION_TERMINAL_CONTAGION_MULT }
+            multiply_temp_variable = { var = chem_state_duration_add value = @CHAOS_BATTALION_TERMINAL_CONTAGION_MULT }
+            multiply_temp_variable = { var = chaos_battalion_enemy_org_damage_per_unit value = @CHAOS_BATTALION_ENEMY_DAMAGE_TERMINAL_MULT }
+            multiply_temp_variable = { var = chaos_battalion_enemy_str_damage_per_unit value = @CHAOS_BATTALION_ENEMY_DAMAGE_TERMINAL_MULT }
+        }
+        multiply_temp_variable = { var = chem_state_dose_per_div value = chem_division_chaos_state_effect_mult }
+        multiply_temp_variable = { var = chem_state_duration_add value = chem_division_chaos_state_effect_mult }
+        multiply_temp_variable = { var = chaos_battalion_enemy_org_damage_per_unit value = chem_division_chaos_damage_mult }
+        multiply_temp_variable = { var = chaos_battalion_enemy_str_damage_per_unit value = chem_division_chaos_damage_mult }
+        multiply_temp_variable = { var = chem_state_dose_per_div value = chem_contamination_strength_mult }
+        multiply_temp_variable = { var = chem_state_duration_add value = chem_contamination_duration_mult }
+
+        round_temp_variable = chem_state_duration_add
+        clamp_temp_variable = { var = chem_state_duration_add min = 1 max = @CHAOS_BATTALION_STATE_DURATION_MAX }
+
+        event_target:chem_state_dispersal_owner_country = {
+            set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
+            set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
+            chaos_battalion_apply_enemy_casualties_from_controlled_states = yes
+
+            every_allied_country = {
+                set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
+                set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
+                chaos_battalion_apply_enemy_casualties_from_controlled_states = yes
+            }
+        }
+    }
+}
+
+chaos_battalion_try_trigger_bio_outbreak = {
+    if = {
+        limit = {
+            NOT = { has_state_flag = bioweapon_contaminated }
+            event_target:chem_state_dispersal_owner_country = {
+                OR = {
+                    has_tech = anthrax_bomb_delivery_systems
+                    has_tech = plague_bomb_delivery_systems
+                    has_tech = tularemia_bomb_delivery_systems
+                }
+            }
+        }
+
+        set_temp_variable = { var = chaos_bio_outbreak_triggered value = 0 }
+
+        random = {
+            chance = @CHAOS_BATTALION_BIO_OUTBREAK_BASE_CHANCE
+            set_temp_variable = { var = chaos_bio_outbreak_triggered value = 1 }
+        }
+
+        if = {
+            limit = {
+                check_variable = { var = chaos_bio_outbreak_triggered value = 0 }
+                check_variable = { var = chaos_battalion_units_in_enemy_state value = 2 compare = greater_than }
+            }
+            random = {
+                chance = @CHAOS_BATTALION_BIO_OUTBREAK_DENSITY_CHANCE
+                set_temp_variable = { var = chaos_bio_outbreak_triggered value = 1 }
+            }
+        }
+
+        if = {
+            limit = {
+                check_variable = { var = chaos_bio_outbreak_triggered value = 0 }
+                event_target:chem_state_dispersal_owner_country = { has_country_flag = chaos_battalion_terminal_contagion_unlocked }
+            }
+            random = {
+                chance = @CHAOS_BATTALION_BIO_OUTBREAK_TERMINAL_CHANCE
+                set_temp_variable = { var = chaos_bio_outbreak_triggered value = 1 }
+            }
+        }
+
+        if = {
+            limit = { check_variable = { var = chaos_bio_outbreak_triggered value = 1 } }
+            if = {
+                limit = {
+                    event_target:chem_state_dispersal_owner_country = { has_tech = tularemia_bomb_delivery_systems }
+                }
+                set_temp_variable = { contamination_days = @CHAOS_BATTALION_BIO_OUTBREAK_TULAREMIA_DAYS }
+                apply_tularemia_contamination = yes
+            }
+            else_if = {
+                limit = {
+                    event_target:chem_state_dispersal_owner_country = { has_tech = anthrax_bomb_delivery_systems }
+                }
+                set_temp_variable = { contamination_days = @CHAOS_BATTALION_BIO_OUTBREAK_ANTHRAX_DAYS }
+                apply_anthrax_contamination = yes
+            }
+            else_if = {
+                limit = {
+                    event_target:chem_state_dispersal_owner_country = { has_tech = plague_bomb_delivery_systems }
+                }
+                set_temp_variable = { contamination_days = @CHAOS_BATTALION_BIO_OUTBREAK_PLAGUE_DAYS }
+                apply_plague_contamination = yes
+            }
+        }
+    }
+}
+
+chaos_battalion_set_owner_count_in_state = {
+    set_temp_variable = { var = chaos_state_count_low value = 0 }
+    set_temp_variable = { var = chaos_state_count_high value = @CHAOS_BATTALION_STATE_COUNT_MAX }
+    add_to_temp_variable = { var = chaos_state_count_high value = 1 }
+
+    set_temp_variable = { var = chaos_state_count_gap value = chaos_state_count_high }
+    set_temp_variable = { var = chaos_state_count_gap_sub value = chaos_state_count_low }
+    multiply_temp_variable = { var = chaos_state_count_gap_sub value = -1 }
+    add_to_temp_variable = { var = chaos_state_count_gap value = chaos_state_count_gap_sub }
+
+    while_loop_effect = {
+        limit = { check_variable = { var = chaos_state_count_gap value = 1 compare = greater_than } }
+
+        set_temp_variable = { var = chaos_state_count_mid value = chaos_state_count_low }
+        add_to_temp_variable = { var = chaos_state_count_mid value = chaos_state_count_high }
+        divide_temp_variable = { var = chaos_state_count_mid value = 2 }
+        round_temp_variable = chaos_state_count_mid
+
+        set_temp_variable = { var = chaos_state_count_probe_minus_one value = chaos_state_count_mid }
+        add_to_temp_variable = { var = chaos_state_count_probe_minus_one value = -1 }
+
+        if = {
+            limit = {
+                event_target:chem_state_dispersal_owner_country = {
+                    meta_trigger = {
+                        text = {
+                            num_battalions_in_states = {
+                                count > [CHAOS_COUNT_PROBE]
+                                states = { [CHAOS_STATE_ID] }
+                                types = { chaos_battalion }
+                            }
+                        }
+                        CHAOS_COUNT_PROBE = "[?chaos_state_count_probe_minus_one|0]"
+                        CHAOS_STATE_ID = "[?chaos_state_id|0]"
+                    }
+                }
+            }
+            set_temp_variable = { var = chaos_state_count_low value = chaos_state_count_mid }
+        }
+        else = {
+            set_temp_variable = { var = chaos_state_count_high value = chaos_state_count_mid }
+        }
+
+        set_temp_variable = { var = chaos_state_count_gap value = chaos_state_count_high }
+        set_temp_variable = { var = chaos_state_count_gap_sub value = chaos_state_count_low }
+        multiply_temp_variable = { var = chaos_state_count_gap_sub value = -1 }
+        add_to_temp_variable = { var = chaos_state_count_gap value = chaos_state_count_gap_sub }
+    }
+
+    set_temp_variable = { var = chaos_battalion_units_in_enemy_state value = chaos_state_count_low }
+}
+
+chaos_battalion_apply_enemy_casualties_from_controlled_states = {
+    every_controlled_state = {
+        every_neighbor_state = {
+            limit = {
+                CONTROLLER = { has_war_with = event_target:chem_state_dispersal_owner_country }
+                NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
+            }
+            set_temp_variable = { var = chaos_battalion_units_in_enemy_state value = 0 }
+            meta_effect = {
+                text = {
+                    set_temp_variable = { var = chaos_state_id value = [CHAOS_STATE_ID] }
+                }
+                CHAOS_STATE_ID = "[THIS.GetID]"
+            }
+            chaos_battalion_set_owner_count_in_state = yes
+            if = {
+                limit = {
+                    check_variable = { var = chaos_battalion_units_in_enemy_state value = 0 compare = greater_than }
+                }
+                add_to_temp_variable = { var = chem_state_scan_states_with_units value = 1 }
+                set_temp_variable = { var = chem_dose_each value = chaos_battalion_units_in_enemy_state }
+                multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
+                add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
+                chem_apply_state_contamination = yes
+                chaos_battalion_try_trigger_bio_outbreak = yes
+
+                set_temp_variable = { var = chaos_battalion_enemy_org_damage value = chaos_battalion_enemy_org_damage_per_unit }
+                multiply_temp_variable = { var = chaos_battalion_enemy_org_damage value = chaos_battalion_units_in_enemy_state }
+                clamp_temp_variable = { var = chaos_battalion_enemy_org_damage min = 0 max = @CHAOS_BATTALION_ENEMY_ORG_DAMAGE_MAX }
+
+                set_temp_variable = { var = chaos_battalion_enemy_str_damage value = chaos_battalion_enemy_str_damage_per_unit }
+                multiply_temp_variable = { var = chaos_battalion_enemy_str_damage value = chaos_battalion_units_in_enemy_state }
+                clamp_temp_variable = { var = chaos_battalion_enemy_str_damage min = 0 max = @CHAOS_BATTALION_ENEMY_STR_DAMAGE_MAX }
+
+                damage_units = {
+                    state = THIS
+                    limit = { has_war_with = event_target:chem_state_dispersal_owner_country }
+                    org_damage = chaos_battalion_enemy_org_damage
+                    str_damage = chaos_battalion_enemy_str_damage
+                    ratio = yes
+                    army = yes
+                    navy = no
+                }
+
+                set_temp_variable = { var = chaos_battalion_friendly_org_damage value = chaos_battalion_enemy_org_damage }
+                multiply_temp_variable = { var = chaos_battalion_friendly_org_damage value = @CHAOS_BATTALION_FRIENDLY_DAMAGE_MULT }
+                clamp_temp_variable = { var = chaos_battalion_friendly_org_damage min = 0 max = @CHAOS_BATTALION_FRIENDLY_ORG_DAMAGE_MAX }
+
+                set_temp_variable = { var = chaos_battalion_friendly_str_damage value = chaos_battalion_enemy_str_damage }
+                multiply_temp_variable = { var = chaos_battalion_friendly_str_damage value = @CHAOS_BATTALION_FRIENDLY_DAMAGE_MULT }
+                clamp_temp_variable = { var = chaos_battalion_friendly_str_damage min = 0 max = @CHAOS_BATTALION_FRIENDLY_STR_DAMAGE_MAX }
+
+                damage_units = {
+                    state = THIS
+                    limit = { NOT = { has_war_with = event_target:chem_state_dispersal_owner_country } }
+                    org_damage = chaos_battalion_friendly_org_damage
+                    str_damage = chaos_battalion_friendly_str_damage
+                    ratio = yes
+                    army = yes
+                    navy = no
+                }
+            }
+        }
+    }
+}
+chaos_battalion_register_combat_condemnation_won = {
+    set_temp_variable = { var = chaos_battalion_total value = num_battalions_with_type@chaos_battalion }
+    clamp_temp_variable = { var = chaos_battalion_total min = 0 }
+    set_temp_variable = { var = chaos_battalion_total_units value = num_units }
+    clamp_temp_variable = { var = chaos_battalion_total_units min = 0 }
+    set_temp_variable = { var = chaos_battalion_offensive_units value = num_units_offensive_combats }
+    clamp_temp_variable = { var = chaos_battalion_offensive_units min = 0 }
+
+    set_temp_variable = { var = chaos_battalion_non_chaos_units value = chaos_battalion_total }
+    multiply_temp_variable = { var = chaos_battalion_non_chaos_units value = -1 }
+    add_to_temp_variable = { var = chaos_battalion_non_chaos_units value = chaos_battalion_total_units }
+    clamp_temp_variable = { var = chaos_battalion_non_chaos_units min = 0 }
+
+    set_temp_variable = { var = chaos_battalion_guaranteed_offensive value = chaos_battalion_non_chaos_units }
+    multiply_temp_variable = { var = chaos_battalion_guaranteed_offensive value = -1 }
+    add_to_temp_variable = { var = chaos_battalion_guaranteed_offensive value = chaos_battalion_offensive_units }
+    clamp_temp_variable = { var = chaos_battalion_guaranteed_offensive min = 0 }
+    if = {
+        limit = {
+            check_variable = {
+                var = chaos_battalion_guaranteed_offensive
+                value = chaos_battalion_total
+                compare = greater_than
+            }
+        }
+        set_temp_variable = { var = chaos_battalion_guaranteed_offensive value = chaos_battalion_total }
+    }
+
+    if = {
+        limit = {
+            check_variable = { var = chaos_battalion_guaranteed_offensive value = 0 compare = greater_than }
+            check_variable = { var = chaos_battalion_offensive_units value = 0 compare = greater_than }
+        }
+        set_temp_variable = { var = chaos_battalion_offensive_ratio value = chaos_battalion_guaranteed_offensive }
+        divide_temp_variable = { var = chaos_battalion_offensive_ratio value = chaos_battalion_offensive_units }
+        clamp_temp_variable = { var = chaos_battalion_offensive_ratio min = 0 max = @CHAOS_BATTALION_CONDEMNATION_RATIO_MAX }
+
+        set_temp_variable = { var = chem_condemnation_base value = @CHAOS_BATTALION_CONDEMNATION_BASE_WON }
+        multiply_temp_variable = { var = chem_condemnation_base value = chaos_battalion_offensive_ratio }
+
+        set_temp_variable = { var = chem_condemnation_per_unit value = @CHAOS_BATTALION_CONDEMNATION_PER_UNIT }
+        multiply_temp_variable = { var = chem_condemnation_per_unit value = chaos_battalion_offensive_ratio }
+
+        set_temp_variable = { var = chem_consumed_amount value = chaos_battalion_guaranteed_offensive }
+        multiply_temp_variable = { var = chem_consumed_amount value = @CHAOS_BATTALION_CONDEMNATION_CONSUMED_PER_COMBAT_UNIT }
+        clamp_temp_variable = {
+            var = chem_consumed_amount
+            min = @CHAOS_BATTALION_CONDEMNATION_CONSUMED_MIN
+            max = @CHAOS_BATTALION_CONDEMNATION_CONSUMED_MAX
+        }
+        set_temp_variable = { var = chem_required_amount value = 0 }
+
+        if = {
+            limit = { OWNER = { has_country_flag = chaos_battalion_terminal_contagion_unlocked } }
+            multiply_temp_variable = { var = chem_condemnation_base value = @CHAOS_BATTALION_TERMINAL_CONTAGION_MULT }
+            multiply_temp_variable = { var = chem_condemnation_per_unit value = @CHAOS_BATTALION_TERMINAL_CONTAGION_MULT }
+        }
+        chem_set_chaos_division_spirit_chemical_modifiers = yes
+        multiply_temp_variable = { var = chem_condemnation_base value = chem_division_chaos_condemnation_mult }
+        multiply_temp_variable = { var = chem_condemnation_per_unit value = chem_division_chaos_condemnation_mult }
+
+        OWNER = { chem_warfare_register_attack_use_no_livens = yes }
+    }
+}
+
+chaos_battalion_register_combat_condemnation_lost = {
+    set_temp_variable = { var = chaos_battalion_total value = num_battalions_with_type@chaos_battalion }
+    clamp_temp_variable = { var = chaos_battalion_total min = 0 }
+    set_temp_variable = { var = chaos_battalion_total_units value = num_units }
+    clamp_temp_variable = { var = chaos_battalion_total_units min = 0 }
+    set_temp_variable = { var = chaos_battalion_offensive_units value = num_units_offensive_combats }
+    clamp_temp_variable = { var = chaos_battalion_offensive_units min = 0 }
+
+    set_temp_variable = { var = chaos_battalion_non_chaos_units value = chaos_battalion_total }
+    multiply_temp_variable = { var = chaos_battalion_non_chaos_units value = -1 }
+    add_to_temp_variable = { var = chaos_battalion_non_chaos_units value = chaos_battalion_total_units }
+    clamp_temp_variable = { var = chaos_battalion_non_chaos_units min = 0 }
+
+    set_temp_variable = { var = chaos_battalion_guaranteed_offensive value = chaos_battalion_non_chaos_units }
+    multiply_temp_variable = { var = chaos_battalion_guaranteed_offensive value = -1 }
+    add_to_temp_variable = { var = chaos_battalion_guaranteed_offensive value = chaos_battalion_offensive_units }
+    clamp_temp_variable = { var = chaos_battalion_guaranteed_offensive min = 0 }
+    if = {
+        limit = {
+            check_variable = {
+                var = chaos_battalion_guaranteed_offensive
+                value = chaos_battalion_total
+                compare = greater_than
+            }
+        }
+        set_temp_variable = { var = chaos_battalion_guaranteed_offensive value = chaos_battalion_total }
+    }
+
+    if = {
+        limit = {
+            check_variable = { var = chaos_battalion_guaranteed_offensive value = 0 compare = greater_than }
+            check_variable = { var = chaos_battalion_offensive_units value = 0 compare = greater_than }
+        }
+        set_temp_variable = { var = chaos_battalion_offensive_ratio value = chaos_battalion_guaranteed_offensive }
+        divide_temp_variable = { var = chaos_battalion_offensive_ratio value = chaos_battalion_offensive_units }
+        clamp_temp_variable = { var = chaos_battalion_offensive_ratio min = 0 max = @CHAOS_BATTALION_CONDEMNATION_RATIO_MAX }
+
+        set_temp_variable = { var = chem_condemnation_base value = @CHAOS_BATTALION_CONDEMNATION_BASE_LOST }
+        multiply_temp_variable = { var = chem_condemnation_base value = chaos_battalion_offensive_ratio }
+
+        set_temp_variable = { var = chem_condemnation_per_unit value = @CHAOS_BATTALION_CONDEMNATION_PER_UNIT }
+        multiply_temp_variable = { var = chem_condemnation_per_unit value = chaos_battalion_offensive_ratio }
+
+        set_temp_variable = { var = chem_consumed_amount value = chaos_battalion_guaranteed_offensive }
+        multiply_temp_variable = { var = chem_consumed_amount value = @CHAOS_BATTALION_CONDEMNATION_CONSUMED_PER_COMBAT_UNIT }
+        clamp_temp_variable = {
+            var = chem_consumed_amount
+            min = @CHAOS_BATTALION_CONDEMNATION_CONSUMED_MIN
+            max = @CHAOS_BATTALION_CONDEMNATION_CONSUMED_MAX
+        }
+        set_temp_variable = { var = chem_required_amount value = 0 }
+
+        if = {
+            limit = { OWNER = { has_country_flag = chaos_battalion_terminal_contagion_unlocked } }
+            multiply_temp_variable = { var = chem_condemnation_base value = @CHAOS_BATTALION_TERMINAL_CONTAGION_MULT }
+            multiply_temp_variable = { var = chem_condemnation_per_unit value = @CHAOS_BATTALION_TERMINAL_CONTAGION_MULT }
+        }
+        chem_set_chaos_division_spirit_chemical_modifiers = yes
+        multiply_temp_variable = { var = chem_condemnation_base value = chem_division_chaos_condemnation_mult }
+        multiply_temp_variable = { var = chem_condemnation_per_unit value = chem_division_chaos_condemnation_mult }
+
+        OWNER = { chem_warfare_register_attack_use_no_livens = yes }
+    }
+}

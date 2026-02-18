@@ -1,0 +1,135 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS BATTALION SUB-UNIT
+# ============================================================================
+# Special-force assault battalion unlocked by Chaos Warfare infantry mastery.
+# Built for extreme breakthrough and casualty infliction at severe cost.
+# ============================================================================
+
+@CHAOS_BATTALION_COMBAT_WIDTH = 2
+@CHAOS_BATTALION_MAX_STRENGTH = 6
+@CHAOS_BATTALION_MAX_ORG = 2
+@CHAOS_BATTALION_DEFAULT_MORALE = 0.01
+@CHAOS_BATTALION_RELIABILITY = 0.05
+@CHAOS_BATTALION_MANPOWER = 1100
+@CHAOS_BATTALION_TRAINING_TIME = 300
+@CHAOS_BATTALION_SUPPRESSION = 3.50
+@CHAOS_BATTALION_WEIGHT = 0.60
+@CHAOS_BATTALION_SUPPLY = 1.50
+@CHAOS_BATTALION_CASUALTY_TRICKLEBACK = -0.98
+
+@CHAOS_BATTALION_SOFT_ATTACK = 20.00
+@CHAOS_BATTALION_BREAKTHROUGH = 2.40
+@CHAOS_BATTALION_HARD_ATTACK = 0.20
+@CHAOS_BATTALION_DEFENSE = -1.00
+@CHAOS_BATTALION_TERRAIN_ATTACK_FOREST = 0.08
+@CHAOS_BATTALION_TERRAIN_ATTACK_JUNGLE = 0.10
+@CHAOS_BATTALION_TERRAIN_ATTACK_MARSH = 0.06
+@CHAOS_BATTALION_TERRAIN_ATTACK_URBAN = 0.16
+@CHAOS_BATTALION_TERRAIN_ATTACK_FORT = 0.20
+@CHAOS_BATTALION_TERRAIN_MOVEMENT_FORT = 0.08
+
+@CHAOS_BATTALION_TERRAIN_ATTACK_HILLS = -0.05
+@CHAOS_BATTALION_TERRAIN_ATTACK_MOUNTAIN = -0.10
+@CHAOS_BATTALION_TERRAIN_ATTACK_PLAINS = -0.06
+@CHAOS_BATTALION_TERRAIN_ATTACK_DESERT = -0.14
+@CHAOS_BATTALION_TERRAIN_MOVEMENT_DESERT = -0.06
+@CHAOS_BATTALION_TERRAIN_ATTACK_RIVER = -0.12
+@CHAOS_BATTALION_TERRAIN_ATTACK_AMPHIBIOUS = -0.20
+
+@CHAOS_BATTALION_NEED_INFANTRY_EQ = 160
+@CHAOS_BATTALION_NEED_SUPPORT_EQ = 40
+@CHAOS_BATTALION_NEED_MOTORIZED = 30
+@CHAOS_BATTALION_NEED_FLAME_CHASSIS = 8
+@CHAOS_BATTALION_NEED_CHLORINE = 200
+@CHAOS_BATTALION_NEED_PHOSGENE = 150
+@CHAOS_BATTALION_NEED_MUSTARD = 150
+@CHAOS_BATTALION_NEED_LEWISITE = 100
+@CHAOS_BATTALION_NEED_SARIN = 50
+@CHAOS_BATTALION_NEED_SOMAN = 30
+@CHAOS_BATTALION_NEED_ANTHRAX = 20
+@CHAOS_BATTALION_NEED_PLAGUE = 10
+@CHAOS_BATTALION_NEED_TULAREMIA = 25
+
+sub_units = {
+    chaos_battalion = {
+        abbreviation = "CHB"
+        sprite = infantry
+        map_icon_category = infantry
+        special_forces = yes
+
+        priority = 700
+        ai_priority = 350
+        active = no
+        affects_speed = no
+
+        type = {
+            infantry
+        }
+
+        group = infantry
+
+        categories = {
+            category_front_line
+            category_light_infantry
+            category_all_infantry
+            category_army
+            category_special_forces
+            category_special_forces_leg_infantry
+        }
+
+        combat_width = @CHAOS_BATTALION_COMBAT_WIDTH
+
+        max_strength = @CHAOS_BATTALION_MAX_STRENGTH
+        max_organisation = @CHAOS_BATTALION_MAX_ORG
+        default_morale = @CHAOS_BATTALION_DEFAULT_MORALE
+        reliability = @CHAOS_BATTALION_RELIABILITY
+        manpower = @CHAOS_BATTALION_MANPOWER
+
+        training_time = @CHAOS_BATTALION_TRAINING_TIME
+        suppression = @CHAOS_BATTALION_SUPPRESSION
+        weight = @CHAOS_BATTALION_WEIGHT
+        supply_consumption = @CHAOS_BATTALION_SUPPLY
+        casualty_trickleback = @CHAOS_BATTALION_CASUALTY_TRICKLEBACK
+
+        soft_attack = @CHAOS_BATTALION_SOFT_ATTACK
+        breakthrough = @CHAOS_BATTALION_BREAKTHROUGH
+        hard_attack = @CHAOS_BATTALION_HARD_ATTACK
+        defense = @CHAOS_BATTALION_DEFENSE
+
+        # Chemical battalion profile:
+        # - Strong in enclosed/retentive terrain where gas effects are harder to evade.
+        # - Weak in open, arid, high-ground, or water-transition terrain where effects disperse faster.
+        forest = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_FOREST }
+        hills = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_HILLS }
+        mountain = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_MOUNTAIN }
+        plains = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_PLAINS }
+        jungle = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_JUNGLE }
+        marsh = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_MARSH }
+        urban = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_URBAN }
+        desert = {
+            attack = @CHAOS_BATTALION_TERRAIN_ATTACK_DESERT
+            movement = @CHAOS_BATTALION_TERRAIN_MOVEMENT_DESERT
+        }
+        fort = {
+            attack = @CHAOS_BATTALION_TERRAIN_ATTACK_FORT
+            movement = @CHAOS_BATTALION_TERRAIN_MOVEMENT_FORT
+        }
+        river = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_RIVER }
+        amphibious = { attack = @CHAOS_BATTALION_TERRAIN_ATTACK_AMPHIBIOUS }
+
+        # can use only infantry type of equipment.
+        need = {
+            infantry_equipment = @CHAOS_BATTALION_NEED_INFANTRY_EQ
+            light_tank_flame_chassis = @CHAOS_BATTALION_NEED_FLAME_CHASSIS
+            chemical_chlorine_payload_cylinder_1 = @CHAOS_BATTALION_NEED_CHLORINE
+            chemical_phosgene_payload_cylinder_1 = @CHAOS_BATTALION_NEED_PHOSGENE
+            chemical_mustard_payload_cylinder_1 = @CHAOS_BATTALION_NEED_MUSTARD
+            chemical_lewisite_payload_cylinder_1 = @CHAOS_BATTALION_NEED_LEWISITE
+            chemical_sarin_payload_cylinder_1 = @CHAOS_BATTALION_NEED_SARIN
+            chemical_soman_payload_cylinder_1 = @CHAOS_BATTALION_NEED_SOMAN
+            anthrax_bomb_1 = @CHAOS_BATTALION_NEED_ANTHRAX
+            plague_bomb_1 = @CHAOS_BATTALION_NEED_PLAGUE
+            tularemia_bomb_1 = @CHAOS_BATTALION_NEED_TULAREMIA
+        }
+    }
+}

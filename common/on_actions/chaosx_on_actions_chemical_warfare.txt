@@ -2,6 +2,7 @@
 # - Leader-daily tooltip/state-dispersal updates for active cylinder abilities.
 # - Livens support combat contamination (daily) + condemnation updates on combat resolution.
 # - Chemical tank-shell support contamination + condemnation hooks.
+# - Chaos battalion frontline contamination/casualty effects while actively in combat.
 # - Ground-combat heat tracking for chemical air-bomb gating.
 # - Weekly chemical air-bomb contamination/condemnation processing.
 on_actions = {
@@ -37,8 +38,8 @@ on_actions = {
 	on_army_leader_daily = {
 		effect = {
 			if = {
-				limit = {
-					OR = {
+                limit = {
+                    OR = {
                         has_trait = chemical_cylinder_active_chlorine
                         has_trait = chemical_cylinder_active_phosgene
                         has_trait = chemical_cylinder_active_mustard
@@ -64,97 +65,126 @@ on_actions = {
             }
 
             if = {
-                limit = {
-                    check_variable = { num_units_in_combat > 0 }
-                    chem_owner_has_chemical_weapon_tech = yes
-                }
-                FROM = { save_event_target_as = chem_state_dispersal_owner_country }
-                chem_tank_shell_apply_state_dispersal = yes
-            }
+                limit = { check_variable = { num_units_in_combat > 0 } }
+                if = {
+                    limit = { chem_owner_has_chemical_weapon_tech = yes }
+                    FROM = { save_event_target_as = chem_state_dispersal_owner_country }
 
-            if = {
-                limit = {
-                    check_variable = { num_units_in_combat > 0 }
-                    chem_owner_has_chemical_weapon_tech = yes
-                }
-                FROM = { save_event_target_as = chem_state_dispersal_owner_country }
-                chem_livens_support_apply_state_dispersal = yes
-            }
-        }
-    }
+                    if = {
+                        limit = { chem_leader_has_chemical_tank_support_battalions = yes }
+                        chem_tank_shell_apply_state_dispersal = yes
+                    }
 
-	on_army_leader_won_combat = {
-		effect = {
-			if = {
-				limit = {
-					check_variable = { num_units_offensive_combats > 0 }
-					OR = {
-						has_trait = chemical_cylinder_active_chlorine
-						has_trait = chemical_cylinder_active_phosgene
-						has_trait = chemical_cylinder_active_mustard
-						has_trait = chemical_cylinder_active_lewisite
-					}
-				}
-				FROM = { chem_grant_first_use_surprise = yes }
-			}
+                    if = {
+                        limit = { chem_leader_has_livens_support_battalions = yes }
+                        chem_livens_support_apply_state_dispersal = yes
+                    }
 
-			# Chemical air bombing contamination/condemnation tracking disabled for now.
-			# if = {
-			# 	limit = { check_variable = { num_units_offensive_combats > 0 } }
-			# 	FROM = { chem_air_bomb_register_ground_ops_heat_won = yes }
-			# }
-            if = {
-                limit = {
-                    check_variable = { num_units_offensive_combats > 0 }
-                    chem_owner_has_chemical_weapon_tech = yes
+                    if = {
+                        limit = {
+                            check_variable = { num_battalions_with_type@chaos_battalion > 0 }
+                            FROM = {
+                                has_doctrine = chaos_warfare
+                                has_country_flag = chaos_battalion_unlocked
+                            }
+                        }
+                        chaos_battalion_apply_state_dispersal = yes
+                    }
                 }
-                chem_livens_support_register_combat_condemnation_won = yes
-            }
-
-            if = {
-                limit = {
-                    check_variable = { num_units_offensive_combats > 0 }
-                    chem_owner_has_chemical_weapon_tech = yes
-                }
-                chem_tank_shell_register_combat_condemnation_won = yes
             }
         }
     }
 
-	on_army_leader_lost_combat = {
-		effect = {
-			if = {
-				limit = {
-					check_variable = { num_units_offensive_combats > 0 }
-					OR = {
-						has_trait = chemical_cylinder_active_chlorine
-						has_trait = chemical_cylinder_active_phosgene
-						has_trait = chemical_cylinder_active_mustard
-						has_trait = chemical_cylinder_active_lewisite
-					}
-				}
-				FROM = { chem_grant_first_use_surprise = yes }
-			}
+    on_army_leader_won_combat = {
+        effect = {
+            if = {
+                limit = {
+                    check_variable = { num_units_offensive_combats > 0 }
+                    OR = {
+                        has_trait = chemical_cylinder_active_chlorine
+                        has_trait = chemical_cylinder_active_phosgene
+                        has_trait = chemical_cylinder_active_mustard
+                        has_trait = chemical_cylinder_active_lewisite
+                    }
+                }
+                FROM = { chem_grant_first_use_surprise = yes }
+            }
 
-			# Chemical air bombing contamination/condemnation tracking disabled for now.
-			# if = {
-			# 	limit = { check_variable = { num_units_offensive_combats > 0 } }
-			# 	FROM = { chem_air_bomb_register_ground_ops_heat_lost = yes }
+            # Chemical air bombing contamination/condemnation tracking disabled for now.
+            # if = {
+            # 	limit = { check_variable = { num_units_offensive_combats > 0 } }
+            # 	FROM = { chem_air_bomb_register_ground_ops_heat_won = yes }
             # }
             if = {
-                limit = {
-                    check_variable = { num_units_offensive_combats > 0 }
-                    chem_owner_has_chemical_weapon_tech = yes
+                limit = { check_variable = { num_units_offensive_combats > 0 } }
+                if = {
+                    limit = { chem_owner_has_chemical_weapon_tech = yes }
+                    if = {
+                        limit = { chem_leader_has_livens_support_battalions = yes }
+                        chem_livens_support_register_combat_condemnation_won = yes
+                    }
+                    if = {
+                        limit = { chem_leader_has_chemical_tank_support_battalions = yes }
+                        chem_tank_shell_register_combat_condemnation_won = yes
+                    }
+                    if = {
+                        limit = {
+                            check_variable = { num_battalions_with_type@chaos_battalion > 0 }
+                            FROM = {
+                                has_doctrine = chaos_warfare
+                                has_country_flag = chaos_battalion_unlocked
+                            }
+                        }
+                        chaos_battalion_register_combat_condemnation_won = yes
+                    }
                 }
-                chem_livens_support_register_combat_condemnation_lost = yes
             }
+        }
+    }
 
+    on_army_leader_lost_combat = {
+        effect = {
             if = {
                 limit = {
                     check_variable = { num_units_offensive_combats > 0 }
-                    chem_owner_has_chemical_weapon_tech = yes
+                    OR = {
+                        has_trait = chemical_cylinder_active_chlorine
+                        has_trait = chemical_cylinder_active_phosgene
+                        has_trait = chemical_cylinder_active_mustard
+                        has_trait = chemical_cylinder_active_lewisite
+                    }
                 }
-                chem_tank_shell_register_combat_condemnation_lost = yes
+                FROM = { chem_grant_first_use_surprise = yes }
+            }
+
+            # Chemical air bombing contamination/condemnation tracking disabled for now.
+            # if = {
+            # 	limit = { check_variable = { num_units_offensive_combats > 0 } }
+            # 	FROM = { chem_air_bomb_register_ground_ops_heat_lost = yes }
+            # }
+            if = {
+                limit = { check_variable = { num_units_offensive_combats > 0 } }
+                if = {
+                    limit = { chem_owner_has_chemical_weapon_tech = yes }
+                    if = {
+                        limit = { chem_leader_has_livens_support_battalions = yes }
+                        chem_livens_support_register_combat_condemnation_lost = yes
+                    }
+                    if = {
+                        limit = { chem_leader_has_chemical_tank_support_battalions = yes }
+                        chem_tank_shell_register_combat_condemnation_lost = yes
+                    }
+                    if = {
+                        limit = {
+                            check_variable = { num_battalions_with_type@chaos_battalion > 0 }
+                            FROM = {
+                                has_doctrine = chaos_warfare
+                                has_country_flag = chaos_battalion_unlocked
+                            }
+                        }
+                        chaos_battalion_register_combat_condemnation_lost = yes
+                    }
+                }
             }
         }
     }

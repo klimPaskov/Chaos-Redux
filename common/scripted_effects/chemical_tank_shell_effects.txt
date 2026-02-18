@@ -4,6 +4,7 @@
 # - Uses the same state contamination modifier path as the ability system.
 
 @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT = 1.50
+@CHEM_TANK_STATE_SUPPORT_COUNT_MAX = 1200
 
 chem_tank_shell_collect_support_counts = {
 	set_temp_variable = { var = chem_tank_units_chlorine value = num_battalions_with_type@light_chemical_tank_support_chlorine }
@@ -22,10 +23,6 @@ chem_tank_shell_collect_support_counts = {
 	add_to_temp_variable = { var = chem_tank_units_lewisite value = num_battalions_with_type@medium_chemical_tank_support_lewisite }
 	add_to_temp_variable = { var = chem_tank_units_lewisite value = num_battalions_with_type@heavy_chemical_tank_support_lewisite }
 
-	set_temp_variable = { var = chem_tank_units_tabun value = num_battalions_with_type@light_chemical_tank_support_tabun }
-	add_to_temp_variable = { var = chem_tank_units_tabun value = num_battalions_with_type@medium_chemical_tank_support_tabun }
-	add_to_temp_variable = { var = chem_tank_units_tabun value = num_battalions_with_type@heavy_chemical_tank_support_tabun }
-
 	set_temp_variable = { var = chem_tank_units_sarin value = num_battalions_with_type@light_chemical_tank_support_sarin }
 	add_to_temp_variable = { var = chem_tank_units_sarin value = num_battalions_with_type@medium_chemical_tank_support_sarin }
 	add_to_temp_variable = { var = chem_tank_units_sarin value = num_battalions_with_type@heavy_chemical_tank_support_sarin }
@@ -38,7 +35,6 @@ chem_tank_shell_collect_support_counts = {
 	add_to_temp_variable = { var = chem_tank_support_total value = chem_tank_units_phosgene }
 	add_to_temp_variable = { var = chem_tank_support_total value = chem_tank_units_mustard }
 	add_to_temp_variable = { var = chem_tank_support_total value = chem_tank_units_lewisite }
-	add_to_temp_variable = { var = chem_tank_support_total value = chem_tank_units_tabun }
 	add_to_temp_variable = { var = chem_tank_support_total value = chem_tank_units_sarin }
 	add_to_temp_variable = { var = chem_tank_support_total value = chem_tank_units_soman }
 }
@@ -103,19 +99,6 @@ chem_tank_shell_set_profile_from_support_counts = {
 		multiply_temp_variable = { var = chem_tank_profile_add value = constant:chem_tank_shell.condemnation_per_unit.lewisite }
 		add_to_temp_variable = { var = chem_tank_profile_condemnation_per_unit value = chem_tank_profile_add }
 
-		set_temp_variable = { var = chem_tank_profile_add value = chem_tank_units_tabun }
-		multiply_temp_variable = { var = chem_tank_profile_add value = constant:chem_tank_shell.dose_per_div.tabun }
-		add_to_temp_variable = { var = chem_tank_profile_dose value = chem_tank_profile_add }
-		set_temp_variable = { var = chem_tank_profile_add value = chem_tank_units_tabun }
-		multiply_temp_variable = { var = chem_tank_profile_add value = constant:chem_tank_shell.duration_days.tabun }
-		add_to_temp_variable = { var = chem_tank_profile_duration value = chem_tank_profile_add }
-		set_temp_variable = { var = chem_tank_profile_add value = chem_tank_units_tabun }
-		multiply_temp_variable = { var = chem_tank_profile_add value = constant:chem_tank_shell.condemnation_base.tabun }
-		add_to_temp_variable = { var = chem_tank_profile_condemnation_base value = chem_tank_profile_add }
-		set_temp_variable = { var = chem_tank_profile_add value = chem_tank_units_tabun }
-		multiply_temp_variable = { var = chem_tank_profile_add value = constant:chem_tank_shell.condemnation_per_unit.tabun }
-		add_to_temp_variable = { var = chem_tank_profile_condemnation_per_unit value = chem_tank_profile_add }
-
 		set_temp_variable = { var = chem_tank_profile_add value = chem_tank_units_sarin }
 		multiply_temp_variable = { var = chem_tank_profile_add value = constant:chem_tank_shell.dose_per_div.sarin }
 		add_to_temp_variable = { var = chem_tank_profile_dose value = chem_tank_profile_add }
@@ -154,6 +137,12 @@ chem_tank_shell_set_profile_from_support_counts = {
 			multiply_temp_variable = { var = chem_tank_profile_condemnation_base value = @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT }
 			multiply_temp_variable = { var = chem_tank_profile_condemnation_per_unit value = @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT }
 		}
+
+		chem_set_chaos_division_spirit_chemical_modifiers = yes
+		multiply_temp_variable = { var = chem_tank_profile_dose value = chem_division_support_profile_mult }
+		multiply_temp_variable = { var = chem_tank_profile_duration value = chem_division_support_profile_mult }
+		multiply_temp_variable = { var = chem_tank_profile_condemnation_base value = chem_division_support_profile_mult }
+		multiply_temp_variable = { var = chem_tank_profile_condemnation_per_unit value = chem_division_support_profile_mult }
 	}
 }
 
@@ -242,6 +231,7 @@ chem_tank_shell_apply_state_dispersal = {
 		OWNER = { chem_grant_first_use_surprise = yes }
 	}
 	chem_tank_shell_set_profile_from_support_counts = yes
+	chem_set_contaminant_firebases_contamination_mult_from_owner_target = yes
 	chem_tank_shell_apply_weather_duration_mult = yes
 
 	if = {
@@ -250,16 +240,18 @@ chem_tank_shell_apply_state_dispersal = {
 			check_variable = { var = chem_tank_profile_duration value = 0 compare = greater_than }
 		}
 		set_temp_variable = { var = chem_tank_support_combat_ratio value = chem_tank_guaranteed_support_combat }
-		divide_temp_variable = { var = chem_tank_support_combat_ratio value = chem_tank_units_in_combat }
+		divide_temp_variable = { var = chem_tank_support_combat_ratio value = chem_tank_support_total }
 		clamp_temp_variable = { var = chem_tank_support_combat_ratio min = 0 max = 1 }
 
 		set_temp_variable = { var = chem_state_dose_per_div value = chem_tank_profile_dose }
 		multiply_temp_variable = { var = chem_state_dose_per_div value = constant:chem_tank_shell.combat_scale.dose_mult }
 		multiply_temp_variable = { var = chem_state_dose_per_div value = chem_tank_support_combat_ratio }
+		multiply_temp_variable = { var = chem_state_dose_per_div value = chem_contamination_strength_mult }
 
 		set_temp_variable = { var = chem_state_duration_add value = chem_tank_profile_duration }
 		multiply_temp_variable = { var = chem_state_duration_add value = chem_tank_duration_mult }
 		multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_tank_shell.combat_scale.duration_mult }
+		multiply_temp_variable = { var = chem_state_duration_add value = chem_contamination_duration_mult }
 		round_temp_variable = chem_state_duration_add
 		clamp_temp_variable = {
 			var = chem_state_duration_add
@@ -270,11 +262,110 @@ chem_tank_shell_apply_state_dispersal = {
 		event_target:chem_state_dispersal_owner_country = {
 			set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
 			set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
-			chem_apply_state_dispersal_from_controlled_states = yes
+			chem_tank_shell_apply_state_dispersal_from_controlled_states = yes
 			every_allied_country = {
 				set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
 				set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
-				chem_apply_state_dispersal_from_controlled_states = yes
+				chem_tank_shell_apply_state_dispersal_from_controlled_states = yes
+			}
+		}
+	}
+}
+
+chem_tank_shell_set_owner_support_count_in_state = {
+	set_temp_variable = { var = chem_tank_state_count_low value = 0 }
+	set_temp_variable = { var = chem_tank_state_count_high value = @CHEM_TANK_STATE_SUPPORT_COUNT_MAX }
+	add_to_temp_variable = { var = chem_tank_state_count_high value = 1 }
+
+	set_temp_variable = { var = chem_tank_state_count_gap value = chem_tank_state_count_high }
+	set_temp_variable = { var = chem_tank_state_count_gap_sub value = chem_tank_state_count_low }
+	multiply_temp_variable = { var = chem_tank_state_count_gap_sub value = -1 }
+	add_to_temp_variable = { var = chem_tank_state_count_gap value = chem_tank_state_count_gap_sub }
+
+	while_loop_effect = {
+		limit = { check_variable = { var = chem_tank_state_count_gap value = 1 compare = greater_than } }
+
+		set_temp_variable = { var = chem_tank_state_count_mid value = chem_tank_state_count_low }
+		add_to_temp_variable = { var = chem_tank_state_count_mid value = chem_tank_state_count_high }
+		divide_temp_variable = { var = chem_tank_state_count_mid value = 2 }
+		round_temp_variable = chem_tank_state_count_mid
+
+		set_temp_variable = { var = chem_tank_state_count_probe_minus_one value = chem_tank_state_count_mid }
+		add_to_temp_variable = { var = chem_tank_state_count_probe_minus_one value = -1 }
+
+		if = {
+			limit = {
+				event_target:chem_state_dispersal_owner_country = {
+					meta_trigger = {
+						text = {
+							num_battalions_in_states = {
+								count > [CHEM_TANK_COUNT_PROBE]
+								states = { [CHEM_STATE_ID] }
+								types = {
+									light_chemical_tank_support_chlorine
+									medium_chemical_tank_support_chlorine
+									heavy_chemical_tank_support_chlorine
+									light_chemical_tank_support_phosgene
+									medium_chemical_tank_support_phosgene
+									heavy_chemical_tank_support_phosgene
+									light_chemical_tank_support_mustard
+									medium_chemical_tank_support_mustard
+									heavy_chemical_tank_support_mustard
+									light_chemical_tank_support_lewisite
+									medium_chemical_tank_support_lewisite
+									heavy_chemical_tank_support_lewisite
+									light_chemical_tank_support_sarin
+									medium_chemical_tank_support_sarin
+									heavy_chemical_tank_support_sarin
+									light_chemical_tank_support_soman
+									medium_chemical_tank_support_soman
+									heavy_chemical_tank_support_soman
+								}
+							}
+						}
+						CHEM_TANK_COUNT_PROBE = "[?chem_tank_state_count_probe_minus_one|0]"
+						CHEM_STATE_ID = "[?chem_state_id|0]"
+					}
+				}
+			}
+			set_temp_variable = { var = chem_tank_state_count_low value = chem_tank_state_count_mid }
+		}
+		else = {
+			set_temp_variable = { var = chem_tank_state_count_high value = chem_tank_state_count_mid }
+		}
+
+		set_temp_variable = { var = chem_tank_state_count_gap value = chem_tank_state_count_high }
+		set_temp_variable = { var = chem_tank_state_count_gap_sub value = chem_tank_state_count_low }
+		multiply_temp_variable = { var = chem_tank_state_count_gap_sub value = -1 }
+		add_to_temp_variable = { var = chem_tank_state_count_gap value = chem_tank_state_count_gap_sub }
+	}
+
+	set_temp_variable = { var = chem_tank_support_in_enemy_state value = chem_tank_state_count_low }
+}
+
+chem_tank_shell_apply_state_dispersal_from_controlled_states = {
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = {
+				CONTROLLER = { has_war_with = event_target:chem_state_dispersal_owner_country }
+				NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
+			}
+
+			meta_effect = {
+				text = {
+					set_temp_variable = { var = chem_state_id value = [CHEM_STATE_ID] }
+				}
+				CHEM_STATE_ID = "[THIS.GetID]"
+			}
+			chem_tank_shell_set_owner_support_count_in_state = yes
+
+			if = {
+				limit = { check_variable = { var = chem_tank_support_in_enemy_state value = 0 compare = greater_than } }
+				add_to_temp_variable = { var = chem_state_scan_states_with_units value = 1 }
+				set_temp_variable = { var = chem_dose_each value = chem_tank_support_in_enemy_state }
+				multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
+				add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
+				chem_apply_state_contamination = yes
 			}
 		}
 	}
