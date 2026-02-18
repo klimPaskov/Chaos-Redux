@@ -21,6 +21,28 @@ has_bio_outbreak_prevention_tier_3 = {
 	has_tech = integrated_epidemic_control
 }
 
+has_active_biowarfare_outbreak = {
+	OR = {
+		any_controlled_state = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+		any_controlled_state = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+		any_controlled_state = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+		any_controlled_state = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+	}
+}
+
+has_neighbor_with_active_biowarfare_outbreak = {
+	any_neighbor_country = {
+		has_active_biowarfare_outbreak = yes
+	}
+}
+
+bio_border_closure_relation_target = {
+	is_in_array = {
+		array = ROOT.closed_bio_borders
+		value = THIS
+	}
+}
+
 is_desert_state = {
 	OR = {
 		state = 275

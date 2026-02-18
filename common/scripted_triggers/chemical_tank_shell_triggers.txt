@@ -42,16 +42,6 @@ chem_has_lewisite_tank_support_in_template = {
 	}
 }
 
-chem_has_tabun_tank_support_in_template = {
-	FROM = {
-		OR = {
-			has_template_containing_unit = light_chemical_tank_support_tabun
-			has_template_containing_unit = medium_chemical_tank_support_tabun
-			has_template_containing_unit = heavy_chemical_tank_support_tabun
-		}
-	}
-}
-
 chem_has_sarin_tank_support_in_template = {
 	FROM = {
 		OR = {
@@ -78,8 +68,36 @@ chem_has_chemical_tank_support_in_template = {
 		chem_has_phosgene_tank_support_in_template = yes
 		chem_has_mustard_tank_support_in_template = yes
 		chem_has_lewisite_tank_support_in_template = yes
-		chem_has_tabun_tank_support_in_template = yes
 		chem_has_sarin_tank_support_in_template = yes
 		chem_has_soman_tank_support_in_template = yes
+	}
+}
+
+# Unit-leader scope: checks actual battalions assigned to the current leader, not country template availability.
+chem_leader_has_chemical_tank_support_battalions = {
+	OR = {
+		check_variable = { num_battalions_with_type@light_chemical_tank_support_chlorine > 0 }
+		check_variable = { num_battalions_with_type@medium_chemical_tank_support_chlorine > 0 }
+		check_variable = { num_battalions_with_type@heavy_chemical_tank_support_chlorine > 0 }
+
+		check_variable = { num_battalions_with_type@light_chemical_tank_support_phosgene > 0 }
+		check_variable = { num_battalions_with_type@medium_chemical_tank_support_phosgene > 0 }
+		check_variable = { num_battalions_with_type@heavy_chemical_tank_support_phosgene > 0 }
+
+		check_variable = { num_battalions_with_type@light_chemical_tank_support_mustard > 0 }
+		check_variable = { num_battalions_with_type@medium_chemical_tank_support_mustard > 0 }
+		check_variable = { num_battalions_with_type@heavy_chemical_tank_support_mustard > 0 }
+
+		check_variable = { num_battalions_with_type@light_chemical_tank_support_lewisite > 0 }
+		check_variable = { num_battalions_with_type@medium_chemical_tank_support_lewisite > 0 }
+		check_variable = { num_battalions_with_type@heavy_chemical_tank_support_lewisite > 0 }
+
+		check_variable = { num_battalions_with_type@light_chemical_tank_support_sarin > 0 }
+		check_variable = { num_battalions_with_type@medium_chemical_tank_support_sarin > 0 }
+		check_variable = { num_battalions_with_type@heavy_chemical_tank_support_sarin > 0 }
+
+		check_variable = { num_battalions_with_type@light_chemical_tank_support_soman > 0 }
+		check_variable = { num_battalions_with_type@medium_chemical_tank_support_soman > 0 }
+		check_variable = { num_battalions_with_type@heavy_chemical_tank_support_soman > 0 }
 	}
 }

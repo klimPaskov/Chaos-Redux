@@ -5,15 +5,11 @@
 @CHEM_ABILITY_COST_MUSTARD = 0.35
 @CHEM_ABILITY_COST_LEWISITE = 0.40
 
-@CHEM_ABILITY_DURATION_HOURS = 168
-@CHEM_ABILITY_ARMY_SPEED_FACTOR = -0.05
-@CHEM_ABILITY_URBAN_ATTACK = 0.10
-
 #
 # Most tuning values are centralized in:
 # `common/script_constants/chemical_warfare_constants.txt` (see `chem_ability_*` and `chem_unit_modifier`).
-# NOTE: ability `cost`/`duration` and `unit_modifiers` do not parse script constants in this context,
-# so those specific values are mirrored as file-local `@` constants above.
+# NOTE: ability `cost` does not parse script constants in this context,
+# so it is mirrored as a file-local `@` constant above.
 
 ability = {
     chemical_chlorine_attack = {
@@ -26,6 +22,10 @@ ability = {
         allowed = {
             is_leading_army_group = no
             is_border_war = no
+            custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_COMMANDER_TRAINING_TT
+                has_trait = chemical_operations_commander
+            }
             custom_trigger_tooltip = {
                 tooltip = CHEM_ABILITY_CHLORINE_TECH_TT
                 OWNER = { has_tech = chlorine_gas }
@@ -44,13 +44,6 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_CHLORINE
-        duration = @CHEM_ABILITY_DURATION_HOURS
-			unit_modifiers = {
-				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
-				urban = {
-					attack = @CHEM_ABILITY_URBAN_ATTACK
-				}
-			}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
@@ -73,7 +66,6 @@ ability = {
             }
             chem_set_final_chlorine_effects = yes
             set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
-
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
                 hidden_effect = {
@@ -102,6 +94,8 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_chlorine_cylinders = yes }
+            set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.chlorine }
+            hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_CHLORINE_VALUE
@@ -244,6 +238,10 @@ ability = {
             is_leading_army_group = no
             is_border_war = no
             custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_COMMANDER_TRAINING_TT
+                has_trait = chemical_operations_commander
+            }
+            custom_trigger_tooltip = {
                 tooltip = CHEM_ABILITY_PHOSGENE_TECH_TT
                 OWNER = { has_tech = phosgene }
             }
@@ -261,13 +259,6 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_PHOSGENE
-        duration = @CHEM_ABILITY_DURATION_HOURS
-			unit_modifiers = {
-				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
-				urban = {
-					attack = @CHEM_ABILITY_URBAN_ATTACK
-				}
-			}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
@@ -290,7 +281,6 @@ ability = {
             }
             chem_set_final_phosgene_effects = yes
             set_temp_variable = { var = chem_duration_days value = constant:chem_ability_core.duration_days }
-
             if = {
                 limit = { has_unit_leader_flag = chem_ability_calculating }
                 hidden_effect = {
@@ -319,6 +309,8 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_phosgene_cylinders = yes }
+            set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.phosgene }
+            hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_PHOSGENE_VALUE
@@ -457,6 +449,10 @@ ability = {
             is_leading_army_group = no
             is_border_war = no
             custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_COMMANDER_TRAINING_TT
+                has_trait = chemical_operations_commander
+            }
+            custom_trigger_tooltip = {
                 tooltip = CHEM_ABILITY_MUSTARD_TECH_TT
                 OWNER = { has_tech = mustard_gas }
             }
@@ -474,13 +470,6 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_MUSTARD
-        duration = @CHEM_ABILITY_DURATION_HOURS
-			unit_modifiers = {
-				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
-				urban = {
-					attack = @CHEM_ABILITY_URBAN_ATTACK
-				}
-			}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
@@ -531,6 +520,8 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_mustard_cylinders = yes }
+            set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.mustard }
+            hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_MUSTARD_VALUE
@@ -676,6 +667,10 @@ ability = {
             is_leading_army_group = no
             is_border_war = no
             custom_trigger_tooltip = {
+                tooltip = CHEM_ABILITY_COMMANDER_TRAINING_TT
+                has_trait = chemical_operations_commander
+            }
+            custom_trigger_tooltip = {
                 tooltip = CHEM_ABILITY_LEWISITE_TECH_TT
                 OWNER = { has_tech = lewisite }
             }
@@ -693,13 +688,6 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_LEWISITE
-        duration = @CHEM_ABILITY_DURATION_HOURS
-			unit_modifiers = {
-				army_speed_factor = @CHEM_ABILITY_ARMY_SPEED_FACTOR
-				urban = {
-					attack = @CHEM_ABILITY_URBAN_ATTACK
-				}
-			}
 
         one_time_effect = {
             add_timed_unit_leader_trait = {
@@ -750,6 +738,8 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_lewisite_cylinders = yes }
+            set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.lewisite }
+            hidden_effect = { chem_refund_chemical_ability_command_power = yes }
             chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_LEWISITE_VALUE

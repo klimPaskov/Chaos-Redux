@@ -1,0 +1,179 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS WARFARE OPERATIONS SUBDOCTRINES
+# ============================================================================
+# Adds Chaos Warfare-specific operations-track subdoctrines and mastery rewards.
+# Current scope:
+# - integrated_chemical_operations
+# ============================================================================
+
+@INTEGRATED_CHEM_OPS_ACTIVATION_PLANNING_SPEED = 0.10
+@INTEGRATED_CHEM_OPS_ACTIVATION_REINFORCE_RATE = 0.05
+@INTEGRATED_CHEM_OPS_ACTIVATION_RECON_FACTOR = 0.20
+@INTEGRATED_CHEM_OPS_ACTIVATION_CHEM_COORDINATION = 0.05
+@INTEGRATED_CHEM_OPS_ACTIVATION_CHEM_DEFENSE = 0.10
+@INTEGRATED_CHEM_OPS_ACTIVATION_CHEM_BREAKTHROUGH = 0.10
+
+@INTEGRATED_CHEM_OPS_M1_RECON_FACTOR = 0.20
+@INTEGRATED_CHEM_OPS_M1_PLANNING_SPEED = 0.10
+
+@INTEGRATED_CHEM_OPS_M2_CHEM_DEFENSE = 0.10
+@INTEGRATED_CHEM_OPS_M2_CHEM_BREAKTHROUGH = 0.10
+@INTEGRATED_CHEM_OPS_M2_CHEM_TANK_RELIABILITY = 0.10
+@INTEGRATED_CHEM_OPS_M2_ARMY_INTEL_FACTOR = 0.05
+@INTEGRATED_CHEM_OPS_M2_INTEL_FROM_COMBAT = 0.20
+
+@INTEGRATED_CHEM_OPS_M3_CHEM_SUPPLY = -0.10
+@INTEGRATED_CHEM_OPS_M3_CHEM_TANK_SUPPLY = -0.10
+@INTEGRATED_CHEM_OPS_M3_CHEM_TANK_RELIABILITY = 0.10
+@INTEGRATED_CHEM_OPS_M3_ATTRITION = -0.10
+
+@INTEGRATED_CHEM_OPS_M4_CHEM_SOFT_ATTACK = 0.10
+
+@INTEGRATED_CHEM_OPS_M5_ARMY_ORG_FACTOR = 0.05
+@INTEGRATED_CHEM_OPS_M5_REINFORCE_RATE = 0.05
+@INTEGRATED_CHEM_OPS_M5_RECON_FACTOR = 0.20
+@INTEGRATED_CHEM_OPS_M5_CHEM_SOFT_ATTACK = 0.10
+@INTEGRATED_CHEM_OPS_M5_CHEM_BREAKTHROUGH = 0.10
+@INTEGRATED_CHEM_OPS_M5_CHEM_DEFENSE = 0.10
+@INTEGRATED_CHEM_OPS_M5_CHEM_TANK_SOFT_ATTACK = 0.10
+@INTEGRATED_CHEM_OPS_M5_CHEM_TANK_BREAKTHROUGH = 0.10
+@INTEGRATED_CHEM_OPS_M5_CHEM_TANK_DEFENSE = 0.10
+
+integrated_chemical_operations = {
+	track = operations
+	name = SUBDOCTRINE_INTEGRATED_CHEMICAL_OPERATIONS
+	description = SUBDOCTRINE_INTEGRATED_CHEMICAL_OPERATIONS_DESC
+	icon = GFX_doctrine_integrated_chemical_operations_medium
+
+	xp_cost = 100
+	xp_type = army
+
+	available = {
+		has_doctrine = chaos_warfare
+	}
+
+	visible = {
+		has_doctrine = chaos_warfare
+	}
+
+	ai_will_do = {
+		base = 1
+
+		modifier = {
+			factor = 2
+			is_major = yes
+		}
+	}
+
+	mastery = {
+		multiplier = 4.0
+		categories = {
+			category_all_infantry
+			category_tanks
+			category_support_battalions
+			category_chemical_support_companies
+		}
+	}
+
+	# ACTIVATION EFFECTS
+	planning_speed = @INTEGRATED_CHEM_OPS_ACTIVATION_PLANNING_SPEED
+	land_reinforce_rate = @INTEGRATED_CHEM_OPS_ACTIVATION_REINFORCE_RATE
+	recon_factor = @INTEGRATED_CHEM_OPS_ACTIVATION_RECON_FACTOR
+	coordination_bonus = @INTEGRATED_CHEM_OPS_ACTIVATION_CHEM_COORDINATION
+
+	category_chemical_support_companies = {
+		defense = @INTEGRATED_CHEM_OPS_ACTIVATION_CHEM_DEFENSE
+		breakthrough = @INTEGRATED_CHEM_OPS_ACTIVATION_CHEM_BREAKTHROUGH
+	}
+
+	rewards = {
+		operational_recon_grids = {
+			mastery = 100
+
+			recon_factor = @INTEGRATED_CHEM_OPS_M1_RECON_FACTOR
+			planning_speed = @INTEGRATED_CHEM_OPS_M1_PLANNING_SPEED
+
+			effect = {
+				set_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked
+				custom_effect_tooltip = integrated_chemical_operations_operational_recon_grids_tt
+			}
+		}
+
+		signal_intelligence_fusion = {
+			mastery = 100
+
+			category_chemical_support_companies = {
+				breakthrough = @INTEGRATED_CHEM_OPS_M2_CHEM_BREAKTHROUGH
+				defense = @INTEGRATED_CHEM_OPS_M2_CHEM_DEFENSE
+			}
+
+			category_chemical_tank_support_companies = {
+				reliability = @INTEGRATED_CHEM_OPS_M2_CHEM_TANK_RELIABILITY
+			}
+
+			army_intel_factor = @INTEGRATED_CHEM_OPS_M2_ARMY_INTEL_FACTOR
+			intel_from_combat_factor = @INTEGRATED_CHEM_OPS_M2_INTEL_FROM_COMBAT
+
+			effect = {
+				set_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked
+				custom_effect_tooltip = integrated_chemical_operations_signal_intelligence_fusion_tt
+			}
+		}
+
+		countercontamination_routing = {
+			mastery = 100
+
+			category_chemical_support_companies = {
+				supply_consumption = @INTEGRATED_CHEM_OPS_M3_CHEM_SUPPLY
+			}
+
+			category_chemical_tank_support_companies = {
+				supply_consumption = @INTEGRATED_CHEM_OPS_M3_CHEM_TANK_SUPPLY
+				reliability = @INTEGRATED_CHEM_OPS_M3_CHEM_TANK_RELIABILITY
+			}
+
+			attrition = @INTEGRATED_CHEM_OPS_M3_ATTRITION
+		}
+
+		air_surface_chemical_link = {
+			mastery = 100
+
+			category_chemical_support_companies = {
+				soft_attack = @INTEGRATED_CHEM_OPS_M4_CHEM_SOFT_ATTACK
+			}
+
+			effect = {
+				set_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked
+				custom_effect_tooltip = integrated_chemical_operations_air_surface_chemical_link_tt
+			}
+		}
+
+		theater_intelligence_overmatch = {
+			mastery = 100
+
+			army_org_factor = @INTEGRATED_CHEM_OPS_M5_ARMY_ORG_FACTOR
+			land_reinforce_rate = @INTEGRATED_CHEM_OPS_M5_REINFORCE_RATE
+			recon_factor = @INTEGRATED_CHEM_OPS_M5_RECON_FACTOR
+
+			category_chemical_support_companies = {
+				soft_attack = @INTEGRATED_CHEM_OPS_M5_CHEM_SOFT_ATTACK
+				breakthrough = @INTEGRATED_CHEM_OPS_M5_CHEM_BREAKTHROUGH
+				defense = @INTEGRATED_CHEM_OPS_M5_CHEM_DEFENSE
+			}
+
+			category_chemical_tank_support_companies = {
+				soft_attack = @INTEGRATED_CHEM_OPS_M5_CHEM_TANK_SOFT_ATTACK
+				breakthrough = @INTEGRATED_CHEM_OPS_M5_CHEM_TANK_BREAKTHROUGH
+				defense = @INTEGRATED_CHEM_OPS_M5_CHEM_TANK_DEFENSE
+			}
+
+			effect = {
+				set_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked
+				set_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked
+				set_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked
+				set_country_flag = integrated_chemical_operations_theater_intelligence_overmatch_unlocked
+				custom_effect_tooltip = integrated_chemical_operations_theater_intelligence_overmatch_tt
+			}
+		}
+	}
+}

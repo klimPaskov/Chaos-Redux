@@ -18,9 +18,84 @@
 
 # Tuning constants are defined in `common/script_constants/biowarfare_constants.txt`.
 
+bio_set_integrated_operations_bw_modifiers_from_actor_country = {
+	set_temp_variable = { var = bio_bw_condemnation_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_potency_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_duration_mult value = 1 }
+
+	if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_theater_intelligence_overmatch_unlocked } }
+		set_temp_variable = { var = bio_bw_condemnation_mult value = constant:bio_integrated_operations.bw_condemnation_mult.theater_intelligence_overmatch }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.theater_intelligence_overmatch }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.theater_intelligence_overmatch }
+	}
+	else_if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked } }
+		set_temp_variable = { var = bio_bw_condemnation_mult value = constant:bio_integrated_operations.bw_condemnation_mult.air_surface_chemical_link }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.air_surface_chemical_link }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.air_surface_chemical_link }
+	}
+	else_if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked } }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.signal_intelligence_fusion }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.signal_intelligence_fusion }
+	}
+
+	if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked } }
+		if = {
+			limit = { check_variable = { var = bio_bw_condemnation_mult value = 1 compare = greater_than_or_equals } }
+			set_temp_variable = { var = bio_bw_condemnation_mult value = constant:bio_integrated_operations.bw_condemnation_mult.operational_recon_grids }
+		}
+	}
+}
+
+bio_refund_outbreak_strike_command_power = {
+	set_temp_variable = { var = bio_outbreak_cp_refund value = 0 }
+
+	if = {
+		limit = { has_variable = actor_country }
+		if = {
+			limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_theater_intelligence_overmatch_unlocked } }
+			set_temp_variable = { var = bio_outbreak_cp_refund value = constant:bio_integrated_operations.outbreak_command_power_refund.theater_intelligence_overmatch }
+		}
+		else_if = {
+			limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked } }
+			set_temp_variable = { var = bio_outbreak_cp_refund value = constant:bio_integrated_operations.outbreak_command_power_refund.air_surface_chemical_link }
+		}
+		else_if = {
+			limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked } }
+			set_temp_variable = { var = bio_outbreak_cp_refund value = constant:bio_integrated_operations.outbreak_command_power_refund.signal_intelligence_fusion }
+		}
+
+		if = {
+			limit = { check_variable = { bio_outbreak_cp_refund > 0 } }
+			var:actor_country = {
+				add_command_power = bio_outbreak_cp_refund
+			}
+		}
+	}
+}
+
+bio_apply_outbreak_strike_potency_to_contamination = {
+	set_temp_variable = { var = bio_bw_condemnation_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_potency_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_duration_mult value = 1 }
+	if = {
+		limit = { has_variable = actor_country }
+		bio_set_integrated_operations_bw_modifiers_from_actor_country = yes
+	}
+	set_temp_variable = { var = bio_scaled_contamination_days value = contamination_days }
+	multiply_temp_variable = { var = bio_scaled_contamination_days value = bio_outbreak_duration_mult }
+	round_temp_variable = bio_scaled_contamination_days
+	clamp_temp_variable = { var = bio_scaled_contamination_days min = 1 max = 2000 }
+	set_temp_variable = { var = contamination_days value = bio_scaled_contamination_days }
+}
+
 # Apply anthrax contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_anthrax_contamination = {
+    bio_apply_outbreak_strike_potency_to_contamination = yes
     # Base anthrax disease effects using constants
     set_variable = { anthrax_manpower_modifier = constant:bio_disease_modifier.anthrax.manpower }
     set_variable = { anthrax_resources_modifier = constant:bio_disease_modifier.anthrax.resources }
@@ -28,6 +103,12 @@ apply_anthrax_contamination = {
     set_variable = { anthrax_production_modifier = constant:bio_disease_modifier.anthrax.production }
     set_variable = { anthrax_attrition_modifier = constant:bio_disease_modifier.anthrax.attrition }
     set_variable = { anthrax_speed_modifier = constant:bio_disease_modifier.anthrax.speed }
+	multiply_variable = { anthrax_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_speed_modifier = bio_outbreak_potency_mult }
 
     # Apply the dynamic modifier with the duration from contamination_days
     add_dynamic_modifier = {
@@ -80,6 +161,7 @@ apply_anthrax_contamination = {
 }
 
 apply_anthrax_contamination_scaled = {
+	bio_apply_outbreak_strike_potency_to_contamination = yes
 	set_variable = { anthrax_manpower_modifier = constant:bio_disease_modifier.anthrax.manpower }
 	set_variable = { anthrax_resources_modifier = constant:bio_disease_modifier.anthrax.resources }
 	set_variable = { anthrax_supplies_modifier = constant:bio_disease_modifier.anthrax.supplies }
@@ -93,6 +175,12 @@ apply_anthrax_contamination_scaled = {
 	multiply_variable = { anthrax_production_modifier = bio_intensity_mult }
 	multiply_variable = { anthrax_attrition_modifier = bio_intensity_mult }
 	multiply_variable = { anthrax_speed_modifier = bio_intensity_mult }
+	multiply_variable = { anthrax_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { anthrax_speed_modifier = bio_outbreak_potency_mult }
 
 	add_dynamic_modifier = { modifier = anthrax_contaminated_state days = contamination_days }
 
@@ -127,6 +215,7 @@ apply_anthrax_contamination_scaled = {
 # Apply plague contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_plague_contamination = {
+    bio_apply_outbreak_strike_potency_to_contamination = yes
     # Base plague disease effects using constants (much stronger than anthrax)
     set_variable = { plague_manpower_modifier = constant:bio_disease_modifier.plague.manpower }
     set_variable = { plague_resources_modifier = constant:bio_disease_modifier.plague.resources }
@@ -134,6 +223,12 @@ apply_plague_contamination = {
     set_variable = { plague_production_modifier = constant:bio_disease_modifier.plague.production }
     set_variable = { plague_attrition_modifier = constant:bio_disease_modifier.plague.attrition }
     set_variable = { plague_speed_modifier = constant:bio_disease_modifier.plague.speed }
+	multiply_variable = { plague_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_speed_modifier = bio_outbreak_potency_mult }
 
     # Apply the dynamic modifier with the duration from contamination_days
     add_dynamic_modifier = {
@@ -186,6 +281,7 @@ apply_plague_contamination = {
 }
 
 apply_plague_contamination_scaled = {
+	bio_apply_outbreak_strike_potency_to_contamination = yes
 	set_variable = { plague_manpower_modifier = constant:bio_disease_modifier.plague.manpower }
 	set_variable = { plague_resources_modifier = constant:bio_disease_modifier.plague.resources }
 	set_variable = { plague_supplies_modifier = constant:bio_disease_modifier.plague.supplies }
@@ -199,6 +295,12 @@ apply_plague_contamination_scaled = {
 	multiply_variable = { plague_production_modifier = bio_intensity_mult }
 	multiply_variable = { plague_attrition_modifier = bio_intensity_mult }
 	multiply_variable = { plague_speed_modifier = bio_intensity_mult }
+	multiply_variable = { plague_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { plague_speed_modifier = bio_outbreak_potency_mult }
 
 	add_dynamic_modifier = { modifier = plague_contaminated_state days = contamination_days }
 
@@ -234,6 +336,7 @@ apply_plague_contamination_scaled = {
 # Apply national and diplomatic consequences for successful anthrax bioweapon use
 # Should be called in raid scope with var:actor_country and var:victim_country available
 apply_anthrax_bioweapon_consequences = {
+    bio_set_integrated_operations_bw_modifiers_from_actor_country = yes
     # National effects on the attacking country
     var:actor_country = {
         # Set the bioweapon user flag for diplomatic tracking
@@ -252,10 +355,14 @@ apply_anthrax_bioweapon_consequences = {
             limit = { NOT = { has_variable = bioweapon_uses } }
             set_variable = { bioweapon_uses = 0 }
         }
-        add_to_variable = { bioweapon_uses = 1 }
+		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
+		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
+        add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
 
         # War Support penalty using constant
-        add_war_support = constant:bio_war_support_penalty.anthrax
+		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.anthrax }
+		multiply_temp_variable = { var = bio_war_support_penalty value = bio_bw_condemnation_mult }
+        add_war_support = bio_war_support_penalty
 
         # Apply diplomatic consequences with all democratic nations
         every_other_country = {
@@ -314,6 +421,7 @@ apply_anthrax_bioweapon_consequences = {
 # Apply national and diplomatic consequences for successful plague bioweapon use
 # Should be called in raid scope with var:actor_country and var:victim_country available
 apply_plague_bioweapon_consequences = {
+    bio_set_integrated_operations_bw_modifiers_from_actor_country = yes
     # National effects on the attacking country
     var:actor_country = {
         # Set the bioweapon user flag for diplomatic tracking
@@ -332,10 +440,14 @@ apply_plague_bioweapon_consequences = {
             limit = { NOT = { has_variable = bioweapon_uses } }
             set_variable = { bioweapon_uses = 0 }
         }
-        add_to_variable = { bioweapon_uses = 1 }
+		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
+		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
+        add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
 
         # War Support penalty using constant (higher for plague)
-        add_war_support = constant:bio_war_support_penalty.plague
+		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.plague }
+		multiply_temp_variable = { var = bio_war_support_penalty value = bio_bw_condemnation_mult }
+        add_war_support = bio_war_support_penalty
 
         # Apply diplomatic consequences with all democratic nations
         every_other_country = {
@@ -1222,6 +1334,7 @@ conduct_smallpox_field_test = {
 # Apply tularemia contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_tularemia_contamination = {
+    bio_apply_outbreak_strike_potency_to_contamination = yes
     # Set contamination start date
     set_variable = { contamination_start_date = current_date_in_days }
 
@@ -1234,6 +1347,13 @@ apply_tularemia_contamination = {
     set_variable = { tularemia_speed_modifier = constant:bio_disease_modifier.tularemia.speed }
     set_variable = { tularemia_org_modifier = constant:bio_disease_modifier.tularemia.org }
     set_variable = { tularemia_contamination_duration = contamination_days }
+	multiply_variable = { tularemia_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_speed_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_org_modifier = bio_outbreak_potency_mult }
 
     # Apply the dynamic modifier
     add_dynamic_modifier = {
@@ -1286,6 +1406,7 @@ apply_tularemia_contamination = {
 }
 
 apply_tularemia_contamination_scaled = {
+	bio_apply_outbreak_strike_potency_to_contamination = yes
 	set_variable = { tularemia_manpower_modifier = constant:bio_disease_modifier.tularemia.manpower }
 	set_variable = { tularemia_resources_modifier = constant:bio_disease_modifier.tularemia.resources }
 	set_variable = { tularemia_supplies_modifier = constant:bio_disease_modifier.tularemia.supplies }
@@ -1301,6 +1422,13 @@ apply_tularemia_contamination_scaled = {
 	multiply_variable = { tularemia_attrition_modifier = bio_intensity_mult }
 	multiply_variable = { tularemia_speed_modifier = bio_intensity_mult }
 	multiply_variable = { tularemia_org_modifier = bio_intensity_mult }
+	multiply_variable = { tularemia_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_speed_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { tularemia_org_modifier = bio_outbreak_potency_mult }
 
 	add_dynamic_modifier = { modifier = tularemia_contaminated_state days = contamination_days }
 
@@ -1335,6 +1463,7 @@ apply_tularemia_contamination_scaled = {
 # Apply smallpox contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_smallpox_contamination = {
+    bio_apply_outbreak_strike_potency_to_contamination = yes
     # Set contamination start date and initial severity
     set_variable = { contamination_start_date = current_date_in_days }
     set_variable = { smallpox_severity = 1 }  # Will grow over time
@@ -1347,6 +1476,12 @@ apply_smallpox_contamination = {
     set_variable = { smallpox_attrition_modifier = constant:bio_disease_modifier.smallpox.attrition }
     set_variable = { smallpox_speed_modifier = constant:bio_disease_modifier.smallpox.speed }
     set_variable = { smallpox_contamination_duration = contamination_days }
+	multiply_variable = { smallpox_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_speed_modifier = bio_outbreak_potency_mult }
 
     # Apply the dynamic modifier (permanent until 100% vaccination achieved)
     add_dynamic_modifier = {
@@ -1403,6 +1538,7 @@ apply_smallpox_contamination = {
 }
 
 apply_smallpox_contamination_scaled = {
+	bio_apply_outbreak_strike_potency_to_contamination = yes
 	set_variable = { smallpox_manpower_modifier = constant:bio_disease_modifier.smallpox.manpower }
 	set_variable = { smallpox_resources_modifier = constant:bio_disease_modifier.smallpox.resources }
 	set_variable = { smallpox_supplies_modifier = constant:bio_disease_modifier.smallpox.supplies }
@@ -1416,6 +1552,12 @@ apply_smallpox_contamination_scaled = {
 	multiply_variable = { smallpox_production_modifier = bio_intensity_mult }
 	multiply_variable = { smallpox_attrition_modifier = bio_intensity_mult }
 	multiply_variable = { smallpox_speed_modifier = bio_intensity_mult }
+	multiply_variable = { smallpox_manpower_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_resources_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_supplies_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_production_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_attrition_modifier = bio_outbreak_potency_mult }
+	multiply_variable = { smallpox_speed_modifier = bio_outbreak_potency_mult }
 
 	add_dynamic_modifier = { modifier = smallpox_contaminated_state days = contamination_days }
 
@@ -1553,6 +1695,7 @@ bio_unleash_stockpile_doomsday = {
 # Apply tularemia bioweapon consequences (country-level effects)
 # Should be called in raid scope with var:actor_country and var:victim_country available
 apply_tularemia_bioweapon_consequences = {
+    bio_set_integrated_operations_bw_modifiers_from_actor_country = yes
     # National effects on the attacking country
     var:actor_country = {
         # Set the bioweapon user flag for diplomatic tracking
@@ -1571,10 +1714,14 @@ apply_tularemia_bioweapon_consequences = {
             limit = { NOT = { has_variable = bioweapon_uses } }
             set_variable = { bioweapon_uses = 0 }
         }
-        add_to_variable = { bioweapon_uses = 1 }
+		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
+		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
+        add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
 
         # War Support penalty using constant (lower for tularemia as it's tactical)
-        add_war_support = constant:bio_war_support_penalty.tularemia
+		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.tularemia }
+		multiply_temp_variable = { var = bio_war_support_penalty value = bio_bw_condemnation_mult }
+        add_war_support = bio_war_support_penalty
 
         # Apply diplomatic consequences with all democratic nations (milder than anthrax/plague)
         every_other_country = {
@@ -1633,6 +1780,7 @@ apply_tularemia_bioweapon_consequences = {
 # Apply smallpox bioweapon consequences (country-level effects)
 # Should be called in raid scope with var:actor_country and var:victim_country available
 apply_smallpox_bioweapon_consequences = {
+    bio_set_integrated_operations_bw_modifiers_from_actor_country = yes
     # National effects on the attacking country
     var:actor_country = {
         # Set the bioweapon user flag for diplomatic tracking
@@ -1654,10 +1802,14 @@ apply_smallpox_bioweapon_consequences = {
             limit = { NOT = { has_variable = bioweapon_uses } }
             set_variable = { bioweapon_uses = 0 }
         }
-        add_to_variable = { bioweapon_uses = 1 }
+		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
+		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
+        add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
 
         # War Support penalty using constant (highest penalty for strategic weapon)
-        add_war_support = constant:bio_war_support_penalty.smallpox
+		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.smallpox }
+		multiply_temp_variable = { var = bio_war_support_penalty value = bio_bw_condemnation_mult }
+        add_war_support = bio_war_support_penalty
 
         # Apply severe diplomatic consequences with ALL nations (strategic weapon = war crime)
         every_other_country = {

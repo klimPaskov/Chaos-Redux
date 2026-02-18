@@ -25,12 +25,6 @@ chem_has_lewisite_livens_support_in_template = {
 	}
 }
 
-chem_has_tabun_livens_support_in_template = {
-	FROM = {
-		has_template_containing_unit = livens_projector_support_tabun
-	}
-}
-
 chem_has_sarin_livens_support_in_template = {
 	FROM = {
 		has_template_containing_unit = livens_projector_support_sarin
@@ -49,10 +43,22 @@ chem_has_livens_support_in_template = {
 		chem_has_phosgene_livens_support_in_template = yes
 		chem_has_mustard_livens_support_in_template = yes
 		chem_has_lewisite_livens_support_in_template = yes
-		chem_has_tabun_livens_support_in_template = yes
 		chem_has_sarin_livens_support_in_template = yes
 		chem_has_soman_livens_support_in_template = yes
 		FROM = { has_template_containing_unit = livens_projector_support }
+	}
+}
+
+# Unit-leader scope: checks actual battalions assigned to the current leader, not country template availability.
+chem_leader_has_livens_support_battalions = {
+	OR = {
+		check_variable = { num_battalions_with_type@livens_projector_support_chlorine > 0 }
+		check_variable = { num_battalions_with_type@livens_projector_support_phosgene > 0 }
+		check_variable = { num_battalions_with_type@livens_projector_support_mustard > 0 }
+		check_variable = { num_battalions_with_type@livens_projector_support_lewisite > 0 }
+		check_variable = { num_battalions_with_type@livens_projector_support_sarin > 0 }
+		check_variable = { num_battalions_with_type@livens_projector_support_soman > 0 }
+		check_variable = { num_battalions_with_type@livens_projector_support > 0 }
 	}
 }
 

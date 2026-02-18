@@ -616,10 +616,13 @@ chem_apply_state_dispersal = {
         # log = "CHEM_STATE: type=lewisite"
     }
     chem_set_livens_integration_values = yes
+    chem_set_contaminant_firebases_contamination_mult_from_owner_target = yes
     multiply_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.core.strength_scale }
     multiply_temp_variable = { var = chem_state_dose_per_div value = chem_livens_state_dose_mult }
+    multiply_temp_variable = { var = chem_state_dose_per_div value = chem_contamination_strength_mult }
     multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_state.core.duration_scale }
     multiply_temp_variable = { var = chem_state_duration_add value = chem_livens_state_duration_mult }
+    multiply_temp_variable = { var = chem_state_duration_add value = chem_contamination_duration_mult }
     round_temp_variable = chem_state_duration_add
     if = {
         limit = { check_variable = { var = chem_state_duration_add value = 0 compare = greater_than } }
@@ -1028,6 +1031,8 @@ chem_consume_chlorine_cylinders = {
     multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.chlorine }
     chem_set_livens_integration_values = yes
     multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    chem_set_chaos_army_spirit_ability_modifiers = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_ability_cylinder_cost_mult }
     round_temp_variable = chem_required_amount
     if = {
         limit = {
@@ -1129,6 +1134,8 @@ chem_consume_phosgene_cylinders = {
     multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.phosgene }
     chem_set_livens_integration_values = yes
     multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    chem_set_chaos_army_spirit_ability_modifiers = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_ability_cylinder_cost_mult }
     round_temp_variable = chem_required_amount
     if = {
         limit = {
@@ -1230,6 +1237,8 @@ chem_consume_mustard_cylinders = {
     multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.mustard }
     chem_set_livens_integration_values = yes
     multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    chem_set_chaos_army_spirit_ability_modifiers = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_ability_cylinder_cost_mult }
     round_temp_variable = chem_required_amount
     if = {
         limit = {
@@ -1331,6 +1340,8 @@ chem_consume_lewisite_cylinders = {
     multiply_temp_variable = { var = chem_required_amount value = constant:chem_ability_cylinders_per_battalion.lewisite }
     chem_set_livens_integration_values = yes
     multiply_temp_variable = { var = chem_required_amount value = chem_livens_cylinder_mult }
+    chem_set_chaos_army_spirit_ability_modifiers = yes
+    multiply_temp_variable = { var = chem_required_amount value = chem_ability_cylinder_cost_mult }
     round_temp_variable = chem_required_amount
     if = {
         limit = {
