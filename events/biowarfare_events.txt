@@ -302,6 +302,122 @@ state_event = {
             factor = constant:bio_outbreak_prevention.t3
             controller = { has_bio_outbreak_prevention_tier_3 = yes }
         }
+        modifier = {
+            factor = constant:bio_border_controls.spread.closed_border_mtth_factor
+            any_neighbor_state = {
+                NOT = { is_fully_controlled_by = ROOT.controller }
+                controller = {
+                    is_in_array = { closed_bio_borders = ROOT.controller }
+                }
+            }
+        }
+
+        # National development and preparedness
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_very_low
+            controller = { num_of_civilian_factories < 8 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_low
+            controller = { num_of_civilian_factories < 18 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_high
+            controller = { num_of_civilian_factories > 40 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_very_high
+            controller = { num_of_civilian_factories > 80 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.no_surveillance
+            controller = { NOT = { has_tech = bio_surveillance_networks } }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.no_containment
+            controller = { NOT = { has_tech = pathogen_handling_protocols } }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.low_stability
+            controller = { has_stability < 0.5 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.very_low_stability
+            controller = { has_stability < 0.3 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.war_stress
+            controller = {
+                has_war = yes
+                surrender_progress > 0.25
+            }
+        }
+
+        # Medical and containment technologies
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_1
+            controller = {
+                has_tech = tech_field_hospital
+                NOT = { has_tech = tech_field_hospital2 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_2
+            controller = {
+                has_tech = tech_field_hospital2
+                NOT = { has_tech = tech_field_hospital3 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_3
+            controller = {
+                has_tech = tech_field_hospital3
+                NOT = { has_tech = tech_field_hospital4 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_4
+            controller = { has_tech = tech_field_hospital4 }
+        }
+
+        # Active containment measures and preparedness decisions
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.field_hospital_state
+            has_state_flag = field_hospitals_deployed
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.quarantine_state
+            has_state_flag = quarantine_measures_active
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.combined_state
+            has_state_flag = field_hospitals_deployed
+            has_state_flag = quarantine_measures_active
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.anthrax_antibiotics
+            controller = { has_idea = anthrax_antibiotics_mass_production_idea }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.hygiene
+            controller = { has_country_flag = hygiene_measures_enforced }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.migration
+            controller = { has_country_flag = migration_restricted }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.quarantine_protocols
+            controller = { has_country_flag = quarantine_protocols_active }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.borders_closed
+            controller = { has_idea = outbreak_prevention_borders_closed }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.extreme_martial_law
+            controller = { has_country_flag = extreme_martial_law_active }
+        }
 
         # Dynamic defense effectiveness reduces spread time based on actual defense values
         modifier = {
@@ -330,7 +446,7 @@ state_event = {
             check_variable = { contamination_defense_effectiveness > 0.80 }
         }
 
-        # Population increases spread chance (reduces time)
+        # Population pressure
         modifier = {
             factor = 0.95
             state_population_k > 100
@@ -351,58 +467,83 @@ state_event = {
             factor = 0.7
             state_population_k > 5000
         }
-
-        # Low infrastructure increases spread
         modifier = {
-            factor = 0.9
-            infrastructure < 5
-            infrastructure > 3
+            factor = constant:bio_spread_dynamics.population.megadense
+            state_population_k > 8000
         }
         modifier = {
-            factor = 0.8
+            factor = constant:bio_spread_dynamics.population.hyperdense
+            state_population_k > 12000
+        }
+
+        # Infrastructure quality
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.high
+            infrastructure > 5
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.very_high
+            infrastructure > 7
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.ultra
+            infrastructure > 8
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.low
             infrastructure < 4
             infrastructure > 2
         }
         modifier = {
-            factor = 0.7
+            factor = constant:bio_spread_dynamics.infra.very_low
             infrastructure < 3
             infrastructure > 1
         }
         modifier = {
-            factor = 0.6
-            infrastructure < 2
-            infrastructure > 0
+            factor = constant:bio_spread_dynamics.infra.extreme_low
+            infrastructure < 1
         }
 
-        # Low stability increases spread
+        # State category differences
         modifier = {
-            factor = 0.9
-            controller = { has_stability < 0.5 }
+            factor = constant:bio_spread_dynamics.state_category.pastoral
+            has_state_category = pastoral
         }
-
-        # Rural states spread faster (worse healthcare)
         modifier = {
-            factor = 0.8
+            factor = constant:bio_spread_dynamics.state_category.rural
             has_state_category = rural
         }
-
-        # Urban states spread slower
         modifier = {
-            factor = 1.2
-            OR = {
-                has_state_category = city
-                has_state_category = metropolis
-                has_state_category = megalopolis
-            }
+            factor = constant:bio_spread_dynamics.state_category.town
+            has_state_category = town
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.large_town
+            has_state_category = large_town
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.city
+            has_state_category = city
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.large_city
+            has_state_category = large_city
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.metropolis
+            has_state_category = metropolis
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.megalopolis
+            has_state_category = megalopolis
         }
     }
 
     trigger = {
         # Must be contaminated with anthrax
         has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-        # Must have neighboring friendly states to spread to
+        # Must have neighboring states to spread to
         any_neighbor_state = {
-            is_fully_controlled_by = ROOT.controller
             NOT = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
         }
         # Must not be completely contained (dynamic check based on actual effectiveness)
@@ -422,7 +563,6 @@ state_event = {
             # Find a neighboring state to spread to
             random_neighbor_state = {
                 limit = {
-                    is_fully_controlled_by = ROOT.controller
                     NOT = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
                 }
                 save_event_target_as = spread_target_state
@@ -755,6 +895,122 @@ state_event = {
             factor = constant:bio_outbreak_prevention.t3
             controller = { has_bio_outbreak_prevention_tier_3 = yes }
         }
+        modifier = {
+            factor = constant:bio_border_controls.spread.closed_border_mtth_factor
+            any_neighbor_state = {
+                NOT = { is_fully_controlled_by = ROOT.controller }
+                controller = {
+                    is_in_array = { closed_bio_borders = ROOT.controller }
+                }
+            }
+        }
+
+        # National development and preparedness
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_very_low
+            controller = { num_of_civilian_factories < 8 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_low
+            controller = { num_of_civilian_factories < 18 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_high
+            controller = { num_of_civilian_factories > 40 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_very_high
+            controller = { num_of_civilian_factories > 80 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.no_surveillance
+            controller = { NOT = { has_tech = bio_surveillance_networks } }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.no_containment
+            controller = { NOT = { has_tech = pathogen_handling_protocols } }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.low_stability
+            controller = { has_stability < 0.5 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.very_low_stability
+            controller = { has_stability < 0.3 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.war_stress
+            controller = {
+                has_war = yes
+                surrender_progress > 0.25
+            }
+        }
+
+        # Medical and containment technologies
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_1
+            controller = {
+                has_tech = tech_field_hospital
+                NOT = { has_tech = tech_field_hospital2 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_2
+            controller = {
+                has_tech = tech_field_hospital2
+                NOT = { has_tech = tech_field_hospital3 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_3
+            controller = {
+                has_tech = tech_field_hospital3
+                NOT = { has_tech = tech_field_hospital4 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_4
+            controller = { has_tech = tech_field_hospital4 }
+        }
+
+        # Active containment measures and preparedness decisions
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.field_hospital_state
+            has_state_flag = field_hospitals_deployed
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.quarantine_state
+            has_state_flag = quarantine_measures_active
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.combined_state
+            has_state_flag = field_hospitals_deployed
+            has_state_flag = quarantine_measures_active
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.plague_antibiotics
+            controller = { has_idea = plague_antibiotics_mass_production_idea }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.hygiene
+            controller = { has_country_flag = hygiene_measures_enforced }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.migration
+            controller = { has_country_flag = migration_restricted }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.quarantine_protocols
+            controller = { has_country_flag = quarantine_protocols_active }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.borders_closed
+            controller = { has_idea = outbreak_prevention_borders_closed }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.extreme_martial_law
+            controller = { has_country_flag = extreme_martial_law_active }
+        }
 
         # Dynamic defense effectiveness reduces spread time based on actual defense values
         modifier = {
@@ -783,7 +1039,7 @@ state_event = {
             check_variable = { contamination_defense_effectiveness > 0.80 }
         }
 
-        # Population increases spread chance (reduces time) - more dramatic for plague
+        # Population pressure
         modifier = {
             factor = 0.9
             state_population_k > 100
@@ -804,68 +1060,83 @@ state_event = {
             factor = 0.65
             state_population_k > 5000
         }
-
-        # Low infrastructure increases spread more dramatically
         modifier = {
-            factor = 0.85
-            infrastructure < 5
-            infrastructure > 3
+            factor = constant:bio_spread_dynamics.population.megadense
+            state_population_k > 8000
         }
         modifier = {
-            factor = 0.75
+            factor = constant:bio_spread_dynamics.population.hyperdense
+            state_population_k > 12000
+        }
+
+        # Infrastructure quality
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.high
+            infrastructure > 5
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.very_high
+            infrastructure > 7
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.ultra
+            infrastructure > 8
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.low
             infrastructure < 4
             infrastructure > 2
         }
         modifier = {
-            factor = 0.65
+            factor = constant:bio_spread_dynamics.infra.very_low
             infrastructure < 3
             infrastructure > 1
         }
         modifier = {
-            factor = 0.55
-            infrastructure < 2
-            infrastructure > 0
+            factor = constant:bio_spread_dynamics.infra.extreme_low
+            infrastructure < 1
         }
 
-        # Low stability increases spread significantly
+        # State category differences
         modifier = {
-            factor = 0.85
-            controller = { has_stability < 0.5 }
+            factor = constant:bio_spread_dynamics.state_category.pastoral
+            has_state_category = pastoral
         }
         modifier = {
-            factor = 0.75
-            controller = { has_stability < 0.3 }
-        }
-
-        # Rural states spread much faster (worse healthcare infrastructure)
-        modifier = {
-            factor = 0.75
+            factor = constant:bio_spread_dynamics.state_category.rural
             has_state_category = rural
         }
-
-        # Urban states spread slower but still faster than anthrax
         modifier = {
-            factor = 1.1
-            OR = {
-                has_state_category = city
-                has_state_category = metropolis
-                has_state_category = megalopolis
-            }
+            factor = constant:bio_spread_dynamics.state_category.town
+            has_state_category = town
         }
-
-        # War conditions increase spread
         modifier = {
-            factor = 0.85
-            controller = { has_war = yes }
+            factor = constant:bio_spread_dynamics.state_category.large_town
+            has_state_category = large_town
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.city
+            has_state_category = city
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.large_city
+            has_state_category = large_city
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.metropolis
+            has_state_category = metropolis
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.megalopolis
+            has_state_category = megalopolis
         }
     }
 
     trigger = {
         # Must be contaminated with plague
         has_dynamic_modifier = { modifier = plague_contaminated_state }
-        # Must have neighboring friendly states to spread to
+        # Must have neighboring states to spread to
         any_neighbor_state = {
-            is_fully_controlled_by = ROOT.controller
             NOT = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
         }
         # Must not be completely contained (dynamic check based on actual effectiveness)
@@ -885,7 +1156,6 @@ state_event = {
             # Find a neighboring state to spread to
             random_neighbor_state = {
                 limit = {
-                    is_fully_controlled_by = ROOT.controller
                     NOT = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
                 }
                 save_event_target_as = spread_target_state
@@ -1477,8 +1747,124 @@ state_event = {
             factor = constant:bio_outbreak_prevention.t3
             controller = { has_bio_outbreak_prevention_tier_3 = yes }
         }
+        modifier = {
+            factor = constant:bio_border_controls.spread.closed_border_mtth_factor
+            any_neighbor_state = {
+                NOT = { is_fully_controlled_by = ROOT.controller }
+                controller = {
+                    is_in_array = { closed_bio_borders = ROOT.controller }
+                }
+            }
+        }
 
-        # Vaccination protection significantly reduces spread time (higher resistance than other bioweapons)
+        # National development and preparedness
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_very_low
+            controller = { num_of_civilian_factories < 8 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_low
+            controller = { num_of_civilian_factories < 18 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_high
+            controller = { num_of_civilian_factories > 40 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.civ_very_high
+            controller = { num_of_civilian_factories > 80 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.no_surveillance
+            controller = { NOT = { has_tech = bio_surveillance_networks } }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.no_containment
+            controller = { NOT = { has_tech = pathogen_handling_protocols } }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.low_stability
+            controller = { has_stability < 0.5 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.very_low_stability
+            controller = { has_stability < 0.3 }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.development.war_stress
+            controller = {
+                has_war = yes
+                surrender_progress > 0.25
+            }
+        }
+
+        # Medical and containment technologies
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_1
+            controller = {
+                has_tech = tech_field_hospital
+                NOT = { has_tech = tech_field_hospital2 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_2
+            controller = {
+                has_tech = tech_field_hospital2
+                NOT = { has_tech = tech_field_hospital3 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_3
+            controller = {
+                has_tech = tech_field_hospital3
+                NOT = { has_tech = tech_field_hospital4 }
+            }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.tech.field_hospital_4
+            controller = { has_tech = tech_field_hospital4 }
+        }
+
+        # Active containment measures and preparedness decisions
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.field_hospital_state
+            has_state_flag = field_hospitals_deployed
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.quarantine_state
+            has_state_flag = quarantine_measures_active
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.combined_state
+            has_state_flag = field_hospitals_deployed
+            has_state_flag = quarantine_measures_active
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.smallpox_vaccination
+            controller = { has_idea = smallpox_vaccination_program_idea }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.hygiene
+            controller = { has_country_flag = hygiene_measures_enforced }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.migration
+            controller = { has_country_flag = migration_restricted }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.quarantine_protocols
+            controller = { has_country_flag = quarantine_protocols_active }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.borders_closed
+            controller = { has_idea = outbreak_prevention_borders_closed }
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.measures.extreme_martial_law
+            controller = { has_country_flag = extreme_martial_law_active }
+        }
+
+        # Vaccination/defense effectiveness from active state variables
         modifier = {
             factor = 2.0
             has_variable = contamination_defense_effectiveness
@@ -1505,7 +1891,7 @@ state_event = {
             check_variable = { contamination_defense_effectiveness > 0.80 }
         }
 
-        # Population increases spread chance (reduces time) - more dramatic for smallpox
+        # Population pressure
         modifier = {
             factor = 0.9
             state_population_k > 100
@@ -1526,68 +1912,83 @@ state_event = {
             factor = 0.5
             state_population_k > 5000
         }
-
-        # Low infrastructure increases spread dramatically
         modifier = {
-            factor = 0.8
-            infrastructure < 5
-            infrastructure > 3
+            factor = constant:bio_spread_dynamics.population.megadense
+            state_population_k > 8000
         }
         modifier = {
-            factor = 0.7
+            factor = constant:bio_spread_dynamics.population.hyperdense
+            state_population_k > 12000
+        }
+
+        # Infrastructure quality
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.high
+            infrastructure > 5
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.very_high
+            infrastructure > 7
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.ultra
+            infrastructure > 8
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.infra.low
             infrastructure < 4
             infrastructure > 2
         }
         modifier = {
-            factor = 0.6
+            factor = constant:bio_spread_dynamics.infra.very_low
             infrastructure < 3
             infrastructure > 1
         }
         modifier = {
-            factor = 0.5
-            infrastructure < 2
-            infrastructure > 0
+            factor = constant:bio_spread_dynamics.infra.extreme_low
+            infrastructure < 1
         }
 
-        # Low stability increases spread significantly
+        # State category differences
         modifier = {
-            factor = 0.8
-            controller = { has_stability < 0.5 }
+            factor = constant:bio_spread_dynamics.state_category.pastoral
+            has_state_category = pastoral
         }
         modifier = {
-            factor = 0.7
-            controller = { has_stability < 0.3 }
-        }
-
-        # Rural states spread much faster (worse healthcare infrastructure)
-        modifier = {
-            factor = 0.7
+            factor = constant:bio_spread_dynamics.state_category.rural
             has_state_category = rural
         }
-
-        # Urban states spread slower but still faster than anthrax
         modifier = {
-            factor = 1.1
-            OR = {
-                has_state_category = city
-                has_state_category = metropolis
-                has_state_category = megalopolis
-            }
+            factor = constant:bio_spread_dynamics.state_category.town
+            has_state_category = town
         }
-
-        # War conditions increase spread
         modifier = {
-            factor = 0.8
-            controller = { has_war = yes }
+            factor = constant:bio_spread_dynamics.state_category.large_town
+            has_state_category = large_town
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.city
+            has_state_category = city
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.large_city
+            has_state_category = large_city
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.metropolis
+            has_state_category = metropolis
+        }
+        modifier = {
+            factor = constant:bio_spread_dynamics.state_category.megalopolis
+            has_state_category = megalopolis
         }
     }
 
     trigger = {
         # Must be contaminated with smallpox
         has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-        # Must have neighboring friendly states to spread to
+        # Must have neighboring states to spread to
         any_neighbor_state = {
-            is_fully_controlled_by = ROOT.controller
             NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
         }
         # Must not be completely contained (vaccination effectiveness check)
@@ -1607,7 +2008,6 @@ state_event = {
             # Find a neighboring state to spread to
             random_neighbor_state = {
                 limit = {
-                    is_fully_controlled_by = ROOT.controller
                     NOT = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
                 }
                 save_event_target_as = spread_target_state

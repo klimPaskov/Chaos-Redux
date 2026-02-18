@@ -1,0 +1,170 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS WARFARE INFANTRY SUBDOCTRINES
+# ============================================================================
+# Adds Chaos Warfare-specific infantry-track subdoctrines and mastery rewards.
+# Current scope:
+# - extermination_columns
+# ============================================================================
+
+@EXTERMINATION_COLUMNS_ACTIVATION_INF_SOFT_ATTACK = 0.05
+@EXTERMINATION_COLUMNS_ACTIVATION_INF_BREAKTHROUGH = 0.05
+@EXTERMINATION_COLUMNS_ACTIVATION_INF_DEFENSE = 0.05
+@EXTERMINATION_COLUMNS_ACTIVATION_INF_RECOVERY = 0.05
+@EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_MAX_ORG = 10
+@EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_RELIABILITY = 0.08
+@EXTERMINATION_COLUMNS_ACTIVATION_SF_SOFT_ATTACK = 0.10
+@EXTERMINATION_COLUMNS_ACTIVATION_SF_BREAKTHROUGH = 0.10
+
+@EXTERMINATION_COLUMNS_M1_INF_SOFT_ATTACK = 0.10
+@EXTERMINATION_COLUMNS_M1_INF_BREAKTHROUGH = 0.15
+@EXTERMINATION_COLUMNS_M1_INF_DEFENSE = 0.05
+@EXTERMINATION_COLUMNS_M1_NIGHT_ATTACK = 0.10
+@EXTERMINATION_COLUMNS_M1_ARMY_ORG_FACTOR = 0.05
+
+@EXTERMINATION_COLUMNS_M2_INF_SUPPLY = -0.08
+@EXTERMINATION_COLUMNS_M2_INF_RECOVERY = 0.12
+@EXTERMINATION_COLUMNS_M2_LIGHT_INF_MAX_ORG = 10
+@EXTERMINATION_COLUMNS_M2_LIGHT_INF_RELIABILITY = 0.08
+@EXTERMINATION_COLUMNS_M2_REINFORCE_RATE = 0.04
+
+@EXTERMINATION_COLUMNS_M4_INF_SOFT_ATTACK = 0.10
+@EXTERMINATION_COLUMNS_M4_INF_BREAKTHROUGH = 0.10
+@EXTERMINATION_COLUMNS_M4_SF_SOFT_ATTACK = 0.25
+@EXTERMINATION_COLUMNS_M4_SF_BREAKTHROUGH = 0.25
+@EXTERMINATION_COLUMNS_M4_ENEMY_ATTRITION = 0.15
+@EXTERMINATION_COLUMNS_M4_ARMY_ATTACK_FACTOR = 0.05
+
+@EXTERMINATION_COLUMNS_M5_INF_SOFT_ATTACK = 0.10
+@EXTERMINATION_COLUMNS_M5_INF_BREAKTHROUGH = 0.10
+@EXTERMINATION_COLUMNS_M5_INF_MAX_ORG = 10
+@EXTERMINATION_COLUMNS_M5_CHAOS_BATTALION_SOFT_ATTACK = 0.45
+@EXTERMINATION_COLUMNS_M5_CHAOS_BATTALION_BREAKTHROUGH = 0.45
+@EXTERMINATION_COLUMNS_M5_PLANNING_SPEED = 0.15
+@EXTERMINATION_COLUMNS_M5_COORDINATION_BONUS = 0.10
+
+extermination_columns = {
+    track = infantry
+    name = SUBDOCTRINE_EXTERMINATION_COLUMNS
+    description = SUBDOCTRINE_EXTERMINATION_COLUMNS_DESC
+    icon = GFX_doctrine_extermination_columns_medium
+
+    xp_cost = 100
+    xp_type = army
+
+    available = {
+        has_doctrine = chaos_warfare
+    }
+
+    visible = {
+        has_doctrine = chaos_warfare
+    }
+
+    ai_will_do = {
+        base = 1
+
+        modifier = {
+            factor = 2
+            is_major = yes
+        }
+    }
+
+    mastery = {
+        multiplier = 1.75
+        categories = {
+            category_all_infantry
+            category_special_forces
+        }
+    }
+
+    # ACTIVATION EFFECTS
+    category_all_infantry = {
+        soft_attack = @EXTERMINATION_COLUMNS_ACTIVATION_INF_SOFT_ATTACK
+        breakthrough = @EXTERMINATION_COLUMNS_ACTIVATION_INF_BREAKTHROUGH
+        defense = @EXTERMINATION_COLUMNS_ACTIVATION_INF_DEFENSE
+        default_morale = @EXTERMINATION_COLUMNS_ACTIVATION_INF_RECOVERY
+    }
+
+    category_light_infantry = {
+        max_organisation = @EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_MAX_ORG
+        reliability = @EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_RELIABILITY
+    }
+
+    category_special_forces = {
+        soft_attack = @EXTERMINATION_COLUMNS_ACTIVATION_SF_SOFT_ATTACK
+        breakthrough = @EXTERMINATION_COLUMNS_ACTIVATION_SF_BREAKTHROUGH
+    }
+
+    rewards = {
+        contagion_assault_drills = {
+            category_all_infantry = {
+                soft_attack = @EXTERMINATION_COLUMNS_M1_INF_SOFT_ATTACK
+                breakthrough = @EXTERMINATION_COLUMNS_M1_INF_BREAKTHROUGH
+                defense = @EXTERMINATION_COLUMNS_M1_INF_DEFENSE
+            }
+
+            land_night_attack = @EXTERMINATION_COLUMNS_M1_NIGHT_ATTACK
+            army_org_factor = @EXTERMINATION_COLUMNS_M1_ARMY_ORG_FACTOR
+        }
+
+        sacrificial_march_columns = {
+            category_all_infantry = {
+                supply_consumption = @EXTERMINATION_COLUMNS_M2_INF_SUPPLY
+                default_morale = @EXTERMINATION_COLUMNS_M2_INF_RECOVERY
+            }
+
+            category_light_infantry = {
+                max_organisation = @EXTERMINATION_COLUMNS_M2_LIGHT_INF_MAX_ORG
+                reliability = @EXTERMINATION_COLUMNS_M2_LIGHT_INF_RELIABILITY
+            }
+
+            land_reinforce_rate = @EXTERMINATION_COLUMNS_M2_REINFORCE_RATE
+        }
+
+        unlock_chaos_battalion = {
+            effect = {
+                set_technology = { chaos_battalion_tech = 1 }
+                set_country_flag = chaos_battalion_unlocked
+                custom_effect_tooltip = extermination_columns_chaos_battalion_unlocked_tt
+            }
+        }
+
+        ruinwave_battlecells = {
+            category_all_infantry = {
+                soft_attack = @EXTERMINATION_COLUMNS_M4_INF_SOFT_ATTACK
+                breakthrough = @EXTERMINATION_COLUMNS_M4_INF_BREAKTHROUGH
+            }
+
+            category_special_forces = {
+                soft_attack = @EXTERMINATION_COLUMNS_M4_SF_SOFT_ATTACK
+                breakthrough = @EXTERMINATION_COLUMNS_M4_SF_BREAKTHROUGH
+            }
+
+            enemy_attrition = @EXTERMINATION_COLUMNS_M4_ENEMY_ATTRITION
+            army_attack_factor = @EXTERMINATION_COLUMNS_M4_ARMY_ATTACK_FACTOR
+
+            effect = {
+            }
+        }
+
+        terminal_contagion_offensive = {
+            category_all_infantry = {
+                soft_attack = @EXTERMINATION_COLUMNS_M5_INF_SOFT_ATTACK
+                breakthrough = @EXTERMINATION_COLUMNS_M5_INF_BREAKTHROUGH
+                max_organisation = @EXTERMINATION_COLUMNS_M5_INF_MAX_ORG
+            }
+
+            chaos_battalion = {
+                soft_attack = @EXTERMINATION_COLUMNS_M5_CHAOS_BATTALION_SOFT_ATTACK
+                breakthrough = @EXTERMINATION_COLUMNS_M5_CHAOS_BATTALION_BREAKTHROUGH
+            }
+
+            planning_speed = @EXTERMINATION_COLUMNS_M5_PLANNING_SPEED
+            coordination_bonus = @EXTERMINATION_COLUMNS_M5_COORDINATION_BONUS
+
+            effect = {
+                set_country_flag = chaos_battalion_terminal_contagion_unlocked
+                custom_effect_tooltip = extermination_columns_terminal_contagion_unlocked_tt
+            }
+        }
+    }
+}

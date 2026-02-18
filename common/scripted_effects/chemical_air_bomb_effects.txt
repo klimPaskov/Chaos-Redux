@@ -56,6 +56,24 @@ chem_air_bomb_set_active_profile = {
 		multiply_temp_variable = { var = chem_air_duration_base value = constant:chem_chaos_warfare_doctrine.air_bomb.duration_base_mult }
 		multiply_temp_variable = { var = chem_air_duration_per_pressure value = constant:chem_chaos_warfare_doctrine.air_bomb.duration_per_pressure_mult }
 	}
+
+	if = {
+		limit = {
+			check_variable = { var = chem_air_profile_active value = 0 compare = greater_than }
+			has_idea = chemical_air_deep_strike_spirit
+		}
+		multiply_temp_variable = { var = chem_air_dose_per_pressure value = constant:chem_chaos_warfare_spirit.air.air_bomb_dose_mult }
+		multiply_temp_variable = { var = chem_air_duration_base value = constant:chem_chaos_warfare_spirit.air.air_bomb_duration_base_mult }
+		multiply_temp_variable = { var = chem_air_duration_per_pressure value = constant:chem_chaos_warfare_spirit.air.air_bomb_duration_per_pressure_mult }
+	}
+
+	if = {
+		limit = { check_variable = { var = chem_air_profile_active value = 0 compare = greater_than } }
+		chem_set_integrated_operations_air_bomb_mult_from_owner = yes
+		multiply_temp_variable = { var = chem_air_dose_per_pressure value = chem_operations_air_bomb_dose_mult }
+		multiply_temp_variable = { var = chem_air_duration_base value = chem_operations_air_bomb_duration_mult }
+		multiply_temp_variable = { var = chem_air_duration_per_pressure value = chem_operations_air_bomb_duration_mult }
+	}
 }
 
 chem_air_bomb_process_region = {

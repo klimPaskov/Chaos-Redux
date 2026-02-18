@@ -172,6 +172,136 @@ chaosx_disease_containment_category = {
         }
     }
 
+    close_border_to_infected_neighbor = {
+        icon = GFX_decision_generic_arrest
+        target_array = neighbors
+        cost = 20
+
+        target_root_trigger = {
+            has_neighbor_with_active_biowarfare_outbreak = yes
+        }
+
+        target_trigger = {
+            FROM = {
+                has_active_biowarfare_outbreak = yes
+            }
+        }
+
+        visible = {
+            NOT = { is_in_array = { closed_bio_borders = FROM } }
+        }
+
+        available = {
+            NOT = { is_in_array = { closed_bio_borders = FROM } }
+            FROM = { has_active_biowarfare_outbreak = yes }
+        }
+
+        ai_will_do = {
+            base = constant:bio_border_controls.ai.close_base
+            modifier = {
+                add = constant:bio_border_controls.ai.close_add_smallpox
+                FROM = {
+                    any_controlled_state = {
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    }
+                }
+            }
+            modifier = {
+                add = constant:bio_border_controls.ai.close_add_plague
+                FROM = {
+                    any_controlled_state = {
+                        has_dynamic_modifier = { modifier = plague_contaminated_state }
+                    }
+                }
+            }
+            modifier = {
+                add = constant:bio_border_controls.ai.close_add_other
+                FROM = {
+                    OR = {
+                        any_controlled_state = {
+                            has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                        }
+                        any_controlled_state = {
+                            has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                        }
+                    }
+                }
+            }
+            modifier = {
+                factor = constant:bio_border_controls.ai.close_factor_high_opinion
+                has_opinion = {
+                    target = FROM
+                    value > 75
+                }
+            }
+            modifier = {
+                factor = constant:bio_border_controls.ai.close_factor_at_war
+                has_war_with = FROM
+            }
+        }
+
+        complete_effect = {
+            add_to_array = {
+                array = closed_bio_borders
+                value = FROM
+            }
+            if = {
+                limit = { NOT = { has_country_flag = bio_border_relation_override_active } }
+                add_relation_rule_override = {
+                    trigger = bio_border_closure_relation_target
+                    usage_desc = bio_border_closure_usage_desc
+                    can_access_market = no
+                }
+                add_relation_rule_override = {
+                    trigger = bio_border_closure_relation_target
+                    usage_desc = bio_border_closure_usage_desc
+                    can_send_volunteers = no
+                }
+                set_country_flag = bio_border_relation_override_active
+            }
+        }
+    }
+
+    reopen_border_to_infected_neighbor = {
+        icon = GFX_decision_generic_industry
+        target_array = neighbors
+        cost = 5
+
+        target_trigger = {
+            FROM = {
+                exists = yes
+                is_neighbor_of = ROOT
+            }
+        }
+
+        visible = {
+            is_in_array = { closed_bio_borders = FROM }
+        }
+
+        available = {
+            is_in_array = { closed_bio_borders = FROM }
+        }
+
+        ai_will_do = {
+            base = constant:bio_border_controls.ai.reopen_base
+            modifier = {
+                add = constant:bio_border_controls.ai.reopen_add_when_safe
+                FROM = { NOT = { has_active_biowarfare_outbreak = yes } }
+            }
+            modifier = {
+                factor = constant:bio_border_controls.ai.reopen_factor_while_infected
+                FROM = { has_active_biowarfare_outbreak = yes }
+            }
+        }
+
+        complete_effect = {
+            remove_from_array = {
+                array = closed_bio_borders
+                value = FROM
+            }
+        }
+    }
+
     anthrax_antibiotics_mass_production = {
         icon = GFX_decision_generic_industry
         days_remove = 100

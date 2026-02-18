@@ -1,0 +1,173 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS WARFARE ARMOR SUBDOCTRINES
+# ============================================================================
+# Adds Chaos Warfare-specific armor-track subdoctrines and mastery rewards.
+# Current scope:
+# - chemical_suppression
+# ============================================================================
+
+@CHEM_SUPPRESSION_ACTIVATION_TANK_BREAKTHROUGH = 0.15
+@CHEM_SUPPRESSION_ACTIVATION_TANK_SUPPRESSION = 0.20
+@CHEM_SUPPRESSION_ACTIVATION_INF_SUPPRESSION = 0.06
+@CHEM_SUPPRESSION_ACTIVATION_INF_DEFENSE = 0.03
+
+@CHEM_SUPPRESSION_M1_TANK_SUPPRESSION = 0.50
+@CHEM_SUPPRESSION_M1_CHEM_TANK_SUPPORT_SUPPRESSION = 1.00
+@CHEM_SUPPRESSION_M1_INF_SUPPRESSION = 0.10
+@CHEM_SUPPRESSION_M1_INF_DEFENSE = 0.05
+@CHEM_SUPPRESSION_M1_GARRISON_DAMAGE_REDUCTION = -0.15
+
+@CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MAX_ORG = 15
+@CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MORALE = 0.15
+@CHEM_SUPPRESSION_M2_COORDINATION_BONUS = 0.05
+@CHEM_SUPPRESSION_M2_INF_MAX_ORG = 5
+@CHEM_SUPPRESSION_M2_INF_SOFT_ATTACK = 0.03
+
+@CHEM_SUPPRESSION_M3_INF_SUPPRESSION = 0.50
+@CHEM_SUPPRESSION_M3_CHEM_TANK_SUPPORT_SUPPRESSION = 2.00
+
+@CHEM_SUPPRESSION_M4_ARMOR_SUPPLY = -0.10
+@CHEM_SUPPRESSION_M4_ARMOR_BREAKTHROUGH = 0.10
+@CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_SUPPLY = -0.50
+@CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_RELIABILITY = 0.15
+@CHEM_SUPPRESSION_M4_INF_SUPPLY = -0.02
+@CHEM_SUPPRESSION_M4_INF_DEFENSE = 0.04
+
+@CHEM_SUPPRESSION_M5_PLANNING_SPEED = 0.20
+@CHEM_SUPPRESSION_M5_COORDINATION_BONUS = 0.05
+@CHEM_SUPPRESSION_M5_INITIATIVE = 0.03
+@CHEM_SUPPRESSION_M5_TANK_BREAKTHROUGH = 0.15
+@CHEM_SUPPRESSION_M5_TANK_SOFT_ATTACK = 0.15
+@CHEM_SUPPRESSION_M5_TANK_HARD_ATTACK = 0.15
+@CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_INITIATIVE = 0.05
+@CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_RELIABILITY = 0.10
+@CHEM_SUPPRESSION_M5_ARMY_MORALE = 0.10
+
+chemical_suppression = {
+    track = armor
+    name = SUBDOCTRINE_CHEMICAL_SUPPRESSION
+    description = SUBDOCTRINE_CHEMICAL_SUPPRESSION_DESC
+    icon = GFX_doctrine_chemical_suppression_medium
+
+    xp_cost = 100
+    xp_type = army
+
+    available = {
+        has_doctrine = chaos_warfare
+    }
+
+    visible = {
+        has_doctrine = chaos_warfare
+    }
+
+    ai_will_do = {
+        base = 1
+
+        modifier = {
+            factor = 2
+            is_major = yes
+        }
+    }
+
+    # ACTIVATION EFFECTS
+    category_tanks = {
+        breakthrough = @CHEM_SUPPRESSION_ACTIVATION_TANK_BREAKTHROUGH
+        suppression = @CHEM_SUPPRESSION_ACTIVATION_TANK_SUPPRESSION
+    }
+
+    category_all_infantry = {
+        suppression = @CHEM_SUPPRESSION_ACTIVATION_INF_SUPPRESSION
+        defense = @CHEM_SUPPRESSION_ACTIVATION_INF_DEFENSE
+    }
+
+    rewards = {
+        adamsite_emission_cells = {
+            category_tanks = {
+                suppression = @CHEM_SUPPRESSION_M1_TANK_SUPPRESSION
+            }
+
+            category_chemical_tank_support_companies = {
+                suppression = @CHEM_SUPPRESSION_M1_CHEM_TANK_SUPPORT_SUPPRESSION
+            }
+
+            category_all_infantry = {
+                suppression = @CHEM_SUPPRESSION_M1_INF_SUPPRESSION
+                defense = @CHEM_SUPPRESSION_M1_INF_DEFENSE
+            }
+
+            resistance_damage_to_garrison_on_our_occupied_states = @CHEM_SUPPRESSION_M1_GARRISON_DAMAGE_REDUCTION
+
+            effect = {
+                set_country_flag = chaos_adamsite_emission_unlocked
+                custom_effect_tooltip = chemical_suppression_adamsite_unlocked_tt
+            }
+        }
+
+        armored_chemical_support_liaison = {
+            category_chemical_tank_support_companies = {
+                max_organisation = @CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MAX_ORG
+                default_morale = @CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MORALE
+            }
+
+            coordination_bonus = @CHEM_SUPPRESSION_M2_COORDINATION_BONUS
+
+            category_all_infantry = {
+                max_organisation = @CHEM_SUPPRESSION_M2_INF_MAX_ORG
+                soft_attack = @CHEM_SUPPRESSION_M2_INF_SOFT_ATTACK
+            }
+        }
+
+        zyklon_b_saturation_drills = {
+            category_chemical_tank_support_companies = {
+                suppression = @CHEM_SUPPRESSION_M3_CHEM_TANK_SUPPORT_SUPPRESSION
+            }
+
+            category_all_infantry = {
+                suppression = @CHEM_SUPPRESSION_M3_INF_SUPPRESSION
+            }
+
+            effect = {
+                set_country_flag = concentration_occupation_law_unlocked
+                custom_effect_tooltip = chemical_suppression_concentration_unlocked_tt
+            }
+        }
+
+        sealed_pressure_logistics = {
+            category_all_armor = {
+                supply_consumption = @CHEM_SUPPRESSION_M4_ARMOR_SUPPLY
+                breakthrough = @CHEM_SUPPRESSION_M4_ARMOR_BREAKTHROUGH
+            }
+
+            category_chemical_tank_support_companies = {
+                supply_consumption = @CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_SUPPLY
+                reliability = @CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_RELIABILITY
+            }
+
+            category_all_infantry = {
+                supply_consumption = @CHEM_SUPPRESSION_M4_INF_SUPPLY
+                defense = @CHEM_SUPPRESSION_M4_INF_DEFENSE
+            }
+        }
+
+        catastrophic_shock_breakthrough = {
+            planning_speed = @CHEM_SUPPRESSION_M5_PLANNING_SPEED
+            coordination_bonus = @CHEM_SUPPRESSION_M5_COORDINATION_BONUS
+            category_army = {
+                initiative = @CHEM_SUPPRESSION_M5_INITIATIVE
+            }
+
+            category_tanks = {
+                breakthrough = @CHEM_SUPPRESSION_M5_TANK_BREAKTHROUGH
+                soft_attack = @CHEM_SUPPRESSION_M5_TANK_SOFT_ATTACK
+                hard_attack = @CHEM_SUPPRESSION_M5_TANK_HARD_ATTACK
+            }
+
+            category_chemical_tank_support_companies = {
+                initiative = @CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_INITIATIVE
+                reliability = @CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_RELIABILITY
+            }
+
+            army_morale = @CHEM_SUPPRESSION_M5_ARMY_MORALE
+        }
+    }
+}
