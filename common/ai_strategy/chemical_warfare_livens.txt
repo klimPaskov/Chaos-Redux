@@ -5,14 +5,15 @@
 @CHEM_AI_LIVENS_RESEARCH_BASE = 25
 @CHEM_AI_LIVENS_RESEARCH_THREAT = 100
 @CHEM_AI_LIVENS_RESEARCH_FORCE = 100
-@CHEM_AI_LIVENS_RESEARCH_JAPAN_BONUS = 30
+@CHEM_AI_LIVENS_RESEARCH_JAPAN_BONUS = 40
 
 @CHEM_AI_LIVENS_PRODUCTION_BASE = 1
 @CHEM_AI_LIVENS_PRODUCTION_THREAT_LOW = 2
 @CHEM_AI_LIVENS_PRODUCTION_THREAT_MED = 3
-@CHEM_AI_LIVENS_PRODUCTION_JAPAN_BONUS = 1
+@CHEM_AI_LIVENS_PRODUCTION_JAPAN_BONUS = 2
 
 @CHEM_AI_LIVENS_XP_TEMPLATE_FOCUS = 40
+@CHEM_AI_LIVENS_XP_TEMPLATE_FOCUS_JAPAN_BONUS = 35
 
 chem_livens_research_major_base = {
 	allowed = { always = yes }
@@ -212,6 +213,22 @@ chem_livens_production_japan_bonus = {
 	}
 }
 
+chem_livens_production_japan_china_bonus = {
+	allowed = { original_tag = JAP }
+	enable = {
+		is_major = yes
+		has_tech = livens_projector_tech
+		is_japan_china_chemical_campaign_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = livens_projector_chassis
+		value = @CHEM_AI_LIVENS_PRODUCTION_JAPAN_BONUS
+	}
+}
+
 chem_livens_template_design_focus = {
 	allowed = { always = yes }
 	enable = {
@@ -225,5 +242,20 @@ chem_livens_template_design_focus = {
 		type = land_xp_spend_priority
 		id = division_template
 		value = @CHEM_AI_LIVENS_XP_TEMPLATE_FOCUS
+	}
+}
+
+chem_livens_template_design_focus_japan_bonus = {
+	allowed = { original_tag = JAP }
+	enable = {
+		has_tech = livens_projector_tech
+		is_japan_china_chemical_campaign_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = land_xp_spend_priority
+		id = division_template
+		value = @CHEM_AI_LIVENS_XP_TEMPLATE_FOCUS_JAPAN_BONUS
 	}
 }

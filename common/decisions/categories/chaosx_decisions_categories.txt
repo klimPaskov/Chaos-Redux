@@ -48,6 +48,7 @@ chaosx_acid_rain_decision_category = {
 chaosx_mass_panic_decision_category = {
     visible = {
         has_country_flag = mass_panic
+        uses_normal_civilian_systems = yes
     }
     icon = GFX_decision_category_eng_organize_the_blackshirts
     priority = 99
@@ -109,7 +110,7 @@ chaosx_communism_fight_category = {
 chaosx_outbreak_prevention_category = {
     visible = {
         has_global_flag = has_zombie_outbreak
-        NOT = { original_tag = ZZZ }
+        uses_normal_civilian_systems = yes
     }
     icon = GFX_decision_category_generic_crisis
     priority = 100
@@ -127,33 +128,30 @@ chaosx_disease_containment_category = {
 }
 
 chaosx_anti_zombie_league_category = {
-    visible = {
-        has_global_flag = has_zombie_outbreak
-        NOT = { has_country_flag = azl_refused_to_join}
-        NOT = { original_tag = ZZZ }
-        NOT = { has_country_flag = zombie_outbreak_dynamic_country }
-        NOT = { has_global_flag = azl_dissolved }
-        OR = {
-            # Show for formation candidates
-            AND = {
-                NOT = { has_global_flag = anti_zombie_league_formed }
-                OR = {
-                    is_major = yes
-                    is_ai = no
-                }
-                date > 1937.1.1
-            }
-            # Show for joining candidates
-            AND = {
-                has_global_flag = anti_zombie_league_formed
-                NOT = { has_idea = anti_zombie_league_member_level_0 }
-            }
-            # Show for current members
-            has_idea = anti_zombie_league_member_level_0
-        }
-    }
-    icon = GFX_decision_category_generic_prepare_civil_war
-    priority = 100
+	visible = {
+		has_global_flag = has_zombie_outbreak
+		NOT = { has_country_flag = azl_refused_to_join }
+		NOT = { original_tag = ZZZ }
+		NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+		NOT = { has_global_flag = azl_dissolved }
+		OR = {
+			# Show for formation candidates
+			AND = {
+				NOT = { has_global_flag = anti_zombie_league_formed }
+				can_lead_anti_zombie_league = yes
+				date > 1937.1.1
+			}
+			# Show for joining candidates
+			AND = {
+				has_global_flag = anti_zombie_league_formed
+				can_join_anti_zombie_league = yes
+			}
+			# Show for current members
+			is_anti_zombie_league_member = yes
+		}
+	}
+	icon = GFX_decision_category_generic_prepare_civil_war
+	priority = 100
 }
 
 chaosx_cbw_doom_category = {
@@ -175,4 +173,22 @@ chaosx_cbw_doom_category = {
     }
     icon = GFX_decision_category_chaos_doom
     priority = 200
+}
+
+air_cleanliness_treaty_category = {
+    visible = {
+        has_global_flag = air_cleanliness_treaty_active
+        has_country_flag = air_cleanliness_treaty_member
+        NOT = { has_country_flag = air_cleanliness_treaty_banned }
+    }
+    icon = GFX_decision_category_contamination_defense
+    priority = 101
+}
+
+japan_chemical_campaign_category = {
+	visible = {
+		is_japan_china_chemical_campaign_war = yes
+	}
+	icon = GFX_decision_category_generic_crisis
+	priority = 102
 }

@@ -1,6 +1,7 @@
 # Chaos Warfare officer corps spirits.
 # Adds doctrine-gated army, division command, and air force command spirit options
 # that integrate with chemical ability and combat-effect scripted systems.
+@chem_division_barrage_preferred_weight_factor = 1.0
 
 ideas = {
 	army_spirit = {
@@ -55,6 +56,33 @@ ideas = {
 		}
 	}
 
+	academy_spirit = {
+		chemical_operations_academy_spirit = {
+			ledger = army
+			modifier = {
+				custom_modifier_tooltip = chemical_operations_academy_spirit_tt
+			}
+			ai_will_do = {
+				base = 1
+				modifier = {
+					factor = 0
+					NOT = { has_dlc = "No Step Back" }
+				}
+				modifier = {
+					factor = 2
+					OR = {
+						has_tech = chlorine_gas
+						has_tech = phosgene
+						has_tech = mustard_gas
+						has_tech = lewisite
+						has_tech = sarin
+						has_tech = soman
+					}
+				}
+			}
+		}
+	}
+
 	division_command_spirit = {
 		chemical_division_contamination_command_spirit = {
 			ledger = army
@@ -63,6 +91,7 @@ ideas = {
 			}
 			modifier = {
 				custom_modifier_tooltip = chemical_division_contamination_command_spirit_tt
+				tactic_chemical_barrage_preferred_weight_factor = @chem_division_barrage_preferred_weight_factor
 			}
 			ai_will_do = {
 				base = 1

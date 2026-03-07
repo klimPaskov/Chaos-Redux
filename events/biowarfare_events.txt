@@ -141,75 +141,61 @@ country_event = {
     picture = GFX_report_event_generic_bioweapon
 
     mean_time_to_happen = {
-        years = 5
+        years = constant:bio_stockpile_accident.anthrax_base_years
 
-        # Higher containment techs reduce stockpile accident chance
+        # Strong containment and prevention drastically reduce stockpile accident chance
         modifier = {
-            factor = 4
+            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
             has_tech = sealed_containment_laboratories
         }
         modifier = {
-            factor = 2
+            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
             has_tech = pathogen_handling_protocols
             NOT = { has_tech = sealed_containment_laboratories }
         }
-
-        # Outbreak-prevention tech chain
         modifier = {
-            factor = constant:bio_outbreak_prevention.t1
+            factor = constant:bio_stockpile_accident.prevention_t1_factor
             has_bio_outbreak_prevention_tier_1_only = yes
         }
         modifier = {
-            factor = constant:bio_outbreak_prevention.t2
+            factor = constant:bio_stockpile_accident.prevention_t2_factor
             has_bio_outbreak_prevention_tier_2_only = yes
         }
         modifier = {
-            factor = constant:bio_outbreak_prevention.t3
+            factor = constant:bio_stockpile_accident.prevention_t3_factor
             has_bio_outbreak_prevention_tier_3 = yes
         }
 
-        # The more anthrax bombs, the higher the chance
+        # Stockpile-driven risk uses exclusive ranges (single active tier).
         modifier = {
-            factor = 0.9
-            has_equipment = { anthrax_bomb_1 > 99 }
-        }
-        modifier = {
-            factor = 0.8
-            has_equipment = { anthrax_bomb_1 > 299 }
-        }
-        modifier = {
-            factor = 0.7
-            has_equipment = { anthrax_bomb_1 > 499 }
-        }
-        modifier = {
-            factor = 0.6
+            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
             has_equipment = { anthrax_bomb_1 > 999 }
+            NOT = { has_equipment = { anthrax_bomb_1 > 1999 } }
         }
         modifier = {
-            factor = 0.5
+            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
             has_equipment = { anthrax_bomb_1 > 1999 }
+            NOT = { has_equipment = { anthrax_bomb_1 > 4999 } }
         }
         modifier = {
-            factor = 0.4
-            has_equipment = { anthrax_bomb_1 > 2999 }
-        }
-        modifier = {
-            factor = 0.3
-            has_equipment = { anthrax_bomb_1 > 3999 }
-        }
-        modifier = {
-            factor = 0.2
+            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
             has_equipment = { anthrax_bomb_1 > 4999 }
+            NOT = { has_equipment = { anthrax_bomb_1 > 9999 } }
         }
         modifier = {
-            factor = 0.1
+            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
             has_equipment = { anthrax_bomb_1 > 9999 }
+            NOT = { has_equipment = { anthrax_bomb_1 > 19999 } }
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
+            has_equipment = { anthrax_bomb_1 > 19999 }
         }
     }
 
     trigger = {
-        # Must have anthrax bombs in stockpile
-        has_equipment = { anthrax_bomb_1 > 0 }
+        # Stockpile accidents only start at very large bomb counts.
+        has_equipment = { anthrax_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
         # Must have completed the anthrax bomb project
         is_special_project_completed = sp:anthrax_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -288,6 +274,22 @@ state_event = {
 
     mean_time_to_happen = {
         years = 3 # Anthrax isn't highly contagious, so long base time
+
+        # Global air contamination pressure accelerates spread.
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_75
+            has_global_flag = air_contamination_threshold_75
+        }
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_50
+            has_global_flag = air_contamination_threshold_50
+            NOT = { has_global_flag = air_contamination_threshold_75 }
+        }
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_25
+            has_global_flag = air_contamination_threshold_25
+            NOT = { has_global_flag = air_contamination_threshold_50 }
+        }
 
         # Outbreak-prevention tech chain
         modifier = {
@@ -734,75 +736,61 @@ country_event = {
     picture = GFX_report_event_generic_bioweapon
 
     mean_time_to_happen = {
-        years = 7
+        years = constant:bio_stockpile_accident.plague_base_years
 
-        # Higher containment techs reduce stockpile accident chance
+        # Strong containment and prevention drastically reduce stockpile accident chance
         modifier = {
-            factor = 4
+            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
             has_tech = sealed_containment_laboratories
         }
         modifier = {
-            factor = 2
+            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
             has_tech = pathogen_handling_protocols
             NOT = { has_tech = sealed_containment_laboratories }
         }
-
-        # Outbreak-prevention tech chain
         modifier = {
-            factor = constant:bio_outbreak_prevention.t1
+            factor = constant:bio_stockpile_accident.prevention_t1_factor
             has_bio_outbreak_prevention_tier_1_only = yes
         }
         modifier = {
-            factor = constant:bio_outbreak_prevention.t2
+            factor = constant:bio_stockpile_accident.prevention_t2_factor
             has_bio_outbreak_prevention_tier_2_only = yes
         }
         modifier = {
-            factor = constant:bio_outbreak_prevention.t3
+            factor = constant:bio_stockpile_accident.prevention_t3_factor
             has_bio_outbreak_prevention_tier_3 = yes
         }
 
-        # The more plague bombs, the higher the chance
+        # Stockpile-driven risk uses exclusive ranges (single active tier).
         modifier = {
-            factor = 0.9
-            has_equipment = { plague_bomb_1 > 49 }
-        }
-        modifier = {
-            factor = 0.8
-            has_equipment = { plague_bomb_1 > 149 }
-        }
-        modifier = {
-            factor = 0.7
-            has_equipment = { plague_bomb_1 > 249 }
-        }
-        modifier = {
-            factor = 0.6
-            has_equipment = { plague_bomb_1 > 499 }
-        }
-        modifier = {
-            factor = 0.5
+            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
             has_equipment = { plague_bomb_1 > 999 }
+            NOT = { has_equipment = { plague_bomb_1 > 1999 } }
         }
         modifier = {
-            factor = 0.4
-            has_equipment = { plague_bomb_1 > 1499 }
-        }
-        modifier = {
-            factor = 0.3
+            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
             has_equipment = { plague_bomb_1 > 1999 }
+            NOT = { has_equipment = { plague_bomb_1 > 4999 } }
         }
         modifier = {
-            factor = 0.2
-            has_equipment = { plague_bomb_1 > 2499 }
-        }
-        modifier = {
-            factor = 0.1
+            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
             has_equipment = { plague_bomb_1 > 4999 }
+            NOT = { has_equipment = { plague_bomb_1 > 9999 } }
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
+            has_equipment = { plague_bomb_1 > 9999 }
+            NOT = { has_equipment = { plague_bomb_1 > 19999 } }
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
+            has_equipment = { plague_bomb_1 > 19999 }
         }
     }
 
     trigger = {
-        # Must have plague bombs in stockpile
-        has_equipment = { plague_bomb_1 > 0 }
+        # Stockpile accidents only start at very large bomb counts.
+        has_equipment = { plague_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
         # Must have completed the plague bomb project
         is_special_project_completed = sp:plague_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -881,6 +869,22 @@ state_event = {
 
     mean_time_to_happen = {
         years = 2 # Plague spreads faster than anthrax due to higher contagiousness
+
+        # Global air contamination pressure accelerates spread.
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_75
+            has_global_flag = air_contamination_threshold_75
+        }
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_50
+            has_global_flag = air_contamination_threshold_50
+            NOT = { has_global_flag = air_contamination_threshold_75 }
+        }
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_25
+            has_global_flag = air_contamination_threshold_25
+            NOT = { has_global_flag = air_contamination_threshold_50 }
+        }
 
         # Outbreak-prevention tech chain
         modifier = {
@@ -1232,75 +1236,61 @@ country_event = {
     picture = GFX_report_event_generic_bioweapon
 
     mean_time_to_happen = {
-        years = 10  # Longer than anthrax/plague due to lower danger
+        years = constant:bio_stockpile_accident.tularemia_base_years
 
-        # Outbreak-prevention tech chain
+        # Strong containment and prevention drastically reduce stockpile accident chance
         modifier = {
-            factor = constant:bio_outbreak_prevention.t1
-            has_bio_outbreak_prevention_tier_1_only = yes
-        }
-        modifier = {
-            factor = constant:bio_outbreak_prevention.t2
-            has_bio_outbreak_prevention_tier_2_only = yes
-        }
-        modifier = {
-            factor = constant:bio_outbreak_prevention.t3
-            has_bio_outbreak_prevention_tier_3 = yes
-        }
-
-        # Higher containment techs reduce stockpile accident chance
-        modifier = {
-            factor = 4
+            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
             has_tech = sealed_containment_laboratories
         }
         modifier = {
-            factor = 2
+            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
             has_tech = pathogen_handling_protocols
             NOT = { has_tech = sealed_containment_laboratories }
         }
+        modifier = {
+            factor = constant:bio_stockpile_accident.prevention_t1_factor
+            has_bio_outbreak_prevention_tier_1_only = yes
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.prevention_t2_factor
+            has_bio_outbreak_prevention_tier_2_only = yes
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.prevention_t3_factor
+            has_bio_outbreak_prevention_tier_3 = yes
+        }
 
-        # The more tularemia bombs, the higher the chance
+        # Stockpile-driven risk uses exclusive ranges (single active tier).
         modifier = {
-            factor = 0.95
-            has_equipment = { tularemia_bomb_1 > 99 }
+            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
+            has_equipment = { tularemia_bomb_1 > 999 }
+            NOT = { has_equipment = { tularemia_bomb_1 > 1999 } }
         }
         modifier = {
-            factor = 0.9
-            has_equipment = { tularemia_bomb_1 > 199 }
+            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
+            has_equipment = { tularemia_bomb_1 > 1999 }
+            NOT = { has_equipment = { tularemia_bomb_1 > 4999 } }
         }
         modifier = {
-            factor = 0.85
-            has_equipment = { tularemia_bomb_1 > 399 }
+            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
+            has_equipment = { tularemia_bomb_1 > 4999 }
+            NOT = { has_equipment = { tularemia_bomb_1 > 9999 } }
         }
         modifier = {
-            factor = 0.8
-            has_equipment = { tularemia_bomb_1 > 799 }
+            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
+            has_equipment = { tularemia_bomb_1 > 9999 }
+            NOT = { has_equipment = { tularemia_bomb_1 > 19999 } }
         }
         modifier = {
-            factor = 0.75
-            has_equipment = { tularemia_bomb_1 > 1599 }
-        }
-        modifier = {
-            factor = 0.7
-            has_equipment = { tularemia_bomb_1 > 2399 }
-        }
-        modifier = {
-            factor = 0.65
-            has_equipment = { tularemia_bomb_1 > 3199 }
-        }
-        modifier = {
-            factor = 0.6
-            has_equipment = { tularemia_bomb_1 > 3999 }
-        }
-        modifier = {
-            factor = 0.5
-            has_equipment = { tularemia_bomb_1 > 7999 }
+            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
+            has_equipment = { tularemia_bomb_1 > 19999 }
         }
     }
 
     trigger = {
-        # Must have tularemia bombs in stockpile
-        has_equipment = { tularemia_bomb_1 > 0 }
+        # Stockpile accidents only start at very large bomb counts.
+        has_equipment = { tularemia_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
         # Must have completed the tularemia bomb project
         is_special_project_completed = sp:tularemia_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -1571,75 +1561,61 @@ country_event = {
     picture = GFX_report_event_generic_bioweapon
 
     mean_time_to_happen = {
-        years = 4
+        years = constant:bio_stockpile_accident.smallpox_base_years
 
-        # Outbreak-prevention tech chain
+        # Strong containment and prevention drastically reduce stockpile accident chance
         modifier = {
-            factor = constant:bio_outbreak_prevention.t1
-            has_bio_outbreak_prevention_tier_1_only = yes
-        }
-        modifier = {
-            factor = constant:bio_outbreak_prevention.t2
-            has_bio_outbreak_prevention_tier_2_only = yes
-        }
-        modifier = {
-            factor = constant:bio_outbreak_prevention.t3
-            has_bio_outbreak_prevention_tier_3 = yes
-        }
-
-        # Higher containment techs reduce stockpile accident chance
-        modifier = {
-            factor = 4
+            factor = constant:bio_stockpile_accident.containment_sealed_labs_factor
             has_tech = sealed_containment_laboratories
         }
         modifier = {
-            factor = 2
+            factor = constant:bio_stockpile_accident.containment_pathogen_handling_factor
             has_tech = pathogen_handling_protocols
             NOT = { has_tech = sealed_containment_laboratories }
         }
+        modifier = {
+            factor = constant:bio_stockpile_accident.prevention_t1_factor
+            has_bio_outbreak_prevention_tier_1_only = yes
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.prevention_t2_factor
+            has_bio_outbreak_prevention_tier_2_only = yes
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.prevention_t3_factor
+            has_bio_outbreak_prevention_tier_3 = yes
+        }
 
-        # The more smallpox bombs, the higher the chance
+        # Stockpile-driven risk uses exclusive ranges (single active tier).
         modifier = {
-            factor = 0.9
-            has_equipment = { smallpox_bomb_1 > 24 }
-        }
-        modifier = {
-            factor = 0.8
-            has_equipment = { smallpox_bomb_1 > 49 }
-        }
-        modifier = {
-            factor = 0.7
-            has_equipment = { smallpox_bomb_1 > 99 }
-        }
-        modifier = {
-            factor = 0.6
-            has_equipment = { smallpox_bomb_1 > 199 }
-        }
-        modifier = {
-            factor = 0.5
-            has_equipment = { smallpox_bomb_1 > 399 }
-        }
-        modifier = {
-            factor = 0.4
-            has_equipment = { smallpox_bomb_1 > 599 }
-        }
-        modifier = {
-            factor = 0.3
-            has_equipment = { smallpox_bomb_1 > 799 }
-        }
-        modifier = {
-            factor = 0.2
+            factor = constant:bio_stockpile_accident.stockpile_1k_to_2k_factor
             has_equipment = { smallpox_bomb_1 > 999 }
+            NOT = { has_equipment = { smallpox_bomb_1 > 1999 } }
         }
         modifier = {
-            factor = 0.1
+            factor = constant:bio_stockpile_accident.stockpile_2k_to_5k_factor
             has_equipment = { smallpox_bomb_1 > 1999 }
+            NOT = { has_equipment = { smallpox_bomb_1 > 4999 } }
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.stockpile_5k_to_10k_factor
+            has_equipment = { smallpox_bomb_1 > 4999 }
+            NOT = { has_equipment = { smallpox_bomb_1 > 9999 } }
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.stockpile_10k_to_20k_factor
+            has_equipment = { smallpox_bomb_1 > 9999 }
+            NOT = { has_equipment = { smallpox_bomb_1 > 19999 } }
+        }
+        modifier = {
+            factor = constant:bio_stockpile_accident.stockpile_20k_plus_factor
+            has_equipment = { smallpox_bomb_1 > 19999 }
         }
     }
 
     trigger = {
-        # Must have smallpox bombs in stockpile
-        has_equipment = { smallpox_bomb_1 > 0 }
+        # Stockpile accidents only start at very large bomb counts.
+        has_equipment = { smallpox_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
         # Must have completed the smallpox bomb project
         is_special_project_completed = sp:smallpox_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -1733,6 +1709,22 @@ state_event = {
 
     mean_time_to_happen = {
         months = 1  # Base 1 month spread time - much faster than anthrax due to high contagiousness
+
+        # Global air contamination pressure accelerates spread.
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_75
+            has_global_flag = air_contamination_threshold_75
+        }
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_50
+            has_global_flag = air_contamination_threshold_50
+            NOT = { has_global_flag = air_contamination_threshold_75 }
+        }
+        modifier = {
+            factor = constant:air_contamination_spread_mtth.tier_25
+            has_global_flag = air_contamination_threshold_25
+            NOT = { has_global_flag = air_contamination_threshold_50 }
+        }
 
         # Outbreak-prevention tech chain
         modifier = {

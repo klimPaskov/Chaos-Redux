@@ -4,6 +4,7 @@
 @CHEM_ABILITY_COST_PHOSGENE = 0.30
 @CHEM_ABILITY_COST_MUSTARD = 0.35
 @CHEM_ABILITY_COST_LEWISITE = 0.40
+@CHEM_ABILITY_COOLDOWN_HOURS = 168
 
 #
 # Most tuning values are centralized in:
@@ -44,16 +45,18 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_CHLORINE
+        duration = @CHEM_ABILITY_COOLDOWN_HOURS
+        cooldown = @CHEM_ABILITY_COOLDOWN_HOURS
 
         one_time_effect = {
-            add_timed_unit_leader_trait = {
-                trait = chemical_cylinder_active_chlorine
-                days = constant:chem_ability_core.duration_days
+            hidden_effect = {
+                add_timed_unit_leader_trait = {
+                    trait = chemical_cylinder_active_chlorine
+                    days = constant:chem_ability_core.duration_days
+                }
             }
             set_unit_leader_flag = chem_ability_calculating
             set_variable = { var = chem_active_type value = constant:chem_type.chlorine }
-            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.chlorine }
-            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.chlorine }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_chlorine } }
@@ -94,9 +97,10 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_chlorine_cylinders = yes }
+            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.chlorine }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
-            chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_CHLORINE_VALUE
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_CHLORINE
@@ -113,16 +117,15 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CHLORINE_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-        ai_will_do = {
-            factor = 0
-            modifier = {
-                FROM = {
-                    has_war = yes
+			ai_will_do = {
+				factor = 0
+				modifier = {
+					FROM = {
+						has_war = yes
                     command_power > constant:chem_ability_ai.min_command_power.chlorine
                     has_war_support > constant:chem_ability_ai.min_war_support.chlorine
                 }
@@ -216,16 +219,20 @@ ability = {
                 }
                 add = constant:chem_ability_ai.retaliate_add.med
             }
-            modifier = {
-                FROM = {
-                    any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
-                    }
-                }
-                add = constant:chem_ability_ai.retaliate_add.high
-            }
-        }
-    }
+	            modifier = {
+	                FROM = {
+	                    any_enemy_country = {
+	                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
+	                    }
+	                }
+	                add = constant:chem_ability_ai.retaliate_add.high
+	            }
+				modifier = {
+					FROM = { has_country_flag = air_cleanliness_treaty_member }
+					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				}
+	        }
+	    }
 
     chemical_phosgene_attack = {
         name = CHEM_ABILITY_PHOSGENE_NAME
@@ -259,16 +266,18 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_PHOSGENE
+        duration = @CHEM_ABILITY_COOLDOWN_HOURS
+        cooldown = @CHEM_ABILITY_COOLDOWN_HOURS
 
         one_time_effect = {
-            add_timed_unit_leader_trait = {
-                trait = chemical_cylinder_active_phosgene
-                days = constant:chem_ability_core.duration_days
+            hidden_effect = {
+                add_timed_unit_leader_trait = {
+                    trait = chemical_cylinder_active_phosgene
+                    days = constant:chem_ability_core.duration_days
+                }
             }
             set_unit_leader_flag = chem_ability_calculating
             set_variable = { var = chem_active_type value = constant:chem_type.phosgene }
-            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.phosgene }
-            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.phosgene }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_phosgene } }
@@ -309,9 +318,10 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_phosgene_cylinders = yes }
+            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.phosgene }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
-            chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_PHOSGENE_VALUE
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_PHOSGENE
@@ -328,16 +338,15 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_PHOSGENE_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-        ai_will_do = {
-            factor = 0
-            modifier = {
-                FROM = {
-                    has_war = yes
+			ai_will_do = {
+				factor = 0
+				modifier = {
+					FROM = {
+						has_war = yes
                     command_power > constant:chem_ability_ai.min_command_power.phosgene
                     has_war_support > constant:chem_ability_ai.min_war_support.phosgene
                 }
@@ -427,16 +436,20 @@ ability = {
                 }
                 add = constant:chem_ability_ai.retaliate_add.med
             }
-            modifier = {
-                FROM = {
-                    any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
-                    }
-                }
-                add = constant:chem_ability_ai.retaliate_add.high
-            }
-        }
-    }
+	            modifier = {
+	                FROM = {
+	                    any_enemy_country = {
+	                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
+	                    }
+	                }
+	                add = constant:chem_ability_ai.retaliate_add.high
+	            }
+				modifier = {
+					FROM = { has_country_flag = air_cleanliness_treaty_member }
+					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				}
+	        }
+	    }
 
     chemical_mustard_attack = {
         name = CHEM_ABILITY_MUSTARD_NAME
@@ -470,16 +483,18 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_MUSTARD
+        duration = @CHEM_ABILITY_COOLDOWN_HOURS
+        cooldown = @CHEM_ABILITY_COOLDOWN_HOURS
 
         one_time_effect = {
-            add_timed_unit_leader_trait = {
-                trait = chemical_cylinder_active_mustard
-                days = constant:chem_ability_core.duration_days
+            hidden_effect = {
+                add_timed_unit_leader_trait = {
+                    trait = chemical_cylinder_active_mustard
+                    days = constant:chem_ability_core.duration_days
+                }
             }
             set_unit_leader_flag = chem_ability_calculating
             set_variable = { var = chem_active_type value = constant:chem_type.mustard }
-            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.mustard }
-            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.mustard }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_mustard } }
@@ -520,9 +535,10 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_mustard_cylinders = yes }
+            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.mustard }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
-            chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_MUSTARD_VALUE
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_MUSTARD
@@ -545,16 +561,15 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_MUSTARD_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-        ai_will_do = {
-            factor = 0
-            modifier = {
-                FROM = {
-                    has_war = yes
+			ai_will_do = {
+				factor = 0
+				modifier = {
+					FROM = {
+						has_war = yes
                     command_power > constant:chem_ability_ai.min_command_power.mustard
                     has_war_support > constant:chem_ability_ai.min_war_support.mustard
                 }
@@ -645,16 +660,20 @@ ability = {
                 }
                 add = constant:chem_ability_ai.retaliate_add.med
             }
-            modifier = {
-                FROM = {
-                    any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
-                    }
-                }
-                add = constant:chem_ability_ai.retaliate_add.high
-            }
-        }
-    }
+	            modifier = {
+	                FROM = {
+	                    any_enemy_country = {
+	                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
+	                    }
+	                }
+	                add = constant:chem_ability_ai.retaliate_add.high
+	            }
+				modifier = {
+					FROM = { has_country_flag = air_cleanliness_treaty_member }
+					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				}
+	        }
+	    }
 
     chemical_lewisite_attack = {
         name = CHEM_ABILITY_LEWISITE_NAME
@@ -688,16 +707,18 @@ ability = {
         }
 
         cost = @CHEM_ABILITY_COST_LEWISITE
+        duration = @CHEM_ABILITY_COOLDOWN_HOURS
+        cooldown = @CHEM_ABILITY_COOLDOWN_HOURS
 
         one_time_effect = {
-            add_timed_unit_leader_trait = {
-                trait = chemical_cylinder_active_lewisite
-                days = constant:chem_ability_core.duration_days
+            hidden_effect = {
+                add_timed_unit_leader_trait = {
+                    trait = chemical_cylinder_active_lewisite
+                    days = constant:chem_ability_core.duration_days
+                }
             }
             set_unit_leader_flag = chem_ability_calculating
             set_variable = { var = chem_active_type value = constant:chem_type.lewisite }
-            set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.lewisite }
-            set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.lewisite }
 
             if = {
                 limit = { NOT = { has_variable = chem_offense_total_lewisite } }
@@ -738,9 +759,10 @@ ability = {
             set_temp_variable = { var = chem_consumed_amount value = 0 }
             set_temp_variable = { var = chem_required_amount value = 0 }
             hidden_effect = { chem_consume_lewisite_cylinders = yes }
+            hidden_effect = { chem_register_current_ability_condemnation = yes }
+            hidden_effect = { chem_apply_current_ability_state_dispersal = yes }
             set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_ability_command_power_cost.lewisite }
             hidden_effect = { chem_refund_chemical_ability_command_power = yes }
-            chem_warfare_register_attack_use = yes
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STOCKPILE_LEWISITE_VALUE
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_LEWISITE
@@ -763,16 +785,15 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_LEWISITE_COMBINED_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-            custom_effect_tooltip = CHEM_ABILITY_CONDEMNATION_WARNING_TT
             custom_effect_tooltip = CHEM_ABILITY_FINAL_EFFECTS_NOTE_TT
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-        ai_will_do = {
-            factor = 0
-            modifier = {
-                FROM = {
-                    has_war = yes
+			ai_will_do = {
+				factor = 0
+				modifier = {
+					FROM = {
+						has_war = yes
                     command_power > constant:chem_ability_ai.min_command_power.lewisite
                     has_war_support > constant:chem_ability_ai.min_war_support.lewisite
                 }
@@ -862,14 +883,18 @@ ability = {
                 }
                 add = constant:chem_ability_ai.retaliate_add.med
             }
-            modifier = {
-                FROM = {
-                    any_enemy_country = {
-                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
-                    }
-                }
-                add = constant:chem_ability_ai.retaliate_add.high
-            }
-        }
-    }
+	            modifier = {
+	                FROM = {
+	                    any_enemy_country = {
+	                        check_variable = { var = chem_warfare_condemnation value = constant:chem_ability_ai.retaliate_threshold.high compare = greater_than }
+	                    }
+	                }
+	                add = constant:chem_ability_ai.retaliate_add.high
+	            }
+				modifier = {
+					FROM = { has_country_flag = air_cleanliness_treaty_member }
+					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+				}
+	        }
+	    }
 }

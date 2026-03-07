@@ -7,7 +7,7 @@
 3. [Event Classification](#event-classification)
 4. [Chaos Meter System](#chaos-meter-system)
 5. [World End Scenario Mechanic](#world-end-scenario-mechanic)
-6. [Event Evolution and Clusters](#event-evolution-and-clusters)
+6. [Event Evolution and Event Logs](#event-evolution-and-event-logs)
 7. [Configuration and Settings](#configuration-and-settings)
 8. [Multiplayer Compatibility](#multiplayer-compatibility)
 9. [Debug and Monitoring](#debug-and-monitoring)
@@ -129,6 +129,18 @@ A global meter (0-1000+) that tracks world instability and drives system behavio
 
 <img width="480" height="80" alt="chaos_meter_0" src="https://github.com/user-attachments/assets/315ecf14-8e84-4e42-9f85-1cfccbf78a9f" />
 
+### Chaos Meter Window
+
+The Chaos Meter details window has five tabs:
+
+1. **Status**: Current chaos value, current tier, and a short mechanics explanation.
+2. **History**: Scrollable chaos change log with filters and sorting.
+3. **Air Cleanliness**: Global air quality, contamination pressure, and threshold status.
+4. **Condemnation**: Country-by-country responsibility for unconventional warfare use.
+5. **Deaths**: Total deaths, civilian/military split, and a recent death log.
+
+<!-- IMAGE PLACEHOLDER: Chaos Meter window with all five tabs visible -->
+
 ### Chaos Tiers
 
 - **Calm World** (0-199): Normal event frequency, stable conditions
@@ -155,7 +167,8 @@ A global meter (0-1000+) that tracks world instability and drives system behavio
 - Nuke: +1 chaos (so it's not abused)
 - World tension increases: +1 per percentage point
 - Military buildup: +1 per 50 military factories or 100 divisions
-- Casualties: +1 per 250,000 casualties
+- Deaths: +1 per 1,000,000 total tracked deaths
+- Air contamination: +1 chaos per +1% contamination gain
 
 #### Decreases
 
@@ -166,8 +179,71 @@ A global meter (0-1000+) that tracks world instability and drives system behavio
 - High world stability: variable reduction
 - Increased global democracy: variable reduction
 - Monthly Decay: -1
+- Air contamination recovery: -1 chaos per -1% contamination recovery
 
 Chaos changes can also happen from events.
+
+### Air Cleanliness (Contamination) System
+
+Air cleanliness is a global pressure system shown in the Chaos Meter window.
+
+- Chemical contamination in one state adds **+0.01%**.
+- One outbreak state adds about **+0.02%** (lower/higher by outbreak intensity).
+- A normal nuke adds **+0.2%**.
+- A thermonuclear strike adds **+1.5%**.
+- Natural recovery scales by contamination level while still reversible:
+  - below **25%**: **-0.03%** monthly
+  - **25%+**: **-0.02%** monthly
+  - **50%+**: **-0.01%** monthly
+  - **75%+**: **-0.005%** monthly
+
+Threshold behavior:
+
+- **25%**: contamination and outbreak spread becomes easier.
+- **50%**: mild nuclear-winter periods can begin.
+- **75%**: stronger nuclear-winter periods can begin, with harsher global penalties.
+- **100%**: contamination becomes irreversible and states begin a long decline toward wasteland.
+
+For chaos synchronization:
+
+- Every **+1%** contamination change adds **+1 chaos**.
+- Every **-1%** contamination recovery removes **1 chaos**.
+
+The tab uses a single current status line for stage/state, plus a short mechanics overview on the side.
+The tab also includes an enable/disable checkbox for the air cleanliness system.
+
+<!-- IMAGE PLACEHOLDER: Air Cleanliness tab with thresholds and status line -->
+
+### Condemnation System
+
+Condemnation is diplomatic blame for unconventional weapon use.
+
+What increases condemnation:
+
+- Chemical units actively used in combat
+- Chemical and biological attack use
+- Nuclear strike use, with larger strikes on more populated states causing heavier condemnation
+- Some decisions as well
+
+The **Condemnation** tab shows your value and a sortable country list.  
+The list updates instantly when condemnation changes.
+
+<!-- IMAGE PLACEHOLDER: Condemnation tab with sortable country list -->
+
+### Deaths System
+
+Strategic bombing, chemical and biological attacks, outbreaks, nuclear strikes, and military casualties all feed a shared global deaths tracker.
+
+- Death sources reduce real state population, not only recruitable manpower.
+- Population losses are scaled by state population, local conditions, and the kind of attack, so dense and poorly protected areas suffer more heavily.
+- Outbreak and contamination deaths happen gradually over time for as long as the state remains affected.
+- Nuclear strikes cause a heavy immediate death spike and can leave behind radioactive fallout that keeps killing civilians over time.
+- The **Deaths** tab shows total deaths, civilian deaths, military deaths, latest change, and a scrollable death log.
+- Death log entries show the affected country, death type as **Civilian** or **Military**, and can be filtered by type.
+- The tab includes an enable/disable checkbox for the deaths system.
+- Every **1,000,000** total deaths adds **+1 chaos**.
+
+<!-- IMAGE PLACEHOLDER: Deaths tab with totals and recent log -->
 
 ### Chaos Effects on Timing
 
@@ -193,13 +269,13 @@ This represents the logical conclusion of the campaign and prevents indefinite g
 
 - **Trigger Condition**: Chaos > 1000  
 - **Scenario Selection**: Based on world state (e.g., zombie apocalypse if outbreak dominates, or other endgame disasters depending on conditions).  
-- **Event Freeze**: Automatic event firing stops for all countries.
+- **Event Freeze**: Automatic event firing stops across the world.
 - **Purpose**: Ensures campaigns reach a dramatic, conclusive end and prevents late-game slowdown.
 - **Super Event**: Each world end scenario has a custom super event.
 
 ---
 
-## Event Evolution and Clusters
+## Event Evolution and Event Logs
 
 ### Event Evolution
 
@@ -209,13 +285,24 @@ Events can transform into more dangerous versions when chaos levels are sufficie
 - **Progressive Escalation**: Higher chaos enables more severe event variants
 - **Prerequisite Events**: Some evolutions require specific previous events
 
-### Event Clusters
+### Event Logs Window
 
-Related events can fire in sequence:
+The event logs window tracks what has happened and what can still happen.
 
-- **Cluster Probability**: Increases with higher chaos levels
-- **Thematic Connections**: Events within clusters share themes or consequences
-- **Escalating Sequences**: Later events in clusters tend to be more severe
+- Tabs: **Status**, **History**, **Evolutions**, **Events**
+- **Events** tab lists all available events.
+- You can filter events by **All / Enabled / Disabled**.
+- You can sort by **Event ID** or **Fired count** (ascending/descending).
+- Each event row has a quick toggle button to enable/disable that event.
+
+Any row in **History**, **Evolutions**, or **Events** can be clicked to open a separate detail window.
+
+- Detail windows are larger, bordered, and movable.
+- The header uses the selected event/evolution name.
+- Multiple detail windows can stay open at the same time.
+
+<!-- IMAGE PLACEHOLDER: Events tab with filter/sort/toggle controls -->
+<!-- IMAGE PLACEHOLDER: Multiple event detail windows opened at once -->
 
 ---
 
@@ -279,76 +366,16 @@ Related events can fire in sequence:
 
 ## Debug and Monitoring
 
-### Debug Output
+This section helps you understand why events are firing faster or slower during a campaign.
 
-Comprehensive logging system tracks:
+It provides a clear overview of:
 
-- **Event Statistics**: Total fired, by type
-- **Timer Information**: Current values, modifiers, progression
-- **Weight Tracking**: Current weights, caps, recovery status
-- **Chaos Monitoring**: Current level, recent changes, tier effects
+- Total fired events and event type balance
+- Current timer pace and acceleration pressure
+- Major-event pressure and recovery behavior
+- Current chaos level, tier, and recent trend
 
-### Diagnostic Information
-
-```
-  ======================================================
-  CHAOS REDUX EVENT SYSTEM DEBUG START NR [X]
-  DATE:  [X]
-  ======================================================
-
-  EVENTS FIRED:
-  Total events fired: [X]
-  Major events fired: [X]
-  Minor events fired: [X]
-    - Minor repeatable events fired: [X]
-    - Minor fire-once events fired: [X]
-  ------------------------------------------------------
-  UNIQUE EVENTS:
-  Total events in system: [X]
-  Total unique events yet to be fired: [X]
-    - Major events unfired: [X] / [X]
-    - Minor fire-once events unfired: [X] / [X]
-    - Minor repeatable events unfired: [X] / [X]
-  ------------------------------------------------------
-  MAJOR EVENT WEIGHTS:
-  Minor events fired since last major: [X]
-  Current major event weight: [X]
-  ------------------------------------------------------
-  SYSTEM INFO:
-  Minor event weight: [X]
-  Minor event recovery rate: [X]
-  Minor repeatable event cap reduction: [X]
-  Major event weight per minor: [X]
-  ------------------------------------------------------
-  DYNAMIC TIMER SYSTEM:
-  Timer range: [X] - [X] days
-  Timer day decrement: [X] / [X] days
-  Max cap reduction: [X] / [X] days
-  Current timer range after decrements: [X] - [X] days
-  Current chaos tier: [X]
-  Current chaos timer modifier: [X]x
-  Current timer: [X] days
-  ------------------------------------------------------
-  Last fired event: ID: [X]
-  Name: [X], Type: [X]
-  ------------------------------------------------------
-  MAJOR EVENTS DETAIL:
-  ID: [X], Name: [X], Weight: [X]
-  …
-  ------------------------------------------------------
-  FIRE-ONCE EVENTS DETAIL:
-  ID: [X], Name: [X], Weight: [X]
-  …
-  ------------------------------------------------------
-  REPEATABLE EVENTS DETAIL:
-  ID: [X], Name: [X], Weight: [X], Cap: [X]
-  …
-
-  ======================================================
-  CHAOS REDUX EVENT SYSTEM DEBUG END NR [X]
-  ======================================================
-
-```
+Use this information when you want to tune settings for a longer campaign, faster escalation, or more controlled pacing.
 
 ---
 
@@ -461,10 +488,16 @@ Using chemical supports in combat increases international condemnation.
 
 Heavy repeated use can trigger escalating diplomatic fallout.
 
+Condemnation is based on real use of unconventional weapons in combat, not on just being at war or owning stockpiles.
+
+You can track who is responsible in the Chaos Meter **Condemnation** tab.
+
+<!-- IMAGE PLACEHOLDER: Condemnation tab showing countries and updated totals -->
+
 ### Chemical Planes
 
 You can apply chemical air bomb modules to your planes. The planes behave as CAS, but cause more damage and add contamination to states.
-This is under-development content.
+This feature is part of the chemical warfare system and expands high-impact air operations.
 
 ### Raids
 
@@ -589,4 +622,8 @@ What the player does:
 
 ## Chaos Warfare
 
-Placeholder
+Chaos Warfare focuses on the most extreme battlefield doctrine paths.
+
+These options increase short-term military pressure, but they also raise long-term costs such as condemnation, civilian harm, and contamination.
+
+<!-- IMAGE PLACEHOLDER: Chaos Warfare doctrine path and key effects -->

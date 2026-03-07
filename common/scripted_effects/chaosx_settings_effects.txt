@@ -83,6 +83,7 @@ initialize_settings_system = {
     initialize_timer_system_settings = yes
     initialize_tag_management_settings = yes
     initialize_chaos_meter_settings = yes
+    initialize_events_log_settings = yes
     initialize_advanced_settings = yes
 }
 
@@ -95,6 +96,7 @@ initialize_global_settings_system = {
 
     # chaos meter settings - default is disabled = false, so don't set the flag
     clr_global_flag = settings_chaos_meter_disabled
+    clr_global_flag = settings_logic_log_lines_enabled
 
     # Advanced settings
     set_variable = { global.settings_recovery_rate = global.minor_event_recovery_rate }
@@ -1046,27 +1048,1630 @@ toggle_force_trigger_mode = {
 
 # Toggle event disabled state for selected event
 toggle_event_disabled = {
-    if = {
-        limit = { NOT = { check_variable = { settings_selected_event_id = constant:event_system_event_type.unknown } } }
-        if = {
-            limit = { is_in_array = { global.disabled_events = settings_selected_event_id } }
-            remove_from_array = { global.disabled_events = settings_selected_event_id }
-        }
-        else = {
-            add_to_array = { global.disabled_events = settings_selected_event_id }
-        }
-    }
+	if = {
+		limit = { NOT = { check_variable = { settings_selected_event_id = constant:event_system_event_type.unknown } } }
+		if = {
+			limit = { is_in_array = { global.disabled_events = settings_selected_event_id } }
+			remove_from_array = { global.disabled_events = settings_selected_event_id }
+		}
+		else = {
+			add_to_array = { global.disabled_events = settings_selected_event_id }
+		}
+	}
+
+	if = {
+		limit = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_events_tab
+		}
+		rebuild_events_log_events_view = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_event_details_open
+		}
+		events_log_rebuild_open_event_details_view = yes
+	}
 }
 
-# Toggle events log display
-toggle_events_log = {
-    if = {
-        limit = { has_country_flag = show_events_log }
-        clr_country_flag = show_events_log
-    }
-    else = {
-        set_country_flag = show_events_log
-    }
+# Toggle events log popup window
+toggle_events_log_popup = {
+	if = {
+		limit = { has_country_flag = events_log_window_open }
+		events_log_close_history_details_view = yes
+		clr_country_flag = events_log_window_open
+		clr_country_flag = events_log_history_tab
+		clr_country_flag = events_log_evolutions_tab
+		clr_country_flag = events_log_events_tab
+		clr_country_flag = events_log_event_details_open
+		clr_country_flag = events_log_evolution_details_open
+		clear_array = global.events_log_open_event_detail_entries
+		clear_array = global.events_log_open_event_detail_type_entries
+		clear_array = global.events_log_open_event_detail_fired_entries
+		clear_array = global.events_log_open_event_detail_enabled_entries
+		clear_array = global.events_log_open_event_detail_unique_entries
+		clear_array = global.events_log_event_detail_evolution_type_entries
+		clear_array = global.events_log_event_detail_evolution_tier_entries
+		clear_array = global.events_log_event_detail_evolution_stage_entries
+	}
+	else = {
+		set_variable = { settings_events_log_sort_mode = 0 }
+		set_variable = { settings_events_log_filter_type = 0 }
+		set_variable = { settings_events_log_evolution_sort_mode = 0 }
+		set_variable = { settings_events_log_evolution_filter_type = 0 }
+		set_variable = { settings_events_log_events_sort_mode = 0 }
+		set_variable = { settings_events_log_events_filter_type = 0 }
+		clr_country_flag = events_log_sort_descending
+		clr_country_flag = events_log_evolution_sort_descending
+		clr_country_flag = events_log_events_sort_descending
+		events_log_close_history_details_view = yes
+		set_country_flag = events_log_window_open
+		set_country_flag = events_log_history_tab
+		clr_country_flag = events_log_evolutions_tab
+		clr_country_flag = events_log_events_tab
+		clr_country_flag = events_log_event_details_open
+		clr_country_flag = events_log_evolution_details_open
+		clear_array = global.events_log_open_event_detail_entries
+		clear_array = global.events_log_open_event_detail_type_entries
+		clear_array = global.events_log_open_event_detail_fired_entries
+		clear_array = global.events_log_open_event_detail_enabled_entries
+		clear_array = global.events_log_open_event_detail_unique_entries
+		clear_array = global.events_log_event_detail_evolution_type_entries
+		clear_array = global.events_log_event_detail_evolution_tier_entries
+		clear_array = global.events_log_event_detail_evolution_stage_entries
+		rebuild_events_log_history_view = yes
+		rebuild_events_log_evolution_view = yes
+		rebuild_events_log_events_view = yes
+	}
+}
+
+events_log_close_history_details_view = {
+	clr_country_flag = events_log_history_details_open
+	set_variable = { events_log_history_selected_event_id = 0 }
+	set_variable = { events_log_history_selected_event_type = 0 }
+	set_variable = { events_log_history_selected_date = 0 }
+	set_variable = { events_log_history_selected_sequence = 0 }
+	set_variable = { events_log_history_selected_actor = 0 }
+	set_variable = { events_log_history_selected_has_actor = 0 }
+	set_variable = { events_log_history_selected_total_fired = 0 }
+	set_variable = { events_log_history_selected_enabled = 1 }
+	clear_array = global.events_log_history_detail_evolution_sequence_entries
+	clear_array = global.events_log_history_detail_evolution_date_entries
+	clear_array = global.events_log_history_detail_evolution_type_entries
+	clear_array = global.events_log_history_detail_evolution_tier_entries
+	clear_array = global.events_log_history_detail_evolution_stage_entries
+	clear_array = global.events_log_history_detail_evolution_actor_entries
+	clear_array = global.events_log_history_detail_evolution_has_actor_entries
+}
+
+events_log_rebuild_history_details_view = {
+	sanitize_events_log_evolution_actor_entries = yes
+	clear_array = global.events_log_history_detail_evolution_sequence_entries
+	clear_array = global.events_log_history_detail_evolution_date_entries
+	clear_array = global.events_log_history_detail_evolution_type_entries
+	clear_array = global.events_log_history_detail_evolution_tier_entries
+	clear_array = global.events_log_history_detail_evolution_stage_entries
+	clear_array = global.events_log_history_detail_evolution_actor_entries
+	clear_array = global.events_log_history_detail_evolution_has_actor_entries
+	set_variable = { events_log_history_selected_total_fired = 0 }
+	set_variable = { events_log_history_selected_enabled = 1 }
+
+	if = {
+		limit = { check_variable = { events_log_history_selected_event_id > 0 } }
+		set_variable = { event_id = events_log_history_selected_event_id }
+
+		if = {
+			limit = { is_in_array = { global.disabled_events = events_log_history_selected_event_id } }
+			set_variable = { events_log_history_selected_enabled = 0 }
+		}
+
+		set_temp_variable = { events_log_history_detail_history_index = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = events_log_history_detail_history_index
+					value = global.events_log_history_event_id_entries^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_history_event_id_entries^events_log_history_detail_history_index
+						value = events_log_history_selected_event_id
+						compare = equals
+					}
+				}
+				add_to_variable = { events_log_history_selected_total_fired = 1 }
+			}
+			add_to_temp_variable = { events_log_history_detail_history_index = 1 }
+		}
+
+		set_temp_variable = { events_log_history_detail_evolution_index = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = events_log_history_detail_evolution_index
+					value = global.events_log_evolution_sequence_entries^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_evolution_event_id_entries^events_log_history_detail_evolution_index
+						value = events_log_history_selected_event_id
+						compare = equals
+					}
+				}
+				add_to_array = {
+					array = global.events_log_history_detail_evolution_sequence_entries
+					value = global.events_log_evolution_sequence_entries^events_log_history_detail_evolution_index
+				}
+				add_to_array = {
+					array = global.events_log_history_detail_evolution_date_entries
+					value = global.events_log_evolution_date_entries^events_log_history_detail_evolution_index
+				}
+				add_to_array = {
+					array = global.events_log_history_detail_evolution_type_entries
+					value = global.events_log_evolution_type_entries^events_log_history_detail_evolution_index
+				}
+				add_to_array = {
+					array = global.events_log_history_detail_evolution_tier_entries
+					value = global.events_log_evolution_tier_entries^events_log_history_detail_evolution_index
+				}
+				add_to_array = {
+					array = global.events_log_history_detail_evolution_stage_entries
+					value = global.events_log_evolution_stage_entries^events_log_history_detail_evolution_index
+				}
+				add_to_array = {
+					array = global.events_log_history_detail_evolution_actor_entries
+					value = global.events_log_evolution_actor_entries^events_log_history_detail_evolution_index
+				}
+				add_to_array = {
+					array = global.events_log_history_detail_evolution_has_actor_entries
+					value = global.events_log_evolution_has_actor_entries^events_log_history_detail_evolution_index
+				}
+			}
+			add_to_temp_variable = { events_log_history_detail_evolution_index = 1 }
+		}
+	}
+}
+
+events_log_open_selected_history_related_evolution_detail = {
+	set_variable = { events_log_selected_evolution_type = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_tier = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_stage = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_actor = global.events_log_history_detail_evolution_actor_entries^events_log_history_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_has_actor = global.events_log_history_detail_evolution_has_actor_entries^events_log_history_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_date = global.events_log_history_detail_evolution_date_entries^events_log_history_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_event_id = events_log_history_selected_event_id }
+	set_variable = { events_log_selected_evolution_event_type = events_log_history_selected_event_type }
+	set_country_flag = events_log_evolution_details_open
+}
+
+events_log_rebuild_open_event_details_view = {
+	clear_array = global.events_log_open_event_detail_type_entries
+	clear_array = global.events_log_open_event_detail_fired_entries
+	clear_array = global.events_log_open_event_detail_enabled_entries
+	clear_array = global.events_log_open_event_detail_unique_entries
+	clear_array = global.events_log_event_detail_evolution_type_entries
+	clear_array = global.events_log_event_detail_evolution_tier_entries
+	clear_array = global.events_log_event_detail_evolution_stage_entries
+
+	set_temp_variable = { events_log_open_detail_count = global.events_log_open_event_detail_entries^num }
+	for_loop_effect = {
+		start = 0
+		end = events_log_open_detail_count
+		value = events_log_open_detail_index
+
+		set_temp_variable = { event_id = global.events_log_open_event_detail_entries^events_log_open_detail_index }
+		get_event_type = yes
+
+		add_to_array = {
+			array = global.events_log_open_event_detail_type_entries
+			value = event_type
+		}
+
+		set_temp_variable = { events_log_open_detail_enabled = 1 }
+		if = {
+			limit = { is_in_array = { global.disabled_events = event_id } }
+			set_temp_variable = { events_log_open_detail_enabled = 0 }
+		}
+		add_to_array = {
+			array = global.events_log_open_event_detail_enabled_entries
+			value = events_log_open_detail_enabled
+		}
+
+		set_temp_variable = { events_log_open_detail_unique = 0 }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { event_type = constant:event_system_event_type.major }
+					check_variable = { event_type = constant:event_system_event_type.fire_once }
+				}
+			}
+			set_temp_variable = { events_log_open_detail_unique = 1 }
+		}
+		add_to_array = {
+			array = global.events_log_open_event_detail_unique_entries
+			value = events_log_open_detail_unique
+		}
+
+		set_temp_variable = { events_log_open_detail_fired = 0 }
+		set_temp_variable = { events_log_open_detail_history_index = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = events_log_open_detail_history_index
+					value = global.events_log_history_event_id_entries^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_history_event_id_entries^events_log_open_detail_history_index
+						value = event_id
+						compare = equals
+					}
+				}
+				add_to_temp_variable = { events_log_open_detail_fired = 1 }
+			}
+			add_to_temp_variable = { events_log_open_detail_history_index = 1 }
+		}
+		add_to_array = {
+			array = global.events_log_open_event_detail_fired_entries
+			value = events_log_open_detail_fired
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = 2
+					compare = equals
+				}
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_type_entries
+				value = 1
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_tier_entries
+				value = 1
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_stage_entries
+				value = 1
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_type_entries
+				value = 1
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_tier_entries
+				value = 2
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_stage_entries
+				value = 2
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_type_entries
+				value = 1
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_tier_entries
+				value = 3
+			}
+			add_to_array = {
+				array = global.events_log_event_detail_evolution_stage_entries
+				value = 3
+			}
+		}
+	}
+}
+
+events_log_add_event_details_entry = {
+	if = {
+		limit = { check_variable = { events_log_selected_event_id > 0 } }
+		clear_array = global.events_log_open_event_detail_entries
+		add_to_array = {
+			array = global.events_log_open_event_detail_entries
+			value = events_log_selected_event_id
+		}
+		set_variable = { events_log_history_selected_event_id = events_log_selected_event_id }
+		set_variable = { events_log_history_selected_event_type = events_log_selected_event_type }
+		set_country_flag = events_log_event_details_open
+		events_log_rebuild_open_event_details_view = yes
+		events_log_rebuild_history_details_view = yes
+	}
+}
+
+events_log_open_selected_evolution_detail = {
+	set_variable = { events_log_selected_evolution_type = global.events_log_evolution_view_type_entries^events_log_evolution_index }
+	set_variable = { events_log_selected_evolution_tier = global.events_log_evolution_view_tier_entries^events_log_evolution_index }
+	set_variable = { events_log_selected_evolution_stage = global.events_log_evolution_view_stage_entries^events_log_evolution_index }
+	set_variable = { events_log_selected_evolution_event_id = global.events_log_evolution_event_id_entries^events_log_evolution_index }
+	set_variable = { events_log_selected_evolution_event_type = global.events_log_evolution_view_event_type_entries^events_log_evolution_index }
+	set_variable = { events_log_selected_evolution_actor = global.events_log_evolution_view_actor_entries^events_log_evolution_index }
+	set_variable = { events_log_selected_evolution_has_actor = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index }
+	set_variable = { events_log_selected_evolution_date = global.events_log_evolution_view_date_entries^events_log_evolution_index }
+	set_country_flag = events_log_evolution_details_open
+}
+
+events_log_open_selected_event_detail_evolution = {
+	set_variable = { events_log_selected_evolution_type = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_tier = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_stage = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index }
+	set_variable = { events_log_selected_evolution_event_id = events_log_selected_event_id }
+	set_variable = { events_log_selected_evolution_event_type = events_log_selected_event_type }
+	set_variable = { events_log_selected_evolution_actor = 0 }
+	set_variable = { events_log_selected_evolution_has_actor = 0 }
+	set_variable = { events_log_selected_evolution_date = 0 }
+	set_country_flag = events_log_evolution_details_open
+}
+
+events_log_remove_event_details_entry = {
+	if = {
+		limit = {
+			check_variable = { events_log_selected_event_id > 0 }
+			is_in_array = {
+				global.events_log_open_event_detail_entries = events_log_selected_event_id
+			}
+		}
+		remove_from_array = {
+			array = global.events_log_open_event_detail_entries
+			value = events_log_selected_event_id
+		}
+	}
+
+	events_log_rebuild_open_event_details_view = yes
+
+	if = {
+		limit = { check_variable = { global.events_log_open_event_detail_entries^num < 1 } }
+		clr_country_flag = events_log_event_details_open
+		set_variable = { events_log_selected_event_id = 0 }
+	}
+}
+
+events_log_close_all_event_details_entries = {
+	clear_array = global.events_log_open_event_detail_entries
+	clear_array = global.events_log_open_event_detail_type_entries
+	clear_array = global.events_log_open_event_detail_fired_entries
+	clear_array = global.events_log_open_event_detail_enabled_entries
+	clear_array = global.events_log_open_event_detail_unique_entries
+	clear_array = global.events_log_event_detail_evolution_type_entries
+	clear_array = global.events_log_event_detail_evolution_tier_entries
+	clear_array = global.events_log_event_detail_evolution_stage_entries
+	clr_country_flag = events_log_event_details_open
+	set_variable = { events_log_selected_event_id = 0 }
+}
+
+cycle_events_log_sort_mode_prev = {
+	if = {
+		limit = { check_variable = { settings_events_log_sort_mode > 0 } }
+		subtract_from_variable = { settings_events_log_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_sort_mode = 2 }
+	}
+	rebuild_events_log_history_view = yes
+}
+
+cycle_events_log_sort_mode_next = {
+	if = {
+		limit = { check_variable = { settings_events_log_sort_mode < 2 } }
+		add_to_variable = { settings_events_log_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_sort_mode = 0 }
+	}
+	rebuild_events_log_history_view = yes
+}
+
+toggle_events_log_sort_order = {
+	if = {
+		limit = { has_country_flag = events_log_sort_descending }
+		clr_country_flag = events_log_sort_descending
+	}
+	else = {
+		set_country_flag = events_log_sort_descending
+	}
+	rebuild_events_log_history_view = yes
+}
+
+cycle_events_log_filter_prev = {
+	if = {
+		limit = { check_variable = { settings_events_log_filter_type > 0 } }
+		subtract_from_variable = { settings_events_log_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_filter_type = 3 }
+	}
+	rebuild_events_log_history_view = yes
+}
+
+cycle_events_log_filter_next = {
+	if = {
+		limit = { check_variable = { settings_events_log_filter_type < 3 } }
+		add_to_variable = { settings_events_log_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_filter_type = 0 }
+	}
+	rebuild_events_log_history_view = yes
+}
+
+events_log_row_matches_active_filter = {
+	set_temp_variable = { events_log_row_matches_filter = 0 }
+	if = {
+		limit = { check_variable = { settings_events_log_filter_type = 0 } }
+		set_temp_variable = { events_log_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_events_log_filter_type = 1 }
+			check_variable = {
+				var = global.events_log_history_event_type_entries^events_log_source_index
+				value = constant:event_system_event_type.major
+				compare = equals
+			}
+		}
+		set_temp_variable = { events_log_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_events_log_filter_type = 2 }
+			check_variable = {
+				var = global.events_log_history_event_type_entries^events_log_source_index
+				value = constant:event_system_event_type.repeatable
+				compare = equals
+			}
+		}
+		set_temp_variable = { events_log_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_events_log_filter_type = 3 }
+			check_variable = {
+				var = global.events_log_history_event_type_entries^events_log_source_index
+				value = constant:event_system_event_type.fire_once
+				compare = equals
+			}
+		}
+		set_temp_variable = { events_log_row_matches_filter = 1 }
+	}
+}
+
+events_log_append_view_row_from_source = {
+	add_to_array = {
+		array = global.events_log_view_sequence_entries
+		value = global.events_log_history_sequence_entries^events_log_source_index
+	}
+	add_to_array = {
+		array = global.events_log_view_date_entries
+		value = global.events_log_history_date_entries^events_log_source_index
+	}
+	add_to_array = {
+		array = global.events_log_view_event_id_entries
+		value = global.events_log_history_event_id_entries^events_log_source_index
+	}
+	add_to_array = {
+		array = global.events_log_view_event_type_entries
+		value = global.events_log_history_event_type_entries^events_log_source_index
+	}
+	add_to_array = {
+		array = global.events_log_view_actor_entries
+		value = global.events_log_history_actor_entries^events_log_source_index
+	}
+	add_to_array = {
+		array = global.events_log_view_has_actor_entries
+		value = global.events_log_history_has_actor_entries^events_log_source_index
+	}
+}
+
+events_log_history_append_rows_by_actor_sort = {
+	clear_array = temp_events_log_history_unique_actors
+
+	# Build unique actor list from rows with actors.
+	set_temp_variable = { events_log_actor_collect_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { events_log_actor_collect_index < events_log_source_count } }
+		set_temp_variable = { events_log_source_index = events_log_actor_collect_index }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.events_log_history_has_actor_entries^events_log_source_index
+					value = 0
+					compare = greater_than
+				}
+				NOT = {
+					is_in_array = {
+						temp_events_log_history_unique_actors = global.events_log_history_actor_entries^events_log_source_index
+					}
+				}
+			}
+			add_to_array = {
+				array = temp_events_log_history_unique_actors
+				value = global.events_log_history_actor_entries^events_log_source_index
+			}
+		}
+		add_to_temp_variable = { events_log_actor_collect_index = 1 }
+	}
+
+	# Deterministic actor-id sort passes.
+	while_loop_effect = {
+		limit = { check_variable = { temp_events_log_history_unique_actors^num > 0 } }
+
+		if = {
+			limit = { has_country_flag = events_log_sort_descending }
+			find_highest_in_array = {
+				array = temp_events_log_history_unique_actors
+				value = events_log_actor_sort_target
+			}
+		}
+		else = {
+			find_lowest_in_array = {
+				array = temp_events_log_history_unique_actors
+				value = events_log_actor_sort_target
+			}
+		}
+
+		if = {
+			limit = { has_country_flag = events_log_sort_descending }
+			set_temp_variable = { events_log_actor_member_index = 0 }
+			while_loop_effect = {
+				limit = { check_variable = { events_log_actor_member_index < events_log_source_count } }
+				set_temp_variable = { events_log_source_index = events_log_actor_member_index }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_history_has_actor_entries^events_log_source_index
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = global.events_log_history_actor_entries^events_log_source_index
+							value = events_log_actor_sort_target
+							compare = equals
+						}
+					}
+					events_log_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_row_matches_filter > 0 } }
+						events_log_append_view_row_from_source = yes
+					}
+				}
+				add_to_temp_variable = { events_log_actor_member_index = 1 }
+			}
+		}
+		else = {
+			set_temp_variable = { events_log_actor_member_index = events_log_source_count }
+			while_loop_effect = {
+				limit = { check_variable = { events_log_actor_member_index > 0 } }
+				subtract_from_temp_variable = { events_log_actor_member_index = 1 }
+				set_temp_variable = { events_log_source_index = events_log_actor_member_index }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_history_has_actor_entries^events_log_source_index
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = global.events_log_history_actor_entries^events_log_source_index
+							value = events_log_actor_sort_target
+							compare = equals
+						}
+					}
+					events_log_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_row_matches_filter > 0 } }
+						events_log_append_view_row_from_source = yes
+					}
+				}
+			}
+		}
+
+		remove_from_array = {
+			array = temp_events_log_history_unique_actors
+			value = events_log_actor_sort_target
+		}
+	}
+
+	# Non-actor rows are always appended after actor rows.
+	if = {
+		limit = { has_country_flag = events_log_sort_descending }
+		set_temp_variable = { events_log_source_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_source_index < events_log_source_count } }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_history_has_actor_entries^events_log_source_index
+						value = 1
+						compare = less_than
+					}
+				}
+				events_log_row_matches_active_filter = yes
+				if = {
+					limit = { check_variable = { events_log_row_matches_filter > 0 } }
+					events_log_append_view_row_from_source = yes
+				}
+			}
+			add_to_temp_variable = { events_log_source_index = 1 }
+		}
+	}
+	else = {
+		set_temp_variable = { events_log_source_index = events_log_source_count }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_source_index > 0 } }
+			subtract_from_temp_variable = { events_log_source_index = 1 }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_history_has_actor_entries^events_log_source_index
+						value = 1
+						compare = less_than
+					}
+				}
+				events_log_row_matches_active_filter = yes
+				if = {
+					limit = { check_variable = { events_log_row_matches_filter > 0 } }
+					events_log_append_view_row_from_source = yes
+				}
+			}
+		}
+	}
+}
+
+rebuild_events_log_history_view = {
+	sanitize_events_log_history_actor_entries = yes
+
+	if = {
+		limit = { NOT = { has_variable = settings_events_log_sort_mode } }
+		set_variable = { settings_events_log_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_sort_mode > 2 } }
+		set_variable = { settings_events_log_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_sort_mode < 0 } }
+		set_variable = { settings_events_log_sort_mode = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = settings_events_log_filter_type } }
+		set_variable = { settings_events_log_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_filter_type > 3 } }
+		set_variable = { settings_events_log_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_filter_type < 0 } }
+		set_variable = { settings_events_log_filter_type = 0 }
+	}
+
+	clear_array = global.events_log_view_sequence_entries
+	clear_array = global.events_log_view_date_entries
+	clear_array = global.events_log_view_event_id_entries
+	clear_array = global.events_log_view_event_type_entries
+	clear_array = global.events_log_view_actor_entries
+	clear_array = global.events_log_view_has_actor_entries
+
+	set_temp_variable = { events_log_source_count = global.events_log_history_event_id_entries^num }
+
+	if = {
+		limit = { check_variable = { events_log_source_count > 0 } }
+		if = {
+			limit = { check_variable = { settings_events_log_sort_mode = 0 } }
+			if = {
+				limit = { has_country_flag = events_log_sort_descending }
+				for_loop_effect = {
+					start = 0
+					end = events_log_source_count
+					value = i
+					set_temp_variable = { events_log_source_index = i }
+					events_log_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_row_matches_filter > 0 } }
+						events_log_append_view_row_from_source = yes
+					}
+				}
+			}
+			else = {
+				set_temp_variable = { events_log_asc_index = events_log_source_count }
+				while_loop_effect = {
+					limit = { check_variable = { events_log_asc_index > 0 } }
+					subtract_from_temp_variable = { events_log_asc_index = 1 }
+					set_temp_variable = { events_log_source_index = events_log_asc_index }
+					events_log_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_row_matches_filter > 0 } }
+						events_log_append_view_row_from_source = yes
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { settings_events_log_sort_mode = 1 } }
+			if = {
+				limit = { has_country_flag = events_log_sort_descending }
+				set_temp_variable = { events_log_sort_id = 2000 }
+				while_loop_effect = {
+					limit = { check_variable = { events_log_sort_id > 0 } }
+					subtract_from_temp_variable = { events_log_sort_id = 1 }
+					for_loop_effect = {
+						start = 0
+						end = events_log_source_count
+						value = i
+						set_temp_variable = { events_log_source_index = i }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.events_log_history_event_id_entries^events_log_source_index
+									value = events_log_sort_id
+									compare = equals
+								}
+							}
+							events_log_row_matches_active_filter = yes
+							if = {
+								limit = { check_variable = { events_log_row_matches_filter > 0 } }
+								events_log_append_view_row_from_source = yes
+							}
+						}
+					}
+				}
+			}
+			else = {
+				for_loop_effect = {
+					start = 1
+					end = 2001
+					value = events_log_sort_id
+					for_loop_effect = {
+						start = 0
+						end = events_log_source_count
+						value = i
+						set_temp_variable = { events_log_source_index = i }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.events_log_history_event_id_entries^events_log_source_index
+									value = events_log_sort_id
+									compare = equals
+								}
+							}
+							events_log_row_matches_active_filter = yes
+							if = {
+								limit = { check_variable = { events_log_row_matches_filter > 0 } }
+								events_log_append_view_row_from_source = yes
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			events_log_history_append_rows_by_actor_sort = yes
+		}
+	}
+}
+
+cycle_events_log_evolution_sort_mode_prev = {
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_sort_mode > 0 } }
+		subtract_from_variable = { settings_events_log_evolution_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_evolution_sort_mode = 3 }
+	}
+	rebuild_events_log_evolution_view = yes
+}
+
+cycle_events_log_evolution_sort_mode_next = {
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_sort_mode < 3 } }
+		add_to_variable = { settings_events_log_evolution_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_evolution_sort_mode = 0 }
+	}
+	rebuild_events_log_evolution_view = yes
+}
+
+toggle_events_log_evolution_sort_order = {
+	if = {
+		limit = { has_country_flag = events_log_evolution_sort_descending }
+		clr_country_flag = events_log_evolution_sort_descending
+	}
+	else = {
+		set_country_flag = events_log_evolution_sort_descending
+	}
+	rebuild_events_log_evolution_view = yes
+}
+
+cycle_events_log_evolution_filter_prev = {
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_filter_type > 0 } }
+		subtract_from_variable = { settings_events_log_evolution_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_evolution_filter_type = 2 }
+	}
+	rebuild_events_log_evolution_view = yes
+}
+
+cycle_events_log_evolution_filter_next = {
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_filter_type < 2 } }
+		add_to_variable = { settings_events_log_evolution_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_evolution_filter_type = 0 }
+	}
+	rebuild_events_log_evolution_view = yes
+}
+
+events_log_evolution_row_matches_active_filter = {
+	set_temp_variable = { events_log_evolution_row_matches_filter = 0 }
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_filter_type = 0 } }
+		set_temp_variable = { events_log_evolution_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_events_log_evolution_filter_type = 1 }
+			check_variable = {
+				var = global.events_log_evolution_event_type_entries^events_log_evolution_source_index
+				value = constant:event_system_event_type.major
+				compare = equals
+			}
+		}
+		set_temp_variable = { events_log_evolution_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_events_log_evolution_filter_type = 2 }
+			OR = {
+				check_variable = {
+					var = global.events_log_evolution_event_type_entries^events_log_evolution_source_index
+					value = constant:event_system_event_type.repeatable
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_event_type_entries^events_log_evolution_source_index
+					value = constant:event_system_event_type.fire_once
+					compare = equals
+				}
+			}
+		}
+		set_temp_variable = { events_log_evolution_row_matches_filter = 1 }
+	}
+}
+
+events_log_evolution_append_view_row_from_source = {
+	add_to_array = {
+		array = global.events_log_evolution_view_sequence_entries
+		value = global.events_log_evolution_sequence_entries^events_log_evolution_source_index
+	}
+	add_to_array = {
+		array = global.events_log_evolution_view_date_entries
+		value = global.events_log_evolution_date_entries^events_log_evolution_source_index
+	}
+	add_to_array = {
+		array = global.events_log_evolution_view_type_entries
+		value = global.events_log_evolution_type_entries^events_log_evolution_source_index
+	}
+	add_to_array = {
+		array = global.events_log_evolution_view_event_type_entries
+		value = global.events_log_evolution_event_type_entries^events_log_evolution_source_index
+	}
+	add_to_array = {
+		array = global.events_log_evolution_view_tier_entries
+		value = global.events_log_evolution_tier_entries^events_log_evolution_source_index
+	}
+	add_to_array = {
+		array = global.events_log_evolution_view_stage_entries
+		value = global.events_log_evolution_stage_entries^events_log_evolution_source_index
+	}
+	add_to_array = {
+		array = global.events_log_evolution_view_actor_entries
+		value = global.events_log_evolution_actor_entries^events_log_evolution_source_index
+	}
+	add_to_array = {
+		array = global.events_log_evolution_view_has_actor_entries
+		value = global.events_log_evolution_has_actor_entries^events_log_evolution_source_index
+	}
+}
+
+events_log_evolution_append_rows_by_actor_sort = {
+	clear_array = temp_events_log_evolution_unique_actors
+
+	# Build unique actor list from rows with actors.
+	set_temp_variable = { events_log_evolution_actor_collect_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { events_log_evolution_actor_collect_index < events_log_evolution_source_count } }
+		set_temp_variable = { events_log_evolution_source_index = events_log_evolution_actor_collect_index }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.events_log_evolution_has_actor_entries^events_log_evolution_source_index
+					value = 0
+					compare = greater_than
+				}
+				NOT = {
+					is_in_array = {
+						temp_events_log_evolution_unique_actors = global.events_log_evolution_actor_entries^events_log_evolution_source_index
+					}
+				}
+			}
+			add_to_array = {
+				array = temp_events_log_evolution_unique_actors
+				value = global.events_log_evolution_actor_entries^events_log_evolution_source_index
+			}
+		}
+		add_to_temp_variable = { events_log_evolution_actor_collect_index = 1 }
+	}
+
+	# Deterministic actor-id sort passes.
+	while_loop_effect = {
+		limit = { check_variable = { temp_events_log_evolution_unique_actors^num > 0 } }
+
+		if = {
+			limit = { has_country_flag = events_log_evolution_sort_descending }
+			find_highest_in_array = {
+				array = temp_events_log_evolution_unique_actors
+				value = events_log_evolution_actor_sort_target
+			}
+		}
+		else = {
+			find_lowest_in_array = {
+				array = temp_events_log_evolution_unique_actors
+				value = events_log_evolution_actor_sort_target
+			}
+		}
+
+		if = {
+			limit = { has_country_flag = events_log_evolution_sort_descending }
+			set_temp_variable = { events_log_evolution_actor_member_index = 0 }
+			while_loop_effect = {
+				limit = { check_variable = { events_log_evolution_actor_member_index < events_log_evolution_source_count } }
+				set_temp_variable = { events_log_evolution_source_index = events_log_evolution_actor_member_index }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_evolution_has_actor_entries^events_log_evolution_source_index
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = global.events_log_evolution_actor_entries^events_log_evolution_source_index
+							value = events_log_evolution_actor_sort_target
+							compare = equals
+						}
+					}
+					events_log_evolution_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+						events_log_evolution_append_view_row_from_source = yes
+					}
+				}
+				add_to_temp_variable = { events_log_evolution_actor_member_index = 1 }
+			}
+		}
+		else = {
+			set_temp_variable = { events_log_evolution_actor_member_index = events_log_evolution_source_count }
+			while_loop_effect = {
+				limit = { check_variable = { events_log_evolution_actor_member_index > 0 } }
+				subtract_from_temp_variable = { events_log_evolution_actor_member_index = 1 }
+				set_temp_variable = { events_log_evolution_source_index = events_log_evolution_actor_member_index }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_evolution_has_actor_entries^events_log_evolution_source_index
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = global.events_log_evolution_actor_entries^events_log_evolution_source_index
+							value = events_log_evolution_actor_sort_target
+							compare = equals
+						}
+					}
+					events_log_evolution_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+						events_log_evolution_append_view_row_from_source = yes
+					}
+				}
+			}
+		}
+
+		remove_from_array = {
+			array = temp_events_log_evolution_unique_actors
+			value = events_log_evolution_actor_sort_target
+		}
+	}
+
+	# Non-actor rows are always appended after actor rows.
+	if = {
+		limit = { has_country_flag = events_log_evolution_sort_descending }
+		set_temp_variable = { events_log_evolution_source_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_evolution_source_index < events_log_evolution_source_count } }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_evolution_has_actor_entries^events_log_evolution_source_index
+						value = 1
+						compare = less_than
+					}
+				}
+				events_log_evolution_row_matches_active_filter = yes
+				if = {
+					limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+					events_log_evolution_append_view_row_from_source = yes
+				}
+			}
+			add_to_temp_variable = { events_log_evolution_source_index = 1 }
+		}
+	}
+	else = {
+		set_temp_variable = { events_log_evolution_source_index = events_log_evolution_source_count }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_evolution_source_index > 0 } }
+			subtract_from_temp_variable = { events_log_evolution_source_index = 1 }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_evolution_has_actor_entries^events_log_evolution_source_index
+						value = 1
+						compare = less_than
+					}
+				}
+				events_log_evolution_row_matches_active_filter = yes
+				if = {
+					limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+					events_log_evolution_append_view_row_from_source = yes
+				}
+			}
+		}
+	}
+}
+
+rebuild_events_log_evolution_view = {
+	sanitize_events_log_evolution_actor_entries = yes
+
+	if = {
+		limit = { NOT = { has_variable = settings_events_log_evolution_sort_mode } }
+		set_variable = { settings_events_log_evolution_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_sort_mode > 3 } }
+		set_variable = { settings_events_log_evolution_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_sort_mode < 0 } }
+		set_variable = { settings_events_log_evolution_sort_mode = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = settings_events_log_evolution_filter_type } }
+		set_variable = { settings_events_log_evolution_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_filter_type > 2 } }
+		set_variable = { settings_events_log_evolution_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_evolution_filter_type < 0 } }
+		set_variable = { settings_events_log_evolution_filter_type = 0 }
+	}
+
+	clear_array = global.events_log_evolution_view_sequence_entries
+	clear_array = global.events_log_evolution_view_date_entries
+	clear_array = global.events_log_evolution_view_type_entries
+	clear_array = global.events_log_evolution_view_event_type_entries
+	clear_array = global.events_log_evolution_view_tier_entries
+	clear_array = global.events_log_evolution_view_stage_entries
+	clear_array = global.events_log_evolution_view_actor_entries
+	clear_array = global.events_log_evolution_view_has_actor_entries
+
+	set_temp_variable = { events_log_evolution_source_count = global.events_log_evolution_sequence_entries^num }
+
+	if = {
+		limit = { check_variable = { events_log_evolution_source_count > 0 } }
+		if = {
+			limit = { check_variable = { settings_events_log_evolution_sort_mode = 0 } }
+			if = {
+				limit = { has_country_flag = events_log_evolution_sort_descending }
+				for_loop_effect = {
+					start = 0
+					end = events_log_evolution_source_count
+					value = i
+					set_temp_variable = { events_log_evolution_source_index = i }
+					events_log_evolution_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+						events_log_evolution_append_view_row_from_source = yes
+					}
+				}
+			}
+			else = {
+				set_temp_variable = { events_log_evolution_asc_index = events_log_evolution_source_count }
+				while_loop_effect = {
+					limit = { check_variable = { events_log_evolution_asc_index > 0 } }
+					subtract_from_temp_variable = { events_log_evolution_asc_index = 1 }
+					set_temp_variable = { events_log_evolution_source_index = events_log_evolution_asc_index }
+					events_log_evolution_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+						events_log_evolution_append_view_row_from_source = yes
+					}
+				}
+			}
+		}
+			else_if = {
+				limit = { check_variable = { settings_events_log_evolution_sort_mode = 1 } }
+				if = {
+					limit = { has_country_flag = events_log_evolution_sort_descending }
+					find_highest_in_array = {
+						array = global.events_log_evolution_tier_entries
+						value = events_log_evolution_sort_tier
+					}
+					while_loop_effect = {
+						limit = { check_variable = { events_log_evolution_sort_tier > -1 } }
+						for_loop_effect = {
+							start = 0
+							end = events_log_evolution_source_count
+							value = i
+							set_temp_variable = { events_log_evolution_source_index = i }
+							if = {
+								limit = {
+									check_variable = {
+										var = global.events_log_evolution_tier_entries^events_log_evolution_source_index
+										value = events_log_evolution_sort_tier
+										compare = equals
+									}
+								}
+								events_log_evolution_row_matches_active_filter = yes
+								if = {
+								limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+								events_log_evolution_append_view_row_from_source = yes
+								}
+							}
+						}
+						subtract_from_temp_variable = { events_log_evolution_sort_tier = 1 }
+					}
+				}
+				else = {
+					find_lowest_in_array = {
+						array = global.events_log_evolution_tier_entries
+						value = events_log_evolution_sort_tier
+					}
+					find_highest_in_array = {
+						array = global.events_log_evolution_tier_entries
+						value = events_log_evolution_sort_tier_end
+					}
+					add_to_temp_variable = { events_log_evolution_sort_tier_end = 1 }
+					while_loop_effect = {
+						limit = { check_variable = { events_log_evolution_sort_tier < events_log_evolution_sort_tier_end } }
+						for_loop_effect = {
+							start = 0
+							end = events_log_evolution_source_count
+							value = i
+							set_temp_variable = { events_log_evolution_source_index = i }
+							if = {
+								limit = {
+									check_variable = {
+										var = global.events_log_evolution_tier_entries^events_log_evolution_source_index
+										value = events_log_evolution_sort_tier
+										compare = equals
+									}
+								}
+								events_log_evolution_row_matches_active_filter = yes
+							if = {
+								limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+									events_log_evolution_append_view_row_from_source = yes
+								}
+							}
+						}
+						add_to_temp_variable = { events_log_evolution_sort_tier = 1 }
+					}
+				}
+			}
+			else_if = {
+				limit = { check_variable = { settings_events_log_evolution_sort_mode = 2 } }
+				if = {
+					limit = { has_country_flag = events_log_evolution_sort_descending }
+					find_highest_in_array = {
+						array = global.events_log_evolution_stage_entries
+						value = events_log_evolution_sort_stage
+					}
+					while_loop_effect = {
+						limit = { check_variable = { events_log_evolution_sort_stage > -1 } }
+						for_loop_effect = {
+							start = 0
+							end = events_log_evolution_source_count
+							value = i
+							set_temp_variable = { events_log_evolution_source_index = i }
+							if = {
+								limit = {
+									check_variable = {
+										var = global.events_log_evolution_stage_entries^events_log_evolution_source_index
+										value = events_log_evolution_sort_stage
+										compare = equals
+									}
+								}
+								events_log_evolution_row_matches_active_filter = yes
+								if = {
+									limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+									events_log_evolution_append_view_row_from_source = yes
+								}
+							}
+						}
+						subtract_from_temp_variable = { events_log_evolution_sort_stage = 1 }
+					}
+				}
+				else = {
+					find_lowest_in_array = {
+						array = global.events_log_evolution_stage_entries
+						value = events_log_evolution_sort_stage
+					}
+					find_highest_in_array = {
+						array = global.events_log_evolution_stage_entries
+						value = events_log_evolution_sort_stage_end
+					}
+					add_to_temp_variable = { events_log_evolution_sort_stage_end = 1 }
+					while_loop_effect = {
+						limit = { check_variable = { events_log_evolution_sort_stage < events_log_evolution_sort_stage_end } }
+						for_loop_effect = {
+							start = 0
+							end = events_log_evolution_source_count
+							value = i
+							set_temp_variable = { events_log_evolution_source_index = i }
+							if = {
+								limit = {
+									check_variable = {
+										var = global.events_log_evolution_stage_entries^events_log_evolution_source_index
+										value = events_log_evolution_sort_stage
+										compare = equals
+									}
+								}
+								events_log_evolution_row_matches_active_filter = yes
+								if = {
+									limit = { check_variable = { events_log_evolution_row_matches_filter > 0 } }
+									events_log_evolution_append_view_row_from_source = yes
+								}
+							}
+						}
+						add_to_temp_variable = { events_log_evolution_sort_stage = 1 }
+					}
+				}
+			}
+			else = {
+				events_log_evolution_append_rows_by_actor_sort = yes
+			}
+		}
+	}
+
+cycle_events_log_events_sort_mode_prev = {
+	if = {
+		limit = { check_variable = { settings_events_log_events_sort_mode > 0 } }
+		subtract_from_variable = { settings_events_log_events_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_events_sort_mode = 1 }
+	}
+	rebuild_events_log_events_view = yes
+}
+
+cycle_events_log_events_sort_mode_next = {
+	if = {
+		limit = { check_variable = { settings_events_log_events_sort_mode < 1 } }
+		add_to_variable = { settings_events_log_events_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_events_sort_mode = 0 }
+	}
+	rebuild_events_log_events_view = yes
+}
+
+toggle_events_log_events_sort_order = {
+	if = {
+		limit = { has_country_flag = events_log_events_sort_descending }
+		clr_country_flag = events_log_events_sort_descending
+	}
+	else = {
+		set_country_flag = events_log_events_sort_descending
+	}
+	rebuild_events_log_events_view = yes
+}
+
+cycle_events_log_events_filter_prev = {
+	if = {
+		limit = { check_variable = { settings_events_log_events_filter_type > 0 } }
+		subtract_from_variable = { settings_events_log_events_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_events_filter_type = 2 }
+	}
+	rebuild_events_log_events_view = yes
+}
+
+cycle_events_log_events_filter_next = {
+	if = {
+		limit = { check_variable = { settings_events_log_events_filter_type < 2 } }
+		add_to_variable = { settings_events_log_events_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_events_log_events_filter_type = 0 }
+	}
+	rebuild_events_log_events_view = yes
+}
+
+events_log_toggle_event_disabled_by_row = {
+	if = {
+		limit = { check_variable = { events_log_selected_event_id > 0 } }
+		if = {
+			limit = { is_in_array = { global.disabled_events = events_log_selected_event_id } }
+			remove_from_array = { global.disabled_events = events_log_selected_event_id }
+		}
+		else = {
+			add_to_array = { global.disabled_events = events_log_selected_event_id }
+		}
+	}
+	rebuild_events_log_events_view = yes
+	if = {
+		limit = { has_country_flag = events_log_event_details_open }
+		events_log_rebuild_open_event_details_view = yes
+	}
+}
+
+rebuild_events_log_events_view = {
+	if = {
+		limit = { NOT = { has_variable = settings_events_log_events_sort_mode } }
+		set_variable = { settings_events_log_events_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_events_sort_mode > 1 } }
+		set_variable = { settings_events_log_events_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_events_sort_mode < 0 } }
+		set_variable = { settings_events_log_events_sort_mode = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = settings_events_log_events_filter_type } }
+		set_variable = { settings_events_log_events_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_events_filter_type > 2 } }
+		set_variable = { settings_events_log_events_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_events_log_events_filter_type < 0 } }
+		set_variable = { settings_events_log_events_filter_type = 0 }
+	}
+
+	clear_array = global.events_log_view_sequence_entries
+	clear_array = global.events_log_view_date_entries
+	clear_array = global.events_log_view_event_id_entries
+	clear_array = global.events_log_view_event_type_entries
+	clear_array = global.events_log_view_actor_entries
+	clear_array = global.events_log_view_has_actor_entries
+	clear_array = global.events_log_events_view_fired_entries
+	clear_array = global.events_log_events_view_enabled_entries
+	clear_array = global.events_log_events_view_unique_entries
+
+	clear_array = temp_events_log_events_source_event_id_entries
+	clear_array = temp_events_log_events_source_event_type_entries
+	clear_array = temp_events_log_events_source_fired_entries
+	clear_array = temp_events_log_events_source_enabled_entries
+	clear_array = temp_events_log_events_source_unique_entries
+
+	set_temp_variable = { events_log_events_all_count = global.all_events^num }
+	for_loop_effect = {
+		start = 0
+		end = events_log_events_all_count
+		value = i
+
+		set_temp_variable = { event_id = global.all_events^i }
+		set_temp_variable = { events_log_events_is_enabled = 1 }
+		if = {
+			limit = { is_in_array = { global.disabled_events = event_id } }
+			set_temp_variable = { events_log_events_is_enabled = 0 }
+		}
+
+		set_temp_variable = { events_log_events_include = 1 }
+		if = {
+			limit = {
+				check_variable = { settings_events_log_events_filter_type = 1 }
+				check_variable = { events_log_events_is_enabled = 0 }
+			}
+			set_temp_variable = { events_log_events_include = 0 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { settings_events_log_events_filter_type = 2 }
+				check_variable = { events_log_events_is_enabled > 0 }
+			}
+			set_temp_variable = { events_log_events_include = 0 }
+		}
+
+		if = {
+			limit = { check_variable = { events_log_events_include > 0 } }
+			get_event_type = yes
+
+			set_temp_variable = { events_log_events_unique_flag = 0 }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { event_type = constant:event_system_event_type.major }
+						check_variable = { event_type = constant:event_system_event_type.fire_once }
+					}
+				}
+				set_temp_variable = { events_log_events_unique_flag = 1 }
+			}
+
+			set_temp_variable = { events_log_events_fired_count = 0 }
+			set_temp_variable = { events_log_events_history_scan_index = 0 }
+			while_loop_effect = {
+				limit = {
+					check_variable = {
+						events_log_events_history_scan_index < global.events_log_history_event_id_entries^num
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_history_event_id_entries^events_log_events_history_scan_index
+							value = event_id
+							compare = equals
+						}
+					}
+					add_to_temp_variable = { events_log_events_fired_count = 1 }
+				}
+				add_to_temp_variable = { events_log_events_history_scan_index = 1 }
+			}
+
+			add_to_array = {
+				array = temp_events_log_events_source_event_id_entries
+				value = event_id
+			}
+			add_to_array = {
+				array = temp_events_log_events_source_event_type_entries
+				value = event_type
+			}
+			add_to_array = {
+				array = temp_events_log_events_source_fired_entries
+				value = events_log_events_fired_count
+			}
+			add_to_array = {
+				array = temp_events_log_events_source_enabled_entries
+				value = events_log_events_is_enabled
+			}
+			add_to_array = {
+				array = temp_events_log_events_source_unique_entries
+				value = events_log_events_unique_flag
+			}
+		}
+	}
+
+	set_temp_variable = { events_log_events_source_count = temp_events_log_events_source_event_id_entries^num }
+	set_temp_variable = { events_log_events_sorted_count = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { events_log_events_sorted_count < events_log_events_source_count } }
+
+		set_temp_variable = { events_log_events_best_index = -1 }
+		set_temp_variable = { events_log_events_scan_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_events_scan_index < events_log_events_source_count } }
+			if = {
+				limit = {
+					check_variable = {
+						var = temp_events_log_events_source_event_id_entries^events_log_events_scan_index
+						value = 0
+						compare = greater_than
+					}
+				}
+
+				set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_event_id_entries^events_log_events_scan_index }
+				if = {
+					limit = { check_variable = { settings_events_log_events_sort_mode = 1 } }
+					set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_fired_entries^events_log_events_scan_index }
+				}
+
+				if = {
+					limit = { check_variable = { events_log_events_best_index < 0 } }
+					set_temp_variable = { events_log_events_best_index = events_log_events_scan_index }
+					set_temp_variable = { events_log_events_best_metric = events_log_events_candidate_metric }
+					set_temp_variable = { events_log_events_best_event_id = temp_events_log_events_source_event_id_entries^events_log_events_scan_index }
+				}
+				else_if = {
+					limit = {
+						has_country_flag = events_log_events_sort_descending
+						check_variable = { events_log_events_candidate_metric > events_log_events_best_metric }
+					}
+					set_temp_variable = { events_log_events_best_index = events_log_events_scan_index }
+					set_temp_variable = { events_log_events_best_metric = events_log_events_candidate_metric }
+					set_temp_variable = { events_log_events_best_event_id = temp_events_log_events_source_event_id_entries^events_log_events_scan_index }
+				}
+				else_if = {
+					limit = {
+						NOT = { has_country_flag = events_log_events_sort_descending }
+						check_variable = { events_log_events_candidate_metric < events_log_events_best_metric }
+					}
+					set_temp_variable = { events_log_events_best_index = events_log_events_scan_index }
+					set_temp_variable = { events_log_events_best_metric = events_log_events_candidate_metric }
+					set_temp_variable = { events_log_events_best_event_id = temp_events_log_events_source_event_id_entries^events_log_events_scan_index }
+				}
+				else_if = {
+					limit = { check_variable = { events_log_events_candidate_metric = events_log_events_best_metric } }
+					if = {
+						limit = {
+							has_country_flag = events_log_events_sort_descending
+							check_variable = {
+								var = temp_events_log_events_source_event_id_entries^events_log_events_scan_index
+								value = events_log_events_best_event_id
+								compare = greater_than
+							}
+						}
+						set_temp_variable = { events_log_events_best_index = events_log_events_scan_index }
+						set_temp_variable = { events_log_events_best_metric = events_log_events_candidate_metric }
+						set_temp_variable = { events_log_events_best_event_id = temp_events_log_events_source_event_id_entries^events_log_events_scan_index }
+					}
+					else_if = {
+						limit = {
+							NOT = { has_country_flag = events_log_events_sort_descending }
+							check_variable = {
+								var = temp_events_log_events_source_event_id_entries^events_log_events_scan_index
+								value = events_log_events_best_event_id
+								compare = less_than
+							}
+						}
+						set_temp_variable = { events_log_events_best_index = events_log_events_scan_index }
+						set_temp_variable = { events_log_events_best_metric = events_log_events_candidate_metric }
+						set_temp_variable = { events_log_events_best_event_id = temp_events_log_events_source_event_id_entries^events_log_events_scan_index }
+					}
+				}
+			}
+			add_to_temp_variable = { events_log_events_scan_index = 1 }
+		}
+
+		if = {
+			limit = { check_variable = { events_log_events_best_index > -1 } }
+			add_to_array = {
+				array = global.events_log_view_event_id_entries
+				value = temp_events_log_events_source_event_id_entries^events_log_events_best_index
+			}
+			add_to_array = {
+				array = global.events_log_view_event_type_entries
+				value = temp_events_log_events_source_event_type_entries^events_log_events_best_index
+			}
+			add_to_array = {
+				array = global.events_log_events_view_fired_entries
+				value = temp_events_log_events_source_fired_entries^events_log_events_best_index
+			}
+			add_to_array = {
+				array = global.events_log_events_view_enabled_entries
+				value = temp_events_log_events_source_enabled_entries^events_log_events_best_index
+			}
+			add_to_array = {
+				array = global.events_log_events_view_unique_entries
+				value = temp_events_log_events_source_unique_entries^events_log_events_best_index
+			}
+
+			set_variable = { temp_events_log_events_source_event_id_entries^events_log_events_best_index = -1 }
+			add_to_temp_variable = { events_log_events_sorted_count = 1 }
+		}
+		else = {
+			set_temp_variable = { events_log_events_sorted_count = events_log_events_source_count }
+		}
+	}
 }
 
 # Toggle between events view and event clusters view
@@ -1358,6 +2963,36 @@ update_unfired_events_counts = {
             add_to_variable = { global.unfired_fire_once_events_count = 1 }
         }
     }
+
+    # Count repeatable events that have never fired
+    set_variable = { global.unfired_repeatable_events_count = 0 }
+    for_loop_effect = {
+        start = 0
+        end = global.repeatable_events^num
+        value = i
+        set_temp_variable = { check_event_id = global.repeatable_events^i }
+        set_temp_variable = { event_ever_fired = 0 }
+
+        for_loop_effect = {
+            start = 0
+            end = global.fired_events^num
+            value = j
+            if = {
+                limit = { check_variable = { global.fired_events^j = check_event_id } }
+                set_temp_variable = { event_ever_fired = 1 }
+            }
+        }
+
+        if = {
+            limit = { check_variable = { event_ever_fired = 0 } }
+            add_to_variable = { global.unfired_repeatable_events_count = 1 }
+        }
+    }
+
+    # Total unique events left across all categories
+    set_variable = { global.unfired_total_events_count = global.unfired_major_events_count }
+    add_to_variable = { global.unfired_total_events_count = global.unfired_fire_once_events_count }
+    add_to_variable = { global.unfired_total_events_count = global.unfired_repeatable_events_count }
 }
 
 # ============================================================================
@@ -2294,11 +3929,14 @@ initialize_chaos_meter_settings = {
         set_variable = { settings_chaos_meter_value = 0 }
     }
 
-    # Initialize increment mode
-    set_variable = { settings_chaos_increment_mode = constant:settings_defaults.chaos_increment_mode }
+	# Initialize increment mode
+	set_variable = { settings_chaos_increment_mode = constant:settings_defaults.chaos_increment_mode }
+	set_variable = { settings_chaos_history_sort_mode = 0 } # 0 = index, 1 = actor, 2 = delta
+	set_variable = { settings_chaos_history_filter_type = 0 } # 0 = all, 1 = major, 2 = minor, 3 = other
+	clr_country_flag = chaos_meter_history_sort_descending
 
-    # Initialize tier based on current value
-    update_settings_chaos_tier = yes
+	# Initialize tier based on current value
+	update_settings_chaos_tier = yes
 }
 
 # ============================================================================
@@ -2508,11 +4146,30 @@ cycle_chaos_tier_next = {
 
 # Update actual chaos meter to match preview settings
 update_actual_chaos_meter = {
+    set_temp_variable = { old_chaos_value = 0 }
+    if = {
+        limit = { has_variable = global.chaos_meter_value }
+        set_temp_variable = { old_chaos_value = global.chaos_meter_value }
+    }
+
+    set_temp_variable = { chaos_change = settings_chaos_meter_value }
+    subtract_from_temp_variable = { chaos_change = old_chaos_value }
+    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.settings.manual_update }
+
     # Set the actual chaos meter value
     set_variable = { global.chaos_meter_value = settings_chaos_meter_value }
 
     # Update actual chaos meter tier
     update_chaos_meter_tier = yes
+    if = {
+        limit = {
+            OR = {
+                check_variable = { chaos_change > 0 }
+                check_variable = { chaos_change < 0 }
+            }
+        }
+        record_chaos_meter_history_entry = yes
+    }
 
     log = "CHAOS REDUX SETTINGS: Chaos meter updated to [?settings_chaos_meter_value] via settings panel"
 }
@@ -2527,11 +4184,28 @@ toggle_chaos_meter_disabled = {
         # Restore the chaos meter value from backup if it exists
         if = {
             limit = { has_variable = global.chaos_meter_backup_value }
+            set_temp_variable = { old_chaos_value = 0 }
+            if = {
+                limit = { has_variable = global.chaos_meter_value }
+                set_temp_variable = { old_chaos_value = global.chaos_meter_value }
+            }
             set_variable = { global.chaos_meter_value = global.chaos_meter_backup_value }
+            set_temp_variable = { chaos_change = global.chaos_meter_value }
+            subtract_from_temp_variable = { chaos_change = old_chaos_value }
+            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.settings.reenabled }
             clear_variable = global.chaos_meter_backup_value
 
             # Update chaos meter tier after restoring value
             update_chaos_meter_tier = yes
+            if = {
+                limit = {
+                    OR = {
+                        check_variable = { chaos_change > 0 }
+                        check_variable = { chaos_change < 0 }
+                    }
+                }
+                record_chaos_meter_history_entry = yes
+            }
         }
 
         log = "CHAOS REDUX SETTINGS: Chaos meter ENABLED - value restored to [?global.chaos_meter_value]"
@@ -2550,12 +4224,49 @@ toggle_chaos_meter_disabled = {
         }
 
         # Set chaos meter to 0 temporarily
+        set_temp_variable = { old_chaos_value = 0 }
+        if = {
+            limit = { has_variable = global.chaos_meter_value }
+            set_temp_variable = { old_chaos_value = global.chaos_meter_value }
+        }
         set_variable = { global.chaos_meter_value = 0 }
+        set_temp_variable = { chaos_change = global.chaos_meter_value }
+        subtract_from_temp_variable = { chaos_change = old_chaos_value }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.settings.disabled }
 
         update_chaos_meter_tier = yes
+        if = {
+            limit = {
+                OR = {
+                    check_variable = { chaos_change > 0 }
+                    check_variable = { chaos_change < 0 }
+                }
+            }
+            record_chaos_meter_history_entry = yes
+        }
 
         log = "CHAOS REDUX SETTINGS: Chaos meter DISABLED - backed up value [?global.chaos_meter_backup_value] and set to 0"
     }
+}
+
+# Toggle chaosx logic event logging (global)
+toggle_logic_log_lines = {
+    if = {
+        limit = { has_global_flag = settings_logic_log_lines_enabled }
+        clr_global_flag = settings_logic_log_lines_enabled
+        log = "CHAOS REDUX SETTINGS: chaosx_logic_effects event logs disabled"
+    }
+    else = {
+        set_global_flag = settings_logic_log_lines_enabled
+        log = "CHAOS REDUX SETTINGS: chaosx_logic_effects event logs enabled"
+    }
+}
+
+# Write a single debug snapshot regardless of the auto-log toggle
+write_event_log_snapshot = {
+    set_variable = { temp_force_logic_log = 1 }
+    log_event_system_debug = yes
+    clear_variable = temp_force_logic_log
 }
 
 # Reset chaos meter settings to defaults
@@ -2992,4 +4703,38 @@ reset_advanced_settings_to_defaults = {
     set_variable = { global.settings_cap_reduction = constant:event_system_defaults.reduce_cap_factor }
     set_variable = { global.settings_major_weight_per_minor = constant:event_system_defaults.major_event_weight_per_minor }
     set_variable = { settings_advanced_increment_mode = constant:settings_defaults.advanced_increment_mode }
+}
+# Initialize events log settings (country scoped)
+initialize_events_log_settings = {
+	set_variable = { settings_events_log_sort_mode = 0 } # 0 = index, 1 = event id, 2 = actor
+	set_variable = { settings_events_log_filter_type = 0 } # 0 = all, 1 = major, 2 = repeatable, 3 = fire-once
+	set_variable = { settings_events_log_evolution_sort_mode = 0 } # 0 = index, 1 = tier, 2 = stage, 3 = actor
+	set_variable = { settings_events_log_evolution_filter_type = 0 } # 0 = all, 1 = major, 2 = minor
+	set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired
+	set_variable = { settings_events_log_events_filter_type = 0 } # 0 = all, 1 = enabled, 2 = disabled
+	clr_country_flag = events_log_sort_descending
+	clr_country_flag = events_log_evolution_sort_descending
+	clr_country_flag = events_log_events_sort_descending
+	clr_country_flag = events_log_history_tab
+	clr_country_flag = events_log_evolutions_tab
+	clr_country_flag = events_log_events_tab
+	clr_country_flag = events_log_event_details_open
+	clr_country_flag = events_log_evolution_details_open
+	set_variable = { events_log_selected_event_id = 0 }
+	set_variable = { events_log_selected_evolution_type = 0 }
+	set_variable = { events_log_selected_evolution_tier = 0 }
+	set_variable = { events_log_selected_evolution_stage = 0 }
+	set_variable = { events_log_selected_evolution_event_id = 0 }
+	set_variable = { events_log_selected_evolution_event_type = 0 }
+	set_variable = { events_log_selected_evolution_actor = 0 }
+	set_variable = { events_log_selected_evolution_has_actor = 0 }
+	set_variable = { events_log_selected_evolution_date = 0 }
+	clear_array = global.events_log_open_event_detail_entries
+	clear_array = global.events_log_open_event_detail_type_entries
+	clear_array = global.events_log_open_event_detail_fired_entries
+	clear_array = global.events_log_open_event_detail_enabled_entries
+	clear_array = global.events_log_open_event_detail_unique_entries
+	clear_array = global.events_log_event_detail_evolution_type_entries
+	clear_array = global.events_log_event_detail_evolution_tier_entries
+	clear_array = global.events_log_event_detail_evolution_stage_entries
 }

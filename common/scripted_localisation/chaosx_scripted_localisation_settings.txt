@@ -172,6 +172,19 @@ defined_text = {
     }
 }
 
+# Chaosx logic auto-log checkbox sprite
+defined_text = {
+    name = GetLogicLogLinesCheckboxSprite
+    text = {
+        trigger = { has_global_flag = settings_logic_log_lines_enabled }
+        localization_key = "GFX_chaosx_checkbox_checked"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "GFX_chaosx_checkbox_unchecked"
+    }
+}
+
 # ============================================================================
 # TIMER SYSTEM SCRIPTED LOCALISATION
 # ============================================================================
@@ -598,6 +611,45 @@ defined_text = {
         localization_key = "Unknown"
     }
 }
+
+defined_text = {
+    name = GetEventsLogHistoryType
+    text = {
+        trigger = {
+            check_variable = {
+                var = global.events_log_view_event_type_entries^events_log_history_index
+                value = constant:event_system_event_type.major
+                compare = equals
+            }
+        }
+        localization_key = settings.major.colored
+    }
+    text = {
+        trigger = {
+            check_variable = {
+                var = global.events_log_view_event_type_entries^events_log_history_index
+                value = constant:event_system_event_type.repeatable
+                compare = equals
+            }
+        }
+        localization_key = settings.minor_repeatable.colored
+    }
+    text = {
+        trigger = {
+            check_variable = {
+                var = global.events_log_view_event_type_entries^events_log_history_index
+                value = constant:event_system_event_type.fire_once
+                compare = equals
+            }
+        }
+        localization_key = settings.minor_fire_once.colored
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "Unknown"
+    }
+}
+
 # Event types
 defined_text = {
     name = GetLastFiredIDColoured
@@ -9396,10 +9448,10 @@ defined_text = {
         }
         localization_key = "Chaos value: [?global.chaos_meter_backup_value] (Disabled)"
     }
-    text = {
-        trigger = { has_variable = global.chaos_meter_value }
-        localization_key = chaos_meter.tt
-    }
+	text = {
+		trigger = { has_variable = global.chaos_meter_value }
+		localization_key = chaos_meter.tt.settings
+	}
     text = {
         trigger = { always = yes }
         localization_key = "Chaos value: 0 (Not initialized)"
