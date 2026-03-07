@@ -92,6 +92,21 @@ bio_apply_outbreak_strike_potency_to_contamination = {
 	set_temp_variable = { var = contamination_days value = bio_scaled_contamination_days }
 }
 
+bio_register_state_civilian_deaths = {
+	if = {
+		limit = { NOT = { has_variable = bio_state_deaths_percent } }
+		set_temp_variable = { bio_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.plague_application }
+	}
+	set_temp_variable = { chaos_state_deaths_percent = bio_state_deaths_percent }
+	set_temp_variable = { chaos_state_deaths_mult = 1 }
+	chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+	set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.outbreak_cap_factor }
+	set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+	set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+	chaos_meter_register_state_civilian_deaths_percent = yes
+}
+
 # Apply anthrax contamination to a state
 # Should be called in state scope with contamination_days temp variable set
 apply_anthrax_contamination = {
@@ -117,10 +132,10 @@ apply_anthrax_contamination = {
     }
 
     # If the controlling country has antibiotics production active, apply protection immediately
-    if = {
-        limit = {
-            THIS.controller = { has_idea = anthrax_antibiotics_mass_production_idea }
-        }
+	    if = {
+	        limit = {
+	            THIS.controller = { has_idea = anthrax_antibiotics_mass_production_idea }
+	        }
         THIS.controller = {
             # Calculate antibiotics effectiveness based on civilian factories
             if = {
@@ -144,13 +159,16 @@ apply_anthrax_contamination = {
                 reduce_contamination_effects = yes
                 force_update_dynamic_modifier = yes
             }
-        }
-    }
+	        }
+	    }
 
-    THIS.controller = {
-        set_country_flag = bioweapon_target
-        add_to_variable = { bioweapon_contaminated_states = 1 }
-    }
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.anthrax_application }
+		bio_register_state_civilian_deaths = yes
+	
+	    THIS.controller = {
+	        set_country_flag = bioweapon_target
+	        add_to_variable = { bioweapon_contaminated_states = 1 }
+	    }
 
     # Set state flags
     set_state_flag = anthrax_contaminated
@@ -184,8 +202,8 @@ apply_anthrax_contamination_scaled = {
 
 	add_dynamic_modifier = { modifier = anthrax_contaminated_state days = contamination_days }
 
-	if = {
-		limit = { THIS.controller = { has_idea = anthrax_antibiotics_mass_production_idea } }
+		if = {
+			limit = { THIS.controller = { has_idea = anthrax_antibiotics_mass_production_idea } }
 		THIS.controller = {
 			if = {
 				limit = { num_of_civilian_factories > 0 }
@@ -200,13 +218,16 @@ apply_anthrax_contamination_scaled = {
 				reduce_contamination_effects = yes
 				force_update_dynamic_modifier = yes
 			}
+			}
 		}
-	}
 
-	THIS.controller = {
-		set_country_flag = bioweapon_target
-		add_to_variable = { bioweapon_contaminated_states = 1 }
-	}
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.anthrax_application }
+		bio_register_state_civilian_deaths = yes
+	
+		THIS.controller = {
+			set_country_flag = bioweapon_target
+			add_to_variable = { bioweapon_contaminated_states = 1 }
+		}
 	set_state_flag = anthrax_contaminated
 	set_state_flag = bioweapon_contaminated
 	calculate_contamination_defense_effectiveness = yes
@@ -237,10 +258,10 @@ apply_plague_contamination = {
     }
 
     # If the controlling country has antibiotics production active, apply protection immediately
-    if = {
-        limit = {
-            THIS.controller = { has_idea = plague_antibiotics_mass_production_idea }
-        }
+	    if = {
+	        limit = {
+	            THIS.controller = { has_idea = plague_antibiotics_mass_production_idea }
+	        }
         THIS.controller = {
             # Calculate antibiotics effectiveness based on civilian factories
             if = {
@@ -264,13 +285,16 @@ apply_plague_contamination = {
                 reduce_contamination_effects = yes
                 force_update_dynamic_modifier = yes
             }
-        }
-    }
+	        }
+	    }
 
-    THIS.controller = {
-        set_country_flag = bioweapon_target
-        add_to_variable = { bioweapon_contaminated_states = 1 }
-    }
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.plague_application }
+		bio_register_state_civilian_deaths = yes
+	
+	    THIS.controller = {
+	        set_country_flag = bioweapon_target
+	        add_to_variable = { bioweapon_contaminated_states = 1 }
+	    }
 
     # Set state flags
     set_state_flag = plague_contaminated
@@ -304,8 +328,8 @@ apply_plague_contamination_scaled = {
 
 	add_dynamic_modifier = { modifier = plague_contaminated_state days = contamination_days }
 
-	if = {
-		limit = { THIS.controller = { has_idea = plague_antibiotics_mass_production_idea } }
+		if = {
+			limit = { THIS.controller = { has_idea = plague_antibiotics_mass_production_idea } }
 		THIS.controller = {
 			if = {
 				limit = { num_of_civilian_factories > 0 }
@@ -320,13 +344,16 @@ apply_plague_contamination_scaled = {
 				reduce_contamination_effects = yes
 				force_update_dynamic_modifier = yes
 			}
+			}
 		}
-	}
 
-	THIS.controller = {
-		set_country_flag = bioweapon_target
-		add_to_variable = { bioweapon_contaminated_states = 1 }
-	}
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.plague_application }
+		bio_register_state_civilian_deaths = yes
+	
+		THIS.controller = {
+			set_country_flag = bioweapon_target
+			add_to_variable = { bioweapon_contaminated_states = 1 }
+		}
 	set_state_flag = plague_contaminated
 	set_state_flag = bioweapon_contaminated
 	calculate_contamination_defense_effectiveness = yes
@@ -388,13 +415,15 @@ apply_anthrax_bioweapon_consequences = {
                 }
             }
         }
-        var:victim_country = {
-            add_opinion_modifier = {
-                target = PREV
-                modifier = bioweapon_user
-            }
-        }
-    }
+			var:victim_country = {
+				add_opinion_modifier = {
+					target = PREV
+					modifier = bioweapon_user
+				}
+			}
+			set_country_flag = used_unconventional_weapon
+			air_cleanliness_treaty_on_unconventional_use = yes
+		}
 
     # National effects on the target country
     var:victim_country = {
@@ -473,13 +502,15 @@ apply_plague_bioweapon_consequences = {
                 }
             }
         }
-        var:victim_country = {
-            add_opinion_modifier = {
-                target = PREV
-                modifier = bioweapon_user
-            }
-        }
-    }
+			var:victim_country = {
+				add_opinion_modifier = {
+					target = PREV
+					modifier = bioweapon_user
+				}
+			}
+			set_country_flag = used_unconventional_weapon
+			air_cleanliness_treaty_on_unconventional_use = yes
+		}
 
     # National effects on the target country
     var:victim_country = {
@@ -1362,10 +1393,10 @@ apply_tularemia_contamination = {
     }
 
     # If the controlling country has antibiotics production active, apply protection immediately
-    if = {
-        limit = {
-            THIS.controller = { has_idea = tularemia_antibiotics_mass_production_idea }
-        }
+	    if = {
+	        limit = {
+	            THIS.controller = { has_idea = tularemia_antibiotics_mass_production_idea }
+	        }
         THIS.controller = {
             # Calculate antibiotics effectiveness based on civilian factories
             if = {
@@ -1389,13 +1420,16 @@ apply_tularemia_contamination = {
                 reduce_contamination_effects = yes
                 force_update_dynamic_modifier = yes
             }
-        }
-    }
+	        }
+	    }
 
-    THIS.controller = {
-        set_country_flag = bioweapon_target
-        add_to_variable = { bioweapon_contaminated_states = 1 }
-    }
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.tularemia_application }
+		bio_register_state_civilian_deaths = yes
+	
+	    THIS.controller = {
+	        set_country_flag = bioweapon_target
+	        add_to_variable = { bioweapon_contaminated_states = 1 }
+	    }
 
     # Set state flags
     set_state_flag = tularemia_contaminated
@@ -1432,8 +1466,8 @@ apply_tularemia_contamination_scaled = {
 
 	add_dynamic_modifier = { modifier = tularemia_contaminated_state days = contamination_days }
 
-	if = {
-		limit = { THIS.controller = { has_idea = tularemia_antibiotics_mass_production_idea } }
+		if = {
+			limit = { THIS.controller = { has_idea = tularemia_antibiotics_mass_production_idea } }
 		THIS.controller = {
 			if = {
 				limit = { num_of_civilian_factories > 0 }
@@ -1448,13 +1482,16 @@ apply_tularemia_contamination_scaled = {
 				reduce_contamination_effects = yes
 				force_update_dynamic_modifier = yes
 			}
+			}
 		}
-	}
 
-	THIS.controller = {
-		set_country_flag = bioweapon_target
-		add_to_variable = { bioweapon_contaminated_states = 1 }
-	}
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.tularemia_application }
+		bio_register_state_civilian_deaths = yes
+	
+		THIS.controller = {
+			set_country_flag = bioweapon_target
+			add_to_variable = { bioweapon_contaminated_states = 1 }
+		}
 	set_state_flag = tularemia_contaminated
 	set_state_flag = bioweapon_contaminated
 	calculate_contamination_defense_effectiveness = yes
@@ -1490,10 +1527,10 @@ apply_smallpox_contamination = {
     }
 
     # Check for existing vaccination protection
-    if = {
-        limit = {
-            THIS.controller = { has_idea = smallpox_vaccination_program_idea }
-        }
+	    if = {
+	        limit = {
+	            THIS.controller = { has_idea = smallpox_vaccination_program_idea }
+	        }
         THIS.controller = {
             # Calculate vaccination effectiveness based on civilian factories
             if = {
@@ -1517,12 +1554,15 @@ apply_smallpox_contamination = {
                 reduce_contamination_effects = yes
                 force_update_dynamic_modifier = yes
             }
-        }
-    }
+	        }
+	    }
 
-    THIS.controller = {
-        set_country_flag = bioweapon_target
-        add_to_variable = { bioweapon_contaminated_states = 1 }
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.smallpox_application }
+		bio_register_state_civilian_deaths = yes
+	
+	    THIS.controller = {
+	        set_country_flag = bioweapon_target
+	        add_to_variable = { bioweapon_contaminated_states = 1 }
 
         # Trigger country-wide panic and health crisis
         add_stability = -0.05
@@ -1561,16 +1601,19 @@ apply_smallpox_contamination_scaled = {
 
 	add_dynamic_modifier = { modifier = smallpox_contaminated_state days = contamination_days }
 
-	if = {
-		limit = { has_state_flag = smallpox_vaccination_protection_active }
-		reduce_contamination_effects = yes
-		force_update_dynamic_modifier = yes
-	}
+		if = {
+			limit = { has_state_flag = smallpox_vaccination_protection_active }
+			reduce_contamination_effects = yes
+			force_update_dynamic_modifier = yes
+		}
 
-	THIS.controller = {
-		set_country_flag = bioweapon_target
-		add_to_variable = { bioweapon_contaminated_states = 1 }
-	}
+		set_temp_variable = { var = bio_state_deaths_percent value = constant:chaos_meter_contamination_deaths_percent.smallpox_application }
+		bio_register_state_civilian_deaths = yes
+	
+		THIS.controller = {
+			set_country_flag = bioweapon_target
+			add_to_variable = { bioweapon_contaminated_states = 1 }
+		}
 	set_state_flag = smallpox_contaminated
 	set_state_flag = bioweapon_contaminated
 	calculate_contamination_defense_effectiveness = yes
@@ -1747,13 +1790,15 @@ apply_tularemia_bioweapon_consequences = {
                 }
             }
         }
-        var:victim_country = {
-            add_opinion_modifier = {
-                target = PREV
-                modifier = bioweapon_user
-            }
-        }
-    }
+			var:victim_country = {
+				add_opinion_modifier = {
+					target = PREV
+					modifier = bioweapon_user
+				}
+			}
+			set_country_flag = used_unconventional_weapon
+			air_cleanliness_treaty_on_unconventional_use = yes
+		}
 
     # National effects on the target country
     var:victim_country = {
@@ -1834,13 +1879,15 @@ apply_smallpox_bioweapon_consequences = {
                 }
             }
         }
-        var:victim_country = {
-            add_opinion_modifier = {
-                target = PREV
-                modifier = strategic_bioweapon_user
-            }
-        }
-    }
+			var:victim_country = {
+				add_opinion_modifier = {
+					target = PREV
+					modifier = strategic_bioweapon_user
+				}
+			}
+			set_country_flag = used_unconventional_weapon
+			air_cleanliness_treaty_on_unconventional_use = yes
+		}
 
     # National effects on the target country
     var:victim_country = {

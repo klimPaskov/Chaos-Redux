@@ -9,6 +9,7 @@
 # ============================================================================
 
 # Chaos meter tuning is centralized in `common/script_constants/chaos_meter_constants.txt`.
+@air_cleanliness_treaty_cleaning_day_cooldown_days = 180
 
 # ============================================================================
 # INITIALIZATION
@@ -19,6 +20,8 @@ initialize_chaos_meter_system = {
 
     # Initialize disabled state to enabled (clear flag = enabled, set flag = disabled)
     clr_global_flag = settings_chaos_meter_disabled
+	clr_global_flag = settings_air_cleanliness_disabled
+	clr_global_flag = settings_chaos_deaths_disabled
 
     # Initialize tracking variables
     set_variable = { global.last_casualty_count = 0 }
@@ -30,11 +33,106 @@ initialize_chaos_meter_system = {
     set_variable = { global.total_countries_for_stability = 0 }
     set_variable = { global.last_average_democracy = 0 }
     set_variable = { global.total_countries_for_democracy = 0 }
+    set_variable = { global.chaos_meter_history_sequence = 0 }
+    set_variable = { global.air_contamination_bp = 0 }
+    set_variable = { global.air_contamination_chaos_buffer_bp = 0 }
+    set_variable = { global.air_contamination_percent = 0 }
+    set_variable = { global.air_cleanliness_percent = 100 }
+    set_variable = { global.air_contamination_chem_states = 0 }
+    set_variable = { global.air_contamination_outbreak_states = 0 }
+    set_variable = { global.air_contamination_chem_bp = 0 }
+	set_variable = { global.air_contamination_outbreak_bp = 0 }
+	set_variable = { global.air_contamination_decay_bp = 0 }
+	set_variable = { global.air_contamination_last_delta_bp = 0 }
+	set_variable = { global.air_contamination_last_nuke_bp = 0 }
+	set_variable = { global.air_contamination_chem_percent = 0 }
+	set_variable = { global.air_contamination_outbreak_percent = 0 }
+	set_variable = { global.air_contamination_decay_percent = 0 }
+	set_variable = { global.air_contamination_last_delta_percent = 0 }
+	set_variable = { global.air_contamination_last_nuke_percent = 0 }
+	set_variable = { global.chaos_meter_deaths_total = 0 }
+	set_variable = { global.chaos_meter_deaths_civilian_total = 0 }
+	set_variable = { global.chaos_meter_deaths_military_total = 0 }
+	set_variable = { global.chaos_meter_deaths_last_change = 0 }
+	set_variable = { global.chaos_meter_deaths_chaos_buffer = 0 }
+	set_variable = { global.chaos_meter_deaths_chaos_generated = 0 }
+	set_variable = { global.chaos_meter_deaths_sequence = 0 }
+	set_variable = { global.chaos_meter_total_population = 0 }
+	set_variable = { global.chaos_meter_total_population_k = 0 }
 
-    every_country = {
-        add_to_variable = { global.last_total_divisions = num_armies }
-        add_to_variable = { global.last_average_stability = stability }
-        add_to_variable = { global.total_countries_for_stability = 1 }
+    clear_array = global.chaos_meter_history_sequence_entries
+    clear_array = global.chaos_meter_history_delta_entries
+    clear_array = global.chaos_meter_history_total_entries
+    clear_array = global.chaos_meter_history_reason_entries
+    clear_array = global.chaos_meter_history_date_entries
+	clear_array = global.chaos_meter_history_target_count_entries
+	clear_array = global.chaos_meter_history_actor_entries
+	clear_array = global.chaos_meter_history_has_actor_entries
+	clear_array = global.chaos_meter_history_view_sequence_entries
+	clear_array = global.chaos_meter_history_view_delta_entries
+	clear_array = global.chaos_meter_history_view_total_entries
+	clear_array = global.chaos_meter_history_view_reason_entries
+	clear_array = global.chaos_meter_history_view_date_entries
+	clear_array = global.chaos_meter_history_view_target_count_entries
+	clear_array = global.chaos_meter_history_view_actor_entries
+	clear_array = global.chaos_meter_history_view_has_actor_entries
+	clear_array = global.chaos_meter_condemnation_view_country_entries
+	clear_array = global.chaos_meter_condemnation_view_value_entries
+	clear_array = global.chaos_meter_deaths_sequence_entries
+	clear_array = global.chaos_meter_deaths_date_entries
+	clear_array = global.chaos_meter_deaths_change_entries
+	clear_array = global.chaos_meter_deaths_total_entries
+	clear_array = global.chaos_meter_deaths_reason_entries
+	clear_array = global.chaos_meter_deaths_civilian_entries
+	clear_array = global.chaos_meter_deaths_military_entries
+	clear_array = global.chaos_meter_deaths_country_entries
+	clear_array = global.chaos_meter_deaths_has_country_entries
+	clear_array = global.chaos_meter_deaths_view_sequence_entries
+	clear_array = global.chaos_meter_deaths_view_date_entries
+	clear_array = global.chaos_meter_deaths_view_change_entries
+	clear_array = global.chaos_meter_deaths_view_total_entries
+	clear_array = global.chaos_meter_deaths_view_reason_entries
+	clear_array = global.chaos_meter_deaths_view_civilian_entries
+	clear_array = global.chaos_meter_deaths_view_military_entries
+	clear_array = global.chaos_meter_deaths_view_country_entries
+	clear_array = global.chaos_meter_deaths_view_has_country_entries
+	clear_array = global.chaos_meter_deaths_detail_sequence_entries
+	clear_array = global.chaos_meter_deaths_detail_date_entries
+	clear_array = global.chaos_meter_deaths_detail_change_entries
+	clear_array = global.chaos_meter_deaths_detail_reason_entries
+	clear_array = global.chaos_meter_deaths_detail_civilian_entries
+	clear_array = global.chaos_meter_deaths_detail_military_entries
+
+	clr_global_flag = air_contamination_threshold_25
+	clr_global_flag = air_contamination_threshold_50
+	clr_global_flag = air_contamination_threshold_75
+	clr_global_flag = air_contamination_threshold_100
+	clr_global_flag = air_contamination_irreversible
+	clr_global_flag = air_contamination_winter
+	clr_global_flag = air_contamination_news_25_fired
+	clr_global_flag = air_contamination_news_50_fired
+	clr_global_flag = air_contamination_news_75_fired
+	clr_global_flag = air_contamination_news_100_fired
+	clr_global_flag = air_cleanliness_treaty_active
+	clr_global_flag = air_cleanliness_treaty_news_fired
+	clr_global_flag = air_cleanliness_treaty_cleaning_day_cooldown
+	if = {
+		limit = { has_event_target = air_cleanliness_treaty_founder }
+		clear_global_event_target = air_cleanliness_treaty_founder
+	}
+
+	every_state = {
+		set_temp_variable = { chaos_state_population_total_k = state_population_k }
+		add_to_variable = { global.chaos_meter_total_population_k = chaos_state_population_total_k }
+	}
+
+	every_country = {
+		clr_country_flag = air_cleanliness_treaty_member
+		clr_country_flag = air_cleanliness_treaty_banned
+		set_variable = { chaos_meter_last_casualty_count = casualties }
+		add_to_variable = { global.last_total_divisions = num_armies }
+		add_to_variable = { global.last_average_stability = stability }
+		add_to_variable = { global.total_countries_for_stability = 1 }
         add_to_variable = { global.last_total_mils = num_of_military_factories }
 
         # Add democracy tracking
@@ -56,7 +154,2640 @@ initialize_chaos_meter_system = {
     }
 
     update_chaos_meter_tier = yes
-    log = "CHAOS METER: System initialized with value [?global.chaos_meter_value]"
+	log = "CHAOS METER: System initialized with value [?global.chaos_meter_value]"
+}
+
+sanitize_chaos_meter_history_actor_entries = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_history_sequence_entries^num
+				value = global.chaos_meter_history_actor_entries^num
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { missing_actor_entries = global.chaos_meter_history_sequence_entries^num }
+		subtract_from_temp_variable = { missing_actor_entries = global.chaos_meter_history_actor_entries^num }
+
+		while_loop_effect = {
+			limit = { check_variable = { missing_actor_entries > 0 } }
+			add_to_array = {
+				array = global.chaos_meter_history_actor_entries
+				value = 0
+			}
+			add_to_array = {
+				array = global.chaos_meter_history_has_actor_entries
+				value = 0
+			}
+			subtract_from_temp_variable = { missing_actor_entries = 1 }
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_history_sequence_entries^num
+				value = global.chaos_meter_history_has_actor_entries^num
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { missing_has_actor_entries = global.chaos_meter_history_sequence_entries^num }
+		subtract_from_temp_variable = { missing_has_actor_entries = global.chaos_meter_history_has_actor_entries^num }
+
+		while_loop_effect = {
+			limit = { check_variable = { missing_has_actor_entries > 0 } }
+			add_to_array = {
+				array = global.chaos_meter_history_has_actor_entries
+				value = 0
+			}
+			subtract_from_temp_variable = { missing_has_actor_entries = 1 }
+		}
+	}
+
+	set_temp_variable = { chaos_history_sanitize_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = chaos_history_sanitize_index
+				value = global.chaos_meter_history_sequence_entries^num
+				compare = less_than
+			}
+		}
+
+		if = {
+			limit = {
+				OR = {
+					check_variable = {
+						var = global.chaos_meter_history_reason_entries^chaos_history_sanitize_index
+						value = constant:chaos_meter_history_reason.generic.increase
+						compare = equals
+					}
+					check_variable = {
+						var = global.chaos_meter_history_reason_entries^chaos_history_sanitize_index
+						value = constant:chaos_meter_history_reason.generic.decrease
+						compare = equals
+					}
+					check_variable = {
+						var = global.chaos_meter_history_reason_entries^chaos_history_sanitize_index
+						value = constant:chaos_meter_history_reason.settings.manual_update
+						compare = equals
+					}
+					check_variable = {
+						var = global.chaos_meter_history_reason_entries^chaos_history_sanitize_index
+						value = constant:chaos_meter_history_reason.settings.disabled
+						compare = equals
+					}
+					check_variable = {
+						var = global.chaos_meter_history_reason_entries^chaos_history_sanitize_index
+						value = constant:chaos_meter_history_reason.settings.reenabled
+						compare = equals
+					}
+					AND = {
+						check_variable = {
+							var = global.chaos_meter_history_reason_entries^chaos_history_sanitize_index
+							value = constant:chaos_meter_history_reason.world_state.world_tension_rise
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = global.chaos_meter_history_reason_entries^chaos_history_sanitize_index
+							value = constant:chaos_meter_history_reason.world_state.deaths_rise
+							compare = less_than_or_equals
+						}
+					}
+				}
+			}
+			set_variable = { global.chaos_meter_history_actor_entries^chaos_history_sanitize_index = 0 }
+			set_variable = { global.chaos_meter_history_has_actor_entries^chaos_history_sanitize_index = 0 }
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_history_has_actor_entries^chaos_history_sanitize_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_variable = { global.chaos_meter_history_actor_entries^chaos_history_sanitize_index = 0 }
+			set_variable = { global.chaos_meter_history_has_actor_entries^chaos_history_sanitize_index = 0 }
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_history_has_actor_entries^chaos_history_sanitize_index
+					value = 0
+					compare = greater_than
+				}
+				check_variable = {
+					var = global.chaos_meter_history_actor_entries^chaos_history_sanitize_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_variable = { global.chaos_meter_history_actor_entries^chaos_history_sanitize_index = 0 }
+			set_variable = { global.chaos_meter_history_has_actor_entries^chaos_history_sanitize_index = 0 }
+		}
+
+		add_to_temp_variable = { chaos_history_sanitize_index = 1 }
+	}
+}
+
+cycle_chaos_meter_history_sort_mode_prev = {
+	if = {
+		limit = { check_variable = { settings_chaos_history_sort_mode > 0 } }
+		subtract_from_variable = { settings_chaos_history_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_history_sort_mode = 2 }
+	}
+	rebuild_chaos_meter_history_view = yes
+}
+
+cycle_chaos_meter_history_sort_mode_next = {
+	if = {
+		limit = { check_variable = { settings_chaos_history_sort_mode < 2 } }
+		add_to_variable = { settings_chaos_history_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_history_sort_mode = 0 }
+	}
+	rebuild_chaos_meter_history_view = yes
+}
+
+toggle_chaos_meter_history_sort_order = {
+	if = {
+		limit = { has_country_flag = chaos_meter_history_sort_descending }
+		clr_country_flag = chaos_meter_history_sort_descending
+	}
+	else = {
+		set_country_flag = chaos_meter_history_sort_descending
+	}
+	rebuild_chaos_meter_history_view = yes
+}
+
+cycle_chaos_meter_history_filter_prev = {
+	if = {
+		limit = { check_variable = { settings_chaos_history_filter_type > 0 } }
+		subtract_from_variable = { settings_chaos_history_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_history_filter_type = 3 }
+	}
+	rebuild_chaos_meter_history_view = yes
+}
+
+cycle_chaos_meter_history_filter_next = {
+	if = {
+		limit = { check_variable = { settings_chaos_history_filter_type < 3 } }
+		add_to_variable = { settings_chaos_history_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_history_filter_type = 0 }
+	}
+	rebuild_chaos_meter_history_view = yes
+}
+
+toggle_chaos_meter_condemnation_sort_order = {
+	if = {
+		limit = { has_country_flag = chaos_meter_condemnation_sort_descending }
+		clr_country_flag = chaos_meter_condemnation_sort_descending
+	}
+	else = {
+		set_country_flag = chaos_meter_condemnation_sort_descending
+	}
+	rebuild_chaos_meter_condemnation_view = yes
+}
+
+cycle_chaos_meter_deaths_sort_mode_prev = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_sort_mode > 0 } }
+		subtract_from_variable = { settings_chaos_deaths_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_sort_mode = 2 }
+	}
+	rebuild_chaos_meter_deaths_view = yes
+}
+
+cycle_chaos_meter_deaths_sort_mode_next = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_sort_mode < 2 } }
+		add_to_variable = { settings_chaos_deaths_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_sort_mode = 0 }
+	}
+	rebuild_chaos_meter_deaths_view = yes
+}
+
+cycle_chaos_meter_deaths_filter_prev = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_filter_type > 0 } }
+		subtract_from_variable = { settings_chaos_deaths_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_filter_type = 2 }
+	}
+	rebuild_chaos_meter_deaths_view = yes
+}
+
+cycle_chaos_meter_deaths_filter_next = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_filter_type < 2 } }
+		add_to_variable = { settings_chaos_deaths_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_filter_type = 0 }
+	}
+	rebuild_chaos_meter_deaths_view = yes
+}
+
+toggle_chaos_meter_deaths_sort_order = {
+	if = {
+		limit = { has_country_flag = chaos_meter_deaths_sort_descending }
+		clr_country_flag = chaos_meter_deaths_sort_descending
+	}
+	else = {
+		set_country_flag = chaos_meter_deaths_sort_descending
+	}
+	rebuild_chaos_meter_deaths_view = yes
+}
+
+cycle_chaos_meter_deaths_details_sort_mode_prev = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_mode > 0 } }
+		subtract_from_variable = { settings_chaos_deaths_details_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_details_sort_mode = 2 }
+	}
+	rebuild_chaos_meter_deaths_details_view = yes
+}
+
+cycle_chaos_meter_deaths_details_sort_mode_next = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_mode < 2 } }
+		add_to_variable = { settings_chaos_deaths_details_sort_mode = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_details_sort_mode = 0 }
+	}
+	rebuild_chaos_meter_deaths_details_view = yes
+}
+
+cycle_chaos_meter_deaths_details_filter_prev = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_filter_type > 0 } }
+		subtract_from_variable = { settings_chaos_deaths_details_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_details_filter_type = 2 }
+	}
+	rebuild_chaos_meter_deaths_details_view = yes
+}
+
+cycle_chaos_meter_deaths_details_filter_next = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_filter_type < 2 } }
+		add_to_variable = { settings_chaos_deaths_details_filter_type = 1 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_details_filter_type = 0 }
+	}
+	rebuild_chaos_meter_deaths_details_view = yes
+}
+
+toggle_chaos_meter_deaths_details_sort_order = {
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_order > 0 } }
+		set_variable = { settings_chaos_deaths_details_sort_order = 0 }
+	}
+	else = {
+		set_variable = { settings_chaos_deaths_details_sort_order = 1 }
+	}
+	rebuild_chaos_meter_deaths_details_view = yes
+}
+
+toggle_air_cleanliness_system_disabled = {
+	if = {
+		limit = { has_global_flag = settings_air_cleanliness_disabled }
+		clr_global_flag = settings_air_cleanliness_disabled
+		air_contamination_refresh_values = yes
+		air_contamination_update_threshold_flags = yes
+		air_contamination_apply_country_modifier = yes
+	}
+	else = {
+		set_global_flag = settings_air_cleanliness_disabled
+		set_variable = { global.air_contamination_chem_states = 0 }
+		set_variable = { global.air_contamination_outbreak_states = 0 }
+		set_variable = { global.air_contamination_chem_bp = 0 }
+		set_variable = { global.air_contamination_outbreak_bp = 0 }
+		set_variable = { global.air_contamination_decay_bp = 0 }
+			set_variable = { global.air_contamination_last_delta_bp = 0 }
+			set_variable = { global.air_contamination_last_nuke_bp = 0 }
+			clr_global_flag = air_contamination_winter
+			every_country = {
+				limit = { has_dynamic_modifier = air_contamination_global_country }
+				remove_dynamic_modifier = { modifier = air_contamination_global_country }
+			}
+			air_contamination_refresh_values = yes
+		}
+	}
+
+toggle_chaos_meter_deaths_system_disabled = {
+	if = {
+		limit = { has_global_flag = settings_chaos_deaths_disabled }
+		clr_global_flag = settings_chaos_deaths_disabled
+	}
+	else = {
+		set_global_flag = settings_chaos_deaths_disabled
+		set_variable = { global.chaos_meter_deaths_last_change = 0 }
+	}
+	rebuild_chaos_meter_deaths_view = yes
+}
+
+sanitize_chaos_meter_deaths_country_entries = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_deaths_sequence_entries^num
+				value = global.chaos_meter_deaths_country_entries^num
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { chaos_deaths_missing_country_entries = global.chaos_meter_deaths_sequence_entries^num }
+		subtract_from_temp_variable = { chaos_deaths_missing_country_entries = global.chaos_meter_deaths_country_entries^num }
+
+		while_loop_effect = {
+			limit = { check_variable = { chaos_deaths_missing_country_entries > 0 } }
+			add_to_array = {
+				array = global.chaos_meter_deaths_country_entries
+				value = 0
+			}
+			subtract_from_temp_variable = { chaos_deaths_missing_country_entries = 1 }
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_deaths_sequence_entries^num
+				value = global.chaos_meter_deaths_has_country_entries^num
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { chaos_deaths_missing_has_country_entries = global.chaos_meter_deaths_sequence_entries^num }
+		subtract_from_temp_variable = { chaos_deaths_missing_has_country_entries = global.chaos_meter_deaths_has_country_entries^num }
+
+		while_loop_effect = {
+			limit = { check_variable = { chaos_deaths_missing_has_country_entries > 0 } }
+			add_to_array = {
+				array = global.chaos_meter_deaths_has_country_entries
+				value = 0
+			}
+			subtract_from_temp_variable = { chaos_deaths_missing_has_country_entries = 1 }
+		}
+	}
+}
+
+chaos_meter_resolve_country_sort_index = {
+	set_temp_variable = { chaos_deaths_country_sort_index = global.countries^num }
+	set_temp_variable = { chaos_deaths_country_sort_scan_index = 0 }
+
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = chaos_deaths_country_sort_scan_index
+				value = global.countries^num
+				compare = less_than
+			}
+			check_variable = {
+				var = chaos_deaths_country_sort_index
+				value = global.countries^num
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.countries^chaos_deaths_country_sort_scan_index
+					value = chaos_deaths_aggregate_country
+					compare = equals
+				}
+			}
+			set_temp_variable = { chaos_deaths_country_sort_index = chaos_deaths_country_sort_scan_index }
+		}
+		add_to_temp_variable = { chaos_deaths_country_sort_scan_index = 1 }
+	}
+}
+
+chaos_meter_deaths_entry_matches_active_filter = {
+	set_temp_variable = { chaos_deaths_entry_matches_filter = 1 }
+	set_temp_variable = { chaos_deaths_entry_filter_value = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
+
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_filter_type = 1 } }
+		set_temp_variable = { chaos_deaths_entry_filter_value = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_temp_variable = { chaos_deaths_entry_matches_filter = 0 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { settings_chaos_deaths_filter_type = 2 } }
+		set_temp_variable = { chaos_deaths_entry_filter_value = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_temp_variable = { chaos_deaths_entry_matches_filter = 0 }
+		}
+	}
+}
+
+chaos_meter_deaths_detail_entry_matches_active_filter = {
+	set_temp_variable = { chaos_deaths_detail_entry_matches_filter = 1 }
+
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_filter_type = 1 } }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_temp_variable = { chaos_deaths_detail_entry_matches_filter = 0 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { settings_chaos_deaths_details_filter_type = 2 } }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_temp_variable = { chaos_deaths_detail_entry_matches_filter = 0 }
+		}
+	}
+}
+
+chaos_meter_aggregate_country_deaths_view_row = {
+	set_temp_variable = { chaos_deaths_country_total = 0 }
+	set_temp_variable = { chaos_deaths_country_civilian_total = 0 }
+	set_temp_variable = { chaos_deaths_country_military_total = 0 }
+	set_temp_variable = { chaos_deaths_country_filter_total = 0 }
+	set_temp_variable = { chaos_deaths_country_latest_sequence = 0 }
+	set_temp_variable = { chaos_deaths_country_latest_date = 0 }
+	set_temp_variable = { chaos_deaths_country_latest_change = 0 }
+	set_temp_variable = { chaos_deaths_country_latest_reason = 0 }
+
+	set_temp_variable = { chaos_deaths_source_count = global.chaos_meter_deaths_sequence_entries^num }
+	for_loop_effect = {
+		start = 0
+		end = chaos_deaths_source_count
+		value = chaos_deaths_source_index
+		chaos_meter_deaths_entry_matches_active_filter = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_deaths_has_country_entries^chaos_deaths_source_index
+					value = 0
+					compare = greater_than
+				}
+				check_variable = {
+					var = global.chaos_meter_deaths_country_entries^chaos_deaths_source_index
+					value = chaos_deaths_aggregate_country
+					compare = equals
+				}
+			}
+			add_to_temp_variable = { chaos_deaths_country_total = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
+			add_to_temp_variable = { chaos_deaths_country_civilian_total = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index }
+			add_to_temp_variable = { chaos_deaths_country_military_total = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index }
+
+			if = {
+				limit = {
+					check_variable = {
+						var = chaos_deaths_entry_matches_filter
+						value = 0
+						compare = greater_than
+					}
+				}
+				add_to_temp_variable = { chaos_deaths_country_filter_total = chaos_deaths_entry_filter_value }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.chaos_meter_deaths_sequence_entries^chaos_deaths_source_index
+							value = chaos_deaths_country_latest_sequence
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { chaos_deaths_country_latest_sequence = global.chaos_meter_deaths_sequence_entries^chaos_deaths_source_index }
+					set_temp_variable = { chaos_deaths_country_latest_date = global.chaos_meter_deaths_date_entries^chaos_deaths_source_index }
+					set_temp_variable = { chaos_deaths_country_latest_change = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
+					set_temp_variable = { chaos_deaths_country_latest_reason = global.chaos_meter_deaths_reason_entries^chaos_deaths_source_index }
+				}
+			}
+		}
+	}
+}
+
+rebuild_chaos_meter_condemnation_view = {
+	clear_array = global.chaos_meter_condemnation_view_country_entries
+	clear_array = global.chaos_meter_condemnation_view_value_entries
+	clear_array = temp_chaos_meter_condemnation_countries
+
+	every_country = {
+		limit = {
+			has_variable = chem_warfare_condemnation
+			check_variable = { chem_warfare_condemnation > 0 }
+		}
+		ROOT = {
+			add_to_array = {
+				array = temp_chaos_meter_condemnation_countries
+				value = PREV
+			}
+		}
+	}
+
+	while_loop_effect = {
+		limit = { check_variable = { temp_chaos_meter_condemnation_countries^num > 0 } }
+
+		set_temp_variable = { condemnation_best_country = temp_chaos_meter_condemnation_countries^0 }
+		set_temp_variable = { condemnation_best_value = 0 }
+		var:condemnation_best_country = {
+			if = {
+				limit = { has_variable = chem_warfare_condemnation }
+				set_temp_variable = { condemnation_best_value = chem_warfare_condemnation }
+			}
+		}
+
+		set_temp_variable = { condemnation_country_scan_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { condemnation_country_scan_index < temp_chaos_meter_condemnation_countries^num } }
+			set_temp_variable = { condemnation_candidate_country = temp_chaos_meter_condemnation_countries^condemnation_country_scan_index }
+			set_temp_variable = { condemnation_candidate_value = 0 }
+			var:condemnation_candidate_country = {
+				if = {
+					limit = { has_variable = chem_warfare_condemnation }
+					set_temp_variable = { condemnation_candidate_value = chem_warfare_condemnation }
+				}
+			}
+
+			if = {
+				limit = {
+					has_country_flag = chaos_meter_condemnation_sort_descending
+					check_variable = {
+						var = condemnation_candidate_value
+						value = condemnation_best_value
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
+				set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
+			}
+			else_if = {
+				limit = {
+					NOT = { has_country_flag = chaos_meter_condemnation_sort_descending }
+					check_variable = {
+						var = condemnation_candidate_value
+						value = condemnation_best_value
+						compare = less_than
+					}
+				}
+				set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
+				set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = condemnation_candidate_value
+						value = condemnation_best_value
+						compare = equals
+					}
+					check_variable = {
+						var = condemnation_candidate_country
+						value = condemnation_best_country
+						compare = less_than
+					}
+				}
+				set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
+				set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
+			}
+
+			add_to_temp_variable = { condemnation_country_scan_index = 1 }
+		}
+
+		add_to_array = {
+			array = global.chaos_meter_condemnation_view_country_entries
+			value = condemnation_best_country
+		}
+		add_to_array = {
+			array = global.chaos_meter_condemnation_view_value_entries
+			value = condemnation_best_value
+		}
+		remove_from_array = {
+			array = temp_chaos_meter_condemnation_countries
+			value = condemnation_best_country
+		}
+	}
+}
+
+refresh_chaos_meter_condemnation_view_if_open = {
+	rebuild_chaos_meter_condemnation_view = yes
+}
+
+rebuild_chaos_meter_deaths_view = {
+	set_variable = { global.chaos_meter_total_population = 0 }
+	set_variable = { global.chaos_meter_total_population_k = 0 }
+	every_state = {
+		set_temp_variable = { chaos_state_population_total_k = state_population_k }
+		add_to_variable = { global.chaos_meter_total_population_k = chaos_state_population_total_k }
+	}
+	set_variable = { global.chaos_meter_total_population_display_value = global.chaos_meter_total_population_k }
+	set_variable = { global.chaos_meter_total_population_display_unit = 0 }
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_total_population_display_value
+				value = 1000000
+				compare = greater_than_or_equals
+			}
+		}
+		divide_variable = { var = global.chaos_meter_total_population_display_value value = 1000000 }
+		set_variable = { global.chaos_meter_total_population_display_unit = 3 }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_total_population_display_value
+				value = 1000
+				compare = greater_than_or_equals
+			}
+		}
+		divide_variable = { var = global.chaos_meter_total_population_display_value value = 1000 }
+		set_variable = { global.chaos_meter_total_population_display_unit = 2 }
+	}
+	else = {
+		set_variable = { global.chaos_meter_total_population_display_unit = 1 }
+	}
+
+	if = {
+		limit = { NOT = { has_variable = settings_chaos_deaths_sort_mode } }
+		set_variable = { settings_chaos_deaths_sort_mode = 1 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_sort_mode > 2 } }
+		set_variable = { settings_chaos_deaths_sort_mode = 1 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_sort_mode < 0 } }
+		set_variable = { settings_chaos_deaths_sort_mode = 1 }
+	}
+	if = {
+		limit = { NOT = { has_variable = settings_chaos_deaths_filter_type } }
+		set_variable = { settings_chaos_deaths_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_filter_type > 2 } }
+		set_variable = { settings_chaos_deaths_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_filter_type < 0 } }
+		set_variable = { settings_chaos_deaths_filter_type = 0 }
+	}
+
+	clear_array = temp_chaos_meter_deaths_unsorted_sequence_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_date_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_change_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_total_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_reason_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_civilian_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_military_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_country_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_country_sort_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_metric_entries
+	clear_array = temp_chaos_meter_deaths_unique_countries
+	clear_array = global.chaos_meter_deaths_view_sequence_entries
+	clear_array = global.chaos_meter_deaths_view_date_entries
+	clear_array = global.chaos_meter_deaths_view_change_entries
+	clear_array = global.chaos_meter_deaths_view_total_entries
+	clear_array = global.chaos_meter_deaths_view_reason_entries
+	clear_array = global.chaos_meter_deaths_view_civilian_entries
+	clear_array = global.chaos_meter_deaths_view_military_entries
+	clear_array = global.chaos_meter_deaths_view_country_entries
+	clear_array = global.chaos_meter_deaths_view_has_country_entries
+	clear_array = temp_chaos_meter_deaths_view_source_indices
+	set_variable = { chaos_meter_deaths_selected_index = -1 }
+	set_temp_variable = { chaos_deaths_sort_descending = 0 }
+
+	sanitize_chaos_meter_deaths_country_entries = yes
+
+	if = {
+		limit = {
+			any_country = {
+				is_ai = no
+				has_country_flag = chaos_meter_window_open
+				has_country_flag = chaos_meter_deaths_tab
+				has_country_flag = chaos_meter_deaths_sort_descending
+			}
+		}
+		set_temp_variable = { chaos_deaths_sort_descending = 1 }
+	}
+
+	set_temp_variable = { chaos_deaths_source_count = global.chaos_meter_deaths_sequence_entries^num }
+	if = {
+		limit = { check_variable = { chaos_deaths_source_count > 0 } }
+		for_loop_effect = {
+			start = 0
+			end = chaos_deaths_source_count
+			value = chaos_deaths_source_index
+			if = {
+				limit = {
+					check_variable = {
+						var = global.chaos_meter_deaths_has_country_entries^chaos_deaths_source_index
+						value = 0
+						compare = greater_than
+					}
+					NOT = {
+						is_in_array = {
+							temp_chaos_meter_deaths_unique_countries = global.chaos_meter_deaths_country_entries^chaos_deaths_source_index
+						}
+					}
+				}
+				add_to_array = {
+					array = temp_chaos_meter_deaths_unique_countries
+					value = global.chaos_meter_deaths_country_entries^chaos_deaths_source_index
+				}
+			}
+		}
+	}
+
+	while_loop_effect = {
+		limit = { check_variable = { temp_chaos_meter_deaths_unique_countries^num > 0 } }
+		set_temp_variable = { chaos_deaths_aggregate_country = temp_chaos_meter_deaths_unique_countries^0 }
+		chaos_meter_aggregate_country_deaths_view_row = yes
+		if = {
+			limit = { check_variable = { chaos_deaths_country_filter_total > 0 } }
+			chaos_meter_resolve_country_sort_index = yes
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_sequence_entries
+				value = chaos_deaths_country_latest_sequence
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_date_entries
+				value = chaos_deaths_country_latest_date
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_change_entries
+				value = chaos_deaths_country_latest_change
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_total_entries
+				value = chaos_deaths_country_total
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_reason_entries
+				value = chaos_deaths_country_latest_reason
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_civilian_entries
+				value = chaos_deaths_country_civilian_total
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_military_entries
+				value = chaos_deaths_country_military_total
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_country_entries
+				value = chaos_deaths_aggregate_country
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_country_sort_entries
+				value = chaos_deaths_country_sort_index
+			}
+			add_to_array = {
+				array = temp_chaos_meter_deaths_unsorted_metric_entries
+				value = chaos_deaths_country_filter_total
+			}
+		}
+		remove_from_array = {
+			array = temp_chaos_meter_deaths_unique_countries
+			value = chaos_deaths_aggregate_country
+		}
+	}
+
+	set_temp_variable = { chaos_deaths_unsorted_count = temp_chaos_meter_deaths_unsorted_country_entries^num }
+	if = {
+		limit = { check_variable = { chaos_deaths_unsorted_count > 0 } }
+		for_loop_effect = {
+			start = 0
+			end = chaos_deaths_unsorted_count
+			value = chaos_deaths_source_index
+			add_to_array = {
+				array = temp_chaos_meter_deaths_view_source_indices
+				value = chaos_deaths_source_index
+			}
+		}
+	}
+
+	while_loop_effect = {
+		limit = { check_variable = { temp_chaos_meter_deaths_view_source_indices^num > 0 } }
+		set_temp_variable = { chaos_deaths_best_source_index = temp_chaos_meter_deaths_view_source_indices^0 }
+		set_temp_variable = { chaos_deaths_best_metric = temp_chaos_meter_deaths_unsorted_sequence_entries^chaos_deaths_best_source_index }
+		set_temp_variable = { chaos_deaths_best_sequence = temp_chaos_meter_deaths_unsorted_sequence_entries^chaos_deaths_best_source_index }
+
+		if = {
+			limit = { check_variable = { settings_chaos_deaths_sort_mode = 1 } }
+			set_temp_variable = { chaos_deaths_best_metric = temp_chaos_meter_deaths_unsorted_metric_entries^chaos_deaths_best_source_index }
+		}
+		else_if = {
+			limit = { check_variable = { settings_chaos_deaths_sort_mode = 2 } }
+			set_temp_variable = { chaos_deaths_best_metric = temp_chaos_meter_deaths_unsorted_country_sort_entries^chaos_deaths_best_source_index }
+		}
+
+		set_temp_variable = { chaos_deaths_source_scan_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { chaos_deaths_source_scan_index < temp_chaos_meter_deaths_view_source_indices^num } }
+			set_temp_variable = { chaos_deaths_candidate_source_index = temp_chaos_meter_deaths_view_source_indices^chaos_deaths_source_scan_index }
+			set_temp_variable = { chaos_deaths_candidate_metric = temp_chaos_meter_deaths_unsorted_sequence_entries^chaos_deaths_candidate_source_index }
+			set_temp_variable = { chaos_deaths_candidate_sequence = temp_chaos_meter_deaths_unsorted_sequence_entries^chaos_deaths_candidate_source_index }
+
+			if = {
+				limit = { check_variable = { settings_chaos_deaths_sort_mode = 1 } }
+				set_temp_variable = { chaos_deaths_candidate_metric = temp_chaos_meter_deaths_unsorted_metric_entries^chaos_deaths_candidate_source_index }
+			}
+			else_if = {
+				limit = { check_variable = { settings_chaos_deaths_sort_mode = 2 } }
+				set_temp_variable = { chaos_deaths_candidate_metric = temp_chaos_meter_deaths_unsorted_country_sort_entries^chaos_deaths_candidate_source_index }
+			}
+
+			if = {
+				limit = {
+					check_variable = {
+						var = chaos_deaths_sort_descending
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = chaos_deaths_candidate_metric
+						value = chaos_deaths_best_metric
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { chaos_deaths_best_source_index = chaos_deaths_candidate_source_index }
+				set_temp_variable = { chaos_deaths_best_metric = chaos_deaths_candidate_metric }
+				set_temp_variable = { chaos_deaths_best_sequence = chaos_deaths_candidate_sequence }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = chaos_deaths_sort_descending
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = chaos_deaths_candidate_metric
+						value = chaos_deaths_best_metric
+						compare = equals
+					}
+					check_variable = {
+						var = chaos_deaths_candidate_sequence
+						value = chaos_deaths_best_sequence
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { chaos_deaths_best_source_index = chaos_deaths_candidate_source_index }
+				set_temp_variable = { chaos_deaths_best_metric = chaos_deaths_candidate_metric }
+				set_temp_variable = { chaos_deaths_best_sequence = chaos_deaths_candidate_sequence }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = chaos_deaths_sort_descending
+						value = 1
+						compare = less_than
+					}
+					check_variable = {
+						var = chaos_deaths_candidate_metric
+						value = chaos_deaths_best_metric
+						compare = less_than
+					}
+				}
+				set_temp_variable = { chaos_deaths_best_source_index = chaos_deaths_candidate_source_index }
+				set_temp_variable = { chaos_deaths_best_metric = chaos_deaths_candidate_metric }
+				set_temp_variable = { chaos_deaths_best_sequence = chaos_deaths_candidate_sequence }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = chaos_deaths_sort_descending
+						value = 1
+						compare = less_than
+					}
+					check_variable = {
+						var = chaos_deaths_candidate_metric
+						value = chaos_deaths_best_metric
+						compare = equals
+					}
+					check_variable = {
+						var = chaos_deaths_candidate_sequence
+						value = chaos_deaths_best_sequence
+						compare = less_than
+					}
+				}
+				set_temp_variable = { chaos_deaths_best_source_index = chaos_deaths_candidate_source_index }
+				set_temp_variable = { chaos_deaths_best_metric = chaos_deaths_candidate_metric }
+				set_temp_variable = { chaos_deaths_best_sequence = chaos_deaths_candidate_sequence }
+			}
+
+			add_to_temp_variable = { chaos_deaths_source_scan_index = 1 }
+		}
+
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_sequence_entries
+			value = temp_chaos_meter_deaths_unsorted_sequence_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_date_entries
+			value = temp_chaos_meter_deaths_unsorted_date_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_change_entries
+			value = temp_chaos_meter_deaths_unsorted_change_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_total_entries
+			value = temp_chaos_meter_deaths_unsorted_total_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_reason_entries
+			value = temp_chaos_meter_deaths_unsorted_reason_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_civilian_entries
+			value = temp_chaos_meter_deaths_unsorted_civilian_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_military_entries
+			value = temp_chaos_meter_deaths_unsorted_military_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_country_entries
+			value = temp_chaos_meter_deaths_unsorted_country_entries^chaos_deaths_best_source_index
+		}
+		add_to_array = {
+			array = global.chaos_meter_deaths_view_has_country_entries
+			value = 1
+		}
+
+		remove_from_array = {
+			array = temp_chaos_meter_deaths_view_source_indices
+			value = chaos_deaths_best_source_index
+		}
+	}
+}
+
+rebuild_chaos_meter_deaths_details_view = {
+	clear_array = global.chaos_meter_deaths_detail_sequence_entries
+	clear_array = global.chaos_meter_deaths_detail_date_entries
+	clear_array = global.chaos_meter_deaths_detail_change_entries
+	clear_array = global.chaos_meter_deaths_detail_reason_entries
+	clear_array = global.chaos_meter_deaths_detail_civilian_entries
+	clear_array = global.chaos_meter_deaths_detail_military_entries
+	clear_array = temp_chaos_meter_deaths_detail_unsorted_sequence_entries
+	clear_array = temp_chaos_meter_deaths_detail_unsorted_date_entries
+	clear_array = temp_chaos_meter_deaths_detail_unsorted_change_entries
+	clear_array = temp_chaos_meter_deaths_detail_unsorted_reason_entries
+	clear_array = temp_chaos_meter_deaths_detail_unsorted_civilian_entries
+	clear_array = temp_chaos_meter_deaths_detail_unsorted_military_entries
+	clear_array = temp_chaos_meter_deaths_detail_source_indices
+	set_variable = { chaos_meter_deaths_selected_total = 0 }
+	set_variable = { chaos_meter_deaths_selected_civilian_total = 0 }
+	set_variable = { chaos_meter_deaths_selected_military_total = 0 }
+	set_variable = { chaos_meter_deaths_selected_last_date = 0 }
+	set_variable = { chaos_meter_deaths_selected_last_reason = 0 }
+	set_variable = { chaos_meter_deaths_selected_last_change = 0 }
+	set_temp_variable = { chaos_meter_deaths_selected_last_sequence = 0 }
+	set_temp_variable = { chaos_deaths_details_sort_descending = 0 }
+
+	if = {
+		limit = { NOT = { has_variable = settings_chaos_deaths_details_sort_mode } }
+		set_variable = { settings_chaos_deaths_details_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_mode > 2 } }
+		set_variable = { settings_chaos_deaths_details_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_mode < 0 } }
+		set_variable = { settings_chaos_deaths_details_sort_mode = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = settings_chaos_deaths_details_filter_type } }
+		set_variable = { settings_chaos_deaths_details_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_filter_type > 2 } }
+		set_variable = { settings_chaos_deaths_details_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_filter_type < 0 } }
+		set_variable = { settings_chaos_deaths_details_filter_type = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = settings_chaos_deaths_details_sort_order } }
+		set_variable = { settings_chaos_deaths_details_sort_order = 1 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_order > 1 } }
+		set_variable = { settings_chaos_deaths_details_sort_order = 1 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_order < 0 } }
+		set_variable = { settings_chaos_deaths_details_sort_order = 1 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_deaths_details_sort_order > 0 } }
+		set_temp_variable = { chaos_deaths_details_sort_descending = 1 }
+	}
+
+	if = {
+		limit = {
+			has_variable = chaos_meter_deaths_selected_country
+			check_variable = {
+				var = chaos_meter_deaths_selected_country
+				value = 0
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { chaos_deaths_source_count = global.chaos_meter_deaths_sequence_entries^num }
+		if = {
+			limit = { check_variable = { chaos_deaths_source_count > 0 } }
+			for_loop_effect = {
+				start = 0
+				end = chaos_deaths_source_count
+				value = chaos_deaths_source_index
+				if = {
+					limit = {
+						check_variable = {
+							var = global.chaos_meter_deaths_has_country_entries^chaos_deaths_source_index
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = global.chaos_meter_deaths_country_entries^chaos_deaths_source_index
+							value = chaos_meter_deaths_selected_country
+							compare = equals
+						}
+					}
+					add_to_variable = { chaos_meter_deaths_selected_total = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
+					add_to_variable = { chaos_meter_deaths_selected_civilian_total = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index }
+					add_to_variable = { chaos_meter_deaths_selected_military_total = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index }
+					if = {
+						limit = {
+							OR = {
+								check_variable = {
+									var = global.chaos_meter_deaths_date_entries^chaos_deaths_source_index
+									value = chaos_meter_deaths_selected_last_date
+									compare = greater_than
+								}
+								AND = {
+									check_variable = {
+										var = global.chaos_meter_deaths_date_entries^chaos_deaths_source_index
+										value = chaos_meter_deaths_selected_last_date
+										compare = equals
+									}
+									check_variable = {
+										var = global.chaos_meter_deaths_sequence_entries^chaos_deaths_source_index
+										value = chaos_meter_deaths_selected_last_sequence
+										compare = greater_than
+									}
+								}
+							}
+						}
+						set_variable = { chaos_meter_deaths_selected_last_date = global.chaos_meter_deaths_date_entries^chaos_deaths_source_index }
+						set_variable = { chaos_meter_deaths_selected_last_reason = global.chaos_meter_deaths_reason_entries^chaos_deaths_source_index }
+						set_variable = { chaos_meter_deaths_selected_last_change = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index }
+						set_temp_variable = { chaos_meter_deaths_selected_last_sequence = global.chaos_meter_deaths_sequence_entries^chaos_deaths_source_index }
+					}
+
+					chaos_meter_deaths_detail_entry_matches_active_filter = yes
+					if = {
+						limit = {
+							check_variable = {
+								var = chaos_deaths_detail_entry_matches_filter
+								value = 0
+								compare = greater_than
+							}
+						}
+						add_to_array = {
+							array = temp_chaos_meter_deaths_detail_unsorted_sequence_entries
+							value = global.chaos_meter_deaths_sequence_entries^chaos_deaths_source_index
+						}
+						add_to_array = {
+							array = temp_chaos_meter_deaths_detail_unsorted_date_entries
+							value = global.chaos_meter_deaths_date_entries^chaos_deaths_source_index
+						}
+						add_to_array = {
+							array = temp_chaos_meter_deaths_detail_unsorted_change_entries
+							value = global.chaos_meter_deaths_change_entries^chaos_deaths_source_index
+						}
+						add_to_array = {
+							array = temp_chaos_meter_deaths_detail_unsorted_reason_entries
+							value = global.chaos_meter_deaths_reason_entries^chaos_deaths_source_index
+						}
+						add_to_array = {
+							array = temp_chaos_meter_deaths_detail_unsorted_civilian_entries
+							value = global.chaos_meter_deaths_civilian_entries^chaos_deaths_source_index
+						}
+						add_to_array = {
+							array = temp_chaos_meter_deaths_detail_unsorted_military_entries
+							value = global.chaos_meter_deaths_military_entries^chaos_deaths_source_index
+						}
+					}
+				}
+			}
+		}
+
+		set_temp_variable = { chaos_deaths_detail_unsorted_count = temp_chaos_meter_deaths_detail_unsorted_sequence_entries^num }
+		if = {
+			limit = { check_variable = { chaos_deaths_detail_unsorted_count > 0 } }
+			for_loop_effect = {
+				start = 0
+				end = chaos_deaths_detail_unsorted_count
+				value = chaos_deaths_detail_source_index
+				add_to_array = {
+					array = temp_chaos_meter_deaths_detail_source_indices
+					value = chaos_deaths_detail_source_index
+				}
+			}
+		}
+
+		while_loop_effect = {
+			limit = { check_variable = { temp_chaos_meter_deaths_detail_source_indices^num > 0 } }
+			set_temp_variable = { chaos_deaths_detail_best_source_index = temp_chaos_meter_deaths_detail_source_indices^0 }
+			set_temp_variable = { chaos_deaths_detail_best_metric = temp_chaos_meter_deaths_detail_unsorted_date_entries^chaos_deaths_detail_best_source_index }
+			set_temp_variable = { chaos_deaths_detail_best_sequence = temp_chaos_meter_deaths_detail_unsorted_sequence_entries^chaos_deaths_detail_best_source_index }
+
+			if = {
+				limit = { check_variable = { settings_chaos_deaths_details_sort_mode = 1 } }
+				set_temp_variable = { chaos_deaths_detail_best_metric = temp_chaos_meter_deaths_detail_unsorted_change_entries^chaos_deaths_detail_best_source_index }
+			}
+			else_if = {
+				limit = { check_variable = { settings_chaos_deaths_details_sort_mode = 2 } }
+				set_temp_variable = { chaos_deaths_detail_best_metric = temp_chaos_meter_deaths_detail_unsorted_reason_entries^chaos_deaths_detail_best_source_index }
+			}
+
+			set_temp_variable = { chaos_deaths_detail_scan_index = 0 }
+			while_loop_effect = {
+				limit = { check_variable = { chaos_deaths_detail_scan_index < temp_chaos_meter_deaths_detail_source_indices^num } }
+				set_temp_variable = { chaos_deaths_detail_candidate_source_index = temp_chaos_meter_deaths_detail_source_indices^chaos_deaths_detail_scan_index }
+				set_temp_variable = { chaos_deaths_detail_candidate_metric = temp_chaos_meter_deaths_detail_unsorted_date_entries^chaos_deaths_detail_candidate_source_index }
+				set_temp_variable = { chaos_deaths_detail_candidate_sequence = temp_chaos_meter_deaths_detail_unsorted_sequence_entries^chaos_deaths_detail_candidate_source_index }
+
+				if = {
+					limit = { check_variable = { settings_chaos_deaths_details_sort_mode = 1 } }
+					set_temp_variable = { chaos_deaths_detail_candidate_metric = temp_chaos_meter_deaths_detail_unsorted_change_entries^chaos_deaths_detail_candidate_source_index }
+				}
+				else_if = {
+					limit = { check_variable = { settings_chaos_deaths_details_sort_mode = 2 } }
+					set_temp_variable = { chaos_deaths_detail_candidate_metric = temp_chaos_meter_deaths_detail_unsorted_reason_entries^chaos_deaths_detail_candidate_source_index }
+				}
+
+				if = {
+					limit = {
+						check_variable = {
+							var = chaos_deaths_details_sort_descending
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = chaos_deaths_detail_candidate_metric
+							value = chaos_deaths_detail_best_metric
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { chaos_deaths_detail_best_source_index = chaos_deaths_detail_candidate_source_index }
+					set_temp_variable = { chaos_deaths_detail_best_metric = chaos_deaths_detail_candidate_metric }
+					set_temp_variable = { chaos_deaths_detail_best_sequence = chaos_deaths_detail_candidate_sequence }
+				}
+				else_if = {
+					limit = {
+						check_variable = {
+							var = chaos_deaths_details_sort_descending
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = chaos_deaths_detail_candidate_metric
+							value = chaos_deaths_detail_best_metric
+							compare = equals
+						}
+						check_variable = {
+							var = chaos_deaths_detail_candidate_sequence
+							value = chaos_deaths_detail_best_sequence
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { chaos_deaths_detail_best_source_index = chaos_deaths_detail_candidate_source_index }
+					set_temp_variable = { chaos_deaths_detail_best_metric = chaos_deaths_detail_candidate_metric }
+					set_temp_variable = { chaos_deaths_detail_best_sequence = chaos_deaths_detail_candidate_sequence }
+				}
+				else_if = {
+					limit = {
+						check_variable = {
+							var = chaos_deaths_details_sort_descending
+							value = 1
+							compare = less_than
+						}
+						check_variable = {
+							var = chaos_deaths_detail_candidate_metric
+							value = chaos_deaths_detail_best_metric
+							compare = less_than
+						}
+					}
+					set_temp_variable = { chaos_deaths_detail_best_source_index = chaos_deaths_detail_candidate_source_index }
+					set_temp_variable = { chaos_deaths_detail_best_metric = chaos_deaths_detail_candidate_metric }
+					set_temp_variable = { chaos_deaths_detail_best_sequence = chaos_deaths_detail_candidate_sequence }
+				}
+				else_if = {
+					limit = {
+						check_variable = {
+							var = chaos_deaths_details_sort_descending
+							value = 1
+							compare = less_than
+						}
+						check_variable = {
+							var = chaos_deaths_detail_candidate_metric
+							value = chaos_deaths_detail_best_metric
+							compare = equals
+						}
+						check_variable = {
+							var = chaos_deaths_detail_candidate_sequence
+							value = chaos_deaths_detail_best_sequence
+							compare = less_than
+						}
+					}
+					set_temp_variable = { chaos_deaths_detail_best_source_index = chaos_deaths_detail_candidate_source_index }
+					set_temp_variable = { chaos_deaths_detail_best_metric = chaos_deaths_detail_candidate_metric }
+					set_temp_variable = { chaos_deaths_detail_best_sequence = chaos_deaths_detail_candidate_sequence }
+				}
+
+				add_to_temp_variable = { chaos_deaths_detail_scan_index = 1 }
+			}
+
+			add_to_array = {
+				array = global.chaos_meter_deaths_detail_sequence_entries
+				value = temp_chaos_meter_deaths_detail_unsorted_sequence_entries^chaos_deaths_detail_best_source_index
+			}
+			add_to_array = {
+				array = global.chaos_meter_deaths_detail_date_entries
+				value = temp_chaos_meter_deaths_detail_unsorted_date_entries^chaos_deaths_detail_best_source_index
+			}
+			add_to_array = {
+				array = global.chaos_meter_deaths_detail_change_entries
+				value = temp_chaos_meter_deaths_detail_unsorted_change_entries^chaos_deaths_detail_best_source_index
+			}
+			add_to_array = {
+				array = global.chaos_meter_deaths_detail_reason_entries
+				value = temp_chaos_meter_deaths_detail_unsorted_reason_entries^chaos_deaths_detail_best_source_index
+			}
+			add_to_array = {
+				array = global.chaos_meter_deaths_detail_civilian_entries
+				value = temp_chaos_meter_deaths_detail_unsorted_civilian_entries^chaos_deaths_detail_best_source_index
+			}
+			add_to_array = {
+				array = global.chaos_meter_deaths_detail_military_entries
+				value = temp_chaos_meter_deaths_detail_unsorted_military_entries^chaos_deaths_detail_best_source_index
+			}
+			remove_from_array = {
+				array = temp_chaos_meter_deaths_detail_source_indices
+				value = chaos_deaths_detail_best_source_index
+			}
+		}
+	}
+}
+
+refresh_chaos_meter_deaths_view_if_open = {
+	every_country = {
+		limit = {
+			has_country_flag = chaos_meter_window_open
+			has_country_flag = chaos_meter_deaths_tab
+		}
+		rebuild_chaos_meter_deaths_view = yes
+		if = {
+			limit = {
+				has_country_flag = chaos_meter_deaths_details_open
+				has_variable = chaos_meter_deaths_selected_country
+				check_variable = {
+					var = chaos_meter_deaths_selected_country
+					value = 0
+					compare = greater_than
+				}
+			}
+			rebuild_chaos_meter_deaths_details_view = yes
+		}
+	}
+}
+
+chaos_meter_sync_chaos_from_deaths_delta = {
+	if = {
+		limit = {
+			check_variable = { chaos_deaths_change > 0 }
+		}
+		add_to_variable = { global.chaos_meter_deaths_chaos_buffer = chaos_deaths_change }
+
+		set_temp_variable = { chaos_change = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_deaths_chaos_buffer
+					value = constant:chaos_meter_deaths.million_for_chaos
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_temp_variable = { chaos_change = 1 }
+			subtract_from_variable = { global.chaos_meter_deaths_chaos_buffer = constant:chaos_meter_deaths.million_for_chaos }
+		}
+
+		if = {
+			limit = { check_variable = { chaos_change > 0 } }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.deaths_rise }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			add_chaos_meter_value = yes
+			add_to_variable = { global.chaos_meter_deaths_chaos_generated = chaos_change }
+		}
+	}
+}
+
+record_chaos_meter_deaths_log_entry = {
+	if = {
+		limit = { NOT = { has_variable = chaos_deaths_reason } }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.military_casualties }
+	}
+	set_temp_variable = { chaos_deaths_log_civilian = 0 }
+	set_temp_variable = { chaos_deaths_log_military = 0 }
+	set_temp_variable = { chaos_deaths_log_country = 0 }
+	set_temp_variable = { chaos_deaths_log_has_country = 0 }
+	if = {
+		limit = {
+			has_variable = chaos_deaths_is_civilian
+			check_variable = { chaos_deaths_is_civilian > 0 }
+		}
+		set_temp_variable = { chaos_deaths_log_civilian = chaos_deaths_change }
+	}
+	else = {
+		set_temp_variable = { chaos_deaths_log_military = chaos_deaths_change }
+	}
+	if = {
+		limit = {
+			has_variable = chaos_deaths_has_target_country
+			check_variable = { chaos_deaths_has_target_country > 0 }
+			has_variable = chaos_deaths_target_country
+			check_variable = { chaos_deaths_target_country > 0 }
+		}
+		set_temp_variable = { chaos_deaths_log_country = chaos_deaths_target_country }
+		set_temp_variable = { chaos_deaths_log_has_country = 1 }
+	}
+
+	add_to_variable = { global.chaos_meter_deaths_sequence = 1 }
+	add_to_array = {
+		array = global.chaos_meter_deaths_sequence_entries
+		value = global.chaos_meter_deaths_sequence
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_date_entries
+		value = global.date
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_change_entries
+		value = chaos_deaths_change
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_total_entries
+		value = global.chaos_meter_deaths_total
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_reason_entries
+		value = chaos_deaths_reason
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_civilian_entries
+		value = chaos_deaths_log_civilian
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_military_entries
+		value = chaos_deaths_log_military
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_country_entries
+		value = chaos_deaths_log_country
+	}
+	add_to_array = {
+		array = global.chaos_meter_deaths_has_country_entries
+		value = chaos_deaths_log_has_country
+	}
+
+}
+
+chaos_meter_register_deaths = {
+	if = {
+		limit = {
+			NOT = { has_variable = chaos_deaths_change }
+		}
+		set_temp_variable = { chaos_deaths_change = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = chaos_deaths_target_country } }
+		set_temp_variable = { chaos_deaths_target_country = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = chaos_deaths_has_target_country } }
+		set_temp_variable = { chaos_deaths_has_target_country = 0 }
+	}
+	round_temp_variable = chaos_deaths_change
+
+	if = {
+		limit = {
+			NOT = { has_global_flag = settings_chaos_deaths_disabled }
+			check_variable = { chaos_deaths_change > 0 }
+		}
+		add_to_variable = { global.chaos_meter_deaths_total = chaos_deaths_change }
+		set_variable = { global.chaos_meter_deaths_last_change = chaos_deaths_change }
+
+		if = {
+			limit = {
+				has_variable = chaos_deaths_is_civilian
+				check_variable = { chaos_deaths_is_civilian > 0 }
+			}
+			add_to_variable = { global.chaos_meter_deaths_civilian_total = chaos_deaths_change }
+
+			if = {
+				limit = {
+					has_variable = chaos_deaths_apply_state_pop
+					check_variable = { chaos_deaths_apply_state_pop > 0 }
+				}
+				set_temp_variable = { chaos_deaths_state_pop_delta = chaos_deaths_change }
+				multiply_temp_variable = { chaos_deaths_state_pop_delta = -1 }
+				add_manpower = var:chaos_deaths_state_pop_delta
+			}
+		}
+		else = {
+			add_to_variable = { global.chaos_meter_deaths_military_total = chaos_deaths_change }
+		}
+
+		record_chaos_meter_deaths_log_entry = yes
+		chaos_meter_sync_chaos_from_deaths_delta = yes
+		refresh_chaos_meter_deaths_view_if_open = yes
+	}
+	else_if = {
+		limit = { has_global_flag = settings_chaos_deaths_disabled }
+		set_variable = { global.chaos_meter_deaths_last_change = 0 }
+	}
+
+	set_temp_variable = { chaos_deaths_target_country = 0 }
+	set_temp_variable = { chaos_deaths_has_target_country = 0 }
+}
+
+chaos_meter_on_combat_civilian_casualties = {
+}
+
+chaos_meter_apply_combat_civilian_deaths_from_controlled_states = {
+	clear_array = temp_chaos_meter_combat_civ_processed_states
+
+	every_controlled_state = {
+		set_temp_variable = { chaos_combat_units_in_state = 0 }
+		event_target:chaos_combat_civ_leader = {
+			meta_effect = {
+				text = {
+					set_temp_variable = { chaos_combat_units_in_state = num_units_in_state@[CHAOS_COMBAT_STATE_ID] }
+				}
+				CHAOS_COMBAT_STATE_ID = "[PREV.GetID]"
+			}
+		}
+
+		if = {
+			limit = {
+				check_variable = { var = chaos_combat_units_in_state value = 0 compare = greater_than }
+				any_neighbor_state = {
+					CONTROLLER = { has_war_with = ROOT }
+					NOT = { is_controlled_by = ROOT }
+				}
+				NOT = { is_in_array = { temp_chaos_meter_combat_civ_processed_states = THIS.id } }
+			}
+			add_to_array = { temp_chaos_meter_combat_civ_processed_states = THIS.id }
+			chaos_meter_apply_combat_civilian_deaths_to_state = yes
+		}
+
+		every_neighbor_state = {
+			limit = {
+				CONTROLLER = { has_war_with = ROOT }
+				NOT = { is_controlled_by = ROOT }
+				NOT = { is_in_array = { temp_chaos_meter_combat_civ_processed_states = THIS.id } }
+			}
+			set_temp_variable = { chaos_combat_units_in_state = 0 }
+			event_target:chaos_combat_civ_leader = {
+				meta_effect = {
+					text = {
+						set_temp_variable = { chaos_combat_units_in_state = num_units_in_state@[CHAOS_COMBAT_STATE_ID] }
+					}
+					CHAOS_COMBAT_STATE_ID = "[PREV.GetID]"
+				}
+			}
+			if = {
+				limit = { check_variable = { var = chaos_combat_units_in_state value = 0 compare = greater_than } }
+				add_to_array = { temp_chaos_meter_combat_civ_processed_states = THIS.id }
+				chaos_meter_apply_combat_civilian_deaths_to_state = yes
+			}
+		}
+	}
+}
+
+chaos_meter_apply_state_death_density_multiplier = {
+	if = {
+		limit = { NOT = { has_variable = chaos_state_deaths_mult } }
+		set_temp_variable = { chaos_state_deaths_mult = 1 }
+	}
+
+	if = {
+		limit = { has_state_category = megalopolis }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_megalopolis }
+	}
+	else_if = {
+		limit = { has_state_category = metropolis }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_metropolis }
+	}
+	else_if = {
+		limit = { has_state_category = large_city }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_large_city }
+	}
+	else_if = {
+		limit = { has_state_category = city }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_city }
+	}
+	else_if = {
+		limit = { has_state_category = large_town }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_large_town }
+	}
+	else_if = {
+		limit = { has_state_category = town }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_town }
+	}
+	else_if = {
+		limit = { has_state_category = rural }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_rural }
+	}
+	else_if = {
+		limit = { has_state_category = pastoral }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_pastoral }
+	}
+	else_if = {
+		limit = { has_state_category = small_island }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_small_island }
+	}
+	else_if = {
+		limit = { has_state_category = tiny_island }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_tiny_island }
+	}
+	else_if = {
+		limit = { has_state_category = enclave }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_enclave }
+	}
+	else_if = {
+		limit = { has_state_category = wasteland }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.state_wasteland }
+	}
+}
+
+chaos_meter_apply_outbreak_state_death_environment_multiplier = {
+	chaos_meter_apply_state_death_density_multiplier = yes
+
+	if = {
+		limit = { infrastructure > 7 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_8 }
+	}
+	else_if = {
+		limit = { infrastructure > 5 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_6 }
+	}
+	else_if = {
+		limit = { infrastructure > 3 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_4 }
+	}
+	else_if = {
+		limit = { infrastructure > 1 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_2 }
+	}
+	else = {
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.outbreak_infra_0 }
+	}
+}
+
+chaos_meter_apply_bombing_state_death_environment_multiplier = {
+	chaos_meter_apply_state_death_density_multiplier = yes
+
+	if = {
+		limit = { infrastructure > 7 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_8 }
+	}
+	else_if = {
+		limit = { infrastructure > 5 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_6 }
+	}
+	else_if = {
+		limit = { infrastructure > 3 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_4 }
+	}
+	else_if = {
+		limit = { infrastructure > 1 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_2 }
+	}
+	else = {
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.bombing_infra_0 }
+	}
+}
+
+chaos_meter_apply_combat_state_death_environment_multiplier = {
+	chaos_meter_apply_state_death_density_multiplier = yes
+
+	if = {
+		limit = { infrastructure > 7 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_8 }
+	}
+	else_if = {
+		limit = { infrastructure > 5 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_6 }
+	}
+	else_if = {
+		limit = { infrastructure > 3 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_4 }
+	}
+	else_if = {
+		limit = { infrastructure > 1 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_2 }
+	}
+	else = {
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.combat_infra_0 }
+	}
+}
+
+chaos_meter_apply_nuclear_state_death_environment_multiplier = {
+	chaos_meter_apply_state_death_density_multiplier = yes
+
+	if = {
+		limit = { infrastructure > 7 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_8 }
+	}
+	else_if = {
+		limit = { infrastructure > 5 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_6 }
+	}
+	else_if = {
+		limit = { infrastructure > 3 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_4 }
+	}
+	else_if = {
+		limit = { infrastructure > 1 }
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_2 }
+	}
+	else = {
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:chaos_meter_state_death_dynamic.nuclear_infra_0 }
+	}
+}
+
+chaos_meter_apply_nuclear_fallout_to_state = {
+	set_temp_variable = { chaos_fallout_current_day = global.num_days }
+	set_temp_variable = { chaos_fallout_existing_intensity = 0 }
+	set_temp_variable = { chaos_fallout_existing_expiry = 0 }
+
+	if = {
+		limit = { has_variable = nuclear_fallout_intensity }
+		set_temp_variable = { chaos_fallout_existing_intensity = nuclear_fallout_intensity }
+	}
+	if = {
+		limit = { has_variable = nuclear_fallout_expiry_day }
+		set_temp_variable = { chaos_fallout_existing_expiry = nuclear_fallout_expiry_day }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = chaos_fallout_existing_expiry
+				value = chaos_fallout_current_day
+				compare = less_than_or_equals
+			}
+		}
+		set_temp_variable = { chaos_fallout_existing_intensity = 0 }
+		set_temp_variable = { chaos_fallout_existing_expiry = chaos_fallout_current_day }
+	}
+
+	set_temp_variable = { chaos_fallout_new_intensity = chaos_fallout_existing_intensity }
+	add_to_temp_variable = { chaos_fallout_new_intensity = ROOT.chaos_fallout_intensity_add }
+	clamp_temp_variable = {
+		var = chaos_fallout_new_intensity
+		min = 0
+		max = constant:chaos_meter_nuclear_fallout.intensity_max
+	}
+	set_variable = { nuclear_fallout_intensity = chaos_fallout_new_intensity }
+
+	set_temp_variable = { chaos_fallout_new_expiry = chaos_fallout_current_day }
+	add_to_temp_variable = { chaos_fallout_new_expiry = ROOT.chaos_fallout_duration_days }
+	if = {
+		limit = {
+			check_variable = {
+				var = chaos_fallout_existing_expiry
+				value = chaos_fallout_new_expiry
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { chaos_fallout_new_expiry = chaos_fallout_existing_expiry }
+	}
+	set_variable = { nuclear_fallout_expiry_day = chaos_fallout_new_expiry }
+
+	set_temp_variable = { chaos_fallout_days_left = chaos_fallout_new_expiry }
+	subtract_from_temp_variable = { chaos_fallout_days_left = chaos_fallout_current_day }
+	round_temp_variable = chaos_fallout_days_left
+	clamp_temp_variable = { var = chaos_fallout_days_left min = 1 max = 5000 }
+	add_dynamic_modifier = { modifier = nuclear_fallout_state days = chaos_fallout_days_left }
+}
+
+chaos_meter_register_nuclear_condemnation = {
+	if = {
+		limit = {
+			tag = USA
+			FROM = {
+				OR = {
+					OWNER = { tag = JAP }
+					CONTROLLER = { tag = JAP }
+					OWNER = { original_tag = JAP }
+					CONTROLLER = { original_tag = JAP }
+				}
+			}
+		}
+	}
+	else = {
+		set_temp_variable = { chaos_nuke_condemnation_add = constant:chaos_meter_nuclear_fallout.condemnation_base }
+		set_temp_variable = { chaos_nuke_condemnation_pop_millions = 0 }
+		set_temp_variable = { chaos_nuke_condemnation_density_mult = 1 }
+
+		FROM = {
+			set_temp_variable = { chaos_nuke_condemnation_pop_millions = state_population_k }
+			divide_temp_variable = { chaos_nuke_condemnation_pop_millions = 1000 }
+			set_temp_variable = { chaos_state_deaths_mult = 1 }
+			chaos_meter_apply_state_death_density_multiplier = yes
+			set_temp_variable = { chaos_nuke_condemnation_density_mult = chaos_state_deaths_mult }
+
+			if = {
+				limit = { check_variable = { state_population_k > 20000 } }
+				multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:chaos_meter_nuclear_fallout.condemnation_populous_20m }
+			}
+			else_if = {
+				limit = { check_variable = { state_population_k > 10000 } }
+				multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:chaos_meter_nuclear_fallout.condemnation_populous_10m }
+			}
+			else_if = {
+				limit = { check_variable = { state_population_k > 5000 } }
+				multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:chaos_meter_nuclear_fallout.condemnation_populous_5m }
+			}
+		}
+
+		multiply_temp_variable = { chaos_nuke_condemnation_pop_millions = constant:chaos_meter_nuclear_fallout.condemnation_per_million_population }
+		add_to_temp_variable = { chaos_nuke_condemnation_add = chaos_nuke_condemnation_pop_millions }
+		multiply_temp_variable = { chaos_nuke_condemnation_add = chaos_nuke_condemnation_density_mult }
+
+		if = {
+			limit = { has_tech = thermonuclear_bombs }
+			multiply_temp_variable = { chaos_nuke_condemnation_add = constant:chaos_meter_nuclear_fallout.condemnation_thermonuclear_mult }
+		}
+
+		if = {
+			limit = { check_variable = { chaos_nuke_condemnation_add > 0 } }
+			if = {
+				limit = { NOT = { has_variable = chem_warfare_condemnation } }
+				set_variable = { chem_warfare_condemnation = 0 }
+			}
+			add_to_variable = { chem_warfare_condemnation = chaos_nuke_condemnation_add }
+			chem_apply_condemnation_diplomatic_consequences = yes
+			refresh_chaos_meter_condemnation_view_if_open = yes
+		}
+	}
+}
+
+chaos_meter_apply_combat_civilian_deaths_to_state = {
+	if = {
+		limit = {
+			check_variable = { state_population_k > 0 }
+			check_variable = { chaos_combat_units_in_state > 0 }
+			check_variable = { chaos_combat_civ_percent > 0 }
+		}
+		set_temp_variable = { chaos_combat_unit_factor = chaos_combat_units_in_state }
+		divide_temp_variable = { chaos_combat_unit_factor = constant:chaos_meter_combat_civilian_deaths.units_per_rate_step }
+		clamp_temp_variable = {
+			var = chaos_combat_unit_factor
+			min = constant:chaos_meter_combat_civilian_deaths.unit_factor_min
+			max = constant:chaos_meter_combat_civilian_deaths.unit_factor_max
+		}
+
+		if = {
+			limit = { check_variable = { chaos_combat_unit_factor > 0 } }
+			set_temp_variable = { chaos_state_deaths_percent = chaos_combat_civ_percent }
+			set_temp_variable = { chaos_state_deaths_mult = chaos_combat_unit_factor }
+			chaos_meter_apply_combat_state_death_environment_multiplier = yes
+			set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.combat_cap_factor }
+			set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.combat_random_min }
+			set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.combat_random_span }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+			chaos_meter_register_state_civilian_deaths_percent = yes
+		}
+	}
+}
+
+chaos_meter_register_state_civilian_deaths_percent = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = settings_chaos_deaths_disabled }
+			check_variable = { state_population_k > 0 }
+			has_variable = chaos_state_deaths_percent
+			check_variable = { chaos_state_deaths_percent > 0 }
+		}
+		set_temp_variable = { chaos_state_deaths_mult_local = 1 }
+		set_temp_variable = { chaos_state_deaths_cap_factor_local = 1 }
+		set_temp_variable = { chaos_state_deaths_random_min_local = constant:chaos_meter_state_death_dynamic.default_random_min }
+		set_temp_variable = { chaos_state_deaths_random_span_local = constant:chaos_meter_state_death_dynamic.default_random_span }
+		set_temp_variable = { chaos_state_deaths_cap_floor_local = constant:chaos_meter_state_death_dynamic.cap_floor }
+		set_temp_variable = { chaos_state_deaths_cap_hard_max_local = constant:chaos_meter_state_death_dynamic.cap_hard_max }
+
+		if = {
+			limit = {
+				has_variable = chaos_state_deaths_mult
+				check_variable = { chaos_state_deaths_mult > 0 }
+			}
+			set_temp_variable = { chaos_state_deaths_mult_local = chaos_state_deaths_mult }
+		}
+		if = {
+			limit = {
+				has_variable = chaos_state_deaths_cap_factor
+				check_variable = { chaos_state_deaths_cap_factor > 0 }
+			}
+			set_temp_variable = { chaos_state_deaths_cap_factor_local = chaos_state_deaths_cap_factor }
+		}
+		if = {
+			limit = {
+				has_variable = chaos_state_deaths_random_min
+				check_variable = { chaos_state_deaths_random_min > 0 }
+			}
+			set_temp_variable = { chaos_state_deaths_random_min_local = chaos_state_deaths_random_min }
+		}
+		if = {
+			limit = {
+				has_variable = chaos_state_deaths_random_span
+				check_variable = { chaos_state_deaths_random_span > 0 }
+			}
+			set_temp_variable = { chaos_state_deaths_random_span_local = chaos_state_deaths_random_span }
+		}
+		if = {
+			limit = {
+				has_variable = chaos_state_deaths_cap_floor
+				check_variable = { chaos_state_deaths_cap_floor > 0 }
+			}
+			set_temp_variable = { chaos_state_deaths_cap_floor_local = chaos_state_deaths_cap_floor }
+		}
+		if = {
+			limit = {
+				has_variable = chaos_state_deaths_cap_hard_max
+				check_variable = { chaos_state_deaths_cap_hard_max > 0 }
+			}
+			set_temp_variable = { chaos_state_deaths_cap_hard_max_local = chaos_state_deaths_cap_hard_max }
+		}
+
+		set_temp_variable_to_random = { var = chaos_state_deaths_roll }
+		set_temp_variable = { chaos_state_deaths_random_mult = chaos_state_deaths_random_min_local }
+		set_temp_variable = { chaos_state_deaths_random_mult_span = chaos_state_deaths_random_span_local }
+		multiply_temp_variable = { chaos_state_deaths_random_mult_span = chaos_state_deaths_roll }
+		add_to_temp_variable = { chaos_state_deaths_random_mult = chaos_state_deaths_random_mult_span }
+
+		set_temp_variable = { chaos_deaths_change = state_population_k }
+		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_percent }
+		multiply_temp_variable = { chaos_deaths_change = 1000 }
+		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_mult_local }
+		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_random_mult }
+		round_temp_variable = chaos_deaths_change
+
+		set_temp_variable_to_random = { var = chaos_state_deaths_cap_roll }
+		set_temp_variable = { chaos_state_deaths_cap_random_mult = constant:chaos_meter_state_death_dynamic.cap_random_min }
+		set_temp_variable = { chaos_state_deaths_cap_random_mult_span = constant:chaos_meter_state_death_dynamic.cap_random_span }
+		multiply_temp_variable = { chaos_state_deaths_cap_random_mult_span = chaos_state_deaths_cap_roll }
+		add_to_temp_variable = { chaos_state_deaths_cap_random_mult = chaos_state_deaths_cap_random_mult_span }
+
+		set_temp_variable = { chaos_state_deaths_cap_local = state_population_k }
+		multiply_temp_variable = { chaos_state_deaths_cap_local = chaos_state_deaths_cap_factor_local }
+		multiply_temp_variable = { chaos_state_deaths_cap_local = chaos_state_deaths_cap_random_mult }
+		round_temp_variable = chaos_state_deaths_cap_local
+		clamp_temp_variable = {
+			var = chaos_state_deaths_cap_local
+			min = chaos_state_deaths_cap_floor_local
+			max = chaos_state_deaths_cap_hard_max_local
+		}
+		clamp_temp_variable = {
+			var = chaos_deaths_change
+			min = 0
+			max = chaos_state_deaths_cap_local
+		}
+
+		if = {
+			limit = { check_variable = { chaos_deaths_change > 0 } }
+			set_temp_variable = { chaos_deaths_is_civilian = 1 }
+			set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
+			set_temp_variable = { chaos_deaths_target_country = CONTROLLER }
+			set_temp_variable = { chaos_deaths_has_target_country = 1 }
+			chaos_meter_register_deaths = yes
+		}
+
+		set_temp_variable = { chaos_state_deaths_percent = 0 }
+		set_temp_variable = { chaos_state_deaths_mult = 0 }
+		set_temp_variable = { chaos_state_deaths_cap_factor = 0 }
+		set_temp_variable = { chaos_state_deaths_random_min = 0 }
+		set_temp_variable = { chaos_state_deaths_random_span = 0 }
+		set_temp_variable = { chaos_state_deaths_cap_floor = 0 }
+		set_temp_variable = { chaos_state_deaths_cap_hard_max = 0 }
+	}
+}
+
+chaos_meter_history_row_matches_active_filter = {
+	set_temp_variable = { chaos_history_row_matches_filter = 0 }
+	set_temp_variable = { chaos_history_row_is_major = 0 }
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.war.major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.peace.major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.annex.major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.puppet.major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.subject.free_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.mobilization.up_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.coup.major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.ideology_change.major_democratic
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.ideology_change.major_non_democratic
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.faction.join_both_democratic_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.faction.join_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.faction.leave_both_democratic_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.faction.leave_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.diplomacy.guarantee_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.diplomacy.wargoal_expire_major
+					compare = equals
+				}
+				check_variable = {
+					var = global.chaos_meter_history_reason_entries^chaos_history_source_index
+					value = constant:chaos_meter_history_reason.subtle.capitulation_major
+					compare = equals
+				}
+			}
+		}
+		set_temp_variable = { chaos_history_row_is_major = 1 }
+	}
+
+	if = {
+		limit = { check_variable = { settings_chaos_history_filter_type = 0 } }
+		set_temp_variable = { chaos_history_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_chaos_history_filter_type = 1 }
+			check_variable = { chaos_history_row_is_major > 0 }
+		}
+		set_temp_variable = { chaos_history_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_chaos_history_filter_type = 2 }
+			check_variable = { chaos_history_row_is_major < 1 }
+			check_variable = {
+				var = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { chaos_history_row_matches_filter = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { settings_chaos_history_filter_type = 3 }
+			check_variable = {
+				var = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+				value = 1
+				compare = less_than
+			}
+		}
+		set_temp_variable = { chaos_history_row_matches_filter = 1 }
+	}
+}
+
+chaos_meter_history_append_view_row_from_source = {
+	add_to_array = {
+		array = global.chaos_meter_history_view_sequence_entries
+		value = global.chaos_meter_history_sequence_entries^chaos_history_source_index
+	}
+	add_to_array = {
+		array = global.chaos_meter_history_view_delta_entries
+		value = global.chaos_meter_history_delta_entries^chaos_history_source_index
+	}
+	add_to_array = {
+		array = global.chaos_meter_history_view_total_entries
+		value = global.chaos_meter_history_total_entries^chaos_history_source_index
+	}
+	add_to_array = {
+		array = global.chaos_meter_history_view_reason_entries
+		value = global.chaos_meter_history_reason_entries^chaos_history_source_index
+	}
+	add_to_array = {
+		array = global.chaos_meter_history_view_date_entries
+		value = global.chaos_meter_history_date_entries^chaos_history_source_index
+	}
+	add_to_array = {
+		array = global.chaos_meter_history_view_target_count_entries
+		value = global.chaos_meter_history_target_count_entries^chaos_history_source_index
+	}
+	add_to_array = {
+		array = global.chaos_meter_history_view_actor_entries
+		value = global.chaos_meter_history_actor_entries^chaos_history_source_index
+	}
+	add_to_array = {
+		array = global.chaos_meter_history_view_has_actor_entries
+		value = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+	}
+}
+
+chaos_meter_history_append_rows_by_actor_sort = {
+	clear_array = temp_chaos_history_unique_actors
+
+	# Build a unique actor list from rows that actually have actors.
+	set_temp_variable = { chaos_history_actor_collect_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { chaos_history_actor_collect_index < chaos_history_source_count } }
+		set_temp_variable = { chaos_history_source_index = chaos_history_actor_collect_index }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+					value = 0
+					compare = greater_than
+				}
+				NOT = {
+					is_in_array = {
+						temp_chaos_history_unique_actors = global.chaos_meter_history_actor_entries^chaos_history_source_index
+					}
+				}
+			}
+			add_to_array = {
+				array = temp_chaos_history_unique_actors
+				value = global.chaos_meter_history_actor_entries^chaos_history_source_index
+			}
+		}
+		add_to_temp_variable = { chaos_history_actor_collect_index = 1 }
+	}
+
+	# Actor sort now uses deterministic actor-id passes.
+	while_loop_effect = {
+		limit = { check_variable = { temp_chaos_history_unique_actors^num > 0 } }
+
+		if = {
+			limit = { has_country_flag = chaos_meter_history_sort_descending }
+			find_highest_in_array = {
+				array = temp_chaos_history_unique_actors
+				value = chaos_history_actor_sort_target
+			}
+		}
+		else = {
+			find_lowest_in_array = {
+				array = temp_chaos_history_unique_actors
+				value = chaos_history_actor_sort_target
+			}
+		}
+
+		if = {
+			limit = { has_country_flag = chaos_meter_history_sort_descending }
+			set_temp_variable = { chaos_history_actor_member_index = 0 }
+			while_loop_effect = {
+				limit = { check_variable = { chaos_history_actor_member_index < chaos_history_source_count } }
+				set_temp_variable = { chaos_history_source_index = chaos_history_actor_member_index }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = global.chaos_meter_history_actor_entries^chaos_history_source_index
+							value = chaos_history_actor_sort_target
+							compare = equals
+						}
+					}
+					chaos_meter_history_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+						chaos_meter_history_append_view_row_from_source = yes
+					}
+				}
+				add_to_temp_variable = { chaos_history_actor_member_index = 1 }
+			}
+		}
+		else = {
+			set_temp_variable = { chaos_history_actor_member_index = chaos_history_source_count }
+			while_loop_effect = {
+				limit = { check_variable = { chaos_history_actor_member_index > 0 } }
+				subtract_from_temp_variable = { chaos_history_actor_member_index = 1 }
+				set_temp_variable = { chaos_history_source_index = chaos_history_actor_member_index }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+							value = 0
+							compare = greater_than
+						}
+						check_variable = {
+							var = global.chaos_meter_history_actor_entries^chaos_history_source_index
+							value = chaos_history_actor_sort_target
+							compare = equals
+						}
+					}
+					chaos_meter_history_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+						chaos_meter_history_append_view_row_from_source = yes
+					}
+				}
+			}
+		}
+
+		remove_from_array = {
+			array = temp_chaos_history_unique_actors
+			value = chaos_history_actor_sort_target
+		}
+	}
+
+	# Non-actor rows are always appended after actor rows.
+	if = {
+		limit = { has_country_flag = chaos_meter_history_sort_descending }
+		set_temp_variable = { chaos_history_source_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { chaos_history_source_index < chaos_history_source_count } }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+						value = 1
+						compare = less_than
+					}
+				}
+				chaos_meter_history_row_matches_active_filter = yes
+				if = {
+					limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+					chaos_meter_history_append_view_row_from_source = yes
+				}
+			}
+			add_to_temp_variable = { chaos_history_source_index = 1 }
+		}
+	}
+	else = {
+		set_temp_variable = { chaos_history_source_index = chaos_history_source_count }
+		while_loop_effect = {
+			limit = { check_variable = { chaos_history_source_index > 0 } }
+			subtract_from_temp_variable = { chaos_history_source_index = 1 }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.chaos_meter_history_has_actor_entries^chaos_history_source_index
+						value = 1
+						compare = less_than
+					}
+				}
+				chaos_meter_history_row_matches_active_filter = yes
+				if = {
+					limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+					chaos_meter_history_append_view_row_from_source = yes
+				}
+			}
+		}
+	}
+}
+
+rebuild_chaos_meter_history_view = {
+	sanitize_chaos_meter_history_actor_entries = yes
+
+	if = {
+		limit = { NOT = { has_variable = settings_chaos_history_sort_mode } }
+		set_variable = { settings_chaos_history_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_history_sort_mode > 2 } }
+		set_variable = { settings_chaos_history_sort_mode = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_history_sort_mode < 0 } }
+		set_variable = { settings_chaos_history_sort_mode = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = settings_chaos_history_filter_type } }
+		set_variable = { settings_chaos_history_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_history_filter_type > 3 } }
+		set_variable = { settings_chaos_history_filter_type = 0 }
+	}
+	if = {
+		limit = { check_variable = { settings_chaos_history_filter_type < 0 } }
+		set_variable = { settings_chaos_history_filter_type = 0 }
+	}
+
+	clear_array = global.chaos_meter_history_view_sequence_entries
+	clear_array = global.chaos_meter_history_view_delta_entries
+	clear_array = global.chaos_meter_history_view_total_entries
+	clear_array = global.chaos_meter_history_view_reason_entries
+	clear_array = global.chaos_meter_history_view_date_entries
+	clear_array = global.chaos_meter_history_view_target_count_entries
+	clear_array = global.chaos_meter_history_view_actor_entries
+	clear_array = global.chaos_meter_history_view_has_actor_entries
+
+	set_temp_variable = { chaos_history_source_count = global.chaos_meter_history_sequence_entries^num }
+
+	if = {
+		limit = { check_variable = { chaos_history_source_count > 0 } }
+		if = {
+			limit = { check_variable = { settings_chaos_history_sort_mode = 0 } }
+			if = {
+				limit = { has_country_flag = chaos_meter_history_sort_descending }
+				for_loop_effect = {
+					start = 0
+					end = chaos_history_source_count
+					value = i
+					set_temp_variable = { chaos_history_source_index = i }
+					chaos_meter_history_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+						chaos_meter_history_append_view_row_from_source = yes
+					}
+				}
+			}
+			else = {
+				set_temp_variable = { chaos_history_asc_index = chaos_history_source_count }
+				while_loop_effect = {
+					limit = { check_variable = { chaos_history_asc_index > 0 } }
+					subtract_from_temp_variable = { chaos_history_asc_index = 1 }
+					set_temp_variable = { chaos_history_source_index = chaos_history_asc_index }
+					chaos_meter_history_row_matches_active_filter = yes
+					if = {
+						limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+						chaos_meter_history_append_view_row_from_source = yes
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { settings_chaos_history_sort_mode = 1 } }
+			chaos_meter_history_append_rows_by_actor_sort = yes
+		}
+		else = {
+			if = {
+				limit = { has_country_flag = chaos_meter_history_sort_descending }
+				set_temp_variable = { chaos_history_sort_delta = 200 }
+				while_loop_effect = {
+					limit = { check_variable = { chaos_history_sort_delta > -201 } }
+					for_loop_effect = {
+						start = 0
+						end = chaos_history_source_count
+						value = i
+						set_temp_variable = { chaos_history_source_index = i }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.chaos_meter_history_delta_entries^chaos_history_source_index
+									value = chaos_history_sort_delta
+									compare = equals
+								}
+							}
+							chaos_meter_history_row_matches_active_filter = yes
+							if = {
+								limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+								chaos_meter_history_append_view_row_from_source = yes
+							}
+						}
+					}
+					subtract_from_temp_variable = { chaos_history_sort_delta = 1 }
+				}
+			}
+			else = {
+				for_loop_effect = {
+					start = -200
+					end = 201
+					value = chaos_history_sort_delta
+					for_loop_effect = {
+						start = 0
+						end = chaos_history_source_count
+						value = i
+						set_temp_variable = { chaos_history_source_index = i }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.chaos_meter_history_delta_entries^chaos_history_source_index
+									value = chaos_history_sort_delta
+									compare = equals
+								}
+							}
+							chaos_meter_history_row_matches_active_filter = yes
+							if = {
+								limit = { check_variable = { chaos_history_row_matches_filter > 0 } }
+								chaos_meter_history_append_view_row_from_source = yes
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+record_chaos_meter_history_entry = {
+	if = {
+		limit = { NOT = { has_variable = global.chaos_meter_history_sequence } }
+		set_variable = { global.chaos_meter_history_sequence = 0 }
+	}
+
+	if = {
+		limit = { NOT = { has_variable = chaos_history_reason } }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.generic.increase }
+	}
+
+	set_temp_variable = { chaos_history_reason_uses_actor = 1 }
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = chaos_history_reason
+					value = constant:chaos_meter_history_reason.generic.increase
+					compare = equals
+				}
+				check_variable = {
+					var = chaos_history_reason
+					value = constant:chaos_meter_history_reason.generic.decrease
+					compare = equals
+				}
+				check_variable = {
+					var = chaos_history_reason
+					value = constant:chaos_meter_history_reason.settings.manual_update
+					compare = equals
+				}
+				check_variable = {
+					var = chaos_history_reason
+					value = constant:chaos_meter_history_reason.settings.disabled
+					compare = equals
+				}
+				check_variable = {
+					var = chaos_history_reason
+					value = constant:chaos_meter_history_reason.settings.reenabled
+					compare = equals
+				}
+					AND = {
+						check_variable = {
+							var = chaos_history_reason
+							value = constant:chaos_meter_history_reason.world_state.world_tension_rise
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = chaos_history_reason
+							value = constant:chaos_meter_history_reason.world_state.deaths_rise
+							compare = less_than_or_equals
+						}
+					}
+				}
+			}
+		set_temp_variable = { chaos_history_reason_uses_actor = 0 }
+	}
+
+	if = {
+		limit = { NOT = { has_variable = chaos_history_target_count } }
+		set_temp_variable = { chaos_history_target_count = 1 }
+	}
+
+	sanitize_chaos_meter_history_actor_entries = yes
+
+	set_temp_variable = { chaos_history_actor_from_event_target = 0 }
+	if = {
+		limit = {
+			check_variable = { chaos_history_reason_uses_actor > 0 }
+			has_event_target = chaos_history_actor
+		}
+		set_temp_variable = { chaos_history_actor_from_event_target = 1 }
+	}
+
+	set_temp_variable = { merge_with_latest_war_entry = 0 }
+	if = {
+		limit = {
+			check_variable = { global.chaos_meter_history_reason_entries^num > 0 }
+			check_variable = { global.chaos_meter_history_has_actor_entries^num > 0 }
+			OR = {
+				check_variable = {
+					var = chaos_history_reason
+					value = constant:chaos_meter_history_reason.war.major
+					compare = equals
+				}
+				check_variable = {
+					var = chaos_history_reason
+					value = constant:chaos_meter_history_reason.war.minor
+					compare = equals
+				}
+			}
+			check_variable = {
+				var = global.chaos_meter_history_reason_entries^0
+				value = chaos_history_reason
+				compare = equals
+			}
+			check_variable = {
+				var = global.chaos_meter_history_date_entries^0
+				value = global.date
+				compare = equals
+			}
+				OR = {
+					AND = {
+						check_variable = { chaos_history_actor_from_event_target > 0 }
+						check_variable = {
+							var = global.chaos_meter_history_actor_entries^0
+							value = event_target:chaos_history_actor
+							compare = equals
+						}
+					}
+					AND = {
+						check_variable = { chaos_history_actor_from_event_target < 1 }
+						check_variable = {
+							var = global.chaos_meter_history_has_actor_entries^0
+							value = 1
+							compare = less_than
+						}
+					}
+			}
+		}
+		set_temp_variable = { merge_with_latest_war_entry = 1 }
+	}
+
+	if = {
+		limit = { check_variable = { merge_with_latest_war_entry > 0 } }
+		add_to_variable = { global.chaos_meter_history_delta_entries^0 = chaos_change }
+		set_variable = { global.chaos_meter_history_total_entries^0 = global.chaos_meter_value }
+		add_to_variable = { global.chaos_meter_history_target_count_entries^0 = 1 }
+	}
+	else = {
+		add_to_variable = { global.chaos_meter_history_sequence = 1 }
+
+		add_to_array = {
+			array = global.chaos_meter_history_sequence_entries
+			value = global.chaos_meter_history_sequence
+			index = 0
+		}
+
+		add_to_array = {
+			array = global.chaos_meter_history_delta_entries
+			value = chaos_change
+			index = 0
+		}
+
+		add_to_array = {
+			array = global.chaos_meter_history_total_entries
+			value = global.chaos_meter_value
+			index = 0
+		}
+
+		add_to_array = {
+			array = global.chaos_meter_history_reason_entries
+			value = chaos_history_reason
+			index = 0
+		}
+
+		add_to_array = {
+			array = global.chaos_meter_history_date_entries
+			value = global.date
+			index = 0
+		}
+
+		add_to_array = {
+			array = global.chaos_meter_history_target_count_entries
+			value = chaos_history_target_count
+			index = 0
+		}
+
+		if = {
+			limit = {
+				check_variable = { chaos_history_reason_uses_actor > 0 }
+				has_event_target = chaos_history_actor
+			}
+			event_target:chaos_history_actor = {
+				add_to_array = {
+					array = global.chaos_meter_history_actor_entries
+					value = THIS
+					index = 0
+				}
+			}
+			add_to_array = {
+				array = global.chaos_meter_history_has_actor_entries
+				value = 1
+				index = 0
+			}
+		}
+		else = {
+			add_to_array = {
+				array = global.chaos_meter_history_actor_entries
+				value = 0
+				index = 0
+			}
+			add_to_array = {
+				array = global.chaos_meter_history_has_actor_entries
+				value = 0
+				index = 0
+			}
+		}
+	}
+
+	every_country = {
+		limit = {
+			is_ai = no
+			has_country_flag = chaos_meter_window_open
+			has_country_flag = chaos_meter_history_tab
+		}
+		rebuild_chaos_meter_history_view = yes
+	}
 }
 
 # ============================================================================
@@ -75,6 +2806,32 @@ add_chaos_meter_value = {
         limit = { check_variable = { global.chaos_meter_value < constant:chaos_meter_tier_range.tier_final.min } }
 
         round_temp_variable = chaos_change
+
+        set_temp_variable = { generic_history_reason = constant:chaos_meter_history_reason.generic.increase }
+        if = {
+            limit = { check_variable = { chaos_change < 0 } }
+            set_temp_variable = { generic_history_reason = constant:chaos_meter_history_reason.generic.decrease }
+        }
+
+        if = {
+            limit = {
+                has_variable = chaos_history_reason_custom
+                check_variable = { chaos_history_reason_custom > 0 }
+                has_variable = chaos_history_reason
+            }
+            set_temp_variable = { active_history_reason = chaos_history_reason }
+        }
+        else = {
+            set_temp_variable = { active_history_reason = generic_history_reason }
+        }
+        set_temp_variable = { chaos_history_reason = active_history_reason }
+        set_temp_variable = { chaos_history_reason_custom = 0 }
+
+        if = {
+            limit = { NOT = { has_variable = chaos_history_target_count } }
+            set_temp_variable = { chaos_history_target_count = 1 }
+        }
+
         add_to_variable = { global.chaos_meter_value = chaos_change }
 
         clamp_variable = {
@@ -84,6 +2841,16 @@ add_chaos_meter_value = {
 
         round_variable = global.chaos_meter_value
         update_chaos_meter_tier = yes
+
+        if = {
+            limit = {
+                OR = {
+                    check_variable = { chaos_change > 0 }
+                    check_variable = { chaos_change < 0 }
+                }
+            }
+            record_chaos_meter_history_entry = yes
+        }
 
         if = {
             limit = { check_variable = { chaos_change > 0 } }
@@ -167,6 +2934,1014 @@ update_chaos_meter_tier = {
     }
 }
 
+air_contamination_refresh_values = {
+	set_variable = { global.air_contamination_percent = global.air_contamination_bp }
+	divide_variable = { global.air_contamination_percent = 100 }
+
+	set_variable = { global.air_cleanliness_percent = 100 }
+	subtract_from_variable = { global.air_cleanliness_percent = global.air_contamination_percent }
+	clamp_variable = {
+		var = global.air_cleanliness_percent
+		min = 0
+		max = 100
+	}
+
+	set_variable = { global.air_contamination_chem_percent = global.air_contamination_chem_bp }
+	divide_variable = { global.air_contamination_chem_percent = 100 }
+	set_variable = { global.air_contamination_outbreak_percent = global.air_contamination_outbreak_bp }
+	divide_variable = { global.air_contamination_outbreak_percent = 100 }
+	set_variable = { global.air_contamination_decay_percent = global.air_contamination_decay_bp }
+	divide_variable = { global.air_contamination_decay_percent = 100 }
+	set_variable = { global.air_contamination_last_delta_percent = global.air_contamination_last_delta_bp }
+	divide_variable = { global.air_contamination_last_delta_percent = 100 }
+	set_variable = { global.air_contamination_last_nuke_percent = global.air_contamination_last_nuke_bp }
+	divide_variable = { global.air_contamination_last_nuke_percent = 100 }
+}
+
+air_contamination_update_threshold_flags = {
+	clr_global_flag = air_contamination_threshold_25
+	clr_global_flag = air_contamination_threshold_50
+	clr_global_flag = air_contamination_threshold_75
+	clr_global_flag = air_contamination_threshold_100
+
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.spread_25
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = air_contamination_threshold_25
+		if = {
+			limit = { NOT = { has_global_flag = air_contamination_news_25_fired } }
+			set_global_flag = air_contamination_news_25_fired
+			news_event = { id = chaosx_contamination.1 }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.winter_50
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = air_contamination_threshold_50
+		if = {
+			limit = { NOT = { has_global_flag = air_contamination_news_50_fired } }
+			set_global_flag = air_contamination_news_50_fired
+			news_event = { id = chaosx_contamination.2 }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.winter_75
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = air_contamination_threshold_75
+		if = {
+			limit = { NOT = { has_global_flag = air_contamination_news_75_fired } }
+			set_global_flag = air_contamination_news_75_fired
+			news_event = { id = chaosx_contamination.3 }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.irreversible_100
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = air_contamination_threshold_100
+		if = {
+			limit = { NOT = { has_global_flag = air_contamination_news_100_fired } }
+			set_global_flag = air_contamination_news_100_fired
+			news_event = { id = chaosx_contamination.4 }
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.irreversible_100
+				compare = greater_than_or_equals
+			}
+			NOT = { has_global_flag = air_contamination_irreversible }
+		}
+		set_global_flag = air_contamination_irreversible
+		log = "AIR CONTAMINATION: Irreversible contamination threshold reached"
+	}
+}
+
+air_contamination_sync_chaos_from_delta = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { air_contamination_delta_bp > 0 }
+				check_variable = { air_contamination_delta_bp < 0 }
+			}
+		}
+		add_to_variable = { global.air_contamination_chaos_buffer_bp = air_contamination_delta_bp }
+
+		set_temp_variable = { chaos_change = 0 }
+
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = global.air_contamination_chaos_buffer_bp
+					value = 100
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_temp_variable = { chaos_change = 1 }
+			subtract_from_variable = { global.air_contamination_chaos_buffer_bp = 100 }
+		}
+
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = global.air_contamination_chaos_buffer_bp
+					value = -100
+					compare = less_than_or_equals
+				}
+			}
+			subtract_from_temp_variable = { chaos_change = 1 }
+			add_to_variable = { global.air_contamination_chaos_buffer_bp = 100 }
+		}
+
+		if = {
+			limit = {
+				OR = {
+					check_variable = { chaos_change > 0 }
+					check_variable = { chaos_change < 0 }
+				}
+			}
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+			if = {
+				limit = { check_variable = { chaos_change < 0 } }
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+			}
+
+			if = {
+				limit = {
+					check_variable = { chaos_change > 0 }
+					has_variable = air_chaos_reason_increase
+					check_variable = { air_chaos_reason_increase > 0 }
+				}
+				set_temp_variable = { chaos_history_reason = air_chaos_reason_increase }
+			}
+			if = {
+				limit = {
+					check_variable = { chaos_change < 0 }
+					has_variable = air_chaos_reason_decrease
+					check_variable = { air_chaos_reason_decrease > 0 }
+				}
+				set_temp_variable = { chaos_history_reason = air_chaos_reason_decrease }
+			}
+
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			add_chaos_meter_value = yes
+		}
+	}
+}
+
+air_contamination_apply_delta_bp = {
+	set_temp_variable = { air_contamination_previous_bp = global.air_contamination_bp }
+	add_to_variable = { global.air_contamination_bp = air_contamination_delta_bp }
+
+	clamp_variable = {
+		var = global.air_contamination_bp
+		min = 0
+	}
+
+	if = {
+		limit = {
+			has_global_flag = air_contamination_irreversible
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.irreversible_100
+				compare = less_than
+			}
+		}
+		set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
+	}
+
+	set_temp_variable = { air_contamination_delta_bp = global.air_contamination_bp }
+	subtract_from_temp_variable = { air_contamination_delta_bp = air_contamination_previous_bp }
+	set_variable = { global.air_contamination_last_delta_bp = air_contamination_delta_bp }
+
+	air_contamination_sync_chaos_from_delta = yes
+	air_contamination_refresh_values = yes
+	air_contamination_update_threshold_flags = yes
+}
+
+air_contamination_apply_country_modifier = {
+	if = {
+		limit = { has_global_flag = settings_air_cleanliness_disabled }
+		every_country = {
+			limit = { has_dynamic_modifier = air_contamination_global_country }
+			remove_dynamic_modifier = { modifier = air_contamination_global_country }
+		}
+	}
+	else = {
+	set_temp_variable = { air_mod_contamination_percent = global.air_contamination_percent }
+
+	set_temp_variable = { air_mod_attrition = air_mod_contamination_percent }
+	multiply_temp_variable = { air_mod_attrition = constant:air_contamination_country_mod.per_percent.attrition }
+
+	set_temp_variable = { air_mod_monthly_population = air_mod_contamination_percent }
+	multiply_temp_variable = { air_mod_monthly_population = constant:air_contamination_country_mod.per_percent.monthly_population }
+
+	set_temp_variable = { air_mod_stability_weekly = air_mod_contamination_percent }
+	multiply_temp_variable = { air_mod_stability_weekly = constant:air_contamination_country_mod.per_percent.stability_weekly }
+
+	if = {
+		limit = { has_global_flag = { flag = air_contamination_winter value = 2 } }
+		add_to_temp_variable = { air_mod_attrition = constant:air_contamination_country_mod.winter_severe.attrition }
+		add_to_temp_variable = { air_mod_monthly_population = constant:air_contamination_country_mod.winter_severe.monthly_population }
+		add_to_temp_variable = { air_mod_stability_weekly = constant:air_contamination_country_mod.winter_severe.stability_weekly }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = air_contamination_winter value = 1 } }
+		add_to_temp_variable = { air_mod_attrition = constant:air_contamination_country_mod.winter_mild.attrition }
+		add_to_temp_variable = { air_mod_monthly_population = constant:air_contamination_country_mod.winter_mild.monthly_population }
+		add_to_temp_variable = { air_mod_stability_weekly = constant:air_contamination_country_mod.winter_mild.stability_weekly }
+	}
+
+	clamp_temp_variable = {
+		var = air_mod_attrition
+		min = 0
+		max = constant:air_contamination_country_mod.max.attrition
+	}
+	clamp_temp_variable = {
+		var = air_mod_monthly_population
+		min = constant:air_contamination_country_mod.max.monthly_population
+		max = 0
+	}
+	clamp_temp_variable = {
+		var = air_mod_stability_weekly
+		min = constant:air_contamination_country_mod.max.stability_weekly
+		max = 0
+	}
+
+		every_country = {
+			set_variable = { air_contamination_attrition_country = air_mod_attrition }
+			set_variable = { air_contamination_monthly_population_country = air_mod_monthly_population }
+			set_variable = { air_contamination_stability_weekly_country = air_mod_stability_weekly }
+			add_dynamic_modifier = {
+				modifier = air_contamination_global_country
+				days = 45
+			}
+			force_update_dynamic_modifier = yes
+		}
+	}
+}
+
+air_contamination_apply_winter_effects = {
+	if = {
+		limit = { NOT = { has_global_flag = air_contamination_winter } }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.air_contamination_bp
+					value = constant:air_contamination_threshold_bp.winter_75
+					compare = greater_than_or_equals
+				}
+			}
+			random = {
+				chance = 24
+				set_global_flag = {
+					flag = air_contamination_winter
+					value = 2
+					days = 120
+				}
+				log = "AIR CONTAMINATION: Severe nuclear winter started"
+				news_event = { id = chaosx_contamination.6 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = global.air_contamination_bp
+					value = constant:air_contamination_threshold_bp.winter_50
+					compare = greater_than_or_equals
+				}
+			}
+			random = {
+				chance = 12
+				set_global_flag = {
+					flag = air_contamination_winter
+					value = 1
+					days = 60
+				}
+				log = "AIR CONTAMINATION: Nuclear winter period started"
+				news_event = { id = chaosx_contamination.5 }
+			}
+		}
+	}
+
+	if = {
+		limit = { has_global_flag = air_contamination_winter }
+		set_temp_variable = { winter_random_states = constant:air_contamination_winter.random_states_mild }
+		set_temp_variable = { winter_state_modifier_days = constant:air_contamination_winter.state_modifier_days_mild }
+		set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_delta_bp.winter_mild_monthly }
+
+		if = {
+			limit = { has_global_flag = { flag = air_contamination_winter value = 2 } }
+			set_temp_variable = { winter_random_states = constant:air_contamination_winter.random_states_severe }
+			set_temp_variable = { winter_state_modifier_days = constant:air_contamination_winter.state_modifier_days_severe }
+			set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_delta_bp.winter_severe_monthly }
+		}
+
+		set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+		set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+		air_contamination_apply_delta_bp = yes
+
+		set_temp_variable = { winter_random_states_left = winter_random_states }
+		while_loop_effect = {
+			limit = { check_variable = { winter_random_states_left > 0 } }
+			random_state = {
+				limit = { NOT = { has_state_category = wasteland } }
+				if = {
+					limit = { has_global_flag = { flag = air_contamination_winter value = 2 } }
+					add_dynamic_modifier = {
+						modifier = fallout_thermonuclear
+						days = winter_state_modifier_days
+					}
+				}
+				else = {
+					add_dynamic_modifier = {
+						modifier = fallout_atomic
+						days = winter_state_modifier_days
+					}
+				}
+			}
+			subtract_from_temp_variable = { winter_random_states_left = 1 }
+		}
+	}
+}
+
+air_contamination_degrade_state_category = {
+	if = {
+		limit = { has_state_category = megalopolis }
+		set_state_category = metropolis
+	}
+	else_if = {
+		limit = { has_state_category = metropolis }
+		set_state_category = large_city
+	}
+	else_if = {
+		limit = { has_state_category = large_city }
+		set_state_category = city
+	}
+	else_if = {
+		limit = { has_state_category = city }
+		set_state_category = large_town
+	}
+	else_if = {
+		limit = { has_state_category = large_town }
+		set_state_category = town
+	}
+	else_if = {
+		limit = { has_state_category = town }
+		set_state_category = rural
+	}
+	else_if = {
+		limit = { has_state_category = rural }
+		set_state_category = pastoral
+	}
+	else_if = {
+		limit = { has_state_category = pastoral }
+		set_state_category = wasteland
+	}
+	else_if = {
+		limit = { has_state_category = small_island }
+		set_state_category = wasteland
+	}
+	else_if = {
+		limit = { has_state_category = tiny_island }
+		set_state_category = wasteland
+	}
+	else_if = {
+		limit = { has_state_category = enclave }
+		set_state_category = wasteland
+	}
+}
+
+air_contamination_apply_irreversible_effects = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.irreversible_100
+				compare = less_than
+			}
+		}
+		set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
+	}
+
+	every_state = {
+		add_dynamic_modifier = {
+			modifier = fallout_thermonuclear
+			days = constant:air_contamination_irreversible.global_state_modifier_days
+		}
+	}
+
+	set_temp_variable = { irreversible_degrade_steps = constant:air_contamination_irreversible.state_degrade_low }
+	if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_irreversible.state_degrade_high_threshold_bp
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { irreversible_degrade_steps = constant:air_contamination_irreversible.state_degrade_high }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_irreversible.state_degrade_mid_threshold_bp
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { irreversible_degrade_steps = constant:air_contamination_irreversible.state_degrade_mid }
+	}
+
+	while_loop_effect = {
+		limit = {
+			check_variable = { irreversible_degrade_steps > 0 }
+			any_state = { NOT = { has_state_category = wasteland } }
+		}
+		random_state = {
+			limit = { NOT = { has_state_category = wasteland } }
+			air_contamination_degrade_state_category = yes
+		}
+		subtract_from_temp_variable = { irreversible_degrade_steps = 1 }
+	}
+}
+
+air_cleanliness_treaty_try_form = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = air_cleanliness_treaty_active }
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.winter_75
+				compare = greater_than_or_equals
+			}
+			any_country = { is_air_cleanliness_treaty_founder_candidate = yes }
+		}
+		random_country = {
+			limit = { is_air_cleanliness_treaty_founder_candidate = yes }
+			set_global_flag = air_cleanliness_treaty_active
+			set_country_flag = air_cleanliness_treaty_member
+			save_global_event_target_as = air_cleanliness_treaty_founder
+
+			if = {
+				limit = { NOT = { has_global_flag = air_cleanliness_treaty_news_fired } }
+				set_global_flag = air_cleanliness_treaty_news_fired
+				news_event = { id = chaosx_contamination.7 }
+			}
+
+			country_event = { id = chaosx_contamination.10 }
+
+			every_country = {
+				limit = {
+					NOT = { tag = PREV }
+					NOT = { has_country_flag = air_cleanliness_treaty_member }
+					NOT = { has_country_flag = air_cleanliness_treaty_banned }
+					NOT = { original_tag = ZZZ }
+					NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+				}
+				country_event = {
+					id = chaosx_contamination.9
+					days = constant:air_cleanliness_treaty.invite_delay_days
+				}
+			}
+		}
+	}
+}
+
+air_cleanliness_treaty_set_cleaning_day_cooldown = {
+	set_global_flag = {
+		flag = air_cleanliness_treaty_cleaning_day_cooldown
+		days = @air_cleanliness_treaty_cleaning_day_cooldown_days
+	}
+}
+
+air_cleanliness_treaty_try_cleaning_day = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = air_cleanliness_treaty_cleaning_day_cooldown }
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_cleanliness_treaty.decision_min_contamination_bp
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { air_cleanliness_member_count = 0 }
+		every_country = {
+			limit = { has_country_flag = air_cleanliness_treaty_member }
+			add_to_temp_variable = { air_cleanliness_member_count = 1 }
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = air_cleanliness_member_count
+					value = constant:air_cleanliness_treaty.decision_member_count_min
+					compare = greater_than_or_equals
+				}
+			}
+			random = {
+				chance = constant:air_cleanliness_treaty.cleaning_day_monthly_chance
+				air_cleanliness_treaty_set_cleaning_day_cooldown = yes
+				set_temp_variable = { air_contamination_delta_bp = constant:air_cleanliness_treaty.cleaning_day_delta_bp }
+				multiply_temp_variable = { air_contamination_delta_bp = -1 }
+				set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+				set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+				air_contamination_apply_delta_bp = yes
+				air_contamination_apply_country_modifier = yes
+				news_event = { id = chaosx_contamination.11 }
+			}
+		}
+	}
+}
+
+air_cleanliness_treaty_monthly_update = {
+	air_cleanliness_treaty_try_form = yes
+
+	if = {
+		limit = { has_global_flag = air_cleanliness_treaty_active }
+		every_country = {
+			limit = { has_country_flag = air_cleanliness_treaty_banned }
+			clr_country_flag = air_cleanliness_treaty_member
+		}
+
+		every_country = {
+			limit = {
+				has_country_flag = air_cleanliness_treaty_member
+				has_used_unconventional_weapons = yes
+			}
+			air_cleanliness_treaty_on_unconventional_use = yes
+		}
+
+		every_country = {
+			limit = { has_country_flag = air_cleanliness_treaty_member }
+			every_other_country = {
+				limit = { has_country_flag = air_cleanliness_treaty_member }
+				add_opinion_modifier = {
+					target = PREV
+					modifier = air_cleanliness_treaty_member_respect
+				}
+			}
+		}
+
+		every_country = {
+			limit = { NOT = { has_country_flag = air_cleanliness_treaty_member } }
+			every_other_country = {
+				limit = {
+					has_country_flag = air_cleanliness_treaty_member
+					NOT = { is_subject_of = PREV }
+				}
+				send_embargo = PREV
+			}
+		}
+
+		air_cleanliness_treaty_try_cleaning_day = yes
+	}
+}
+
+air_cleanliness_treaty_on_unconventional_use = {
+	if = {
+		limit = {
+			has_global_flag = air_cleanliness_treaty_active
+			has_country_flag = air_cleanliness_treaty_member
+			NOT = { has_country_flag = air_cleanliness_treaty_banned }
+		}
+
+		clr_country_flag = air_cleanliness_treaty_member
+		set_country_flag = air_cleanliness_treaty_banned
+
+		every_other_country = {
+			limit = {
+				exists = yes
+				NOT = { is_subject_of = PREV }
+			}
+			add_opinion_modifier = {
+				target = PREV
+				modifier = air_cleanliness_treaty_violator
+			}
+			send_embargo = PREV
+		}
+
+		news_event = { id = chaosx_contamination.8 }
+	}
+}
+
+chaos_meter_apply_daily_contamination_and_outbreak_deaths = {
+	if = {
+		limit = { has_global_flag = settings_chaos_deaths_disabled }
+	}
+	else = {
+		every_state = {
+			if = {
+				limit = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+				set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_nuclear_fallout.daily_percent }
+				set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_nuclear_fallout.daily_cap_factor }
+				if = {
+					limit = { has_variable = nuclear_fallout_intensity }
+					multiply_temp_variable = { chaos_state_deaths_percent = nuclear_fallout_intensity }
+					multiply_temp_variable = { chaos_state_deaths_cap_factor = nuclear_fallout_intensity }
+				}
+				set_temp_variable = { chaos_state_deaths_mult = 1 }
+				chaos_meter_apply_nuclear_state_death_environment_multiplier = yes
+				set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.nuclear_random_min }
+				set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.nuclear_random_span }
+				set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.nuclear_strike }
+				chaos_meter_register_state_civilian_deaths_percent = yes
+			}
+
+			if = {
+				limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+				set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.chemical_monthly }
+				divide_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.tick_days_divisor }
+				set_temp_variable = { chaos_state_deaths_mult = 1 }
+				chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+				set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.chemical_cap_factor }
+				set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+				set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+				set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
+				chaos_meter_register_state_civilian_deaths_percent = yes
+			}
+
+			if = {
+				limit = {
+					OR = {
+						has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+						has_dynamic_modifier = { modifier = plague_contaminated_state }
+						has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+						has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+					}
+				}
+				set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_anthrax_monthly }
+				if = {
+					limit = {
+						OR = {
+							has_dynamic_modifier = { modifier = plague_contaminated_state }
+							has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+						}
+					}
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_plague_monthly }
+				}
+				else_if = {
+					limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_tularemia_monthly }
+				}
+
+				if = {
+					limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_smallpox_monthly }
+				}
+
+				divide_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.tick_days_divisor }
+				set_temp_variable = { chaos_state_deaths_mult = 1 }
+				chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+
+				set_temp_variable = { chaos_outbreak_death_mult = 1 }
+				CONTROLLER = {
+					if = {
+						limit = { has_bio_outbreak_prevention_tier_3 = yes }
+						multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.tier_3 }
+					}
+					else_if = {
+						limit = { has_bio_outbreak_prevention_tier_2_only = yes }
+						multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.tier_2 }
+					}
+					else_if = {
+						limit = { has_bio_outbreak_prevention_tier_1_only = yes }
+						multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.tier_1 }
+					}
+
+					if = {
+						limit = { has_country_flag = quarantine_protocols_active }
+						multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.quarantine_protocols }
+					}
+					if = {
+						limit = { has_idea = outbreak_prevention_borders_closed }
+						multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.closed_borders }
+					}
+				}
+
+				calculate_contamination_defense_effectiveness = yes
+				if = {
+					limit = { has_variable = contamination_defense_effectiveness }
+					set_temp_variable = { chaos_outbreak_state_effectiveness = contamination_defense_effectiveness }
+					clamp_temp_variable = {
+						var = chaos_outbreak_state_effectiveness
+						min = 0
+						max = constant:chaos_meter_outbreak_death_mitigation.state_effectiveness_cap
+					}
+					set_temp_variable = { chaos_outbreak_state_remaining = 1 }
+					subtract_from_temp_variable = { chaos_outbreak_state_remaining = chaos_outbreak_state_effectiveness }
+					multiply_temp_variable = { chaos_outbreak_death_mult = chaos_outbreak_state_remaining }
+				}
+
+				multiply_temp_variable = { chaos_state_deaths_mult = chaos_outbreak_death_mult }
+				set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.outbreak_cap_factor }
+				set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+				set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+				set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+				chaos_meter_register_state_civilian_deaths_percent = yes
+			}
+		}
+	}
+}
+
+air_contamination_monthly_update = {
+	if = {
+		limit = { NOT = { has_variable = global.air_contamination_bp } }
+		set_variable = { global.air_contamination_bp = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.air_contamination_chaos_buffer_bp } }
+		set_variable = { global.air_contamination_chaos_buffer_bp = 0 }
+	}
+
+	set_variable = { global.air_contamination_chem_states = 0 }
+	set_variable = { global.air_contamination_outbreak_states = 0 }
+	set_variable = { global.air_contamination_chem_bp = 0 }
+	set_variable = { global.air_contamination_outbreak_bp = 0 }
+	set_variable = { global.air_contamination_decay_bp = 0 }
+
+	set_temp_variable = { air_monthly_chem_bp = 0 }
+	set_temp_variable = { air_monthly_outbreak_bp = 0 }
+	set_temp_variable = { air_cleanliness_system_enabled = 1 }
+	if = {
+		limit = { has_global_flag = settings_air_cleanliness_disabled }
+		set_temp_variable = { air_cleanliness_system_enabled = 0 }
+	}
+
+	every_state = {
+		if = {
+			limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+			if = {
+				limit = {
+					check_variable = {
+						var = air_cleanliness_system_enabled
+						value = 0
+						compare = greater_than
+					}
+				}
+				add_to_variable = { global.air_contamination_chem_states = 1 }
+				add_to_temp_variable = { air_monthly_chem_bp = constant:air_contamination_delta_bp.chemical_state }
+			}
+		}
+
+		if = {
+			limit = {
+				OR = {
+					has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+					has_dynamic_modifier = { modifier = plague_contaminated_state }
+					has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+					has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+				}
+			}
+				if = {
+					limit = {
+						check_variable = {
+						var = air_cleanliness_system_enabled
+						value = 0
+						compare = greater_than
+					}
+				}
+				add_to_variable = { global.air_contamination_outbreak_states = 1 }
+				if = {
+					limit = {
+						OR = {
+							has_dynamic_modifier = { modifier = plague_contaminated_state }
+							has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+						}
+					}
+					add_to_temp_variable = { air_monthly_outbreak_bp = constant:air_contamination_delta_bp.outbreak_state_high }
+				}
+				else_if = {
+					limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+					add_to_temp_variable = { air_monthly_outbreak_bp = constant:air_contamination_delta_bp.outbreak_state_low }
+				}
+				else = {
+					add_to_temp_variable = { air_monthly_outbreak_bp = constant:air_contamination_delta_bp.outbreak_state_base }
+				}
+			}
+		}
+
+		if = {
+			limit = { days_since_last_strategic_bombing < constant:chaos_meter_deaths.strategic_bombing_days_recent }
+			set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_state_death_dynamic.strategic_bombing_percent_recent }
+			set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.bombing_cap_factor_recent }
+
+			if = {
+				limit = { days_since_last_strategic_bombing < constant:chaos_meter_deaths.strategic_bombing_days_warm }
+				set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_state_death_dynamic.strategic_bombing_percent_warm }
+				set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.bombing_cap_factor_warm }
+			}
+			if = {
+				limit = { days_since_last_strategic_bombing < constant:chaos_meter_deaths.strategic_bombing_days_hot }
+				set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_state_death_dynamic.strategic_bombing_percent_hot }
+				set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.bombing_cap_factor_hot }
+			}
+
+			set_temp_variable = { chaos_state_deaths_mult = 1 }
+			chaos_meter_apply_bombing_state_death_environment_multiplier = yes
+			set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.bombing_random_min }
+			set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.bombing_random_span }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.strategic_bombing }
+			chaos_meter_register_state_civilian_deaths_percent = yes
+		}
+
+			if = {
+				limit = {
+					NOT = { is_owned_and_controlled_by = CONTROLLER }
+					has_resistance = yes
+				}
+				set_temp_variable = { chaos_state_deaths_percent = 0 }
+
+				if = {
+					limit = { occupation_law = concentration }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.concentration }
+				}
+				else_if = {
+					limit = { occupation_law = brutally_oppressive_occupation }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.brutally_oppressive_occupation }
+				}
+				else_if = {
+					limit = { occupation_law = harsh_quotas_occupation }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.harsh_quotas_occupation }
+				}
+				else_if = {
+					limit = { occupation_law = forced_labor_occupation }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.forced_labor_occupation }
+				}
+				else_if = {
+					limit = { occupation_law = martial_law_occupation }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.martial_law_occupation }
+				}
+				else_if = {
+					limit = { occupation_law = military_governor_occupation }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.military_governor_occupation }
+				}
+				else_if = {
+					limit = { occupation_law = secret_police_oversight }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.secret_police_oversight }
+				}
+				else_if = {
+					limit = { occupation_law = local_police_force_garrison }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.local_police_force_garrison }
+				}
+				else_if = {
+					limit = { occupation_law = foreign_civilian_oversight }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.foreign_civilian_oversight }
+				}
+				else_if = {
+					limit = { occupation_law = autonomous_occupation }
+					set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_occupation_deaths_percent.autonomous_occupation }
+				}
+
+				if = {
+					limit = { check_variable = { chaos_state_deaths_percent > 0 } }
+					set_temp_variable = { chaos_state_deaths_mult = 1 }
+					chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+					set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.occupation_cap_factor }
+					set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.occupation_policy }
+					chaos_meter_register_state_civilian_deaths_percent = yes
+				}
+			}
+		}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = air_cleanliness_system_enabled
+				value = 0
+				compare = greater_than
+			}
+		}
+		set_variable = { global.air_contamination_chem_bp = air_monthly_chem_bp }
+		set_variable = { global.air_contamination_outbreak_bp = air_monthly_outbreak_bp }
+
+		set_temp_variable = { air_contamination_delta_bp = air_monthly_chem_bp }
+		add_to_temp_variable = { air_contamination_delta_bp = air_monthly_outbreak_bp }
+
+		if = {
+			limit = { NOT = { has_global_flag = air_contamination_irreversible } }
+			set_variable = { global.air_contamination_decay_bp = constant:air_contamination_delta_bp.monthly_decay_base }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.air_contamination_bp
+						value = constant:air_contamination_threshold_bp.winter_75
+						compare = greater_than_or_equals
+					}
+				}
+				set_variable = { global.air_contamination_decay_bp = constant:air_contamination_delta_bp.monthly_decay_tier_75 }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = global.air_contamination_bp
+						value = constant:air_contamination_threshold_bp.winter_50
+						compare = greater_than_or_equals
+					}
+				}
+				set_variable = { global.air_contamination_decay_bp = constant:air_contamination_delta_bp.monthly_decay_tier_50 }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = global.air_contamination_bp
+						value = constant:air_contamination_threshold_bp.spread_25
+						compare = greater_than_or_equals
+					}
+				}
+				set_variable = { global.air_contamination_decay_bp = constant:air_contamination_delta_bp.monthly_decay_tier_25 }
+			}
+			set_temp_variable = { air_decay_bp = global.air_contamination_decay_bp }
+			multiply_temp_variable = { air_decay_bp = -1 }
+			add_to_temp_variable = { air_contamination_delta_bp = air_decay_bp }
+		}
+
+		set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+		set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+		air_contamination_apply_delta_bp = yes
+
+		if = {
+			limit = {
+				NOT = { has_global_flag = air_contamination_irreversible }
+				check_variable = {
+					var = global.air_contamination_bp
+					value = constant:air_contamination_threshold_bp.winter_50
+					compare = greater_than_or_equals
+				}
+			}
+			air_contamination_apply_winter_effects = yes
+		}
+
+		if = {
+			limit = { has_global_flag = air_contamination_irreversible }
+			air_contamination_apply_irreversible_effects = yes
+		}
+
+		air_contamination_refresh_values = yes
+		air_contamination_update_threshold_flags = yes
+		air_contamination_apply_country_modifier = yes
+	}
+	else = {
+		set_variable = { global.air_contamination_chem_states = 0 }
+		set_variable = { global.air_contamination_outbreak_states = 0 }
+		set_variable = { global.air_contamination_chem_bp = 0 }
+		set_variable = { global.air_contamination_outbreak_bp = 0 }
+		set_variable = { global.air_contamination_decay_bp = 0 }
+		set_variable = { global.air_contamination_last_delta_bp = 0 }
+		set_variable = { global.air_contamination_last_nuke_bp = 0 }
+		clr_global_flag = air_contamination_winter
+		air_contamination_refresh_values = yes
+		air_contamination_apply_country_modifier = yes
+	}
+
+	# The treaty-pressure phase has been removed from contamination escalation.
+	# Clean up legacy treaty state so old saves do not keep side effects.
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = air_cleanliness_treaty_active
+				has_global_flag = air_cleanliness_treaty_news_fired
+				has_global_flag = air_cleanliness_treaty_cleaning_day_cooldown
+			}
+		}
+		clr_global_flag = air_cleanliness_treaty_active
+		clr_global_flag = air_cleanliness_treaty_news_fired
+		clr_global_flag = air_cleanliness_treaty_cleaning_day_cooldown
+
+		if = {
+			limit = { has_event_target = air_cleanliness_treaty_founder }
+			clear_global_event_target = air_cleanliness_treaty_founder
+		}
+
+		every_country = {
+			clr_country_flag = air_cleanliness_treaty_member
+			clr_country_flag = air_cleanliness_treaty_banned
+		}
+	}
+}
+
 world_end_scenario_triggered = {
 
 
@@ -192,13 +3967,19 @@ chaos_meter_on_war_relation_added = {
         }
         if = {
             limit = { ROOT = { is_major = yes } FROM = { is_major = yes } }
+            ROOT = { save_event_target_as = chaos_history_actor }
             set_temp_variable = { chaos_change = constant:chaos_meter_delta.war.major }
+            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.major }
+            set_temp_variable = { chaos_history_reason_custom = 1 }
             log = "CHAOS METER: Major [ROOT.GetName] declared war on Major [FROM.GetName] ([?chaos_change|=] chaos)"
             add_chaos_meter_value = yes
         }
         else_if = {
             limit = { ROOT = { OR = { is_subject = no is_in_faction = no } } FROM = { is_subject = no } }
+            ROOT = { save_event_target_as = chaos_history_actor }
             set_temp_variable = { chaos_change = constant:chaos_meter_delta.war.minor }
+            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.minor }
+            set_temp_variable = { chaos_history_reason_custom = 1 }
             log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
             add_chaos_meter_value = yes
         }
@@ -213,12 +3994,18 @@ chaos_meter_on_peace = {
     # on_peace has no FROM scope - THIS is the country that is no longer at war
     if = {
         limit = { is_major = yes }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.peace.major }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.peace.major }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Major [THIS.GetName] made peace ([?chaos_change|=] chaos)"
     }
     else_if = {
         limit = { is_subject = no }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.peace.minor }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.peace.minor }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Minor [THIS.GetName] made peace ([?chaos_change|=] chaos)"
     }
 
@@ -229,11 +4016,17 @@ chaos_meter_on_annex = {
     # Check if annexed country is major or minor
     if = {
         limit = { FROM = { is_major = yes } }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.annex.major }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.annex.major }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Major [FROM.GetName] was annexed by [THIS.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.annex.minor }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.annex.minor }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Minor [FROM.GetName] was annexed by [THIS.GetName] ([?chaos_change|=] chaos)"
     }
 
@@ -243,11 +4036,17 @@ chaos_meter_on_annex = {
 chaos_meter_on_puppet = {
     if = {
         limit = { FROM = { is_major = yes } }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.puppet.major }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.puppet.major }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Major [FROM.GetName] was puppeted by [THIS.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.puppet.minor }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.puppet.minor }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: [FROM.GetName] was puppeted by [THIS.GetName] ([?chaos_change|=] chaos)"
     }
     add_chaos_meter_value = yes
@@ -257,11 +4056,17 @@ chaos_meter_on_liberate = {
     # Check if liberator is democratic
     if = {
         limit = { has_government = democratic }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.liberate.democratic }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.liberate.democratic }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Democratic [THIS.GetName] liberated [FROM.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.liberate.base }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.liberate.base }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: [THIS.GetName] liberated [FROM.GetName] ([?chaos_change|=] chaos)"
     }
 
@@ -269,7 +4074,10 @@ chaos_meter_on_liberate = {
 }
 
 chaos_meter_on_release_as_free = {
+    save_event_target_as = chaos_history_actor
     set_temp_variable = { chaos_change = constant:chaos_meter_delta.release.free }
+    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.release.free }
+    set_temp_variable = { chaos_history_reason_custom = 1 }
     log = "CHAOS METER: [FROM.GetName] was released as free nation by [THIS.GetName] ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
@@ -278,11 +4086,17 @@ chaos_meter_on_release_as_free = {
 chaos_meter_on_subject_free = {
     if = {
         limit = { is_major = yes }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.subject.free_major }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subject.free_major }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Major [THIS.GetName] became free from subject status ([?chaos_change|=] chaos)"
     }
     else = {
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.subject.free_minor }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subject.free_minor }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: [THIS.GetName] became free from subject status ([?chaos_change|=] chaos)"
     }
 
@@ -291,27 +4105,94 @@ chaos_meter_on_subject_free = {
 }
 
 chaos_meter_on_subject_annexed = {
+    save_event_target_as = chaos_history_actor
     set_temp_variable = { chaos_change = constant:chaos_meter_delta.subject.annexed }
+    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subject.annexed }
+    set_temp_variable = { chaos_history_reason_custom = 1 }
     log = "CHAOS METER: Subject [FROM.GetName] was annexed by [THIS.GetName] ([?chaos_change|=] chaos)"
 
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_nuke_drop = {
-    set_temp_variable = { chaos_change = constant:chaos_meter_delta.nuke.base }
-    log = "CHAOS METER: Nuclear weapon dropped by [THIS.GetName] on [FROM.GetName] ([?chaos_change|=] chaos)"
+	save_event_target_as = chaos_history_actor
+	set_temp_variable = { air_cleanliness_system_enabled = 1 }
+	set_temp_variable = { chaos_fallout_duration_days = constant:chaos_meter_nuclear_fallout.normal_duration_days }
+	set_temp_variable = { chaos_fallout_intensity_add = constant:chaos_meter_nuclear_fallout.normal_intensity_add }
+	if = {
+		limit = { has_global_flag = settings_air_cleanliness_disabled }
+		set_temp_variable = { air_cleanliness_system_enabled = 0 }
+	}
+	set_temp_variable = { chaos_nuke_state_deaths_percent = constant:chaos_meter_state_death_dynamic.nuclear_percent }
+	set_temp_variable = { chaos_nuke_state_cap_factor = constant:chaos_meter_state_death_dynamic.nuke_cap_factor }
 
-    add_chaos_meter_value = yes
+	if = {
+		limit = { has_tech = thermonuclear_bombs }
+		set_temp_variable = { chaos_nuke_state_deaths_percent = constant:chaos_meter_state_death_dynamic.thermonuclear_percent }
+		set_temp_variable = { chaos_nuke_state_cap_factor = constant:chaos_meter_state_death_dynamic.thermonuke_cap_factor }
+		set_temp_variable = { chaos_fallout_duration_days = constant:chaos_meter_nuclear_fallout.thermonuclear_duration_days }
+		set_temp_variable = { chaos_fallout_intensity_add = constant:chaos_meter_nuclear_fallout.thermonuclear_intensity_add }
+	}
+
+	chaos_meter_register_nuclear_condemnation = yes
+
+	FROM = {
+		set_temp_variable = { chaos_state_deaths_percent = ROOT.chaos_nuke_state_deaths_percent }
+		set_temp_variable = { chaos_state_deaths_mult = 1 }
+		chaos_meter_apply_nuclear_state_death_environment_multiplier = yes
+		set_temp_variable = { chaos_state_deaths_cap_factor = ROOT.chaos_nuke_state_cap_factor }
+		set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.nuclear_random_min }
+		set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.nuclear_random_span }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.nuclear_strike }
+		chaos_meter_register_state_civilian_deaths_percent = yes
+		chaos_meter_apply_nuclear_fallout_to_state = yes
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = air_cleanliness_system_enabled
+				value = 0
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_delta_bp.nuke_normal }
+		set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.nuke.base }
+		if = {
+			limit = { has_tech = thermonuclear_bombs }
+			set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_delta_bp.nuke_thermonuclear }
+			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.nuke.thermonuclear }
+			log = "AIR CONTAMINATION: Thermonuclear strike by [THIS.GetName] on [FROM.GetName] (+[?air_contamination_delta_bp] bp)"
+		}
+		else = {
+			log = "AIR CONTAMINATION: Nuclear strike by [THIS.GetName] on [FROM.GetName] (+[?air_contamination_delta_bp] bp)"
+		}
+
+		set_variable = { global.air_contamination_last_nuke_bp = air_contamination_delta_bp }
+		air_contamination_apply_delta_bp = yes
+		air_contamination_apply_country_modifier = yes
+	}
+	else = {
+		set_variable = { global.air_contamination_last_nuke_bp = 0 }
+	}
+	set_country_flag = used_unconventional_weapon
+	air_cleanliness_treaty_on_unconventional_use = yes
 }
 
 chaos_meter_on_mobilization_law_change = {
     if = {
         limit = { is_major = yes }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.mobilization.up_major }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.mobilization.up_major }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Major [THIS.GetName] increased mobilization law ([?chaos_change|=] chaos)"
     }
     else = {
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.mobilization.up_major }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.mobilization.up_minor }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Minor [THIS.GetName] increased mobilization law ([?chaos_change|=] chaos)"
     }
 
@@ -321,11 +4202,17 @@ chaos_meter_on_mobilization_law_change = {
 chaos_meter_on_coup = {
     if = {
         limit = { is_major = yes }
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.coup.major }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.coup.major }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Coup in major power [THIS.GetName] ([?chaos_change|=] chaos)"
     }
     else = {
+        save_event_target_as = chaos_history_actor
         set_temp_variable = { chaos_change = constant:chaos_meter_delta.coup.minor }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.coup.minor }
+        set_temp_variable = { chaos_history_reason_custom = 1 }
         log = "CHAOS METER: Coup in minor power [THIS.GetName] ([?chaos_change|=] chaos)"
     }
 
@@ -347,133 +4234,105 @@ chaos_meter_on_coup = {
 # }
 
 chaos_meter_on_ideology_change = {
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
 	    # The ruling party change triggers after the change, so we detect the new ideology
 	    if = {
 	        limit = {
 	            is_major = yes
 	            has_government = democratic
 	        }
+	        save_event_target_as = chaos_history_actor
 	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.ideology_change.major_democratic }
+	        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.ideology_change.major_democratic }
+	        set_temp_variable = { chaos_history_reason_custom = 1 }
 	        log = "CHAOS METER: Major power [THIS.GetName] changed to democratic ideology ([?chaos_change|=] chaos)"
 	    }
 	    else_if = {
 	        limit = { is_major = yes }
+	        save_event_target_as = chaos_history_actor
 	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.ideology_change.major_non_democratic }
+	        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.ideology_change.major_non_democratic }
+	        set_temp_variable = { chaos_history_reason_custom = 1 }
 	        log = "CHAOS METER: Major power [THIS.GetName] changed to non-democratic ideology ([?chaos_change|=] chaos)"
 	    }
 	    else_if = {
 	        limit = { has_government = democratic }
+	        save_event_target_as = chaos_history_actor
 	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.ideology_change.minor_democratic }
+	        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.ideology_change.minor_democratic }
+	        set_temp_variable = { chaos_history_reason_custom = 1 }
 	        log = "CHAOS METER: Minor power [THIS.GetName] changed to democratic ideology ([?chaos_change|=] chaos)"
 	    }
 	    else = {
+	        save_event_target_as = chaos_history_actor
 	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.ideology_change.minor_non_democratic }
+	        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.ideology_change.minor_non_democratic }
+	        set_temp_variable = { chaos_history_reason_custom = 1 }
 	        log = "CHAOS METER: Minor power [THIS.GetName] changed to non-democratic ideology ([?chaos_change|=] chaos)"
 	    }
 
-    add_chaos_meter_value = yes
+	    add_chaos_meter_value = yes
+	}
 }
 
 chaos_meter_on_faction_created = {
+	    save_event_target_as = chaos_history_actor
 	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.create }
+	    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.faction.create }
+	    set_temp_variable = { chaos_history_reason_custom = 1 }
 	    log = "CHAOS METER: [THIS.GetName] created a faction ([?chaos_change|=] chaos)"
 
 	    add_chaos_meter_value = yes
 }
 
 chaos_meter_on_faction_disbanded = {
+	    save_event_target_as = chaos_history_actor
 	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.disband }
+	    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.faction.disband }
+	    set_temp_variable = { chaos_history_reason_custom = 1 }
 	    log = "CHAOS METER: Faction disbanded ([?chaos_change|=] chaos)"
 
 	    add_chaos_meter_value = yes
 }
 
 chaos_meter_on_faction_join = {
-    # Check if both joining country and faction leader are democratic
-    set_temp_variable = { both_democratic = 0 }
-    if = {
-        limit = {
-            has_government = democratic
-            FROM = { has_government = democratic }
-        }
-        set_temp_variable = { both_democratic = 1 }
-    }
-
-	    if = {
-	        limit = {
-	            is_major = yes
-	            check_variable = { both_democratic = 1 }
-	        }
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.join_both_democratic_major }
-	        log = "CHAOS METER: Major democratic power [THIS.GetName] joined democratic faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
-	    }
-	    else_if = {
-	        limit = {
-	            check_variable = { both_democratic = 1 }
-	        }
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.join_both_democratic_minor }
-	        log = "CHAOS METER: Minor democratic power [THIS.GetName] joined democratic faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
-	    }
-	    else_if = {
-	        limit = { is_major = yes }
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.join_major }
-	        log = "CHAOS METER: Major power [THIS.GetName] joined faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
-	    }
-	    else = {
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.join_minor }
-	        log = "CHAOS METER: Minor power [THIS.GetName] joined faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
-	    }
+	if = {
+		limit = { is_major = yes }
+		save_event_target_as = chaos_history_actor
+		set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.join_major }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.faction.join_major }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		log = "CHAOS METER: Major power [THIS.GetName] joined faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
+	}
+	else = {
+		save_event_target_as = chaos_history_actor
+		set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.join_minor }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.faction.join_minor }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		log = "CHAOS METER: Minor power [THIS.GetName] joined faction led by [FROM.GetName] ([?chaos_change|=] chaos)"
+	}
 
     add_chaos_meter_value = yes
 }
 
 chaos_meter_on_faction_leave = {
-    # Check if both leaving country and current faction leader are democratic
-    set_temp_variable = { both_democratic = 0 }
-    if = {
-        limit = {
-            has_government = democratic
-            FROM = { has_government = democratic }
-        }
-        set_temp_variable = { both_democratic = 1 }
-    }
-
-    # No effect for democratic countries leaving democratic factions
-    if = {
-        limit = {
-            has_government = democratic
-            check_variable = { both_democratic = 1 }
-        }
-        log = "CHAOS METER: Democratic power [THIS.GetName] left democratic faction (no chaos effect)"
-    }
-	    else_if = {
-	        limit = {
-	            is_major = yes
-	            check_variable = { both_democratic = 1 }
-	        }
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.leave_both_democratic_major }
-	        log = "CHAOS METER: Major power [THIS.GetName] left democratic faction ([?chaos_change|=] chaos)"
-	        add_chaos_meter_value = yes
-	    }
-	    else_if = {
-	        limit = {
-	            check_variable = { both_democratic = 1 }
-	        }
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.leave_both_democratic_minor }
-	        log = "CHAOS METER: Minor power [THIS.GetName] left democratic faction ([?chaos_change|=] chaos)"
-	        add_chaos_meter_value = yes
-	    }
-	    else_if = {
-	        limit = { is_major = yes }
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.leave_major }
-	        log = "CHAOS METER: Major power [THIS.GetName] left faction ([?chaos_change|=] chaos)"
-	        add_chaos_meter_value = yes
-	    }
-	    else = {
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.leave_minor }
-	        log = "CHAOS METER: Minor power [THIS.GetName] left faction ([?chaos_change|=] chaos)"
-	        add_chaos_meter_value = yes
-	    }
+	if = {
+		limit = { is_major = yes }
+		save_event_target_as = chaos_history_actor
+		set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.leave_major }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.faction.leave_major }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		log = "CHAOS METER: Major power [THIS.GetName] left faction ([?chaos_change|=] chaos)"
+	}
+	else = {
+		save_event_target_as = chaos_history_actor
+		set_temp_variable = { chaos_change = constant:chaos_meter_delta.faction.leave_minor }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.faction.leave_minor }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		log = "CHAOS METER: Minor power [THIS.GetName] left faction ([?chaos_change|=] chaos)"
+	}
+	add_chaos_meter_value = yes
 }
 
 # chaos_meter_on_justifying_wargoal = {
@@ -489,20 +4348,25 @@ chaos_meter_on_faction_leave = {
 chaos_meter_on_guarantee = {
 	    if = {
 	        limit = { is_major = yes }
+	        save_event_target_as = chaos_history_actor
 	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.diplomacy.guarantee_major }
+	        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.diplomacy.guarantee_major }
+	        set_temp_variable = { chaos_history_reason_custom = 1 }
 	        log = "CHAOS METER: Major power [THIS.GetName] guaranteed independence of [FROM.GetName] ([?chaos_change|=] chaos)"
+	        add_chaos_meter_value = yes
 	    }
-
-    add_chaos_meter_value = yes
 }
 
 chaos_meter_on_wargoal_expire = {
 	    if = {
 	        limit = { is_major = yes }
+	        save_event_target_as = chaos_history_actor
 	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.diplomacy.wargoal_expire_major }
+	        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.diplomacy.wargoal_expire_major }
+	        set_temp_variable = { chaos_history_reason_custom = 1 }
 	        log = "CHAOS METER: Major power [THIS.GetName] had war goal against [FROM.GetName] expire ([?chaos_change|=] chaos)"
+	        add_chaos_meter_value = yes
 	    }
-	    add_chaos_meter_value = yes
 }
 # chaos_meter_on_call_allies = {
 #     if = {
@@ -516,62 +4380,102 @@ chaos_meter_on_wargoal_expire = {
 chaos_meter_on_join_allies = {
 	    if = {
 	        limit = { ROOT = { is_subject = no } }
+	        save_event_target_as = chaos_history_actor
 	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.join_allies }
+	        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.join_allies }
+	        set_temp_variable = { chaos_history_reason_custom = 1 }
 	        log = "CHAOS METER: [THIS.GetName] joined allies in war ([?chaos_change|=] chaos)"
 	        add_chaos_meter_value = yes
 	    }
 }
 
 chaos_meter_on_new_term_election = {
-	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.new_term_election }
-	    log = "CHAOS METER: Major [THIS.GetName] held democratic elections ([?chaos_change|=] chaos)"
-	    add_chaos_meter_value = yes
+	# Elections are intentionally excluded from chaos impact.
+	# save_event_target_as = chaos_history_actor
+	# set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.new_term_election }
+	# set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.new_term_election }
+	# set_temp_variable = { chaos_history_reason_custom = 1 }
+	# log = "CHAOS METER: Major [THIS.GetName] held democratic elections ([?chaos_change|=] chaos)"
+	# add_chaos_meter_value = yes
 }
 
 chaos_meter_on_stage_coup = {
+	    save_event_target_as = chaos_history_actor
 	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.stage_coup }
+	    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.stage_coup }
+	    set_temp_variable = { chaos_history_reason_custom = 1 }
 	    log = "CHAOS METER: [THIS.GetName] staged coup attempt in [FROM.GetName] ([?chaos_change|=] chaos)"
 	    add_chaos_meter_value = yes
 }
 
 chaos_meter_on_coup_succeeded = {
+	    save_event_target_as = chaos_history_actor
 	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.coup_succeeded }
+	    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.coup_succeeded }
+	    set_temp_variable = { chaos_history_reason_custom = 1 }
 	    log = "CHAOS METER: Coup succeeded in [THIS.GetName] ([?chaos_change|=] chaos)"
 	    add_chaos_meter_value = yes
 }
 
 chaos_meter_on_capitulation = {
-    if = {
-        limit = { THIS = { is_major = yes } }
-        set_temp_variable = { chaos_change = 3 }
-        log = "CHAOS METER: Major [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
-    }
-	    else = {
-	        set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.capitulation }
-	        log = "CHAOS METER: Minor [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
-	    }
-    add_chaos_meter_value = yes
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
+		if = {
+			limit = { THIS = { is_major = yes } }
+			save_event_target_as = chaos_history_actor
+			set_temp_variable = { chaos_change = 3 }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.capitulation_major }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			log = "CHAOS METER: Major [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
+		}
+		else = {
+			save_event_target_as = chaos_history_actor
+			set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.capitulation }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.capitulation_minor }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			log = "CHAOS METER: Minor [THIS.GetName] capitulated to [FROM.GetName] ([?chaos_change|=] chaos)"
+		}
+		add_chaos_meter_value = yes
+	}
 }
 
 chaos_meter_on_uncapitulation = {
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
 	    # on_uncapitulation: ROOT = country affected (no FROM)
+	    ROOT = { save_event_target_as = chaos_history_actor }
 	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.uncapitulation }
+	    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.uncapitulation }
+	    set_temp_variable = { chaos_history_reason_custom = 1 }
 	    log = "CHAOS METER: [ROOT.GetName] was liberated from capitulation ([?chaos_change|=] chaos)"
 	    add_chaos_meter_value = yes
+	}
 }
 
 chaos_meter_on_government_exiled = {
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
 	    # on_government_exiled: ROOT = exile government, FROM = host country
+	    ROOT = { save_event_target_as = chaos_history_actor }
 	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.government_exiled }
+	    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.government_exiled }
+	    set_temp_variable = { chaos_history_reason_custom = 1 }
 	    log = "CHAOS METER: Government of [ROOT.GetName] went into exile in [FROM.GetName] ([?chaos_change|=] chaos)"
 	    add_chaos_meter_value = yes
+	}
 }
 
 chaos_meter_on_exile_reinstated = {
+	if = {
+		limit = { uses_normal_civilian_systems = yes }
 	    # on_exile_government_reinstated: ROOT = government, FROM = former host
+	    ROOT = { save_event_target_as = chaos_history_actor }
 	    set_temp_variable = { chaos_change = constant:chaos_meter_delta.subtle.exile_reinstated }
+	    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.subtle.exile_reinstated }
+	    set_temp_variable = { chaos_history_reason_custom = 1 }
 	    log = "CHAOS METER: Exiled government of [ROOT.GetName] was reinstated from [FROM.GetName] ([?chaos_change|=] chaos)"
 	    add_chaos_meter_value = yes
+	}
 }
 
 
@@ -597,6 +4501,7 @@ chaos_meter_daily_update = {
     # Check if chaos meter is disabled
     if = {
         limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+        chaos_meter_apply_daily_contamination_and_outbreak_deaths = yes
         chaos_meter_update_world_tension = yes
         chaos_meter_update_casualties = yes
         chaos_meter_update_factories = yes
@@ -621,6 +4526,8 @@ chaos_meter_update_world_tension = {
 	            limit = { check_variable = { var = tension_increase value = constant:chaos_meter_update_threshold.min_tension_change compare = greater_than_or_equals } }
 	            set_temp_variable = { chaos_change = tension_increase }
 	            multiply_temp_variable = { chaos_change = constant:chaos_meter_delta.world_tension.base }
+	            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.world_tension_rise }
+	            set_temp_variable = { chaos_history_reason_custom = 1 }
 	            add_chaos_meter_value = yes
 	            log = "CHAOS METER: World tension increased from [?global.highest_world_tension_recorded]% to [?current_world_tension]% ([?chaos_change|=] chaos)"
 	            set_variable = { global.highest_world_tension_recorded = current_world_tension }
@@ -637,6 +4544,8 @@ chaos_meter_update_world_tension = {
 	            set_temp_variable = { chaos_change = tension_decrease }
 	            multiply_temp_variable = { chaos_change = constant:chaos_meter_delta.world_tension.base }
 	            multiply_temp_variable = { chaos_change = -1 }
+	            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.world_tension_fall }
+	            set_temp_variable = { chaos_history_reason_custom = 1 }
 	            add_chaos_meter_value = yes
 
             set_temp_variable = { wt_decreased_from = current_world_tension }
@@ -648,29 +4557,32 @@ chaos_meter_update_world_tension = {
 }
 
 chaos_meter_update_casualties = {
-    set_temp_variable = { current_casualties = 0 }
-    every_country = {
-        add_to_temp_variable = { current_casualties = casualties }
-    }
+	set_temp_variable = { current_casualties = 0 }
+	every_country = {
+		add_to_temp_variable = { current_casualties = casualties }
+		if = {
+			limit = { NOT = { has_variable = chaos_meter_last_casualty_count } }
+			set_variable = { chaos_meter_last_casualty_count = casualties }
+		}
 
-    divide_temp_variable = { current_casualties = 1000 }
-	    set_temp_variable = { casualty_increase = current_casualties }
-	    subtract_from_temp_variable = { casualty_increase = global.last_casualty_count }
+		set_temp_variable = { casualty_increase = casualties }
+		subtract_from_temp_variable = { casualty_increase = chaos_meter_last_casualty_count }
 
-	    if = {
-	        limit = { check_variable = { casualty_increase > constant:chaos_meter_scale.per.casualties } }
-	        set_temp_variable = { chaos_from_casualties = casualty_increase }
-	        divide_temp_variable = { chaos_from_casualties = constant:chaos_meter_scale.per.casualties }
-	        set_temp_variable = { chaos_change = chaos_from_casualties }
+		if = {
+			limit = { check_variable = { casualty_increase > 0 } }
+			set_temp_variable = { chaos_deaths_change = casualty_increase }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.military_casualties }
+			set_temp_variable = { chaos_deaths_is_civilian = 0 }
+			set_temp_variable = { chaos_deaths_target_country = THIS }
+			set_temp_variable = { chaos_deaths_has_target_country = 1 }
+			chaos_meter_register_deaths = yes
+			log = "CHAOS METER: Military casualties increased for [This.GetNameDef] by [?casualty_increase|.0], total deaths now [?global.chaos_meter_deaths_total|.0]"
+		}
 
-	        if = {
-	            limit = { check_variable = { var = chaos_change value = constant:chaos_meter_update_threshold.min_casualty_change_k compare = greater_than_or_equals } }
-	            add_chaos_meter_value = yes
-	            log = "CHAOS METER: Increased by [?chaos_change] due to [?casualty_increase]k new casualties"
-	        }
+		set_variable = { chaos_meter_last_casualty_count = casualties }
+	}
 
-        set_variable = { global.last_casualty_count = current_casualties }
-    }
+	set_variable = { global.last_casualty_count = current_casualties }
 }
 
 chaos_meter_update_factories = {
@@ -690,6 +4602,8 @@ chaos_meter_update_factories = {
 
 	        if = {
 	            limit = { check_variable = { var = chaos_change value = constant:chaos_meter_update_threshold.min_casualty_change_k compare = greater_than_or_equals } }
+	            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.military_factories_rise }
+	            set_temp_variable = { chaos_history_reason_custom = 1 }
 	            add_chaos_meter_value = yes
 	            log = "CHAOS METER: Arms buildup from [?mil_change] new military factories ([?chaos_change|=] chaos)"
 	        }
@@ -716,6 +4630,8 @@ chaos_meter_update_divisions = {
 
 	        if = {
 	            limit = { check_variable = { var = chaos_change value = constant:chaos_meter_update_threshold.min_casualty_change_k compare = greater_than_or_equals } }
+	            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.divisions_rise }
+	            set_temp_variable = { chaos_history_reason_custom = 1 }
 	            add_chaos_meter_value = yes
 	            log = "CHAOS METER: Military buildup from [?division_change] new divisions ([?chaos_change|=] chaos)"
 	        }
@@ -769,6 +4685,14 @@ chaos_meter_update_stability = {
 	                    }
 	                }
 	            }
+	            if = {
+	                limit = { check_variable = { stability_change > 0 } }
+	                set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.stability_rise }
+	            }
+	            else = {
+	                set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.stability_fall }
+	            }
+	            set_temp_variable = { chaos_history_reason_custom = 1 }
             add_chaos_meter_value = yes
 
             if = {
@@ -789,6 +4713,7 @@ chaos_meter_update_democracy = {
     set_temp_variable = { current_country_count = 0 }
 
     every_country = {
+		limit = { uses_normal_civilian_systems = yes }
         if = {
             limit = { has_government = democratic }
             add_to_temp_variable = { current_total_democracy = 1 }
@@ -832,6 +4757,14 @@ chaos_meter_update_democracy = {
 	                    }
 	                }
 	            }
+	            if = {
+	                limit = { check_variable = { democracy_change > 0 } }
+	                set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.democracy_rise }
+	            }
+	            else = {
+	                set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.democracy_fall }
+	            }
+	            set_temp_variable = { chaos_history_reason_custom = 1 }
             add_chaos_meter_value = yes
 
             if = {

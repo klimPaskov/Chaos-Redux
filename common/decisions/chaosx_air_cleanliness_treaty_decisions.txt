@@ -1,0 +1,97 @@
+# ============================================================================
+# AIR CLEANLINESS TREATY DECISIONS
+# ============================================================================
+# Member-only international cleanup programs for the Air Cleanliness Treaty.
+# ============================================================================
+
+air_cleanliness_treaty_category = {
+	air_cleanliness_global_cleaning_day = {
+		icon = GFX_decision_generic_operation
+
+		visible = {
+			NOT = { has_global_flag = air_cleanliness_treaty_cleaning_day_cooldown }
+		}
+
+		available = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_cleanliness_treaty.decision_min_contamination_bp
+				compare = greater_than_or_equals
+			}
+			any_country = {
+				has_country_flag = air_cleanliness_treaty_member
+				NOT = { tag = ROOT }
+			}
+		}
+
+		cost = constant:air_cleanliness_treaty.decision_cleaning_day_cost
+		days_remove = constant:air_cleanliness_treaty.decision_cleaning_day_days
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_ai.decision_cleaning_ai_base
+			modifier = {
+				factor = 1.5
+				has_government = democratic
+			}
+			modifier = {
+				factor = 0.5
+				has_unconventional_weapon_stockpile = yes
+			}
+		}
+
+		remove_effect = {
+			air_cleanliness_treaty_set_cleaning_day_cooldown = yes
+			set_temp_variable = { air_contamination_delta_bp = constant:air_cleanliness_treaty.cleaning_day_delta_bp }
+			multiply_temp_variable = { air_contamination_delta_bp = -1 }
+			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+			air_contamination_apply_delta_bp = yes
+			air_contamination_apply_country_modifier = yes
+			news_event = { id = chaosx_contamination.11 }
+		}
+	}
+
+	air_cleanliness_joint_decontamination_program = {
+		icon = GFX_decision_generic_operation
+
+		available = {
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_cleanliness_treaty.decision_min_contamination_bp
+				compare = greater_than_or_equals
+			}
+		}
+
+		cost = constant:air_cleanliness_treaty.decision_cleanup_cost
+		days_remove = constant:air_cleanliness_treaty.decision_cleanup_days
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_ai.decision_cleanup_ai_base
+			modifier = {
+				factor = 1.35
+				has_government = democratic
+			}
+			modifier = {
+				factor = 0.75
+				has_war = yes
+			}
+		}
+
+		remove_effect = {
+			set_temp_variable = { air_contamination_delta_bp = constant:air_cleanliness_treaty.cleanup_program_delta_bp }
+			multiply_temp_variable = { air_contamination_delta_bp = -1 }
+			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+			air_contamination_apply_delta_bp = yes
+			air_contamination_apply_country_modifier = yes
+
+			every_other_country = {
+				limit = { has_country_flag = air_cleanliness_treaty_member }
+				add_opinion_modifier = {
+					target = PREV
+					modifier = air_cleanliness_treaty_member_respect
+				}
+			}
+		}
+	}
+}

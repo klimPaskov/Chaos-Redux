@@ -11,3 +11,214 @@ unit_leader_event = {
         name = chem_wind.1.a
     }
 }
+
+# Global atmospheric contamination news events.
+add_namespace = chaosx_contamination
+
+news_event = {
+	id = chaosx_contamination.1
+	title = chaosx_contamination.1.t
+	desc = chaosx_contamination.1.d
+	picture = GFX_news_event_chaosx_cbw_doom
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.1.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.2
+	title = chaosx_contamination.2.t
+	desc = chaosx_contamination.2.d
+	picture = GFX_news_event_chaosx_cbw_doom
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.2.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.3
+	title = chaosx_contamination.3.t
+	desc = chaosx_contamination.3.d
+	picture = GFX_news_event_chaosx_cbw_doom
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.3.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.4
+	title = chaosx_contamination.4.t
+	desc = chaosx_contamination.4.d
+	picture = GFX_news_event_chaosx_cbw_doom
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.4.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.5
+	title = chaosx_contamination.5.t
+	desc = chaosx_contamination.5.d
+	picture = GFX_news_event_chaosx_cbw_doom
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.5.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.6
+	title = chaosx_contamination.6.t
+	desc = chaosx_contamination.6.d
+	picture = GFX_news_event_chaosx_cbw_doom
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.6.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.7
+	title = chaosx_contamination.7.t
+	desc = chaosx_contamination.7.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.7.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.8
+	title = chaosx_contamination.8.t
+	desc = chaosx_contamination.8.d
+	picture = GFX_news_event_chaosx_cbw_doom
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.8.a
+	}
+}
+
+country_event = {
+	id = chaosx_contamination.9
+	title = chaosx_contamination.9.t
+	desc = chaosx_contamination.9.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_contamination.9.a
+		trigger = {
+			NOT = { has_country_flag = air_cleanliness_treaty_member }
+			NOT = { has_country_flag = air_cleanliness_treaty_banned }
+			NOT = { has_used_unconventional_weapons = yes }
+			OR = {
+				NOT = { has_variable = chem_warfare_condemnation }
+				check_variable = {
+					var = chem_warfare_condemnation
+					value = constant:air_cleanliness_treaty.member_condemnation_max
+					compare = less_than_or_equals
+				}
+			}
+		}
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_ai.join_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.join_factor_democratic
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.join_factor_minor_no_stockpile
+				is_major = no
+				NOT = { has_unconventional_weapon_stockpile = yes }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.join_factor_has_stockpile
+				has_unconventional_weapon_stockpile = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.join_factor_used_unconventional
+				has_used_unconventional_weapons = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.join_factor_at_war_with_founder
+				has_war_with = FROM
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_ai.join_factor_major
+				is_major = yes
+			}
+		}
+		set_country_flag = air_cleanliness_treaty_member
+		if = {
+			limit = { FROM = { exists = yes } }
+			add_opinion_modifier = {
+				target = FROM
+				modifier = air_cleanliness_treaty_member_respect
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_contamination.9.b
+		ai_chance = {
+			base = 1
+		}
+	}
+}
+
+country_event = {
+	id = chaosx_contamination.10
+	title = chaosx_contamination.10.t
+	desc = chaosx_contamination.10.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_contamination.10.a
+	}
+}
+
+news_event = {
+	id = chaosx_contamination.11
+	title = chaosx_contamination.11.t
+	desc = chaosx_contamination.11.d
+	picture = GFX_report_event_generic_sign_treaty1
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_contamination.11.a
+	}
+}

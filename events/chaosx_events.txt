@@ -4,6 +4,8 @@
 # Discord server: https://discord.com/invite/rAXesGcT2t
 # Events list: https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing
 
+@ZOMBIE_EVACUATION_EVENT_TIMEOUT_DAYS = 5
+
 
 
 
@@ -942,90 +944,97 @@ country_event = {
     hidden = yes
     is_triggered_only = yes
 
-    immediate = {
-        hidden_effect = {
-            random_state = {
-                limit = { is_island_state = no state_population_k > 1000 NOT = { is_controlled_by = ZZZ } } # At least 1 million
-                save_global_event_target_as = zombie_state
-                transfer_state_to = ZZZ # Sets ZZZ owner of the state
-                add_core_of = ZZZ
-                ZZZ = {
-                    set_major = yes
-                    load_oob = "ZZZ_1936" # Get Brainzz Horde template
-                }
-                create_unit = {
-                    division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
-                    count = 20
-                    owner = ZZZ
-                }
-            }
+	    immediate = {
+	        hidden_effect = {
+	            if = {
+	                limit = {
+	                    NOT = { has_global_flag = has_zombie_outbreak }
+	                    NOT = { has_global_flag = zombie_system_disabled }
+	                }
+	                random_state = {
+	                    limit = { is_island_state = no state_population_k > 1000 NOT = { is_controlled_by = ZZZ } } # At least 1 million
+	                    save_event_target_as = zombie_state
+	                    transfer_state_to = ZZZ # Sets ZZZ owner of the state
+	                    add_core_of = ZZZ
+	                    ZZZ = {
+	                        set_major = yes
+	                        load_oob = "ZZZ_1936" # Get Brainzz Horde template
+	                        set_division_force_allow_recruiting = { division_template = "Brainzz Horde" force_allow_recruiting = yes }
+	                        set_division_template_lock = { division_template = "Brainzz Horde" is_locked = no }
+	                    }
+	                    create_unit = {
+	                        division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+	                        count = 20
+	                        owner = ZZZ
+	                    }
+	                }
 
-            ZZZ = {
-                add_equipment_to_stockpile = {
-                    type = infantry_equipment
-                    amount = 10000 # Since Zombies require 1 piece of equipment to deploy a division
-                    producer = CHI
-                }
+	                ZZZ = {
+	                    add_equipment_to_stockpile = {
+	                        type = infantry_equipment
+	                        amount = 10000 # Since Zombies require 1 piece of equipment to deploy a division
+	                        producer = CHI
+	                    }
 
-                upgrade_economy_law = yes
-                upgrade_economy_law = yes
-                upgrade_economy_law = yes
+	                    upgrade_economy_law = yes
+	                    upgrade_economy_law = yes
+	                    upgrade_economy_law = yes
 
-                # Add default zombie idea
-                add_ideas = {
-                    zombies_idea_0
-                }
-                # Set zombie evolution target based on current chaos tier
-                if = {
-                    limit = { has_global_flag = { flag = chaos_tier value = 0 } }
-                    set_country_flag = { flag = zombie_target_tier value = 0 }
-                }
-                else_if = {
-                    limit = { has_global_flag = { flag = chaos_tier value = 1 } }
-                    set_country_flag = { flag = zombie_target_tier value = 1 }
-                }
-                else_if = {
-                    limit = { has_global_flag = { flag = chaos_tier value = 2 } }
-                    set_country_flag = { flag = zombie_target_tier value = 2 }
-                }
-                else_if = {
-                    limit = { has_global_flag = { flag = chaos_tier value = 3 } }
-                    set_country_flag = { flag = zombie_target_tier value = 3 }
-                }
-                else = {
-                    set_country_flag = { flag = zombie_target_tier value = 3 } # Cap at tier 3
-                }
-                # Set current zombie tier to 0
-                set_country_flag = { flag = zombie_current_tier value = 0 }
+	                    # Add default zombie idea
+	                    add_ideas = {
+	                        zombies_idea_0
+	                    }
+	                    # Set zombie evolution target based on current chaos tier
+	                    if = {
+	                        limit = { has_global_flag = { flag = chaos_tier value = 0 } }
+	                        set_country_flag = { flag = zombie_target_tier value = 0 }
+	                    }
+	                    else_if = {
+	                        limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+	                        set_country_flag = { flag = zombie_target_tier value = 1 }
+	                    }
+	                    else_if = {
+	                        limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+	                        set_country_flag = { flag = zombie_target_tier value = 2 }
+	                    }
+	                    else_if = {
+	                        limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+	                        set_country_flag = { flag = zombie_target_tier value = 3 }
+	                    }
+	                    else = {
+	                        set_country_flag = { flag = zombie_target_tier value = 3 } # Cap at tier 3
+	                    }
+	                    # Set current zombie tier to 0
+	                    set_country_flag = { flag = zombie_current_tier value = 0 }
 
-                every_possible_country = {
-                    limit = { NOT = { original_tag = ZZZ } }
-                    add_opinion_modifier = {
-                        target = ZZZ
-                        modifier = zombie_hostile
-                    }
-                    ZZZ = {
-                        add_opinion_modifier = {
-                            target = PREV
-                            modifier = zombie_hostile
-                        }
-                    }
-                }
-            }
+	                    every_possible_country = {
+	                        limit = { NOT = { original_tag = ZZZ } }
+	                        add_opinion_modifier = {
+	                            target = ZZZ
+	                            modifier = zombie_hostile
+	                        }
+	                        ZZZ = {
+	                            add_opinion_modifier = {
+	                                target = PREV
+	                                modifier = zombie_hostile
+	                            }
+	                        }
+	                    }
+	                }
 
-            if = {
-                limit = { NOT = { has_global_flag = has_zombie_outbreak } }
-                set_global_flag = has_zombie_outbreak
+	                set_global_flag = has_zombie_outbreak
+	                clr_global_flag = zombie_system_disabled
+	                clr_global_flag = zombie_threat_defeated
+	                set_variable = { global.zombie_main_capitulation_count = 0 }
 
-                # Initialize zombie outbreak chance calculations for all countries
-                update_all_zombie_outbreak_chances = yes
+	                # Initialize zombie outbreak chance calculations for all countries
+	                update_all_zombie_outbreak_chances = yes
 
-                # Initialize dynamic cure research values for all countries
-                update_all_cure_research_values = yes
-            }
-
-        }
-    }
+	                # Initialize dynamic cure research values for all countries
+	                update_all_cure_research_values = yes
+	            }
+	        }
+	    }
 }
 
 country_event = { # Cure activated
@@ -1118,69 +1127,74 @@ country_event = {
 
     immediate = {
         hidden_effect = {
-            if = {
-                limit = {
-                    has_country_flag = { flag = zombie_current_tier value = 0 }
-                    has_country_flag = { flag = zombie_target_tier value > 0 }
-                }
-                # Evolution from tier 0 to tier 1
-                swap_ideas = { remove_idea = zombies_idea_0 add_idea = zombies_idea_1 }
-                set_country_flag = { flag = zombie_current_tier value = 1 }
-                kill_country_leader = yes
-                if = {
-                    limit = { tag = ZZZ}
-                    promote_character = ZZZ_leader_1
-                }
-                else = {
-                    create_country_leader = {
-                        name = "Zombie Horde"
-                        picture = "GFX_portrait_ZZZ_leader_2"
-                        ideology = anarchism
-                    }
-                }
+	            if = {
+	                limit = {
+	                    has_country_flag = { flag = zombie_current_tier value = 0 }
+	                    has_country_flag = { flag = zombie_target_tier value > 0 }
+	                }
+	                # Evolution from tier 0 to tier 1
+	                swap_ideas = { remove_idea = zombies_idea_0 add_idea = zombies_idea_1 }
+	                set_country_flag = { flag = zombie_current_tier value = 1 }
+	                set_temp_variable = { events_log_evolution_stage = 1 }
+	                if = {
+	                    limit = { tag = ZZZ }
+	                    save_event_target_as = events_log_evolution_actor
+	                    set_temp_variable = { events_log_evolution_type = 1 }
+	                    set_temp_variable = { events_log_evolution_event_id = 2 }
+	                    set_temp_variable = { events_log_evolution_tier = 1 }
+	                    record_events_log_evolution_entry = yes
+	                }
+	                if = {
+	                    limit = { tag = ZZZ }
+	                    kill_country_leader = yes
+	                    promote_character = ZZZ_leader_1
+	                }
             }
-            else_if = {
-                limit = {
-                    has_country_flag = { flag = zombie_current_tier value = 1 }
-                    has_country_flag = { flag = zombie_target_tier value > 1 }
-                }
-                # Evolution from tier 1 to tier 2
-                swap_ideas = { remove_idea = zombies_idea_1 add_idea = zombies_idea_2 }
-                set_country_flag = { flag = zombie_current_tier value = 2 }
-                kill_country_leader = yes
-                if = {
-                    limit = { tag = ZZZ}
-                    promote_character = ZZZ_leader_2
-                }
-                else = {
-                    create_country_leader = {
-                        name = "Zombie Horde"
-                        picture = "GFX_portrait_ZZZ_leader_3"
-                        ideology = anarchism
-                    }
-
-                }
+	            else_if = {
+	                limit = {
+	                    has_country_flag = { flag = zombie_current_tier value = 1 }
+	                    has_country_flag = { flag = zombie_target_tier value > 1 }
+	                }
+	                # Evolution from tier 1 to tier 2
+	                swap_ideas = { remove_idea = zombies_idea_1 add_idea = zombies_idea_2 }
+	                set_country_flag = { flag = zombie_current_tier value = 2 }
+	                set_temp_variable = { events_log_evolution_stage = 2 }
+	                if = {
+	                    limit = { tag = ZZZ }
+	                    save_event_target_as = events_log_evolution_actor
+	                    set_temp_variable = { events_log_evolution_type = 1 }
+	                    set_temp_variable = { events_log_evolution_event_id = 2 }
+	                    set_temp_variable = { events_log_evolution_tier = 2 }
+	                    record_events_log_evolution_entry = yes
+	                }
+	                if = {
+	                    limit = { tag = ZZZ }
+	                    kill_country_leader = yes
+	                    promote_character = ZZZ_leader_2
+	                }
             }
-            else_if = {
-                limit = {
-                    has_country_flag = { flag = zombie_current_tier value = 2 }
-                    has_country_flag = { flag = zombie_target_tier value > 2 }
-                }
-                # Evolution from tier 2 to tier 3
-                swap_ideas = { remove_idea = zombies_idea_2 add_idea = zombies_idea_3 }
-                set_country_flag = { flag = zombie_current_tier value = 3 }
-                kill_country_leader = yes
-                if = {
-                    limit = { tag = ZZZ}
-                    promote_character = ZZZ_leader_3
-                }
-                else = {
-                    create_country_leader = {
-                        name = "Zombie Horde"
-                        picture = "GFX_portrait_ZZZ_leader_4"
-                        ideology = anarchism
-                    }
-                }
+	            else_if = {
+	                limit = {
+	                    has_country_flag = { flag = zombie_current_tier value = 2 }
+	                    has_country_flag = { flag = zombie_target_tier value > 2 }
+	                }
+	                # Evolution from tier 2 to tier 3
+	                swap_ideas = { remove_idea = zombies_idea_2 add_idea = zombies_idea_3 }
+	                set_country_flag = { flag = zombie_current_tier value = 3 }
+	                set_temp_variable = { events_log_evolution_stage = 3 }
+	                if = {
+	                    limit = { tag = ZZZ }
+	                    save_event_target_as = events_log_evolution_actor
+	                    set_temp_variable = { events_log_evolution_type = 1 }
+	                    set_temp_variable = { events_log_evolution_event_id = 2 }
+	                    set_temp_variable = { events_log_evolution_tier = 3 }
+	                    record_events_log_evolution_entry = yes
+	                }
+	                if = {
+	                    limit = { tag = ZZZ }
+	                    kill_country_leader = yes
+	                    promote_character = ZZZ_leader_3
+	                }
             }
         }
     }
@@ -1259,49 +1273,56 @@ country_event = {
     id = chaosx.nr2.6
 
     hidden = yes
-    trigger = {
-        has_global_flag = has_zombie_outbreak
-        NOT = { original_tag = ZZZ }
-        num_of_controlled_states > 1
-
-        # Check if country has full protection (all measures active)
-        NOT = {
-            has_country_flag = extreme_martial_law_active
-        }
-    }
+	trigger = {
+		can_roll_dynamic_zombie_outbreak = yes
+	}
 
     mean_time_to_happen = {
-        days = 1825 # 5 years base mean time (matching scripted effect calculation)
+        days = constant:zombie_outbreak.base_days
+
+        # The opening phase should stay relatively contained.
+        modifier = {
+            factor = constant:zombie_outbreak.initial_outbreak_factor
+            ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.low_chaos_factor
+            has_global_flag = { flag = chaos_tier value = 0 }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.rising_chaos_factor
+            has_global_flag = { flag = chaos_tier value = 1 }
+        }
 
         # Zombie evolution increases outbreak chance
         modifier = {
-            factor = 0.8
+            factor = constant:zombie_outbreak.tier_1_factor
             ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
         }
         modifier = {
-            factor = 0.6
+            factor = constant:zombie_outbreak.tier_2_factor
             ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
         }
         modifier = {
-            factor = 0.4
+            factor = constant:zombie_outbreak.tier_3_factor
             ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
         }
 
         # Prevention measures reduce chance
         modifier = {
-            factor = 1.5
+            factor = constant:zombie_outbreak.hygiene_factor
             has_country_flag = hygiene_measures_enforced
         }
         modifier = {
-            factor = 1.8
+            factor = constant:zombie_outbreak.migration_factor
             has_country_flag = migration_restricted
         }
         modifier = {
-            factor = 2.2
+            factor = constant:zombie_outbreak.quarantine_factor
             has_country_flag = quarantine_protocols_active
         }
         modifier = {
-            factor = 3.0
+            factor = constant:zombie_outbreak.border_closure_factor
             has_country_flag = borders_completely_closed
         }
 
@@ -1321,245 +1342,325 @@ country_event = {
 
         # Population-based risk - higher population = higher risk
         modifier = {
-            factor = 0.6
-            check_variable = { max_manpower_k > 500000 } # Very high population (500M+)
+            factor = constant:zombie_outbreak.population_very_high_factor
+            check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold }
         }
         modifier = {
-            factor = 0.7
-            check_variable = { max_manpower_k > 200000 } # High population (200M+)
-            NOT = { check_variable = { max_manpower_k > 500000 } }
+            factor = constant:zombie_outbreak.population_high_factor
+            check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold }
+            NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold } }
         }
         modifier = {
-            factor = 0.8
-            check_variable = { max_manpower_k > 100000 } # Medium-high population (100M+)
-            NOT = { check_variable = { max_manpower_k > 200000 } }
+            factor = constant:zombie_outbreak.population_medium_high_factor
+            check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold }
+            NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold } }
         }
         modifier = {
-            factor = 0.9
-            check_variable = { max_manpower_k > 50000 } # Medium population (50M+)
-            NOT = { check_variable = { max_manpower_k > 100000 } }
+            factor = constant:zombie_outbreak.population_medium_factor
+            check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold }
+            NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold } }
         }
         modifier = {
-            factor = 1.1
-            check_variable = { max_manpower_k > 10000 } # Low population (10M+)
-            NOT = { check_variable = { max_manpower_k > 50000 } }
+            factor = constant:zombie_outbreak.population_low_factor
+            check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold }
+            NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold } }
         }
         modifier = {
-            factor = 1.3
-            NOT = { check_variable = { max_manpower_k > 10000 } } # Very low population (under 10M)
+            factor = constant:zombie_outbreak.population_very_low_factor
+            NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold } }
         }
+
+        # Low-capacity countries are more exposed while advanced countries are safer.
+        modifier = {
+            factor = constant:zombie_outbreak.research_slots_very_low_factor
+            amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.research_slots_low_factor
+            amount_research_slots < constant:zombie_outbreak.research_slots_low_threshold
+            NOT = { amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.research_slots_high_factor
+            amount_research_slots > constant:zombie_outbreak.research_slots_high_threshold
+            NOT = { amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.research_slots_very_high_factor
+            amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold
+        }
+
+        modifier = {
+            factor = constant:zombie_outbreak.factories_very_low_factor
+            num_of_factories < constant:zombie_outbreak.factories_very_low_threshold
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.factories_low_factor
+            num_of_factories < constant:zombie_outbreak.factories_low_threshold
+            NOT = { num_of_factories < constant:zombie_outbreak.factories_very_low_threshold }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.factories_high_factor
+            num_of_factories > constant:zombie_outbreak.factories_high_threshold
+            NOT = { num_of_factories > constant:zombie_outbreak.factories_very_high_threshold }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.factories_very_high_factor
+            num_of_factories > constant:zombie_outbreak.factories_very_high_threshold
+        }
+
+		modifier = {
+			factor = constant:zombie_outbreak.rear_state_medium_risk_factor
+			any_controlled_state = {
+				is_medium_risk_rear_zombie_outbreak_state = yes
+			}
+			NOT = {
+				any_controlled_state = {
+					is_high_risk_rear_zombie_outbreak_state = yes
+				}
+			}
+		}
+		modifier = {
+			factor = constant:zombie_outbreak.rear_state_extreme_risk_factor
+			any_controlled_state = {
+				is_extreme_risk_rear_zombie_outbreak_state = yes
+            }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.rear_state_high_risk_factor
+            any_controlled_state = {
+                is_high_risk_rear_zombie_outbreak_state = yes
+            }
+            NOT = {
+                any_controlled_state = {
+                    is_extreme_risk_rear_zombie_outbreak_state = yes
+                }
+            }
+        }
+
+		# Direct borders matter, but they no longer hard-gate the whole system.
+		modifier = {
+			factor = constant:zombie_outbreak.frontline_proximity_factor
+			has_neighboring_zombie_front = yes
+		}
+		modifier = {
+			factor = constant:zombie_outbreak.nearby_front_proximity_factor
+			has_nearby_zombie_front = yes
+		}
+		modifier = {
+			factor = constant:zombie_outbreak.same_continent_proximity_factor
+			NOT = { has_neighboring_zombie_front = yes }
+			NOT = { has_nearby_zombie_front = yes }
+			has_same_continent_zombie_presence = yes
+		}
+		modifier = {
+			factor = constant:zombie_outbreak.distant_proximity_factor
+			NOT = { has_neighboring_zombie_front = yes }
+			NOT = { has_nearby_zombie_front = yes }
+			NOT = { has_same_continent_zombie_presence = yes }
+		}
 
         # Island nations are safer
         modifier = {
-            factor = 2.0
+            factor = constant:zombie_outbreak.island_factor
             capital_scope = { is_island_state = yes }
         }
 
-        # Major powers are more at risk due to trade/travel
-        modifier = {
-            factor = 0.8
-            is_major = yes
+		# Established major powers generally have more capacity to suppress outbreaks.
+		modifier = {
+			factor = constant:zombie_outbreak.major_factor
+			is_major = yes
         }
 
         # Reduce chance for countries with very few states
         modifier = {
-            factor = 2.0
-            num_of_controlled_states < 5
+            factor = constant:zombie_outbreak.low_state_count_factor
+            num_of_controlled_states < constant:zombie_outbreak.low_state_count_threshold
+        }
+
+        modifier = {
+            factor = constant:zombie_outbreak.first_main_collapse_factor
+            check_variable = {
+                var = global.zombie_main_capitulation_count
+                value = 1
+                compare = greater_than_or_equals
+            }
+        }
+        modifier = {
+            factor = constant:zombie_outbreak.second_main_collapse_factor
+            check_variable = {
+                var = global.zombie_main_capitulation_count
+                value = 2
+                compare = greater_than_or_equals
+            }
         }
     }
 
-    immediate = {
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { can_roll_dynamic_zombie_outbreak = yes }
+				# Prefer dense, underdeveloped rear states over safe advanced interiors.
+				select_dynamic_zombie_outbreak_state = yes
 
-        hidden_effect = {
-            # Check if outbreak state connects to ZZZ capital by land
-            random_owned_state = {
-                limit = {
-                    NOT = {
-                        any_neighbor_state = {
-                            is_controlled_by = ZZZ
-                        }
-                    }
-                }
-                save_global_event_target_as = outbreak_state
-            }
+				if = {
+					limit = { has_event_target = outbreak_state }
+					create_dynamic_country = {
+						original_tag = ZZZ
+						copy_tag = ZZZ
+						set_temp_variable = { dynamic_zombie_new_country = this }
+						set_country_flag = zombie_outbreak_dynamic_country
 
-            # Create dynamic zombie country - scope changes to the new country
-            create_dynamic_country = {
-                original_tag = ZZZ
-                copy_tag = ZZZ
+						ZZZ = {
+							every_core_state = {
+								remove_core_of = PREV
+							}
+						}
 
-                # Load zombie division templates
-                load_oob = "ZZZ_1936"
+						add_equipment_to_stockpile = {
+							type = infantry_equipment
+							amount = 2000 # Since Zombies require 1 piece of equipment to deploy a division
+							producer = CHI
+						}
 
-                ZZZ = {
-                    every_core_state = {
-                        remove_core_of = PREV
-                    }
-                }
+						set_politics = {
+							ruling_party = neutrality
+							elections_allowed = no
+						}
+						set_popularities = {
+							neutrality = 100
+						}
 
-                division_template = {
-                    name = "Brainzz Horde"
-                    regiments = {
-                        zombies = { x = 0 y = 0 }
-                        zombies = { x = 0 y = 1 }
-                        zombies = { x = 0 y = 2 }
-                        zombies = { x = 0 y = 3 }
-                        zombies = { x = 1 y = 0 }
-                        zombies = { x = 1 y = 1 }
-                        zombies = { x = 1 y = 2 }
-                        zombies = { x = 1 y = 3 }
-                        zombies = { x = 2 y = 0 }
-                        zombies = { x = 2 y = 1 }
-                        zombies = { x = 2 y = 2 }
-                        zombies = { x = 2 y = 3 }
-                        zombies = { x = 3 y = 0 }
-                        zombies = { x = 3 y = 1 }
-                        zombies = { x = 3 y = 2 }
-                        zombies = { x = 3 y = 3 }
-                    }
-                }
+						# Add the core zombie ideas
+						add_ideas = {
+							never_ending_hunger
+							tot_economic_mobilisation
+							extensive_conscription
+						}
 
-                add_equipment_to_stockpile = {
-                    type = infantry_equipment
-                    amount = 2000 # Since Zombies require 1 piece of equipment to deploy a division
-                    producer = CHI
-                }
+						every_possible_country = {
+							limit = { NOT = { original_tag = ZZZ } }
+							add_opinion_modifier = {
+								target = PREV
+								modifier = zombie_hostile
+							}
+							PREV = {
+								add_opinion_modifier = {
+									target = PREV
+									modifier = zombie_hostile
+								}
+							}
+						}
 
-                event_target:outbreak_state = {
-                    transfer_state_to = PREV
-                    add_core_of = PREV
+						# Copy zombie ideas and flags from main ZZZ
+						ZZZ = {
+							if = {
+								limit = { has_idea = zombies_idea_0 }
+								PREV = { add_ideas = zombies_idea_0 }
+							}
+							if = {
+								limit = { has_idea = zombies_idea_1 }
+								PREV = { add_ideas = zombies_idea_1 }
+							}
+							if = {
+								limit = { has_idea = zombies_idea_2 }
+								PREV = { add_ideas = zombies_idea_2 }
+							}
+							if = {
+								limit = { has_idea = zombies_idea_3 }
+								PREV = { add_ideas = zombies_idea_3 }
+							}
 
-                    # Create zombie forces
-                    if = {
-                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
-                        create_unit = {
-                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
-                            count = 10
-                            owner = PREV
-                        }
-                    }
-                    else_if = {
-                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
-                        create_unit = {
-                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
-                            count = 10
-                            owner = PREV
-                        }
-                    }
-                    else_if = {
-                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
-                        create_unit = {
-                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
-                            count = 12
-                            owner = PREV
-                        }
-                    }
-                    else_if = {
-                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
-                        create_unit = {
-                            division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
-                            count = 15
-                            owner = PREV
-                        }
-                    }
-                }
+							# Copy zombie tier flags
+							if = {
+								limit = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+								PREV = { set_country_flag = { flag = zombie_current_tier value = 0 } }
+							}
+							if = {
+								limit = { has_country_flag = { flag = zombie_current_tier value = 1 } }
+								PREV = { set_country_flag = { flag = zombie_current_tier value = 1 } }
+							}
+							if = {
+								limit = { has_country_flag = { flag = zombie_current_tier value = 2 } }
+								PREV = { set_country_flag = { flag = zombie_current_tier value = 2 } }
+							}
+							if = {
+								limit = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+								PREV = { set_country_flag = { flag = zombie_current_tier value = 3 } }
+							}
 
-                set_politics = {
-                    ruling_party = neutrality
-                    elections_allowed = no
-                }
-                set_popularities = {
-                    neutrality = 100
-                }
+							# Copy zombie target tier flags
+							if = {
+								limit = { has_country_flag = { flag = zombie_target_tier value = 0 } }
+								PREV = { set_country_flag = { flag = zombie_target_tier value = 0 } }
+							}
+							if = {
+								limit = { has_country_flag = { flag = zombie_target_tier value = 1 } }
+								PREV = { set_country_flag = { flag = zombie_target_tier value = 1 } }
+							}
+							if = {
+								limit = { has_country_flag = { flag = zombie_target_tier value = 2 } }
+								PREV = { set_country_flag = { flag = zombie_target_tier value = 2 } }
+							}
+							if = {
+								limit = { has_country_flag = { flag = zombie_target_tier value = 3 } }
+								PREV = { set_country_flag = { flag = zombie_target_tier value = 3 } }
+							}
+						}
+					}
 
-                # Create a custom leader for the zombie outbreak
-                create_country_leader = {
-                    name = "Zombie Horde"
-                    picture = "GFX_portrait_ZZZ_leader_1"
-                    ideology = anarchism
-                }
+					event_target:outbreak_state = {
+						var:dynamic_zombie_new_country = {
+							transfer_state = PREV
+							add_state_core = PREV
+							set_capital = {
+								state = PREV
+								remember_old_capital = no
+							}
+							load_oob = "ZZZ_1936"
+							set_division_force_allow_recruiting = { division_template = "Brainzz Horde" force_allow_recruiting = yes }
+							set_division_template_lock = { division_template = "Brainzz Horde" is_locked = no }
+						}
+						if = {
+							limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
+							create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1" owner = var:dynamic_zombie_new_country count = 10 }
+						}
+						else_if = {
+							limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
+							create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2" owner = var:dynamic_zombie_new_country count = 10 }
+						}
+						else_if = {
+							limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
+							create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3" owner = var:dynamic_zombie_new_country count = 12 }
+						}
+						else_if = {
+							limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
+							create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5" owner = var:dynamic_zombie_new_country count = 15 }
+						}
+					}
 
-                # Add the core zombie ideas
-                add_ideas = {
-                    never_ending_hunger
-                    tot_economic_mobilisation
-                    extensive_conscription
-                }
+					set_temp_variable = { outbreak_country_cooldown_days = constant:zombie_outbreak.country_cooldown_days }
+					set_temp_variable = { outbreak_global_cooldown_days = constant:zombie_outbreak.global_cooldown_days }
+					meta_effect = {
+						text = {
+							set_country_flag = {
+								flag = zombie_dynamic_outbreak_recent
+								days = [COUNTRY_COOLDOWN_DAYS]
+							}
+							set_global_flag = {
+								flag = zombie_dynamic_outbreak_global_cooldown
+								days = [GLOBAL_COOLDOWN_DAYS]
+							}
+						}
+						COUNTRY_COOLDOWN_DAYS = "[?outbreak_country_cooldown_days|.0]"
+						GLOBAL_COOLDOWN_DAYS = "[?outbreak_global_cooldown_days|.0]"
+					}
 
-                every_possible_country = {
-                    limit = { NOT = { original_tag = ZZZ } }
-                    add_opinion_modifier = {
-                        target = PREV
-                        modifier = zombie_hostile
-                    }
-                    PREV = {
-                        add_opinion_modifier = {
-                            target = PREV
-                            modifier = zombie_hostile
-                        }
-                    }
-                }
-
-                # Copy zombie ideas and flags from main ZZZ
-                ZZZ = {
-                    if = {
-                        limit = { has_idea = zombies_idea_0 }
-                        PREV = { add_ideas = zombies_idea_0 }
-                    }
-                    if = {
-                        limit = { has_idea = zombies_idea_1 }
-                        PREV = { add_ideas = zombies_idea_1 }
-                    }
-                    if = {
-                        limit = { has_idea = zombies_idea_2 }
-                        PREV = { add_ideas = zombies_idea_2 }
-                    }
-                    if = {
-                        limit = { has_idea = zombies_idea_3 }
-                        PREV = { add_ideas = zombies_idea_3 }
-                    }
-
-                    # Copy zombie tier flags
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 0 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 0 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 1 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 1 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 2 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 2 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 3 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 3 } }
-                    }
-
-                    # Copy zombie target tier flags
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 0 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 0 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 1 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 1 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 2 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 2 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 3 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 3 } }
-                    }
-                }
-                set_country_flag = zombie_outbreak_dynamic_country
-            }
-            news_event = { id = chaosx.news.3 days = 3 }
-        }
-    }
+					news_event = { id = chaosx.news.3 days = 3 }
+				}
+			}
+		}
+	}
 }
 
 # News event about overseas zombie outbreak
@@ -1588,11 +1689,12 @@ country_event = {
     picture = GFX_report_event_generic_sign_treaty2
 
     trigger = {
+        has_global_flag = anti_zombie_league_formed
         has_global_flag = azl_formation_announced
         NOT = { has_country_flag = azl_formation_event_fired }
         NOT = { original_tag = ZZZ }
         NOT = { has_country_flag = zombie_outbreak_dynamic_country }
-        NOT = { has_idea = anti_zombie_league_member_level_0 }
+        NOT = { is_anti_zombie_league_member = yes }
         NOT = { has_country_flag = azl_leader }
     }
 
@@ -1603,24 +1705,22 @@ country_event = {
     immediate = {
         hidden_effect = {
             set_country_flag = azl_formation_event_fired
-            # Check if zombies have overwhelming force (>500 divisions)
-            set_temp_variable = { total_zombie_divisions = 0 }
-            if = {
-                limit = { country_exists = ZZZ }
-                ZZZ = {
-                    set_temp_variable = { zzz_divisions = num_divisions }
-                    PREV = { add_to_temp_variable = { var = total_zombie_divisions value = zzz_divisions } }
-                }
-            }
-            every_country = {
-                limit = { has_country_flag = zombie_outbreak_dynamic_country }
-                set_temp_variable = { dynamic_divisions = num_divisions }
-                PREV = { add_to_temp_variable = { var = total_zombie_divisions value = dynamic_divisions } }
-            }
+            calculate_total_zombie_strength = yes
 
-            # If zombies have >500 divisions, set flag for overwhelming force
+            # If zombies have overwhelming global strength, set flag for mandatory coordination.
             if = {
-                limit = { check_variable = { var = total_zombie_divisions value > 500 } ZZZ = { check_variable = { num_controlled_states > 50 } } }
+                limit = {
+                    check_variable = {
+                        var = total_zombie_divisions
+                        value = constant:zombie_threat.very_high_divisions
+                        compare = greater_than_or_equals
+                    }
+                    check_variable = {
+                        var = total_zombie_controlled_states
+                        value = constant:zombie_threat.very_high_controlled_states
+                        compare = greater_than_or_equals
+                    }
+                }
                 set_country_flag = zombie_overwhelming_force
             }
         }
@@ -1638,7 +1738,7 @@ country_event = {
             # Base factors for joining
             modifier = {
                 factor = 5
-                has_war_with = ZZZ
+                is_at_war_with_any_zombie_country = yes
             }
 
             # Government type modifiers
@@ -1678,14 +1778,7 @@ country_event = {
             # Proximity to zombie threat
             modifier = {
                 factor = 3
-                any_owned_state = {
-                    any_neighbor_state = {
-                        OR = {
-                            is_controlled_by = ZZZ
-                            controller = { has_country_flag = zombie_outbreak_dynamic_country }
-                        }
-                    }
-                }
+                has_neighboring_zombie_front = yes
             }
 
             # Chaos tier escalation
@@ -1726,7 +1819,7 @@ country_event = {
             modifier = {
                 factor = 0.2
                 has_war = yes
-                NOT = { has_war_with = ZZZ }
+                NOT = { is_at_war_with_any_zombie_country = yes }
                 NOT = { has_defensive_war = yes }
                 surrender_progress < 0.1
             }
@@ -1740,16 +1833,26 @@ country_event = {
             # Overwhelming zombie force - everyone must join
             modifier = {
                 factor = 100
-                check_variable = { var = total_zombie_divisions value > 500 }
+                check_variable = {
+                    var = total_zombie_divisions
+                    value = constant:zombie_threat.very_high_divisions
+                    compare = greater_than_or_equals
+                }
+                check_variable = {
+                    var = total_zombie_controlled_states
+                    value = constant:zombie_threat.very_high_controlled_states
+                    compare = greater_than_or_equals
+                }
             }
         }
-
-        activate_decision = join_anti_zombie_league
 
         if = {
             limit = { has_country_flag = zombie_overwhelming_force }
             custom_effect_tooltip = azl_zombie_overwhelming_force_tt
         }
+
+        join_anti_zombie_league_effect = yes
+        clr_country_flag = zombie_overwhelming_force
     }
 
     # Option B: Consider joining later
@@ -1762,7 +1865,7 @@ country_event = {
             # Reduce chance if very willing to join
             modifier = {
                 factor = 0.1
-                has_war_with = ZZZ
+                is_at_war_with_any_zombie_country = yes
             }
 
             # Government type modifiers (inverse of join willingness)
@@ -1795,16 +1898,7 @@ country_event = {
             modifier = {
                 factor = 2
                 capital_scope = { is_island_state = yes }
-                NOT = {
-                    any_owned_state = {
-                        any_neighbor_state = {
-                            OR = {
-                                is_controlled_by = ZZZ
-                                controller = { has_country_flag = zombie_outbreak_dynamic_country }
-                            }
-                        }
-                    }
-                }
+                NOT = { has_neighboring_zombie_front = yes }
             }
 
             # Less likely to delay as chaos increases
@@ -1828,11 +1922,21 @@ country_event = {
             # Cannot delay if zombies are overwhelming
             modifier = {
                 factor = 0
-                check_variable = { var = total_zombie_divisions value > 500 }
+                check_variable = {
+                    var = total_zombie_divisions
+                    value = constant:zombie_threat.very_high_divisions
+                    compare = greater_than_or_equals
+                }
+                check_variable = {
+                    var = total_zombie_controlled_states
+                    value = constant:zombie_threat.very_high_controlled_states
+                    compare = greater_than_or_equals
+                }
             }
         }
 
         add_political_power = 25
+        clr_country_flag = zombie_overwhelming_force
         custom_effect_tooltip = azl_can_join_later_tt
     }
 
@@ -1875,7 +1979,7 @@ country_event = {
             modifier = {
                 factor = 1.5
                 is_major = yes
-                NOT = { has_war_with = ZZZ }
+                NOT = { is_at_war_with_any_zombie_country = yes }
             }
 
             # Less likely to refuse if unprepared
@@ -1888,14 +1992,7 @@ country_event = {
             # Less likely to refuse if neighbors are infected
             modifier = {
                 factor = 0.2
-                any_owned_state = {
-                    any_neighbor_state = {
-                        OR = {
-                            is_controlled_by = ZZZ
-                            controller = { has_country_flag = zombie_outbreak_dynamic_country }
-                        }
-                    }
-                }
+                has_neighboring_zombie_front = yes
             }
 
             # Much less likely to refuse as chaos increases
@@ -1919,12 +2016,22 @@ country_event = {
             # Cannot refuse if zombies are overwhelming
             modifier = {
                 factor = 0
-                check_variable = { var = total_zombie_divisions value > 500 }
+                check_variable = {
+                    var = total_zombie_divisions
+                    value = constant:zombie_threat.very_high_divisions
+                    compare = greater_than_or_equals
+                }
+                check_variable = {
+                    var = total_zombie_controlled_states
+                    value = constant:zombie_threat.very_high_controlled_states
+                    compare = greater_than_or_equals
+                }
             }
         }
 
         add_political_power = 50
         set_country_flag = azl_refused_to_join
+        clr_country_flag = zombie_overwhelming_force
         custom_effect_tooltip = azl_refused_to_join_tt
     }
 }
@@ -1938,9 +2045,11 @@ country_event = {
     fire_only_once = yes
 
     trigger = {
+        has_global_flag = has_zombie_outbreak
         has_global_flag = { flag = chaos_tier value = 5 }
         has_global_flag = anti_zombie_league_formed
         NOT = { has_global_flag = world_end }
+        NOT = { has_global_flag = zombie_system_disabled }
         ZZZ = { num_divisions > 300 }
     }
 
@@ -1961,6 +2070,37 @@ country_event = {
             set_global_flag = world_end
 
             set_global_flag = world_end_zombies
+        }
+    }
+}
+
+# World End Scenario Event - Fallout (air contamination collapse)
+country_event = {
+    id = chaosx.nr2.9
+
+    hidden = yes
+    fire_only_once = yes
+    is_triggered_only = yes
+
+    trigger = {
+        NOT = { has_global_flag = world_end }
+        NOT = { has_global_flag = world_end_disabled }
+        check_variable = {
+            var = global.air_contamination_bp
+            value = constant:air_contamination_threshold_bp.world_end_1000
+            compare = greater_than_or_equals
+        }
+    }
+
+    immediate = {
+        hidden_effect = {
+            set_global_flag = {
+                flag = super_event_visible
+                days = 30
+                value = 4
+            }
+            set_global_flag = world_end
+            set_global_flag = world_end_fallout
         }
     }
 }
@@ -7156,13 +7296,14 @@ country_event = {
     is_triggered_only = yes
 
 
-    immediate = {
-        every_country = {
-            add_ideas = galaxies_mix
-            country_event = { id = chaosx.nr49.2 }
-            set_country_flag = mass_panic
-        }
-    }
+	immediate = {
+		every_country = {
+			limit = { uses_normal_civilian_systems = yes }
+			add_ideas = galaxies_mix
+			country_event = { id = chaosx.nr49.2 }
+			set_country_flag = mass_panic
+		}
+	}
 }
 
 
@@ -14186,6 +14327,104 @@ country_event = {
         name = chaosx.nr100.2.a
         ai_chance = { base = 100 }
     }
+}
+
+
+##############################################################################################################
+
+country_event = {
+	id = chaosx.nr2.10
+	title = chaosx.nr2.10.t
+	desc = chaosx.nr2.10.d
+	picture = GFX_report_event_merchant_ship_01
+
+	is_triggered_only = yes
+	timeout_days = @ZOMBIE_EVACUATION_EVENT_TIMEOUT_DAYS
+
+	trigger = {
+		has_global_flag = has_zombie_outbreak
+		can_receive_zombie_evacuees = yes
+		FROM = {
+			has_country_flag = zombie_evacuation_request_pending
+			uses_normal_civilian_systems = yes
+			check_variable = {
+				var = zombie_evacuation_population_to_move
+				value = 0
+				compare = greater_than
+			}
+		}
+	}
+
+	immediate = {
+		save_event_target_as = refugee_host_country
+		FROM = {
+			save_event_target_as = refugee_source_country
+		}
+	}
+
+	option = {
+		name = chaosx.nr2.10.b
+		custom_effect_tooltip = chaosx.nr2.10.b.tt
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				has_war = yes
+			}
+			modifier = {
+				add = 20
+				surrender_progress > 0.2
+			}
+			modifier = {
+				factor = 0.50
+				is_in_faction_with = FROM
+			}
+		}
+		FROM = {
+			resolve_zombie_evacuation_refusal = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr2.10.a
+		trigger = {
+			can_receive_zombie_evacuees = yes
+			FROM = {
+				has_country_flag = zombie_evacuation_request_pending
+				uses_normal_civilian_systems = yes
+				NOT = { has_capitulated = yes }
+				is_at_war_with_any_zombie_country = yes
+				check_variable = {
+					var = zombie_evacuation_population_to_move
+					value = 0
+					compare = greater_than
+				}
+			}
+		}
+		custom_effect_tooltip = chaosx.nr2.10.a.tt
+		ai_chance = {
+			base = 35
+			modifier = {
+				add = 30
+				is_in_faction_with = FROM
+			}
+			modifier = {
+				add = 15
+				has_government = democratic
+			}
+			modifier = {
+				factor = 0.50
+				has_war = yes
+			}
+			modifier = {
+				factor = 0.25
+				surrender_progress > 0.2
+			}
+		}
+		FROM = {
+			apply_zombie_evacuation_transfer = yes
+		}
+	}
 }
 
 

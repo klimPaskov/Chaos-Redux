@@ -59,7 +59,10 @@ on_actions = {
                     is_ai = no
                     NOT = { has_global_flag = settings_chaos_meter_disabled }
                 }
+                air_contamination_monthly_update = yes
                 set_temp_variable = { chaos_change = -1 }
+                set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.monthly_decay }
+                set_temp_variable = { chaos_history_reason_custom = 1 }
                 add_chaos_meter_value = yes
                 log = "CHAOS METER: Monthly decay"
             }
@@ -228,14 +231,15 @@ on_actions = {
         }
     }
 
-    on_new_term_election = {
-        effect = {
-            if = {
-                limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } is_major = yes }
-                chaos_meter_on_new_term_election = yes
-            }
-        }
-    }
+    # Elections are intentionally excluded from chaos impact.
+    # on_new_term_election = {
+    #     effect = {
+    #         if = {
+    #             limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } is_major = yes }
+    #             chaos_meter_on_new_term_election = yes
+    #         }
+    #     }
+    # }
 
     on_stage_coup = {
         effect = {

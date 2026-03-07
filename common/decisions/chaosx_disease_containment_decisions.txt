@@ -1,3 +1,27 @@
+@BIO_ANTHRAX_ANTIBIOTICS_AI_MASS_PRODUCTION = 100
+@BIO_ANTHRAX_ANTIBIOTICS_AI_RETROACTIVE = 80
+@BIO_PLAGUE_ANTIBIOTICS_AI_MASS_PRODUCTION = 120
+@BIO_PLAGUE_ANTIBIOTICS_AI_RETROACTIVE = 100
+@BIO_TULAREMIA_ANTIBIOTICS_AI_MASS_PRODUCTION = 100
+@BIO_TULAREMIA_ANTIBIOTICS_AI_RETROACTIVE = 80
+@BIO_ANTIBIOTICS_AI_HIGH_FACTORY_FACTOR = 2
+
+@BIO_SMALLPOX_VACCINATION_MASS_PROGRAM_COST = 150
+@BIO_SMALLPOX_VACCINATION_MASS_PROGRAM_DAYS = 180
+@BIO_SMALLPOX_VACCINATION_REVOKE_DAYS = 30
+@BIO_SMALLPOX_VACCINATION_MIN_CIVS = 20
+@BIO_SMALLPOX_VACCINATION_AI_MASS_PROGRAM = 100
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_CONTAMINATED = 20
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_ENEMY_USE = 10
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_KNOWN_PROJECT = 5
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_LOW_INDUSTRY = 0.10
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_CONTAMINATED = 0
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_THREAT = 0
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_KNOWN_PROJECT = 0.50
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_CRISIS = 3
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_PEACE = 5
+@BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_SAFE = 10
+
 chaosx_disease_containment_category = {
 
     deploy_field_hospitals = {
@@ -330,9 +354,9 @@ chaosx_disease_containment_category = {
         }
 
         ai_will_do = {
-            factor = 5
+            factor = @BIO_ANTHRAX_ANTIBIOTICS_AI_MASS_PRODUCTION
             modifier = {
-                factor = 2
+                factor = @BIO_ANTIBIOTICS_AI_HIGH_FACTORY_FACTOR
                 num_of_civilian_factories > 15
             }
         }
@@ -377,9 +401,9 @@ chaosx_disease_containment_category = {
         }
 
         ai_will_do = {
-            factor = 2
+            factor = @BIO_ANTHRAX_ANTIBIOTICS_AI_RETROACTIVE
             modifier = {
-                factor = 3
+                factor = @BIO_ANTIBIOTICS_AI_HIGH_FACTORY_FACTOR
                 num_of_civilian_factories > 15
             }
         }
@@ -477,9 +501,9 @@ chaosx_disease_containment_category = {
         }
 
         ai_will_do = {
-            factor = 8
+            factor = @BIO_PLAGUE_ANTIBIOTICS_AI_MASS_PRODUCTION
             modifier = {
-                factor = 2
+                factor = @BIO_ANTIBIOTICS_AI_HIGH_FACTORY_FACTOR
                 num_of_civilian_factories > 25
             }
         }
@@ -524,9 +548,9 @@ chaosx_disease_containment_category = {
         }
 
         ai_will_do = {
-            factor = 5
+            factor = @BIO_PLAGUE_ANTIBIOTICS_AI_RETROACTIVE
             modifier = {
-                factor = 3
+                factor = @BIO_ANTIBIOTICS_AI_HIGH_FACTORY_FACTOR
                 num_of_civilian_factories > 25
             }
         }
@@ -621,7 +645,7 @@ chaosx_disease_containment_category = {
         }
 
         ai_will_do = {
-            base = 50
+            base = @BIO_TULAREMIA_ANTIBIOTICS_AI_MASS_PRODUCTION
             modifier = {
                 factor = 10
                 any_controlled_state = {
@@ -667,7 +691,7 @@ chaosx_disease_containment_category = {
         }
 
         ai_will_do = {
-            base = 25
+            base = @BIO_TULAREMIA_ANTIBIOTICS_AI_RETROACTIVE
             modifier = {
                 factor = 5
                 any_controlled_state = {
@@ -752,7 +776,7 @@ chaosx_disease_containment_category = {
     # Smallpox vaccination decisions
     smallpox_vaccination_mass_program = {
         icon = GFX_decision_generic_medical
-        days_remove = 180  # Long vaccination campaign
+        days_remove = @BIO_SMALLPOX_VACCINATION_MASS_PROGRAM_DAYS
 
         visible = {
             # Must have smallpox threat or contamination present
@@ -771,27 +795,27 @@ chaosx_disease_containment_category = {
             NOT = { has_country_flag = smallpox_vaccination_program_in_progress }
         }
 
-        cost = 150  # Very expensive - strategic defensive measure
+        cost = @BIO_SMALLPOX_VACCINATION_MASS_PROGRAM_COST
 
         ai_will_do = {
-            base = 1  # Very high priority
+            base = @BIO_SMALLPOX_VACCINATION_AI_MASS_PROGRAM
             modifier = {
-                factor = 20
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_CONTAMINATED
                 any_controlled_state = {
                     has_dynamic_modifier = { modifier = smallpox_contaminated_state }
                 }
             }
             modifier = {
-                factor = 10
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_ENEMY_USE
                 any_enemy_country = { has_country_flag = used_smallpox_weapon }
             }
             modifier = {
-                factor = 5
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_KNOWN_PROJECT
                 any_country = { is_special_project_completed = sp:smallpox_bomb }
             }
             modifier = {
-                factor = 0.1
-                num_of_civilian_factories < 20  # Need substantial industrial base
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_LOW_INDUSTRY
+                num_of_civilian_factories < @BIO_SMALLPOX_VACCINATION_MIN_CIVS
             }
         }
 
@@ -806,9 +830,9 @@ chaosx_disease_containment_category = {
         }
     }
 
-    revoke_smallpox_vaccination_program = {
+    revoke_smallpox_vaccination_mass_program = {
         icon = GFX_decision_generic_industry
-        days_remove = 30  # Takes time to shut down vaccination infrastructure
+        days_remove = @BIO_SMALLPOX_VACCINATION_REVOKE_DAYS
 
         available = {
             # Must currently have vaccination program active
@@ -822,33 +846,33 @@ chaosx_disease_containment_category = {
         }
 
         ai_will_do = {
-            base = 1  # Very low - almost never revoke vaccination
+            base = 1
             modifier = {
-                factor = 0  # Never revoke if contamination exists
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_CONTAMINATED
                 any_controlled_state = {
                     has_dynamic_modifier = { modifier = smallpox_contaminated_state }
                 }
             }
             modifier = {
-                factor = 0  # Never revoke during wartime with smallpox threat
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_THREAT
                 has_war = yes
                 any_enemy_country = { has_country_flag = used_smallpox_weapon }
             }
             modifier = {
-                factor = 0.5  # Rarely revoke if any country has smallpox
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_KNOWN_PROJECT
                 any_country = { is_special_project_completed = sp:smallpox_bomb }
             }
             modifier = {
-                factor = 3
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_CRISIS
                 num_of_civilian_factories < 10
                 has_stability < 0.2
             }
             modifier = {
-                factor = 5
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_PEACE
                 has_war = no
             }
             modifier = {
-                factor = 10
+                factor = @BIO_SMALLPOX_VACCINATION_AI_FACTOR_REVOKE_SAFE
                 NOT = {
                     any_controlled_state = {
                         has_dynamic_modifier = { modifier = smallpox_contaminated_state }

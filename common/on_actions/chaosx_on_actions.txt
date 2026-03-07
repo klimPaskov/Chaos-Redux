@@ -11,12 +11,17 @@ on_actions = {
 	}
 
 	# Zombie Outbreak
-	on_daily = { # Checks daily if there is a neighbor to declare war on
-		effect = {
-			if = {
-				limit = { original_tag = ZZZ exists = yes }
-				every_country = {
-					limit = { is_neighbor_of = ROOT NOT = { has_war_with = ROOT } NOT = { original_tag = ZZZ } }
+		on_daily = { # Checks daily if there is a neighbor to declare war on
+			effect = {
+				if = {
+					limit = {
+						original_tag = ZZZ
+						exists = yes
+						has_global_flag = has_zombie_outbreak
+						NOT = { has_global_flag = zombie_system_disabled }
+					}
+					every_country = {
+						limit = { is_neighbor_of = ROOT NOT = { has_war_with = ROOT } NOT = { original_tag = ZZZ } }
 					if = { limit = { NOT = { is_subject_of = ZZZ }}
 						ROOT = {
 							declare_war_on = {
@@ -37,6 +42,8 @@ on_actions = {
 					limit = { is_controlled_by = ROOT NOT = { is_core_of = ROOT } }
 					add_core_of = ROOT
 				}
+
+				relocate_isolated_zombie_capital = yes
 
 				# Stop monroe doctrine white peace
 				if = {
@@ -193,9 +200,80 @@ on_actions = {
 		effect = {
 			if = {
 				limit = {
+					is_special_chaos_country = yes
+				}
+				clear_special_chaos_country_civilian_effects = yes
+			}
+			if = {
+				limit = {
 					has_global_flag = has_zombie_outbreak
+					NOT = { has_global_flag = zombie_system_disabled }
 				}
 				calculate_zombie_outbreak_chance = yes
+			}
+			if = {
+				limit = {
+					has_global_flag = has_zombie_outbreak
+					NOT = { has_global_flag = zombie_system_disabled }
+					can_request_zombie_evacuation = yes
+				}
+				attempt_zombie_mass_evacuation = yes
+			}
+			if = {
+				limit = {
+					original_tag = ZZZ
+					has_global_flag = has_zombie_outbreak
+					NOT = { has_global_flag = anti_zombie_league_formed }
+					NOT = { has_global_flag = azl_dissolved }
+					NOT = { has_global_flag = zombie_system_disabled }
+					NOT = {
+						any_country = {
+							has_country_flag = azl_formation_in_progress
+						}
+					}
+					check_variable = {
+						var = global.chaos_meter_value
+						value = constant:anti_zombie_league.emergency_chaos
+						compare = greater_than_or_equals
+					}
+				}
+				calculate_total_zombie_strength = yes
+				calculate_zombie_continent_presence = yes
+				if = {
+					limit = {
+						check_variable = { total_zombie_divisions > constant:anti_zombie_league.emergency_divisions }
+						check_variable = { zombie_controls_continent > 0 }
+						any_country = {
+							is_emergency_anti_zombie_league_founder_candidate = yes
+						}
+					}
+					force_emergency_anti_zombie_league_formation = yes
+				}
+			}
+			if = {
+				limit = {
+					has_global_flag = anti_zombie_league_formed
+					NOT = { has_global_flag = zombie_system_disabled }
+					has_country_flag = azl_leader
+					is_faction_leader = yes
+					num_faction_members > 1
+				}
+				calculate_total_zombie_strength = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = total_zombie_divisions
+							value = constant:zombie_threat.very_high_divisions
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = total_zombie_controlled_states
+							value = constant:zombie_threat.very_high_controlled_states
+							compare = greater_than_or_equals
+						}
+					}
+					azl_absorb_smaller_factions = yes
+				}
 			}
 			if = {
 				limit = {
@@ -712,30 +790,68 @@ on_actions = {
 					remove_core_of = PREV
 				}
 
-				if = { limit = { tag = ZZZ }
-					random_country = {
-						limit = { has_country_flag = zombie_outbreak_dynamic_country }
-						ZZZ = {
-							annex_country = {
-								target = PREV
-								transfer_troops = yes
+				if = {
+					limit = {
+						tag = ZZZ
+						has_global_flag = has_zombie_outbreak
+						NOT = { has_global_flag = zombie_system_disabled }
+					}
+					add_to_variable = { global.zombie_main_capitulation_count = 1 }
+
+					if = {
+						limit = {
+							check_variable = {
+								var = global.zombie_main_capitulation_count
+								value = constant:zombie_threat.main_collapse_shutdown_limit
+								compare = greater_than_or_equals
 							}
 						}
-
-						every_core_state = {
-							add_core_of = ZZZ
-							remove_core_of = PREV
+						disable_zombie_outbreak_system = yes
+					}
+					else_if = {
+						limit = {
+							any_country = {
+								exists = yes
+								has_country_flag = zombie_outbreak_dynamic_country
+								num_of_controlled_states > 0
+								NOT = { has_capitulated = yes }
+							}
 						}
-
+						random_country = {
+							limit = {
+								exists = yes
+								has_country_flag = zombie_outbreak_dynamic_country
+								num_of_controlled_states > 0
+								NOT = { has_capitulated = yes }
+							}
+							transfer_dynamic_zombie_successor_to_main = yes
+						}
+						update_all_zombie_outbreak_chances = yes
+					}
+					else = {
+						disable_zombie_outbreak_system = yes
 					}
 				}
 			}
 
-			if = { limit = { FROM = { original_tag = ZZZ } }
+			if = {
+				limit = {
+					has_global_flag = has_zombie_outbreak
+					NOT = { has_global_flag = zombie_system_disabled }
+					FROM = { original_tag = ZZZ }
+				}
 				every_owned_state = {
 					limit = { is_core_of = ROOT }
 					transfer_state_to = FROM
 				}
+			}
+
+			if = {
+				limit = {
+					is_zombie_outbreak_country = yes
+					zombie_threat_fully_defeated = yes
+				}
+				on_zombie_threat_defeated = yes
 			}
 
 			# REV

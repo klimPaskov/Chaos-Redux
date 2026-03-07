@@ -4,37 +4,51 @@
 
 zombie_outbreak_chance = {
     # Base time until next outbreak (in days)
-    base = 1825 # 5 years base mean time (matching scripted effect calculation)
+    base = constant:zombie_outbreak.base_days
+
+    # The opening phase should stay relatively contained.
+    modifier = {
+        factor = constant:zombie_outbreak.initial_outbreak_factor
+        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.low_chaos_factor
+        has_global_flag = { flag = chaos_tier value = 0 }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.rising_chaos_factor
+        has_global_flag = { flag = chaos_tier value = 1 }
+    }
 
     # Zombie evolution increases outbreak chance
     modifier = {
-        factor = 0.8
+        factor = constant:zombie_outbreak.tier_1_factor
         ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
     }
     modifier = {
-        factor = 0.6
+        factor = constant:zombie_outbreak.tier_2_factor
         ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
     }
     modifier = {
-        factor = 0.4
+        factor = constant:zombie_outbreak.tier_3_factor
         ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
     }
 
     # Prevention measures reduce chance
     modifier = {
-        factor = 1.5
+        factor = constant:zombie_outbreak.hygiene_factor
         has_country_flag = hygiene_measures_enforced
     }
     modifier = {
-        factor = 1.8
+        factor = constant:zombie_outbreak.migration_factor
         has_country_flag = migration_restricted
     }
     modifier = {
-        factor = 2.2
+        factor = constant:zombie_outbreak.quarantine_factor
         has_country_flag = quarantine_protocols_active
     }
     modifier = {
-        factor = 3.0
+        factor = constant:zombie_outbreak.border_closure_factor
         has_country_flag = borders_completely_closed
     }
 
@@ -54,49 +68,157 @@ zombie_outbreak_chance = {
 
     # Population-based risk - higher population = higher risk
     modifier = {
-        factor = 0.6
-        check_variable = { max_manpower_k > 500000 } # Very high population (500M+)
+        factor = constant:zombie_outbreak.population_very_high_factor
+        check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold }
     }
     modifier = {
-        factor = 0.7
-        check_variable = { max_manpower_k > 200000 } # High population (200M+)
-        NOT = { check_variable = { max_manpower_k > 500000 } }
+        factor = constant:zombie_outbreak.population_high_factor
+        check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold }
+        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold } }
     }
     modifier = {
-        factor = 0.8
-        check_variable = { max_manpower_k > 100000 } # Medium-high population (100M+)
-        NOT = { check_variable = { max_manpower_k > 200000 } }
+        factor = constant:zombie_outbreak.population_medium_high_factor
+        check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold }
+        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold } }
     }
     modifier = {
-        factor = 0.9
-        check_variable = { max_manpower_k > 50000 } # Medium population (50M+)
-        NOT = { check_variable = { max_manpower_k > 100000 } }
+        factor = constant:zombie_outbreak.population_medium_factor
+        check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold }
+        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold } }
     }
     modifier = {
-        factor = 1.1
-        check_variable = { max_manpower_k > 10000 } # Low population (10M+)
-        NOT = { check_variable = { max_manpower_k > 50000 } }
+        factor = constant:zombie_outbreak.population_low_factor
+        check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold }
+        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold } }
     }
     modifier = {
-        factor = 1.3
-        NOT = { check_variable = { max_manpower_k > 10000 } } # Very low population (under 10M)
+        factor = constant:zombie_outbreak.population_very_low_factor
+        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold } }
     }
+
+    # Low-capacity countries are more exposed while advanced countries are safer.
+    modifier = {
+        factor = constant:zombie_outbreak.research_slots_very_low_factor
+        amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.research_slots_low_factor
+        amount_research_slots < constant:zombie_outbreak.research_slots_low_threshold
+        NOT = { amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.research_slots_high_factor
+        amount_research_slots > constant:zombie_outbreak.research_slots_high_threshold
+        NOT = { amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.research_slots_very_high_factor
+        amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold
+    }
+
+    modifier = {
+        factor = constant:zombie_outbreak.factories_very_low_factor
+        num_of_factories < constant:zombie_outbreak.factories_very_low_threshold
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.factories_low_factor
+        num_of_factories < constant:zombie_outbreak.factories_low_threshold
+        NOT = { num_of_factories < constant:zombie_outbreak.factories_very_low_threshold }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.factories_high_factor
+        num_of_factories > constant:zombie_outbreak.factories_high_threshold
+        NOT = { num_of_factories > constant:zombie_outbreak.factories_very_high_threshold }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.factories_very_high_factor
+        num_of_factories > constant:zombie_outbreak.factories_very_high_threshold
+    }
+
+	modifier = {
+		factor = constant:zombie_outbreak.rear_state_medium_risk_factor
+		any_controlled_state = {
+			is_medium_risk_rear_zombie_outbreak_state = yes
+		}
+		NOT = {
+			any_controlled_state = {
+				is_high_risk_rear_zombie_outbreak_state = yes
+			}
+		}
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.rear_state_extreme_risk_factor
+		any_controlled_state = {
+			is_extreme_risk_rear_zombie_outbreak_state = yes
+        }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.rear_state_high_risk_factor
+        any_controlled_state = {
+            is_high_risk_rear_zombie_outbreak_state = yes
+        }
+        NOT = {
+            any_controlled_state = {
+                is_extreme_risk_rear_zombie_outbreak_state = yes
+            }
+        }
+    }
+
+	# Direct borders matter, but they no longer hard-gate the whole system.
+	modifier = {
+		factor = constant:zombie_outbreak.frontline_proximity_factor
+		has_neighboring_zombie_front = yes
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.nearby_front_proximity_factor
+		has_nearby_zombie_front = yes
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.same_continent_proximity_factor
+		NOT = { has_neighboring_zombie_front = yes }
+		NOT = { has_nearby_zombie_front = yes }
+		has_same_continent_zombie_presence = yes
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.distant_proximity_factor
+		NOT = { has_neighboring_zombie_front = yes }
+		NOT = { has_nearby_zombie_front = yes }
+		NOT = { has_same_continent_zombie_presence = yes }
+	}
 
     # Island nations are safer
     modifier = {
-        factor = 2.0
+        factor = constant:zombie_outbreak.island_factor
         capital_scope = { is_island_state = yes }
     }
 
-    # Major powers are more at risk due to trade/travel
-    modifier = {
-        factor = 0.8
-        is_major = yes
+	# Established major powers generally have more capacity to suppress outbreaks.
+	modifier = {
+		factor = constant:zombie_outbreak.major_factor
+		is_major = yes
     }
 
     # Reduce chance for countries with very few states
     modifier = {
-        factor = 2.0
-        num_of_controlled_states < 5
+        factor = constant:zombie_outbreak.low_state_count_factor
+        num_of_controlled_states < constant:zombie_outbreak.low_state_count_threshold
+    }
+
+    # Each time the central zombie horde is crushed, new outbreaks become rarer.
+    modifier = {
+        factor = constant:zombie_outbreak.first_main_collapse_factor
+        check_variable = {
+            var = global.zombie_main_capitulation_count
+            value = 1
+            compare = greater_than_or_equals
+        }
+    }
+    modifier = {
+        factor = constant:zombie_outbreak.second_main_collapse_factor
+        check_variable = {
+            var = global.zombie_main_capitulation_count
+            value = 2
+            compare = greater_than_or_equals
+        }
     }
 }

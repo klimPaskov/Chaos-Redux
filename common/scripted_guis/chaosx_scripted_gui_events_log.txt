@@ -1,0 +1,891 @@
+scripted_gui = {
+	events_log_popup_shell_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
+		window_name = "events_log_popup_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+		}
+
+		effects = {
+			close_button_click = {
+				clr_country_flag = events_log_window_open
+				clr_country_flag = events_log_history_tab
+				clr_country_flag = events_log_evolutions_tab
+				clr_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				events_log_close_history_details_view = yes
+				clr_country_flag = events_log_evolution_details_open
+			}
+
+			events_log_status_tab_button_idle_click = {
+				clr_country_flag = events_log_history_tab
+				clr_country_flag = events_log_evolutions_tab
+				clr_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_status_tab_button_active_click = {
+				clr_country_flag = events_log_history_tab
+				clr_country_flag = events_log_evolutions_tab
+				clr_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_history_tab_button_idle_click = {
+				set_country_flag = events_log_history_tab
+				clr_country_flag = events_log_evolutions_tab
+				clr_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+				rebuild_events_log_history_view = yes
+			}
+
+			events_log_history_tab_button_active_click = {
+				set_country_flag = events_log_history_tab
+				clr_country_flag = events_log_evolutions_tab
+				clr_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+				rebuild_events_log_history_view = yes
+			}
+
+			events_log_evolutions_tab_button_idle_click = {
+				clr_country_flag = events_log_history_tab
+				set_country_flag = events_log_evolutions_tab
+				clr_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+				rebuild_events_log_evolution_view = yes
+			}
+
+			events_log_evolutions_tab_button_active_click = {
+				clr_country_flag = events_log_history_tab
+				set_country_flag = events_log_evolutions_tab
+				clr_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+				rebuild_events_log_evolution_view = yes
+			}
+
+			events_log_events_tab_button_idle_click = {
+				clr_country_flag = events_log_history_tab
+				clr_country_flag = events_log_evolutions_tab
+				set_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+				rebuild_events_log_events_view = yes
+			}
+
+			events_log_events_tab_button_active_click = {
+				clr_country_flag = events_log_history_tab
+				clr_country_flag = events_log_evolutions_tab
+				set_country_flag = events_log_events_tab
+				events_log_close_all_event_details_entries = yes
+				clr_country_flag = events_log_evolution_details_open
+				events_log_close_history_details_view = yes
+				rebuild_events_log_events_view = yes
+			}
+		}
+
+		triggers = {
+			events_log_status_tab_button_idle_visible = {
+				OR = {
+					has_country_flag = events_log_history_tab
+					has_country_flag = events_log_evolutions_tab
+					has_country_flag = events_log_events_tab
+				}
+			}
+			events_log_status_tab_button_active_visible = {
+				NOT = {
+					OR = {
+						has_country_flag = events_log_history_tab
+						has_country_flag = events_log_evolutions_tab
+						has_country_flag = events_log_events_tab
+					}
+				}
+			}
+			events_log_history_tab_button_idle_visible = {
+				NOT = { has_country_flag = events_log_history_tab }
+			}
+			events_log_history_tab_button_active_visible = {
+				has_country_flag = events_log_history_tab
+			}
+			events_log_evolutions_tab_button_idle_visible = {
+				NOT = { has_country_flag = events_log_evolutions_tab }
+			}
+			events_log_evolutions_tab_button_active_visible = {
+				has_country_flag = events_log_evolutions_tab
+			}
+			events_log_events_tab_button_idle_visible = {
+				NOT = { has_country_flag = events_log_events_tab }
+			}
+			events_log_events_tab_button_active_visible = {
+				has_country_flag = events_log_events_tab
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_status_gui = {
+		context_type = player_context
+		parent_scripted_gui = "events_log_popup_shell_gui"
+		window_name = "events_log_status_content_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			NOT = { has_country_flag = events_log_history_tab }
+			NOT = { has_country_flag = events_log_evolutions_tab }
+			NOT = { has_country_flag = events_log_events_tab }
+		}
+
+		effects = {
+			events_log_auto_checkbox_click = {
+				toggle_logic_log_lines = yes
+			}
+		}
+
+		triggers = {
+			events_log_auto_checkbox_click_enabled = {
+				always = yes
+			}
+		}
+
+		properties = {
+			events_log_auto_checkbox = {
+				image = "[GetLogicLogLinesCheckboxSprite]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_history_gui = {
+		context_type = player_context
+		parent_scripted_gui = "events_log_popup_shell_gui"
+		window_name = "events_log_history_content_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_history_tab
+		}
+
+		effects = {
+			events_log_filter_prev_click = {
+				cycle_events_log_filter_prev = yes
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_filter_next_click = {
+				cycle_events_log_filter_next = yes
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_sort_mode_prev_click = {
+				cycle_events_log_sort_mode_prev = yes
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_sort_mode_next_click = {
+				cycle_events_log_sort_mode_next = yes
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_sort_order_prev_click = {
+				toggle_events_log_sort_order = yes
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_sort_order_next_click = {
+				toggle_events_log_sort_order = yes
+				events_log_close_history_details_view = yes
+			}
+
+			history_entry_open_details_button_click = {
+				ROOT = {
+					set_variable = { events_log_history_selected_event_id = global.events_log_view_event_id_entries^events_log_history_index }
+					set_variable = { events_log_history_selected_event_type = global.events_log_view_event_type_entries^events_log_history_index }
+					set_variable = { events_log_history_selected_date = global.events_log_view_date_entries^events_log_history_index }
+					set_variable = { events_log_history_selected_sequence = global.events_log_view_sequence_entries^events_log_history_index }
+					set_variable = { events_log_history_selected_actor = global.events_log_view_actor_entries^events_log_history_index }
+					set_variable = { events_log_history_selected_has_actor = global.events_log_view_has_actor_entries^events_log_history_index }
+					events_log_rebuild_history_details_view = yes
+					set_country_flag = events_log_history_details_open
+					events_log_close_all_event_details_entries = yes
+					clr_country_flag = events_log_evolution_details_open
+				}
+			}
+
+			open_diplomacy_button_click = {
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_view_has_actor_entries^events_log_history_index
+							value = 0
+							compare = greater_than
+						}
+					}
+					capital_scope = {
+						ROOT = { goto_state = PREV }
+					}
+				}
+			}
+		}
+
+		triggers = {
+			history_no_entries_info_visible = {
+				check_variable = { global.events_log_view_event_id_entries^num < 1 }
+			}
+			events_log_filter_prev_click_enabled = {
+				always = yes
+			}
+			events_log_filter_next_click_enabled = {
+				always = yes
+			}
+			events_log_sort_mode_prev_click_enabled = {
+				always = yes
+			}
+			events_log_sort_mode_next_click_enabled = {
+				always = yes
+			}
+			events_log_sort_order_prev_click_enabled = {
+				always = yes
+			}
+			events_log_sort_order_next_click_enabled = {
+				always = yes
+			}
+			history_entry_open_details_button_click_enabled = {
+				always = yes
+			}
+			open_diplomacy_button_visible = {
+				check_variable = {
+					var = global.events_log_view_has_actor_entries^events_log_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			country_flag_visible = {
+				check_variable = {
+					var = global.events_log_view_has_actor_entries^events_log_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			country_flag_frame_visible = {
+				check_variable = {
+					var = global.events_log_view_has_actor_entries^events_log_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			history_entry_text_actor_visible = {
+				check_variable = {
+					var = global.events_log_view_has_actor_entries^events_log_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			history_entry_text_generic_fallback_visible = {
+				check_variable = {
+					var = global.events_log_view_has_actor_entries^events_log_history_index
+					value = 0
+					compare = less_than_or_equals
+				}
+			}
+		}
+
+		dynamic_lists = {
+			events_log_history_dynamic_list = {
+				array = global.events_log_view_actor_entries
+				value = events_log_actor
+				index = events_log_history_index
+				change_scope = yes
+				entry_container = "events_log_history_entry_generic"
+				country_scope_entry_container = "events_log_history_entry_country"
+			}
+		}
+
+		properties = {
+			country_flag = {
+				image = "[?global.events_log_view_actor_entries^events_log_history_index.GetFlag]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_history_details_gui = {
+		context_type = player_context
+		parent_scripted_gui = "events_log_popup_shell_gui"
+		window_name = "events_log_history_details_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_history_tab
+			has_country_flag = events_log_history_details_open
+			check_variable = { events_log_history_selected_event_id > 0 }
+		}
+
+		effects = {
+			events_log_history_details_close_button_click = {
+				events_log_close_history_details_view = yes
+			}
+
+			events_log_history_details_open_diplomacy_button_click = {
+				var:events_log_history_selected_actor = {
+					capital_scope = {
+						ROOT = { goto_state = PREV }
+					}
+				}
+			}
+
+			history_detail_evolution_open_details_button_click = {
+				events_log_open_selected_history_related_evolution_detail = yes
+			}
+		}
+
+		triggers = {
+			events_log_history_details_close_button_click_enabled = {
+				always = yes
+			}
+			events_log_history_details_open_diplomacy_button_visible = {
+				check_variable = {
+					var = events_log_history_selected_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_history_details_open_diplomacy_button_click_enabled = {
+				check_variable = {
+					var = events_log_history_selected_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			history_detail_evolution_open_details_button_click_enabled = {
+				always = yes
+			}
+			events_log_history_details_actor_flag_visible = {
+				check_variable = {
+					var = events_log_history_selected_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_history_details_actor_flag_frame_visible = {
+				check_variable = {
+					var = events_log_history_selected_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_history_details_actor_line_visible = {
+				check_variable = {
+					var = events_log_history_selected_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_history_details_evolutions_header_visible = {
+				check_variable = { global.events_log_history_detail_evolution_sequence_entries^num > 0 }
+			}
+			events_log_history_details_evolutions_list_visible = {
+				check_variable = { global.events_log_history_detail_evolution_sequence_entries^num > 0 }
+			}
+		}
+
+		dynamic_lists = {
+			events_log_history_details_evolution_dynamic_list = {
+				array = global.events_log_history_detail_evolution_sequence_entries
+				value = events_log_history_detail_sequence
+				index = events_log_history_detail_evolution_index
+				change_scope = no
+				entry_container = "events_log_history_detail_evolution_entry"
+			}
+		}
+
+		properties = {
+			events_log_history_details_actor_flag = {
+				image = "[?events_log_history_selected_actor.GetFlag]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_evolutions_gui = {
+		context_type = player_context
+		parent_scripted_gui = "events_log_popup_shell_gui"
+		window_name = "events_log_evolutions_content_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_evolutions_tab
+		}
+
+		effects = {
+			events_log_evolution_filter_prev_click = {
+				cycle_events_log_evolution_filter_prev = yes
+			}
+
+			events_log_evolution_filter_next_click = {
+				cycle_events_log_evolution_filter_next = yes
+			}
+
+			events_log_evolution_sort_mode_prev_click = {
+				cycle_events_log_evolution_sort_mode_prev = yes
+			}
+
+			events_log_evolution_sort_mode_next_click = {
+				cycle_events_log_evolution_sort_mode_next = yes
+			}
+
+			events_log_evolution_sort_order_prev_click = {
+				toggle_events_log_evolution_sort_order = yes
+			}
+
+			events_log_evolution_sort_order_next_click = {
+				toggle_events_log_evolution_sort_order = yes
+			}
+
+			evolution_entry_open_details_button_click = {
+				events_log_open_selected_evolution_detail = yes
+			}
+
+			evolution_open_diplomacy_button_click = {
+				if = {
+					limit = {
+						check_variable = {
+							var = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index
+							value = 0
+							compare = greater_than
+						}
+					}
+					capital_scope = {
+						ROOT = { goto_state = PREV }
+					}
+				}
+			}
+		}
+
+		triggers = {
+			evolutions_no_entries_info_visible = {
+				check_variable = { global.events_log_evolution_view_sequence_entries^num < 1 }
+			}
+			events_log_evolution_filter_prev_click_enabled = {
+				always = yes
+			}
+			events_log_evolution_filter_next_click_enabled = {
+				always = yes
+			}
+			events_log_evolution_sort_mode_prev_click_enabled = {
+				always = yes
+			}
+			events_log_evolution_sort_mode_next_click_enabled = {
+				always = yes
+			}
+			events_log_evolution_sort_order_prev_click_enabled = {
+				always = yes
+			}
+			events_log_evolution_sort_order_next_click_enabled = {
+				always = yes
+			}
+			evolution_entry_open_details_button_click_enabled = {
+				always = yes
+			}
+			evolution_open_diplomacy_button_visible = {
+				check_variable = {
+					var = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			evolution_country_flag_visible = {
+				check_variable = {
+					var = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			evolution_country_flag_frame_visible = {
+				check_variable = {
+					var = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			evolution_entry_text_actor_visible = {
+				check_variable = {
+					var = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			evolution_entry_text_generic_fallback_visible = {
+				check_variable = {
+					var = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index
+					value = 0
+					compare = less_than_or_equals
+				}
+			}
+		}
+
+		dynamic_lists = {
+			events_log_evolution_dynamic_list = {
+				array = global.events_log_evolution_view_actor_entries
+				value = events_log_evolution_actor
+				index = events_log_evolution_index
+				change_scope = yes
+				entry_container = "events_log_evolution_entry_generic"
+				country_scope_entry_container = "events_log_evolution_entry_country"
+			}
+		}
+
+		properties = {
+			evolution_country_flag = {
+				image = "[?global.events_log_evolution_view_actor_entries^events_log_evolution_index.GetFlag]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_events_gui = {
+		context_type = player_context
+		parent_scripted_gui = "events_log_popup_shell_gui"
+		window_name = "events_log_events_content_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_events_tab
+		}
+
+		effects = {
+			events_log_events_filter_prev_click = {
+				cycle_events_log_events_filter_prev = yes
+			}
+
+			events_log_events_filter_next_click = {
+				cycle_events_log_events_filter_next = yes
+			}
+
+			events_log_events_sort_mode_prev_click = {
+				cycle_events_log_events_sort_mode_prev = yes
+			}
+
+			events_log_events_sort_mode_next_click = {
+				cycle_events_log_events_sort_mode_next = yes
+			}
+
+			events_log_events_sort_order_prev_click = {
+				toggle_events_log_events_sort_order = yes
+			}
+
+			events_log_events_sort_order_next_click = {
+				toggle_events_log_events_sort_order = yes
+			}
+
+			events_log_events_entry_open_details_button_click = {
+				set_variable = { events_log_selected_event_id = global.events_log_view_event_id_entries^events_log_history_index }
+				set_variable = { events_log_selected_event_type = global.events_log_view_event_type_entries^events_log_history_index }
+				events_log_add_event_details_entry = yes
+				clr_country_flag = events_log_evolution_details_open
+			}
+
+			events_log_events_toggle_enabled_button_click = {
+				set_variable = { events_log_selected_event_id = global.events_log_view_event_id_entries^events_log_history_index }
+				events_log_toggle_event_disabled_by_row = yes
+			}
+
+			events_log_events_toggle_disabled_button_click = {
+				set_variable = { events_log_selected_event_id = global.events_log_view_event_id_entries^events_log_history_index }
+				events_log_toggle_event_disabled_by_row = yes
+			}
+		}
+
+		triggers = {
+			events_log_events_no_entries_info_visible = {
+				check_variable = { global.events_log_view_event_id_entries^num < 1 }
+			}
+			events_log_events_filter_prev_click_enabled = {
+				always = yes
+			}
+			events_log_events_filter_next_click_enabled = {
+				always = yes
+			}
+			events_log_events_sort_mode_prev_click_enabled = {
+				always = yes
+			}
+			events_log_events_sort_mode_next_click_enabled = {
+				always = yes
+			}
+			events_log_events_sort_order_prev_click_enabled = {
+				always = yes
+			}
+			events_log_events_sort_order_next_click_enabled = {
+				always = yes
+			}
+			events_log_events_entry_open_details_button_click_enabled = {
+				always = yes
+			}
+			events_log_events_toggle_enabled_button_visible = {
+				check_variable = {
+					var = global.events_log_events_view_enabled_entries^events_log_history_index
+					value = 0
+					compare = less_than_or_equals
+				}
+			}
+			events_log_events_toggle_disabled_button_visible = {
+				check_variable = {
+					var = global.events_log_events_view_enabled_entries^events_log_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_events_toggle_enabled_button_click_enabled = {
+				always = yes
+			}
+			events_log_events_toggle_disabled_button_click_enabled = {
+				always = yes
+			}
+		}
+
+		dynamic_lists = {
+			events_log_events_dynamic_list = {
+				array = global.events_log_view_event_id_entries
+				value = events_log_event_id
+				index = events_log_history_index
+				entry_container = "events_log_events_entry_generic"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_event_details_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
+		window_name = "events_log_event_details_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_events_tab
+			has_country_flag = events_log_event_details_open
+			check_variable = { global.events_log_open_event_detail_entries^num > 0 }
+		}
+
+		effects = {
+			events_log_event_detail_entry_close_button_click = {
+				set_variable = { events_log_selected_event_id = global.events_log_open_event_detail_entries^events_log_open_event_detail_index }
+				events_log_remove_event_details_entry = yes
+			}
+
+			events_log_event_detail_entry_trigger_button_click = {
+				set_variable = { settings_selected_event_id = global.events_log_open_event_detail_entries^events_log_open_event_detail_index }
+				trigger_selected_event = yes
+			}
+
+			events_log_event_detail_toggle_enabled_button_click = {
+				set_variable = { events_log_selected_event_id = global.events_log_open_event_detail_entries^events_log_open_event_detail_index }
+				events_log_toggle_event_disabled_by_row = yes
+			}
+
+			events_log_event_detail_toggle_disabled_button_click = {
+				set_variable = { events_log_selected_event_id = global.events_log_open_event_detail_entries^events_log_open_event_detail_index }
+				events_log_toggle_event_disabled_by_row = yes
+			}
+
+			history_detail_evolution_open_details_button_click = {
+				events_log_open_selected_event_detail_evolution = yes
+			}
+		}
+
+		triggers = {
+			events_log_event_detail_entry_close_button_click_enabled = {
+				always = yes
+			}
+			events_log_event_detail_entry_trigger_button_click_enabled = {
+				OR = {
+					check_variable = {
+						var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+						value = constant:event_system_event_type.repeatable
+						compare = equals
+					}
+					AND = {
+						OR = {
+							check_variable = {
+								var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+								value = constant:event_system_event_type.major
+								compare = equals
+							}
+							check_variable = {
+								var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+								value = constant:event_system_event_type.fire_once
+								compare = equals
+							}
+						}
+						check_variable = {
+							var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+							value = 1
+							compare = less_than
+						}
+					}
+				}
+			}
+			events_log_event_detail_toggle_enabled_button_visible = {
+				check_variable = {
+					var = global.events_log_open_event_detail_enabled_entries^events_log_open_event_detail_index
+					value = 0
+					compare = less_than_or_equals
+				}
+			}
+			events_log_event_detail_toggle_disabled_button_visible = {
+				check_variable = {
+					var = global.events_log_open_event_detail_enabled_entries^events_log_open_event_detail_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_event_detail_toggle_enabled_button_click_enabled = {
+				always = yes
+			}
+			events_log_event_detail_toggle_disabled_button_click_enabled = {
+				always = yes
+			}
+			history_detail_evolution_open_details_button_click_enabled = {
+				always = yes
+			}
+			events_log_event_detail_evolutions_header_visible = {
+				check_variable = { global.events_log_event_detail_evolution_stage_entries^num > 0 }
+			}
+			events_log_event_detail_evolutions_list_visible = {
+				check_variable = { global.events_log_event_detail_evolution_stage_entries^num > 0 }
+			}
+			events_log_event_detail_evolutions_empty_visible = {
+				check_variable = { global.events_log_event_detail_evolution_stage_entries^num < 1 }
+			}
+		}
+
+		dynamic_lists = {
+			events_log_event_details_dynamic_list = {
+				array = global.events_log_open_event_detail_entries
+				value = event_id
+				index = events_log_open_event_detail_index
+				entry_container = "events_log_event_detail_entry"
+			}
+			events_log_event_detail_evolution_dynamic_list = {
+				array = global.events_log_event_detail_evolution_stage_entries
+				value = events_log_event_detail_evolution_stage
+				index = events_log_event_detail_evolution_index
+				change_scope = no
+				entry_container = "events_log_event_detail_evolution_entry"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_evolution_details_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
+		window_name = "events_log_evolution_details_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_evolution_details_open
+		}
+
+		effects = {
+			events_log_evolution_details_close_button_click = {
+				clr_country_flag = events_log_evolution_details_open
+			}
+
+			events_log_evolution_details_open_diplomacy_button_click = {
+				var:events_log_selected_evolution_actor = {
+					capital_scope = {
+						ROOT = { goto_state = PREV }
+					}
+				}
+			}
+		}
+
+		triggers = {
+			events_log_evolution_details_close_button_click_enabled = {
+				always = yes
+			}
+			events_log_evolution_details_open_diplomacy_button_visible = {
+				check_variable = {
+					var = events_log_selected_evolution_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_evolution_details_open_diplomacy_button_click_enabled = {
+				check_variable = {
+					var = events_log_selected_evolution_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_evolution_details_actor_flag_visible = {
+				check_variable = {
+					var = events_log_selected_evolution_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_evolution_details_actor_flag_frame_visible = {
+				check_variable = {
+					var = events_log_selected_evolution_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+			events_log_evolution_details_actor_visible = {
+				check_variable = {
+					var = events_log_selected_evolution_has_actor
+					value = 0
+					compare = greater_than
+				}
+			}
+		}
+
+		properties = {
+			events_log_evolution_details_actor_flag = {
+				image = "[?events_log_selected_evolution_actor.GetFlag]"
+			}
+			events_log_evolution_details_portrait = {
+				image = "[GetEventsLogSelectedEvolutionPortrait]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+	}
