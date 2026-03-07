@@ -1,0 +1,2164 @@
+# ============================================================================
+# CHAOS REDUX - EVENTS LOG SCRIPTED LOCALISATION
+# ============================================================================
+# Dedicated scripted localisation for events-log controls and history rows.
+# Uses the filtered/sorted view arrays populated by rebuild_events_log_history_view.
+# ============================================================================
+
+defined_text = {
+	name = GetEventsLogHistoryTypeView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.major
+				compare = equals
+			}
+		}
+		localization_key = settings.major.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.repeatable
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_repeatable.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.fire_once
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_fire_once.colored
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = "Unknown"
+	}
+}
+
+defined_text = {
+	name = GetEventsLogFilterType
+	text = {
+		trigger = { check_variable = { settings_events_log_filter_type = 0 } }
+		localization_key = chaosx.events_log.filter.all
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_filter_type = 1 } }
+		localization_key = chaosx.events_log.filter.major
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_filter_type = 2 } }
+		localization_key = chaosx.events_log.filter.repeatable
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_filter_type = 3 } }
+		localization_key = chaosx.events_log.filter.fire_once
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.filter.all
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSortMode
+	text = {
+		trigger = { check_variable = { settings_events_log_sort_mode = 0 } }
+		localization_key = chaosx.events_log.sort.mode.index
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_sort_mode = 1 } }
+		localization_key = chaosx.events_log.sort.mode.event_id
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_sort_mode = 2 } }
+		localization_key = chaosx.events_log.sort.mode.actor
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.sort.mode.index
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSortOrder
+	text = {
+		trigger = { has_country_flag = events_log_sort_descending }
+		localization_key = chaosx.events_log.sort.order.desc
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.sort.order.asc
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventsFilterType
+	text = {
+		trigger = { check_variable = { settings_events_log_events_filter_type = 0 } }
+		localization_key = chaosx.events_log.events.filter.all
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_events_filter_type = 1 } }
+		localization_key = chaosx.events_log.events.filter.enabled
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_events_filter_type = 2 } }
+		localization_key = chaosx.events_log.events.filter.disabled
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.filter.all
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventsSortMode
+	text = {
+		trigger = { check_variable = { settings_events_log_events_sort_mode = 0 } }
+		localization_key = chaosx.events_log.events.sort.mode.event_id
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_events_sort_mode = 1 } }
+		localization_key = chaosx.events_log.events.sort.mode.fired
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.sort.mode.event_id
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventsSortOrder
+	text = {
+		trigger = { has_country_flag = events_log_events_sort_descending }
+		localization_key = chaosx.events_log.events.sort.order.desc
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.sort.order.asc
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventUniqueLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_events_view_unique_entries^events_log_history_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.events.unique.yes
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.unique.no
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventEnabledLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_events_view_enabled_entries^events_log_history_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.events.enabled.yes
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.enabled.no
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventFiredColored
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_events_view_fired_entries^events_log_history_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.events.fired.positive
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.fired.zero
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailTypeLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+				value = constant:event_system_event_type.major
+				compare = equals
+			}
+		}
+		localization_key = settings.major.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+				value = constant:event_system_event_type.repeatable
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_repeatable.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_type_entries^events_log_open_event_detail_index
+				value = constant:event_system_event_type.fire_once
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_fire_once.colored
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = "Unknown"
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailFiredColored
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.fired.positive
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.fired.zero
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailEnabledLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_enabled_entries^events_log_open_event_detail_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.events.enabled.yes
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.enabled.no
+	}
+}
+
+defined_text = {
+	name = GetEventsLogHistorySelectedTypeLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_history_selected_event_type
+				value = constant:event_system_event_type.major
+				compare = equals
+			}
+		}
+		localization_key = settings.major.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_history_selected_event_type
+				value = constant:event_system_event_type.repeatable
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_repeatable.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_history_selected_event_type
+				value = constant:event_system_event_type.fire_once
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_fire_once.colored
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = "Unknown"
+	}
+}
+
+defined_text = {
+	name = GetEventsLogHistorySelectedEnabledLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_history_selected_enabled
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.events.enabled.yes
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.enabled.no
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailUniqueLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_unique_entries^events_log_open_event_detail_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.events.unique.yes
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.events.unique.no
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEvolutionFilterType
+	text = {
+		trigger = { check_variable = { settings_events_log_evolution_filter_type = 0 } }
+		localization_key = chaosx.events_log.evolution.filter.all
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_evolution_filter_type = 1 } }
+		localization_key = chaosx.events_log.evolution.filter.major
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_evolution_filter_type = 2 } }
+		localization_key = chaosx.events_log.evolution.filter.minor
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.filter.all
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEvolutionSortMode
+	text = {
+		trigger = { check_variable = { settings_events_log_evolution_sort_mode = 0 } }
+		localization_key = chaosx.events_log.evolution.sort.mode.index
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_evolution_sort_mode = 1 } }
+		localization_key = chaosx.events_log.evolution.sort.mode.tier
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_evolution_sort_mode = 2 } }
+		localization_key = chaosx.events_log.evolution.sort.mode.stage
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_evolution_sort_mode = 3 } }
+		localization_key = chaosx.events_log.evolution.sort.mode.actor
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.sort.mode.index
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEvolutionSortOrder
+	text = {
+		trigger = { has_country_flag = events_log_evolution_sort_descending }
+		localization_key = chaosx.events_log.evolution.sort.order.desc
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.sort.order.asc
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEvolutionTypeView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.zombie
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.communism
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.type.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEvolutionStageView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.stage.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEvolutionTierView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_tier_entries^events_log_evolution_index
+				value = 0
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.0
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_tier_entries^events_log_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_tier_entries^events_log_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_tier_entries^events_log_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_tier_entries^events_log_evolution_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_tier_entries^events_log_evolution_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.tier.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedHistoryEvolutionTypeView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.zombie
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.communism
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.type.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedHistoryEvolutionStageView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.stage.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedHistoryEvolutionTierView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index
+				value = 0
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.0
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.tier.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailEvolutionTypeView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.zombie
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.communism
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.type.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailEvolutionStageView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.stage.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailEvolutionTierView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index
+				value = 0
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.0
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.tier.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailEvolutionTitle
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_1.title
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_2.title
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_3.title
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.type.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedEvolutionStageView
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.stage.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.stage.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedEvolutionTierView
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_tier
+				value = 0
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.0
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_tier
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_tier
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_tier
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_tier
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_evolution_tier
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.tier.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.tier.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailDescription
+	text = {
+		trigger = {
+			check_variable = {
+				var = event_id
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.zombie_outbreak
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.entry_placeholder.generic
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedEvolutionTitle
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 1 }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_1.title
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 2 }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_2.title
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 3 }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_3.title
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.title.generic
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedEvolutionSummary
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.summary
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.summary.generic
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedEvolutionBody
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 1 }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_1.body
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 2 }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_2.body
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 3 }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.zombie.stage_3.body
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.placeholder.generic
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedEvolutionPortrait
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 1 }
+		}
+		localization_key = "GFX_portrait_ZZZ_leader_2"
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 2 }
+		}
+		localization_key = "GFX_portrait_ZZZ_leader_3"
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = 1 }
+			check_variable = { events_log_selected_evolution_stage = 3 }
+		}
+		localization_key = "GFX_portrait_ZZZ_leader_4"
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = "GFX_portrait_unknown"
+	}
+}
+
+defined_text = {
+	name = GetEventsLogHistoryEventName
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.5
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 6
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.6
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 7
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.7
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 8
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.8
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 9
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.9
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 10
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.10
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 11
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.11
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 12
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.12
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 13
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.13
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 14
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.14
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 15
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.15
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 16
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.16
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 17
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.17
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 18
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.18
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 19
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.19
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 20
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.20
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 21
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.21
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 22
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.22
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 23
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.23
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 24
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.24
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 25
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.25
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 26
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.26
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 27
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.27
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 28
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.28
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 29
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.29
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 30
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.30
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 31
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.31
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 32
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.32
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 33
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.33
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 34
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.34
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 35
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.35
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 36
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.36
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 37
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.37
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 38
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.38
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 39
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.39
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 40
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.40
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 41
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.41
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 42
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.42
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 43
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.43
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 44
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.44
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 45
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.45
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 46
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.46
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 47
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.47
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 48
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.48
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 49
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.49
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 50
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.50
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 51
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.51
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 52
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.52
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 53
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.53
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 54
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.54
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 55
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.55
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 56
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.56
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 57
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.57
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 58
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.58
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 59
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.59
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 60
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.60
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 61
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.61
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 62
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.62
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 63
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.63
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 64
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.64
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 65
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.65
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 66
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.66
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 67
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.67
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 68
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.68
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 69
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.69
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 70
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.70
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 71
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.71
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 72
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.72
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 73
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.73
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 74
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.74
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 75
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.75
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 76
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.76
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 77
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.77
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 78
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.78
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 79
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.79
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 80
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.80
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 81
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.81
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 82
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.82
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 83
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.83
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 84
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.84
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 85
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.85
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 86
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.86
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 87
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.87
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 88
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.88
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 89
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.89
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 90
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.90
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 91
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.91
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 92
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.92
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 93
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.93
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 94
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.94
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 95
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.95
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 96
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.96
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 97
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.97
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 98
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.98
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = 99
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.99
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = "Unknown event"
+	}
+}

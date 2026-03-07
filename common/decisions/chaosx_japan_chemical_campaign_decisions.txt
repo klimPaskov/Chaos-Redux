@@ -1,0 +1,86 @@
+# ============================================================================
+# JAPAN CHEMICAL CAMPAIGN DECISIONS
+# ============================================================================
+# State-targeted chemical cylinder operations for Japan during the China war.
+# One free selector decision rotates the prepared agent, while the attack
+# decision spends command power, consumes cylinders, and applies state
+# contamination through shared scripted effects.
+# ============================================================================
+
+@JAPAN_CHEMICAL_CAMPAIGN_AI_ATTACK_BASE = 4
+@JAPAN_CHEMICAL_CAMPAIGN_AI_ATTACK_ADD_CORE_STATE = 2
+@JAPAN_CHEMICAL_CAMPAIGN_AI_TREATY_MEMBER_FACTOR = 0.30
+@JAPAN_CHEMICAL_CAMPAIGN_ATTACK_COOLDOWN_DAYS = 8
+
+japan_chemical_campaign_category = {
+	japan_chemical_campaign_cycle_agent = {
+		icon = GFX_decision_generic_operation
+
+		available = {
+			is_japan_china_chemical_campaign_war = yes
+		}
+
+		visible = {
+			is_japan_china_chemical_campaign_war = yes
+		}
+
+		ai_will_do = {
+			base = 0
+		}
+
+		complete_effect = {
+			japan_cycle_targeted_chemical_campaign_agent = yes
+		}
+	}
+
+	japan_chemical_campaign_attack = {
+		icon = GFX_decision_generic_operation
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+
+		target_trigger = {
+			FROM = { is_japan_chemical_campaign_target_state = yes }
+		}
+
+		available = {
+			is_japan_china_chemical_campaign_war = yes
+			NOT = { has_country_flag = japan_chemical_campaign_attack_cooldown }
+			custom_trigger_tooltip = {
+				tooltip = japan_chemical_campaign_attack_stockpile_tt
+				has_japan_chemical_campaign_selected_stockpile_attack = yes
+			}
+		}
+
+		custom_cost_trigger = {
+			has_japan_chemical_campaign_attack_command_power = yes
+			has_japan_chemical_campaign_selected_stockpile_attack = yes
+		}
+		custom_cost_text = japan_chemical_campaign_attack_cost
+
+			ai_will_do = {
+				base = @JAPAN_CHEMICAL_CAMPAIGN_AI_ATTACK_BASE
+				modifier = {
+					add = @JAPAN_CHEMICAL_CAMPAIGN_AI_ATTACK_ADD_CORE_STATE
+					FROM = { is_core_of = CHI }
+				}
+				modifier = {
+					factor = @JAPAN_CHEMICAL_CAMPAIGN_AI_TREATY_MEMBER_FACTOR
+					has_country_flag = air_cleanliness_treaty_member
+				}
+			}
+
+		complete_effect = {
+			set_temp_variable = { var = chem_ability_cp_cost value = constant:chem_japan_campaign_decision.defaults.attack_command_power_cost }
+			chem_set_chemical_attack_command_power_cost = yes
+			set_temp_variable = { var = japan_campaign_command_power_cost value = chem_attack_command_power_cost }
+			multiply_temp_variable = { var = japan_campaign_command_power_cost value = -1 }
+			add_command_power = japan_campaign_command_power_cost
+				set_country_flag = {
+					flag = japan_chemical_campaign_attack_cooldown
+					days = @JAPAN_CHEMICAL_CAMPAIGN_ATTACK_COOLDOWN_DAYS
+				}
+			FROM = { save_event_target_as = japan_chemical_campaign_target_state }
+			japan_apply_targeted_chemical_campaign_attack = yes
+		}
+	}
+}

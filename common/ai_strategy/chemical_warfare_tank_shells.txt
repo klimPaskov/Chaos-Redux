@@ -4,7 +4,9 @@
 @CHEM_AI_TANK_SHELL_PROD_BASE = 1
 @CHEM_AI_TANK_SHELL_PROD_THREAT_LOW = 2
 @CHEM_AI_TANK_SHELL_PROD_THREAT_MED = 3
+@CHEM_AI_TANK_SHELL_PROD_JAPAN_BONUS = 1
 @CHEM_AI_TANK_SHELL_XP_TEMPLATE_FOCUS = 30
+@CHEM_AI_TANK_SHELL_XP_TEMPLATE_FOCUS_JAPAN_BONUS = 30
 
 chem_tank_shell_production_major_base = {
 	allowed = { always = yes }
@@ -120,5 +122,58 @@ chem_tank_shell_template_design_focus = {
 		type = land_xp_spend_priority
 		id = division_template
 		value = @CHEM_AI_TANK_SHELL_XP_TEMPLATE_FOCUS
+	}
+}
+
+chem_tank_shell_production_japan_bonus = {
+	allowed = { original_tag = JAP }
+	enable = {
+		has_tech = livens_projector_tech
+		is_japan_china_chemical_campaign_war = yes
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = tabun
+			has_tech = sarin
+			has_tech = soman
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = light_tank_chassis
+		value = @CHEM_AI_TANK_SHELL_PROD_JAPAN_BONUS
+	}
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = medium_tank_chassis
+		value = @CHEM_AI_TANK_SHELL_PROD_JAPAN_BONUS
+	}
+}
+
+chem_tank_shell_template_design_focus_japan_bonus = {
+	allowed = { original_tag = JAP }
+	enable = {
+		has_tech = livens_projector_tech
+		is_japan_china_chemical_campaign_war = yes
+		OR = {
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = tabun
+			has_tech = sarin
+			has_tech = soman
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = land_xp_spend_priority
+		id = division_template
+		value = @CHEM_AI_TANK_SHELL_XP_TEMPLATE_FOCUS_JAPAN_BONUS
 	}
 }

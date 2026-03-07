@@ -1,22 +1,732 @@
 scripted_gui = {
-    chaos_meter_gui = {
-        context_type = player_context
-        parent_window_token = top_bar
+	chaos_meter_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
+		window_name = "chaos_meter_container"
 
-        window_name = "chaos_meter_container"
+		visible = {
+			always = yes
+		}
 
-        visible = {
-            always = yes
-        }
+			effects = {
+					chaos_meter_click_area_click = {
+						set_variable = { settings_chaos_history_sort_mode = 0 }
+						set_variable = { settings_chaos_history_filter_type = 0 }
+						set_variable = { settings_chaos_deaths_sort_mode = 1 }
+						set_variable = { settings_chaos_deaths_filter_type = 0 }
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+						clr_country_flag = chaos_meter_history_sort_descending
+						set_country_flag = chaos_meter_deaths_sort_descending
+						clr_country_flag = chaos_meter_deaths_details_open
+					set_country_flag = chaos_meter_window_open
+					clr_country_flag = chaos_meter_air_tab
+					clr_country_flag = chaos_meter_condemnation_tab
+					clr_country_flag = chaos_meter_deaths_tab
+					set_country_flag = chaos_meter_history_tab
+					rebuild_chaos_meter_history_view = yes
+				}
+			}
 
-        properties = {
-            chaos_meter_icon = {
-                image = "[GetChaosMeterSprite]"
-            }
-        }
+		properties = {
+			chaos_meter_icon = {
+				image = "[GetChaosMeterSprite]"
+			}
+		}
 
-        ai_enabled = {
-            always = no
-        }
-    }
-}
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	chaos_meter_popup_shell_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
+		window_name = "chaos_meter_popup_window"
+
+		visible = {
+			has_country_flag = chaos_meter_window_open
+		}
+
+			effects = {
+					close_button_click = {
+						clr_country_flag = chaos_meter_window_open
+						clr_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+					}
+
+					status_tab_button_idle_click = {
+						clr_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+					}
+
+					status_tab_button_active_click = {
+						clr_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+					}
+
+					history_tab_button_idle_click = {
+						set_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+						rebuild_chaos_meter_history_view = yes
+					}
+
+					history_tab_button_active_click = {
+						set_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+						rebuild_chaos_meter_history_view = yes
+					}
+
+					air_tab_button_idle_click = {
+						clr_country_flag = chaos_meter_history_tab
+						set_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+					}
+
+					air_tab_button_active_click = {
+						clr_country_flag = chaos_meter_history_tab
+						set_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+					}
+
+					condemnation_tab_button_idle_click = {
+						clr_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						set_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+						rebuild_chaos_meter_condemnation_view = yes
+					}
+
+					condemnation_tab_button_active_click = {
+						clr_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						set_country_flag = chaos_meter_condemnation_tab
+						clr_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+						rebuild_chaos_meter_condemnation_view = yes
+					}
+
+					deaths_tab_button_idle_click = {
+						clr_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						set_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+						rebuild_chaos_meter_deaths_view = yes
+					}
+
+					deaths_tab_button_active_click = {
+						clr_country_flag = chaos_meter_history_tab
+						clr_country_flag = chaos_meter_air_tab
+						clr_country_flag = chaos_meter_condemnation_tab
+						set_country_flag = chaos_meter_deaths_tab
+						clr_country_flag = chaos_meter_deaths_details_open
+						set_variable = { chaos_meter_deaths_selected_index = -1 }
+						rebuild_chaos_meter_deaths_view = yes
+					}
+			}
+
+		triggers = {
+				status_tab_button_idle_visible = {
+					OR = {
+						has_country_flag = chaos_meter_history_tab
+						has_country_flag = chaos_meter_air_tab
+						has_country_flag = chaos_meter_condemnation_tab
+						has_country_flag = chaos_meter_deaths_tab
+					}
+				}
+				status_tab_button_active_visible = {
+					NOT = {
+						OR = {
+							has_country_flag = chaos_meter_history_tab
+							has_country_flag = chaos_meter_air_tab
+							has_country_flag = chaos_meter_condemnation_tab
+							has_country_flag = chaos_meter_deaths_tab
+						}
+					}
+				}
+			history_tab_button_idle_visible = {
+				NOT = { has_country_flag = chaos_meter_history_tab }
+			}
+			history_tab_button_active_visible = {
+				has_country_flag = chaos_meter_history_tab
+			}
+			air_tab_button_idle_visible = {
+				NOT = { has_country_flag = chaos_meter_air_tab }
+			}
+			air_tab_button_active_visible = {
+				has_country_flag = chaos_meter_air_tab
+			}
+			condemnation_tab_button_idle_visible = {
+				NOT = { has_country_flag = chaos_meter_condemnation_tab }
+			}
+				condemnation_tab_button_active_visible = {
+					has_country_flag = chaos_meter_condemnation_tab
+				}
+				deaths_tab_button_idle_visible = {
+					NOT = { has_country_flag = chaos_meter_deaths_tab }
+				}
+				deaths_tab_button_active_visible = {
+					has_country_flag = chaos_meter_deaths_tab
+				}
+			}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	chaos_meter_popup_status_gui = {
+		context_type = player_context
+		parent_scripted_gui = "chaos_meter_popup_shell_gui"
+		window_name = "chaos_meter_status_content_window"
+
+			visible = {
+				has_country_flag = chaos_meter_window_open
+				NOT = { has_country_flag = chaos_meter_history_tab }
+				NOT = { has_country_flag = chaos_meter_air_tab }
+				NOT = { has_country_flag = chaos_meter_condemnation_tab }
+				NOT = { has_country_flag = chaos_meter_deaths_tab }
+			}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	chaos_meter_popup_history_gui = {
+		context_type = player_context
+		parent_scripted_gui = "chaos_meter_popup_shell_gui"
+		window_name = "chaos_meter_history_content_window"
+
+		visible = {
+			has_country_flag = chaos_meter_window_open
+			has_country_flag = chaos_meter_history_tab
+		}
+
+		effects = {
+			chaos_history_filter_prev_click = {
+				cycle_chaos_meter_history_filter_prev = yes
+			}
+
+			chaos_history_filter_next_click = {
+				cycle_chaos_meter_history_filter_next = yes
+			}
+
+			chaos_history_sort_mode_prev_click = {
+				cycle_chaos_meter_history_sort_mode_prev = yes
+			}
+
+			chaos_history_sort_mode_next_click = {
+				cycle_chaos_meter_history_sort_mode_next = yes
+			}
+
+			chaos_history_sort_order_prev_click = {
+				toggle_chaos_meter_history_sort_order = yes
+			}
+
+			chaos_history_sort_order_next_click = {
+				toggle_chaos_meter_history_sort_order = yes
+			}
+
+			open_diplomacy_button_click = {
+				if = {
+					limit = {
+						check_variable = {
+							var = global.chaos_meter_history_view_has_actor_entries^chaos_history_index
+							value = 0
+							compare = greater_than
+						}
+					}
+					capital_scope = {
+						ROOT = { goto_state = PREV }
+					}
+				}
+			}
+		}
+
+		triggers = {
+			history_no_entries_info_visible = {
+				check_variable = { global.chaos_meter_history_view_sequence_entries^num < 1 }
+			}
+			chaos_history_filter_prev_click_enabled = {
+				always = yes
+			}
+			chaos_history_filter_next_click_enabled = {
+				always = yes
+			}
+			chaos_history_sort_mode_prev_click_enabled = {
+				always = yes
+			}
+			chaos_history_sort_mode_next_click_enabled = {
+				always = yes
+			}
+			chaos_history_sort_order_prev_click_enabled = {
+				always = yes
+			}
+			chaos_history_sort_order_next_click_enabled = {
+				always = yes
+			}
+			open_diplomacy_button_visible = {
+				check_variable = {
+					var = global.chaos_meter_history_view_has_actor_entries^chaos_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			country_flag_visible = {
+				check_variable = {
+					var = global.chaos_meter_history_view_has_actor_entries^chaos_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			country_flag_frame_visible = {
+				check_variable = {
+					var = global.chaos_meter_history_view_has_actor_entries^chaos_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			history_entry_text_actor_visible = {
+				check_variable = {
+					var = global.chaos_meter_history_view_has_actor_entries^chaos_history_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			history_entry_text_generic_fallback_visible = {
+				check_variable = {
+					var = global.chaos_meter_history_view_has_actor_entries^chaos_history_index
+					value = 0
+					compare = less_than_or_equals
+				}
+			}
+		}
+
+		dynamic_lists = {
+			chaos_history_dynamic_list = {
+				array = global.chaos_meter_history_view_actor_entries
+				value = chaos_history_actor
+				index = chaos_history_index
+				change_scope = yes
+				entry_container = "chaos_meter_history_entry_generic"
+				country_scope_entry_container = "chaos_meter_history_entry_country"
+			}
+		}
+
+		properties = {
+			country_flag = {
+				image = "[?global.chaos_meter_history_view_actor_entries^chaos_history_index.GetFlag]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	chaos_meter_popup_air_gui = {
+		context_type = player_context
+		parent_scripted_gui = "chaos_meter_popup_shell_gui"
+		window_name = "chaos_meter_air_content_window"
+
+		visible = {
+			has_country_flag = chaos_meter_window_open
+			has_country_flag = chaos_meter_air_tab
+		}
+
+		effects = {
+			air_system_checkbox_click = {
+				toggle_air_cleanliness_system_disabled = yes
+			}
+		}
+
+		triggers = {
+			air_system_checkbox_click_enabled = {
+				always = yes
+			}
+		}
+
+		properties = {
+			air_system_checkbox = {
+				image = "[GetAirCleanlinessSystemCheckboxSprite]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+		chaos_meter_popup_condemnation_gui = {
+		context_type = player_context
+		parent_scripted_gui = "chaos_meter_popup_shell_gui"
+		window_name = "chaos_meter_condemnation_content_window"
+
+		visible = {
+			has_country_flag = chaos_meter_window_open
+			has_country_flag = chaos_meter_condemnation_tab
+		}
+
+		effects = {
+			chaos_condemnation_sort_order_prev_click = {
+				toggle_chaos_meter_condemnation_sort_order = yes
+			}
+
+			chaos_condemnation_sort_order_next_click = {
+				toggle_chaos_meter_condemnation_sort_order = yes
+			}
+
+			condemnation_open_diplomacy_button_click = {
+				capital_scope = {
+					ROOT = { goto_state = PREV }
+				}
+			}
+		}
+
+		triggers = {
+			condemnation_no_entries_info_visible = {
+				check_variable = { global.chaos_meter_condemnation_view_country_entries^num < 1 }
+			}
+			chaos_condemnation_sort_order_prev_click_enabled = {
+				always = yes
+			}
+			chaos_condemnation_sort_order_next_click_enabled = {
+				always = yes
+			}
+			condemnation_open_diplomacy_button_visible = {
+				always = yes
+			}
+			condemnation_country_flag_visible = {
+				always = yes
+			}
+			condemnation_country_flag_frame_visible = {
+				always = yes
+			}
+		}
+
+		dynamic_lists = {
+			chaos_condemnation_dynamic_list = {
+				array = global.chaos_meter_condemnation_view_country_entries
+				value = chaos_condemnation_country
+				index = condemnation_index
+				change_scope = yes
+				entry_container = "chaos_meter_condemnation_entry_generic"
+				country_scope_entry_container = "chaos_meter_condemnation_entry_country"
+			}
+		}
+
+		properties = {
+			condemnation_country_flag = {
+				image = "[?global.chaos_meter_condemnation_view_country_entries^condemnation_index.GetFlag]"
+			}
+		}
+
+			ai_enabled = {
+				always = no
+			}
+		}
+
+		chaos_meter_popup_deaths_gui = {
+			context_type = player_context
+			parent_scripted_gui = "chaos_meter_popup_shell_gui"
+			window_name = "chaos_meter_deaths_content_window"
+
+			visible = {
+				has_country_flag = chaos_meter_window_open
+				has_country_flag = chaos_meter_deaths_tab
+			}
+
+			effects = {
+				chaos_deaths_sort_mode_prev_click = {
+					cycle_chaos_meter_deaths_sort_mode_prev = yes
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				chaos_deaths_sort_mode_next_click = {
+					cycle_chaos_meter_deaths_sort_mode_next = yes
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				chaos_deaths_sort_order_prev_click = {
+					toggle_chaos_meter_deaths_sort_order = yes
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				chaos_deaths_sort_order_next_click = {
+					toggle_chaos_meter_deaths_sort_order = yes
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				chaos_deaths_filter_prev_click = {
+					cycle_chaos_meter_deaths_filter_prev = yes
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				chaos_deaths_filter_next_click = {
+					cycle_chaos_meter_deaths_filter_next = yes
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				deaths_system_checkbox_click = {
+					toggle_chaos_meter_deaths_system_disabled = yes
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				deaths_entry_open_details_button_click = {
+					ROOT = {
+						set_variable = { chaos_meter_deaths_selected_index = chaos_deaths_index }
+						set_variable = { chaos_meter_deaths_selected_country = global.chaos_meter_deaths_view_country_entries^chaos_deaths_index }
+						rebuild_chaos_meter_deaths_details_view = yes
+						set_country_flag = chaos_meter_deaths_details_open
+					}
+				}
+
+				deaths_entry_open_diplomacy_button_click = {
+					capital_scope = {
+						ROOT = { goto_state = PREV }
+					}
+				}
+			}
+
+			triggers = {
+				deaths_no_entries_info_visible = {
+					check_variable = { global.chaos_meter_deaths_view_sequence_entries^num < 1 }
+				}
+				chaos_deaths_sort_mode_prev_click_enabled = {
+					always = yes
+				}
+				chaos_deaths_sort_mode_next_click_enabled = {
+					always = yes
+				}
+				chaos_deaths_sort_order_prev_click_enabled = {
+					always = yes
+				}
+				chaos_deaths_sort_order_next_click_enabled = {
+					always = yes
+				}
+				chaos_deaths_filter_prev_click_enabled = {
+					always = yes
+				}
+				chaos_deaths_filter_next_click_enabled = {
+					always = yes
+				}
+				deaths_system_checkbox_click_enabled = {
+					always = yes
+				}
+				deaths_entry_open_details_button_click_enabled = {
+					always = yes
+				}
+				deaths_entry_open_diplomacy_button_visible = {
+					always = yes
+				}
+				deaths_entry_country_flag_visible = {
+					always = yes
+				}
+				deaths_entry_country_flag_frame_visible = {
+					always = yes
+				}
+			}
+
+			dynamic_lists = {
+				chaos_deaths_dynamic_list = {
+					array = global.chaos_meter_deaths_view_country_entries
+					value = chaos_deaths_country
+					index = chaos_deaths_index
+					change_scope = yes
+					entry_container = "chaos_meter_deaths_entry_generic"
+					country_scope_entry_container = "chaos_meter_deaths_entry_country"
+				}
+			}
+
+			properties = {
+				deaths_system_checkbox = {
+					image = "[GetDeathsSystemCheckboxSprite]"
+				}
+				deaths_entry_country_flag = {
+					image = "[?global.chaos_meter_deaths_view_country_entries^chaos_deaths_index.GetFlag]"
+				}
+			}
+
+			ai_enabled = {
+				always = no
+			}
+		}
+
+		chaos_meter_popup_deaths_details_gui = {
+			context_type = player_context
+			parent_scripted_gui = "chaos_meter_popup_shell_gui"
+			window_name = "chaos_meter_deaths_details_overlay"
+
+			visible = {
+				has_country_flag = chaos_meter_window_open
+				has_country_flag = chaos_meter_deaths_tab
+				has_country_flag = chaos_meter_deaths_details_open
+				has_variable = chaos_meter_deaths_selected_country
+				check_variable = {
+					var = chaos_meter_deaths_selected_country
+					value = 0
+					compare = greater_than
+				}
+			}
+
+			effects = {
+				deaths_details_close_button_click = {
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
+				}
+
+				deaths_details_open_diplomacy_button_click = {
+					var:chaos_meter_deaths_selected_country = {
+						capital_scope = {
+							ROOT = { goto_state = PREV }
+						}
+					}
+				}
+
+				deaths_details_filter_prev_click = {
+					cycle_chaos_meter_deaths_details_filter_prev = yes
+				}
+
+				deaths_details_filter_next_click = {
+					cycle_chaos_meter_deaths_details_filter_next = yes
+				}
+
+				deaths_details_sort_mode_prev_click = {
+					cycle_chaos_meter_deaths_details_sort_mode_prev = yes
+				}
+
+				deaths_details_sort_mode_next_click = {
+					cycle_chaos_meter_deaths_details_sort_mode_next = yes
+				}
+
+				deaths_details_sort_order_prev_click = {
+					toggle_chaos_meter_deaths_details_sort_order = yes
+				}
+
+				deaths_details_sort_order_next_click = {
+					toggle_chaos_meter_deaths_details_sort_order = yes
+				}
+			}
+
+			triggers = {
+				deaths_details_close_button_click_enabled = {
+					always = yes
+				}
+				deaths_details_open_diplomacy_button_click_enabled = {
+					check_variable = {
+						var = chaos_meter_deaths_selected_country
+						value = 0
+						compare = greater_than
+					}
+				}
+				deaths_details_open_diplomacy_button_visible = {
+					check_variable = {
+						var = chaos_meter_deaths_selected_country
+						value = 0
+						compare = greater_than
+					}
+				}
+				deaths_details_country_flag_visible = {
+					check_variable = {
+						var = chaos_meter_deaths_selected_country
+						value = 0
+						compare = greater_than
+					}
+				}
+				deaths_details_country_flag_frame_visible = {
+					check_variable = {
+						var = chaos_meter_deaths_selected_country
+						value = 0
+						compare = greater_than
+					}
+				}
+				deaths_details_no_entries_visible = {
+					check_variable = { global.chaos_meter_deaths_detail_sequence_entries^num < 1 }
+				}
+				deaths_details_filter_prev_click_enabled = {
+					always = yes
+				}
+				deaths_details_filter_next_click_enabled = {
+					always = yes
+				}
+				deaths_details_sort_mode_prev_click_enabled = {
+					always = yes
+				}
+				deaths_details_sort_mode_next_click_enabled = {
+					always = yes
+				}
+				deaths_details_sort_order_prev_click_enabled = {
+					always = yes
+				}
+				deaths_details_sort_order_next_click_enabled = {
+					always = yes
+				}
+			}
+
+			dynamic_lists = {
+				chaos_deaths_details_dynamic_list = {
+					array = global.chaos_meter_deaths_detail_sequence_entries
+					value = chaos_deaths_detail_sequence
+					index = chaos_deaths_detail_index
+					change_scope = no
+					entry_container = "chaos_meter_deaths_detail_entry_generic"
+				}
+			}
+
+			properties = {
+				deaths_details_country_flag = {
+					image = "[?chaos_meter_deaths_selected_country.GetFlag]"
+				}
+			}
+
+			ai_enabled = {
+				always = no
+			}
+		}
+	}
