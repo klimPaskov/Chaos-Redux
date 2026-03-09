@@ -1,0 +1,194 @@
+add_namespace = chaosx.nr7
+
+##############################################################################################################
+#    ##    ## ########     ########
+#    ###   ## ##     ##    ##    ##
+#    ####  ## ##     ##        ##
+#    ## ## ## ########        ##
+#    ##  #### ##   ##        ##
+#    ##   ### ##    ##       ##
+#    ##    ## ##     ##      ##
+##############################################################################################################
+#   ######
+#   #     #   ##   #    # #####   ####  #    #    ###### #    # #####    ##   #    #  ####  #  ####  #    #
+#   #     #  #  #  ##   # #    # #    # ##  ##    #       #  #  #    #  #  #  ##   # #      # #    # ##   #
+#   ######  #    # # #  # #    # #    # # ## #    #####    ##   #    # #    # # #  #  ####  # #    # # #  #
+#   #   #   ###### #  # # #    # #    # #    #    #        ##   #####  ###### #  # #      # # #    # #  # #
+#   #    #  #    # #   ## #    # #    # #    #    #       #  #  #      #    # #   ## #    # # #    # #   ##
+#   #     # #    # #    # #####   ####  #    #    ###### #    # #      #    # #    #  ####  #  ####  #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr7.1
+    title = chaosx.nr7.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = { all_owned_state = { is_island_state = no } }
+            country_event = { id = chaosx.nr7.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr7.2
+    title = chaosx.nr7.2.t
+    desc = chaosx.nr7.2.d
+    picture = GFX_report_event_chinese_army_training
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = {
+            clear_variable = num_neighbors
+            clear_array = selected_neighbors
+            every_neighbor_country = {
+                limit = { NOT = { is_in_array = { ROOT.selected_neighbors = THIS.id } } }
+                random_select_amount = 4
+                add_to_variable = { ROOT.num_neighbors = 1 }
+                add_to_array = { ROOT.selected_neighbors = THIS.id }
+            }
+            log = "Number of neighbors [ROOT.GetName] has: [?num_neighbors|.0]"
+        }
+    }
+
+    option = {
+        name = chaosx.nr7.2.a
+        add_war_support = 0.10
+        ai_chance = {
+            factor = 10
+            # modifier = {
+            #     add = 50
+            #     var:selected_neighbors^0 = {
+            #         is_major = no
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^0 = {
+            #         has_war = yes
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^0 = { num_divisions < ROOT.num_divisions }
+            # }
+        }
+        # var:selected_neighbors^0 = {
+        #     ROOT = {
+        #         declare_war_on = {
+        #             type = annex_everything
+        #             target = PREV
+        #         }
+        #     }
+        # }
+    }
+    option = {
+        name = chaosx.nr7.2.b
+        add_war_support = 0.10
+        ai_chance = {
+            factor = 10
+            # modifier = {
+            #     add = 50
+            #     var:selected_neighbors^1 = {
+            #         is_major = no
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^1 = {
+            #         has_war = yes
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^1 = { num_divisions < ROOT.num_divisions }
+            # }
+        }
+        # var:selected_neighbors^1 = {
+        #     ROOT = {
+        #         declare_war_on = {
+        #             type = annex_everything
+        #             target = PREV
+        #         }
+        #     }
+        # }
+        trigger = {
+            check_variable = { num_neighbors > 1 }
+        }
+    }
+    option = {
+        name = chaosx.nr7.2.c
+        add_war_support = 0.10
+        ai_chance = {
+            factor = 10
+            # modifier = {
+            #     add = 50
+            #     var:selected_neighbors^2 = {
+            #         is_major = no
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^2 = {
+            #         has_war = yes
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^2 = { num_divisions < ROOT.num_divisions }
+            # }
+        }
+        # var:selected_neighbors^2 = {
+        #     ROOT = {
+        #         declare_war_on = {
+        #             type = annex_everything
+        #             target = PREV
+        #         }
+        #     }
+        # }
+        trigger = {
+            check_variable = { num_neighbors > 2 }
+        }
+    }
+    option = {
+        name = chaosx.nr7.2.e
+        add_war_support = 0.10
+        ai_chance = {
+            factor = 10
+            # modifier = {
+            #     add = 50
+            #     var:selected_neighbors^3 = {
+            #         is_major = no
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^3 = {
+            #         has_war = yes
+            #     }
+            # }
+            # modifier = {
+            #     add = 20
+            #     var:selected_neighbors^3 = { num_divisions < ROOT.num_divisions }
+            # }
+        }
+        # var:selected_neighbors^3 = {
+        #     ROOT = {
+        #         declare_war_on = {
+        #             type = annex_everything
+        #             target = PREV
+        #         }
+        #     }
+        # }
+        trigger = {
+            check_variable = { num_neighbors > 3 }
+        }
+    }
+}

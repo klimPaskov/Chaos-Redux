@@ -1,0 +1,64 @@
+add_namespace = chaosx.nr52
+
+##############################################################################################################
+#    ##    ## ########     ########  #######
+#    ###   ## ##     ##    ##       ##     ##
+#    ####  ## ##     ##    ##              ##
+#    ## ## ## ########     #######   #######
+#    ##  #### ##   ##            ## ##
+#    ##   ### ##    ##     ##    ## ##
+#    ##    ## ##     ##     ######  #########
+##############################################################################################################
+#   ###                               #
+#    #  #    # ##### ###### #         #       ######   ##   #    #
+#    #  ##   #   #   #      #         #       #       #  #  #   #
+#    #  # #  #   #   #####  #         #       #####  #    # ####
+#    #  #  # #   #   #      #         #       #      ###### #  #
+#    #  #   ##   #   #      #         #       #      #    # #   #
+#   ### #    #   #   ###### ######    ####### ###### #    # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr52.1
+    title = chaosx.nr52.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = { limit = { any_country = { OR = { is_major = yes is_ai = no } has_war = yes } }
+        random_country = {
+            limit = { OR = { is_major = yes is_ai = no } has_war = yes }
+            country_event = { id = chaosx.nr52.2 }
+        }
+    } else = {
+        country_event = { id = chaosx.nr52.2 }
+    }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr52.2
+    title = chaosx.nr52.2.t
+    desc = chaosx.nr52.2.d
+    picture = GFX_report_event_intel_leak
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr52.2.a
+        news_event = { id = chaosx.news.53 days = 1 }
+        every_country = {
+            add_intel = {
+                target = ROOT
+                civilian_intel = 100
+                army_intel = 100
+                navy_intel = 100
+                airforce_intel = 100
+            }
+        }
+    }
+}

@@ -1,0 +1,216 @@
+add_namespace = chaosx.nr12
+
+##############################################################################################################
+#    ##    ## ########        ##    #######
+#    ###   ## ##     ##     ####   ##     ##
+#    ####  ## ##     ##       ##          ##
+#    ## ## ## ########        ##    #######
+#    ##  #### ##   ##         ##   ##
+#    ##   ### ##    ##        ##   ##
+#    ##    ## ##     ##     ###### #########
+##############################################################################################################
+#      #                                            #     #
+#     # #   ###### #####  #  ####    ##   #    #    #     # #    # #  ####  #    #
+#    #   #  #      #    # # #    #  #  #  ##   #    #     # ##   # # #    # ##   #
+#   #     # #####  #    # # #      #    # # #  #    #     # # #  # # #    # # #  #
+#   ####### #      #####  # #      ###### #  # #    #     # #  # # # #    # #  # #
+#   #     # #      #   #  # #    # #    # #   ##    #     # #   ## # #    # #   ##
+#   #     # #      #    # #  ####  #    # #    #     #####  #    # #  ####  #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr12.1
+    title = chaosx.nr12.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = { limit = { ROOT = { is_ai = no capital_scope = { is_on_continent = africa } } }
+        country_event = { id = chaosx.nr12.2 days = 1 }
+    } else = {
+        random_country = {
+            limit = { capital_scope = { is_on_continent = africa } }
+            country_event = { id = chaosx.nr12.2 days = 1 }
+        }
+    }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr12.2
+    title = chaosx.nr12.2.t
+    desc = chaosx.nr12.2.d
+    picture = GFX_report_event_generic_african_unity
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 90 }
+        name = chaosx.nr12.2.a
+        if = { limit = { tag = SAF is_subject = yes }
+        overlord = {
+            set_autonomy = {
+                target = SAF
+                autonomous_state = autonomy_free
+                end_wars = yes
+                end_civil_wars = yes
+            }
+        }
+    }
+    leave_faction = yes
+    set_cosmetic_tag = AFR
+    add_ideas = AFR_african_ambission
+    set_politics = {
+        ruling_party = neutrality
+        elections_allowed = no
+        election_frequency = 48
+        long_name = "Absolute Monarchy of King of Africa"
+        name = "African Dynasty"
+    }
+    add_popularity = {
+        ideology = neutrality
+        popularity = 1.00
+    }
+    retire_country_leader = yes
+    create_country_leader = {
+        name = "King of Africa"
+        picture = GFX_portrait_AFR_king_of_africa
+        expire = "1965.1.1"
+        ideology = despotism
+    }
+    every_state = {
+        limit = { is_on_continent = africa }
+        add_core_of = ROOT
+    }
+    division_template = {
+        name = "African Tribal Division"
+        regiments = {
+            irregular_infantry = { x = 0 y = 0 }
+            irregular_infantry = { x = 0 y = 1 }
+            irregular_infantry = { x = 0 y = 2 }
+            irregular_infantry = { x = 0 y = 3 }
+            irregular_infantry = { x = 1 y = 0 }
+            irregular_infantry = { x = 1 y = 1 }
+            irregular_infantry = { x = 1 y = 2 }
+            irregular_infantry = { x = 1 y = 3 }
+            irregular_infantry = { x = 2 y = 0 }
+            irregular_infantry = { x = 2 y = 1 }
+            irregular_infantry = { x = 2 y = 2 }
+            irregular_infantry = { x = 2 y = 3 }
+            irregular_infantry = { x = 3 y = 0 }
+            irregular_infantry = { x = 3 y = 1 }
+            irregular_infantry = { x = 3 y = 2 }
+            irregular_infantry = { x = 3 y = 3 }
+        }
+    }
+    capital_scope = {
+        create_unit = {
+            division = "name = \"African Tribes\" division_template = \"African Tribal Division\" start_experience_factor = 0.2"
+            count = 10
+            owner = ROOT
+        }
+    }
+    every_other_country = {
+        limit = { any_owned_state = { is_on_continent = africa } }
+        country_event = { id = chaosx.nr12.3 days = 1 }
+    }
+    news_event = { id = chaosx.news.10 days = 4 }
+}
+option = {
+    ai_chance = { base = 10 }
+    add_stability = -0.1
+    name = chaosx.nr12.2.b
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr12.3
+    title = chaosx.nr12.3.t
+    desc = chaosx.nr12.3.d
+    picture = GFX_report_event_generic_african_unity
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = {
+            factor = 5
+            modifier = {
+                add = 25
+                capital_scope = { is_on_continent = africa }
+            }
+        }
+        add_stability = -0.1
+        add_political_power = -50
+        name = chaosx.nr12.3.a
+        ROOT = {
+            if = { limit = { capital_scope = { is_on_continent = africa } }
+            FROM = {
+                annex_country = {
+                    target = ROOT
+                    transfer_troops = yes
+                }
+            }
+        } else = {
+            every_state = {
+                limit = { is_on_continent = africa is_controlled_by = ROOT }
+                transfer_state_to = FROM
+            }
+        }
+
+    }
+    FROM = { country_event = { id = chaosx.nr12.4 days = 2 } }
+}
+option = {
+    ai_chance = { base = 95 }
+    add_war_support = 0.05
+    add_political_power = 50
+    FROM = { country_event = { id = chaosx.nr12.5 days = 1 } }
+    name = chaosx.nr12.3.b
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr12.4
+    title = chaosx.nr12.4.t
+    desc = chaosx.nr12.4.d
+    picture = GFX_report_event_generic_african_unity
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        add_opinion_modifier = {
+            target = FROM
+            modifier = huge_increase
+        }
+        name = chaosx.nr12.4.a
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr12.5
+    title = chaosx.nr12.5.t
+    desc = chaosx.nr12.5.d
+    picture = GFX_report_event_generic_african_unity
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        create_wargoal = {
+            target = FROM
+            type = take_core_state
+        }
+        name = chaosx.nr12.5.a
+    }
+}

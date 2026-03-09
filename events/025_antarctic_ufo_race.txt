@@ -1,0 +1,85 @@
+add_namespace = chaosx.nr25
+
+##############################################################################################################
+#    ##    ## ########      #######  ########
+#    ###   ## ##     ##    ##     ## ##
+#    ####  ## ##     ##           ## ##
+#    ## ## ## ########      #######  #######
+#    ##  #### ##   ##      ##              ##
+#    ##   ### ##    ##     ##        ##    ##
+#    ##    ## ##     ##    #########  ######
+##############################################################################################################
+#      #                                                               ######
+#     # #   #    # #####   ##   #####   ####  ##### #  ####    ##      #     #   ##    ####  ######
+#    #   #  ##   #   #    #  #  #    # #    #   #   # #    #  #  #     #     #  #  #  #    # #
+#   #     # # #  #   #   #    # #    # #        #   # #      #    #    ######  #    # #      #####
+#   ####### #  # #   #   ###### #####  #        #   # #      ######    #   #   ###### #      #
+#   #     # #   ##   #   #    # #   #  #    #   #   # #    # #    #    #    #  #    # #    # #
+#   #     # #    #   #   #    # #    #  ####    #   #  ####  #    #    #     # #    #  ####  ######
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr25.1
+    title = chaosx.nr25.1.t
+
+    hidden = yes
+
+    is_triggered_only = yes
+
+    immediate = {
+        news_event = { id = chaosx.news.25 days = 4 }
+        every_country = {
+            limit = { OR = { is_major = yes is_ai = no } }
+            set_variable = { ufo_infl = 0 }
+            country_event = { id = chaosx.nr25.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr25.2
+    title = chaosx.nr25.2.t
+    desc = chaosx.nr25.2.d
+    picture = GFX_report_event_antarctica_race
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr25.2.a
+        set_global_flag = ufo_race
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr25.3
+    title = chaosx.nr25.3.t
+    desc = chaosx.nr25.3.d
+    picture = GFX_report_event_antarctica_secured
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr25.3.a
+        news_event = { id = chaosx.news.26 days = 1 }
+        add_ideas = antarctica_success
+        set_technology = {
+            experimental_rockets = 1
+            rocket_engines = 1
+            jet_engines = 1
+        }
+        hidden_effect = {
+            every_army_leader = {
+                remove_trait = {
+                    trait = in_antarctica
+                }
+            }
+        }
+    }
+}

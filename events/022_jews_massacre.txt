@@ -1,0 +1,126 @@
+add_namespace = chaosx.nr22
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##           ##        ##
+#    ## ## ## ########      #######   #######
+#    ##  #### ##   ##      ##        ##
+#    ##   ### ##    ##     ##        ##
+#    ##    ## ##     ##    ######### #########
+##############################################################################################################
+#     #    #####   #####    #           #####
+#    ##   #     # #     #  ##          #     # #####    ##   # #    #         # ###### #    #  ####
+#   # #         # #     # # #          #       #    #  #  #  # ##   #         # #      #    # #
+#     #    #####   ######   #           #####  #    # #    # # # #  #         # #####  #    #  ####
+#     #         #       #   #   ###          # #####  ###### # #  # #         # #      # ## #      #
+#     #   #     # #     #   #   ###    #     # #      #    # # #   ##    #    # #      ##  ## #    #
+#   #####  #####   #####  #####  #      #####  #      #    # # #    #     ####  ###### #    #  ####
+#                               #
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr22.1
+    title = chaosx.nr22.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        SPR = {
+            country_event = { id = chaosx.nr22.4 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr22.2
+    title = chaosx.nr22.2.t
+    desc = chaosx.nr22.2.d
+    picture = GFX_report_event_dead_jews
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr22.2.a
+        add_opinion_modifier = {
+            target = FROM
+            modifier = hostile_status
+        }
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr22.3
+    title = chaosx.nr22.3.t
+    desc = chaosx.nr22.3.d
+    picture = GFX_report_event_dead_jews
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr22.3.a
+        ROOT = { add_to_faction = FROM }
+        add_ai_strategy = {
+            type = alliance
+            id = FROM
+            value = 100
+        }
+        FROM = {
+            add_ai_strategy = {
+                type = alliance
+                id = ROOT
+                value = 100
+            }
+        }
+        ai_chance = { base = 100 }
+    }
+    option = {
+        name = chaosx.nr22.3.b
+        add_opinion_modifier = {
+            target = FROM
+            modifier = hostile_status
+        }
+        ai_chance = { base = 0 }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr22.4
+    title = chaosx.nr22.4.t
+    desc = chaosx.nr22.4.d
+    picture = GFX_report_event_dead_jews
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr22.4.a
+        add_ideas = jews_massacre
+        POL = { country_event = { id = chaosx.nr22.2 days = 1 } add_ideas = POL_jews_massacre }
+        SOV = { country_event = { id = chaosx.nr22.2 days = 1 } add_ideas = SOV_jews_massacre }
+        LIT = { country_event = { id = chaosx.nr22.2 days = 1 } add_ideas = LIT_jews_massacre }
+        FRA = { country_event = { id = chaosx.nr22.2 days = 1 } add_ideas = FRA_jews_massacre }
+        ENG = { country_event = { id = chaosx.nr22.2 days = 1 } add_ideas = ENG_jews_massacre }
+        CZE = { country_event = { id = chaosx.nr22.2 days = 1 } add_ideas = CZE_jews_massacre }
+        GER = { country_event = { id = chaosx.nr22.3 days = 1 } add_ideas = GER_jews_massacre }
+        ROM = { country_event = { id = chaosx.nr22.2 days = 1 } add_ideas = ROM_jews_massacre }
+        news_event = { id = chaosx.news.22 days = 1 }
+        ai_chance = { base = 100 }
+    }
+    option = {
+        name = chaosx.nr22.4.b
+        add_stability = -0.10
+        add_popularity = {
+            ideology = fascism
+            popularity = -0.10
+        }
+        ai_chance = { base = 0 }
+    }
+}

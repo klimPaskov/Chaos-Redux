@@ -1,0 +1,189 @@
+add_namespace = chaosx.nr89
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##    ##     ## ##     ##
+#    ## ## ## ########      #######   ########
+#    ##  #### ##   ##      ##     ##        ##
+#    ##   ### ##    ##     ##     ## ##     ##
+#    ##    ## ##     ##     #######   #######
+##############################################################################################################
+#   #######                          #####                                           #####
+#      #    ######  ####  #    #    #     # #    #   ##   #####  # #    #  ####     #     # #####   ####  #    # #####   ####
+#      #    #      #    # #    #    #       #    #  #  #  #    # # ##   # #    #    #       #    # #    # #    # #    # #
+#      #    #####  #      ######     #####  ###### #    # #    # # # #  # #         #  #### #    # #    # #    # #    #  ####
+#      #    #      #      #    #          # #    # ###### #####  # #  # # #  ###    #     # #####  #    # #    # #####       #
+#      #    #      #    # #    #    #     # #    # #    # #   #  # #   ## #    #    #     # #   #  #    # #    # #      #    #
+#      #    ######  ####  #    #     #####  #    # #    # #    # # #    #  ####      #####  #    #  ####   ####  #       ####
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr89.1
+    title = chaosx.nr89.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            limit = { OR = { tag = ENG tag = SOV tag = GER tag = JAP } }
+
+            if = { limit = { tag = ENG }
+            add_to_tech_sharing_group = chaosx_research_group_1
+        } else_if = { limit = { tag = SOV }
+        add_to_tech_sharing_group = chaosx_research_group_2
+    }else_if = { limit = { tag = GER }
+    add_to_tech_sharing_group = chaosx_research_group_3
+}else_if = { limit = { tag = JAP }
+add_to_tech_sharing_group = chaosx_research_group_4
+}
+country_event = { id = chaosx.nr89.3 }
+}
+every_country = {
+    limit = { NOT = { OR = { tag = ENG tag = SOV tag = GER tag = JAP } } }
+    country_event = { id = chaosx.nr89.2 }
+}
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr89.2
+    title = chaosx.nr89.2.t
+    desc = chaosx.nr89.2.d
+    picture = GFX_report_event_generic_research_lab
+
+    is_triggered_only = yes
+
+    option = {
+        add_to_tech_sharing_group = chaosx_research_group_1
+        ENG = { country_event = { id = chaosx.nr89.4 } }
+        add_opinion_modifier = {
+            target = ENG
+            modifier = small_increase
+        }
+        name = chaosx.nr89.2.a
+        ai_chance = {
+            factor = 5
+            modifier = {
+                add = 100
+                OR = {
+                    has_government = ENG
+                    is_in_faction_with = ENG
+                }
+            }
+        }
+        trigger = {
+            NOT = { has_war_with = ENG }
+        }
+    }
+    option = {
+        add_to_tech_sharing_group = chaosx_research_group_2
+        SOV = { country_event = { id = chaosx.nr89.4 } }
+        add_opinion_modifier = {
+            target = SOV
+            modifier = small_increase
+        }
+        name = chaosx.nr89.2.b
+        ai_chance = {
+            factor = 5
+            modifier = {
+                add = 100
+                has_government = SOV
+            }
+        }
+        trigger = {
+            NOT = { has_war_with = SOV }
+        }
+    }
+    option = {
+        add_to_tech_sharing_group = chaosx_research_group_3
+        GER = { country_event = { id = chaosx.nr89.4 } }
+        add_opinion_modifier = {
+            target = GER
+            modifier = small_increase
+        }
+        name = chaosx.nr89.2.c
+        ai_chance = {
+            factor = 5
+            modifier = {
+                add = 100
+                has_government = GER
+                NOT = { capital_scope = { is_on_continent = asia } }
+            }
+        }
+        trigger = {
+            NOT = { has_war_with = GER }
+            NOT = { ROOT = { capital_scope = { is_on_continent = asia } } }
+        }
+    }
+    option = {
+        add_to_tech_sharing_group = chaosx_research_group_4
+        JAP = { country_event = { id = chaosx.nr89.4 } }
+        add_opinion_modifier = {
+            target = JAP
+            modifier = small_increase
+        }
+        name = chaosx.nr89.2.e
+        ai_chance = {
+            factor = 5
+            modifier = {
+                add = 100
+                has_government = JAP
+                capital_scope = { is_on_continent = asia }
+            }
+        }
+        trigger = {
+            NOT = { has_war_with = JAP }
+            ROOT = { capital_scope = { is_on_continent = asia } }
+        }
+    }
+
+    option = {
+        name = chaosx.nr89.2.g
+        ai_chance = { base = 10 }
+
+    }
+}
+
+##############################################################################################################
+
+country_event = { # tech sharing group leader
+    id = chaosx.nr89.3
+    title = chaosx.nr89.3.t
+    desc = chaosx.nr89.3.d
+    picture = GFX_report_event_generic_research_lab
+
+    is_triggered_only = yes
+    timeout_days = 5
+
+    option = {
+        add_political_power = 100
+        name = chaosx.nr89.3.a
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # joined us
+    id = chaosx.nr89.4
+    title = chaosx.nr89.4.t
+    desc = chaosx.nr89.4.d
+    picture = GFX_report_event_generic_research_lab
+
+    is_triggered_only = yes
+
+    option = {
+        add_political_power = 10
+        add_opinion_modifier = {
+            target = FROM
+            modifier = small_increase
+        }
+        name = chaosx.nr89.4.a
+        ai_chance = { base = 100 }
+    }
+}

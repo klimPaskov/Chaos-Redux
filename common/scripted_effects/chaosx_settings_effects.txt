@@ -1168,19 +1168,19 @@ events_log_close_history_details_view = {
 }
 
 events_log_open_history_event_details_entry = {
-	if = {
-		limit = { check_variable = { events_log_selected_event_id > 0 } }
-		clr_country_flag = events_log_history_details_open
-		set_country_flag = events_log_detail_use_history_context
-		clear_array = global.events_log_open_event_detail_entries
-		add_to_array = {
-			array = global.events_log_open_event_detail_entries
-			value = events_log_selected_event_id
-		}
-		set_country_flag = events_log_event_details_open
-		events_log_rebuild_open_event_details_view = yes
-		events_log_rebuild_history_details_view = yes
-	}
+    if = {
+        limit = { check_variable = { events_log_selected_event_id > 0 } }
+        clr_country_flag = events_log_history_details_open
+        set_country_flag = events_log_detail_use_history_context
+        clear_array = global.events_log_open_event_detail_entries
+        add_to_array = {
+            array = global.events_log_open_event_detail_entries
+            value = events_log_selected_event_id
+        }
+        set_country_flag = events_log_event_details_open
+        events_log_rebuild_open_event_details_view = yes
+        events_log_rebuild_history_details_view = yes
+    }
 }
 
 events_log_rebuild_history_details_view = {
@@ -1408,22 +1408,22 @@ events_log_rebuild_open_event_details_view = {
                             compare = greater_than
                         }
                     }
-                        set_temp_variable = { events_log_open_detail_date = global.events_log_history_date_entries^events_log_open_detail_history_index }
-                        set_temp_variable = { events_log_open_detail_sequence = global.events_log_history_sequence_entries^events_log_open_detail_history_index }
-                        if = {
-                            limit = {
-                                check_variable = {
-                                    var = global.events_log_history_has_actor_entries^events_log_open_detail_history_index
-                                    value = 0
-                                    compare = greater_than
-                                }
+                    set_temp_variable = { events_log_open_detail_date = global.events_log_history_date_entries^events_log_open_detail_history_index }
+                    set_temp_variable = { events_log_open_detail_sequence = global.events_log_history_sequence_entries^events_log_open_detail_history_index }
+                    if = {
+                        limit = {
+                            check_variable = {
+                                var = global.events_log_history_has_actor_entries^events_log_open_detail_history_index
+                                value = 0
+                                compare = greater_than
                             }
-                            set_temp_variable = { events_log_open_detail_actor = global.events_log_history_actor_entries^events_log_open_detail_history_index }
-                            set_temp_variable = { events_log_open_detail_has_actor = global.events_log_history_has_actor_entries^events_log_open_detail_history_index }
                         }
+                        set_temp_variable = { events_log_open_detail_actor = global.events_log_history_actor_entries^events_log_open_detail_history_index }
+                        set_temp_variable = { events_log_open_detail_has_actor = global.events_log_history_has_actor_entries^events_log_open_detail_history_index }
                     }
                 }
-                add_to_temp_variable = { events_log_open_detail_history_index = 1 }
+            }
+            add_to_temp_variable = { events_log_open_detail_history_index = 1 }
         }
         if = {
             limit = {
@@ -4601,13 +4601,24 @@ update_actual_chaos_meter = {
 
     set_temp_variable = { chaos_change = settings_chaos_meter_value }
     subtract_from_temp_variable = { chaos_change = old_chaos_value }
-    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.settings.manual_update }
+	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.settings.manual_update }
 
-    # Set the actual chaos meter value
-    set_variable = { global.chaos_meter_value = settings_chaos_meter_value }
+	# Set the actual chaos meter value
+	set_variable = { global.chaos_meter_value = settings_chaos_meter_value }
+	if = {
+		limit = {
+			date < 1940.01.01
+			check_variable = {
+				var = settings_chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_1.min
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = achievement_chaos_reached_gathering_storm_pre_1940
+	}
 
-    # Update actual chaos meter tier
-    update_chaos_meter_tier = yes
+	# Update actual chaos meter tier
+	update_chaos_meter_tier = yes
     if = {
         limit = {
             OR = {
@@ -4628,19 +4639,30 @@ toggle_chaos_meter_disabled = {
         # Re-enabling chaos meter
         clr_global_flag = settings_chaos_meter_disabled
 
-        # Restore the chaos meter value from backup if it exists
-        if = {
-            limit = { has_variable = global.chaos_meter_backup_value }
-            set_temp_variable = { old_chaos_value = 0 }
-            if = {
-                limit = { has_variable = global.chaos_meter_value }
-                set_temp_variable = { old_chaos_value = global.chaos_meter_value }
-            }
-            set_variable = { global.chaos_meter_value = global.chaos_meter_backup_value }
-            set_temp_variable = { chaos_change = global.chaos_meter_value }
-            subtract_from_temp_variable = { chaos_change = old_chaos_value }
-            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.settings.reenabled }
-            clear_variable = global.chaos_meter_backup_value
+	        # Restore the chaos meter value from backup if it exists
+	        if = {
+	            limit = { has_variable = global.chaos_meter_backup_value }
+	            set_temp_variable = { old_chaos_value = 0 }
+	            if = {
+	                limit = { has_variable = global.chaos_meter_value }
+	                set_temp_variable = { old_chaos_value = global.chaos_meter_value }
+	            }
+	            set_variable = { global.chaos_meter_value = global.chaos_meter_backup_value }
+	            if = {
+	                limit = {
+	                    date < 1940.01.01
+	                    check_variable = {
+	                        var = global.chaos_meter_value
+	                        value = constant:chaos_meter_tier_range.tier_1.min
+	                        compare = greater_than_or_equals
+	                    }
+	                }
+	                set_global_flag = achievement_chaos_reached_gathering_storm_pre_1940
+	            }
+	            set_temp_variable = { chaos_change = global.chaos_meter_value }
+	            subtract_from_temp_variable = { chaos_change = old_chaos_value }
+	            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.settings.reenabled }
+	            clear_variable = global.chaos_meter_backup_value
 
             # Update chaos meter tier after restoring value
             update_chaos_meter_tier = yes
@@ -5373,22 +5395,6 @@ evaluate_random_event_selection_candidate = {
 
     if = {
         limit = { check_variable = { random_event_selection_candidate_is_valid = 1 } }
-        set_temp_variable = { random_event_selection_special_rule_id = 0 }
-
-        if = {
-            limit = { check_variable = { random_event_selection_candidate_id = 2 } }
-            set_temp_variable = { random_event_selection_special_rule_id = 2 }
-        }
-        else_if = {
-            limit = { check_variable = { random_event_selection_candidate_id = 14 } }
-            set_temp_variable = { random_event_selection_special_rule_id = 14 }
-        }
-
-        run_dynamic_random_event_selection_special_rule = yes
-    }
-
-    if = {
-        limit = { check_variable = { random_event_selection_candidate_is_valid = 1 } }
         set_temp_variable = { random_event_selection_candidate_weight_scaled = global.event_weights^random_event_selection_candidate_id }
         multiply_temp_variable = { random_event_selection_candidate_weight_scaled = 100 }
         round_temp_variable = random_event_selection_candidate_weight_scaled
@@ -5605,5 +5611,25 @@ play_current_super_event_sound = {
     }
     else = {
         play_dynamic_super_event_sound = yes
+    }
+}
+
+play_dynamic_super_event_music = {
+    meta_effect = {
+        text = {
+            scoped_play_song = "chaosx_super_event_[SUPER_EVENT_ID]_[VOLUME_SUFFIX]"
+        }
+        SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
+        VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
+    }
+}
+
+play_dynamic_super_event_sound = {
+    meta_effect = {
+        text = {
+            scoped_sound_effect = "chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]"
+        }
+        SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
+        VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
     }
 }

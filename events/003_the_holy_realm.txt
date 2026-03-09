@@ -1,0 +1,144 @@
+add_namespace = chaosx.nr3
+
+##############################################################################################################
+#    ##    ## ########      #######
+#    ###   ## ##     ##    ##     ##
+#    ####  ## ##     ##           ##
+#    ## ## ## ########      #######
+#    ##  #### ##   ##             ##
+#    ##   ### ##    ##     ##     ##
+#    ##    ## ##     ##     #######
+##############################################################################################################
+#   #######                  #     #                        ######
+#      #    #    # ######    #     #  ####  #      #   #    #     # ######   ##   #      #    #
+#      #    #    # #         #     # #    # #       # #     #     # #       #  #  #      ##  ##
+#      #    ###### #####     ####### #    # #        #      ######  #####  #    # #      # ## #
+#      #    #    # #         #     # #    # #        #      #   #   #      ###### #      #    #
+#      #    #    # #         #     # #    # #        #      #    #  #      #    # #      #    #
+#      #    #    # ######    #     #  ####  ######   #      #     # ###### #    # ###### #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr3.1
+    title = chaosx.nr3.1.t
+
+    is_triggered_only = yes
+
+    hidden = yes
+
+    immediate = {
+        if = {
+            limit = { OR = { BHU = { is_ai = no } TIB = { is_ai = no } NEP = { is_ai = no } } }
+            country_event = { id = chaosx.nr3.2 days = 1 }
+        }
+        else = {
+            random_country = {
+                limit = { OR = { tag = BHU tag = TIB tag = NEP } }
+                country_event = { id = chaosx.nr3.2 days = 1 }
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr3.2
+    title = chaosx.nr3.2.t
+    desc = chaosx.nr3.2.d
+    picture = GFX_report_event_lhasa
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.2.a
+        ai_chance = { base = 100 }
+        hidden_effect = {
+            set_cosmetic_tag = THR
+            add_ideas = THR_gods_plan
+            create_faction = gods_plan
+            set_politics = {
+                ruling_party = neutrality
+                elections_allowed = no
+                election_frequency = 48
+                long_name = "God's Plan"
+                name = "God's Plan"
+            }
+            add_popularity = {
+                ideology = neutrality
+                popularity = 1.00
+            }
+            retire_country_leader = yes
+            create_country_leader = {
+                name = "God"
+                picture = GFX_portrait_THR_godly_figure
+                ideology = despotism
+            }
+            news_event = { id = chaosx.news.9 days = 3 }
+        }
+        BHU = {
+            if = { limit = { NOT = { tag = ROOT } }
+            country_event = { id = chaosx.nr3.3 days = 3 }
+            every_core_state = {
+                add_core_of = ROOT
+            }
+        }
+    }
+    NEP = {
+        if = { limit = { NOT = { tag = ROOT } }
+        country_event = { id = chaosx.nr3.3 days = 1 }
+        every_core_state = {
+            add_core_of = ROOT
+        }
+    }
+}
+TIB = {
+    if = { limit = { NOT = { tag = ROOT } }
+    country_event = { id = chaosx.nr3.3 days = 2 }
+    every_core_state = {
+        add_core_of = ROOT
+    }
+}
+}
+}
+option = {
+    name = chaosx.nr3.2.b
+    add_stability = -0.10
+    ai_chance = { base = 0 }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr3.3
+    title = chaosx.nr3.3.t
+    desc = chaosx.nr3.3.d
+    picture = GFX_report_event_lhasa
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.3.a
+        ai_chance = { base = 70 }
+        FROM = {
+            annex_country = {
+                target = ROOT
+                transfer_troops = yes
+            }
+        }
+    }
+    option = {
+        name = chaosx.nr3.3.b
+        add_stability = -0.10
+        add_war_support = 0.10
+        FROM = {
+            create_wargoal = {
+                target = ROOT
+                type = annex_everything
+            }
+        }
+        ai_chance = { base = 30 }
+    }
+}

@@ -1,0 +1,163 @@
+add_namespace = chaosx.nr56
+
+##############################################################################################################
+#    ##    ## ########     ########  #######
+#    ###   ## ##     ##    ##       ##     ##
+#    ####  ## ##     ##    ##       ##
+#    ## ## ## ########     #######  ########
+#    ##  #### ##   ##            ## ##     ##
+#    ##   ### ##    ##     ##    ## ##     ##
+#    ##    ## ##     ##     ######   #######
+##############################################################################################################
+#   #######                  #     #
+#      #    #    # ######    ##    #   ##   #    # #   #
+#      #    #    # #         # #   #  #  #  #    #  # #
+#      #    ###### #####     #  #  # #    # #    #   #
+#      #    #    # #         #   # # ###### #    #   #
+#      #    #    # #         #    ## #    #  #  #    #
+#      #    #    # ######    #     # #    #   ##     #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr56.1
+    title = chaosx.nr56.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        news_event = { id = chaosx.news.55 days = 2 }
+        every_country = {
+            limit = { any_owned_state = { is_coastal = yes } }
+            country_event = { id = chaosx.nr56.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr56.2
+    title = chaosx.nr56.2.t
+    desc = chaosx.nr56.2.d
+    picture = GFX_report_event_ast_navy
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr56.2.a
+        create_equipment_variant = {
+            allow_without_tech = yes
+            name = "Destroyer Class"
+            type = ship_hull_light_2
+            role_icon_index = auto
+            modules = {
+                fixed_ship_battery_slot = ship_light_battery_1
+                fixed_ship_anti_air_slot = ship_anti_air_1
+                fixed_ship_fire_control_system_slot = ship_fire_control_system_0
+                fixed_ship_radar_slot = empty
+                fixed_ship_engine_slot = light_ship_engine_2
+                fixed_ship_torpedo_slot = ship_torpedo_1
+                mid_1_custom_slot = ship_mine_layer_1
+                rear_1_custom_slot = ship_depth_charge_1
+            }
+        }
+        for_loop_effect = {
+            end = 20
+            create_ship = {
+                type = ship_hull_light_2
+                equipment_variant = "Destroyer Class"
+            }
+        }
+        create_equipment_variant = {
+            allow_without_tech = yes
+            name = "Submarine Class"
+            type = ship_hull_submarine_2
+            role_icon_index = auto
+            modules = {
+                fixed_ship_torpedo_slot = ship_torpedo_sub_2
+                fixed_ship_engine_slot = sub_ship_engine_2
+                rear_1_custom_slot = ship_torpedo_sub_2
+            }
+        }
+        for_loop_effect = {
+            end = 50
+            create_ship = {
+                type = ship_hull_submarine_2
+                equipment_variant = "Submarine Class"
+            }
+        }
+        create_equipment_variant = {
+            allow_without_tech = yes
+            name = "Cruiser Class"
+            type = ship_hull_cruiser_2
+            role_icon_index = auto
+            modules = {
+                fixed_ship_battery_slot = ship_light_medium_battery_1
+                fixed_ship_anti_air_slot = ship_anti_air_2
+                fixed_ship_fire_control_system_slot = ship_fire_control_system_0
+                fixed_ship_radar_slot = empty
+                fixed_ship_engine_slot = cruiser_ship_engine_2
+                fixed_ship_armor_slot = ship_armor_cruiser_2
+                fixed_ship_secondaries_slot = dp_ship_secondaries_1
+                mid_1_custom_slot = ship_torpedo_1
+                mid_2_custom_slot = ship_torpedo_1
+                rear_1_custom_slot = ship_light_medium_battery_1
+            }
+        }
+        for_loop_effect = {
+            end = 3
+            create_ship = {
+                type = ship_hull_cruiser_2
+                equipment_variant = "Cruiser Class"
+            }
+        }
+        create_equipment_variant = {
+            allow_without_tech = yes
+            name = "Battleship Class"
+            type = ship_hull_heavy_2
+            role_icon_index = auto
+            modules = {
+                fixed_ship_battery_slot = ship_heavy_battery_1
+                fixed_ship_anti_air_slot = ship_anti_air_2
+                fixed_ship_fire_control_system_slot = ship_fire_control_system_1
+                fixed_ship_radar_slot = empty
+                fixed_ship_engine_slot = heavy_ship_engine_1
+                fixed_ship_secondaries_slot = dp_ship_secondaries_1
+                fixed_ship_armor_slot = ship_armor_bb_1
+                front_1_custom_slot = ship_heavy_battery_1
+                mid_1_custom_slot = ship_anti_air_2
+                mid_2_custom_slot = dp_ship_secondaries_1
+                rear_1_custom_slot = ship_heavy_battery_1
+            }
+        }
+        create_ship = {
+            type = ship_hull_heavy_2
+            equipment_variant = "Battleship Class"
+        }create_ship = {
+            type = ship_hull_heavy_2
+            equipment_variant = "Battleship Class"
+        }
+        create_equipment_variant = {
+            allow_without_tech = yes
+            name = "Carrier Class"
+            type = ship_hull_carrier_2
+            role_icon_index = auto
+            modules = {
+                fixed_ship_deck_slot_1 = ship_deck_space
+                fixed_ship_deck_slot_2 = ship_deck_space
+                fixed_ship_anti_air_slot = ship_anti_air_2
+                fixed_ship_radar_slot = empty
+                fixed_ship_engine_slot = carrier_ship_engine_3
+                fixed_ship_secondaries_slot = ship_secondaries_1
+                front_1_custom_slot = ship_deck_space
+            }
+        }
+        create_ship = {
+            type = ship_hull_carrier_2
+            equipment_variant = "Carrier Class"
+        }
+        ai_chance = { base = 100 }
+    }
+}

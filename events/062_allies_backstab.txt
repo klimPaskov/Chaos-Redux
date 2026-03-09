@@ -1,0 +1,109 @@
+add_namespace = chaosx.nr62
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##    ##               ##
+#    ## ## ## ########     ########   #######
+#    ##  #### ##   ##      ##     ## ##
+#    ##   ### ##    ##     ##     ## ##
+#    ##    ## ##     ##     #######  #########
+##############################################################################################################
+#      #                                     ######
+#     # #   #      #      # ######  ####     #     #   ##    ####  #    #  ####  #####   ##   #####
+#    #   #  #      #      # #      #         #     #  #  #  #    # #   #  #        #    #  #  #    #
+#   #     # #      #      # #####   ####     ######  #    # #      ####    ####    #   #    # #####
+#   ####### #      #      # #           #    #     # ###### #      #  #        #   #   ###### #    #
+#   #     # #      #      # #      #    #    #     # #    # #    # #   #  #    #   #   #    # #    #
+#   #     # ###### ###### # ######  ####     ######  #    #  ####  #    #  ####    #   #    # #####
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr62.1
+    title = chaosx.nr62.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = { limit = { any_country = { is_subject = no is_in_faction_with = ENG is_major = no } }
+        random_country = {
+            limit = { is_subject = no is_in_faction_with = ENG is_major = no }
+            country_event = { id = chaosx.nr62.2 }
+        }
+    } else = {
+        random_country = {
+            limit = { is_faction_leader = yes num_faction_members > 1 }
+            random_country = {
+                limit = { is_subject = no is_in_faction_with = PREV }
+                country_event = { id = chaosx.nr62.3 }
+            }
+        }
+    }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr62.2
+    title = chaosx.nr62.2.t
+    desc = chaosx.nr62.2.d
+    picture = GFX_report_event_generic_sign_treaty2
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr62.2.a
+        ENG = {
+            remove_from_faction = ROOT
+            declare_war_on = {
+                type = annex_everything
+                target = ROOT
+            }
+        }
+        every_country = {
+            limit = { is_in_faction_with = ENG }
+            THIS = {
+                declare_war_on = {
+                    type = annex_everything
+                    target = ROOT
+                }
+            }
+        }
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr62.3
+    title = chaosx.nr62.3.t
+    desc = chaosx.nr62.3.d
+    picture = GFX_report_event_generic_sign_treaty2
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr62.3.a
+        faction_leader = {
+            remove_from_faction = ROOT
+            declare_war_on = {
+                type = annex_everything
+                target = ROOT
+            }
+        }
+        every_country = {
+            limit = { is_in_faction_with = ROOT.faction_leader }
+            THIS = {
+                declare_war_on = {
+                    type = annex_everything
+                    target = ROOT
+                }
+            }
+        }
+        ai_chance = { base = 100 }
+    }
+}

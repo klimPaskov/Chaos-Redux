@@ -1,0 +1,296 @@
+add_namespace = chaosx.nr10
+
+##############################################################################################################
+#    ##    ## ########        ##     #####
+#    ###   ## ##     ##     ####    ##   ##
+#    ####  ## ##     ##       ##   ##     ##
+#    ## ## ## ########        ##   ##     ##
+#    ##  #### ##   ##         ##   ##     ##
+#    ##   ### ##    ##        ##    ##   ##
+#    ##    ## ##     ##     ######   #####
+##############################################################################################################
+#   #     #                     # ######
+#   #  #  #   ##   #####       #  #     # ######   ##    ####  ######     ####  #####  # #####  # #####  ####
+#   #  #  #  #  #  #    #     #   #     # #       #  #  #    # #         #      #    # # #    # #   #   #
+#   #  #  # #    # #    #    #    ######  #####  #    # #      #####      ####  #    # # #    # #   #    ####
+#   #  #  # ###### #####    #     #       #      ###### #      #              # #####  # #####  #   #        #
+#   #  #  # #    # #   #   #      #       #      #    # #    # #         #    # #      # #   #  #   #   #    #
+#    ## ##  #    # #    # #       #       ###### #    #  ####  ######     ####  #      # #    # #   #    ####
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr10.1
+    title = chaosx.nr10.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = { OR = { is_ai = no is_major = yes } }
+            country_event = { id = chaosx.nr10.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr10.2
+    title = chaosx.nr10.2.t
+    desc = chaosx.nr10.2.d
+    picture = GFX_report_event_war_or_peace
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr10.2.a
+        news_event = { id = chaosx.news.7 days = 4 }
+        ai_chance = { base = 50 }
+        add_war_support = 1.00
+        add_stability = -0.1
+        add_political_power = 100
+        add_ideas = symbol_of_war
+        every_other_country = {
+            limit = { is_subject = no }
+            country_event = { id = chaosx.nr10.3 days = 2 }
+        }
+    }
+    option = {
+        name = chaosx.nr10.2.b
+        news_event = { id = chaosx.news.8 days = 4 }
+        add_stability = 1.00
+        add_war_support = -0.1
+        add_political_power = 100
+        add_ideas = symbol_of_peace
+        every_other_country = {
+            limit = { is_subject = no }
+            country_event = { id = chaosx.nr10.4 days = 2 }
+        }
+        ai_chance = { base = 50 }
+    }
+    option = {
+        name = chaosx.nr10.2.c
+        add_stability = -0.1
+        add_war_support = -0.1
+        add_political_power = -100
+        ai_chance = { base = 0 }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr10.3
+    title = chaosx.nr10.3.t
+    desc = chaosx.nr10.3.d
+    picture = GFX_report_event_tur_machine_gunners
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr10.3.a
+        ai_chance = {
+            factor = 50
+            modifier = {
+                add = 50
+                FROM = { is_ally_with = ROOT }
+            }
+        }
+        if = { limit = { FROM = { has_government = fascism } }
+        add_popularity = {
+            ideology = fascism
+            popularity = 0.20
+        }
+    } else_if = { limit = { FROM = { has_government = democratic } }
+    add_popularity = {
+        ideology = democratic
+        popularity = 0.20
+    }
+} else_if = { limit = { FROM = { has_government = neutrality } }
+add_popularity = {
+    ideology = neutrality
+    popularity = 0.20
+}
+} else_if = { limit = { FROM = { has_government = communism } }
+add_popularity = {
+    ideology = communism
+    popularity = 0.20
+}
+}
+add_war_support = 0.1
+add_political_power = 100
+effect_tooltip = {
+    FROM = {
+        add_political_power = 25
+        add_stability = 0.02
+        add_war_support = 0.02
+    }
+}
+FROM = {
+    country_event = { id = chaosx.nr10.5 days = 1 }
+}
+add_opinion_modifier = {
+    target = FROM
+    modifier = small_increase
+}
+}
+option = {
+    name = chaosx.nr10.3.b
+    add_stability = 0.05
+    effect_tooltip = {
+        FROM = {
+            add_political_power = -10
+            add_stability = -0.02
+            add_war_support = -0.02
+        }
+    }
+    FROM = { country_event = { id = chaosx.nr10.6 days = 1 } }
+    add_opinion_modifier = {
+        target = FROM
+        modifier = unstable_alliance
+    }
+    ai_chance = {
+        factor = 50
+        modifier = {
+            add = 50
+            FROM = { is_enemy_ideology = yes }
+        }
+        modifier = {
+            add = 20
+            FROM = { num_of_factories < ROOT.num_of_factories }
+        }
+        modifier = {
+            add = 50
+            ROOT = { is_major = yes }
+        }
+    }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr10.4
+    title = chaosx.nr10.4.t
+    desc = chaosx.nr10.4.d
+    picture = GFX_report_event_generic_factory
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr10.4.a
+        ai_chance = {
+            factor = 50
+            modifier = {
+                add = 50
+                FROM = { is_ally_with = ROOT }
+            }
+        }
+        if = { limit = { FROM = { has_government = fascism } }
+        add_popularity = {
+            ideology = fascism
+            popularity = 0.20
+        }
+    } else_if = { limit = { FROM = { has_government = democratic } }
+    add_popularity = {
+        ideology = democratic
+        popularity = 0.20
+    }
+} else_if = { limit = { FROM = { has_government = neutrality } }
+add_popularity = {
+    ideology = neutrality
+    popularity = 0.20
+}
+} else_if = { limit = { FROM = { has_government = communism } }
+add_popularity = {
+    ideology = communism
+    popularity = 0.20
+}
+}
+add_stability = 0.1
+add_political_power = 100
+effect_tooltip = {
+    FROM = {
+        add_political_power = 25
+        add_stability = 0.02
+        add_war_support = 0.02
+    }
+}
+FROM = { country_event = { id = chaosx.nr10.5 days = 3 } }
+add_opinion_modifier = {
+    target = FROM
+    modifier = small_increase
+}
+}
+option = {
+    name = chaosx.nr10.4.b
+    add_war_support = 0.05
+    effect_tooltip = {
+        FROM = {
+            add_political_power = -10
+            add_stability = -0.02
+            add_war_support = -0.02
+        }
+    }
+    FROM = { country_event = { id = chaosx.nr10.6 days = 1 } }
+    add_opinion_modifier = {
+        target = FROM
+        modifier = unstable_alliance
+    }
+    ai_chance = {
+        factor = 50
+        modifier = {
+            add = 50
+            FROM = { is_enemy_ideology = yes }
+        }
+        modifier = {
+            add = 20
+            FROM = { num_of_factories < ROOT.num_of_factories }
+        }
+        modifier = {
+            add = 50
+            ROOT = { is_major = yes }
+        }
+    }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr10.5
+    title = chaosx.nr10.5.t
+    desc = chaosx.nr10.5.d
+    picture = GFX_report_event_generic_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr10.5.a
+        add_political_power = 25
+        add_stability = 0.02
+        add_war_support = 0.02
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr10.6
+    title = chaosx.nr10.6.t
+    desc = chaosx.nr10.6.d
+    picture = GFX_report_event_generic_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr10.6.a
+        add_political_power = -10
+        add_stability = -0.02
+        add_war_support = -0.02
+    }
+}

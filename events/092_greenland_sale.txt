@@ -1,0 +1,95 @@
+add_namespace = chaosx.nr92
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##    ##     ##        ##
+#    ## ## ## ########      ########  #######
+#    ##  #### ##   ##             ## ##
+#    ##   ### ##    ##     ##     ## ##
+#    ##    ## ##     ##     #######  #########
+##############################################################################################################
+#    #####                                                              #####
+#   #     # #####  ###### ###### #    # #        ##   #    # #####     #     #   ##   #      ######
+#   #       #    # #      #      ##   # #       #  #  ##   # #    #    #        #  #  #      #
+#   #  #### #    # #####  #####  # #  # #      #    # # #  # #    #     #####  #    # #      #####
+#   #     # #####  #      #      #  # # #      ###### #  # # #    #          # ###### #      #
+#   #     # #   #  #      #      #   ## #      #    # #   ## #    #    #     # #    # #      #
+#    #####  #    # ###### ###### #    # ###### #    # #    # #####      #####  #    # ###### ######
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr92.1
+    title = chaosx.nr92.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        DEN = {
+            country_event = { id = chaosx.nr92.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr92.2
+    title = chaosx.nr92.2.t
+    desc = chaosx.nr92.2.d
+    picture = GFX_report_event_greenland
+
+    is_triggered_only = yes
+
+    option = {
+        add_stability = 0.1
+        every_country = {
+            limit = { OR = { is_major = yes is_ai = no } }
+            country_event = { id = chaosx.nr92.3 }
+        }
+        name = chaosx.nr92.2.a
+        ai_chance = { base = 100 }
+    }
+    option = {
+        add_political_power = -100
+        name = chaosx.nr92.2.b
+        ai_chance = { base = 0 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # Greenland sale begins
+    id = chaosx.nr92.3
+    title = chaosx.nr92.3.t
+    desc = chaosx.nr92.3.d
+    picture = GFX_report_event_greenland
+
+    is_triggered_only = yes
+
+    option = {
+        add_political_power = 10
+        set_country_flag = greenland_sale
+        name = chaosx.nr92.3.a
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # Greenland sold
+    id = chaosx.nr92.4
+    title = chaosx.nr92.4.t
+    desc = chaosx.nr92.4.d
+    picture = GFX_report_event_greenland
+
+    is_triggered_only = yes
+
+    option = {
+        add_stability = 0.02
+        name = chaosx.nr92.4.a
+        ai_chance = { base = 100 }
+    }
+}

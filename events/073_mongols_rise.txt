@@ -1,0 +1,107 @@
+add_namespace = chaosx.nr73
+
+##############################################################################################################
+#    ##    ## ########     ########  #######
+#    ###   ## ##     ##    ##    ## ##     ##
+#    ####  ## ##     ##        ##          ##
+#    ## ## ## ########        ##     #######
+#    ##  #### ##   ##        ##            ##
+#    ##   ### ##    ##       ##     ##     ##
+#    ##    ## ##     ##      ##      #######
+##############################################################################################################
+#   #     #                                              ######
+#   ##   ##  ####  #    #  ####   ####  #       ####     #     # #  ####  ######
+#   # # # # #    # ##   # #    # #    # #      #         #     # # #      #
+#   #  #  # #    # # #  # #      #    # #       ####     ######  #  ####  #####
+#   #     # #    # #  # # #  ### #    # #           #    #   #   #      # #
+#   #     # #    # #   ## #    # #    # #      #    #    #    #  # #    # #
+#   #     #  ####  #    #  ####   ####  ######  ####     #     # #  ####  ######
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr73.1
+    title = chaosx.nr73.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        MON = {
+            country_event = { id = chaosx.nr73.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr73.2
+    title = chaosx.nr73.2.t
+    desc = chaosx.nr73.2.d
+    picture = GFX_report_event_yugoslavian_cavalry
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr73.2.a
+        news_event = { id = chaosx.news.64 days = 3 }
+        add_ideas = legacy_of_khan
+        set_politics = {
+            ruling_party = neutrality
+            elections_allowed = no
+        }
+        add_popularity = {
+            ideology = neutrality
+            popularity = 1.00
+        }
+        leave_faction = yes
+        create_faction = "The Khanate"
+        add_war_support = 0.25
+
+        every_state = {
+            limit = { OR = { is_on_continent = europe is_on_continent = asia is_on_continent = middle_east } }
+            add_claim_by = MON
+        }
+
+        division_template = {
+            name = "Glorious Genghis Khan's Cavalry"
+            regiments = {
+                cavalry = { x = 0 y = 0 }
+                cavalry = { x = 0 y = 1 }
+                cavalry = { x = 0 y = 2 }
+                cavalry = { x = 0 y = 3 }
+                cavalry = { x = 1 y = 0 }
+                cavalry = { x = 1 y = 1 }
+                cavalry = { x = 1 y = 2 }
+                cavalry = { x = 1 y = 3 }
+                cavalry = { x = 2 y = 0 }
+                cavalry = { x = 2 y = 1 }
+                cavalry = { x = 2 y = 2 }
+                cavalry = { x = 2 y = 3 }
+                cavalry = { x = 3 y = 0 }
+                cavalry = { x = 3 y = 1 }
+                cavalry = { x = 3 y = 2 }
+                cavalry = { x = 3 y = 3 }
+            }
+        }
+        every_controlled_state = {
+            create_unit = {
+                division = "name = \"Glorious Genghis Khan's Cavalry\" division_template = \"Glorious Genghis Khan's Cavalry\" start_experience_factor = 0.2"
+                count = 4
+                owner = ROOT
+            }
+        }
+        ai_chance = { base = 90 }
+    }
+    option = {
+        name = chaosx.nr73.2.b
+        add_war_support = -0.10
+        add_stability = -0.10
+        start_civil_war = {
+            ideology = neutrality
+            size = 0.3
+        }
+        ai_chance = { base = 10 }
+    }
+}

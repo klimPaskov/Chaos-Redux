@@ -1,0 +1,85 @@
+add_namespace = chaosx.nr79
+
+##############################################################################################################
+#    ##    ## ########     ########  #######
+#    ###   ## ##     ##    ##    ## ##     ##
+#    ####  ## ##     ##        ##   ##     ##
+#    ## ## ## ########        ##     ########
+#    ##  #### ##   ##        ##            ##
+#    ##   ### ##    ##       ##     ##     ##
+#    ##    ## ##     ##      ##      #######
+##############################################################################################################
+#   #######                  #     #
+#      #    #    # ######    ##   ##   ##    ####  ##### ###### #####
+#      #    #    # #         # # # #  #  #  #        #   #      #    #
+#      #    ###### #####     #  #  # #    #  ####    #   #####  #    #
+#      #    #    # #         #     # ######      #   #   #      #####
+#      #    #    # #         #     # #    # #    #   #   #      #   #
+#      #    #    # ######    #     # #    #  ####    #   ###### #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr79.1
+    title = chaosx.nr79.1.t
+    desc = chaosx.nr79.1.d
+    picture = GFX_report_event_hitler_handshake
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = {
+            set_country_flag = fight_for_minor
+            random_other_country = {
+                limit = { is_major = no num_of_factories < ROOT.num_of_factories has_war = no is_in_faction = no }
+                set_variable = { global.minor_to_attract = THIS.id }
+                ROOT = { give_guarantee = PREV }
+                every_country = {
+                    limit = { is_enemy_ideology = yes OR = { is_major = yes num_of_factories > ROOT.num_of_factories } }
+                    set_country_flag = fight_for_minor
+                    give_guarantee = PREV
+                }
+            }
+            every_country = { limit = { has_country_flag = fight_for_minor } add_to_array = { global.masters_array = THIS.id } }
+        }
+    }
+
+    option = {
+        name = chaosx.nr79.1.a
+        add_political_power = 50
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr79.2
+    title = chaosx.nr79.2.t
+    desc = chaosx.nr79.2.d
+    picture = GFX_report_event_hitler_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr79.2.a
+        every_country = {
+            limit = { has_guaranteed = var:global.minor_to_attract }
+            meta_effect = {
+                text = {
+                    diplomatic_relation = {
+                        country = [MINOR_TO_ATTRACT]
+                        relation = guarantee
+                        active = no
+                    }
+                }
+                MINOR_TO_ATTRACT = "[?global.minor_to_attract.GetID]"
+            }
+        }
+        puppet = {
+            target = var:global.minor_to_attract
+            end_wars = yes
+        }
+        news_event = { id = chaosx.news.66 days = 1 }
+    }
+
+}

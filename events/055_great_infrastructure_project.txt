@@ -1,0 +1,59 @@
+add_namespace = chaosx.nr55
+
+##############################################################################################################
+#    ##    ## ########     ######## ########
+#    ###   ## ##     ##    ##       ##
+#    ####  ## ##     ##    ##       ##
+#    ## ## ## ########     #######  #######
+#    ##  #### ##   ##            ##       ##
+#    ##   ### ##    ##     ##    ## ##    ##
+#    ##    ## ##     ##     ######   ######
+##############################################################################################################
+#   ###                                                                                             #     #
+#    #  #    # ###### #####    ##    ####  ##### #####  #    #  ####  ##### #    # #####  ######    ##   ##   ##   #    #
+#    #  ##   # #      #    #  #  #  #        #   #    # #    # #    #   #   #    # #    # #         # # # #  #  #   #  #
+#    #  # #  # #####  #    # #    #  ####    #   #    # #    # #        #   #    # #    # #####     #  #  # #    #   ##
+#    #  #  # # #      #####  ######      #   #   #####  #    # #        #   #    # #####  #         #     # ######   ##
+#    #  #   ## #      #   #  #    # #    #   #   #   #  #    # #    #   #   #    # #   #  #         #     # #    #  #  #
+#   ### #    # #      #    # #    #  ####    #   #    #  ####   ####    #    ####  #    # ######    #     # #    # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr55.1
+    title = chaosx.nr55.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = { check_variable = { num_owned_states > 10 } } # check_variable is needed since there is no trigger for the variable
+            country_event = { id = chaosx.nr55.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr55.2
+    title = chaosx.nr55.2.t
+    desc = chaosx.nr55.2.d
+    picture = GFX_report_event_infrastructure_project
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr55.2.a
+        news_event = { id = chaosx.news.54 days = 2 }
+        every_owned_state = {
+            add_building_construction = {
+                type = infrastructure
+                level = 5
+                instant_build = yes
+            }
+        }
+        ai_chance = { base = 100 }
+    }
+}

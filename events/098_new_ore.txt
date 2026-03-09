@@ -1,0 +1,59 @@
+add_namespace = chaosx.nr98
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##    ##     ## ##     ##
+#    ## ## ## ########      ########  #######
+#    ##  #### ##   ##             ## ##     ##
+#    ##   ### ##    ##     ##     ## ##     ##
+#    ##    ## ##     ##     #######   #######
+##############################################################################################################
+#   #     #                  #######
+#   ##    # ###### #    #    #     # #####  ######
+#   # #   # #      #    #    #     # #    # #
+#   #  #  # #####  #    #    #     # #    # #####
+#   #   # # #      # ## #    #     # #####  #
+#   #    ## #      ##  ##    #     # #   #  #
+#   #     # ###### #    #    ####### #    # ######
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr98.1
+    title = chaosx.nr98.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_state = {
+            limit = { NOT = { has_dynamic_modifier = { modifier = special_ore_state } } }
+            set_variable = { ore_state = THIS.id }
+            set_variable = { global.ore_state_container = THIS.id }
+            ROOT = { goto_state = PREV }
+            add_dynamic_modifier = { modifier = special_ore_state } # just to indicate where the special state is
+            owner = {
+                country_event = { id = chaosx.nr98.2 }
+                add_ideas = special_iron_ore
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr98.2
+    title = chaosx.nr98.2.t
+    desc = chaosx.nr98.2.d
+    picture = GFX_report_event_FIN_petsamo_mine
+
+    is_triggered_only = yes
+
+    option = {
+        news_event = { id = chaosx.news.77 days = 1 }
+        name = chaosx.nr98.2.a
+        ai_chance = { base = 100 }
+    }
+}

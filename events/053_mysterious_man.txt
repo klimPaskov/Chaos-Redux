@@ -1,0 +1,95 @@
+add_namespace = chaosx.nr53
+
+##############################################################################################################
+
+# TODO: add events for what happened
+
+##############################################################################################################
+#    ##    ## ########     ########  #######
+#    ###   ## ##     ##    ##       ##     ##
+#    ####  ## ##     ##    ##              ##
+#    ## ## ## ########     #######   #######
+#    ##  #### ##   ##            ##        ##
+#    ##   ### ##    ##     ##    ## ##     ##
+#    ##    ## ##     ##     ######   #######
+##############################################################################################################
+#   #     #                                                            #     #
+#   ##   ## #   #  ####  ##### ###### #####  #  ####  #    #  ####     ##   ##   ##   #    #
+#   # # # #  # #  #        #   #      #    # # #    # #    # #         # # # #  #  #  ##   #
+#   #  #  #   #    ####    #   #####  #    # # #    # #    #  ####     #  #  # #    # # #  #
+#   #     #   #        #   #   #      #####  # #    # #    #      #    #     # ###### #  # #
+#   #     #   #   #    #   #   #      #   #  # #    # #    # #    #    #     # #    # #   ##
+#   #     #   #    ####    #   ###### #    # #  ####   ####   ####     #     # #    # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr53.1
+    title = chaosx.nr53.1.t
+    desc = chaosx.nr53.1.d
+    picture = GFX_report_event_mysterious_man
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr53.1.a
+        add_political_power = -200
+    }
+    option = {
+        name = chaosx.nr53.1.b
+        add_political_power = 50
+        hidden_effect = {
+            random_list = {
+                10 = { add_research_slot = -2 }
+                10 = { capital_scope = { ROOT = { launch_nuke = { state = PREV controller = ROOT } goto_state = PREV } } }
+                10 = {
+                    modifier = { factor = 0 all_controlled_state = { is_core_of = ROOT } }
+                    every_controlled_state = {
+                        limit = { NOT = { is_core_of = ROOT } }
+                        add_resistance = 100
+                    }
+                }
+                10 = { add_war_support = -0.5 add_stability = -0.5 }
+                10 = { random_country = { limit = { is_major = no } ROOT = { inherit_technology = PREV } } }
+                10 = { set_fuel = 0 }
+                10 = {
+                    start_civil_war = {
+                        ideology = fascism
+                        size = 0.4
+                    }
+                }
+                10 = {
+                    every_owned_state = {
+                        remove_building = {
+                            type = arms_factory
+                            level = 1
+                        }
+                    }
+                }
+                10 = {
+                    every_owned_state = {
+                        remove_building = {
+                            type = industrial_complex
+                            level = 1
+                        }
+                    }
+                }
+                10 = {
+                    every_owned_state = {
+                        damage_building = {
+                            type = industrial_complex
+                            damage = 0.20
+                        } damage_building = {
+                            type = arms_factory
+                            damage = 0.20
+                        } damage_building = {
+                            type = infrastructure
+                            damage = 1.00
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,81 @@
+add_namespace = chaosx.nr45
+
+##############################################################################################################
+#    ##    ## ########     ##        ########
+#    ###   ## ##     ##    ##    ##  ##
+#    ####  ## ##     ##    ##    ##  ##
+#    ## ## ## ########     ##    ##  #######
+#    ##  #### ##   ##      #########       ##
+#    ##   ### ##    ##           ##  ##    ##
+#    ##    ## ##     ##          ##   ######
+##############################################################################################################
+#   #######                           ######
+#      #    #    # # #####  #####     #     #   ##   #      #    #   ##   #    #    #    #   ##   #####
+#      #    #    # # #    # #    #    #     #  #  #  #      #   #   #  #  ##   #    #    #  #  #  #    #
+#      #    ###### # #    # #    #    ######  #    # #      ####   #    # # #  #    #    # #    # #    #
+#      #    #    # # #####  #    #    #     # ###### #      #  #   ###### #  # #    # ## # ###### #####
+#      #    #    # # #   #  #    #    #     # #    # #      #   #  #    # #   ##    ##  ## #    # #   #
+#      #    #    # # #    # #####     ######  #    # ###### #    # #    # #    #    #    # #    # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr45.1
+    title = chaosx.nr45.1.t
+
+    hidden = yes
+
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            limit = { OR = { tag = MAC tag = SLV tag = BOS tag = HRZ tag = CRO tag = MNT tag = ALB tag = GRE tag = TUR tag = BUL tag = ROM tag = SER tag = YUG tag = KOS } }
+            country_event = { id = chaosx.nr45.2 days = 1 }
+        }
+        news_event = { id = chaosx.news.49 days = 5 }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr45.2
+    title = chaosx.nr45.2.t
+    desc = chaosx.nr45.2.d
+    picture = GFX_report_event_balkan_war
+
+    is_triggered_only = yes
+    timeout_days = 5
+
+    option = {
+        ai_chance = { base = 100 }
+        division_template = {
+            name = "Balkan Guard Division"
+            regiments = {
+                infantry = { x = 0 y = 0 }
+                infantry = { x = 0 y = 1 }
+                infantry = { x = 0 y = 2 }
+                infantry = { x = 1 y = 0 }
+                infantry = { x = 1 y = 1 }
+                infantry = { x = 1 y = 2 }
+            }
+        }
+        capital_scope = {
+            create_unit = {
+                division = "name = \"Balkan Guard Division\" division_template = \"Balkan Guard Division\" start_experience_factor = 0"
+                count = 4
+                owner = ROOT
+            }
+        }
+        every_other_country = {
+            limit = { OR = { tag = MAC tag = SLV tag = BOS tag = HRZ tag = CRO tag = MNT tag = ALB tag = GRE tag = TUR tag = BUL tag = ROM tag = SER tag = YUG } }
+            ROOT = {
+                declare_war_on = {
+                    target = PREV
+                    type = annex_everything
+                }
+            }
+        }
+        name = chaosx.nr45.2.a
+    }
+}

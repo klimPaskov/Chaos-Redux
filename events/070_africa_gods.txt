@@ -1,0 +1,468 @@
+add_namespace = chaosx.nr70
+
+##############################################################################################################
+#    ##    ## ########     ########   #####
+#    ###   ## ##     ##    ##    ##  ##   ##
+#    ####  ## ##     ##        ##   ##     ##
+#    ## ## ## ########        ##    ##     ##
+#    ##  #### ##   ##        ##     ##     ##
+#    ##   ### ##    ##       ##      ##   ##
+#    ##    ## ##     ##      ##       #####
+##############################################################################################################
+#    #####                                              #
+#   #     #  ####  #####   ####      ####  ######      # #   ###### #####  #  ####    ##
+#   #       #    # #    # #         #    # #          #   #  #      #    # # #    #  #  #
+#   #  #### #    # #    #  ####     #    # #####     #     # #####  #    # # #      #    #
+#   #     # #    # #    #      #    #    # #         ####### #      #####  # #      ######
+#   #     # #    # #    # #    #    #    # #         #     # #      #   #  # #    # #    #
+#    #####   ####  #####   ####      ####  #         #     # #      #    # #  ####  #    #
+
+##############################################################################################################
+
+country_event = { # Demand 1
+    id = chaosx.nr70.1
+    title = chaosx.nr70.1.t
+    desc = chaosx.nr70.1.d
+    picture = GFX_report_event_africa_tribe_member
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.1.a
+        add_threat = 2
+        set_variable = { global.africa_gods_predict = 30 }
+        clr_global_flag = demand_fulfilled
+        activate_mission = africa_gods_predict_timeout
+        set_global_flag = demand_1
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # Demand 2
+    id = chaosx.nr70.2
+    title = chaosx.nr70.2.t
+    desc = chaosx.nr70.2.d
+    picture = GFX_report_event_africa_tribe_member
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.2.a
+        add_threat = 1
+        set_variable = { global.africa_gods_predict = 30 }
+        clr_global_flag = demand_fulfilled
+        activate_mission = africa_gods_predict_timeout
+        set_global_flag = demand_2
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # Demand 3
+    id = chaosx.nr70.3
+    title = chaosx.nr70.3.t
+    desc = chaosx.nr70.3.d
+    picture = GFX_report_event_africa_tribe_member
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.3.a
+        add_threat = 1
+        set_variable = { global.africa_gods_predict = 30 }
+        clr_global_flag = demand_fulfilled
+        activate_mission = africa_gods_predict_timeout
+        set_global_flag = demand_3
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # Demand 4; last demand
+    id = chaosx.nr70.4
+    title = chaosx.nr70.4.t
+    desc = chaosx.nr70.4.d
+    picture = GFX_report_event_africa_tribe_member
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.4.a
+        add_threat = 1
+        set_variable = { global.africa_gods_predict = 20 }
+        clr_global_flag = demand_fulfilled
+        activate_mission = africa_gods_predict_timeout
+        set_global_flag = demand_4
+        set_variable = { sacrifice_manpower_amount = manpower }
+        divide_variable = { sacrifice_manpower_amount = 150 }
+        round_variable = sacrifice_manpower_amount
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # Demands fulfilled
+    id = chaosx.nr70.5
+    title = chaosx.nr70.5.t
+    desc = chaosx.nr70.5.d
+    picture = GFX_report_event_africa_tribe_member
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.5.a
+        add_threat = -5
+        add_political_power = 100
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # Warning
+    id = chaosx.nr70.6
+    title = chaosx.nr70.6.t
+    desc = chaosx.nr70.6.d
+    picture = GFX_report_event_africa_tribe_member
+
+    timeout_days = 4
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.6.a
+        add_political_power = -50
+        if = { limit = { has_global_flag = demand_1 }
+        activate_decision = demand_1
+        hidden_effect = { add_political_power = -50 }
+    }else_if = { limit = { has_global_flag = demand_2 }
+    activate_decision = demand_2
+}else_if = { limit = { has_global_flag = demand_3 }
+activate_decision = demand_3
+}else_if = { limit = { has_global_flag = demand_4 }
+activate_decision = demand_4
+}
+hidden_effect = {
+    if = { limit = { has_global_flag = demand_2 }
+    if = { limit = { has_army_experience < 20 }
+    army_experience = 20
+}
+if = { limit = { command_power < 20 }
+add_command_power = 20
+}
+if = {
+    limit = {
+        has_equipment = { infantry_equipment < 2000 }
+    }
+    add_equipment_to_stockpile = {
+        type = infantry_equipment
+        amount = 2000
+    }
+}
+} else_if = { limit = { has_global_flag = demand_1 }
+if = { limit = { has_political_power < 50 }
+set_political_power = 50
+}
+}
+}
+ai_chance = { base = 100 }
+}
+option = {
+    name = chaosx.nr70.6.b
+    add_stability = -0.10
+    hidden_effect = {
+        if = { limit = { has_global_flag = demand_2 }
+        if = { limit = { has_army_experience < 20 }
+        army_experience = 20
+    }
+    if = { limit = { command_power < 20 }
+    add_command_power = 20
+}
+if = {
+    limit = {
+        has_equipment = { infantry_equipment < 2000 }
+    }
+    add_equipment_to_stockpile = {
+        type = infantry_equipment
+        amount = 2000
+    }
+}
+} else_if = { limit = { has_global_flag = demand_1 }
+if = { limit = { has_political_power < 50 }
+set_political_power = 50
+}
+}
+}
+ai_chance = { base = 0 }
+}
+}
+
+##############################################################################################################
+
+country_event = { # Warning 2
+    id = chaosx.nr70.7
+    title = chaosx.nr70.7.t
+    desc = chaosx.nr70.7.d
+    picture = GFX_report_event_africa_tribe_member
+
+    timeout_days = 4
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.7.a
+        add_stability = -0.05
+        hidden_effect = {
+            if = { limit = { has_global_flag = demand_2 }
+            if = { limit = { has_army_experience < 20 }
+            army_experience = 5
+        }
+        if = { limit = { command_power < 20 }
+        add_command_power = 10
+    }
+    if = {
+        limit = {
+            has_equipment = { infantry_equipment < 2000 }
+        }
+        add_equipment_to_stockpile = {
+            type = infantry_equipment
+            amount = 1000
+        }
+    }
+} else_if = { limit = { has_global_flag = demand_1 }
+if = { limit = { has_political_power < 50 }
+set_political_power = 50
+}
+}
+}
+ai_chance = { base = 100 }
+}
+}
+
+##############################################################################################################
+
+country_event = { #  africa predict
+    id = chaosx.nr70.8
+    title = chaosx.nr70.8.t
+    desc = chaosx.nr70.8.d
+    picture = GFX_report_event_africa_tribe_member
+
+    timeout_days = 5
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr70.8.a
+        hidden_effect = {
+            if = { limit = { check_variable = { global.africa_gods_predict = 30 } }
+            random_country = {
+                random_list = {
+                    10 = { country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 } } # Earthquake
+                    10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+                    country_event = { id = chaosx.nr13.3 days = 1 random_days = 4 } # Flood
+                } else = {
+                    country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 }
+                }
+            }
+            10 = { country_event = { id = chaosx.nr13.4 days = 1 random_days = 4 } } # Tornado
+            10 = { country_event = { id = chaosx.nr13.5 days = 1 random_days = 4 } } # Wildfire
+            10 = { country_event = { id = chaosx.nr13.6 days = 1 random_days = 4 } } # Lightning Storm
+            10 = { country_event = { id = chaosx.nr13.7 days = 1 random_days = 4 } } # Hurricane
+        }
+    }
+    random = {
+        chance = 75
+        set_variable = { global.africa_gods_predict = 20 }
+    }
+}
+else_if = { limit = {check_variable = { global.africa_gods_predict = 20 } }
+random_country = {
+    random_list = {
+        10 = { country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 } } # Earthquake
+        10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+        country_event = { id = chaosx.nr13.3 days = 1 random_days = 4 } # Flood
+    } else = {
+        country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 }
+    }
+}
+10 = { country_event = { id = chaosx.nr13.4 days = 1 random_days = 4 } } # Tornado
+10 = { country_event = { id = chaosx.nr13.5 days = 1 random_days = 4 } } # Wildfire
+10 = { country_event = { id = chaosx.nr13.6 days = 1 random_days = 4 } } # Lightning Storm
+10 = { country_event = { id = chaosx.nr13.7 days = 1 random_days = 4 } } # Hurricane
+}
+random_list = {
+    10 = { country_event = { id = chaosx.nr43.1 } } # MASSIVE FLOOD
+    10 = { country_event = { id = chaosx.nr46.1 } } # EARTH EARTHQUAKE
+    10 = { country_event = { id = chaosx.nr47.1 } } # BOOM!
+    10 = { country_event = { id = chaosx.nr28.2 } } # ASTEROID IMPACT
+    10 = { country_event = { id = chaosx.nr31.2 } } # Terrorists
+    10 = { country_event = { id = chaosx.nr14.2 } } # Cannibals
+    10 = { country_event = { id = chaosx.nr99.1 } } # Sandstorm
+}
+}
+random = {
+    chance = 75
+    set_variable = { global.africa_gods_predict = 15 }
+}
+}
+else_if = { limit = { check_variable = { global.africa_gods_predict = 15 } }
+country_event = { id = chaosx.nr70.7 days = 1 }
+random_country = {
+    random_list = {
+        10 = { country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 } } # Earthquake
+        10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+        country_event = { id = chaosx.nr13.3 days = 1 random_days = 4 } # Flood
+    } else = {
+        country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 }
+    }
+}
+10 = { country_event = { id = chaosx.nr13.4 days = 1 random_days = 4 } } # Tornado
+10 = { country_event = { id = chaosx.nr13.5 days = 1 random_days = 4 } } # Wildfire
+10 = { country_event = { id = chaosx.nr13.6 days = 1 random_days = 4 } } # Lightning Storm
+10 = { country_event = { id = chaosx.nr13.7 days = 1 random_days = 4 } } # Hurricane
+}random_list = {
+    10 = { country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 } } # Earthquake
+    10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+    country_event = { id = chaosx.nr13.3 days = 1 random_days = 4 } # Flood
+} else = {
+    country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 }
+}
+}
+10 = { country_event = { id = chaosx.nr13.4 days = 1 random_days = 4 } } # Tornado
+10 = { country_event = { id = chaosx.nr13.5 days = 1 random_days = 4 } } # Wildfire
+10 = { country_event = { id = chaosx.nr13.6 days = 1 random_days = 4 } } # Lightning Storm
+10 = { country_event = { id = chaosx.nr13.7 days = 1 random_days = 4 } } # Hurricane
+}
+random_list = {
+    10 = { country_event = { id = chaosx.nr43.1 days = 1 random_days = 4 } } # MASSIVE FLOOD
+    10 = { country_event = { id = chaosx.nr46.1 days = 1 random_days = 4 } } # EARTH EARTHQUAKE
+    10 = { country_event = { id = chaosx.nr47.1 days = 1 random_days = 4 } } # BOOM!
+    10 = { country_event = { id = chaosx.nr28.2 days = 1 random_days = 4 } } # ASTEROID IMPACT
+    10 = { country_event = { id = chaosx.nr31.2 days = 1 random_days = 4 } } # Terrorists
+    10 = { country_event = { id = chaosx.nr14.2 days = 1 random_days = 4 } } # Cannibals
+    10 = { country_event = { id = chaosx.nr99.1 days = 1 random_days = 4 } } # Sandstorm
+}
+country_event = { id = chaosx.nr20.1 days = 1 random_days = 4 } # BLACK DEATH
+country_event = { id = chaosx.nr2.1 days = 1 random_days = 4 } # ZOMBIES
+country_event = { id = chaosx.nr94.2 } # half gone
+}
+set_variable = { global.africa_gods_predict = 10 }
+}
+else_if = { limit = { check_variable = { global.africa_gods_predict = 10 } }
+random_country = {
+    random_list = {
+        10 = { country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 } } # Earthquake
+        10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+        country_event = { id = chaosx.nr13.3 days = 1 random_days = 4 } # Flood
+    } else = {
+        country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 }
+    }
+}
+10 = { country_event = { id = chaosx.nr13.4 days = 1 random_days = 4 } } # Tornado
+10 = { country_event = { id = chaosx.nr13.5 days = 1 random_days = 4 } } # Wildfire
+10 = { country_event = { id = chaosx.nr13.6 days = 1 random_days = 4 } } # Lightning Storm
+10 = { country_event = { id = chaosx.nr13.7 days = 1 random_days = 4 } } # Hurricane
+}random_list = {
+    10 = { country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 } } # Earthquake
+    10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+    country_event = { id = chaosx.nr13.3 days = 1 random_days = 4 } # Flood
+} else = {
+    country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 }
+}
+}
+10 = { country_event = { id = chaosx.nr13.4 days = 1 random_days = 4 } } # Tornado
+10 = { country_event = { id = chaosx.nr13.5 days = 1 random_days = 4 } } # Wildfire
+10 = { country_event = { id = chaosx.nr13.6 days = 1 random_days = 4 } } # Lightning Storm
+10 = { country_event = { id = chaosx.nr13.7 days = 1 random_days = 4 } } # Hurricane
+}random_list = {
+    10 = { country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 } } # Earthquake
+    10 = { if = { limit = { any_owned_state = { is_coastal = yes } }
+    country_event = { id = chaosx.nr13.3 days = 1 random_days = 4 } # Flood
+} else = {
+    country_event = { id = chaosx.nr13.2 days = 1 random_days = 4 }
+}
+}
+10 = { country_event = { id = chaosx.nr13.4 days = 1 random_days = 4 } } # Tornado
+10 = { country_event = { id = chaosx.nr13.5 days = 1 random_days = 4 } } # Wildfire
+10 = { country_event = { id = chaosx.nr13.6 days = 1 random_days = 4 } } # Lightning Storm
+10 = { country_event = { id = chaosx.nr13.7 days = 1 random_days = 4 } } # Hurricane
+}
+random_list = {
+    10 = { country_event = { id = chaosx.nr43.1 days = 1 random_days = 4 } } # MASSIVE FLOOD
+    10 = { country_event = { id = chaosx.nr28.2 days = 1 random_days = 4 } } # ASTEROID IMPACT
+    10 = { country_event = { id = chaosx.nr31.2 days = 1 random_days = 4 } } # Terrorists
+    10 = { country_event = { id = chaosx.nr99.1 days = 1 random_days = 4 } } # Sandstorm
+}random_list = {
+    10 = { country_event = { id = chaosx.nr46.1 days = 1 random_days = 4 } } # EARTH EARTHQUAKE
+    10 = { country_event = { id = chaosx.nr47.1 days = 1 random_days = 4 } } # BOOM!
+    10 = { country_event = { id = chaosx.nr14.2 days = 1 random_days = 4 } } # Cannibals
+}
+country_event = { id = chaosx.nr2.1 days = 1 random_days = 4 } # ZOMBIES
+country_event = { id = chaosx.nr94.2 } # half gone again!
+}
+country_event = { id = chaosx.nr70.6 } # WARNING
+set_variable = { global.africa_gods_predict = 5 }
+}
+else_if = { limit = { check_variable = { global.africa_gods_predict = 5 } }
+scoped_sound_effect  = "weather_thunder_01"
+scoped_sound_effect  = "weather_thunder_02"
+scoped_sound_effect  = "weather_thunder_03"
+scoped_sound_effect  = "weather_thunder_04"
+scoped_sound_effect  = "weather_cloud_winds"
+scoped_sound_effect  = "airplane_bomb_01"
+scoped_sound_effect  = "airplane_bomb_09"
+scoped_sound_effect  = "airplane_bomb_10"
+scoped_sound_effect  = "super_heavy_battleship_attack_01"
+news_event = { id = chaosx.news.62 days = 1 }
+every_other_country = {
+    add_opinion_modifier = {
+        target = ROOT
+        modifier = hostile_status
+    }
+}
+every_state = { # A disaster; moon collides with Earth
+    every_country = {
+        launch_nuke = {
+            state = PREV
+            controller = THIS
+            use_nuke = no
+        }
+    }
+    remove_building = {
+        type = arms_factory
+        level = 3
+    }
+    remove_building = {
+        type = industrial_complex
+        level = 3
+    }
+    remove_building = {
+        type = infrastructure
+        level = 5
+    }
+    damage_building  = {
+        type = arms_factory
+        damage = 10
+    }
+    damage_building  = {
+        type = industrial_complex
+        damage = 10
+    }
+    damage_building  = {
+        type = infrastructure
+        damage = 5
+    }
+    add_manpower = -5000000
+    set_state_category = wasteland
+}
+clear_variable = global.africa_gods_predict
+}
+}
+if = { limit = { NOT = { check_variable = { global.africa_gods_predict = 0 } } }
+activate_mission = africa_gods_predict_timeout
+}
+ai_chance = { base = 100 }
+}
+}

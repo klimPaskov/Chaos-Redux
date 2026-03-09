@@ -2918,6 +2918,20 @@ record_chaos_meter_history_entry = {
     }
 }
 
+track_contamination_achievement_failure = {
+	if = {
+		limit = {
+			date < 1945.01.01
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:achievement_threshold.contamination_bp.low_10
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = achievement_contamination_reached_10_pre_1945
+	}
+}
+
 # ============================================================================
 # CHAOS METER VALUE MANAGEMENT
 # ============================================================================
@@ -2962,13 +2976,24 @@ add_chaos_meter_value = {
 
         add_to_variable = { global.chaos_meter_value = chaos_change }
 
-        clamp_variable = {
-            var = global.chaos_meter_value
-            min = 0
-        }
+		clamp_variable = {
+			var = global.chaos_meter_value
+			min = 0
+		}
 
-        round_variable = global.chaos_meter_value
-        update_chaos_meter_tier = yes
+		round_variable = global.chaos_meter_value
+		if = {
+			limit = {
+				date < 1940.01.01
+				check_variable = {
+					var = global.chaos_meter_value
+					value = constant:chaos_meter_tier_range.tier_1.min
+					compare = greater_than_or_equals
+				}
+			}
+			set_global_flag = achievement_chaos_reached_gathering_storm_pre_1940
+		}
+		update_chaos_meter_tier = yes
 
         if = {
             limit = {
@@ -3284,6 +3309,7 @@ air_contamination_apply_delta_bp = {
     subtract_from_temp_variable = { air_contamination_delta_bp = air_contamination_previous_bp }
     set_variable = { global.air_contamination_last_delta_bp = air_contamination_delta_bp }
 
+	track_contamination_achievement_failure = yes
     air_contamination_sync_chaos_from_delta = yes
     air_contamination_refresh_values = yes
     air_contamination_update_threshold_flags = yes
@@ -3493,6 +3519,7 @@ air_contamination_apply_irreversible_effects = {
         }
         set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
     }
+	track_contamination_achievement_failure = yes
 
     every_state = {
         add_dynamic_modifier = {
