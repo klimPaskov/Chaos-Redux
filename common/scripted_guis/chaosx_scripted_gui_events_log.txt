@@ -218,15 +218,15 @@ scripted_gui = {
 
 			history_entry_open_details_button_click = {
 				ROOT = {
+					set_variable = { events_log_selected_event_id = global.events_log_view_event_id_entries^events_log_history_index }
+					set_variable = { events_log_selected_event_type = global.events_log_view_event_type_entries^events_log_history_index }
 					set_variable = { events_log_history_selected_event_id = global.events_log_view_event_id_entries^events_log_history_index }
 					set_variable = { events_log_history_selected_event_type = global.events_log_view_event_type_entries^events_log_history_index }
 					set_variable = { events_log_history_selected_date = global.events_log_view_date_entries^events_log_history_index }
 					set_variable = { events_log_history_selected_sequence = global.events_log_view_sequence_entries^events_log_history_index }
 					set_variable = { events_log_history_selected_actor = global.events_log_view_actor_entries^events_log_history_index }
 					set_variable = { events_log_history_selected_has_actor = global.events_log_view_has_actor_entries^events_log_history_index }
-					events_log_rebuild_history_details_view = yes
-					set_country_flag = events_log_history_details_open
-					events_log_close_all_event_details_entries = yes
+					events_log_open_history_event_details_entry = yes
 					clr_country_flag = events_log_evolution_details_open
 				}
 			}
@@ -468,7 +468,9 @@ scripted_gui = {
 			}
 
 			evolution_entry_open_details_button_click = {
-				events_log_open_selected_evolution_detail = yes
+				ROOT = {
+					events_log_open_selected_evolution_detail = yes
+				}
 			}
 
 			evolution_open_diplomacy_button_click = {
@@ -692,7 +694,10 @@ scripted_gui = {
 
 		visible = {
 			has_country_flag = events_log_window_open
-			has_country_flag = events_log_events_tab
+			OR = {
+				has_country_flag = events_log_history_tab
+				has_country_flag = events_log_events_tab
+			}
 			has_country_flag = events_log_event_details_open
 			check_variable = { global.events_log_open_event_detail_entries^num > 0 }
 		}
@@ -708,6 +713,15 @@ scripted_gui = {
 				trigger_selected_event = yes
 			}
 
+			events_log_event_detail_open_diplomacy_button_click = {
+				set_variable = { events_log_selected_event_actor = global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index }
+				var:events_log_selected_event_actor = {
+					capital_scope = {
+						ROOT = { goto_state = PREV }
+					}
+				}
+			}
+
 			events_log_event_detail_toggle_enabled_button_click = {
 				set_variable = { events_log_selected_event_id = global.events_log_open_event_detail_entries^events_log_open_event_detail_index }
 				events_log_toggle_event_disabled_by_row = yes
@@ -720,6 +734,20 @@ scripted_gui = {
 
 			history_detail_evolution_open_details_button_click = {
 				events_log_open_selected_event_detail_evolution = yes
+			}
+
+			event_detail_evolution_toggle_enabled_button_click = {
+				set_variable = { events_log_selected_evolution_event_id = events_log_selected_event_id }
+				set_variable = { events_log_selected_evolution_type = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index }
+				set_variable = { events_log_selected_evolution_stage = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index }
+				events_log_toggle_selected_evolution_disabled = yes
+			}
+
+			event_detail_evolution_toggle_disabled_button_click = {
+				set_variable = { events_log_selected_evolution_event_id = events_log_selected_event_id }
+				set_variable = { events_log_selected_evolution_type = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index }
+				set_variable = { events_log_selected_evolution_stage = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index }
+				events_log_toggle_selected_evolution_disabled = yes
 			}
 		}
 
@@ -775,7 +803,97 @@ scripted_gui = {
 			events_log_event_detail_toggle_disabled_button_click_enabled = {
 				always = yes
 			}
+			events_log_event_detail_open_diplomacy_button_visible = {
+				AND = {
+					check_variable = {
+						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
+			events_log_event_detail_open_diplomacy_button_click_enabled = {
+				AND = {
+					check_variable = {
+						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
+			events_log_event_detail_actor_flag_visible = {
+				AND = {
+					check_variable = {
+						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
+			events_log_event_detail_actor_flag_frame_visible = {
+				AND = {
+					check_variable = {
+						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
+			events_log_event_detail_entry_meta_tertiary_visible = {
+				OR = {
+					check_variable = {
+						var = global.events_log_open_event_detail_sequence_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+					check_variable = {
+						var = global.events_log_open_event_detail_evolution_stage_entries^events_log_open_event_detail_index
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
 			history_detail_evolution_open_details_button_click_enabled = {
+				always = yes
+			}
+			event_detail_evolution_toggle_enabled_button_visible = {
+				check_variable = {
+					var = global.events_log_event_detail_evolution_enabled_entries^events_log_event_detail_evolution_index
+					value = 0
+					compare = less_than_or_equals
+				}
+			}
+			event_detail_evolution_toggle_disabled_button_visible = {
+				check_variable = {
+					var = global.events_log_event_detail_evolution_enabled_entries^events_log_event_detail_evolution_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			event_detail_evolution_toggle_enabled_button_click_enabled = {
+				always = yes
+			}
+			event_detail_evolution_toggle_disabled_button_click_enabled = {
 				always = yes
 			}
 			events_log_event_detail_evolutions_header_visible = {
@@ -802,6 +920,12 @@ scripted_gui = {
 				index = events_log_event_detail_evolution_index
 				change_scope = no
 				entry_container = "events_log_event_detail_evolution_entry"
+			}
+		}
+
+		properties = {
+			events_log_event_detail_actor_flag = {
+				image = "[?global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index.GetFlag]"
 			}
 		}
 

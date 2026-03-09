@@ -25,6 +25,31 @@
 
 @CHEM_FIRST_USE_SURPRISE_DURATION_DAYS = 30
 
+chem_sync_chemical_tactic_preferred_weight_ideas = {
+	if = {
+		limit = {
+			has_tech = basic_gas_masks
+			NOT = { has_idea = chemical_gas_mask_preferred_tactic_suppression }
+		}
+		add_ideas = chemical_gas_mask_preferred_tactic_suppression
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_tech = chlorine_gas
+				has_tech = phosgene
+				has_tech = mustard_gas
+				has_tech = lewisite
+				has_tech = sarin
+				has_tech = soman
+			}
+			NOT = { has_idea = chemical_shelling_preferred_tactic_suppression }
+		}
+		add_ideas = chemical_shelling_preferred_tactic_suppression
+	}
+}
+
 chem_grant_first_use_surprise = {
 	if = {
 		limit = { NOT = { has_country_flag = chem_first_use_surprise_consumed } }

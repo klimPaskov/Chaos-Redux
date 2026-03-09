@@ -7,6 +7,23 @@ check_event_availability = {
 	}
 }
 
+has_disabled_current_evolution = {
+	meta_trigger = {
+		text = {
+			has_global_flag = {
+				flag = events_log_disabled_evolution_[EVOLUTION_EVENT_ID]_[EVOLUTION_TYPE]_[EVOLUTION_STAGE]
+			}
+		}
+		EVOLUTION_EVENT_ID = "[?events_log_evolution_event_id|0]"
+		EVOLUTION_TYPE = "[?events_log_evolution_type|0]"
+		EVOLUTION_STAGE = "[?events_log_evolution_stage|0]"
+	}
+}
+
+is_current_evolution_enabled = {
+	NOT = { has_disabled_current_evolution = yes }
+}
+
 has_bio_outbreak_prevention_tier_1_only = {
 	has_tech = bio_surveillance_networks
 	NOT = { has_tech = rapid_outbreak_response }
@@ -441,18 +458,8 @@ can_roll_dynamic_zombie_outbreak = {
 	NOT = { has_global_flag = zombie_dynamic_outbreak_global_cooldown }
 	uses_normal_civilian_systems = yes
 	num_of_controlled_states > 1
+	has_rear_zombie_outbreak_state = yes
 	NOT = { has_country_flag = zombie_dynamic_outbreak_recent }
-	OR = {
-		has_high_risk_rear_zombie_outbreak_state = yes
-		AND = {
-			has_medium_risk_rear_zombie_outbreak_state = yes
-			OR = {
-				has_neighboring_zombie_front = yes
-				has_nearby_zombie_front = yes
-				has_same_continent_zombie_presence = yes
-			}
-		}
-	}
 	NOT = { has_country_flag = extreme_martial_law_active }
 }
 

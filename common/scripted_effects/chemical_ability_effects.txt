@@ -636,22 +636,6 @@ chem_apply_current_ability_state_dispersal = {
 	chem_apply_state_dispersal = yes
 }
 
-chem_set_leader_unit_count_in_target_state = {
-	set_temp_variable = { var = chem_units_in_target_state value = 0 }
-	event_target:chem_state_dispersal_leader = {
-		set_temp_variable = { var = chem_units_in_target_state_probe value = 0 }
-		meta_effect = {
-			text = {
-				set_temp_variable = { var = chem_units_in_target_state_probe value = num_units_in_state@[CHEM_STATE_ID] }
-				PREV = {
-					set_temp_variable = { var = chem_units_in_target_state value = ROOT.chem_units_in_target_state_probe }
-				}
-			}
-			CHEM_STATE_ID = "[PREV.GetID]"
-		}
-	}
-}
-
 chem_apply_state_dispersal = {
     save_event_target_as = chem_state_dispersal_leader
     # log = "CHEM_STATE: chem_apply_state_dispersal country=[chem_state_dispersal_owner_country.GetNameDef] leader=[THIS.GetName]"
@@ -707,9 +691,16 @@ chem_apply_state_dispersal = {
 
 chem_apply_state_dispersal_from_controlled_states = {
 	every_controlled_state = {
-		chem_set_leader_unit_count_in_target_state = yes
-		set_temp_variable = { var = chem_units_in_state value = chem_units_in_target_state }
-
+		set_temp_variable = { var = chem_units_in_state value = 0 }
+		meta_effect = {
+			text = {
+				set_temp_variable = {
+					var = chem_units_in_state
+					value = event_target:chem_state_dispersal_leader.num_units_in_state@[CHEM_STATE_ID]
+				}
+			}
+			CHEM_STATE_ID = "[THIS.GetID]"
+		}
 		if = {
 			limit = { check_variable = { var = chem_units_in_state value = 0 compare = greater_than } }
 			add_to_temp_variable = { var = chem_state_scan_states_with_units value = 1 }
@@ -722,9 +713,16 @@ chem_apply_state_dispersal_from_controlled_states = {
 				CONTROLLER = { has_war_with = event_target:chem_state_dispersal_owner_country }
 				NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
 			}
-
-			chem_set_leader_unit_count_in_target_state = yes
-			set_temp_variable = { var = chem_units_in_enemy_state value = chem_units_in_target_state }
+			set_temp_variable = { var = chem_units_in_enemy_state value = 0 }
+			meta_effect = {
+				text = {
+					set_temp_variable = {
+						var = chem_units_in_enemy_state
+						value = event_target:chem_state_dispersal_leader.num_units_in_state@[CHEM_STATE_ID]
+					}
+				}
+				CHEM_STATE_ID = "[THIS.GetID]"
+			}
 
 			set_temp_variable = { var = chem_dose_each value = chem_units_in_enemy_state }
 			if = {

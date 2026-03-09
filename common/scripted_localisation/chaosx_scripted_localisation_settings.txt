@@ -9,6 +9,20 @@ defined_text = {
 defined_text = {
     name = GetCurrentEventID
     text = {
+        trigger = {
+            has_country_flag = event_id_manual_entry_active
+            NOT = { has_variable = settings_event_id_manual_buffer }
+        }
+        localization_key = "chaosx.trigger_events.current_id_ready"
+    }
+    text = {
+        trigger = {
+            has_country_flag = event_id_manual_entry_active
+            has_variable = settings_event_id_manual_buffer
+        }
+        localization_key = "[?settings_event_id_manual_buffer|.0]"
+    }
+    text = {
         trigger = { always = yes }
         localization_key = "[?settings_selected_event_id]"
     }
@@ -274,6 +288,22 @@ defined_text = {
 defined_text = {
     name = GetTimerMinValue
     text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.timer_min }
+            NOT = { has_variable = settings_numeric_manual_buffer }
+        }
+        localization_key = "chaosx.settings.manual_entry_ready"
+    }
+    text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.timer_min }
+            has_variable = settings_numeric_manual_buffer
+        }
+        localization_key = "[?settings_numeric_manual_buffer|.0]"
+    }
+    text = {
         trigger = { always = yes }
         localization_key = "[?settings_timer_min_days]"
     }
@@ -282,6 +312,22 @@ defined_text = {
 # Timer max value display
 defined_text = {
     name = GetTimerMaxValue
+    text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.timer_max }
+            NOT = { has_variable = settings_numeric_manual_buffer }
+        }
+        localization_key = "chaosx.settings.manual_entry_ready"
+    }
+    text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.timer_max }
+            has_variable = settings_numeric_manual_buffer
+        }
+        localization_key = "[?settings_numeric_manual_buffer|.0]"
+    }
     text = {
         trigger = { always = yes }
         localization_key = "[?settings_timer_max_days]"
@@ -299,6 +345,127 @@ defined_text = {
         localization_key = chaosx.timer_window.countdown.never
     }
 }
+
+# ============================================================================
+# MISCELLANEOUS SETTINGS SCRIPTED LOCALISATION
+# ============================================================================
+
+defined_text = {
+    name = GetSuperEventAudioMode
+    text = {
+        trigger = { check_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.sound } }
+        localization_key = chaosx.miscellaneous.super_event_audio_mode.sound
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = chaosx.miscellaneous.super_event_audio_mode.music
+    }
+}
+
+defined_text = {
+    name = GetSuperEventAudioVolume
+    text = {
+        trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x0 } }
+        localization_key = chaosx.miscellaneous.super_event_audio_volume.0
+    }
+    text = {
+        trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x0_5 } }
+        localization_key = chaosx.miscellaneous.super_event_audio_volume.0_5
+    }
+    text = {
+        trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x1_0 } }
+        localization_key = chaosx.miscellaneous.super_event_audio_volume.1_0
+    }
+    text = {
+        trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x1_5 } }
+        localization_key = chaosx.miscellaneous.super_event_audio_volume.1_5
+    }
+    text = {
+        trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x2_0 } }
+        localization_key = chaosx.miscellaneous.super_event_audio_volume.2_0
+    }
+    text = {
+        trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x2_5 } }
+        localization_key = chaosx.miscellaneous.super_event_audio_volume.2_5
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = chaosx.miscellaneous.super_event_audio_volume.3_0
+    }
+}
+
+defined_text = {
+	name = GetSuperEventAudioVolumeToken
+	text = {
+		trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x0 } }
+		localization_key = chaosx.miscellaneous.super_event_audio_volume_token.0
+	}
+	text = {
+		trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x0_5 } }
+		localization_key = chaosx.miscellaneous.super_event_audio_volume_token.0_5
+	}
+	text = {
+		trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x1_0 } }
+		localization_key = chaosx.miscellaneous.super_event_audio_volume_token.1_0
+	}
+	text = {
+		trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x1_5 } }
+		localization_key = chaosx.miscellaneous.super_event_audio_volume_token.1_5
+	}
+	text = {
+		trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x2_0 } }
+		localization_key = chaosx.miscellaneous.super_event_audio_volume_token.2_0
+	}
+	text = {
+		trigger = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x2_5 } }
+		localization_key = chaosx.miscellaneous.super_event_audio_volume_token.2_5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.miscellaneous.super_event_audio_volume_token.3_0
+	}
+}
+
+defined_text = {
+    name = GetTagManagementSelectedCountrySyncTag
+    text = {
+        trigger = { always = yes }
+        localization_key = "[This.GetTag]"
+    }
+}
+
+defined_text = {
+    name = GetTagManagementSelectedCountrySyncName
+    text = {
+        trigger = { always = yes }
+        localization_key = "[This.GetName]"
+    }
+}
+
+defined_text = {
+    name = GetTagManagementSelectedCountryEnableButtonFrame
+    text = {
+        trigger = { has_country_flag = events_activated }
+        localization_key = "1"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "0"
+    }
+}
+
+defined_text = {
+    name = GetTagManagementSelectedCountryDisableButtonFrame
+    text = {
+        trigger = { NOT = { has_country_flag = events_activated } }
+        localization_key = "1"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "0"
+    }
+}
+
 # ============================================================================
 # TAG MANAGEMENT SCRIPTED LOCALISATION
 # ============================================================================
@@ -8688,6 +8855,22 @@ defined_text = {
 defined_text = {
     name = GetSettingsChaosValue
     text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.chaos_value }
+            NOT = { has_variable = settings_numeric_manual_buffer }
+        }
+        localization_key = "chaosx.settings.manual_entry_ready"
+    }
+    text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.chaos_value }
+            has_variable = settings_numeric_manual_buffer
+        }
+        localization_key = "[?settings_numeric_manual_buffer|.0]"
+    }
+    text = {
         trigger = { check_variable = { settings_chaos_meter_value > 1000 } }
         localization_key = "1000+"
     }
@@ -9462,14 +9645,63 @@ defined_text = {
 defined_text = {
     name = GetRecoveryRateValue
     text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.recovery_rate }
+            NOT = { has_variable = settings_numeric_manual_buffer }
+        }
+        localization_key = "chaosx.settings.manual_entry_ready"
+    }
+    text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.recovery_rate }
+            has_variable = settings_numeric_manual_buffer
+        }
+        localization_key = "[?settings_numeric_manual_buffer|.0]"
+    }
+    text = {
         trigger = { always = yes }
         localization_key = "[?global.settings_recovery_rate]"
+    }
+}
+
+# Cap Reduction Display
+defined_text = {
+    name = GetCapReductionValue
+    text = {
+        trigger = { has_variable = global.settings_cap_reduction }
+        localization_key = "[?global.settings_cap_reduction|.2]"
+    }
+    text = {
+        trigger = { has_variable = global.reduce_cap_factor }
+        localization_key = "[?global.reduce_cap_factor|.2]"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "0.50"
     }
 }
 
 # Major Weight Per Minor Display
 defined_text = {
     name = GetMajorWeightPerMinorValue
+    text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.major_weight }
+            NOT = { has_variable = settings_numeric_manual_buffer }
+        }
+        localization_key = "chaosx.settings.manual_entry_ready"
+    }
+    text = {
+        trigger = {
+            has_country_flag = settings_numeric_manual_entry_active
+            check_variable = { settings_numeric_manual_target = constant:settings_numeric_input_target.major_weight }
+            has_variable = settings_numeric_manual_buffer
+        }
+        localization_key = "[?settings_numeric_manual_buffer|.0]"
+    }
     text = {
         trigger = { always = yes }
         localization_key = "[?global.settings_major_weight_per_minor]"
@@ -9482,6 +9714,18 @@ defined_text = {
     text = {
         trigger = { always = yes }
         localization_key = "[?global.minor_event_recovery_rate]"
+    }
+}
+
+defined_text = {
+    name = GetActiveCapReductionValue
+    text = {
+        trigger = { has_variable = global.reduce_cap_factor }
+        localization_key = "[?global.reduce_cap_factor|.2]"
+    }
+    text = {
+        trigger = { always = yes }
+        localization_key = "0.50"
     }
 }
 
