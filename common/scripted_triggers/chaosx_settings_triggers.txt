@@ -1,0 +1,25 @@
+check_event_availability = {
+    meta_trigger = {
+        text = {
+            has_global_flag = { flag = event_disabled value = [EVENT_ID] }
+        }
+        EVENT_ID = event_id
+    }
+}
+
+has_disabled_current_evolution = {
+    meta_trigger = {
+        text = {
+            has_global_flag = {
+                flag = events_log_disabled_evolution_[EVOLUTION_EVENT_ID]_[EVOLUTION_TYPE]_[EVOLUTION_STAGE]
+            }
+        }
+        EVOLUTION_EVENT_ID = "[?events_log_evolution_event_id|0]"
+        EVOLUTION_TYPE = "[?events_log_evolution_type|0]"
+        EVOLUTION_STAGE = "[?events_log_evolution_stage|0]"
+    }
+}
+
+is_current_evolution_enabled = {
+    NOT = { has_disabled_current_evolution = yes }
+}

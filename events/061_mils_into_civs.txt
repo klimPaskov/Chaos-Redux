@@ -1,0 +1,69 @@
+add_namespace = chaosx.nr61
+
+##############################################################################################################
+#    ##    ## ########      #######     ##
+#    ###   ## ##     ##    ##     ##  ####
+#    ####  ## ##     ##    ##           ##
+#    ## ## ## ########     ########     ##
+#    ##  #### ##   ##      ##     ##    ##
+#    ##   ### ##    ##     ##     ##    ##
+#    ##    ## ##     ##     #######   ######
+##############################################################################################################
+#   #     #                                              #####
+#   ##   ## # #       ####     # #    # #####  ####     #     # # #    #  ####
+#   # # # # # #      #         # ##   #   #   #    #    #       # #    # #
+#   #  #  # # #       ####     # # #  #   #   #    #    #       # #    #  ####
+#   #     # # #           #    # #  # #   #   #    #    #       # #    #      #
+#   #     # # #      #    #    # #   ##   #   #    #    #     # #  #  #  #    #
+#   #     # # ######  ####     # #    #   #    ####      #####  #   ##    ####
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr61.1
+    title = chaosx.nr61.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            country_event = { id = chaosx.nr61.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr61.2
+    title = chaosx.nr61.2.t
+    desc = chaosx.nr61.2.d
+    picture = GFX_report_event_mils_to_civs
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr61.2.a
+        every_owned_state = {
+            limit = { check_variable = { arms_factory_level > 1 } }
+            set_temp_variable = {
+                var = mils_to_convert
+                value = arms_factory_level
+                tooltip = mils_in_state
+            }
+            divide_temp_variable = { mils_to_convert = 2 }
+            round_temp_variable = mils_to_convert
+            remove_building = {
+                type = arms_factory
+                level = mils_to_convert
+            }
+            add_building_construction = {
+                type = industrial_complex
+                level = mils_to_convert
+                instant_build = yes
+            }
+        }
+        ai_chance = { base = 100 }
+    }
+}

@@ -45,6 +45,8 @@ modify_value_based_on_chaos_tier = {
     }
 }
 
+###############################################################################################################
+
 # Can define variables 'buildings_to_damage_per_state', 'percent_of_states_to_target', and 'damage_modifier' to control how many buildings are damaged per state, how many buildings to damage, and how much damage is applied. Also 'state_population_percent' to control how much of population % is killed in the selected random state(s).
 damage_buildings_in_random_states = {
     # Input: buildings_to_damage_per_state, percent_of_states_to_target, damage_modifier, state_population_percent
@@ -276,7 +278,7 @@ damage_buildings_in_random_states = {
 }
 
 
-
+###############################################################################################################
 
 
 # Can take a specified percentage of the state's population and reduce/increase it. Defaults to -0.1% (one thousandth of the population).
@@ -296,7 +298,7 @@ modify_state_population_by_percent = {
 
 
 
-
+###############################################################################################################
 
 
 get_random_sea_region = {
@@ -406,52 +408,17 @@ get_random_sea_region = {
     }
 }
 
-run_dynamic_random_event_selection_special_rule = {
-	if = {
-		limit = { NOT = { has_variable = random_event_selection_special_rule_id } }
-		set_temp_variable = { random_event_selection_special_rule_id = 0 }
-	}
+###############################################################################################################
 
-	meta_effect = {
-		text = {
-			random_event_selection_special_rule_[RULE_ID] = yes
-		}
-		RULE_ID = "[?random_event_selection_special_rule_id|.0]"
-	}
+clear_special_chaos_country_civilian_effects = { # TODO: add more
+    if = {
+        limit = { has_country_flag = mass_panic }
+        clr_country_flag = mass_panic
+    }
+    if = {
+        limit = { has_idea = galaxies_mix }
+        remove_ideas = galaxies_mix
+    }
 }
 
-random_event_selection_special_rule_0 = {}
-
-random_event_selection_special_rule_2 = {
-	if = {
-		limit = { any_country = { is_neighbor_of = ZZZ } }
-		set_temp_variable = { random_event_selection_candidate_is_valid = 0 }
-	}
-}
-
-random_event_selection_special_rule_14 = {
-	if = {
-		limit = { all_country = { has_war = no } }
-		set_temp_variable = { random_event_selection_candidate_is_valid = 0 }
-	}
-}
-
-play_dynamic_super_event_music = {
-	meta_effect = {
-		text = {
-			scoped_play_song = "chaosx_super_event_[SUPER_EVENT_ID]_[VOLUME_SUFFIX]"
-		}
-		SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
-		VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
-	}
-}
-
-play_dynamic_super_event_sound = {
-	meta_effect = {
-		text = {
-			scoped_sound_effect = "chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]"
-		}
-		SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
-		VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
-	}
-}
+###############################################################################################################

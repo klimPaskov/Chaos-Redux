@@ -1,0 +1,268 @@
+# Chaos Redux custom achievements.
+#
+# Structure:
+# - Internal ID prefixes group achievements by intended rarity in the in-game list.
+# - All achievements are available as any country.
+# - The mod achievement UI resolves icon art from gfx/achievements/<achievement_id>*.dds.
+
+unique_id = chaos_redux_achievements
+
+#############################
+# LEGENDARY
+#############################
+
+00_calm_before_the_storm_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = calm_before_the_storm_achievement_tooltip
+			date > 1939.12.31
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_1.min
+				compare = less_than
+			}
+			NOT = { has_global_flag = achievement_chaos_reached_gathering_storm_pre_1940 }
+		}
+	}
+}
+
+01_world_collapse_ahead_of_schedule_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = world_collapse_ahead_of_schedule_achievement_tooltip
+			date < 1940.01.01
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_final.min
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+02_full_spectrum_terror_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = full_spectrum_terror_achievement_tooltip
+			has_tech = pathogen_handling_protocols
+			has_tech = sealed_containment_laboratories
+			has_tech = fail_safe_containment_facilities
+			has_tech = bio_surveillance_networks
+			has_tech = rapid_outbreak_response
+			has_tech = integrated_epidemic_control
+			has_tech = livens_projector_tech
+			has_tech = improved_livens_projector
+			has_tech = advanced_livens_projector
+			has_tech = chlorine_gas
+			has_tech = phosgene
+			has_tech = mustard_gas
+			has_tech = lewisite
+			has_tech = dimercaprol
+			has_tech = tabun
+			has_tech = basic_gas_masks
+			has_tech = improved_gas_masks
+			has_tech = advanced_gas_masks
+			has_tech = portable_anemometer
+			has_tech = meteorological_stations
+			has_tech = upper_air_soundings
+		}
+	}
+}
+
+03_poisoned_skies_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = poisoned_skies_achievement_tooltip
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.irreversible_100
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+04_a_billion_dead_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = a_billion_dead_achievement_tooltip
+			check_variable = {
+				var = global.chaos_meter_deaths_total
+				value = 1000000000
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+#############################
+# COMMON
+#############################
+
+10_maximum_chaos_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = maximum_chaos_achievement_tooltip
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_final.min
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+11_gas_gas_gas_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = gas_gas_gas_achievement_tooltip
+			has_country_flag = achievement_used_chemical_ability
+		}
+	}
+}
+
+12_tainted_air_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = tainted_air_achievement_tooltip
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.spread_25
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+13_hundred_million_dead_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = hundred_million_dead_achievement_tooltip
+			check_variable = {
+				var = global.chaos_meter_deaths_total
+				value = 100000000
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+14_ten_percent_ceiling_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ten_percent_ceiling_achievement_tooltip
+			date > 1944.12.31
+			NOT = { has_global_flag = achievement_contamination_reached_10_pre_1945 }
+		}
+	}
+}
+
+15_global_pariah_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = global_pariah_achievement_tooltip
+			check_variable = {
+				var = chem_warfare_condemnation
+				value = constant:achievement_threshold.condemnation.common_100
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+#############################
+# EPIC
+#############################
+
+20_end_of_the_living_achievement = {
+	possible = {
+		custom_override_tooltip = {
+			tooltip = achievement_available_as_any_tag_tooltip
+			always = yes
+		}
+	}
+
+	happened = {
+		custom_override_tooltip = {
+			tooltip = end_of_the_living_achievement_tooltip
+			has_global_flag = world_end_zombies
+		}
+	}
+}

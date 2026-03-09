@@ -1,0 +1,106 @@
+add_namespace = chaosx.nr43
+
+##############################################################################################################
+#    ##    ## ########     ##         #######
+#    ###   ## ##     ##    ##    ##  ##     ##
+#    ####  ## ##     ##    ##    ##         ##
+#    ## ## ## ########     ##    ##   #######
+#    ##  #### ##   ##      #########        ##
+#    ##   ### ##    ##           ##  ##     ##
+#    ##    ## ##     ##          ##   #######
+##############################################################################################################
+#   #     #
+#   ##   ##   ##    ####   ####  # #    # ######    ###### #       ####   ####  #####
+#   # # # #  #  #  #      #      # #    # #         #      #      #    # #    # #    #
+#   #  #  # #    #  ####   ####  # #    # #####     #####  #      #    # #    # #    #
+#   #     # ######      #      # # #    # #         #      #      #    # #    # #    #
+#   #     # #    # #    # #    # #  #  #  #         #      #      #    # #    # #    #
+#   #     # #    #  ####   ####  #   ##   ######    #      ######  ####   ####  #####
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr43.1
+    title = chaosx.nr43.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_state = {
+            limit = { is_coastal = yes }
+            damage_units = {
+                state = THIS
+                limit = { always = no }
+                org_damage = 0.5
+                str_damage = 0.5
+                ratio = yes
+                army = yes
+                navy = yes # hey!
+            }
+            damage_building = {
+                type = arms_factory
+                damage = 0.5
+            }
+            damage_building = {
+                type = industrial_complex
+                damage = 0.5
+            }
+            damage_building = {
+                type = infrastructure
+                damage = 1.00
+            }
+            add_manpower = -5000
+        }
+        every_country = {
+            limit = { any_owned_state = { is_coastal = yes } }
+            country_event = { id = chaosx.nr43.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr43.2
+    title = chaosx.nr43.2.t
+    desc = chaosx.nr43.2.d
+    picture = GFX_report_event_generic_ruins
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        add_stability = -0.05
+        effect_tooltip = {
+            ROOT = {
+                every_state = {
+                    limit = { is_coastal = yes }
+                    damage_units = {
+                        state = THIS
+                        limit = { always = no }
+                        org_damage = 0.5
+                        str_damage = 0.5
+                        ratio = yes
+                        army = yes
+                        navy = yes
+                    }
+                    damage_building = {
+                        type = arms_factory
+                        damage = 0.5
+                    }
+                    damage_building = {
+                        type = industrial_complex
+                        damage = 0.5
+                    }
+                    damage_building = {
+                        type = infrastructure
+                        damage = 1.00
+                    }
+                    add_manpower = -5000
+                }
+            }
+        }
+        name = chaosx.nr43.2.a
+    }
+}

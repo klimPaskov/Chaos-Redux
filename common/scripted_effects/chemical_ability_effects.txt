@@ -381,29 +381,45 @@ chem_apply_chaos_warfare_doctrine_final_bonus = {
 chem_register_current_ability_condemnation = {
 	set_temp_variable = { var = chem_condemnation_base value = 0 }
 	set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
+	set_temp_variable = { var = chem_ability_affected_unit_scale value = 0 }
 	set_temp_variable = { var = chem_consumed_amount value = num_battalions }
 
 	if = {
 		limit = { has_trait = chemical_cylinder_active_chlorine }
 		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.chlorine }
 		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.chlorine }
+		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.chlorine }
 	}
 	else_if = {
 		limit = { has_trait = chemical_cylinder_active_phosgene }
 		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.phosgene }
 		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.phosgene }
+		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.phosgene }
 	}
 	else_if = {
 		limit = { has_trait = chemical_cylinder_active_mustard }
 		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.mustard }
 		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.mustard }
+		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.mustard }
 	}
 	else_if = {
 		limit = { has_trait = chemical_cylinder_active_lewisite }
 		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.lewisite }
 		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.lewisite }
+		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.lewisite }
 	}
 
+	if = {
+		limit = {
+			has_variable = chem_total_units_affected
+			check_variable = { var = chem_total_units_affected value = 0 compare = greater_than }
+		}
+		set_temp_variable = { var = chem_ability_affected_condemnation value = chem_total_units_affected }
+		multiply_temp_variable = { var = chem_ability_affected_condemnation value = chem_ability_affected_unit_scale }
+		add_to_temp_variable = { var = chem_consumed_amount value = chem_ability_affected_condemnation }
+	}
+
+	OWNER = { set_country_flag = achievement_used_chemical_ability }
 	OWNER = { chem_warfare_register_attack_use_no_livens = yes }
 }
 
@@ -674,6 +690,7 @@ chem_apply_state_dispersal = {
     multiply_temp_variable = { var = chem_state_duration_add value = chem_livens_state_duration_mult }
     multiply_temp_variable = { var = chem_state_duration_add value = chem_contamination_duration_mult }
     round_temp_variable = chem_state_duration_add
+    set_temp_variable = { var = chem_total_units_affected value = 0 }
     if = {
         limit = { check_variable = { var = chem_state_duration_add value = 0 compare = greater_than } }
         event_target:chem_state_dispersal_owner_country = {
@@ -692,14 +709,13 @@ chem_apply_state_dispersal = {
 chem_apply_state_dispersal_from_controlled_states = {
 	every_controlled_state = {
 		set_temp_variable = { var = chem_units_in_state value = 0 }
-		meta_effect = {
-			text = {
-				set_temp_variable = {
-					var = chem_units_in_state
-					value = event_target:chem_state_dispersal_leader.num_units_in_state@[CHEM_STATE_ID]
+		event_target:chem_state_dispersal_leader = {
+			meta_effect = {
+				text = {
+					set_temp_variable = { var = chem_units_in_state value = num_units_in_state@[CHEM_STATE_ID] }
 				}
+				CHEM_STATE_ID = "[PREV.GetID]"
 			}
-			CHEM_STATE_ID = "[THIS.GetID]"
 		}
 		if = {
 			limit = { check_variable = { var = chem_units_in_state value = 0 compare = greater_than } }
@@ -714,14 +730,13 @@ chem_apply_state_dispersal_from_controlled_states = {
 				NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
 			}
 			set_temp_variable = { var = chem_units_in_enemy_state value = 0 }
-			meta_effect = {
-				text = {
-					set_temp_variable = {
-						var = chem_units_in_enemy_state
-						value = event_target:chem_state_dispersal_leader.num_units_in_state@[CHEM_STATE_ID]
+			event_target:chem_state_dispersal_leader = {
+				meta_effect = {
+					text = {
+						set_temp_variable = { var = chem_units_in_enemy_state value = num_units_in_state@[CHEM_STATE_ID] }
 					}
+					CHEM_STATE_ID = "[PREV.GetID]"
 				}
-				CHEM_STATE_ID = "[THIS.GetID]"
 			}
 
 			set_temp_variable = { var = chem_dose_each value = chem_units_in_enemy_state }
@@ -735,6 +750,7 @@ chem_apply_state_dispersal_from_controlled_states = {
 
 			if = {
 				limit = { check_variable = { var = chem_dose_each value = 0 compare = greater_than } }
+				add_to_temp_variable = { var = chem_total_units_affected value = chem_dose_each }
 				multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
 				add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
 				PREV = {
@@ -754,6 +770,7 @@ chem_apply_state_dispersal_from_controlled_states = {
 				}
 			}
 			set_temp_variable = { var = chem_dose_each value = chem_units_in_state }
+			add_to_temp_variable = { var = chem_total_units_affected value = chem_dose_each }
 			multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
 			add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
 			chem_apply_state_contamination = yes

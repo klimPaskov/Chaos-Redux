@@ -1,0 +1,92 @@
+add_namespace = chaosx.nr93
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##    ##     ##        ##
+#    ## ## ## ########      ########  #######
+#    ##  #### ##   ##             ##        ##
+#    ##   ### ##    ##     ##     ## ##     ##
+#    ##    ## ##     ##     #######   #######
+##############################################################################################################
+#   ######                                                      #####
+#   #     #  ####  #####  ##### #    #  ####    ##   #         #     #   ##   #      #  ####  #   ##
+#   #     # #    # #    #   #   #    # #    #  #  #  #         #        #  #  #      # #    # #  #  #
+#   ######  #    # #    #   #   #    # #      #    # #         #  #### #    # #      # #      # #    #
+#   #       #    # #####    #   #    # #  ### ###### #         #     # ###### #      # #      # ######
+#   #       #    # #   #    #   #    # #    # #    # #         #     # #    # #      # #    # # #    #
+#   #        ####  #    #   #    ####   ####  #    # ######     #####  #    # ###### #  ####  # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr93.1
+    title = chaosx.nr93.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        POR = { country_event = { id = chaosx.nr93.2 } }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr93.2
+    title = chaosx.nr93.2.t
+    desc = chaosx.nr93.2.d
+    picture = GFX_report_event_galicia
+
+    is_triggered_only = yes
+
+    option = {
+        add_war_support = 0.10
+        171 = { add_core_of = POR }
+        every_country = {
+            limit = { any_owned_state = { state = 171 } }
+            country_event = { id = chaosx.nr93.3 }
+        }
+        name = chaosx.nr93.2.a
+        ai_chance = { base = 100 }
+    }
+    option = {
+        add_political_power = -100
+        add_war_support = -0.20
+        name = chaosx.nr93.2.b
+        ai_chance = { base = 0 }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr93.3
+    title = chaosx.nr93.3.t
+    desc = chaosx.nr93.3.d
+    picture = GFX_report_event_galicia
+
+    is_triggered_only = yes
+
+    option = {
+        add_war_support = 0.10
+        add_political_power = 50
+        FROM = {
+            declare_war_on = {
+                target = ROOT
+                type = take_core_state
+            }
+        }
+        name = chaosx.nr93.3.a
+        ai_chance = { base = 50 }
+    }
+    option = {
+        add_political_power = -50
+        add_war_support = -0.10
+        news_event = { id = chaosx.news.74 days = 2 }
+        171 = { transfer_state_to = FROM }
+        name = chaosx.nr93.3.b
+        ai_chance = { base = 50 }
+    }
+}

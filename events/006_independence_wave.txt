@@ -1,0 +1,57 @@
+add_namespace = chaosx.nr6
+
+##############################################################################################################
+#    ##    ## ########      #######
+#    ###   ## ##     ##    ##     ##
+#    ####  ## ##     ##    ##
+#    ## ## ## ########     ########
+#    ##  #### ##   ##      ##     ##
+#    ##   ### ##    ##     ##     ##
+#    ##    ## ##     ##     #######
+##############################################################################################################
+#   ###
+#    #  #    # #####  ###### #####  ###### #    # #####  ###### #    #  ####  ######    #    #   ##   #    # ######
+#    #  ##   # #    # #      #    # #      ##   # #    # #      ##   # #    # #         #    #  #  #  #    # #
+#    #  # #  # #    # #####  #    # #####  # #  # #    # #####  # #  # #      #####     #    # #    # #    # #####
+#    #  #  # # #    # #      #####  #      #  # # #    # #      #  # # #      #         # ## # ###### #    # #
+#    #  #   ## #    # #      #      #      #   ## #    # #      #   ## #    # #         ##  ## #    #  #  #  #
+#   ### #    # #####  ###### #      ###### #    # #####  ###### #    #  ####  ######    #    # #    #   ##   ######
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr6.1
+    title = chaosx.nr6.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        clear_array = global.indp_countries
+        every_possible_country = {
+            limit = { exists = no any_state = { is_core_of = PREV } NOT = { tag = UKR tag = BEL } }
+            random_select_amount = 3
+            add_to_array = { global.indp_countries = THIS }
+        }
+        for_each_scope_loop = {
+            array = global.indp_countries
+            random_country = {
+                limit = { any_controlled_state = { is_core_of = PREV.PREV } }
+                release = PREV
+                set_truce = {
+                    target = PREV
+                    days = 180
+                }
+                PREV = { # So that the country doesn't lose cores
+                    every_owned_state = {
+                        add_core_of = PREV.PREV
+                    }
+                }
+            }
+        }
+        set_variable = { global.indp_country_1 = global.indp_countries^0 }
+        set_variable = { global.indp_country_2 = global.indp_countries^1 }
+        set_variable = { global.indp_country_3 = global.indp_countries^2 }
+        news_event = { id = chaosx.news.6 days = 2 }
+    }
+}

@@ -1,0 +1,283 @@
+add_namespace = chaosx.nr77
+
+##############################################################################################################
+#    ##    ## ########     ######## ########
+#    ###   ## ##     ##    ##    ## ##    ##
+#    ####  ## ##     ##        ##       ##
+#    ## ## ## ########        ##       ##
+#    ##  #### ##   ##        ##       ##
+#    ##   ### ##    ##       ##       ##
+#    ##    ## ##     ##      ##       ##
+##############################################################################################################
+#   #######                                              #     #                                                #     #
+#   #        ####         ###### #####   ####  #    #    ##   ##   ##        #  ####  #####     #####  ####     ##   ## # #    #  ####  #####
+#   #       #    #        #      #    # #    # ##  ##    # # # #  #  #       # #    # #    #      #   #    #    # # # # # ##   # #    # #    #
+#   #####   #    #        #####  #    # #    # # ## #    #  #  # #    #      # #    # #    #      #   #    #    #  #  # # # #  # #    # #    #
+#   #       #  # # ###    #      #####  #    # #    #    #     # ######      # #    # #####       #   #    #    #     # # #  # # #    # #####
+#   #       #   #  ###    #      #   #  #    # #    #    #     # #    # #    # #    # #   #       #   #    #    #     # # #   ## #    # #   #
+#   #######  ### # ###    #      #    #  ####  #    #    #     # #    #  ####   ####  #    #      #    ####     #     # # #    #  ####  #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr77.1
+    title = chaosx.nr77.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = {
+                OR = { is_major = yes is_ai = no }
+                OR = {
+                    # Infantry
+                    has_equipment = { infantry_equipment > 1000 }
+                    has_equipment = { artillery_equipment > 150 }
+                    has_equipment = { anti_air_equipment > 100 }
+                    has_equipment = { anti_tank_equipment > 100 }
+                    has_equipment = { support_equipment > 200 }
+                    # Motorized/Supply
+                    has_equipment = { motorized_equipment > 100 }
+                    has_equipment = { armored_car_equipment > 100 }
+                    has_equipment = { mechanized_equipment > 100 }
+                    has_equipment = { amphibious_mechanized_equipment > 100 }
+                    has_equipment = { train_equipment > 10 }
+                    has_equipment = { convoy > 100 }
+                    # Planes
+                    has_equipment = { small_plane_airframe > 50 }
+                    has_equipment = { cv_small_plane_airframe > 50 }
+                    has_equipment = { small_plane_cas_airframe > 50 }
+                    has_equipment = { cv_small_plane_cas_airframe > 50 }
+                    has_equipment = { small_plane_naval_bomber_airframe > 50 }
+                    has_equipment = { cv_small_plane_naval_bomber_airframe > 50 }
+                    has_equipment = { small_plane_suicide_airframe > 50 }
+                    has_equipment = { cv_small_plane_suicide_airframe > 50 }
+                    has_equipment = { jet_fighter_equipment > 50 }
+                    has_equipment = { rocket_interceptor_equipment > 50 }
+                    has_equipment = { medium_plane_airframe > 50 }
+                    has_equipment = { medium_plane_fighter_airframe > 50 }
+                    has_equipment = { medium_plane_scout_plane_airframe > 50 }
+                    has_equipment = { jet_tac_bomber_equipment > 50 }
+                    has_equipment = { large_plane_airframe > 50 }
+                    has_equipment = { large_plane_maritime_patrol_plane_airframe > 50 }
+                    has_equipment = { jet_strat_bomber_equipment > 50 }
+                    has_equipment = { transport_plane_equipment > 50 }
+                    # Tanks
+                    has_equipment = { light_tank_chassis > 100 }
+                    has_equipment = { light_tank_aa_chassis > 100 }
+                    has_equipment = { light_tank_artillery_chassis > 100 }
+                    has_equipment = { light_tank_destroyer_chassis > 100 }
+                    has_equipment = { light_tank_amphibious_chassis > 100 }
+                    has_equipment = { light_tank_flame_chassis > 100 }
+                    has_equipment = { medium_tank_chassis > 100 }
+                    has_equipment = { medium_tank_aa_chassis > 100 }
+                    has_equipment = { medium_tank_artillery_chassis > 100 }
+                    has_equipment = { medium_tank_destroyer_chassis > 100 }
+                    has_equipment = { medium_tank_amphibious_chassis > 100 }
+                    has_equipment = { medium_tank_flame_chassis > 100 }
+                    has_equipment = { heavy_tank_chassis > 100 }
+                    has_equipment = { heavy_tank_chassis > 100 }
+                    has_equipment = { heavy_tank_aa_chassis > 100 }
+                    has_equipment = { heavy_tank_artillery_chassis > 100 }
+                    has_equipment = { heavy_tank_destroyer_chassis > 100 }
+                    has_equipment = { heavy_tank_amphibious_chassis > 100 }
+                    has_equipment = { heavy_tank_flame_chassis > 100 }
+                    # Late game
+                    has_equipment = { modern_tank_chassis > 50 }
+                    has_equipment = { super_heavy_tank_chassis > 50 }
+                    has_equipment = { amphibious_tank_chassis > 100 }
+                    has_equipment = { railway_gun_equipment > 1 }
+                }
+            }
+            # Get random minors
+            random_other_country = {
+                limit = { is_major = no NOT = { is_ally_with = PREV } is_in_faction = no is_subject = no }
+                set_variable = { global.random_minor_1 = THIS.id }
+                random_other_country = {
+                    limit = { is_major = no NOT = { is_ally_with = PREV.PREV } is_in_faction = no is_subject = no }
+                    set_variable = { global.random_minor_2 = THIS.id }
+                    random_other_country = {
+                        limit = { is_major = no NOT = { is_ally_with = PREV.PREV.PREV tag = PREV.PREV } is_in_faction = no is_subject = no }
+                        set_variable = { global.random_minor_3 = THIS.id }
+                    }
+                }
+            }
+
+            country_event = { id = chaosx.nr77.3 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr77.2
+    title = chaosx.nr77.2.t
+    desc = chaosx.nr77.2.d
+    picture = GFX_report_event_glorious_vehicle
+
+    is_triggered_only = yes
+
+    option = {
+        set_variable = { global.chosen_eq = 1 }
+        name = chaosx.nr77.2.a
+        var:global.chosen_minor = {
+            country_event = { id = chaosx.nr77.4 }
+        }
+        trigger = {
+            OR = {
+                has_equipment = { infantry_equipment > 1000 }
+                has_equipment = { artillery_equipment > 150 }
+                has_equipment = { anti_air_equipment > 100 }
+                has_equipment = { anti_tank_equipment > 100 }
+                has_equipment = { support_equipment > 200 }
+            }
+        }
+    }
+    option = {
+        set_variable = { global.chosen_eq = 2 }
+        name = chaosx.nr77.2.b
+        var:global.chosen_minor = {
+            country_event = { id = chaosx.nr77.4 }
+        }
+        trigger = {
+            OR = {
+                has_equipment = { motorized_equipment > 100 }
+                has_equipment = { train_equipment > 10 }
+                has_equipment = { convoy > 100 }
+            }
+        }
+    }
+    option = {
+        set_variable = { global.chosen_eq = 3 }
+        name = chaosx.nr77.2.c
+        var:global.chosen_minor = {
+            country_event = { id = chaosx.nr77.4 }
+        }
+        trigger = {
+            OR = {
+                has_equipment = { small_plane_airframe > 50 }
+                has_equipment = { cv_small_plane_airframe > 50 }
+                has_equipment = { small_plane_cas_airframe > 50 }
+                has_equipment = { cv_small_plane_cas_airframe > 50 }
+                has_equipment = { small_plane_naval_bomber_airframe > 50 }
+                has_equipment = { cv_small_plane_naval_bomber_airframe > 50 }
+                has_equipment = { small_plane_suicide_airframe > 50 }
+                has_equipment = { cv_small_plane_suicide_airframe > 50 }
+                has_equipment = { jet_fighter_equipment > 50 }
+                has_equipment = { rocket_interceptor_equipment > 50 }
+                has_equipment = { medium_plane_airframe > 50 }
+                has_equipment = { medium_plane_fighter_airframe > 50 }
+                has_equipment = { medium_plane_scout_plane_airframe > 50 }
+                has_equipment = { jet_tac_bomber_equipment > 50 }
+                has_equipment = { large_plane_airframe > 50 }
+                has_equipment = { large_plane_maritime_patrol_plane_airframe > 50 }
+                has_equipment = { jet_strat_bomber_equipment > 50 }
+                has_equipment = { transport_plane_equipment > 50 }
+            }
+        }
+    }
+    option = {
+        set_variable = { global.chosen_eq = 4 }
+        name = chaosx.nr77.2.e
+        var:global.chosen_minor = {
+            country_event = { id = chaosx.nr77.4 }
+        }
+        trigger = {
+            OR = {
+                has_equipment = { armored_car_equipment > 100 }
+                has_equipment = { mechanized_equipment > 100 }
+                has_equipment = { amphibious_mechanized_equipment > 100 }
+                has_equipment = { light_tank_chassis > 100 }
+                has_equipment = { light_tank_aa_chassis > 100 }
+                has_equipment = { light_tank_artillery_chassis > 100 }
+                has_equipment = { light_tank_destroyer_chassis > 100 }
+                has_equipment = { light_tank_amphibious_chassis > 100 }
+                has_equipment = { light_tank_flame_chassis > 100 }
+                has_equipment = { medium_tank_chassis > 100 }
+                has_equipment = { medium_tank_aa_chassis > 100 }
+                has_equipment = { medium_tank_artillery_chassis > 100 }
+                has_equipment = { medium_tank_destroyer_chassis > 100 }
+                has_equipment = { medium_tank_amphibious_chassis > 100 }
+                has_equipment = { medium_tank_flame_chassis > 100 }
+                has_equipment = { heavy_tank_chassis > 100 }
+                has_equipment = { heavy_tank_chassis > 100 }
+                has_equipment = { heavy_tank_aa_chassis > 100 }
+                has_equipment = { heavy_tank_artillery_chassis > 100 }
+                has_equipment = { heavy_tank_destroyer_chassis > 100 }
+                has_equipment = { heavy_tank_amphibious_chassis > 100 }
+                has_equipment = { heavy_tank_flame_chassis > 100 }
+            }
+        }
+    }
+    option = {
+        set_variable = { global.chosen_eq = 5 }
+        name = chaosx.nr77.2.f
+        var:global.chosen_minor = {
+            country_event = { id = chaosx.nr77.4 }
+        }
+        trigger = {
+            OR = {
+                has_equipment = { modern_tank_chassis > 50 }
+                has_equipment = { super_heavy_tank_chassis > 50 }
+                has_equipment = { amphibious_tank_chassis > 100 }
+                has_equipment = { railway_gun_equipment > 1 }
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr77.3
+    title = chaosx.nr77.3.t
+    desc = chaosx.nr77.3.d
+    picture = GFX_report_event_glorious_vehicle
+
+    is_triggered_only = yes
+
+    option = {
+        hidden_effect = { country_event = { id = chaosx.nr77.2 } }
+        var:global.random_minor_1 = {
+            set_variable = { global.chosen_minor = THIS.id }
+        }
+        name = chaosx.nr77.3.a
+    }
+    option = {
+        hidden_effect = { country_event = { id = chaosx.nr77.2 } }
+        var:global.random_minor_2 = {
+            set_variable = { global.chosen_minor = THIS.id }
+        }
+        name = chaosx.nr77.3.b
+    }
+    option = {
+        hidden_effect = { country_event = { id = chaosx.nr77.2 } }
+        var:global.random_minor_3 = {
+            set_variable = { global.chosen_minor = THIS.id }
+        }
+        name = chaosx.nr77.3.c
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr77.4
+    title = chaosx.nr77.4.t
+    desc = chaosx.nr77.4.d
+    picture = GFX_report_event_glorious_vehicle
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr77.4.a
+        FROM = { send_chosen_equipment = yes }
+        news_event = { id = chaosx.news.67 days = 1 }
+        add_opinion_modifier = {
+            target = FROM
+            modifier = huge_increase
+        }
+    }
+}
