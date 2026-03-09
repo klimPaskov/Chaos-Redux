@@ -54,6 +54,7 @@ initialize_event_system = {
 	clear_array = global.events_log_event_detail_evolution_type_entries
 	clear_array = global.events_log_event_detail_evolution_tier_entries
 	clear_array = global.events_log_event_detail_evolution_stage_entries
+	clear_array = global.events_log_event_detail_evolution_enabled_entries
 	clear_array = global.events_log_history_detail_evolution_sequence_entries
 	clear_array = global.events_log_history_detail_evolution_date_entries
 	clear_array = global.events_log_history_detail_evolution_type_entries
@@ -61,6 +62,7 @@ initialize_event_system = {
 	clear_array = global.events_log_history_detail_evolution_stage_entries
 	clear_array = global.events_log_history_detail_evolution_actor_entries
 	clear_array = global.events_log_history_detail_evolution_has_actor_entries
+	clear_array = global.events_log_history_detail_evolution_enabled_entries
 	clear_array = global.events_log_evolution_sequence_entries
 	clear_array = global.events_log_evolution_date_entries
 	clear_array = global.events_log_evolution_type_entries
@@ -73,11 +75,13 @@ initialize_event_system = {
 	clear_array = global.events_log_evolution_view_sequence_entries
 	clear_array = global.events_log_evolution_view_date_entries
 	clear_array = global.events_log_evolution_view_type_entries
+	clear_array = global.events_log_evolution_view_event_id_entries
 	clear_array = global.events_log_evolution_view_event_type_entries
 	clear_array = global.events_log_evolution_view_tier_entries
 	clear_array = global.events_log_evolution_view_stage_entries
 	clear_array = global.events_log_evolution_view_actor_entries
 	clear_array = global.events_log_evolution_view_has_actor_entries
+	clear_array = global.events_log_evolution_view_enabled_entries
 
     set_variable = { global.default_event_weight = constant:event_system_defaults.event_weight }
     set_variable = { global.minor_event_recovery_rate = constant:event_system_defaults.recovery_rate }
@@ -293,8 +297,8 @@ check_event_timer = {
 
 # Calculate next timer value based on current modifiers and chaos
 calculate_next_timer_value = {
-    set_temp_variable = { temp_min_timer = settings_timer_min_days }
-    set_temp_variable = { temp_max_timer = settings_timer_max_days }
+    set_temp_variable = { temp_min_timer = timer_min_days }
+    set_temp_variable = { temp_max_timer = timer_max_days }
     subtract_from_temp_variable = { temp_max_timer = timer_max_cap_reduction }
 
     # Update chaos timer modifier based on current tier
@@ -929,6 +933,87 @@ sanitize_events_log_history_actor_entries = {
 	}
 }
 
+events_log_set_default_actor_for_current_event = {
+	set_temp_variable = { events_log_default_actor = 0 }
+	set_temp_variable = { events_log_default_has_actor = 0 }
+
+	if = {
+		limit = { check_variable = { event_id = 2 } }
+		ZZZ = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 5 } }
+		SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 23 } }
+		SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 38 } }
+		MLT = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 48 } }
+		BUL = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 69 } }
+		CHI = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 71 } }
+		PER = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 72 } }
+		IRE = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 73 } }
+		MON = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 74 } }
+		JAP = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 75 } }
+		TAN = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 81 } }
+		ENG = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 90 } }
+		JAP = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 91 } }
+		SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = 93 } }
+		POR = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+}
+
 record_events_log_history_entry = {
     if = {
         limit = { NOT = { has_variable = global.events_log_history_sequence } }
@@ -967,183 +1052,15 @@ record_events_log_history_entry = {
         value = event_type
         index = 0
     }
-    set_temp_variable = { events_log_has_actor = 0 }
-
-    if = {
-        limit = { check_variable = { events_log_entry_event_id = 2 } }
-        ZZZ = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 5 } }
-        SOV = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 23 } }
-        SOV = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 38 } }
-        MLT = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 48 } }
-        BUL = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 69 } }
-        CHI = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 71 } }
-        PER = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 72 } }
-        IRE = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 73 } }
-        MON = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 74 } }
-        JAP = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 75 } }
-        TAN = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 81 } }
-        ENG = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 91 } }
-        SOV = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 90 } }
-        JAP = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else_if = {
-        limit = { check_variable = { events_log_entry_event_id = 93 } }
-        POR = {
-            add_to_array = {
-                array = global.events_log_history_actor_entries
-                value = THIS
-                index = 0
-            }
-        }
-        set_temp_variable = { events_log_has_actor = 1 }
-    }
-    else = {
-        add_to_array = {
-            array = global.events_log_history_actor_entries
-            value = 0
-            index = 0
-        }
+    events_log_set_default_actor_for_current_event = yes
+    add_to_array = {
+        array = global.events_log_history_actor_entries
+        value = events_log_default_actor
+        index = 0
     }
     add_to_array = {
         array = global.events_log_history_has_actor_entries
-        value = events_log_has_actor
+        value = events_log_default_has_actor
         index = 0
     }
     add_to_array = {

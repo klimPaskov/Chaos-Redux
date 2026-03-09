@@ -38,17 +38,43 @@ on_actions = {
 						}
 					}
 				}
-				every_state = { # Anything zombies occupy, becomes core state
-					limit = { is_controlled_by = ROOT NOT = { is_core_of = ROOT } }
-					add_core_of = ROOT
-				}
+					every_state = { # Anything zombies occupy, becomes core state
+						limit = { is_controlled_by = ROOT NOT = { is_core_of = ROOT } }
+						add_core_of = ROOT
+					}
 
-				relocate_isolated_zombie_capital = yes
+					relocate_isolated_zombie_capital = yes
 
-				# Stop monroe doctrine white peace
-				if = {
-					limit = { any_country = { has_war_with = ROOT OR = { capital_scope = { is_on_continent = south_america } capital_scope = { is_on_continent = north_america } } } NOT = { has_war_with = USA } }
-					declare_war_on = {
+					if = {
+						limit = {
+							tag = ZZZ
+							NOT = {
+								has_country_leader = {
+									ruling_only = yes
+									character = ZZZ_leader
+								}
+							}
+						}
+						refresh_dynamic_zombie_country_leader = yes
+					}
+
+					if = {
+						limit = {
+							has_country_flag = zombie_outbreak_dynamic_country
+							NOT = {
+								has_country_leader = {
+									ruling_only = yes
+									character = ZZZ_leader
+								}
+							}
+						}
+						refresh_dynamic_zombie_country_leader = yes
+					}
+
+					# Stop monroe doctrine white peace
+					if = {
+						limit = { any_country = { has_war_with = ROOT OR = { capital_scope = { is_on_continent = south_america } capital_scope = { is_on_continent = north_america } } } NOT = { has_war_with = USA } }
+						declare_war_on = {
 						target = USA
 						type = annex_everything
 					}
@@ -183,13 +209,13 @@ on_actions = {
 					NOT = { has_global_flag = azl_super_event_fired }
 				}
 
-				play_song = "zombies_music"
-
 				set_global_flag = {
 					flag = super_event_visible
 					days = 30
 					value = 2
 				}
+				set_variable = { global.current_super_event_audio_id = 2 }
+				play_current_super_event_audio = yes
 				set_global_flag = azl_super_event_fired
 
 			}
@@ -206,10 +232,12 @@ on_actions = {
 			}
 			if = {
 				limit = {
+					tag = ZZZ
 					has_global_flag = has_zombie_outbreak
 					NOT = { has_global_flag = zombie_system_disabled }
 				}
-				calculate_zombie_outbreak_chance = yes
+				update_all_zombie_outbreak_chances = yes
+				attempt_dynamic_zombie_outbreak = yes
 			}
 			if = {
 				limit = {
@@ -829,7 +857,7 @@ on_actions = {
 						update_all_zombie_outbreak_chances = yes
 					}
 					else = {
-						disable_zombie_outbreak_system = yes
+						update_all_zombie_outbreak_chances = yes
 					}
 				}
 			}

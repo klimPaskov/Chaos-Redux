@@ -405,3 +405,53 @@ get_random_sea_region = {
         1 = { set_variable = { global.rand_sea_region = 279 } }
     }
 }
+
+run_dynamic_random_event_selection_special_rule = {
+	if = {
+		limit = { NOT = { has_variable = random_event_selection_special_rule_id } }
+		set_temp_variable = { random_event_selection_special_rule_id = 0 }
+	}
+
+	meta_effect = {
+		text = {
+			random_event_selection_special_rule_[RULE_ID] = yes
+		}
+		RULE_ID = "[?random_event_selection_special_rule_id|.0]"
+	}
+}
+
+random_event_selection_special_rule_0 = {}
+
+random_event_selection_special_rule_2 = {
+	if = {
+		limit = { any_country = { is_neighbor_of = ZZZ } }
+		set_temp_variable = { random_event_selection_candidate_is_valid = 0 }
+	}
+}
+
+random_event_selection_special_rule_14 = {
+	if = {
+		limit = { all_country = { has_war = no } }
+		set_temp_variable = { random_event_selection_candidate_is_valid = 0 }
+	}
+}
+
+play_dynamic_super_event_music = {
+	meta_effect = {
+		text = {
+			scoped_play_song = "chaosx_super_event_[SUPER_EVENT_ID]_[VOLUME_SUFFIX]"
+		}
+		SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
+		VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
+	}
+}
+
+play_dynamic_super_event_sound = {
+	meta_effect = {
+		text = {
+			scoped_sound_effect = "chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]"
+		}
+		SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
+		VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
+	}
+}
