@@ -1151,21 +1151,13 @@ tactic_sf_ambush = { #countered by mouse holing
 # CHAOS REDUX - CHEMICAL WARFARE TACTICS
 # ============================================================================
 
-@CHEM_GAS_MASK_TACTIC_BASE = 1
-@CHEM_GAS_MASK_TACTIC_IMPROVED_ADD = 1
-@CHEM_GAS_MASK_TACTIC_ADVANCED_ADD = 1
 @CHEM_GAS_MASK_TACTIC_ATTACKER_MOVE = -0.1
 @CHEM_GAS_MASK_TACTIC_ATTACKER = -0.2
 @CHEM_GAS_MASK_TACTIC_DEFENDER = 0.15
 
-@CHEM_SHELLING_TACTIC_BASE = 4
 @CHEM_SHELLING_TACTIC_ATTACKER_MOVE = -0.10
 @CHEM_SHELLING_TACTIC_ATTACKER = 0.25
 @CHEM_SHELLING_TACTIC_DEFENDER = -0.35
-@CHEM_SHELLING_TACTIC_GLOBAL_USAGE_FACTOR = 0.10
-@CHEM_SHELLING_TACTIC_JAPAN_USAGE_FACTOR = 4.50
-@CHEM_SHELLING_TACTIC_JAPAN_CHINA_USAGE_FACTOR = 2.00
-@CHEM_SHELLING_TACTIC_CHAOS_WARFARE_USAGE_FACTOR = 0.25
 
 @CHEM_BARRAGE_TACTIC_BASE = 6
 @CHEM_BARRAGE_TACTIC_ATTACKER_MOVE = -0.12
@@ -1173,32 +1165,24 @@ tactic_sf_ambush = { #countered by mouse holing
 @CHEM_BARRAGE_TACTIC_DEFENDER = -0.58
 
 tactic_gas_mask_defense = {
-    is_attacker = no
-    trigger = {
-        is_attacker = no
-        phase = no
-        OWNER = { has_tech = basic_gas_masks }
-    }
+	is_attacker = no
+	trigger = {
+		is_attacker = no
+		phase = no
+		OWNER = { has_tech = basic_gas_masks }
+	}
 
-    active = no
+	active = no
 
-    base = {
-        factor = @CHEM_GAS_MASK_TACTIC_BASE
-        modifier = {
-            add = @CHEM_GAS_MASK_TACTIC_IMPROVED_ADD
-            OWNER = { has_tech = improved_gas_masks }
-        }
-        modifier = {
-            add = @CHEM_GAS_MASK_TACTIC_ADVANCED_ADD
-            OWNER = { has_tech = advanced_gas_masks }
-        }
-    }
+	base = {
+		factor = 0 # Counter-only tactic; do not pick it proactively outside chemical counters.
+	}
 
-    picture = gas_mask
+	picture = gas_mask
 
-    attacker_movement_speed = @CHEM_GAS_MASK_TACTIC_ATTACKER_MOVE
-    attacker = @CHEM_GAS_MASK_TACTIC_ATTACKER
-    defender = @CHEM_GAS_MASK_TACTIC_DEFENDER
+	attacker_movement_speed = @CHEM_GAS_MASK_TACTIC_ATTACKER_MOVE
+	attacker = @CHEM_GAS_MASK_TACTIC_ATTACKER
+	defender = @CHEM_GAS_MASK_TACTIC_DEFENDER
 }
 
 tactic_chemical_shelling = {
@@ -1222,77 +1206,53 @@ tactic_chemical_shelling = {
 	active = no
 
 	base = {
-		factor = @CHEM_SHELLING_TACTIC_BASE
-		modifier = {
-			factor = @CHEM_SHELLING_TACTIC_GLOBAL_USAGE_FACTOR
-			always = yes
-		}
-		modifier = {
-			factor = @CHEM_SHELLING_TACTIC_JAPAN_USAGE_FACTOR
-			tag = JAP
-		}
-		modifier = {
-			factor = @CHEM_SHELLING_TACTIC_JAPAN_CHINA_USAGE_FACTOR
-			OWNER = { is_japan_china_chemical_campaign_war = yes }
-		}
-		modifier = {
-			factor = @CHEM_SHELLING_TACTIC_CHAOS_WARFARE_USAGE_FACTOR
-			OWNER = { has_doctrine = chaos_warfare }
-		}
-		modifier = {
-			add = 1
-			has_trait = offensive_doctrine
-		}
-        modifier = {
-            add = 1
-            has_trait = aggressive_assaulter
-        }
-    }
+		factor = 0 # Automatic chemical shelling is disabled; chemical attack use comes from explicit systems.
+	}
 
-    picture = gas_attack
-    countered_by = tactic_gas_mask_defense
+	picture = gas_attack
+	countered_by = tactic_gas_mask_defense
 
-    attacker_movement_speed = @CHEM_SHELLING_TACTIC_ATTACKER_MOVE
-    attacker = @CHEM_SHELLING_TACTIC_ATTACKER
-    defender = @CHEM_SHELLING_TACTIC_DEFENDER
+	attacker_movement_speed = @CHEM_SHELLING_TACTIC_ATTACKER_MOVE
+	attacker = @CHEM_SHELLING_TACTIC_ATTACKER
+	defender = @CHEM_SHELLING_TACTIC_DEFENDER
 }
 
 tactic_chemical_barrage = {
-    is_attacker = yes
-    trigger = {
-        is_attacker = yes
-        phase = no
-        OWNER = {
-            has_doctrine = chaos_warfare
-            OR = {
-                has_tech = chlorine_gas
-                has_tech = phosgene
-                has_tech = mustard_gas
-                has_tech = lewisite
-                has_tech = sarin
-                has_tech = soman
-            }
-        }
-    }
+	is_attacker = yes
+	trigger = {
+		is_attacker = yes
+		phase = no
+		OWNER = {
+			has_doctrine = chaos_warfare
+			OR = {
+				has_tech = chlorine_gas
+				has_tech = phosgene
+				has_tech = mustard_gas
+				has_tech = lewisite
+				has_tech = sarin
+				has_tech = soman
+			}
+		}
+	}
 
-    active = no
+	active = no
 
-    base = {
-        factor = @CHEM_BARRAGE_TACTIC_BASE
-        modifier = {
-            add = 2
-            has_trait = offensive_doctrine
-        }
-        modifier = {
-            add = 2
-            has_trait = aggressive_assaulter
-        }
-    }
+	base = {
+		factor = @CHEM_BARRAGE_TACTIC_BASE
+		modifier = {
+			add = 2
+			has_trait = offensive_doctrine
+		}
+		modifier = {
+			add = 2
+			has_trait = aggressive_assaulter
+		}
+	}
 
-    picture = gas_attack
-    countered_by = tactic_gas_mask_defense
+	picture = gas_attack
+	countered_by = tactic_gas_mask_defense
 
-    attacker_movement_speed = @CHEM_BARRAGE_TACTIC_ATTACKER_MOVE
-    attacker = @CHEM_BARRAGE_TACTIC_ATTACKER
-    defender = @CHEM_BARRAGE_TACTIC_DEFENDER
+	attacker_movement_speed = @CHEM_BARRAGE_TACTIC_ATTACKER_MOVE
+	attacker = @CHEM_BARRAGE_TACTIC_ATTACKER
+	defender = @CHEM_BARRAGE_TACTIC_DEFENDER
 }

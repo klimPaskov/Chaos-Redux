@@ -1990,45 +1990,127 @@ relocate_isolated_zombie_capital = {
 }
 
 select_dynamic_zombie_outbreak_state = {
+	clear_array = global.dynamic_zombie_outbreak_state_pool
+
+	every_controlled_state = {
+		limit = { is_rear_zombie_outbreak_state = yes }
+
+		set_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_base_weight }
+
+		if = {
+			limit = { is_medium_risk_rear_zombie_outbreak_state = yes }
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_medium_risk_bonus }
+		}
+		if = {
+			limit = { is_high_risk_rear_zombie_outbreak_state = yes }
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_high_risk_bonus }
+		}
+		if = {
+			limit = { is_extreme_risk_rear_zombie_outbreak_state = yes }
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_extreme_risk_bonus }
+		}
+
+		if = {
+			limit = {
+				OR = {
+					has_state_category = city
+					has_state_category = large_city
+				}
+			}
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_city_bonus }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_state_category = metropolis
+					has_state_category = megalopolis
+				}
+			}
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_major_city_bonus }
+		}
+
+		if = {
+			limit = { state_population_k > constant:zombie_outbreak.state_population_high_risk_threshold }
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_high_population_bonus }
+		}
+		if = {
+			limit = { state_population_k > constant:zombie_outbreak.state_population_extreme_risk_threshold }
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_extreme_population_bonus }
+		}
+
+		if = {
+			limit = { infrastructure < constant:zombie_outbreak.low_infrastructure_threshold }
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_low_infrastructure_bonus }
+		}
+		if = {
+			limit = { infrastructure < constant:zombie_outbreak.very_low_infrastructure_threshold }
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_very_low_infrastructure_bonus }
+		}
+		if = {
+			limit = {
+				industrial_complex < constant:zombie_outbreak.low_industry_threshold
+				arms_factory < constant:zombie_outbreak.low_industry_threshold
+			}
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_low_industry_bonus }
+		}
+		if = {
+			limit = {
+				industrial_complex < constant:zombie_outbreak.very_low_industry_threshold
+				arms_factory < constant:zombie_outbreak.very_low_industry_threshold
+			}
+			add_to_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_very_low_industry_bonus }
+		}
+
+		round_temp_variable = zombie_dynamic_outbreak_state_weight
+
+		if = {
+			limit = {
+				check_variable = {
+					var = zombie_dynamic_outbreak_state_weight
+					value = 1
+					compare = less_than
+				}
+			}
+			set_temp_variable = { zombie_dynamic_outbreak_state_weight = 1 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = zombie_dynamic_outbreak_state_weight
+					value = constant:zombie_outbreak.state_pick_weight_cap
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { zombie_dynamic_outbreak_state_weight = constant:zombie_outbreak.state_pick_weight_cap }
+		}
+
+		for_loop_effect = {
+			start = 0
+			end = zombie_dynamic_outbreak_state_weight
+			value = zombie_dynamic_outbreak_state_pool_index
+
+			add_to_array = {
+				array = global.dynamic_zombie_outbreak_state_pool
+				value = THIS
+			}
+		}
+	}
+
 	if = {
 		limit = {
-			any_controlled_state = {
-				is_extreme_risk_rear_zombie_outbreak_state = yes
+			check_variable = {
+				var = global.dynamic_zombie_outbreak_state_pool^num
+				value = 0
+				compare = greater_than
 			}
 		}
-		random_controlled_state = {
-			limit = {
-				is_extreme_risk_rear_zombie_outbreak_state = yes
-			}
+		random_scope_in_array = {
+			array = global.dynamic_zombie_outbreak_state_pool
 			save_event_target_as = outbreak_state
 		}
 	}
-	else_if = {
-		limit = {
-			any_controlled_state = {
-				is_high_risk_rear_zombie_outbreak_state = yes
-			}
-		}
-		random_controlled_state = {
-			limit = {
-				is_high_risk_rear_zombie_outbreak_state = yes
-			}
-			save_event_target_as = outbreak_state
-		}
-	}
-	else_if = {
-		limit = {
-			any_controlled_state = {
-				is_medium_risk_rear_zombie_outbreak_state = yes
-			}
-		}
-		random_controlled_state = {
-			limit = {
-				is_medium_risk_rear_zombie_outbreak_state = yes
-			}
-			save_event_target_as = outbreak_state
-		}
-	}
+
+	clear_array = global.dynamic_zombie_outbreak_state_pool
 }
 
 transfer_dynamic_zombie_successor_to_main = {
@@ -2053,6 +2135,71 @@ transfer_dynamic_zombie_successor_to_main = {
 	}
 }
 
+restore_dormant_zombie_main_outbreak = {
+	if = {
+		limit = { has_event_target = outbreak_state }
+		event_target:outbreak_state = {
+			transfer_state_to = ZZZ
+			add_core_of = ZZZ
+
+			ZZZ = {
+				set_major = yes
+				add_ideas = {
+					never_ending_hunger
+					tot_economic_mobilisation
+					extensive_conscription
+				}
+				set_capital = {
+					state = PREV
+					remember_old_capital = no
+				}
+				load_oob = "ZZZ_1936"
+				set_division_force_allow_recruiting = {
+					division_template = "Brainzz Horde"
+					force_allow_recruiting = yes
+				}
+				set_division_template_lock = {
+					division_template = "Brainzz Horde"
+					is_locked = no
+				}
+			}
+
+			if = {
+				limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
+				create_unit = {
+					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+					owner = ZZZ
+					count = 10
+				}
+			}
+			else_if = {
+				limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
+				create_unit = {
+					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2"
+					owner = ZZZ
+					count = 10
+				}
+			}
+			else_if = {
+				limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
+				create_unit = {
+					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3"
+					owner = ZZZ
+					count = 12
+				}
+			}
+			else_if = {
+				limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
+				create_unit = {
+					division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
+					owner = ZZZ
+					count = 15
+				}
+			}
+		}
+	}
+}
+
 disable_zombie_outbreak_system = {
 	if = {
 		limit = { has_global_flag = has_zombie_outbreak }
@@ -2060,12 +2207,6 @@ disable_zombie_outbreak_system = {
 	}
 
 	set_global_flag = zombie_system_disabled
-	play_song = "zombies_music"
-	set_global_flag = {
-		flag = super_event_visible
-		days = 30
-		value = 5
-	}
 
 	every_country = {
 		limit = { exists = yes }
@@ -2075,12 +2216,13 @@ disable_zombie_outbreak_system = {
 
 on_zombie_threat_defeated = {
 	set_global_flag = zombie_threat_defeated
-	play_song = "zombies_music"
 	set_global_flag = {
 		flag = super_event_visible
 		days = 30
-		value = 6
+		value = 5
 	}
+	set_variable = { global.current_super_event_audio_id = 5 }
+	play_current_super_event_audio = yes
 
 	set_temp_variable = { chaos_change = constant:zombie_threat.defeat_chaos_reduction }
 	multiply_temp_variable = { chaos_change = -1 }
@@ -2125,7 +2267,138 @@ azl_absorb_smaller_factions = {
 	}
 }
 
-# Calculate zombie outbreak chance for a country (mirrors chaosx.nr2.6 mean_time_to_happen)
+refresh_dynamic_zombie_country_leader = {
+	set_country_leader_name = {
+		name = ZZZ_leader_name
+	}
+	if = {
+		limit = {
+			has_country_flag = { flag = zombie_current_tier value = 3 }
+		}
+		set_country_leader_portrait = {
+			portrait = "GFX_portrait_ZZZ_leader_4"
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = { flag = zombie_current_tier value = 2 }
+		}
+		set_country_leader_portrait = {
+			portrait = "GFX_portrait_ZZZ_leader_3"
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = { flag = zombie_current_tier value = 1 }
+		}
+		set_country_leader_portrait = {
+			portrait = "GFX_portrait_ZZZ_leader_2"
+		}
+	}
+	else = {
+		set_country_leader_portrait = {
+			portrait = "GFX_portrait_ZZZ_leader_1"
+		}
+	}
+}
+
+build_dynamic_zombie_outbreak_country_pool = {
+	clear_array = global.dynamic_zombie_outbreak_country_pool
+
+	every_country = {
+		limit = { can_roll_dynamic_zombie_outbreak = yes }
+
+		set_temp_variable = { zombie_dynamic_outbreak_country_weight = constant:zombie_outbreak.country_pick_weight_scale }
+		divide_temp_variable = { zombie_dynamic_outbreak_country_weight = zombie_outbreak_days }
+		round_temp_variable = zombie_dynamic_outbreak_country_weight
+
+		if = {
+			limit = {
+				check_variable = {
+					var = zombie_dynamic_outbreak_country_weight
+					value = 1
+					compare = less_than
+				}
+			}
+			set_temp_variable = { zombie_dynamic_outbreak_country_weight = 1 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = zombie_dynamic_outbreak_country_weight
+					value = constant:zombie_outbreak.country_pick_weight_cap
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { zombie_dynamic_outbreak_country_weight = constant:zombie_outbreak.country_pick_weight_cap }
+		}
+
+		for_loop_effect = {
+			start = 0
+			end = zombie_dynamic_outbreak_country_weight
+			value = zombie_dynamic_outbreak_country_pool_index
+
+			add_to_array = {
+				array = global.dynamic_zombie_outbreak_country_pool
+				value = THIS
+			}
+		}
+	}
+}
+
+fire_weighted_dynamic_zombie_outbreak_candidate = {
+	build_dynamic_zombie_outbreak_country_pool = yes
+
+	if = {
+		limit = {
+			check_variable = {
+				var = global.dynamic_zombie_outbreak_country_pool^num
+				value = 0
+				compare = greater_than
+			}
+		}
+		random_scope_in_array = {
+			array = global.dynamic_zombie_outbreak_country_pool
+			country_event = { id = chaosx.nr2.6 }
+		}
+	}
+
+	clear_array = global.dynamic_zombie_outbreak_country_pool
+}
+
+attempt_dynamic_zombie_outbreak = {
+	if = {
+		limit = {
+			has_global_flag = has_zombie_outbreak
+			NOT = { has_global_flag = zombie_system_disabled }
+			NOT = { has_global_flag = zombie_dynamic_outbreak_global_cooldown }
+			any_country = {
+				can_roll_dynamic_zombie_outbreak = yes
+			}
+		}
+		set_temp_variable = { zombie_dynamic_outbreak_roll_yes = constant:zombie_outbreak.weekly_roll_days }
+		set_temp_variable = { zombie_dynamic_outbreak_roll_no = global.best_dynamic_zombie_outbreak_days }
+		subtract_from_temp_variable = { zombie_dynamic_outbreak_roll_no = zombie_dynamic_outbreak_roll_yes }
+
+		if = {
+			limit = {
+				check_variable = {
+					var = zombie_dynamic_outbreak_roll_no
+					value = 1
+					compare = less_than
+				}
+			}
+			set_temp_variable = { zombie_dynamic_outbreak_roll_no = 1 }
+		}
+
+		random_list = {
+			zombie_dynamic_outbreak_roll_no = { }
+			zombie_dynamic_outbreak_roll_yes = { fire_weighted_dynamic_zombie_outbreak_candidate = yes }
+		}
+	}
+}
+
+# Calculate zombie outbreak chance for a country (used for outbreak UI and weekly target selection)
 calculate_zombie_outbreak_chance = {
 	    set_variable = { zombie_outbreak_days = mtth:zombie_outbreak_chance }
 	
@@ -2149,12 +2422,26 @@ calculate_zombie_outbreak_chance = {
 }
 # Update zombie outbreak chance for all countries (weekly effect)
 update_all_zombie_outbreak_chances = {
+	set_variable = { global.best_dynamic_zombie_outbreak_days = constant:zombie_outbreak.no_risk_days }
+
     every_country = {
         limit = {
             exists = yes
             NOT = { original_tag = ZZZ }
         }
         calculate_zombie_outbreak_chance = yes
+
+		if = {
+			limit = {
+				can_roll_dynamic_zombie_outbreak = yes
+				check_variable = {
+					var = zombie_outbreak_days
+					value = global.best_dynamic_zombie_outbreak_days
+					compare = less_than
+				}
+			}
+			set_variable = { global.best_dynamic_zombie_outbreak_days = zombie_outbreak_days }
+		}
     }
 }
 
@@ -2165,10 +2452,10 @@ apply_azl_cure_research_bonus = {
         limit = { is_anti_zombie_league_member = yes }
 
         # Set faster research time variables for AZL members
-        set_variable = { cure_research_days_0 = 45 }
-        set_variable = { cure_research_days_1 = 68 }
-        set_variable = { cure_research_days_2 = 90 }
-        set_variable = { cure_research_days_3 = 113 }
+        set_variable = { cure_research_days_0 = constant:zombie_evolution.stage_0_cure_research_days }
+        set_variable = { cure_research_days_1 = constant:zombie_evolution.stage_1_cure_research_days }
+        set_variable = { cure_research_days_2 = constant:zombie_evolution.stage_2_cure_research_days }
+        set_variable = { cure_research_days_3 = constant:zombie_evolution.stage_3_cure_research_days }
 
         # Get the appropriate cure sharing bonus based on zombie tier
     }

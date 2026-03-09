@@ -518,12 +518,9 @@ scripted_gui = {
 				}
 
 				deaths_entry_open_details_button_click = {
-					ROOT = {
-						set_variable = { chaos_meter_deaths_selected_index = chaos_deaths_index }
-						set_variable = { chaos_meter_deaths_selected_country = global.chaos_meter_deaths_view_country_entries^chaos_deaths_index }
-						rebuild_chaos_meter_deaths_details_view = yes
-						set_country_flag = chaos_meter_deaths_details_open
-					}
+					clr_country_flag = chaos_meter_deaths_details_open
+					set_variable = { chaos_meter_deaths_selected_index = -1 }
+					set_variable = { chaos_meter_deaths_selected_country = 0 }
 				}
 
 				deaths_entry_open_diplomacy_button_click = {
@@ -559,7 +556,10 @@ scripted_gui = {
 					always = yes
 				}
 				deaths_entry_open_details_button_click_enabled = {
-					always = yes
+					always = no
+				}
+				deaths_entry_open_details_button_visible = {
+					always = no
 				}
 				deaths_entry_open_diplomacy_button_visible = {
 					always = yes
@@ -603,15 +603,7 @@ scripted_gui = {
 			window_name = "chaos_meter_deaths_details_overlay"
 
 			visible = {
-				has_country_flag = chaos_meter_window_open
-				has_country_flag = chaos_meter_deaths_tab
-				has_country_flag = chaos_meter_deaths_details_open
-				has_variable = chaos_meter_deaths_selected_country
-				check_variable = {
-					var = chaos_meter_deaths_selected_country
-					value = 0
-					compare = greater_than
-				}
+				always = no
 			}
 
 			effects = {
