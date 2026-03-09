@@ -1,0 +1,143 @@
+add_namespace = chaosx.nr38
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##           ## ##     ##
+#    ## ## ## ########      #######   #######
+#    ##  #### ##   ##             ## ##     ##
+#    ##   ### ##    ##     ##     ## ##     ##
+#    ##    ## ##     ##     #######   #######
+##############################################################################################################
+#   #     #
+#   ##   ##   ##   #      #####   ##       ####  #####  #    #  ####    ##   #####  ###### #####   ####
+#   # # # #  #  #  #        #    #  #     #    # #    # #    # #       #  #  #    # #      #    # #
+#   #  #  # #    # #        #   #    #    #      #    # #    #  ####  #    # #    # #####  #    #  ####
+#   #     # ###### #        #   ######    #      #####  #    #      # ###### #    # #      #####       #
+#   #     # #    # #        #   #    #    #    # #   #  #    # #    # #    # #    # #      #   #  #    #
+#   #     # #    # ######   #   #    #     ####  #    #  ####   ####  #    # #####  ###### #    #  ####
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr38.1
+    title = chaosx.nr38.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            limit = { any_owned_state = { is_core_of = MLT } }
+            release = MLT
+        }
+        news_event = { id = chaosx.news.43 days = 2 }
+        MLT = {
+            set_cosmetic_tag = CRU
+            add_ideas = ninth_crusade
+            add_war_support = 1.00
+            add_stability = 1.00
+            set_politics = {
+                ruling_party = neutrality
+                elections_allowed = no
+                election_frequency = 48
+                long_name = "The Ninth Crusade Order"
+                name = "Crusaders"
+            }
+            add_popularity = {
+                ideology = neutrality
+                popularity = 1.00
+            }
+            retire_country_leader = yes
+            create_country_leader = {
+                name = "The Leader of the Order of Malta"
+                picture = GFX_portrait_CRU_crusader
+                ideology = despotism
+            }
+            set_technology = {
+                artillery1 = 1
+                tech_support = 1
+                tech_engineers = 1
+                tech_recon = 1
+                tech_maintenance_company = 1
+                infantry_weapons1 = 1
+            }
+            add_equipment_to_stockpile = {
+                type = convoy
+                amount = 200
+            }
+
+        }
+        every_state = {
+            limit = { OR = { state = 677 state = 344 state = 350 state = 553 state = 454 state = 799 state = 183 state = 182 state = 455 is_core_of = GRE is_core_of = TUR state = 453 state = 446 } }
+            add_core_of = MLT
+        }
+        every_state = {
+            limit = { OR = { state = 183 state = 797 state = 182 state = 47 state = 454 state = 553 state = 799 state = 677 state = 344 state = 345 } }
+            transfer_state_to = MLT
+        }
+
+        MLT = {
+            division_template = {
+                name = "Malta Knights Division"
+                regiments = {
+                    irregular_infantry = { x = 0 y = 0 }
+                    irregular_infantry = { x = 0 y = 1 }
+                    irregular_infantry = { x = 0 y = 2 }
+                    irregular_infantry = { x = 0 y = 3 }
+                    irregular_infantry = { x = 1 y = 0 }
+                    irregular_infantry = { x = 1 y = 1 }
+                    irregular_infantry = { x = 1 y = 2 }
+                    irregular_infantry = { x = 1 y = 3 }
+                    irregular_infantry = { x = 2 y = 0 }
+                    irregular_infantry = { x = 2 y = 1 }
+                    irregular_infantry = { x = 2 y = 2 }
+                    irregular_infantry = { x = 2 y = 3 }
+                    irregular_infantry = { x = 3 y = 0 }
+                    irregular_infantry = { x = 3 y = 1 }
+                    irregular_infantry = { x = 3 y = 2 }
+                    irregular_infantry = { x = 3 y = 3 }
+                }
+                support = {
+                    recon = { x = 0 y = 0 }
+                    maintenance_company = { x = 0 y = 1 }
+                    engineer = { x = 0 y = 2 }
+                    artillery = { x = 0 y = 3 }
+                }
+            }
+            every_owned_state = {
+                create_unit = {
+                    division = "name = \"The Crusaders\" division_template = \"Malta Knights Division\" start_experience_factor = 0.2"
+                    count = 2
+                    owner = MLT
+                }
+            }
+        }
+        every_country = {
+            limit = { any_owned_state = { is_core_of = MLT }  }
+            MLT = {
+                declare_war_on = {
+                    type = take_core_state
+                    target = PREV
+                }
+            }
+            country_event = { id = chaosx.nr38.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr38.2
+    title = chaosx.nr38.2.t
+    desc = chaosx.nr38.2.d
+    picture = GFX_report_event_FIN_petsamo_mine
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr38.2.a
+    }
+}

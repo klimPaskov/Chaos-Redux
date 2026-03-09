@@ -1,0 +1,386 @@
+is_zombie_outbreak_country = {
+    OR = {
+        original_tag = ZZZ
+        has_country_flag = zombie_outbreak_dynamic_country
+    }
+}
+
+is_anti_zombie_league_member = {
+    OR = {
+        has_idea = anti_zombie_league_member_level_0
+        has_idea = anti_zombie_league_member_level_1
+        has_idea = anti_zombie_league_member_level_2
+        has_idea = anti_zombie_league_member_level_3
+        has_idea = anti_zombie_league_member_level_4
+        has_idea = anti_zombie_league_member_level_5
+        has_idea = anti_zombie_league_member_level_6
+        has_idea = anti_zombie_league_member_level_7
+        has_idea = anti_zombie_league_member_level_8
+        has_idea = anti_zombie_league_member_level_9
+        has_idea = anti_zombie_league_member_level_10
+        has_idea = anti_zombie_league_member_level_11
+        has_idea = anti_zombie_league_member_level_12
+        has_idea = anti_zombie_league_member_level_13
+        has_idea = anti_zombie_league_member_level_14
+        has_idea = anti_zombie_league_member_level_15
+        has_idea = anti_zombie_league_member_level_16
+        has_idea = anti_zombie_league_member_level_17
+    }
+}
+
+can_lead_anti_zombie_league = {
+    is_major = yes
+    NOT = { original_tag = ZZZ }
+    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+    is_subject = no
+}
+
+can_join_anti_zombie_league = {
+    NOT = { original_tag = ZZZ }
+    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+    NOT = { is_anti_zombie_league_member = yes }
+    exists = yes
+    is_subject = no
+}
+
+has_active_anti_zombie_league_leader = {
+    any_country = {
+        has_country_flag = azl_leader
+        is_faction_leader = yes
+        is_anti_zombie_league_member = yes
+    }
+}
+
+has_neighboring_zombie_front = {
+    any_controlled_state = {
+        any_neighbor_state = {
+            OR = {
+                is_controlled_by = ZZZ
+                controller = { has_country_flag = zombie_outbreak_dynamic_country }
+            }
+        }
+    }
+}
+
+is_at_war_with_any_zombie_country = {
+    OR = {
+        has_war_with = ZZZ
+        any_country = {
+            has_country_flag = zombie_outbreak_dynamic_country
+            has_war_with = ROOT
+        }
+    }
+}
+
+can_request_zombie_evacuation = {
+    uses_normal_civilian_systems = yes
+    NOT = { has_capitulated = yes }
+    NOT = { has_country_flag = zombie_evacuation_request_pending }
+    NOT = { has_country_flag = zombie_evacuation_cooldown }
+    is_at_war_with_any_zombie_country = yes
+    surrender_progress > constant:zombie_evacuation.source_surrender_threshold
+    num_of_controlled_states > 0
+    check_variable = {
+        var = num_equipment@convoy
+        value = 0
+        compare = greater_than
+    }
+    any_controlled_state = {
+        state_population_k > 0
+    }
+}
+
+is_zombie_evacuation_host_candidate = {
+    uses_normal_civilian_systems = yes
+    exists = yes
+    NOT = { has_capitulated = yes }
+    surrender_progress < constant:zombie_evacuation.host_surrender_threshold
+    capital_scope = {
+        is_island_state = yes
+        is_controlled_by = PREV
+    }
+}
+
+can_receive_zombie_evacuees = {
+    is_zombie_evacuation_host_candidate = yes
+}
+
+is_emergency_anti_zombie_league_founder_candidate = {
+    can_lead_anti_zombie_league = yes
+    has_government = democratic
+}
+
+zombie_threat_below_leave_threshold = {
+    NOT = {
+        any_country = {
+            is_zombie_outbreak_country = yes
+            num_divisions > constant:anti_zombie_league.leave_low_division_cap
+        }
+    }
+}
+
+zombie_threat_below_very_low_leave_threshold = {
+    NOT = {
+        any_country = {
+            is_zombie_outbreak_country = yes
+            num_divisions > constant:anti_zombie_league.leave_very_low_division_cap
+        }
+    }
+}
+
+zombie_threat_ready_for_anti_zombie_league_disband = {
+    NOT = {
+        any_country = {
+            is_zombie_outbreak_country = yes
+            num_divisions > constant:anti_zombie_league.disband_division_cap
+        }
+    }
+}
+
+is_rear_zombie_outbreak_state = {
+    NOT = {
+        any_neighbor_state = {
+            OR = {
+                is_controlled_by = ZZZ
+                controller = { has_country_flag = zombie_outbreak_dynamic_country }
+            }
+        }
+    }
+}
+
+has_rear_zombie_outbreak_state = {
+    any_controlled_state = {
+        is_rear_zombie_outbreak_state = yes
+    }
+}
+
+has_nearby_zombie_front = {
+    NOT = { has_neighboring_zombie_front = yes }
+    any_neighbor_country = {
+        has_neighboring_zombie_front = yes
+    }
+}
+
+has_same_continent_zombie_presence = {
+    OR = {
+        AND = {
+            any_controlled_state = { is_on_continent = europe }
+            any_country = {
+                exists = yes
+                is_zombie_outbreak_country = yes
+                any_controlled_state = { is_on_continent = europe }
+            }
+        }
+        AND = {
+            any_controlled_state = { is_on_continent = north_america }
+            any_country = {
+                exists = yes
+                is_zombie_outbreak_country = yes
+                any_controlled_state = { is_on_continent = north_america }
+            }
+        }
+        AND = {
+            any_controlled_state = { is_on_continent = south_america }
+            any_country = {
+                exists = yes
+                is_zombie_outbreak_country = yes
+                any_controlled_state = { is_on_continent = south_america }
+            }
+        }
+        AND = {
+            any_controlled_state = { is_on_continent = australia }
+            any_country = {
+                exists = yes
+                is_zombie_outbreak_country = yes
+                any_controlled_state = { is_on_continent = australia }
+            }
+        }
+        AND = {
+            any_controlled_state = { is_on_continent = africa }
+            any_country = {
+                exists = yes
+                is_zombie_outbreak_country = yes
+                any_controlled_state = { is_on_continent = africa }
+            }
+        }
+        AND = {
+            any_controlled_state = { is_on_continent = asia }
+            any_country = {
+                exists = yes
+                is_zombie_outbreak_country = yes
+                any_controlled_state = { is_on_continent = asia }
+            }
+        }
+        AND = {
+            any_controlled_state = { is_on_continent = middle_east }
+            any_country = {
+                exists = yes
+                is_zombie_outbreak_country = yes
+                any_controlled_state = { is_on_continent = middle_east }
+            }
+        }
+    }
+}
+
+has_medium_risk_rear_zombie_outbreak_state = {
+    any_controlled_state = {
+        is_medium_risk_rear_zombie_outbreak_state = yes
+    }
+}
+
+has_high_risk_rear_zombie_outbreak_state = {
+    any_controlled_state = {
+        is_high_risk_rear_zombie_outbreak_state = yes
+    }
+}
+
+shows_zombie_outbreak_no_risk = {
+    has_variable = zombie_outbreak_months
+    check_variable = {
+        var = zombie_outbreak_months
+        value = constant:zombie_outbreak.display_no_risk_months
+        compare = greater_than
+    }
+}
+
+should_ai_take_zombie_outbreak_prevention = {
+    has_global_flag = has_zombie_outbreak
+    NOT = { has_global_flag = zombie_system_disabled }
+    uses_normal_civilian_systems = yes
+    can_roll_dynamic_zombie_outbreak = yes
+    NOT = { shows_zombie_outbreak_no_risk = yes }
+}
+
+can_roll_dynamic_zombie_outbreak = {
+    has_global_flag = has_zombie_outbreak
+    NOT = { has_global_flag = zombie_system_disabled }
+    NOT = { has_global_flag = zombie_dynamic_outbreak_global_cooldown }
+    uses_normal_civilian_systems = yes
+    num_of_controlled_states > 1
+    has_rear_zombie_outbreak_state = yes
+    NOT = { has_country_flag = zombie_dynamic_outbreak_recent }
+    NOT = { has_country_flag = extreme_martial_law_active }
+}
+
+has_isolated_island_capital = {
+    capital_scope = {
+        is_island_state = yes
+        NOT = {
+            any_neighbor_state = {
+                always = yes
+            }
+        }
+    }
+}
+
+is_zombie_mainland_capital_state = {
+    NOT = { is_island_state = yes }
+    any_neighbor_state = {
+        always = yes
+    }
+}
+
+is_zombie_connected_capital_state = {
+    any_neighbor_state = {
+        always = yes
+    }
+}
+
+is_medium_risk_rear_zombie_outbreak_state = {
+    is_rear_zombie_outbreak_state = yes
+    state_population_k > constant:zombie_outbreak.state_population_medium_risk_threshold
+    OR = {
+        has_state_category = city
+        has_state_category = large_city
+        has_state_category = metropolis
+        has_state_category = megalopolis
+        infrastructure < constant:zombie_outbreak.low_infrastructure_threshold
+        AND = {
+            industrial_complex < constant:zombie_outbreak.low_industry_threshold
+            arms_factory < constant:zombie_outbreak.low_industry_threshold
+        }
+    }
+}
+
+is_high_risk_rear_zombie_outbreak_state = {
+    is_medium_risk_rear_zombie_outbreak_state = yes
+    state_population_k > constant:zombie_outbreak.state_population_high_risk_threshold
+    OR = {
+        AND = {
+            OR = {
+                has_state_category = city
+                has_state_category = large_city
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+            infrastructure < constant:zombie_outbreak.low_infrastructure_threshold
+        }
+        AND = {
+            OR = {
+                has_state_category = city
+                has_state_category = large_city
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+            industrial_complex < constant:zombie_outbreak.low_industry_threshold
+            arms_factory < constant:zombie_outbreak.low_industry_threshold
+        }
+        AND = {
+            infrastructure < constant:zombie_outbreak.low_infrastructure_threshold
+            industrial_complex < constant:zombie_outbreak.low_industry_threshold
+            arms_factory < constant:zombie_outbreak.low_industry_threshold
+        }
+        AND = {
+            OR = {
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+            infrastructure < constant:zombie_outbreak.high_risk_urban_infrastructure_threshold
+        }
+    }
+}
+
+is_extreme_risk_rear_zombie_outbreak_state = {
+    is_high_risk_rear_zombie_outbreak_state = yes
+    state_population_k > constant:zombie_outbreak.state_population_extreme_risk_threshold
+    OR = {
+        AND = {
+            OR = {
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+            infrastructure < constant:zombie_outbreak.very_low_infrastructure_threshold
+        }
+        AND = {
+            OR = {
+                has_state_category = large_city
+                has_state_category = metropolis
+                has_state_category = megalopolis
+            }
+            industrial_complex < constant:zombie_outbreak.very_low_industry_threshold
+            arms_factory < constant:zombie_outbreak.very_low_industry_threshold
+        }
+        AND = {
+            infrastructure < constant:zombie_outbreak.very_low_infrastructure_threshold
+            industrial_complex < constant:zombie_outbreak.very_low_industry_threshold
+            arms_factory < constant:zombie_outbreak.very_low_industry_threshold
+        }
+    }
+}
+
+zombie_threat_fully_defeated = {
+    has_global_flag = zombie_system_disabled
+    NOT = { has_global_flag = zombie_threat_defeated }
+    check_variable = {
+        var = global.zombie_main_capitulation_count
+        value = constant:zombie_threat.main_collapse_shutdown_limit
+        compare = greater_than_or_equals
+    }
+    NOT = {
+        any_country = {
+            exists = yes
+            is_zombie_outbreak_country = yes
+            num_of_controlled_states > 0
+        }
+    }
+}

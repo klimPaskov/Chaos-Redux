@@ -1,0 +1,101 @@
+add_namespace = chaosx.nr48
+
+##############################################################################################################
+#    ##    ## ########     ##         #######
+#    ###   ## ##     ##    ##    ##  ##     ##
+#    ####  ## ##     ##    ##    ##  ##     ##
+#    ## ## ## ########     ##    ##   #######
+#    ##  #### ##   ##      ######### ##     ##
+#    ##   ### ##    ##           ##  ##     ##
+#    ##    ## ##     ##          ##   #######
+##############################################################################################################
+#   #######                   #####                                ######
+#   #     # #      #####     #     # #####  ######   ##   #####    #     # #    # #       ####    ##   #####  #   ##
+#   #     # #      #    #    #       #    # #       #  #    #      #     # #    # #      #    #  #  #  #    # #  #  #
+#   #     # #      #    #    #  #### #    # #####  #    #   #      ######  #    # #      #      #    # #    # # #    #
+#   #     # #      #    #    #     # #####  #      ######   #      #     # #    # #      #  ### ###### #####  # ######
+#   #     # #      #    #    #     # #   #  #      #    #   #      #     # #    # #      #    # #    # #   #  # #    #
+#   ####### ###### #####      #####  #    # ###### #    #   #      ######   ####  ######  ####  #    # #    # # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr48.1
+    title = chaosx.nr48.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        BUL = { country_event = { id = chaosx.nr48.2 } }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr48.2
+    title = chaosx.nr48.2.t
+    desc = chaosx.nr48.2.d
+    picture = GFX_report_event_old_great_bulgaria
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 95 }
+        name = chaosx.nr48.2.a
+        every_state = {
+            limit = { OR = { state = 137 state = 196 state = 200 state = 226 state = 227 state = 218 state = 234 state = 233 state = 826 state = 231 state = 229 state = 821 state = 828 state = 827 state = 235 state = 232 state = 237 state = 238 state = 245 state = 228 state = 221 state = 245 state = 259 state = 203 state = 197 state = 192 state = 834 state = 198 state = 203 state = 202 state = 193 state = 225 state = 240 state = 220 state = 260 is_core_of = ROM is_core_of = GRE state = 797 state = 341 is_core_of = SER is_core_of = MAC is_core_of = ALB is_core_of = MNT is_core_of = HUN is_core_of = TRA is_core_of = KOS } }
+            add_core_of = BUL
+        }
+        every_country = {
+            limit = { any_owned_state = { OR = { state = 137 state = 196 state = 200 state = 226 state = 227 state = 218 state = 234 state = 233 state = 826 state = 231 state = 229 state = 821 state = 828 state = 827 state = 235 state = 232 state = 237 state = 238 state = 245 state = 228 state = 221 state = 245 state = 259 state = 203 state = 197 state = 192 state = 834 state = 198 state = 203 state = 202 state = 193 state = 225 state = 240 state = 220 state = 260 is_core_of = ROM is_core_of = GRE state = 797 state = 341 is_core_of = SER is_core_of = MAC is_core_of = ALB is_core_of = MNT is_core_of = HUN is_core_of = TRA is_core_of = KOS } } }
+            BUL = {
+                create_wargoal = {
+                    target = PREV
+                    type = take_core_state
+                }
+            }
+        }
+        division_template = {
+            name = "Old Great Bulgarian Division"
+            regiments = {
+                infantry = { x = 0 y = 0 }
+                infantry = { x = 0 y = 1 }
+                infantry = { x = 0 y = 2 }
+                infantry = { x = 0 y = 3 }
+                infantry = { x = 1 y = 0 }
+                infantry = { x = 1 y = 1 }
+                infantry = { x = 1 y = 2 }
+                infantry = { x = 1 y = 3 }
+                infantry = { x = 2 y = 0 }
+                infantry = { x = 2 y = 1 }
+                infantry = { x = 2 y = 2 }
+                infantry = { x = 2 y = 3 }
+            }
+            support = {
+                recon = { x = 0 y = 0 }
+                maintenance_company = { x = 0 y = 1 }
+                engineer = { x = 0 y = 2 }
+                artillery = { x = 0 y = 3 }
+            }
+        }
+        capital_scope = {
+            create_unit = {
+                division = "name = \"Warriors of the Old\" division_template = \"Old Great Bulgarian Division\" start_experience_factor = 0.1"
+                count = 10
+                owner = BUL
+            }
+        }
+        set_cosmetic_tag = OGB
+        add_ideas = old_great_bulgaria
+        add_war_support = 1.00
+        news_event = { id = chaosx.news.51 days = 1 }
+    }
+    option = {
+        ai_chance = { base = 5 }
+        add_stability = -0.25
+        add_war_support = -1.00
+        name = chaosx.nr48.2.b
+    }
+}

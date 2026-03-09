@@ -1,0 +1,92 @@
+add_namespace = chaosx.nr18
+
+##############################################################################################################
+#    ##    ## ########        ##    #######
+#    ###   ## ##     ##     ####   ##     ##
+#    ####  ## ##     ##       ##   ##     ##
+#    ## ## ## ########        ##    #######
+#    ##  #### ##   ##         ##   ##     ##
+#    ##   ### ##    ##        ##   ##     ##
+#    ##    ## ##     ##     ######  #######
+##############################################################################################################
+#   ######
+#   #     #   ##   #    # #####   ####  #    #    #####  ######  ####   ####  #    # #####   ####  ######
+#   #     #  #  #  ##   # #    # #    # ##  ##    #    # #      #      #    # #    # #    # #    # #
+#   ######  #    # # #  # #    # #    # # ## #    #    # #####   ####  #    # #    # #    # #      #####
+#   #   #   ###### #  # # #    # #    # #    #    #####  #           # #    # #    # #####  #      #
+#   #    #  #    # #   ## #    # #    # #    #    #   #  #      #    # #    # #    # #   #  #    # #
+#   #     # #    # #    # #####   ####  #    #    #    # ######  ####   ####   ####  #    #  ####  ######
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr18.1
+    title = chaosx.nr18.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            country_event = { id = chaosx.nr18.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr18.2
+    title = chaosx.nr18.2.t
+    desc = chaosx.nr18.2.d
+    picture = GFX_report_event_random_resource
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr18.2.a
+        ROOT = {
+            random_owned_controlled_state = {
+                every_country = {
+                    limit = { is_ai = no }
+                    goto_state = PREV
+                }
+                random_list = {
+                    10 = {
+                        add_resource = {
+                            type = oil
+                            amount = 200
+                        }
+                    } 10 = {
+                        add_resource = {
+                            type = steel
+                            amount = 200
+                        }
+                    } 10 = {
+                        add_resource = {
+                            type = tungsten
+                            amount = 200
+                        }
+                    } 10 = {
+                        add_resource = {
+                            type = chromium
+                            amount = 200
+                        }
+                    } 10 = {
+                        add_resource = {
+                            type = aluminium
+                            amount = 200
+                        }
+                    } 10 = {
+                        add_resource = {
+                            type = rubber
+                            amount = 200
+                        }
+                    }
+                }
+            }
+        }
+        news_event = { id = chaosx.news.20 days = 2 }
+        ai_chance = { base = 100 }
+    }
+}

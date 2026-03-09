@@ -1,0 +1,171 @@
+has_bio_outbreak_prevention_tier_1_only = {
+    has_tech = bio_surveillance_networks
+    NOT = { has_tech = rapid_outbreak_response }
+}
+
+has_bio_outbreak_prevention_tier_2_only = {
+    has_tech = rapid_outbreak_response
+    NOT = { has_tech = integrated_epidemic_control }
+}
+
+has_bio_outbreak_prevention_tier_3 = {
+    has_tech = integrated_epidemic_control
+}
+
+has_active_biowarfare_outbreak = {
+    OR = {
+        any_controlled_state = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+        any_controlled_state = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+        any_controlled_state = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+        any_controlled_state = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+    }
+}
+
+has_neighbor_with_active_biowarfare_outbreak = {
+    any_neighbor_country = {
+        has_active_biowarfare_outbreak = yes
+    }
+}
+
+has_unconventional_weapon_stockpile = {
+    OR = {
+        num_of_nukes > 0
+        has_equipment = { chemical_chlorine_payload_cylinder_1 > 0 }
+        has_equipment = { chemical_phosgene_payload_cylinder_1 > 0 }
+        has_equipment = { chemical_mustard_payload_cylinder_1 > 0 }
+        has_equipment = { chemical_lewisite_payload_cylinder_1 > 0 }
+        has_equipment = { chemical_tabun_payload_cylinder_1 > 0 }
+        has_equipment = { chemical_sarin_payload_cylinder_1 > 0 }
+        has_equipment = { chemical_soman_payload_cylinder_1 > 0 }
+        has_equipment = { anthrax_bomb_1 > 0 }
+        has_equipment = { plague_bomb_1 > 0 }
+        has_equipment = { tularemia_bomb_1 > 0 }
+        has_equipment = { smallpox_bomb_1 > 0 }
+    }
+}
+
+has_used_unconventional_weapons = {
+    OR = {
+        has_country_flag = used_unconventional_weapon
+        has_country_flag = used_bioweapon
+        has_country_flag = used_anthrax_weapon
+        has_country_flag = used_plague_weapon
+        has_country_flag = used_tularemia_weapon
+        has_country_flag = used_smallpox_weapon
+        AND = {
+            has_variable = chem_warfare_condemnation
+            check_variable = { chem_warfare_condemnation > 0 }
+        }
+    }
+}
+
+has_enemy_used_chemical_weapons = {
+    any_enemy_country = {
+        has_variable = chem_warfare_condemnation
+        check_variable = { chem_warfare_condemnation > 0 }
+    }
+}
+
+is_japan_china_chemical_campaign_war = {
+    original_tag = JAP
+    has_war = yes
+    OR = {
+        has_war_with = CHI
+        has_war_with = PRC
+        has_war_with = SHX
+        has_war_with = GXC
+        has_war_with = YUN
+        has_war_with = XSM
+        has_war_with = SIK
+    }
+}
+
+has_japan_chemical_campaign_selected_stockpile_attack = {
+    OR = {
+        AND = {
+            NOT = { has_variable = japan_chemical_campaign_selected_agent }
+            has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        AND = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.chlorine
+                compare = equals
+            }
+            has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        AND = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.phosgene
+                compare = equals
+            }
+            has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        AND = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.mustard
+                compare = equals
+            }
+            has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        AND = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.lewisite
+                compare = equals
+            }
+            has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+    }
+}
+
+has_japan_chemical_campaign_attack_command_power = {
+    OR = {
+        command_power > constant:chem_japan_campaign_decision.defaults.attack_command_power_cost_trigger
+        AND = {
+            has_idea = chemical_command_reagent_optimization_spirit
+            command_power > constant:chem_japan_campaign_decision.defaults.attack_command_power_cost_discounted_trigger
+        }
+    }
+}
+
+is_japan_chemical_campaign_target_state = {
+    OR = {
+        is_core_of = CHI
+        is_core_of = PRC
+        is_core_of = SHX
+        is_core_of = GXC
+        is_core_of = YUN
+        is_core_of = XSM
+        is_core_of = SIK
+    }
+    any_neighbor_state = {
+        is_controlled_by = ROOT
+    }
+    CONTROLLER = {
+        exists = yes
+        has_war_with = ROOT
+    }
+    NOT = { is_controlled_by = ROOT }
+    NOT = { has_state_flag = japan_chemical_campaign_recently_targeted }
+}
+
+is_air_cleanliness_treaty_founder_candidate = {
+    is_major = yes
+    has_government = democratic
+    is_subject = no
+    NOT = { has_country_flag = air_cleanliness_treaty_banned }
+    NOT = { has_used_unconventional_weapons = yes }
+    NOT = { original_tag = ZZZ }
+    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+}
+
+
+bio_border_closure_relation_target = {
+    is_in_array = {
+        array = ROOT.closed_bio_borders
+        value = THIS
+    }
+}

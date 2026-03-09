@@ -1,0 +1,165 @@
+add_namespace = chaosx.nr68
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##    ##        ##     ##
+#    ## ## ## ########     ########   #######
+#    ##  #### ##   ##      ##     ## ##     ##
+#    ##   ### ##    ##     ##     ## ##     ##
+#    ##    ## ##     ##     #######   #######
+##############################################################################################################
+#   ####### ### #     #
+#        #   #  ##    #
+#       #    #  # #   #
+#      #     #  #  #  #
+#     #      #  #   # #
+#    #       #  #    ##
+#   ####### ### #     #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr68.1
+    title = chaosx.nr68.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_state = {
+            limit = { is_capital = no }
+            owner = {
+                country_event = { id = chaosx.nr68.2 }
+            }
+            transfer_state_to = ZIN
+            add_core_of = ZIN
+            ZIN = { load_oob = "ZIN_1936" }
+            create_unit = {
+                division = "name = \"Guardians of ZIN\" division_template = \"Guardians of ZIN\" start_experience_factor = 0.5"
+                count = 6
+                owner = ZIN
+            }
+            create_unit = {
+                division = "name = \"Cavalry of ZIN\" division_template = \"Cavalry of ZIN\" start_experience_factor = 0.5"
+                count = 3
+                owner = ZIN
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr68.2
+    title = chaosx.nr68.2.t
+    desc = chaosx.nr68.2.d
+    picture = GFX_report_event_zin
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr68.2.a
+        news_event = { id = chaosx.news.60 days = 1 }
+        ai_chance = { base = 90 }
+    }
+    option = {
+        name = chaosx.nr68.2.b
+        news_event = { id = chaosx.news.60 days = 1 }
+        create_wargoal = {
+            target = ZIN
+            type = annex_everything
+        }
+        ai_chance = { base = 10 }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr68.3
+    title = chaosx.nr68.3.t
+    desc = chaosx.nr68.3.d
+    picture = GFX_report_event_zin
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr68.3.a
+        remove_ideas = punishment_from_gods
+        white_peace = {
+            tag = ZIN
+        }
+        if = { limit = { NOT = { is_owner_neighbor_of = ZIN } } # Checks core territory
+        capital_scope = {
+            transfer_state_to = ZIN
+            add_core_of = ZIN
+        }
+    } else = {
+        ZIN = {
+            every_core_state = {
+                every_neighbor_state = {
+                    limit = { is_owned_by = ROOT }
+                    transfer_state_to = ZIN
+                    add_core_of = ZIN
+                }
+            }
+        }
+    }
+    ai_chance = {
+        factor = 0
+        modifier = {
+            add = 10
+            any_country = { NOT = { tag = ZIN } has_war_with = ROOT }
+        }
+        modifier = {
+            add = 10
+            has_stability < 0.5
+            has_war_support < 0.5
+        }
+        modifier = {
+            add = 20
+            has_stability < 0.25
+            has_war_support < 0.25
+        }
+        modifier = {
+            add = 20
+            has_stability < 0.10
+            has_war_support < 0.10
+        }
+        modifier = {
+            add = 20
+            has_manpower < 10000
+        }
+        modifier = {
+            add = 5
+            has_damaged_buildings = yes
+        }
+        modifier = {
+            add = 15
+            all_owned_state = {
+                OR = {
+                    non_damaged_building_level = {
+                        building = arms_factory
+                        level < 2
+                    }
+                    non_damaged_building_level = {
+                        building = industrial_complex
+                        level < 2
+                    }
+                    non_damaged_building_level = {
+                        building = infrastructure
+                        level < 2
+                    }
+                }
+            }
+        }
+    }
+}
+option = {
+    name = chaosx.nr68.3.b
+    add_political_power = -10
+    ai_chance = { base = 50 }
+}
+}

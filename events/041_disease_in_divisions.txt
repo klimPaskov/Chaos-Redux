@@ -1,0 +1,88 @@
+add_namespace = chaosx.nr41
+
+##############################################################################################################
+#    ##    ## ########     ##           ##
+#    ###   ## ##     ##    ##    ##   ####
+#    ####  ## ##     ##    ##    ##     ##
+#    ## ## ## ########     ##    ##     ##
+#    ##  #### ##   ##      #########    ##
+#    ##   ### ##    ##           ##     ##
+#    ##    ## ##     ##          ##   ######
+##############################################################################################################
+#   ######                                                         #
+#   #     # #  ####  ######   ##    ####  ######    # #    #      # #   #####  #    # #   #
+#   #     # # #      #       #  #  #      #         # ##   #     #   #  #    # ##  ##  # #
+#   #     # #  ####  #####  #    #  ####  #####     # # #  #    #     # #    # # ## #   #
+#   #     # #      # #      ######      # #         # #  # #    ####### #####  #    #   #
+#   #     # # #    # #      #    # #    # #         # #   ##    #     # #   #  #    #   #
+#   ######  #  ####  ###### #    #  ####  ######    # #    #    #     # #    # #    #   #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr41.1
+    title = chaosx.nr41.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = { limit = { any_country = { has_war = yes num_divisions > 10 } }
+        random_country = {
+            limit = {
+                has_war = yes
+                num_divisions > 10
+            }
+            every_country = {
+                limit = { is_neighbor_of = PREV }
+                PREV = {
+                    every_owned_state = {
+                        limit = { any_neighbor_state = { is_controlled_by = PREV.PREV } }
+                        damage_units = {
+                            state = THIS
+                            limit = { always = no }
+                            org_damage = 0.5
+                            str_damage = 0.5
+                            ratio = yes
+                            army = yes
+                            navy = no
+                        }
+                    }
+                }
+            }
+            country_event = { id = chaosx.nr41.2 days = 1 }
+        }
+    } else = {
+        every_owned_state = {
+            limit = { has_ROOT_at_least_1_div_in_current_state_scope = yes } # Probably unnecessary
+            damage_units = {
+                state = THIS
+                limit = { always = no }
+                org_damage = 0.5
+                str_damage = 0.5
+                ratio = yes
+                army = yes
+                navy = no
+            }
+        }
+        country_event = { id = chaosx.nr41.2 days = 1 }
+    }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr41.2
+    title = chaosx.nr41.2.t
+    desc = chaosx.nr41.2.d
+    picture = GFX_report_event_dead_soldiers
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr41.2.a
+        news_event = { id = chaosx.news.46 days = 2 }
+    }
+}

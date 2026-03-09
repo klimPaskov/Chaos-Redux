@@ -1,0 +1,108 @@
+add_namespace = chaosx.nr26
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##           ## ##
+#    ## ## ## ########      #######  ########
+#    ##  #### ##   ##      ##        ##     ##
+#    ##   ### ##    ##     ##        ##     ##
+#    ##    ## ##     ##    #########  #######
+##############################################################################################################
+#   ######                                       ###
+#   #     # ######  ####  ###### #####  #####     #  #    # #####  #    #  ####  ##### #####  #   ##   #      # ######   ##   ##### #  ####  #    #
+#   #     # #      #      #      #    #   #       #  ##   # #    # #    # #        #   #    # #  #  #  #      #     #   #  #    #   # #    # ##   #
+#   #     # #####   ####  #####  #    #   #       #  # #  # #    # #    #  ####    #   #    # # #    # #      #    #   #    #   #   # #    # # #  #
+#   #     # #           # #      #####    #       #  #  # # #    # #    #      #   #   #####  # ###### #      #   #    ######   #   # #    # #  # #
+#   #     # #      #    # #      #   #    #       #  #   ## #    # #    # #    #   #   #   #  # #    # #      #  #     #    #   #   # #    # #   ##
+#   ######  ######  ####  ###### #    #   #      ### #    # #####   ####   ####    #   #    # # #    # ###### # ###### #    #   #   #  ####  #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr26.1
+    title = chaosx.nr26.1.t
+
+    hidden = yes
+
+    is_triggered_only = yes
+
+    immediate = {
+        if = { limit = { any_owned_state = { is_desert_state = yes } }
+        country_event = { id = chaosx.nr26.2 days = 1 }
+    } else = {
+        random_country = {
+            limit = { num_of_factories > 50 any_owned_state = { is_desert_state = yes } }
+            country_event = { id = chaosx.nr26.2 days = 1 }
+        }
+    }
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr26.2
+    title = chaosx.nr26.2.t
+    desc = chaosx.nr26.2.d
+    picture = GFX_report_event_desert
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr26.2.a
+        hidden_effect = {
+            every_owned_state = { limit = { is_fully_controlled_by = ROOT is_desert_state = yes }
+            add_to_temp_array = { owned_desert_states = THIS }
+        }
+        for_each_loop = {
+            array = owned_desert_states
+            value = v
+            add_to_temp_variable = { num_of_owned_desert_states = 1 } # Distribute factories evenly throughout states.
+            log = "[ROOT.GetName] owns desert state: [?v.GetID], [?v.GetName]"
+        }
+        set_temp_variable = { num_of_military_factories_to_desert = num_of_military_factories }
+        set_temp_variable = { num_of_civilian_factories_to_desert = num_of_civilian_factories }
+        divide_temp_variable = {
+            var = num_of_military_factories_to_desert
+            value = num_of_owned_desert_states
+        }
+        divide_temp_variable = {
+            var = num_of_civilian_factories_to_desert
+            value = num_of_owned_desert_states
+        }
+        add_to_temp_variable = { slots = num_of_military_factories_to_desert }
+        add_to_temp_variable = { slots = num_of_civilian_factories_to_desert }
+        every_owned_state = { limit = { is_fully_controlled_by = ROOT is_desert_state = yes }
+        add_extra_state_shared_building_slots = slots
+        add_building_construction = {
+            type = arms_factory
+            level = num_of_military_factories_to_desert
+            instant_build = yes
+        }
+        add_building_construction = {
+            type = industrial_complex
+            level = num_of_civilian_factories_to_desert
+            instant_build = yes
+        }
+    }
+    every_owned_state = { limit = { is_fully_controlled_by = ROOT is_desert_state = no }
+    remove_building = {
+        type = arms_factory
+        level = 10
+    }
+    remove_building = {
+        type = industrial_complex
+        level = 10
+    }
+}
+}
+news_event = { id = chaosx.news.27 days = 2 }
+
+}
+option = {
+    ai_chance = { base = 0 }
+    name = chaosx.nr26.2.b
+}
+}

@@ -1,0 +1,79 @@
+add_namespace = chaosx.nr63
+
+##############################################################################################################
+#    ##    ## ########      #######   #######
+#    ###   ## ##     ##    ##     ## ##     ##
+#    ####  ## ##     ##    ##               ##
+#    ## ## ## ########     ########   #######
+#    ##  #### ##   ##      ##     ##        ##
+#    ##   ### ##    ##     ##     ## ##     ##
+#    ##    ## ##     ##     #######   #######
+##############################################################################################################
+#    #####                                              ###
+#   #     # #    # #####       # ######  ####  #####     #  #    # #####  ###### #####  ###### #    # #####  ###### #    #  ####  ######
+#   #       #    # #    #      # #      #    #   #       #  ##   # #    # #      #    # #      ##   # #    # #      ##   # #    # #
+#    #####  #    # #####       # #####  #        #       #  # #  # #    # #####  #    # #####  # #  # #    # #####  # #  # #      #####
+#         # #    # #    #      # #      #        #       #  #  # # #    # #      #####  #      #  # # #    # #      #  # # #      #
+#   #     # #    # #    # #    # #      #    #   #       #  #   ## #    # #      #      #      #   ## #    # #      #   ## #    # #
+#    #####   ####  #####   ####  ######  ####    #      ### #    # #####  ###### #      ###### #    # #####  ###### #    #  ####  ######
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr63.1
+    title = chaosx.nr63.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = { is_subject = yes }
+            overlord = {
+                end_puppet = PREV
+                set_variable = { ended_puppet = PREV.id }
+                country_event = { id = chaosx.nr63.2 }
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr63.2
+    title = chaosx.nr63.2.t
+    desc = chaosx.nr63.2.d
+    picture = GFX_report_event_generic_rally2
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr63.2.a
+        add_war_support = 0.10
+        news_event = { id = chaosx.news.57 days = 2 }
+        declare_war_on = {
+            type = puppet_wargoal_focus
+            target = ended_puppet
+        }
+        every_country = {
+            limit = { is_subject_of = ROOT }
+            random = {
+                chance = 50
+                overlord = { end_puppet = PREV }
+                declare_war_on = {
+                    type = puppet_wargoal_focus
+                    target = ROOT
+                }
+            }
+        }
+        custom_effect_tooltip = events_tooltip_1
+        ai_chance = { base = 50 }
+    }
+    option = {
+        name = chaosx.nr63.2.b
+        add_stability = -0.05
+        news_event = { id = chaosx.news.57 days = 2 }
+        ai_chance = { base = 50 }
+    }
+}

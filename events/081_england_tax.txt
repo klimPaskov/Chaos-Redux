@@ -1,0 +1,168 @@
+add_namespace = chaosx.nr81
+
+##############################################################################################################
+#    ##    ## ########      #######     ##
+#    ###   ## ##     ##    ##     ##  ####
+#    ####  ## ##     ##    ##     ##    ##
+#    ## ## ## ########      #######     ##
+#    ##  #### ##   ##      ##     ##    ##
+#    ##   ### ##    ##     ##     ##    ##
+#    ##    ## ##     ##     #######   ######
+##############################################################################################################
+#   ######                                    #######
+#   #     # #####  # ##### #  ####  #    #       #      ##   #    # ######  ####
+#   #     # #    # #   #   # #      #    #       #     #  #   #  #  #      #
+#   ######  #    # #   #   #  ####  ######       #    #    #   ##   #####   ####
+#   #     # #####  #   #   #      # #    #       #    ######   ##   #           #
+#   #     # #   #  #   #   # #    # #    #       #    #    #  #  #  #      #    #
+#   ######  #    # #   #   #  ####  #    #       #    #    # #    # ######  ####
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr81.1
+    title = chaosx.nr81.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        ENG = {
+            country_event = { id = chaosx.nr81.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # For britain
+    id = chaosx.nr81.2
+    title = chaosx.nr81.2.t
+    desc = chaosx.nr81.2.d
+    picture = GFX_report_event_usa_british_sailors_destroyers
+
+    is_triggered_only = yes
+
+    option = {
+        news_event = { id = chaosx.news.71 days = 3 }
+        every_other_country = {
+            limit = { NOT = { OR = { is_ally_with = ENG has_war_with = ENG } } }
+            country_event = { id = chaosx.nr81.3 }
+        }
+        name = chaosx.nr81.2.a
+    }
+}
+
+##############################################################################################################
+
+country_event = { # taxed country
+    id = chaosx.nr81.3
+    title = chaosx.nr81.3.t
+    desc = chaosx.nr81.3.d
+    picture = GFX_report_event_eng_royal_family
+
+    is_triggered_only = yes
+
+    option = {
+        add_political_power = -50
+        add_stability = -0.05
+        add_timed_idea = {
+            idea = british_tax
+            years = 1
+        }
+        ENG = { country_event = { id = chaosx.nr81.5 days = 1 } }
+        ai_chance = { base = 60 }
+        name = chaosx.nr81.3.a
+    }
+    option = {
+        add_political_power = 50
+        add_war_support = 0.05
+        ENG = { country_event = { id = chaosx.nr81.4 days = 1 } }
+        name = chaosx.nr81.3.b
+        ai_chance = {
+            factor = 40
+            modifier = {
+                add = 20
+                has_opinion = {
+                    target = ENG
+                    value < 0
+                }
+            }
+            modifier = {
+                add = 20
+                ENG = { is_enemy_ideology = yes }
+            }
+            modifier = {
+                add = 60
+                is_major = yes
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # taxes refused
+    id = chaosx.nr81.4
+    title = chaosx.nr81.4.t
+    desc = chaosx.nr81.4.d
+    picture = GFX_report_event_gre_diplomacy
+
+    is_triggered_only = yes
+
+    option = {
+        create_wargoal = {
+            target = FROM
+            type = annex_everything
+        }
+        ai_chance = {
+            factor = 50
+            modifier = {
+                add = 30
+                FROM = { is_enemy_ideology = yes }
+            }
+        }
+        name = chaosx.nr81.4.a
+    }
+    option = {
+        add_political_power = -20
+        add_stability = -0.02
+        add_opinion_modifier = {
+            target = FROM
+            modifier = protest_action_strong
+        }
+        name = chaosx.nr81.4.b
+        ai_chance = {
+            factor = 50
+            modifier = {
+                add = 20
+                has_war_support < 0.5
+            }
+            modifier = {
+                add = 60
+                is_major = yes
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # taxes accepted
+    id = chaosx.nr81.5
+    title = chaosx.nr81.5.t
+    desc = chaosx.nr81.5.d
+    picture = GFX_report_event_generic_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        add_political_power = 20
+        add_stability = 0.02
+        add_opinion_modifier = {
+            target = FROM
+            modifier = offered_support
+        }
+        name = chaosx.nr81.5.a
+    }
+}

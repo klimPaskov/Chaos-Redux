@@ -1,0 +1,242 @@
+add_namespace = chaosx.nr30
+
+##############################################################################################################
+#    ##    ## ########      #######    #####
+#    ###   ## ##     ##    ##     ##  ##   ##
+#    ####  ## ##     ##           ## ##     ##
+#    ## ## ## ########      #######  ##     ##
+#    ##  #### ##   ##             ## ##     ##
+#    ##   ### ##    ##     ##     ##  ##   ##
+#    ##    ## ##     ##     #######    #####
+##############################################################################################################
+#   #######                    #######
+#      #    # #    # ######       #    #####    ##   #    # ###### #      ###### #####
+#      #    # ##  ## #            #    #    #  #  #  #    # #      #      #      #    #
+#      #    # # ## # #####        #    #    # #    # #    # #####  #      #####  #    #
+#      #    # #    # #            #    #####  ###### #    # #      #      #      #####
+#      #    # #    # #            #    #   #  #    #  #  #  #      #      #      #   #
+#      #    # #    # ######       #    #    # #    #   ##   ###### ###### ###### #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr30.1
+    title = chaosx.nr30.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            country_event = { id = chaosx.nr30.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr30.2
+    title = chaosx.nr30.2.t
+    desc = chaosx.nr30.2.d
+    picture = GFX_report_event_time_traveler
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr30.2.a
+        news_event = { id = chaosx.news.33 days = 2 }
+        add_timed_idea = {
+            idea = time_traveler
+            days = 365
+        }
+        hidden_effect = {
+            GER = {
+                if = { limit = { exists = yes SOV = { exists = yes } }
+                set_variable_to_random = {
+                    var = random_num
+                    min = 5
+                    max = 20
+                    integer = yes
+                }
+                country_event = { id = chaosx.nr30.3 days = random_num }
+            }
+        }
+        USA = {
+            if = { limit = { exists = yes JAP = { exists = yes } }
+            set_variable_to_random = {
+                var = random_num
+                min = 5
+                max = 20
+                integer = yes
+            }
+            country_event = { id = chaosx.nr30.7 days = random_num }
+        }
+    }
+}
+}
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr30.3
+    title = chaosx.nr30.3.t
+    desc = chaosx.nr30.3.d
+    picture = GFX_report_event_generic_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 90 }
+        name = chaosx.nr30.3.a
+        SOV = { country_event = { id = chaosx.nr30.4 days = 1 } }
+    }
+    option = {
+        ai_chance = { base = 10 }
+        name = chaosx.nr30.3.b
+        add_political_power = 200
+        add_war_support = 0.1
+        add_opinion_modifier = {
+            target = SOV
+            modifier = hostile_status
+        }
+        hidden_effect = {
+            SOV = {
+                add_opinion_modifier = {
+                    target = ROOT
+                    modifier = hostile_status
+                }
+            }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr30.4
+    title = chaosx.nr30.4.t
+    desc = chaosx.nr30.4.d
+    picture = GFX_report_event_generic_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 60 }
+        name = chaosx.nr30.4.a
+        FROM = { country_event = { id = chaosx.nr30.5 days = 1 } }
+    }
+    option = {
+        ai_chance = { base = 40 }
+        name = chaosx.nr30.4.b
+        add_political_power = 200
+        add_war_support = 0.1
+        FROM = { country_event = { id = chaosx.nr30.6 days = 1 } }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr30.5
+    title = chaosx.nr30.5.t
+    desc = chaosx.nr30.5.d
+    picture = GFX_report_event_generic_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr30.5.a
+        news_event = { id = chaosx.news.34 days = 1 }
+        add_opinion_modifier = {
+            target = FROM
+            modifier = cheat_opinion_modifier_good
+        }
+        add_ai_strategy = { # So that Soviet Union wouldn't leave faction immediately
+            type = alliance
+            id = FROM
+            value = 2000
+        }
+        FROM = {
+            add_opinion_modifier = {
+                target = ROOT
+                modifier = cheat_opinion_modifier_good
+            }
+            add_ai_strategy = {
+                type = alliance
+                id = ROOT
+                value = 2000
+            }
+        }
+        create_faction = the_berlin_moscow_axis
+        add_to_faction = FROM
+        every_other_country = {
+            limit = {
+                OR = {
+                    AND = {
+                        NOT = { tag = GER }
+                        has_government = fascism
+                    }
+                    has_government = democratic
+                }
+            }
+            add_opinion_modifier = { target = SOV modifier = unholy_alliance }
+        }
+        add_named_threat = { threat = 10 name = germany.89.t }
+        every_other_country = {
+            limit = {
+                has_government = fascism
+            }
+            add_opinion_modifier = { target = GER modifier = communist_collaborators }
+        }
+        every_other_country = {
+            limit = {
+                has_government = democratic
+            }
+            add_opinion_modifier = { target = GER modifier = unholy_alliance }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr30.6
+    title = chaosx.nr30.6.t
+    desc = chaosx.nr30.6.d
+    picture = GFX_report_event_generic_handshake
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr30.6.a
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr30.7
+    title = chaosx.nr30.7.t
+    desc = chaosx.nr30.7.d
+    picture = GFX_report_event_japanese_siam_politicians
+
+    is_triggered_only = yes
+
+    option = {
+        ai_chance = { base = 100 }
+        name = chaosx.nr30.7.a
+        news_event = { id = chaosx.news.35 days = 1 }
+        add_intel = {
+            target = JAP
+            civilian_intel = 100
+            army_intel = 100
+            navy_intel = 100
+            airforce_intel = 100
+        }
+    }
+}

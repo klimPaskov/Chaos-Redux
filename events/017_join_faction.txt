@@ -1,0 +1,114 @@
+add_namespace = chaosx.nr17
+
+##############################################################################################################
+#    ##    ## ########        ##   ########
+#    ###   ## ##     ##     ####   ##    ##
+#    ####  ## ##     ##       ##       ##
+#    ## ## ## ########        ##      ##
+#    ##  #### ##   ##         ##     ##
+#    ##   ### ##    ##        ##     ##
+#    ##    ## ##     ##     ######   ##
+##############################################################################################################
+#         #                    #######
+#         #  ####  # #    #    #         ##    ####  ##### #  ####  #    #
+#         # #    # # ##   #    #        #  #  #    #   #   # #    # ##   #
+#         # #    # # # #  #    #####   #    # #        #   # #    # # #  #
+#   #     # #    # # #  # #    #       ###### #        #   # #    # #  # #
+#   #     # #    # # #   ##    #       #    # #    #   #   # #    # #   ##
+#    #####   ####  # #    #    #       #    #  ####    #   #  ####  #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr17.1
+    title = chaosx.nr17.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = { is_in_faction = no is_major = no is_subject = no }
+            country_event = { id = chaosx.nr17.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr17.2
+    title = chaosx.nr17.2.t
+    desc = chaosx.nr17.2.d
+    picture = GFX_report_event_generic_research_lab
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr17.2.a
+        set_variable = { global.joined_faction_leader = GER }
+        trigger = {
+            GER = { is_faction_leader = yes }
+        }
+        GER = { add_to_faction = ROOT }
+        ai_chance = {
+            factor = 100
+            modifier = {
+                factor = 0
+                NOT = { has_government = fascism }
+            }
+        }
+        news_event = { id = chaosx.news.4 days = 2 }
+    }
+    option = {
+        name = chaosx.nr17.2.b
+        set_variable = { global.joined_faction_leader = SOV }
+        trigger = {
+            SOV = { is_faction_leader = yes }
+        }
+        SOV = { add_to_faction = ROOT }
+        ai_chance = {
+            factor = 100
+            modifier = {
+                factor = 0
+                NOT = { has_government = communism }
+            }
+        }
+        news_event = { id = chaosx.news.4 days = 2 }
+    }
+    option = {
+        name = chaosx.nr17.2.e
+        set_variable = { global.joined_faction_leader = ENG }
+        trigger = {
+            ENG = { is_faction_leader = yes }
+        }
+        ENG = { add_to_faction = ROOT }
+        ai_chance = {
+            factor = 100
+            modifier = {
+                factor = 0
+                NOT = { has_government = democratic }
+            }
+        }
+        news_event = { id = chaosx.news.4 days = 2 }
+    }
+    option = {
+        name = chaosx.nr17.2.c
+        trigger = {
+            any_country = { is_faction_leader = yes NOT = { OR = { tag = ENG tag = SOV tag = GER } } }
+        }
+        random_country = {
+            limit = { is_faction_leader = yes NOT = { OR = { tag = ENG tag = SOV tag = GER } } }
+            set_variable = { global.joined_faction_leader = THIS.id }
+            THIS = { add_to_faction = ROOT }
+        }
+        ai_chance = {
+            factor = 100
+            modifier = {
+                factor = 0
+                NOT = { has_government = neutrality }
+            }
+        }
+        news_event = { id = chaosx.news.4 days = 2 }
+    }
+}

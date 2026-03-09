@@ -1,0 +1,70 @@
+add_namespace = chaosx.nr19
+
+##############################################################################################################
+#    ##    ## ########        ##    #######
+#    ###   ## ##     ##     ####   ##     ##
+#    ####  ## ##     ##       ##   ##     ##
+#    ## ## ## ########        ##    ########
+#    ##  #### ##   ##         ##          ##
+#    ##   ### ##    ##        ##   ##     ##
+#    ##    ## ##     ##     ######  #######
+##############################################################################################################
+#   ###                                                    #####
+#    #  #    # ######   ##   #    # ##### #####  #   #    #     # #####    ##   #    # #    #
+#    #  ##   # #       #  #  ##   #   #   #    #  # #     #       #    #  #  #  #    # ##   #
+#    #  # #  # #####  #    # # #  #   #   #    #   #       #####  #    # #    # #    # # #  #
+#    #  #  # # #      ###### #  # #   #   #####    #            # #####  ###### # ## # #  # #
+#    #  #   ## #      #    # #   ##   #   #   #    #      #     # #      #    # ##  ## #   ##
+#   ### #    # #      #    # #    #   #   #    #   #       #####  #      #    # #    # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr19.1
+    title = chaosx.nr19.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            division_template = {
+                name = "Infantry Division"
+                regiments = {
+                    infantry = { x = 0 y = 0 }
+                    infantry = { x = 0 y = 1 }
+                    infantry = { x = 0 y = 2 }
+                    infantry = { x = 0 y = 3 }
+                    infantry = { x = 1 y = 0 }
+                    infantry = { x = 1 y = 1 }
+                    infantry = { x = 1 y = 2 }
+                    infantry = { x = 1 y = 3 }
+                }
+            }
+            every_controlled_state = {
+                limit = { is_fully_controlled_by = PREV impassable = no }
+                create_unit = {
+                    division = "name = \"Random Events Division\" division_template = \"Infantry Division\" start_experience_factor = 0.1"
+                    owner = PREV
+                }
+            }
+            country_event = { id = chaosx.nr19.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr19.2
+    title = chaosx.nr19.2.t
+    desc = chaosx.nr19.2.d
+    picture = GFX_report_event_lithuania_army
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr19.2.a
+        ai_chance = { base = 100 }
+    }
+}

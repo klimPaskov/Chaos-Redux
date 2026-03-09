@@ -1,0 +1,202 @@
+add_namespace = chaosx.nr80
+
+##############################################################################################################
+#    ##    ## ########      #######    #####
+#    ###   ## ##     ##    ##     ##  ##   ##
+#    ####  ## ##     ##    ##     ## ##     ##
+#    ## ## ## ########      #######  ##     ##
+#    ##  #### ##   ##      ##     ## ##     ##
+#    ##   ### ##    ##     ##     ##  ##   ##
+#    ##    ## ##     ##     #######    #####
+##############################################################################################################
+#      #
+#     # #   # #####   ####  #    # # #####
+#    #   #  # #    # #      #    # # #    #
+#   #     # # #    #  ####  ###### # #    #
+#   ####### # #####       # #    # # #####
+#   #     # # #   #  #    # #    # # #
+#   #     # # #    #  ####  #    # # #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr80.1
+    title = chaosx.nr80.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        USA = {
+            country_event = { id = chaosx.nr80.3 }
+            set_country_flag = airship_country
+        }
+        set_global_flag = airship
+        activate_mission = airship_timeout
+        set_variable = { global.airship_d = 0 }
+        every_country = {
+            limit = { NOT = { tag = USA } }
+            country_event = { id = chaosx.nr80.2 days = 2 }
+            set_variable = { as_crash_chance = 1 } # 1 out of 100 as base
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # every country
+    id = chaosx.nr80.2
+    title = chaosx.nr80.2.t
+    desc = chaosx.nr80.2.d
+    picture = GFX_report_event_airship
+
+    is_triggered_only = yes
+
+    option = {
+        add_political_power = 10
+        name = chaosx.nr80.2.a
+    }
+}
+
+##############################################################################################################
+
+country_event = { # USA
+    id = chaosx.nr80.3
+    title = chaosx.nr80.3.t
+    desc = chaosx.nr80.3.d
+    picture = GFX_report_event_airship
+
+    is_triggered_only = yes
+
+    option = {
+        add_stability = 0.05
+        add_war_support = 0.05
+        add_political_power = 100
+        name = chaosx.nr80.3.a
+    }
+
+}
+country_event = { # crash
+    id = chaosx.nr80.4
+    title = chaosx.nr80.4.t
+    desc = chaosx.nr80.4.d
+    picture = GFX_report_event_hindenburg_flames
+
+    is_triggered_only = yes
+
+    option = {
+        news_event = { id = chaosx.news.70 days = 1 }
+        add_threat = 1
+        add_political_power = -50
+        add_stability = -0.05
+        USA = {
+            add_opinion_modifier = {
+                target = ROOT
+                modifier = hostile_status
+            }
+            country_event = { id = chaosx.nr80.5 days = 1 }
+        }
+        name = chaosx.nr80.4.a
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr80.5
+    title = chaosx.nr80.5.t
+    desc = chaosx.nr80.5.d
+    picture = GFX_report_event_hindenburg_flames
+
+    is_triggered_only = yes
+
+    option = {
+        add_war_support = 0.10
+        declare_war_on = {
+            type = annex_everything
+            target = FROM
+        }
+        name = chaosx.nr80.5.a
+    }
+}
+
+##############################################################################################################
+
+country_event = { # didn't crash
+    id = chaosx.nr80.6
+    title = chaosx.nr80.6.t
+    desc = chaosx.nr80.6.d
+    picture = GFX_report_event_airship
+
+    is_triggered_only = yes
+
+    option = {
+        add_political_power = 20
+        add_stability = 0.02
+        USA = {
+            add_opinion_modifier = {
+                target = ROOT
+                modifier = small_increase
+            }
+        }
+        name = chaosx.nr80.6.a
+    }
+}
+
+##############################################################################################################
+
+country_event = { # didn't crash: USA
+    id = chaosx.nr80.7
+    title = chaosx.nr80.7.t
+    desc = chaosx.nr80.7.d
+    picture = GFX_report_event_airship
+
+    is_triggered_only = yes
+
+    option = {
+        add_political_power = 200
+        add_stability = 0.2
+        name = chaosx.nr80.7.a
+    }
+}
+
+##############################################################################################################
+
+country_event = { # over our country
+    id = chaosx.nr80.8
+    title = chaosx.nr80.8.t
+    desc = chaosx.nr80.8.d
+    picture = GFX_report_event_airship
+
+    timeout_days = 4
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = { set_country_flag = airship_above }
+    }
+
+    option = {
+        add_political_power = 10
+        name = chaosx.nr80.8.a
+    }
+}
+
+##############################################################################################################
+
+country_event = { # no longer over our country
+    id = chaosx.nr80.9
+    title = chaosx.nr80.9.t
+    desc = chaosx.nr80.9.d
+    picture = GFX_report_event_airship
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = { clr_country_flag = airship_above }
+    }
+
+    option = {
+        add_stability = 0.02
+        name = chaosx.nr80.9.a
+    }
+}

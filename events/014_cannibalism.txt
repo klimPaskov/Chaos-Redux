@@ -1,0 +1,78 @@
+add_namespace = chaosx.nr14
+
+##############################################################################################################
+#    ##    ## ########        ##   ##
+#    ###   ## ##     ##     ####   ##    ##
+#    ####  ## ##     ##       ##   ##    ##
+#    ## ## ## ########        ##   ##    ##
+#    ##  #### ##   ##         ##   #########
+#    ##   ### ##    ##        ##         ##
+#    ##    ## ##     ##     ######       ##
+##############################################################################################################
+#    #####
+#   #     #   ##   #    # #    # # #####    ##   #      #  ####  #    #
+#   #        #  #  ##   # ##   # # #    #  #  #  #      # #      ##  ##
+#   #       #    # # #  # # #  # # #####  #    # #      #  ####  # ## #
+#   #       ###### #  # # #  # # # #    # ###### #      #      # #    #
+#   #     # #    # #   ## #   ## # #    # #    # #      # #    # #    #
+#    #####  #    # #    # #    # # #####  #    # ###### #  ####  #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr14.1
+    title = chaosx.nr14.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = { has_war = yes }
+            country_event = { id = chaosx.nr14.2 days = 1 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr14.2
+    title = chaosx.nr14.2.t
+    desc = chaosx.nr14.2.d
+    picture = GFX_report_event_cannibalism
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr14.2.a
+        add_ideas = cannibalism
+        add_stability = -0.05
+        news_event = { id = chaosx.news.17 days = 2 }
+        trigger = { has_war = yes }
+        ai_chance = { base = 50 }
+    }
+    option = {
+        name = chaosx.nr14.2.c
+        add_timed_idea = {
+            idea = cannibalism
+            days = 180
+        }
+        add_stability = -0.05
+        news_event = { id = chaosx.news.17 days = 2 }
+        trigger = { has_war = no }
+        ai_chance = { base = 50 }
+    }
+    option = {
+        name = chaosx.nr14.2.b
+        ai_chance = { base = 50 }
+        add_timed_idea = {
+            idea = cannibalism
+            days = 180
+        }
+        add_political_power = -100
+        add_stability = -0.10
+        news_event = { id = chaosx.news.17 days = 2 }
+    }
+
+}

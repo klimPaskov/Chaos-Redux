@@ -1,0 +1,82 @@
+add_namespace = chaosx.nr95
+
+##############################################################################################################
+#    ##    ## ########      #######  ########
+#    ###   ## ##     ##    ##     ## ##
+#    ####  ## ##     ##    ##     ## ##
+#    ## ## ## ########      ######## #######
+#    ##  #### ##   ##             ##       ##
+#    ##   ### ##    ##     ##     ## ##    ##
+#    ##    ## ##     ##     #######   ######
+##############################################################################################################
+#   #######                                                             ######
+#   #     #  ####   ####  #    # #####    ##   ##### #  ####  #    #    #     # ###### #    #  ####  #      #####
+#   #     # #    # #    # #    # #    #  #  #    #   # #    # ##   #    #     # #      #    # #    # #        #
+#   #     # #      #      #    # #    # #    #   #   # #    # # #  #    ######  #####  #    # #    # #        #
+#   #     # #      #      #    # #####  ######   #   # #    # #  # #    #   #   #      #    # #    # #        #
+#   #     # #    # #    # #    # #      #    #   #   # #    # #   ##    #    #  #       #  #  #    # #        #
+#   #######  ####   ####   ####  #      #    #   #   #  ####  #    #    #     # ######   ##    ####  ######   #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr95.1
+    title = chaosx.nr95.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_country = {
+            limit = { is_government_in_exile = yes }
+            random_enemy_country = {
+                every_controlled_state = {
+                    limit = { is_core_of = PREV.PREV }
+                    transfer_state_to = PREV.PREV
+                }
+            }
+            division_template = {
+                name = "Revolt Division"
+                regiments = {
+                    infantry = { x = 0 y = 0 }
+                    infantry = { x = 0 y = 1 }
+                    infantry = { x = 0 y = 2 }
+                    infantry = { x = 0 y = 3 }
+                    irregular_infantry = { x = 1 y = 0 }
+                    irregular_infantry = { x = 1 y = 1 }
+                    irregular_infantry = { x = 1 y = 2 }
+                    cavalry = { x = 2 y = 0 }
+                    cavalry = { x = 2 y = 1 }
+                }
+            }
+            every_owned_state = {
+                create_unit = {
+                    division = "name = \"Rebels\" division_template = \"Revolt Division\" start_experience_factor = 0.1"
+                    owner = PREV
+                    count = 1
+                    allow_spawning_on_enemy_provs = yes
+                }
+            }
+            country_event = { id = chaosx.nr95.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr95.2
+    title = chaosx.nr95.2.t
+    desc = chaosx.nr95.2.d
+    picture = GFX_report_event_spr_army_of_africa
+
+    is_triggered_only = yes
+
+    option = {
+        add_war_support = 0.15
+        add_political_power = 50
+        news_event = { id = chaosx.news.76 days = 2 }
+        name = chaosx.nr95.2.a
+        ai_chance = { base = 100 }
+    }
+}

@@ -1,0 +1,161 @@
+add_namespace = chaosx.nr75
+
+##############################################################################################################
+#    ##    ## ########     ######## ########
+#    ###   ## ##     ##    ##    ## ##
+#    ####  ## ##     ##        ##   ##
+#    ## ## ## ########        ##    #######
+#    ##  #### ##   ##        ##           ##
+#    ##   ### ##    ##       ##     ##    ##
+#    ##    ## ##     ##      ##      ######
+##############################################################################################################
+#   #######                                #######                          #####                ###           ######
+#      #      ##   #    # #    # #    #       #    #    # #    #   ##      #     #  ####  #####  ###  ####     #     # #        ##   #    #
+#      #     #  #  ##   # ##   # #    #       #    #    # #    #  #  #     #       #    # #    #  #  #         #     # #       #  #  ##   #
+#      #    #    # # #  # # #  # #    #       #    #    # #    # #    #    #  #### #    # #    # #    ####     ######  #      #    # # #  #
+#      #    ###### #  # # #  # # #    #       #    #    # #    # ######    #     # #    # #    #          #    #       #      ###### #  # #
+#      #    #    # #   ## #   ## #    #       #    #    #  #  #  #    #    #     # #    # #    #     #    #    #       #      #    # #   ##
+#      #    #    # #    # #    #  ####        #     ####    ##   #    #     #####   ####  #####       ####     #       ###### #    # #    #
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr75.1
+    title = chaosx.nr75.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        TAN = {
+            country_event = { id = chaosx.nr75.2 }
+        }
+    }
+}
+
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr75.2
+    title = chaosx.nr75.2.t
+    desc = chaosx.nr75.2.d
+    picture = GFX_report_event_generic_sign_treaty1
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr75.2.a
+        ai_chance = { base = 100 }
+        add_popularity = {
+            ideology = neutrality
+            popularity = 1.00
+        }
+        set_politics = {
+            ruling_party = neutrality
+            elections_allowed = no
+        }
+        every_country = {
+            limit = { has_cosmetic_tag = THR is_faction_leader = yes }
+            country_event = { id = chaosx.nr75.3 }
+        }
+        trigger = {
+            any_country = { has_cosmetic_tag = THR is_faction_leader = yes }
+        }
+    }
+    option = {
+        name = chaosx.nr75.2.b
+        ai_chance = { base = 100 }
+        add_popularity = {
+            ideology = democratic
+            popularity = 1.00
+        }
+        set_politics = {
+            ruling_party = democratic
+            elections_allowed = no
+        }
+        ENG = { country_event = { id = chaosx.nr75.5 } }
+        trigger = {
+            NOT = { any_country = { has_cosmetic_tag = THR is_faction_leader = yes } }
+        }
+    }
+    option = {
+        name = chaosx.nr75.2.c
+        ai_chance = { base = 0 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # allies
+    id = chaosx.nr75.3
+    title = chaosx.nr75.3.t
+    desc = chaosx.nr75.3.d
+    picture = GFX_report_event_generic_sign_treaty2
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr75.3.a
+        add_to_faction = TAN
+        ai_chance = { base = 100 }
+    }
+    option = {
+        name = chaosx.nr75.3.b
+        TAN = { country_event = { id = chaosx.nr75.4 } }
+        ai_chance = { base = 0 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # tan
+    id = chaosx.nr75.4
+    title = chaosx.nr75.4.t
+    desc = chaosx.nr75.4.d
+    picture = GFX_report_event_generic_sign_treaty1
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr75.4.a
+        ai_chance = { base = 100 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # thr
+    id = chaosx.nr75.5
+    title = chaosx.nr75.5.t
+    desc = chaosx.nr75.5.d
+    picture = GFX_report_event_generic_sign_treaty2
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr75.5.a
+        add_to_faction = TAN
+        ai_chance = { base = 100 }
+    }
+    option = {
+        name = chaosx.nr75.5.b
+        TAN = { country_event = { id = chaosx.nr75.6 } }
+        ai_chance = { base = 0 }
+    }
+}
+
+##############################################################################################################
+
+country_event = { # tan
+    id = chaosx.nr75.6
+    title = chaosx.nr75.6.t
+    desc = chaosx.nr75.6.d
+    picture = GFX_report_event_generic_sign_treaty1
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr75.6.a
+        ai_chance = { base = 100 }
+    }
+}
