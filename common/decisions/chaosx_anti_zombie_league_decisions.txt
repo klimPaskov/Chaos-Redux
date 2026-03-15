@@ -25,7 +25,7 @@ chaosx_anti_zombie_league_category = {
 			can_lead_anti_zombie_league = yes
 		}
 
-		cost = 50
+		cost = constant:anti_zombie_league.formation_pp_cost
 		days_remove = 10
 		fire_only_once = yes
 
@@ -56,6 +56,12 @@ chaosx_anti_zombie_league_category = {
 				factor = 0.4
 				NOT = { has_government = democratic }
 			}
+
+			modifier = {
+				factor = 0.25
+				zombie_threat_confined_to_americas = yes
+				is_outside_americas_country = yes
+			}
 		}
 
 		complete_effect = {
@@ -68,7 +74,7 @@ chaosx_anti_zombie_league_category = {
 
 		cancel_effect = {
 			clr_country_flag = azl_formation_in_progress
-			add_political_power = 50
+			add_political_power = constant:anti_zombie_league.formation_pp_cost
 		}
 	}
 
@@ -77,13 +83,13 @@ chaosx_anti_zombie_league_category = {
 
 		visible = {
 			has_global_flag = anti_zombie_league_formed
-			can_join_anti_zombie_league = yes
-			has_active_anti_zombie_league_leader = yes
+			hidden_trigger = { can_join_anti_zombie_league = yes }
+			hidden_trigger = { has_active_anti_zombie_league_leader = yes }
 		}
 
 		available = {
-			can_join_anti_zombie_league = yes
-			has_active_anti_zombie_league_leader = yes
+			hidden_trigger = { can_join_anti_zombie_league = yes }
+			hidden_trigger = { has_active_anti_zombie_league_leader = yes }
 		}
 
 		ai_will_do = {
@@ -148,6 +154,12 @@ chaosx_anti_zombie_league_category = {
 				factor = 0.4
 				NOT = { has_government = democratic }
 			}
+
+			modifier = {
+				factor = 0.25
+				zombie_threat_confined_to_americas = yes
+				is_outside_americas_country = yes
+			}
 		}
 
 		complete_effect = {
@@ -159,13 +171,13 @@ chaosx_anti_zombie_league_category = {
 		icon = GFX_decision_generic_nationalism
 
 		visible = {
-			is_anti_zombie_league_member = yes
+			hidden_trigger = { is_anti_zombie_league_member = yes }
 			is_in_faction = yes
 			NOT = { has_country_flag = azl_leader }
 		}
 
 		available = {
-			is_anti_zombie_league_member = yes
+			hidden_trigger = { is_anti_zombie_league_member = yes }
 			is_in_faction = yes
 			NOT = { has_country_flag = azl_leader }
 		}
@@ -207,8 +219,7 @@ chaosx_anti_zombie_league_category = {
 			leave_faction = yes
 
 			hidden_effect = {
-				remove_anti_zombie_league_membership_idea = yes
-				apply_azl_cure_research_bonus = yes
+				remove_anti_zombie_league_membership_package = yes
 			}
 		}
 	}
@@ -218,11 +229,11 @@ chaosx_anti_zombie_league_category = {
 
 		visible = {
 			has_global_flag = anti_zombie_league_formed
-			is_anti_zombie_league_member = yes
+			hidden_trigger = { is_anti_zombie_league_member = yes }
 		}
 
 		available = {
-			is_anti_zombie_league_member = yes
+			hidden_trigger = { is_anti_zombie_league_member = yes }
 			NOT = { has_global_flag = azl_investment_maxed }
 			hidden_trigger = { has_political_power > 49 }
 			NOT = { has_idea = azl_investment_penalty }
@@ -348,17 +359,17 @@ chaosx_anti_zombie_league_category = {
 			set_global_flag = azl_league_dissolved
 			set_variable = { global.azl_global_investment = 0 }
 			set_variable = { global.target_level = 0 }
+			refresh_zombie_world_threat_source = yes
 
 			every_country = {
 				limit = {
-					is_anti_zombie_league_member = yes
+					has_anti_zombie_league_membership_idea = yes
 				}
-				remove_anti_zombie_league_membership_idea = yes
+				remove_anti_zombie_league_membership_package = yes
 				if = {
 					limit = { is_in_faction = yes }
 					leave_faction = yes
 				}
-				apply_azl_cure_research_bonus = yes
 			}
 
 			clr_country_flag = azl_leader

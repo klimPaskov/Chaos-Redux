@@ -2,29 +2,129 @@
 # all on_daily, on_weekly, and on_monthly evaluate for all countries by default.
 on_actions = {
 
-	on_startup = {
-		effect = {
+		on_state_control_changed = {
+			effect = {
+				if = {
+					limit = {
+						ROOT = { is_zombie_outbreak_country = yes }
+					}
+					FROM.FROM = {
+						zombie_on_state_captured_by_outbreak = yes
+					}
+				}
+			}
+		}
+
+		on_startup = {
+			effect = {
 			every_country = {
 				initialize_smallpox_vaccination_protection = yes
 			}
 		}
 	}
 
-	# Zombie Outbreak
-		on_daily = { # Checks daily if there is a neighbor to declare war on
-			effect = {
-				if = {
-					limit = {
-						original_tag = ZZZ
-						exists = yes
-						has_global_flag = has_zombie_outbreak
-						NOT = { has_global_flag = zombie_system_disabled }
+	on_join_faction = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = anti_zombie_league_formed
+					FROM = {
+						has_country_flag = azl_leader
+						is_faction_leader = yes
 					}
-					every_country = {
-						limit = { is_neighbor_of = ROOT NOT = { has_war_with = ROOT } NOT = { original_tag = ZZZ } }
-					if = { limit = { NOT = { is_subject_of = ZZZ }}
-						ROOT = {
-							declare_war_on = {
+				}
+				prepare_anti_zombie_league_member = yes
+				grant_anti_zombie_league_membership_benefits = yes
+			}
+
+			if = {
+				limit = {
+					has_anti_zombie_league_membership_idea = yes
+					NOT = { is_in_anti_zombie_league_faction = yes }
+				}
+				remove_anti_zombie_league_membership_package = yes
+			}
+		}
+	}
+
+	on_leave_faction = {
+		effect = {
+			if = {
+				limit = {
+					has_anti_zombie_league_membership_idea = yes
+					NOT = { has_country_flag = azl_disbanding_league }
+				}
+				remove_anti_zombie_league_membership_package = yes
+			}
+		}
+	}
+
+	on_assume_faction_leadership = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = anti_zombie_league_formed
+					FROM = {
+						has_country_flag = azl_leader
+					}
+				}
+				FROM = {
+					clr_country_flag = azl_leader
+				}
+				set_country_flag = azl_leader
+				save_global_event_target_as = azl_faction_leader
+				prepare_anti_zombie_league_member = yes
+				grant_anti_zombie_league_membership_benefits = yes
+			}
+		}
+	}
+
+	# Zombie Outbreak
+			on_daily = { # Checks daily if there is a neighbor to declare war on
+				effect = {
+					if = {
+						limit = {
+							is_zombie_outbreak_country = yes
+							exists = yes
+							has_global_flag = has_zombie_outbreak
+							NOT = { has_global_flag = zombie_system_disabled }
+						}
+						zombie_process_controlled_state_decay = yes
+					}
+					if = {
+						limit = {
+							original_tag = ZZZ
+							exists = yes
+							has_global_flag = has_zombie_outbreak
+							NOT = { has_global_flag = zombie_system_disabled }
+						}
+						refresh_zombie_world_threat_source = yes
+						every_country = {
+						limit = {
+							is_neighbor_of = ROOT
+							NOT = { has_war_with = ROOT }
+							OR = {
+								AND = {
+									ROOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+									is_zombie_outbreak_country = yes
+								}
+								AND = {
+									ROOT = { NOT = { has_country_flag = weaponized_zombie_targets_zombies_only } }
+									NOT = { original_tag = ZZZ }
+									NOT = {
+										ROOT = {
+											is_in_array = {
+												array = weaponized_zombie_friendly_countries
+												value = PREV
+											}
+										}
+									}
+								}
+							}
+						}
+						if = { limit = { NOT = { is_subject_of = ZZZ }}
+							ROOT = {
+								declare_war_on = {
 								target = PREV
 								type = annex_everything
 							}
@@ -86,22 +186,24 @@ on_actions = {
 					exists = yes
 					has_global_flag = has_zombie_outbreak
 
-					# Check if any dynamic zombie country connects to ZZZ now
-					any_country = {
-						has_country_flag = zombie_outbreak_dynamic_country
-						any_controlled_state = {
-							any_neighbor_state = {
-								is_controlled_by = ZZZ
+						# Check if any dynamic zombie country connects to ZZZ now
+						any_country = {
+							has_country_flag = zombie_outbreak_dynamic_country
+							NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+							any_controlled_state = {
+								any_neighbor_state = {
+									is_controlled_by = ZZZ
 							}
 						}
 					}
 				}
-				every_country = {
-					limit = {
-						has_country_flag = zombie_outbreak_dynamic_country
-						OR = {
-							any_controlled_state = {
-								any_neighbor_state = {
+					every_country = {
+						limit = {
+							has_country_flag = zombie_outbreak_dynamic_country
+							NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+							OR = {
+								any_controlled_state = {
+									any_neighbor_state = {
 									is_controlled_by = ZZZ
 								}
 							}
@@ -118,26 +220,29 @@ on_actions = {
 				}
 			}
 			else_if = {
-				limit = {
-					original_tag = ZZZ
-					exists = yes
-					has_global_flag = has_zombie_outbreak
+					limit = {
+						original_tag = ZZZ
+						exists = yes
+						has_global_flag = has_zombie_outbreak
+						NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
 
-					# Check if any dynamic zombie country connects to ZZZ now
-					any_country = {
-						has_country_flag = zombie_outbreak_dynamic_country
-						any_controlled_state = {
-							any_neighbor_state = {
-								is_controlled_by = ROOT
+						# Check if any dynamic zombie country connects to ZZZ now
+						any_country = {
+							has_country_flag = zombie_outbreak_dynamic_country
+							NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+							any_controlled_state = {
+								any_neighbor_state = {
+									is_controlled_by = ROOT
 							}
 						}
 					}
 				}
-				every_country = {
-					limit = {
-						has_country_flag = zombie_outbreak_dynamic_country
-						is_neighbor_of = ROOT
-					}
+					every_country = {
+						limit = {
+							has_country_flag = zombie_outbreak_dynamic_country
+							NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+							is_neighbor_of = ROOT
+						}
 
 					ROOT = {
 						annex_country = {
@@ -150,10 +255,11 @@ on_actions = {
 			# If dynamic zombie country has no neighbors, get annexed  by ZZZ
 			if = {
 				limit = {
-					original_tag = ZZZ
-					has_country_flag = zombie_outbreak_dynamic_country
-					exists = yes
-					has_global_flag = has_zombie_outbreak
+						original_tag = ZZZ
+						has_country_flag = zombie_outbreak_dynamic_country
+						NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+						exists = yes
+						has_global_flag = has_zombie_outbreak
 
 					NOT = {
 						any_neighbor_country = {
@@ -176,10 +282,11 @@ on_actions = {
 					exists = yes
 					has_global_flag = has_zombie_outbreak
 
-					any_country = {
-						has_country_flag = zombie_outbreak_dynamic_country
-						any_controlled_state = { is_coastal = yes }
-					}
+						any_country = {
+							has_country_flag = zombie_outbreak_dynamic_country
+							NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+							any_controlled_state = { is_coastal = yes }
+						}
 
 					NOT = {
 						any_neighbor_country = {
@@ -188,11 +295,12 @@ on_actions = {
 					}
 
 				}
-				every_country = {
-					limit = {
-						has_country_flag = zombie_outbreak_dynamic_country
-						any_controlled_state = { is_coastal = yes }
-					}
+					every_country = {
+						limit = {
+							has_country_flag = zombie_outbreak_dynamic_country
+							NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+							any_controlled_state = { is_coastal = yes }
+						}
 					ZZZ = {
 						annex_country = {
 							target = PREV
@@ -825,40 +933,7 @@ on_actions = {
 						NOT = { has_global_flag = zombie_system_disabled }
 					}
 					add_to_variable = { global.zombie_main_capitulation_count = 1 }
-
-					if = {
-						limit = {
-							check_variable = {
-								var = global.zombie_main_capitulation_count
-								value = constant:zombie_threat.main_collapse_shutdown_limit
-								compare = greater_than_or_equals
-							}
-						}
-						disable_zombie_outbreak_system = yes
-					}
-					else_if = {
-						limit = {
-							any_country = {
-								exists = yes
-								has_country_flag = zombie_outbreak_dynamic_country
-								num_of_controlled_states > 0
-								NOT = { has_capitulated = yes }
-							}
-						}
-						random_country = {
-							limit = {
-								exists = yes
-								has_country_flag = zombie_outbreak_dynamic_country
-								num_of_controlled_states > 0
-								NOT = { has_capitulated = yes }
-							}
-							transfer_dynamic_zombie_successor_to_main = yes
-						}
-						update_all_zombie_outbreak_chances = yes
-					}
-					else = {
-						update_all_zombie_outbreak_chances = yes
-					}
+					disable_zombie_outbreak_system = yes
 				}
 			}
 

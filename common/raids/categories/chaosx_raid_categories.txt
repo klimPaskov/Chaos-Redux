@@ -3,33 +3,51 @@ categories = {
         intel_source = air
         free_targeting = yes
 
+		visible = {
+			OR = {
+				has_country_flag = bioweapon_available
+				has_country_flag = anti_zombie_bomb_available
+			}
+		}
+
         available = {
-            custom_trigger_tooltip = {
-                hidden_trigger = { has_country_flag = bioweapon_available }
-                tooltip = bioweapon_available_tooltip
-            }
+			custom_trigger_tooltip = {
+				hidden_trigger = {
+					OR = {
+						has_country_flag = bioweapon_available
+						has_country_flag = anti_zombie_bomb_available
+					}
+				}
+				tooltip = biological_raid_available_tooltip
+			}
         }
     }
 
-    chemical_raids = {
-        intel_source = air
-        free_targeting = yes
+	chemical_raids = {
+		intel_source = air
+		free_targeting = yes
 
-        visible = {
-            has_tech = tabun
-        }
+		visible = {
+			OR = {
+				has_tech = tabun
+				is_special_project_completed = sp:sp_cw_malodor_bomb_program
+				is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program
+			}
+		}
 
-        available = {
-            custom_trigger_tooltip = {
-                hidden_trigger = {
-                    OR = {
-                        has_tech = sarin
-                        has_tech = soman
-                    }
-                }
-                tooltip = chemical_raid_available_tooltip
-            }
-        }
+		available = {
+			custom_trigger_tooltip = {
+				hidden_trigger = {
+					OR = {
+						has_tech = sarin
+						has_tech = soman
+						is_special_project_completed = sp:sp_cw_malodor_bomb_program
+						is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program
+					}
+				}
+				tooltip = chemical_raid_available_tooltip
+			}
+		}
     }
 
 }

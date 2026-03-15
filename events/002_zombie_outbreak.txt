@@ -693,6 +693,12 @@ country_event = {
                 capital_scope = { is_island_state = yes }
             }
 
+            modifier = {
+                factor = 0.25
+                zombie_threat_confined_to_americas = yes
+                is_outside_americas_country = yes
+            }
+
             # Overwhelming zombie force - everyone must join
             modifier = {
                 factor = 100
@@ -762,6 +768,12 @@ country_event = {
                 factor = 2
                 capital_scope = { is_island_state = yes }
                 NOT = { has_neighboring_zombie_front = yes }
+            }
+
+            modifier = {
+                factor = 3
+                zombie_threat_confined_to_americas = yes
+                is_outside_americas_country = yes
             }
 
             # Less likely to delay as chaos increases
@@ -836,6 +848,12 @@ country_event = {
             modifier = {
                 factor = 2
                 capital_scope = { is_island_state = yes }
+            }
+
+            modifier = {
+                factor = 2.5
+                zombie_threat_confined_to_americas = yes
+                is_outside_americas_country = yes
             }
 
             # Major powers might think they can handle it alone
@@ -965,6 +983,40 @@ country_event = {
             play_current_super_event_audio = yes
             set_global_flag = world_end
             set_global_flag = world_end_fallout
+        }
+    }
+}
+
+# World End Scenario Event - Wendigo ascendancy
+country_event = {
+    id = chaosx.nr2.11
+
+    hidden = yes
+
+    trigger = {
+        has_global_flag = { flag = chaos_tier value = 5 }
+        NOT = { has_global_flag = world_end }
+        NOT = { has_global_flag = world_end_disabled }
+        NOT = { has_global_flag = zombie_system_disabled }
+        has_country_flag = weaponized_zombie_outbreak_country
+        has_country_flag = weaponized_zombie_type_wendigo
+    }
+
+    mean_time_to_happen = {
+        days = constant:weaponized_zombies.wendigo_world_end_mtth_days
+    }
+
+    immediate = {
+        hidden_effect = {
+            evaluate_wendigo_world_end_readiness = yes
+
+            if = {
+                limit = { has_country_flag = wendigo_world_end_ready }
+                set_global_flag = world_end
+                set_global_flag = world_end_wendigo
+                add_ideas = weaponized_zombie_wendigo_world_end
+                trigger_wendigo_super_event = yes
+            }
         }
     }
 }

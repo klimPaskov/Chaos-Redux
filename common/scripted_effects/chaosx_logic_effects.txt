@@ -352,7 +352,7 @@ calculate_next_timer_value = {
 
 # Update timer when minor event fires
 on_minor_event_timer_update = {
-    add_to_variable = { timer_day_decrement = 1 }
+    add_to_variable = { timer_day_decrement = constant:event_system_timer_defaults.minor_event_decrement_step }
     clamp_variable = {
         var = timer_day_decrement
         max = timer_min_decrement_cap
@@ -366,7 +366,7 @@ on_minor_event_timer_update = {
             check_variable = { temp_check = 0 }
             check_variable = { timer_max_cap_reduction < timer_max_decrement_cap }
         }
-        add_to_variable = { timer_max_cap_reduction = 1 }
+        add_to_variable = { timer_max_cap_reduction = constant:event_system_timer_defaults.minor_event_compression_step }
     }
     else_if = {
         limit = { check_variable = { timer_max_cap_reduction > timer_max_decrement_cap } }

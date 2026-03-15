@@ -1,0 +1,22 @@
+# Overview:
+# - Collections for the Anti-Zombie League faction template.
+# - Used by the faction manifest to measure how much of the world remains out
+#   of zombie hands.
+
+world_non_zombie_controlled_states = {
+	input = game:all_states
+	name = COLLECTION_WORLD_NON_ZOMBIE_CONTROLLED_STATES
+	operators = {
+		limit = {
+			NOT = {
+				controller = {
+					OR = {
+						original_tag = ZZZ
+						has_country_flag = zombie_outbreak_dynamic_country
+						has_country_flag = weaponized_zombie_outbreak_country
+					}
+				}
+			}
+		}
+	}
+}
