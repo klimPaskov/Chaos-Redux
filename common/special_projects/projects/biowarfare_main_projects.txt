@@ -19,6 +19,8 @@
 # 	* Complexity :
 # 	How much progress is gained each prototype iteration. Once reaching 100 the prototype phase is completed.
 
+@anti_zombie_bomb_project_rubber_cost = 1
+
 # FROM - country
 # ROOT - project
 zombie_cure_bomb = {
@@ -50,8 +52,7 @@ zombie_cure_bomb = {
     # If omitted it will default to 0 for the project specialization.
     # Can also add script to modify the value (Country Scope).
     breakthrough_cost = {
-        specialization_air = 1
-        specialization_biowarfare = 2
+        specialization_biowarfare = constant:anti_zombie_bomb.project_breakthrough_cost
         # specialization_land = {
         # 	base = 1
         # 	modifier = {
@@ -139,8 +140,7 @@ zombie_cure_bomb = {
 
     resource_cost = {
         resources = {
-            tungsten = 2
-            rubber = 4
+            rubber = @anti_zombie_bomb_project_rubber_cost
         }
     }
 
@@ -154,18 +154,17 @@ zombie_cure_bomb = {
 
     # Optional
     # Bonus given when the Project is fully researched (i.e. at the end of the last Prototyping phase)
-    project_output = {
-        # output content, detailed below
-        # TODO
-        country_effects = {
-            hidden_effect = {
-                if = {
-                    limit = { NOT = { has_country_flag = bioweapon_available } }
-                    set_country_flag = bioweapon_available
-                }
-            }
-        }
-    }
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = anti_zombie_bomb_unlocked_tooltip
+			hidden_effect = {
+				if = {
+					limit = { NOT = { has_country_flag = anti_zombie_bomb_available } }
+					set_country_flag = anti_zombie_bomb_available
+				}
+			}
+		}
+	}
 
     # Optional array
     # Rewards for when one iteration in the prototype phase is completed
@@ -536,51 +535,51 @@ anthrax_bomb = {
             }
         }
 
-		sp_anthrax_reward_field_testing = {
-			icon = GFX_PLACEHOLDER_sp_project_picture
+        sp_anthrax_reward_field_testing = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
 
-			fire_only_once = yes
+            fire_only_once = yes
 
             threshold = {
                 min = 40
                 max = 100
             }
 
-			weight = {
-				base = 10
-				modifier = {
-					factor = 0
-					FROM = {
-						is_ai = yes
-						NOT = { has_war = yes }
-					}
-				}
-			}
+            weight = {
+                base = 10
+                modifier = {
+                    factor = 0
+                    FROM = {
+                        is_ai = yes
+                        NOT = { has_war = yes }
+                    }
+                }
+            }
 
-			option = {
-				token = sp_anthrax_reward_field_testing_conduct
+            option = {
+                token = sp_anthrax_reward_field_testing_conduct
 
-				iteration_output = {
-					country_effects = {
-						if = {
-							limit = {
-								OR = {
-									is_ai = no
-									has_war = yes
-								}
-							}
-							custom_effect_tooltip = anthrax_field_testing_tt
-							FROM = {
-								add_project_progress_ratio = constant:sp_progress.gain.high
-							}
-							conduct_anthrax_field_test = yes
-						}
-						else = {
-							custom_effect_tooltip = anthrax_skip_field_testing_tt
-						}
-					}
-				}
-			}
+                iteration_output = {
+                    country_effects = {
+                        if = {
+                            limit = {
+                                OR = {
+                                    is_ai = no
+                                    has_war = yes
+                                }
+                            }
+                            custom_effect_tooltip = anthrax_field_testing_tt
+                            FROM = {
+                                add_project_progress_ratio = constant:sp_progress.gain.high
+                            }
+                            conduct_anthrax_field_test = yes
+                        }
+                        else = {
+                            custom_effect_tooltip = anthrax_skip_field_testing_tt
+                        }
+                    }
+                }
+            }
             option = {
                 token = sp_anthrax_reward_field_testing_skip
 
@@ -765,51 +764,51 @@ plague_bomb = {
             }
         }
 
-		sp_plague_reward_field_testing = {
-			icon = GFX_PLACEHOLDER_sp_project_picture
+        sp_plague_reward_field_testing = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
 
-			fire_only_once = yes
+            fire_only_once = yes
 
             threshold = {
                 min = 40
                 max = 100
             }
 
-			weight = {
-				base = 10
-				modifier = {
-					factor = 0
-					FROM = {
-						is_ai = yes
-						NOT = { has_war = yes }
-					}
-				}
-			}
+            weight = {
+                base = 10
+                modifier = {
+                    factor = 0
+                    FROM = {
+                        is_ai = yes
+                        NOT = { has_war = yes }
+                    }
+                }
+            }
 
-			option = {
-				token = sp_plague_reward_field_testing_conduct
+            option = {
+                token = sp_plague_reward_field_testing_conduct
 
-				iteration_output = {
-					country_effects = {
-						if = {
-							limit = {
-								OR = {
-									is_ai = no
-									has_war = yes
-								}
-							}
-							custom_effect_tooltip = plague_field_testing_tt
-							FROM = {
-								add_project_progress_ratio = constant:sp_progress.gain.high
-							}
-							conduct_plague_field_test = yes
-						}
-						else = {
-							custom_effect_tooltip = plague_skip_field_testing_tt
-						}
-					}
-				}
-			}
+                iteration_output = {
+                    country_effects = {
+                        if = {
+                            limit = {
+                                OR = {
+                                    is_ai = no
+                                    has_war = yes
+                                }
+                            }
+                            custom_effect_tooltip = plague_field_testing_tt
+                            FROM = {
+                                add_project_progress_ratio = constant:sp_progress.gain.high
+                            }
+                            conduct_plague_field_test = yes
+                        }
+                        else = {
+                            custom_effect_tooltip = plague_skip_field_testing_tt
+                        }
+                    }
+                }
+            }
             option = {
                 token = sp_plague_reward_field_testing_skip
 
@@ -998,51 +997,51 @@ tularemia_bomb = {
             }
         }
 
-		sp_tularemia_reward_field_testing = {
-			icon = GFX_PLACEHOLDER_sp_project_picture
+        sp_tularemia_reward_field_testing = {
+            icon = GFX_PLACEHOLDER_sp_project_picture
 
-			fire_only_once = yes
+            fire_only_once = yes
 
             threshold = {
                 min = 30
                 max = 100
             }
 
-			weight = {
-				base = 10
-				modifier = {
-					factor = 0
-					FROM = {
-						is_ai = yes
-						NOT = { has_war = yes }
-					}
-				}
-			}
+            weight = {
+                base = 10
+                modifier = {
+                    factor = 0
+                    FROM = {
+                        is_ai = yes
+                        NOT = { has_war = yes }
+                    }
+                }
+            }
 
-			option = {
-				token = sp_tularemia_reward_field_testing_conduct
+            option = {
+                token = sp_tularemia_reward_field_testing_conduct
 
-				iteration_output = {
-					country_effects = {
-						if = {
-							limit = {
-								OR = {
-									is_ai = no
-									has_war = yes
-								}
-							}
-							custom_effect_tooltip = tularemia_field_testing_tt
-							FROM = {
-								add_project_progress_ratio = constant:sp_progress.gain.medium
-							}
-							conduct_tularemia_field_test = yes
-						}
-						else = {
-							custom_effect_tooltip = tularemia_skip_field_testing_tt
-						}
-					}
-				}
-			}
+                iteration_output = {
+                    country_effects = {
+                        if = {
+                            limit = {
+                                OR = {
+                                    is_ai = no
+                                    has_war = yes
+                                }
+                            }
+                            custom_effect_tooltip = tularemia_field_testing_tt
+                            FROM = {
+                                add_project_progress_ratio = constant:sp_progress.gain.medium
+                            }
+                            conduct_tularemia_field_test = yes
+                        }
+                        else = {
+                            custom_effect_tooltip = tularemia_skip_field_testing_tt
+                        }
+                    }
+                }
+            }
             option = {
                 token = sp_tularemia_reward_field_testing_skip
 
@@ -1250,51 +1249,51 @@ smallpox_bomb = {
             }
         }
 
-		sp_smallpox_reward_field_testing = {
+        sp_smallpox_reward_field_testing = {
             icon = GFX_PLACEHOLDER_sp_project_picture
 
-			fire_only_once = yes
+            fire_only_once = yes
 
             threshold = {
                 min = 50  # Later in development due to extreme danger
                 max = 100
             }
 
-			weight = {
+            weight = {
                 base = 8  # Lower weight - very dangerous
-				modifier = {
-					factor = 0
-					FROM = {
-						is_ai = yes
-						NOT = { has_war = yes }
-					}
-				}
-			}
+                modifier = {
+                    factor = 0
+                    FROM = {
+                        is_ai = yes
+                        NOT = { has_war = yes }
+                    }
+                }
+            }
 
-			option = {
-				token = sp_smallpox_reward_field_testing_conduct
+            option = {
+                token = sp_smallpox_reward_field_testing_conduct
 
-				iteration_output = {
-					country_effects = {
-						if = {
-							limit = {
-								OR = {
-									is_ai = no
-									has_war = yes
-								}
-							}
-							custom_effect_tooltip = smallpox_field_testing_tt
-							FROM = {
-								add_project_progress_ratio = constant:sp_progress.gain.high
-							}
-							conduct_smallpox_field_test = yes
-						}
-						else = {
-							custom_effect_tooltip = smallpox_skip_field_testing_tt
-						}
-					}
-				}
-			}
+                iteration_output = {
+                    country_effects = {
+                        if = {
+                            limit = {
+                                OR = {
+                                    is_ai = no
+                                    has_war = yes
+                                }
+                            }
+                            custom_effect_tooltip = smallpox_field_testing_tt
+                            FROM = {
+                                add_project_progress_ratio = constant:sp_progress.gain.high
+                            }
+                            conduct_smallpox_field_test = yes
+                        }
+                        else = {
+                            custom_effect_tooltip = smallpox_skip_field_testing_tt
+                        }
+                    }
+                }
+            }
             option = {
                 token = sp_smallpox_reward_field_testing_skip
 

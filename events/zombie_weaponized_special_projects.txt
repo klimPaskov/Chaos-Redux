@@ -1,0 +1,330 @@
+add_namespace = chaosx.weaponized_zombies
+
+# Overview:
+# - Player-facing and hidden events for the Weaponize the Zombies special project.
+# - Covers final conclusions, field tests, lab accidents, and creator-betrayer turns.
+
+country_event = {
+	id = chaosx.weaponized_zombies.1
+	title = chaosx.weaponized_zombies.1.t
+	desc = chaosx.weaponized_zombies.1.d
+	picture = GFX_report_event_generic_biowarfare
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.weaponized_zombies.1.a
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.2
+	title = chaosx.weaponized_zombies.2.t
+	desc = chaosx.weaponized_zombies.2.d
+	picture = GFX_report_event_generic_biowarfare
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.weaponized_zombies.2.a
+
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+				}
+				add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
+				add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
+				add_war_support = constant:weaponized_zombies.condemnation_warsupport_loss_negative
+				set_country_flag = used_bioweapon
+				set_country_flag = used_unconventional_weapon
+				set_country_flag = used_weaponized_zombie_weapon
+				every_other_country = {
+					limit = {
+						exists = yes
+						has_government = democratic
+						NOT = { tag = ROOT }
+					}
+					add_opinion_modifier = {
+						target = PREV
+						modifier = strategic_bioweapon_user
+					}
+				}
+			}
+			else = {
+				set_country_flag = achievement_fight_fire_with_fire
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.3
+	title = chaosx.weaponized_zombies.3.t
+	desc = chaosx.weaponized_zombies.3.d
+	picture = GFX_report_event_generic_biowarfare
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.weaponized_zombies.3.a
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.4
+	title = chaosx.weaponized_zombies.4.t
+	desc = chaosx.weaponized_zombies.4.d
+	picture = GFX_report_event_generic_biowarfare
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.weaponized_zombies.4.a
+		add_political_power = constant:weaponized_zombies.domestic_test_outbreak_pp_loss
+		add_stability = constant:weaponized_zombies.domestic_test_outbreak_stability_loss
+		add_war_support = constant:weaponized_zombies.domestic_test_outbreak_warsupport_loss
+		set_country_flag = achievement_containment_was_temporary
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.5
+	title = chaosx.weaponized_zombies.5.t
+	desc = chaosx.weaponized_zombies.5.d
+	picture = GFX_report_event_generic_bioweapon
+
+	trigger = {
+		has_country_flag = weaponized_zombies_started
+		is_special_project_being_researched = sp:weaponize_the_zombies
+		NOT = { is_special_project_completed = sp:weaponize_the_zombies }
+		NOT = { has_country_flag = weaponized_zombie_lab_accident_happened }
+		OR = {
+			has_country_flag = weaponized_zombie_nature_neurobiological
+			has_country_flag = weaponized_zombie_nature_rage
+			has_country_flag = weaponized_zombie_nature_parasitic
+			has_country_flag = weaponized_zombie_nature_necrotic
+			has_country_flag = weaponized_zombie_nature_demonic
+		}
+		any_controlled_state = {
+			biowarfare_facility > 0
+		}
+	}
+
+	mean_time_to_happen = {
+		years = constant:weaponized_zombies.accident_base_years
+
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_risk_low
+			check_variable = {
+				var = weaponized_zombie_accident_risk
+				value = constant:weaponized_zombies.accident_risk_threshold_low
+				compare = greater_than_or_equals
+			}
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_risk_medium
+			check_variable = {
+				var = weaponized_zombie_accident_risk
+				value = constant:weaponized_zombies.accident_risk_threshold_medium
+				compare = greater_than_or_equals
+			}
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_risk_high
+			check_variable = {
+				var = weaponized_zombie_accident_risk
+				value = constant:weaponized_zombies.accident_risk_threshold_high
+				compare = greater_than_or_equals
+			}
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_expanded
+			has_country_flag = weaponized_zombie_resource_expanded
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_maximum
+			has_country_flag = weaponized_zombie_resource_maximum
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_field_tested
+			has_country_flag = weaponized_zombie_field_tested
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_domestic_test
+			has_country_flag = weaponized_zombie_domestic_test
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_forbidden
+			has_country_flag = weaponized_zombie_forbidden_branch
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_high_infectiousness
+			check_variable = {
+				var = weaponized_zombie_infectiousness
+				value = 2
+				compare = greater_than
+			}
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_demonic
+			has_country_flag = weaponized_zombie_nature_demonic
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_fail_safe_containment
+			has_tech = fail_safe_containment_facilities
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.accident_factor_sealed_labs
+			has_tech = sealed_containment_laboratories
+		}
+	}
+
+	immediate = {
+		hidden_effect = {
+			resolve_weaponized_zombie_profile = yes
+			set_country_flag = weaponized_zombie_lab_accident_happened
+			set_country_flag = achievement_containment_was_temporary
+
+			random_controlled_state = {
+				limit = {
+					biowarfare_facility > 0
+				}
+				save_event_target_as = weaponized_zombie_target_state
+			}
+
+			if = {
+				limit = {
+					check_variable = {
+						var = num_equipment@zombie_disease_bomb_1
+						value = 0
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { weaponized_zombie_bombs_lost = num_equipment@zombie_disease_bomb_1 }
+				multiply_temp_variable = { weaponized_zombie_bombs_lost = constant:weaponized_zombies.lab_accident_equipment_loss_ratio }
+				round_temp_variable = weaponized_zombie_bombs_lost
+
+				if = {
+					limit = {
+						check_variable = {
+							var = weaponized_zombie_bombs_lost
+							value = 1
+							compare = less_than
+						}
+					}
+					set_temp_variable = { weaponized_zombie_bombs_lost = 1 }
+				}
+
+				set_temp_variable = { weaponized_zombie_bombs_lost_negative = weaponized_zombie_bombs_lost }
+				multiply_temp_variable = { weaponized_zombie_bombs_lost_negative = -1 }
+				add_equipment_to_stockpile = {
+					type = zombie_disease_bomb_1
+					amount = weaponized_zombie_bombs_lost_negative
+					producer = ROOT
+				}
+			}
+
+			event_target:weaponized_zombie_target_state = {
+				if = {
+					limit = {
+						ROOT = {
+							OR = {
+								has_country_flag = weaponized_zombie_archetype_wendigo
+								check_variable = {
+									var = weaponized_zombie_accident_risk
+									value = constant:weaponized_zombies.accident_risk_threshold_medium
+									compare = greater_than_or_equals
+								}
+							}
+						}
+					}
+					ROOT = { spawn_weaponized_zombie_outbreak_from_creator = yes }
+				}
+				else = {
+					ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.weaponized_zombies.5.a
+		add_political_power = constant:weaponized_zombies.lab_accident_pp_loss
+		add_stability = constant:weaponized_zombies.lab_accident_stability_loss
+		add_war_support = constant:weaponized_zombies.lab_accident_warsupport_loss
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.6
+	title = chaosx.weaponized_zombies.6.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			weaponized_zombie_save_creator_target = yes
+			clr_country_flag = weaponized_zombie_friendly_to_creator
+			set_country_flag = weaponized_zombie_betrayed_creator
+
+			if = {
+				limit = { has_event_target = weaponized_zombie_creator }
+				remove_from_array = {
+					array = weaponized_zombie_friendly_countries
+					value = event_target:weaponized_zombie_creator
+				}
+				event_target:weaponized_zombie_creator = {
+					add_opinion_modifier = {
+						target = ROOT
+						modifier = zombie_hostile
+					}
+					country_event = { id = chaosx.weaponized_zombies.7 }
+				}
+				ROOT = {
+					add_opinion_modifier = {
+						target = event_target:weaponized_zombie_creator
+						modifier = zombie_hostile
+					}
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.7
+	title = chaosx.weaponized_zombies.7.t
+	desc = chaosx.weaponized_zombies.7.d
+	picture = GFX_report_event_generic_biowarfare
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.weaponized_zombies.7.a
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.8
+	title = chaosx.weaponized_zombies.8.t
+	desc = chaosx.weaponized_zombies.8.d
+	picture = GFX_report_event_generic_bioweapon
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			spawn_wendigo_incident_from_completion = yes
+		}
+	}
+
+	option = {
+		name = chaosx.weaponized_zombies.8.a
+		add_political_power = constant:weaponized_zombies.lab_accident_pp_loss
+		add_stability = constant:weaponized_zombies.lab_accident_stability_loss
+		add_war_support = constant:weaponized_zombies.lab_accident_warsupport_loss
+		set_country_flag = achievement_containment_was_temporary
+	}
+}

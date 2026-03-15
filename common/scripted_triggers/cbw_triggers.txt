@@ -66,18 +66,44 @@ has_enemy_used_chemical_weapons = {
     }
 }
 
+has_enemy_chemical_condemnation_considerable = {
+	any_enemy_country = {
+		has_variable = chem_warfare_condemnation
+		check_variable = {
+			var = chem_warfare_condemnation
+			value = constant:chem_ability_ai.retaliate_threshold.considerable
+			compare = greater_than
+		}
+	}
+}
+
+has_enemy_chemical_condemnation_very_high = {
+	any_enemy_country = {
+		has_variable = chem_warfare_condemnation
+		check_variable = {
+			var = chem_warfare_condemnation
+			value = constant:chem_ability_ai.retaliate_threshold.very_high
+			compare = greater_than
+		}
+	}
+}
+
+has_war_with_chinese_country = {
+	has_war = yes
+	OR = {
+		has_war_with = CHI
+		has_war_with = PRC
+		has_war_with = SHX
+		has_war_with = GXC
+		has_war_with = YUN
+		has_war_with = XSM
+		has_war_with = SIK
+	}
+}
+
 is_japan_china_chemical_campaign_war = {
     original_tag = JAP
-    has_war = yes
-    OR = {
-        has_war_with = CHI
-        has_war_with = PRC
-        has_war_with = SHX
-        has_war_with = GXC
-        has_war_with = YUN
-        has_war_with = XSM
-        has_war_with = SIK
-    }
+    has_war_with_chinese_country = yes
 }
 
 has_japan_chemical_campaign_selected_stockpile_attack = {

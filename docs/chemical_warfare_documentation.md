@@ -10,8 +10,9 @@ Chemical warfare is implemented as one connected gameplay package:
 2. Chemical Livens support companies (per chemical type).
 3. Chemical tank support companies (per chemical type and chassis class).
 4. Nerve-agent raid options (Sarin and Soman).
-5. Global diplomatic backlash (international condemnation).
-6. Chemical air bomb modules marked as under-development.
+5. US special-project raid options (Malodor and Aphrodisiac bombs).
+6. Global diplomatic backlash (international condemnation).
+7. Chemical air bomb modules marked as under-development.
 
 The system rewards preparation and logistics while making repeated chemical use politically costly.
 
@@ -24,6 +25,8 @@ The system rewards preparation and logistics while making repeated chemical use 
 - The nerve branch uses G-series progression:
   - GA (Tabun) -> GB (Sarin) -> GD (Soman).
 - Nerve raids are tactical and short-lived in contamination persistence.
+- US special-project raids are also short-lived and focus on disruption rather than direct casualties.
+- US special-project raids do not add international condemnation.
 - Air bomb modules are visible in progression, while plane-based contamination and condemnation behavior remains disabled.
 
 ## Core Gameplay Flow
@@ -34,7 +37,8 @@ The system rewards preparation and logistics while making repeated chemical use 
    - General ability,
    - Livens support company,
    - Chemical tank support company,
-   - Nerve raid (Sarin/Soman).
+   - Nerve raid (Sarin/Soman),
+   - US special raid (Malodor/Aphrodisiac).
 4. Execute usage while managing condemnation growth.
 5. Adjust operations around weather, stockpiles, and diplomatic pressure.
 
@@ -47,7 +51,9 @@ These are command abilities tied to generals.
 - Weather and terrain can amplify or reduce effectiveness.
 - The visible ability timer matches the full active window of the applied 7-day chemical attack buff.
 - Frontline contamination is applied to the active frontline touched by the attacking army. The system prefers enemy-adjacent states and falls back to the leader's bordering controlled state if the enemy-side state count cannot be resolved cleanly.
-- Every usage contributes to international condemnation.
+- Usage against human targets contributes to international condemnation.
+- Cylinder use against zombie-held fronts does not add condemnation.
+- Japan's general-led cylinder use during the China campaign adds reduced condemnation instead of the full normal amount.
 
 ## Livens Support Companies
 
@@ -102,9 +108,18 @@ Sarin and Soman raids are dedicated strike options.
 - Short contamination persistence relative to persistent agents.
 - Significant diplomatic cost when used repeatedly.
 
+## US Special Chemical Raids
+
+The malodor and aphrodisiac bombs are US-only special-project raid payloads.
+
+- Delivered only through raids.
+- Built around temporary state disruption rather than major strength damage.
+- Malodor adds immediate org shock plus severe short-term disruption.
+- Aphrodisiac focuses on coordination, planning, reinforce, and defense breakdown.
+
 ## International Condemnation and Diplomacy
 
-All major chemical delivery paths feed condemnation:
+Most major chemical delivery paths feed condemnation:
 
 - cylinder abilities,
 - Livens support combat use,
@@ -113,6 +128,8 @@ All major chemical delivery paths feed condemnation:
 
 Exception:
 
+- Cylinder abilities used only against zombie-held fronts do not add condemnation.
+- US special-project malodor and aphrodisiac raids do not add condemnation.
 - Japan's targeted chemical campaign decisions against China do not add condemnation.
 
 As condemnation rises, external diplomatic pressure and penalties intensify.
@@ -130,7 +147,8 @@ Chemical protection research is a core countermeasure layer.
 AI treats chemical warfare as a strategic path with tradeoffs.
 
 - It evaluates escalation pressure.
-- It can shift production and usage toward chemical systems under relevant war conditions.
+- It does not use general-led cylinder abilities unless enemy condemnation is already considerable, except for Japan's China war exception.
+- Only Japan is allowed to use the general-led cylinder abilities against Chinese war targets.
 - It still incurs condemnation costs from overuse.
 - It does not proactively select `tactic_chemical_shelling` as a normal combat tactic.
 - `tactic_gas_mask_defense` is reserved for counterplay rather than proactive tactic picks.

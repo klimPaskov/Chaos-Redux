@@ -12,6 +12,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
 - [modify_state_population_by_percent](#modify_state_population_by_percent)
 - [get_random_sea_region](#get_random_sea_region)
+- [refresh_world_threat_state](#refresh_world_threat_state)
 
 ## modify_value_based_on_chaos_tier
 
@@ -107,4 +108,40 @@ meta_effect = {
  }
  SEA_REGION = "[?global.rand_sea_region|.0]"
 }
+```
+
+## refresh_world_threat_state
+
+This is the shared global aggregator for the mod-wide world-threat flag. It rebuilds `global.world_threat_source_count` from registered source flags and then sets or clears the global flag `world_in_threat`.
+
+Use this whenever a threat-specific system changes whether its own source flag should be active. The threat-specific system is responsible for setting or clearing its own source flag first, then calling this effect. The current registered source set includes:
+
+- `world_threat_source_zombies`
+
+Future threats should follow the same pattern:
+
+1. add a source flag with a descriptive name such as `world_threat_source_aliens`
+2. extend `refresh_world_threat_state` with one more source-flag count block
+3. call the refresh effect whenever that source activates or deactivates
+
+Output:
+
+- `global.world_threat_source_count`
+- `world_in_threat` global flag
+
+Side effects:
+
+- clears `world_in_threat` automatically when no registered source flags remain active
+
+Example:
+
+```txt
+if = {
+	limit = { my_threat_is_active = yes }
+	set_global_flag = world_threat_source_my_threat
+}
+else = {
+	clr_global_flag = world_threat_source_my_threat
+}
+refresh_world_threat_state = yes
 ```

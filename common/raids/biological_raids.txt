@@ -1,3 +1,14 @@
+@ANTI_ZOMBIE_BOMB_DAYS_TO_PREPARE = 10
+@ANTI_ZOMBIE_BOMB_COMMAND_POWER = 10
+@ANTI_ZOMBIE_BOMB_UNIT_MIN_TACTICAL_BOMBERS = 25
+@ANTI_ZOMBIE_BOMB_UNIT_MIN_STRATEGIC_BOMBERS = 10
+@ANTI_ZOMBIE_BOMB_PLANE_LOSS_FAILURE = 0.45
+@ANTI_ZOMBIE_BOMB_PLANE_LOSS_LIMITED = 0.25
+@ANTI_ZOMBIE_BOMB_PLANE_LOSS_SUCCESS = 0.10
+@ANTI_ZOMBIE_BOMB_RAID_XP_LIMITED = 0.10
+@ANTI_ZOMBIE_BOMB_RAID_XP_SUCCESS = 0.25
+@ANTI_ZOMBIE_BOMB_RAID_XP_CRITICAL = 0.35
+
 types = {
 
 
@@ -1108,7 +1119,218 @@ types = {
                 }
             }
         }
-
     }
+
+	zombie_cure_strike = {
+		days_to_prepare = @ANTI_ZOMBIE_BOMB_DAYS_TO_PREPARE
+
+		category = biological_raids
+
+		equipment_icon = GFX_zombie_cure_bomb_equipment_medium
+
+		command_power = @ANTI_ZOMBIE_BOMB_COMMAND_POWER
+
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						tag = FROM
+						is_in_faction_with = FROM
+						AND = {
+							FROM = { is_zombie_outbreak_country = yes }
+							has_war_with = FROM
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = 4
+				var:target_state = {
+					is_zombie_controlled_state = yes
+				}
+			}
+			modifier = {
+				factor = 2
+				tag = FROM
+			}
+			modifier = {
+				factor = 2
+				is_in_faction_with = FROM
+			}
+			modifier = {
+				factor = 0.25
+				has_government = fascism
+			}
+		}
+
+		allowed = { }
+		visible = {
+			has_country_flag = anti_zombie_bomb_available
+		}
+		show_target = {
+			var:target_state = {
+				is_anti_zombie_bomb_target_state = yes
+			}
+			OR = {
+				tag = FROM
+				is_in_faction_with = FROM
+				AND = {
+					FROM = { is_zombie_outbreak_country = yes }
+					has_war_with = FROM
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				hidden_trigger = {
+					has_active_zombie_cure = yes
+				}
+				tooltip = zombie_cure_raid_available_tooltip
+			}
+		}
+		launchable = {
+			has_active_zombie_cure = yes
+			OR = {
+				tag = FROM
+				is_in_faction_with = FROM
+				AND = {
+					FROM = { is_zombie_outbreak_country = yes }
+					has_war_with = FROM
+				}
+			}
+		}
+
+		launch_sound = raid_launch_air
+
+		target_type = {
+			province = any
+		}
+		target_icon = GFX_other_target_icon
+
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = @ANTI_ZOMBIE_BOMB_UNIT_MIN_TACTICAL_BOMBERS }
+			}
+		}
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = @ANTI_ZOMBIE_BOMB_UNIT_MIN_STRATEGIC_BOMBERS }
+			}
+		}
+
+		starting_point = {
+			types = { air_base }
+		}
+
+		arrow = {
+			type = air
+		}
+
+		success_factors = {
+			success = {
+				base = 0.5
+				experience = {
+					weight = 0.1
+					start_weight = -0.1
+					reference = 1.0
+				}
+				air_defence = {
+					reference = 100
+					start_weight = -0.05
+					weight = 0.05
+				}
+				air_agility = {
+					reference = 100
+					start_weight = -0.1
+					weight = 0.1
+				}
+				reliability = {
+					start_weight = -0.1
+					weight = 0.1
+				}
+				air_superiority = {
+					reference = 1.0
+					start_weight = -0.25
+					weight = 0.25
+				}
+				interception = {
+					reference = 10
+					weight = -0.25
+				}
+				anti_air = {
+					weight = -0.05
+				}
+				radar = {
+					weight = -0.05
+				}
+				intel = {
+					weight = 0.2
+					reference = 100
+				}
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					var:actor_country = {
+						custom_effect_tooltip = raid_aborted_tt
+						add_political_power = -5
+					}
+					raid_damage_units = {
+						plane_loss = @ANTI_ZOMBIE_BOMB_PLANE_LOSS_FAILURE
+						ratio = yes
+					}
+				}
+			}
+			limited_success = {
+				actor_effects = {
+					raid_damage_units = {
+						plane_loss = @ANTI_ZOMBIE_BOMB_PLANE_LOSS_LIMITED
+						ratio = yes
+					}
+					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_LIMITED
+				}
+				victim_effects = {
+					var:target_state = {
+						custom_effect_tooltip = raid_zombie_cure_strike_tt
+						apply_zombie_decontamination_state_modifier = yes
+					}
+				}
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_damage_units = {
+						plane_loss = @ANTI_ZOMBIE_BOMB_PLANE_LOSS_SUCCESS
+						ratio = yes
+					}
+					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_SUCCESS
+				}
+				victim_effects = {
+					var:target_state = {
+						custom_effect_tooltip = raid_zombie_cure_strike_tt
+						apply_zombie_decontamination_state_modifier = yes
+					}
+				}
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_add_unit_experience = @ANTI_ZOMBIE_BOMB_RAID_XP_CRITICAL
+				}
+				victim_effects = {
+					var:target_state = {
+						custom_effect_tooltip = raid_zombie_cure_strike_tt
+						apply_zombie_decontamination_state_modifier = yes
+					}
+				}
+			}
+		}
+	}
 
 }

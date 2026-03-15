@@ -1,3 +1,8 @@
+@anti_zombie_league_doctrine_planning_speed = 0.10
+@anti_zombie_league_doctrine_army_org_regain = 0.05
+@anti_zombie_league_doctrine_special_project_speed_factor = 0.10
+@anti_zombie_league_doctrine_research_sharing_factor = 1.00
+
 ideas = {
 
     country = {
@@ -351,10 +356,10 @@ ideas = {
             }
 
             modifier = {
-                defence = -0.25
-                army_attack_factor = -0.25
-                army_speed_factor = -0.25
-                conscription = -0.25
+                defence = -0.50
+                army_attack_factor = -0.50
+                army_speed_factor = -0.50
+                conscription = -0.50
             }
         }
     }
@@ -1067,6 +1072,17 @@ ideas = {
                 ai_focus_aggressive_factor = 1.00
             }
         }
+		anti_zombie_league_operational_doctrine = {
+			allowed_civil_war = {
+				always = yes
+			}
+			modifier = {
+				planning_speed = @anti_zombie_league_doctrine_planning_speed
+				army_org_regain = @anti_zombie_league_doctrine_army_org_regain
+				special_project_speed_factor = @anti_zombie_league_doctrine_special_project_speed_factor
+				research_sharing_per_country_bonus_factor = @anti_zombie_league_doctrine_research_sharing_factor
+			}
+		}
     }
     country = {
         punishment_from_gods = {
@@ -1307,10 +1323,9 @@ ideas = {
             }
 
             modifier = {
-                consumer_goods_factor = 0.02  # Small increase in consumer goods needed
-                production_factory_efficiency_gain_factor = -0.05  # Minor factory efficiency penalty
-                research_speed_factor = 0.02  # Small research bonus (improved healthcare research)
-                stability_weekly = -0.001  # Minor ongoing stability penalty
+                consumer_goods_factor = 0.01  # Light compliance cost
+                production_factory_efficiency_gain_factor = -0.02  # Mild factory slowdown
+                research_speed_factor = 0.01  # Small research bonus (improved healthcare research)
             }
 
             cancel = {
@@ -1336,11 +1351,11 @@ ideas = {
             }
 
             modifier = {
-                monthly_population = -0.15  # Reduced population growth due to restricted movement
-                production_factory_max_efficiency_factor = -0.05  # Industrial capacity reduction
-                trade_opinion_factor = -0.15  # Trade relations worsened
-                stability_weekly = -0.0015  # Ongoing stability penalty
-                political_power_gain = -0.05  # Administrative burden
+                monthly_population = -0.05  # Reduced population growth due to restricted movement
+                production_factory_max_efficiency_factor = -0.03  # Industrial capacity reduction
+                trade_opinion_factor = -0.10  # Trade relations worsened
+                stability_weekly = -0.0005  # Ongoing stability penalty
+                political_power_gain = -0.02  # Administrative burden
             }
 
             cancel = {
@@ -1366,12 +1381,11 @@ ideas = {
             }
 
             modifier = {
-                production_factory_max_efficiency_factor = -0.15  # Significant industrial output penalty
-                trade_opinion_factor = -0.25  # Major trade restrictions
-                research_speed_factor = -0.1  # Research hampered by restrictions
-                stability_weekly = -0.0015  # Significant stability penalty
-                war_support_weekly = -0.001  # Population discontent
-                monthly_population = -0.25  # Reduced population growth
+                production_factory_max_efficiency_factor = -0.08  # Noticeable industrial output penalty
+                trade_opinion_factor = -0.15  # Trade restrictions
+                research_speed_factor = -0.04  # Research hampered by restrictions
+                stability_weekly = -0.001  # Stability penalty
+                monthly_population = -0.10  # Reduced population growth
             }
 
             cancel = {
@@ -1397,13 +1411,12 @@ ideas = {
             }
 
             modifier = {
-                monthly_population = -0.5  # Major population growth penalty
-                trade_opinion_factor = -0.50  # Severe trade penalties
-                production_factory_max_efficiency_factor = -0.15  # Major industrial capacity reduction
-                consumer_goods_factor = 0.1  # Increased consumer goods needs due to hoarding
-                stability_weekly = -0.002  # Major stability penalty
-                war_support_weekly = -0.001  # Significant population discontent
-                political_power_gain = -0.05  # Heavy administrative burden
+                monthly_population = -0.20  # Major population growth penalty
+                trade_opinion_factor = -0.25  # Heavy trade penalties
+                production_factory_max_efficiency_factor = -0.08  # Major industrial capacity reduction
+                consumer_goods_factor = 0.04  # Increased consumer goods needs due to hoarding
+                stability_weekly = -0.001  # Stability penalty
+                political_power_gain = -0.02  # Administrative burden
             }
 
             cancel = {
@@ -1429,12 +1442,12 @@ ideas = {
             }
 
             modifier = {
-                monthly_population = -0.8  # Extreme population growth reduction
-                production_factory_max_efficiency_factor = -0.25  # Extreme industrial penalties
-                consumer_goods_factor = 0.2  # Major increase in consumer goods needs
-                stability_weekly = -0.002  # Extreme stability penalty
-                war_support_weekly = -0.005  # Major population discontent
-                political_power_gain = -0.3  # Extreme administrative burden
+                monthly_population = -0.35  # Population growth reduction
+                production_factory_max_efficiency_factor = -0.12  # Heavy industrial penalties
+                consumer_goods_factor = 0.08  # Increased consumer goods needs
+                stability_weekly = -0.001  # Stability penalty
+                war_support_weekly = -0.0015  # Population discontent
+                political_power_gain = -0.10  # Administrative burden
                 # Military benefits to offset the extreme measures
                 army_morale_factor = 0.1  # Better military discipline
                 land_doctrine_cost_factor = -0.1  # Military focus improves doctrine development
@@ -1454,17 +1467,6 @@ ideas = {
 
             allowed_civil_war = {
                 always = yes
-            }
-
-            modifier = {
-                # Penalties for committing to the league
-                research_speed_factor = -0.15  # Research diverted to zombie containment
-                political_power_gain = -0.2   # Administrative burden
-                consumer_goods_factor = 0.05  # Resource allocation to league efforts
-                production_factory_max_efficiency_factor = -0.05  # Industrial focus on containment
-
-                # Enhanced cure research (when in cure sharing)
-                # Additional bonuses applied via scripted effects
             }
 
             targeted_modifier = {
@@ -1487,14 +1489,6 @@ ideas = {
                 always = yes
             }
 
-            modifier = {
-                # Same penalties as base level
-                research_speed_factor = -0.16
-                political_power_gain = -0.21
-                consumer_goods_factor = 0.06
-                production_factory_max_efficiency_factor = -0.06
-            }
-
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.20   # 20% vs zombies (15% + 5%)
@@ -1512,13 +1506,6 @@ ideas = {
 
             allowed_civil_war = {
                 always = yes
-            }
-
-            modifier = {
-                research_speed_factor = -0.17
-                political_power_gain = -0.22
-                consumer_goods_factor = 0.07
-                production_factory_max_efficiency_factor = -0.07
             }
 
             targeted_modifier = {
@@ -1540,13 +1527,6 @@ ideas = {
                 always = yes
             }
 
-            modifier = {
-                research_speed_factor = -0.18
-                political_power_gain = -0.23
-                consumer_goods_factor = 0.08
-                production_factory_max_efficiency_factor = -0.08
-            }
-
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.30   # 30% vs zombies
@@ -1566,13 +1546,6 @@ ideas = {
                 always = yes
             }
 
-            modifier = {
-                research_speed_factor = -0.19
-                political_power_gain = -0.24
-                consumer_goods_factor = 0.09
-                production_factory_max_efficiency_factor = -0.09
-            }
-
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.35   # 35% vs zombies
@@ -1588,13 +1561,6 @@ ideas = {
         anti_zombie_league_member_level_5 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.20
-                political_power_gain = -0.25
-                consumer_goods_factor = 0.10
-                production_factory_max_efficiency_factor = -0.10
-            }
-
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.40
@@ -1607,12 +1573,6 @@ ideas = {
         anti_zombie_league_member_level_6 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.22
-                political_power_gain = -0.27
-                consumer_goods_factor = 0.12
-                production_factory_max_efficiency_factor = -0.12
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.45
@@ -1625,12 +1585,6 @@ ideas = {
         anti_zombie_league_member_level_7 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.25
-                political_power_gain = -0.30
-                consumer_goods_factor = 0.15
-                production_factory_max_efficiency_factor = -0.15
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.50
@@ -1643,12 +1597,6 @@ ideas = {
         anti_zombie_league_member_level_8 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.27
-                political_power_gain = -0.32
-                consumer_goods_factor = 0.17
-                production_factory_max_efficiency_factor = -0.17
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.55
@@ -1661,12 +1609,6 @@ ideas = {
         anti_zombie_league_member_level_9 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.30
-                political_power_gain = -0.35
-                consumer_goods_factor = 0.20
-                production_factory_max_efficiency_factor = -0.20
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.60
@@ -1679,12 +1621,6 @@ ideas = {
         anti_zombie_league_member_level_10 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.33
-                political_power_gain = -0.38
-                consumer_goods_factor = 0.23
-                production_factory_max_efficiency_factor = -0.23
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.65
@@ -1697,12 +1633,6 @@ ideas = {
         anti_zombie_league_member_level_11 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.37
-                political_power_gain = -0.42
-                consumer_goods_factor = 0.27
-                production_factory_max_efficiency_factor = -0.27
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.70
@@ -1715,12 +1645,6 @@ ideas = {
         anti_zombie_league_member_level_12 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.30
-                political_power_gain = -0.45
-                consumer_goods_factor = 0.30
-                production_factory_max_efficiency_factor = -0.30
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.75
@@ -1733,12 +1657,6 @@ ideas = {
         anti_zombie_league_member_level_13 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.33
-                political_power_gain = -0.48
-                consumer_goods_factor = 0.33
-                production_factory_max_efficiency_factor = -0.33
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.80
@@ -1751,12 +1669,6 @@ ideas = {
         anti_zombie_league_member_level_14 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.35
-                political_power_gain = -0.50
-                consumer_goods_factor = 0.35
-                production_factory_max_efficiency_factor = -0.35
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.85
@@ -1769,12 +1681,6 @@ ideas = {
         anti_zombie_league_member_level_15 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.37
-                political_power_gain = -0.52
-                consumer_goods_factor = 0.37
-                production_factory_max_efficiency_factor = -0.37
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.90
@@ -1787,12 +1693,6 @@ ideas = {
         anti_zombie_league_member_level_16 = {
             picture = jap_supremacy_of_technology
             allowed_civil_war = { always = yes }
-            modifier = {
-                research_speed_factor = -0.40
-                political_power_gain = -0.55
-                consumer_goods_factor = 0.40
-                production_factory_max_efficiency_factor = -0.40
-            }
             targeted_modifier = {
                 tag = ZZZ
                 attack_bonus_against = 0.95
@@ -1807,13 +1707,6 @@ ideas = {
 
             allowed_civil_war = {
                 always = yes
-            }
-
-            modifier = {
-                research_speed_factor = -0.45
-                political_power_gain = -0.60
-                consumer_goods_factor = 0.45
-                production_factory_max_efficiency_factor = -0.45
             }
 
             targeted_modifier = {

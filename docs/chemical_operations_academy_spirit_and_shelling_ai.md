@@ -13,7 +13,7 @@ This update extends the chemical warfare officer corps package with three connec
 - Category: `academy_spirit`
 - Definition file: `common/ideas/cbw_spirits.txt`
 - Shared tuning constant:
-  - `chem_chaos_warfare_spirit.academy.chemical_operations_trait_gain_chance = 50`
+  - `chem_chaos_warfare_spirit.academy.chemical_operations_trait_gain_chance = 5`
   - File: `common/script_constants/chemical_spirit_constants.txt`
 
 #### Trait gain behavior
@@ -26,9 +26,12 @@ This update extends the chemical warfare officer corps package with three connec
   - File: `common/scripted_effects/chemical_warfare_effects.txt`
 - Rules:
   1. Country must have `chemical_operations_academy_spirit`.
-  2. Leader must be an army leader.
-  3. Leader must not already have `chemical_operations_commander`.
-  4. Roll `50%` chance and grant `chemical_operations_commander` on success.
+  2. Country must not be Japan.
+  3. The country must face an enemy with very high chemical condemnation.
+  4. AI only considers the spirit itself under that same very-high-condemnation condition, and at very low weight.
+  5. Leader must be an army leader.
+  6. Leader must not already have `chemical_operations_commander`.
+  7. Roll `5%` chance and grant `chemical_operations_commander` on success.
 
 ### 2. Division Command Cell preferred tactic boost
 - Spirit: `chemical_division_contamination_command_spirit`
@@ -73,6 +76,6 @@ No new sprite is required for this update.
   - Suggested sprite key: `GFX_idea_chemical_operations_academy_spirit`
 
 ## Future Plans / Suggestions
-1. Add separate chance tiers for newly assigned leaders and level-up events (for finer balancing).
-2. Add AI spirit weighting that scales with cylinder stockpile depth and active chemical battalion share for non-preferred-tactic chemical support tools.
+1. Add separate chance tiers for newly assigned leaders and level-up events if the current single low chance proves too flat.
+2. Add AI spirit weighting that also checks whether the country has enough chemical stockpile depth to justify the spirit once condemnation escalation has happened.
 3. Add a doctrine-agnostic defensive counter-spirit that improves gas-mask counter quality without reintroducing proactive gas-mask tactic picks.

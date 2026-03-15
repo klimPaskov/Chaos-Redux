@@ -97,6 +97,7 @@ The outbreak namespace currently uses these IDs:
 - `chaosx.nr2.8`: zombie apocalypse world-end branch
 - `chaosx.nr2.9`: fallout world-end branch in the same namespace
 - `chaosx.nr2.10`: emergency island refugee convoy request
+- `chaosx.nr2.11`: Wendigo ascendancy world-end branch
 - `chaosx.news.3`: news follow-up for dynamic rear outbreaks
 
 `chaosx.nr2.10` is a zombie subevent in the same chain.
@@ -105,6 +106,7 @@ The zombie super-event slots currently used by this chain are:
 
 - slot `1`: initial outbreak
 - slot `3`: zombie apocalypse world-end
+- slot `6`: Wendigo ascendancy world-end
 - slot `5`: final zombie defeat after the last active zombie-held territory is erased
 
 ## Runtime Flow
@@ -318,6 +320,7 @@ Core goals of the current implementation:
 2. Let the league form reliably even when the founder or joiner is already inside another faction.
 3. Force a democratic major to create the league automatically once the zombie threat reaches continent-scale proportions.
 4. Keep all current members synchronized to the same global investment tier so late joiners and absorbed factions do not get stuck on outdated bonuses.
+5. Use the vanilla faction framework so the League has a manifest, faction rules, and faction goals in the diplomacy UI instead of being a plain custom faction shell.
 
 #### `chaosx.nr2.7`
 
@@ -353,6 +356,8 @@ Current behavior:
 - the founder no longer has to pre-seed hygiene, quarantine, and cure-sharing manually
 - formation now applies the preparation package automatically through shared scripted effects
 - if the founder is already in another faction, it leaves first and then creates the league
+- the league is now created from `faction_template_anti_zombie_league`, not a raw `create_faction`
+- that template gives the league a live survival manifest, visible faction rules, and a dedicated goal track
 
 This makes the manual path consistent with the emergency path instead of producing two different membership states.
 
@@ -381,8 +386,11 @@ Important results:
 
 - countries that join immediately from `chaosx.nr2.7` now actually join immediately instead of only getting an activated decision
 - if a joining country is already in another faction, it leaves that faction first
+- if the zombie threat is still confined to the mainland Americas and holds no mainland outside them, countries outside the Americas become much less willing to join
+- once the league exists and the zombie threat reaches strong emergency pressure, the zombie system now registers itself as a mod-wide world threat source
 - when the league forcibly absorbs smaller factions, those absorbed countries also receive the full league preparation package
 - absorbed countries are moved to the correct current league tier instead of being left on a stale member idea
+- vanilla faction joining rules now also prevent zombie outbreak countries from being valid league members in the faction UI layer
 
 #### Membership tiers and investment
 
@@ -395,6 +403,10 @@ Practical rules:
 - global investment maps cleanly to member levels `0` through `17`
 - the broken `level_18` overflow path is gone
 - every time investment changes, all current members are reapplied to the current global tier
+- league membership only counts while a country is actually inside the Anti-Zombie League faction
+- joining some other faction strips league membership, cure-sharing participation, and league-only doctrine benefits
+- the member-tier idea itself no longer carries negative economic or research penalties
+- visible faction-rule bonuses now add extra positive-only coordinated command and shared-lab modifiers on top of the hidden membership package
 
 That keeps late joiners, emergency founders, and absorbed countries synchronized with the same bonuses.
 
@@ -423,6 +435,29 @@ This gives the system a hard emergency response once zombies become too large fo
 #### Shared league helpers
 
 The system now relies on reusable scripted helpers so the same rules are shared by decisions, events, AI, and forced faction absorption.
+
+#### Faction-system layer
+
+The template-backed Anti-Zombie League now exposes a proper vanilla faction package:
+
+- Manifest:
+  `faction_manifest_anti_zombie_global_survival`
+  This tracks the share of world states still outside zombie control.
+- Rules:
+  `azl_joining_rule_human_survivors_only`
+  `azl_member_rule_joint_operations`
+  `azl_member_rule_shared_labs`
+- Goals:
+  `faction_goal_azl_secure_cure_exchange`
+  `faction_goal_azl_fund_joint_labs`
+  `faction_goal_azl_field_the_cure`
+
+This means the League now has visible faction-level direction in the diplomacy screen:
+
+- coordinated military planning against zombie offensives
+- faster shared special-project work
+- stronger research-sharing output
+- explicit cure-network and cure-deployment goals
 
 Important helpers:
 
@@ -469,13 +504,10 @@ The main continuity logic sits in `on_capitulation`.
 
 1. `ZZZ` removes its cores.
 2. If the outbreak is active and not disabled, `global.zombie_main_capitulation_count` increases by 1.
-3. If the count has reached `constant:zombie_threat.main_collapse_shutdown_limit`, the system is disabled.
-4. Otherwise, if a living dynamic zombie country exists, one is chosen at random.
-5. `transfer_dynamic_zombie_successor_to_main` moves its states to `ZZZ`, adds cores to `ZZZ`, removes the splinter cores, and annexes the splinter into `ZZZ` with troop transfer.
-6. If no valid dynamic successor exists yet, the system stays active but the main horde is left dormant.
-7. Outbreak chances are recalculated worldwide.
+3. The outbreak system is disabled immediately.
+4. No dynamic successor is promoted back into `ZZZ`.
 
-This means the main zombie country can collapse multiple times, but only up to the configured shutdown limit, and an early collapse before any splinter outbreak exists no longer shuts the whole chain off immediately.
+This means the main zombie country is now the hard anchor of the outbreak system. Once `ZZZ` falls, spontaneous continuation stops at once even if splinter zombie countries are still alive on the map.
 
 #### Dormant main-horde recovery
 
@@ -489,17 +521,12 @@ Instead, the selected outbreak state is transferred straight back to `ZZZ`, whic
 - spawns its starter zombie divisions from the recovered state
 - resumes acting as the main outbreak country
 
-That is what lets the system keep going after the first or second destruction of the main horde even if no dynamic zombie country existed at the exact moment `ZZZ` fell.
+That fallback only matters while `ZZZ` is still alive. Once the main horde has capitulated, the system is shut down before any later dormant recovery can occur.
 
 #### Outbreak slowdown after each main collapse
 
-Both the actual MTTH and the displayed outbreak-risk calculation react to `global.zombie_main_capitulation_count`.
-
-After each main-horde collapse:
-
-- dynamic outbreaks become significantly rarer
-- a second collapse reduces the risk again
-- the third collapse disables the system completely
+Before shutdown, both the actual MTTH and the displayed outbreak-risk calculation can still react to `global.zombie_main_capitulation_count`.
+In practice, the count now mainly serves as bookkeeping for how many times the main horde has collapsed before the system was shut down.
 
 ### 7.1 Prevention-decision AI gating
 
@@ -530,13 +557,21 @@ Practical results:
 
 The zombie countries themselves are not force-deleted here. The system is disabled; it is not retroactively rewritten into a different scenario.
 
+Shutdown also clears the zombie world-threat source, which lets the shared `world_in_threat` framework fall back to any other active existential threats rather than leaving the zombie source stuck on.
+
+While the outbreak system is active, zombie-controlled states now also decay over time:
+
+- every `30` days they lose `0.5%` population for up to `36` monthly ticks per state
+- every `180` days they attempt one structural degradation pass, removing one productive building and degrading the state category by one step only if the state is already `rural` or lower
+
+Those losses are handled through the shared chaos-meter deaths pipeline rather than a separate zombie-only casualty tracker.
+
 ### 8.1 Final zombie defeat after shutdown
 
 Shutdown is not the same thing as total victory.
 
 After the system has already been shut down, the chain now watches zombie capitulations for a second endpoint:
 
-- `global.zombie_main_capitulation_count` must be at least `constant:zombie_threat.main_collapse_shutdown_limit`
 - no zombie outbreak country may still control any state
 - `zombie_threat_defeated` must not already be set
 
@@ -547,9 +582,9 @@ When that happens, `on_zombie_threat_defeated`:
 - reduces the global chaos meter by `constant:zombie_threat.defeat_chaos_reduction`
 - writes a chaos-history entry for the zombie threat being eradicated
 
-If the third main-horde collapse happens while no zombie polity still controls land, this final defeat condition is met immediately and the super event fires on that shutdown.
+If `ZZZ` itself is the last zombie polity on the map when it capitulates, this final defeat condition is met immediately and the super event fires on that same collapse.
 
-### 9. World-end branches: `chaosx.nr2.8` and `chaosx.nr2.9`
+### 9. World-end branches: `chaosx.nr2.8`, `chaosx.nr2.9`, and `chaosx.nr2.11`
 
 #### `chaosx.nr2.8`: zombie apocalypse
 
@@ -574,6 +609,31 @@ Effects:
 #### `chaosx.nr2.9`: fallout
 
 This is the air-contamination collapse world-end event in the same namespace. It is not a zombie outbreak event, but it shares the same super-event numbering block and therefore belongs in this namespace-level documentation.
+
+#### `chaosx.nr2.11`: Wendigo ascendancy
+
+This hidden repeatable-check event handles the weaponized Wendigo end-state.
+
+Requirements:
+
+- chaos tier 5
+- no `world_end`
+- world-end system not disabled
+- zombie system not disabled
+- the scoped country is a weaponized Wendigo outbreak country
+
+Runtime check:
+
+- the event recalculates continent control on the outbreak country itself
+- a continent qualifies when the Wendigo controls at least `85%` of its states and is missing no more than `3`
+- the first qualifying continent marks the country as `wendigo_world_end_ready`
+
+Effects when ready:
+
+- sets `world_end`
+- sets `world_end_wendigo`
+- grants `weaponized_zombie_wendigo_world_end`
+- shows super-event slot `6`
 
 ### 10. Refugee evacuation subevent: `chaosx.nr2.10`
 

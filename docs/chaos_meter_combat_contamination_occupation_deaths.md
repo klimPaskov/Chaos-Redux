@@ -18,20 +18,23 @@ Combat now generates civilian deaths while fighting is active.
 
 Behavior:
 
-1. The system checks army leaders that currently have units in combat.
-2. It applies a small state-population-based civilian death loss to frontline battle states.
-3. The rate is random within a narrow range each tick.
-4. The death rate is ideology-based and always present:
+1. The system checks army leaders that currently have offensive units in combat.
+2. It picks a random enemy frontline state where that leader is actively fighting.
+3. It applies a state-population-based civilian death loss there.
+4. The trigger itself is random, so democratic countries only cause this rarely while harsher regimes do it much more often.
+5. The death rate is ideology-based:
    - fascist: highest baseline,
    - communist: lower,
    - non-aligned: very low,
    - democratic: extremely low.
-5. If the country has `chaos_warfare`, an additional combat civilian-death rate is added on top.
+6. If the country has `chaos_warfare`, an additional combat civilian-death rate and trigger bonus are added on top.
+7. Higher chaos tiers now scale the combat death rate upward.
 
 Result:
 
 - `chaos_warfare` + ideology rates stack additively.
 - The deaths are registered as civilian and reduce state population directly.
+- This pass is now materially stronger than the previous tuning.
 
 ## Contaminated-State Monthly Death Ticks
 
@@ -45,6 +48,7 @@ Monthly contaminated-state deaths are now population-percentage based instead of
 
 - Outbreak states apply higher death percentages.
 - Deadlier outbreaks apply stronger monthly death percentages.
+- These death rates are now stronger than before.
 
 Severity order:
 
@@ -71,6 +75,16 @@ Rules:
 3. `concentration` is the harshest and produces the highest death rate.
 
 This creates a direct death-toll consequence for repression-heavy occupation policy.
+
+## Zombie-Controlled State Decay
+
+Zombie-controlled states now use a separate long-form collapse mechanic documented in `docs/zombie_state_decay_and_civilian_deaths.md`.
+
+Summary:
+
+- `0.5%` monthly population loss for up to `36` months per state,
+- one structural degradation pass every `180` days,
+- deaths feed the same chaos-meter pipeline under the cause `Zombie occupation collapse`.
 
 ## Air Contamination Modifier Visibility
 

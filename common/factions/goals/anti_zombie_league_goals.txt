@@ -1,0 +1,143 @@
+# Overview:
+# - Manifest and goals for the Anti-Zombie League faction template.
+# - Keeps the coalition focused on survival, joint research, and cure
+#   deployment rather than ordinary bloc politics.
+
+@azl_manifest_fulfilled_ratio = 0.85
+@azl_manifest_planning_speed = 0.04
+@azl_manifest_special_project_speed_factor = 0.05
+@azl_manifest_research_sharing_factor = 0.25
+@azl_manifest_army_attack_factor = 0.03
+@azl_manifest_army_defence_factor = 0.05
+@azl_goal_investment_mid = 45
+@azl_goal_projection_short = 75
+@azl_goal_projection_medium = 125
+@azl_goal_projection_long = 200
+@azl_goal_initiative_reward = 1
+
+faction_manifest_anti_zombie_global_survival = {
+	name = azl_manifest_global_survival_name
+	description = azl_manifest_global_survival_desc
+	is_manifest = yes
+
+	ratio_progress = {
+		total_amount_collection = game:all_states
+		completed_amount_collection = collection:world_non_zombie_controlled_states
+
+		scale = {
+			planning_speed = @azl_manifest_planning_speed
+			special_project_speed_factor = @azl_manifest_special_project_speed_factor
+			research_sharing_per_country_bonus_factor = @azl_manifest_research_sharing_factor
+		}
+
+		progress_sections = {
+			manifest_fulfilled = {
+				min = @azl_manifest_fulfilled_ratio
+
+				modifier = {
+					army_attack_factor = @azl_manifest_army_attack_factor
+					army_defence_factor = @azl_manifest_army_defence_factor
+				}
+			}
+		}
+	}
+}
+
+faction_goal_azl_secure_cure_exchange = {
+	name = faction_goal_azl_secure_cure_exchange_name
+	description = faction_goal_azl_secure_cure_exchange_desc
+	category = short_term
+	group = FOCUS_FILTER_INDUSTRY
+
+	visible = {
+		ROOT = {
+			has_faction_template = faction_template_anti_zombie_league
+		}
+	}
+
+	available = {
+		has_global_flag = has_zombie_outbreak
+	}
+
+	completed = {
+		NOT = {
+			any_country = {
+				is_in_faction_with = ROOT
+				NOT = { is_in_tech_sharing_group = cure_sharing }
+			}
+		}
+	}
+
+	complete_effect = {
+		add_faction_power_projection = @azl_goal_projection_short
+		add_faction_initiative = @azl_goal_initiative_reward
+	}
+
+	ai_will_do = {
+		base = 8
+	}
+}
+
+faction_goal_azl_fund_joint_labs = {
+	name = faction_goal_azl_fund_joint_labs_name
+	description = faction_goal_azl_fund_joint_labs_desc
+	category = medium_term
+	group = FOCUS_FILTER_INDUSTRY
+
+	visible = {
+		ROOT = {
+			has_faction_template = faction_template_anti_zombie_league
+		}
+	}
+
+	available = {
+		has_global_flag = has_zombie_outbreak
+	}
+
+	completed = {
+		check_variable = {
+			var = global.azl_global_investment
+			value = @azl_goal_investment_mid
+			compare = greater_than
+		}
+	}
+
+	complete_effect = {
+		add_faction_power_projection = @azl_goal_projection_medium
+		add_faction_initiative = @azl_goal_initiative_reward
+	}
+
+	ai_will_do = {
+		base = 6
+	}
+}
+
+faction_goal_azl_field_the_cure = {
+	name = faction_goal_azl_field_the_cure_name
+	description = faction_goal_azl_field_the_cure_desc
+	category = long_term
+	group = FOCUS_FILTER_POLITICAL_CHARACTER
+
+	visible = {
+		ROOT = {
+			has_faction_template = faction_template_anti_zombie_league
+		}
+	}
+
+	available = {
+		has_global_flag = has_zombie_outbreak
+	}
+
+	completed = {
+		has_active_zombie_cure = yes
+	}
+
+	complete_effect = {
+		add_faction_power_projection = @azl_goal_projection_long
+		add_faction_initiative = @azl_goal_initiative_reward
+	}
+
+	ai_will_do = {
+		base = 4
+	}
+}

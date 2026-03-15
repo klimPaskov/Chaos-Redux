@@ -1,0 +1,460 @@
+@WZ_RAID_PAYLOAD = 125
+@WZ_RAID_SUCCESS_BASE_LOW = 0.35
+@WZ_RAID_SUCCESS_BASE_MEDIUM = 0.50
+@WZ_RAID_SUCCESS_BASE_HIGH = 0.68
+
+types = {
+	weaponized_zombie_strike_low = {
+		days_to_prepare = 10
+		category = biological_raids
+		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
+		command_power = 15
+
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 8
+				ROOT = {
+					tag = JAP
+					has_war_with = CHI
+				}
+				FROM = { tag = CHI }
+			}
+			modifier = {
+				factor = 5
+				var:target_state = { is_zombie_controlled_state = yes }
+			}
+		}
+
+		allowed = { }
+		visible = {
+			has_country_flag = weaponized_zombies_completed
+			check_variable = { var = weaponized_zombie_infectiousness value < 2 }
+		}
+		show_target = {
+			OR = {
+				AND = {
+					has_country_flag = weaponized_zombie_targets_zombies_only
+					var:target_state = { is_zombie_controlled_state = yes }
+					OR = {
+						tag = FROM
+						is_in_faction_with = FROM
+						has_war_with = FROM
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
+					has_war_with = FROM
+				}
+			}
+		}
+		available = { }
+		launchable = {
+			OR = {
+				AND = {
+					has_country_flag = weaponized_zombie_targets_zombies_only
+					var:target_state = { is_zombie_controlled_state = yes }
+					OR = {
+						tag = FROM
+						is_in_faction_with = FROM
+						has_war_with = FROM
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
+					has_war_with = FROM
+				}
+			}
+		}
+
+		launch_sound = raid_launch_nuclear_strike
+		target_type = { province = any }
+		target_icon = GFX_other_target_icon
+
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = 25 }
+			}
+		}
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = 10 }
+			}
+		}
+
+		essential_equipment = {
+			zombie_disease_bomb_equipment = @WZ_RAID_PAYLOAD
+		}
+
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+
+		success_factors = {
+			success = {
+				base = @WZ_RAID_SUCCESS_BASE_LOW
+				experience = {
+					weight = 0.1
+					start_weight = -0.1
+					reference = 1.0
+				}
+				air_defence = {
+					reference = 100
+					start_weight = -0.05
+					weight = 0.05
+				}
+				air_agility = {
+					reference = 100
+					start_weight = -0.1
+					weight = 0.1
+				}
+				reliability = {
+					start_weight = -0.1
+					weight = 0.1
+				}
+				air_superiority = {
+					reference = 1.0
+					start_weight = -0.25
+					weight = 0.25
+				}
+				interception = {
+					reference = 10
+					weight = -0.25
+				}
+				anti_air = { weight = -0.05 }
+				radar = { weight = -0.05 }
+				intel = {
+					weight = 0.2
+					reference = 100
+				}
+			}
+		}
+
+		success_levels = {
+			failure = {
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.45 ratio = yes }
+				}
+			}
+			limited_success = {
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.20 ratio = yes }
+					raid_add_unit_experience = 0.1
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_minor_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.1 ratio = yes }
+					raid_add_unit_experience = 0.2
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_add_unit_experience = 0.35
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	weaponized_zombie_strike_medium = {
+		days_to_prepare = 10
+		category = biological_raids
+		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
+		command_power = 15
+		ai_will_do = { base = 1 }
+		allowed = { }
+		visible = {
+			has_country_flag = weaponized_zombies_completed
+			check_variable = { var = weaponized_zombie_infectiousness value > 1 }
+			check_variable = { var = weaponized_zombie_infectiousness value < 3 }
+		}
+		show_target = {
+			OR = {
+				AND = {
+					has_country_flag = weaponized_zombie_targets_zombies_only
+					var:target_state = { is_zombie_controlled_state = yes }
+					OR = {
+						tag = FROM
+						is_in_faction_with = FROM
+						has_war_with = FROM
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
+					has_war_with = FROM
+				}
+			}
+		}
+		available = { }
+		launchable = {
+			OR = {
+				AND = {
+					has_country_flag = weaponized_zombie_targets_zombies_only
+					var:target_state = { is_zombie_controlled_state = yes }
+					OR = {
+						tag = FROM
+						is_in_faction_with = FROM
+						has_war_with = FROM
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
+					has_war_with = FROM
+				}
+			}
+		}
+		launch_sound = raid_launch_nuclear_strike
+		target_type = { province = any }
+		target_icon = GFX_other_target_icon
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = 25 }
+			}
+		}
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = 10 }
+			}
+		}
+		essential_equipment = {
+			zombie_disease_bomb_equipment = @WZ_RAID_PAYLOAD
+		}
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @WZ_RAID_SUCCESS_BASE_MEDIUM
+				experience = { weight = 0.1 start_weight = -0.1 reference = 1.0 }
+				air_defence = { reference = 100 start_weight = -0.05 weight = 0.05 }
+				air_agility = { reference = 100 start_weight = -0.1 weight = 0.1 }
+				reliability = { start_weight = -0.1 weight = 0.1 }
+				air_superiority = { reference = 1.0 start_weight = -0.25 weight = 0.25 }
+				interception = { reference = 10 weight = -0.25 }
+				anti_air = { weight = -0.05 }
+				radar = { weight = -0.05 }
+				intel = { weight = 0.2 reference = 100 }
+			}
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.45 ratio = yes }
+				}
+			}
+			limited_success = {
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.20 ratio = yes }
+					raid_add_unit_experience = 0.1
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_minor_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.1 ratio = yes }
+					raid_add_unit_experience = 0.2
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_add_unit_experience = 0.35
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	weaponized_zombie_strike_high = {
+		days_to_prepare = 10
+		category = biological_raids
+		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
+		command_power = 15
+		ai_will_do = { base = 1 }
+		allowed = { }
+		visible = {
+			has_country_flag = weaponized_zombies_completed
+			check_variable = {
+				var = weaponized_zombie_infectiousness
+				value = 2
+				compare = greater_than
+			}
+		}
+		show_target = {
+			OR = {
+				AND = {
+					has_country_flag = weaponized_zombie_targets_zombies_only
+					var:target_state = { is_zombie_controlled_state = yes }
+					OR = {
+						tag = FROM
+						is_in_faction_with = FROM
+						has_war_with = FROM
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
+					has_war_with = FROM
+				}
+			}
+		}
+		available = { }
+		launchable = {
+			OR = {
+				AND = {
+					has_country_flag = weaponized_zombie_targets_zombies_only
+					var:target_state = { is_zombie_controlled_state = yes }
+					OR = {
+						tag = FROM
+						is_in_faction_with = FROM
+						has_war_with = FROM
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
+					has_war_with = FROM
+				}
+			}
+		}
+		launch_sound = raid_launch_nuclear_strike
+		target_type = { province = any }
+		target_icon = GFX_other_target_icon
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = 25 }
+			}
+		}
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = 10 }
+			}
+		}
+		essential_equipment = {
+			zombie_disease_bomb_equipment = @WZ_RAID_PAYLOAD
+		}
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @WZ_RAID_SUCCESS_BASE_HIGH
+				experience = { weight = 0.1 start_weight = -0.1 reference = 1.0 }
+				air_defence = { reference = 100 start_weight = -0.05 weight = 0.05 }
+				air_agility = { reference = 100 start_weight = -0.1 weight = 0.1 }
+				reliability = { start_weight = -0.1 weight = 0.1 }
+				air_superiority = { reference = 1.0 start_weight = -0.25 weight = 0.25 }
+				interception = { reference = 10 weight = -0.25 }
+				anti_air = { weight = -0.05 }
+				radar = { weight = -0.05 }
+				intel = { weight = 0.2 reference = 100 }
+			}
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.45 ratio = yes }
+				}
+			}
+			limited_success = {
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.20 ratio = yes }
+					raid_add_unit_experience = 0.1
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_minor_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+			success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_damage_units = { plane_loss = 0.1 ratio = yes }
+					raid_add_unit_experience = 0.2
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+			critical_success = {
+				custom_sound = generic_bioweapon_aerosol
+				actor_effects = {
+					raid_add_unit_experience = 0.35
+					apply_weaponized_zombie_strike_consequences = yes
+				}
+				victim_effects = {
+					var:target_state = {
+						var:ROOT.actor_country = {
+							spawn_weaponized_zombie_outbreak_from_creator = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
