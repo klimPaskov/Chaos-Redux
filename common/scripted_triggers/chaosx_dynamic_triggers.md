@@ -10,7 +10,45 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 
 - [is_desert_state](#is_desert_state)
 - [is_special_chaos_country](#is_special_chaos_country)
+- [mapmode_state_has_chemical_contamination](#mapmode_state_has_chemical_contamination)
+- [mapmode_state_has_disease_contamination](#mapmode_state_has_disease_contamination)
+- [mapmode_state_has_nuclear_contamination](#mapmode_state_has_nuclear_contamination)
+- [mapmode_state_has_tracked_contamination](#mapmode_state_has_tracked_contamination)
+- [mapmode_state_has_civilian_death_history](#mapmode_state_has_civilian_death_history)
 
 ## is_desert_state
 
 ## is_special_chaos_country
+
+## mapmode_state_has_chemical_contamination
+
+State-scope trigger. Returns true when the state has the active `chem_state_contamination` dynamic modifier.
+
+Use this for UI, tooltips, or logic that needs a single reusable check for chemical state contamination without repeating the modifier token.
+
+## mapmode_state_has_disease_contamination
+
+State-scope trigger. Returns true when the state has any tracked biological outbreak modifier:
+
+- `anthrax_contaminated_state`
+- `plague_contaminated_state`
+- `tularemia_contaminated_state`
+- `smallpox_contaminated_state`
+
+Use this when the distinction that matters is "any disease contamination" rather than the exact disease.
+
+## mapmode_state_has_nuclear_contamination
+
+State-scope trigger. Returns true when the state has the active `nuclear_fallout_state` dynamic modifier.
+
+## mapmode_state_has_tracked_contamination
+
+State-scope trigger. Aggregates the chemical, disease, and nuclear contamination triggers above.
+
+Use this as the main target filter for contamination-focused state UI so one place controls which hazards count as tracked contamination.
+
+## mapmode_state_has_civilian_death_history
+
+State-scope trigger. Returns true when the state has a positive cumulative `chaos_state_civilian_deaths_total` variable.
+
+This is intended for map and UI systems that need persistent state-level civilian death history rather than short-lived daily effects.

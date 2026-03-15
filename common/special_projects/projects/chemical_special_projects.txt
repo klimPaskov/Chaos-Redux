@@ -1,0 +1,228 @@
+# US-only special chemical raid projects.
+# These projects unlock dedicated raid payloads for nonlethal-disruption
+# chemical strike concepts tied to the existing chemical raid framework.
+
+sp_cw_malodor_bomb_program = {
+	specialization = specialization_cw
+	icon = GFX_sp_malodor_bomb
+
+	allowed = {
+		original_tag = USA
+	}
+
+	available = {
+		FROM = {
+			has_tech = lewisite
+		}
+	}
+
+	visible = { }
+
+	breakthrough_cost = {
+		specialization_cw = 1
+	}
+
+	prototype_time = sp_time.prototype.medium
+
+	resource_cost = {
+		resources = {
+			steel = 3
+			rubber = 4
+			chromium = 2
+		}
+	}
+
+	complexity = sp_complexity.medium
+
+	ai_will_do = {
+		base = 1
+		modifier = {
+			factor = 2
+			FROM = { has_war = yes }
+		}
+		modifier = {
+			factor = 1.5
+			FROM = { is_major = yes }
+		}
+	}
+
+	project_output = {
+		enable_equipments = {
+			malodor_bomb_1
+		}
+
+		country_effects = {
+			custom_effect_tooltip = malodor_bomb_unlocked_tooltip
+		}
+	}
+
+	unique_prototype_rewards = {
+		sp_cw_malodor_reward_dispersal = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+
+			fire_only_once = yes
+
+			threshold = {
+				min = 20
+				max = 90
+			}
+
+			weight = {
+				base = 1000
+			}
+
+			option = {
+				token = sp_cw_malodor_reward_dispersal_careful
+				default = yes
+
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = sp_cw_malodor_reward_dispersal_careful_tt
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.low
+						}
+						add_stability = 0.01
+					}
+				}
+			}
+
+			option = {
+				token = sp_cw_malodor_reward_dispersal_aggressive
+
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = sp_cw_malodor_reward_dispersal_aggressive_tt
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.low
+						}
+						add_stability = -0.01
+					}
+				}
+			}
+		}
+	}
+
+	generic_prototype_rewards = {
+		sp_cw_generic_reward_scientist_xp
+		sp_cw_generic_reward_major_progress
+		sp_cw_generic_reward_breakthrough
+		sp_cw_generic_reward_chemistry_insights
+		sp_cw_generic_reward_test_failure
+		sp_cw_generic_reward_resource_scarcity
+	}
+}
+
+sp_cw_aphrodisiac_bomb_program = {
+	specialization = specialization_cw
+	icon = GFX_sp_aphrodisiac_bomb
+
+	allowed = {
+		original_tag = USA
+	}
+
+	available = {
+		FROM = {
+			has_tech = tabun
+		}
+	}
+
+	visible = { }
+
+	special_project_parent = {
+		sp_cw_malodor_bomb_program
+	}
+
+	breakthrough_cost = {
+		specialization_cw = 2
+	}
+
+	prototype_time = sp_time.prototype.long
+
+	resource_cost = {
+		resources = {
+			steel = 4
+			rubber = 5
+			tungsten = 3
+			chromium = 3
+		}
+	}
+
+	complexity = sp_complexity.large
+
+	ai_will_do = {
+		base = 1
+		modifier = {
+			factor = 2
+			FROM = { has_war = yes }
+		}
+		modifier = {
+			factor = 1.5
+			FROM = { is_major = yes }
+		}
+	}
+
+	project_output = {
+		enable_equipments = {
+			aphrodisiac_bomb_1
+		}
+
+		country_effects = {
+			custom_effect_tooltip = aphrodisiac_bomb_unlocked_tooltip
+		}
+	}
+
+	unique_prototype_rewards = {
+		sp_cw_aphrodisiac_reward_behavior = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+
+			fire_only_once = yes
+
+			threshold = {
+				min = 25
+				max = 95
+			}
+
+			weight = {
+				base = 1000
+			}
+
+			option = {
+				token = sp_cw_aphrodisiac_reward_behavior_careful
+				default = yes
+
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = sp_cw_aphrodisiac_reward_behavior_careful_tt
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.low
+						}
+						add_political_power = 15
+					}
+				}
+			}
+
+			option = {
+				token = sp_cw_aphrodisiac_reward_behavior_risky
+
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = sp_cw_aphrodisiac_reward_behavior_risky_tt
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.low
+						}
+						add_political_power = -15
+					}
+				}
+			}
+		}
+	}
+
+	generic_prototype_rewards = {
+		sp_cw_generic_reward_scientist_xp
+		sp_cw_generic_reward_major_progress
+		sp_cw_generic_reward_breakthrough
+		sp_cw_generic_reward_chemistry_insights
+		sp_cw_generic_reward_test_failure
+		sp_cw_generic_reward_resource_scarcity
+	}
+}

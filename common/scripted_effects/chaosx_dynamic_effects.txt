@@ -422,3 +422,22 @@ clear_special_chaos_country_civilian_effects = { # TODO: add more
 }
 
 ###############################################################################################################
+
+refresh_world_threat_state = {
+	set_variable = { global.world_threat_source_count = 0 }
+
+	if = {
+		limit = { has_global_flag = world_threat_source_zombies }
+		add_to_variable = { global.world_threat_source_count = 1 }
+	}
+
+	if = {
+		limit = { check_variable = { global.world_threat_source_count > 0 } }
+		set_global_flag = world_in_threat
+	}
+	else = {
+		clr_global_flag = world_in_threat
+	}
+}
+
+###############################################################################################################

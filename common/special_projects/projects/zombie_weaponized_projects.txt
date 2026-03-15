@@ -1,0 +1,858 @@
+# Overview:
+# - Adds the long-form Weaponize the Zombies project chain.
+# - Uses repeated prototype rewards to build a persistent zombie profile for the
+#   creator country rather than yielding one fixed zombie weapon.
+
+weaponize_the_zombies = {
+	specialization = specialization_biowarfare
+
+	allowed = { }
+	available = { }
+	visible = {
+		FROM = {
+			has_global_flag = has_zombie_outbreak
+		}
+	}
+
+	breakthrough_cost = {
+		specialization_biowarfare = 1
+	}
+
+	icon = GFX_sp_weaponize_the_zombies
+
+	prototype_time = sp_time.prototype.very_long
+
+	resource_cost = {
+		resources = {
+			steel = 4
+			tungsten = 4
+			chromium = 3
+			rubber = 3
+		}
+	}
+
+	complexity = sp_complexity.medium
+
+	empty_reward_weight = {
+		base = 0
+		modifier = {
+			add = 1
+			FROM = {
+				has_country_flag = weaponized_zombie_step_forbidden_done
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = constant:weaponized_zombies.ai_japan_base
+		modifier = {
+			factor = constant:weaponized_zombies.ai_japan_war_with_china_factor
+			ROOT = {
+				original_tag = JAP
+				has_war_with = CHI
+			}
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.ai_japan_has_biowarfare_factor
+			ROOT = {
+				original_tag = JAP
+				has_tech = pathogen_handling_protocols
+			}
+		}
+		modifier = {
+			factor = constant:weaponized_zombies.ai_non_japan_factor
+			ROOT = {
+				NOT = { original_tag = JAP }
+			}
+		}
+	}
+
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = weaponized_zombies_unlocked_tooltip
+			hidden_effect = {
+				complete_weaponized_zombie_project = yes
+			}
+		}
+	}
+
+	unique_prototype_rewards = {
+		sp_weaponized_zombie_reward_acquisition = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					NOT = { has_country_flag = weaponized_zombie_step_acquisition_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_acquisition_extract
+				default = yes
+
+				iteration_output = {
+					country_effects = {
+						initialize_weaponized_zombie_tracking = yes
+						set_country_flag = weaponized_zombie_step_acquisition_done
+						custom_effect_tooltip = weaponized_zombie_acquisition_tt
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 1 }
+						set_temp_variable = { wz_delta_accident_risk = 0.10 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_nature = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_acquisition_done
+					NOT = { has_country_flag = weaponized_zombie_step_nature_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_nature_neurobiological
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_nature_done
+						clr_country_flag = weaponized_zombie_nature_rage
+						clr_country_flag = weaponized_zombie_nature_parasitic
+						clr_country_flag = weaponized_zombie_nature_necrotic
+						clr_country_flag = weaponized_zombie_nature_demonic
+						set_country_flag = weaponized_zombie_nature_neurobiological
+						set_temp_variable = { wz_delta_strength = 1 }
+						set_temp_variable = { wz_delta_infectiousness = 1 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 1 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.15 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_nature_rage
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_nature_done
+						clr_country_flag = weaponized_zombie_nature_neurobiological
+						clr_country_flag = weaponized_zombie_nature_parasitic
+						clr_country_flag = weaponized_zombie_nature_necrotic
+						clr_country_flag = weaponized_zombie_nature_demonic
+						set_country_flag = weaponized_zombie_nature_rage
+						set_temp_variable = { wz_delta_strength = 2 }
+						set_temp_variable = { wz_delta_infectiousness = 1 }
+						set_temp_variable = { wz_delta_speed = 2 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.30 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_nature_parasitic
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_nature_done
+						clr_country_flag = weaponized_zombie_nature_neurobiological
+						clr_country_flag = weaponized_zombie_nature_rage
+						clr_country_flag = weaponized_zombie_nature_necrotic
+						clr_country_flag = weaponized_zombie_nature_demonic
+						set_country_flag = weaponized_zombie_nature_parasitic
+						set_temp_variable = { wz_delta_strength = 1 }
+						set_temp_variable = { wz_delta_infectiousness = 1 }
+						set_temp_variable = { wz_delta_speed = 1 }
+						set_temp_variable = { wz_delta_durability = 1 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 1 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.25 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_nature_necrotic
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_nature_done
+						clr_country_flag = weaponized_zombie_nature_neurobiological
+						clr_country_flag = weaponized_zombie_nature_rage
+						clr_country_flag = weaponized_zombie_nature_parasitic
+						clr_country_flag = weaponized_zombie_nature_demonic
+						set_country_flag = weaponized_zombie_nature_necrotic
+						set_temp_variable = { wz_delta_strength = 1 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 2 }
+						set_temp_variable = { wz_delta_cure_resistance = 1 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.30 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_nature_demonic
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_nature_done
+						clr_country_flag = weaponized_zombie_nature_neurobiological
+						clr_country_flag = weaponized_zombie_nature_rage
+						clr_country_flag = weaponized_zombie_nature_parasitic
+						clr_country_flag = weaponized_zombie_nature_necrotic
+						set_country_flag = weaponized_zombie_nature_demonic
+						set_country_flag = weaponized_zombie_forbidden_branch
+						set_temp_variable = { wz_delta_strength = 1 }
+						set_temp_variable = { wz_delta_infectiousness = 1 }
+						set_temp_variable = { wz_delta_speed = 1 }
+						set_temp_variable = { wz_delta_durability = 1 }
+						set_temp_variable = { wz_delta_cure_resistance = 1 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.45 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_life_state = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_nature_done
+					NOT = { has_country_flag = weaponized_zombie_step_life_state_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_life_state_dead
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_life_state_done
+						clr_country_flag = weaponized_zombie_life_alive
+						clr_country_flag = weaponized_zombie_life_fragmented
+						clr_country_flag = weaponized_zombie_life_transformed
+						set_country_flag = weaponized_zombie_life_dead
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_life_state_alive
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_life_state_done
+						clr_country_flag = weaponized_zombie_life_dead
+						clr_country_flag = weaponized_zombie_life_fragmented
+						clr_country_flag = weaponized_zombie_life_transformed
+						set_country_flag = weaponized_zombie_life_alive
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_life_state_fragmented
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_life_state_done
+						clr_country_flag = weaponized_zombie_life_dead
+						clr_country_flag = weaponized_zombie_life_alive
+						clr_country_flag = weaponized_zombie_life_transformed
+						set_country_flag = weaponized_zombie_life_fragmented
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_life_state_transformed
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_life_state_done
+						clr_country_flag = weaponized_zombie_life_dead
+						clr_country_flag = weaponized_zombie_life_alive
+						clr_country_flag = weaponized_zombie_life_fragmented
+						set_country_flag = weaponized_zombie_life_transformed
+						add_to_variable = { weaponized_zombie_accident_risk = 0.10 }
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_strength = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_resources_done
+					NOT = { has_country_flag = weaponized_zombie_step_strength_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_strength_mild
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_strength_done
+						set_temp_variable = { wz_delta_strength = 1 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.10 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_strength_medium
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_strength_done
+						set_temp_variable = { wz_delta_strength = 2 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.20 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_strength_strong
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_strength_done
+						set_temp_variable = { wz_delta_strength = 3 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.30 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_infectiousness = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_strength_done
+					NOT = { has_country_flag = weaponized_zombie_step_infectiousness_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_infectiousness_mild
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_infectiousness_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 1 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.10 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_infectiousness_medium
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_infectiousness_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 2 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.20 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_infectiousness_strong
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_infectiousness_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 3 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.35 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_speed = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_infectiousness_done
+					NOT = { has_country_flag = weaponized_zombie_step_speed_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_speed_mild
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_speed_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 1 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.10 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_speed_medium
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_speed_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 2 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.20 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_speed_strong
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_speed_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 3 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.30 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_durability = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_speed_done
+					NOT = { has_country_flag = weaponized_zombie_step_durability_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_durability_mild
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_durability_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 1 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.10 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_durability_medium
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_durability_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 2 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.20 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_durability_strong
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_durability_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 3 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.30 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_cure = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_durability_done
+					NOT = { has_country_flag = weaponized_zombie_step_cure_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_cure_mild
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_cure_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 1 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.10 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_cure_medium
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_cure_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 2 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.20 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_cure_strong
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_cure_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 3 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.25 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_friendliness = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_cure_done
+					NOT = { has_country_flag = weaponized_zombie_step_friendliness_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_friendliness_mild
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_friendliness_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 1 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.05 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_friendliness_medium
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_friendliness_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 2 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.10 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_friendliness_strong
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_friendliness_done
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 3 }
+						set_temp_variable = { wz_delta_subjects = 0 }
+						set_temp_variable = { wz_delta_accident_risk = 0.15 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_trials = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_life_state_done
+					NOT = { has_country_flag = weaponized_zombie_step_trials_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_trials_approve
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_trials_done
+						custom_effect_tooltip = weaponized_zombie_trials_tt
+						add_manpower = constant:weaponized_zombies.manpower_sacrifice_negative
+						set_temp_variable = { wz_delta_strength = 0 }
+						set_temp_variable = { wz_delta_infectiousness = 0 }
+						set_temp_variable = { wz_delta_speed = 0 }
+						set_temp_variable = { wz_delta_durability = 0 }
+						set_temp_variable = { wz_delta_cure_resistance = 0 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
+						set_temp_variable = { wz_delta_subjects = 2 }
+						set_temp_variable = { wz_delta_accident_risk = 0.20 }
+						weaponized_zombie_apply_profile_delta = yes
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_resources = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_trials_done
+					NOT = { has_country_flag = weaponized_zombie_step_resources_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_resources_minimal
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_resources_done
+						clr_country_flag = weaponized_zombie_resource_expanded
+						clr_country_flag = weaponized_zombie_resource_maximum
+						set_country_flag = weaponized_zombie_resource_minimal
+						custom_effect_tooltip = weaponized_zombie_resources_minimal_tt
+						add_to_variable = { weaponized_zombie_accident_risk = 0.05 }
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_resources_expanded
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_resources_done
+						clr_country_flag = weaponized_zombie_resource_minimal
+						clr_country_flag = weaponized_zombie_resource_maximum
+						set_country_flag = weaponized_zombie_resource_expanded
+						custom_effect_tooltip = weaponized_zombie_resources_expanded_tt
+						add_to_variable = { weaponized_zombie_accident_risk = 0.20 }
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_resources_maximum
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_resources_done
+						clr_country_flag = weaponized_zombie_resource_minimal
+						clr_country_flag = weaponized_zombie_resource_expanded
+						set_country_flag = weaponized_zombie_resource_maximum
+						custom_effect_tooltip = weaponized_zombie_resources_maximum_tt
+						add_to_variable = { weaponized_zombie_accident_risk = 0.40 }
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_field_test = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_friendliness_done
+					NOT = { has_country_flag = weaponized_zombie_step_field_test_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_field_test_conduct
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_field_test_done
+						custom_effect_tooltip = weaponized_zombie_field_test_tt
+						conduct_weaponized_zombie_field_test = yes
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_field_test_skip
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_field_test_done
+						custom_effect_tooltip = weaponized_zombie_field_test_skip_tt
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_forbidden = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			allowed = {
+				FROM = {
+					has_country_flag = weaponized_zombie_step_field_test_done
+					NOT = { has_country_flag = weaponized_zombie_step_forbidden_done }
+				}
+			}
+			weight = { base = 100 }
+
+			option = {
+				token = sp_weaponized_zombie_reward_forbidden_caution
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_forbidden_done
+						custom_effect_tooltip = weaponized_zombie_forbidden_caution_tt
+					}
+				}
+			}
+			option = {
+				token = sp_weaponized_zombie_reward_forbidden_pursue
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_forbidden_done
+						custom_effect_tooltip = weaponized_zombie_forbidden_pursue_tt
+						set_country_flag = weaponized_zombie_forbidden_branch
+						add_to_variable = { weaponized_zombie_accident_risk = 0.30 }
+					}
+				}
+			}
+		}
+	}
+
+}

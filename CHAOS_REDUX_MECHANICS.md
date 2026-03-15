@@ -62,6 +62,17 @@ Every 3 minor events:
 - Compresses the overall timer range
 - Creates faster event cycles during active periods
 
+| Minor events since last major | Daily decrement | Max timer reduction before roll | Possible next timer at `1.0x` |
+| --- | --- | --- | --- |
+| `0` | `0` | `0` | `45-60` days |
+| `1` | `1` | `0` | `44-59` days |
+| `2` | `2` | `0` | `43-58` days |
+| `3` | `3` | `1` | `42-56` days |
+| `6` | `6` | `2` | `39-52` days |
+| `9` | `9` | `3` | `36-48` days |
+| `12` | `12` | `4` | `33-44` days |
+| `15+` | `15` | `5` | `30-40` days |
+
 #### Major Event Reset
 
 When a major event fires:
@@ -85,6 +96,15 @@ When a major event fires:
 - Maximum decrement: -35 days
 - Maximum compression: -13 days
 - Effective range: 10-12 days
+
+| Chaos tier | Timer multiplier | Speed vs calm | Max-acceleration range with current defaults |
+| --- | --- | --- | --- |
+| **Calm World** | `1.0x` | baseline | `30-40` days |
+| **Gathering Storm** | `0.8x` | `20%` faster | `24-32` days |
+| **Rising Chaos** | `0.7x` | `30%` faster | `21-28` days |
+| **Chaos Tier** | `0.6x` | `40%` faster | `18-24` days |
+| **Totalen Chaos** | `0.5x` | `50%` faster | `15-20` days |
+| **World Collapse** | `0.5x` | `50%` faster | `15-20` days |
 
 ---
 
@@ -114,6 +134,12 @@ When a major event fires:
 - **Weight After Firing**: Permanently set to 0 for the fired event and all unfired major events reset to 0 weight
 - **Purpose**: Events that have a major impact on the world right away
 - **Super Events**: Major events are displayed as Super Events
+
+| Event type | Default start weight | Repeat behavior | Recovery / growth | System effect after firing |
+| --- | --- | --- | --- | --- |
+| **Fire-Once** | `1000` | Fires once per campaign | None | Event is marked fired permanently and removed from future selection; still adds minor-event timer pressure |
+| **Repeatable** | `1000` | Can fire repeatedly | `+20` weight per month up to current cap | Weight cap is halved each firing; still adds minor-event timer pressure |
+| **Major** | `0` | Fires once per campaign | `+150` weight per minor event fired | Fired major resets major weights and resets timer acceleration state |
 
 ### Super Event Example
 
@@ -150,36 +176,38 @@ The Chaos Meter details window has five tabs:
 - **Totalen Chaos** (800-999): Very high frequency, most evolutions available
 - **World Collapse** (1000+): Maximum chaos, system prepares end-game scenarios
 
+| Tier | Chaos range | Timer multiplier | Relative event speed |
+| --- | --- | --- | --- |
+| **Calm World** | `0-199` | `1.0x` | baseline |
+| **Gathering Storm** | `200-399` | `0.8x` | `20%` faster |
+| **Rising Chaos** | `400-599` | `0.7x` | `30%` faster |
+| **Chaos Tier** | `600-799` | `0.6x` | `40%` faster |
+| **Totalen Chaos** | `800-999` | `0.5x` | `50%` faster |
+| **World Collapse** | `1000+` | `0.5x` | `50%` faster |
+
 ### Chaos Sources
 
-#### Major Increases
+| System | Lower / minor change | Higher / major change |
+| --- | --- | --- |
+| War | `+1` | `+5` |
+| Peace | `-1` | `-3` |
+| Annexation | `+2` | `+10` |
+| Puppeting | `+1` | `+3` |
+| Liberation | `-2` | `-5` democratic liberation |
+| Freeing countries | `-3` | n/a |
+| Faction joining | `+1` | `+3` |
+| Faction leaving | `-1` | `-3` |
+| Ideology change | `+1` minor non-democratic / `-2` minor democratic | `+5` major non-democratic / `-5` major democratic |
+| Nuke use | `+1` | thermonuclear uses a separate contamination spike, not a separate chaos delta here |
+| Monthly world decay | `-1` | n/a |
 
-- Major power wars: +5 chaos
-- Major annexations: +10 chaos
-- Major power ideology changes to non-democratic: +5 chaos
-
-#### Moderate Increases
-
-- Minor power wars: +1 chaos
-- Minor annexations: +2 chaos
-- Puppeting: +1 to +3 chaos
-- Faction joining: +1 to +3 chaos
-- Nuke: +1 chaos (so it's not abused)
-- World tension increases: +1 per percentage point
-- Military buildup: +1 per 50 military factories or 100 divisions
-- Deaths: +1 per 1,000,000 total tracked deaths
-- Air contamination: +1 chaos per +1% contamination gain
-
-#### Decreases
-
-- Peace agreements: -2 to -5 chaos
-- Liberation by democratic powers: -5 chaos
-- Freeing countries: -2 to -5 chaos
-- Faction leaving: -1 to -3 chaos
-- High world stability: variable reduction
-- Increased global democracy: variable reduction
-- Monthly Decay: -1
-- Air contamination recovery: -1 chaos per -1% contamination recovery
+| Scaling rule | Exact threshold |
+| --- | --- |
+| World tension rise | `+1` chaos per percentage-point rise |
+| Military buildup | `+1` chaos per `100` military factories |
+| Division buildup | `+1` chaos per `100` divisions |
+| Deaths | `+1` chaos per `1,000,000` tracked deaths |
+| Air contamination | `+1` chaos per net `+1%` contamination, `-1` chaos per net `-1%` recovery |
 
 Chaos changes can also happen from events.
 
@@ -211,6 +239,30 @@ For chaos synchronization:
 
 The tab uses a single current status line for stage/state, plus a short mechanics overview on the side.
 The tab also includes an enable/disable checkbox for the air cleanliness system.
+
+| Source | Basis points | Percent |
+| --- | --- | --- |
+| Chemical contamination in one state | `+1 bp` | `+0.01%` |
+| One outbreak state, low intensity | `+1 bp` | `+0.01%` |
+| One outbreak state, base intensity | `+2 bp` | `+0.02%` |
+| One outbreak state, high intensity | `+3 bp` | `+0.03%` |
+| Normal nuke | `+20 bp` | `+0.20%` |
+| Thermonuclear strike | `+150 bp` | `+1.50%` |
+
+| Monthly recovery band | Basis points | Percent |
+| --- | --- | --- |
+| Below `25%` | `-3 bp` | `-0.03%` |
+| `25%+` | `-2 bp` | `-0.02%` |
+| `50%+` | `-1 bp` | `-0.01%` |
+| `75%+` | `-0.5 bp` | `-0.005%` |
+
+| Threshold | Basis points | Result |
+| --- | --- | --- |
+| `25%` | `2500 bp` | Spread becomes easier |
+| `50%` | `5000 bp` | Mild nuclear-winter periods can begin |
+| `75%` | `7500 bp` | Stronger nuclear-winter periods can begin |
+| `100%` | `10000 bp` | Contamination becomes irreversible |
+| `1000%` | `100000 bp` | Fallout world-end scenario can trigger |
 
 <!-- IMAGE PLACEHOLDER: Air Cleanliness tab with thresholds and status line -->
 
@@ -297,10 +349,6 @@ The event logs window tracks what has happened and what can still happen.
 
 Any row in **History**, **Evolutions**, or **Events** can be clicked to open a separate detail window.
 
-- Detail windows are larger, bordered, and movable.
-- The header uses the selected event/evolution name.
-- Multiple detail windows can stay open at the same time.
-
 <!-- IMAGE PLACEHOLDER: Events tab with filter/sort/toggle controls -->
 <!-- IMAGE PLACEHOLDER: Multiple event detail windows opened at once -->
 
@@ -366,16 +414,7 @@ Any row in **History**, **Evolutions**, or **Events** can be clicked to open a s
 
 ## Debug and Monitoring
 
-This section helps you understand why events are firing faster or slower during a campaign.
-
-It provides a clear overview of:
-
-- Total fired events and event type balance
-- Current timer pace and acceleration pressure
-- Major-event pressure and recovery behavior
-- Current chaos level, tier, and recent trend
-
-Use this information when you want to tune settings for a longer campaign, faster escalation, or more controlled pacing.
+TODO
 
 ---
 
@@ -624,6 +663,54 @@ What the player does:
 
 Chaos Warfare focuses on the most extreme battlefield doctrine paths.
 
-These options increase short-term military pressure, but they also raise long-term costs such as condemnation, civilian harm, and contamination.
+These options increase short-term military pressure, but they also raise long-term costs such as condemnation, civilian harm, and contamination. TODO
 
 <!-- IMAGE PLACEHOLDER: Chaos Warfare doctrine path and key effects -->
+
+### Subdoctrine 1
+
+#### Mastery 1
+
+#### Mastery 2
+
+#### Mastery 3
+
+#### Mastery 4
+
+#### Mastery 5
+
+### Subdoctrine 2
+
+#### Mastery 1
+
+#### Mastery 2
+
+#### Mastery 3
+
+#### Mastery 4
+
+#### Mastery 5
+
+### Subdoctrine 3
+
+#### Mastery 1
+
+#### Mastery 2
+
+#### Mastery 3
+
+#### Mastery 4
+
+#### Mastery 5
+
+### Subdoctrine 4
+
+#### Mastery 1
+
+#### Mastery 2
+
+#### Mastery 3
+
+#### Mastery 4
+
+#### Mastery 5

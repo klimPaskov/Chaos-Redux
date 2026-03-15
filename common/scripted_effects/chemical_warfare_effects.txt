@@ -120,6 +120,8 @@ chem_try_grant_chemical_operations_trait_from_academy_spirit = {
 	if = {
 		limit = {
 			FROM = { has_idea = chemical_operations_academy_spirit }
+			FROM = { NOT = { original_tag = JAP } }
+			FROM = { has_enemy_chemical_condemnation_very_high = yes }
 			is_army_leader = yes
 			NOT = { has_trait = chemical_operations_commander }
 		}
@@ -371,6 +373,10 @@ chem_warfare_register_attack_use = {
 	multiply_temp_variable = { var = chem_condemnation_add value = chem_livens_condemnation_mult }
 	chem_set_integrated_operations_condemnation_mult_from_owner = yes
 	multiply_temp_variable = { var = chem_condemnation_add value = chem_operations_condemnation_mult }
+	if = {
+		limit = { has_variable = chem_condemnation_mult }
+		multiply_temp_variable = { var = chem_condemnation_add value = chem_condemnation_mult }
+	}
 
 	if = {
 		limit = { check_variable = { var = chem_condemnation_add value = 0 compare = greater_than } }
@@ -499,6 +505,10 @@ chem_warfare_register_attack_use_no_livens = {
 	add_to_temp_variable = { var = chem_condemnation_add value = chem_condemnation_scale }
 	chem_set_integrated_operations_condemnation_mult_from_country = yes
 	multiply_temp_variable = { var = chem_condemnation_add value = chem_operations_condemnation_mult }
+	if = {
+		limit = { has_variable = chem_condemnation_mult }
+		multiply_temp_variable = { var = chem_condemnation_add value = chem_condemnation_mult }
+	}
 
 	if = {
 		limit = { check_variable = { var = chem_condemnation_add value = 0 compare = greater_than } }
@@ -684,4 +694,230 @@ chem_apply_nerve_raid_unit_damage_soman_critical = {
 			}
 		}
 	}
+}
+
+chem_apply_malodor_raid_state_effect_limited = {
+	set_temp_variable = { var = chem_special_raid_outcome_mult value = constant:chem_special_raid.outcome_mult.limited }
+	chem_apply_malodor_raid_state_effect = yes
+}
+
+chem_apply_malodor_raid_state_effect_success = {
+	set_temp_variable = { var = chem_special_raid_outcome_mult value = constant:chem_special_raid.outcome_mult.success }
+	chem_apply_malodor_raid_state_effect = yes
+}
+
+chem_apply_malodor_raid_state_effect_critical = {
+	set_temp_variable = { var = chem_special_raid_outcome_mult value = constant:chem_special_raid.outcome_mult.critical }
+	chem_apply_malodor_raid_state_effect = yes
+}
+
+chem_apply_malodor_raid_state_effect = {
+	chem_set_contaminant_firebases_raid_damage_mult_from_actor_country = yes
+	set_temp_variable = { var = chem_special_effect_mult value = chem_raid_effect_mult }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_local_supplies.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_local_supplies value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_supply_impact.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_supply_impact value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_speed.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_speed value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_local_org_regain.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_org_regain value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_attack.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_attack value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_defence.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_defence value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_breakthrough.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_breakthrough value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_max_dig_in_factor.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_max_dig_in value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_dig_in_speed_factor.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_dig_in_speed value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_local_factories.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_local_factories value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_required_garrison_factor.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_garrison value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_resistance_target.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_resistance_target value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_air_mission_efficiency.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_air_mission_efficiency value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_air_accidents_factor.malodor }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_malodor_raid_air_accidents value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_duration value = constant:chem_special_raid.duration_days.malodor }
+	multiply_temp_variable = { var = chem_special_duration value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_duration value = chem_special_effect_mult }
+	round_temp_variable = chem_special_duration
+	clamp_temp_variable = { var = chem_special_duration min = 1 max = 14 }
+	add_dynamic_modifier = { modifier = chem_state_malodor_disruption days = chem_special_duration }
+	force_update_dynamic_modifier = yes
+
+	set_temp_variable = { var = chem_dose_each value = constant:chem_special_raid.contamination_dose.malodor }
+	if = {
+		limit = { check_variable = { var = chem_dose_each value = 0 compare = less_than } }
+		multiply_temp_variable = { var = chem_dose_each value = chem_special_raid_outcome_mult }
+		chem_set_contaminant_firebases_contamination_mult_from_actor_country = yes
+		multiply_temp_variable = { var = chem_dose_each value = chem_contamination_strength_mult }
+		set_temp_variable = { var = chem_state_duration_add value = constant:chem_special_raid.contamination_duration_days.malodor }
+		multiply_temp_variable = { var = chem_state_duration_add value = chem_special_raid_outcome_mult }
+		multiply_temp_variable = { var = chem_state_duration_add value = chem_contamination_duration_mult }
+		round_temp_variable = chem_state_duration_add
+		clamp_temp_variable = { var = chem_state_duration_add min = 1 max = 4 }
+		chem_apply_state_contamination = yes
+	}
+}
+
+chem_apply_malodor_raid_unit_org_damage_limited = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_special_raid.immediate_org_damage.malodor }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_special_raid.outcome_mult.limited }
+	chem_apply_malodor_raid_unit_org_damage = yes
+}
+
+chem_apply_malodor_raid_unit_org_damage_success = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_special_raid.immediate_org_damage.malodor }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_special_raid.outcome_mult.success }
+	chem_apply_malodor_raid_unit_org_damage = yes
+}
+
+chem_apply_malodor_raid_unit_org_damage_critical = {
+	set_temp_variable = { var = chem_raid_org_damage value = constant:chem_special_raid.immediate_org_damage.malodor }
+	multiply_temp_variable = { var = chem_raid_org_damage value = constant:chem_special_raid.outcome_mult.critical }
+	chem_apply_malodor_raid_unit_org_damage = yes
+}
+
+chem_apply_malodor_raid_unit_org_damage = {
+	chem_set_contaminant_firebases_raid_damage_mult_from_actor_country = yes
+	multiply_temp_variable = { var = chem_raid_org_damage value = chem_raid_effect_mult }
+	var:victim_country = {
+		var:target_state = {
+			damage_units = {
+				province = var:ROOT.target_province
+				state = THIS
+				org_damage = chem_raid_org_damage
+				str_damage = 0
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
+	}
+}
+
+chem_apply_aphrodisiac_raid_state_effect_limited = {
+	set_temp_variable = { var = chem_special_raid_outcome_mult value = constant:chem_special_raid.outcome_mult.limited }
+	chem_apply_aphrodisiac_raid_state_effect = yes
+}
+
+chem_apply_aphrodisiac_raid_state_effect_success = {
+	set_temp_variable = { var = chem_special_raid_outcome_mult value = constant:chem_special_raid.outcome_mult.success }
+	chem_apply_aphrodisiac_raid_state_effect = yes
+}
+
+chem_apply_aphrodisiac_raid_state_effect_critical = {
+	set_temp_variable = { var = chem_special_raid_outcome_mult value = constant:chem_special_raid.outcome_mult.critical }
+	chem_apply_aphrodisiac_raid_state_effect = yes
+}
+
+chem_apply_aphrodisiac_raid_state_effect = {
+	chem_set_contaminant_firebases_raid_damage_mult_from_actor_country = yes
+	set_temp_variable = { var = chem_special_effect_mult value = chem_raid_effect_mult }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_attack.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_attack value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_defence.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_defence value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_breakthrough.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_breakthrough value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_local_org_regain.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_org_regain value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_max_dig_in_factor.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_max_dig_in value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_dig_in_speed_factor.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_dig_in_speed value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_coordination.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_coordination value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_land_reinforce_rate.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_reinforce value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_max_planning_factor.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_planning value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_state_value value = constant:chem_special_raid.state_resistance_target.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_state_value value = chem_special_effect_mult }
+	set_variable = { var = chem_aphrodisiac_raid_resistance_target value = chem_special_state_value }
+
+	set_temp_variable = { var = chem_special_duration value = constant:chem_special_raid.duration_days.aphrodisiac }
+	multiply_temp_variable = { var = chem_special_duration value = chem_special_raid_outcome_mult }
+	multiply_temp_variable = { var = chem_special_duration value = chem_special_effect_mult }
+	round_temp_variable = chem_special_duration
+	clamp_temp_variable = { var = chem_special_duration min = 1 max = 10 }
+	add_dynamic_modifier = { modifier = chem_state_aphrodisiac_disruption days = chem_special_duration }
+	force_update_dynamic_modifier = yes
 }

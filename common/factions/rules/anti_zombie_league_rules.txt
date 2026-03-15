@@ -1,0 +1,95 @@
+# Overview:
+# - Positive-only faction rules for the Anti-Zombie League.
+# - Exposes the coalition's coordinated command and shared research apparatus
+#   in the vanilla faction UI instead of keeping all benefits hidden.
+
+@azl_rule_joint_planning_speed = 0.03
+@azl_rule_joint_org_regain = 0.03
+@azl_rule_joint_defence_factor = 0.03
+@azl_rule_shared_labs_special_project_speed = 0.05
+@azl_rule_shared_labs_research_sharing = 0.25
+@azl_rule_shared_labs_research_speed = 0.02
+
+azl_joining_rule_human_survivors_only = {
+	type = joining_rules
+
+	visible = {
+		has_faction_template = faction_template_anti_zombie_league
+	}
+
+	available = {
+		has_global_flag = has_zombie_outbreak
+	}
+
+	can_remove = {
+		always = no
+	}
+
+	trigger = {
+		can_join_anti_zombie_league = yes
+	}
+
+	ai_will_do = {
+		base = 1
+	}
+}
+
+azl_member_rule_joint_operations = {
+	type = member_rules
+
+	visible = {
+		has_faction_template = faction_template_anti_zombie_league
+	}
+
+	available = {
+		has_global_flag = has_zombie_outbreak
+	}
+
+	can_remove = {
+		always = no
+	}
+
+	trigger = {
+		always = yes
+	}
+
+	modifier = {
+		planning_speed = @azl_rule_joint_planning_speed
+		army_org_regain = @azl_rule_joint_org_regain
+		army_defence_factor = @azl_rule_joint_defence_factor
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+azl_member_rule_shared_labs = {
+	type = member_rules
+
+	visible = {
+		has_faction_template = faction_template_anti_zombie_league
+	}
+
+	available = {
+		has_global_flag = has_zombie_outbreak
+	}
+
+	can_remove = {
+		always = no
+	}
+
+	trigger = {
+		always = yes
+	}
+
+	modifier = {
+		special_project_speed_factor = @azl_rule_shared_labs_special_project_speed
+		research_sharing_per_country_bonus_factor = @azl_rule_shared_labs_research_sharing
+		research_speed_factor = @azl_rule_shared_labs_research_speed
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}

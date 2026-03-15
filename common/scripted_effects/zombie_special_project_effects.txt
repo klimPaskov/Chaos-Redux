@@ -1,0 +1,2140 @@
+# Overview:
+# - Handles the zombie special-project support and offensive branches.
+# - Tracks the creator's zombie profile, resolves it into a final archetype,
+#   and spawns custom outbreak countries for strikes, accidents, and tests.
+# - Keeps the anti-zombie containment raid idempotent.
+
+apply_zombie_decontamination_state_modifier = {
+	if = {
+		limit = {
+			NOT = { has_dynamic_modifier = { modifier = zombie_decontaminated_state } }
+		}
+		add_dynamic_modifier = {
+			modifier = zombie_decontaminated_state
+		}
+		force_update_dynamic_modifier = yes
+	}
+}
+
+initialize_weaponized_zombie_tracking = {
+	if = {
+		limit = { NOT = { has_country_flag = weaponized_zombies_started } }
+		clear_weaponized_zombie_research_step_flags = yes
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_strength } }
+		set_variable = { weaponized_zombie_strength = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_infectiousness } }
+		set_variable = { weaponized_zombie_infectiousness = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_speed } }
+		set_variable = { weaponized_zombie_speed = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_durability } }
+		set_variable = { weaponized_zombie_durability = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_cure_resistance } }
+		set_variable = { weaponized_zombie_cure_resistance = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_friendliness } }
+		set_variable = { weaponized_zombie_friendliness = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_test_subjects } }
+		set_variable = { weaponized_zombie_test_subjects = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_accident_risk } }
+		set_variable = { weaponized_zombie_accident_risk = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_cost_score } }
+		set_variable = { weaponized_zombie_cost_score = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_mutation_extremes } }
+		set_variable = { weaponized_zombie_mutation_extremes = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_outbreak_stage } }
+		set_variable = { weaponized_zombie_outbreak_stage = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = weaponized_zombie_creator_cure_days } }
+		set_variable = { weaponized_zombie_creator_cure_days = constant:weaponized_zombies.creator_cure_days_low }
+	}
+	set_country_flag = weaponized_zombies_started
+}
+
+clear_weaponized_zombie_research_step_flags = {
+	clr_country_flag = weaponized_zombie_step_acquisition_done
+	clr_country_flag = weaponized_zombie_step_nature_done
+	clr_country_flag = weaponized_zombie_step_life_state_done
+	clr_country_flag = weaponized_zombie_step_trials_done
+	clr_country_flag = weaponized_zombie_step_resources_done
+	clr_country_flag = weaponized_zombie_step_strength_done
+	clr_country_flag = weaponized_zombie_step_infectiousness_done
+	clr_country_flag = weaponized_zombie_step_speed_done
+	clr_country_flag = weaponized_zombie_step_durability_done
+	clr_country_flag = weaponized_zombie_step_cure_done
+	clr_country_flag = weaponized_zombie_step_friendliness_done
+	clr_country_flag = weaponized_zombie_step_field_test_done
+	clr_country_flag = weaponized_zombie_step_forbidden_done
+}
+
+clear_weaponized_zombie_resolution_flags = {
+	clear_weaponized_zombie_type_flags = yes
+
+	clr_country_flag = weaponized_zombie_archetype_rabid_horde
+	clr_country_flag = weaponized_zombie_archetype_necrotic_siege
+	clr_country_flag = weaponized_zombie_archetype_parasitic_directed
+	clr_country_flag = weaponized_zombie_archetype_controlled_loyalty
+	clr_country_flag = weaponized_zombie_archetype_purifier
+	clr_country_flag = weaponized_zombie_archetype_semi_sapient
+	clr_country_flag = weaponized_zombie_archetype_creator_betrayer
+	clr_country_flag = weaponized_zombie_archetype_canonical_convergence
+	clr_country_flag = weaponized_zombie_archetype_wendigo
+	clr_country_flag = weaponized_zombie_profile_hardened
+
+	clr_country_flag = weaponized_zombie_targets_zombies_only
+	clr_country_flag = weaponized_zombie_friendly_to_creator
+	clr_country_flag = weaponized_zombie_friendly_to_humans
+	clr_country_flag = weaponized_zombie_attack_other_zombies
+}
+
+clear_weaponized_zombie_type_flags = {
+	clr_country_flag = weaponized_zombie_type_infected
+	clr_country_flag = weaponized_zombie_type_rabid
+	clr_country_flag = weaponized_zombie_type_parasitic
+	clr_country_flag = weaponized_zombie_type_mutant
+	clr_country_flag = weaponized_zombie_type_undead
+	clr_country_flag = weaponized_zombie_type_necrotic
+	clr_country_flag = weaponized_zombie_type_demonic
+	clr_country_flag = weaponized_zombie_type_wendigo
+}
+
+weaponized_zombie_set_type_infected = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_infected
+}
+
+weaponized_zombie_set_type_rabid = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_rabid
+}
+
+weaponized_zombie_set_type_parasitic = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_parasitic
+}
+
+weaponized_zombie_set_type_mutant = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_mutant
+}
+
+weaponized_zombie_set_type_undead = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_undead
+}
+
+weaponized_zombie_set_type_necrotic = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_necrotic
+}
+
+weaponized_zombie_set_type_demonic = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_demonic
+}
+
+weaponized_zombie_set_type_wendigo = {
+	clear_weaponized_zombie_type_flags = yes
+	set_country_flag = weaponized_zombie_type_wendigo
+}
+
+clear_wendigo_world_end_continent_flags = {
+	clr_country_flag = wendigo_world_end_ready
+	clr_country_flag = wendigo_world_end_continent_europe
+	clr_country_flag = wendigo_world_end_continent_north_america
+	clr_country_flag = wendigo_world_end_continent_south_america
+	clr_country_flag = wendigo_world_end_continent_australia
+	clr_country_flag = wendigo_world_end_continent_africa
+	clr_country_flag = wendigo_world_end_continent_asia
+	clr_country_flag = wendigo_world_end_continent_middle_east
+}
+
+evaluate_wendigo_world_end_readiness = {
+	clear_wendigo_world_end_continent_flags = yes
+
+	set_temp_variable = { wendigo_continent_total_states = 0 }
+	set_temp_variable = { wendigo_continent_controlled_states = 0 }
+	every_state = {
+		limit = { is_on_continent = europe }
+		add_to_temp_variable = { wendigo_continent_total_states = 1 }
+		if = {
+			limit = { is_controlled_by = ROOT }
+			add_to_temp_variable = { wendigo_continent_controlled_states = 1 }
+		}
+	}
+	set_temp_variable = { wendigo_continent_missing_states = wendigo_continent_total_states }
+	subtract_from_temp_variable = { wendigo_continent_missing_states = wendigo_continent_controlled_states }
+	set_temp_variable = { wendigo_continent_control_percent = wendigo_continent_controlled_states }
+	multiply_temp_variable = { wendigo_continent_control_percent = constant:weaponized_zombies.wendigo_world_end_percent_scale }
+	divide_temp_variable = { wendigo_continent_control_percent = wendigo_continent_total_states }
+	if = {
+		limit = {
+			check_variable = {
+				var = wendigo_continent_controlled_states
+				value = 1
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_missing_states
+				value = constant:weaponized_zombies.wendigo_world_end_missing_states
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_control_percent
+				value = constant:weaponized_zombies.wendigo_world_end_control_percent
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = wendigo_world_end_ready
+		set_country_flag = wendigo_world_end_continent_europe
+	}
+
+	set_temp_variable = { wendigo_continent_total_states = 0 }
+	set_temp_variable = { wendigo_continent_controlled_states = 0 }
+	every_state = {
+		limit = { is_on_continent = north_america }
+		add_to_temp_variable = { wendigo_continent_total_states = 1 }
+		if = {
+			limit = { is_controlled_by = ROOT }
+			add_to_temp_variable = { wendigo_continent_controlled_states = 1 }
+		}
+	}
+	set_temp_variable = { wendigo_continent_missing_states = wendigo_continent_total_states }
+	subtract_from_temp_variable = { wendigo_continent_missing_states = wendigo_continent_controlled_states }
+	set_temp_variable = { wendigo_continent_control_percent = wendigo_continent_controlled_states }
+	multiply_temp_variable = { wendigo_continent_control_percent = constant:weaponized_zombies.wendigo_world_end_percent_scale }
+	divide_temp_variable = { wendigo_continent_control_percent = wendigo_continent_total_states }
+	if = {
+		limit = {
+			NOT = { has_country_flag = wendigo_world_end_ready }
+			check_variable = {
+				var = wendigo_continent_controlled_states
+				value = 1
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_missing_states
+				value = constant:weaponized_zombies.wendigo_world_end_missing_states
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_control_percent
+				value = constant:weaponized_zombies.wendigo_world_end_control_percent
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = wendigo_world_end_ready
+		set_country_flag = wendigo_world_end_continent_north_america
+	}
+
+	set_temp_variable = { wendigo_continent_total_states = 0 }
+	set_temp_variable = { wendigo_continent_controlled_states = 0 }
+	every_state = {
+		limit = { is_on_continent = south_america }
+		add_to_temp_variable = { wendigo_continent_total_states = 1 }
+		if = {
+			limit = { is_controlled_by = ROOT }
+			add_to_temp_variable = { wendigo_continent_controlled_states = 1 }
+		}
+	}
+	set_temp_variable = { wendigo_continent_missing_states = wendigo_continent_total_states }
+	subtract_from_temp_variable = { wendigo_continent_missing_states = wendigo_continent_controlled_states }
+	set_temp_variable = { wendigo_continent_control_percent = wendigo_continent_controlled_states }
+	multiply_temp_variable = { wendigo_continent_control_percent = constant:weaponized_zombies.wendigo_world_end_percent_scale }
+	divide_temp_variable = { wendigo_continent_control_percent = wendigo_continent_total_states }
+	if = {
+		limit = {
+			NOT = { has_country_flag = wendigo_world_end_ready }
+			check_variable = {
+				var = wendigo_continent_controlled_states
+				value = 1
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_missing_states
+				value = constant:weaponized_zombies.wendigo_world_end_missing_states
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_control_percent
+				value = constant:weaponized_zombies.wendigo_world_end_control_percent
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = wendigo_world_end_ready
+		set_country_flag = wendigo_world_end_continent_south_america
+	}
+
+	set_temp_variable = { wendigo_continent_total_states = 0 }
+	set_temp_variable = { wendigo_continent_controlled_states = 0 }
+	every_state = {
+		limit = { is_on_continent = australia }
+		add_to_temp_variable = { wendigo_continent_total_states = 1 }
+		if = {
+			limit = { is_controlled_by = ROOT }
+			add_to_temp_variable = { wendigo_continent_controlled_states = 1 }
+		}
+	}
+	set_temp_variable = { wendigo_continent_missing_states = wendigo_continent_total_states }
+	subtract_from_temp_variable = { wendigo_continent_missing_states = wendigo_continent_controlled_states }
+	set_temp_variable = { wendigo_continent_control_percent = wendigo_continent_controlled_states }
+	multiply_temp_variable = { wendigo_continent_control_percent = constant:weaponized_zombies.wendigo_world_end_percent_scale }
+	divide_temp_variable = { wendigo_continent_control_percent = wendigo_continent_total_states }
+	if = {
+		limit = {
+			NOT = { has_country_flag = wendigo_world_end_ready }
+			check_variable = {
+				var = wendigo_continent_controlled_states
+				value = 1
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_missing_states
+				value = constant:weaponized_zombies.wendigo_world_end_missing_states
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_control_percent
+				value = constant:weaponized_zombies.wendigo_world_end_control_percent
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = wendigo_world_end_ready
+		set_country_flag = wendigo_world_end_continent_australia
+	}
+
+	set_temp_variable = { wendigo_continent_total_states = 0 }
+	set_temp_variable = { wendigo_continent_controlled_states = 0 }
+	every_state = {
+		limit = { is_on_continent = africa }
+		add_to_temp_variable = { wendigo_continent_total_states = 1 }
+		if = {
+			limit = { is_controlled_by = ROOT }
+			add_to_temp_variable = { wendigo_continent_controlled_states = 1 }
+		}
+	}
+	set_temp_variable = { wendigo_continent_missing_states = wendigo_continent_total_states }
+	subtract_from_temp_variable = { wendigo_continent_missing_states = wendigo_continent_controlled_states }
+	set_temp_variable = { wendigo_continent_control_percent = wendigo_continent_controlled_states }
+	multiply_temp_variable = { wendigo_continent_control_percent = constant:weaponized_zombies.wendigo_world_end_percent_scale }
+	divide_temp_variable = { wendigo_continent_control_percent = wendigo_continent_total_states }
+	if = {
+		limit = {
+			NOT = { has_country_flag = wendigo_world_end_ready }
+			check_variable = {
+				var = wendigo_continent_controlled_states
+				value = 1
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_missing_states
+				value = constant:weaponized_zombies.wendigo_world_end_missing_states
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_control_percent
+				value = constant:weaponized_zombies.wendigo_world_end_control_percent
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = wendigo_world_end_ready
+		set_country_flag = wendigo_world_end_continent_africa
+	}
+
+	set_temp_variable = { wendigo_continent_total_states = 0 }
+	set_temp_variable = { wendigo_continent_controlled_states = 0 }
+	every_state = {
+		limit = { is_on_continent = asia }
+		add_to_temp_variable = { wendigo_continent_total_states = 1 }
+		if = {
+			limit = { is_controlled_by = ROOT }
+			add_to_temp_variable = { wendigo_continent_controlled_states = 1 }
+		}
+	}
+	set_temp_variable = { wendigo_continent_missing_states = wendigo_continent_total_states }
+	subtract_from_temp_variable = { wendigo_continent_missing_states = wendigo_continent_controlled_states }
+	set_temp_variable = { wendigo_continent_control_percent = wendigo_continent_controlled_states }
+	multiply_temp_variable = { wendigo_continent_control_percent = constant:weaponized_zombies.wendigo_world_end_percent_scale }
+	divide_temp_variable = { wendigo_continent_control_percent = wendigo_continent_total_states }
+	if = {
+		limit = {
+			NOT = { has_country_flag = wendigo_world_end_ready }
+			check_variable = {
+				var = wendigo_continent_controlled_states
+				value = 1
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_missing_states
+				value = constant:weaponized_zombies.wendigo_world_end_missing_states
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_control_percent
+				value = constant:weaponized_zombies.wendigo_world_end_control_percent
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = wendigo_world_end_ready
+		set_country_flag = wendigo_world_end_continent_asia
+	}
+
+	set_temp_variable = { wendigo_continent_total_states = 0 }
+	set_temp_variable = { wendigo_continent_controlled_states = 0 }
+	every_state = {
+		limit = { is_on_continent = middle_east }
+		add_to_temp_variable = { wendigo_continent_total_states = 1 }
+		if = {
+			limit = { is_controlled_by = ROOT }
+			add_to_temp_variable = { wendigo_continent_controlled_states = 1 }
+		}
+	}
+	set_temp_variable = { wendigo_continent_missing_states = wendigo_continent_total_states }
+	subtract_from_temp_variable = { wendigo_continent_missing_states = wendigo_continent_controlled_states }
+	set_temp_variable = { wendigo_continent_control_percent = wendigo_continent_controlled_states }
+	multiply_temp_variable = { wendigo_continent_control_percent = constant:weaponized_zombies.wendigo_world_end_percent_scale }
+	divide_temp_variable = { wendigo_continent_control_percent = wendigo_continent_total_states }
+	if = {
+		limit = {
+			NOT = { has_country_flag = wendigo_world_end_ready }
+			check_variable = {
+				var = wendigo_continent_controlled_states
+				value = 1
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_missing_states
+				value = constant:weaponized_zombies.wendigo_world_end_missing_states
+				compare = less_than_or_equals
+			}
+			check_variable = {
+				var = wendigo_continent_control_percent
+				value = constant:weaponized_zombies.wendigo_world_end_control_percent
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = wendigo_world_end_ready
+		set_country_flag = wendigo_world_end_continent_middle_east
+	}
+}
+
+weaponized_zombie_calculate_world_pressure = {
+	set_temp_variable = { weaponized_zombie_disaster_pressure = 0 }
+
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_chaos_tier_2 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_chaos_tier_3 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 4 } }
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_chaos_tier_4 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value > 4 } }
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_chaos_tier_5 }
+	}
+
+	if = {
+		limit = {
+			ZZZ = {
+				has_country_flag = { flag = zombie_current_tier value = 2 }
+			}
+		}
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_evolution_tier_2 }
+	}
+	else_if = {
+		limit = {
+			ZZZ = {
+				has_country_flag = { flag = zombie_current_tier value = 3 }
+			}
+		}
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_evolution_tier_3 }
+	}
+
+	if = {
+		limit = { has_country_flag = weaponized_zombie_life_transformed }
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_transformed }
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_forbidden_branch }
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_forbidden }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_mutation_extremes
+				value = 4
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_temp_variable = { weaponized_zombie_disaster_pressure = constant:weaponized_zombies.world_pressure_mutation_extreme }
+	}
+}
+
+weaponized_zombie_resolve_base_type = {
+	if = {
+		limit = { has_country_flag = weaponized_zombie_nature_demonic }
+		weaponized_zombie_set_type_demonic = yes
+	}
+	else_if = {
+		limit = { has_country_flag = weaponized_zombie_nature_necrotic }
+		weaponized_zombie_set_type_necrotic = yes
+	}
+	else_if = {
+		limit = { has_country_flag = weaponized_zombie_life_dead }
+		weaponized_zombie_set_type_undead = yes
+	}
+	else_if = {
+		limit = { has_country_flag = weaponized_zombie_nature_parasitic }
+		weaponized_zombie_set_type_parasitic = yes
+	}
+	else_if = {
+		limit = { has_country_flag = weaponized_zombie_nature_rage }
+		weaponized_zombie_set_type_rabid = yes
+	}
+	else = {
+		weaponized_zombie_set_type_infected = yes
+	}
+}
+
+weaponized_zombie_roll_mutant_override = {
+	if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_extreme_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.mutant_keep_extreme = { }
+			constant:weaponized_zombies.mutant_gain_extreme = { weaponized_zombie_set_type_mutant = yes }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_high_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.mutant_keep_high = { }
+			constant:weaponized_zombies.mutant_gain_high = { weaponized_zombie_set_type_mutant = yes }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_medium_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.mutant_keep_medium = { }
+			constant:weaponized_zombies.mutant_gain_medium = { weaponized_zombie_set_type_mutant = yes }
+		}
+	}
+	else = {
+		random_list = {
+			constant:weaponized_zombies.mutant_keep_low = { }
+			constant:weaponized_zombies.mutant_gain_low = { weaponized_zombie_set_type_mutant = yes }
+		}
+	}
+}
+
+weaponized_zombie_roll_demonic_override = {
+	if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_extreme_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.demonic_keep_extreme = { }
+			constant:weaponized_zombies.demonic_gain_extreme = { weaponized_zombie_set_type_demonic = yes }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_high_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.demonic_keep_high = { }
+			constant:weaponized_zombies.demonic_gain_high = { weaponized_zombie_set_type_demonic = yes }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_medium_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.demonic_keep_medium = { }
+			constant:weaponized_zombies.demonic_gain_medium = { weaponized_zombie_set_type_demonic = yes }
+		}
+	}
+	else = {
+		random_list = {
+			constant:weaponized_zombies.demonic_keep_low = { }
+			constant:weaponized_zombies.demonic_gain_low = { weaponized_zombie_set_type_demonic = yes }
+		}
+	}
+}
+
+weaponized_zombie_roll_wendigo_override = {
+	if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_extreme_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.wendigo_keep_extreme = { }
+			constant:weaponized_zombies.wendigo_gain_extreme = { weaponized_zombie_set_type_wendigo = yes }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_high_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.wendigo_keep_high = { }
+			constant:weaponized_zombies.wendigo_gain_high = { weaponized_zombie_set_type_wendigo = yes }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_disaster_pressure
+				value = constant:weaponized_zombies.world_pressure_medium_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		random_list = {
+			constant:weaponized_zombies.wendigo_keep_medium = { }
+			constant:weaponized_zombies.wendigo_gain_medium = { weaponized_zombie_set_type_wendigo = yes }
+		}
+	}
+	else = {
+		random_list = {
+			constant:weaponized_zombies.wendigo_keep_low = { }
+			constant:weaponized_zombies.wendigo_gain_low = { weaponized_zombie_set_type_wendigo = yes }
+		}
+	}
+}
+
+weaponized_zombie_apply_type_pressure = {
+	weaponized_zombie_resolve_base_type = yes
+	weaponized_zombie_calculate_world_pressure = yes
+
+	if = {
+		limit = {
+			NOT = { has_country_flag = weaponized_zombie_type_wendigo }
+			NOT = { has_country_flag = weaponized_zombie_type_demonic }
+			OR = {
+				has_country_flag = weaponized_zombie_life_transformed
+				AND = {
+					has_country_flag = weaponized_zombie_life_dead
+					has_country_flag = weaponized_zombie_nature_necrotic
+				}
+			}
+			OR = {
+				has_country_flag = weaponized_zombie_forbidden_branch
+				check_variable = {
+					var = weaponized_zombie_mutation_extremes
+					value = 4
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		weaponized_zombie_roll_demonic_override = yes
+	}
+
+	if = {
+		limit = {
+			has_country_flag = weaponized_zombie_life_transformed
+			NOT = { has_country_flag = weaponized_zombie_type_wendigo }
+			NOT = { has_country_flag = weaponized_zombie_type_demonic }
+			NOT = { has_country_flag = weaponized_zombie_type_mutant }
+		}
+		weaponized_zombie_roll_mutant_override = yes
+	}
+}
+
+weaponized_zombie_check_completion_wendigo_failure = {
+	clr_country_flag = weaponized_zombie_completion_wendigo_failure
+
+	if = {
+		limit = {
+			NOT = { has_global_flag = weaponized_zombie_wendigo_exists }
+			has_country_flag = weaponized_zombie_nature_demonic
+			OR = {
+				has_country_flag = weaponized_zombie_life_dead
+				has_country_flag = weaponized_zombie_life_transformed
+			}
+			check_variable = {
+				var = weaponized_zombie_mutation_extremes
+				value = 5
+				compare = greater_than_or_equals
+			}
+		}
+		weaponized_zombie_calculate_world_pressure = yes
+		weaponized_zombie_roll_wendigo_override = yes
+
+		if = {
+			limit = { has_country_flag = weaponized_zombie_type_wendigo }
+			clear_weaponized_zombie_type_flags = yes
+			set_country_flag = weaponized_zombie_completion_wendigo_failure
+		}
+	}
+}
+
+weaponized_zombie_apply_profile_delta = {
+	initialize_weaponized_zombie_tracking = yes
+
+	add_to_variable = { weaponized_zombie_strength = wz_delta_strength }
+	add_to_variable = { weaponized_zombie_infectiousness = wz_delta_infectiousness }
+	add_to_variable = { weaponized_zombie_speed = wz_delta_speed }
+	add_to_variable = { weaponized_zombie_durability = wz_delta_durability }
+	add_to_variable = { weaponized_zombie_cure_resistance = wz_delta_cure_resistance }
+	add_to_variable = { weaponized_zombie_friendliness = wz_delta_friendliness }
+	add_to_variable = { weaponized_zombie_test_subjects = wz_delta_subjects }
+	add_to_variable = { weaponized_zombie_accident_risk = wz_delta_accident_risk }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = wz_delta_strength
+				value = 2
+				compare = greater_than
+			}
+		}
+		add_to_variable = { weaponized_zombie_mutation_extremes = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = wz_delta_infectiousness
+				value = 2
+				compare = greater_than
+			}
+		}
+		add_to_variable = { weaponized_zombie_mutation_extremes = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = wz_delta_speed
+				value = 2
+				compare = greater_than
+			}
+		}
+		add_to_variable = { weaponized_zombie_mutation_extremes = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = wz_delta_durability
+				value = 2
+				compare = greater_than
+			}
+		}
+		add_to_variable = { weaponized_zombie_mutation_extremes = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = wz_delta_cure_resistance
+				value = 2
+				compare = greater_than
+			}
+		}
+		add_to_variable = { weaponized_zombie_mutation_extremes = 1 }
+	}
+}
+
+resolve_weaponized_zombie_profile = {
+	initialize_weaponized_zombie_tracking = yes
+	clear_weaponized_zombie_resolution_flags = yes
+	set_variable = { weaponized_zombie_cost_score = 0 }
+	set_variable = { weaponized_zombie_outbreak_stage = 0 }
+
+	add_to_variable = { weaponized_zombie_cost_score = weaponized_zombie_strength }
+	add_to_variable = { weaponized_zombie_cost_score = weaponized_zombie_infectiousness }
+	add_to_variable = { weaponized_zombie_cost_score = weaponized_zombie_speed }
+	add_to_variable = { weaponized_zombie_cost_score = weaponized_zombie_durability }
+	add_to_variable = { weaponized_zombie_cost_score = weaponized_zombie_cure_resistance }
+	add_to_variable = { weaponized_zombie_cost_score = weaponized_zombie_friendliness }
+
+	if = {
+		limit = { has_country_flag = weaponized_zombie_nature_parasitic }
+		add_to_variable = { weaponized_zombie_cost_score = 1 }
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_nature_demonic }
+		add_to_variable = { weaponized_zombie_cost_score = 3 }
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_forbidden_branch }
+		add_to_variable = { weaponized_zombie_cost_score = 2 }
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_field_tested }
+		add_to_variable = { weaponized_zombie_cost_score = 1 }
+	}
+
+	set_temp_variable = { weaponized_zombie_stage_score = weaponized_zombie_strength }
+	add_to_temp_variable = { weaponized_zombie_stage_score = weaponized_zombie_infectiousness }
+	add_to_temp_variable = { weaponized_zombie_stage_score = weaponized_zombie_speed }
+	add_to_temp_variable = { weaponized_zombie_stage_score = weaponized_zombie_durability }
+
+	if = {
+		limit = { check_variable = { var = weaponized_zombie_stage_score value > 10 } }
+		set_variable = { weaponized_zombie_outbreak_stage = 3 }
+	}
+	else_if = {
+		limit = { check_variable = { var = weaponized_zombie_stage_score value > 8 } }
+		set_variable = { weaponized_zombie_outbreak_stage = 2 }
+	}
+	else_if = {
+		limit = { check_variable = { var = weaponized_zombie_stage_score value > 6 } }
+		set_variable = { weaponized_zombie_outbreak_stage = 1 }
+	}
+
+	weaponized_zombie_apply_type_pressure = yes
+
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_wendigo }
+		set_country_flag = weaponized_zombie_archetype_wendigo
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_friendliness value > 2 }
+			OR = {
+				has_country_flag = weaponized_zombie_life_fragmented
+				has_country_flag = weaponized_zombie_life_alive
+				has_country_flag = weaponized_zombie_life_transformed
+			}
+			NOT = { has_country_flag = weaponized_zombie_nature_rage }
+			NOT = { has_country_flag = weaponized_zombie_nature_demonic }
+			check_variable = { var = weaponized_zombie_strength value < 3 }
+			check_variable = { var = weaponized_zombie_speed value < 3 }
+			check_variable = { var = weaponized_zombie_durability value < 3 }
+		}
+		set_country_flag = weaponized_zombie_archetype_semi_sapient
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_friendliness value > 1 }
+			OR = {
+				has_country_flag = weaponized_zombie_life_fragmented
+				has_country_flag = weaponized_zombie_life_transformed
+			}
+			OR = {
+				has_country_flag = weaponized_zombie_nature_neurobiological
+				has_country_flag = weaponized_zombie_nature_parasitic
+			}
+			check_variable = { var = weaponized_zombie_speed value < 3 }
+			check_variable = { var = weaponized_zombie_strength value < 3 }
+		}
+		set_country_flag = weaponized_zombie_archetype_purifier
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_friendliness value > 2 }
+			OR = {
+				has_country_flag = weaponized_zombie_life_fragmented
+				has_country_flag = weaponized_zombie_life_alive
+				has_country_flag = weaponized_zombie_life_transformed
+			}
+			OR = {
+				has_country_flag = weaponized_zombie_nature_neurobiological
+				has_country_flag = weaponized_zombie_nature_parasitic
+			}
+		}
+		set_country_flag = weaponized_zombie_archetype_controlled_loyalty
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_friendliness value > 1 }
+			OR = {
+				has_country_flag = weaponized_zombie_nature_parasitic
+				has_country_flag = weaponized_zombie_life_fragmented
+			}
+		}
+		set_country_flag = weaponized_zombie_archetype_parasitic_directed
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_friendliness value > 1 }
+			OR = {
+				has_country_flag = weaponized_zombie_nature_rage
+				has_country_flag = weaponized_zombie_nature_demonic
+			}
+		}
+		set_country_flag = weaponized_zombie_archetype_creator_betrayer
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_country_flag = weaponized_zombie_nature_necrotic
+				has_country_flag = weaponized_zombie_nature_demonic
+			}
+			has_country_flag = weaponized_zombie_life_dead
+			check_variable = { var = weaponized_zombie_durability value > 1 }
+			check_variable = { var = weaponized_zombie_speed value < 3 }
+		}
+		set_country_flag = weaponized_zombie_archetype_necrotic_siege
+	}
+	else_if = {
+		limit = {
+			has_country_flag = weaponized_zombie_life_dead
+			NOT = { has_country_flag = weaponized_zombie_nature_parasitic }
+			check_variable = { var = weaponized_zombie_mutation_extremes value < 4 }
+		}
+		set_country_flag = weaponized_zombie_archetype_canonical_convergence
+	}
+	else = {
+		set_country_flag = weaponized_zombie_archetype_rabid_horde
+	}
+
+	if = {
+		limit = {
+			NOT = { has_country_flag = weaponized_zombie_archetype_canonical_convergence }
+		}
+		set_country_flag = weaponized_zombie_attack_other_zombies
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = weaponized_zombie_archetype_controlled_loyalty
+				has_country_flag = weaponized_zombie_archetype_creator_betrayer
+				has_country_flag = weaponized_zombie_archetype_parasitic_directed
+			}
+		}
+		set_country_flag = weaponized_zombie_friendly_to_creator
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = weaponized_zombie_archetype_purifier
+				has_country_flag = weaponized_zombie_archetype_semi_sapient
+			}
+		}
+		set_country_flag = weaponized_zombie_friendly_to_humans
+		set_country_flag = weaponized_zombie_targets_zombies_only
+	}
+
+	if = {
+		limit = { check_variable = { var = weaponized_zombie_cost_score value < constant:weaponized_zombies.profile_cost_tier_low } }
+		set_variable = { weaponized_zombie_creator_cure_days = constant:weaponized_zombies.creator_cure_days_low }
+	}
+	else_if = {
+		limit = { check_variable = { var = weaponized_zombie_cost_score value < constant:weaponized_zombies.profile_cost_tier_medium } }
+		set_variable = { weaponized_zombie_creator_cure_days = constant:weaponized_zombies.creator_cure_days_medium }
+	}
+	else_if = {
+		limit = { check_variable = { var = weaponized_zombie_cost_score value < constant:weaponized_zombies.profile_cost_tier_high } }
+		set_variable = { weaponized_zombie_creator_cure_days = constant:weaponized_zombies.creator_cure_days_high }
+	}
+	else = {
+		set_variable = { weaponized_zombie_creator_cure_days = constant:weaponized_zombies.creator_cure_days_extreme }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = weaponized_zombie_strength
+				value = constant:weaponized_zombies.profile_hardened_strength_threshold
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = weaponized_zombie_durability
+				value = constant:weaponized_zombies.profile_hardened_durability_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = weaponized_zombie_profile_hardened
+	}
+}
+
+remove_weaponized_zombie_cost_ideas = {
+	if = { limit = { has_idea = weaponized_zombie_bomb_cost_tier_1 } remove_ideas = weaponized_zombie_bomb_cost_tier_1 }
+	if = { limit = { has_idea = weaponized_zombie_bomb_cost_tier_2 } remove_ideas = weaponized_zombie_bomb_cost_tier_2 }
+	if = { limit = { has_idea = weaponized_zombie_bomb_cost_tier_3 } remove_ideas = weaponized_zombie_bomb_cost_tier_3 }
+	if = { limit = { has_idea = weaponized_zombie_bomb_cost_tier_4 } remove_ideas = weaponized_zombie_bomb_cost_tier_4 }
+}
+
+apply_weaponized_zombie_completed_bonuses = {
+	resolve_weaponized_zombie_profile = yes
+	remove_weaponized_zombie_cost_ideas = yes
+
+	if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_cost_score value < constant:weaponized_zombies.profile_cost_tier_low }
+		}
+		add_ideas = weaponized_zombie_bomb_cost_tier_1
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_cost_score value < constant:weaponized_zombies.profile_cost_tier_medium }
+		}
+		add_ideas = weaponized_zombie_bomb_cost_tier_2
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = weaponized_zombie_cost_score value < constant:weaponized_zombies.profile_cost_tier_high }
+		}
+		add_ideas = weaponized_zombie_bomb_cost_tier_3
+	}
+	else = {
+		add_ideas = weaponized_zombie_bomb_cost_tier_4
+	}
+
+	if = {
+		limit = {
+			NOT = { has_country_flag = bioweapon_available }
+		}
+		set_country_flag = bioweapon_available
+	}
+	set_country_flag = weaponized_zombies_completed
+
+	set_technology = {
+		zombie_disease_bomb_delivery_systems = 1
+		popup = no
+	}
+	add_equipment_to_stockpile = {
+		type = zombie_disease_bomb_1
+		amount = constant:weaponized_zombies.initial_stockpile
+		producer = ROOT
+	}
+
+	if = {
+		limit = {
+			NOT = { has_country_flag = weaponized_zombie_archetype_wendigo }
+		}
+		meta_effect = {
+			text = {
+				add_timed_idea = {
+					idea = weaponized_zombie_creator_cure_advantage
+					days = [WZ_CURE_DAYS]
+				}
+			}
+			WZ_CURE_DAYS = "[?weaponized_zombie_creator_cure_days|.0]"
+		}
+	}
+
+	if = {
+		limit = { has_active_zombie_cure = yes }
+		set_country_flag = achievement_we_made_a_cure_then_made_it_worse
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_archetype_controlled_loyalty }
+		set_country_flag = achievement_only_obeys_us
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = weaponized_zombie_archetype_purifier
+				has_country_flag = weaponized_zombie_archetype_semi_sapient
+			}
+		}
+		set_country_flag = achievement_a_friend_to_mankind
+	}
+}
+
+calculate_wendigo_incident_spawn_values = {
+	set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_wendigo_divisions }
+	set_temp_variable = { weaponized_zombie_spawn_experience = constant:weaponized_zombies.wendigo_incident_spawn_experience }
+
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 4 } }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value > 4 } }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+		add_to_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.wendigo_incident_spawn_per_chaos_tier }
+	}
+}
+
+initialize_wendigo_incident_outbreak_country = {
+	set_country_flag = zombie_outbreak_dynamic_country
+	set_country_flag = weaponized_zombie_outbreak_country
+	set_country_flag = weaponized_zombie_created_by_@ROOT
+	set_country_flag = weaponized_zombie_type_wendigo
+	set_country_flag = weaponized_zombie_archetype_wendigo
+	set_country_flag = weaponized_zombie_attack_other_zombies
+	set_country_flag = weaponized_zombie_independent_outbreak
+
+	set_popularities = {
+		democratic = 0
+		fascism = 0
+		communism = 0
+		neutrality = 100
+	}
+	set_politics = {
+		ruling_party = neutrality
+		elections_allowed = no
+	}
+
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = 3000
+		producer = CHI
+	}
+	add_ideas = {
+		never_ending_hunger
+		tot_economic_mobilisation
+		extensive_conscription
+		weaponized_zombie_wendigo
+		zombies_idea_3
+	}
+	set_country_flag = { flag = zombie_current_tier value = 3 }
+	set_country_flag = { flag = zombie_target_tier value = 3 }
+}
+
+spawn_wendigo_incident_from_completion = {
+	save_event_target_as = weaponized_zombie_creator
+
+	create_dynamic_country = {
+		original_tag = ZZZ
+		copy_tag = ZZZ
+		set_temp_variable = { weaponized_zombie_new_country = this }
+		initialize_wendigo_incident_outbreak_country = yes
+	}
+
+	var:weaponized_zombie_new_country = {
+		save_event_target_as = weaponized_zombie_new_country
+		weaponized_zombie_refresh_country_leader = yes
+	}
+
+	event_target:weaponized_zombie_target_state = {
+		var:weaponized_zombie_new_country = {
+			transfer_state = PREV
+			add_state_core = PREV
+			set_capital = {
+				state = PREV
+				remember_old_capital = no
+			}
+			load_oob = "ZZZ_weaponized_1936"
+			weaponized_zombie_unlock_profiled_template = yes
+		}
+
+		calculate_wendigo_incident_spawn_values = yes
+		weaponized_zombie_create_profiled_units = yes
+	}
+
+	var:weaponized_zombie_new_country = {
+		set_country_flag = achievement_the_wendigo_rises
+		trigger_wendigo_super_event = yes
+	}
+}
+
+complete_weaponized_zombie_project = {
+	resolve_weaponized_zombie_profile = yes
+	weaponized_zombie_check_completion_wendigo_failure = yes
+
+	if = {
+		limit = { has_country_flag = weaponized_zombie_completion_wendigo_failure }
+		random_controlled_state = {
+			limit = {
+				biowarfare_facility > 0
+			}
+			save_event_target_as = weaponized_zombie_target_state
+		}
+		if = {
+			limit = { NOT = { has_event_target = weaponized_zombie_target_state } }
+			random_controlled_state = {
+				save_event_target_as = weaponized_zombie_target_state
+			}
+		}
+		set_global_flag = weaponized_zombie_wendigo_exists
+		country_event = { id = chaosx.weaponized_zombies.8 }
+	}
+	else = {
+		apply_weaponized_zombie_completed_bonuses = yes
+		custom_effect_tooltip = weaponized_zombies_unlocked_tooltip
+		country_event = { id = chaosx.weaponized_zombies.1 }
+		set_country_flag = achievement_weaponize_the_end
+	}
+}
+
+weaponized_zombie_fill_human_friend_array = {
+	clear_array = weaponized_zombie_friendly_countries
+	every_country = {
+		limit = {
+			exists = yes
+			NOT = { original_tag = ZZZ }
+			NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+		}
+		ROOT = {
+			add_to_array = {
+				array = weaponized_zombie_friendly_countries
+				value = PREV
+			}
+		}
+	}
+}
+
+weaponized_zombie_save_creator_target = {
+	every_country = {
+		limit = {
+			ROOT = {
+				has_country_flag = weaponized_zombie_created_by_@PREV
+			}
+		}
+		save_event_target_as = weaponized_zombie_creator
+	}
+}
+
+weaponized_zombie_apply_archetype_idea = {
+	if = { limit = { has_country_flag = weaponized_zombie_archetype_rabid_horde } add_ideas = weaponized_zombie_rabid_horde }
+	else_if = { limit = { has_country_flag = weaponized_zombie_archetype_necrotic_siege } add_ideas = weaponized_zombie_necrotic_siege }
+	else_if = { limit = { has_country_flag = weaponized_zombie_archetype_parasitic_directed } add_ideas = weaponized_zombie_parasitic_directed }
+	else_if = { limit = { has_country_flag = weaponized_zombie_archetype_controlled_loyalty } add_ideas = weaponized_zombie_controlled_loyalty }
+	else_if = { limit = { has_country_flag = weaponized_zombie_archetype_purifier } add_ideas = weaponized_zombie_purifier }
+	else_if = { limit = { has_country_flag = weaponized_zombie_archetype_semi_sapient } add_ideas = weaponized_zombie_semi_sapient }
+	else_if = { limit = { has_country_flag = weaponized_zombie_archetype_creator_betrayer } add_ideas = weaponized_zombie_creator_betrayer }
+	else_if = { limit = { has_country_flag = weaponized_zombie_archetype_wendigo } add_ideas = weaponized_zombie_wendigo }
+}
+
+weaponized_zombie_refresh_country_leader = {
+	refresh_dynamic_zombie_country_leader = yes
+
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_wendigo }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_wendigo_pack
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_demonic }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_demonic_zombie_horde
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_necrotic }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_necrotic_horde
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_undead }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_undead_horde
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_mutant }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_mutant_horde
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_parasitic }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_parasitic_horde
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_rabid }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_rabid_horde
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_infected }
+		set_country_leader_name = {
+			name = weaponized_zombie_leader_name_infected_horde
+		}
+	}
+}
+
+weaponized_zombie_unlock_profiled_template = {
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_wendigo }
+		set_division_force_allow_recruiting = {
+			division_template = "Wendigo Pack"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Wendigo Pack"
+			is_locked = no
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_demonic }
+		set_division_force_allow_recruiting = {
+			division_template = "Demonic Zombie Horde"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Demonic Zombie Horde"
+			is_locked = no
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_necrotic }
+		set_division_force_allow_recruiting = {
+			division_template = "Necrotic Horde"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Necrotic Horde"
+			is_locked = no
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_undead }
+		set_division_force_allow_recruiting = {
+			division_template = "Undead Horde"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Undead Horde"
+			is_locked = no
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_mutant }
+		set_division_force_allow_recruiting = {
+			division_template = "Mutant Horde"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Mutant Horde"
+			is_locked = no
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_parasitic }
+		set_division_force_allow_recruiting = {
+			division_template = "Parasitic Horde"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Parasitic Horde"
+			is_locked = no
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_rabid }
+		set_division_force_allow_recruiting = {
+			division_template = "Rabid Horde"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Rabid Horde"
+			is_locked = no
+		}
+	}
+	if = {
+		limit = { has_country_flag = weaponized_zombie_type_infected }
+		set_division_force_allow_recruiting = {
+			division_template = "Infected Horde"
+			force_allow_recruiting = yes
+		}
+		set_division_template_lock = {
+			division_template = "Infected Horde"
+			is_locked = no
+		}
+	}
+}
+
+weaponized_zombie_create_profiled_units = {
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_wendigo
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Wendigo Pack\" division_template = \"Wendigo Pack\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_demonic
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Demonic Zombie Horde\" division_template = \"Demonic Zombie Horde\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_necrotic
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Necrotic Horde\" division_template = \"Necrotic Horde\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_undead
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Undead Horde\" division_template = \"Undead Horde\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_mutant
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Mutant Horde\" division_template = \"Mutant Horde\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_parasitic
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Parasitic Horde\" division_template = \"Parasitic Horde\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_rabid
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Rabid Horde\" division_template = \"Rabid Horde\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+	if = {
+		limit = {
+			var:weaponized_zombie_new_country = {
+				has_country_flag = weaponized_zombie_type_infected
+			}
+		}
+		meta_effect = {
+			text = {
+				create_unit = {
+					division = "name = \"Infected Horde\" division_template = \"Infected Horde\" start_experience_factor = [WZ_EXPERIENCE]"
+					owner = var:weaponized_zombie_new_country
+					count = WZ_DIVISIONS
+				}
+			}
+			WZ_EXPERIENCE = "[?weaponized_zombie_spawn_experience|1]"
+			WZ_DIVISIONS = "[?weaponized_zombie_spawn_count|.0]"
+		}
+	}
+}
+
+weaponized_zombie_copy_profile_to_outbreak = {
+	set_country_flag = zombie_outbreak_dynamic_country
+	set_country_flag = weaponized_zombie_outbreak_country
+	set_country_flag = weaponized_zombie_created_by_@ROOT
+
+	set_popularities = {
+		democratic = 0
+		fascism = 0
+		communism = 0
+		neutrality = 100
+	}
+	set_politics = {
+		ruling_party = neutrality
+		elections_allowed = no
+	}
+
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_nature_neurobiological } } set_country_flag = weaponized_zombie_nature_neurobiological }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_nature_rage } } set_country_flag = weaponized_zombie_nature_rage }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_nature_parasitic } } set_country_flag = weaponized_zombie_nature_parasitic }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_nature_necrotic } } set_country_flag = weaponized_zombie_nature_necrotic }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_nature_demonic } } set_country_flag = weaponized_zombie_nature_demonic }
+
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_life_dead } } set_country_flag = weaponized_zombie_life_dead }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_life_alive } } set_country_flag = weaponized_zombie_life_alive }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_life_fragmented } } set_country_flag = weaponized_zombie_life_fragmented }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_life_transformed } } set_country_flag = weaponized_zombie_life_transformed }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_profile_hardened } } set_country_flag = weaponized_zombie_profile_hardened }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_infected } } set_country_flag = weaponized_zombie_type_infected }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_rabid } } set_country_flag = weaponized_zombie_type_rabid }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_parasitic } } set_country_flag = weaponized_zombie_type_parasitic }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_mutant } } set_country_flag = weaponized_zombie_type_mutant }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_undead } } set_country_flag = weaponized_zombie_type_undead }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_necrotic } } set_country_flag = weaponized_zombie_type_necrotic }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_demonic } } set_country_flag = weaponized_zombie_type_demonic }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_type_wendigo } } set_country_flag = weaponized_zombie_type_wendigo }
+
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_rabid_horde } } set_country_flag = weaponized_zombie_archetype_rabid_horde }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_necrotic_siege } } set_country_flag = weaponized_zombie_archetype_necrotic_siege }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_parasitic_directed } } set_country_flag = weaponized_zombie_archetype_parasitic_directed }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_controlled_loyalty } } set_country_flag = weaponized_zombie_archetype_controlled_loyalty }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_purifier } } set_country_flag = weaponized_zombie_archetype_purifier }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_semi_sapient } } set_country_flag = weaponized_zombie_archetype_semi_sapient }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_creator_betrayer } } set_country_flag = weaponized_zombie_archetype_creator_betrayer }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_canonical_convergence } } set_country_flag = weaponized_zombie_archetype_canonical_convergence }
+	if = { limit = { ROOT = { has_country_flag = weaponized_zombie_archetype_wendigo } } set_country_flag = weaponized_zombie_archetype_wendigo }
+
+	if = {
+		limit = {
+			ROOT = { has_country_flag = weaponized_zombie_attack_other_zombies }
+		}
+		set_country_flag = weaponized_zombie_attack_other_zombies
+	}
+	if = {
+		limit = {
+			ROOT = { has_country_flag = weaponized_zombie_friendly_to_creator }
+		}
+		set_country_flag = weaponized_zombie_friendly_to_creator
+	}
+	if = {
+		limit = {
+			ROOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+		}
+		set_country_flag = weaponized_zombie_friendly_to_humans
+	}
+	if = {
+		limit = {
+			ROOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+		}
+		set_country_flag = weaponized_zombie_targets_zombies_only
+	}
+	if = {
+		limit = {
+			ROOT = { NOT = { has_country_flag = weaponized_zombie_archetype_canonical_convergence } }
+		}
+		set_country_flag = weaponized_zombie_independent_outbreak
+	}
+
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = 2000
+		producer = CHI
+	}
+	add_ideas = {
+		never_ending_hunger
+		tot_economic_mobilisation
+		extensive_conscription
+	}
+	weaponized_zombie_apply_archetype_idea = yes
+
+	if = {
+		limit = { ROOT = { check_variable = { var = weaponized_zombie_outbreak_stage value > 2 } } }
+		set_country_flag = { flag = zombie_current_tier value = 3 }
+		set_country_flag = { flag = zombie_target_tier value = 3 }
+		add_ideas = zombies_idea_3
+	}
+	else_if = {
+		limit = { ROOT = { check_variable = { var = weaponized_zombie_outbreak_stage value > 1 } } }
+		set_country_flag = { flag = zombie_current_tier value = 2 }
+		set_country_flag = { flag = zombie_target_tier value = 2 }
+		add_ideas = zombies_idea_2
+	}
+	else_if = {
+		limit = { ROOT = { check_variable = { var = weaponized_zombie_outbreak_stage value > 0 } } }
+		set_country_flag = { flag = zombie_current_tier value = 1 }
+		set_country_flag = { flag = zombie_target_tier value = 1 }
+		add_ideas = zombies_idea_1
+	}
+	else = {
+		set_country_flag = { flag = zombie_current_tier value = 0 }
+		set_country_flag = { flag = zombie_target_tier value = 0 }
+		add_ideas = zombies_idea_0
+	}
+}
+
+spawn_weaponized_zombie_outbreak_from_creator = {
+	resolve_weaponized_zombie_profile = yes
+	save_event_target_as = weaponized_zombie_creator
+	PREV = {
+		save_event_target_as = weaponized_zombie_target_state
+	}
+
+	create_dynamic_country = {
+		original_tag = ZZZ
+		copy_tag = ZZZ
+		set_temp_variable = { weaponized_zombie_new_country = this }
+
+		ZZZ = {
+			every_core_state = {
+				remove_core_of = PREV
+			}
+		}
+
+		weaponized_zombie_copy_profile_to_outbreak = yes
+	}
+
+	var:weaponized_zombie_new_country = {
+		save_event_target_as = weaponized_zombie_new_country
+		weaponized_zombie_refresh_country_leader = yes
+	}
+
+	event_target:weaponized_zombie_target_state = {
+		var:weaponized_zombie_new_country = {
+			transfer_state = PREV
+			add_state_core = PREV
+			set_capital = {
+				state = PREV
+				remember_old_capital = no
+			}
+			if = {
+				limit = { has_country_flag = weaponized_zombie_profile_hardened }
+				load_oob = "ZZZ_weaponized_hardened_1936"
+			}
+			else = {
+				load_oob = "ZZZ_weaponized_1936"
+			}
+			weaponized_zombie_unlock_profiled_template = yes
+		}
+
+		if = {
+			limit = {
+				ROOT = {
+					check_variable = {
+						var = weaponized_zombie_outbreak_stage
+						value = 2
+						compare = greater_than
+					}
+				}
+			}
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_divisions_3 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.4 }
+		}
+		else_if = {
+			limit = {
+				ROOT = {
+					check_variable = {
+						var = weaponized_zombie_outbreak_stage
+						value = 1
+						compare = greater_than
+					}
+				}
+			}
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_divisions_2 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.3 }
+		}
+		else_if = {
+			limit = {
+				ROOT = {
+					check_variable = {
+						var = weaponized_zombie_outbreak_stage
+						value = 0
+						compare = greater_than
+					}
+				}
+			}
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_divisions_1 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.2 }
+		}
+		else = {
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_divisions_0 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.1 }
+		}
+
+		if = {
+			limit = {
+				var:weaponized_zombie_new_country = {
+					has_country_flag = weaponized_zombie_archetype_wendigo
+				}
+			}
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_wendigo_divisions }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.5 }
+		}
+
+		weaponized_zombie_create_profiled_units = yes
+	}
+
+	var:weaponized_zombie_new_country = {
+		if = {
+			limit = { has_country_flag = weaponized_zombie_archetype_wendigo }
+			set_country_flag = achievement_the_wendigo_rises
+			trigger_wendigo_super_event = yes
+		}
+		if = {
+			limit = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			weaponized_zombie_fill_human_friend_array = yes
+		}
+		if = {
+			limit = { has_country_flag = weaponized_zombie_friendly_to_creator }
+			add_to_array = {
+				array = weaponized_zombie_friendly_countries
+				value = event_target:weaponized_zombie_creator
+			}
+		}
+		if = {
+			limit = { has_country_flag = weaponized_zombie_archetype_creator_betrayer }
+			country_event = {
+				id = chaosx.weaponized_zombies.6
+				days = constant:weaponized_zombies.creator_betrayal_days
+				random_days = constant:weaponized_zombies.creator_betrayal_random_days
+			}
+		}
+	}
+}
+
+spawn_minor_weaponized_zombie_outbreak_from_creator = {
+	resolve_weaponized_zombie_profile = yes
+	save_event_target_as = weaponized_zombie_creator
+	PREV = {
+		save_event_target_as = weaponized_zombie_target_state
+	}
+
+	create_dynamic_country = {
+		original_tag = ZZZ
+		copy_tag = ZZZ
+		set_temp_variable = { weaponized_zombie_new_country = this }
+
+		weaponized_zombie_copy_profile_to_outbreak = yes
+	}
+
+	var:weaponized_zombie_new_country = {
+		save_event_target_as = weaponized_zombie_new_country
+		weaponized_zombie_refresh_country_leader = yes
+	}
+
+	event_target:weaponized_zombie_target_state = {
+		var:weaponized_zombie_new_country = {
+			transfer_state = PREV
+			add_state_core = PREV
+			set_capital = {
+				state = PREV
+				remember_old_capital = no
+			}
+			if = {
+				limit = { has_country_flag = weaponized_zombie_profile_hardened }
+				load_oob = "ZZZ_weaponized_hardened_1936"
+			}
+			else = {
+				load_oob = "ZZZ_weaponized_1936"
+			}
+			weaponized_zombie_unlock_profiled_template = yes
+		}
+
+		if = {
+			limit = { ROOT = { check_variable = { var = weaponized_zombie_outbreak_stage value > 2 } } }
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_minor_divisions_3 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.25 }
+		}
+		else_if = {
+			limit = { ROOT = { check_variable = { var = weaponized_zombie_outbreak_stage value > 1 } } }
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_minor_divisions_2 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.20 }
+		}
+		else_if = {
+			limit = { ROOT = { check_variable = { var = weaponized_zombie_outbreak_stage value > 0 } } }
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_minor_divisions_1 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.15 }
+		}
+		else = {
+			set_temp_variable = { weaponized_zombie_spawn_count = constant:weaponized_zombies.stage_minor_divisions_0 }
+			set_temp_variable = { weaponized_zombie_spawn_experience = 0.1 }
+		}
+
+		weaponized_zombie_create_profiled_units = yes
+	}
+
+	var:weaponized_zombie_new_country = {
+		if = {
+			limit = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			weaponized_zombie_fill_human_friend_array = yes
+		}
+		if = {
+			limit = { has_country_flag = weaponized_zombie_friendly_to_creator }
+			add_to_array = {
+				array = weaponized_zombie_friendly_countries
+				value = event_target:weaponized_zombie_creator
+			}
+		}
+	}
+}
+
+conduct_weaponized_zombie_field_test = {
+	resolve_weaponized_zombie_profile = yes
+	set_country_flag = weaponized_zombie_field_tested
+
+	if = {
+		limit = {
+			has_country_flag = weaponized_zombie_targets_zombies_only
+			any_country = {
+				OR = {
+					tag = ROOT
+					is_in_faction_with = ROOT
+					has_war_with = ROOT
+				}
+				any_controlled_state = {
+					is_zombie_controlled_state = yes
+					any_neighbor_state = {
+						is_controlled_by = ROOT
+					}
+				}
+			}
+		}
+
+		random_country = {
+			limit = {
+				OR = {
+						tag = ROOT
+					is_in_faction_with = ROOT
+					has_war_with = ROOT
+				}
+				any_controlled_state = {
+					is_zombie_controlled_state = yes
+					any_neighbor_state = {
+						is_controlled_by = ROOT
+					}
+				}
+			}
+			random_controlled_state = {
+				limit = {
+					is_zombie_controlled_state = yes
+					any_neighbor_state = {
+						is_controlled_by = ROOT
+					}
+				}
+				save_event_target_as = weaponized_zombie_target_state
+			}
+		}
+
+		if = {
+			limit = { check_variable = { var = weaponized_zombie_infectiousness value > 2 } }
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_enemy_high = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_enemy_high = { }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = weaponized_zombie_infectiousness value > 1 } }
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_enemy_medium = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_enemy_medium = { }
+			}
+		}
+		else = {
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_enemy_low = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_enemy_low = { }
+			}
+		}
+
+		country_event = { id = chaosx.weaponized_zombies.2 }
+	}
+	else_if = {
+		limit = {
+			any_neighbor_country = {
+				has_war_with = ROOT
+				any_controlled_state = {
+					any_neighbor_state = {
+						is_controlled_by = ROOT
+					}
+				}
+			}
+		}
+
+		random_neighbor_country = {
+			limit = {
+				has_war_with = ROOT
+				any_controlled_state = {
+					any_neighbor_state = {
+						is_controlled_by = ROOT
+					}
+				}
+			}
+			random_controlled_state = {
+				limit = {
+					any_neighbor_state = {
+						is_controlled_by = ROOT
+					}
+				}
+				save_event_target_as = weaponized_zombie_target_state
+			}
+		}
+
+		if = {
+			limit = { check_variable = { var = weaponized_zombie_infectiousness value > 2 } }
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_enemy_high = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_enemy_high = { }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = weaponized_zombie_infectiousness value > 1 } }
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_enemy_medium = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_enemy_medium = { }
+			}
+		}
+		else = {
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_enemy_low = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_enemy_low = { }
+			}
+		}
+
+		country_event = { id = chaosx.weaponized_zombies.2 }
+	}
+	else = {
+		set_country_flag = weaponized_zombie_domestic_test
+		random_controlled_state = {
+			limit = {
+				NOT = { is_capital = yes }
+			}
+			save_event_target_as = weaponized_zombie_target_state
+		}
+		if = {
+			limit = { NOT = { has_event_target = weaponized_zombie_target_state } }
+			random_controlled_state = {
+				save_event_target_as = weaponized_zombie_target_state
+			}
+		}
+
+		if = {
+			limit = { check_variable = { var = weaponized_zombie_infectiousness value > 2 } }
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_own_high = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+					country_event = { id = chaosx.weaponized_zombies.4 }
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_own_high = {
+					country_event = { id = chaosx.weaponized_zombies.3 }
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = weaponized_zombie_infectiousness value > 1 } }
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_own_medium = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+					country_event = { id = chaosx.weaponized_zombies.4 }
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_own_medium = {
+					country_event = { id = chaosx.weaponized_zombies.3 }
+				}
+			}
+		}
+		else = {
+			random_list = {
+				constant:weaponized_zombies.field_test_outbreak_chance_own_low = {
+					event_target:weaponized_zombie_target_state = {
+						ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+					}
+					country_event = { id = chaosx.weaponized_zombies.4 }
+				}
+				constant:weaponized_zombies.field_test_no_outbreak_chance_own_low = {
+					country_event = { id = chaosx.weaponized_zombies.3 }
+				}
+			}
+		}
+	}
+}
+
+apply_weaponized_zombie_strike_consequences = {
+	var:actor_country = {
+		if = {
+			limit = {
+				NOT = {
+					has_country_flag = weaponized_zombie_targets_zombies_only
+				}
+				NOT = {
+					var:ROOT.target_state = {
+						is_zombie_controlled_state = yes
+					}
+				}
+			}
+			add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
+			add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
+			add_war_support = constant:weaponized_zombies.condemnation_warsupport_loss_negative
+			set_country_flag = used_bioweapon
+			set_country_flag = used_unconventional_weapon
+			if = {
+				limit = { NOT = { has_country_flag = used_weaponized_zombie_weapon } }
+				set_country_flag = used_weaponized_zombie_weapon
+			}
+			every_other_country = {
+				limit = {
+					exists = yes
+					has_government = democratic
+					NOT = { tag = ROOT }
+				}
+				add_opinion_modifier = {
+					target = PREV
+					modifier = strategic_bioweapon_user
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_country_flag = weaponized_zombie_targets_zombies_only
+				var:ROOT.target_state = {
+					is_zombie_controlled_state = yes
+				}
+			}
+			set_country_flag = achievement_fight_fire_with_fire
+		}
+	}
+}
+
+trigger_wendigo_super_event = {
+	set_global_flag = {
+		flag = super_event_visible
+		days = 30
+		value = 6
+	}
+	set_variable = { global.current_super_event_audio_id = 5 }
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
+	}
+}

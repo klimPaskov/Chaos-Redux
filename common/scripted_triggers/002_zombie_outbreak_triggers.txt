@@ -5,7 +5,52 @@ is_zombie_outbreak_country = {
     }
 }
 
-is_anti_zombie_league_member = {
+is_weaponized_zombie_outbreak_country = {
+	has_country_flag = weaponized_zombie_outbreak_country
+}
+
+is_weaponized_zombie_independent_outbreak_country = {
+	AND = {
+		has_country_flag = weaponized_zombie_outbreak_country
+		has_country_flag = weaponized_zombie_independent_outbreak
+	}
+}
+
+is_weaponized_zombie_canonical_outbreak_country = {
+	AND = {
+		has_country_flag = weaponized_zombie_outbreak_country
+		NOT = { has_country_flag = weaponized_zombie_independent_outbreak }
+	}
+}
+
+has_active_zombie_cure = {
+	any_country = {
+		has_idea = cure_activated
+	}
+}
+
+is_zombie_controlled_state = {
+	OR = {
+		is_controlled_by = ZZZ
+		controller = { has_country_flag = zombie_outbreak_dynamic_country }
+	}
+}
+
+is_zombie_threatened_state = {
+	OR = {
+		is_zombie_controlled_state = yes
+		any_neighbor_state = {
+			is_zombie_controlled_state = yes
+		}
+	}
+}
+
+is_anti_zombie_bomb_target_state = {
+	is_zombie_threatened_state = yes
+	NOT = { has_dynamic_modifier = { modifier = zombie_decontaminated_state } }
+}
+
+has_anti_zombie_league_membership_idea = {
     OR = {
         has_idea = anti_zombie_league_member_level_0
         has_idea = anti_zombie_league_member_level_1
@@ -28,16 +73,43 @@ is_anti_zombie_league_member = {
     }
 }
 
+is_in_anti_zombie_league_faction = {
+	OR = {
+		AND = {
+			has_country_flag = azl_leader
+			is_faction_leader = yes
+			is_in_faction = yes
+		}
+		AND = {
+			is_in_faction = yes
+			has_event_target = azl_faction_leader
+			event_target:azl_faction_leader = {
+				is_faction_leader = yes
+			}
+			is_in_faction_with = event_target:azl_faction_leader
+		}
+	}
+}
+
+is_anti_zombie_league_member = {
+	AND = {
+		has_anti_zombie_league_membership_idea = yes
+		is_in_anti_zombie_league_faction = yes
+	}
+}
+
 can_lead_anti_zombie_league = {
     is_major = yes
     NOT = { original_tag = ZZZ }
     NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+    NOT = { has_country_flag = weaponized_zombie_outbreak_country }
     is_subject = no
 }
 
 can_join_anti_zombie_league = {
     NOT = { original_tag = ZZZ }
     NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+    NOT = { has_country_flag = weaponized_zombie_outbreak_country }
     NOT = { is_anti_zombie_league_member = yes }
     exists = yes
     is_subject = no
@@ -70,6 +142,65 @@ is_at_war_with_any_zombie_country = {
             has_war_with = ROOT
         }
     }
+}
+
+zombie_threat_confined_to_americas = {
+	OR = {
+		any_country = {
+			exists = yes
+			OR = {
+				is_zombie_outbreak_country = yes
+				is_weaponized_zombie_outbreak_country = yes
+			}
+			any_controlled_state = {
+				is_island_state = no
+				OR = {
+					is_on_continent = north_america
+					is_on_continent = south_america
+				}
+			}
+		}
+		any_country = {
+			exists = yes
+			OR = {
+				is_zombie_outbreak_country = yes
+				is_weaponized_zombie_outbreak_country = yes
+			}
+			capital_scope = {
+				OR = {
+					is_on_continent = north_america
+					is_on_continent = south_america
+				}
+			}
+		}
+	}
+	NOT = {
+		any_country = {
+			exists = yes
+			OR = {
+				is_zombie_outbreak_country = yes
+				is_weaponized_zombie_outbreak_country = yes
+			}
+			any_controlled_state = {
+				is_island_state = no
+				NOT = {
+					OR = {
+						is_on_continent = north_america
+						is_on_continent = south_america
+					}
+				}
+			}
+		}
+	}
+}
+
+is_outside_americas_country = {
+	NOT = {
+		OR = {
+			capital_scope = { is_on_continent = north_america }
+			capital_scope = { is_on_continent = south_america }
+		}
+	}
 }
 
 can_request_zombie_evacuation = {
@@ -371,11 +502,6 @@ is_extreme_risk_rear_zombie_outbreak_state = {
 zombie_threat_fully_defeated = {
     has_global_flag = zombie_system_disabled
     NOT = { has_global_flag = zombie_threat_defeated }
-    check_variable = {
-        var = global.zombie_main_capitulation_count
-        value = constant:zombie_threat.main_collapse_shutdown_limit
-        compare = greater_than_or_equals
-    }
     NOT = {
         any_country = {
             exists = yes

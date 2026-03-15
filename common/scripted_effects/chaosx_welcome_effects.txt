@@ -1,0 +1,192 @@
+# ============================================================================
+# CHAOS REDUX - WELCOME SCREEN EFFECTS
+# ============================================================================
+# Copies live and constant-backed system values into welcome-screen display
+# variables so the scripted GUI description always reflects the current script.
+# ============================================================================
+
+initialize_welcome_screen_values = {
+	set_variable = { global.welcome_event_pool_total = global.all_events^num }
+	set_variable = { global.welcome_major_events_total = global.major_events^num }
+	set_variable = { global.welcome_fire_once_events_total = global.fire_once_events^num }
+	set_variable = { global.welcome_repeatable_events_total = global.repeatable_events^num }
+
+	set_variable = { global.welcome_fire_once_initial_weight = global.default_event_weight }
+	set_variable = { global.welcome_repeatable_initial_weight = global.default_event_weight }
+	set_variable = { global.welcome_repeatable_recovery_rate = global.minor_event_recovery_rate }
+	set_variable = { global.welcome_repeatable_cap_reduction = global.reduce_cap_factor }
+	set_variable = { global.welcome_major_activation_weight = global.major_event_weight_per_minor }
+	set_variable = { global.welcome_major_initial_weight = 0 }
+	set_variable = { global.welcome_post_fire_weight = 0 }
+
+	clear_array = global.welcome_repeatable_weight_progression
+	set_temp_variable = { welcome_repeatable_weight_step = global.default_event_weight }
+	add_to_array = {
+		array = global.welcome_repeatable_weight_progression
+		value = welcome_repeatable_weight_step
+	}
+	set_temp_variable = { welcome_repeatable_weight_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { welcome_repeatable_weight_index < 10 } }
+		multiply_temp_variable = { welcome_repeatable_weight_step = global.reduce_cap_factor }
+		round_temp_variable = welcome_repeatable_weight_step
+		add_to_array = {
+			array = global.welcome_repeatable_weight_progression
+			value = welcome_repeatable_weight_step
+		}
+		add_to_temp_variable = { welcome_repeatable_weight_index = 1 }
+	}
+
+	set_variable = { global.welcome_timer_random_start_min = constant:event_system_timer_random_start.min }
+	set_variable = { global.welcome_timer_random_start_max = constant:event_system_timer_random_start.max }
+	set_variable = { global.welcome_timer_base_min_days = constant:event_system_timer_defaults.min_days }
+	set_variable = { global.welcome_timer_base_max_days = constant:event_system_timer_defaults.max_days }
+	set_variable = { global.welcome_timer_minor_event_interval = constant:event_system_timer_defaults.minor_event_timer_increment }
+	set_variable = { global.welcome_timer_decrement_step = constant:event_system_timer_defaults.minor_event_decrement_step }
+	set_variable = { global.welcome_timer_max_daily_decrement = constant:event_system_timer_defaults.min_decrement_cap }
+	set_variable = { global.welcome_timer_compression_step = constant:event_system_timer_defaults.minor_event_compression_step }
+	set_variable = { global.welcome_timer_max_total_compression = constant:event_system_timer_defaults.max_decrement_cap }
+	set_variable = { global.welcome_timer_minimum_days = constant:event_system_timer_defaults.minimum_days }
+	set_variable = { global.welcome_timer_daily_tick = 1 }
+	set_variable = { global.welcome_timer_trigger_threshold = 0 }
+	set_variable = { global.welcome_timer_reset_value = 0 }
+
+	set_variable = { global.welcome_chaos_tier_0_min = constant:chaos_meter_tier_range.tier_0.min }
+	set_variable = { global.welcome_chaos_tier_0_max = constant:chaos_meter_tier_range.tier_0.max }
+	set_variable = { global.welcome_chaos_tier_1_min = constant:chaos_meter_tier_range.tier_1.min }
+	set_variable = { global.welcome_chaos_tier_1_max = constant:chaos_meter_tier_range.tier_1.max }
+	set_variable = { global.welcome_chaos_tier_2_min = constant:chaos_meter_tier_range.tier_2.min }
+	set_variable = { global.welcome_chaos_tier_2_max = constant:chaos_meter_tier_range.tier_2.max }
+	set_variable = { global.welcome_chaos_tier_3_min = constant:chaos_meter_tier_range.tier_3.min }
+	set_variable = { global.welcome_chaos_tier_3_max = constant:chaos_meter_tier_range.tier_3.max }
+	set_variable = { global.welcome_chaos_tier_4_min = constant:chaos_meter_tier_range.tier_4.min }
+	set_variable = { global.welcome_chaos_tier_4_max = constant:chaos_meter_tier_range.tier_4.max }
+	set_variable = { global.welcome_chaos_tier_final_min = constant:chaos_meter_tier_range.tier_final.min }
+	set_variable = { global.welcome_chaos_scaled_gain = 1 }
+
+	set_variable = { global.welcome_chaos_delta_war_minor = constant:chaos_meter_delta.war.minor }
+	set_variable = { global.welcome_chaos_delta_war_major = constant:chaos_meter_delta.war.major }
+	set_variable = { global.welcome_chaos_delta_annex_minor = constant:chaos_meter_delta.annex.minor }
+	set_variable = { global.welcome_chaos_delta_annex_major = constant:chaos_meter_delta.annex.major }
+	set_variable = { global.welcome_chaos_delta_peace_minor = constant:chaos_meter_delta.peace.minor }
+	set_variable = { global.welcome_chaos_delta_peace_major = constant:chaos_meter_delta.peace.major }
+	set_variable = { global.welcome_chaos_delta_puppet_minor = constant:chaos_meter_delta.puppet.minor }
+	set_variable = { global.welcome_chaos_delta_puppet_major = constant:chaos_meter_delta.puppet.major }
+	set_variable = { global.welcome_chaos_delta_liberate_democratic = constant:chaos_meter_delta.liberate.democratic }
+	set_variable = { global.welcome_chaos_delta_liberate_base = constant:chaos_meter_delta.liberate.base }
+	set_variable = { global.welcome_chaos_delta_release_free = constant:chaos_meter_delta.release.free }
+	set_variable = { global.welcome_chaos_delta_ideology_major_non_democratic = constant:chaos_meter_delta.ideology_change.major_non_democratic }
+	set_variable = { global.welcome_chaos_delta_faction_join_minor = constant:chaos_meter_delta.faction.join_minor }
+	set_variable = { global.welcome_chaos_delta_faction_join_major = constant:chaos_meter_delta.faction.join_major }
+	set_variable = { global.welcome_chaos_delta_faction_leave_minor = constant:chaos_meter_delta.faction.leave_minor }
+	set_variable = { global.welcome_chaos_delta_faction_leave_major = constant:chaos_meter_delta.faction.leave_major }
+	set_variable = { global.welcome_chaos_delta_nuke = constant:chaos_meter_delta.nuke.base }
+	set_variable = { global.welcome_chaos_delta_world_tension = constant:chaos_meter_delta.world_tension.base }
+	set_variable = { global.welcome_chaos_delta_monthly_decay = constant:chaos_meter_delta.world_state.monthly_decay }
+	set_variable = { global.welcome_chaos_scale_mils = constant:chaos_meter_scale.per.mils_increase }
+	set_variable = { global.welcome_chaos_scale_divisions = constant:chaos_meter_scale.per.divisions_increase }
+	set_variable = { global.welcome_chaos_casualties_per_point = constant:chaos_meter_scale.per.casualties }
+	multiply_variable = { global.welcome_chaos_casualties_per_point = 1000 }
+	set_variable = { global.welcome_chaos_deaths_per_point = constant:chaos_meter_deaths.million_for_chaos }
+
+	set_variable = { global.welcome_chaos_timer_modifier_calm = global.chaos_timer_modifier_calm }
+	set_variable = { global.welcome_chaos_timer_modifier_gathering = global.chaos_timer_modifier_gathering }
+	set_variable = { global.welcome_chaos_timer_modifier_rising = global.chaos_timer_modifier_rising }
+	set_variable = { global.welcome_chaos_timer_modifier_chaos = global.chaos_timer_modifier_chaos }
+	set_variable = { global.welcome_chaos_timer_modifier_critical = global.chaos_timer_modifier_critical }
+	set_variable = { global.welcome_chaos_timer_modifier_collapse = global.chaos_timer_modifier_collapse }
+
+	set_variable = { global.welcome_chaos_timer_speedup_gathering = 0 }
+	set_variable = { global.welcome_chaos_timer_speedup_rising = 0 }
+	set_variable = { global.welcome_chaos_timer_speedup_chaos = 0 }
+	set_variable = { global.welcome_chaos_timer_speedup_critical = 0 }
+	set_variable = { global.welcome_chaos_timer_speedup_collapse = 0 }
+	if = {
+		limit = { check_variable = { global.chaos_timer_modifier_calm > 0 } }
+		set_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_gathering }
+		divide_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_calm }
+		multiply_temp_variable = { welcome_timer_speedup = -1 }
+		add_to_temp_variable = { welcome_timer_speedup = 1 }
+		multiply_temp_variable = { welcome_timer_speedup = 100 }
+		round_temp_variable = welcome_timer_speedup
+		set_variable = { global.welcome_chaos_timer_speedup_gathering = welcome_timer_speedup }
+
+		set_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_rising }
+		divide_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_calm }
+		multiply_temp_variable = { welcome_timer_speedup = -1 }
+		add_to_temp_variable = { welcome_timer_speedup = 1 }
+		multiply_temp_variable = { welcome_timer_speedup = 100 }
+		round_temp_variable = welcome_timer_speedup
+		set_variable = { global.welcome_chaos_timer_speedup_rising = welcome_timer_speedup }
+
+		set_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_chaos }
+		divide_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_calm }
+		multiply_temp_variable = { welcome_timer_speedup = -1 }
+		add_to_temp_variable = { welcome_timer_speedup = 1 }
+		multiply_temp_variable = { welcome_timer_speedup = 100 }
+		round_temp_variable = welcome_timer_speedup
+		set_variable = { global.welcome_chaos_timer_speedup_chaos = welcome_timer_speedup }
+
+		set_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_critical }
+		divide_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_calm }
+		multiply_temp_variable = { welcome_timer_speedup = -1 }
+		add_to_temp_variable = { welcome_timer_speedup = 1 }
+		multiply_temp_variable = { welcome_timer_speedup = 100 }
+		round_temp_variable = welcome_timer_speedup
+		set_variable = { global.welcome_chaos_timer_speedup_critical = welcome_timer_speedup }
+
+		set_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_collapse }
+		divide_temp_variable = { welcome_timer_speedup = global.chaos_timer_modifier_calm }
+		multiply_temp_variable = { welcome_timer_speedup = -1 }
+		add_to_temp_variable = { welcome_timer_speedup = 1 }
+		multiply_temp_variable = { welcome_timer_speedup = 100 }
+		round_temp_variable = welcome_timer_speedup
+		set_variable = { global.welcome_chaos_timer_speedup_collapse = welcome_timer_speedup }
+	}
+
+	set_variable = { global.welcome_settings_recovery_rate_min = constant:settings_advanced_bounds.recovery_rate.min }
+	set_variable = { global.welcome_settings_recovery_rate_max = constant:settings_advanced_bounds.recovery_rate.max }
+	set_variable = { global.welcome_settings_cap_reduction_min = constant:settings_advanced_bounds.cap_reduction.min }
+	set_variable = { global.welcome_settings_cap_reduction_max = constant:settings_advanced_bounds.cap_reduction.max }
+	set_variable = { global.welcome_settings_major_weight_min = constant:settings_advanced_bounds.major_weight_per_minor.min }
+	set_variable = { global.welcome_settings_major_weight_max = constant:settings_advanced_bounds.major_weight_per_minor.max }
+	set_variable = { global.welcome_settings_timer_modifier_min = constant:settings_advanced_bounds.timer_modifier.min }
+	set_variable = { global.welcome_settings_timer_modifier_max = constant:settings_advanced_bounds.timer_modifier.max }
+
+	set_variable = { global.welcome_default_recovery_rate = constant:event_system_defaults.recovery_rate }
+	set_variable = { global.welcome_default_cap_reduction = constant:event_system_defaults.reduce_cap_factor }
+	set_variable = { global.welcome_default_major_weight_per_minor = constant:event_system_defaults.major_event_weight_per_minor }
+
+	set_variable = { global.welcome_condemnation_threshold_low = constant:chem_condemnation_diplomacy.threshold.low }
+	set_variable = { global.welcome_condemnation_threshold_med = constant:chem_condemnation_diplomacy.threshold.med }
+	set_variable = { global.welcome_condemnation_threshold_high = constant:chem_condemnation_diplomacy.threshold.high }
+
+	set_variable = { global.welcome_air_chemical_state_gain_percent = constant:air_contamination_delta_bp.chemical_state }
+	divide_variable = { global.welcome_air_chemical_state_gain_percent = 100 }
+	set_variable = { global.welcome_air_outbreak_state_low_gain_percent = constant:air_contamination_delta_bp.outbreak_state_low }
+	divide_variable = { global.welcome_air_outbreak_state_low_gain_percent = 100 }
+	set_variable = { global.welcome_air_outbreak_state_high_gain_percent = constant:air_contamination_delta_bp.outbreak_state_high }
+	divide_variable = { global.welcome_air_outbreak_state_high_gain_percent = 100 }
+	set_variable = { global.welcome_air_nuke_gain_percent = constant:air_contamination_delta_bp.nuke_normal }
+	divide_variable = { global.welcome_air_nuke_gain_percent = 100 }
+	set_variable = { global.welcome_air_thermonuclear_gain_percent = constant:air_contamination_delta_bp.nuke_thermonuclear }
+	divide_variable = { global.welcome_air_thermonuclear_gain_percent = 100 }
+	set_variable = { global.welcome_air_threshold_spread_percent = constant:air_contamination_threshold_bp.spread_25 }
+	divide_variable = { global.welcome_air_threshold_spread_percent = 100 }
+	set_variable = { global.welcome_air_threshold_winter_percent = constant:air_contamination_threshold_bp.winter_50 }
+	divide_variable = { global.welcome_air_threshold_winter_percent = 100 }
+	set_variable = { global.welcome_air_threshold_severe_winter_percent = constant:air_contamination_threshold_bp.winter_75 }
+	divide_variable = { global.welcome_air_threshold_severe_winter_percent = 100 }
+	set_variable = { global.welcome_air_threshold_irreversible_percent = constant:air_contamination_threshold_bp.irreversible_100 }
+	divide_variable = { global.welcome_air_threshold_irreversible_percent = 100 }
+	set_variable = { global.welcome_air_attrition_per_percent = constant:air_contamination_country_mod.per_percent.attrition }
+	set_variable = { global.welcome_air_monthly_population_per_percent = constant:air_contamination_country_mod.per_percent.monthly_population }
+	set_variable = { global.welcome_air_stability_weekly_per_percent = constant:air_contamination_country_mod.per_percent.stability_weekly }
+	set_variable = { global.welcome_air_treaty_min_contamination_percent = constant:air_cleanliness_treaty.decision_min_contamination_bp }
+	divide_variable = { global.welcome_air_treaty_min_contamination_percent = 100 }
+	set_variable = { global.welcome_air_treaty_member_min = constant:air_cleanliness_treaty.decision_member_count_min }
+	set_variable = { global.welcome_air_treaty_cleaning_day_delta_percent = constant:air_cleanliness_treaty.cleaning_day_delta_bp }
+	divide_variable = { global.welcome_air_treaty_cleaning_day_delta_percent = 100 }
+	set_variable = { global.welcome_air_treaty_cleanup_program_delta_percent = constant:air_cleanliness_treaty.cleanup_program_delta_bp }
+	divide_variable = { global.welcome_air_treaty_cleanup_program_delta_percent = 100 }
+}
