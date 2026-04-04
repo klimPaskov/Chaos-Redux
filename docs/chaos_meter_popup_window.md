@@ -90,13 +90,13 @@ When condemnation values change, the visible condemnation tab is rebuilt immedia
 
 The `Deaths` tab shows:
 
-- total global deaths (civilian + military),
-- split between civilian deaths and military casualties,
+- text summary lines for the global totals at the top,
 - chaos generated from deaths using `1 chaos per 1,000,000 deaths`,
 - most recent recorded deaths change,
 - a separator and a scrollable country totals list below the summary block.
 
-Country entries show the latest recorded update plus cumulative total, civilian, and military deaths for that country.
+Country entries show the country name on a single line with a tight right-aligned cluster of value boxes, and each icon sits just to the left of its box.
+Each value group has a tooltip with its cause breakdown; only causes with recorded casualties for that country are shown.
 The per-country details overlay is intentionally disabled in this version of the deaths view.
 
 ## Data Flow
@@ -180,6 +180,12 @@ Sprite names used in code:
 - `GFX_chaosx_chaos_meter_entry`
 - `GFX_chaosx_sort_button_100x29_2`
 - `GFX_chaosx_button_123x34_vanilla`
+
+Vanilla sprite references reused directly in the deaths header:
+
+- `GFX_casuality_icon`
+- `GFX_population_icon`
+- `GFX_manpower_icon`
 
 No additional art is required for this feature unless you want a custom non-vanilla visual skin.
 

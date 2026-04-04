@@ -206,9 +206,7 @@ chaosx_disease_containment_category = {
         }
 
         target_trigger = {
-            FROM = {
-                has_active_biowarfare_outbreak = yes
-            }
+			has_biowarfare_outbreak_in_border_proximity_from = yes
         }
 
         visible = {
@@ -217,39 +215,27 @@ chaosx_disease_containment_category = {
 
         available = {
             NOT = { is_in_array = { closed_bio_borders = FROM } }
-            FROM = { has_active_biowarfare_outbreak = yes }
+			has_biowarfare_outbreak_in_border_proximity_from = yes
         }
 
         ai_will_do = {
             base = constant:bio_border_controls.ai.close_base
             modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						has_smallpox_outbreak_in_border_proximity_from = yes
+						has_plague_outbreak_in_border_proximity_from = yes
+					}
+				}
+			}
+			modifier = {
                 add = constant:bio_border_controls.ai.close_add_smallpox
-                FROM = {
-                    any_controlled_state = {
-                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-                    }
-                }
+				has_smallpox_outbreak_in_border_proximity_from = yes
             }
             modifier = {
                 add = constant:bio_border_controls.ai.close_add_plague
-                FROM = {
-                    any_controlled_state = {
-                        has_dynamic_modifier = { modifier = plague_contaminated_state }
-                    }
-                }
-            }
-            modifier = {
-                add = constant:bio_border_controls.ai.close_add_other
-                FROM = {
-                    OR = {
-                        any_controlled_state = {
-                            has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-                        }
-                        any_controlled_state = {
-                            has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-                        }
-                    }
-                }
+				has_plague_outbreak_in_border_proximity_from = yes
             }
             modifier = {
                 factor = constant:bio_border_controls.ai.close_factor_high_opinion
@@ -310,11 +296,11 @@ chaosx_disease_containment_category = {
             base = constant:bio_border_controls.ai.reopen_base
             modifier = {
                 add = constant:bio_border_controls.ai.reopen_add_when_safe
-                FROM = { NOT = { has_active_biowarfare_outbreak = yes } }
+				NOT = { has_biowarfare_outbreak_in_border_proximity_from = yes }
             }
             modifier = {
                 factor = constant:bio_border_controls.ai.reopen_factor_while_infected
-                FROM = { has_active_biowarfare_outbreak = yes }
+				has_biowarfare_outbreak_in_border_proximity_from = yes
             }
         }
 

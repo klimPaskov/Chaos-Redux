@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - ZOMBIE OUTBREAK COUNTRY SCORERS
+# ============================================================================
+# Shared scorer definitions for selecting the strongest surviving dynamic
+# zombie outbreak country when the main ZZZ horde collapses.
+# ============================================================================
+
+strongest_dynamic_zombie_successor = {
+	targets = {
+		target_array = global.countries
+		targets_dynamic = yes
+
+		target_trigger = {
+			FROM = {
+				has_country_flag = zombie_outbreak_dynamic_country
+				NOT = { is_weaponized_zombie_independent_outbreak_country = yes }
+				num_of_controlled_states > 0
+				NOT = { has_capitulated = yes }
+			}
+		}
+
+		score = {
+			base = 0
+
+			modifier = {
+				set_temp_variable = { zombie_successor_score = num_divisions }
+				multiply_temp_variable = {
+					zombie_successor_score = constant:zombie_threat.successor_division_score_factor
+				}
+
+				set_temp_variable = { zombie_successor_state_score = num_of_controlled_states }
+				multiply_temp_variable = {
+					zombie_successor_state_score = constant:zombie_threat.successor_state_score_factor
+				}
+
+				add_to_temp_variable = {
+					var = zombie_successor_score
+					value = zombie_successor_state_score
+				}
+
+				add = zombie_successor_score
+			}
+		}
+	}
+}

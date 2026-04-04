@@ -6,7 +6,7 @@ chaosx_anti_zombie_league_category = {
 		visible = {
 			NOT = { has_global_flag = anti_zombie_league_formed }
 			has_global_flag = has_zombie_outbreak
-			date > 1937.1.1
+			date > 1936.7.1
 			can_lead_anti_zombie_league = yes
 			NOT = {
 				any_country = {
@@ -14,7 +14,7 @@ chaosx_anti_zombie_league_category = {
 				}
 			}
 			any_country = {
-				original_tag = ZZZ
+				is_zombie_outbreak_country = yes
 				num_of_controlled_states > constant:anti_zombie_league.formation_controlled_states
 				num_divisions > constant:anti_zombie_league.formation_divisions
 			}
@@ -51,6 +51,23 @@ chaosx_anti_zombie_league_category = {
 				factor = 2
 				has_government = democratic
 			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_same_continent_factor
+				has_same_continent_zombie_presence = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_nearby_front_factor
+				has_nearby_zombie_front = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.form_no_regional_threat_factor
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_global_emergency_factor
+				zombie_threat_is_global_emergency = yes
+			}
 
 			modifier = {
 				factor = 0.4
@@ -61,6 +78,11 @@ chaosx_anti_zombie_league_category = {
 				factor = 0.25
 				zombie_threat_confined_to_americas = yes
 				is_outside_americas_country = yes
+			}
+
+			modifier = {
+				factor = constant:anti_zombie_league.form_low_threat_factor
+				zombie_threat_below_serious_join_threshold = yes
 			}
 		}
 
@@ -83,17 +105,17 @@ chaosx_anti_zombie_league_category = {
 
 		visible = {
 			has_global_flag = anti_zombie_league_formed
-			hidden_trigger = { can_join_anti_zombie_league = yes }
+			hidden_trigger = { should_consider_joining_anti_zombie_league = yes }
 			hidden_trigger = { has_active_anti_zombie_league_leader = yes }
 		}
 
 		available = {
-			hidden_trigger = { can_join_anti_zombie_league = yes }
+			hidden_trigger = { should_consider_joining_anti_zombie_league = yes }
 			hidden_trigger = { has_active_anti_zombie_league_leader = yes }
 		}
 
 		ai_will_do = {
-			factor = 1
+			factor = 0.05
 
 			modifier = {
 				factor = 4
@@ -104,14 +126,22 @@ chaosx_anti_zombie_league_category = {
 				factor = 3
 				has_neighboring_zombie_front = yes
 			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_nearby_front_factor
+				has_nearby_zombie_front = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_same_continent_factor
+				has_same_continent_zombie_presence = yes
+			}
 
 			modifier = {
-				factor = 5
+				factor = 1.50
 				has_government = democratic
 			}
 
 			modifier = {
-				factor = 1.5
+				factor = 1.05
 				is_major = yes
 			}
 
@@ -159,6 +189,43 @@ chaosx_anti_zombie_league_category = {
 				factor = 0.25
 				zombie_threat_confined_to_americas = yes
 				is_outside_americas_country = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_no_regional_threat_factor
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = 0.15
+				NOT = { has_regional_zombie_threat = yes }
+				has_same_continent_zombie_presence = yes
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { has_same_continent_zombie_presence = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = 0.05
+				NOT = { has_regional_zombie_threat = yes }
+				zombie_threat_below_serious_join_threshold = yes
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_regional_zombie_threat = yes }
+				zombie_threat_below_serious_join_threshold = yes
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_global_emergency_factor
+				zombie_threat_is_global_emergency = yes
+			}
+
+			modifier = {
+				factor = constant:anti_zombie_league.join_low_threat_factor
+				zombie_threat_below_serious_join_threshold = yes
 			}
 		}
 
@@ -353,29 +420,7 @@ chaosx_anti_zombie_league_category = {
 		}
 
 		remove_effect = {
-			clr_global_flag = anti_zombie_league_formed
-			clr_global_flag = azl_investment_maxed
-			clr_global_flag = azl_formation_announced
-			set_global_flag = azl_league_dissolved
-			set_variable = { global.azl_global_investment = 0 }
-			set_variable = { global.target_level = 0 }
-			refresh_zombie_world_threat_source = yes
-
-			every_country = {
-				limit = {
-					has_anti_zombie_league_membership_idea = yes
-				}
-				remove_anti_zombie_league_membership_package = yes
-				if = {
-					limit = { is_in_faction = yes }
-					leave_faction = yes
-				}
-			}
-
-			clr_country_flag = azl_leader
-			clr_country_flag = azl_disbanding_league
-			clear_global_event_target = azl_faction_leader
-			set_global_flag = azl_dissolved
+			dismantle_anti_zombie_league = yes
 		}
 
 		cancel_trigger = {

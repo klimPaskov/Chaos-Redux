@@ -27,12 +27,15 @@ The events log popup now:
 
 1. Opening the deaths tab rebuilds the current world population from a thousands-based state aggregate and then rebuilds the grouped deaths rows.
 2. Logged death entries with a valid target country are collected into a unique-country working list.
-3. Each country row aggregates total, civilian, military, and latest matching entry data from the raw deaths log.
-4. The grouped rows are sorted by the selected mode and order, then pushed into the view arrays used by the scripted GUI.
-5. Clicking a deaths row or a history/evolution row now writes selection state back to the player scope even when the list entry itself is using `change_scope = yes`.
-6. The deaths details overlay rebuilds its own filtered and sorted entry list for the selected country without depending on the main deaths-tab sort controls.
-7. Opening the events log popup starts on History, but the standalone event-details popup stays closed until an Events-tab row is clicked.
-8. Switching away from a tab clears stale details windows so only the relevant panel remains visible.
+3. Each country row aggregates total, civilian, military, and latest matching entry data from the deaths country cache, and the view now drains any pending cache backfill before it repopulates the visible rows.
+4. Automatic open-tab refreshes from newly registered deaths now update only the affected country row in place instead of rebuilding the full visible list, so the deaths entries stay visible while the game is running.
+5. Country-scoped military hovers now use the vanilla `CASUALTY` tooltip, so the wars-view opponent casualty breakdown is reused directly on the deaths rows.
+6. Death values below 1,000 now use whole-number integer formatting in the UI instead of showing a trailing decimal.
+7. The grouped rows are sorted by the selected mode and order, then pushed into the view arrays used by the scripted GUI.
+8. Clicking a deaths row or a history/evolution row now writes selection state back to the player scope even when the list entry itself is using `change_scope = yes`.
+9. The deaths details overlay rebuilds its own filtered and sorted entry list for the selected country without depending on the main deaths-tab sort controls.
+10. Opening the events log popup starts on History, but the standalone event-details popup stays closed until an Events-tab row is clicked.
+11. Switching away from a tab clears stale details windows so only the relevant panel remains visible.
 
 ## Interaction With Existing Systems
 

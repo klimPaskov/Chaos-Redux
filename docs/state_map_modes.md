@@ -26,9 +26,10 @@ The contamination map mode uses distinct hazard colors:
 - Disease: green
 - Nuclear: cyan-blue
 
-If a state carries more than one hazard category at once, the map mode blends those colors additively and switches to a brighter pulsing border so overlap is obvious at a glance.
+If a state carries more than one hazard category at once, the map mode blends those colors additively and switches to a brighter pulsing fill so overlap is obvious at a glance.
 
 The map mode updates daily, which keeps it in sync with timed contamination expiry without needing separate refresh hooks in every chemical, biological, and nuclear effect path.
+The scripted top layer now renders the whole state fill instead of only a border layer, and it only renders for states that actually match the contamination triggers. This avoids the earlier target-selection issues and keeps the contamination view restricted to genuinely contaminated states.
 
 ## Civilian deaths map mode
 
@@ -42,8 +43,10 @@ The data flow is:
 4. The same effect now also adds the loss to `chaos_state_civilian_deaths_total`.
 5. If that state total exceeds the global peak, `global.chaos_state_civilian_deaths_map_max` is updated.
 6. The map mode colors each state relative to the current global peak so the hottest state is always clearly visible.
+7. The deaths view now uses a continuous red heat gradient instead of coarse discrete steps, so each state's fill gets redder and more opaque as its cumulative civilian death total rises.
+8. The scripted top layer renders full state fill only for states with tracked civilian-death history, which keeps the deaths view separate from contamination and makes the heat map much more legible.
 
-This keeps the feature dynamic and easy to extend. Any future civilian-death source that already uses the shared chaos-meter registration path will automatically appear on the map without extra map-view-specific logic.
+This keeps the feature dynamic and easy to extend. Any future civilian-death source that already uses the shared chaos-meter registration path will automatically appear on the map without extra map-view-specific logic. Combat-caused civilian deaths use the same registration path, so the heat map highlights whichever frontier states actually receive those civilian-combat death entries.
 
 ## Files
 
@@ -51,28 +54,26 @@ This keeps the feature dynamic and easy to extend. Any future civilian-death sou
 - Map mode constants: `common/script_constants/state_map_modes_constants.txt`
 - Reusable map mode triggers: `common/scripted_triggers/chaosx_dynamic_triggers.txt`
 - Tooltip scripted localisation: `common/scripted_localisation/chaosx_scripted_localisation_map_modes.txt`
-- Icon sprite definitions: `interface/chaosx_map_modes.gfx`
+- Shared strip sprite definitions: `interface/mapmodes_interface.gfx`
 - English localisation: `localisation/english/chaosx_map_modes_l_english.yml`
 
 ## Icons needed
 
-The button icons are already wired. Replace these placeholder files later with final art:
+The button icons are now taken from the shared vanilla-style strip:
 
-- `gfx/interface/mapmode/mapmode_buttons_deselected_small_contaminated_states_map_mode.dds`
-- `gfx/interface/mapmode/mapmode_buttons_selected_small_contaminated_states_map_mode.dds`
-- `gfx/interface/mapmode/mapmode_buttons_deselected_small_deaths_state_map_mode.dds`
-- `gfx/interface/mapmode/mapmode_buttons_selected_small_deaths_state_map_mode.dds`
+- `gfx/interface/mapmode/mapmode_buttons_deselected_small.dds`
+- `gfx/interface/mapmode/mapmode_buttons_selected_small.dds`
 
-These are referenced by:
+Chaos Redux extends those strips to `20` frames in:
 
-- `interface/chaosx_map_modes.gfx`
+- `interface/mapmodes_interface.gfx`
 
-Sprite keys used by the engine:
+The two custom state map modes consume the final two strip slots by scripted map-mode declaration order in `common/map_modes/chaosx_state_map_modes.txt`.
 
-- `GFX_mapmode_buttons_deselected_small_contaminated_states_map_mode`
-- `GFX_mapmode_buttons_selected_small_contaminated_states_map_mode`
-- `GFX_mapmode_buttons_deselected_small_deaths_state_map_mode`
-- `GFX_mapmode_buttons_selected_small_deaths_state_map_mode`
+Current slot assignment:
+
+- Sprite `18`: `deaths_state_map_mode`
+- Sprite `19`: `contaminated_states_map_mode`
 
 ## Future extensions
 

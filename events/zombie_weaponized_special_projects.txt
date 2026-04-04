@@ -18,6 +18,27 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.weaponized_zombies.9
+	title = chaosx.weaponized_zombies.9.t
+	desc = chaosx.weaponized_zombies.9.d
+	picture = GFX_report_event_generic_biowarfare
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_event_target = weaponized_zombie_review_target
+		event_target:weaponized_zombie_review_target = {
+			exists = yes
+			has_country_flag = weaponized_zombie_outbreak_country
+		}
+	}
+
+	option = {
+		name = chaosx.weaponized_zombies.9.a
+	}
+}
+
+country_event = {
 	id = chaosx.weaponized_zombies.2
 	title = chaosx.weaponized_zombies.2.t
 	desc = chaosx.weaponized_zombies.2.d
@@ -99,12 +120,11 @@ country_event = {
 		is_special_project_being_researched = sp:weaponize_the_zombies
 		NOT = { is_special_project_completed = sp:weaponize_the_zombies }
 		NOT = { has_country_flag = weaponized_zombie_lab_accident_happened }
+		has_country_flag = weaponized_zombie_step_resources_done
+		NOT = { has_country_flag = weaponized_zombie_resource_minimal }
 		OR = {
-			has_country_flag = weaponized_zombie_nature_neurobiological
-			has_country_flag = weaponized_zombie_nature_rage
-			has_country_flag = weaponized_zombie_nature_parasitic
-			has_country_flag = weaponized_zombie_nature_necrotic
-			has_country_flag = weaponized_zombie_nature_demonic
+			has_country_flag = weaponized_zombie_resource_expanded
+			has_country_flag = weaponized_zombie_resource_maximum
 		}
 		any_controlled_state = {
 			biowarfare_facility > 0
@@ -182,7 +202,6 @@ country_event = {
 
 	immediate = {
 		hidden_effect = {
-			resolve_weaponized_zombie_profile = yes
 			set_country_flag = weaponized_zombie_lab_accident_happened
 			set_country_flag = achievement_containment_was_temporary
 
@@ -191,6 +210,7 @@ country_event = {
 					biowarfare_facility > 0
 				}
 				save_event_target_as = weaponized_zombie_target_state
+				save_event_target_as = outbreak_state
 			}
 
 			if = {
@@ -225,25 +245,10 @@ country_event = {
 				}
 			}
 
-			event_target:weaponized_zombie_target_state = {
-				if = {
-					limit = {
-						ROOT = {
-							OR = {
-								has_country_flag = weaponized_zombie_archetype_wendigo
-								check_variable = {
-									var = weaponized_zombie_accident_risk
-									value = constant:weaponized_zombies.accident_risk_threshold_medium
-									compare = greater_than_or_equals
-								}
-							}
-						}
-					}
-					ROOT = { spawn_weaponized_zombie_outbreak_from_creator = yes }
-				}
-				else = {
-					ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
-				}
+			if = {
+				limit = { has_event_target = outbreak_state }
+				spawn_selected_dynamic_zombie_outbreak = yes
+				news_event = { id = chaosx.news.3 days = 3 }
 			}
 		}
 	}

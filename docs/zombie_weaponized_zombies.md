@@ -17,7 +17,7 @@ The actual spawned battalion/template family now comes from the disease classifi
 2. `Nature of the Disease` determines the broad scientific or extra-scientific explanation for the zombie.
 3. `Life State` determines whether the infected are dead, alive, fragmented, or transformed.
 4. `Human Experimentation` consumes `1000` manpower and escalates the program into live testing.
-5. `Resource Allocation` trades safety for program scale and accident risk.
+5. `Resource Allocation` trades safety for program scale and containment risk.
 6. The six tuning passes shape:
    - strength
    - infectiousness
@@ -26,18 +26,47 @@ The actual spawned battalion/template family now comes from the disease classifi
    - cure resistance
    - friendliness / obedience
 7. `Field Testing` may test on enemy territory, zombie territory, or domestically depending on the final profile and local war state.
+   The target state is now chosen before the option resolves so the tooltip can name the planned test site while the real scripted effects remain hidden.
 8. `Forbidden Branches` can push the zombie toward more extreme outcomes.
 9. On completion, a conclusions event summarizes the resulting archetype and unlocks production plus raids.
+10. The finished conclusions can be reopened later from the base zombie cure category, even before the weapon is deployed, but only by the country that completed the project.
 
-The project no longer pulls generic prototype rewards.
 Its key choices now follow a mandatory ordered chain so the player establishes subjects first, then determines zombie nature and life state, and only after that gets the detailed stat-tuning prompts.
-Each step now writes its own completion flag and unlocks the next step, so the project cannot skip ahead to later zombie tuning choices.
+Each step now writes its own project-scoped completion flag and unlocks the next step, so the project cannot skip ahead to later zombie tuning choices and stale country flags cannot block the chain.
+After the core chain reaches `Field Testing`, the project runs two final end-phase iterations before normal completion:
+
+- a guaranteed refinement cycle
+- a guaranteed deployment/finalization cycle
+
+The rare forbidden branch no longer acts as a mandatory completion step.
+Instead, when its conditions are met, it can replace the normal refinement iteration as a one-off easter-egg branch without preventing the normal project flow from completing.
+If slower project options were chosen, a local generic-style `Minor Breakthrough` filler can appear only after `Weaponization and Deployment` is done. It exists purely to close the last small remaining gap to `100%`.
 
 Current project pacing:
 
 - startup cost: `1` biowarfare breakthrough
-- prototype progress per iteration: `8`
-- containment accident MTTH: intentionally very rare, and inactive until `Nature of the Disease` has been chosen
+- prototype time per iteration: `45` days
+- prototype progress per iteration: `6`
+- progress-affecting choices:
+  - `Resource Allocation`: `-2% / +2% / +4%`
+  - `Field Testing`: `-2% / +4%`
+  - `Prototype Refinement`: `+2%`
+  - `Forbidden Branches` replacement: `-2% / +2%`
+  - `Weaponization and Deployment`: `+6%`
+- post-chain filler iteration: a repeatable `Minor Breakthrough` appears only after deployment
+- total iterations to finish normally: `14`
+- expected filler after the normal chain:
+  - fastest legal path: `0`
+  - ordinary mixed path: `1`
+  - slowest legal path: `2`
+- containment accident MTTH:
+  - unavailable before `Resource Allocation`
+  - disabled by `Minimum Allocation`
+  - enabled at an extremely low chance by `Expanded Allocation`, with only a minimal added risk contribution
+  - increased slightly, but still kept rare, by `Maximum Allocation`
+
+The obedience pass now has a true feral path.
+`Accept a feral result` adds no obedience at all, while the higher options are the only ones that meaningfully push the project toward selective control outcomes.
 
 ## Disease types
 
@@ -59,8 +88,12 @@ These unit families determine:
 - baseline staying power
 - baseline armor / hardness where relevant
 
+Weaponized outbreak countries now also get a dedicated type idea for that family.
+They no longer inherit the main apocalypse `zombies_idea_0-3` stage ideas, so their identity is driven by their own type and behavior package rather than the global outbreak evolution ladder.
+
 The project strength sliders do not create separate battalion classes for mild, medium, or extreme variants.
 Those broader performance swings still come from the outbreak's ideas and stage/tier setup.
+Those broader swings now come from the weaponized profile plus its dedicated type and behavior ideas, not from the main zombie evolution-stage idea chain.
 
 ## World pressure and late-evolution drift
 
@@ -96,15 +129,35 @@ The zombie resolves into one of several behavior profiles:
 These outcomes change outbreak behavior, the creator-side temporary cure advantage, bomb production cost, and whether spawned outbreak countries merge back into the main `ZZZ` horde.
 They do not define the battalion family on their own.
 One selective-control branch can later fail in the field, but that instability is no longer labeled as its own visible zombie type.
+Dead necrotic and demonic zombie outcomes also no longer resolve into obedient control profiles just because high obedience options were chosen during research; those paths can still be attempted in the lab, but they do not produce reliable control in the final outcome.
 
 ## Runtime behavior
 
 - Completion gives the country `zombie_disease_bomb_delivery_systems` and an initial payload stockpile.
-- The unlocked raid tier depends on the final infectiousness score.
+- The base zombie cure category stays generic.
+- Every live curable weaponized outbreak now appears there as its own targeted decision entry, and selecting one opens a live outbreak-profile event for that specific horde.
+- Those report decisions re-enable after use, so the profile can be checked again later without moving it into a permanent idea.
+- Completion unlocks a single weaponized zombie strike raid, and the hidden internal success profile now upgrades from low to medium to high based on the final infectiousness score.
+- The raid UI reads only the hidden `weaponized_zombie_raid_success_low/medium/high` flags that are written at project completion, so one matching weaponized strike always appears once the project is finished.
+- The raid UI keeps the strike under the normal `Biological Raids` category, alongside the anti-zombie bomb, but now uses a dedicated weaponized-zombie strike icon so it still reads as its own weapon.
+- The raid UI still exposes only a single visible weaponized zombie strike instead of separate low, medium, and high entries.
+- The strike uses the same province-targeted air-raid model as the other bioweapons.
+- Targeting is now obedience-aware instead of hardcoded:
+  - `friendly to humans` outcomes can only be deployed onto zombie-controlled states
+  - all other outcomes can be deployed onto any province
+- Every deliberate weaponized outbreak deployment now also fires a major world news event naming the deployed state and describing the resulting zombie's nature and visible outbreak type.
 - Weaponized outbreaks copy the creator's disease nature and life-state flags before spawning, then load either `history/units/ZZZ_weaponized_1936.txt` or `history/units/ZZZ_weaponized_hardened_1936.txt` and unlock only the matching template.
 - The visible outbreak family is resolved into explicit type flags before spawning, so leaders, templates, and created divisions all read the same final disease-type result instead of re-deriving it separately.
+- Spawn count now scales upward with infectiousness, while demonic zombie families deliberately spawn in somewhat smaller numbers than equally advanced infected-style hordes.
+- Outbreak countries now also get hidden profile ideas copied from the creator's final strength, infectiousness, speed, durability, and cure-resistance picks, so the stat choices materially change the spawned horde instead of only changing event text.
+- Raid-created weaponized outbreaks also receive a matching cosmetic country name (`Demonic Zombie Horde`, `Necrotic Horde`, `Undead Horde`, and so on) instead of staying on the base `ZZZ` name.
+- Weaponized outbreaks now immediately declare on valid neighboring enemies as soon as they spawn, while still respecting creator-friendly and human-friendly exceptions.
+- The outbreak runtime now prunes all nonmatching zombie templates and pushes type-specific AI template priorities, so an `Infected Horde` trains infected zombie divisions, a `Demonic Zombie Horde` trains demonic zombie divisions, and so on.
 - Armor is no longer granted purely by disease family for the ordinary outbreak families. It only appears on the hardened outbreak path when both strength and durability resolve high enough.
 - `Wendigo Pack` sits outside the normal successful outbreak ladder: it is always armored, always hostile, and only appears when the project catastrophically fails at completion.
+- The Wendigo super event now records the actual originating country instead of using a placeholder source token, and the super-event remark is fully wired for slot `6`.
+- The Wendigo super event now also uses its own dedicated sound asset on the super-event sound-output path: `sound/chaosx_super_event_wendigo.wav`.
+- A necrotic or extra-scientific zombie profile with a dead or transformed life state and at least four extreme mutation picks now guarantees the catastrophic Wendigo completion failure if no other Wendigo already exists in the campaign.
 - Zombies marked `zombies-only` can only target zombie-controlled states and can earn the `Fight Fire With Fire` achievement.
 - Independent weaponized outbreaks are excluded from the base zombie auto-merge rules in `common/on_actions/chaosx_on_actions.txt`.
 - Creator-friendly zombies store their protected creator in outbreak-local diplomacy state and can later lose that protection through an unannounced field-control failure event.
@@ -135,9 +188,18 @@ The system now uses `events/zombie_weaponized_special_projects.txt` for:
 - enemy field-test results
 - domestic safe test results
 - domestic outbreak results
-- MTTH lab containment failure during research
+- a very rare research-time laboratory containment failure can occur after `Resource Allocation`
+- that laboratory accident uses the canonical dynamic zombie outbreak path in the facility state
+- the laboratory accident does not consume the normal dynamic-outbreak country or global cooldowns
 - hidden creator-betrayer resolution
 - creator-side betrayal notification
+
+Field tests now prefer the most remote practical target states:
+
+- enemy states are still always preferred over domestic testing
+- one-state islands and other island states are prioritized first
+- low-population remote states are preferred over dense mainland states
+- domestic fallback tests use the same remote-state priority and avoid the capital where possible
 
 ## Files touched by the system
 
@@ -156,9 +218,18 @@ The system now uses `events/zombie_weaponized_special_projects.txt` for:
 - `history/units/ZZZ_weaponized_hardened_1936.txt`
 - `interface/chaosx_subuniticons.gfx`
 - `interface/chaosx_texticons.gfx`
+- `interface/chaosx_raids.gfx`
 - `localisation/english/chaosx_events_l_english.yml`
 - `localisation/english/chaosx_units_l_english.yml`
 - `localisation/english/chaosx_characters_l_english.yml`
+
+## Raid icons needed
+
+The weaponized zombie raid stays under the standard biological raid category, but it now has its own dedicated strike icon.
+Replace this file later with final art:
+
+- `gfx/interface/military_raids/map_icons/raid_type_icon_weaponized_zombie_strike.dds`
+  Referenced by `interface/chaosx_raids.gfx` as `GFX_raid_type_icon_weaponized_zombie_strike`
 
 ## Icon wiring
 

@@ -27,6 +27,8 @@ The system rewards preparation and logistics while making repeated chemical use 
 - Nerve raids are tactical and short-lived in contamination persistence.
 - US special-project raids are also short-lived and focus on disruption rather than direct casualties.
 - US special-project raids do not add international condemnation.
+- Chemical air-delivered raids use the same province-targeted deployment model as the biological bomb raids.
+- Direct Sarin and Soman strikes now consume their cylinder payloads without requiring deployed bomber wings; only the rocket variants still require missile equipment.
 - Air bomb modules are visible in progression, while plane-based contamination and condemnation behavior remains disabled.
 
 ## Core Gameplay Flow
@@ -107,6 +109,8 @@ Sarin and Soman raids are dedicated strike options.
 - Strong direct military disruption.
 - Short contamination persistence relative to persistent agents.
 - Significant diplomatic cost when used repeatedly.
+- The direct air-delivered Sarin and Soman strikes do not require deployed bomber wings.
+- The rocket-delivered Sarin and Soman variants still require guided missiles.
 
 ## US Special Chemical Raids
 

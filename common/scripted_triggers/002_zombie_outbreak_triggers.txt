@@ -29,6 +29,16 @@ has_active_zombie_cure = {
 	}
 }
 
+has_live_main_zombie_outbreak = {
+	country_exists = ZZZ
+	ZZZ = {
+		exists = yes
+		NOT = { has_capitulated = yes }
+		num_divisions > 0
+		num_of_controlled_states > 0
+	}
+}
+
 is_zombie_controlled_state = {
 	OR = {
 		is_controlled_by = ZZZ
@@ -48,6 +58,20 @@ is_zombie_threatened_state = {
 is_anti_zombie_bomb_target_state = {
 	is_zombie_threatened_state = yes
 	NOT = { has_dynamic_modifier = { modifier = zombie_decontaminated_state } }
+}
+
+is_weaponized_zombie_raid_target_state = {
+	OR = {
+		AND = {
+			has_country_flag = weaponized_zombie_friendly_to_humans
+			var:target_state = {
+				is_zombie_controlled_state = yes
+			}
+		}
+		AND = {
+			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+		}
+	}
 }
 
 has_anti_zombie_league_membership_idea = {
@@ -99,6 +123,7 @@ is_anti_zombie_league_member = {
 }
 
 can_lead_anti_zombie_league = {
+	uses_normal_civilian_systems = yes
     is_major = yes
     NOT = { original_tag = ZZZ }
     NOT = { has_country_flag = zombie_outbreak_dynamic_country }
@@ -107,12 +132,47 @@ can_lead_anti_zombie_league = {
 }
 
 can_join_anti_zombie_league = {
+	uses_normal_civilian_systems = yes
+	has_live_main_zombie_outbreak = yes
     NOT = { original_tag = ZZZ }
     NOT = { has_country_flag = zombie_outbreak_dynamic_country }
     NOT = { has_country_flag = weaponized_zombie_outbreak_country }
     NOT = { is_anti_zombie_league_member = yes }
+    NOT = { has_country_flag = azl_left_due_distant_threat }
+    NOT = { has_country_flag = azl_left_after_main_outbreak_gone }
     exists = yes
     is_subject = no
+}
+
+can_rejoin_anti_zombie_league = {
+	uses_normal_civilian_systems = yes
+	has_live_main_zombie_outbreak = yes
+    NOT = { original_tag = ZZZ }
+    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+    NOT = { has_country_flag = weaponized_zombie_outbreak_country }
+    NOT = { is_anti_zombie_league_member = yes }
+    NOT = { has_country_flag = azl_left_after_main_outbreak_gone }
+    exists = yes
+    is_subject = no
+}
+
+should_consider_joining_anti_zombie_league = {
+	can_join_anti_zombie_league = yes
+	OR = {
+		zombie_threat_is_global_emergency = yes
+		has_regional_zombie_threat = yes
+		AND = {
+			has_same_continent_zombie_presence = yes
+			NOT = { zombie_threat_below_serious_join_threshold = yes }
+		}
+	}
+	NOT = {
+		AND = {
+			zombie_threat_confined_to_americas = yes
+			is_outside_americas_country = yes
+			NOT = { zombie_threat_is_global_emergency = yes }
+		}
+	}
 }
 
 has_active_anti_zombie_league_leader = {
@@ -259,6 +319,24 @@ zombie_threat_below_very_low_leave_threshold = {
     }
 }
 
+zombie_threat_below_serious_join_threshold = {
+	OR = {
+		NOT = { has_variable = global.zombie_current_total_divisions }
+		check_variable = {
+			var = global.zombie_current_total_divisions
+			value = constant:anti_zombie_league.join_low_threat_divisions
+			compare = less_than
+		}
+	}
+}
+
+zombie_threat_has_anti_zombie_league_border_contact = {
+	any_country = {
+		is_anti_zombie_league_member = yes
+		has_neighboring_zombie_front = yes
+	}
+}
+
 zombie_threat_ready_for_anti_zombie_league_disband = {
     NOT = {
         any_country = {
@@ -290,6 +368,36 @@ has_nearby_zombie_front = {
     any_neighbor_country = {
         has_neighboring_zombie_front = yes
     }
+}
+
+has_regional_zombie_threat = {
+	OR = {
+		is_at_war_with_any_zombie_country = yes
+		has_neighboring_zombie_front = yes
+		has_nearby_zombie_front = yes
+		has_same_continent_zombie_presence = yes
+	}
+}
+
+zombie_threat_is_global_emergency = {
+	OR = {
+		AND = {
+			has_variable = global.zombie_current_total_divisions
+			check_variable = {
+				var = global.zombie_current_total_divisions
+				value = constant:zombie_threat.very_high_divisions
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			has_variable = global.zombie_current_total_controlled_states
+			check_variable = {
+				var = global.zombie_current_total_controlled_states
+				value = constant:zombie_threat.very_high_controlled_states
+				compare = greater_than_or_equals
+			}
+		}
+	}
 }
 
 has_same_continent_zombie_presence = {
@@ -340,14 +448,6 @@ has_same_continent_zombie_presence = {
                 exists = yes
                 is_zombie_outbreak_country = yes
                 any_controlled_state = { is_on_continent = asia }
-            }
-        }
-        AND = {
-            any_controlled_state = { is_on_continent = middle_east }
-            any_country = {
-                exists = yes
-                is_zombie_outbreak_country = yes
-                any_controlled_state = { is_on_continent = middle_east }
             }
         }
     }

@@ -43,8 +43,7 @@ country_event = {
                     ZZZ = {
                         set_major = yes
                         load_oob = "ZZZ_1936" # Get Brainzz Horde template
-                        set_division_force_allow_recruiting = { division_template = "Brainzz Horde" force_allow_recruiting = yes }
-                        set_division_template_lock = { division_template = "Brainzz Horde" is_locked = no }
+                        apply_standard_zombie_recruitment_profile = yes
                     }
                     create_unit = {
                         division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
@@ -114,9 +113,26 @@ country_event = {
                 clr_global_flag = zombie_system_disabled
                 clr_global_flag = zombie_threat_defeated
                 set_variable = { global.zombie_main_capitulation_count = 0 }
+                set_variable = { global.zombie_campaign_start_day = global.num_days }
+                set_variable = { global.zombie_peak_divisions = 0 }
+                set_variable = { global.zombie_peak_controlled_states = 0 }
+                set_variable = { global.zombie_campaign_duration_days = 0 }
+                set_variable = { global.zombie_campaign_zombie_dead = 0 }
+                set_variable = { global.zombie_campaign_civilian_dead = 0 }
+                set_variable = { global.zombie_campaign_total_dead = 0 }
+				ZZZ = {
+					clr_country_flag = zombie_main_continent_known_europe
+					clr_country_flag = zombie_main_continent_known_africa
+					clr_country_flag = zombie_main_continent_known_asia
+					clr_country_flag = zombie_main_continent_known_north_america
+					clr_country_flag = zombie_main_continent_known_south_america
+					clr_country_flag = zombie_main_continent_known_australia
+				}
+                mark_main_zombie_outbreak_restore_day = yes
 
                 # Initialize zombie outbreak chance calculations for all countries
                 update_all_zombie_outbreak_chances = yes
+                refresh_zombie_world_threat_source = yes
 
                 # Initialize dynamic cure research values for all countries
                 update_all_cure_research_values = yes
@@ -366,183 +382,16 @@ country_event = {
             if = {
                 limit = { can_roll_dynamic_zombie_outbreak = yes }
                 # Prefer dense, underdeveloped rear states over safe advanced interiors.
-                select_dynamic_zombie_outbreak_state = yes
+				select_dynamic_zombie_outbreak_state = yes
 
-                if = {
-                    limit = { has_event_target = outbreak_state }
-                    if = {
-                        limit = {
-                            ZZZ = { num_of_controlled_states < 1 }
-                            NOT = {
-                                check_variable = {
-                                    var = global.zombie_main_capitulation_count
-                                    value = constant:zombie_threat.main_collapse_shutdown_limit
-                                    compare = greater_than_or_equals
-                                }
-                            }
-                            NOT = {
-                                any_country = {
-                                    exists = yes
-                                    has_country_flag = zombie_outbreak_dynamic_country
-                                    num_of_controlled_states > 0
-                                    NOT = { has_capitulated = yes }
-                                }
-                            }
-                        }
-                        restore_dormant_zombie_main_outbreak = yes
-                        update_all_zombie_outbreak_chances = yes
-                    }
-                    else = {
-                        create_dynamic_country = {
-                            original_tag = ZZZ
-                            copy_tag = ZZZ
-                            set_temp_variable = { dynamic_zombie_new_country = this }
-                            set_country_flag = zombie_outbreak_dynamic_country
-
-                            ZZZ = {
-                                every_core_state = {
-                                    remove_core_of = PREV
-                                }
-                            }
-
-                            add_equipment_to_stockpile = {
-                                type = infantry_equipment
-                                amount = 2000 # Since Zombies require 1 piece of equipment to deploy a division
-                                producer = CHI
-                            }
-
-                            # Add the core zombie ideas
-                            add_ideas = {
-                                never_ending_hunger
-                                tot_economic_mobilisation
-                                extensive_conscription
-                            }
-
-                            every_possible_country = {
-                                limit = { NOT = { original_tag = ZZZ } }
-                                add_opinion_modifier = {
-                                    target = PREV
-                                    modifier = zombie_hostile
-                                }
-                                PREV = {
-                                    add_opinion_modifier = {
-                                        target = PREV
-                                        modifier = zombie_hostile
-                                    }
-                                }
-                            }
-
-                            # Copy zombie ideas and flags from main ZZZ
-                            ZZZ = {
-                                if = {
-                                    limit = { has_idea = zombies_idea_0 }
-                                    PREV = { add_ideas = zombies_idea_0 }
-                                }
-                                if = {
-                                    limit = { has_idea = zombies_idea_1 }
-                                    PREV = { add_ideas = zombies_idea_1 }
-                                }
-                                if = {
-                                    limit = { has_idea = zombies_idea_2 }
-                                    PREV = { add_ideas = zombies_idea_2 }
-                                }
-                                if = {
-                                    limit = { has_idea = zombies_idea_3 }
-                                    PREV = { add_ideas = zombies_idea_3 }
-                                }
-
-                                # Copy zombie tier flags
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_current_tier value = 0 } }
-                                    PREV = { set_country_flag = { flag = zombie_current_tier value = 0 } }
-                                }
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_current_tier value = 1 } }
-                                    PREV = { set_country_flag = { flag = zombie_current_tier value = 1 } }
-                                }
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_current_tier value = 2 } }
-                                    PREV = { set_country_flag = { flag = zombie_current_tier value = 2 } }
-                                }
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_current_tier value = 3 } }
-                                    PREV = { set_country_flag = { flag = zombie_current_tier value = 3 } }
-                                }
-
-                                # Copy zombie target tier flags
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_target_tier value = 0 } }
-                                    PREV = { set_country_flag = { flag = zombie_target_tier value = 0 } }
-                                }
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_target_tier value = 1 } }
-                                    PREV = { set_country_flag = { flag = zombie_target_tier value = 1 } }
-                                }
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_target_tier value = 2 } }
-                                    PREV = { set_country_flag = { flag = zombie_target_tier value = 2 } }
-                                }
-                                if = {
-                                    limit = { has_country_flag = { flag = zombie_target_tier value = 3 } }
-                                    PREV = { set_country_flag = { flag = zombie_target_tier value = 3 } }
-                                }
-                            }
-
-                            refresh_dynamic_zombie_country_leader = yes
-                        }
-
-                        event_target:outbreak_state = {
-                            var:dynamic_zombie_new_country = {
-                                transfer_state = PREV
-                                add_state_core = PREV
-                                set_capital = {
-                                    state = PREV
-                                    remember_old_capital = no
-                                }
-                                load_oob = "ZZZ_1936"
-                                set_division_force_allow_recruiting = { division_template = "Brainzz Horde" force_allow_recruiting = yes }
-                                set_division_template_lock = { division_template = "Brainzz Horde" is_locked = no }
-                            }
-                            if = {
-                                limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } } }
-                                create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1" owner = var:dynamic_zombie_new_country count = 10 }
-                            }
-                            else_if = {
-                                limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
-                                create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.2" owner = var:dynamic_zombie_new_country count = 10 }
-                            }
-                            else_if = {
-                                limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
-                                create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.3" owner = var:dynamic_zombie_new_country count = 12 }
-                            }
-                            else_if = {
-                                limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
-                                create_unit = { division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5" owner = var:dynamic_zombie_new_country count = 15 }
-                            }
-                        }
-                    }
-
-                    set_temp_variable = { outbreak_country_cooldown_days = constant:zombie_outbreak.country_cooldown_days }
-                    set_temp_variable = { outbreak_global_cooldown_days = constant:zombie_outbreak.global_cooldown_days }
-                    meta_effect = {
-                        text = {
-                            set_country_flag = {
-                                flag = zombie_dynamic_outbreak_recent
-                                days = [COUNTRY_COOLDOWN_DAYS]
-                            }
-                            set_global_flag = {
-                                flag = zombie_dynamic_outbreak_global_cooldown
-                                days = [GLOBAL_COOLDOWN_DAYS]
-                            }
-                        }
-                        COUNTRY_COOLDOWN_DAYS = "[?outbreak_country_cooldown_days|.0]"
-                        GLOBAL_COOLDOWN_DAYS = "[?outbreak_global_cooldown_days|.0]"
-                    }
-
-                    news_event = { id = chaosx.news.3 days = 3 }
-                }
-            }
-        }
+				if = {
+					limit = { has_event_target = outbreak_state }
+					spawn_selected_dynamic_zombie_outbreak = yes
+					apply_dynamic_zombie_outbreak_cooldowns = yes
+					news_event = { id = chaosx.news.3 days = 3 }
+				}
+			}
+		}
     }
 }
 
@@ -557,9 +406,7 @@ country_event = {
         has_global_flag = anti_zombie_league_formed
         has_global_flag = azl_formation_announced
         NOT = { has_country_flag = azl_formation_event_fired }
-        NOT = { original_tag = ZZZ }
-        NOT = { has_country_flag = zombie_outbreak_dynamic_country }
-        NOT = { is_anti_zombie_league_member = yes }
+		should_consider_joining_anti_zombie_league = yes
         NOT = { has_country_flag = azl_leader }
     }
 
@@ -596,7 +443,7 @@ country_event = {
         name = chaosx.nr2.7.a
 
         ai_chance = {
-            base = 10
+            base = 1
 
             # Base factors for joining
             modifier = {
@@ -606,7 +453,7 @@ country_event = {
 
             # Government type modifiers
             modifier = {
-                factor = 3
+                factor = 1.75
                 has_government = democratic
             }
             modifier = {
@@ -624,47 +471,72 @@ country_event = {
 
             # Prevention measures boost willingness
             modifier = {
-                factor = 1.5
+                factor = 1.15
                 has_country_flag = hygiene_measures_enforced
             }
             modifier = {
-                factor = 2
+                factor = 1.35
                 has_country_flag = quarantine_protocols_active
             }
 
             # Cure sharing participation
             modifier = {
-                factor = 2.5
+                factor = 1.4
                 is_in_tech_sharing_group = cure_sharing
             }
 
             # Proximity to zombie threat
             modifier = {
-                factor = 3
+                factor = 2.25
                 has_neighboring_zombie_front = yes
+            }
+            modifier = {
+                factor = constant:anti_zombie_league.event_join_nearby_front_factor
+                has_nearby_zombie_front = yes
+            }
+            modifier = {
+                factor = constant:anti_zombie_league.event_join_same_continent_factor
+                has_same_continent_zombie_presence = yes
+            }
+            modifier = {
+                factor = constant:anti_zombie_league.event_join_no_regional_threat_factor
+                NOT = { has_regional_zombie_threat = yes }
+                NOT = { zombie_threat_is_global_emergency = yes }
+            }
+            modifier = {
+                factor = 0.15
+                NOT = { has_regional_zombie_threat = yes }
+                has_same_continent_zombie_presence = yes
+                NOT = { zombie_threat_is_global_emergency = yes }
+            }
+            modifier = {
+                factor = 0
+                NOT = { has_regional_zombie_threat = yes }
+                NOT = { has_same_continent_zombie_presence = yes }
+                NOT = { zombie_threat_is_global_emergency = yes }
             }
 
             # Chaos tier escalation
             modifier = {
-                factor = 1.5
+                factor = 1.10
                 has_global_flag = { flag = chaos_tier value = 2 }
             }
             modifier = {
-                factor = 2
+                factor = 1.35
                 has_global_flag = { flag = chaos_tier value = 3 }
             }
             modifier = {
-                factor = 3
+                factor = 1.75
                 has_global_flag = { flag = chaos_tier value = 4 }
             }
             modifier = {
-                factor = 4
+                factor = 2.25
                 has_global_flag = { flag = chaos_tier value = 5 }
             }
 
             # Major powers more likely to lead cooperation
             modifier = {
-                factor = 1.8
+                factor = 1.10
                 is_major = yes
             }
 
@@ -699,20 +571,31 @@ country_event = {
                 is_outside_americas_country = yes
             }
 
-            # Overwhelming zombie force - everyone must join
+			modifier = {
+				factor = constant:anti_zombie_league.join_low_threat_factor
+				zombie_threat_below_serious_join_threshold = yes
+			}
             modifier = {
-                factor = 100
-                check_variable = {
-                    var = total_zombie_divisions
-                    value = constant:zombie_threat.very_high_divisions
-                    compare = greater_than_or_equals
-                }
-                check_variable = {
-                    var = total_zombie_controlled_states
-                    value = constant:zombie_threat.very_high_controlled_states
-                    compare = greater_than_or_equals
-                }
+                factor = 0.03
+                NOT = { has_regional_zombie_threat = yes }
+                zombie_threat_below_serious_join_threshold = yes
             }
+            modifier = {
+                factor = 0
+                NOT = { has_regional_zombie_threat = yes }
+                zombie_threat_below_serious_join_threshold = yes
+                NOT = { zombie_threat_is_global_emergency = yes }
+            }
+
+            # Overwhelming zombie force - distant holdouts stop resisting league entry
+			modifier = {
+				factor = 8
+				zombie_threat_is_global_emergency = yes
+			}
+			modifier = {
+				factor = 0
+				NOT = { should_consider_joining_anti_zombie_league = yes }
+			}
         }
 
         if = {
@@ -775,6 +658,11 @@ country_event = {
                 zombie_threat_confined_to_americas = yes
                 is_outside_americas_country = yes
             }
+            modifier = {
+                factor = constant:anti_zombie_league.event_consider_later_no_regional_threat_factor
+                NOT = { has_regional_zombie_threat = yes }
+                NOT = { zombie_threat_is_global_emergency = yes }
+            }
 
             # Less likely to delay as chaos increases
             modifier = {
@@ -795,19 +683,14 @@ country_event = {
             }
 
             # Cannot delay if zombies are overwhelming
-            modifier = {
-                factor = 0
-                check_variable = {
-                    var = total_zombie_divisions
-                    value = constant:zombie_threat.very_high_divisions
-                    compare = greater_than_or_equals
-                }
-                check_variable = {
-                    var = total_zombie_controlled_states
-                    value = constant:zombie_threat.very_high_controlled_states
-                    compare = greater_than_or_equals
-                }
-            }
+			modifier = {
+				factor = 0
+				zombie_threat_is_global_emergency = yes
+			}
+			modifier = {
+				factor = 2.5
+				NOT = { should_consider_joining_anti_zombie_league = yes }
+			}
         }
 
         add_political_power = 25
@@ -855,6 +738,11 @@ country_event = {
                 zombie_threat_confined_to_americas = yes
                 is_outside_americas_country = yes
             }
+            modifier = {
+                factor = constant:anti_zombie_league.event_refuse_no_regional_threat_factor
+                NOT = { has_regional_zombie_threat = yes }
+                NOT = { zombie_threat_is_global_emergency = yes }
+            }
 
             # Major powers might think they can handle it alone
             modifier = {
@@ -889,25 +777,20 @@ country_event = {
                 factor = 0.2
                 has_global_flag = { flag = chaos_tier value = 4 }
             }
-            modifier = {
-                factor = 0.1
-                has_global_flag = { flag = chaos_tier value = 5 }
-            }
+			modifier = {
+				factor = 0.1
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
 
             # Cannot refuse if zombies are overwhelming
             modifier = {
                 factor = 0
-                check_variable = {
-                    var = total_zombie_divisions
-                    value = constant:zombie_threat.very_high_divisions
-                    compare = greater_than_or_equals
-                }
-                check_variable = {
-                    var = total_zombie_controlled_states
-                    value = constant:zombie_threat.very_high_controlled_states
-                    compare = greater_than_or_equals
-                }
+                zombie_threat_is_global_emergency = yes
             }
+			modifier = {
+				factor = 4
+				NOT = { should_consider_joining_anti_zombie_league = yes }
+			}
         }
 
         add_political_power = 50
@@ -927,7 +810,6 @@ country_event = {
     trigger = {
         has_global_flag = has_zombie_outbreak
         has_global_flag = { flag = chaos_tier value = 5 }
-        has_global_flag = anti_zombie_league_formed
         NOT = { has_global_flag = world_end }
         NOT = { has_global_flag = zombie_system_disabled }
         ZZZ = { num_divisions > 300 }
@@ -950,6 +832,19 @@ country_event = {
             set_global_flag = world_end
 
             set_global_flag = world_end_zombies
+
+			ZZZ = {
+				if = {
+					limit = {
+						NOT = {
+							any_neighbor_country = {
+								uses_normal_civilian_systems = yes
+							}
+						}
+					}
+					spawn_world_end_zombie_coastal_breakouts = yes
+				}
+			}
         }
     }
 }
@@ -1019,6 +914,215 @@ country_event = {
             }
         }
     }
+}
+
+country_event = {
+    id = chaosx.nr2.12
+    title = chaosx.nr2.12.t
+    desc = chaosx.nr2.12.d
+    picture = GFX_report_event_generic_research_lab
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr2.12.a
+
+        if = {
+            limit = {
+                has_global_flag = zombie_postwar_order_active
+                has_country_flag = was_ever_at_war_with_zombies
+            }
+            country_event = {
+                id = chaosx.nr2.13
+                days = constant:zombie_postwar.memorial_repeat_days
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr2.13
+    title = chaosx.nr2.13.t
+    desc = chaosx.nr2.13.d
+    picture = GFX_report_event_generic_research_lab
+
+    is_triggered_only = yes
+
+    trigger = {
+        has_global_flag = zombie_postwar_order_active
+        has_country_flag = was_ever_at_war_with_zombies
+    }
+
+    option = {
+        name = chaosx.nr2.13.a
+        add_political_power = constant:zombie_postwar.memorial_pp_reward
+
+        if = {
+            limit = {
+                has_global_flag = zombie_postwar_order_active
+                has_country_flag = was_ever_at_war_with_zombies
+            }
+            country_event = {
+                id = chaosx.nr2.13
+                days = constant:zombie_postwar.memorial_repeat_days
+            }
+        }
+    }
+}
+
+country_event = {
+	id = chaosx.nr2.14
+	title = chaosx.nr2.14.t
+	desc = chaosx.nr2.14.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = anti_zombie_league_formed
+		is_anti_zombie_league_member = yes
+		NOT = { has_country_flag = azl_leader }
+		OR = {
+			NOT = { has_live_main_zombie_outbreak = yes }
+			NOT = { zombie_threat_has_anti_zombie_league_border_contact = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr2.14.a
+
+		ai_chance = {
+			base = 70
+
+			modifier = {
+				factor = 0.35
+				has_government = democratic
+			}
+			modifier = {
+				factor = 0.20
+				has_government = democratic
+				is_major = yes
+			}
+		}
+
+		set_country_flag = azl_left_due_distant_threat
+		if = {
+			limit = { NOT = { has_live_main_zombie_outbreak = yes } }
+			set_country_flag = azl_left_after_main_outbreak_gone
+		}
+		set_country_flag = azl_distant_threat_reviewed
+		if = {
+			limit = { is_in_faction = yes }
+			leave_faction = yes
+		}
+		remove_anti_zombie_league_membership_package = yes
+	}
+
+	option = {
+		name = chaosx.nr2.14.b
+
+		ai_chance = {
+			base = 10
+
+			modifier = {
+				factor = 5
+				has_government = democratic
+			}
+			modifier = {
+				factor = 8
+				has_government = democratic
+				is_major = yes
+			}
+			modifier = {
+				factor = 2
+				is_major = yes
+			}
+		}
+
+		set_country_flag = azl_distant_threat_reviewed
+	}
+}
+
+country_event = {
+	id = chaosx.nr2.15
+	title = chaosx.nr2.15.t
+	desc = chaosx.nr2.15.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = anti_zombie_league_formed
+		has_country_flag = azl_left_due_distant_threat
+		NOT = { has_country_flag = azl_left_after_main_outbreak_gone }
+		has_live_main_zombie_outbreak = yes
+		can_rejoin_anti_zombie_league = yes
+		should_consider_joining_anti_zombie_league = yes
+		has_active_anti_zombie_league_leader = yes
+	}
+
+	option = {
+		name = chaosx.nr2.15.a
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 1.5
+				has_government = democratic
+			}
+			modifier = {
+				factor = 1.5
+				has_government = democratic
+				is_major = yes
+			}
+			modifier = {
+				factor = 0.5
+				has_same_continent_zombie_presence = yes
+			}
+			modifier = {
+				factor = 0.35
+				is_at_war_with_any_zombie_country = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr2.15.b
+
+		ai_chance = {
+			base = 2
+
+			modifier = {
+				factor = 6
+				has_government = democratic
+			}
+			modifier = {
+				factor = 8
+				has_government = democratic
+				is_major = yes
+			}
+			modifier = {
+				factor = 4
+				has_same_continent_zombie_presence = yes
+			}
+			modifier = {
+				factor = 4
+				is_at_war_with_any_zombie_country = yes
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = 0
+				NOT = { should_consider_joining_anti_zombie_league = yes }
+			}
+		}
+
+		join_anti_zombie_league_effect = yes
+	}
 }
 
 ##############################################################################################################
