@@ -36,6 +36,7 @@ Primary script and data files:
 - `common/ai_strategy/anti_zombie_league.txt`
 - `common/ai_templates/templates_ZZZ.txt`
 - `common/ideas/chaosx_ideas.txt`
+- `common/technology_sharing/chaosx_tech_sharing.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - `interface/chaosx_super_events.gfx`
 - `localisation/english/chaosx_events_l_english.yml`
@@ -98,6 +99,8 @@ The outbreak namespace currently uses these IDs:
 - `chaosx.nr2.9`: fallout world-end branch in the same namespace
 - `chaosx.nr2.10`: emergency island refugee convoy request
 - `chaosx.nr2.11`: Wendigo ascendancy world-end branch
+- `chaosx.nr2.12`: postwar survivor compact announcement
+- `chaosx.nr2.13`: annual Day of the Buried memorial
 - `chaosx.news.3`: news follow-up for dynamic rear outbreaks
 
 `chaosx.nr2.10` is a zombie subevent in the same chain.
@@ -139,18 +142,13 @@ The active zombie system is driven every day from `common/on_actions/chaosx_on_a
 When the scope country is `ZZZ` and the outbreak is active:
 
 - neighboring non-zombie countries are attacked immediately
+- neighboring non-weaponized dynamic zombie outbreak countries are annexed into `ZZZ`
 - subjects next to `ZZZ` are annexed instead of war-decled
 - every occupied state is cored
 - `relocate_isolated_zombie_capital = yes` runs
 - `USA` is forced into the war in the Monroe Doctrine edge case
 
-The same daily block also merges zombie fragments back together:
-
-- if a dynamic zombie country borders `ZZZ`, it is annexed into `ZZZ`
-- if `ZZZ` has no neighbors but a coastal dynamic zombie exists, that dynamic zombie is folded into `ZZZ`
-- if a dynamic zombie country has no neighbors at all, `ZZZ` annexes it
-
-This preserves the intended design that `ZZZ` is the main outbreak center even when splinter outbreaks appear.
+This preserves the intended design that `ZZZ` is the main outbreak center even when normal dynamic outbreaks splinter nearby. Weaponized outbreaks are excluded from this daily annex rule.
 
 ### 3. Evolution and target sync: `chaosx.nr2.4` and `chaosx.nr2.5`
 
@@ -279,11 +277,12 @@ When a rear outbreak fires:
 3. The selected state is transferred, cored, and made the new capital.
 4. Only after the country flag and capital exist, the `ZZZ_1936` OOB is loaded and `Brainzz Horde` is explicitly unlocked for recruitment.
 5. The dynamic country receives zombie politics, zombie ideas, copied tier flags, and hostility opinions.
-6. Starting zombie divisions are created from the outbreak-state scope with `owner = var:dynamic_zombie_new_country`, using the current main-zombie tier to choose strength.
-7. The dynamic country keeps using the single fixed zombie leader copied from `ZZZ`, and its portrait is synced to the current evolution tier without generating a fresh leader.
-8. `ZZZ` now also has a one-entry fallback name pool in `common/names/ZZZ_names.txt`, so if the engine does try to auto-generate a temporary zombie character during setup, that name resolves cleanly as `Zombie Horde`.
-9. The source country gets a timed local cooldown and the whole world gets a 7 day global cooldown before another dynamic outbreak can fire.
-10. `chaosx.news.3` fires as public narrative fallout.
+6. Ordinary dynamic splinters also receive `Fragmented Zombie Horde`, a dedicated debuff idea that keeps them significantly weaker than the main outbreak until one of them is promoted into the new `ZZZ`.
+7. Starting zombie divisions are created from the outbreak-state scope with `owner = var:dynamic_zombie_new_country`, using the current main-zombie tier to choose strength.
+8. The dynamic country keeps using the single fixed zombie leader copied from `ZZZ`, and its portrait is synced to the current evolution tier without generating a fresh leader.
+9. `ZZZ` now also has a one-entry fallback name pool in `common/names/ZZZ_names.txt`, so if the engine does try to auto-generate a temporary zombie character during setup, that name resolves cleanly as `Zombie Horde`.
+10. The source country gets a timed local cooldown and the whole world gets a 7 day global cooldown before another dynamic outbreak can fire.
+11. `chaosx.news.3` fires as public narrative fallout.
 
 #### Dynamic zombie template recruitment
 
@@ -292,8 +291,11 @@ The zombie battalion itself is inactive for normal template design use, so the o
 Both the initial outbreak and each dynamic splinter:
 
 - load the zombie OOB/template
-- set `Brainzz Horde` to `force_allow_recruiting = yes`
-- unlock the template with `set_division_template_lock = { is_locked = no }`
+- reapply the country-wide division-template lock so zombie countries do not drift into non-zombie templates
+- keep `Brainzz Horde` recruitable with `force_allow_recruiting = yes`
+- keep `Brainzz Horde` template-locked as the single forced zombie template
+- mark `Brainzz Horde` as an explicit `infantry` AI role with high template priority
+- push strong AI role/template pressure toward that zombie infantry template and away from ordinary human training queues
 
 Dynamic outbreak units are also spawned from the selected outbreak state with an explicit owner, rather than from an ambiguous post-creation country scope.
 
@@ -479,11 +481,48 @@ Shared league tuning lives in `common/script_constants/zombie_constants.txt` und
 Exposed values include:
 
 - manual formation thresholds
+- low-threat join reluctance thresholds
 - emergency chaos and division thresholds
-- continent-scale control thresholds by continent
+- continent-scale control thresholds for Europe, Africa, and Asia
 - leave and disband pressure limits
 - investment contribution values for majors and minors
 - maximum investment cap used for tier synchronization
+
+Current formation and join behavior:
+
+- the League can be formed a bit earlier than before
+- only countries that pass `uses_normal_civilian_systems = yes` can lead or join it
+- if total live zombie strength is still below `650` divisions, AI countries are much less willing to join
+- the one-time `chaosx.nr2.7` formation invitation now only goes to countries that are actually pressured by the threat, not to every technically eligible country on the map
+- the faction joining rule itself now uses that same pressure gate, so countries cannot bypass the tuned invitation logic by silently joining through the faction-rule layer
+- major democracies no longer get an automatic far-away early-entry carve-out; they still come in early when the threat is regional, continental, or truly global
+- countries now evaluate proximity much more aggressively, so wars with zombies, direct borders, nearby fronts, and same-continent outbreak presence matter far more than before
+- countries on other continents are now blocked from joining unless the outbreak has become a true global emergency
+- same-continent countries without an actual front threat are only weakly inclined to join, so expansion should remain gradual instead of becoming instantly global
+- countries with no meaningful regional zombie threat are now strongly biased toward delaying or refusing unless the outbreak has become a true global emergency
+- if there is no live main `ZZZ` outbreak on the map, countries stop joining or rejoining the League and the alliance begins to decay through member exits instead
+- countries that leave during that no-main-outbreak decay are now marked separately and do not cycle back into the League while the alliance shell still exists
+- continent-level emergency pressure only counts Europe, Africa, and Asia
+- Arabia / `middle_east` no longer counts as its own AZL continent pressure bucket
+- the League can also be dismantled earlier once zombies are reduced to either:
+  - fewer than `10` divisions total in practice, or
+  - a situation where no Anti-Zombie League member still has a land border with any zombie country
+
+That means large overseas zombie realms do not automatically keep the League alive on their own.
+If zombies are stranded on islands or overseas landmasses and no AZL member actually borders them by land, the alliance can wind down.
+If even one AZL member still directly borders zombie territory, the League stays relevant and should not fully disband yet.
+
+When that distant-front state happens, the League no longer relies only on the leader's manual disband decision.
+Instead, a weekly AZL review now asks current members whether they want to stay in the alliance:
+
+- most countries leave
+- major democracies are biased toward staying
+- the leader is not asked to leave through this flow
+- countries that leave through this distant-front review do not use the normal join decision anymore
+- countries that leave because there is no live main outbreak also stop using the rejoin path entirely for that league instance
+
+Those former members can be pulled back only by a renewed crisis.
+If the main outbreak opens a fresh continental front and actually borders an AZL member on a continent it had not previously reached, former members receive a separate rejoin event and may return to the League through that event.
 
 #### League assets
 
@@ -504,10 +543,14 @@ The main continuity logic sits in `on_capitulation`.
 
 1. `ZZZ` removes its cores.
 2. If the outbreak is active and not disabled, `global.zombie_main_capitulation_count` increases by 1.
-3. The outbreak system is disabled immediately.
-4. No dynamic successor is promoted back into `ZZZ`.
+3. The outbreak checks how long the current main-horde life lasted since the last main restoration.
+4. Collapse `1` is only treated as survivable if it happened within `180` days of the outbreak appearing.
+5. Collapse `2` is only treated as survivable if it happened within `90` days of the restored outbreak appearing.
+6. Collapse `3` always shuts the system down.
 
-This means the main zombie country is now the hard anchor of the outbreak system. Once `ZZZ` falls, spontaneous continuation stops at once even if splinter zombie countries are still alive on the map.
+This means the main zombie country can collapse multiple times without ending the mechanic outright, but only if those first two collapses were rapid suppressions of a freshly restored main horde.
+
+When a surviving normal dynamic outbreak is chosen as the successor, `ZZZ` now inherits it through annexation. That means the main outbreak keeps the `ZZZ` tag while taking over the successor's owned territory, divisions, and capital, instead of manually transferring states first and risking partial handoffs.
 
 #### Dormant main-horde recovery
 
@@ -521,12 +564,16 @@ Instead, the selected outbreak state is transferred straight back to `ZZZ`, whic
 - spawns its starter zombie divisions from the recovered state
 - resumes acting as the main outbreak country
 
-That fallback only matters while `ZZZ` is still alive. Once the main horde has capitulated, the system is shut down before any later dormant recovery can occur.
+That fallback matters until the shutdown limit is reached. If the main horde is wiped out early, later rear-outbreak rolls can still restore `ZZZ` so the crisis continues.
 
 #### Outbreak slowdown after each main collapse
 
 Before shutdown, both the actual MTTH and the displayed outbreak-risk calculation can still react to `global.zombie_main_capitulation_count`.
-In practice, the count now mainly serves as bookkeeping for how many times the main horde has collapsed before the system was shut down.
+The count now directly governs continuity:
+
+- collapse `1`: system remains active only if it happened within `180` days
+- collapse `2`: system remains active only if it happened within `90` days
+- collapse `3`: `disable_zombie_outbreak_system` fires
 
 ### 7.1 Prevention-decision AI gating
 
@@ -581,8 +628,39 @@ When that happens, `on_zombie_threat_defeated`:
 - shows super-event slot `5`
 - reduces the global chaos meter by `constant:zombie_threat.defeat_chaos_reduction`
 - writes a chaos-history entry for the zombie threat being eradicated
+- snapshots the campaign's peak zombie strength and recorded dead
+- can activate a permanent postwar survivor order if the zombie war was large and costly enough
 
 If `ZZZ` itself is the last zombie polity on the map when it capitulates, this final defeat condition is met immediately and the super event fires on that same collapse.
+
+If the Anti-Zombie League still exists at that point, it is dismantled automatically through the same shared teardown used by the manual disband decision:
+
+- the faction is broken up
+- membership ideas and doctrine are removed
+- `cure_sharing` is cleaned up
+- the AZL leader/event-target bookkeeping is cleared
+- the zombie world-threat source is refreshed back to its post-defeat state
+
+### 8.2 Postwar survivor order: `chaosx.nr2.12` and `chaosx.nr2.13`
+
+If the zombie campaign lasted long enough and cost enough lives, the defeat flow now creates a lasting postwar settlement rather than ending as a pure cleanup.
+
+Current activation thresholds:
+
+- peak zombie strength reached at least `200` divisions
+- the campaign lasted at least `365` days
+- recorded zombie-side war dead plus recorded civilian deaths under zombie occupation reached at least `250000`
+
+When that happens:
+
+- `zombie_postwar_order_active` is set
+- all normal non-zombie countries gain `zombie_postwar_global_vigilance`
+- those same countries join the `zombie_postwar_research_compact` tech-sharing group for engineering, construction, electronics, and biowarfare work
+- every country marked with `was_ever_at_war_with_zombies` receives `chaosx.nr2.12`
+
+`chaosx.nr2.12` announces the survivor compact and shows the recorded zombie-war dead.
+
+`chaosx.nr2.13` is the annual remembrance event. It repeats every `365` days for countries that were ever at war with zombies and grants `10` political power each year.
 
 ### 9. World-end branches: `chaosx.nr2.8`, `chaosx.nr2.9`, and `chaosx.nr2.11`
 
@@ -594,7 +672,6 @@ Requirements:
 
 - zombie outbreak active
 - chaos tier 5
-- Anti-Zombie League formed
 - no other `world_end`
 - system not disabled
 - `ZZZ` has more than 300 divisions
@@ -605,6 +682,15 @@ Effects:
 - shows super-event slot `3`
 - sets `world_end`
 - sets `world_end_zombies`
+- if `ZZZ` has no neighboring normal countries when the world-end branch fires, it immediately creates coastal breakout beachheads
+
+Current coastal breakout tuning:
+
+- only active for `world_end_zombies`
+- only used when `ZZZ` has no neighboring country that uses normal civilian systems
+- picks `3` random coastal states that are not one-state islands and are still held by normal countries
+- transfers those states to `ZZZ`
+- spawns `24` `Brainzz Horde` divisions in each breakout state
 
 #### `chaosx.nr2.9`: fallout
 
@@ -735,6 +821,7 @@ Special countries currently covered:
 - `ZZZ`
 - all dynamic zombie countries with `zombie_outbreak_dynamic_country`
 - `ZIN`
+- `THR` / countries using the Holy Realm cosmetic tag
 
 Practical effect:
 
@@ -758,10 +845,18 @@ This keeps nonstandard scenario actors out of mechanics that only make sense for
 - `azl_dissolved`
 - `super_event_visible`
 - `zombie_threat_defeated`
+- `zombie_postwar_order_active`
 
 ### Global variables
 
 - `global.zombie_main_capitulation_count`
+- `global.zombie_peak_divisions`
+- `global.zombie_peak_controlled_states`
+- `global.zombie_campaign_start_day`
+- `global.zombie_campaign_duration_days`
+- `global.zombie_campaign_zombie_dead`
+- `global.zombie_campaign_civilian_dead`
+- `global.zombie_campaign_total_dead`
 - `global.chaos_meter_value`
 - `global.azl_global_investment`
 - `global.target_level`
@@ -771,6 +866,7 @@ This keeps nonstandard scenario actors out of mechanics that only make sense for
 - `zombie_current_tier`
 - `zombie_target_tier`
 - `zombie_outbreak_dynamic_country`
+- `was_ever_at_war_with_zombies`
 
 ### Evacuation flags and variables
 
@@ -815,6 +911,14 @@ Controls:
 - very-high zombie controlled-state threshold
 - main-collapse shutdown count
 - final zombie-defeat chaos reduction
+
+### `zombie_postwar`
+
+Controls:
+
+- postwar-order activation thresholds
+- memorial timing and annual political-power reward
+- the permanent outbreak-risk slowdown from the survivor-vigilance idea
 
 ### `anti_zombie_league`
 
@@ -866,6 +970,7 @@ Existing outbreak-related assets already used by the system:
 - `GFX_report_event_merchant_ship_01`
 
 `chaosx.nr2.10` reuses `GFX_report_event_merchant_ship_01`; it does not require new event art.
+`chaosx.nr2.12` and `chaosx.nr2.13` reuse `GFX_report_event_generic_research_lab`; the postwar compact and memorial flow does not require new art or icons.
 
 ## Design Constraints and Known Heuristics
 

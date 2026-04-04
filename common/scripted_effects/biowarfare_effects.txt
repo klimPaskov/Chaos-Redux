@@ -603,6 +603,9 @@ reduce_contamination_effects = {
         }
     }
 
+	calculate_zombie_prevention_contamination_reduction = yes
+	add_to_temp_variable = { total_reduction = zombie_prevention_contamination_reduction }
+
     # Apply reduced contamination effects based on measures taken
     if = {
         limit = { check_variable = { var:total_reduction > 0 } }
@@ -644,6 +647,237 @@ reduce_contamination_effects = {
         multiply_variable = { smallpox_attrition_modifier = total_reduction_in_percentage }
         multiply_variable = { smallpox_speed_modifier = total_reduction_in_percentage }
     }
+}
+
+calculate_zombie_prevention_contamination_reduction = {
+	set_temp_variable = { zombie_prevention_contamination_reduction = 0 }
+
+	if = {
+		limit = { controller = { has_country_flag = hygiene_measures_enforced } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.hygiene }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = migration_restricted } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.migration }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = quarantine_protocols_active } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.quarantine_protocols }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = borders_completely_closed } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.borders_closed }
+	}
+
+	if = {
+		limit = { controller = { has_country_flag = extreme_martial_law_active } }
+		add_to_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.extreme_martial_law }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = zombie_prevention_contamination_reduction
+				value = constant:bio_zombie_prevention_containment.country_measure_cap
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { zombie_prevention_contamination_reduction = constant:bio_zombie_prevention_containment.country_measure_cap }
+	}
+}
+
+refresh_contaminated_state_effects_from_active_measures = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
+		set_variable = { anthrax_manpower_modifier = constant:bio_disease_modifier.anthrax.manpower }
+		set_variable = { anthrax_resources_modifier = constant:bio_disease_modifier.anthrax.resources }
+		set_variable = { anthrax_supplies_modifier = constant:bio_disease_modifier.anthrax.supplies }
+		set_variable = { anthrax_production_modifier = constant:bio_disease_modifier.anthrax.production }
+		set_variable = { anthrax_attrition_modifier = constant:bio_disease_modifier.anthrax.attrition }
+		set_variable = { anthrax_speed_modifier = constant:bio_disease_modifier.anthrax.speed }
+	}
+
+	if = {
+		limit = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
+		set_variable = { plague_manpower_modifier = constant:bio_disease_modifier.plague.manpower }
+		set_variable = { plague_resources_modifier = constant:bio_disease_modifier.plague.resources }
+		set_variable = { plague_supplies_modifier = constant:bio_disease_modifier.plague.supplies }
+		set_variable = { plague_production_modifier = constant:bio_disease_modifier.plague.production }
+		set_variable = { plague_attrition_modifier = constant:bio_disease_modifier.plague.attrition }
+		set_variable = { plague_speed_modifier = constant:bio_disease_modifier.plague.speed }
+	}
+
+	if = {
+		limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+		set_variable = { tularemia_manpower_modifier = constant:bio_disease_modifier.tularemia.manpower }
+		set_variable = { tularemia_resources_modifier = constant:bio_disease_modifier.tularemia.resources }
+		set_variable = { tularemia_supplies_modifier = constant:bio_disease_modifier.tularemia.supplies }
+		set_variable = { tularemia_production_modifier = constant:bio_disease_modifier.tularemia.production }
+		set_variable = { tularemia_attrition_modifier = constant:bio_disease_modifier.tularemia.attrition }
+		set_variable = { tularemia_speed_modifier = constant:bio_disease_modifier.tularemia.speed }
+		set_variable = { tularemia_org_modifier = constant:bio_disease_modifier.tularemia.org }
+	}
+
+	if = {
+		limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+		set_variable = { smallpox_manpower_modifier = constant:bio_disease_modifier.smallpox.manpower }
+		set_variable = { smallpox_resources_modifier = constant:bio_disease_modifier.smallpox.resources }
+		set_variable = { smallpox_supplies_modifier = constant:bio_disease_modifier.smallpox.supplies }
+		set_variable = { smallpox_production_modifier = constant:bio_disease_modifier.smallpox.production }
+		set_variable = { smallpox_attrition_modifier = constant:bio_disease_modifier.smallpox.attrition }
+		set_variable = { smallpox_speed_modifier = constant:bio_disease_modifier.smallpox.speed }
+	}
+
+	reduce_contamination_effects = yes
+	calculate_contamination_defense_effectiveness = yes
+	force_update_dynamic_modifier = yes
+}
+
+refresh_country_contamination_effects_from_active_measures = {
+	every_controlled_state = {
+		limit = {
+			OR = {
+				has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+				has_dynamic_modifier = { modifier = plague_contaminated_state }
+				has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+				has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+			}
+		}
+		refresh_contaminated_state_effects_from_active_measures = yes
+	}
+}
+
+apply_shared_hygiene_measures = {
+	if = {
+		limit = { NOT = { has_country_flag = hygiene_measures_enforced } }
+		set_country_flag = hygiene_measures_enforced
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_hygiene_measures } }
+		add_ideas = outbreak_prevention_hygiene_measures
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+revoke_shared_hygiene_measures = {
+	if = {
+		limit = { has_country_flag = hygiene_measures_enforced }
+		clr_country_flag = hygiene_measures_enforced
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_hygiene_measures }
+		remove_ideas = outbreak_prevention_hygiene_measures
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+apply_shared_migration_restrictions = {
+	if = {
+		limit = { NOT = { has_country_flag = migration_restricted } }
+		set_country_flag = migration_restricted
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_migration_restricted } }
+		add_ideas = outbreak_prevention_migration_restricted
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+revoke_shared_migration_restrictions = {
+	if = {
+		limit = { has_country_flag = migration_restricted }
+		clr_country_flag = migration_restricted
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_migration_restricted }
+		remove_ideas = outbreak_prevention_migration_restricted
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+apply_shared_quarantine_protocols = {
+	if = {
+		limit = { NOT = { has_country_flag = quarantine_protocols_active } }
+		set_country_flag = quarantine_protocols_active
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_quarantine_protocols } }
+		add_ideas = outbreak_prevention_quarantine_protocols
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+revoke_shared_quarantine_protocols = {
+	if = {
+		limit = { has_country_flag = quarantine_protocols_active }
+		clr_country_flag = quarantine_protocols_active
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_quarantine_protocols }
+		remove_ideas = outbreak_prevention_quarantine_protocols
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+apply_shared_closed_borders = {
+	if = {
+		limit = { NOT = { has_country_flag = borders_completely_closed } }
+		set_country_flag = borders_completely_closed
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_borders_closed } }
+		add_ideas = outbreak_prevention_borders_closed
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+reopen_shared_borders = {
+	if = {
+		limit = { has_country_flag = borders_completely_closed }
+		clr_country_flag = borders_completely_closed
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_borders_closed }
+		remove_ideas = outbreak_prevention_borders_closed
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+apply_shared_extreme_martial_law = {
+	if = {
+		limit = { NOT = { has_country_flag = extreme_martial_law_active } }
+		set_country_flag = extreme_martial_law_active
+	}
+	if = {
+		limit = { NOT = { has_idea = outbreak_prevention_extreme_martial_law } }
+		add_ideas = outbreak_prevention_extreme_martial_law
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
+}
+
+revoke_shared_extreme_martial_law = {
+	if = {
+		limit = { has_country_flag = extreme_martial_law_active }
+		clr_country_flag = extreme_martial_law_active
+	}
+	if = {
+		limit = { has_idea = outbreak_prevention_extreme_martial_law }
+		remove_ideas = outbreak_prevention_extreme_martial_law
+	}
+	calculate_zombie_outbreak_chance = yes
+	refresh_country_contamination_effects_from_active_measures = yes
 }
 
 # ==================== BIOWEAPON CLEANUP AND MAINTENANCE EFFECTS ====================
@@ -1068,6 +1302,9 @@ calculate_contamination_defense_effectiveness = {
             add_to_temp_variable = { total_effectiveness = smallpox_vaccination_protection_effectiveness }
         }
     }
+
+	calculate_zombie_prevention_contamination_reduction = yes
+	add_to_temp_variable = { total_effectiveness = zombie_prevention_contamination_reduction }
 
     # Store the result as a variable for use in triggers
     set_variable = { contamination_defense_effectiveness = total_effectiveness }

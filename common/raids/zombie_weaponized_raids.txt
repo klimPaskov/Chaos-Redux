@@ -7,6 +7,7 @@ types = {
 	weaponized_zombie_strike_low = {
 		days_to_prepare = 10
 		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
 
@@ -26,47 +27,19 @@ types = {
 			}
 		}
 
-		allowed = { }
+		allowed = {
+			has_country_flag = weaponized_zombie_raid_success_low
+		}
 		visible = {
 			has_country_flag = weaponized_zombies_completed
-			check_variable = { var = weaponized_zombie_infectiousness value < 2 }
+			has_country_flag = weaponized_zombie_raid_success_low
 		}
 		show_target = {
-			OR = {
-				AND = {
-					has_country_flag = weaponized_zombie_targets_zombies_only
-					var:target_state = { is_zombie_controlled_state = yes }
-					OR = {
-						tag = FROM
-						is_in_faction_with = FROM
-						has_war_with = FROM
-					}
-				}
-				AND = {
-					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
-					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
-					has_war_with = FROM
-				}
-			}
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 		available = { }
 		launchable = {
-			OR = {
-				AND = {
-					has_country_flag = weaponized_zombie_targets_zombies_only
-					var:target_state = { is_zombie_controlled_state = yes }
-					OR = {
-						tag = FROM
-						is_in_faction_with = FROM
-						has_war_with = FROM
-					}
-				}
-				AND = {
-					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
-					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
-					has_war_with = FROM
-				}
-			}
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 
 		launch_sound = raid_launch_nuclear_strike
@@ -188,51 +161,23 @@ types = {
 	weaponized_zombie_strike_medium = {
 		days_to_prepare = 10
 		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
 		ai_will_do = { base = 1 }
-		allowed = { }
+		allowed = {
+			has_country_flag = weaponized_zombie_raid_success_medium
+		}
 		visible = {
 			has_country_flag = weaponized_zombies_completed
-			check_variable = { var = weaponized_zombie_infectiousness value > 1 }
-			check_variable = { var = weaponized_zombie_infectiousness value < 3 }
+			has_country_flag = weaponized_zombie_raid_success_medium
 		}
 		show_target = {
-			OR = {
-				AND = {
-					has_country_flag = weaponized_zombie_targets_zombies_only
-					var:target_state = { is_zombie_controlled_state = yes }
-					OR = {
-						tag = FROM
-						is_in_faction_with = FROM
-						has_war_with = FROM
-					}
-				}
-				AND = {
-					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
-					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
-					has_war_with = FROM
-				}
-			}
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 		available = { }
 		launchable = {
-			OR = {
-				AND = {
-					has_country_flag = weaponized_zombie_targets_zombies_only
-					var:target_state = { is_zombie_controlled_state = yes }
-					OR = {
-						tag = FROM
-						is_in_faction_with = FROM
-						has_war_with = FROM
-					}
-				}
-				AND = {
-					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
-					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
-					has_war_with = FROM
-				}
-			}
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }
@@ -323,54 +268,23 @@ types = {
 	weaponized_zombie_strike_high = {
 		days_to_prepare = 10
 		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
 		ai_will_do = { base = 1 }
-		allowed = { }
+		allowed = {
+			has_country_flag = weaponized_zombie_raid_success_high
+		}
 		visible = {
 			has_country_flag = weaponized_zombies_completed
-			check_variable = {
-				var = weaponized_zombie_infectiousness
-				value = 2
-				compare = greater_than
-			}
+			has_country_flag = weaponized_zombie_raid_success_high
 		}
 		show_target = {
-			OR = {
-				AND = {
-					has_country_flag = weaponized_zombie_targets_zombies_only
-					var:target_state = { is_zombie_controlled_state = yes }
-					OR = {
-						tag = FROM
-						is_in_faction_with = FROM
-						has_war_with = FROM
-					}
-				}
-				AND = {
-					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
-					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
-					has_war_with = FROM
-				}
-			}
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 		available = { }
 		launchable = {
-			OR = {
-				AND = {
-					has_country_flag = weaponized_zombie_targets_zombies_only
-					var:target_state = { is_zombie_controlled_state = yes }
-					OR = {
-						tag = FROM
-						is_in_faction_with = FROM
-						has_war_with = FROM
-					}
-				}
-				AND = {
-					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
-					var:target_state = { NOT = { is_zombie_controlled_state = yes } }
-					has_war_with = FROM
-				}
-			}
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }

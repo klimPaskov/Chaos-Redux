@@ -20,7 +20,7 @@ weaponize_the_zombies = {
 
 	icon = GFX_sp_weaponize_the_zombies
 
-	prototype_time = sp_time.prototype.very_long
+	prototype_time = sp_time.prototype.short
 
 	resource_cost = {
 		resources = {
@@ -31,16 +31,10 @@ weaponize_the_zombies = {
 		}
 	}
 
-	complexity = sp_complexity.medium
+	complexity = sp_complexity.weaponized_zombies
 
 	empty_reward_weight = {
 		base = 0
-		modifier = {
-			add = 1
-			FROM = {
-				has_country_flag = weaponized_zombie_step_forbidden_done
-			}
-		}
 	}
 
 	ai_will_do = {
@@ -81,12 +75,13 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					NOT = { has_country_flag = weaponized_zombie_step_acquisition_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_acquisition_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_acquisition_extract
@@ -94,8 +89,9 @@ weaponize_the_zombies = {
 
 				iteration_output = {
 					country_effects = {
-						initialize_weaponized_zombie_tracking = yes
+						reset_weaponized_zombie_project_tracking = yes
 						set_country_flag = weaponized_zombie_step_acquisition_done
+						FROM = { set_project_flag = weaponized_zombie_step_acquisition_done }
 						custom_effect_tooltip = weaponized_zombie_acquisition_tt
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
@@ -115,13 +111,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_acquisition_done
-					NOT = { has_country_flag = weaponized_zombie_step_nature_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_acquisition_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_nature_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_nature_neurobiological
@@ -129,6 +129,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_nature_done
+						FROM = { set_project_flag = weaponized_zombie_step_nature_done }
 						clr_country_flag = weaponized_zombie_nature_rage
 						clr_country_flag = weaponized_zombie_nature_parasitic
 						clr_country_flag = weaponized_zombie_nature_necrotic
@@ -151,6 +152,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_nature_done
+						FROM = { set_project_flag = weaponized_zombie_step_nature_done }
 						clr_country_flag = weaponized_zombie_nature_neurobiological
 						clr_country_flag = weaponized_zombie_nature_parasitic
 						clr_country_flag = weaponized_zombie_nature_necrotic
@@ -173,6 +175,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_nature_done
+						FROM = { set_project_flag = weaponized_zombie_step_nature_done }
 						clr_country_flag = weaponized_zombie_nature_neurobiological
 						clr_country_flag = weaponized_zombie_nature_rage
 						clr_country_flag = weaponized_zombie_nature_necrotic
@@ -195,6 +198,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_nature_done
+						FROM = { set_project_flag = weaponized_zombie_step_nature_done }
 						clr_country_flag = weaponized_zombie_nature_neurobiological
 						clr_country_flag = weaponized_zombie_nature_rage
 						clr_country_flag = weaponized_zombie_nature_parasitic
@@ -217,6 +221,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_nature_done
+						FROM = { set_project_flag = weaponized_zombie_step_nature_done }
 						clr_country_flag = weaponized_zombie_nature_neurobiological
 						clr_country_flag = weaponized_zombie_nature_rage
 						clr_country_flag = weaponized_zombie_nature_parasitic
@@ -241,19 +246,24 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_nature_done
-					NOT = { has_country_flag = weaponized_zombie_step_life_state_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_nature_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_life_state_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_life_state_dead
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_life_state_done
+						FROM = { set_project_flag = weaponized_zombie_step_life_state_done }
 						clr_country_flag = weaponized_zombie_life_alive
 						clr_country_flag = weaponized_zombie_life_fragmented
 						clr_country_flag = weaponized_zombie_life_transformed
@@ -267,6 +277,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_life_state_done
+						FROM = { set_project_flag = weaponized_zombie_step_life_state_done }
 						clr_country_flag = weaponized_zombie_life_dead
 						clr_country_flag = weaponized_zombie_life_fragmented
 						clr_country_flag = weaponized_zombie_life_transformed
@@ -279,6 +290,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_life_state_done
+						FROM = { set_project_flag = weaponized_zombie_step_life_state_done }
 						clr_country_flag = weaponized_zombie_life_dead
 						clr_country_flag = weaponized_zombie_life_alive
 						clr_country_flag = weaponized_zombie_life_transformed
@@ -291,6 +303,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_life_state_done
+						FROM = { set_project_flag = weaponized_zombie_step_life_state_done }
 						clr_country_flag = weaponized_zombie_life_dead
 						clr_country_flag = weaponized_zombie_life_alive
 						clr_country_flag = weaponized_zombie_life_fragmented
@@ -305,13 +318,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_resources_done
-					NOT = { has_country_flag = weaponized_zombie_step_strength_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_resources_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_strength_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_strength_mild
@@ -319,6 +336,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_strength_done
+						FROM = { set_project_flag = weaponized_zombie_step_strength_done }
 						set_temp_variable = { wz_delta_strength = 1 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -336,6 +354,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_strength_done
+						FROM = { set_project_flag = weaponized_zombie_step_strength_done }
 						set_temp_variable = { wz_delta_strength = 2 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -353,6 +372,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_strength_done
+						FROM = { set_project_flag = weaponized_zombie_step_strength_done }
 						set_temp_variable = { wz_delta_strength = 3 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -371,13 +391,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_strength_done
-					NOT = { has_country_flag = weaponized_zombie_step_infectiousness_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_strength_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_infectiousness_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_infectiousness_mild
@@ -385,6 +409,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_infectiousness_done
+						FROM = { set_project_flag = weaponized_zombie_step_infectiousness_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 1 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -402,6 +427,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_infectiousness_done
+						FROM = { set_project_flag = weaponized_zombie_step_infectiousness_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 2 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -419,6 +445,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_infectiousness_done
+						FROM = { set_project_flag = weaponized_zombie_step_infectiousness_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 3 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -437,13 +464,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_infectiousness_done
-					NOT = { has_country_flag = weaponized_zombie_step_speed_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_infectiousness_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_speed_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_speed_mild
@@ -451,6 +482,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_speed_done
+						FROM = { set_project_flag = weaponized_zombie_step_speed_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 1 }
@@ -468,6 +500,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_speed_done
+						FROM = { set_project_flag = weaponized_zombie_step_speed_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 2 }
@@ -485,6 +518,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_speed_done
+						FROM = { set_project_flag = weaponized_zombie_step_speed_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 3 }
@@ -503,13 +537,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_speed_done
-					NOT = { has_country_flag = weaponized_zombie_step_durability_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_speed_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_durability_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_durability_mild
@@ -517,6 +555,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_durability_done
+						FROM = { set_project_flag = weaponized_zombie_step_durability_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -534,6 +573,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_durability_done
+						FROM = { set_project_flag = weaponized_zombie_step_durability_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -551,6 +591,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_durability_done
+						FROM = { set_project_flag = weaponized_zombie_step_durability_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -569,13 +610,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_durability_done
-					NOT = { has_country_flag = weaponized_zombie_step_cure_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_durability_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_cure_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_cure_mild
@@ -583,6 +628,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_cure_done
+						FROM = { set_project_flag = weaponized_zombie_step_cure_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -600,6 +646,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_cure_done
+						FROM = { set_project_flag = weaponized_zombie_step_cure_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -617,6 +664,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_cure_done
+						FROM = { set_project_flag = weaponized_zombie_step_cure_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
@@ -635,13 +683,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_cure_done
-					NOT = { has_country_flag = weaponized_zombie_step_friendliness_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_cure_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_friendliness_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_friendliness_mild
@@ -649,12 +701,13 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_friendliness_done
+						FROM = { set_project_flag = weaponized_zombie_step_friendliness_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
 						set_temp_variable = { wz_delta_durability = 0 }
 						set_temp_variable = { wz_delta_cure_resistance = 0 }
-						set_temp_variable = { wz_delta_friendliness = 1 }
+						set_temp_variable = { wz_delta_friendliness = 0 }
 						set_temp_variable = { wz_delta_subjects = 0 }
 						set_temp_variable = { wz_delta_accident_risk = 0.05 }
 						weaponized_zombie_apply_profile_delta = yes
@@ -666,12 +719,13 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_friendliness_done
+						FROM = { set_project_flag = weaponized_zombie_step_friendliness_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
 						set_temp_variable = { wz_delta_durability = 0 }
 						set_temp_variable = { wz_delta_cure_resistance = 0 }
-						set_temp_variable = { wz_delta_friendliness = 2 }
+						set_temp_variable = { wz_delta_friendliness = 1 }
 						set_temp_variable = { wz_delta_subjects = 0 }
 						set_temp_variable = { wz_delta_accident_risk = 0.10 }
 						weaponized_zombie_apply_profile_delta = yes
@@ -683,12 +737,13 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_friendliness_done
+						FROM = { set_project_flag = weaponized_zombie_step_friendliness_done }
 						set_temp_variable = { wz_delta_strength = 0 }
 						set_temp_variable = { wz_delta_infectiousness = 0 }
 						set_temp_variable = { wz_delta_speed = 0 }
 						set_temp_variable = { wz_delta_durability = 0 }
 						set_temp_variable = { wz_delta_cure_resistance = 0 }
-						set_temp_variable = { wz_delta_friendliness = 3 }
+						set_temp_variable = { wz_delta_friendliness = 2 }
 						set_temp_variable = { wz_delta_subjects = 0 }
 						set_temp_variable = { wz_delta_accident_risk = 0.15 }
 						weaponized_zombie_apply_profile_delta = yes
@@ -701,13 +756,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_life_state_done
-					NOT = { has_country_flag = weaponized_zombie_step_trials_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_life_state_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_trials_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_trials_approve
@@ -715,6 +774,7 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_trials_done
+						FROM = { set_project_flag = weaponized_zombie_step_trials_done }
 						custom_effect_tooltip = weaponized_zombie_trials_tt
 						add_manpower = constant:weaponized_zombies.manpower_sacrifice_negative
 						set_temp_variable = { wz_delta_strength = 0 }
@@ -735,13 +795,17 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_trials_done
-					NOT = { has_country_flag = weaponized_zombie_step_resources_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_trials_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_resources_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_resources_minimal
@@ -749,11 +813,13 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_resources_done
+						FROM = { set_project_flag = weaponized_zombie_step_resources_done }
 						clr_country_flag = weaponized_zombie_resource_expanded
 						clr_country_flag = weaponized_zombie_resource_maximum
 						set_country_flag = weaponized_zombie_resource_minimal
 						custom_effect_tooltip = weaponized_zombie_resources_minimal_tt
-						add_to_variable = { weaponized_zombie_accident_risk = 0.05 }
+						add_to_variable = { weaponized_zombie_accident_risk = 0.02 }
+						FROM = { add_project_progress_ratio = -0.02 }
 					}
 				}
 			}
@@ -762,11 +828,13 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_resources_done
+						FROM = { set_project_flag = weaponized_zombie_step_resources_done }
 						clr_country_flag = weaponized_zombie_resource_minimal
 						clr_country_flag = weaponized_zombie_resource_maximum
 						set_country_flag = weaponized_zombie_resource_expanded
 						custom_effect_tooltip = weaponized_zombie_resources_expanded_tt
-						add_to_variable = { weaponized_zombie_accident_risk = 0.20 }
+						add_to_variable = { weaponized_zombie_accident_risk = 0.05 }
+						FROM = { add_project_progress_ratio = 0.02 }
 					}
 				}
 			}
@@ -775,11 +843,13 @@ weaponize_the_zombies = {
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_resources_done
+						FROM = { set_project_flag = weaponized_zombie_step_resources_done }
 						clr_country_flag = weaponized_zombie_resource_minimal
 						clr_country_flag = weaponized_zombie_resource_expanded
 						set_country_flag = weaponized_zombie_resource_maximum
 						custom_effect_tooltip = weaponized_zombie_resources_maximum_tt
-						add_to_variable = { weaponized_zombie_accident_risk = 0.40 }
+						add_to_variable = { weaponized_zombie_accident_risk = 0.15 }
+						FROM = { add_project_progress_ratio = 0.04 }
 					}
 				}
 			}
@@ -789,31 +859,79 @@ weaponize_the_zombies = {
 			icon = GFX_PLACEHOLDER_sp_project_picture
 			fire_only_once = yes
 			threshold = { min = 0 max = 1000 }
-			allowed = {
-				FROM = {
-					has_country_flag = weaponized_zombie_step_friendliness_done
-					NOT = { has_country_flag = weaponized_zombie_step_field_test_done }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_friendliness_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_field_test_done
 				}
 			}
-			weight = { base = 100 }
 
 			option = {
 				token = sp_weaponized_zombie_reward_field_test_conduct
-				default = yes
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_field_test_done
-						custom_effect_tooltip = weaponized_zombie_field_test_tt
-						conduct_weaponized_zombie_field_test = yes
+						FROM = { set_project_flag = weaponized_zombie_step_field_test_done }
+						hidden_effect = {
+							prepare_weaponized_zombie_field_test_target = yes
+						}
+						custom_effect_tooltip = weaponized_zombie_field_test_location_tt
+						hidden_effect = {
+							conduct_weaponized_zombie_field_test = yes
+							FROM = { add_project_progress_ratio = 0.04 }
+						}
 					}
 				}
 			}
 			option = {
 				token = sp_weaponized_zombie_reward_field_test_skip
+				default = yes
 				iteration_output = {
 					country_effects = {
 						set_country_flag = weaponized_zombie_step_field_test_done
+						FROM = { set_project_flag = weaponized_zombie_step_field_test_done }
 						custom_effect_tooltip = weaponized_zombie_field_test_skip_tt
+						FROM = { add_project_progress_ratio = -0.02 }
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_refinement = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_field_test_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_refinement_done
+				}
+			}
+
+			option = {
+				token = sp_weaponized_zombie_reward_refinement_analyze
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_refinement_done
+						FROM = { set_project_flag = weaponized_zombie_step_refinement_done }
+						custom_effect_tooltip = weaponized_zombie_refinement_tt
+						add_to_variable = { weaponized_zombie_accident_risk = -0.05 }
+						if = {
+							limit = { check_variable = { weaponized_zombie_accident_risk < 0 } }
+							set_variable = { weaponized_zombie_accident_risk = 0 }
+						}
+						FROM = { add_project_progress_ratio = 0.02 }
 					}
 				}
 			}
@@ -825,19 +943,53 @@ weaponize_the_zombies = {
 			threshold = { min = 0 max = 1000 }
 			allowed = {
 				FROM = {
-					has_country_flag = weaponized_zombie_step_field_test_done
-					NOT = { has_country_flag = weaponized_zombie_step_forbidden_done }
+					has_country_flag = weaponized_zombie_nature_demonic
+					OR = {
+						has_country_flag = weaponized_zombie_life_dead
+						has_country_flag = weaponized_zombie_life_transformed
+					}
+					check_variable = {
+						var = weaponized_zombie_mutation_extremes
+						value = 4
+						compare = greater_than_or_equals
+					}
 				}
 			}
-			weight = { base = 100 }
+			weight = {
+				base = 5
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_field_test_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_refinement_done
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_forbidden_done
+				}
+				modifier = {
+					factor = 200
+					check_variable = {
+						var = weaponized_zombie_mutation_extremes
+						value = 5
+						compare = greater_than_or_equals
+					}
+				}
+			}
 
 			option = {
 				token = sp_weaponized_zombie_reward_forbidden_caution
 				default = yes
 				iteration_output = {
 					country_effects = {
+						set_country_flag = weaponized_zombie_step_refinement_done
 						set_country_flag = weaponized_zombie_step_forbidden_done
+						FROM = { set_project_flag = weaponized_zombie_step_refinement_done }
+						FROM = { set_project_flag = weaponized_zombie_step_forbidden_done }
 						custom_effect_tooltip = weaponized_zombie_forbidden_caution_tt
+						FROM = { add_project_progress_ratio = -0.02 }
 					}
 				}
 			}
@@ -845,14 +997,72 @@ weaponize_the_zombies = {
 				token = sp_weaponized_zombie_reward_forbidden_pursue
 				iteration_output = {
 					country_effects = {
+						set_country_flag = weaponized_zombie_step_refinement_done
 						set_country_flag = weaponized_zombie_step_forbidden_done
+						FROM = { set_project_flag = weaponized_zombie_step_refinement_done }
+						FROM = { set_project_flag = weaponized_zombie_step_forbidden_done }
 						custom_effect_tooltip = weaponized_zombie_forbidden_pursue_tt
 						set_country_flag = weaponized_zombie_forbidden_branch
 						add_to_variable = { weaponized_zombie_accident_risk = 0.30 }
+						FROM = { add_project_progress_ratio = 0.02 }
 					}
 				}
 			}
 		}
+
+		sp_weaponized_zombie_reward_deployment = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = yes
+			threshold = { min = 0 max = 1000 }
+			weight = {
+				base = 100
+				modifier = {
+					factor = 0
+					NOT = { has_project_flag = weaponized_zombie_step_refinement_done }
+				}
+				modifier = {
+					factor = 0
+					has_project_flag = weaponized_zombie_step_deployment_done
+				}
+			}
+
+			option = {
+				token = sp_weaponized_zombie_reward_deployment_finalize
+				default = yes
+				iteration_output = {
+					country_effects = {
+						set_country_flag = weaponized_zombie_step_deployment_done
+						FROM = { set_project_flag = weaponized_zombie_step_deployment_done }
+						custom_effect_tooltip = weaponized_zombie_deployment_tt
+						FROM = { add_project_progress_ratio = 0.06 }
+					}
+				}
+			}
+		}
+
+		sp_weaponized_zombie_reward_filler = {
+			icon = GFX_PLACEHOLDER_sp_project_picture
+			fire_only_once = no
+			threshold = { min = 0 max = 1000 }
+			weight = {
+				base = 0
+				modifier = {
+					add = 100
+					has_project_flag = weaponized_zombie_step_deployment_done
+				}
+			}
+
+			option = {
+				token = sp_biowarfare_generic_reward_option_major_breakthrough
+				default = yes
+				iteration_output = {
+					country_effects = {
+						FROM = { add_project_progress_ratio = constant:sp_progress.gain.low }
+					}
+				}
+			}
+		}
+
 	}
 
 }

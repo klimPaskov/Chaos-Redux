@@ -26,11 +26,25 @@ azl_joining_rule_human_survivors_only = {
 	}
 
 	trigger = {
-		can_join_anti_zombie_league = yes
+		should_consider_joining_anti_zombie_league = yes
 	}
 
 	ai_will_do = {
-		base = 1
+		base = 0.1
+
+		modifier = {
+			factor = 8
+			has_regional_zombie_threat = yes
+		}
+		modifier = {
+			factor = 4
+			has_same_continent_zombie_presence = yes
+			NOT = { zombie_threat_below_serious_join_threshold = yes }
+		}
+		modifier = {
+			factor = 6
+			zombie_threat_is_global_emergency = yes
+		}
 	}
 }
 

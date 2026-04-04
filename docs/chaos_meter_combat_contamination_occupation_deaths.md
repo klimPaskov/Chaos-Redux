@@ -18,23 +18,29 @@ Combat now generates civilian deaths while fighting is active.
 
 Behavior:
 
-1. The system checks army leaders that currently have offensive units in combat.
-2. It picks a random enemy frontline state where that leader is actively fighting.
-3. It applies a state-population-based civilian death loss there.
-4. The trigger itself is random, so democratic countries only cause this rarely while harsher regimes do it much more often.
-5. The death rate is ideology-based:
+1. The system now starts from each country's real daily military casualty increase, using the existing deaths tracker instead of army-leader combat scope.
+2. If that country is at war, it converts part of that daily casualty delta into civilian collateral pressure using ideology, `chaos_warfare`, and chaos-tier scaling.
+3. It resolves valid enemy frontline states directly by iterating enemy-controlled states that border the source country's currently controlled territory, and only keeps states that still have population to lose.
+4. The collateral total is split across every valid frontline state instead of only one random state, so all affected frontier states on that front can register deaths on the same day.
+5. Each frontline state first gets a dynamic distribution weight from density, population, and inverse infrastructure, then the full daily collateral pool is divided across those states by their share of the total weight.
+6. The distribution pass keeps its running allocation totals in global scratch variables for the duration of the country pass, so the state loop no longer depends on fragile inline cross-scope variable reads.
+7. This means combat civilian deaths no longer depend on unit-leader state lookups or daily combat-scope edge cases; they piggyback on the military casualty stream that is already working.
+8. The death rate is ideology-based:
    - fascist: highest baseline,
    - communist: lower,
    - non-aligned: very low,
    - democratic: extremely low.
-6. If the country has `chaos_warfare`, an additional combat civilian-death rate and trigger bonus are added on top.
-7. Higher chaos tiers now scale the combat death rate upward.
+9. If the country has `chaos_warfare`, an additional combat civilian-death rate and collateral-pressure bonus are added on top.
+10. Higher chaos tiers now scale the combat death rate upward.
 
 Result:
 
 - `chaos_warfare` + ideology rates stack additively.
 - The deaths are registered as civilian and reduce state population directly.
-- This pass is now materially stronger than the previous tuning.
+- Border states are only considered once per pass, so multi-neighbor frontlines no longer get extra random-weight just from adjacency duplication.
+- Frontline states are now all eligible to take part of the same day's collateral losses instead of combat deaths concentrating into one random state.
+- The overall daily collateral pool is preserved, but denser, more populous, and less developed frontline states receive a larger share of it.
+- This pass is tied to real tracked combat losses rather than inferred leader placement, and the deaths map highlights the states that actually receive those registered civilian combat deaths through the shared state-population death pipeline.
 
 ## Contaminated-State Monthly Death Ticks
 
@@ -42,7 +48,7 @@ Monthly contaminated-state deaths are now population-percentage based instead of
 
 ### Chemical Contamination
 
-- Chemical contamination applies a very low monthly civilian death percentage.
+- Chemical contamination now applies a noticeably stronger monthly civilian death percentage than before.
 
 ### Biowarfare Outbreaks
 
@@ -74,7 +80,7 @@ Rules:
 2. Harsher laws produce higher civilian death percentages.
 3. `concentration` is the harshest and produces the highest death rate.
 
-This creates a direct death-toll consequence for repression-heavy occupation policy.
+This creates a direct death-toll consequence for repression-heavy occupation policy, and the current pass raises those occupation-law death rates substantially.
 
 ## Zombie-Controlled State Decay
 
@@ -82,7 +88,7 @@ Zombie-controlled states now use a separate long-form collapse mechanic document
 
 Summary:
 
-- `0.5%` monthly population loss for up to `36` months per state,
+- `1.4%` monthly population loss for up to `36` months per state,
 - one structural degradation pass every `180` days,
 - deaths feed the same chaos-meter pipeline under the cause `Zombie occupation collapse`.
 

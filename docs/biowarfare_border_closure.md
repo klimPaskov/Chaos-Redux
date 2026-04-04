@@ -2,7 +2,7 @@
 
 ## Overview
 
-This mechanic adds targeted border-closure decisions to `chaosx_disease_containment_category` for neighboring countries with active biowarfare outbreaks.
+This mechanic adds targeted border-closure decisions to `chaosx_disease_containment_category` for neighboring countries whose biowarfare outbreaks are close enough to threaten the border.
 
 The system is bilateral and per-target:
 - You can close the border to a specific infected neighbor.
@@ -14,11 +14,20 @@ The system is bilateral and per-target:
 1. Decision visibility:
 - The disease containment category now appears if:
   - your country has active biowarfare contamination, or
-  - any neighboring country has active biowarfare contamination.
+  - any neighboring country has a contaminated state within border-threat range.
+
+Border-threat range now means:
+
+- a contaminated state directly adjacent to one of your controlled states, or
+- a contaminated state that is exactly one state behind the border, where the intermediate state is adjacent to you and the contaminated state itself is not.
+
+Result:
+
+- remote outbreaks deep inside a neighboring country no longer create border-closure pressure by themselves.
 
 2. Close border decision:
 - Targeted to `neighbors`.
-- Only shown for neighbors that currently have active outbreak contamination.
+- Only shown for neighbors with a border-proximate outbreak threat.
 - On completion:
   - applies a relation-rule override with `can_access_market = no` toward the selected target,
   - applies a relation-rule override with `can_send_volunteers = no` toward the selected target,
@@ -39,11 +48,14 @@ The system is bilateral and per-target:
 
 ## Scripted Reuse Added
 
-Added scripted triggers in `common/scripted_triggers/chaosx_scripted_triggers.txt`:
+Added scripted triggers in `common/scripted_triggers/cbw_triggers.txt`:
 - `has_active_biowarfare_outbreak`
 - `has_neighbor_with_active_biowarfare_outbreak`
+- `has_biowarfare_outbreak_in_border_proximity_from`
+- `has_smallpox_outbreak_in_border_proximity_from`
+- `has_plague_outbreak_in_border_proximity_from`
 
-These are used by category visibility and targeted decision filtering.
+These are used by category visibility, targeted decision filtering, and AI weighting.
 
 ## Tuning Constants
 
@@ -56,16 +68,16 @@ These control both spread reduction strength and AI decision behavior.
 
 ## AI Behavior
 
-Close-border AI increases with outbreak severity in target country:
-- highest bias for smallpox,
-- then plague,
-- then anthrax/tularemia.
+Close-border AI now reacts only to nearby high-threat outbreaks:
+- highest bias for nearby smallpox,
+- then nearby plague,
+- nearby anthrax and tularemia do not cause AI border closure consideration.
 
 AI is less likely to close when:
 - opinion is high,
 - already at war with target.
 
-AI is more likely to reopen once target has no active outbreak and less likely while outbreak remains active.
+AI is more likely to reopen once the target no longer has a border-proximate outbreak and less likely while that nearby threat remains active.
 
 ## Icons Needed
 

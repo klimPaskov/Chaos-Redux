@@ -1,10 +1,11 @@
 chaosx_communism_fight_category = {
 
     # Political propaganda campaign against communism
-    fight_communism_propaganda = {
-        icon = GFX_decision_generic_speech
-        cost = 25
-        days_remove = 30
+	fight_communism_propaganda = {
+		icon = GFX_decision_generic_speech
+		cost = 25
+		days_remove = 30
+		days_re_enable = constant:communism_spread_timing.propaganda_reenable_days
 
         available = {
             hidden_trigger = { has_political_power > 24 }
@@ -14,13 +15,6 @@ chaosx_communism_fight_category = {
         visible = {
             has_global_flag = communism_spread
             NOT = { has_government = communism }
-            OR = {
-                has_idea = communism_spread_idea
-                has_idea = communism_spread_idea_2
-                has_idea = communism_spread_idea_3
-                has_idea = communism_spread_idea_4
-                has_idea = communism_spread_idea_5
-            }
         }
 
         ai_will_do = {
@@ -52,19 +46,22 @@ chaosx_communism_fight_category = {
             add_political_power = -25
         }
 
-        remove_effect = {
-            add_popularity = {
-                ideology = communism
-                popularity = -0.02
-            }
-            update_communism_spread_idea = yes
-        }
-    }
+		remove_effect = {
+			set_temp_variable = { communism_reduction = constant:communism_spread_reduction.propaganda }
+			multiply_temp_variable = { communism_reduction = -1 }
+			add_popularity = {
+				ideology = communism
+				popularity = var:communism_reduction
+			}
+			update_communism_spread_idea = yes
+		}
+	}
 
     # Economic incentives to counter communist appeal
-    fight_communism_economic = {
-        icon = GFX_decision_generic_consumer_goods
-        days_remove = 60
+	fight_communism_economic = {
+		icon = GFX_decision_generic_consumer_goods
+		days_remove = 60
+		days_re_enable = constant:communism_spread_timing.economic_reenable_days
 
         available = {
         }
@@ -72,13 +69,6 @@ chaosx_communism_fight_category = {
         visible = {
             has_global_flag = communism_spread
             NOT = { has_government = communism }
-            OR = {
-                has_idea = communism_spread_idea
-                has_idea = communism_spread_idea_2
-                has_idea = communism_spread_idea_3
-                has_idea = communism_spread_idea_4
-                has_idea = communism_spread_idea_5
-            }
         }
 
         ai_will_do = {
@@ -113,19 +103,22 @@ chaosx_communism_fight_category = {
             add_timed_idea = { idea = fight_communism_consumer_goods days = 60 }
         }
 
-        remove_effect = {
-            add_popularity = {
-                ideology = communism
-                popularity = -0.03
-            }
-            update_communism_spread_idea = yes
-        }
-    }
+		remove_effect = {
+			set_temp_variable = { communism_reduction = constant:communism_spread_reduction.economic }
+			multiply_temp_variable = { communism_reduction = -1 }
+			add_popularity = {
+				ideology = communism
+				popularity = var:communism_reduction
+			}
+			update_communism_spread_idea = yes
+		}
+	}
 
     # Military intervention against communist cells
-    fight_communism_military = {
-        icon = GFX_decision_generic_military
-        days_remove = 20
+	fight_communism_military = {
+		icon = GFX_decision_generic_military
+		days_remove = 20
+		days_re_enable = constant:communism_spread_timing.military_reenable_days
 
         custom_cost_trigger = {
             command_power > 24
@@ -146,12 +139,6 @@ chaosx_communism_fight_category = {
         visible = {
             has_global_flag = communism_spread
             NOT = { has_government = communism }
-            OR = {
-                has_idea = communism_spread_idea_2
-                has_idea = communism_spread_idea_3
-                has_idea = communism_spread_idea_4
-                has_idea = communism_spread_idea_5
-            }
         }
 
         ai_will_do = {
@@ -203,21 +190,45 @@ chaosx_communism_fight_category = {
             # Lower communist support = higher success chance
             # Base success chance starts at 80% when communism = 0%
             # Drops to 20% when communism = 50%+
-            set_temp_variable = { base_success_chance = 80 }
+            set_temp_variable = { base_success_chance = constant:communism_spread_military.base_success_chance }
             set_temp_variable = { communist_penalty = party_popularity@communism }
-            multiply_temp_variable = { communist_penalty = 120 } # Convert to penalty (120% penalty at 50% support)
+            multiply_temp_variable = { communist_penalty = constant:communism_spread_military.communist_penalty_scale } # Convert to penalty (120% penalty at 50% support)
             subtract_from_temp_variable = { base_success_chance = communist_penalty }
+
+			if = {
+				limit = { has_country_flag = { flag = communism_support_stage value = 3 } }
+				subtract_from_temp_variable = { base_success_chance = constant:communism_spread_military.armed_cells_success_penalty }
+			}
+			else_if = {
+				limit = { has_country_flag = { flag = communism_support_stage value = 4 } }
+				subtract_from_temp_variable = { base_success_chance = constant:communism_spread_military.parallel_soviets_success_penalty }
+			}
 
             # Ensure minimum 20% success chance
             if = {
-                limit = { check_variable = { base_success_chance < 20 } }
-                set_temp_variable = { base_success_chance = 20 }
+                limit = { check_variable = { base_success_chance < constant:communism_spread_military.min_success_chance } }
+                set_temp_variable = { base_success_chance = constant:communism_spread_military.min_success_chance }
             }
 
             # Calculate failure chances
             set_temp_variable = { partial_failure_chance = 100 }
             subtract_from_temp_variable = { partial_failure_chance = base_success_chance }
-            multiply_temp_variable = { partial_failure_chance = 0.75 } # 75% of remaining chance
+			multiply_temp_variable = { partial_failure_chance = constant:communism_spread_military.default_partial_failure_share }
+
+			if = {
+				limit = { has_country_flag = { flag = communism_support_stage value = 3 } }
+				set_temp_variable = { remaining_failure_chance = 100 }
+				subtract_from_temp_variable = { remaining_failure_chance = base_success_chance }
+				set_temp_variable = { partial_failure_chance = remaining_failure_chance }
+				multiply_temp_variable = { partial_failure_chance = constant:communism_spread_military.armed_cells_partial_failure_share }
+			}
+			else_if = {
+				limit = { has_country_flag = { flag = communism_support_stage value = 4 } }
+				set_temp_variable = { remaining_failure_chance = 100 }
+				subtract_from_temp_variable = { remaining_failure_chance = base_success_chance }
+				set_temp_variable = { partial_failure_chance = remaining_failure_chance }
+				multiply_temp_variable = { partial_failure_chance = constant:communism_spread_military.parallel_soviets_partial_failure_share }
+			}
 
             set_temp_variable = { complete_failure_chance = 100 }
             subtract_from_temp_variable = { complete_failure_chance = base_success_chance }
@@ -241,9 +252,10 @@ chaosx_communism_fight_category = {
     }
 
     # Industrial crackdown on communist-sympathizing workers
-    fight_communism_industrial = {
-        icon = GFX_decision_generic_factory
-        days_remove = 25
+	fight_communism_industrial = {
+		icon = GFX_decision_generic_factory
+		days_remove = 25
+		days_re_enable = constant:communism_spread_timing.industrial_reenable_days
 
         available = {
             any_owned_state = {
@@ -257,12 +269,6 @@ chaosx_communism_fight_category = {
         visible = {
             has_global_flag = communism_spread
             NOT = { has_government = communism }
-            OR = {
-                has_idea = communism_spread_idea_2
-                has_idea = communism_spread_idea_3
-                has_idea = communism_spread_idea_4
-                has_idea = communism_spread_idea_5
-            }
         }
 
         ai_will_do = {
@@ -309,21 +315,24 @@ chaosx_communism_fight_category = {
             }
         }
 
-        remove_effect = {
-            add_popularity = {
-                ideology = communism
-                popularity = -0.03
-            }
-            add_stability = -0.015
-            update_communism_spread_idea = yes
+		remove_effect = {
+			set_temp_variable = { communism_reduction = constant:communism_spread_reduction.industrial }
+			multiply_temp_variable = { communism_reduction = -1 }
+			add_popularity = {
+				ideology = communism
+				popularity = var:communism_reduction
+			}
+			add_stability = -0.015
+			update_communism_spread_idea = yes
         }
     }
 
     # Emergency anti-communist measures (high-tier threat response)
-    fight_communism_emergency = {
-        icon = GFX_decision_generic_protection
-        cost = 50
-        days_remove = 60
+	fight_communism_emergency = {
+		icon = GFX_decision_generic_protection
+		cost = 50
+		days_remove = 60
+		days_re_enable = constant:communism_spread_timing.emergency_reenable_days
 
         custom_cost_trigger = {
             command_power > 49
@@ -346,10 +355,6 @@ chaosx_communism_fight_category = {
         visible = {
             has_global_flag = communism_spread
             NOT = { has_government = communism }
-            OR = {
-                has_idea = communism_spread_idea_4
-                has_idea = communism_spread_idea_5
-            }
         }
 
         ai_will_do = {
@@ -399,13 +404,15 @@ chaosx_communism_fight_category = {
             }
         }
 
-        remove_effect = {
-            add_popularity = {
-                ideology = communism
-                popularity = -0.1
-            }
-            add_stability = -0.05
-            add_war_support = -0.05
+		remove_effect = {
+			set_temp_variable = { communism_reduction = constant:communism_spread_reduction.emergency }
+			multiply_temp_variable = { communism_reduction = -1 }
+			add_popularity = {
+				ideology = communism
+				popularity = var:communism_reduction
+			}
+			add_stability = -0.05
+			add_war_support = -0.05
             update_communism_spread_idea = yes
         }
     }

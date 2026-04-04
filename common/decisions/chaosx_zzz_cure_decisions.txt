@@ -6,11 +6,88 @@
 #150 = 113  # 25% faster
 
 chaosx_zzz_cure_category = {
-    find_cure_tier_0 = {
-        visible = {
-            has_global_flag = has_zombie_outbreak
-            ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } }
-        }
+	review_weaponized_zombie_profile = {
+		icon = GFX_decision_generic_research
+
+		visible = {
+			has_country_flag = weaponized_zombies_completed
+		}
+
+		available = {
+			has_country_flag = weaponized_zombies_completed
+		}
+
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+
+		ai_will_do = {
+			factor = 0
+		}
+
+		complete_effect = {
+			country_event = { id = chaosx.weaponized_zombies.1 }
+		}
+	}
+
+	review_weaponized_zombie_outbreak_profile = {
+		icon = GFX_decision_generic_research
+
+		target_root_trigger = {
+			has_global_flag = has_zombie_outbreak
+		}
+
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = weaponized_zombie_outbreak_country
+				NOT = { has_country_flag = weaponized_zombie_type_wendigo }
+				num_of_controlled_states > 0
+				NOT = { has_capitulated = yes }
+			}
+		}
+
+		visible = {
+			FROM = {
+				exists = yes
+				has_country_flag = weaponized_zombie_outbreak_country
+				NOT = { has_country_flag = weaponized_zombie_type_wendigo }
+				num_of_controlled_states > 0
+				NOT = { has_capitulated = yes }
+			}
+		}
+
+		available = {
+			FROM = {
+				exists = yes
+				has_country_flag = weaponized_zombie_outbreak_country
+				NOT = { has_country_flag = weaponized_zombie_type_wendigo }
+				num_of_controlled_states > 0
+				NOT = { has_capitulated = yes }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+
+		ai_will_do = {
+			factor = 0
+		}
+
+		complete_effect = {
+			FROM = {
+				save_event_target_as = weaponized_zombie_review_target
+			}
+			country_event = { id = chaosx.weaponized_zombies.9 }
+		}
+	}
+
+	find_cure_tier_0 = {
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+		}
 
         available = {
             NOT = { has_idea = cure_activated }
@@ -134,13 +211,10 @@ chaosx_zzz_cure_category = {
                 }
                 if = {
                     limit = { check_variable = { global.zzz_cure > 99 } }
+                    mark_first_zombie_cure_activation = yes
                     every_country = {
                         limit = { is_in_tech_sharing_group = cure_sharing }
-                        add_timed_idea = {
-                            idea = cure_activated
-                            days = 120
-                        }
-                        country_event = { id = chaosx.nr2.2 }
+                        activate_shared_zombie_cure_for_current_country = yes
                     }
                     every_country = {
                         limit = { original_tag = ZZZ }
@@ -293,14 +367,11 @@ chaosx_zzz_cure_category = {
                     tooltip = zzz_cure_global_tt
                 }
                 if = { limit = { check_variable = { global.zzz_cure > 99 } }
+                mark_first_zombie_cure_activation = yes
 
                 every_country = {
                     limit = { is_in_tech_sharing_group = cure_sharing }
-                    add_timed_idea = {
-                        idea = cure_activated
-                        days = 120
-                    }
-                    country_event = { id = chaosx.nr2.2 }
+                    activate_shared_zombie_cure_for_current_country = yes
                 }
                 every_country = {
                     limit = { original_tag = ZZZ }
@@ -464,14 +535,11 @@ find_cure_tier_2 = {
                 tooltip = zzz_cure_global_tt
             }
             if = { limit = { check_variable = { global.zzz_cure > 99 } }
+            mark_first_zombie_cure_activation = yes
 
             every_country = {
                 limit = { is_in_tech_sharing_group = cure_sharing }
-                add_timed_idea = {
-                    idea = cure_activated
-                    days = 120
-                }
-                country_event = { id = chaosx.nr2.2 }
+                activate_shared_zombie_cure_for_current_country = yes
             }
             every_country = {
                 limit = { original_tag = ZZZ }
@@ -663,14 +731,11 @@ find_cure_tier_3 = {
                 tooltip = zzz_cure_global_tt
             }
             if = { limit = { check_variable = { global.zzz_cure > 99 } }
+            mark_first_zombie_cure_activation = yes
 
             every_country = {
                 limit = { is_in_tech_sharing_group = cure_sharing }
-                add_timed_idea = {
-                    idea = cure_activated
-                    days = 120
-                }
-                country_event = { id = chaosx.nr2.2 }
+                activate_shared_zombie_cure_for_current_country = yes
             }
             every_country = {
                 limit = { original_tag = ZZZ }
@@ -1111,13 +1176,7 @@ activate_the_cure = {
     }
 
     complete_effect = {
-        add_timed_idea = {
-            idea = cure_activated
-            days = 360
-        }
-        country_event = { id = chaosx.nr2.2 }
-        set_variable = { zzz_cure = 0 }
-
+        activate_zombie_cure_for_current_country = yes
     }
 }
 }
@@ -1267,12 +1326,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            set_country_flag = hygiene_measures_enforced
-            add_ideas = outbreak_prevention_hygiene_measures
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { apply_shared_hygiene_measures = yes }
     }
 
     restrict_migration = {
@@ -1424,12 +1478,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            set_country_flag = migration_restricted
-            add_ideas = outbreak_prevention_migration_restricted
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { apply_shared_migration_restrictions = yes }
     }
 
     quarantine_protocols = {
@@ -1596,12 +1645,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            set_country_flag = quarantine_protocols_active
-            add_ideas = outbreak_prevention_quarantine_protocols
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { apply_shared_quarantine_protocols = yes }
     }
 
     close_borders_completely = {
@@ -1778,12 +1822,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            set_country_flag = borders_completely_closed
-            add_ideas = outbreak_prevention_borders_closed
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { apply_shared_closed_borders = yes }
     }
 
     extreme_martial_law = {
@@ -1957,12 +1996,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            set_country_flag = extreme_martial_law_active
-            add_ideas = outbreak_prevention_extreme_martial_law
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { apply_shared_extreme_martial_law = yes }
     }
 
     revoke_hygiene_measures = {
@@ -2046,12 +2080,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            clr_country_flag = hygiene_measures_enforced
-            remove_ideas = outbreak_prevention_hygiene_measures
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { revoke_shared_hygiene_measures = yes }
     }
 
     revoke_migration_restrictions = {
@@ -2085,12 +2114,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            clr_country_flag = migration_restricted
-            remove_ideas = outbreak_prevention_migration_restricted
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { revoke_shared_migration_restrictions = yes }
     }
 
     revoke_quarantine_protocols = {
@@ -2124,12 +2148,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            clr_country_flag = quarantine_protocols_active
-            remove_ideas = outbreak_prevention_quarantine_protocols
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { revoke_shared_quarantine_protocols = yes }
     }
 
     reopen_borders = {
@@ -2167,12 +2186,7 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            clr_country_flag = borders_completely_closed
-            remove_ideas = outbreak_prevention_borders_closed
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { reopen_shared_borders = yes }
     }
 
     revoke_extreme_martial_law = {
@@ -2214,11 +2228,6 @@ chaosx_outbreak_prevention_category = {
             }
         }
 
-        remove_effect = {
-            clr_country_flag = extreme_martial_law_active
-            remove_ideas = outbreak_prevention_extreme_martial_law
-            # Recalculate zombie outbreak chance
-            calculate_zombie_outbreak_chance = yes
-        }
+        remove_effect = { revoke_shared_extreme_martial_law = yes }
     }
 }

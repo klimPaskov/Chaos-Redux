@@ -5,7 +5,7 @@ This mechanic adds one Chaos Warfare armor-track subdoctrine:
 
 - `chemical_suppression`
 
-The subdoctrine is only available while `chaos_warfare` is the active grand doctrine.  
+The subdoctrine is always visible in the doctrine interface, but it is only available while `chaos_warfare` is the active grand doctrine.  
 Its design focus is occupation control through armored chemical pressure, with explicit separation between:
 
 - generic chemical support (`category_chemical_support_companies`)

@@ -27,29 +27,32 @@ The update covers:
 - `2.5x`
 - `3.0x`
 4. Default values are:
-- Audio mode: `Music`
+- Audio mode: `Sound`
 - Audio volume: `1.5x`
 
 These defaults are applied in both `initialize_miscellaneous_settings` and `reset_miscellaneous_to_defaults`.
 
 ## Super-event audio behavior
 Super-event playback is now routed through `play_current_super_event_audio` in:
-- `common/scripted_effects/chaosx_super_event_audio_effects.txt`
+- `common/scripted_effects/chaosx_settings_effects.txt`
 
 Behavior:
 - `Music` mode plays the current super-event track through the music channel.
 - `Sound` mode plays that same current super-event track through the sound-effects channel.
 - `0x` mutes super-event playback entirely.
-- `1.5x` preserves the previous default loudness as the default setting.
+- `1.5x` preserves the previous loudness as the default volume tier.
+- `Sound` is now the default playback channel for new saves and for `Reset All Settings`.
 
 Current song routing:
 - The script now builds `chaosx_super_event_<id>_<volume_suffix>` dynamically through `meta_effect`.
 - Sound-channel playback builds `chaosx_super_event_<id>_sound_<volume_suffix>` the same way.
-- Current live super-event IDs `1`, `2`, `3`, and `5` reuse the zombie track definitions.
+- Current live super-event IDs `1`, `2`, and `3` reuse the zombie outbreak track definitions.
 - Current live super-event ID `4` reuses the default track definitions.
+- Current live super-event ID `5` uses the zombie-threat-defeated track definitions.
+- Current live super-event ID `6` uses the wendigo track definitions.
 
-The variant song IDs are registered in:
-- `music/chaosx_super_event_music.txt`
+The variant song IDs are defined in:
+- `music/chaosx_super_event_music.asset`
 
 Each registered per-ID variant reuses the same underlying track file from:
 - `music/chaosx_super_event_music.asset`
@@ -187,9 +190,13 @@ Audio assets used:
 - Music-channel sources:
   - `music/default.ogg`
   - `music/zombies.ogg`
+  - `music/zombies_defeat.ogg`
+  - `music/wendigo.ogg`
 - Sound-channel sources:
   - `sound/chaosx_super_event_default.wav`
   - `sound/chaosx_super_event_zombies.wav`
+  - `sound/chaosx_super_event_zombies_defeat.wav`
+  - `sound/chaosx_super_event_wendigo.wav`
 
 If custom art is later desired for the Miscellaneous menu or sync controls:
 - Put textures in `gfx/interface/`

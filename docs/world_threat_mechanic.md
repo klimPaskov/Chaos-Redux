@@ -33,7 +33,6 @@ Each threat system decides for itself when it should count as a world threat.
 
 For the zombie system, the source activates only when:
 
-- the Anti-Zombie League exists
 - the zombie outbreak system is still active
 - the outbreak has not been disabled
 - zombie pressure is already strong enough to justify global emergency behavior
@@ -72,11 +71,9 @@ That effect:
 The zombie source is refreshed from:
 
 - the existing `ZZZ` daily outbreak runtime
-- Anti-Zombie League formation
-- Anti-Zombie League disband
 - zombie-system shutdown
 
-This means the flag stays live while the zombie campaign is active, and is also cleared immediately when the league or the outbreak system collapses.
+This means the flag stays live while the zombie campaign is active, independent of whether the Anti-Zombie League was ever formed, and is cleared immediately when the outbreak system collapses.
 
 ## Script API
 

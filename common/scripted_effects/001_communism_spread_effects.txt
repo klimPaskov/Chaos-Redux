@@ -1,170 +1,416 @@
-
-# Manages communism spread idea tiers based on current communist support percentage
+# Communism spread support effects.
+# - Updates the active communism spread idea tier from live communist popularity.
+# - Applies cooldown-aware strike and status-notification pacing.
 # COUNTRY SCOPE
+
+queue_communism_spread_strike_cooldown = {
+	set_country_flag = communism_spread_strike_cooldown
+
+	if = {
+		limit = { communism > 0.5 }
+		country_event = {
+			id = chaosx.nr1.12
+			days = constant:communism_spread_timing.strike_tier_5_cooldown_days
+		}
+	}
+	else_if = {
+		limit = { communism > 0.4 }
+		country_event = {
+			id = chaosx.nr1.12
+			days = constant:communism_spread_timing.strike_tier_4_cooldown_days
+		}
+	}
+	else_if = {
+		limit = { communism > 0.25 }
+		country_event = {
+			id = chaosx.nr1.12
+			days = constant:communism_spread_timing.strike_tier_3_cooldown_days
+		}
+	}
+	else_if = {
+		limit = { communism > 0.2 }
+		country_event = {
+			id = chaosx.nr1.12
+			days = constant:communism_spread_timing.strike_tier_2_cooldown_days
+		}
+	}
+	else = {
+		country_event = {
+			id = chaosx.nr1.12
+			days = constant:communism_spread_timing.strike_tier_1_cooldown_days
+		}
+	}
+}
+
+queue_communism_spread_status_notification_cooldown = {
+	set_country_flag = communism_spread_status_notification_cooldown
+	country_event = {
+		id = chaosx.nr1.13
+		days = constant:communism_spread_timing.status_notification_cooldown_days
+	}
+}
+
+clear_communism_support_escalation = {
+	set_country_flag = { flag = communism_support_stage value = 0 }
+	set_variable = { communism_stage_extra_drift = 0 }
+	set_variable = { communism_stage_extra_political_power_gain = 0 }
+	set_variable = { communism_stage_extra_stability_weekly = 0 }
+	set_variable = { communism_stage_extra_war_support_weekly = 0 }
+
+	if = {
+		limit = { has_dynamic_modifier = communism_support_escalation }
+		remove_dynamic_modifier = { modifier = communism_support_escalation }
+	}
+}
+
+update_communism_spread_support_stage = {
+	if = {
+		limit = {
+			has_global_flag = communism_spread
+			NOT = { has_government = communism }
+		}
+
+		set_temp_variable = { communism_support_stage_target = 0 }
+
+		if = {
+			limit = {
+				OR = {
+					communism > constant:communism_spread_stage_threshold.parallel_soviets
+					AND = {
+						communism > constant:communism_spread_stage_threshold.parallel_soviets_rebel_support
+						any_country = {
+							has_country_flag = communist_rebel_state
+							has_war_with = ROOT
+							original_tag = ROOT
+						}
+					}
+				}
+			}
+			set_temp_variable = { communism_support_stage_target = 4 }
+		}
+		else_if = {
+			limit = { communism > constant:communism_spread_stage_threshold.armed_cells }
+			set_temp_variable = { communism_support_stage_target = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					communism > constant:communism_spread_stage_threshold.strike_committees
+					AND = {
+						has_country_flag = communism_strike_committees_formed
+						communism > 0.10
+					}
+				}
+			}
+			set_temp_variable = { communism_support_stage_target = 2 }
+		}
+		else_if = {
+			limit = { communism > constant:communism_spread_stage_threshold.cadre_networks }
+			set_temp_variable = { communism_support_stage_target = 1 }
+		}
+
+		if = {
+			limit = { check_variable = { communism_support_stage_target = 4 } }
+			set_country_flag = { flag = communism_support_stage value = 4 }
+		}
+		else_if = {
+			limit = { check_variable = { communism_support_stage_target = 3 } }
+			set_country_flag = { flag = communism_support_stage value = 3 }
+		}
+		else_if = {
+			limit = { check_variable = { communism_support_stage_target = 2 } }
+			set_country_flag = { flag = communism_support_stage value = 2 }
+		}
+		else_if = {
+			limit = { check_variable = { communism_support_stage_target = 1 } }
+			set_country_flag = { flag = communism_support_stage value = 1 }
+		}
+		else = {
+			set_country_flag = { flag = communism_support_stage value = 0 }
+		}
+
+		set_variable = { communism_stage_extra_drift = 0 }
+		set_variable = { communism_stage_extra_political_power_gain = 0 }
+		set_variable = { communism_stage_extra_stability_weekly = 0 }
+		set_variable = { communism_stage_extra_war_support_weekly = 0 }
+
+		if = {
+			limit = { check_variable = { communism_support_stage_target > 0 } }
+			if = {
+				limit = { NOT = { has_dynamic_modifier = communism_support_escalation } }
+				add_dynamic_modifier = { modifier = communism_support_escalation }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_dynamic_modifier = communism_support_escalation }
+				remove_dynamic_modifier = { modifier = communism_support_escalation }
+			}
+		}
+
+		if = {
+			limit = {
+				OR = {
+					check_variable = { communism_support_stage_target = 1 }
+					check_variable = { communism_support_stage_target = 2 }
+				}
+			}
+			set_variable = { communism_stage_extra_drift = constant:communism_spread_stage_modifier.cadre_extra_drift }
+			set_variable = { communism_stage_extra_political_power_gain = constant:communism_spread_stage_modifier.cadre_political_power_gain }
+		}
+		else_if = {
+			limit = { check_variable = { communism_support_stage_target = 3 } }
+			set_variable = { communism_stage_extra_drift = constant:communism_spread_stage_modifier.cadre_extra_drift }
+			set_variable = { communism_stage_extra_political_power_gain = constant:communism_spread_stage_modifier.armed_cells_political_power_gain }
+			set_variable = { communism_stage_extra_stability_weekly = constant:communism_spread_stage_modifier.armed_cells_stability_weekly }
+			set_variable = { communism_stage_extra_war_support_weekly = constant:communism_spread_stage_modifier.armed_cells_war_support_weekly }
+		}
+		else_if = {
+			limit = { check_variable = { communism_support_stage_target = 4 } }
+			set_variable = { communism_stage_extra_drift = constant:communism_spread_stage_modifier.cadre_extra_drift }
+			set_variable = { communism_stage_extra_political_power_gain = constant:communism_spread_stage_modifier.parallel_soviets_political_power_gain }
+			set_variable = { communism_stage_extra_stability_weekly = constant:communism_spread_stage_modifier.parallel_soviets_stability_weekly }
+			set_variable = { communism_stage_extra_war_support_weekly = constant:communism_spread_stage_modifier.parallel_soviets_war_support_weekly }
+		}
+	}
+	else = {
+		clear_communism_support_escalation = yes
+		clr_country_flag = communism_strike_committees_formed
+	}
+}
+
 update_communism_spread_idea = {
-    if = {
-        limit = {
-            has_global_flag = communism_spread
-            NOT = { has_government = communism }
-        }
+	if = {
+		limit = {
+			has_global_flag = communism_spread
+			NOT = { has_government = communism }
+		}
 
-        # Store previous idea tier for comparison
-        set_temp_variable = { previous_tier = 0 }
-        if = { limit = { has_idea = communism_spread_idea } set_temp_variable = { previous_tier = 1 } }
-        else_if = { limit = { has_idea = communism_spread_idea_2 } set_temp_variable = { previous_tier = 2 } }
-        else_if = { limit = { has_idea = communism_spread_idea_3 } set_temp_variable = { previous_tier = 3 } }
-        else_if = { limit = { has_idea = communism_spread_idea_4 } set_temp_variable = { previous_tier = 4 } }
-        else_if = { limit = { has_idea = communism_spread_idea_5 } set_temp_variable = { previous_tier = 5 } }
+		set_temp_variable = { previous_tier = 0 }
+		if = {
+			limit = { has_idea = communism_spread_idea }
+			set_temp_variable = { previous_tier = 1 }
+		}
+		else_if = {
+			limit = { has_idea = communism_spread_idea_2 }
+			set_temp_variable = { previous_tier = 2 }
+		}
+		else_if = {
+			limit = { has_idea = communism_spread_idea_3 }
+			set_temp_variable = { previous_tier = 3 }
+		}
+		else_if = {
+			limit = { has_idea = communism_spread_idea_4 }
+			set_temp_variable = { previous_tier = 4 }
+		}
+		else_if = {
+			limit = { has_idea = communism_spread_idea_5 }
+			set_temp_variable = { previous_tier = 5 }
+		}
 
-        # Determine target tier based on communist support
-        set_temp_variable = { target_tier = 0 }
-        if = { limit = { communism > 0.5 } set_temp_variable = { target_tier = 5 } }
-        else_if = { limit = { communism > 0.4 } set_temp_variable = { target_tier = 4 } }
-        else_if = { limit = { communism > 0.25 } set_temp_variable = { target_tier = 3 } }
-        else_if = { limit = { communism > 0.2 } set_temp_variable = { target_tier = 2 } }
-        else_if = { limit = { communism > 0.1 } set_temp_variable = { target_tier = 1 } }
+		set_temp_variable = { target_tier = 0 }
+		if = {
+			limit = { communism > 0.5 }
+			set_temp_variable = { target_tier = 5 }
+		}
+		else_if = {
+			limit = { communism > 0.4 }
+			set_temp_variable = { target_tier = 4 }
+		}
+		else_if = {
+			limit = { communism > 0.25 }
+			set_temp_variable = { target_tier = 3 }
+		}
+		else_if = {
+			limit = { communism > 0.2 }
+			set_temp_variable = { target_tier = 2 }
+		}
+		else_if = {
+			limit = { communism > 0.1 }
+			set_temp_variable = { target_tier = 1 }
+		}
 
-        # Apply the idea changes
-        if = {
-            limit = { communism > 0.5 }
-            # Target is idea_5
-            if = { limit = { has_idea = communism_spread_idea }
-            swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_5 }
-        }
-        else_if = { limit = { has_idea = communism_spread_idea_2 }
-        swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_5 }
-    }
-    else_if = { limit = { has_idea = communism_spread_idea_3 }
-    swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_5 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_4 }
-swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_5 }
-}
-else_if = { limit = { NOT = { has_idea = communism_spread_idea_5 } }
-add_ideas = communism_spread_idea_5
-}
-}
-else_if = {
-    limit = { communism > 0.4 }
-    # Target is idea_4
-    if = { limit = { has_idea = communism_spread_idea }
-    swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_4 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_2 }
-swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_4 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_3 }
-swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_4 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_5 }
-swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_4 }
-}
-else_if = { limit = { NOT = { has_idea = communism_spread_idea_4 } }
-add_ideas = communism_spread_idea_4
-}
-}
-else_if = {
-    limit = { communism > 0.25 }
-    # Target is idea_3
-    if = { limit = { has_idea = communism_spread_idea }
-    swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_3 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_2 }
-swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_3 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_4 }
-swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_3 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_5 }
-swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_3 }
-}
-else_if = { limit = { NOT = { has_idea = communism_spread_idea_3 } }
-add_ideas = communism_spread_idea_3
-}
-}
-else_if = {
-    limit = { communism > 0.2 }
-    # Target is idea_2
-    if = { limit = { has_idea = communism_spread_idea }
-    swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_2 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_3 }
-swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_2 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_4 }
-swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_2 }
-}
-else_if = { limit = { has_idea = communism_spread_idea_5 }
-swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_2 }
-}
-else_if = { limit = { NOT = { has_idea = communism_spread_idea_2 } }
-add_ideas = communism_spread_idea_2
-}
-}
-else_if = {
-    limit = { communism > 0.1 }
-    # Target is idea_1
-    if = { limit = { has_idea = communism_spread_idea_2 }
-    swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea }
-}
-else_if = { limit = { has_idea = communism_spread_idea_3 }
-swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea }
-}
-else_if = { limit = { has_idea = communism_spread_idea_4 }
-swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea }
-}
-else_if = { limit = { has_idea = communism_spread_idea_5 }
-swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea }
-}
-else_if = { limit = { NOT = { has_idea = communism_spread_idea } }
-add_ideas = communism_spread_idea
-}
-}
-else_if = {
-    limit = { communism < 0.01 }
-    # Communist support is 0.01 or below, remove all ideas
-    if = { limit = { has_idea = communism_spread_idea } remove_ideas = communism_spread_idea }
-    if = { limit = { has_idea = communism_spread_idea_2 } remove_ideas = communism_spread_idea_2 }
-    if = { limit = { has_idea = communism_spread_idea_3 } remove_ideas = communism_spread_idea_3 }
-    if = { limit = { has_idea = communism_spread_idea_4 } remove_ideas = communism_spread_idea_4 }
-    if = { limit = { has_idea = communism_spread_idea_5 } remove_ideas = communism_spread_idea_5 }
-}
+		if = {
+			limit = { check_variable = { target_tier = 5 } }
+			if = {
+				limit = { has_idea = communism_spread_idea }
+				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_5 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_2 }
+				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_5 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_3 }
+				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_5 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_4 }
+				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_5 }
+			}
+			else_if = {
+				limit = { NOT = { has_idea = communism_spread_idea_5 } }
+				add_ideas = communism_spread_idea_5
+			}
+		}
+		else_if = {
+			limit = { check_variable = { target_tier = 4 } }
+			if = {
+				limit = { has_idea = communism_spread_idea }
+				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_4 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_2 }
+				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_4 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_3 }
+				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_4 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_5 }
+				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_4 }
+			}
+			else_if = {
+				limit = { NOT = { has_idea = communism_spread_idea_4 } }
+				add_ideas = communism_spread_idea_4
+			}
+		}
+		else_if = {
+			limit = { check_variable = { target_tier = 3 } }
+			if = {
+				limit = { has_idea = communism_spread_idea }
+				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_3 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_2 }
+				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_3 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_4 }
+				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_3 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_5 }
+				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_3 }
+			}
+			else_if = {
+				limit = { NOT = { has_idea = communism_spread_idea_3 } }
+				add_ideas = communism_spread_idea_3
+			}
+		}
+		else_if = {
+			limit = { check_variable = { target_tier = 2 } }
+			if = {
+				limit = { has_idea = communism_spread_idea }
+				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_2 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_3 }
+				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_2 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_4 }
+				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_2 }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_5 }
+				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_2 }
+			}
+			else_if = {
+				limit = { NOT = { has_idea = communism_spread_idea_2 } }
+				add_ideas = communism_spread_idea_2
+			}
+		}
+		else_if = {
+			limit = { check_variable = { target_tier = 1 } }
+			if = {
+				limit = { has_idea = communism_spread_idea_2 }
+				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_3 }
+				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_4 }
+				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea }
+			}
+			else_if = {
+				limit = { has_idea = communism_spread_idea_5 }
+				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea }
+			}
+			else_if = {
+				limit = { NOT = { has_idea = communism_spread_idea } }
+				add_ideas = communism_spread_idea
+			}
+		}
+		else = {
+			if = {
+				limit = { has_idea = communism_spread_idea }
+				remove_ideas = communism_spread_idea
+			}
+			if = {
+				limit = { has_idea = communism_spread_idea_2 }
+				remove_ideas = communism_spread_idea_2
+			}
+			if = {
+				limit = { has_idea = communism_spread_idea_3 }
+				remove_ideas = communism_spread_idea_3
+			}
+			if = {
+				limit = { has_idea = communism_spread_idea_4 }
+				remove_ideas = communism_spread_idea_4
+			}
+			if = {
+				limit = { has_idea = communism_spread_idea_5 }
+				remove_ideas = communism_spread_idea_5
+			}
+		}
 
-# Fire events based on tier changes
-if = {
-    limit = {
-        NOT = { check_variable = { previous_tier = target_tier } }
-        NOT = { AND = { check_variable = { previous_tier = 0 } check_variable = { target_tier = 0 } } }
-    }
+		update_communism_spread_support_stage = yes
 
-    # Determine if getting better or worse
-    if = {
-        limit = { check_variable = { target_tier > previous_tier } }
-        # Communist influence is growing
-        if = {
-            limit = { OR = { check_variable = { target_tier = 4 } check_variable = { target_tier = 5 } } }
-            # Critical threat reached
-            country_event = { id = chaosx.nr1.6 days = 1 }
-        }
-        else = {
-            # General progression
-            country_event = { id = chaosx.nr1.4 days = 1 }
-        }
-    }
-    else_if = {
-        limit = { check_variable = { target_tier < previous_tier } }
-        # Communist influence is weakening
-        if = {
-            limit = { OR = { check_variable = { target_tier = 1 } check_variable = { target_tier = 0 } } }
-            # Threat greatly reduced
-            country_event = { id = chaosx.nr1.7 days = 1 }
-        }
-        else = {
-            # General regression
-            country_event = { id = chaosx.nr1.5 days = 1 }
-        }
-    }
-}
-}
-}
+		if = {
+			limit = {
+				NOT = { check_variable = { previous_tier = target_tier } }
+				NOT = { has_country_flag = communism_spread_status_notification_cooldown }
+			}
 
+			if = {
+				limit = { check_variable = { target_tier > previous_tier } }
+				if = {
+					limit = {
+						OR = {
+							check_variable = { target_tier = 4 }
+							check_variable = { target_tier = 5 }
+						}
+					}
+					country_event = { id = chaosx.nr1.6 days = 1 }
+				}
+				else = {
+					country_event = { id = chaosx.nr1.4 days = 1 }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { target_tier < previous_tier } }
+				if = {
+					limit = {
+						OR = {
+							check_variable = { target_tier = 0 }
+							check_variable = { target_tier = 1 }
+						}
+					}
+					country_event = { id = chaosx.nr1.7 days = 1 }
+				}
+				else = {
+					country_event = { id = chaosx.nr1.5 days = 1 }
+				}
+			}
+
+			queue_communism_spread_status_notification_cooldown = yes
+		}
+	}
+	else = {
+		clear_communism_support_escalation = yes
+	}
+}
