@@ -10,6 +10,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 
 - [is_desert_state](#is_desert_state)
 - [is_special_chaos_country](#is_special_chaos_country)
+- [is_actual_nonhuman_country](#is_actual_nonhuman_country)
 - [mapmode_state_has_chemical_contamination](#mapmode_state_has_chemical_contamination)
 - [mapmode_state_has_disease_contamination](#mapmode_state_has_disease_contamination)
 - [mapmode_state_has_nuclear_contamination](#mapmode_state_has_nuclear_contamination)
@@ -19,6 +20,27 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 ## is_desert_state
 
 ## is_special_chaos_country
+
+Country-scope trigger. Returns true for system actors and special scenario countries that should not be treated like normal civilian societies.
+
+Current coverage includes:
+
+- `ZZZ`
+- dynamic zombie outbreak countries
+- weaponized zombie outbreak countries
+- `ZIN`
+- `THR` / countries using the `The Holy Realm` cosmetic tag
+
+## is_actual_nonhuman_country
+
+Country-scope trigger. Returns true only for countries that should currently be treated as actually nonhuman rather than merely unusual or scenario-specific.
+
+Current coverage includes:
+
+- `ZZZ`
+- dynamic zombie outbreak countries
+- weaponized zombie outbreak countries
+- `ZIN`
 
 ## mapmode_state_has_chemical_contamination
 

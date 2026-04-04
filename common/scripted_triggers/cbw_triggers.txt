@@ -12,19 +12,131 @@ has_bio_outbreak_prevention_tier_3 = {
     has_tech = integrated_epidemic_control
 }
 
+is_standard_unconventional_air_raid_target_country = {
+	NOT = { is_in_faction_with = FROM }
+}
+
+can_launch_standard_unconventional_air_raid_against = {
+	has_war_with = FROM
+}
+
+is_biowarfare_contaminated_state = {
+	OR = {
+		has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+		has_dynamic_modifier = { modifier = plague_contaminated_state }
+		has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+		has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+	}
+}
+
 has_active_biowarfare_outbreak = {
-    OR = {
-        any_controlled_state = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
-        any_controlled_state = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
-        any_controlled_state = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
-        any_controlled_state = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
-    }
+	any_controlled_state = {
+		is_biowarfare_contaminated_state = yes
+	}
+}
+
+has_biowarfare_outbreak_in_border_proximity_from = {
+	FROM = {
+		any_controlled_state = {
+			is_biowarfare_contaminated_state = yes
+			OR = {
+				any_neighbor_state = {
+					is_controlled_by = ROOT
+				}
+				AND = {
+					NOT = {
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+					any_neighbor_state = {
+						is_controlled_by = PREV.PREV
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+has_smallpox_outbreak_in_border_proximity_from = {
+	FROM = {
+		any_controlled_state = {
+			has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+			OR = {
+				any_neighbor_state = {
+					is_controlled_by = ROOT
+				}
+				AND = {
+					NOT = {
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+					any_neighbor_state = {
+						is_controlled_by = PREV.PREV
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+has_plague_outbreak_in_border_proximity_from = {
+	FROM = {
+		any_controlled_state = {
+			has_dynamic_modifier = { modifier = plague_contaminated_state }
+			OR = {
+				any_neighbor_state = {
+					is_controlled_by = ROOT
+				}
+				AND = {
+					NOT = {
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+					any_neighbor_state = {
+						is_controlled_by = PREV.PREV
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 has_neighbor_with_active_biowarfare_outbreak = {
-    any_neighbor_country = {
-        has_active_biowarfare_outbreak = yes
-    }
+	any_neighbor_country = {
+		any_controlled_state = {
+			is_biowarfare_contaminated_state = yes
+			OR = {
+				any_neighbor_state = {
+					is_controlled_by = PREV.PREV.PREV
+				}
+				AND = {
+					NOT = {
+						any_neighbor_state = {
+							is_controlled_by = PREV.PREV.PREV
+						}
+					}
+					any_neighbor_state = {
+						is_controlled_by = PREV.PREV
+						any_neighbor_state = {
+							is_controlled_by = PREV.PREV.PREV
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 has_unconventional_weapon_stockpile = {

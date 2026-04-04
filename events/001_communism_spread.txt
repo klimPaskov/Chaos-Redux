@@ -88,27 +88,55 @@ country_event = {
     desc = chaosx.nr1.2.d
     picture = GFX_report_event_FIN_helsinki_bombed
 
-    trigger = {
-        NOT = { has_government = communism }
-        communism > 0.10
-        has_global_flag = communism_spread
-    }
+	trigger = {
+		NOT = { has_government = communism }
+		communism > 0.10
+		has_global_flag = communism_spread
+		NOT = { has_country_flag = communism_spread_strike_cooldown }
+	}
 
-    mean_time_to_happen = {
-        days = 20 # base mean time 1(100%)/days
-    }
+	mean_time_to_happen = {
+		days = 20 # base mean time 1(100%)/days
+	}
+
+	immediate = {
+		hidden_effect = {
+			set_country_flag = communism_strike_committees_formed
+			update_communism_spread_support_stage = yes
+			queue_communism_spread_strike_cooldown = yes
+		}
+	}
 
     option = { # OK, do nothing
         name = chaosx.nr1.2.a
         ai_chance = { base = 80 }
         custom_effect_tooltip = chaosx_tt_1_2a
-        hidden_effect = {
-            set_temp_variable = { state_population_percent = -0.001 } # 0.1% of state population
-            set_temp_variable = { buildings_to_damage_per_state = 3 }
-            set_temp_variable = { damage_modifier = 0.25 }
-            set_temp_variable = { percent_of_states_to_target = 0.1 }
-            damage_buildings_in_random_states = yes
-        }
+		hidden_effect = {
+			set_temp_variable = { state_population_percent = -0.001 } # 0.1% of state population
+			set_temp_variable = { buildings_to_damage_per_state = constant:communism_spread_strike.base_buildings }
+			set_temp_variable = { damage_modifier = constant:communism_spread_strike.base_damage }
+			set_temp_variable = { percent_of_states_to_target = constant:communism_spread_strike.base_state_share }
+
+			if = {
+				limit = { has_country_flag = { flag = communism_support_stage value > 0 } }
+				set_temp_variable = { buildings_to_damage_per_state = constant:communism_spread_strike.cadre_buildings }
+				set_temp_variable = { percent_of_states_to_target = constant:communism_spread_strike.cadre_state_share }
+			}
+
+			if = {
+				limit = { has_country_flag = { flag = communism_support_stage value > 1 } }
+				set_temp_variable = { buildings_to_damage_per_state = constant:communism_spread_strike.strike_committees_buildings }
+				set_temp_variable = { damage_modifier = constant:communism_spread_strike.strike_committees_damage }
+				set_temp_variable = { percent_of_states_to_target = constant:communism_spread_strike.strike_committees_state_share }
+			}
+
+			damage_buildings_in_random_states = yes
+		}
+		if = {
+			limit = { has_country_flag = { flag = communism_support_stage value > 1 } }
+			add_stability = constant:communism_spread_strike.ignore_stability
+			add_war_support = constant:communism_spread_strike.ignore_war_support
+		}
     }
 
     option = { # Try to subdue the strikes
@@ -168,6 +196,10 @@ country_event = {
 
     mean_time_to_happen = {
         days = 180 # base mean time 1(100%)/days
+		modifier = {
+			factor = constant:communism_spread_civil_war.parallel_soviets_mtth_factor
+			has_country_flag = { flag = communism_support_stage value = 4 }
+		}
     }
 
     option = { # Cool down the situation
@@ -342,9 +374,9 @@ country_event = {
 
 # Communist threat significantly reduced (dropping to tier 1 or eliminated)
 country_event = {
-    id = chaosx.nr1.7
-    title = chaosx.nr1.7.t
-    desc = chaosx.nr1.7.d
+	id = chaosx.nr1.7
+	title = chaosx.nr1.7.t
+	desc = chaosx.nr1.7.d
     picture = GFX_report_event_generic_rally
 
     is_triggered_only = yes
@@ -354,7 +386,33 @@ country_event = {
         add_stability = 0.05
         add_war_support = 0.05
         # The communist threat is greatly diminished
-    }
+	}
+}
+
+# Clear the communist strike cooldown after the scheduled delay.
+country_event = {
+	id = chaosx.nr1.12
+
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_spread_strike_cooldown
+	}
+}
+
+# Clear the communist status-notification cooldown after the scheduled delay.
+country_event = {
+	id = chaosx.nr1.13
+
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_spread_status_notification_cooldown
+	}
 }
 
 # Communist rebel groups form and seize territory
@@ -418,6 +476,35 @@ country_event = {
             # Round to nearest integer
             round_temp_variable = states_to_occupy
 
+			if = {
+				limit = { has_country_flag = { flag = communism_support_stage value > 2 } }
+				add_to_temp_variable = { rebel_state_percentage = constant:communism_spread_rebels.armed_cells_rebel_state_bonus }
+			}
+
+			if = {
+				limit = { has_country_flag = { flag = communism_support_stage value = 4 } }
+				add_to_temp_variable = { rebel_state_percentage = constant:communism_spread_rebels.parallel_soviets_rebel_state_bonus }
+			}
+
+			set_temp_variable = { states_to_occupy = total_states }
+			multiply_temp_variable = { states_to_occupy = rebel_state_percentage }
+			divide_temp_variable = { states_to_occupy = 100 }
+
+			if = {
+				limit = { check_variable = { states_to_occupy < 0.5 } }
+				set_temp_variable = { states_to_occupy = 1 }
+			}
+
+			round_temp_variable = states_to_occupy
+
+			if = {
+				limit = {
+					has_country_flag = { flag = communism_support_stage value = 4 }
+					check_variable = { states_to_occupy < constant:communism_spread_rebels.parallel_soviets_min_states_to_occupy }
+				}
+				set_temp_variable = { states_to_occupy = constant:communism_spread_rebels.parallel_soviets_min_states_to_occupy }
+			}
+
             # Calculate divisions per state based on stability
             # Base 2 divisions + 1 for every 5% stability below 50%
             set_temp_variable = { divisions_per_state = 2 }
@@ -431,6 +518,11 @@ country_event = {
                 limit = { check_variable = { divisions_per_state < 2 } }
                 set_temp_variable = { divisions_per_state = 2 }
             }
+
+			if = {
+				limit = { has_country_flag = { flag = communism_support_stage value > 2 } }
+				add_to_temp_variable = { divisions_per_state = constant:communism_spread_rebels.armed_cells_divisions_per_state_bonus }
+			}
 
             round_temp_variable = divisions_per_state
 
@@ -696,14 +788,16 @@ country_event = {
 
     is_triggered_only = yes
 
-    option = {
-        name = chaosx.nr1.9.a
-        add_popularity = {
-            ideology = communism
-            popularity = -0.05
-        }
-        add_stability = -0.01
-        add_war_support = 0.01
+	option = {
+		name = chaosx.nr1.9.a
+		set_temp_variable = { communism_reduction = constant:communism_spread_reduction.military_success }
+		multiply_temp_variable = { communism_reduction = -1 }
+		add_popularity = {
+			ideology = communism
+			popularity = var:communism_reduction
+		}
+		add_stability = -0.01
+		add_war_support = 0.01
         update_communism_spread_idea = yes
     }
 }
@@ -717,14 +811,16 @@ country_event = {
 
     is_triggered_only = yes
 
-    option = {
-        name = chaosx.nr1.10.a
-        add_popularity = {
-            ideology = communism
-            popularity = -0.02
-        }
-        add_stability = -0.02
-        add_war_support = -0.02
+	option = {
+		name = chaosx.nr1.10.a
+		set_temp_variable = { communism_reduction = constant:communism_spread_reduction.military_partial_failure }
+		multiply_temp_variable = { communism_reduction = -1 }
+		add_popularity = {
+			ideology = communism
+			popularity = var:communism_reduction
+		}
+		add_stability = -0.02
+		add_war_support = -0.02
         update_communism_spread_idea = yes
     }
 }

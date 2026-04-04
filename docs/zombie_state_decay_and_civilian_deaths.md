@@ -15,7 +15,7 @@ Zombie-controlled states now deteriorate while they remain under outbreak contro
 
 ### Population loss
 
-- each zombie-controlled state loses `0.5%` of its current population every `30` days,
+- each zombie-controlled state loses `1.4%` of its current population every `30` days,
 - the loss is applied for at most `36` monthly ticks per state,
 - after `36` ticks, population decline stops permanently for that state unless the system is redesigned later.
 
@@ -55,20 +55,21 @@ Urban and town categories are intentionally preserved. Zombie occupation still s
 
 ## Combat Civilian Deaths
 
-Combat civilian deaths are now actually applied from leader combat hooks instead of only being defined in constants.
+Combat civilian deaths are now derived from each country's real daily military casualty increase instead of leader combat hooks.
 
 Rules:
 
-- only offensive combat is considered,
-- deaths are applied to a random enemy frontline state where the leader is actively fighting,
+- the system starts from the country's daily military casualty delta,
+- deaths are distributed across enemy-controlled frontier states that border the country's currently controlled land,
+- more populous, denser, and less-developed frontline states take a larger share,
 - fascist countries have the highest baseline,
 - communist countries are next,
 - non-aligned countries are lower,
-- democratic countries trigger this only rarely,
-- `chaos_warfare` increases both the death rate and the chance to trigger,
+- democratic countries remain the lowest,
+- `chaos_warfare` increases the death rate further,
 - higher global chaos tiers further scale the death rate upward.
 
-This keeps the mechanic focused on countries actively inflicting devastation into enemy territory instead of always hitting both sides symmetrically.
+This keeps the mechanic focused on countries actively inflicting devastation into enemy territory while avoiding unreliable unit-leader combat scope lookups.
 
 ## Shared Death Pipeline
 
