@@ -15,7 +15,11 @@ Zombie-controlled states now deteriorate while they remain under outbreak contro
 
 ### Population loss
 
-- each zombie-controlled state loses `1.4%` of its current population every `30` days,
+- each zombie-controlled state loses a stage-scaled share of its current population every `30` days,
+- stage `0`: `2.55%`,
+- stage `1`: about `3.7%`,
+- stage `2`: about `5.4%`,
+- stage `3`: about `7.7%`,
 - the loss is applied for at most `36` monthly ticks per state,
 - after `36` ticks, population decline stops permanently for that state unless the system is redesigned later.
 
@@ -23,6 +27,7 @@ Implementation notes:
 
 - the timer follows actual zombie captures through `on_state_control_changed`,
 - existing outbreak states that predate the capture hook self-initialize the first time the zombie runtime processes them,
+- the monthly death rate now reads the outbreak country's `zombie_current_tier`, so late-stage hordes inflict far heavier occupation losses than early-stage ones,
 - deaths use the normal chaos-meter state-population pipeline and appear as civilian deaths with the cause `Zombie occupation collapse`.
 
 ### Structural degradation
@@ -69,7 +74,7 @@ Rules:
 - `chaos_warfare` increases the death rate further,
 - higher global chaos tiers further scale the death rate upward.
 
-This keeps the mechanic focused on countries actively inflicting devastation into enemy territory while avoiding unreliable unit-leader combat scope lookups.
+This keeps the mechanic focused on countries actively inflicting devastation into enemy territory while avoiding unreliable unit-leader combat scope lookups. The latest tuning pass also raises the wider civilian-death ecosystem, with outbreak mortality increased more sharply than the other sources.
 
 ## Shared Death Pipeline
 
@@ -83,6 +88,7 @@ That means they:
 - reduce state population directly,
 - increase the global civilian death total,
 - contribute to chaos through the existing deaths-to-chaos rule,
+- zombie occupation deaths still display and log at their full real value, but only contribute to chaos at a reduced `10:1` rate,
 - show up in the deaths UI with proper cause text.
 
 ## Tuning Files

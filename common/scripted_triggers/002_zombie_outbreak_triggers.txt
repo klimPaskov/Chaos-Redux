@@ -63,13 +63,11 @@ is_anti_zombie_bomb_target_state = {
 is_weaponized_zombie_raid_target_state = {
 	OR = {
 		AND = {
-			has_country_flag = weaponized_zombie_friendly_to_humans
-			var:target_state = {
-				is_zombie_controlled_state = yes
-			}
+			ROOT = { NOT = { has_country_flag = weaponized_zombie_friendly_to_humans } }
 		}
 		AND = {
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			ROOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			is_zombie_controlled_state = yes
 		}
 	}
 }
@@ -172,6 +170,14 @@ should_consider_joining_anti_zombie_league = {
 			is_outside_americas_country = yes
 			NOT = { zombie_threat_is_global_emergency = yes }
 		}
+	}
+}
+
+should_actively_join_anti_zombie_league = {
+	can_join_anti_zombie_league = yes
+	OR = {
+		zombie_threat_is_global_emergency = yes
+		has_regional_zombie_threat = yes
 	}
 }
 
@@ -375,7 +381,6 @@ has_regional_zombie_threat = {
 		is_at_war_with_any_zombie_country = yes
 		has_neighboring_zombie_front = yes
 		has_nearby_zombie_front = yes
-		has_same_continent_zombie_presence = yes
 	}
 }
 

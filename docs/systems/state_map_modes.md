@@ -59,7 +59,7 @@ This keeps the feature dynamic and easy to extend. Any future civilian-death sou
 
 ## Icons needed
 
-The button icons are now taken from the shared vanilla-style strip:
+The button icons come from the shared vanilla-style strip:
 
 - `gfx/interface/mapmode/mapmode_buttons_deselected_small.dds`
 - `gfx/interface/mapmode/mapmode_buttons_selected_small.dds`
@@ -68,12 +68,12 @@ Chaos Redux extends those strips to `20` frames in:
 
 - `interface/mapmodes_interface.gfx`
 
-The two custom state map modes consume the final two strip slots by scripted map-mode declaration order in `common/map_modes/chaosx_state_map_modes.txt`.
+Vanilla already occupies the first `18` small-strip frames, including hidden deployment and nudger slots, so the two scripted Chaos Redux map modes must use appended frames after the vanilla strip.
 
 Current slot assignment:
 
-- Sprite `18`: `deaths_state_map_mode`
-- Sprite `19`: `contaminated_states_map_mode`
+- Strip sprite `19`: `deaths_state_map_mode`
+- Strip sprite `20`: `contaminated_states_map_mode`
 
 ## Future extensions
 

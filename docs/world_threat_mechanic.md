@@ -3,7 +3,6 @@
 ## Overview
 
 `world_in_threat` is the shared global flag for Chaos Redux's existential-threat state.
-It is not zombie-specific.
 
 The purpose of the mechanic is to give other systems one clean hook for "the world is facing a large external threat right now, so normal geopolitical behavior should calm down and cooperation logic should be favored instead."
 
@@ -57,7 +56,7 @@ Current flow:
 
 This keeps the high-level flag generic and future-proof.
 
-### 3. Zombie integration
+### 3. Zombies Example
 
 The zombie source uses `refresh_zombie_world_threat_source` in `common/scripted_effects/002_zombie_outbreak_effects.txt`.
 
