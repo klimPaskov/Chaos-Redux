@@ -25,18 +25,22 @@ On monthly host tick (`on_monthly`), `air_contamination_monthly_update` runs and
   - low: `+1 bp` (`+0.01%`),
   - base: `+2 bp` (`+0.02%`),
   - high: `+3 bp` (`+0.03%`).
+- Irradiated fallout state (`nuclear_fallout_state`): `+3 bp` per current fallout intensity (`+0.03%` per intensity, up to `+0.21%` at the current intensity cap).
 - Natural recovery (when not irreversible): `-35 bp` monthly (`-0.35%`).
 
 The computed delta is applied through `air_contamination_apply_delta_bp`.
 
-### 2) Nuke contributions
+### 2) Nuke fallout seeding
 
-`chaos_meter_on_nuke_drop` now feeds contamination directly:
+`chaos_meter_on_nuke_drop` no longer adds a direct global contamination spike.
 
-- normal nuke: `+20 bp` (`+0.2%`),
-- thermonuclear nuke: `+150 bp` (`+1.5%`).
+Instead, a strike applies or strengthens `nuclear_fallout_state` on the target state:
 
-The last nuke contribution is stored for UI display.
+- normal nuke: `+1.0` fallout intensity for `180` days,
+- thermonuclear nuke: `+3.5` fallout intensity for `540` days,
+- repeated strikes stack intensity up to the current cap of `7.0`.
+
+That fallout intensity then contributes contamination monthly through the state loop, the same way chemical and outbreak states do.
 
 ### 3) Chaos synchronization
 
@@ -99,13 +103,14 @@ The contamination tab displays:
 
 - contamination %, cleanliness %, monthly net delta,
 - natural recovery amount,
-- chemical/outbreak state counts and contribution,
-- last nuke contribution,
+- chemical/outbreak/irradiated state counts and contribution,
 - one consolidated contamination stage status line,
 - winter state,
-- one plain-language summary sentence explaining that each 1% contamination adds global attrition pressure, lowers monthly population growth, and reduces weekly stability for normal countries,
+- one plain-language summary sentence explaining that each 1% contamination adds environmental attrition pressure across all states, regardless of owner type,
 - progress to the fallout world-end threshold,
 - right-side quick overview text with tooltip help.
+
+The right-side monthly-model and threshold reference values are refreshed whenever the Chaos Meter popup is opened and whenever the `Air Cleanliness` tab is selected, so the UI does not depend on stale cached globals after loading a save.
 
 The condemnation tab displays:
 
@@ -136,7 +141,7 @@ It sets:
 
 ### Existing sprite reused
 
-- `GFX_modifiers_radiation` (already defined in `interface/countrystateview.gfx`) is used for the global contamination dynamic modifier icon.
+- `GFX_modifiers_radiation` (already defined in `interface/countrystateview.gfx`) is used for the global contamination state modifier icon.
 - Condemnation list uses existing UI sprites:
   - `GFX_flag_small2` and `GFX_diplo_countrylist_flag_frame` for country rows,
   - `GFX_mini_tooltip` for diplomacy quick-open button.

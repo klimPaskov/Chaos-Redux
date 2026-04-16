@@ -215,10 +215,30 @@ zombie_apply_state_degradation = {
     }
 }
 
+zombie_set_state_population_decay_profile = {
+	set_temp_variable = { chaos_state_deaths_percent = constant:zombie_state_decay.monthly_population_percent_base }
+
+	if = {
+		limit = { ROOT = { has_country_flag = { flag = zombie_current_tier value = 3 } } }
+		multiply_temp_variable = { chaos_state_deaths_percent = constant:zombie_state_decay.monthly_population_stage_factor_3 }
+	}
+	else_if = {
+		limit = { ROOT = { has_country_flag = { flag = zombie_current_tier value = 2 } } }
+		multiply_temp_variable = { chaos_state_deaths_percent = constant:zombie_state_decay.monthly_population_stage_factor_2 }
+	}
+	else_if = {
+		limit = { ROOT = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
+		multiply_temp_variable = { chaos_state_deaths_percent = constant:zombie_state_decay.monthly_population_stage_factor_1 }
+	}
+	else = {
+		multiply_temp_variable = { chaos_state_deaths_percent = constant:zombie_state_decay.monthly_population_stage_factor_0 }
+	}
+}
+
 zombie_apply_state_population_decay = {
     if = {
         limit = { check_variable = { state_population_k > 0 } }
-        set_temp_variable = { chaos_state_deaths_percent = constant:zombie_state_decay.monthly_population_percent }
+        zombie_set_state_population_decay_profile = yes
         set_temp_variable = { chaos_state_deaths_cap_factor = constant:zombie_state_decay.monthly_population_cap_factor }
         set_temp_variable = { chaos_state_deaths_random_min = constant:zombie_state_decay.monthly_population_random_min }
         set_temp_variable = { chaos_state_deaths_random_span = constant:zombie_state_decay.monthly_population_random_span }
@@ -579,6 +599,7 @@ prepare_anti_zombie_league_member = {
     }
 
     clr_country_flag = azl_refused_to_join
+    clr_country_flag = azl_can_join_later
 }
 
 establish_anti_zombie_league = {
@@ -627,10 +648,11 @@ join_anti_zombie_league_effect = {
         leave_faction = yes
     }
 
-    prepare_anti_zombie_league_member = yes
-    clr_country_flag = azl_left_due_distant_threat
-    clr_country_flag = azl_distant_threat_reviewed
-    clr_country_flag = azl_left_after_main_outbreak_gone
+	prepare_anti_zombie_league_member = yes
+	clr_country_flag = azl_left_due_distant_threat
+	clr_country_flag = azl_distant_threat_reviewed
+	clr_country_flag = azl_left_after_main_outbreak_gone
+	clr_country_flag = azl_can_join_later
 
     if = {
         limit = {
@@ -916,6 +938,7 @@ dismantle_anti_zombie_league = {
         clr_country_flag = azl_disbanding_league
         clr_country_flag = azl_formation_in_progress
         clr_country_flag = azl_refused_to_join
+        clr_country_flag = azl_can_join_later
         clr_country_flag = azl_left_due_distant_threat
         clr_country_flag = azl_distant_threat_reviewed
         clr_country_flag = azl_left_after_main_outbreak_gone

@@ -604,6 +604,7 @@ country_event = {
         }
 
         join_anti_zombie_league_effect = yes
+        clr_country_flag = azl_can_join_later
         clr_country_flag = zombie_overwhelming_force
     }
 
@@ -694,6 +695,7 @@ country_event = {
         }
 
         add_political_power = 25
+        set_country_flag = azl_can_join_later
         clr_country_flag = zombie_overwhelming_force
         custom_effect_tooltip = azl_can_join_later_tt
     }
@@ -794,6 +796,7 @@ country_event = {
         }
 
         add_political_power = 50
+        clr_country_flag = azl_can_join_later
         set_country_flag = azl_refused_to_join
         clr_country_flag = zombie_overwhelming_force
         custom_effect_tooltip = azl_refused_to_join_tt
@@ -845,39 +848,6 @@ country_event = {
 					spawn_world_end_zombie_coastal_breakouts = yes
 				}
 			}
-        }
-    }
-}
-
-# World End Scenario Event - Fallout (air contamination collapse)
-country_event = {
-    id = chaosx.nr2.9
-
-    hidden = yes
-    fire_only_once = yes
-    is_triggered_only = yes
-
-    trigger = {
-        NOT = { has_global_flag = world_end }
-        NOT = { has_global_flag = world_end_disabled }
-        check_variable = {
-            var = global.air_contamination_bp
-            value = constant:air_contamination_threshold_bp.world_end_1000
-            compare = greater_than_or_equals
-        }
-    }
-
-    immediate = {
-        hidden_effect = {
-            set_global_flag = {
-                flag = super_event_visible
-                days = 30
-                value = 4
-            }
-            set_variable = { global.current_super_event_audio_id = 4 }
-            play_current_super_event_audio = yes
-            set_global_flag = world_end
-            set_global_flag = world_end_fallout
         }
     }
 }

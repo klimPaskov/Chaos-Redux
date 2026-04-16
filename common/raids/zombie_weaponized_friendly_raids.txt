@@ -4,7 +4,7 @@
 @WZ_RAID_SUCCESS_BASE_HIGH = 0.68
 
 types = {
-	weaponized_zombie_strike_low = {
+	weaponized_zombie_strike_low_friendly = {
 		days_to_prepare = 10
 		category = biological_raids
 		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
@@ -14,29 +14,24 @@ types = {
 		ai_will_do = {
 			base = 1
 			modifier = {
-				factor = 8
-				ROOT = {
-					tag = JAP
-					has_war_with = CHI
-				}
-				FROM = { tag = CHI }
-			}
-			modifier = {
-				factor = 5
+				factor = 12
 				var:target_state = { is_zombie_controlled_state = yes }
 			}
 		}
 
 		allowed = {
 			has_country_flag = weaponized_zombie_raid_success_low
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			has_country_flag = weaponized_zombie_friendly_to_humans
 		}
 		visible = {
 			has_country_flag = weaponized_zombies_completed
 			has_country_flag = weaponized_zombie_raid_success_low
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			has_country_flag = weaponized_zombie_friendly_to_humans
 		}
 		show_target = {
+			var:target_state = {
+				is_zombie_controlled_state = yes
+			}
 			NOT = { is_in_faction_with = FROM }
 		}
 		available = { }
@@ -73,40 +68,15 @@ types = {
 		success_factors = {
 			success = {
 				base = @WZ_RAID_SUCCESS_BASE_LOW
-				experience = {
-					weight = 0.1
-					start_weight = -0.1
-					reference = 1.0
-				}
-				air_defence = {
-					reference = 100
-					start_weight = -0.05
-					weight = 0.05
-				}
-				air_agility = {
-					reference = 100
-					start_weight = -0.1
-					weight = 0.1
-				}
-				reliability = {
-					start_weight = -0.1
-					weight = 0.1
-				}
-				air_superiority = {
-					reference = 1.0
-					start_weight = -0.25
-					weight = 0.25
-				}
-				interception = {
-					reference = 10
-					weight = -0.25
-				}
+				experience = { weight = 0.1 start_weight = -0.1 reference = 1.0 }
+				air_defence = { reference = 100 start_weight = -0.05 weight = 0.05 }
+				air_agility = { reference = 100 start_weight = -0.1 weight = 0.1 }
+				reliability = { start_weight = -0.1 weight = 0.1 }
+				air_superiority = { reference = 1.0 start_weight = -0.25 weight = 0.25 }
+				interception = { reference = 10 weight = -0.25 }
 				anti_air = { weight = -0.05 }
 				radar = { weight = -0.05 }
-				intel = {
-					weight = 0.2
-					reference = 100
-				}
+				intel = { weight = 0.2 reference = 100 }
 			}
 		}
 
@@ -166,32 +136,45 @@ types = {
 		}
 	}
 
-	weaponized_zombie_strike_medium = {
+	weaponized_zombie_strike_medium_friendly = {
 		days_to_prepare = 10
 		category = biological_raids
 		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
-		ai_will_do = { base = 1 }
+
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 12
+				var:target_state = { is_zombie_controlled_state = yes }
+			}
+		}
+
 		allowed = {
 			has_country_flag = weaponized_zombie_raid_success_medium
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			has_country_flag = weaponized_zombie_friendly_to_humans
 		}
 		visible = {
 			has_country_flag = weaponized_zombies_completed
 			has_country_flag = weaponized_zombie_raid_success_medium
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			has_country_flag = weaponized_zombie_friendly_to_humans
 		}
 		show_target = {
+			var:target_state = {
+				is_zombie_controlled_state = yes
+			}
 			NOT = { is_in_faction_with = FROM }
 		}
 		available = { }
 		launchable = {
 			has_war_with = FROM
 		}
+
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }
 		target_icon = GFX_other_target_icon
+
 		unit_requirements = {
 			equipment = {
 				type = { cas }
@@ -210,8 +193,10 @@ types = {
 				amount = { min = 10 }
 			}
 		}
+
 		starting_point = { types = { air_base } }
 		arrow = { type = air }
+
 		success_factors = {
 			success = {
 				base = @WZ_RAID_SUCCESS_BASE_MEDIUM
@@ -226,6 +211,7 @@ types = {
 				intel = { weight = 0.2 reference = 100 }
 			}
 		}
+
 		success_levels = {
 			failure = {
 				actor_effects = {
@@ -282,32 +268,45 @@ types = {
 		}
 	}
 
-	weaponized_zombie_strike_high = {
+	weaponized_zombie_strike_high_friendly = {
 		days_to_prepare = 10
 		category = biological_raids
 		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
-		ai_will_do = { base = 1 }
+
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 12
+				var:target_state = { is_zombie_controlled_state = yes }
+			}
+		}
+
 		allowed = {
 			has_country_flag = weaponized_zombie_raid_success_high
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			has_country_flag = weaponized_zombie_friendly_to_humans
 		}
 		visible = {
 			has_country_flag = weaponized_zombies_completed
 			has_country_flag = weaponized_zombie_raid_success_high
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			has_country_flag = weaponized_zombie_friendly_to_humans
 		}
 		show_target = {
+			var:target_state = {
+				is_zombie_controlled_state = yes
+			}
 			NOT = { is_in_faction_with = FROM }
 		}
 		available = { }
 		launchable = {
 			has_war_with = FROM
 		}
+
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }
 		target_icon = GFX_other_target_icon
+
 		unit_requirements = {
 			equipment = {
 				type = { cas }
@@ -326,8 +325,10 @@ types = {
 				amount = { min = 10 }
 			}
 		}
+
 		starting_point = { types = { air_base } }
 		arrow = { type = air }
+
 		success_factors = {
 			success = {
 				base = @WZ_RAID_SUCCESS_BASE_HIGH
@@ -342,6 +343,7 @@ types = {
 				intel = { weight = 0.2 reference = 100 }
 			}
 		}
+
 		success_levels = {
 			failure = {
 				actor_effects = {

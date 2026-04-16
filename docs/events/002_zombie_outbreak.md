@@ -43,7 +43,7 @@ Primary script and data files:
 
 Related non-zombie UI documentation:
 
-- `docs/events_log_evolutions_and_clusters.md`
+- `docs/chaosx_systems/events_log_evolutions_and_clusters.md`
 
 ## Events Log Integration
 
@@ -494,11 +494,12 @@ Current formation and join behavior:
 - only countries that pass `uses_normal_civilian_systems = yes` can lead or join it
 - if total live zombie strength is still below `650` divisions, AI countries are much less willing to join
 - the one-time `chaosx.nr2.7` formation invitation now only goes to countries that are actually pressured by the threat, not to every technically eligible country on the map
-- the faction joining rule itself now uses that same pressure gate, so countries cannot bypass the tuned invitation logic by silently joining through the faction-rule layer
+- countries that pick `Consider Joining Later` now get the later join path explicitly; they do not jump straight from broad eligibility into the decision and faction-rule join logic
+- the faction joining rule itself now uses that stricter later-join gate, so countries cannot bypass the tuned invitation logic by silently joining through the faction-rule layer
 - major democracies no longer get an automatic far-away early-entry carve-out; they still come in early when the threat is regional, continental, or truly global
-- countries now evaluate proximity much more aggressively, so wars with zombies, direct borders, nearby fronts, and same-continent outbreak presence matter far more than before
+- countries now evaluate proximity much more aggressively, so wars with zombies, direct borders, and nearby fronts matter far more than before
 - countries on other continents are now blocked from joining unless the outbreak has become a true global emergency
-- same-continent countries without an actual front threat are only weakly inclined to join, so expansion should remain gradual instead of becoming instantly global
+- same-continent countries without an actual front threat can still get the formation invitation for consideration once the outbreak is serious, but they no longer actively seek League entry until the threat becomes regional or global
 - countries with no meaningful regional zombie threat are now strongly biased toward delaying or refusing unless the outbreak has become a true global emergency
 - if there is no live main `ZZZ` outbreak on the map, countries stop joining or rejoining the League and the alliance begins to decay through member exits instead
 - countries that leave during that no-main-outbreak decay are now marked separately and do not cycle back into the League while the alliance shell still exists
