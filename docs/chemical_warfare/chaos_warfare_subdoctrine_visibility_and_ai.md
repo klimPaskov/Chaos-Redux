@@ -21,7 +21,7 @@ Affected subdoctrines:
 - `common/doctrines/subdoctrines/land/chaos_warfare_armor_subdoctrines.txt`
 - `common/doctrines/subdoctrines/land/chaos_warfare_combat_support_subdoctrines.txt`
 - `common/doctrines/subdoctrines/land/chaos_warfare_operations_subdoctrines.txt`
-- `docs/chaos_warfare_chemical_suppression.md`
+- `docs/chemical_warfare/chaos_warfare_chemical_suppression.md`
 
 ## AI Notes
 - This does not make non-Chaos countries eligible to pick the branch.

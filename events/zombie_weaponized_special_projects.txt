@@ -12,6 +12,53 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
+		resolve_weaponized_zombie_profile = yes
+		weaponized_zombie_refresh_raid_success_profile = yes
+		set_technology = {
+			zombie_disease_bomb_delivery_systems = 1
+			popup = no
+		}
+		if = {
+			limit = {
+				has_country_flag = weaponized_zombies_completed
+				check_variable = {
+					var = num_equipment@zombie_disease_bomb_1
+					value = 1
+					compare = less_than
+				}
+			}
+			clr_country_flag = weaponized_zombie_initial_stockpile_granted
+		}
+		ensure_weaponized_zombie_initial_stockpile = yes
+		set_temp_variable = { wz_debug_completed = 0 }
+		if = {
+			limit = { has_country_flag = weaponized_zombies_completed }
+			set_temp_variable = { wz_debug_completed = 1 }
+		}
+		set_temp_variable = { wz_debug_raid_low = 0 }
+		if = {
+			limit = { has_country_flag = weaponized_zombie_raid_success_low }
+			set_temp_variable = { wz_debug_raid_low = 1 }
+		}
+		set_temp_variable = { wz_debug_raid_medium = 0 }
+		if = {
+			limit = { has_country_flag = weaponized_zombie_raid_success_medium }
+			set_temp_variable = { wz_debug_raid_medium = 1 }
+		}
+		set_temp_variable = { wz_debug_raid_high = 0 }
+		if = {
+			limit = { has_country_flag = weaponized_zombie_raid_success_high }
+			set_temp_variable = { wz_debug_raid_high = 1 }
+		}
+		set_temp_variable = { wz_debug_friendly_humans = 0 }
+		if = {
+			limit = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			set_temp_variable = { wz_debug_friendly_humans = 1 }
+		}
+		log = "[Chaos Redux] WZ RAID DEBUG country=[ROOT.GetTag] completed=[?wz_debug_completed|0] low=[?wz_debug_raid_low|0] medium=[?wz_debug_raid_medium|0] high=[?wz_debug_raid_high|0] friendly_humans=[?wz_debug_friendly_humans|0] bombs=[?num_equipment@zombie_disease_bomb_1|0]"
+	}
+
 	option = {
 		name = chaosx.weaponized_zombies.1.a
 	}
@@ -52,7 +99,7 @@ country_event = {
 		hidden_effect = {
 			if = {
 				limit = {
-					NOT = { has_country_flag = weaponized_zombie_targets_zombies_only }
+					NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 				}
 				add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
 				add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
@@ -331,5 +378,17 @@ country_event = {
 		add_stability = constant:weaponized_zombies.lab_accident_stability_loss
 		add_war_support = constant:weaponized_zombies.lab_accident_warsupport_loss
 		set_country_flag = achievement_containment_was_temporary
+	}
+}
+
+country_event = {
+	id = chaosx.weaponized_zombies.10
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			randomize_and_complete_weaponized_zombie_project = yes
+		}
 	}
 }

@@ -142,6 +142,7 @@ Dead necrotic and demonic zombie outcomes also no longer resolve into obedient c
 - The raid UI keeps the strike under the normal `Biological Raids` category, alongside the anti-zombie bomb, but now uses a dedicated weaponized-zombie strike icon so it still reads as its own weapon.
 - The raid UI still exposes only a single visible weaponized zombie strike instead of separate low, medium, and high entries.
 - The strike uses the same province-targeted air-raid model as the other bioweapons.
+- The strike now checks the zombie-payload stockpile in `available` and consumes the payload manually on launch, instead of relying on raid `essential_equipment` collection during province targeting.
 - Targeting is now obedience-aware instead of hardcoded:
   - `friendly to humans` outcomes can only be deployed onto zombie-controlled states
   - all other outcomes can be deployed onto any province

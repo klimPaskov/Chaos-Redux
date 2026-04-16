@@ -41,6 +41,7 @@ Result:
 - Frontline states are now all eligible to take part of the same day's collateral losses instead of combat deaths concentrating into one random state.
 - The overall daily collateral pool is preserved, but denser, more populous, and less developed frontline states receive a larger share of it.
 - This pass is tied to real tracked combat losses rather than inferred leader placement, and the deaths map highlights the states that actually receive those registered civilian combat deaths through the shared state-population death pipeline.
+- The current tuning pass raises combat, bombing, contamination, fallout, nuclear, and occupation civilian losses again so every source hits harder than before, while outbreaks receive the largest increase.
 
 ## Contaminated-State Monthly Death Ticks
 
@@ -48,13 +49,13 @@ Monthly contaminated-state deaths are now population-percentage based instead of
 
 ### Chemical Contamination
 
-- Chemical contamination now applies a noticeably stronger monthly civilian death percentage than before.
+- Chemical contamination now applies a stronger monthly civilian death percentage than before.
 
 ### Biowarfare Outbreaks
 
-- Outbreak states apply higher death percentages.
-- Deadlier outbreaks apply stronger monthly death percentages.
-- These death rates are now stronger than before.
+- Outbreak states now apply drastically higher death percentages than before.
+- Deadlier outbreaks still apply stronger monthly death percentages than milder outbreaks.
+- This pass pushes outbreak lethality up much more aggressively, with plague and smallpox raised again on top of the broader outbreak increase, so outbreaks now stand out clearly as the deadliest recurring contamination source by a wide margin.
 
 Severity order:
 
@@ -84,11 +85,11 @@ This creates a direct death-toll consequence for repression-heavy occupation pol
 
 ## Zombie-Controlled State Decay
 
-Zombie-controlled states now use a separate long-form collapse mechanic documented in `docs/zombie_state_decay_and_civilian_deaths.md`.
+Zombie-controlled states now use a separate long-form collapse mechanic documented in `docs/biological_warfare/zombie_state_decay_and_civilian_deaths.md`.
 
 Summary:
 
-- `1.4%` monthly population loss for up to `36` months per state,
+- `1.7%` monthly population loss for up to `36` months per state,
 - one structural degradation pass every `180` days,
 - deaths feed the same chaos-meter pipeline under the cause `Zombie occupation collapse`.
 

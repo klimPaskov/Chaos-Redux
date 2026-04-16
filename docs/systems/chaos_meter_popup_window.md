@@ -66,8 +66,7 @@ The `Air Cleanliness` tab shows:
 
 - current global contamination and cleanliness,
 - monthly contamination delta and natural recovery,
-- chemical/outbreak state contribution counts,
-- last nuke contamination contribution,
+- chemical/outbreak/irradiated state contribution counts,
 - one consolidated contamination stage status line,
 - active winter phase and fallout world-end progress.
 - a right-side quick mechanic overview with threshold summary.
