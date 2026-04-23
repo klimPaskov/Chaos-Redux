@@ -20,18 +20,20 @@ The zombie outbreak event now has authored gameplay text in the event-details wi
    - fired count per event (from history log arrays),
    - enabled/disabled state (from `global.disabled_events`),
    - unique flag (major/fire-once vs repeatable).
+   - live selection weight for each row (zeroed for disabled events and already-fired unique events).
 5. The square toggle button in each `Events` row instantly enables/disables the event and rebuilds the list.
-6. Logged evolution rows are now pure history rows. They stay clickable, but their enable/disable checkbox is gone because the evolution already happened.
-7. Event-preview evolution rows inside the shared event-details popup still keep their checkbox, because that list is used to control future progression.
-8. Clicking any event row from either `History` or `Events` opens the same large detail window.
-9. That shared event detail window now shows runtime context when it exists:
+6. When a new event is recorded while the `Events` tab is open, the catalogue view rebuilds so live weight values stay current.
+7. Logged evolution rows are now pure history rows. They stay clickable, but their enable/disable checkbox is gone because the evolution already happened.
+8. Event-preview evolution rows inside the shared event-details popup still keep their checkbox, because that list is used to control future progression.
+9. Clicking any event row from either `History` or `Events` opens the same large detail window.
+10. That shared event detail window now shows runtime context when it exists:
    - fired-on date,
    - log number,
    - actor flag beside the title once the event has actually fired,
    - latest reached evolution stage.
-10. Event `2` (`Zombie Outbreak`) now renders gameplay-useful description text in that detail window instead of the old placeholder copy.
-11. If the selected event has logged or preview evolutions, the event detail window shows a clickable evolution list under the description text.
-12. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
+11. Event `2` (`Zombie Outbreak`) now renders gameplay-useful description text in that detail window instead of the old placeholder copy.
+12. If the selected event has logged or preview evolutions, the event detail window shows a clickable evolution list under the description text.
+13. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
    - evolution title and summary,
    - logged actor country link,
    - evolved zombie portrait,
@@ -50,6 +52,7 @@ Events-list metadata arrays:
 - `global.events_log_events_view_fired_entries`
 - `global.events_log_events_view_enabled_entries`
 - `global.events_log_events_view_unique_entries`
+- `global.events_log_events_view_weight_entries`
 
 The row id/type payload reuses:
 - `global.events_log_view_event_id_entries`

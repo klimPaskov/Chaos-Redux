@@ -50,6 +50,7 @@ initialize_event_system = {
 	clear_array = global.events_log_events_view_fired_entries
 	clear_array = global.events_log_events_view_enabled_entries
 	clear_array = global.events_log_events_view_unique_entries
+	clear_array = global.events_log_events_view_weight_entries
 	clear_array = global.events_log_open_event_detail_entries
 	clear_array = global.events_log_event_detail_evolution_type_entries
 	clear_array = global.events_log_event_detail_evolution_tier_entries
@@ -1079,21 +1080,23 @@ record_events_log_history_entry = {
         index = 0
     }
 
-    every_country = {
-        limit = {
-            is_ai = no
-            has_country_flag = events_log_window_open
-            has_country_flag = events_log_history_tab
-        }
-        rebuild_events_log_history_view = yes
-    }
 	every_country = {
 		limit = {
 			is_ai = no
 			has_country_flag = events_log_window_open
-			has_country_flag = events_log_event_details_open
 		}
-		events_log_rebuild_open_event_details_view = yes
+		if = {
+			limit = { has_country_flag = events_log_history_tab }
+			rebuild_events_log_history_view = yes
+		}
+		if = {
+			limit = { has_country_flag = events_log_events_tab }
+			rebuild_events_log_events_view = yes
+		}
+		if = {
+			limit = { has_country_flag = events_log_event_details_open }
+			events_log_rebuild_open_event_details_view = yes
+		}
 	}
 }
 
