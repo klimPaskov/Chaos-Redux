@@ -2820,12 +2820,14 @@ rebuild_events_log_events_view = {
     clear_array = global.events_log_events_view_fired_entries
     clear_array = global.events_log_events_view_enabled_entries
     clear_array = global.events_log_events_view_unique_entries
+    clear_array = global.events_log_events_view_weight_entries
 
     clear_array = temp_events_log_events_source_event_id_entries
     clear_array = temp_events_log_events_source_event_type_entries
     clear_array = temp_events_log_events_source_fired_entries
     clear_array = temp_events_log_events_source_enabled_entries
     clear_array = temp_events_log_events_source_unique_entries
+    clear_array = temp_events_log_events_source_weight_entries
 
     set_temp_variable = { events_log_events_all_count = global.all_events^num }
     for_loop_effect = {
@@ -2892,6 +2894,21 @@ rebuild_events_log_events_view = {
                 add_to_temp_variable = { events_log_events_history_scan_index = 1 }
             }
 
+            set_temp_variable = { events_log_events_live_weight = 0 }
+            if = {
+                limit = {
+                    check_variable = { events_log_events_is_enabled > 0 }
+                    NOT = {
+                        AND = {
+                            check_variable = { events_log_events_unique_flag > 0 }
+                            check_variable = { events_log_events_fired_count > 0 }
+                        }
+                    }
+                }
+                get_event_weight = yes
+                set_temp_variable = { events_log_events_live_weight = event_weight }
+            }
+
             add_to_array = {
                 array = temp_events_log_events_source_event_id_entries
                 value = event_id
@@ -2911,6 +2928,10 @@ rebuild_events_log_events_view = {
             add_to_array = {
                 array = temp_events_log_events_source_unique_entries
                 value = events_log_events_unique_flag
+            }
+            add_to_array = {
+                array = temp_events_log_events_source_weight_entries
+                value = events_log_events_live_weight
             }
         }
     }
@@ -3017,6 +3038,10 @@ rebuild_events_log_events_view = {
             add_to_array = {
                 array = global.events_log_events_view_unique_entries
                 value = temp_events_log_events_source_unique_entries^events_log_events_best_index
+            }
+            add_to_array = {
+                array = global.events_log_events_view_weight_entries
+                value = temp_events_log_events_source_weight_entries^events_log_events_best_index
             }
 
             set_variable = { temp_events_log_events_source_event_id_entries^events_log_events_best_index = -1 }
