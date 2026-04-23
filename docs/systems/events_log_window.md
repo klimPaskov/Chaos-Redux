@@ -24,6 +24,10 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - That shared detail popup uses the clicked history row as context when available, so `Fired on`, `Log #`, and `Actor` reflect the selected log entry instead of a generic placeholder.
 - If an event has a mapped actor and it has already fired, the shared detail popup shows that actor as a clickable flag next to the title instead of a separate `Actor:` row.
 
+## Events tab behavior
+- Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event.
+- The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
+
 ## Evolutions tab behavior
 - Logs evolution entries (currently zombie evolution stages, with room for additional types).
 - Zombie evolution logs are written only for the main zombie country (`tag = ZZZ`), not for dynamic outbreak tags.
@@ -41,6 +45,12 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - Non-actor rows are sanitized to actor `0` and has-actor `0`.
 
 ## Data structures
+Events-tab metadata arrays:
+- `global.events_log_events_view_fired_entries`
+- `global.events_log_events_view_enabled_entries`
+- `global.events_log_events_view_unique_entries`
+- `global.events_log_events_view_weight_entries`
+
 Source history arrays:
 - `global.events_log_history_sequence_entries`
 - `global.events_log_history_date_entries`

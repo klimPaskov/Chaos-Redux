@@ -38,7 +38,7 @@ The system now has two logging entry points:
 
 ## Icon and Sprite Wiring
 - Source copied from vanilla:
-  - `/home/klim/projects/Hearts of Iron IV/gfx/interface/equipmentdesigner/edit_notes_button.dds`
+  - `/home/klim/Hearts of Iron IV/gfx/interface/equipmentdesigner/edit_notes_button.dds`
 - Mod texture path:
   - `gfx/interface/chaosx_events_log_button.dds`
 - GFX definition file:
