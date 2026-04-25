@@ -121,120 +121,120 @@ ability = {
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-			ai_will_do = {
-				factor = 0
-				modifier = {
-					factor = 0
-					FROM = { NOT = { has_war = yes } }
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						NOT = { is_japan_china_chemical_campaign_war = yes }
-						NOT = { has_enemy_chemical_condemnation_considerable = yes }
-					}
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						has_war_with_chinese_country = yes
-						NOT = { original_tag = JAP }
-					}
-				}
-				modifier = {
-					FROM = {
-						has_war = yes
-						command_power > constant:chem_ability_ai.min_command_power.chlorine
-						has_war_support > constant:chem_ability_ai.min_war_support.chlorine
-					}
-					check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_low }
-					check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
-					add = constant:chem_ability_ai.pressure_add.high
-				}
-				modifier = {
-					check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
-					add = constant:chem_ability_ai.pressure_add.med
-				}
-				modifier = {
-					check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
-					check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
-					add = constant:chem_ability_ai.pressure_add.med
-				}
-				modifier = {
-					OR = {
-						check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@forest > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@jungle > constant:chem_ability_ai.pressure.terrain_pressure }
-					}
-					add = constant:chem_ability_ai.terrain_pressure_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					FROM = { has_government = democratic }
-					add = constant:chem_ability_ai.ideology_add.democratic
-				}
-				modifier = {
-					FROM = { has_government = fascism }
-					add = constant:chem_ability_ai.ideology_add.fascist
-				}
-				modifier = {
-					FROM = { has_government = communism }
-					add = constant:chem_ability_ai.ideology_add.communist
-				}
-				modifier = {
-					FROM = { has_government = neutrality }
-					add = constant:chem_ability_ai.ideology_add.neutral
-				}
-				modifier = {
-					FROM = { is_japan_china_chemical_campaign_war = yes }
-					add = constant:chem_ability_ai.country_add.japan_china_campaign
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.strong_favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
-					NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
-					add = constant:chem_ability_ai.wind_add.favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.against
-				}
-				modifier = {
-					FROM = { has_tech = advanced_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.advanced
-				}
-				modifier = {
-					FROM = { has_tech = improved_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.improved
-				}
-				modifier = {
-					FROM = { has_tech = basic_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.basic
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_considerable = yes }
-					add = constant:chem_ability_ai.retaliate_add.considerable
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_very_high = yes }
-					add = constant:chem_ability_ai.retaliate_add.very_high
-				}
-				modifier = {
-					FROM = { has_country_flag = air_cleanliness_treaty_member }
-					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-				}
-	        }
-	    }
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                factor = 0
+                FROM = { NOT = { has_war = yes } }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    NOT = { is_japan_china_chemical_campaign_war = yes }
+                    NOT = { has_enemy_chemical_condemnation_considerable = yes }
+                }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    has_war_with_chinese_country = yes
+                    NOT = { original_tag = JAP }
+                }
+            }
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > constant:chem_ability_ai.min_command_power.chlorine
+                    has_war_support > constant:chem_ability_ai.min_war_support.chlorine
+                }
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_low }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.high
+            }
+            modifier = {
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
+                add = constant:chem_ability_ai.pressure_add.med
+            }
+            modifier = {
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.med
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@forest > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@jungle > constant:chem_ability_ai.pressure.terrain_pressure }
+                }
+                add = constant:chem_ability_ai.terrain_pressure_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = constant:chem_ability_ai.ideology_add.democratic
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = constant:chem_ability_ai.ideology_add.fascist
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = constant:chem_ability_ai.ideology_add.communist
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = constant:chem_ability_ai.ideology_add.neutral
+            }
+            modifier = {
+                FROM = { is_japan_china_chemical_campaign_war = yes }
+                add = constant:chem_ability_ai.country_add.japan_china_campaign
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.advanced
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.improved
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.basic
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_considerable = yes }
+                add = constant:chem_ability_ai.retaliate_add.considerable
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_very_high = yes }
+                add = constant:chem_ability_ai.retaliate_add.very_high
+            }
+            modifier = {
+                FROM = { has_country_flag = air_cleanliness_treaty_member }
+                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+            }
+        }
+    }
 
     chemical_phosgene_attack = {
         name = CHEM_ABILITY_PHOSGENE_NAME
@@ -344,116 +344,116 @@ ability = {
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-			ai_will_do = {
-				factor = 0
-				modifier = {
-					factor = 0
-					FROM = { NOT = { has_war = yes } }
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						NOT = { is_japan_china_chemical_campaign_war = yes }
-						NOT = { has_enemy_chemical_condemnation_considerable = yes }
-					}
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						has_war_with_chinese_country = yes
-						NOT = { original_tag = JAP }
-					}
-				}
-				modifier = {
-					FROM = {
-						has_war = yes
-						command_power > constant:chem_ability_ai.min_command_power.phosgene
-						has_war_support > constant:chem_ability_ai.min_war_support.phosgene
-					}
-					check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
-					check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
-					add = constant:chem_ability_ai.pressure_add.high
-				}
-				modifier = {
-					check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
-					check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
-					add = constant:chem_ability_ai.pressure_add.med
-				}
-				modifier = {
-					OR = {
-						check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@hills > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@mountain > constant:chem_ability_ai.pressure.terrain_pressure }
-					}
-					add = constant:chem_ability_ai.terrain_pressure_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					FROM = { has_government = democratic }
-					add = constant:chem_ability_ai.ideology_add.democratic
-				}
-				modifier = {
-					FROM = { has_government = fascism }
-					add = constant:chem_ability_ai.ideology_add.fascist
-				}
-				modifier = {
-					FROM = { has_government = communism }
-					add = constant:chem_ability_ai.ideology_add.communist
-				}
-				modifier = {
-					FROM = { has_government = neutrality }
-					add = constant:chem_ability_ai.ideology_add.neutral
-				}
-				modifier = {
-					FROM = { is_japan_china_chemical_campaign_war = yes }
-					add = constant:chem_ability_ai.country_add.japan_china_campaign
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.strong_favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
-					NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
-					add = constant:chem_ability_ai.wind_add.favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.against
-				}
-				modifier = {
-					FROM = { has_tech = advanced_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.advanced
-				}
-				modifier = {
-					FROM = { has_tech = improved_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.improved
-				}
-				modifier = {
-					FROM = { has_tech = basic_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.basic
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_considerable = yes }
-					add = constant:chem_ability_ai.retaliate_add.considerable
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_very_high = yes }
-					add = constant:chem_ability_ai.retaliate_add.very_high
-				}
-				modifier = {
-					FROM = { has_country_flag = air_cleanliness_treaty_member }
-					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-				}
-	        }
-	    }
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                factor = 0
+                FROM = { NOT = { has_war = yes } }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    NOT = { is_japan_china_chemical_campaign_war = yes }
+                    NOT = { has_enemy_chemical_condemnation_considerable = yes }
+                }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    has_war_with_chinese_country = yes
+                    NOT = { original_tag = JAP }
+                }
+            }
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > constant:chem_ability_ai.min_command_power.phosgene
+                    has_war_support > constant:chem_ability_ai.min_war_support.phosgene
+                }
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.high
+            }
+            modifier = {
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.med
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@hills > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@mountain > constant:chem_ability_ai.pressure.terrain_pressure }
+                }
+                add = constant:chem_ability_ai.terrain_pressure_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = constant:chem_ability_ai.ideology_add.democratic
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = constant:chem_ability_ai.ideology_add.fascist
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = constant:chem_ability_ai.ideology_add.communist
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = constant:chem_ability_ai.ideology_add.neutral
+            }
+            modifier = {
+                FROM = { is_japan_china_chemical_campaign_war = yes }
+                add = constant:chem_ability_ai.country_add.japan_china_campaign
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.advanced
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.improved
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.basic
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_considerable = yes }
+                add = constant:chem_ability_ai.retaliate_add.considerable
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_very_high = yes }
+                add = constant:chem_ability_ai.retaliate_add.very_high
+            }
+            modifier = {
+                FROM = { has_country_flag = air_cleanliness_treaty_member }
+                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+            }
+        }
+    }
 
     chemical_mustard_attack = {
         name = CHEM_ABILITY_MUSTARD_NAME
@@ -548,16 +548,16 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_MUSTARD
             custom_effect_tooltip = CHEM_ABILITY_MUSTARD_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
-			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_MUSTARD_TT
-			if = {
-				limit = {
-					OWNER = { has_tech = dimercaprol }
-				}
-				custom_effect_tooltip = CHEM_ABILITY_DIMERCAPROL_BLISTER_TT
-			}
-			custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-			custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_MUSTARD_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_MUSTARD_TT
+            if = {
+                limit = {
+                    OWNER = { has_tech = dimercaprol }
+                }
+                custom_effect_tooltip = CHEM_ABILITY_DIMERCAPROL_BLISTER_TT
+            }
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_MUSTARD_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
             custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
@@ -569,117 +569,117 @@ ability = {
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-			ai_will_do = {
-				factor = 0
-				modifier = {
-					factor = 0
-					FROM = { NOT = { has_war = yes } }
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						NOT = { is_japan_china_chemical_campaign_war = yes }
-						NOT = { has_enemy_chemical_condemnation_considerable = yes }
-					}
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						has_war_with_chinese_country = yes
-						NOT = { original_tag = JAP }
-					}
-				}
-				modifier = {
-					FROM = {
-						has_war = yes
-						command_power > constant:chem_ability_ai.min_command_power.mustard
-						has_war_support > constant:chem_ability_ai.min_war_support.mustard
-					}
-					check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
-					check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
-					add = constant:chem_ability_ai.pressure_add.high
-				}
-				modifier = {
-					check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_low }
-					check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
-					add = constant:chem_ability_ai.pressure_add.med
-				}
-				modifier = {
-					OR = {
-						check_variable = { num_units_offensive_combats_against@forest > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@jungle > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@marsh > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
-					}
-					add = constant:chem_ability_ai.terrain_pressure_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					FROM = { has_government = democratic }
-					add = constant:chem_ability_ai.ideology_add.democratic
-				}
-				modifier = {
-					FROM = { has_government = fascism }
-					add = constant:chem_ability_ai.ideology_add.fascist
-				}
-				modifier = {
-					FROM = { has_government = communism }
-					add = constant:chem_ability_ai.ideology_add.communist
-				}
-				modifier = {
-					FROM = { has_government = neutrality }
-					add = constant:chem_ability_ai.ideology_add.neutral
-				}
-				modifier = {
-					FROM = { is_japan_china_chemical_campaign_war = yes }
-					add = constant:chem_ability_ai.country_add.japan_china_campaign
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.strong_favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
-					NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
-					add = constant:chem_ability_ai.wind_add.favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.against
-				}
-				modifier = {
-					FROM = { has_tech = advanced_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.advanced
-				}
-				modifier = {
-					FROM = { has_tech = improved_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.improved
-				}
-				modifier = {
-					FROM = { has_tech = basic_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.basic
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_considerable = yes }
-					add = constant:chem_ability_ai.retaliate_add.considerable
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_very_high = yes }
-					add = constant:chem_ability_ai.retaliate_add.very_high
-				}
-				modifier = {
-					FROM = { has_country_flag = air_cleanliness_treaty_member }
-					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-				}
-	        }
-	    }
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                factor = 0
+                FROM = { NOT = { has_war = yes } }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    NOT = { is_japan_china_chemical_campaign_war = yes }
+                    NOT = { has_enemy_chemical_condemnation_considerable = yes }
+                }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    has_war_with_chinese_country = yes
+                    NOT = { original_tag = JAP }
+                }
+            }
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > constant:chem_ability_ai.min_command_power.mustard
+                    has_war_support > constant:chem_ability_ai.min_war_support.mustard
+                }
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.high
+            }
+            modifier = {
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_low }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.med
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@forest > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@jungle > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@marsh > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
+                }
+                add = constant:chem_ability_ai.terrain_pressure_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = constant:chem_ability_ai.ideology_add.democratic
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = constant:chem_ability_ai.ideology_add.fascist
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = constant:chem_ability_ai.ideology_add.communist
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = constant:chem_ability_ai.ideology_add.neutral
+            }
+            modifier = {
+                FROM = { is_japan_china_chemical_campaign_war = yes }
+                add = constant:chem_ability_ai.country_add.japan_china_campaign
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.advanced
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.improved
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.basic
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_considerable = yes }
+                add = constant:chem_ability_ai.retaliate_add.considerable
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_very_high = yes }
+                add = constant:chem_ability_ai.retaliate_add.very_high
+            }
+            modifier = {
+                FROM = { has_country_flag = air_cleanliness_treaty_member }
+                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+            }
+        }
+    }
 
     chemical_lewisite_attack = {
         name = CHEM_ABILITY_LEWISITE_NAME
@@ -774,16 +774,16 @@ ability = {
             custom_effect_tooltip = CHEM_ABILITY_CYLINDER_STATUS_LEWISITE
             custom_effect_tooltip = CHEM_ABILITY_LEWISITE_EFFECTS_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
-			custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_LEWISITE_TT
-			if = {
-				limit = {
-					OWNER = { has_tech = dimercaprol }
-				}
-				custom_effect_tooltip = CHEM_ABILITY_DIMERCAPROL_BLISTER_TT
-			}
-			custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
-			custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_LEWISITE_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_TT
+            custom_effect_tooltip = CHEM_ABILITY_GAS_MASK_EFFECTS_LEWISITE_TT
+            if = {
+                limit = {
+                    OWNER = { has_tech = dimercaprol }
+                }
+                custom_effect_tooltip = CHEM_ABILITY_DIMERCAPROL_BLISTER_TT
+            }
+            custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
+            custom_effect_tooltip = CHEM_ABILITY_WEATHER_TERRAIN_LEWISITE_TT
             custom_effect_tooltip = CHEM_ABILITY_SECTION_DIVIDER
             custom_effect_tooltip = CHEM_ABILITY_WIND_STATUS_TT
             custom_effect_tooltip = CHEM_ABILITY_WIND_TECH_TT
@@ -795,114 +795,114 @@ ability = {
             clr_unit_leader_flag = chem_ability_calculating
         }
 
-			ai_will_do = {
-				factor = 0
-				modifier = {
-					factor = 0
-					FROM = { NOT = { has_war = yes } }
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						NOT = { is_japan_china_chemical_campaign_war = yes }
-						NOT = { has_enemy_chemical_condemnation_considerable = yes }
-					}
-				}
-				modifier = {
-					factor = 0
-					FROM = {
-						has_war_with_chinese_country = yes
-						NOT = { original_tag = JAP }
-					}
-				}
-				modifier = {
-					FROM = {
-						has_war = yes
-						command_power > constant:chem_ability_ai.min_command_power.lewisite
-						has_war_support > constant:chem_ability_ai.min_war_support.lewisite
-					}
-					check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
-					check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
-					add = constant:chem_ability_ai.pressure_add.high
-				}
-				modifier = {
-					check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
-					check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
-					add = constant:chem_ability_ai.pressure_add.med
-				}
-				modifier = {
-					OR = {
-						check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@hills > constant:chem_ability_ai.pressure.terrain_pressure }
-						check_variable = { num_units_offensive_combats_against@mountain > constant:chem_ability_ai.pressure.terrain_pressure }
-					}
-					add = constant:chem_ability_ai.terrain_pressure_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
-					add = constant:chem_ability_ai.climate_penalty_add.value
-				}
-				modifier = {
-					FROM = { has_government = democratic }
-					add = constant:chem_ability_ai.ideology_add.democratic
-				}
-				modifier = {
-					FROM = { has_government = fascism }
-					add = constant:chem_ability_ai.ideology_add.fascist
-				}
-				modifier = {
-					FROM = { has_government = communism }
-					add = constant:chem_ability_ai.ideology_add.communist
-				}
-				modifier = {
-					FROM = { has_government = neutrality }
-					add = constant:chem_ability_ai.ideology_add.neutral
-				}
-				modifier = {
-					FROM = { is_japan_china_chemical_campaign_war = yes }
-					add = constant:chem_ability_ai.country_add.japan_china_campaign
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.strong_favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
-					NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
-					add = constant:chem_ability_ai.wind_add.favor
-				}
-				modifier = {
-					check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
-					add = constant:chem_ability_ai.wind_add.against
-				}
-				modifier = {
-					FROM = { has_tech = advanced_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.advanced
-				}
-				modifier = {
-					FROM = { has_tech = improved_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.improved
-				}
-				modifier = {
-					FROM = { has_tech = basic_gas_masks }
-					add = constant:chem_ability_ai.gas_mask_add.basic
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_considerable = yes }
-					add = constant:chem_ability_ai.retaliate_add.considerable
-				}
-				modifier = {
-					FROM = { has_enemy_chemical_condemnation_very_high = yes }
-					add = constant:chem_ability_ai.retaliate_add.very_high
-				}
-				modifier = {
-					FROM = { has_country_flag = air_cleanliness_treaty_member }
-					factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
-				}
-	        }
-	    }
+        ai_will_do = {
+            factor = 0
+            modifier = {
+                factor = 0
+                FROM = { NOT = { has_war = yes } }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    NOT = { is_japan_china_chemical_campaign_war = yes }
+                    NOT = { has_enemy_chemical_condemnation_considerable = yes }
+                }
+            }
+            modifier = {
+                factor = 0
+                FROM = {
+                    has_war_with_chinese_country = yes
+                    NOT = { original_tag = JAP }
+                }
+            }
+            modifier = {
+                FROM = {
+                    has_war = yes
+                    command_power > constant:chem_ability_ai.min_command_power.lewisite
+                    has_war_support > constant:chem_ability_ai.min_war_support.lewisite
+                }
+                check_variable = { num_units_offensive_combats > constant:chem_ability_ai.pressure.offensive_high }
+                check_variable = { avg_offensive_combat_status > constant:chem_ability_ai.pressure.offensive_status_min }
+                add = constant:chem_ability_ai.pressure_add.high
+            }
+            modifier = {
+                check_variable = { num_units_defensive_combats > constant:chem_ability_ai.pressure.defensive_low }
+                check_variable = { avg_defensive_combat_status < constant:chem_ability_ai.pressure.defensive_status_max }
+                add = constant:chem_ability_ai.pressure_add.med
+            }
+            modifier = {
+                OR = {
+                    check_variable = { num_units_offensive_combats_against@urban > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@hills > constant:chem_ability_ai.pressure.terrain_pressure }
+                    check_variable = { num_units_offensive_combats_against@mountain > constant:chem_ability_ai.pressure.terrain_pressure }
+                }
+                add = constant:chem_ability_ai.terrain_pressure_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@cold_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                check_variable = { num_units_on_climate@hot_climate > constant:chem_ability_ai.pressure.climate_pressure }
+                add = constant:chem_ability_ai.climate_penalty_add.value
+            }
+            modifier = {
+                FROM = { has_government = democratic }
+                add = constant:chem_ability_ai.ideology_add.democratic
+            }
+            modifier = {
+                FROM = { has_government = fascism }
+                add = constant:chem_ability_ai.ideology_add.fascist
+            }
+            modifier = {
+                FROM = { has_government = communism }
+                add = constant:chem_ability_ai.ideology_add.communist
+            }
+            modifier = {
+                FROM = { has_government = neutrality }
+                add = constant:chem_ability_ai.ideology_add.neutral
+            }
+            modifier = {
+                FROM = { is_japan_china_chemical_campaign_war = yes }
+                add = constant:chem_ability_ai.country_add.japan_china_campaign
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.strong_favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.favor compare = greater_than_or_equals }
+                NOT = { check_variable = { var = chem_wind_state value = constant:chem_wind_state.strong_favor compare = greater_than_or_equals } }
+                add = constant:chem_ability_ai.wind_add.favor
+            }
+            modifier = {
+                check_variable = { var = chem_wind_state value = constant:chem_wind_state.against compare = less_than_or_equals }
+                add = constant:chem_ability_ai.wind_add.against
+            }
+            modifier = {
+                FROM = { has_tech = advanced_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.advanced
+            }
+            modifier = {
+                FROM = { has_tech = improved_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.improved
+            }
+            modifier = {
+                FROM = { has_tech = basic_gas_masks }
+                add = constant:chem_ability_ai.gas_mask_add.basic
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_considerable = yes }
+                add = constant:chem_ability_ai.retaliate_add.considerable
+            }
+            modifier = {
+                FROM = { has_enemy_chemical_condemnation_very_high = yes }
+                add = constant:chem_ability_ai.retaliate_add.very_high
+            }
+            modifier = {
+                FROM = { has_country_flag = air_cleanliness_treaty_member }
+                factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member
+            }
+        }
+    }
 }

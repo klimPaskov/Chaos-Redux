@@ -25,6 +25,8 @@ Deaths are currently registered from:
 4. Biowarfare contamination application (anthrax/plague/tularemia/smallpox) and monthly outbreak state effects.
 5. Nuclear and thermonuclear strikes.
 
+Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
+
 ## State Population Impact
 
 When a death source is marked as civilian/state-linked, the state scope receives a negative `add_manpower` delta.

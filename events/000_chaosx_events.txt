@@ -4,8 +4,6 @@
 # Discord server: https://discord.com/invite/rAXesGcT2t
 # Events list: https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing
 
-add_namespace = chaosx.generic
-
 
 
 ##############################################################################################################
@@ -32,35 +30,4 @@ add_namespace = chaosx.generic
 ###############################################################################################################
 ###############################################################################################################
 
-# Generic World End Scenario Event - Fallout (air contamination collapse)
-country_event = {
-    id = chaosx.generic.1
 
-    hidden = yes
-    fire_only_once = yes
-    is_triggered_only = yes
-
-    trigger = {
-        NOT = { has_global_flag = world_end }
-        NOT = { has_global_flag = world_end_disabled }
-        check_variable = {
-            var = global.air_contamination_bp
-            value = constant:air_contamination_threshold_bp.world_end_1000
-            compare = greater_than_or_equals
-        }
-    }
-
-    immediate = {
-        hidden_effect = {
-            set_global_flag = {
-                flag = super_event_visible
-                days = 30
-                value = 4
-            }
-            set_variable = { global.current_super_event_audio_id = 4 }
-            play_current_super_event_audio = yes
-            set_global_flag = world_end
-            set_global_flag = world_end_fallout
-        }
-    }
-}

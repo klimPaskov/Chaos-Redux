@@ -198,7 +198,7 @@ The Chaos Meter details window has five tabs:
 | Faction joining | `+1` | `+3` |
 | Faction leaving | `-1` | `-3` |
 | Ideology change | `+1` minor non-democratic / `-2` minor democratic | `+5` major non-democratic / `-5` major democratic |
-| Nuke use | `+1` | thermonuclear uses a separate contamination spike, not a separate chaos delta here |
+| Nuclear or thermonuclear use | shared ladder: `+10`, `+5`, `+3`, `+2`, then `+1` | thermonuclear uses stronger fallout/condemnation effects, but shares the same direct chaos ladder |
 | Monthly world decay | `-1` | n/a |
 
 | Scaling rule | Exact threshold |
@@ -344,7 +344,7 @@ The event logs window tracks what has happened and what can still happen.
 - Tabs: **Status**, **History**, **Evolutions**, **Events**
 - **Events** tab lists all available events.
 - You can filter events by **All / Enabled / Disabled**.
-- You can sort by **Event ID** or **Fired count** (ascending/descending).
+- You can sort by **Event ID**, **Fired count**, or **Weight** (ascending/descending).
 - Each event row has a quick toggle button to enable/disable that event.
 
 Any row in **History**, **Evolutions**, or **Events** can be clicked to open a separate detail window.

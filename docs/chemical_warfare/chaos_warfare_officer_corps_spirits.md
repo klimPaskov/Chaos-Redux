@@ -45,6 +45,7 @@ This adds three doctrine-gated officer corps spirits that become selectable when
 - Effects:
   - Adds a 50% roll on general creation and on general level-up to grant `chemical_operations_commander`.
   - Uses shared scripted effect `chem_try_grant_chemical_operations_trait_from_academy_spirit`.
+  - Unlocks manual assignment of `chemical_operations_commander`; without this spirit, the trait is not a valid assignable trait choice.
 
 ## Script Integration
 ### New constants

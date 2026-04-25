@@ -29,7 +29,7 @@ The actual spawned battalion/template family now comes from the disease classifi
    The target state is now chosen before the option resolves so the tooltip can name the planned test site while the real scripted effects remain hidden.
 8. `Forbidden Branches` can push the zombie toward more extreme outcomes.
 9. On completion, a conclusions event summarizes the resulting archetype and unlocks production plus raids.
-10. The finished conclusions can be reopened later from the base zombie cure category, even before the weapon is deployed, but only by the country that completed the project.
+10. Live weaponized outbreaks can be inspected later from the base zombie cure category through a single dynamic outbreak-profile decision.
 
 Its key choices now follow a mandatory ordered chain so the player establishes subjects first, then determines zombie nature and life state, and only after that gets the detailed stat-tuning prompts.
 Each step now writes its own project-scoped completion flag and unlocks the next step, so the project cannot skip ahead to later zombie tuning choices and stale country flags cannot block the chain.
@@ -79,6 +79,7 @@ Weaponized outbreaks now resolve into one of these battalion/template families:
 - `Undead Horde`
 - `Necrotic Horde`
 - `Demonic Zombie Horde`
+- `Wendigo Pack`
 
 These unit families determine:
 
@@ -89,11 +90,11 @@ These unit families determine:
 - baseline armor / hardness where relevant
 
 Weaponized outbreak countries now also get a dedicated type idea for that family.
-They no longer inherit the main apocalypse `zombies_idea_0-3` stage ideas, so their identity is driven by their own type and behavior package rather than the global outbreak evolution ladder.
+They do not inherit the main apocalypse `zombies_idea_0-3` stage ideas, so their identity is driven by their own type and behavior package rather than the global outbreak evolution ladder.
+The type ideas directly carry the common zombie battlefield traits, such as low supply sensitivity, night attacks, attack tempo, no-supply grace, and attrition resistance, with values tuned per weaponized zombie family.
 
 The project strength sliders do not create separate battalion classes for mild, medium, or extreme variants.
-Those broader performance swings still come from the outbreak's ideas and stage/tier setup.
-Those broader swings now come from the weaponized profile plus its dedicated type and behavior ideas, not from the main zombie evolution-stage idea chain.
+Those broader performance swings come from the weaponized profile plus dedicated type and behavior ideas, not from the main zombie evolution-stage idea chain.
 
 ## World pressure and late-evolution drift
 
@@ -130,29 +131,39 @@ These outcomes change outbreak behavior, the creator-side temporary cure advanta
 They do not define the battalion family on their own.
 One selective-control branch can later fail in the field, but that instability is no longer labeled as its own visible zombie type.
 Dead necrotic and demonic zombie outcomes also no longer resolve into obedient control profiles just because high obedience options were chosen during research; those paths can still be attempted in the lab, but they do not produce reliable control in the final outcome.
+`Canonical Convergence`, the profile that tends to merge with the existing zombie outbreak, now only resolves from the `Undead Horde` type when no more than two of the five core zombie attributes are at maximum strength.
 
 ## Runtime behavior
 
 - Completion gives the country `zombie_disease_bomb_delivery_systems` and an initial payload stockpile.
+- The hidden instant-completion event `chaosx.weaponized_zombies.10` now marks field testing as skipped instead of conducting a live random field test, so console completion cannot create a domestic outbreak as a side effect.
 - The base zombie cure category stays generic.
-- Every live curable weaponized outbreak now appears there as its own targeted decision entry, and selecting one opens a live outbreak-profile event for that specific horde.
+- Live weaponized outbreaks now surface in their own type-specific cure categories, such as `Fighting the Undead Horde`, `Fighting the Necrotic Horde`, or `Fighting the Demonic Zombie Horde`.
+- The profile decisions target the creator country rather than the outbreak country, so the decision icon shows the creator's flag.
+- Before a successful deliberate deployment, the profile is visible only to the creator. Once a deployed outbreak exists, other countries can see the creator-targeted profile decision for that outbreak type.
 - Those report decisions re-enable after use, so the profile can be checked again later without moving it into a permanent idea.
 - Completion unlocks a single weaponized zombie strike raid, and the hidden internal success profile now upgrades from low to medium to high based on the final infectiousness score.
 - The raid UI reads only the hidden `weaponized_zombie_raid_success_low/medium/high` flags that are written at project completion, so one matching weaponized strike always appears once the project is finished.
 - The raid UI keeps the strike under the normal `Biological Raids` category, alongside the anti-zombie bomb, but now uses a dedicated weaponized-zombie strike icon so it still reads as its own weapon.
 - The raid UI still exposes only a single visible weaponized zombie strike instead of separate low, medium, and high entries.
 - The strike uses the same province-targeted air-raid model as the other bioweapons.
-- The strike now checks the zombie-payload stockpile in `available` and consumes the payload manually on launch, instead of relying on raid `essential_equipment` collection during province targeting.
+- The strike now declares its zombie-payload cost through raid `essential_equipment`, so preparing the raid requires and collects `125` `zombie_disease_bomb_equipment`.
+- Hostile deployments now register strategic bioweapon condemnation in the shared `chem_warfare_condemnation` tracker, with the existing biological integrated-operations condemnation reductions applied.
 - Targeting is now obedience-aware instead of hardcoded:
   - `friendly to humans` outcomes can only be deployed onto zombie-controlled states
   - all other outcomes can be deployed onto any province
+- `Canonical Convergence` outcomes cannot be deliberately deployed onto standard zombie outbreak territory, since that result is meant to fold back into the existing outbreak rather than seed a separate weaponized anti-zombie front.
 - Every deliberate weaponized outbreak deployment now also fires a major world news event naming the deployed state and describing the resulting zombie's nature and visible outbreak type.
 - Weaponized outbreaks copy the creator's disease nature and life-state flags before spawning, then load either `history/units/ZZZ_weaponized_1936.txt` or `history/units/ZZZ_weaponized_hardened_1936.txt` and unlock only the matching template.
 - The visible outbreak family is resolved into explicit type flags before spawning, so leaders, templates, and created divisions all read the same final disease-type result instead of re-deriving it separately.
 - Spawn count now scales upward with infectiousness, while demonic zombie families deliberately spawn in somewhat smaller numbers than equally advanced infected-style hordes.
 - Outbreak countries now also get hidden profile ideas copied from the creator's final strength, infectiousness, speed, durability, and cure-resistance picks, so the stat choices materially change the spawned horde instead of only changing event text.
 - Raid-created weaponized outbreaks also receive a matching cosmetic country name (`Demonic Zombie Horde`, `Necrotic Horde`, `Undead Horde`, and so on) instead of staying on the base `ZZZ` name.
-- Weaponized outbreaks now immediately declare on valid neighboring enemies as soon as they spawn, while still respecting creator-friendly and human-friendly exceptions.
+- Raid-created weaponized outbreaks also receive a matching leader portrait through `interface/chaosx_characters.gfx` and `weaponized_zombie_refresh_country_leader`.
+- Weaponized outbreaks now immediately declare on valid neighboring enemies as soon as they spawn and keep retrying through the daily outbreak maintenance hook when declaration is legal.
+- Weaponized outbreaks always attack neighboring zombie outbreaks if their resolved profile does not integrate back into the existing outbreak; canonical convergence remains the exception.
+- Canonical-convergence weaponized outbreaks merge back into the main `ZZZ` outbreak if they border it. If they border a standard dynamic zombie outbreak instead, the side with more divisions annexes the other.
+- If a human-friendly weaponized outbreak somehow enters a war against a human country, daily maintenance clears its human-friendly state and protected-country array, making it hostile to all humans from then on.
 - The outbreak runtime now prunes all nonmatching zombie templates and pushes type-specific AI template priorities, so an `Infected Horde` trains infected zombie divisions, a `Demonic Zombie Horde` trains demonic zombie divisions, and so on.
 - Armor is no longer granted purely by disease family for the ordinary outbreak families. It only appears on the hardened outbreak path when both strength and durability resolve high enough.
 - `Wendigo Pack` sits outside the normal successful outbreak ladder: it is always armored, always hostile, and only appears when the project catastrophically fails at completion.
@@ -253,6 +264,27 @@ Super-event art:
 - File: `gfx/super_events/super_event_wendigo.dds`
 - GFX definition: `interface/chaosx_super_events.gfx`
 - Token: `GFX_super_event_wendigo`
+
+Weaponized zombie leader portraits:
+- Files:
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_infected.dds`
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_rabid.dds`
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_parasitic.dds`
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_mutant.dds`
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_undead.dds`
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_necrotic.dds`
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_demonic.dds`
+  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_wendigo.dds`
+- GFX definition: `interface/chaosx_characters.gfx`
+- Tokens:
+  - `GFX_portrait_ZZZ_weaponized_infected`
+  - `GFX_portrait_ZZZ_weaponized_rabid`
+  - `GFX_portrait_ZZZ_weaponized_parasitic`
+  - `GFX_portrait_ZZZ_weaponized_mutant`
+  - `GFX_portrait_ZZZ_weaponized_undead`
+  - `GFX_portrait_ZZZ_weaponized_necrotic`
+  - `GFX_portrait_ZZZ_weaponized_demonic`
+  - `GFX_portrait_ZZZ_weaponized_wendigo`
 
 Weaponized zombie battalion icons:
 - Large counter files:

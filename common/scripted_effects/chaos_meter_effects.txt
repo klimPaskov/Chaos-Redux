@@ -33,6 +33,7 @@ initialize_chaos_meter_system = {
     set_variable = { global.total_countries_for_stability = 0 }
     set_variable = { global.last_average_democracy = 0 }
     set_variable = { global.total_countries_for_democracy = 0 }
+    set_variable = { global.chaos_meter_nuclear_uses = 0 }
     set_variable = { global.chaos_meter_history_sequence = 0 }
     set_variable = { global.air_contamination_bp = 0 }
     set_variable = { global.air_contamination_chaos_buffer_bp = 0 }
@@ -4966,6 +4967,54 @@ chaos_meter_on_subject_annexed = {
 
 chaos_meter_on_nuke_drop = {
     save_event_target_as = chaos_history_actor
+    if = {
+        limit = { NOT = { has_variable = global.chaos_meter_nuclear_uses } }
+        set_variable = { global.chaos_meter_nuclear_uses = 0 }
+    }
+    add_to_variable = { global.chaos_meter_nuclear_uses = 1 }
+    set_temp_variable = { chaos_change = constant:chaos_meter_delta.nuke.fifth_plus }
+    if = {
+        limit = {
+            check_variable = {
+                var = global.chaos_meter_nuclear_uses
+                value = 1
+                compare = equals
+            }
+        }
+        set_temp_variable = { chaos_change = constant:chaos_meter_delta.nuke.first }
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = global.chaos_meter_nuclear_uses
+                value = 2
+                compare = equals
+            }
+        }
+        set_temp_variable = { chaos_change = constant:chaos_meter_delta.nuke.second }
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = global.chaos_meter_nuclear_uses
+                value = 3
+                compare = equals
+            }
+        }
+        set_temp_variable = { chaos_change = constant:chaos_meter_delta.nuke.third }
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = global.chaos_meter_nuclear_uses
+                value = 4
+                compare = equals
+            }
+        }
+        set_temp_variable = { chaos_change = constant:chaos_meter_delta.nuke.fourth }
+    }
+    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.nuke.base }
+    set_temp_variable = { chaos_history_reason_custom = 1 }
     set_temp_variable = { air_cleanliness_system_enabled = 1 }
     set_temp_variable = { chaos_fallout_duration_days = constant:chaos_meter_nuclear_fallout.normal_duration_days }
     set_temp_variable = { chaos_fallout_intensity_add = constant:chaos_meter_nuclear_fallout.normal_intensity_add }
@@ -4978,11 +5027,15 @@ chaos_meter_on_nuke_drop = {
 
     if = {
         limit = { has_tech = thermonuclear_bombs }
+        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.nuke.thermonuclear }
         set_temp_variable = { chaos_nuke_state_deaths_percent = constant:chaos_meter_state_death_dynamic.thermonuclear_percent }
         set_temp_variable = { chaos_nuke_state_cap_factor = constant:chaos_meter_state_death_dynamic.thermonuke_cap_factor }
         set_temp_variable = { chaos_fallout_duration_days = constant:chaos_meter_nuclear_fallout.thermonuclear_duration_days }
         set_temp_variable = { chaos_fallout_intensity_add = constant:chaos_meter_nuclear_fallout.thermonuclear_intensity_add }
     }
+
+    add_chaos_meter_value = yes
+    log = "CHAOS METER: Nuclear use #[?global.chaos_meter_nuclear_uses|.0] by [THIS.GetName] on [FROM.GetName] ([?chaos_change|=] chaos)"
 
     chaos_meter_register_nuclear_condemnation = yes
 

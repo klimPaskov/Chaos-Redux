@@ -355,6 +355,7 @@ The standard formation path still comes from `common/decisions/chaosx_anti_zombi
 Current behavior:
 
 - only eligible major non-zombie countries can see the formation decision
+- manual formation now requires a larger outbreak footprint and more zombie divisions, so the league appears later and less often
 - the founder no longer has to pre-seed hygiene, quarantine, and cure-sharing manually
 - formation now applies the preparation package automatically through shared scripted effects
 - if the founder is already in another faction, it leaves first and then creates the league
@@ -372,6 +373,8 @@ The outbreak system can force league formation without player costs when:
 - zombie control reaches continent-scale thresholds
 - no league already exists
 - the system is not disabled
+
+The emergency thresholds are deliberately higher than the manual formation thresholds so the league remains a late-crisis consolidation tool rather than an automatic early-game response.
 
 The founder must be a democratic major and is chosen in this order:
 
@@ -633,6 +636,8 @@ When that happens, `on_zombie_threat_defeated`:
 - can activate a permanent postwar survivor order if the zombie war was large and costly enough
 
 If `ZZZ` itself is the last zombie polity on the map when it capitulates, this final defeat condition is met immediately and the super event fires on that same collapse.
+Weaponized zombie countries still count as live zombie polities for this endpoint, but they are not promoted into the main `ZZZ` outbreak if the standard horde has no valid dynamic successor.
+That means the standard outbreak can be shut down while a weaponized outbreak remains active, and the final defeat super event waits until those weaponized remnants are also gone.
 
 If the Anti-Zombie League still exists at that point, it is dismantled automatically through the same shared teardown used by the manual disband decision:
 
