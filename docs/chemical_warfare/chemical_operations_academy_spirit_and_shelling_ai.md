@@ -13,7 +13,7 @@ This update extends the chemical warfare officer corps package with three connec
 - Category: `academy_spirit`
 - Definition file: `common/ideas/cbw_spirits.txt`
 - Shared tuning constant:
-  - `chem_chaos_warfare_spirit.academy.chemical_operations_trait_gain_chance = 5`
+  - `chem_chaos_warfare_spirit.academy.chemical_operations_trait_gain_chance = 50`
   - File: `common/script_constants/chemical_spirit_constants.txt`
 
 #### Trait gain behavior
@@ -26,12 +26,11 @@ This update extends the chemical warfare officer corps package with three connec
   - File: `common/scripted_effects/chemical_warfare_effects.txt`
 - Rules:
   1. Country must have `chemical_operations_academy_spirit`.
-  2. Country must not be Japan.
-  3. The country must face an enemy with very high chemical condemnation.
-  4. AI only considers the spirit itself under that same very-high-condemnation condition, and at very low weight.
-  5. Leader must be an army leader.
-  6. Leader must not already have `chemical_operations_commander`.
-  7. Roll `5%` chance and grant `chemical_operations_commander` on success.
+  2. Leader must be an army leader.
+  3. Leader must not already have `chemical_operations_commander`.
+  4. Roll `50%` chance and grant `chemical_operations_commander` on success.
+  5. Manual assignment of `chemical_operations_commander` also requires the `chemical_operations_academy_spirit` prerequisite.
+- AI still only considers selecting the academy spirit under very-high enemy chemical condemnation and at low weight.
 
 ### 2. Division Command Cell preferred tactic boost
 - Spirit: `chemical_division_contamination_command_spirit`

@@ -2695,14 +2695,14 @@ cycle_events_log_events_sort_mode_prev = {
         subtract_from_variable = { settings_events_log_events_sort_mode = 1 }
     }
     else = {
-        set_variable = { settings_events_log_events_sort_mode = 1 }
+        set_variable = { settings_events_log_events_sort_mode = 2 }
     }
     rebuild_events_log_events_view = yes
 }
 
 cycle_events_log_events_sort_mode_next = {
     if = {
-        limit = { check_variable = { settings_events_log_events_sort_mode < 1 } }
+        limit = { check_variable = { settings_events_log_events_sort_mode < 2 } }
         add_to_variable = { settings_events_log_events_sort_mode = 1 }
     }
     else = {
@@ -2791,7 +2791,7 @@ rebuild_events_log_events_view = {
         set_variable = { settings_events_log_events_sort_mode = 0 }
     }
     if = {
-        limit = { check_variable = { settings_events_log_events_sort_mode > 1 } }
+        limit = { check_variable = { settings_events_log_events_sort_mode > 2 } }
         set_variable = { settings_events_log_events_sort_mode = 0 }
     }
     if = {
@@ -2958,6 +2958,10 @@ rebuild_events_log_events_view = {
                 if = {
                     limit = { check_variable = { settings_events_log_events_sort_mode = 1 } }
                     set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_fired_entries^events_log_events_scan_index }
+                }
+                else_if = {
+                    limit = { check_variable = { settings_events_log_events_sort_mode = 2 } }
+                    set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_weight_entries^events_log_events_scan_index }
                 }
 
                 if = {
@@ -5305,7 +5309,7 @@ initialize_events_log_settings = {
     set_variable = { settings_events_log_filter_type = 0 } # 0 = all, 1 = major, 2 = repeatable, 3 = fire-once
     set_variable = { settings_events_log_evolution_sort_mode = 0 } # 0 = index, 1 = tier, 2 = stage, 3 = actor
     set_variable = { settings_events_log_evolution_filter_type = 0 } # 0 = all, 1 = major, 2 = minor
-    set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired
+    set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired, 2 = weight
     set_variable = { settings_events_log_events_filter_type = 0 } # 0 = all, 1 = enabled, 2 = disabled
     clr_country_flag = events_log_sort_descending
     clr_country_flag = events_log_evolution_sort_descending

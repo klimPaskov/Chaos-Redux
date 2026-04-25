@@ -375,82 +375,82 @@ chem_apply_chaos_warfare_doctrine_final_bonus = {
         multiply_temp_variable = { var = chem_org_damage value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
         multiply_temp_variable = { var = chem_str_damage value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
         multiply_temp_variable = { var = chem_war_support value = @CHEM_FIRST_USE_SURPRISE_CYLINDER_MULT }
-	}
+    }
 }
 
 chem_register_current_ability_condemnation = {
-	set_temp_variable = { var = chem_condemnation_base value = 0 }
-	set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
-	set_temp_variable = { var = chem_ability_affected_unit_scale value = 0 }
-	set_temp_variable = { var = chem_consumed_amount value = num_battalions }
-	set_temp_variable = { var = chem_condemnation_mult value = 1 }
+    set_temp_variable = { var = chem_condemnation_base value = 0 }
+    set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
+    set_temp_variable = { var = chem_ability_affected_unit_scale value = 0 }
+    set_temp_variable = { var = chem_consumed_amount value = num_battalions }
+    set_temp_variable = { var = chem_condemnation_mult value = 1 }
 
-	if = {
-		limit = { chem_active_cylinder_type_is_chlorine = yes }
-		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.chlorine }
-		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.chlorine }
-		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.chlorine }
-	}
-	else_if = {
-		limit = { chem_active_cylinder_type_is_phosgene = yes }
-		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.phosgene }
-		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.phosgene }
-		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.phosgene }
-	}
-	else_if = {
-		limit = { chem_active_cylinder_type_is_mustard = yes }
-		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.mustard }
-		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.mustard }
-		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.mustard }
-	}
-	else_if = {
-		limit = { chem_active_cylinder_type_is_lewisite = yes }
-		set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.lewisite }
-		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.lewisite }
-		set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.lewisite }
-	}
+    if = {
+        limit = { chem_active_cylinder_type_is_chlorine = yes }
+        set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.chlorine }
+        set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.chlorine }
+        set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.chlorine }
+    }
+    else_if = {
+        limit = { chem_active_cylinder_type_is_phosgene = yes }
+        set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.phosgene }
+        set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.phosgene }
+        set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.phosgene }
+    }
+    else_if = {
+        limit = { chem_active_cylinder_type_is_mustard = yes }
+        set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.mustard }
+        set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.mustard }
+        set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.mustard }
+    }
+    else_if = {
+        limit = { chem_active_cylinder_type_is_lewisite = yes }
+        set_temp_variable = { var = chem_condemnation_base value = constant:chem_ability_condemnation_base.lewisite }
+        set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_ability_condemnation_per_unit.lewisite }
+        set_temp_variable = { var = chem_ability_affected_unit_scale value = constant:chem_ability_condemnation_affected_unit_scale.lewisite }
+    }
 
-	if = {
-		limit = {
-			NOT = { has_unit_leader_flag = chem_ability_hit_human_state }
-		}
-		set_temp_variable = { var = chem_condemnation_mult value = 0 }
-	}
-	else_if = {
-		limit = {
-			has_unit_leader_flag = chem_ability_japan_china_target
-			OWNER = { is_japan_china_chemical_campaign_war = yes }
-		}
-		set_temp_variable = { var = chem_condemnation_mult value = constant:chem_ability_ai.condemnation_mult.japan_china_campaign }
-	}
+    if = {
+        limit = {
+            NOT = { has_unit_leader_flag = chem_ability_hit_human_state }
+        }
+        set_temp_variable = { var = chem_condemnation_mult value = 0 }
+    }
+    else_if = {
+        limit = {
+            has_unit_leader_flag = chem_ability_japan_china_target
+            OWNER = { is_japan_china_chemical_campaign_war = yes }
+        }
+        set_temp_variable = { var = chem_condemnation_mult value = constant:chem_ability_ai.condemnation_mult.japan_china_campaign }
+    }
 
-	if = {
-		limit = {
-			has_variable = chem_ability_total_units_affected
-			check_variable = { var = chem_ability_total_units_affected value = 0 compare = greater_than }
-		}
-		set_temp_variable = { var = chem_ability_affected_condemnation value = chem_ability_total_units_affected }
-		multiply_temp_variable = { var = chem_ability_affected_condemnation value = chem_ability_affected_unit_scale }
-		add_to_temp_variable = { var = chem_consumed_amount value = chem_ability_affected_condemnation }
-	}
+    if = {
+        limit = {
+            has_variable = chem_ability_total_units_affected
+            check_variable = { var = chem_ability_total_units_affected value = 0 compare = greater_than }
+        }
+        set_temp_variable = { var = chem_ability_affected_condemnation value = chem_ability_total_units_affected }
+        multiply_temp_variable = { var = chem_ability_affected_condemnation value = chem_ability_affected_unit_scale }
+        add_to_temp_variable = { var = chem_consumed_amount value = chem_ability_affected_condemnation }
+    }
 
-	OWNER = { set_country_flag = achievement_used_chemical_ability }
-	OWNER = { chem_warfare_register_attack_use_no_livens = yes }
-	clr_unit_leader_flag = chem_ability_hit_nonhuman_state
-	clr_unit_leader_flag = chem_ability_hit_human_state
-	clr_unit_leader_flag = chem_ability_japan_china_target
-	clear_variable = chem_ability_total_units_affected
+    OWNER = { set_country_flag = achievement_used_chemical_ability }
+    OWNER = { chem_warfare_register_attack_use_no_livens = yes }
+    clr_unit_leader_flag = chem_ability_hit_nonhuman_state
+    clr_unit_leader_flag = chem_ability_hit_human_state
+    clr_unit_leader_flag = chem_ability_japan_china_target
+    clear_variable = chem_ability_total_units_affected
 }
 
 chem_register_state_civilian_deaths = {
-	set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.chemical_application }
-	set_temp_variable = { chaos_state_deaths_mult = 1 }
-	chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.chemical_cap_factor }
-	set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
-	set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
-	chaos_meter_register_state_civilian_deaths_percent = yes
+    set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.chemical_application }
+    set_temp_variable = { chaos_state_deaths_mult = 1 }
+    chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+    set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.chemical_cap_factor }
+    set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+    set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+    set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
+    chaos_meter_register_state_civilian_deaths_percent = yes
 }
 
 chem_apply_state_contamination = {
@@ -513,14 +513,14 @@ chem_apply_state_contamination = {
     multiply_temp_variable = { var = chem_current_day_neg value = -1 }
     add_to_temp_variable = { var = chem_days_left value = chem_current_day_neg }
     clamp_temp_variable = { var = chem_days_left min = 1 max = chem_max_duration_days }
-	if = {
-		limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
-		remove_dynamic_modifier = { modifier = chem_state_contamination }
-	}
+    if = {
+        limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+        remove_dynamic_modifier = { modifier = chem_state_contamination }
+    }
     add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
     force_update_dynamic_modifier = yes
 
-	chem_register_state_civilian_deaths = yes
+    chem_register_state_civilian_deaths = yes
     # log = "CHEM_STATE: contaminated [THIS.GetName] ([THIS.GetID]) strength=[?chem_state_contamination_strength|.4] supplies=[?chem_state_contamination_supplies|.4] atk=[?chem_state_contamination_attack|.4] brk=[?chem_state_contamination_breakthrough|.4] days=[?chem_days_left|0]"
 }
 
@@ -583,14 +583,14 @@ chem_apply_state_contamination_doomsday = {
     set_temp_variable = { var = chem_current_day_neg value = chem_current_day }
     multiply_temp_variable = { var = chem_current_day_neg value = -1 }
     add_to_temp_variable = { var = chem_days_left value = chem_current_day_neg }
-	clamp_temp_variable = { var = chem_days_left min = 1 max = chem_max_duration_days }
-	if = {
-		limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
-		remove_dynamic_modifier = { modifier = chem_state_contamination }
-	}
-	add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
-	force_update_dynamic_modifier = yes
-	chem_register_state_civilian_deaths = yes
+    clamp_temp_variable = { var = chem_days_left min = 1 max = chem_max_duration_days }
+    if = {
+        limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+        remove_dynamic_modifier = { modifier = chem_state_contamination }
+    }
+    add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
+    force_update_dynamic_modifier = yes
+    chem_register_state_civilian_deaths = yes
 }
 
 chem_unleash_stockpile_doomsday = {
@@ -673,275 +673,275 @@ chem_unleash_stockpile_doomsday = {
 }
 
 chem_apply_current_ability_state_dispersal = {
-	OWNER = {
-		save_event_target_as = chem_state_dispersal_owner_country
-	}
-	chem_apply_state_dispersal = yes
+    OWNER = {
+        save_event_target_as = chem_state_dispersal_owner_country
+    }
+    chem_apply_state_dispersal = yes
 }
 
 chem_count_leader_units_in_state = {
-	set_temp_variable = { var = chem_leader_units_in_state_count value = 0 }
-	event_target:chem_state_dispersal_owner_country = {
-		var:chem_state_dispersal_leader_var = {
-			meta_effect = {
-				text = {
-					set_temp_variable = {
-						var = chem_leader_units_in_state_count
-						value = num_units_in_state@[CHEM_STATE_ID]
-					}
-				}
-				CHEM_STATE_ID = "[?chem_state_id|0]"
-			}
-		}
-	}
+    set_temp_variable = { var = chem_leader_units_in_state_count value = 0 }
+    event_target:chem_state_dispersal_owner_country = {
+        var:chem_state_dispersal_leader_var = {
+            meta_effect = {
+                text = {
+                    set_temp_variable = {
+                        var = chem_leader_units_in_state_count
+                        value = num_units_in_state@[CHEM_STATE_ID]
+                    }
+                }
+                CHEM_STATE_ID = "[?chem_state_id|0]"
+            }
+        }
+    }
 }
 
 chem_apply_state_dispersal = {
-	if = {
-		limit = { NOT = { has_event_target = chem_state_dispersal_owner_country } }
-		OWNER = { save_event_target_as = chem_state_dispersal_owner_country }
-	}
-	OWNER = { set_variable = { chem_state_dispersal_leader_var = PREV } }
-	set_temp_variable = { var = chem_state_dose_per_div value = 0 }
-	set_temp_variable = { var = chem_state_duration_add value = 0 }
-	clr_unit_leader_flag = chem_ability_hit_nonhuman_state
-	clr_unit_leader_flag = chem_ability_hit_human_state
-	clr_unit_leader_flag = chem_ability_japan_china_target
-	clear_variable = chem_ability_total_units_affected
-	set_variable = { var = chem_ability_total_units_affected value = 0 }
-	if = {
-		limit = { chem_active_cylinder_type_is_chlorine = yes }
-		set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.chlorine }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.chlorine }
-		# log = "CHEM_STATE: type=chlorine"
-	}
-	else_if = {
-		limit = { chem_active_cylinder_type_is_phosgene = yes }
-		set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.phosgene }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.phosgene }
-		# log = "CHEM_STATE: type=phosgene"
-	}
-	else_if = {
-		limit = { chem_active_cylinder_type_is_mustard = yes }
-		set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.mustard }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.mustard }
-		# log = "CHEM_STATE: type=mustard"
-	}
-	else_if = {
-		limit = { chem_active_cylinder_type_is_lewisite = yes }
-		set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.lewisite }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.lewisite }
-		# log = "CHEM_STATE: type=lewisite"
-	}
-	chem_set_livens_integration_values = yes
-	chem_set_contaminant_firebases_contamination_mult_from_owner_target = yes
-	multiply_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.core.strength_scale }
-	multiply_temp_variable = { var = chem_state_dose_per_div value = chem_livens_state_dose_mult }
-	multiply_temp_variable = { var = chem_state_dose_per_div value = chem_contamination_strength_mult }
-	multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_state.core.duration_scale }
-	multiply_temp_variable = { var = chem_state_duration_add value = chem_livens_state_duration_mult }
-	multiply_temp_variable = { var = chem_state_duration_add value = chem_contamination_duration_mult }
-	round_temp_variable = chem_state_duration_add
-	if = {
-		limit = { check_variable = { var = chem_state_duration_add value = 0 compare = greater_than } }
-		event_target:chem_state_dispersal_owner_country = {
-			set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
-			set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
-			chem_apply_state_dispersal_from_controlled_states = yes
-			every_allied_country = {
-				set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
-				set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
-				chem_apply_state_dispersal_from_controlled_states = yes
-			}
-		}
-	}
-	OWNER = { clear_variable = chem_state_dispersal_leader_var }
+    if = {
+        limit = { NOT = { has_event_target = chem_state_dispersal_owner_country } }
+        OWNER = { save_event_target_as = chem_state_dispersal_owner_country }
+    }
+    OWNER = { set_variable = { chem_state_dispersal_leader_var = PREV } }
+    set_temp_variable = { var = chem_state_dose_per_div value = 0 }
+    set_temp_variable = { var = chem_state_duration_add value = 0 }
+    clr_unit_leader_flag = chem_ability_hit_nonhuman_state
+    clr_unit_leader_flag = chem_ability_hit_human_state
+    clr_unit_leader_flag = chem_ability_japan_china_target
+    clear_variable = chem_ability_total_units_affected
+    set_variable = { var = chem_ability_total_units_affected value = 0 }
+    if = {
+        limit = { chem_active_cylinder_type_is_chlorine = yes }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.chlorine }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.chlorine }
+        # log = "CHEM_STATE: type=chlorine"
+    }
+    else_if = {
+        limit = { chem_active_cylinder_type_is_phosgene = yes }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.phosgene }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.phosgene }
+        # log = "CHEM_STATE: type=phosgene"
+    }
+    else_if = {
+        limit = { chem_active_cylinder_type_is_mustard = yes }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.mustard }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.mustard }
+        # log = "CHEM_STATE: type=mustard"
+    }
+    else_if = {
+        limit = { chem_active_cylinder_type_is_lewisite = yes }
+        set_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.dose_per_div.lewisite }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_state.duration_add.lewisite }
+        # log = "CHEM_STATE: type=lewisite"
+    }
+    chem_set_livens_integration_values = yes
+    chem_set_contaminant_firebases_contamination_mult_from_owner_target = yes
+    multiply_temp_variable = { var = chem_state_dose_per_div value = constant:chem_state.core.strength_scale }
+    multiply_temp_variable = { var = chem_state_dose_per_div value = chem_livens_state_dose_mult }
+    multiply_temp_variable = { var = chem_state_dose_per_div value = chem_contamination_strength_mult }
+    multiply_temp_variable = { var = chem_state_duration_add value = constant:chem_state.core.duration_scale }
+    multiply_temp_variable = { var = chem_state_duration_add value = chem_livens_state_duration_mult }
+    multiply_temp_variable = { var = chem_state_duration_add value = chem_contamination_duration_mult }
+    round_temp_variable = chem_state_duration_add
+    if = {
+        limit = { check_variable = { var = chem_state_duration_add value = 0 compare = greater_than } }
+        event_target:chem_state_dispersal_owner_country = {
+            set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
+            set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
+            chem_apply_state_dispersal_from_controlled_states = yes
+            every_allied_country = {
+                set_temp_variable = { var = chem_state_scan_states_with_units value = 0 }
+                set_temp_variable = { var = chem_state_scan_states_applied value = 0 }
+                chem_apply_state_dispersal_from_controlled_states = yes
+            }
+        }
+    }
+    OWNER = { clear_variable = chem_state_dispersal_leader_var }
 }
 
 chem_apply_state_dispersal_from_controlled_states = {
-	every_controlled_state = {
-		set_temp_variable = { var = chem_units_in_state value = 0 }
-		meta_effect = {
-			text = {
-				set_temp_variable = { var = chem_state_id value = [CHEM_STATE_ID] }
-			}
-			CHEM_STATE_ID = "[THIS.GetID]"
-		}
-		chem_count_leader_units_in_state = yes
-		set_temp_variable = { var = chem_units_in_state value = chem_leader_units_in_state_count }
-		if = {
-			limit = { check_variable = { var = chem_units_in_state value = 0 compare = greater_than } }
-			add_to_temp_variable = { var = chem_state_scan_states_with_units value = 1 }
-		}
-		every_neighbor_state = {
-			limit = {
-				any_country = {
-					has_war_with = event_target:chem_state_dispersal_owner_country
-					controls_state = PREV
-				}
-			}
-			set_temp_variable = { var = chem_units_in_enemy_state value = 0 }
-			meta_effect = {
-				text = {
-					set_temp_variable = { var = chem_state_id value = [CHEM_STATE_ID] }
-				}
-				CHEM_STATE_ID = "[THIS.GetID]"
-			}
-			chem_count_leader_units_in_state = yes
-			set_temp_variable = { var = chem_units_in_enemy_state value = chem_leader_units_in_state_count }
-			set_temp_variable = { var = chem_dose_each value = chem_units_in_enemy_state }
-			if = {
-				limit = {
-					check_variable = { var = chem_dose_each value = 0 compare = less_than_or_equals }
-					check_variable = { var = chem_units_in_state value = 0 compare = greater_than }
-				}
-				set_temp_variable = { var = chem_dose_each value = chem_units_in_state }
-			}
+    every_controlled_state = {
+        set_temp_variable = { var = chem_units_in_state value = 0 }
+        meta_effect = {
+            text = {
+                set_temp_variable = { var = chem_state_id value = [CHEM_STATE_ID] }
+            }
+            CHEM_STATE_ID = "[THIS.GetID]"
+        }
+        chem_count_leader_units_in_state = yes
+        set_temp_variable = { var = chem_units_in_state value = chem_leader_units_in_state_count }
+        if = {
+            limit = { check_variable = { var = chem_units_in_state value = 0 compare = greater_than } }
+            add_to_temp_variable = { var = chem_state_scan_states_with_units value = 1 }
+        }
+        every_neighbor_state = {
+            limit = {
+                any_country = {
+                    has_war_with = event_target:chem_state_dispersal_owner_country
+                    controls_state = PREV
+                }
+            }
+            set_temp_variable = { var = chem_units_in_enemy_state value = 0 }
+            meta_effect = {
+                text = {
+                    set_temp_variable = { var = chem_state_id value = [CHEM_STATE_ID] }
+                }
+                CHEM_STATE_ID = "[THIS.GetID]"
+            }
+            chem_count_leader_units_in_state = yes
+            set_temp_variable = { var = chem_units_in_enemy_state value = chem_leader_units_in_state_count }
+            set_temp_variable = { var = chem_dose_each value = chem_units_in_enemy_state }
+            if = {
+                limit = {
+                    check_variable = { var = chem_dose_each value = 0 compare = less_than_or_equals }
+                    check_variable = { var = chem_units_in_state value = 0 compare = greater_than }
+                }
+                set_temp_variable = { var = chem_dose_each value = chem_units_in_state }
+            }
 
-			if = {
-				limit = { check_variable = { var = chem_dose_each value = 0 compare = greater_than } }
-				if = {
-					limit = {
-						any_country = {
-							is_actual_nonhuman_country = yes
-							controls_state = PREV
-						}
-					}
-					event_target:chem_state_dispersal_owner_country = {
-						var:chem_state_dispersal_leader_var = {
-							set_unit_leader_flag = chem_ability_hit_nonhuman_state
-						}
-					}
-				}
-				else = {
-					event_target:chem_state_dispersal_owner_country = {
-						var:chem_state_dispersal_leader_var = {
-							set_unit_leader_flag = chem_ability_hit_human_state
-						}
-					}
-				}
-				if = {
-					limit = {
-						event_target:chem_state_dispersal_owner_country = { is_japan_china_chemical_campaign_war = yes }
-						OR = {
-							is_core_of = CHI
-							is_core_of = PRC
-							is_core_of = SHX
-							is_core_of = GXC
-							is_core_of = YUN
-							is_core_of = XSM
-							is_core_of = SIK
-						}
-						any_neighbor_state = {
-							is_controlled_by = event_target:chem_state_dispersal_owner_country
-						}
-						any_country = {
-							has_war_with = event_target:chem_state_dispersal_owner_country
-							controls_state = PREV
-						}
-						NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
-						NOT = { has_state_flag = japan_chemical_campaign_recently_targeted }
-					}
-					event_target:chem_state_dispersal_owner_country = {
-						var:chem_state_dispersal_leader_var = {
-							set_unit_leader_flag = chem_ability_japan_china_target
-						}
-					}
-				}
-				event_target:chem_state_dispersal_owner_country = {
-					var:chem_state_dispersal_leader_var = {
-						add_to_variable = { var = chem_ability_total_units_affected value = chem_dose_each }
-					}
-				}
-				multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
-				add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
-				chem_apply_state_contamination = yes
-			}
-		}
+            if = {
+                limit = { check_variable = { var = chem_dose_each value = 0 compare = greater_than } }
+                if = {
+                    limit = {
+                        any_country = {
+                            is_actual_nonhuman_country = yes
+                            controls_state = PREV
+                        }
+                    }
+                    event_target:chem_state_dispersal_owner_country = {
+                        var:chem_state_dispersal_leader_var = {
+                            set_unit_leader_flag = chem_ability_hit_nonhuman_state
+                        }
+                    }
+                }
+                else = {
+                    event_target:chem_state_dispersal_owner_country = {
+                        var:chem_state_dispersal_leader_var = {
+                            set_unit_leader_flag = chem_ability_hit_human_state
+                        }
+                    }
+                }
+                if = {
+                    limit = {
+                        event_target:chem_state_dispersal_owner_country = { is_japan_china_chemical_campaign_war = yes }
+                        OR = {
+                            is_core_of = CHI
+                            is_core_of = PRC
+                            is_core_of = SHX
+                            is_core_of = GXC
+                            is_core_of = YUN
+                            is_core_of = XSM
+                            is_core_of = SIK
+                        }
+                        any_neighbor_state = {
+                            is_controlled_by = event_target:chem_state_dispersal_owner_country
+                        }
+                        any_country = {
+                            has_war_with = event_target:chem_state_dispersal_owner_country
+                            controls_state = PREV
+                        }
+                        NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
+                        NOT = { has_state_flag = japan_chemical_campaign_recently_targeted }
+                    }
+                    event_target:chem_state_dispersal_owner_country = {
+                        var:chem_state_dispersal_leader_var = {
+                            set_unit_leader_flag = chem_ability_japan_china_target
+                        }
+                    }
+                }
+                event_target:chem_state_dispersal_owner_country = {
+                    var:chem_state_dispersal_leader_var = {
+                        add_to_variable = { var = chem_ability_total_units_affected value = chem_dose_each }
+                    }
+                }
+                multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
+                add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
+                chem_apply_state_contamination = yes
+            }
+        }
 
-		if = {
-			limit = {
-				check_variable = { var = chem_units_in_state value = 0 compare = greater_than }
-				any_neighbor_state = {
-					any_country = {
-						has_war_with = event_target:chem_state_dispersal_owner_country
-						controls_state = PREV
-					}
-				}
-			}
-			set_temp_variable = { var = chem_dose_each value = chem_units_in_state }
-			if = {
-				limit = {
-					any_neighbor_state = {
-						any_country = {
-							is_actual_nonhuman_country = yes
-							has_war_with = event_target:chem_state_dispersal_owner_country
-							controls_state = PREV
-						}
-					}
-				}
-				event_target:chem_state_dispersal_owner_country = {
-					var:chem_state_dispersal_leader_var = {
-						set_unit_leader_flag = chem_ability_hit_nonhuman_state
-					}
-				}
-			}
-			if = {
-				limit = {
-					any_neighbor_state = {
-						any_country = {
-							NOT = { is_actual_nonhuman_country = yes }
-							has_war_with = event_target:chem_state_dispersal_owner_country
-							controls_state = PREV
-						}
-					}
-				}
-				event_target:chem_state_dispersal_owner_country = {
-					var:chem_state_dispersal_leader_var = {
-						set_unit_leader_flag = chem_ability_hit_human_state
-					}
-				}
-			}
-			if = {
-				limit = {
-					event_target:chem_state_dispersal_owner_country = { is_japan_china_chemical_campaign_war = yes }
-					any_neighbor_state = {
-						OR = {
-							is_core_of = CHI
-							is_core_of = PRC
-							is_core_of = SHX
-							is_core_of = GXC
-							is_core_of = YUN
-							is_core_of = XSM
-							is_core_of = SIK
-						}
-						any_neighbor_state = {
-							is_controlled_by = event_target:chem_state_dispersal_owner_country
-						}
-						any_country = {
-							has_war_with = event_target:chem_state_dispersal_owner_country
-							controls_state = PREV
-						}
-						NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
-						NOT = { has_state_flag = japan_chemical_campaign_recently_targeted }
-					}
-				}
-				event_target:chem_state_dispersal_owner_country = {
-					var:chem_state_dispersal_leader_var = {
-						set_unit_leader_flag = chem_ability_japan_china_target
-					}
-				}
-			}
-			event_target:chem_state_dispersal_owner_country = {
-				var:chem_state_dispersal_leader_var = {
-					add_to_variable = { var = chem_ability_total_units_affected value = chem_dose_each }
-				}
-			}
-			multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
-			add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
-			chem_apply_state_contamination = yes
-		}
-	}
+        if = {
+            limit = {
+                check_variable = { var = chem_units_in_state value = 0 compare = greater_than }
+                any_neighbor_state = {
+                    any_country = {
+                        has_war_with = event_target:chem_state_dispersal_owner_country
+                        controls_state = PREV
+                    }
+                }
+            }
+            set_temp_variable = { var = chem_dose_each value = chem_units_in_state }
+            if = {
+                limit = {
+                    any_neighbor_state = {
+                        any_country = {
+                            is_actual_nonhuman_country = yes
+                            has_war_with = event_target:chem_state_dispersal_owner_country
+                            controls_state = PREV
+                        }
+                    }
+                }
+                event_target:chem_state_dispersal_owner_country = {
+                    var:chem_state_dispersal_leader_var = {
+                        set_unit_leader_flag = chem_ability_hit_nonhuman_state
+                    }
+                }
+            }
+            if = {
+                limit = {
+                    any_neighbor_state = {
+                        any_country = {
+                            NOT = { is_actual_nonhuman_country = yes }
+                            has_war_with = event_target:chem_state_dispersal_owner_country
+                            controls_state = PREV
+                        }
+                    }
+                }
+                event_target:chem_state_dispersal_owner_country = {
+                    var:chem_state_dispersal_leader_var = {
+                        set_unit_leader_flag = chem_ability_hit_human_state
+                    }
+                }
+            }
+            if = {
+                limit = {
+                    event_target:chem_state_dispersal_owner_country = { is_japan_china_chemical_campaign_war = yes }
+                    any_neighbor_state = {
+                        OR = {
+                            is_core_of = CHI
+                            is_core_of = PRC
+                            is_core_of = SHX
+                            is_core_of = GXC
+                            is_core_of = YUN
+                            is_core_of = XSM
+                            is_core_of = SIK
+                        }
+                        any_neighbor_state = {
+                            is_controlled_by = event_target:chem_state_dispersal_owner_country
+                        }
+                        any_country = {
+                            has_war_with = event_target:chem_state_dispersal_owner_country
+                            controls_state = PREV
+                        }
+                        NOT = { is_controlled_by = event_target:chem_state_dispersal_owner_country }
+                        NOT = { has_state_flag = japan_chemical_campaign_recently_targeted }
+                    }
+                }
+                event_target:chem_state_dispersal_owner_country = {
+                    var:chem_state_dispersal_leader_var = {
+                        set_unit_leader_flag = chem_ability_japan_china_target
+                    }
+                }
+            }
+            event_target:chem_state_dispersal_owner_country = {
+                var:chem_state_dispersal_leader_var = {
+                    add_to_variable = { var = chem_ability_total_units_affected value = chem_dose_each }
+                }
+            }
+            multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
+            add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
+            chem_apply_state_contamination = yes
+        }
+    }
 }
 
 chem_prepare_weather_terrain_penalties = {

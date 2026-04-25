@@ -31,32 +31,6 @@ country_event = {
 			clr_country_flag = weaponized_zombie_initial_stockpile_granted
 		}
 		ensure_weaponized_zombie_initial_stockpile = yes
-		set_temp_variable = { wz_debug_completed = 0 }
-		if = {
-			limit = { has_country_flag = weaponized_zombies_completed }
-			set_temp_variable = { wz_debug_completed = 1 }
-		}
-		set_temp_variable = { wz_debug_raid_low = 0 }
-		if = {
-			limit = { has_country_flag = weaponized_zombie_raid_success_low }
-			set_temp_variable = { wz_debug_raid_low = 1 }
-		}
-		set_temp_variable = { wz_debug_raid_medium = 0 }
-		if = {
-			limit = { has_country_flag = weaponized_zombie_raid_success_medium }
-			set_temp_variable = { wz_debug_raid_medium = 1 }
-		}
-		set_temp_variable = { wz_debug_raid_high = 0 }
-		if = {
-			limit = { has_country_flag = weaponized_zombie_raid_success_high }
-			set_temp_variable = { wz_debug_raid_high = 1 }
-		}
-		set_temp_variable = { wz_debug_friendly_humans = 0 }
-		if = {
-			limit = { has_country_flag = weaponized_zombie_friendly_to_humans }
-			set_temp_variable = { wz_debug_friendly_humans = 1 }
-		}
-		log = "[Chaos Redux] WZ RAID DEBUG country=[ROOT.GetTag] completed=[?wz_debug_completed|0] low=[?wz_debug_raid_low|0] medium=[?wz_debug_raid_medium|0] high=[?wz_debug_raid_high|0] friendly_humans=[?wz_debug_friendly_humans|0] bombs=[?num_equipment@zombie_disease_bomb_1|0]"
 	}
 
 	option = {
@@ -73,8 +47,7 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		has_event_target = weaponized_zombie_review_target
-		event_target:weaponized_zombie_review_target = {
+		FROM = {
 			exists = yes
 			has_country_flag = weaponized_zombie_outbreak_country
 		}

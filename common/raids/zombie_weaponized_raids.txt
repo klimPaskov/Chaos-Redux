@@ -11,6 +11,10 @@ types = {
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
 
+		essential_equipment = {
+			zombie_disease_bomb_equipment = @WZ_RAID_PAYLOAD
+		}
+
 		ai_will_do = {
 			base = 1
 			modifier = {
@@ -27,21 +31,25 @@ types = {
 			}
 		}
 
-		allowed = {
-			has_country_flag = weaponized_zombie_raid_success_low
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
-		}
+		allowed = { }
 		visible = {
 			has_country_flag = weaponized_zombies_completed
 			has_country_flag = weaponized_zombie_raid_success_low
 			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 		}
 		show_target = {
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 			NOT = { is_in_faction_with = FROM }
 		}
-		available = { }
+		available = {
+			custom_trigger_tooltip = {
+				hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
+				tooltip = weaponized_zombie_raid_available_tooltip
+			}
+		}
 		launchable = {
 			has_war_with = FROM
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 
 		launch_sound = raid_launch_nuclear_strike
@@ -113,13 +121,11 @@ types = {
 		success_levels = {
 			failure = {
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.45 ratio = yes }
 				}
 			}
 			limited_success = {
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.20 ratio = yes }
 					raid_add_unit_experience = 0.1
 					apply_weaponized_zombie_strike_consequences = yes
@@ -135,7 +141,6 @@ types = {
 			success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.1 ratio = yes }
 					raid_add_unit_experience = 0.2
 					apply_weaponized_zombie_strike_consequences = yes
@@ -151,7 +156,6 @@ types = {
 			critical_success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_add_unit_experience = 0.35
 					apply_weaponized_zombie_strike_consequences = yes
 				}
@@ -172,22 +176,30 @@ types = {
 		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
-		ai_will_do = { base = 1 }
-		allowed = {
-			has_country_flag = weaponized_zombie_raid_success_medium
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+
+		essential_equipment = {
+			zombie_disease_bomb_equipment = @WZ_RAID_PAYLOAD
 		}
+		ai_will_do = { base = 1 }
+		allowed = { }
 		visible = {
 			has_country_flag = weaponized_zombies_completed
 			has_country_flag = weaponized_zombie_raid_success_medium
 			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 		}
 		show_target = {
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 			NOT = { is_in_faction_with = FROM }
 		}
-		available = { }
+		available = {
+			custom_trigger_tooltip = {
+				hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
+				tooltip = weaponized_zombie_raid_available_tooltip
+			}
+		}
 		launchable = {
 			has_war_with = FROM
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }
@@ -229,13 +241,11 @@ types = {
 		success_levels = {
 			failure = {
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.45 ratio = yes }
 				}
 			}
 			limited_success = {
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.20 ratio = yes }
 					raid_add_unit_experience = 0.1
 					apply_weaponized_zombie_strike_consequences = yes
@@ -251,7 +261,6 @@ types = {
 			success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.1 ratio = yes }
 					raid_add_unit_experience = 0.2
 					apply_weaponized_zombie_strike_consequences = yes
@@ -267,7 +276,6 @@ types = {
 			critical_success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_add_unit_experience = 0.35
 					apply_weaponized_zombie_strike_consequences = yes
 				}
@@ -288,22 +296,30 @@ types = {
 		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
 		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
 		command_power = 15
-		ai_will_do = { base = 1 }
-		allowed = {
-			has_country_flag = weaponized_zombie_raid_success_high
-			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+
+		essential_equipment = {
+			zombie_disease_bomb_equipment = @WZ_RAID_PAYLOAD
 		}
+		ai_will_do = { base = 1 }
+		allowed = { }
 		visible = {
 			has_country_flag = weaponized_zombies_completed
 			has_country_flag = weaponized_zombie_raid_success_high
 			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 		}
 		show_target = {
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 			NOT = { is_in_faction_with = FROM }
 		}
-		available = { }
+		available = {
+			custom_trigger_tooltip = {
+				hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
+				tooltip = weaponized_zombie_raid_available_tooltip
+			}
+		}
 		launchable = {
 			has_war_with = FROM
+			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
 		}
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }
@@ -345,13 +361,11 @@ types = {
 		success_levels = {
 			failure = {
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.45 ratio = yes }
 				}
 			}
 			limited_success = {
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.20 ratio = yes }
 					raid_add_unit_experience = 0.1
 					apply_weaponized_zombie_strike_consequences = yes
@@ -367,7 +381,6 @@ types = {
 			success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_damage_units = { plane_loss = 0.1 ratio = yes }
 					raid_add_unit_experience = 0.2
 					apply_weaponized_zombie_strike_consequences = yes
@@ -383,7 +396,6 @@ types = {
 			critical_success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
-					consume_weaponized_zombie_raid_payload = yes
 					raid_add_unit_experience = 0.35
 					apply_weaponized_zombie_strike_consequences = yes
 				}

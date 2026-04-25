@@ -1532,14 +1532,17 @@ relocate_isolated_zombie_capital = {
 }
 
 annex_neighboring_dynamic_zombie_outbreaks_to_main = {
-    every_neighbor_country = {
-        limit = {
-            exists = yes
-            has_country_flag = zombie_outbreak_dynamic_country
-            NOT = { has_country_flag = weaponized_zombie_outbreak_country }
-            num_of_controlled_states > 0
-            NOT = { has_capitulated = yes }
-        }
+	every_neighbor_country = {
+		limit = {
+			exists = yes
+			has_country_flag = zombie_outbreak_dynamic_country
+			OR = {
+				NOT = { has_country_flag = weaponized_zombie_outbreak_country }
+				is_weaponized_zombie_canonical_outbreak_country = yes
+			}
+			num_of_controlled_states > 0
+			NOT = { has_capitulated = yes }
+		}
         ZZZ = {
             annex_country = {
                 target = PREV

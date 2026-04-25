@@ -44,6 +44,44 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetEventsLogEventTypeView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.major
+				compare = equals
+			}
+		}
+		localization_key = settings.major.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.repeatable
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_repeatable.colored
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_type_entries^events_log_history_index
+				value = constant:event_system_event_type.fire_once
+				compare = equals
+			}
+		}
+		localization_key = settings.minor_fire_once.colored
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = "Unknown"
+	}
+}
+
+defined_text = {
 	name = GetEventsLogFilterType
 	text = {
 		trigger = { check_variable = { settings_events_log_filter_type = 0 } }
@@ -128,6 +166,10 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { settings_events_log_events_sort_mode = 1 } }
 		localization_key = chaosx.events_log.events.sort.mode.fired
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_events_sort_mode = 2 } }
+		localization_key = chaosx.events_log.events.sort.mode.weight
 	}
 	text = {
 		trigger = { always = yes }

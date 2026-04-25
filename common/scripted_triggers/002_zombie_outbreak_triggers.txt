@@ -23,6 +23,20 @@ is_weaponized_zombie_canonical_outbreak_country = {
 	}
 }
 
+is_live_weaponized_zombie_profile_country = {
+	exists = yes
+	has_country_flag = weaponized_zombie_outbreak_country
+	num_of_controlled_states > 0
+	NOT = { has_capitulated = yes }
+}
+
+is_weaponized_zombie_profile_visible_to_root = {
+	OR = {
+		has_country_flag = weaponized_zombie_profile_public
+		has_country_flag = weaponized_zombie_created_by_@ROOT
+	}
+}
+
 has_active_zombie_cure = {
 	any_country = {
 		has_idea = cure_activated
@@ -43,6 +57,16 @@ is_zombie_controlled_state = {
 	OR = {
 		is_controlled_by = ZZZ
 		controller = { has_country_flag = zombie_outbreak_dynamic_country }
+	}
+}
+
+is_standard_zombie_controlled_state = {
+	OR = {
+		is_controlled_by = ZZZ
+		controller = {
+			has_country_flag = zombie_outbreak_dynamic_country
+			NOT = { has_country_flag = weaponized_zombie_outbreak_country }
+		}
 	}
 }
 
@@ -69,6 +93,20 @@ is_weaponized_zombie_raid_target_state = {
 			ROOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 			is_zombie_controlled_state = yes
 		}
+	}
+	NOT = {
+		AND = {
+			ROOT = { has_country_flag = weaponized_zombie_archetype_canonical_convergence }
+			is_standard_zombie_controlled_state = yes
+		}
+	}
+}
+
+has_weaponized_zombie_raid_payload = {
+	check_variable = {
+		var = num_equipment@zombie_disease_bomb_1
+		value = constant:weaponized_zombies.raid_payload
+		compare = greater_than_or_equals
 	}
 }
 
