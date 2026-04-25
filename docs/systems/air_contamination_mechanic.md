@@ -42,6 +42,8 @@ Instead, a strike applies or strengthens `nuclear_fallout_state` on the target s
 
 That fallout intensity then contributes contamination monthly through the state loop, the same way chemical and outbreak states do.
 
+The same hook also adds direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`.
+
 ### 3) Chaos synchronization
 
 Contamination delta is converted into chaos via `air_contamination_sync_chaos_from_delta`:

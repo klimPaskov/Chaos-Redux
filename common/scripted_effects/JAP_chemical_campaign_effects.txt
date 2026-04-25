@@ -10,150 +10,150 @@
 @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS = 24
 
 japan_finalize_targeted_chemical_campaign = {
-	if = {
-		limit = { check_variable = { var = japan_campaign_consumed_amount value = 0 compare = greater_than } }
-		multiply_temp_variable = { var = chem_dose_each value = japan_campaign_dose_mult }
-		multiply_temp_variable = { var = chem_state_duration_add value = japan_campaign_duration_mult }
+    if = {
+        limit = { check_variable = { var = japan_campaign_consumed_amount value = 0 compare = greater_than } }
+        multiply_temp_variable = { var = chem_dose_each value = japan_campaign_dose_mult }
+        multiply_temp_variable = { var = chem_state_duration_add value = japan_campaign_duration_mult }
 
-		save_event_target_as = chem_state_dispersal_owner_country
-		if = {
-			limit = { has_event_target = japan_chemical_campaign_target_state }
-				event_target:japan_chemical_campaign_target_state = {
-					set_state_flag = {
-						flag = japan_chemical_campaign_recently_targeted
-						days = @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS
-					}
-					chem_apply_state_contamination = yes
-				}
-		}
-	}
+        save_event_target_as = chem_state_dispersal_owner_country
+        if = {
+            limit = { has_event_target = japan_chemical_campaign_target_state }
+            event_target:japan_chemical_campaign_target_state = {
+                set_state_flag = {
+                    flag = japan_chemical_campaign_recently_targeted
+                    days = @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS
+                }
+                chem_apply_state_contamination = yes
+            }
+        }
+    }
 }
 
 japan_set_default_targeted_chemical_campaign_agent = {
-	if = {
-		limit = { NOT = { has_variable = japan_chemical_campaign_selected_agent } }
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
-	}
+    if = {
+        limit = { NOT = { has_variable = japan_chemical_campaign_selected_agent } }
+        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
+    }
 }
 
 japan_cycle_targeted_chemical_campaign_agent = {
-	japan_set_default_targeted_chemical_campaign_agent = yes
+    japan_set_default_targeted_chemical_campaign_agent = yes
 
-	if = {
-		limit = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.mustard
-				compare = equals
-			}
-		}
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.chlorine
-				compare = equals
-			}
-		}
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.phosgene
-				compare = equals
-			}
-		}
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.lewisite }
-	}
-	else = {
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
-	}
+    if = {
+        limit = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.mustard
+                compare = equals
+            }
+        }
+        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine }
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.chlorine
+                compare = equals
+            }
+        }
+        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene }
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.phosgene
+                compare = equals
+            }
+        }
+        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.lewisite }
+    }
+    else = {
+        set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
+    }
 }
 
 japan_apply_targeted_chemical_campaign_attack = {
-	japan_set_default_targeted_chemical_campaign_agent = yes
+    japan_set_default_targeted_chemical_campaign_agent = yes
 
-	set_temp_variable = { var = japan_campaign_consumed_amount value = constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption }
-	set_temp_variable = { var = japan_campaign_dose_mult value = constant:chem_japan_campaign_decision.defaults.attack_dose_mult }
-	set_temp_variable = { var = japan_campaign_duration_mult value = constant:chem_japan_campaign_decision.defaults.attack_duration_mult }
+    set_temp_variable = { var = japan_campaign_consumed_amount value = constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption }
+    set_temp_variable = { var = japan_campaign_dose_mult value = constant:chem_japan_campaign_decision.defaults.attack_dose_mult }
+    set_temp_variable = { var = japan_campaign_duration_mult value = constant:chem_japan_campaign_decision.defaults.attack_duration_mult }
 
-	set_temp_variable = { var = chem_dose_each value = 0 }
-	set_temp_variable = { var = chem_state_duration_add value = 0 }
+    set_temp_variable = { var = chem_dose_each value = 0 }
+    set_temp_variable = { var = chem_state_duration_add value = 0 }
 
-	if = {
-		limit = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.chlorine
-				compare = equals
-			}
-			has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.chlorine }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.chlorine }
+    if = {
+        limit = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.chlorine
+                compare = equals
+            }
+            has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.chlorine }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.chlorine }
 
-		set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
-		multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
-		add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.phosgene
-				compare = equals
-			}
-			has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.phosgene }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.phosgene }
+        set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
+        multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
+        add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.phosgene
+                compare = equals
+            }
+            has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.phosgene }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.phosgene }
 
-		set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
-		multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
-		add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.lewisite
-				compare = equals
-			}
-			has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.lewisite }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.lewisite }
+        set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
+        multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
+        add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = japan_chemical_campaign_selected_agent
+                value = constant:chem_type.lewisite
+                compare = equals
+            }
+            has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.lewisite }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.lewisite }
 
-		set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
-		multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
-		add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
-	}
-	else_if = {
-		limit = {
-			OR = {
-				NOT = { has_variable = japan_chemical_campaign_selected_agent }
-				check_variable = {
-					var = japan_chemical_campaign_selected_agent
-					value = constant:chem_type.mustard
-					compare = equals
-				}
-			}
-			has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.mustard }
-		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.mustard }
+        set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
+        multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
+        add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
+    }
+    else_if = {
+        limit = {
+            OR = {
+                NOT = { has_variable = japan_chemical_campaign_selected_agent }
+                check_variable = {
+                    var = japan_chemical_campaign_selected_agent
+                    value = constant:chem_type.mustard
+                    compare = equals
+                }
+            }
+            has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
+        }
+        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.mustard }
+        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.mustard }
 
-		set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
-		multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
-		add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
-	}
-	else = {
-		set_temp_variable = { var = japan_campaign_consumed_amount value = 0 }
-	}
+        set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
+        multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
+        add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = japan_campaign_equipment_to_consume }
+    }
+    else = {
+        set_temp_variable = { var = japan_campaign_consumed_amount value = 0 }
+    }
 
-	japan_finalize_targeted_chemical_campaign = yes
+    japan_finalize_targeted_chemical_campaign = yes
 }

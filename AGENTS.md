@@ -186,10 +186,11 @@ Localisation and UI must always be kept in sync with gameplay changes.
 
 1. Localisation files must be encoded as **UTF 8 with BOM**. Wrong encoding breaks strings in game.
 2. When you add or rename anything that appears on screen, update localisation in the same change.
-3. Localisation keys:
+3. In scripted localisation, do not write format characters like `§` or `£` directly.
+4. Localisation keys:
    - Do not use `:0`. Write keys as `key_name: "Text"` without `0` and without a leading space before the key.
    - Keep key names consistent and readable. No unnecessary prefixes.
-4. Icons and UI assets:
+5. Icons and UI assets:
    - Define icons in `interface/...` and keep naming stable.
    - When something needs icons, define them in a correct `.gfx` file. I will provide the sprites myself, you just have to tell me what folder to put them in and with what name.
    - Copy placeholder sprites from vanilla files that match the new gfx definition, so later I can replace them with real sprites easily and that the game would run without complaining about missing sprites.

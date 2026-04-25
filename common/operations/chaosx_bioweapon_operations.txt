@@ -1,0 +1,388 @@
+# Overview:
+# - Adds state-selected intelligence operations that plant plague, smallpox, or
+#   weaponized zombie biological agents through operatives.
+# - Success is resolved by scripted effects using pathogen infectiousness and
+#   the origin country's network strength against the target.
+
+operation_plant_plague_outbreak = {
+	icon = GFX_operations_plant_bioweapon
+	map_icon = GFX_operations_plant_bioweapon_map
+	name = operation_plant_plague_outbreak
+	desc = operation_plant_plague_outbreak_desc
+	priority = 17
+
+	days = 75
+	network_strength = 40
+	operatives = 2
+	danger_level = 4
+
+	visible = {
+		is_special_project_completed = sp:plague_bomb
+		network_national_coverage = {
+			target = FROM
+			value > 0
+		}
+	}
+
+	available = {
+		has_equipment = { plague_bomb_1 > 0 }
+	}
+
+	requirements = {
+		FROM = {
+			any_controlled_state = {
+				NOT = { has_state_flag = plague_contaminated }
+				NOT = { is_zombie_controlled_state = yes }
+			}
+		}
+	}
+
+	selection_target = {
+		targets = { FROM }
+	}
+
+	selection_target_state = {
+		NOT = { has_state_flag = plague_contaminated }
+		NOT = { is_zombie_controlled_state = yes }
+	}
+
+	equipment = {
+		plague_bomb_equipment = 25
+		support_equipment = 50
+	}
+
+	risk_chance = 0.25
+	experience = 2
+	risk_modifiers = { operation_risk }
+	cost_modifiers = { operation_cost }
+
+	ai_will_do = {
+		base = constant:bio_operation_plant_outbreak.plague_ai_weight
+		modifier = {
+			factor = 0
+			NOT = { has_war_with = FROM }
+		}
+		modifier = {
+			factor = 0.25
+			has_government = democratic
+		}
+		modifier = {
+			factor = 2
+			FROM = { has_country_flag = used_bioweapon }
+		}
+	}
+
+	outcome_potential = {
+		custom_effect_tooltip = operation_plant_bioweapon_outcome_tt
+	}
+
+	outcome_execute = {
+		ROOT = { save_event_target_as = bio_operation_actor }
+		FROM = { save_event_target_as = bio_operation_victim }
+		set_temp_variable = { var = bio_operation_infectiousness value = constant:bio_operation_plant_outbreak.plague_infectiousness }
+		bio_operation_calculate_plant_success_chance = yes
+		FROM.FROM = {
+			bio_execute_plague_plant_operation = yes
+		}
+	}
+
+	phases = {
+		infiltration_border = { base = 30 }
+		infiltration_submarine = { base = 25 }
+		infiltration_paradrop = {
+			base = 25
+			modifier = {
+				ROOT = {
+					has_equipment = {
+						transport_plane_equipment < 1
+					}
+				}
+				factor = 0
+			}
+		}
+		infiltration_diplomatic = {
+			base = 20
+			modifier = {
+				FROM = { has_war_with = ROOT }
+				factor = 0
+			}
+		}
+	}
+	phases = {
+		bioweapon_plant_reservoir = { base = 50 }
+		bioweapon_seed_medical_chain = { base = 30 }
+		bioweapon_contaminate_transport_hub = { base = 20 }
+	}
+	phases = {
+		exfiltration_border = { base = 35 }
+		exfiltration_go_to_ground = { base = 35 }
+		exfiltration_submarine_pickup = { base = 20 }
+		exfiltration_air_pickup = {
+			base = 10
+			modifier = {
+				ROOT = {
+					has_equipment = {
+						transport_plane_equipment < 1
+					}
+				}
+				factor = 0
+			}
+		}
+	}
+}
+
+operation_plant_smallpox_outbreak = {
+	icon = GFX_operations_plant_bioweapon
+	map_icon = GFX_operations_plant_bioweapon_map
+	name = operation_plant_smallpox_outbreak
+	desc = operation_plant_smallpox_outbreak_desc
+	priority = 18
+
+	days = 90
+	network_strength = 50
+	operatives = 3
+	danger_level = 5
+
+	visible = {
+		is_special_project_completed = sp:smallpox_bomb
+		network_national_coverage = {
+			target = FROM
+			value > 0
+		}
+	}
+
+	available = {
+		has_equipment = { smallpox_bomb_1 > 0 }
+	}
+
+	requirements = {
+		FROM = {
+			any_controlled_state = {
+				NOT = { has_state_flag = smallpox_contaminated }
+				NOT = { is_zombie_controlled_state = yes }
+			}
+		}
+	}
+
+	selection_target = {
+		targets = { FROM }
+	}
+
+	selection_target_state = {
+		NOT = { has_state_flag = smallpox_contaminated }
+		NOT = { is_zombie_controlled_state = yes }
+	}
+
+	equipment = {
+		smallpox_bomb_equipment = 15
+		support_equipment = 75
+	}
+
+	risk_chance = 0.35
+	experience = 3
+	risk_modifiers = { operation_risk }
+	cost_modifiers = { operation_cost }
+
+	ai_will_do = {
+		base = constant:bio_operation_plant_outbreak.smallpox_ai_weight
+		modifier = {
+			factor = 0
+			NOT = { has_war_with = FROM }
+		}
+		modifier = {
+			factor = 0.15
+			has_government = democratic
+		}
+		modifier = {
+			factor = 2
+			FROM = { has_country_flag = used_bioweapon }
+		}
+	}
+
+	outcome_potential = {
+		custom_effect_tooltip = operation_plant_bioweapon_outcome_tt
+	}
+
+	outcome_execute = {
+		ROOT = { save_event_target_as = bio_operation_actor }
+		FROM = { save_event_target_as = bio_operation_victim }
+		set_temp_variable = { var = bio_operation_infectiousness value = constant:bio_operation_plant_outbreak.smallpox_infectiousness }
+		bio_operation_calculate_plant_success_chance = yes
+		FROM.FROM = {
+			bio_execute_smallpox_plant_operation = yes
+		}
+	}
+
+	phases = {
+		infiltration_border = { base = 25 }
+		infiltration_submarine = { base = 25 }
+		infiltration_paradrop = {
+			base = 25
+			modifier = {
+				ROOT = {
+					has_equipment = {
+						transport_plane_equipment < 1
+					}
+				}
+				factor = 0
+			}
+		}
+		infiltration_diplomatic = {
+			base = 25
+			modifier = {
+				FROM = { has_war_with = ROOT }
+				factor = 0
+			}
+		}
+	}
+	phases = {
+		bioweapon_plant_reservoir = { base = 20 }
+		bioweapon_seed_medical_chain = { base = 50 }
+		bioweapon_contaminate_transport_hub = { base = 30 }
+	}
+	phases = {
+		exfiltration_border = { base = 30 }
+		exfiltration_go_to_ground = { base = 40 }
+		exfiltration_submarine_pickup = { base = 20 }
+		exfiltration_air_pickup = {
+			base = 10
+			modifier = {
+				ROOT = {
+					has_equipment = {
+						transport_plane_equipment < 1
+					}
+				}
+				factor = 0
+			}
+		}
+	}
+}
+
+operation_plant_weaponized_zombie_outbreak = {
+	icon = GFX_operations_plant_bioweapon
+	map_icon = GFX_operations_plant_bioweapon_map
+	name = operation_plant_weaponized_zombie_outbreak
+	desc = operation_plant_weaponized_zombie_outbreak_desc
+	priority = 19
+
+	days = 95
+	network_strength = 50
+	operatives = 3
+	danger_level = 6
+
+	visible = {
+		has_country_flag = weaponized_zombies_completed
+		network_national_coverage = {
+			target = FROM
+			value > 0
+		}
+	}
+
+	available = {
+		has_weaponized_zombie_raid_payload = yes
+	}
+
+	requirements = {
+		FROM = {
+			any_controlled_state = {
+				is_weaponized_zombie_raid_target_state = yes
+			}
+		}
+	}
+
+	selection_target = {
+		targets = { FROM }
+	}
+
+	selection_target_state = {
+		is_weaponized_zombie_raid_target_state = yes
+	}
+
+	equipment = {
+		zombie_disease_bomb_equipment = 75
+		support_equipment = 100
+	}
+
+	risk_chance = 0.40
+	experience = 3
+	risk_modifiers = { operation_risk }
+	cost_modifiers = { operation_cost }
+
+	ai_will_do = {
+		base = constant:bio_operation_plant_outbreak.zombie_ai_weight
+		modifier = {
+			factor = 0
+			NOT = { has_war_with = FROM }
+		}
+		modifier = {
+			factor = 8
+			ROOT = {
+				original_tag = JAP
+				has_war_with = CHI
+			}
+			FROM = { tag = CHI }
+		}
+	}
+
+	outcome_potential = {
+		custom_effect_tooltip = operation_plant_bioweapon_outcome_tt
+	}
+
+	outcome_execute = {
+		ROOT = { save_event_target_as = bio_operation_actor }
+		FROM = { save_event_target_as = bio_operation_victim }
+		set_temp_variable = { var = bio_operation_infectiousness value = constant:bio_operation_plant_outbreak.zombie_default_infectiousness }
+		if = {
+			limit = { ROOT = { has_variable = weaponized_zombie_infectiousness } }
+			set_temp_variable = { var = bio_operation_infectiousness value = ROOT.weaponized_zombie_infectiousness }
+		}
+		bio_operation_calculate_plant_success_chance = yes
+		FROM.FROM = {
+			bio_execute_weaponized_zombie_plant_operation = yes
+		}
+	}
+
+	phases = {
+		infiltration_border = { base = 25 }
+		infiltration_submarine = { base = 25 }
+		infiltration_paradrop = {
+			base = 25
+			modifier = {
+				ROOT = {
+					has_equipment = {
+						transport_plane_equipment < 1
+					}
+				}
+				factor = 0
+			}
+		}
+		infiltration_diplomatic = {
+			base = 25
+			modifier = {
+				FROM = { has_war_with = ROOT }
+				factor = 0
+			}
+		}
+	}
+	phases = {
+		bioweapon_plant_reservoir = { base = 20 }
+		bioweapon_seed_medical_chain = { base = 20 }
+		bioweapon_contaminate_transport_hub = { base = 60 }
+	}
+	phases = {
+		exfiltration_border = { base = 25 }
+		exfiltration_go_to_ground = { base = 45 }
+		exfiltration_submarine_pickup = { base = 20 }
+		exfiltration_air_pickup = {
+			base = 10
+			modifier = {
+				ROOT = {
+					has_equipment = {
+						transport_plane_equipment < 1
+					}
+				}
+				factor = 0
+			}
+		}
+	}
+}

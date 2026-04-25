@@ -42,7 +42,7 @@ The zombie outbreak event now has authored gameplay text in the event-details wi
 ## Events tab sorting and filtering
 Events tab supports:
 - Filter: `All`, `Enabled`, `Disabled`
-- Sort mode: `By Event ID`, `By Unique`, `By Fired`
+- Sort mode: `By Event ID`, `By Fired`, `By Weight`
 - Sort order: `Ascending`, `Descending`
 
 Sorting uses deterministic tie-breaking by event id.
