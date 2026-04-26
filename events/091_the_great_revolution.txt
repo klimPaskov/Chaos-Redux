@@ -31,7 +31,11 @@ country_event = {
             set_temp_variable = { REV.temp_oob_container = owner.id }
             transfer_state_to = REV
         }
-        REV = { load_oob = "REV_1936" create_faction = revolution_front } # if country doesn't exist, does nothing
+        REV = {
+			load_oob = "REV_1936"
+			create_communist_rebel_templates = yes
+			create_faction = revolution_front
+		} # if country doesn't exist, does nothing
         every_state = {
             limit = { is_owned_by = REV }
             transfer_state_to = REV.temp_oob_container
@@ -69,17 +73,22 @@ country_event = {
         }
 
         every_country = {
-            limit = { NOT = { has_government = communism } }
+            limit = {
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				NOT = { has_government = communism }
+			}
             country_event = { id = chaosx.nr91.2 }
         }
         every_country = {
-            limit = { has_government = communism }
+            limit = {
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				has_government = communism
+			}
             country_event = { id = chaosx.nr91.3 }
         }
-        clr_global_flag = communism_spread
+		clr_global_flag = communism_spread
 		every_country = {
-			clear_communism_support_escalation = yes
-			clr_country_flag = communism_strike_committees_formed
+			clear_communism_spread_system = yes
 		}
     }
 }
@@ -87,133 +96,52 @@ country_event = {
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr91.2
-    title = chaosx.nr91.2.t
-    desc = chaosx.nr91.2.d
-    picture = GFX_report_event_lenin
+	id = chaosx.nr91.2
+	title = chaosx.nr91.2.t
+	desc = chaosx.nr91.2.d
+	picture = GFX_report_event_lenin
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    immediate = {
-        hidden_effect = {
-            set_temp_variable = { rand_communist_states = party_popularity@communism }
-            multiply_temp_variable = { rand_communist_states = num_owned_states }
-            round_temp_variable = rand_communist_states
-            if = { limit = { NOT = { check_variable = { rand_communist_states = 0 } } }
-            meta_effect = {
-                text = {
-                    every_owned_state = {
-                        limit = { impassable = no }
-                        random_select_amount = [COMMUNIST_STATES_AMOUNT] # doesn't allow normal variable input
-                        transfer_state_to = REV
-                        add_core_of = REV
-                        if = { limit = { is_on_continent = middle_east }
-                        create_unit = {
-                            division = "name = \"Revolutinaries of Arabia\" division_template = \"Regular Revolutionary Division\" start_experience_factor = 0.1"
-                            owner = REV
-                            count = 1
-                            allow_spawning_on_enemy_provs = yes
-                        }
-                        create_unit = {
-                            division = "name = \"Believers of the Cause\" division_template = \"Red Army Irregulars\" start_experience_factor = 0.2"
-                            owner = REV
-                            count = 2
-                            allow_spawning_on_enemy_provs = yes
-                        }
-                        create_unit = {
-                            division = "name = \"Red Camels\" division_template = \"Red Army Cavalry\" start_experience_factor = 0.5"
-                            owner = REV
-                            count = 1
-                            allow_spawning_on_enemy_provs = yes
-                        }
-                    } else_if = { limit = { is_on_continent = asia }
-                    create_unit = {
-                        division = "name = \"Revolutionaries\" division_template = \"Regular Revolutionary Division\" start_experience_factor = 0.1"
-                        owner = REV
-                        count = 1
-                        allow_spawning_on_enemy_provs = yes
-                    }
-                    create_unit = {
-                        division = "name = \"Belivers of the Cause\" division_template = \"Red Army Irregulars\" start_experience_factor = 0.5"
-                        owner = REV
-                        count = 1
-                        allow_spawning_on_enemy_provs = yes
-                    }
-                    create_unit = {
-                        division = "name = \"Red Cossacks\" division_template = \"Red Army Cavalry\" start_experience_factor = 0.5"
-                        owner = REV
-                        count = 2
-                        allow_spawning_on_enemy_provs = yes
-                    }
-                } else_if = { limit = { is_on_continent = south_america }
-                create_unit = {
-                    division = "name = \"Revolucionarios\" division_template = \"Regular Revolutionary Division\" start_experience_factor = 0.1"
-                    owner = REV
-                    count = 2
-                    allow_spawning_on_enemy_provs = yes
-                }
-                create_unit = {
-                    division = "name = \"Creyentes de la Causa\" division_template = \"Red Army Irregulars\" start_experience_factor = 0.5"
-                    owner = REV
-                    count = 1
-                    allow_spawning_on_enemy_provs = yes
-                }
-                create_unit = {
-                    division = "name = \"Cosacos Rojos\" division_template = \"Red Army Cavalry\" start_experience_factor = 0.5"
-                    owner = REV
-                    count = 1
-                    allow_spawning_on_enemy_provs = yes
-                }
-            } else = {
-                create_unit = {
-                    division = "name = \"Revolutionaries\" division_template = \"Regular Revolutionary Division\" start_experience_factor = 0.1"
-                    owner = REV
-                    count = 2
-                    allow_spawning_on_enemy_provs = yes
-                }
-                create_unit = {
-                    division = "name = \"The Red Army\" division_template = \"Red Army Infantry\" start_experience_factor = 0.1"
-                    owner = REV
-                    count = 2
-                    allow_spawning_on_enemy_provs = yes
-                }
-                create_unit = {
-                    division = "name = \"Guards of Lenin\" division_template = \"Lenin's Division\" start_experience_factor = 0.3"
-                    owner = REV
-                    count = 1
-                    allow_spawning_on_enemy_provs = yes
-                }
-                create_unit = {
-                    division = "name = \"Red Cossacks\" division_template = \"Red Army Cavalry\" start_experience_factor = 0.5"
-                    owner = REV
-                    count = 1
-                    allow_spawning_on_enemy_provs = yes
-                }
-            }
-        }
-    }
-    COMMUNIST_STATES_AMOUNT = "[?rand_communist_states|.0]"
-}
+	immediate = {
+		hidden_effect = {
+			set_temp_variable = { world_revolution_controlled_states_transferred = 0 }
+			if = {
+				limit = { hidden_trigger = { NOT = { is_special_chaos_country = yes } } }
+				every_owned_state = {
+					limit = {
+						impassable = no
+						has_state_flag = communist_controlled_state
+					}
+					spawn_world_revolution_units_from_communist_state = yes
+					clear_communism_state_control = yes
+					add_core_of = REV
+					transfer_state_to = REV
+					add_to_temp_variable = { world_revolution_controlled_states_transferred = 1 }
+				}
+			}
+			if = {
+				limit = { check_variable = { world_revolution_controlled_states_transferred > 0 } }
+				REV = {
+					declare_war_on = {
+						target = ROOT
+						type = annex_everything
+					}
+				}
+			}
+			set_political_party = {
+				ideology = communism
+				popularity = 0
+			}
+		}
+	}
 
-}
-REV = {
-    declare_war_on = {
-        target = ROOT
-        type = annex_everything
-    }
-}
-set_political_party = {
-    ideology = communism
-    popularity = 0
-}
-}
-}
-option = {
-    add_war_support = 0.05
-    add_political_power = 50
-    name = chaosx.nr91.2.a
-    ai_chance = { base = 100 }
-}
+	option = {
+		add_war_support = 0.05
+		add_political_power = 50
+		name = chaosx.nr91.2.a
+		ai_chance = { base = 100 }
+	}
 }
 
 ##############################################################################################################

@@ -1,0 +1,179 @@
+# Reusable communism spread state-control triggers.
+
+has_active_communism_spread_country_state = {
+	OR = {
+		has_idea = communism_spread_idea
+		has_communist_controlled_state = yes
+		has_country_flag = fighting_communist_rebels
+		has_country_flag = communism_evolution_unstable_activity
+		has_country_flag = communism_evolution_dark_worker_rituals
+		has_country_flag = communism_evolution_world_revolution_whispers
+	}
+}
+
+has_communist_controlled_state = {
+	any_owned_state = { has_state_flag = communist_controlled_state }
+}
+
+has_regular_communist_intervention_target = {
+	any_owned_state = {
+		OR = {
+			has_state_flag = communist_control_level_1
+			has_state_flag = communist_control_level_2
+		}
+	}
+}
+
+has_communism_evolution_tier_1_unlocked = {
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 1 }
+		has_global_flag = { flag = chaos_tier value = 2 }
+		has_global_flag = { flag = chaos_tier value = 3 }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+	}
+}
+
+has_communism_evolution_tier_2_unlocked = {
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 2 }
+		has_global_flag = { flag = chaos_tier value = 3 }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+	}
+}
+
+has_communism_evolution_tier_3_unlocked = {
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 3 }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+	}
+}
+
+can_launch_communist_emergency_intervention = {
+	has_communist_controlled_state = yes
+	OR = {
+		check_variable = { communism_control_level_3_states > 0 }
+		check_variable = { communism_controlled_states > communism_emergency_control_threshold }
+	}
+}
+
+has_communism_threat_contained = {
+	check_variable = { communism_revolutionary_threat < 20 }
+}
+
+has_communism_threat_growing_unrest = {
+	check_variable = { communism_revolutionary_threat > 19 }
+	check_variable = { communism_revolutionary_threat < 40 }
+}
+
+has_communism_threat_dangerous = {
+	check_variable = { communism_revolutionary_threat > 39 }
+	check_variable = { communism_revolutionary_threat < 65 }
+}
+
+has_communism_threat_revolutionary_crisis = {
+	check_variable = { communism_revolutionary_threat > 64 }
+	check_variable = { communism_revolutionary_threat < 85 }
+}
+
+has_communism_threat_collapse_imminent = {
+	check_variable = { communism_revolutionary_threat > 84 }
+}
+
+has_communism_local_intervention_available = {
+	has_regular_communist_intervention_target = yes
+	NOT = { has_country_flag = fighting_communist_rebels }
+}
+
+has_communism_emergency_pressure = {
+	OR = {
+		can_launch_communist_emergency_intervention = yes
+		check_variable = { communism_revolutionary_threat > constant:communism_spread_dashboard.emergency_pressure_threshold }
+	}
+}
+
+has_communism_local_intervention_pressure = {
+	OR = {
+		has_communism_local_intervention_available = yes
+		check_variable = { communism_revolutionary_threat > constant:communism_spread_dashboard.local_intervention_pressure_threshold }
+	}
+}
+
+is_communist_spread_priority_state = {
+	# STATE SCOPE. Used for selecting strategic states and rebel strength bonuses.
+	OR = {
+		arms_factory > 0
+		industrial_complex > 1
+		state_population_k > 1000
+		AND = {
+			infrastructure > 2
+			state_population_k > 500
+		}
+	}
+}
+
+is_communist_rebel_name_pool_hispanic_country = {
+	OR = {
+		original_tag = SPR
+		original_tag = MEX
+		original_tag = ARG
+		original_tag = CHL
+		original_tag = COL
+		original_tag = VEN
+		original_tag = PRU
+		original_tag = URG
+		original_tag = PAR
+		original_tag = BOL
+		original_tag = ECU
+		original_tag = CUB
+		original_tag = DOM
+		original_tag = GUA
+		original_tag = HON
+		original_tag = ELS
+		original_tag = NIC
+		original_tag = COS
+		original_tag = PAN
+	}
+}
+
+is_communist_rebel_name_pool_portuguese_country = {
+	OR = {
+		original_tag = POR
+		original_tag = BRA
+	}
+}
+
+is_communist_rebel_name_pool_nordic_country = {
+	OR = {
+		original_tag = SWE
+		original_tag = NOR
+		original_tag = DEN
+		original_tag = FIN
+		original_tag = ICE
+	}
+}
+
+is_communist_rebel_name_pool_benelux_country = {
+	OR = {
+		original_tag = HOL
+		original_tag = BEL
+		original_tag = LUX
+	}
+}
+
+is_communist_rebel_name_pool_central_european_country = {
+	OR = {
+		original_tag = CZE
+		original_tag = AUS
+		original_tag = HUN
+		original_tag = ROM
+		original_tag = YUG
+		original_tag = GRE
+		original_tag = BUL
+		original_tag = ALB
+		original_tag = TUR
+		original_tag = SWI
+	}
+}

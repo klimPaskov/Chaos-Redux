@@ -1,6 +1,6 @@
 # Custom Achievements
 
-This mechanic adds a first pass of Chaos Redux custom achievements using HOI4's mod achievement system.
+This mechanic adds Chaos Redux custom achievements using HOI4's mod achievement system.
 
 ## What It Adds
 
@@ -171,10 +171,3 @@ Registered primary sprite aliases:
     - `gfx/achievements/20_end_of_the_living_achievement.dds`
     - `gfx/achievements/20_end_of_the_living_achievement_grey.dds`
     - `gfx/achievements/20_end_of_the_living_achievement_not_eligible.dds`
-
-## Future Plans
-
-- Add a second pass of achievements built around cleanup and restraint, not only escalation.
-- Add meta-achievements that require completing several system achievements in the same run.
-- Add per-system art direction so chemistry, contamination, zombies, and low-chaos survival have distinct visual language.
-- If you later want visible rarity in UI, build a dedicated scripted GUI section or badge overlays using the new sprite aliases; the stock mod achievement UI does not expose rarity badges.

@@ -54,4 +54,52 @@ scripted_gui = {
             is_ai = no
         }
     }
+    communism_spread_dashboard_scripted_gui = {
+        context_type = decision_category
+
+        window_name = "communism_spread_dashboard_container"
+
+        properties = {
+            communism_threat_meter = {
+                image = "[GetCommunismThreatMeterSprite]"
+                frame = 1
+            }
+        }
+        ai_enabled = {
+            always = no
+        }
+        visible = {
+            is_ai = no
+        }
+    }
+    communism_control_state_mapicon_scripted_gui = {
+        context_type = state_mapicon
+
+        window_name = "communism_control_state_mapicon_container"
+
+        visible = {
+            owns_state = PREV
+            PREV = {
+                has_state_flag = communist_controlled_state
+            }
+            has_global_flag = communism_spread
+            hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+            NOT = { has_government = communism }
+            has_idea = communism_spread_idea
+        }
+        triggers = {
+            communism_control_state_mapicon_level_1_visible = {
+                PREV = { has_state_flag = communist_control_level_1 }
+            }
+            communism_control_state_mapicon_level_2_visible = {
+                PREV = { has_state_flag = communist_control_level_2 }
+            }
+            communism_control_state_mapicon_level_3_visible = {
+                PREV = { has_state_flag = communist_control_level_3 }
+            }
+        }
+        ai_enabled = {
+            always = no
+        }
+    }
 }

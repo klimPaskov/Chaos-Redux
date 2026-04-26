@@ -102,6 +102,10 @@ is_special_chaos_country = {
     OR = {
         is_zombie_outbreak_country = yes
         is_weaponized_zombie_outbreak_country = yes
+        tag = REV
+        original_tag = REV
+        has_country_flag = communist_rebel_state
+        has_country_flag = communist_state_control_rebel
         tag = ZIN
         tag = THR
         has_cosmetic_tag = THR
@@ -109,47 +113,15 @@ is_special_chaos_country = {
 }
 
 is_actual_nonhuman_country = {
-	OR = {
-		is_zombie_outbreak_country = yes
-		is_weaponized_zombie_outbreak_country = yes
-		tag = ZIN
-	}
+    OR = {
+        is_zombie_outbreak_country = yes
+        is_weaponized_zombie_outbreak_country = yes
+        tag = ZIN
+    }
 }
 
 uses_normal_civilian_systems = {
     NOT = { is_actual_nonhuman_country = yes }
 }
-
-
-mapmode_state_has_chemical_contamination = {
-	has_dynamic_modifier = { modifier = chem_state_contamination }
-}
-
-mapmode_state_has_disease_contamination = {
-	OR = {
-		has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-		has_dynamic_modifier = { modifier = plague_contaminated_state }
-		has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-		has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-	}
-}
-
-mapmode_state_has_nuclear_contamination = {
-	has_dynamic_modifier = { modifier = nuclear_fallout_state }
-}
-
-mapmode_state_has_tracked_contamination = {
-	OR = {
-		mapmode_state_has_chemical_contamination = yes
-		mapmode_state_has_disease_contamination = yes
-		mapmode_state_has_nuclear_contamination = yes
-	}
-}
-
-mapmode_state_has_civilian_death_history = {
-	has_variable = chaos_state_civilian_deaths_total
-	check_variable = { chaos_state_civilian_deaths_total > 0 }
-}
-
 
 ###############################################################################################################

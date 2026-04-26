@@ -4,94 +4,129 @@ communism_spread_timing = {
 		data = int
 	}
 
-	strike_tier_1_cooldown_days = 240
-	strike_tier_2_cooldown_days = 225
-	strike_tier_3_cooldown_days = 210
-	strike_tier_4_cooldown_days = 195
-	strike_tier_5_cooldown_days = 180
-	status_notification_cooldown_days = 210
-	propaganda_reenable_days = 180
-	economic_reenable_days = 150
-	military_reenable_days = 190
-	industrial_reenable_days = 185
-	emergency_reenable_days = 180
+	maintenance_min_days = 40
+	maintenance_max_days = 70
+	first_maintenance_min_days = 25
+	first_maintenance_max_days = 45
+	state_spread_cooldown_days = 90
+	state_escalation_cooldown_days = 120
+	sabotage_cooldown_days = 150
+	revolutionary_war_cooldown_days = 180
+	evolution_incident_cooldown_days = 180
+	local_intervention_days = 21
+	local_intervention_reenable_days = 90
+	emergency_intervention_days = 45
+	emergency_intervention_reenable_days = 240
+	crackdown_scars_days = 120
+	post_emergency_disruption_days = 150
+	national_counter_agitation_days = 30
+	national_counter_agitation_reenable_days = 75
+	defeat_grace_days = 180
+	evolution_progression_cooldown_days = 90
 }
 
-communism_spread_reduction = {
+communism_spread_drift = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	propaganda = 0.03
-	economic = 0.04
-	military_success = 0.07
-	military_partial_failure = 0.03
-	industrial = 0.04
-	emergency = 0.12
+	base = 0.005
+	per_controlled_state = 0.01
+	max_from_states = 0.90
 }
 
-communism_spread_stage_threshold = {
+communism_spread_dashboard = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	cadre_networks = 0.20
-	strike_committees = 0.25
-	armed_cells = 0.40
-	parallel_soviets = 0.50
-	parallel_soviets_rebel_support = 0.40
+	level_1_threat = 5
+	level_2_threat = 10
+	level_3_threat = 18
+	unstable_activity_threat = 5
+	dark_worker_rituals_threat = 8
+	world_revolution_whispers_threat = 12
+	rebel_war_threat = 20
+	local_intervention_pressure_threshold = 40
+	emergency_pressure_threshold = 70
 }
 
-communism_spread_stage_modifier = {
+communism_spread_state_control = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	cadre_extra_drift = 0.01
-	cadre_political_power_gain = -0.05
-	armed_cells_political_power_gain = -0.05
-	armed_cells_stability_weekly = -0.001
-	armed_cells_war_support_weekly = -0.001
-	parallel_soviets_political_power_gain = -0.10
-	parallel_soviets_stability_weekly = -0.002
-	parallel_soviets_war_support_weekly = -0.002
+	min_support_for_state_spread = 0.08
+	medium_support = 0.20
+	high_support = 0.35
+	very_high_support = 0.55
+	soft_ceiling_ratio = 0.90
+	low_stability_threshold = 0.45
+	strong_stability_threshold = 0.70
+	war_support_low_threshold = 0.35
 }
 
-communism_spread_strike = {
+communism_spread_intervention = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	base_buildings = 3
-	base_state_share = 0.10
-	base_damage = 0.25
-	cadre_buildings = 4
-	cadre_state_share = 0.12
-	strike_committees_buildings = 5
-	strike_committees_state_share = 0.15
-	strike_committees_damage = 0.35
-	ignore_stability = -0.01
-	ignore_war_support = -0.01
+	level_1_command_power = 15
+	level_1_manpower = 2500
+	level_1_equipment = 300
+	level_2_command_power = 30
+	level_2_manpower = 7000
+	level_2_equipment = 900
+	level_1_success = 70
+	level_1_partial = 20
+	level_1_bad_failure = 10
+	level_2_success = 45
+	level_2_partial = 35
+	level_2_bad_failure = 20
+	level_2_support_penalty = 10
+	crackdown_stability_loss = -0.01
+	failed_support_gain = 0.015
 }
 
-communism_spread_military = {
+communism_spread_countermeasures = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	base_success_chance = 80
-	min_success_chance = 20
-	communist_penalty_scale = 120
-	default_partial_failure_share = 0.75
-	armed_cells_success_penalty = 10
-	armed_cells_partial_failure_share = 0.65
-	parallel_soviets_success_penalty = 15
-	parallel_soviets_partial_failure_share = 0.55
+	national_command_power = 20
+	national_command_power_cost = -20
+	national_political_power = 35
+	national_political_power_cost = -35
+	national_stability_cost = -0.01
+	national_support_reduction = -0.02
+}
+
+communism_spread_emergency = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	command_power = 75
+	manpower = 25000
+	equipment = 2500
+	political_power = 75
+	stability_loss = -0.08
+	war_support_loss = -0.06
+	level_1_conversion_chance = 40
+	level_2_conversion_chance = 80
+	level_3_conversion_chance = 100
+	base_uprising_chance = 15
+	per_controlled_state_uprising_chance = 3
+	per_level_3_uprising_chance = 12
+	communism_support_uprising_scale = 45
+	max_uprising_chance = 90
+	no_uprising_support_reduction = -0.05
 }
 
 communism_spread_rebels = {
@@ -100,17 +135,39 @@ communism_spread_rebels = {
 		data = fixed_point
 	}
 
-	armed_cells_rebel_state_bonus = 2
-	armed_cells_divisions_per_state_bonus = 1
-	parallel_soviets_rebel_state_bonus = 3
-	parallel_soviets_min_states_to_occupy = 2
+	base_manpower = 5000
+	manpower_per_converted_state = 3500
+	manpower_support_scale = 25000
+	level_1_units = 1
+	level_2_units = 2
+	level_3_units = 3
+	industrial_bonus_units = 1
+	arms_factory_bonus_units = 1
+	major_country_bonus_units = 1
 }
 
-communism_spread_civil_war = {
+communism_spread_evolution = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	parallel_soviets_mtth_factor = 0.5
+	unstable_min_controlled_states = 1
+	dark_rituals_min_level_2_states = 1
+	world_revolution_whispers_min_level_3_states = 1
+	surprise_revolt_chance = 6
+	worker_ritual_chance = 8
+	world_revolution_whisper_chance = 8
+	ritual_support_gain = 0.01
+	whisper_support_gain = 0.015
+	minor_ritual_support_gain = 0.005
+	minor_stability_loss = -0.005
+	moderate_stability_loss = -0.01
+	minor_war_support_loss = -0.005
+	world_revolution_weight_nudge = 200
+	local_breakaway_chance = 18
+	ritual_conversion_bonus_chance = 10
+	whisper_conversion_bonus_chance = 15
+	progression_roll_chance = 25
+	progression_no_change_chance = 75
 }

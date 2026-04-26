@@ -283,6 +283,14 @@ initialize_event_weights = {
             set_variable = { global.event_weights^event_id = 0 }
         }
     }
+
+    if = {
+        limit = {
+            NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+            check_variable = { 91 < global.event_weights^num }
+        }
+        set_variable = { global.event_weights^91 = 0 }
+    }
 }
 # ============================================================================
 # SECTION 2: DYNAMIC TIMER SYSTEM
@@ -445,8 +453,24 @@ update_major_event_weights = {
         value = i
         set_temp_variable = { event_id = global.major_events^i }
         if = {
-            limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+            limit = {
+                NOT = { is_in_array = { global.fired_events = event_id } }
+                NOT = {
+                    AND = {
+                        check_variable = { event_id = 91 }
+                        NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+                    }
+                }
+            }
             set_temp_variable = { new_weight = major_weight }
+            set_event_weight = yes
+        }
+        else_if = {
+            limit = {
+                check_variable = { event_id = 91 }
+                NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+            }
+            set_temp_variable = { new_weight = 0 }
             set_event_weight = yes
         }
     }

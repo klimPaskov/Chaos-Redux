@@ -6,8 +6,6 @@ Completely rework the current communism spread event into a dynamic, state-based
 
 The old version should be removed or replaced. The new version should make communist influence feel like a growing internal territorial crisis rather than a simple national modifier. The player should see which states are under communist control, feel the economic and military damage from those states, and decide whether to contain the movement locally or risk a brutal nationwide emergency intervention.
 
-Keep the design focused on gameplay and event logic. Technical implementation details can be decided by the agent, but the final system must be clean, reusable, documented, and integrated into all relevant files.
-
 ## Core Design
 
 The communism spread event should now create and maintain a national communist spread idea that only increases daily communism support.
@@ -720,3 +718,220 @@ Display rules:
 - Once World Revolution is unlocked by the communism spread event flag, stop showing `N/A` and show its real calculated weight
 
 This should make the major event UI clearer and avoid misleading the player.
+
+## Event Evolutions
+
+The communism spread event should support the Chaos Redux evolution system, but evolutions should not radically change the core behavior of the system.
+
+Evolutions should mainly make the crisis less predictable and more unstable.
+
+They should add unusual event outcomes, rare surprise escalations, stranger worker-related incidents, and small changes to uprising strength.
+
+Do not make evolutions turn the event into an instant country-killer. A weak country should still face a reasonable crisis. If a random state revolts, it should get a little more strength than normal, but not enough to instantly destroy the country unless the country was already collapsing.
+
+## Evolution Structure
+
+Use only 3 evolution stages.
+
+The system does not need many evolution stages. A smaller number of meaningful evolutions is better.
+
+Suggested structure:
+- Base version: normal communist spread
+- Evolution 1: unstable revolutionary activity
+- Evolution 2: occult worker radicalization
+- Evolution 3: ties with the world revolution event, whispers of a revolution, that lenin has been resurrected and is coming.
+
+## Evolution 1: Unstable Revolutionary Activity
+
+This evolution should make the system more unpredictable, but not massively stronger.
+
+Theme:
+The communist movement becomes harder to read. Some groups act without central coordination. Local cells may launch sudden uprisings, seize buildings, or provoke the army before the wider movement is ready.
+
+New possible behavior:
+- Rare chance for a random controlled state to suddenly declare itself revolutionary territory
+- Rare chance for a Level 2 or Level 3 state to trigger a local armed revolt
+- A revolting state may spawn slightly more divisions than normal
+- Rebel divisions from this evolution may have slightly better organization or strength
+- The revolt should still scale with the country and state strength
+- Small countries should not be destroyed by absurd rebel spawns
+- Stronger countries can face a more serious fight if industrial states revolt
+
+This evolution should create surprise, not guaranteed disaster.
+
+Possible strange events:
+- A factory guard unit joins the revolutionaries
+- A local militia declares the state liberated
+- A red banner is raised over the state capital
+- Revolutionary committees block army access to industrial districts
+- A loyalist governor disappears before a crackdown can begin
+
+## Evolution 2: Dark Worker Rituals
+
+This evolution adds stranger Chaos Redux flavor.
+
+Theme:
+Some parts of the communist movement begin mixing revolutionary politics with dark mass rituals, cult-like worker gatherings, and disturbing factory symbolism.
+
+This should be weird and unsettling, but it should not fully turn the system into a supernatural apocalypse unless another major event later does that.
+
+The rituals can be ambiguous. Maybe they are psychological warfare. Maybe they are mass hysteria. Maybe something darker is happening.
+
+New possible behavior:
+- Rare strange worker events can fire in controlled industrial states
+- Ritual events can slightly increase local control level pressure
+- Ritual events can increase fear, reduce stability, or damage local production
+- Some ritual events can make intervention riskier in that state
+- A state affected by a ritual may be more likely to join a later uprising
+- Effects should be limited and paced
+
+Possible event ideas:
+- Workers chant through the night inside a locked factory
+- Machines keep running after the power is cut
+- A foreman reports symbols painted in oil and blood
+- A factory shift refuses to leave and calls itself the Red Choir
+- Local police find burned production ledgers arranged in a circle
+- A railway depot becomes the site of mass chanting
+- Workers claim the factory has chosen the revolution
+- A missing manager returns speaking only in slogans
+- A night shift produces equipment that no one ordered
+- Loyalist soldiers sent to disperse a crowd desert after hearing the chanting
+
+Possible state effects:
+- Temporary production disruption
+- Temporary construction speed penalty
+- Small local manpower penalty
+- Higher chance of state escalation
+- Higher chance of joining a revolutionary uprising
+- Small chaos increase
+- Small stability loss
+- Small increase in communism support
+
+Design rule:
+These events should be rare enough to feel special.
+
+They should add atmosphere and uncertainty. They should not replace the political state-control system.
+
+## Evolution 3: Whispers of the World Revolution
+
+
+Theme:
+The communist crisis begins connecting to the World Revolution major event.
+
+The movement is no longer only about local revolutionary cells. Rumors spread that something much larger is coming. Workers, soldiers, and party radicals whisper that Lenin has returned, or that he will soon return, to lead the final revolution.
+
+This should feel strange, ideological, and threatening.
+
+Do not fully integrate the World Revolution event yet. This evolution should only create atmosphere and strengthen the connection between the communism spread system and the World Revolution major event. This evolution should make the world revolution super event available now. If before it was unlocked by simply the event being fired, now it should unlock once the evolution stage 3 is reached (Chaos Tier).
+
+New possible behavior:
+- News events mention whispers of World Revolution
+- Controlled states may spread rumors that Lenin has been resurrected
+- Dark worker ritual events can reference Lenin’s return
+- Revolutionary propaganda may claim that the old revolutionary spirit has physically returned
+- Some communist-controlled states may become more unstable after these rumors spread
+- The World Revolution major event can gain more weight through the normal major event system after the communism spread event has unlocked it
+- Rare local breakaway events can frame themselves as the first spark of the coming World Revolution
+
+Possible event ideas:
+- Workers gather around a hidden portrait of Lenin and chant that he is coming
+- A factory night shift claims they heard Lenin’s voice through the machines
+- Red pamphlets appear across controlled states with the phrase: "He has returned"
+- Local communist leaders deny the rumors in public, but their followers begin acting with new confidence
+- A captured revolutionary says the uprising is only preparation for Lenin’s arrival
+- Soldiers report hearing crowds chanting Lenin’s name before a crackdown begins
+- A Level 3 state declares itself the first territory of the coming World Revolution
+- A railway depot is covered in red symbols and slogans about the resurrected leader
+
+Possible effects:
+- Small chaos increase
+- Small national stability loss
+- Slight increase in communist support
+- Slightly higher chance for controlled states to escalate
+- Slightly higher chance for Level 3 states to join a later uprising
+- Slightly stronger rebel divisions if a breakaway crisis happens
+- Increased World Revolution major event weight through the normal major event system
+
+Design rule:
+This evolution should foreshadow World Revolution, not launch it. Each news event about the world revolution coming should increase the weight of the world revolution major event by 200.
+
+Lenin’s resurrection should be presented as rumor, propaganda, mass hysteria, or something possibly darker.
+
+The player should feel that the communist crisis has started pointing toward a much larger event.
+
+## Evolution Pacing
+
+Evolved events need cooldowns.
+
+The strange events should feel rare.
+
+Do not allow worker ritual events or sudden state revolts to fire constantly.
+
+Suggested pacing:
+- Strange worker ritual events should be occasional
+- Surprise state revolts should be rare
+- Breakaway crises should be very rare
+- A country should not get multiple surprise breakaways in a short time
+- Large countries can have more activity, but still need breathing room
+- Repeated strange events should be logged and spaced out
+
+## Event Log and Evolution Tab Requirements
+
+The event log and evolutions tab should explain the evolution in player-facing language.
+
+The player should see that the communism spread event has evolved, but the description should focus on instability and unpredictability rather than raw power.
+
+Example evolution text:
+
+"Communist activity has become harder to predict. Local cells may now act without central direction, and controlled states can produce sudden revolutionary incidents."
+
+Example dark ritual evolution text:
+
+"Reports from controlled industrial states describe strange worker gatherings, night-shift chants, and factory rituals. The movement is no longer only political."
+
+The log should record:
+- Which evolution stage is active
+- What unlocked it
+- What new rare events are now possible
+- Whether sudden state revolts are possible
+- Whether dark worker ritual events are possible
+- Whether breakaway crises are possible
+
+## World Revolution State Integration
+
+When the World Revolution major event eventually fires, it should use the communist state-control system as its main territorial basis.
+
+The World Revolution should no longer simply calculate communist party popularity and randomly choose states.
+
+Instead, it should prioritize the states that are already under communist control from the communism spread system.
+
+This means:
+- Level 1 communist-controlled states can join the World Revolution, but with lower strength
+- Level 2 communist-controlled states are much more likely to join and should spawn stronger forces
+- Level 3 communist-controlled states should almost always join and should provide the strongest revolutionary forces
+- States not under communist control should not be the main basis of the World Revolution
+
+If communist rebel states already exist as their own country before World Revolution fires, then the World Revolution should annex or absorb those rebel countries.
+
+When absorbing an existing communist rebel country:
+- Keep its existing divisions
+- Keep its controlled territory
+- Transfer it cleanly into the World Revolution country
+- Do not delete its army and recreate everything from nothing
+- Do not treat it as a normal random civil war split
+
+If the communist rebels are still only represented through controlled states, then the World Revolution country should spawn from those controlled states.
+
+Division spawning should scale by control level:
+- Level 1 states spawn fewer revolutionary divisions
+- Level 2 states spawn a moderate number of better revolutionary divisions
+- Level 3 states spawn the strongest revolutionary divisions
+- Industrial states should support stronger spawns
+- High-population states should support stronger spawns
+- Weak countries should still receive reasonable rebel strength, not absurd rebel stacks
+
+The World Revolution should feel like it is emerging from the communist-controlled territory that already existed on the map.
+
+When The World Revolution happens, then communist insurgency system is then disabled for every country
+
+The player should understand that ignoring communist state control earlier helped create the World Revolution later.
