@@ -87,6 +87,8 @@ Biowarfare also includes internal risk:
 - stockpile mismanagement can cause catastrophic domestic consequences,
 - emergency release paths are possible but extremely dangerous politically and strategically.
 
+Stockpile accidents are cooldown-gated per payload type. After an anthrax, plague, tularemia, or smallpox stockpile accident fires, that same accident type cannot fire again for the same country for 730 days. Other payload types keep their own independent cooldowns.
+
 ## Diplomacy and International Consequences
 
 Biological weapon use carries major diplomatic costs.

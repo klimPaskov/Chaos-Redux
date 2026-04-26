@@ -21,12 +21,10 @@ It introduces:
 On monthly host tick (`on_monthly`), `air_contamination_monthly_update` runs and computes contamination delta in basis points (`bp`, where `100 bp = 1%`):
 
 - Chemical contaminated state (`chem_state_contamination`): `+1 bp` each (`+0.01%`).
-- Outbreak state:
-  - low: `+1 bp` (`+0.01%`),
-  - base: `+2 bp` (`+0.02%`),
-  - high: `+3 bp` (`+0.03%`).
 - Irradiated fallout state (`nuclear_fallout_state`): `+3 bp` per current fallout intensity (`+0.03%` per intensity, up to `+0.21%` at the current intensity cap).
 - Natural recovery (when not irreversible): `-35 bp` monthly (`-0.35%`).
+
+Biological outbreak states do not add air contamination. They remain part of the biological warfare and deaths systems, but they are excluded from Air Cleanliness growth.
 
 The computed delta is applied through `air_contamination_apply_delta_bp`.
 
@@ -40,7 +38,7 @@ Instead, a strike applies or strengthens `nuclear_fallout_state` on the target s
 - thermonuclear nuke: `+3.5` fallout intensity for `540` days,
 - repeated strikes stack intensity up to the current cap of `7.0`.
 
-That fallout intensity then contributes contamination monthly through the state loop, the same way chemical and outbreak states do.
+That fallout intensity then contributes contamination monthly through the state loop, the same way chemical states do.
 
 The same hook also adds direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`.
 
@@ -105,7 +103,7 @@ The contamination tab displays:
 
 - contamination %, cleanliness %, monthly net delta,
 - natural recovery amount,
-- chemical/outbreak/irradiated state counts and contribution,
+- chemical/irradiated state counts and contribution,
 - one consolidated contamination stage status line,
 - winter state,
 - one plain-language summary sentence explaining that each 1% contamination adds environmental attrition pressure across all states, regardless of owner type,

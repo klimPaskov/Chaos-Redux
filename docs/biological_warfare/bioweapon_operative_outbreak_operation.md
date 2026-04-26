@@ -61,6 +61,12 @@ The operation has a new GFX definition and new copied placeholder assets:
 
 The placeholder files are copied from vanilla targeted-sabotage operation art. They can be replaced later without changing script references.
 
+## Localisation
+
+Operation and phase localisation is defined in `localisation/english/chaosx_operations_l_english.yml`.
+
+The text stays abstract and gameplay-facing. It describes operatives, mission risk, state selection, and outbreak outcomes without procedural detail.
+
 ## Future Plans
 
 - Add operation-specific event follow-ups for partial discovery, diplomatic leaks, and containment race outcomes.

@@ -1,3 +1,5 @@
+@bio_stockpile_accident_type_cooldown_days = 730
+
 add_namespace = chaosx_bioweapon
 
 # Laboratory anthrax outbreak during development (MTTH event)
@@ -196,6 +198,8 @@ country_event = {
     trigger = {
         # Stockpile accidents only start at very large bomb counts.
         has_equipment = { anthrax_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
+        # This stockpile accident type cannot repeat for this country for two years.
+        NOT = { has_country_flag = anthrax_stockpile_accident_cooldown }
         # Must have completed the anthrax bomb project
         is_special_project_completed = sp:anthrax_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -204,6 +208,11 @@ country_event = {
 
     immediate = {
         hidden_effect = {
+            set_country_flag = {
+                flag = anthrax_stockpile_accident_cooldown
+                days = @bio_stockpile_accident_type_cooldown_days
+            }
+
             # Calculate bombs lost (5% of stockpile)
             set_temp_variable = { bombs_in_stockpile = 0 }
             if = {
@@ -791,6 +800,8 @@ country_event = {
     trigger = {
         # Stockpile accidents only start at very large bomb counts.
         has_equipment = { plague_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
+        # This stockpile accident type cannot repeat for this country for two years.
+        NOT = { has_country_flag = plague_stockpile_accident_cooldown }
         # Must have completed the plague bomb project
         is_special_project_completed = sp:plague_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -799,6 +810,11 @@ country_event = {
 
     immediate = {
         hidden_effect = {
+            set_country_flag = {
+                flag = plague_stockpile_accident_cooldown
+                days = @bio_stockpile_accident_type_cooldown_days
+            }
+
             # Calculate bombs lost (10% of stockpile - higher than anthrax due to danger)
             set_temp_variable = { bombs_in_stockpile = 0 }
             if = {
@@ -1291,6 +1307,8 @@ country_event = {
     trigger = {
         # Stockpile accidents only start at very large bomb counts.
         has_equipment = { tularemia_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
+        # This stockpile accident type cannot repeat for this country for two years.
+        NOT = { has_country_flag = tularemia_stockpile_accident_cooldown }
         # Must have completed the tularemia bomb project
         is_special_project_completed = sp:tularemia_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -1299,6 +1317,11 @@ country_event = {
 
     immediate = {
         hidden_effect = {
+            set_country_flag = {
+                flag = tularemia_stockpile_accident_cooldown
+                days = @bio_stockpile_accident_type_cooldown_days
+            }
+
             # Calculate bombs lost (5% of stockpile - lower than anthrax/plague due to lower danger)
             set_temp_variable = { bombs_in_stockpile = 0 }
             if = {
@@ -1616,6 +1639,8 @@ country_event = {
     trigger = {
         # Stockpile accidents only start at very large bomb counts.
         has_equipment = { smallpox_bomb_1 > constant:bio_stockpile_accident.min_stockpile_trigger }
+        # This stockpile accident type cannot repeat for this country for two years.
+        NOT = { has_country_flag = smallpox_stockpile_accident_cooldown }
         # Must have completed the smallpox bomb project
         is_special_project_completed = sp:smallpox_bomb
         # Fail-safe containment prevents stockpile accidents entirely
@@ -1624,6 +1649,11 @@ country_event = {
 
     immediate = {
         hidden_effect = {
+            set_country_flag = {
+                flag = smallpox_stockpile_accident_cooldown
+                days = @bio_stockpile_accident_type_cooldown_days
+            }
+
             # Calculate bombs lost (20% of stockpile - highest loss due to extreme danger)
             set_temp_variable = { bombs_in_stockpile = 0 }
             if = {
