@@ -1897,39 +1897,42 @@ disable_zombie_outbreak_system = {
 }
 
 on_zombie_threat_defeated = {
-    set_global_flag = zombie_threat_defeated
-    set_global_flag = {
-        flag = super_event_visible
-        days = 30
-        value = 5
-    }
-    set_variable = { global.current_super_event_audio_id = 5 }
-    play_current_super_event_audio = yes
+	set_global_flag = zombie_threat_defeated
+	set_global_flag = {
+		flag = super_event_visible
+		days = 30
+		value = 5
+	}
+	set_variable = { global.current_super_event_audio_id = 5 }
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
+	}
 
-    set_temp_variable = { chaos_change = constant:zombie_threat.defeat_chaos_reduction }
-    multiply_temp_variable = { chaos_change = -1 }
-    set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.zombies_defeated }
-    set_temp_variable = { chaos_history_reason_custom = 1 }
-    add_chaos_meter_value = yes
+	set_temp_variable = { chaos_change = constant:zombie_threat.defeat_chaos_reduction }
+	multiply_temp_variable = { chaos_change = -1 }
+	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.zombies_defeated }
+	set_temp_variable = { chaos_history_reason_custom = 1 }
+	add_chaos_meter_value = yes
 
-    capture_zombie_campaign_memorial_totals = yes
-    evaluate_zombie_postwar_order_eligibility = yes
+	capture_zombie_campaign_memorial_totals = yes
+	evaluate_zombie_postwar_order_eligibility = yes
 
-    if = {
-        limit = {
-            check_variable = {
-                var = zombie_postwar_order_should_activate
-                value = 1
-                compare = greater_than_or_equals
-            }
-        }
-        activate_zombie_postwar_order = yes
-    }
+	if = {
+		limit = {
+			check_variable = {
+				var = zombie_postwar_order_should_activate
+				value = 1
+				compare = greater_than_or_equals
+			}
+		}
+		activate_zombie_postwar_order = yes
+	}
 
-    if = {
-        limit = { has_global_flag = anti_zombie_league_formed }
-        dismantle_anti_zombie_league = yes
-    }
+	if = {
+		limit = { has_global_flag = anti_zombie_league_formed }
+		dismantle_anti_zombie_league = yes
+	}
 }
 
 azl_absorb_smaller_factions = {

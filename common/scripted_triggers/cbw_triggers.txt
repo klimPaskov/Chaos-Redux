@@ -13,130 +13,130 @@ has_bio_outbreak_prevention_tier_3 = {
 }
 
 is_standard_unconventional_air_raid_target_country = {
-	NOT = { is_in_faction_with = FROM }
+    NOT = { is_in_faction_with = FROM }
 }
 
 can_launch_standard_unconventional_air_raid_against = {
-	has_war_with = FROM
+    has_war_with = FROM
 }
 
 is_biowarfare_contaminated_state = {
-	OR = {
-		has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-		has_dynamic_modifier = { modifier = plague_contaminated_state }
-		has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-		has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-	}
+    OR = {
+        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+        has_dynamic_modifier = { modifier = plague_contaminated_state }
+        has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+    }
 }
 
 has_active_biowarfare_outbreak = {
-	any_controlled_state = {
-		is_biowarfare_contaminated_state = yes
-	}
+    any_controlled_state = {
+        is_biowarfare_contaminated_state = yes
+    }
 }
 
 has_biowarfare_outbreak_in_border_proximity_from = {
-	FROM = {
-		any_controlled_state = {
-			is_biowarfare_contaminated_state = yes
-			OR = {
-				any_neighbor_state = {
-					is_controlled_by = ROOT
-				}
-				AND = {
-					NOT = {
-						any_neighbor_state = {
-							is_controlled_by = ROOT
-						}
-					}
-					any_neighbor_state = {
-						is_controlled_by = PREV.PREV
-						any_neighbor_state = {
-							is_controlled_by = ROOT
-						}
-					}
-				}
-			}
-		}
-	}
+    FROM = {
+        any_controlled_state = {
+            is_biowarfare_contaminated_state = yes
+            OR = {
+                any_neighbor_state = {
+                    is_controlled_by = ROOT
+                }
+                AND = {
+                    NOT = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                    any_neighbor_state = {
+                        is_controlled_by = PREV.PREV
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 has_smallpox_outbreak_in_border_proximity_from = {
-	FROM = {
-		any_controlled_state = {
-			has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-			OR = {
-				any_neighbor_state = {
-					is_controlled_by = ROOT
-				}
-				AND = {
-					NOT = {
-						any_neighbor_state = {
-							is_controlled_by = ROOT
-						}
-					}
-					any_neighbor_state = {
-						is_controlled_by = PREV.PREV
-						any_neighbor_state = {
-							is_controlled_by = ROOT
-						}
-					}
-				}
-			}
-		}
-	}
+    FROM = {
+        any_controlled_state = {
+            has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+            OR = {
+                any_neighbor_state = {
+                    is_controlled_by = ROOT
+                }
+                AND = {
+                    NOT = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                    any_neighbor_state = {
+                        is_controlled_by = PREV.PREV
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 has_plague_outbreak_in_border_proximity_from = {
-	FROM = {
-		any_controlled_state = {
-			has_dynamic_modifier = { modifier = plague_contaminated_state }
-			OR = {
-				any_neighbor_state = {
-					is_controlled_by = ROOT
-				}
-				AND = {
-					NOT = {
-						any_neighbor_state = {
-							is_controlled_by = ROOT
-						}
-					}
-					any_neighbor_state = {
-						is_controlled_by = PREV.PREV
-						any_neighbor_state = {
-							is_controlled_by = ROOT
-						}
-					}
-				}
-			}
-		}
-	}
+    FROM = {
+        any_controlled_state = {
+            has_dynamic_modifier = { modifier = plague_contaminated_state }
+            OR = {
+                any_neighbor_state = {
+                    is_controlled_by = ROOT
+                }
+                AND = {
+                    NOT = {
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                    any_neighbor_state = {
+                        is_controlled_by = PREV.PREV
+                        any_neighbor_state = {
+                            is_controlled_by = ROOT
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 has_neighbor_with_active_biowarfare_outbreak = {
-	any_neighbor_country = {
-		any_controlled_state = {
-			is_biowarfare_contaminated_state = yes
-			OR = {
-				any_neighbor_state = {
-					is_controlled_by = PREV.PREV.PREV
-				}
-				AND = {
-					NOT = {
-						any_neighbor_state = {
-							is_controlled_by = PREV.PREV.PREV
-						}
-					}
-					any_neighbor_state = {
-						is_controlled_by = PREV.PREV
-						any_neighbor_state = {
-							is_controlled_by = PREV.PREV.PREV
-						}
-					}
-				}
-			}
-		}
-	}
+    any_neighbor_country = {
+        any_controlled_state = {
+            is_biowarfare_contaminated_state = yes
+            OR = {
+                any_neighbor_state = {
+                    is_controlled_by = PREV.PREV.PREV
+                }
+                AND = {
+                    NOT = {
+                        any_neighbor_state = {
+                            is_controlled_by = PREV.PREV.PREV
+                        }
+                    }
+                    any_neighbor_state = {
+                        is_controlled_by = PREV.PREV
+                        any_neighbor_state = {
+                            is_controlled_by = PREV.PREV.PREV
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 has_unconventional_weapon_stockpile = {
@@ -179,38 +179,38 @@ has_enemy_used_chemical_weapons = {
 }
 
 has_enemy_chemical_condemnation_considerable = {
-	any_enemy_country = {
-		has_variable = chem_warfare_condemnation
-		check_variable = {
-			var = chem_warfare_condemnation
-			value = constant:chem_ability_ai.retaliate_threshold.considerable
-			compare = greater_than
-		}
-	}
+    any_enemy_country = {
+        has_variable = chem_warfare_condemnation
+        check_variable = {
+            var = chem_warfare_condemnation
+            value = constant:chem_ability_ai.retaliate_threshold.considerable
+            compare = greater_than
+        }
+    }
 }
 
 has_enemy_chemical_condemnation_very_high = {
-	any_enemy_country = {
-		has_variable = chem_warfare_condemnation
-		check_variable = {
-			var = chem_warfare_condemnation
-			value = constant:chem_ability_ai.retaliate_threshold.very_high
-			compare = greater_than
-		}
-	}
+    any_enemy_country = {
+        has_variable = chem_warfare_condemnation
+        check_variable = {
+            var = chem_warfare_condemnation
+            value = constant:chem_ability_ai.retaliate_threshold.very_high
+            compare = greater_than
+        }
+    }
 }
 
 has_war_with_chinese_country = {
-	has_war = yes
-	OR = {
-		has_war_with = CHI
-		has_war_with = PRC
-		has_war_with = SHX
-		has_war_with = GXC
-		has_war_with = YUN
-		has_war_with = XSM
-		has_war_with = SIK
-	}
+    has_war = yes
+    OR = {
+        has_war_with = CHI
+        has_war_with = PRC
+        has_war_with = SHX
+        has_war_with = GXC
+        has_war_with = YUN
+        has_war_with = XSM
+        has_war_with = SIK
+    }
 }
 
 is_japan_china_chemical_campaign_war = {
@@ -219,66 +219,66 @@ is_japan_china_chemical_campaign_war = {
 }
 
 chem_active_cylinder_type_is_chlorine = {
-	OR = {
-		AND = {
-			has_variable = chem_active_type
-			check_variable = {
-				var = chem_active_type
-				value = constant:chem_type.chlorine
-				compare = equals
-			}
-		}
-		has_trait = chemical_cylinder_active_chlorine
-	}
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.chlorine
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_chlorine
+    }
 }
 
 chem_active_cylinder_type_is_phosgene = {
-	OR = {
-		AND = {
-			has_variable = chem_active_type
-			check_variable = {
-				var = chem_active_type
-				value = constant:chem_type.phosgene
-				compare = equals
-			}
-		}
-		has_trait = chemical_cylinder_active_phosgene
-	}
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.phosgene
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_phosgene
+    }
 }
 
 chem_active_cylinder_type_is_mustard = {
-	OR = {
-		AND = {
-			has_variable = chem_active_type
-			check_variable = {
-				var = chem_active_type
-				value = constant:chem_type.mustard
-				compare = equals
-			}
-		}
-		has_trait = chemical_cylinder_active_mustard
-	}
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.mustard
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_mustard
+    }
 }
 
 chem_active_cylinder_type_is_lewisite = {
-	OR = {
-		AND = {
-			has_variable = chem_active_type
-			check_variable = {
-				var = chem_active_type
-				value = constant:chem_type.lewisite
-				compare = equals
-			}
-		}
-		has_trait = chemical_cylinder_active_lewisite
-	}
+    OR = {
+        AND = {
+            has_variable = chem_active_type
+            check_variable = {
+                var = chem_active_type
+                value = constant:chem_type.lewisite
+                compare = equals
+            }
+        }
+        has_trait = chemical_cylinder_active_lewisite
+    }
 }
 
 chem_active_cylinder_type_is_blister = {
-	OR = {
-		chem_active_cylinder_type_is_mustard = yes
-		chem_active_cylinder_type_is_lewisite = yes
-	}
+    OR = {
+        chem_active_cylinder_type_is_mustard = yes
+        chem_active_cylinder_type_is_lewisite = yes
+    }
 }
 
 has_japan_chemical_campaign_selected_stockpile_attack = {
@@ -369,4 +369,35 @@ bio_border_closure_relation_target = {
         array = ROOT.closed_bio_borders
         value = THIS
     }
+}
+
+
+mapmode_state_has_chemical_contamination = {
+    has_dynamic_modifier = { modifier = chem_state_contamination }
+}
+
+mapmode_state_has_disease_contamination = {
+    OR = {
+        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+        has_dynamic_modifier = { modifier = plague_contaminated_state }
+        has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+    }
+}
+
+mapmode_state_has_nuclear_contamination = {
+    has_dynamic_modifier = { modifier = nuclear_fallout_state }
+}
+
+mapmode_state_has_tracked_contamination = {
+    OR = {
+        mapmode_state_has_chemical_contamination = yes
+        mapmode_state_has_disease_contamination = yes
+        mapmode_state_has_nuclear_contamination = yes
+    }
+}
+
+mapmode_state_has_civilian_death_history = {
+    has_variable = chaos_state_civilian_deaths_total
+    check_variable = { chaos_state_civilian_deaths_total > 0 }
 }

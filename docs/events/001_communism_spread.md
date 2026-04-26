@@ -1,256 +1,260 @@
-# chaosx.nr1.1 Communism Spread System
+# 001 Communist Insurgency
 
-## Scope
+## What The Event Is
 
-This file documents the communism spread chain rooted at `chaosx.nr1.1`.
+`chaosx.nr1.1` starts a state-based communist insurgency. The national idea adds `+0.01` daily communist drift. State control is the real crisis layer, and every communist-controlled state adds another `+0.01` daily communist support through the `communism_state_control_pressure` dynamic modifier.
 
-It covers:
+The event does not unlock World Revolution immediately. World Revolution enters the normal major-event pool only after the third communism evolution, `Whispers of the World Revolution`, is reached. World Revolution is not fired directly by this chain.
 
-- the initial global communism spread bootstrap
-- the recurring communist strikes event
-- threat-stage popup notifications
-- the anti-communist decision set
-- the monthly idea-tier updater and its cooldown logic
+## Event Map And Subevents
 
-## Main Files
+- `chaosx.nr1.1`: starts the system, gives the national idea, seeds one Level 1 controlled state, and queues maintenance
+- `chaosx.nr1.2`: state-based industry sabotage in a controlled state
+- `chaosx.nr1.3`: emergency intervention outcome shell for manual/forced use
+- `chaosx.nr1.4`: new state falls under communist control
+- `chaosx.nr1.5`: controlled state escalates to a stronger level
+- `chaosx.nr1.6`: local intervention succeeds
+- `chaosx.nr1.7`: local intervention backfires
+- `chaosx.nr1.8`: revolutionary war warning when control is severe
+- `chaosx.nr1.9`: emergency intervention restores control without uprising
+- `chaosx.nr1.10`: emergency intervention triggers a custom uprising
+- `chaosx.nr1.11`: evolution milestone, Unstable Revolutionary Activity
+- `chaosx.nr1.12`: evolution milestone, Dark Worker Rituals
+- `chaosx.nr1.13`: evolution milestone, Whispers of the World Revolution
+- `chaosx.nr1.14`: rare surprise revolt in a controlled state
+- `chaosx.nr1.15`: rare worker ritual incident in a controlled state
+- `chaosx.nr1.16`: rare World Revolution foreshadowing incident
+- `chaosx.nr1.17`: country defeat popup when local control is gone and communist support falls below the spread threshold
+- `chaosx.nr1.18`: red-banner surprise revolt variant
+- `chaosx.nr1.19`: loyalist governor disappearance variant
+- `chaosx.nr1.20`: hidden per-country maintenance event
+- `chaosx.nr1.21` to `chaosx.nr1.25`: hidden cooldown clearers
+- `chaosx.nr1.26`: hidden defeat-grace clearer after the 180-day minimum runtime
+- `chaosx.nr1.27` to `chaosx.nr1.29`: dark worker ritual variants
+- `chaosx.nr1.30` to `chaosx.nr1.32`: Lenin resurrection and World Revolution whisper variants
 
-- `events/001_communism_spread.txt`
-- `common/scripted_effects/001_communism_spread_effects.txt`
-- `common/script_constants/communism_spread_constants.txt`
-- `common/decisions/chaosx_communism_fight_decisions.txt`
-- `common/decisions/categories/chaosx_decisions_categories.txt`
-- `common/on_actions/chaosx_on_actions.txt`
-- `common/ideas/chaosx_ideas.txt`
-- `localisation/english/001_communism_spread_l_english.yml`
-- `localisation/english/chaosx_decisions_l_english.yml`
-- `localisation/english/chaosx_ideas_l_english.yml`
+## Trigger And Runtime Flow
 
-## Event Map
+The root event remains fire-once event `1` in the Chaos Redux event system. When it fires, every non-communist country receives `communism_spread_idea`, a small initial communist popularity increase, one immediate Level 1 communist-controlled state, and a queued maintenance event. The initial state seed is explicit so the player immediately sees the state-control layer and the decision category.
 
-- `chaosx.nr1.1`: starts global communism spread and seeds support in all non-communist countries
-- `chaosx.nr1.2`: communist strikes and sabotage event
-- `chaosx.nr1.3`: communist uprising and civil war pressure event
-- `chaosx.nr1.4`: generic warning that communist influence is growing
-- `chaosx.nr1.5`: generic warning that communist influence is weakening
-- `chaosx.nr1.6`: critical communist threat warning
-- `chaosx.nr1.7`: communist threat greatly reduced
-- `chaosx.nr1.8`: communist rebels seize territory
-- `chaosx.nr1.9`: military crackdown succeeds
-- `chaosx.nr1.10`: military crackdown partially fails
-- `chaosx.nr1.11`: military crackdown completely fails
-- `chaosx.nr1.12`: hidden strike-cooldown cleanup event
-- `chaosx.nr1.13`: hidden threat-notification cooldown cleanup event
+Countries matching `is_special_chaos_country = yes` are excluded from the root event spread, maintenance, decisions, and World Revolution state handoff. This keeps the insurgency focused on regular countries instead of special Chaos actors.
 
-## Runtime Flow
+The system does not rely on the old monthly on-action updater anymore. Each affected country self-schedules hidden maintenance every `40-70` days. Maintenance:
 
-### 1. Global spread bootstrap
+1. refreshes controlled state counts
+2. recalculates dynamic national communist drift from controlled states
+3. tries to add one new controlled state if under the soft support-based ceiling
+4. tries to escalate one existing controlled state
+5. checks for communist evolution milestones
+6. may fire a state-based sabotage event
+7. may fire one rare evolution incident if its incident cooldown is clear
+8. may warn of revolutionary war if at least half the country is controlled or two Level 3 states exist
+9. queues the next maintenance pulse
 
-`chaosx.nr1.1` turns on the global `communism_spread` flag once and then pushes communist support into every other country.
+## Main Gameplay Effects
 
-The initial gain still scales with the chaos-tier helper logic. The event also gives each affected country the first communism spread idea so the monthly updater has a state to manage.
+State control uses three levels:
 
-### 2. Monthly tier sync
+- Level 1, `communism_control_level_1`: Agitation Zone. Mild factory, manpower, resources, supply, construction, and unrest penalties. Regular intervention can clear it.
+- Level 2, `communism_control_level_2`: Insurgent Stronghold. Stronger penalties and harder local intervention. It can be reduced or cleared, but failure can push it to Level 3.
+- Level 3, `communism_control_level_3`: Communist Lockdown. Severe penalties, blocked strategic redeployment, and a state-level demilitarized zone. Normal local intervention cannot clear it; emergency intervention is required. The demilitarized-zone status is only removed when this system clears the state control it added.
 
-`update_communism_spread_idea` in `common/scripted_effects/001_communism_spread_effects.txt` is the central runtime controller.
+The old weekly stability and weekly war support penalties were removed from the national idea. The old generic industry damage event was replaced by `chaosx.nr1.2`, which always targets a specific controlled state.
 
-Each monthly refresh now:
+## Defeating The Event
 
-1. reads the current active communism spread idea tier
-2. derives the target tier from live communist popularity
-3. swaps to the correct idea tier, or removes all spread ideas once support falls to `10%` or below
-4. fires a threat-status popup only if the shared notification cooldown is not active
+The event can be defeated country by country. A country drops out of the communism spread runtime and receives `chaosx.nr1.17` when all of these are true:
 
-The monthly on-action now also runs the updater when a country still has a communism spread idea, even if support already fell below `1%`. That closes the old cleanup gap where weak communist support could leave stale ideas behind.
+- at least `180` days have passed since the country entered the communism spread system
+- it has no communist-controlled states
+- it is not currently marked as fighting communist rebels
+- communist party support is below `min_support_for_state_spread`
 
-### 3. Threat notification cooldown
+Local intervention clears or reduces Level 1 and Level 2 states. Level 3 states require emergency intervention. `Disrupt Communist Organizing` is a national support-reduction decision that remains available while the country has the insurgency idea, so the player can push communist popularity down after local control is contained. If emergency intervention does not trigger an uprising, controlled states are cleared or reduced and communist support is cut. If it does trigger an uprising, the country must defeat the communist rebel state in war; the existing annex hook clears the `fighting_communist_rebels` marker.
 
-The “influence growing”, “influence weakening”, “critical threat”, and “threat greatly reduced” popups all share one country-level cooldown.
+The global `communism_spread` flag is cleared once no non-special country has active communism spread state, controlled states, evolution flags, or rebel fighting state, and no communist rebel country remains. When this happens, the World Revolution unlock flag is also cleared and World Revolution weight is reset to `0`.
 
-Current behavior:
+## Evolutions
 
-- the first eligible tier-change popup sets `communism_spread_status_notification_cooldown`
-- hidden event `chaosx.nr1.13` clears that flag after `210` days
-- further tier oscillation during that window updates gameplay state normally but does not spam status popups
+The communist insurgency uses three global evolution stages. Chaos tier and state-control conditions make a stage eligible, but the stage does not fire immediately when the tier changes. Active countries roll for global progression through the maintenance system, with `evolution_progression_cooldown_days = 90` between attempts and `progression_roll_chance = 25`.
 
-This stops the old loop where the player could reduce support, ignore it for a short period, and then get repeated “reduced / increased / reduced” notifications around the same thresholds.
+- Stage 1, Unstable Revolutionary Activity: unlocked at Gathering Storm tier once a country has at least one communist-controlled state. It enables rare surprise revolts, including very rare one-state breakaway revolts.
+- Stage 2, Dark Worker Rituals: unlocked at Rising Chaos tier once at least one state reaches Level 2. It enables strange worker ritual incidents that add temporary state disruption, increase intervention cost, increase conversion risk, and slightly increase communist support.
+- Stage 3, Whispers of the World Revolution: unlocked at Chaos Tier once at least one state reaches Level 3. It sets `communism_spread_world_revolution_unlocked`, allows World Revolution into the major-event pool, and enables foreshadowing incidents that add `200` World Revolution weight.
 
-### 4. Communist strikes cadence
+When an evolution stage unlocks, it is recorded once in the event log without a country actor and then applied to all non-special countries currently running the communism spread system.
 
-`chaosx.nr1.2` now requires `NOT = { has_country_flag = communism_spread_strike_cooldown }`.
+Evolution incidents share `evolution_incident_cooldown_days = 180`, so the added flavor should stay occasional rather than becoming another constant popup stream.
 
-When the strike event fires, it immediately starts a tier-based cooldown through `queue_communism_spread_strike_cooldown`.
+## Rebel Army Generation
 
-Current strike cooldowns:
+Communist rebel armies are generated by state score rather than a single generic unit type. Each converted or breakaway state calculates unit count from:
 
-- tier 1 threat: `240` days
-- tier 2 threat: `225` days
-- tier 3 threat: `210` days
-- tier 4 threat: `195` days
-- tier 5 threat: `180` days
+- control level
+- civilian and military industry
+- state population
+- local industry, population, and developed infrastructure
+- national communist support
+- whether the owner is at war
+- whether the owner is a major
+- national manpower and division count
+- worker ritual or World Revolution whisper flags
+- local breakaway context
 
-Hidden event `chaosx.nr1.12` clears the strike cooldown flag after the scheduled delay.
+The rebel country receives a pool of templates covering worker militias, red guards, revolutionary infantry, factory battalions, railway guards, urban insurgents, partisan brigades, armored defectors, motorized revolutionary columns, armored revolutionary columns, revolutionary cavalry, elite revolutionary guards, and red cossacks. Motorized and armored templates are deliberately stronger than baseline militia formations and include cavalry elements where appropriate. Unit names use country-flavored pools for all vanilla majors plus Estonia, and shared regional/language pools for Hispanic, Portuguese-speaking, Nordic, Benelux, Polish, and central/eastern/southeastern European countries, with a generic naming pool for unsupported countries. Shared pools are selected through reusable scripted triggers in `common/scripted_triggers/001_communism_spread_triggers.txt`, not inline tag lists in the spawn effects.
 
-This means strikes still exist as a recurring pressure tool, but they cannot roll repeatedly every few weeks anymore. Lower communist threat now also directly means a longer wait before the next strike can happen.
+## Supporting Systems Touched
 
-### 5. Anti-communist decisions
+- `common/script_constants/001_communism_spread_constants.txt`: all timing, drift, intervention, emergency, rebel, and evolution values
+- `common/scripted_effects/001_communism_spread_effects.txt`: state control, spread, escalation, sabotage, emergency, uprising, evolution, and World Revolution handoff effects
+- `common/scripted_triggers/001_communism_spread_triggers.txt`: reusable state-control availability triggers
+- `common/dynamic_modifiers/chaosx_dynamic_modifiers.txt`: national pressure, three state control levels, crackdown scars, worker ritual fear, and emergency disruption
+- `common/ideas/chaosx_ideas.txt`: simplified `communism_spread_idea`
+- `common/decisions/chaosx_communism_fight_decisions.txt`: national counter-agitation, state intervention, factory protection, and emergency intervention
+- `common/scripted_guis/chaosx_scripted_guis.txt`: decision-category dashboard registration
+- `common/scripted_localisation/chaosx_scripted_localisation.txt`: dashboard sprite, threat status, and state-control level text
+- `interface/chaosx_decisions.gui`: dashboard layout above the communism decisions
+- `interface/001_communism_spread.gfx`: communism idea sprites, threat meter sprites, and communism event-picture sprite names
+- `common/on_actions/chaosx_on_actions.txt`: removed the obsolete monthly communism updater
+- `events/091_the_great_revolution.txt`: uses communist-controlled states as the World Revolution territorial basis, then cleans up state-control flags
+- Event log and GUI localisation now describe the new system and show locked World Revolution weight as red `N/A`
 
-The category now stays visible for any non-communist country while the communism spread system is active, and all five suppression decisions stay visible at the same time.
+## AI Behavior
 
-Availability, resource costs, and cooldowns still decide whether a specific decision can be clicked. Visibility no longer hides part of the toolkit just because communist support is currently in a lower tier.
+AI will use local intervention more aggressively against Level 2 states, but backs off when it is in a dangerous war or has low stability. AI will consider emergency intervention when Level 3 states exist or controlled states exceed the computed half-country threshold, with caution during major wars.
 
-The decisions now have long re-enable cooldowns, while keeping their original active durations:
+## Emergency Intervention And Uprising
 
-- propaganda: `30` active days, `180` re-enable days
-- economic counter-measures: `60` active days, `150` re-enable days
-- military intervention: `20` active days, `190` re-enable days
-- industrial crackdown: `25` active days, `185` re-enable days
-- emergency measures: `60` active days, `180` re-enable days
+The national emergency decision becomes available when at least one state is Level 3 or controlled states exceed 50% of owned states. It costs political power, command power, manpower, infantry equipment, stability, war support, and temporary national economic disruption.
 
-That puts repeat access roughly into the requested `6-8` month window instead of allowing the same tools to cycle back much faster.
+Emergency intervention rolls for uprising risk from:
 
-Support reduction was also increased:
+- base chance: `15`
+- each controlled state: `+3`
+- each Level 3 state: `+12`
+- communist party support scaled by `45`
+- maximum chance: `90`
 
-- propaganda: `-3%`
-- economic counter-measures: `-4%`
-- industrial crackdown: `-4%`
-- emergency measures: `-12%`
-- military success: `-7%`
-- military partial failure: `-3%`
+If an uprising happens, this system does not use vanilla `start_civil_war`. It marks states for conversion by level:
 
-Complete military failure still backfires and can strengthen communism, so the military line remains risky instead of becoming a guaranteed reduction button.
+- Level 1: `40%`
+- Level 2: `80%`
+- Level 3: `100%`
 
-## Implemented Support-Driven Escalation
+Capital states are excluded from emergency and local breakaway conversion so the original country remains valid for the rebel war declaration.
 
-These are not event-log evolutions. They are the baseline domestic escalation layers that now exist inside the communism chain and are driven by communist support plus rebel activity.
+A dynamic communist rebel country is created, receives its own communist politics and leader, receives spawned division templates, and takes only the converted controlled states. It does not inherit half the original country's stockpile.
 
-### Stage I: Cadre Networks
+## Decisions
 
-Trigger:
+The decision category includes a crisis dashboard above the decisions. The dashboard shows:
 
-- a non-communist country rises above `20%` communist support
+- the Revolutionary Threat Meter from 0% to 100%
+- a short status line: Contained, Growing Unrest, Dangerous, Revolutionary Crisis, or Collapse Imminent
+- controlled-state totals split by Agitation Zone, Insurgent Stronghold, and Communist Lockdown icons
+- current daily communist support from controlled states, shown as the raw daily support value
 
-Gameplay effect:
+The dashboard threat value is rebuilt by `refresh_communism_spread_dashboard_values`. It combines communist party support, the number and level of communist-controlled states, active evolution stages, and open rebel war pressure. The visual meter uses the nearest 10% progress sprite through `GetCommunismThreatMeterSprite`.
 
-- hidden pressure package:
-  - `communism_drift = +0.01`
-  - `political_power_gain = -0.05`
-- `chaosx.nr1.2` strikes upgrade from:
-  - `3` damaged buildings to `4`
-  - `10%` state coverage to `12%`
+State-targeted intervention decisions reuse the Norwegian communist preparation dot icons:
 
-### Stage II: Strike Committees
+- one dot: Communist Agitation Zone
+- two dots: Communist Insurgent Stronghold
+- three dots: Communist Lockdown
 
-Trigger:
+The level icons in the dashboard have tooltips showing how many controlled states are currently in that level. The same dot treatment is used on the local intervention and factory protection state-targeted decisions so the player can distinguish control levels directly from the map decision icons. Controlled states also receive a passive state-map icon through `communism_control_state_mapicon_scripted_gui`, while intervention decisions use the engine's predefined yellow-style state outline color for hover highlights.
 
-- a non-communist country rises above `25%` communist support, or the first strike event has already happened and support is still above `10%`
+- `communism_national_counter_agitation`: national. Reduces communist party support by `2%` after a timed operation, costs command power, political power, and stability, and can trigger country-level defeat once no controlled states remain.
+- `communism_local_military_intervention`: state-targeted. Works only on Level 1 and Level 2 states. Costs and outcome risk scale by level.
+- `communism_factory_protection`: state-targeted. Reduces sabotage pressure in an industrial controlled state but does not clear communist control.
+- `communism_emergency_intervention`: national. Affects all controlled states and may trigger the custom uprising.
 
-Gameplay effect:
+The old generic military, industrial, propaganda, economic, and emergency suppression loop was removed from the active decision file.
 
-- `chaosx.nr1.2` becomes a real sabotage event:
-  - `5` damaged buildings
-  - `15%` state coverage
-  - `0.35` damage modifier
-- ignoring the strike now also costs:
-  - `-1%` stability
-  - `-1%` war support
+## World Revolution Handoff
 
-### Stage III: Armed Cells
+World Revolution is unlocked only after `Whispers of the World Revolution`. Once World Revolution fires later, it uses existing communist-controlled states instead of randomly selecting states from national communist popularity.
 
-Trigger:
+World Revolution strength by state level:
 
-- a non-communist country rises above `40%` communist support
+- Level 1 states transfer as weak local revolutionary cells and mostly spawn worker militias, partisan brigades, and red guards.
+- Level 2 states transfer as organized strongholds and add stronger militia, railway, urban, and factory formations.
+- Level 3 states transfer as prepared revolutionary bases and can spawn elite guards, motorized columns, armored defectors, armored revolutionary columns, revolutionary cavalry, and strong revolutionary infantry.
 
-Gameplay effect:
+Industrial, high-population, developed-infrastructure, high-support, at-war, and major-country contexts add extra REV units. Countries with no communist-controlled states do not provide a territorial basis to REV.
 
-- military anti-communist action loses `10` success chance
-- military partial failure takes a larger share of failed outcomes, making full failure more common
-- `chaosx.nr1.8` rebel escalation gains:
-  - `+2` rebel-state percentage
-  - `+1` division per seized state
-- hidden weekly decay:
-  - `stability_weekly = -0.001`
-  - `war_support_weekly = -0.001`
+## Asset Wiring
 
-### Stage IV: Parallel Soviets
+Gameplay currently runs with registered placeholder idea sprites and event pictures in `interface/001_communism_spread.gfx`. Decision icons reuse existing assets:
 
-Trigger:
+- category: `GFX_decision_category_generic_communism`
+- local intervention: `GFX_decision_generic_military`
+- factory protection: `GFX_decision_generic_factory`
+- emergency intervention: `GFX_decision_generic_protection`
+- national pressure: `GFX_idea_communist_state_control_pressure`
+- Level 1 state control: `GFX_idea_communist_agitation_zone`
+- Level 2 state control: `GFX_idea_communist_insurgent_stronghold`
+- Level 3 state control: `GFX_idea_communist_lockdown`
+- post-crackdown scars: `GFX_idea_communist_post_crackdown_scars`
+- worker ritual fear: `GFX_idea_communist_worker_ritual_fear`
+- emergency disruption: `GFX_idea_communist_emergency_disruption`
 
-- a non-communist country rises above `50%` communist support, or rebels already exist while support is above `40%`
+The Revolutionary Threat Meter uses these DDS assets in `gfx/interface/revolutionary_threat/`:
 
-Gameplay effect:
+- `GFX_revolutionary_threat_meter_000`: `revolutionary_threat_meter_000.dds`
+- `GFX_revolutionary_threat_meter_010`: `revolutionary_threat_meter_010.dds`
+- `GFX_revolutionary_threat_meter_020`: `revolutionary_threat_meter_020.dds`
+- `GFX_revolutionary_threat_meter_030`: `revolutionary_threat_meter_030.dds`
+- `GFX_revolutionary_threat_meter_040`: `revolutionary_threat_meter_040.dds`
+- `GFX_revolutionary_threat_meter_050`: `revolutionary_threat_meter_050.dds`
+- `GFX_revolutionary_threat_meter_060`: `revolutionary_threat_meter_060.dds`
+- `GFX_revolutionary_threat_meter_070`: `revolutionary_threat_meter_070.dds`
+- `GFX_revolutionary_threat_meter_080`: `revolutionary_threat_meter_080.dds`
+- `GFX_revolutionary_threat_meter_090`: `revolutionary_threat_meter_090.dds`
+- `GFX_revolutionary_threat_meter_100`: `revolutionary_threat_meter_100.dds`
 
-- `chaosx.nr1.3` civil-war pressure MTTH drops from `180` days to `90`
-- military anti-communist action loses `15` success chance and uses an even harsher failure split
-- `chaosx.nr1.8` rebel seizure gains:
-  - another `+3` rebel-state percentage
-  - minimum `2` states captured
-- hidden weekly decay:
-  - `political_power_gain = -0.10`
-  - `stability_weekly = -0.002`
-  - `war_support_weekly = -0.002`
+Dedicated art should replace the placeholder `idea_unknown.dds` paths later. Place sprites in `gfx/interface/ideas/` and keep these stable sprite names:
 
-## Suggested Chaos Evolutions
+- `GFX_idea_communist_agitation_zone`
+- `GFX_idea_communist_insurgent_stronghold`
+- `GFX_idea_communist_lockdown`
+- `GFX_idea_communist_state_control_pressure`
+- `GFX_idea_communist_post_crackdown_scars`
+- `GFX_idea_communist_worker_ritual_fear`
+- `GFX_idea_communist_emergency_disruption`
 
-These are the actual event evolutions I would add next. They should be country-scoped evolutions recorded against event `1`, with the affected country stored as `events_log_evolution_actor`.
+Unique event pictures should replace the placeholder DDS files in `gfx/event_pictures/communism_spread/`. Keep the existing filenames and GFX names:
 
-The difference is important:
+- `GFX_report_event_communist_insurgency_start`: `communist_insurgency_start.dds`; depict red pamphlets, organizers, or a strike crowd as the first visible outbreak of the crisis.
+- `GFX_report_event_communist_industry_sabotage`: `communist_industry_sabotage.dds`; depict factory machinery, rail depots, damaged warehouses, or workers disrupting production.
+- `GFX_report_event_communist_emergency_intervention`: `communist_emergency_intervention.dds`; depict loyal troops or police entering a factory district under emergency powers.
+- `GFX_report_event_communist_state_control`: `communist_state_control.dds`; depict revolutionary committees or red banners taking over local administration.
+- `GFX_report_event_communist_control_escalates`: `communist_control_escalates.dds`; depict barricades, militia checkpoints, or a municipal building under red control.
+- `GFX_report_event_communist_intervention_success`: `communist_intervention_success.dds`; depict seized weapons, arrests, or loyal authority restored after a crackdown.
+- `GFX_report_event_communist_intervention_backfire`: `communist_intervention_backfire.dds`; depict street clashes, angry workers, or a failed police sweep.
+- `GFX_report_event_communist_war_warning`: `communist_war_warning.dds`; depict red militias mobilizing before open civil conflict.
+- `GFX_report_event_communist_emergency_success`: `communist_emergency_success.dds`; depict exhausted loyal troops holding a cleared factory or railway hub.
+- `GFX_report_event_communist_uprising`: `communist_uprising.dds`; depict armed revolutionary columns, barricades, and a public rebel proclamation.
+- `GFX_report_event_communist_unstable_activity`: `communist_unstable_activity.dds`; depict a secret cell, hidden weapons cache, or raid preparation.
+- `GFX_report_event_communist_dark_worker_rituals`: `communist_dark_worker_rituals.dds`; depict workers in a night-shift factory ritual with red cloth, tools, and dim industrial light.
+- `GFX_report_event_communist_world_revolution_whispers`: `communist_world_revolution_whispers.dds`; depict clandestine World Revolution pamphlets, foreign cells, or a hidden revolutionary portrait.
+- `GFX_report_event_communist_surprise_revolt`: `communist_surprise_revolt.dds`; depict sudden barricades, improvised red flags, or police being pushed out of a district.
+- `GFX_report_event_communist_worker_ritual`: `communist_worker_ritual.dds`; depict workers gathered around machinery, burned ledgers, or oath-taking in a factory.
+- `GFX_report_event_communist_world_revolution_foreshadowing`: `communist_world_revolution_foreshadowing.dds`; depict coded railway couriers, international revolutionary maps, or red symbols spreading across borders.
+- `GFX_report_event_communist_insurgency_defeated`: `communist_insurgency_defeated.dds`; depict a cleared committee hall, removed banner, or restored local government office.
 
-- support-driven escalation is always on once local communist pressure reaches the threshold
-- a chaos evolution is a world-chaos milestone that changes how the communism event behaves from that point onward
+## Limitations
 
-### Evolution I: International Coordination
+State selection is priority-tiered. It first looks for vulnerable states neighboring existing communist control with industry, population, arms factories, or developed infrastructure, then neighboring states, then strategic industrial/population states, and finally any eligible non-capital owned state when no strategic target exists.
 
-Recommended trigger:
+Map highlighting uses state-targeted decisions and highlighted controlled-state triggers. There is no custom map mode in this pass.
 
-- first time global `chaos_tier = 2`
-- only for countries where communism spread is active and communist support is already at least `15%`
+## Open Tuning Notes And Future Expansion
 
-Recommended behavior change:
-
-- `chaosx.nr1.2` strike MTTH falls from `20` to around `14` days
-- `fight_communism_propaganda` and `fight_communism_economic` each lose around `1%` of reduction strength, representing outside support keeping the movement supplied
-- `chaosx.nr1.11` complete military failure should queue another unrest pulse, for example by forcing a fresh strike roll after `10-20` days
-
-Why this would feel meaningful:
-
-- the player feels the world getting less governable as chaos rises, not just the support number climbing locally
-- soft containment starts to slip specifically because the movement is now externally coordinated
-
-### Evolution II: Insurrectionary Bloc
-
-Recommended trigger:
-
-- first time global `chaos_tier = 4`
-- only for countries where communism spread is active and support is already at least `30%`
-
-Recommended behavior change:
-
-- `chaosx.nr1.3` should loosen from `communism > 0.4` and `stability < 0.3` to something like `communism > 0.3` and `stability < 0.4`
-- `chaosx.nr1.8` should gain a rebound path so that crushing one rebel outbreak does not fully solve the crisis if support stays high
-- military complete failure should become capable of immediately pushing the country into the rebel/uprising path instead of only adding support
-
-Why this would feel meaningful:
-
-- this is the point where the communism event stops being “recurring unrest” and becomes a true pre-insurrection system
-- the player is forced to deal with regime fragility, not just sabotage and popularity drift
-
-No world-end branch is recommended for this chain. The event resolves cleanly through suppression, civil war, or communist takeover instead of a terminal global scenario.
-
-## Icons And UI Assets
-
-No new icons or UI assets were added in this pass.
-
-Existing assets used by the mechanic remain unchanged:
-
-- category icon: `GFX_decision_category_generic_communism`
-- propaganda decision icon: `GFX_decision_generic_speech`
-- economic decision icon: `GFX_decision_generic_consumer_goods`
-- military decision icon: `GFX_decision_generic_military`
-- industrial decision icon: `GFX_decision_generic_factory`
-- emergency decision icon: `GFX_decision_generic_protection`
-
-## Future Plans
-
-- Add dedicated strike-scaling by tier beyond cooldown alone if the chain needs sharper differentiation between early agitation and late revolutionary sabotage.
-- Replace repeated percentage thresholds with a fuller communism spread threshold table in script constants if this mechanic gets another broader rebalance pass.
-- Add event-log details for this chain if communism spread becomes important enough to deserve history browsing parity with the larger chaos systems.
+- `maintenance_min_days` and `maintenance_max_days` control the broad pacing of the system.
+- `state_spread_cooldown_days`, `state_escalation_cooldown_days`, and `sabotage_cooldown_days` are the main anti-spam controls.
+- `defeat_grace_days = 180` prevents a country from defeating the system immediately through early suppression.
+- `evolution_incident_cooldown_days`, `surprise_revolt_chance`, `worker_ritual_chance`, and `world_revolution_whisper_chance` control how often evolution incidents appear.
+- `communism_spread_drift.per_controlled_state = 0.01` is fixed to the spec.
+- Emergency uprising risk may need live-session tuning for large majors; `per_controlled_state_uprising_chance` and `communism_support_uprising_scale` are the first values to adjust.
+- Rebel unit counts are score-based, but the exact thresholds will need live-session tuning. The first values to adjust are `level_1_units`, `level_2_units`, `level_3_units`, industry bonuses, and the evolution conversion bonuses.
