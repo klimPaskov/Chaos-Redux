@@ -1,416 +1,1914 @@
-# Communism spread support effects.
-# - Updates the active communism spread idea tier from live communist popularity.
-# - Applies cooldown-aware strike and status-notification pacing.
-# COUNTRY SCOPE
+# Communism spread state-control effects.
+# COUNTRY SCOPE unless a block explicitly documents STATE SCOPE.
+# The system is self-scheduled from chaosx.nr1.20 instead of using another global monthly country sweep.
 
-queue_communism_spread_strike_cooldown = {
-	set_country_flag = communism_spread_strike_cooldown
-
-	if = {
-		limit = { communism > 0.5 }
-		country_event = {
-			id = chaosx.nr1.12
-			days = constant:communism_spread_timing.strike_tier_5_cooldown_days
-		}
-	}
-	else_if = {
-		limit = { communism > 0.4 }
-		country_event = {
-			id = chaosx.nr1.12
-			days = constant:communism_spread_timing.strike_tier_4_cooldown_days
-		}
-	}
-	else_if = {
-		limit = { communism > 0.25 }
-		country_event = {
-			id = chaosx.nr1.12
-			days = constant:communism_spread_timing.strike_tier_3_cooldown_days
-		}
-	}
-	else_if = {
-		limit = { communism > 0.2 }
-		country_event = {
-			id = chaosx.nr1.12
-			days = constant:communism_spread_timing.strike_tier_2_cooldown_days
-		}
-	}
-	else = {
-		country_event = {
-			id = chaosx.nr1.12
-			days = constant:communism_spread_timing.strike_tier_1_cooldown_days
-		}
-	}
-}
-
-queue_communism_spread_status_notification_cooldown = {
-	set_country_flag = communism_spread_status_notification_cooldown
-	country_event = {
-		id = chaosx.nr1.13
-		days = constant:communism_spread_timing.status_notification_cooldown_days
-	}
-}
-
-clear_communism_support_escalation = {
-	set_country_flag = { flag = communism_support_stage value = 0 }
-	set_variable = { communism_stage_extra_drift = 0 }
-	set_variable = { communism_stage_extra_political_power_gain = 0 }
-	set_variable = { communism_stage_extra_stability_weekly = 0 }
-	set_variable = { communism_stage_extra_war_support_weekly = 0 }
-
-	if = {
-		limit = { has_dynamic_modifier = communism_support_escalation }
-		remove_dynamic_modifier = { modifier = communism_support_escalation }
-	}
-}
-
-update_communism_spread_support_stage = {
+queue_communism_spread_maintenance = {
 	if = {
 		limit = {
 			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			has_idea = communism_spread_idea
+			NOT = { has_country_flag = communism_spread_maintenance_queued }
 			NOT = { has_government = communism }
 		}
+		set_country_flag = communism_spread_maintenance_queued
+		country_event = {
+			id = chaosx.nr1.20
+			days = constant:communism_spread_timing.maintenance_min_days
+			random_days = 30
+		}
+	}
+}
 
-		set_temp_variable = { communism_support_stage_target = 0 }
+queue_initial_communism_spread_maintenance = {
+	if = {
+		limit = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			has_idea = communism_spread_idea
+			NOT = { has_country_flag = communism_spread_maintenance_queued }
+			NOT = { has_government = communism }
+		}
+		set_country_flag = communism_spread_maintenance_queued
+		country_event = {
+			id = chaosx.nr1.20
+			days = constant:communism_spread_timing.first_maintenance_min_days
+			random_days = 20
+		}
+	}
+}
 
+queue_communism_spread_defeat_grace_timeout = {
+	set_country_flag = communism_spread_defeat_grace
+	country_event = {
+		id = chaosx.nr1.26
+		days = constant:communism_spread_timing.defeat_grace_days
+	}
+}
+
+clear_communism_state_control_modifier = {
+	# STATE SCOPE
+	if = {
+		limit = { has_dynamic_modifier = communism_control_level_1 }
+		remove_dynamic_modifier = { modifier = communism_control_level_1 }
+	}
+	if = {
+		limit = { has_dynamic_modifier = communism_control_level_2 }
+		remove_dynamic_modifier = { modifier = communism_control_level_2 }
+	}
+	if = {
+		limit = { has_dynamic_modifier = communism_control_level_3 }
+		remove_dynamic_modifier = { modifier = communism_control_level_3 }
+	}
+}
+
+clear_communism_state_control = {
+	# STATE SCOPE
+	if = {
+		limit = { has_state_flag = communist_added_demilitarized_zone }
+		set_demilitarized_zone = no
+	}
+	clr_state_flag = communist_control_level_1
+	clr_state_flag = communist_control_level_2
+	clr_state_flag = communist_control_level_3
+	clr_state_flag = communist_controlled_state
+	clr_state_flag = communist_added_demilitarized_zone
+	clr_state_flag = communist_worker_ritual_state
+	clr_state_flag = communist_world_revolution_whisper_state
+	clr_state_flag = communist_surprise_breakaway_state
+	clear_communism_state_control_modifier = yes
+}
+
+set_communism_state_control_level_1 = {
+	# STATE SCOPE
+	clear_communism_state_control = yes
+	set_state_flag = communist_controlled_state
+	set_state_flag = communist_control_level_1
+	add_dynamic_modifier = { modifier = communism_control_level_1 }
+}
+
+set_communism_state_control_level_2 = {
+	# STATE SCOPE
+	clear_communism_state_control = yes
+	set_state_flag = communist_controlled_state
+	set_state_flag = communist_control_level_2
+	add_dynamic_modifier = { modifier = communism_control_level_2 }
+}
+
+set_communism_state_control_level_3 = {
+	# STATE SCOPE
+	clear_communism_state_control = yes
+	set_state_flag = communist_controlled_state
+	set_state_flag = communist_control_level_3
+	if = {
+		limit = { NOT = { is_demilitarized_zone = yes } }
+		set_state_flag = communist_added_demilitarized_zone
+	}
+	set_demilitarized_zone = yes
+	add_dynamic_modifier = { modifier = communism_control_level_3 }
+}
+
+refresh_communism_spread_counts = {
+	set_variable = { communism_controlled_states = 0 }
+	set_variable = { communism_control_level_1_states = 0 }
+	set_variable = { communism_control_level_2_states = 0 }
+	set_variable = { communism_control_level_3_states = 0 }
+	set_variable = { communism_emergency_control_threshold = num_owned_states }
+	multiply_variable = { communism_emergency_control_threshold = 0.5 }
+	# Trigger syntax has no inclusive greater-than check, so 50% must pass a > comparison.
+	subtract_from_variable = { communism_emergency_control_threshold = 0.1 }
+
+	every_owned_state = {
+		limit = { has_state_flag = communist_controlled_state }
+		ROOT = { add_to_variable = { communism_controlled_states = 1 } }
+		if = {
+			limit = { has_state_flag = communist_control_level_1 }
+			ROOT = { add_to_variable = { communism_control_level_1_states = 1 } }
+		}
+		else_if = {
+			limit = { has_state_flag = communist_control_level_2 }
+			ROOT = { add_to_variable = { communism_control_level_2_states = 1 } }
+		}
+		else_if = {
+			limit = { has_state_flag = communist_control_level_3 }
+			ROOT = { add_to_variable = { communism_control_level_3_states = 1 } }
+		}
+	}
+}
+
+refresh_communism_spread_pressure = {
+	refresh_communism_spread_counts = yes
+	set_variable = { communism_control_daily_drift = communism_controlled_states }
+	multiply_variable = { communism_control_daily_drift = constant:communism_spread_drift.per_controlled_state }
+	clamp_variable = {
+		var = communism_control_daily_drift
+		max = constant:communism_spread_drift.max_from_states
+	}
+
+	if = {
+		limit = {
+			check_variable = { communism_controlled_states > 0 }
+			NOT = { has_dynamic_modifier = communism_state_control_pressure }
+		}
+		add_dynamic_modifier = { modifier = communism_state_control_pressure }
+	}
+	else_if = {
+		limit = {
+			check_variable = { communism_controlled_states = 0 }
+			has_dynamic_modifier = communism_state_control_pressure
+		}
+		remove_dynamic_modifier = { modifier = communism_state_control_pressure }
+	}
+	refresh_communism_spread_dashboard_values = yes
+	force_update_dynamic_modifier = yes
+}
+
+refresh_communism_spread_dashboard_values = {
+	# COUNTRY SCOPE. Rebuilds player-facing dashboard variables used by scripted GUI/localisation.
+	set_variable = { communism_control_daily_drift_percent = communism_control_daily_drift }
+	multiply_variable = { communism_control_daily_drift_percent = 100 }
+
+	set_variable = { communism_revolutionary_threat = party_popularity_100@communism }
+	set_temp_variable = { communism_level_1_dashboard_pressure = communism_control_level_1_states }
+	multiply_temp_variable = { communism_level_1_dashboard_pressure = constant:communism_spread_dashboard.level_1_threat }
+	add_to_variable = { communism_revolutionary_threat = communism_level_1_dashboard_pressure }
+
+	set_temp_variable = { communism_level_2_dashboard_pressure = communism_control_level_2_states }
+	multiply_temp_variable = { communism_level_2_dashboard_pressure = constant:communism_spread_dashboard.level_2_threat }
+	add_to_variable = { communism_revolutionary_threat = communism_level_2_dashboard_pressure }
+
+	set_temp_variable = { communism_level_3_dashboard_pressure = communism_control_level_3_states }
+	multiply_temp_variable = { communism_level_3_dashboard_pressure = constant:communism_spread_dashboard.level_3_threat }
+	add_to_variable = { communism_revolutionary_threat = communism_level_3_dashboard_pressure }
+
+	if = {
+		limit = { has_country_flag = communism_evolution_unstable_activity }
+		add_to_variable = { communism_revolutionary_threat = constant:communism_spread_dashboard.unstable_activity_threat }
+	}
+	if = {
+		limit = { has_country_flag = communism_evolution_dark_worker_rituals }
+		add_to_variable = { communism_revolutionary_threat = constant:communism_spread_dashboard.dark_worker_rituals_threat }
+	}
+	if = {
+		limit = { has_country_flag = communism_evolution_world_revolution_whispers }
+		add_to_variable = { communism_revolutionary_threat = constant:communism_spread_dashboard.world_revolution_whispers_threat }
+	}
+	if = {
+		limit = { has_country_flag = fighting_communist_rebels }
+		add_to_variable = { communism_revolutionary_threat = constant:communism_spread_dashboard.rebel_war_threat }
+	}
+	clamp_variable = {
+		var = communism_revolutionary_threat
+		min = 0
+		max = 100
+	}
+
+	set_variable = { communism_revolutionary_threat_bar = 0 }
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 4 } }
+		set_variable = { communism_revolutionary_threat_bar = 10 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 14 } }
+		set_variable = { communism_revolutionary_threat_bar = 20 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 24 } }
+		set_variable = { communism_revolutionary_threat_bar = 30 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 34 } }
+		set_variable = { communism_revolutionary_threat_bar = 40 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 44 } }
+		set_variable = { communism_revolutionary_threat_bar = 50 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 54 } }
+		set_variable = { communism_revolutionary_threat_bar = 60 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 64 } }
+		set_variable = { communism_revolutionary_threat_bar = 70 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 74 } }
+		set_variable = { communism_revolutionary_threat_bar = 80 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 84 } }
+		set_variable = { communism_revolutionary_threat_bar = 90 }
+	}
+	if = {
+		limit = { check_variable = { communism_revolutionary_threat > 94 } }
+		set_variable = { communism_revolutionary_threat_bar = 100 }
+	}
+}
+
+can_communism_spread_take_new_state = {
+	set_temp_variable = { communism_spread_can_take_state = 0 }
+	if = {
+		limit = {
+			communism > constant:communism_spread_state_control.min_support_for_state_spread
+			NOT = { has_country_flag = communism_state_spread_cooldown }
+			any_owned_state = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+			}
+		}
+		refresh_communism_spread_counts = yes
+		set_temp_variable = { communism_spread_soft_ceiling = party_popularity@communism }
+		multiply_temp_variable = { communism_spread_soft_ceiling = constant:communism_spread_state_control.soft_ceiling_ratio }
+		multiply_temp_variable = { communism_spread_soft_ceiling = num_owned_states }
+		round_temp_variable = communism_spread_soft_ceiling
+		if = {
+			limit = { check_variable = { communism_spread_soft_ceiling < 1 } }
+			set_temp_variable = { communism_spread_soft_ceiling = 1 }
+		}
+		if = {
+			limit = { check_variable = { communism_controlled_states < communism_spread_soft_ceiling } }
+			set_temp_variable = { communism_spread_can_take_state = 1 }
+		}
+	}
+}
+
+queue_communism_state_spread_cooldown = {
+	set_country_flag = communism_state_spread_cooldown
+	country_event = {
+		id = chaosx.nr1.21
+		days = constant:communism_spread_timing.state_spread_cooldown_days
+	}
+}
+
+queue_communism_state_escalation_cooldown = {
+	set_country_flag = communism_state_escalation_cooldown
+	country_event = {
+		id = chaosx.nr1.22
+		days = constant:communism_spread_timing.state_escalation_cooldown_days
+	}
+}
+
+queue_communism_sabotage_cooldown = {
+	set_country_flag = communism_sabotage_cooldown
+	country_event = {
+		id = chaosx.nr1.23
+		days = constant:communism_spread_timing.sabotage_cooldown_days
+	}
+}
+
+queue_communism_revolutionary_war_cooldown = {
+	set_country_flag = communism_revolutionary_war_cooldown
+	country_event = {
+		id = chaosx.nr1.24
+		days = constant:communism_spread_timing.revolutionary_war_cooldown_days
+	}
+}
+
+queue_communism_evolution_incident_cooldown = {
+	set_country_flag = communism_evolution_incident_cooldown
+	country_event = {
+		id = chaosx.nr1.25
+		days = constant:communism_spread_timing.evolution_incident_cooldown_days
+	}
+}
+
+queue_communism_evolution_progression_cooldown = {
+	set_global_flag = communism_evolution_progression_cooldown
+	country_event = {
+		id = chaosx.nr1.33
+		days = constant:communism_spread_timing.evolution_progression_cooldown_days
+	}
+}
+
+select_new_communist_control_state = {
+	# Priority tiers keep spread strategic while preserving a valid target pool for small countries.
+	if = {
+		limit = {
+			any_owned_state = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+				any_neighbor_state = { has_state_flag = communist_controlled_state }
+				is_communist_spread_priority_state = yes
+			}
+		}
+		random_owned_state = {
+			limit = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+				any_neighbor_state = { has_state_flag = communist_controlled_state }
+				is_communist_spread_priority_state = yes
+			}
+			set_communism_state_control_level_1 = yes
+			save_event_target_as = communist_target_state
+		}
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+				any_neighbor_state = { has_state_flag = communist_controlled_state }
+			}
+		}
+		random_owned_state = {
+			limit = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+				any_neighbor_state = { has_state_flag = communist_controlled_state }
+			}
+			set_communism_state_control_level_1 = yes
+			save_event_target_as = communist_target_state
+		}
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+				is_communist_spread_priority_state = yes
+			}
+		}
+		random_owned_state = {
+			limit = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+				is_communist_spread_priority_state = yes
+			}
+			set_communism_state_control_level_1 = yes
+			save_event_target_as = communist_target_state
+		}
+	}
+	else = {
+		random_owned_state = {
+			limit = {
+				impassable = no
+				NOT = { is_capital = yes }
+				NOT = { has_state_flag = communist_controlled_state }
+			}
+			set_communism_state_control_level_1 = yes
+			save_event_target_as = communist_target_state
+		}
+	}
+	queue_communism_state_spread_cooldown = yes
+	refresh_communism_spread_pressure = yes
+}
+
+seed_initial_communist_control_state = {
+	# COUNTRY SCOPE. The root event must immediately create a visible state-control problem.
+	refresh_communism_spread_counts = yes
+	if = {
+		limit = {
+			check_variable = { communism_controlled_states = 0 }
+			any_owned_state = {
+				impassable = no
+				NOT = { has_state_flag = communist_controlled_state }
+			}
+		}
+		if = {
+			limit = {
+				any_owned_state = {
+					impassable = no
+					NOT = { is_capital = yes }
+					NOT = { has_state_flag = communist_controlled_state }
+				}
+			}
+			select_new_communist_control_state = yes
+		}
+		else = {
+			random_owned_state = {
+				limit = {
+					impassable = no
+					NOT = { has_state_flag = communist_controlled_state }
+				}
+				set_communism_state_control_level_1 = yes
+				save_event_target_as = communist_target_state
+			}
+			queue_communism_state_spread_cooldown = yes
+			refresh_communism_spread_pressure = yes
+		}
+		country_event = { id = chaosx.nr1.4 days = 1 }
+	}
+}
+
+try_communism_state_spread = {
+	can_communism_spread_take_new_state = yes
+	if = {
+		limit = { check_variable = { communism_spread_can_take_state = 1 } }
+		set_temp_variable = { communism_state_spread_chance = 5 }
+		if = {
+			limit = { communism > constant:communism_spread_state_control.medium_support }
+			add_to_temp_variable = { communism_state_spread_chance = 10 }
+		}
+		if = {
+			limit = { communism > constant:communism_spread_state_control.high_support }
+			add_to_temp_variable = { communism_state_spread_chance = 15 }
+		}
+		if = {
+			limit = { communism > constant:communism_spread_state_control.very_high_support }
+			add_to_temp_variable = { communism_state_spread_chance = 15 }
+		}
+		if = {
+			limit = { has_stability < constant:communism_spread_state_control.low_stability_threshold }
+			add_to_temp_variable = { communism_state_spread_chance = 15 }
+		}
+		if = {
+			limit = { has_war = yes }
+			add_to_temp_variable = { communism_state_spread_chance = 10 }
+		}
+		set_temp_variable = { communism_state_no_spread_chance = 100 }
+		subtract_from_temp_variable = { communism_state_no_spread_chance = communism_state_spread_chance }
+		random_list = {
+			var:communism_state_spread_chance = {
+				select_new_communist_control_state = yes
+				country_event = { id = chaosx.nr1.4 days = 1 }
+			}
+			var:communism_state_no_spread_chance = { }
+		}
+	}
+}
+
+try_communism_state_escalation = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = communism_state_escalation_cooldown }
+			any_owned_state = {
+				has_state_flag = communist_controlled_state
+				NOT = { has_state_flag = communist_control_level_3 }
+			}
+		}
+		set_temp_variable = { communism_state_escalation_chance = 15 }
+		if = {
+			limit = { communism > constant:communism_spread_state_control.high_support }
+			add_to_temp_variable = { communism_state_escalation_chance = 15 }
+		}
+		if = {
+			limit = { has_stability < constant:communism_spread_state_control.low_stability_threshold }
+			add_to_temp_variable = { communism_state_escalation_chance = 10 }
+		}
+		if = {
+			limit = { has_war = yes }
+			add_to_temp_variable = { communism_state_escalation_chance = 10 }
+		}
+		set_temp_variable = { communism_state_no_escalation_chance = 100 }
+		subtract_from_temp_variable = { communism_state_no_escalation_chance = communism_state_escalation_chance }
+		random_list = {
+			var:communism_state_escalation_chance = {
+				if = {
+					limit = {
+						any_owned_state = {
+							has_state_flag = communist_control_level_2
+						}
+					}
+					random_owned_state = {
+						limit = { has_state_flag = communist_control_level_2 }
+						set_communism_state_control_level_3 = yes
+						save_event_target_as = communist_target_state
+					}
+				}
+				else = {
+					random_owned_state = {
+						limit = { has_state_flag = communist_control_level_1 }
+						set_communism_state_control_level_2 = yes
+						save_event_target_as = communist_target_state
+					}
+				}
+				queue_communism_state_escalation_cooldown = yes
+				refresh_communism_spread_pressure = yes
+				country_event = { id = chaosx.nr1.5 days = 1 }
+			}
+			var:communism_state_no_escalation_chance = { }
+		}
+	}
+}
+
+select_communist_sabotage_state = {
+	if = {
+		limit = {
+			any_owned_state = {
+				has_state_flag = communist_controlled_state
+				OR = {
+					arms_factory > 0
+					industrial_complex > 0
+					infrastructure > 1
+				}
+			}
+		}
+		random_owned_state = {
+			limit = {
+				has_state_flag = communist_controlled_state
+				OR = {
+					arms_factory > 0
+					industrial_complex > 0
+					infrastructure > 1
+				}
+			}
+			save_event_target_as = communist_sabotage_state
+		}
+	}
+	else = {
+		random_owned_state = {
+			limit = { has_state_flag = communist_controlled_state }
+			save_event_target_as = communist_sabotage_state
+		}
+	}
+}
+
+try_communism_sabotage_event = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = communism_sabotage_cooldown }
+			any_owned_state = { has_state_flag = communist_controlled_state }
+		}
+		set_temp_variable = { communism_sabotage_chance = 12 }
+		if = {
+			limit = { communism > constant:communism_spread_state_control.high_support }
+			add_to_temp_variable = { communism_sabotage_chance = 10 }
+		}
+		if = {
+			limit = { check_variable = { communism_control_level_2_states > 0 } }
+			add_to_temp_variable = { communism_sabotage_chance = 8 }
+		}
+		if = {
+			limit = { check_variable = { communism_control_level_3_states > 0 } }
+			add_to_temp_variable = { communism_sabotage_chance = 12 }
+		}
+		set_temp_variable = { communism_no_sabotage_chance = 100 }
+		subtract_from_temp_variable = { communism_no_sabotage_chance = communism_sabotage_chance }
+		random_list = {
+			var:communism_sabotage_chance = {
+				select_communist_sabotage_state = yes
+				queue_communism_sabotage_cooldown = yes
+				country_event = { id = chaosx.nr1.2 days = 1 }
+			}
+			var:communism_no_sabotage_chance = { }
+		}
+	}
+}
+
+prepare_communist_emergency_uprising_roll = {
+	refresh_communism_spread_counts = yes
+	set_temp_variable = { communist_uprising_chance = constant:communism_spread_emergency.base_uprising_chance }
+	set_temp_variable = { communist_uprising_state_pressure = communism_controlled_states }
+	multiply_temp_variable = { communist_uprising_state_pressure = constant:communism_spread_emergency.per_controlled_state_uprising_chance }
+	add_to_temp_variable = { communist_uprising_chance = communist_uprising_state_pressure }
+	set_temp_variable = { communist_uprising_level_3_pressure = communism_control_level_3_states }
+	multiply_temp_variable = { communist_uprising_level_3_pressure = constant:communism_spread_emergency.per_level_3_uprising_chance }
+	add_to_temp_variable = { communist_uprising_chance = communist_uprising_level_3_pressure }
+	set_temp_variable = { communist_uprising_support_pressure = party_popularity@communism }
+	multiply_temp_variable = { communist_uprising_support_pressure = constant:communism_spread_emergency.communism_support_uprising_scale }
+	add_to_temp_variable = { communist_uprising_chance = communist_uprising_support_pressure }
+	clamp_temp_variable = {
+		var = communist_uprising_chance
+		max = constant:communism_spread_emergency.max_uprising_chance
+	}
+	set_temp_variable = { communist_no_uprising_chance = 100 }
+	subtract_from_temp_variable = { communist_no_uprising_chance = communist_uprising_chance }
+}
+
+mark_communist_uprising_conversion_states = {
+	every_owned_state = {
+		limit = {
+			NOT = { is_capital = yes }
+			has_state_flag = communist_control_level_1
+			NOT = { has_state_flag = communist_uprising_convert }
+		}
+		if = {
+			limit = { has_state_flag = communist_world_revolution_whisper_state }
+			random_list = {
+				55 = { set_state_flag = communist_uprising_convert }
+				45 = { }
+			}
+		}
+		else_if = {
+			limit = { has_state_flag = communist_worker_ritual_state }
+			random_list = {
+				50 = { set_state_flag = communist_uprising_convert }
+				50 = { }
+			}
+		}
+		else = {
+			random_list = {
+				constant:communism_spread_emergency.level_1_conversion_chance = { set_state_flag = communist_uprising_convert }
+				60 = { }
+			}
+		}
+	}
+	every_owned_state = {
+		limit = {
+			NOT = { is_capital = yes }
+			has_state_flag = communist_control_level_2
+			NOT = { has_state_flag = communist_uprising_convert }
+		}
 		if = {
 			limit = {
 				OR = {
-					communism > constant:communism_spread_stage_threshold.parallel_soviets
-					AND = {
-						communism > constant:communism_spread_stage_threshold.parallel_soviets_rebel_support
-						any_country = {
-							has_country_flag = communist_rebel_state
-							has_war_with = ROOT
-							original_tag = ROOT
+					has_state_flag = communist_world_revolution_whisper_state
+					has_state_flag = communist_worker_ritual_state
+				}
+			}
+			random_list = {
+				90 = { set_state_flag = communist_uprising_convert }
+				10 = { }
+			}
+		}
+		else = {
+			random_list = {
+				constant:communism_spread_emergency.level_2_conversion_chance = { set_state_flag = communist_uprising_convert }
+				20 = { }
+			}
+		}
+	}
+	every_owned_state = {
+		limit = {
+			NOT = { is_capital = yes }
+			has_state_flag = communist_control_level_3
+		}
+		set_state_flag = communist_uprising_convert
+	}
+}
+
+clear_communist_uprising_conversion_flags = {
+	every_state = {
+		limit = { has_state_flag = communist_uprising_convert }
+		clr_state_flag = communist_uprising_convert
+	}
+}
+
+create_communist_rebel_templates = {
+	division_template = {
+		name = "Worker Militia"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+		}
+	}
+	division_template = {
+		name = "Red Guards"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 0 y = 2 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+			infantry = { x = 1 y = 2 }
+		}
+		support = {
+			engineer = { x = 0 y = 0 }
+		}
+	}
+	division_template = {
+		name = "Revolutionary Infantry"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 0 y = 2 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+			infantry = { x = 1 y = 2 }
+			infantry = { x = 2 y = 0 }
+			infantry = { x = 2 y = 1 }
+			artillery_brigade = { x = 3 y = 0 }
+		}
+		support = {
+			engineer = { x = 0 y = 0 }
+			artillery = { x = 0 y = 1 }
+		}
+	}
+	division_template = {
+		name = "Factory Battalion"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 0 y = 2 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+		}
+		support = {
+			engineer = { x = 0 y = 0 }
+			maintenance_company = { x = 0 y = 1 }
+		}
+	}
+	division_template = {
+		name = "Railway Guards"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+			cavalry = { x = 2 y = 0 }
+		}
+		support = {
+			recon = { x = 0 y = 0 }
+			engineer = { x = 0 y = 1 }
+		}
+	}
+	division_template = {
+		name = "Urban Insurgents"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 0 y = 2 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+		}
+		support = {
+			engineer = { x = 0 y = 0 }
+			recon = { x = 0 y = 1 }
+		}
+	}
+	division_template = {
+		name = "Partisan Brigade"
+		regiments = {
+			irregular_infantry = { x = 0 y = 0 }
+			irregular_infantry = { x = 0 y = 1 }
+			irregular_infantry = { x = 0 y = 2 }
+			irregular_infantry = { x = 1 y = 0 }
+			irregular_infantry = { x = 1 y = 1 }
+			irregular_infantry = { x = 1 y = 2 }
+		}
+	}
+	division_template = {
+		name = "Armored Defectors"
+		regiments = {
+			light_armor = { x = 0 y = 0 }
+			light_armor = { x = 0 y = 1 }
+			light_armor = { x = 0 y = 2 }
+			light_armor = { x = 0 y = 3 }
+			motorized = { x = 1 y = 0 }
+			motorized = { x = 1 y = 1 }
+			motorized = { x = 1 y = 2 }
+			motorized = { x = 1 y = 3 }
+			motorized = { x = 2 y = 0 }
+			motorized = { x = 2 y = 1 }
+			cavalry = { x = 3 y = 0 }
+		}
+		support = {
+			maintenance_company = { x = 0 y = 0 }
+			recon = { x = 0 y = 1 }
+			engineer = { x = 0 y = 2 }
+		}
+	}
+	division_template = {
+		name = "Motorized Revolutionary Column"
+		regiments = {
+			motorized = { x = 0 y = 0 }
+			motorized = { x = 0 y = 1 }
+			motorized = { x = 0 y = 2 }
+			motorized = { x = 1 y = 0 }
+			motorized = { x = 1 y = 1 }
+			motorized = { x = 1 y = 2 }
+			motorized = { x = 2 y = 0 }
+			motorized = { x = 2 y = 1 }
+			cavalry = { x = 2 y = 2 }
+			cavalry = { x = 3 y = 0 }
+			cavalry = { x = 3 y = 1 }
+		}
+		support = {
+			recon = { x = 0 y = 0 }
+			engineer = { x = 0 y = 1 }
+			maintenance_company = { x = 0 y = 2 }
+		}
+	}
+	division_template = {
+		name = "Revolutionary Cavalry"
+		regiments = {
+			cavalry = { x = 0 y = 0 }
+			cavalry = { x = 0 y = 1 }
+			cavalry = { x = 0 y = 2 }
+			cavalry = { x = 0 y = 3 }
+			cavalry = { x = 1 y = 0 }
+			cavalry = { x = 1 y = 1 }
+			cavalry = { x = 1 y = 2 }
+			cavalry = { x = 1 y = 3 }
+		}
+		support = {
+			recon = { x = 0 y = 0 }
+			artillery = { x = 0 y = 1 }
+		}
+	}
+	division_template = {
+		name = "Armored Revolutionary Column"
+		regiments = {
+			light_armor = { x = 0 y = 0 }
+			light_armor = { x = 0 y = 1 }
+			light_armor = { x = 0 y = 2 }
+			motorized = { x = 1 y = 0 }
+			motorized = { x = 1 y = 1 }
+			motorized = { x = 1 y = 2 }
+			motorized = { x = 2 y = 0 }
+			cavalry = { x = 2 y = 1 }
+			cavalry = { x = 2 y = 2 }
+		}
+		support = {
+			recon = { x = 0 y = 0 }
+			engineer = { x = 0 y = 1 }
+			maintenance_company = { x = 0 y = 2 }
+		}
+	}
+	division_template = {
+		name = "Elite Revolutionary Guards"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 0 y = 2 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+			infantry = { x = 1 y = 2 }
+			artillery_brigade = { x = 2 y = 0 }
+			artillery_brigade = { x = 2 y = 1 }
+		}
+		support = {
+			engineer = { x = 0 y = 0 }
+			artillery = { x = 0 y = 1 }
+			anti_air = { x = 0 y = 2 }
+		}
+	}
+	division_template = {
+		name = "Red Cossacks"
+		regiments = {
+			cavalry = { x = 0 y = 0 }
+			cavalry = { x = 0 y = 1 }
+			cavalry = { x = 0 y = 2 }
+			cavalry = { x = 1 y = 0 }
+			cavalry = { x = 1 y = 1 }
+			cavalry = { x = 1 y = 2 }
+		}
+		support = {
+			recon = { x = 0 y = 0 }
+			artillery = { x = 0 y = 1 }
+		}
+	}
+}
+
+calculate_communist_rebel_state_unit_count = {
+	# STATE SCOPE. Output: temp variable communist_rebel_units_to_spawn.
+	set_temp_variable = { communist_rebel_units_to_spawn = constant:communism_spread_rebels.level_1_units }
+	if = {
+		limit = { has_state_flag = communist_control_level_2 }
+		set_temp_variable = { communist_rebel_units_to_spawn = constant:communism_spread_rebels.level_2_units }
+	}
+	else_if = {
+		limit = { has_state_flag = communist_control_level_3 }
+		set_temp_variable = { communist_rebel_units_to_spawn = constant:communism_spread_rebels.level_3_units }
+	}
+	if = { limit = { industrial_complex > 1 } add_to_temp_variable = { communist_rebel_units_to_spawn = constant:communism_spread_rebels.industrial_bonus_units } }
+	if = { limit = { arms_factory > 0 } add_to_temp_variable = { communist_rebel_units_to_spawn = constant:communism_spread_rebels.arms_factory_bonus_units } }
+	if = { limit = { state_population_k > 1000 } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { is_communist_spread_priority_state = yes } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { ROOT = { is_major = yes } } add_to_temp_variable = { communist_rebel_units_to_spawn = constant:communism_spread_rebels.major_country_bonus_units } }
+	if = { limit = { ROOT = { communism > constant:communism_spread_state_control.high_support } } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { ROOT = { has_war = yes } } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { ROOT = { has_manpower > 100000 } } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { ROOT = { num_divisions > 60 } } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { has_state_flag = communist_worker_ritual_state } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { has_state_flag = communist_world_revolution_whisper_state } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	if = { limit = { has_state_flag = communist_surprise_breakaway_state } add_to_temp_variable = { communist_rebel_units_to_spawn = 1 } }
+	round_temp_variable = communist_rebel_units_to_spawn
+}
+
+spawn_dynamic_communist_rebel_unit_from_state = {
+	# STATE SCOPE. Dynamic rebel country owner is PREV.PREV.
+	if = {
+		limit = { ROOT = { tag = SOV } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Krasnaya Gvardiya\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Rabochaya Militsiya\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Revolyutsionnaya Pekhota\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Krasnye Kazaki\" division_template = \"Red Cossacks\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Motorizovannaya Krasnaya Kolonna\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Bronetankovye Perebezhchiki\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Gvardiya Lenina\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.65" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = GER } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Rote Arbeiterwehr\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Rote Garde\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Fabrikbataillon\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Revolutionaere Infanterie\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Motorisierte Rote Kolonne\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Gepanzerte Ueberlaeufer\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			7 = { create_unit = { division = "name = \"Rote Kavallerie\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = FRA } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Garde Ouvriere Rouge\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Brigade de Commune\" division_template = \"Urban Insurgents\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Infanterie Revolutionnaire\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Bataillon d'Usine\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Colonne Motorisee Rouge\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Deserteurs Blindes\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			7 = { create_unit = { division = "name = \"Cavalerie Rouge\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Garde Revolutionnaire d'Elite\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.60" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = ENG } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Workers' Defence League\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Red Factory Battalion\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Railwaymen's Guard\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Revolutionary Infantry\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Motorized Red Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Armoured Defectors\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			7 = { create_unit = { division = "name = \"Red Cavalry\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Elite Red Guard\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.60" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = CHI } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Gongren Chiwei Dui\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Hongse Weidui\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Geming Budui\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Tielu Chiwei Dui\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Jidong Hongse Zongdui\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Zhuangjia Qiyi Budui\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			7 = { create_unit = { division = "name = \"Hongse Qibing\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Youji Dadui\" division_template = \"Partisan Brigade\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = JAP } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Sekigun Rodo Butai\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Akai Goei Tai\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Kakumei Hohei\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Tetsudo Goei Tai\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Kido Kakumei Butai\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Soko Rihan Butai\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			7 = { create_unit = { division = "name = \"Sekigun Kiheitai\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Tokubetsu Kakumei Goei\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.60" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = EST } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Punane Tookaitse\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Punakaart\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Revolutsiooniline Jalavagi\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Raudtee Punavalve\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Motoriseeritud Punakolonn\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Soomustatud Ulejooksikud\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			7 = { create_unit = { division = "name = \"Punane Ratsavagi\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Tallinna Toopataljon\" division_template = \"Urban Insurgents\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = USA } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Industrial Workers' Guard\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Red Union Guard\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Railroad Red Guard\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Motorized Revolutionary Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Armored Defectors\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = ITA } }
+		random_list = {
+			25 = { create_unit = { division = "name = \"Guardia Rossa Operaia\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Battaglione di Fabbrica\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Fanteria Rivoluzionaria\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Colonna Motorizzata Rossa\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Disertori Corazzati\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Cavalleria Rivoluzionaria\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_hispanic_country = yes } }
+		random_list = {
+			22 = { create_unit = { division = "name = \"Guardia Roja Obrera\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Milicia Sindical Roja\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Batallon de Fabrica\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Infanteria Revolucionaria\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Columna Motorizada Roja\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Desertores Blindados\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Caballeria Roja\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_portuguese_country = yes } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Guarda Vermelha Operaria\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Batalhao de Fabrica\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Infantaria Revolucionaria\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Coluna Motorizada Vermelha\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Desertores Blindados\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Cavalaria Vermelha\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_nordic_country = yes } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Roda Arbetargardet\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Fabriksbataljonen\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Jarnvagsgardet\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Revolutionara Infanteriet\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Motoriserad Rod Kolonn\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Roda Kavalleriet\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_benelux_country = yes } }
+		random_list = {
+			25 = { create_unit = { division = "name = \"Rode Arbeiderswacht\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Fabrieksbataljon\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Spoorweggarde\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			17 = { create_unit = { division = "name = \"Revolutionaire Infanterie\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Gemotoriseerde Rode Colonne\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Rode Cavalerie\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = POL } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Czerwona Gwardia Robotnicza\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Batalion Fabryczny\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Piechota Rewolucyjna\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Czerwona Kawaleria\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Zmotoryzowana Kolumna Czerwona\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Pancerne Dezercje\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_central_european_country = yes } }
+		random_list = {
+			22 = { create_unit = { division = "name = \"Revolutionary Workers' Guard\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Factory Battalion\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Railway Red Guard\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Partisan Brigade\" division_template = \"Partisan Brigade\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Motorized Red Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Armored Defectors\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Revolutionary Cavalry\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else = {
+		random_list = {
+			18 = { create_unit = { division = "name = \"Worker Militia\" division_template = \"Worker Militia\" start_experience_factor = 0.25" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Red Guards\" division_template = \"Red Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Revolutionary Infantry\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Factory Battalion\" division_template = \"Factory Battalion\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Railway Guards\" division_template = \"Railway Guards\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Urban Insurgents\" division_template = \"Urban Insurgents\" start_experience_factor = 0.35" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Partisan Brigade\" division_template = \"Partisan Brigade\" start_experience_factor = 0.30" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			6 = { create_unit = { division = "name = \"Armored Defectors\" division_template = \"Armored Defectors\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			6 = { create_unit = { division = "name = \"Motorized Revolutionary Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.45" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			4 = { create_unit = { division = "name = \"Revolutionary Cavalry\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.40" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			4 = { create_unit = { division = "name = \"Armored Revolutionary Column\" division_template = \"Armored Revolutionary Column\" start_experience_factor = 0.50" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+			5 = { create_unit = { division = "name = \"Elite Revolutionary Guards\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.60" owner = PREV.PREV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+}
+
+spawn_communist_rebel_units_in_state = {
+	# STATE SCOPE. Called while the dynamic rebel country is PREV.PREV.
+	calculate_communist_rebel_state_unit_count = yes
+	if = {
+		limit = { has_state_flag = communist_control_level_3 }
+		spawn_dynamic_communist_rebel_unit_from_state = yes
+	}
+	set_temp_variable = { communist_rebel_units_spawned = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { communist_rebel_units_spawned < communist_rebel_units_to_spawn } }
+		add_to_temp_variable = { communist_rebel_units_spawned = 1 }
+		spawn_dynamic_communist_rebel_unit_from_state = yes
+	}
+}
+
+resolve_communist_emergency_without_uprising = {
+	every_owned_state = {
+		limit = { has_state_flag = communist_control_level_1 }
+		clear_communism_state_control = yes
+		add_dynamic_modifier = {
+			modifier = communism_post_crackdown_scars
+			days = constant:communism_spread_timing.crackdown_scars_days
+		}
+	}
+	every_owned_state = {
+		limit = { has_state_flag = communist_control_level_2 }
+		random_list = {
+			65 = {
+				clear_communism_state_control = yes
+				add_dynamic_modifier = {
+					modifier = communism_post_crackdown_scars
+					days = constant:communism_spread_timing.crackdown_scars_days
+				}
+			}
+			35 = { set_communism_state_control_level_1 = yes }
+		}
+	}
+	every_owned_state = {
+		limit = { has_state_flag = communist_control_level_3 }
+		random_list = {
+			35 = {
+				clear_communism_state_control = yes
+				add_dynamic_modifier = {
+					modifier = communism_post_crackdown_scars
+					days = constant:communism_spread_timing.crackdown_scars_days
+				}
+			}
+			65 = { set_communism_state_control_level_2 = yes }
+		}
+	}
+	add_popularity = {
+		ideology = communism
+		popularity = constant:communism_spread_emergency.no_uprising_support_reduction
+	}
+	refresh_communism_spread_pressure = yes
+}
+
+create_communist_emergency_uprising = {
+	save_event_target_as = communist_original_country
+	mark_communist_uprising_conversion_states = yes
+	if = {
+		limit = {
+			any_owned_state = { has_state_flag = communist_uprising_convert }
+		}
+		create_dynamic_country = {
+			original_tag = ROOT
+			set_politics = {
+				ruling_party = communism
+				elections_allowed = no
+			}
+			create_country_leader = {
+				name = "Revolutionary Committee"
+				picture = "GFX_portrait_communist_rebels"
+				ideology = marxism
+			}
+			set_country_flag = communist_rebel_state
+			set_country_flag = communist_state_control_rebel
+			create_communist_rebel_templates = yes
+			set_temp_variable = { communist_rebel_manpower_gain = constant:communism_spread_rebels.base_manpower }
+			ROOT = {
+				refresh_communism_spread_counts = yes
+				set_temp_variable = { communist_rebel_manpower_from_states = communism_controlled_states }
+				multiply_temp_variable = { communist_rebel_manpower_from_states = constant:communism_spread_rebels.manpower_per_converted_state }
+				set_temp_variable = { communist_rebel_manpower_from_support = party_popularity@communism }
+				multiply_temp_variable = { communist_rebel_manpower_from_support = constant:communism_spread_rebels.manpower_support_scale }
+			}
+			add_to_temp_variable = { communist_rebel_manpower_gain = communist_rebel_manpower_from_states }
+			add_to_temp_variable = { communist_rebel_manpower_gain = communist_rebel_manpower_from_support }
+			round_temp_variable = communist_rebel_manpower_gain
+			add_manpower = communist_rebel_manpower_gain
+			ROOT = {
+				every_owned_state = {
+					limit = { has_state_flag = communist_uprising_convert }
+					transfer_state_to = PREV.PREV
+					spawn_communist_rebel_units_in_state = yes
+					clear_communism_state_control = yes
+				}
+			}
+			declare_war_on = {
+				target = event_target:communist_original_country
+				type = annex_everything
+			}
+		}
+		set_country_flag = fighting_communist_rebels
+		add_stability = -0.06
+		add_war_support = 0.05
+	}
+	else = {
+		resolve_communist_emergency_without_uprising = yes
+	}
+	clear_communist_uprising_conversion_flags = yes
+	refresh_communism_spread_pressure = yes
+}
+
+create_communist_local_breakaway = {
+	# COUNTRY SCOPE. Requires event_target:communist_evolution_state.
+	if = {
+		limit = {
+			has_event_target = communist_evolution_state
+			event_target:communist_evolution_state = { NOT = { is_capital = yes } }
+			NOT = { has_country_flag = fighting_communist_rebels }
+		}
+		save_event_target_as = communist_original_country
+		event_target:communist_evolution_state = { set_state_flag = communist_surprise_breakaway_state }
+		create_dynamic_country = {
+			original_tag = ROOT
+			set_politics = {
+				ruling_party = communism
+				elections_allowed = no
+			}
+			create_country_leader = {
+				name = "Local Revolutionary Committee"
+				picture = "GFX_portrait_communist_rebels"
+				ideology = marxism
+			}
+			set_country_flag = communist_rebel_state
+			set_country_flag = communist_state_control_rebel
+			set_country_flag = communist_local_breakaway_rebel
+			create_communist_rebel_templates = yes
+			add_manpower = 12000
+			ROOT = {
+				event_target:communist_evolution_state = {
+					transfer_state_to = PREV.PREV
+					spawn_communist_rebel_units_in_state = yes
+					clear_communism_state_control = yes
+				}
+			}
+			declare_war_on = {
+				target = event_target:communist_original_country
+				type = annex_everything
+			}
+		}
+		set_country_flag = fighting_communist_rebels
+		add_stability = -0.03
+		add_war_support = 0.03
+	}
+}
+
+resolve_communist_surprise_revolt_state = {
+	# STATE SCOPE. A rare evolution revolt can become a breakaway, but usually worsens local control or disruption.
+	save_event_target_as = communist_evolution_state
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = communist_control_level_2
+				has_state_flag = communist_control_level_3
+			}
+			ROOT = { NOT = { has_country_flag = fighting_communist_rebels } }
+		}
+		ROOT = {
+			random_list = {
+				constant:communism_spread_evolution.local_breakaway_chance = { create_communist_local_breakaway = yes }
+				82 = {
+					event_target:communist_evolution_state = {
+						if = {
+							limit = { has_state_flag = communist_control_level_2 }
+							set_communism_state_control_level_3 = yes
+						}
+						else = {
+							add_dynamic_modifier = {
+								modifier = communism_worker_ritual_fear
+								days = 90
+							}
 						}
 					}
 				}
 			}
-			set_temp_variable = { communism_support_stage_target = 4 }
 		}
-		else_if = {
-			limit = { communism > constant:communism_spread_stage_threshold.armed_cells }
-			set_temp_variable = { communism_support_stage_target = 3 }
-		}
-		else_if = {
-			limit = {
-				OR = {
-					communism > constant:communism_spread_stage_threshold.strike_committees
-					AND = {
-						has_country_flag = communism_strike_committees_formed
-						communism > 0.10
-					}
+	}
+	else_if = {
+		limit = { has_state_flag = communist_control_level_1 }
+		random_list = {
+			65 = { set_communism_state_control_level_2 = yes }
+			35 = {
+				add_dynamic_modifier = {
+					modifier = communism_worker_ritual_fear
+					days = 60
 				}
 			}
-			set_temp_variable = { communism_support_stage_target = 2 }
-		}
-		else_if = {
-			limit = { communism > constant:communism_spread_stage_threshold.cadre_networks }
-			set_temp_variable = { communism_support_stage_target = 1 }
-		}
-
-		if = {
-			limit = { check_variable = { communism_support_stage_target = 4 } }
-			set_country_flag = { flag = communism_support_stage value = 4 }
-		}
-		else_if = {
-			limit = { check_variable = { communism_support_stage_target = 3 } }
-			set_country_flag = { flag = communism_support_stage value = 3 }
-		}
-		else_if = {
-			limit = { check_variable = { communism_support_stage_target = 2 } }
-			set_country_flag = { flag = communism_support_stage value = 2 }
-		}
-		else_if = {
-			limit = { check_variable = { communism_support_stage_target = 1 } }
-			set_country_flag = { flag = communism_support_stage value = 1 }
-		}
-		else = {
-			set_country_flag = { flag = communism_support_stage value = 0 }
-		}
-
-		set_variable = { communism_stage_extra_drift = 0 }
-		set_variable = { communism_stage_extra_political_power_gain = 0 }
-		set_variable = { communism_stage_extra_stability_weekly = 0 }
-		set_variable = { communism_stage_extra_war_support_weekly = 0 }
-
-		if = {
-			limit = { check_variable = { communism_support_stage_target > 0 } }
-			if = {
-				limit = { NOT = { has_dynamic_modifier = communism_support_escalation } }
-				add_dynamic_modifier = { modifier = communism_support_escalation }
-			}
-		}
-		else = {
-			if = {
-				limit = { has_dynamic_modifier = communism_support_escalation }
-				remove_dynamic_modifier = { modifier = communism_support_escalation }
-			}
-		}
-
-		if = {
-			limit = {
-				OR = {
-					check_variable = { communism_support_stage_target = 1 }
-					check_variable = { communism_support_stage_target = 2 }
-				}
-			}
-			set_variable = { communism_stage_extra_drift = constant:communism_spread_stage_modifier.cadre_extra_drift }
-			set_variable = { communism_stage_extra_political_power_gain = constant:communism_spread_stage_modifier.cadre_political_power_gain }
-		}
-		else_if = {
-			limit = { check_variable = { communism_support_stage_target = 3 } }
-			set_variable = { communism_stage_extra_drift = constant:communism_spread_stage_modifier.cadre_extra_drift }
-			set_variable = { communism_stage_extra_political_power_gain = constant:communism_spread_stage_modifier.armed_cells_political_power_gain }
-			set_variable = { communism_stage_extra_stability_weekly = constant:communism_spread_stage_modifier.armed_cells_stability_weekly }
-			set_variable = { communism_stage_extra_war_support_weekly = constant:communism_spread_stage_modifier.armed_cells_war_support_weekly }
-		}
-		else_if = {
-			limit = { check_variable = { communism_support_stage_target = 4 } }
-			set_variable = { communism_stage_extra_drift = constant:communism_spread_stage_modifier.cadre_extra_drift }
-			set_variable = { communism_stage_extra_political_power_gain = constant:communism_spread_stage_modifier.parallel_soviets_political_power_gain }
-			set_variable = { communism_stage_extra_stability_weekly = constant:communism_spread_stage_modifier.parallel_soviets_stability_weekly }
-			set_variable = { communism_stage_extra_war_support_weekly = constant:communism_spread_stage_modifier.parallel_soviets_war_support_weekly }
 		}
 	}
 	else = {
-		clear_communism_support_escalation = yes
-		clr_country_flag = communism_strike_committees_formed
+		add_dynamic_modifier = {
+			modifier = communism_worker_ritual_fear
+			days = 60
+		}
 	}
 }
 
-update_communism_spread_idea = {
+maybe_fire_revolutionary_war_warning = {
+	refresh_communism_spread_dashboard_values = yes
+	if = {
+		limit = {
+			NOT = { has_country_flag = communism_revolutionary_war_cooldown }
+			OR = {
+				check_variable = { communism_revolutionary_threat > 99 }
+				check_variable = { communism_control_level_3_states > 1 }
+				AND = {
+					check_variable = { communism_controlled_states > 0 }
+					check_variable = { num_owned_states > 0 }
+				}
+			}
+		}
+		set_temp_variable = { communist_control_ratio_check = communism_controlled_states }
+		divide_temp_variable = { communist_control_ratio_check = num_owned_states }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { communism_revolutionary_threat > 99 }
+					check_variable = { communist_control_ratio_check > 0.49 }
+					check_variable = { communism_control_level_3_states > 1 }
+				}
+			}
+			queue_communism_revolutionary_war_cooldown = yes
+			country_event = { id = chaosx.nr1.8 days = 1 }
+		}
+	}
+}
+
+apply_global_communism_evolution_flags_to_country = {
+	if = {
+		limit = { has_global_flag = communism_global_evolution_unstable_activity }
+		set_country_flag = communism_evolution_unstable_activity
+	}
+	if = {
+		limit = { has_global_flag = communism_global_evolution_dark_worker_rituals }
+		set_country_flag = communism_evolution_dark_worker_rituals
+	}
+	if = {
+		limit = { has_global_flag = communism_global_evolution_world_revolution_whispers }
+		set_country_flag = communism_evolution_world_revolution_whispers
+	}
+}
+
+apply_global_communism_evolution_to_active_countries = {
+	every_country = {
+		limit = {
+			exists = yes
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			has_idea = communism_spread_idea
+		}
+		apply_global_communism_evolution_flags_to_country = yes
+		refresh_communism_spread_pressure = yes
+	}
+}
+
+record_communism_spread_evolution_stage_1 = {
+	set_temp_variable = { events_log_evolution_event_id = 1 }
+	set_temp_variable = { events_log_evolution_type = 2 }
+	set_temp_variable = { events_log_evolution_stage = 1 }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_global_flag = communism_global_evolution_unstable_activity
+		set_temp_variable = { events_log_evolution_tier = 1 }
+		record_events_log_evolution_entry = yes
+		apply_global_communism_evolution_to_active_countries = yes
+		every_country = {
+			limit = {
+				exists = yes
+				has_global_flag = communism_spread
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				NOT = { has_government = communism }
+				has_idea = communism_spread_idea
+			}
+			country_event = { id = chaosx.nr1.11 days = 1 }
+		}
+	}
+}
+
+record_communism_spread_evolution_stage_2 = {
+	set_temp_variable = { events_log_evolution_event_id = 1 }
+	set_temp_variable = { events_log_evolution_type = 2 }
+	set_temp_variable = { events_log_evolution_stage = 2 }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_global_flag = communism_global_evolution_dark_worker_rituals
+		set_temp_variable = { events_log_evolution_tier = 2 }
+		record_events_log_evolution_entry = yes
+		apply_global_communism_evolution_to_active_countries = yes
+		every_country = {
+			limit = {
+				exists = yes
+				has_global_flag = communism_spread
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				NOT = { has_government = communism }
+				has_idea = communism_spread_idea
+			}
+			country_event = { id = chaosx.nr1.12 days = 1 }
+		}
+	}
+}
+
+record_communism_spread_evolution_stage_3 = {
+	set_temp_variable = { events_log_evolution_event_id = 1 }
+	set_temp_variable = { events_log_evolution_type = 2 }
+	set_temp_variable = { events_log_evolution_stage = 3 }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		set_global_flag = communism_global_evolution_world_revolution_whispers
+		set_global_flag = communism_spread_world_revolution_unlocked
+		increase_world_revolution_weight_from_communist_whisper = yes
+		set_temp_variable = { events_log_evolution_tier = 3 }
+		record_events_log_evolution_entry = yes
+		apply_global_communism_evolution_to_active_countries = yes
+		every_country = {
+			limit = {
+				exists = yes
+				has_global_flag = communism_spread
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				NOT = { has_government = communism }
+				has_idea = communism_spread_idea
+			}
+			country_event = { id = chaosx.nr1.13 days = 1 }
+		}
+	}
+}
+
+try_communism_evolution_progression = {
+	refresh_communism_spread_counts = yes
+	apply_global_communism_evolution_flags_to_country = yes
+	set_temp_variable = { communism_evolution_unstable_threshold = constant:communism_spread_evolution.unstable_min_controlled_states }
+	subtract_from_temp_variable = { communism_evolution_unstable_threshold = 1 }
+	set_temp_variable = { communism_evolution_ritual_threshold = constant:communism_spread_evolution.dark_rituals_min_level_2_states }
+	subtract_from_temp_variable = { communism_evolution_ritual_threshold = 1 }
+	set_temp_variable = { communism_evolution_whisper_threshold = constant:communism_spread_evolution.world_revolution_whispers_min_level_3_states }
+	subtract_from_temp_variable = { communism_evolution_whisper_threshold = 1 }
+	if = {
+		limit = {
+			NOT = { has_global_flag = communism_evolution_progression_cooldown }
+			has_communism_evolution_tier_1_unlocked = yes
+			NOT = { has_global_flag = communism_global_evolution_unstable_activity }
+			check_variable = { communism_controlled_states > communism_evolution_unstable_threshold }
+		}
+		queue_communism_evolution_progression_cooldown = yes
+		random_list = {
+			constant:communism_spread_evolution.progression_roll_chance = { record_communism_spread_evolution_stage_1 = yes }
+			constant:communism_spread_evolution.progression_no_change_chance = { }
+		}
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = communism_evolution_progression_cooldown }
+			has_communism_evolution_tier_2_unlocked = yes
+			has_global_flag = communism_global_evolution_unstable_activity
+			NOT = { has_global_flag = communism_global_evolution_dark_worker_rituals }
+			check_variable = { communism_control_level_2_states > communism_evolution_ritual_threshold }
+		}
+		queue_communism_evolution_progression_cooldown = yes
+		random_list = {
+			constant:communism_spread_evolution.progression_roll_chance = { record_communism_spread_evolution_stage_2 = yes }
+			constant:communism_spread_evolution.progression_no_change_chance = { }
+		}
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = communism_evolution_progression_cooldown }
+			has_communism_evolution_tier_3_unlocked = yes
+			has_global_flag = communism_global_evolution_dark_worker_rituals
+			NOT = { has_global_flag = communism_global_evolution_world_revolution_whispers }
+			check_variable = { communism_control_level_3_states > communism_evolution_whisper_threshold }
+		}
+		queue_communism_evolution_progression_cooldown = yes
+		random_list = {
+			constant:communism_spread_evolution.progression_roll_chance = { record_communism_spread_evolution_stage_3 = yes }
+			constant:communism_spread_evolution.progression_no_change_chance = { }
+		}
+	}
+}
+
+select_communist_evolution_state = {
+	if = {
+		limit = {
+			has_country_flag = communism_evolution_world_revolution_whispers
+			any_owned_state = { has_state_flag = communist_control_level_3 }
+		}
+		random_owned_state = {
+			limit = { has_state_flag = communist_control_level_3 }
+			save_event_target_as = communist_evolution_state
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = communism_evolution_dark_worker_rituals
+			any_owned_state = { has_state_flag = communist_control_level_2 }
+		}
+		random_owned_state = {
+			limit = { has_state_flag = communist_control_level_2 }
+			save_event_target_as = communist_evolution_state
+		}
+	}
+	else = {
+		random_owned_state = {
+			limit = { has_state_flag = communist_controlled_state }
+			save_event_target_as = communist_evolution_state
+		}
+	}
+}
+
+apply_communist_surprise_revolt = {
+	select_communist_evolution_state = yes
+	queue_communism_evolution_incident_cooldown = yes
+	random_list = {
+		40 = { country_event = { id = chaosx.nr1.14 days = 1 } }
+		30 = { country_event = { id = chaosx.nr1.18 days = 1 } }
+		30 = { country_event = { id = chaosx.nr1.19 days = 1 } }
+	}
+}
+
+apply_dark_worker_ritual = {
+	select_communist_evolution_state = yes
+	queue_communism_evolution_incident_cooldown = yes
+	random_list = {
+		30 = { country_event = { id = chaosx.nr1.15 days = 1 } }
+		25 = { country_event = { id = chaosx.nr1.27 days = 1 } }
+		25 = { country_event = { id = chaosx.nr1.28 days = 1 } }
+		20 = { country_event = { id = chaosx.nr1.29 days = 1 } }
+	}
+}
+
+apply_world_revolution_whisper = {
+	select_communist_evolution_state = yes
+	queue_communism_evolution_incident_cooldown = yes
+	random_list = {
+		25 = { country_event = { id = chaosx.nr1.16 days = 1 } }
+		25 = { country_event = { id = chaosx.nr1.30 days = 1 } }
+		25 = { country_event = { id = chaosx.nr1.31 days = 1 } }
+		25 = { country_event = { id = chaosx.nr1.32 days = 1 } }
+	}
+}
+
+try_communism_evolution_incident = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = communism_evolution_incident_cooldown }
+			has_communism_evolution_tier_1_unlocked = yes
+			has_country_flag = communism_evolution_unstable_activity
+			any_owned_state = { has_state_flag = communist_controlled_state }
+		}
+		set_temp_variable = { communism_surprise_revolt_chance = constant:communism_spread_evolution.surprise_revolt_chance }
+		set_temp_variable = { communism_worker_ritual_chance = 0 }
+		set_temp_variable = { communism_world_revolution_whisper_chance = 0 }
+		if = {
+			limit = {
+				has_communism_evolution_tier_2_unlocked = yes
+				has_country_flag = communism_evolution_dark_worker_rituals
+			}
+			set_temp_variable = { communism_worker_ritual_chance = constant:communism_spread_evolution.worker_ritual_chance }
+		}
+		if = {
+			limit = {
+				has_communism_evolution_tier_3_unlocked = yes
+				has_country_flag = communism_evolution_world_revolution_whispers
+			}
+			set_temp_variable = { communism_world_revolution_whisper_chance = constant:communism_spread_evolution.world_revolution_whisper_chance }
+		}
+		set_temp_variable = { communism_no_evolution_incident_chance = 100 }
+		subtract_from_temp_variable = { communism_no_evolution_incident_chance = communism_surprise_revolt_chance }
+		subtract_from_temp_variable = { communism_no_evolution_incident_chance = communism_worker_ritual_chance }
+		subtract_from_temp_variable = { communism_no_evolution_incident_chance = communism_world_revolution_whisper_chance }
+		random_list = {
+			var:communism_surprise_revolt_chance = { apply_communist_surprise_revolt = yes }
+			var:communism_worker_ritual_chance = { apply_dark_worker_ritual = yes }
+			var:communism_world_revolution_whisper_chance = { apply_world_revolution_whisper = yes }
+			var:communism_no_evolution_incident_chance = { }
+		}
+	}
+}
+
+increase_world_revolution_weight_from_communist_whisper = {
+	set_global_flag = communism_spread_world_revolution_unlocked
+	set_temp_variable = { event_id = 91 }
+	get_event_weight = yes
+	set_temp_variable = { new_weight = event_weight }
+	add_to_temp_variable = { new_weight = constant:communism_spread_evolution.world_revolution_weight_nudge }
+	set_event_weight = yes
+}
+
+spawn_rev_communist_rebel_unit_from_state = {
+	# STATE SCOPE. World Revolution owner is REV.
+	if = {
+		limit = { ROOT = { tag = SOV } }
+		random_list = {
+			25 = { create_unit = { division = "name = \"World Krasnaya Gvardiya\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Revolyutsionnaya Pekhota\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Krasnye Kazaki\" division_template = \"Red Cossacks\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Gvardiya Lenina\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Bronetankovye Perebezhchiki\" division_template = \"Armored Defectors\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = GER } }
+		random_list = {
+			25 = { create_unit = { division = "name = \"Weltrevolutionaere Rote Garde\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Revolutionaere Infanterie\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Fabrikbataillon\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Motorisierte Rote Kolonne\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Garde der Weltrevolution\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = FRA } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Garde de la Revolution Mondiale\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Infanterie Revolutionnaire\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Brigade de Commune\" division_template = \"Urban Insurgents\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Bataillon d'Usine\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Garde d'Elite Rouge\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = ENG } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"World Revolution Guard\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Revolutionary Infantry\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Railwaymen's Guard\" division_template = \"Railway Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Motorized Revolutionary Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Elite Red Guard\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = CHI } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Shijie Geming Hongwei\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Geming Budui\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Youji Dadui\" division_template = \"Partisan Brigade\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Tielu Chiwei Dui\" division_template = \"Railway Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Geming Jingwei\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = JAP } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Sekai Kakumei Goei\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Kakumei Hohei\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Tetsudo Goei Tai\" division_template = \"Railway Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Kido Kakumei Butai\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Tokubetsu Kakumei Goei\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = EST } }
+		random_list = {
+			30 = { create_unit = { division = "name = \"Maailmarevolutsiooni Punakaart\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Revolutsiooniline Jalavagi\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Raudtee Punavalve\" division_template = \"Railway Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Punane Partisanibrigaad\" division_template = \"Partisan Brigade\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Eliit Punakaart\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = USA } }
+		random_list = {
+			25 = { create_unit = { division = "name = \"World Revolution Guard\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			25 = { create_unit = { division = "name = \"Revolutionary Infantry\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Industrial Workers' Guard\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Armored Defectors\" division_template = \"Armored Defectors\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Motorized Revolutionary Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = ITA } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Guardia della Rivoluzione Mondiale\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			20 = { create_unit = { division = "name = \"Fanteria Rivoluzionaria\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Battaglione di Fabbrica\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Colonna Motorizzata Rossa\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Colonna Corazzata Rivoluzionaria\" division_template = \"Armored Revolutionary Column\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Cavalleria Rivoluzionaria\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_hispanic_country = yes } }
+		random_list = {
+			22 = { create_unit = { division = "name = \"Guardia de la Revolucion Mundial\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Infanteria Revolucionaria\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Batallon de Fabrica\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Columna Motorizada Roja\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Columna Blindada Revolucionaria\" division_template = \"Armored Revolutionary Column\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Caballeria Roja\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Desertores Blindados\" division_template = \"Armored Defectors\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_portuguese_country = yes } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Guarda da Revolucao Mundial\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Infantaria Revolucionaria\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Batalhao de Fabrica\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Coluna Motorizada Vermelha\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Coluna Blindada Revolucionaria\" division_template = \"Armored Revolutionary Column\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Cavalaria Vermelha\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_nordic_country = yes } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Varldsrevolutionens Roda Garde\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Revolutionara Infanteriet\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Fabriksbataljonen\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Motoriserad Rod Kolonn\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Pansrade Avhoppare\" division_template = \"Armored Defectors\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Roda Kavalleriet\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_benelux_country = yes } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Wacht van de Wereldrevolutie\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Revolutionaire Infanterie\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Fabrieksbataljon\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Gemotoriseerde Rode Colonne\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Gepantserde Overlopers\" division_template = \"Armored Defectors\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Rode Cavalerie\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { tag = POL } }
+		random_list = {
+			24 = { create_unit = { division = "name = \"Gwardia Rewolucji Swiatowej\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Piechota Rewolucyjna\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Batalion Fabryczny\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Zmotoryzowana Kolumna Czerwona\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Pancerna Kolumna Rewolucyjna\" division_template = \"Armored Revolutionary Column\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Czerwona Kawaleria\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else_if = {
+		limit = { ROOT = { is_communist_rebel_name_pool_central_european_country = yes } }
+		random_list = {
+			22 = { create_unit = { division = "name = \"World Revolution Workers' Guard\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Revolutionary Infantry\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			16 = { create_unit = { division = "name = \"Factory Battalion\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			14 = { create_unit = { division = "name = \"Motorized Red Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			12 = { create_unit = { division = "name = \"Armored Defectors\" division_template = \"Armored Defectors\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Armored Revolutionary Column\" division_template = \"Armored Revolutionary Column\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			8 = { create_unit = { division = "name = \"Revolutionary Cavalry\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+	else = {
+		random_list = {
+			12 = { create_unit = { division = "name = \"Worker Militia\" division_template = \"Worker Militia\" start_experience_factor = 0.30" owner = REV allow_spawning_on_enemy_provs = yes } }
+			15 = { create_unit = { division = "name = \"Red Guards\" division_template = \"Red Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			18 = { create_unit = { division = "name = \"Revolutionary Infantry\" division_template = \"Revolutionary Infantry\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Factory Battalion\" division_template = \"Factory Battalion\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Railway Guards\" division_template = \"Railway Guards\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Urban Insurgents\" division_template = \"Urban Insurgents\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			10 = { create_unit = { division = "name = \"Partisan Brigade\" division_template = \"Partisan Brigade\" start_experience_factor = 0.40" owner = REV allow_spawning_on_enemy_provs = yes } }
+			6 = { create_unit = { division = "name = \"Armored Defectors\" division_template = \"Armored Defectors\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			6 = { create_unit = { division = "name = \"Motorized Revolutionary Column\" division_template = \"Motorized Revolutionary Column\" start_experience_factor = 0.50" owner = REV allow_spawning_on_enemy_provs = yes } }
+			4 = { create_unit = { division = "name = \"Revolutionary Cavalry\" division_template = \"Revolutionary Cavalry\" start_experience_factor = 0.45" owner = REV allow_spawning_on_enemy_provs = yes } }
+			4 = { create_unit = { division = "name = \"Armored Revolutionary Column\" division_template = \"Armored Revolutionary Column\" start_experience_factor = 0.55" owner = REV allow_spawning_on_enemy_provs = yes } }
+			5 = { create_unit = { division = "name = \"Elite Revolutionary Guards\" division_template = \"Elite Revolutionary Guards\" start_experience_factor = 0.70" owner = REV allow_spawning_on_enemy_provs = yes } }
+		}
+	}
+}
+
+spawn_world_revolution_units_from_communist_state = {
+	# STATE SCOPE. Called before transfer to REV; state and country strength set count, control level biases quality.
+	calculate_communist_rebel_state_unit_count = yes
+	add_to_temp_variable = { communist_rebel_units_to_spawn = 1 }
+	if = {
+		limit = { has_state_flag = communist_control_level_3 }
+		add_to_temp_variable = { communist_rebel_units_to_spawn = 1 }
+	}
+	set_temp_variable = { communist_rebel_units_spawned = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { communist_rebel_units_spawned < communist_rebel_units_to_spawn } }
+		add_to_temp_variable = { communist_rebel_units_spawned = 1 }
+		spawn_rev_communist_rebel_unit_from_state = yes
+	}
+}
+
+run_communism_spread_maintenance = {
 	if = {
 		limit = {
 			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			has_idea = communism_spread_idea
 			NOT = { has_government = communism }
 		}
-
-		set_temp_variable = { previous_tier = 0 }
+		refresh_communism_spread_pressure = yes
+		try_communism_evolution_progression = yes
+		try_communism_state_spread = yes
+		try_communism_state_escalation = yes
+		try_communism_sabotage_event = yes
+		try_communism_evolution_incident = yes
+		maybe_fire_revolutionary_war_warning = yes
+		try_defeat_country_communism_spread_system = yes
 		if = {
 			limit = { has_idea = communism_spread_idea }
-			set_temp_variable = { previous_tier = 1 }
-		}
-		else_if = {
-			limit = { has_idea = communism_spread_idea_2 }
-			set_temp_variable = { previous_tier = 2 }
-		}
-		else_if = {
-			limit = { has_idea = communism_spread_idea_3 }
-			set_temp_variable = { previous_tier = 3 }
-		}
-		else_if = {
-			limit = { has_idea = communism_spread_idea_4 }
-			set_temp_variable = { previous_tier = 4 }
-		}
-		else_if = {
-			limit = { has_idea = communism_spread_idea_5 }
-			set_temp_variable = { previous_tier = 5 }
-		}
-
-		set_temp_variable = { target_tier = 0 }
-		if = {
-			limit = { communism > 0.5 }
-			set_temp_variable = { target_tier = 5 }
-		}
-		else_if = {
-			limit = { communism > 0.4 }
-			set_temp_variable = { target_tier = 4 }
-		}
-		else_if = {
-			limit = { communism > 0.25 }
-			set_temp_variable = { target_tier = 3 }
-		}
-		else_if = {
-			limit = { communism > 0.2 }
-			set_temp_variable = { target_tier = 2 }
-		}
-		else_if = {
-			limit = { communism > 0.1 }
-			set_temp_variable = { target_tier = 1 }
-		}
-
-		if = {
-			limit = { check_variable = { target_tier = 5 } }
-			if = {
-				limit = { has_idea = communism_spread_idea }
-				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_5 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_2 }
-				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_5 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_3 }
-				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_5 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_4 }
-				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_5 }
-			}
-			else_if = {
-				limit = { NOT = { has_idea = communism_spread_idea_5 } }
-				add_ideas = communism_spread_idea_5
-			}
-		}
-		else_if = {
-			limit = { check_variable = { target_tier = 4 } }
-			if = {
-				limit = { has_idea = communism_spread_idea }
-				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_4 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_2 }
-				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_4 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_3 }
-				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_4 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_5 }
-				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_4 }
-			}
-			else_if = {
-				limit = { NOT = { has_idea = communism_spread_idea_4 } }
-				add_ideas = communism_spread_idea_4
-			}
-		}
-		else_if = {
-			limit = { check_variable = { target_tier = 3 } }
-			if = {
-				limit = { has_idea = communism_spread_idea }
-				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_3 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_2 }
-				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea_3 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_4 }
-				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_3 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_5 }
-				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_3 }
-			}
-			else_if = {
-				limit = { NOT = { has_idea = communism_spread_idea_3 } }
-				add_ideas = communism_spread_idea_3
-			}
-		}
-		else_if = {
-			limit = { check_variable = { target_tier = 2 } }
-			if = {
-				limit = { has_idea = communism_spread_idea }
-				swap_ideas = { remove_idea = communism_spread_idea add_idea = communism_spread_idea_2 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_3 }
-				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea_2 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_4 }
-				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea_2 }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_5 }
-				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea_2 }
-			}
-			else_if = {
-				limit = { NOT = { has_idea = communism_spread_idea_2 } }
-				add_ideas = communism_spread_idea_2
-			}
-		}
-		else_if = {
-			limit = { check_variable = { target_tier = 1 } }
-			if = {
-				limit = { has_idea = communism_spread_idea_2 }
-				swap_ideas = { remove_idea = communism_spread_idea_2 add_idea = communism_spread_idea }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_3 }
-				swap_ideas = { remove_idea = communism_spread_idea_3 add_idea = communism_spread_idea }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_4 }
-				swap_ideas = { remove_idea = communism_spread_idea_4 add_idea = communism_spread_idea }
-			}
-			else_if = {
-				limit = { has_idea = communism_spread_idea_5 }
-				swap_ideas = { remove_idea = communism_spread_idea_5 add_idea = communism_spread_idea }
-			}
-			else_if = {
-				limit = { NOT = { has_idea = communism_spread_idea } }
-				add_ideas = communism_spread_idea
-			}
-		}
-		else = {
-			if = {
-				limit = { has_idea = communism_spread_idea }
-				remove_ideas = communism_spread_idea
-			}
-			if = {
-				limit = { has_idea = communism_spread_idea_2 }
-				remove_ideas = communism_spread_idea_2
-			}
-			if = {
-				limit = { has_idea = communism_spread_idea_3 }
-				remove_ideas = communism_spread_idea_3
-			}
-			if = {
-				limit = { has_idea = communism_spread_idea_4 }
-				remove_ideas = communism_spread_idea_4
-			}
-			if = {
-				limit = { has_idea = communism_spread_idea_5 }
-				remove_ideas = communism_spread_idea_5
-			}
-		}
-
-		update_communism_spread_support_stage = yes
-
-		if = {
-			limit = {
-				NOT = { check_variable = { previous_tier = target_tier } }
-				NOT = { has_country_flag = communism_spread_status_notification_cooldown }
-			}
-
-			if = {
-				limit = { check_variable = { target_tier > previous_tier } }
-				if = {
-					limit = {
-						OR = {
-							check_variable = { target_tier = 4 }
-							check_variable = { target_tier = 5 }
-						}
-					}
-					country_event = { id = chaosx.nr1.6 days = 1 }
-				}
-				else = {
-					country_event = { id = chaosx.nr1.4 days = 1 }
-				}
-			}
-			else_if = {
-				limit = { check_variable = { target_tier < previous_tier } }
-				if = {
-					limit = {
-						OR = {
-							check_variable = { target_tier = 0 }
-							check_variable = { target_tier = 1 }
-						}
-					}
-					country_event = { id = chaosx.nr1.7 days = 1 }
-				}
-				else = {
-					country_event = { id = chaosx.nr1.5 days = 1 }
-				}
-			}
-
-			queue_communism_spread_status_notification_cooldown = yes
+			queue_communism_spread_maintenance = yes
 		}
 	}
 	else = {
-		clear_communism_support_escalation = yes
+		clear_communism_spread_system = yes
 	}
+}
+
+try_defeat_country_communism_spread_system = {
+	refresh_communism_spread_counts = yes
+	if = {
+			limit = {
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				has_idea = communism_spread_idea
+				NOT = { has_country_flag = fighting_communist_rebels }
+				NOT = { has_country_flag = communism_spread_defeat_grace }
+				check_variable = { communism_controlled_states = 0 }
+				communism < constant:communism_spread_state_control.min_support_for_state_spread
+			}
+		country_event = { id = chaosx.nr1.17 days = 1 }
+		clear_communism_spread_system = yes
+	}
+}
+
+try_defeat_communism_spread_system = {
+	if = {
+		limit = {
+			has_global_flag = communism_spread
+			NOT = {
+				any_country = {
+					hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+					has_active_communism_spread_country_state = yes
+				}
+			}
+			NOT = {
+				any_country = {
+					exists = yes
+					has_country_flag = communist_rebel_state
+				}
+			}
+		}
+		clr_global_flag = communism_spread
+		clr_global_flag = communism_spread_world_revolution_unlocked
+		clr_global_flag = communism_global_evolution_unstable_activity
+		clr_global_flag = communism_global_evolution_dark_worker_rituals
+		clr_global_flag = communism_global_evolution_world_revolution_whispers
+		clr_global_flag = communism_evolution_progression_cooldown
+		set_temp_variable = { event_id = 91 }
+		set_temp_variable = { new_weight = 0 }
+		set_event_weight = yes
+	}
+}
+
+clear_communism_spread_system = {
+	if = {
+		limit = { has_idea = communism_spread_idea }
+		remove_ideas = communism_spread_idea
+	}
+	if = {
+		limit = { has_dynamic_modifier = communism_state_control_pressure }
+		remove_dynamic_modifier = { modifier = communism_state_control_pressure }
+	}
+	every_owned_state = {
+		limit = { has_state_flag = communist_controlled_state }
+		clear_communism_state_control = yes
+	}
+	clr_country_flag = communism_spread_maintenance_queued
+	clr_country_flag = communism_state_spread_cooldown
+	clr_country_flag = communism_state_escalation_cooldown
+	clr_country_flag = communism_sabotage_cooldown
+	clr_country_flag = communism_revolutionary_war_cooldown
+	clr_country_flag = communism_evolution_incident_cooldown
+	clr_country_flag = communism_spread_defeat_grace
+	clr_country_flag = communism_evolution_unstable_activity
+	clr_country_flag = communism_evolution_dark_worker_rituals
+	clr_country_flag = communism_evolution_world_revolution_whispers
+	clear_variable = communism_controlled_states
+	clear_variable = communism_control_level_1_states
+	clear_variable = communism_control_level_2_states
+	clear_variable = communism_control_level_3_states
+	clear_variable = communism_control_daily_drift
+	clear_variable = communism_control_daily_drift_percent
+	clear_variable = communism_revolutionary_threat
+	clear_variable = communism_revolutionary_threat_bar
+	try_defeat_communism_spread_system = yes
 }

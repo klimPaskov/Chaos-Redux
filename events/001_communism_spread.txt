@@ -1,847 +1,919 @@
 add_namespace = chaosx.nr1
 
 ###############################################################################################################
-#	##    ## ########        ##
-#	###   ## ##     ##     ####
-#	####  ## ##     ##       ##
-#	## ## ## ########        ##
-#	##  #### ##   ##         ##
-#	##   ### ##    ##        ##
-#	##    ## ##     ##     ######
-###############################################################################################################
-#   #####                                                         #####
-#  #     #  ####  #    # #    # #    # #    # #  ####  #    #    #     # #####  #####  ######   ##   #####
-#  #       #    # ##  ## ##  ## #    # ##   # # #      ##  ##    #       #    # #    # #       #  #  #    #
-#  #       #    # # ## # # ## # #    # # #  # #  ####  # ## #     #####  #    # #    # #####  #    # #    #
-#  #       #    # #    # #    # #    # #  # # #      # #    #          # #####  #####  #      ###### #    #
-#  #     # #    # #    # #    # #    # #   ## # #    # #    #    #     # #      #   #  #      #    # #    #
-#   #####   ####  #    # #    #  ####  #    # #  ####  #    #     #####  #      #    # ###### #    # #####
+# Communism Spread - State-Based Insurgency System
+# Root event: chaosx.nr1.1
+# Runtime is handled by hidden per-country maintenance events and state flags/modifiers.
 ###############################################################################################################
 
-# Build up toward the World Revolution
 country_event = {
-    id = chaosx.nr1.1
-    title = chaosx.nr1.1.t
-    desc = chaosx.nr1.1.d
-    picture = GFX_report_event_stalin_propaganda
+	id = chaosx.nr1.1
+	title = chaosx.nr1.1.t
+	desc = chaosx.nr1.1.d
+	picture = GFX_report_event_communist_insurgency_start
 
-    is_triggered_only = yes
-
-    immediate = {
-        hidden_effect = {
-            if = {
-                limit = { NOT = { has_global_flag = communism_spread } }
-                set_global_flag = communism_spread
-                every_other_country = {
-                    country_event = { id = chaosx.nr1.1 }
-                }
-            }
-
-            set_temp_variable = { base_value = 0.10 }
-            set_temp_variable = { base_add = 0.02 }
-            modify_value_based_on_chaos_tier = yes
-            add_popularity = {
-                ideology = communism
-                popularity = var:modified_value
-            }
-            add_ideas = communism_spread_idea # don't update the idea right away
-        }
-
-    }
-
-    option = {
-        trigger = {
-            NOT = { has_government = communism }
-        }
-        name = chaosx.nr1.1.a
-        effect_tooltip = {
-            set_temp_variable = { base_value = 0.10 }
-            set_temp_variable = { base_add = 0.02 }
-            modify_value_based_on_chaos_tier = yes
-            add_popularity = {
-                ideology = communism
-                popularity = var:modified_value
-            }
-        }
-    }
-    option = {
-        trigger = {
-            has_government = communism
-        }
-        name = chaosx.nr1.1.b
-        effect_tooltip = {
-            set_temp_variable = { base_value = 0.10 }
-            set_temp_variable = { base_add = 0.02 }
-            modify_value_based_on_chaos_tier = yes
-            add_popularity = {
-                ideology = communism
-                popularity = var:modified_value
-            }
-        }
-    }
-}
-
-# Communist strikes; damage to buildings. Build up toward the World Revolution
-country_event = {
-    id = chaosx.nr1.2
-    title = chaosx.nr1.2.t
-    desc = chaosx.nr1.2.d
-    picture = GFX_report_event_FIN_helsinki_bombed
+	is_triggered_only = yes
 
 	trigger = {
-		NOT = { has_government = communism }
-		communism > 0.10
-		has_global_flag = communism_spread
-		NOT = { has_country_flag = communism_spread_strike_cooldown }
-	}
-
-	mean_time_to_happen = {
-		days = 20 # base mean time 1(100%)/days
+		hidden_trigger = { NOT = { is_special_chaos_country = yes } }
 	}
 
 	immediate = {
 		hidden_effect = {
-			set_country_flag = communism_strike_committees_formed
-			update_communism_spread_support_stage = yes
-			queue_communism_spread_strike_cooldown = yes
+			if = {
+				limit = { NOT = { has_global_flag = communism_spread } }
+					set_global_flag = communism_spread
+					every_other_country = {
+						limit = { hidden_trigger = { NOT = { is_special_chaos_country = yes } } }
+						country_event = { id = chaosx.nr1.1 }
+					}
+				}
+
+				if = {
+					limit = {
+						hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+						NOT = { has_government = communism }
+					}
+					if = {
+						limit = { NOT = { has_idea = communism_spread_idea } }
+						add_ideas = communism_spread_idea
+					}
+					queue_communism_spread_defeat_grace_timeout = yes
+					set_temp_variable = { base_value = 0.04 }
+				set_temp_variable = { base_add = 0.01 }
+				modify_value_based_on_chaos_tier = yes
+					add_popularity = {
+						ideology = communism
+						popularity = var:modified_value
+					}
+					seed_initial_communist_control_state = yes
+					refresh_communism_spread_pressure = yes
+					queue_initial_communism_spread_maintenance = yes
+				}
 		}
 	}
 
-    option = { # OK, do nothing
-        name = chaosx.nr1.2.a
-        ai_chance = { base = 80 }
-        custom_effect_tooltip = chaosx_tt_1_2a
+	option = {
+			trigger = {
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				NOT = { has_government = communism }
+			}
+		name = chaosx.nr1.1.a
+		effect_tooltip = {
+			add_ideas = communism_spread_idea
+			add_popularity = {
+				ideology = communism
+				popularity = 0.04
+			}
+		}
+	}
+	option = {
+			trigger = {
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				has_government = communism
+			}
+		name = chaosx.nr1.1.b
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.2
+	title = chaosx.nr1.2.t
+	desc = chaosx.nr1.2.d
+	picture = GFX_report_event_communist_industry_sabotage
+
+	is_triggered_only = yes
+
+	immediate = {
 		hidden_effect = {
-			set_temp_variable = { state_population_percent = -0.001 } # 0.1% of state population
-			set_temp_variable = { buildings_to_damage_per_state = constant:communism_spread_strike.base_buildings }
-			set_temp_variable = { damage_modifier = constant:communism_spread_strike.base_damage }
-			set_temp_variable = { percent_of_states_to_target = constant:communism_spread_strike.base_state_share }
-
 			if = {
-				limit = { has_country_flag = { flag = communism_support_stage value > 0 } }
-				set_temp_variable = { buildings_to_damage_per_state = constant:communism_spread_strike.cadre_buildings }
-				set_temp_variable = { percent_of_states_to_target = constant:communism_spread_strike.cadre_state_share }
+				limit = { NOT = { has_event_target = communist_sabotage_state } }
+				select_communist_sabotage_state = yes
 			}
-
-			if = {
-				limit = { has_country_flag = { flag = communism_support_stage value > 1 } }
-				set_temp_variable = { buildings_to_damage_per_state = constant:communism_spread_strike.strike_committees_buildings }
-				set_temp_variable = { damage_modifier = constant:communism_spread_strike.strike_committees_damage }
-				set_temp_variable = { percent_of_states_to_target = constant:communism_spread_strike.strike_committees_state_share }
-			}
-
-			damage_buildings_in_random_states = yes
 		}
+	}
+
+	option = {
+		name = chaosx.nr1.2.a
+		ai_chance = { base = 65 }
+		custom_effect_tooltip = chaosx_tt_1_2a
+		hidden_effect = {
+			event_target:communist_sabotage_state = {
+				if = {
+					limit = { has_state_flag = communist_control_level_1 }
+					damage_building = {
+						type = industrial_complex
+						damage = 0.20
+					}
+					add_dynamic_modifier = {
+						modifier = communism_post_crackdown_scars
+						days = 45
+					}
+				}
+				else_if = {
+					limit = { has_state_flag = communist_control_level_2 }
+					damage_building = {
+						type = industrial_complex
+						damage = 0.35
+					}
+					damage_building = {
+						type = arms_factory
+						damage = 0.25
+					}
+				}
+				else = {
+					damage_building = {
+						type = industrial_complex
+						damage = 0.55
+					}
+					damage_building = {
+						type = arms_factory
+						damage = 0.45
+					}
+					add_dynamic_modifier = {
+						modifier = communism_post_crackdown_scars
+						days = 90
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.2.b
+		ai_chance = {
+			base = 35
+			modifier = {
+				add = 20
+				has_war = yes
+			}
+			modifier = {
+				factor = 0.5
+				has_stability < 0.35
+			}
+		}
+		add_command_power = -10
+		add_stability = -0.01
+		hidden_effect = {
+			event_target:communist_sabotage_state = {
+				if = {
+					limit = { has_state_flag = communist_control_level_2 }
+					random_list = {
+						55 = { set_communism_state_control_level_1 = yes }
+						45 = { }
+					}
+				}
+				else_if = {
+					limit = { has_state_flag = communist_control_level_1 }
+					random_list = {
+						65 = { clear_communism_state_control = yes }
+						35 = { }
+					}
+				}
+			}
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.3
+	title = chaosx.nr1.3.t
+	desc = chaosx.nr1.3.d
+	picture = GFX_report_event_communist_emergency_intervention
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr1.3.a
+		ai_chance = { base = 50 }
+		add_stability = constant:communism_spread_emergency.stability_loss
+		add_war_support = constant:communism_spread_emergency.war_support_loss
+		add_dynamic_modifier = {
+			modifier = communism_emergency_disruption
+			days = constant:communism_spread_timing.post_emergency_disruption_days
+		}
+		hidden_effect = {
+			resolve_communist_emergency_without_uprising = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.3.b
+		ai_chance = { base = 50 }
+		add_stability = constant:communism_spread_emergency.stability_loss
+		add_war_support = constant:communism_spread_emergency.war_support_loss
+		add_dynamic_modifier = {
+			modifier = communism_emergency_disruption
+			days = constant:communism_spread_timing.post_emergency_disruption_days
+		}
+		hidden_effect = {
+			create_communist_emergency_uprising = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.4
+	title = chaosx.nr1.4.t
+	desc = chaosx.nr1.4.d
+	picture = GFX_report_event_communist_state_control
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr1.4.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.5
+	title = chaosx.nr1.5.t
+	desc = chaosx.nr1.5.d
+	picture = GFX_report_event_communist_control_escalates
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr1.5.a
 		if = {
-			limit = { has_country_flag = { flag = communism_support_stage value > 1 } }
-			add_stability = constant:communism_spread_strike.ignore_stability
-			add_war_support = constant:communism_spread_strike.ignore_war_support
+			limit = {
+				has_event_target = communist_target_state
+				event_target:communist_target_state = { has_state_flag = communist_control_level_3 }
+			}
+			add_stability = -0.015
 		}
-    }
-
-    option = { # Try to subdue the strikes
-        name = chaosx.nr1.2.b
-        ai_chance = {
-            base = 20
-            # More likely to suppress strikes if:
-            modifier = {
-                add = 10
-                has_war = yes # At war
-            }
-            modifier = {
-                add = 10
-                has_stability < 0.2 # Very low stability
-            }
-            modifier = {
-                add = 50
-                communism < 0.12 # Low communist support
-            }
-            # Less likely if:
-            modifier = {
-                factor = 0.5
-                has_manpower < 10000 # Can't afford manpower loss
-            }
-            modifier = {
-                factor = 0.25
-                communism > 0.3 # High communist support
-            }
-        }
-        add_stability = -0.02
-        add_political_power = -20
-        add_manpower = -5000
-        add_popularity = {
-            ideology = communism
-            popularity = -0.02
-        }
-        update_communism_spread_idea = yes
-    }
+	}
 }
 
-##############################################################################################################
-
-# Workers strike communism uprising; Civil war
 country_event = {
-    id = chaosx.nr1.3
-    title = chaosx.nr1.3.t
-    desc = chaosx.nr1.3.d
-    picture = GFX_report_event_worker_protests
+	id = chaosx.nr1.6
+	title = chaosx.nr1.6.t
+	desc = chaosx.nr1.6.d
+	picture = GFX_report_event_communist_intervention_success
 
-    trigger = {
-        has_civil_war = no
-        NOT = { has_government = communism }
-        communism > 0.4
-        has_global_flag = communism_spread
-        has_stability < 0.3
-    }
+	is_triggered_only = yes
 
-    mean_time_to_happen = {
-        days = 180 # base mean time 1(100%)/days
-		modifier = {
-			factor = constant:communism_spread_civil_war.parallel_soviets_mtth_factor
-			has_country_flag = { flag = communism_support_stage value = 4 }
+	option = {
+		name = chaosx.nr1.6.a
+		add_stability = -0.005
+		hidden_effect = {
+			refresh_communism_spread_pressure = yes
 		}
-    }
-
-    option = { # Cool down the situation
-        name = chaosx.nr1.3.a
-        ai_chance = {
-            base = 33
-        }
-        add_war_support = -0.10
-        add_stability = -0.10
-        add_political_power = -100
-        add_popularity = {
-            ideology = communism
-            popularity = -0.02
-        }
-        update_communism_spread_idea = yes
-    }
-
-    option = { # Start civil war
-        name = chaosx.nr1.3.b
-        ai_chance = {
-            base = 34
-            modifier = {
-                factor = 0
-                communism > 0.6
-            }
-            modifier = {
-                factor = 0.25
-                has_war = yes
-            }
-
-        }
-        add_war_support = 0.10
-        add_political_power = 100
-        hidden_effect = {
-            set_temp_variable = { communist_civil_war_size = party_popularity@communism }
-            if = { limit = { check_variable = { communist_civil_war_size > 0.6 } } set_temp_variable = { communist_civil_war_size = 0.6 } }
-        }
-        start_civil_war = {
-            ideology = communism
-            size = var:communist_civil_war_size
-        }
-        hidden_effect = {
-            add_popularity = {
-                ideology = communism
-                popularity = -0.5
-            }
-
-            # If rebels exist, the communist civil war side annexes them
-            if = {
-                limit = {
-                    any_country = {
-                        has_country_flag = communist_rebel_state
-                        has_war_with = ROOT
-                        original_tag = ROOT
-                    }
-                }
-
-                # Find the communist civil war side and have it annex the rebels
-                every_country = {
-                    limit = {
-                        has_government = communism
-                        original_tag = ROOT
-                    }
-
-                    # Find and annex the rebel country
-                    every_country = {
-                        limit = {
-                            has_country_flag = communist_rebel_state
-                            has_war_with = ROOT
-                            original_tag = ROOT
-                        }
-
-                        PREV = {
-                            annex_country = {
-                                target = PREV
-                                transfer_troops = yes
-                            }
-                            add_stability = 0.05
-                            add_war_support = 0.1
-                            add_manpower = 5000
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    option = { # Give up
-        name = chaosx.nr1.3.c
-        ai_chance = {
-            base = 33
-            modifier = {
-                add = 10
-                communism > 0.6
-            }
-            modifier = {
-                factor = 2
-                has_country_flag = fighting_communist_rebels
-            }
-        }
-        add_stability = -0.25
-        add_war_support = -0.25
-        add_ruling_to_com = yes
-        set_politics = {
-            ruling_party = communism
-            elections_allowed = no
-        }
-        # Find and annex the rebel country
-        every_country = {
-            limit = {
-                has_country_flag = communist_rebel_state
-                has_war_with = ROOT
-                original_tag = ROOT
-            }
-            ROOT = {
-                annex_country = {
-                    target = PREV
-                    transfer_troops = no
-                }
-            }
-        }
-
-    }
+	}
 }
 
-# Communist influence grows stronger - progression events
-country_event = {
-    id = chaosx.nr1.4
-    title = chaosx.nr1.4.t
-    desc = chaosx.nr1.4.d
-    picture = GFX_report_event_stalin_propaganda
-
-    is_triggered_only = yes
-
-    option = {
-        name = chaosx.nr1.4.a
-        # Acknowledge the growing communist threat
-    }
-}
-
-# Communist influence grows weaker - regression events
-country_event = {
-    id = chaosx.nr1.5
-    title = chaosx.nr1.5.t
-    desc = chaosx.nr1.5.d
-    picture = GFX_report_event_generic_sign_treaty2
-
-    is_triggered_only = yes
-
-    option = {
-        name = chaosx.nr1.5.a
-        # Acknowledge the weakening communist threat
-    }
-}
-
-# Communist threat becomes critical (reaching tier 4 or 5)
-country_event = {
-    id = chaosx.nr1.6
-    title = chaosx.nr1.6.t
-    desc = chaosx.nr1.6.d
-    picture = GFX_report_event_worker_protests
-
-    is_triggered_only = yes
-
-    option = {
-        name = chaosx.nr1.6.a
-        add_stability = -0.05
-        add_war_support = -0.05
-        # The situation becomes extremely serious
-    }
-}
-
-# Communist threat significantly reduced (dropping to tier 1 or eliminated)
 country_event = {
 	id = chaosx.nr1.7
 	title = chaosx.nr1.7.t
 	desc = chaosx.nr1.7.d
-    picture = GFX_report_event_generic_rally
+	picture = GFX_report_event_communist_intervention_backfire
 
-    is_triggered_only = yes
-
-    option = {
-        name = chaosx.nr1.7.a
-        add_stability = 0.05
-        add_war_support = 0.05
-        # The communist threat is greatly diminished
-	}
-}
-
-# Clear the communist strike cooldown after the scheduled delay.
-country_event = {
-	id = chaosx.nr1.12
-
-	hidden = yes
 	is_triggered_only = yes
 
 	option = {
-		name = OK
-		clr_country_flag = communism_spread_strike_cooldown
+		name = chaosx.nr1.7.a
+		add_stability = constant:communism_spread_intervention.crackdown_stability_loss
+		add_popularity = {
+			ideology = communism
+			popularity = constant:communism_spread_intervention.failed_support_gain
+		}
+		hidden_effect = {
+			refresh_communism_spread_pressure = yes
+		}
 	}
 }
 
-# Clear the communist status-notification cooldown after the scheduled delay.
 country_event = {
-	id = chaosx.nr1.13
+	id = chaosx.nr1.8
+	title = chaosx.nr1.8.t
+	desc = chaosx.nr1.8.d
+	picture = GFX_report_event_communist_war_warning
 
-	hidden = yes
 	is_triggered_only = yes
 
 	option = {
-		name = OK
-		clr_country_flag = communism_spread_status_notification_cooldown
+		name = chaosx.nr1.8.a
+		ai_chance = { base = 45 }
+		add_command_power = -25
+		add_stability = -0.03
+		hidden_effect = {
+			prepare_communist_emergency_uprising_roll = yes
+			random_list = {
+				var:communist_uprising_chance = { create_communist_emergency_uprising = yes }
+				var:communist_no_uprising_chance = { resolve_communist_emergency_without_uprising = yes }
+			}
+		}
 	}
-}
-
-# Communist rebel groups form and seize territory
-country_event = {
-    id = chaosx.nr1.8
-    title = chaosx.nr1.8.t
-    desc = chaosx.nr1.8.d
-    picture = GFX_report_event_worker_protests
-
-    trigger = {
-        has_civil_war = no
-        NOT = { has_government = communism }
-        has_stability < 0.5
-        communism > 0.1
-        has_global_flag = communism_spread
-        has_global_flag = { flag = chaos_tier value > 0 }
-        num_of_controlled_states > 1
-        NOT = { has_country_flag = fighting_communist_rebels }
-    }
-
-    mean_time_to_happen = {
-        days = 100 # base mean time 1(100%)/days
-    }
-
-    immediate = {
-        hidden_effect = {
-            set_country_flag = fighting_communist_rebels
-        }
-    }
-
-    option = { # Fight the rebels - they form a dynamic country
-        name = chaosx.nr1.8.b
-
-        hidden_effect = {
-            # Calculate percentage of states to occupy based on communist support
-            # Base 5% + 1% for every 2% communist support above 10%
-            set_temp_variable = { rebel_state_percentage = 5 }
-            set_temp_variable = { communist_bonus = party_popularity@communism }
-            subtract_from_temp_variable = { communist_bonus = 0.1 }
-            multiply_temp_variable = { communist_bonus = 50 } # Convert to percentage and divide by 2
-            add_to_temp_variable = { rebel_state_percentage = communist_bonus }
-
-            # Ensure minimum is 5%
-            if = {
-                limit = { check_variable = { rebel_state_percentage < 5 } }
-                set_temp_variable = { rebel_state_percentage = 5 }
-            }
-
-            # Calculate number of states to occupy
-            set_temp_variable = { total_states = num_of_controlled_states }
-            set_temp_variable = { states_to_occupy = total_states }
-            multiply_temp_variable = { states_to_occupy = rebel_state_percentage }
-            divide_temp_variable = { states_to_occupy = 100 }
-
-            # Ensure at least 1 state if percentage gives less than 0.5
-            if = {
-                limit = { check_variable = { states_to_occupy < 0.5 } }
-                set_temp_variable = { states_to_occupy = 1 }
-            }
-
-            # Round to nearest integer
-            round_temp_variable = states_to_occupy
-
-			if = {
-				limit = { has_country_flag = { flag = communism_support_stage value > 2 } }
-				add_to_temp_variable = { rebel_state_percentage = constant:communism_spread_rebels.armed_cells_rebel_state_bonus }
-			}
-
-			if = {
-				limit = { has_country_flag = { flag = communism_support_stage value = 4 } }
-				add_to_temp_variable = { rebel_state_percentage = constant:communism_spread_rebels.parallel_soviets_rebel_state_bonus }
-			}
-
-			set_temp_variable = { states_to_occupy = total_states }
-			multiply_temp_variable = { states_to_occupy = rebel_state_percentage }
-			divide_temp_variable = { states_to_occupy = 100 }
-
-			if = {
-				limit = { check_variable = { states_to_occupy < 0.5 } }
-				set_temp_variable = { states_to_occupy = 1 }
-			}
-
-			round_temp_variable = states_to_occupy
-
-			if = {
-				limit = {
-					has_country_flag = { flag = communism_support_stage value = 4 }
-					check_variable = { states_to_occupy < constant:communism_spread_rebels.parallel_soviets_min_states_to_occupy }
+	option = {
+		name = chaosx.nr1.8.b
+		ai_chance = { base = 20 }
+		add_popularity = {
+			ideology = communism
+			popularity = 0.03
+		}
+		add_stability = 0.02
+		hidden_effect = {
+			every_owned_state = {
+				limit = { has_state_flag = communist_control_level_1 }
+				add_dynamic_modifier = {
+					modifier = communism_post_crackdown_scars
+					days = 60
 				}
-				set_temp_variable = { states_to_occupy = constant:communism_spread_rebels.parallel_soviets_min_states_to_occupy }
 			}
-
-            # Calculate divisions per state based on stability
-            # Base 2 divisions + 1 for every 5% stability below 50%
-            set_temp_variable = { divisions_per_state = 2 }
-            set_temp_variable = { stability_penalty = 0.5 }
-            subtract_from_temp_variable = { stability_penalty = stability }
-            multiply_temp_variable = { stability_penalty = 20 } # Convert to penalty per 5%
-            add_to_temp_variable = { divisions_per_state = stability_penalty }
-
-            # Ensure minimum of 2 divisions per state
-            if = {
-                limit = { check_variable = { divisions_per_state < 2 } }
-                set_temp_variable = { divisions_per_state = 2 }
-            }
-
-			if = {
-				limit = { has_country_flag = { flag = communism_support_stage value > 2 } }
-				add_to_temp_variable = { divisions_per_state = constant:communism_spread_rebels.armed_cells_divisions_per_state_bonus }
-			}
-
-            round_temp_variable = divisions_per_state
-
-            # Create the rebel communist country
-            create_dynamic_country = {
-                original_tag = ROOT
-
-                # Set up the rebel state
-                set_politics = {
-                    ruling_party = communism
-                    elections_allowed = no
-                }
-
-                # Create custom leader for the rebels
-                create_country_leader = {
-                    name = "Communist Rebels"
-                    picture = "GFX_portrait_communist_rebels"
-                    ideology = marxism
-                }
-
-                add_manpower = 10000
-
-                # Set flag to identify this as a rebel state
-                set_country_flag = communist_rebel_state
-
-                # Create division templates based on chaos tier
-                if = {
-                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 1 } } }
-                    division_template = {
-                        name = "Communist Militia"
-                        regiments = {
-                            infantry = { x = 0 y = 0 }
-                            infantry = { x = 0 y = 1 }
-                            infantry = { x = 0 y = 2 }
-                            infantry = { x = 1 y = 0 }
-                            infantry = { x = 1 y = 1 }
-                            infantry = { x = 1 y = 2 }
-                        }
-                    }
-                }
-                else_if = {
-                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 2 } } }
-                    division_template = {
-                        name = "Communist Guards"
-                        regiments = {
-                            infantry = { x = 0 y = 0 }
-                            infantry = { x = 0 y = 1 }
-                            infantry = { x = 0 y = 2 }
-                            infantry = { x = 1 y = 0 }
-                            infantry = { x = 1 y = 1 }
-                            infantry = { x = 1 y = 2 }
-                            infantry = { x = 2 y = 0 }
-                        }
-                        support = {
-                            engineer = { x = 0 y = 0 }
-                        }
-                    }
-                }
-                else_if = {
-                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 3 } } }
-                    division_template = {
-                        name = "Communist Brigade"
-                        regiments = {
-                            infantry = { x = 0 y = 0 }
-                            infantry = { x = 0 y = 1 }
-                            infantry = { x = 0 y = 2 }
-                            infantry = { x = 1 y = 0 }
-                            infantry = { x = 1 y = 1 }
-                            infantry = { x = 1 y = 2 }
-                            infantry = { x = 2 y = 0 }
-                            infantry = { x = 2 y = 1 }
-                        }
-                        support = {
-                            engineer = { x = 0 y = 0 }
-                            artillery = { x = 0 y = 1 }
-                        }
-                    }
-                }
-                else_if = {
-                    limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 4 } } }
-                    division_template = {
-                        name = "Communist Regiment"
-                        regiments = {
-                            infantry = { x = 0 y = 0 }
-                            infantry = { x = 0 y = 1 }
-                            infantry = { x = 0 y = 2 }
-                            infantry = { x = 1 y = 0 }
-                            infantry = { x = 1 y = 1 }
-                            infantry = { x = 1 y = 2 }
-                            infantry = { x = 2 y = 0 }
-                            infantry = { x = 2 y = 1 }
-                            infantry = { x = 2 y = 2 }
-                            artillery_brigade = { x = 3 y = 0 }
-                        }
-                        support = {
-                            engineer = { x = 0 y = 0 }
-                            artillery = { x = 0 y = 1 }
-                            anti_tank = { x = 0 y = 2 }
-                        }
-                    }
-                }
-                else = { # Chaos tier 5 or higher
-                    division_template = {
-                        name = "Communist Army"
-                        regiments = {
-                            infantry = { x = 0 y = 0 }
-                            infantry = { x = 0 y = 1 }
-                            infantry = { x = 0 y = 2 }
-                            infantry = { x = 1 y = 0 }
-                            infantry = { x = 1 y = 1 }
-                            infantry = { x = 1 y = 2 }
-                            infantry = { x = 2 y = 0 }
-                            infantry = { x = 2 y = 1 }
-                            infantry = { x = 2 y = 2 }
-                            artillery_brigade = { x = 3 y = 0 }
-                            artillery_brigade = { x = 3 y = 1 }
-                        }
-                        support = {
-                            engineer = { x = 0 y = 0 }
-                            artillery = { x = 0 y = 1 }
-                            anti_tank = { x = 0 y = 2 }
-                            anti_air = { x = 0 y = 3 }
-                        }
-                    }
-                }
-
-                # Transfer calculated number of states to rebels
-                set_temp_variable = { states_transferred = 0 }
-                while_loop_effect = {
-                    limit = { check_variable = { states_transferred < states_to_occupy } }
-
-                    ROOT = {
-                        random_controlled_state = {
-                            limit = {
-                                is_core_of = ROOT
-                                NOT = { is_capital = yes }
-                                NOT = { has_state_flag = rebel_occupied }
-                            }
-                            set_state_flag = rebel_occupied
-                            transfer_state_to = PREV.PREV
-
-                            # Spawn divisions in this state
-                            set_temp_variable = { divisions_spawned = 0 }
-                            while_loop_effect = {
-                                limit = { check_variable = { divisions_spawned < divisions_per_state } }
-
-                                add_to_temp_variable = { divisions_spawned = 1 }
-                                meta_effect = {
-                                    text = {
-                                        if = {
-                                            limit = { ROOT = { OR = { has_global_flag = { flag = chaos_tier value = 1 } has_global_flag = { flag = chaos_tier value = 0 } } } }
-                                            create_unit = {
-                                                division = "name = \"Communist Militia [COUNT]\" division_template = \"Communist Militia\" start_experience_factor = 0.5"
-                                                owner = PREV.PREV
-                                            }
-                                        }
-                                        else_if = {
-                                            limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 2 } } }
-                                            create_unit = {
-                                                division = "name = \"Communist Guards [COUNT]\" division_template = \"Communist Guards\" start_experience_factor = 1.0"
-                                                owner = PREV.PREV
-                                            }
-                                        }
-                                        else_if = {
-                                            limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 3 } } }
-                                            create_unit = {
-                                                division = "name = \"Communist Brigade [COUNT]\" division_template = \"Communist Brigade\" start_experience_factor = 1.0"
-                                                owner = PREV.PREV
-                                            }
-                                        }
-                                        else_if = {
-                                            limit = { ROOT = { has_global_flag = { flag = chaos_tier value = 4 } } }
-                                            create_unit = {
-                                                division = "name = \"Communist Regiment [COUNT]\" division_template = \"Communist Regiment\" start_experience_factor = 1.0"
-                                                owner = PREV.PREV
-                                            }
-                                        }
-                                        else = { # Chaos tier 5+
-                                            create_unit = {
-                                                division = "name = \"Communist Army [COUNT]\" division_template = \"Communist Army\" start_experience_factor = 1.0"
-                                                owner = PREV.PREV
-                                            }
-                                        }
-                                    }
-                                    COUNT = "[?divisions_spawned|0]"
-                                }
-
-                            }
-                        }
-                        add_to_temp_variable = { states_transferred = 1 }
-                    }
-
-                }
-
-                # Clear state flags
-                every_controlled_state = {
-                    clr_state_flag = rebel_occupied
-                }
-
-                # Start war with original country
-                declare_war_on = {
-                    target = ROOT
-                    type = annex_everything
-                }
-            }
-        }
-
-        # Effects on original country
-        add_war_support = 0.1
-        add_stability = -0.1
-        add_popularity = {
-            ideology = communism
-            popularity = -0.05
-        }
-        update_communism_spread_idea = yes
-    }
-
-    option = { # Give in to rebel demands
-        name = chaosx.nr1.8.c
-        ai_chance = {
-            base = 10
-            modifier = {
-                factor = 3
-                communism > 0.4
-            }
-            modifier = {
-                factor = 0.1
-                has_war = yes
-            }
-        }
-        clr_country_flag = fighting_communist_rebels
-        add_stability = -0.15
-        add_political_power = -100
-        add_popularity = {
-            ideology = communism
-            popularity = 0.1
-        }
-        update_communism_spread_idea = yes
-
-        # Chance to go communist if support is very high
-        if = {
-            limit = { communism > 0.5 has_stability < 0.5 }
-            random_list = {
-                30 = {
-                    set_politics = {
-                        ruling_party = communism
-                        elections_allowed = no
-                    }
-                }
-                70 = { # Stay current government but appeased rebels
-                }
-            }
-        }
-    }
+		}
+	}
+	option = {
+		name = chaosx.nr1.8.c
+		ai_chance = { base = 35 }
+		add_command_power = 20
+		add_war_support = 0.03
+		add_dynamic_modifier = {
+			modifier = communism_emergency_disruption
+			days = 60
+		}
+		set_country_flag = communist_loyalist_preparations
+	}
 }
 
-# Military intervention against communists - Success
 country_event = {
-    id = chaosx.nr1.9
-    title = chaosx.nr1.9.t
-    desc = chaosx.nr1.9.d
-    picture = GFX_report_event_generic_rally
+	id = chaosx.nr1.9
+	title = chaosx.nr1.9.t
+	desc = chaosx.nr1.9.d
+	picture = GFX_report_event_communist_emergency_success
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
 	option = {
 		name = chaosx.nr1.9.a
-		set_temp_variable = { communism_reduction = constant:communism_spread_reduction.military_success }
-		multiply_temp_variable = { communism_reduction = -1 }
-		add_popularity = {
-			ideology = communism
-			popularity = var:communism_reduction
-		}
-		add_stability = -0.01
-		add_war_support = 0.01
-        update_communism_spread_idea = yes
-    }
+	}
 }
 
-# Military intervention against communists - Failure
 country_event = {
-    id = chaosx.nr1.10
-    title = chaosx.nr1.10.t
-    desc = chaosx.nr1.10.d
-    picture = GFX_report_event_worker_protests
+	id = chaosx.nr1.10
+	title = chaosx.nr1.10.t
+	desc = chaosx.nr1.10.d
+	picture = GFX_report_event_communist_uprising
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
 	option = {
 		name = chaosx.nr1.10.a
-		set_temp_variable = { communism_reduction = constant:communism_spread_reduction.military_partial_failure }
-		multiply_temp_variable = { communism_reduction = -1 }
-		add_popularity = {
-			ideology = communism
-			popularity = var:communism_reduction
-		}
-		add_stability = -0.02
-		add_war_support = -0.02
-        update_communism_spread_idea = yes
-    }
+	}
 }
 
-# Military intervention against communists - Complete Failure
 country_event = {
-    id = chaosx.nr1.11
-    title = chaosx.nr1.11.t
-    desc = chaosx.nr1.11.d
-    picture = GFX_report_event_journalists_speech
+	id = chaosx.nr1.11
+	title = chaosx.nr1.11.t
+	desc = chaosx.nr1.11.d
+	picture = GFX_report_event_communist_unstable_activity
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    option = {
-        name = chaosx.nr1.11.a
-        add_popularity = {
-            ideology = communism
-            popularity = 0.02
-        }
-        add_stability = -0.04
-        add_war_support = -0.04
-        update_communism_spread_idea = yes
-    }
+	option = {
+		name = chaosx.nr1.11.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.12
+	title = chaosx.nr1.12.t
+	desc = chaosx.nr1.12.d
+	picture = GFX_report_event_communist_dark_worker_rituals
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr1.12.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.13
+	title = chaosx.nr1.13.t
+	desc = chaosx.nr1.13.d
+	picture = GFX_report_event_communist_world_revolution_whispers
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr1.13.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.14
+	title = chaosx.nr1.14.t
+	desc = chaosx.nr1.14.d
+	picture = GFX_report_event_communist_surprise_revolt
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.14.a
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				resolve_communist_surprise_revolt_state = yes
+			}
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.15
+	title = chaosx.nr1.15.t
+	desc = chaosx.nr1.15.d
+	picture = GFX_report_event_communist_worker_ritual
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.15.a
+		add_popularity = {
+			ideology = communism
+			popularity = constant:communism_spread_evolution.ritual_support_gain
+		}
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_worker_ritual_state
+				add_dynamic_modifier = {
+					modifier = communism_worker_ritual_fear
+					days = 90
+				}
+				random_list = {
+					20 = {
+						if = {
+							limit = { has_state_flag = communist_control_level_1 }
+							set_communism_state_control_level_2 = yes
+						}
+					}
+					80 = { }
+				}
+			}
+			set_temp_variable = { chaos_change = 1 }
+			add_chaos_meter_value = yes
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.16
+	title = chaosx.nr1.16.t
+	desc = chaosx.nr1.16.d
+	picture = GFX_report_event_communist_world_revolution_foreshadowing
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.16.a
+		add_popularity = {
+			ideology = communism
+			popularity = constant:communism_spread_evolution.whisper_support_gain
+		}
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_world_revolution_whisper_state
+			}
+			increase_world_revolution_weight_from_communist_whisper = yes
+			set_temp_variable = { chaos_change = 2 }
+			add_chaos_meter_value = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.17
+	title = chaosx.nr1.17.t
+	desc = chaosx.nr1.17.d
+	picture = GFX_report_event_communist_insurgency_defeated
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr1.17.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.18
+	title = chaosx.nr1.18.t
+	desc = chaosx.nr1.18.d
+	picture = GFX_report_event_communist_surprise_revolt
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.18.a
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				resolve_communist_surprise_revolt_state = yes
+			}
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.19
+	title = chaosx.nr1.19.t
+	desc = chaosx.nr1.19.d
+	picture = GFX_report_event_communist_surprise_revolt
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.19.a
+		add_stability = constant:communism_spread_evolution.moderate_stability_loss
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				if = {
+					limit = { has_state_flag = communist_control_level_1 }
+					set_communism_state_control_level_2 = yes
+				}
+				else_if = {
+					limit = { has_state_flag = communist_control_level_2 }
+					add_dynamic_modifier = {
+						modifier = communism_post_crackdown_scars
+						days = 60
+					}
+				}
+				else = {
+					set_state_flag = communist_surprise_breakaway_state
+				}
+			}
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.27
+	title = chaosx.nr1.27.t
+	desc = chaosx.nr1.27.d
+	picture = GFX_report_event_communist_worker_ritual
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.27.a
+		add_war_support = constant:communism_spread_evolution.minor_war_support_loss
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_worker_ritual_state
+				add_dynamic_modifier = {
+					modifier = communism_worker_ritual_fear
+					days = 120
+				}
+			}
+			set_temp_variable = { chaos_change = 1 }
+			add_chaos_meter_value = yes
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.28
+	title = chaosx.nr1.28.t
+	desc = chaosx.nr1.28.d
+	picture = GFX_report_event_communist_worker_ritual
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.28.a
+		add_popularity = {
+			ideology = communism
+			popularity = constant:communism_spread_evolution.minor_ritual_support_gain
+		}
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_worker_ritual_state
+				damage_building = {
+					type = industrial_complex
+					damage = 0.15
+				}
+				add_dynamic_modifier = {
+					modifier = communism_worker_ritual_fear
+					days = 90
+				}
+			}
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.29
+	title = chaosx.nr1.29.t
+	desc = chaosx.nr1.29.d
+	picture = GFX_report_event_communist_worker_ritual
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.29.a
+		add_stability = constant:communism_spread_evolution.minor_stability_loss
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_worker_ritual_state
+				add_dynamic_modifier = {
+					modifier = communism_worker_ritual_fear
+					days = 120
+				}
+				random_list = {
+					15 = {
+						if = {
+							limit = { has_state_flag = communist_control_level_2 }
+							set_communism_state_control_level_3 = yes
+						}
+					}
+					85 = { }
+				}
+			}
+			set_temp_variable = { chaos_change = 1 }
+			add_chaos_meter_value = yes
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.30
+	title = chaosx.nr1.30.t
+	desc = chaosx.nr1.30.d
+	picture = GFX_report_event_communist_world_revolution_foreshadowing
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.30.a
+		add_popularity = {
+			ideology = communism
+			popularity = constant:communism_spread_evolution.whisper_support_gain
+		}
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_world_revolution_whisper_state
+			}
+			increase_world_revolution_weight_from_communist_whisper = yes
+			set_temp_variable = { chaos_change = 2 }
+			add_chaos_meter_value = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.31
+	title = chaosx.nr1.31.t
+	desc = chaosx.nr1.31.d
+	picture = GFX_report_event_communist_world_revolution_foreshadowing
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.31.a
+		add_stability = constant:communism_spread_evolution.minor_stability_loss
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_world_revolution_whisper_state
+				if = {
+					limit = { has_state_flag = communist_worker_ritual_state }
+					add_dynamic_modifier = {
+						modifier = communism_worker_ritual_fear
+						days = 90
+					}
+				}
+			}
+			increase_world_revolution_weight_from_communist_whisper = yes
+			set_temp_variable = { chaos_change = 2 }
+			add_chaos_meter_value = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.32
+	title = chaosx.nr1.32.t
+	desc = chaosx.nr1.32.d
+	picture = GFX_report_event_communist_world_revolution_foreshadowing
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_event_target = communist_evolution_state } }
+				select_communist_evolution_state = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr1.32.a
+		add_popularity = {
+			ideology = communism
+			popularity = constant:communism_spread_evolution.ritual_support_gain
+		}
+		hidden_effect = {
+			event_target:communist_evolution_state = {
+				set_state_flag = communist_world_revolution_whisper_state
+				if = {
+					limit = { has_state_flag = communist_control_level_2 }
+					random_list = {
+						20 = { set_communism_state_control_level_3 = yes }
+						80 = { }
+					}
+				}
+			}
+			increase_world_revolution_weight_from_communist_whisper = yes
+			set_temp_variable = { chaos_change = 2 }
+			add_chaos_meter_value = yes
+			refresh_communism_spread_pressure = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.20
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			clr_country_flag = communism_spread_maintenance_queued
+			run_communism_spread_maintenance = yes
+		}
+	}
+
+	option = { name = OK }
+}
+
+country_event = {
+	id = chaosx.nr1.21
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_state_spread_cooldown
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.22
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_state_escalation_cooldown
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.23
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_sabotage_cooldown
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.24
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_revolutionary_war_cooldown
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.25
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_evolution_incident_cooldown
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.26
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_country_flag = communism_spread_defeat_grace
+	}
+}
+
+country_event = {
+	id = chaosx.nr1.33
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+		clr_global_flag = communism_evolution_progression_cooldown
+	}
 }

@@ -3,6 +3,11 @@ guiTypes = {
 	@chaosx_menu_panel_width = 1450
 	@chaosx_menu_panel_height = 410
 	@chaosx_menu_panel_y = -10
+	@chaosx_menu_panel_start_y = 430
+	@chaosx_menu_panel_anim_time = 1200
+	@chaosx_menu_panel_fade_time = 900
+	@chaosx_menu_logo_y = 10
+	@chaosx_menu_logo_start_y = 250
 	@chaosx_menu_button_x = 570
 	@chaosx_menu_button_y_1 = 58
 	@chaosx_menu_button_y_2 = 113
@@ -270,10 +275,12 @@ guiTypes = {
 	### MAIN MENU PANEL (upperleft)
 	containerWindowType = {
 		name  ="mainmenu_panel_upperleft"
-		position = { x = 0 y = 10 }
-		show_position = { x = 0 y = 10 }
+		position = { x = 0 y = @chaosx_menu_logo_start_y }
+		show_position = { x = 0 y = @chaosx_menu_logo_y }
+		hide_position = { x = 0 y = @chaosx_menu_logo_y }
 		animation_type = decelerated
-		animation_time = 1000
+		animation_time = @chaosx_menu_panel_anim_time
+		fade_time = @chaosx_menu_panel_fade_time
 		size = { width = 592 height = 669 }
 		Orientation = center
 		Origo = center
@@ -433,7 +440,12 @@ guiTypes = {
 	### MAIN MENU PANEL (bottom)
 	containerWindowType = {
 		name ="mainmenu_panel_bottom"
-		position = { x = 0 y = @chaosx_menu_panel_y }
+		position = { x = 0 y = @chaosx_menu_panel_start_y }
+		show_position = { x = 0 y = @chaosx_menu_panel_y }
+		hide_position = { x = 0 y = @chaosx_menu_panel_y }
+		animation_type = decelerated
+		animation_time = @chaosx_menu_panel_anim_time
+		fade_time = @chaosx_menu_panel_fade_time
 		size = { width = @chaosx_menu_panel_width height = @chaosx_menu_panel_height }
 		Orientation = center_down
 		Origo = center_down
@@ -470,10 +482,9 @@ guiTypes = {
 			scale = 1.25
 		}
 
-		@warn_icon_x = 915
 		iconType = {
 			name = "single_player_button_warn"
-			position = { x = @warn_icon_x y = 65 }
+			position = { x = 915 y = 65 }
 			spriteType = "GFX_missing_dlc_warning_sign"
 		}
 
@@ -603,7 +614,6 @@ guiTypes = {
 			clicksound = click_default
 			oversound = ui_menu_over
 			scale = 1.25
-
 		}
 
 		iconType = {
