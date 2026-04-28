@@ -15,6 +15,7 @@ The framework is source-based:
 Current registered source flags:
 
 - `world_threat_source_zombies`
+- `world_threat_source_holy_realm`
 
 Shared aggregate flag:
 
@@ -60,6 +61,8 @@ This keeps the high-level flag generic and future-proof.
 
 The zombie source uses `refresh_zombie_world_threat_source` in `common/scripted_effects/002_zombie_outbreak_effects.txt`.
 
+The Holy Realm source uses `holy_realm_refresh_world_threat_source` in `common/scripted_effects/003_holy_realm_effects.txt`. It can become active after the Buddha Mandate, Divine Sovereignty, final warnings, or an armed final doctrine.
+
 That effect:
 
 1. recalculates total zombie strength
@@ -85,6 +88,7 @@ Shared triggers:
 
 - `is_world_in_threat`
 - `has_world_threat_source_zombies`
+- `has_world_threat_source_holy_realm`
 
 ## Adding future threats
 
