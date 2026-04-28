@@ -58,8 +58,9 @@ If Chaos Redux already has a pattern for the same thing, follow that over vanill
 
 If vanilla examples are insufficient or unclear, you are allowed to inspect well known large mods for additional reference.
 
-- Kaiserreich is approved as a reference mod for structure, patterns, and edge case handling.
+- Kaiserreich (1521695605) is approved as a reference mod for structure, patterns, and edge case handling.
 - You may read Kaiserreich files to understand how similar systems are implemented when vanilla does not provide a clear or complete example.
+- You may read other mod files as well (for example Kaiserredux 2076426030), if you don't find what you are looking for inside Kaiserreich.
 
 ---
 
@@ -230,7 +231,7 @@ When implementing any new mechanic, follow this checklist:
 15. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice unless the user explicitly says they did not reload. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session.
 16. Fallbacks are never allowed and MUST ALWAYS be discussed with the user.
 17. When the user reports that something is wrong and you can't figure out what exactly, then add temporary debug code (for example: `log = "my debug log"`) that exposes the relevant runtime values needed to understand the issue, and remove every debug line you added once the issue is resolved.
-18. When updating content, write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing unless the file is explicitly a changelog.
+18. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
 
 Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
 If this checklist cannot be satisfied, stop and request more design input instead of guessing.
@@ -245,15 +246,3 @@ For Chaos Redux event implementation, use the repo skill `chaos-redux-events`.
 2. Wire event script, category registration, auto-firing, localisation/name mappings, event log actor mapping, and event details window content together in the same change.
 3. If the event has evolutions or world-end branches, wire the log entries, super-event integration, and related localisation in the same change.
 4. Keep gameplay files, docs, the event spreadsheet/presentation, and any other details aligned.
-
----
-
-## 6. Git and Worktrees
-
-When I tell you to, use a separate git worktree for a new session. The agent should create and use its own worktree so parallel sessions do not interfere with each other.
-
-The agent may make small frequent commits inside its own worktree during the session, but commits must be meaningful and represent real progress.
-
-When the session is finished, move the result back into the main tree only if there is no overlap with other active worktrees. If there is any conflict risk, stop and leave the merge to the user.
-
-Never run `git push`. The user does that manually.
