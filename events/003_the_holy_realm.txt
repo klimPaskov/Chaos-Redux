@@ -1,144 +1,397 @@
 add_namespace = chaosx.nr3
 
-##############################################################################################################
-#    ##    ## ########      #######
-#    ###   ## ##     ##    ##     ##
-#    ####  ## ##     ##           ##
-#    ## ## ## ########      #######
-#    ##  #### ##   ##             ##
-#    ##   ### ##    ##     ##     ##
-#    ##    ## ##     ##     #######
-##############################################################################################################
-#   #######                  #     #                        ######
-#      #    #    # ######    #     #  ####  #      #   #    #     # ######   ##   #      #    #
-#      #    #    # #         #     # #    # #       # #     #     # #       #  #  #      ##  ##
-#      #    ###### #####     ####### #    # #        #      ######  #####  #    # #      # ## #
-#      #    #    # #         #     # #    # #        #      #   #   #      ###### #      #    #
-#      #    #    # #         #     # #    # #        #      #    #  #      #    # #      #    #
-#      #    #    # ######    #     #  ####  ######   #      #     # ###### #    # ###### #    #
-
-##############################################################################################################
+# Overview:
+# - Holy Realm event ecosystem. Event 3 remains the stable fire-once entry.
+# - The chain transforms Tibet or a Tibet-centered country into the Holy Realm,
+#   tracks Mandala counters, logs evolution stages, opens doctrine decisions,
+#   warns foreign players, and can resolve into the Final Silence world-end.
 
 country_event = {
-    id = chaosx.nr3.1
-    title = chaosx.nr3.1.t
+	id = chaosx.nr3.1
+	title = chaosx.nr3.1.t
+	is_triggered_only = yes
+	hidden = yes
 
-    is_triggered_only = yes
-
-    hidden = yes
-
-    immediate = {
-        if = {
-            limit = { OR = { BHU = { is_ai = no } TIB = { is_ai = no } NEP = { is_ai = no } } }
-            country_event = { id = chaosx.nr3.2 days = 1 }
-        }
-        else = {
-            random_country = {
-                limit = { OR = { tag = BHU tag = TIB tag = NEP } }
-                country_event = { id = chaosx.nr3.2 days = 1 }
-            }
-        }
-    }
+	immediate = {
+		if = {
+			limit = {
+				TIB = { can_host_holy_realm_refuge = yes }
+			}
+			TIB = { country_event = { id = chaosx.nr3.2 days = 1 } }
+		}
+		else_if = {
+			limit = {
+				any_country = { can_host_holy_realm_refuge = yes }
+			}
+			random_country = {
+				limit = { can_host_holy_realm_refuge = yes }
+				country_event = { id = chaosx.nr3.2 days = 1 }
+			}
+		}
+	}
 }
-
-##############################################################################################################
 
 country_event = {
-    id = chaosx.nr3.2
-    title = chaosx.nr3.2.t
-    desc = chaosx.nr3.2.d
-    picture = GFX_report_event_lhasa
+	id = chaosx.nr3.2
+	title = chaosx.nr3.2.t
+	desc = chaosx.nr3.2.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
 
-    is_triggered_only = yes
+	trigger = {
+		can_host_holy_realm_refuge = yes
+		NOT = { has_global_flag = holy_realm_exists }
+	}
 
-    option = {
-        name = chaosx.nr3.2.a
-        ai_chance = { base = 100 }
-        hidden_effect = {
-            set_cosmetic_tag = THR
-            add_ideas = THR_gods_plan
-            create_faction = gods_plan
-            set_politics = {
-                ruling_party = neutrality
-                elections_allowed = no
-                election_frequency = 48
-                long_name = "God's Plan"
-                name = "God's Plan"
-            }
-            add_popularity = {
-                ideology = neutrality
-                popularity = 1.00
-            }
-            retire_country_leader = yes
-            create_country_leader = {
-                name = "God"
-                picture = GFX_portrait_THR_godly_figure
-                ideology = despotism
-            }
-            news_event = { id = chaosx.news.9 days = 3 }
-        }
-        BHU = {
-            if = { limit = { NOT = { tag = ROOT } }
-            country_event = { id = chaosx.nr3.3 days = 3 }
-            every_core_state = {
-                add_core_of = ROOT
-            }
-        }
-    }
-    NEP = {
-        if = { limit = { NOT = { tag = ROOT } }
-        country_event = { id = chaosx.nr3.3 days = 1 }
-        every_core_state = {
-            add_core_of = ROOT
-        }
-    }
-}
-TIB = {
-    if = { limit = { NOT = { tag = ROOT } }
-    country_event = { id = chaosx.nr3.3 days = 2 }
-    every_core_state = {
-        add_core_of = ROOT
-    }
-}
-}
-}
-option = {
-    name = chaosx.nr3.2.b
-    add_stability = -0.10
-    ai_chance = { base = 0 }
-}
-}
+	option = {
+		name = chaosx.nr3.2.a
+		ai_chance = {
+			base = 70
+			modifier = {
+				factor = 0.35
+				check_variable = { global.chaos_meter_value < constant:holy_realm_chaos.formation_min }
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					tag = TIB
+					original_tag = TIB
+				}
+			}
+		}
+		hidden_effect = {
+			holy_realm_form_country = yes
+			news_event = { id = chaosx.news.9 days = 2 }
+			BHU = {
+				if = {
+					limit = {
+						exists = yes
+						NOT = { tag = ROOT }
+					}
+					country_event = { id = chaosx.nr3.3 days = 2 }
+				}
+			}
+			NEP = {
+				if = {
+					limit = {
+						exists = yes
+						NOT = { tag = ROOT }
+					}
+					country_event = { id = chaosx.nr3.3 days = 3 }
+				}
+			}
+			TIB = {
+				if = {
+					limit = {
+						exists = yes
+						NOT = { tag = ROOT }
+					}
+					country_event = { id = chaosx.nr3.3 days = 1 }
+				}
+			}
+		}
+	}
 
-##############################################################################################################
+	option = {
+		name = chaosx.nr3.2.b
+		ai_chance = { base = 30 }
+		set_country_flag = holy_realm_refused_calling
+		add_stability = -0.05
+	}
+}
 
 country_event = {
-    id = chaosx.nr3.3
-    title = chaosx.nr3.3.t
-    desc = chaosx.nr3.3.d
-    picture = GFX_report_event_lhasa
+	id = chaosx.nr3.3
+	title = chaosx.nr3.3.t
+	desc = chaosx.nr3.3.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
 
-    is_triggered_only = yes
+	option = {
+		name = chaosx.nr3.3.a
+		ai_chance = {
+			base = 45
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > 400 }
+			}
+		}
+		hidden_effect = {
+			every_core_state = {
+				add_core_of = FROM
+			}
+			FROM = {
+				set_country_flag = holy_realm_memory_himalayan_unity
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+				annex_country = {
+					target = ROOT
+					transfer_troops = yes
+				}
+			}
+		}
+	}
 
-    option = {
-        name = chaosx.nr3.3.a
-        ai_chance = { base = 70 }
-        FROM = {
-            annex_country = {
-                target = ROOT
-                transfer_troops = yes
-            }
-        }
-    }
-    option = {
-        name = chaosx.nr3.3.b
-        add_stability = -0.10
-        add_war_support = 0.10
-        FROM = {
-            create_wargoal = {
-                target = ROOT
-                type = annex_everything
-            }
-        }
-        ai_chance = { base = 30 }
-    }
+	option = {
+		name = chaosx.nr3.3.b
+		ai_chance = { base = 55 }
+		add_stability = -0.03
+		FROM = {
+			set_country_flag = holy_realm_memory_himalayan_refusal
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			create_wargoal = {
+				target = ROOT
+				type = annex_everything
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.10
+	title = chaosx.nr3.10.t
+	desc = chaosx.nr3.10.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.10.a
+		ai_chance = { base = 100 }
+		hidden_effect = {
+			holy_realm_set_stage_bodhisattva = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.20
+	title = chaosx.nr3.20.t
+	desc = chaosx.nr3.20.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.20.a
+		ai_chance = { base = 65 }
+		hidden_effect = {
+			set_country_flag = holy_realm_memory_arhats_empowered
+			holy_realm_set_stage_arhat = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr3.20.b
+		ai_chance = { base = 35 }
+		hidden_effect = {
+			set_country_flag = holy_realm_memory_arhats_checked
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
+			holy_realm_add_compassion_drift = yes
+			holy_realm_set_stage_arhat = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.30
+	title = chaosx.nr3.30.t
+	desc = chaosx.nr3.30.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.30.a
+		ai_chance = { base = 100 }
+		hidden_effect = {
+			holy_realm_set_stage_buddha_mandate = yes
+			every_other_country = {
+				limit = {
+					exists = yes
+					NOT = { is_holy_realm_country = yes }
+					OR = {
+						is_major = yes
+						is_ai = no
+					}
+				}
+				country_event = { id = chaosx.nr3.71 days = 2 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.40
+	title = chaosx.nr3.40.t
+	desc = chaosx.nr3.40.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.40.a
+		ai_chance = {
+			base = 70
+			modifier = {
+				factor = 0.25
+				check_variable = { compassion_drift > 50 }
+			}
+		}
+		hidden_effect = {
+			holy_realm_set_stage_divine_sovereignty = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr3.40.b
+		ai_chance = { base = 30 }
+		hidden_effect = {
+			set_country_flag = holy_realm_doctrine_restraint
+			set_country_flag = holy_realm_doctrine_chosen
+			holy_realm_renounce_final_silence = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.70
+	title = chaosx.nr3.70.t
+	desc = chaosx.nr3.70.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.70.a
+		ai_chance = { base = 60 }
+		hidden_effect = {
+			holy_realm_arm_final_silence = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr3.70.b
+		ai_chance = { base = 40 }
+		hidden_effect = {
+			holy_realm_renounce_final_silence = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.71
+	title = chaosx.nr3.71.t
+	desc = chaosx.nr3.71.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.71.a
+		ai_chance = {
+			base = 80
+			modifier = {
+				factor = 2
+				is_major = yes
+			}
+		}
+		add_war_support = 0.02
+		set_country_flag = holy_realm_foreign_monitoring
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.72
+	title = chaosx.nr3.72.t
+	desc = chaosx.nr3.72.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.72.a
+		set_country_flag = holy_realm_multiplayer_warning_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.73
+	title = chaosx.nr3.73.t
+	desc = chaosx.nr3.73.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.73.a
+		set_country_flag = holy_realm_final_silence_witness
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.80
+	title = chaosx.nr3.80.t
+	desc = chaosx.nr3.80.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	trigger = {
+		holy_realm_can_start_final_silence = yes
+	}
+
+	option = {
+		name = chaosx.nr3.80.a
+		ai_chance = { base = 100 }
+		hidden_effect = {
+			holy_realm_prepare_final_silence = yes
+			every_other_country = {
+				limit = {
+					exists = yes
+					NOT = { is_holy_realm_country = yes }
+				}
+				country_event = { id = chaosx.nr3.73 days = 1 }
+			}
+			holy_realm_apply_final_silence_wave = yes
+			if = {
+				limit = { NOT = { has_global_flag = world_end_final_silence_completed } }
+				country_event = { id = chaosx.nr3.82 days = 21 }
+			}
+			else = {
+				country_event = { id = chaosx.nr3.90 days = 1 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.82
+	title = chaosx.nr3.82.t
+	is_triggered_only = yes
+	hidden = yes
+
+	trigger = {
+		is_holy_realm_country = yes
+		has_global_flag = world_end_final_silence
+		NOT = { has_global_flag = world_end_final_silence_completed }
+	}
+
+	immediate = {
+		holy_realm_apply_final_silence_wave = yes
+		if = {
+			limit = { has_global_flag = world_end_final_silence_completed }
+			country_event = { id = chaosx.nr3.90 days = 1 }
+		}
+		else = {
+			country_event = { id = chaosx.nr3.82 days = 21 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.90
+	title = chaosx.nr3.90.t
+	desc = chaosx.nr3.90.d
+	picture = GFX_report_event_lhasa
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.90.a
+		hidden_effect = {
+			world_end_scenario_triggered = yes
+		}
+	}
 }

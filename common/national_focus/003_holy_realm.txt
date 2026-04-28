@@ -1,0 +1,425 @@
+focus_tree = {
+	id = THR_focus
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 10
+			has_country_flag = holy_realm_active
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 50 y = 1800 }
+
+	focus = {
+		id = THR_mountain_refuge
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 20
+		y = 0
+		cost = 5
+		completion_reward = {
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			add_stability = 0.03
+			random_owned_controlled_state = {
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = THR_shelter_border_villages
+		icon = GFX_goal_generic_consumer_goods
+		x = 18
+		y = 1
+		cost = 5
+		prerequisite = { focus = THR_mountain_refuge }
+		completion_reward = {
+			set_country_flag = holy_realm_memory_refugee_shelters
+			add_manpower = 12000
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+	}
+
+	focus = {
+		id = THR_guard_high_passes
+		icon = GFX_goal_generic_fortify_city
+		x = 22
+		y = 1
+		cost = 5
+		prerequisite = { focus = THR_mountain_refuge }
+		completion_reward = {
+			add_war_support = 0.04
+			random_owned_controlled_state = {
+				add_building_construction = {
+					type = bunker
+					level = 2
+					instant_build = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = THR_bodhisattva_accepts_seal
+		icon = GFX_goal_generic_national_unity
+		x = 20
+		y = 2
+		cost = 7
+		prerequisite = { focus = THR_shelter_border_villages }
+		prerequisite = { focus = THR_guard_high_passes }
+		completion_reward = {
+			country_event = { id = chaosx.nr3.10 }
+		}
+	}
+
+	focus = {
+		id = THR_first_doctrine_suffering
+		icon = GFX_goal_generic_political_reform
+		x = 20
+		y = 3
+		cost = 5
+		prerequisite = { focus = THR_bodhisattva_accepts_seal }
+		completion_reward = {
+			add_political_power = 75
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+		}
+	}
+
+	focus = {
+		id = THR_rewrite_civil_register
+		icon = GFX_goal_generic_intelligence_exchange
+		x = 17
+		y = 4
+		cost = 6
+		prerequisite = { focus = THR_first_doctrine_suffering }
+		completion_reward = {
+			set_country_flag = holy_realm_memory_civil_register
+			add_political_power = 50
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+	}
+
+	focus = {
+		id = THR_mandala_bureau
+		icon = GFX_goal_generic_production
+		x = 15
+		y = 5
+		cost = 7
+		prerequisite = { focus = THR_rewrite_civil_register }
+		completion_reward = {
+			add_ideas = holy_realm_arhat_administration
+			random_owned_controlled_state = {
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+	}
+
+	focus = {
+		id = THR_arhat_examinations
+		icon = GFX_goal_generic_political_reform
+		x = 19
+		y = 5
+		cost = 7
+		prerequisite = { focus = THR_rewrite_civil_register }
+		completion_reward = {
+			set_country_flag = holy_realm_memory_arhat_examinations
+			add_stability = 0.04
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+	}
+
+	focus = {
+		id = THR_arhats_take_office
+		icon = GFX_goal_generic_demand_territory
+		x = 17
+		y = 6
+		cost = 8
+		prerequisite = { focus = THR_mandala_bureau }
+		prerequisite = { focus = THR_arhat_examinations }
+		completion_reward = {
+			country_event = { id = chaosx.nr3.20 }
+		}
+	}
+
+	focus = {
+		id = THR_labs_snow_line
+		icon = GFX_goal_generic_scientific_exchange
+		x = 13
+		y = 7
+		cost = 8
+		prerequisite = { focus = THR_arhats_take_office }
+		completion_reward = {
+			add_research_slot = 1
+			add_tech_bonus = {
+				name = THR_labs_snow_line_bonus
+				bonus = 0.50
+				uses = 2
+				category = nuclear
+			}
+			set_country_flag = holy_realm_memory_snow_line_labs
+		}
+	}
+
+	focus = {
+		id = THR_refuge_foundries
+		icon = GFX_goal_generic_construct_mil_factory
+		x = 15
+		y = 7
+		cost = 8
+		prerequisite = { focus = THR_arhats_take_office }
+		completion_reward = {
+			random_owned_controlled_state = {
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			add_war_support = 0.05
+		}
+	}
+
+	focus = {
+		id = THR_vow_keeper_regiments
+		icon = GFX_goal_generic_army_doctrines
+		x = 19
+		y = 7
+		cost = 8
+		prerequisite = { focus = THR_arhats_take_office }
+		completion_reward = {
+			army_experience = 25
+			add_doctrine_cost_reduction = {
+				name = THR_vow_keeper_regiments_bonus
+				cost_reduction = 0.50
+				uses = 1
+				category = land_doctrine
+			}
+		}
+	}
+
+	focus = {
+		id = THR_quiet_envoys
+		icon = GFX_goal_generic_improve_relations
+		x = 21
+		y = 7
+		cost = 8
+		prerequisite = { focus = THR_arhats_take_office }
+		completion_reward = {
+			set_country_flag = holy_realm_memory_quiet_envoys
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+	}
+
+	focus = {
+		id = THR_buddha_mandate
+		icon = GFX_goal_generic_major_war
+		x = 17
+		y = 8
+		cost = 10
+		prerequisite = { focus = THR_labs_snow_line }
+		prerequisite = { focus = THR_refuge_foundries }
+		prerequisite = { focus = THR_vow_keeper_regiments }
+		prerequisite = { focus = THR_quiet_envoys }
+		completion_reward = {
+			country_event = { id = chaosx.nr3.30 }
+		}
+	}
+
+	focus = {
+		id = THR_lamps_remain_lit
+		icon = GFX_goal_generic_national_unity
+		x = 10
+		y = 9
+		cost = 8
+		prerequisite = { focus = THR_buddha_mandate }
+		mutually_exclusive = { focus = THR_pacification_mandate }
+		mutually_exclusive = { focus = THR_throne_without_body }
+		completion_reward = {
+			set_country_flag = holy_realm_doctrine_restraint
+			set_country_flag = holy_realm_doctrine_chosen
+			add_ideas = holy_realm_peacekeeping_mandate
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
+			holy_realm_add_final_silence_pressure = yes
+		}
+	}
+
+	focus = {
+		id = THR_white_flags_foreign_roads
+		icon = GFX_goal_generic_allies_build_infantry
+		x = 12
+		y = 10
+		cost = 8
+		prerequisite = { focus = THR_lamps_remain_lit }
+		completion_reward = {
+			set_country_flag = holy_realm_doctrine_peacekeeping
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			add_war_support = 0.03
+		}
+	}
+
+	focus = {
+		id = THR_vow_against_annihilation
+		icon = GFX_goal_generic_peaceful_revolution
+		x = 10
+		y = 11
+		cost = 8
+		prerequisite = { focus = THR_white_flags_foreign_roads }
+		completion_reward = {
+			holy_realm_renounce_final_silence = yes
+			set_country_flag = holy_realm_memory_vow_against_annihilation
+		}
+	}
+
+	focus = {
+		id = THR_pacification_mandate
+		icon = GFX_goal_generic_occupy_states_ongoing_war
+		x = 17
+		y = 9
+		cost = 8
+		prerequisite = { focus = THR_buddha_mandate }
+		mutually_exclusive = { focus = THR_lamps_remain_lit }
+		mutually_exclusive = { focus = THR_throne_without_body }
+		completion_reward = {
+			set_country_flag = holy_realm_doctrine_coercive_pacification
+			set_country_flag = holy_realm_doctrine_chosen
+			add_ideas = holy_realm_coercive_pacification
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = 20 }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	focus = {
+		id = THR_release_through_administration
+		icon = GFX_goal_generic_position_armies
+		x = 17
+		y = 10
+		cost = 8
+		prerequisite = { focus = THR_pacification_mandate }
+		completion_reward = {
+			set_country_flag = holy_realm_memory_release_through_administration
+			add_war_support = 0.06
+			add_command_power = 25
+		}
+	}
+
+	focus = {
+		id = THR_throne_without_body
+		icon = GFX_goal_generic_dangerous_deal
+		x = 24
+		y = 9
+		cost = 8
+		prerequisite = { focus = THR_buddha_mandate }
+		mutually_exclusive = { focus = THR_lamps_remain_lit }
+		mutually_exclusive = { focus = THR_pacification_mandate }
+		completion_reward = {
+			country_event = { id = chaosx.nr3.40 }
+		}
+	}
+
+	focus = {
+		id = THR_doctrine_last_war
+		icon = GFX_goal_generic_secret_weapon
+		x = 24
+		y = 10
+		cost = 10
+		prerequisite = { focus = THR_throne_without_body }
+		completion_reward = {
+			holy_realm_set_stage_divine_sovereignty = yes
+			set_country_flag = holy_realm_scripted_strike_network
+			add_ideas = holy_realm_final_silence_network
+			add_tech_bonus = {
+				name = THR_final_silence_bonus
+				bonus = 0.75
+				uses = 2
+				category = nuclear
+			}
+		}
+	}
+
+	focus = {
+		id = THR_reactors_prayer_wheels
+		icon = GFX_goal_generic_nuclear
+		x = 22
+		y = 11
+		cost = 10
+		prerequisite = { focus = THR_doctrine_last_war }
+		completion_reward = {
+			set_country_flag = holy_realm_final_silence_engine
+			random_owned_controlled_state = {
+				add_building_construction = {
+					type = nuclear_reactor
+					level = 1
+					instant_build = yes
+				}
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+		}
+	}
+
+	focus = {
+		id = THR_all_roads_end_silence
+		icon = GFX_goal_generic_secret_weapon
+		x = 26
+		y = 11
+		cost = 10
+		prerequisite = { focus = THR_doctrine_last_war }
+		completion_reward = {
+			holy_realm_arm_final_silence = yes
+			country_event = { id = chaosx.nr3.70 days = 1 }
+		}
+	}
+
+	focus = {
+		id = THR_no_one_leaves_mandala
+		icon = GFX_goal_generic_propaganda
+		x = 24
+		y = 12
+		cost = 10
+		prerequisite = { focus = THR_reactors_prayer_wheels }
+		prerequisite = { focus = THR_all_roads_end_silence }
+		completion_reward = {
+			set_country_flag = holy_realm_memory_no_one_leaves
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
+			holy_realm_add_final_silence_pressure = yes
+		}
+	}
+
+	focus = {
+		id = THR_final_silence
+		icon = GFX_goal_generic_nuke
+		x = 24
+		y = 13
+		cost = 10
+		prerequisite = { focus = THR_no_one_leaves_mandala }
+		available = {
+			holy_realm_can_start_final_silence = yes
+		}
+		bypass = {
+			has_country_flag = holy_realm_final_doctrine_renounced
+		}
+		completion_reward = {
+			country_event = { id = chaosx.nr3.80 hours = 6 }
+		}
+	}
+}

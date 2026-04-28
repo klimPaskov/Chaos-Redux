@@ -7,5 +7,5 @@ tags={
 }
 picture="thumbnail.png"
 version="0.1"
-supported_version="1.17.*"
+supported_version="1.18.*"
 path="C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux"

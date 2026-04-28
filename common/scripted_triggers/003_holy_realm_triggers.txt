@@ -1,0 +1,104 @@
+# Overview:
+# - Scripted triggers for the Holy Realm formation route, stage gates, doctrine
+#   memory, foreign containment, and Final Silence world-end conditions.
+
+is_holy_realm_country = {
+	has_country_flag = holy_realm_active
+}
+
+can_host_holy_realm_refuge = {
+	exists = yes
+	NOT = { has_country_flag = holy_realm_refused_calling }
+	OR = {
+		tag = TIB
+		tag = BHU
+		tag = NEP
+		original_tag = TIB
+		any_owned_state = {
+			is_core_of = TIB
+		}
+	}
+}
+
+holy_realm_is_sovereign = {
+	exists = yes
+	is_subject = no
+}
+
+holy_realm_has_bodhisattva_stage = {
+	has_country_flag = holy_realm_stage_bodhisattva
+}
+
+holy_realm_has_arhat_stage = {
+	has_country_flag = holy_realm_stage_arhat_administration
+}
+
+holy_realm_has_buddha_mandate = {
+	has_country_flag = holy_realm_stage_buddha_mandate
+}
+
+holy_realm_has_divine_sovereignty = {
+	has_country_flag = holy_realm_stage_divine_sovereignty
+}
+
+holy_realm_has_final_silence_stage = {
+	has_country_flag = holy_realm_stage_final_silence
+}
+
+holy_realm_final_doctrine_is_armed = {
+	has_country_flag = holy_realm_final_doctrine_armed
+	NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+}
+
+holy_realm_has_scripted_strike_capability = {
+	OR = {
+		num_of_nukes > 0
+		has_tech = nukes
+		has_tech = thermonuclear_bombs
+		has_country_flag = holy_realm_scripted_strike_network
+		has_country_flag = holy_realm_final_silence_engine
+	}
+}
+
+holy_realm_has_most_factories_in_world = {
+	num_of_factories > 0
+	all_other_country = {
+		OR = {
+			NOT = { exists = yes }
+			num_of_factories < ROOT.num_of_factories
+		}
+	}
+}
+
+holy_realm_can_start_final_silence = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	holy_realm_final_doctrine_is_armed = yes
+	date > 1944.12.31
+	check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+	holy_realm_has_most_factories_in_world = yes
+	holy_realm_has_scripted_strike_capability = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+}
+
+holy_realm_uses_thermonuclear_final_silence = {
+	date > 1946.12.31
+	OR = {
+		has_tech = thermonuclear_bombs
+		has_country_flag = holy_realm_thermonuclear_doctrine
+		any_country = {
+			has_tech = thermonuclear_bombs
+		}
+	}
+}
+
+is_holy_realm_foreign_responder = {
+	exists = yes
+	NOT = { is_holy_realm_country = yes }
+	OR = {
+		has_global_flag = holy_realm_global_warning
+		has_global_flag = world_end_final_silence
+	}
+}

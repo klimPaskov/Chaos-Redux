@@ -1,0 +1,81 @@
+# Holy Realm AI strategy package.
+# The Holy Realm stays defensive early, expands influence under the Buddha
+# Mandate, and foreign majors become more willing to contain the active carrier.
+
+holy_realm_refuge_defence = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		NOT = { holy_realm_has_buddha_mandate = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = 150
+	}
+	ai_strategy = {
+		type = force_defend_ally_borders
+		target = asia
+		value = 100
+	}
+}
+
+holy_realm_mandate_intervention = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		holy_realm_has_buddha_mandate = yes
+		NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = send_volunteers_desire
+		value = 80
+	}
+	ai_strategy = {
+		type = conquer
+		value = 50
+	}
+}
+
+holy_realm_foreign_contain_tibet = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_foreign_responder = yes
+		TIB = { is_holy_realm_country = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = antagonize
+		id = TIB
+		value = 100
+	}
+}
+
+holy_realm_foreign_contain_bhutan = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_foreign_responder = yes
+		BHU = { is_holy_realm_country = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = antagonize
+		id = BHU
+		value = 100
+	}
+}
+
+holy_realm_foreign_contain_nepal = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_foreign_responder = yes
+		NEP = { is_holy_realm_country = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = antagonize
+		id = NEP
+		value = 100
+	}
+}
