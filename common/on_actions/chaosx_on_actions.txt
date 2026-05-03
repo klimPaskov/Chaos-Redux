@@ -37,27 +37,41 @@ on_actions = {
 				grant_anti_zombie_league_membership_benefits = yes
 			}
 
-			if = {
-				limit = {
-					has_anti_zombie_league_membership_idea = yes
-					NOT = { is_in_anti_zombie_league_faction = yes }
+				if = {
+					limit = {
+						has_anti_zombie_league_membership_idea = yes
+						NOT = { is_in_anti_zombie_league_faction = yes }
+					}
+					remove_anti_zombie_league_membership_package = yes
 				}
-				remove_anti_zombie_league_membership_package = yes
+
+				if = {
+					limit = {
+						FROM = {
+							has_country_flag = holy_realm_mandala_of_nations_leader
+							is_faction_leader = yes
+						}
+					}
+					holy_realm_mandala_of_nations_member_joined = yes
+				}
 			}
 		}
-	}
 
 	on_leave_faction = {
 		effect = {
-			if = {
-				limit = {
-					has_anti_zombie_league_membership_idea = yes
-					NOT = { has_country_flag = azl_disbanding_league }
+				if = {
+					limit = {
+						has_anti_zombie_league_membership_idea = yes
+						NOT = { has_country_flag = azl_disbanding_league }
+					}
+					remove_anti_zombie_league_membership_package = yes
 				}
-				remove_anti_zombie_league_membership_package = yes
+				if = {
+					limit = { has_country_flag = holy_realm_mandala_peace_vow_locked }
+					holy_realm_clear_mandala_peace_vow = yes
+				}
 			}
 		}
-	}
 
 	on_assume_faction_leadership = {
 		effect = {
@@ -200,6 +214,16 @@ on_actions = {
 				set_variable = { global.current_super_event_audio_id = 2 }
 				play_current_super_event_audio = yes
 				set_global_flag = azl_super_event_fired
+			}
+
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					has_power_balance = {
+						id = holy_realm_final_doctrine_balance
+					}
+				}
+				holy_realm_daily_doctrine_balance_pulse = yes
 			}
 		}
 	}

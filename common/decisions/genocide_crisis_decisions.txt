@@ -1,0 +1,900 @@
+# ============================================================================
+# CHAOS REDUX - GENOCIDE CRISIS DECISIONS
+# ============================================================================
+# Player and AI actions for camp construction, hidden crisis management,
+# evidence destruction, foreign response, Japanese occupation atrocities, and
+# Soviet mass repression.
+# ============================================================================
+
+genocide_crisis_category = {
+	genocide_show_hidden_decisions = {
+		icon = GFX_decision_generic_political_discourse
+		cost = constant:genocide_decision_cost.toggle_visibility
+		visible = {
+			is_ai = no
+			NOT = { has_country_flag = genocide_decisions_visible }
+		}
+		available = { always = yes }
+		complete_effect = {
+			set_country_flag = genocide_decisions_visible
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	genocide_hide_hidden_decisions = {
+		icon = GFX_decision_generic_political_discourse
+		cost = constant:genocide_decision_cost.toggle_visibility
+		visible = {
+			is_ai = no
+			has_country_flag = genocide_decisions_visible
+		}
+		available = { always = yes }
+		complete_effect = {
+			clr_country_flag = genocide_decisions_visible
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	genocide_expand_camp_network = {
+		icon = GFX_decision_oppression
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.build_concentration
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+
+		target_root_trigger = {
+			genocide_country_should_use_camp_construction = yes
+		}
+
+		target_trigger = {
+			FROM = {
+				NOT = { concentration_camp > 0 }
+			}
+		}
+
+		available = {
+			genocide_country_should_use_camp_construction = yes
+			FROM = {
+				NOT = { concentration_camp > 0 }
+			}
+		}
+
+		complete_effect = {
+			genocide_build_concentration_camp_in_from = yes
+		}
+
+		ai_will_do = {
+			base = constant:genocide_ai_weight.generic_concentration
+			modifier = {
+				add = constant:genocide_ai_weight.germany_concentration
+				original_tag = GER
+				has_government = fascism
+				has_war = yes
+			}
+			modifier = {
+				add = constant:genocide_ai_weight.germany_occupied_poland
+				original_tag = GER
+				has_government = fascism
+				FROM = { genocide_state_is_german_occupied_poland_target = yes }
+			}
+			modifier = {
+				add = constant:genocide_ai_weight.japan_forced_labor
+				original_tag = JAP
+				has_government = fascism
+				FROM = { genocide_state_is_japanese_occupation_target = yes }
+			}
+			modifier = {
+				factor = constant:genocide_ai_weight.block_factor
+				has_government = democratic
+				NOT = { has_doctrine = extermination_columns }
+			}
+		}
+	}
+
+	genocide_build_extermination_camp = {
+		icon = GFX_decision_oppression
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.build_extermination
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+
+		target_root_trigger = {
+			genocide_country_can_unlock_extermination_camps = yes
+			NOT = {
+				AND = {
+					original_tag = GER
+					NOT = { germany_controls_auschwitz_area = yes }
+				}
+			}
+		}
+
+		target_trigger = {
+			FROM = {
+				NOT = { extermination_camp > 0 }
+				OR = {
+					concentration_camp > 0
+					NOT = { is_core_of = ROOT }
+					genocide_state_is_german_occupied_poland_target = yes
+				}
+			}
+		}
+
+		available = {
+			genocide_country_can_unlock_extermination_camps = yes
+			NOT = {
+				AND = {
+					original_tag = GER
+					NOT = { germany_controls_auschwitz_area = yes }
+				}
+			}
+			FROM = { NOT = { extermination_camp > 0 } }
+		}
+
+		complete_effect = {
+			genocide_build_extermination_camp_in_from = yes
+		}
+
+		ai_will_do = {
+			base = constant:genocide_ai_weight.generic_extermination
+			modifier = {
+				add = constant:genocide_ai_weight.germany_extermination
+				original_tag = GER
+				has_government = fascism
+				FROM = { genocide_state_is_german_occupied_poland_target = yes }
+			}
+			modifier = {
+				factor = constant:genocide_ai_weight.germany_soviet_war
+				original_tag = GER
+				has_war_with = SOV
+			}
+			modifier = {
+				add = constant:genocide_ai_weight.soviet_escalation
+				original_tag = SOV
+				has_government = communism
+				has_doctrine = extermination_columns
+			}
+			modifier = {
+				factor = constant:genocide_ai_weight.block_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:genocide_ai_weight.collapse_factor
+				surrender_progress > constant:genocide_ai_threshold.surrender_collapse
+			}
+		}
+	}
+
+	genocide_intensify_deportations = {
+		icon = GFX_decision_oppression
+		cost = constant:genocide_decision_cost.intensify_deportations
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_crisis = yes
+		}
+		available = {
+			genocide_country_has_active_camps = yes
+		}
+		complete_effect = {
+			genocide_intensify_deportations = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.deportations_base
+			modifier = {
+				add = constant:genocide_ai_weight.germany_extermination
+				original_tag = GER
+				has_government = fascism
+				has_war = yes
+			}
+		}
+	}
+
+	genocide_hide_evidence_from_foreign_observers = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = constant:genocide_decision_cost.hide_evidence
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_crisis = yes
+		}
+		available = {
+			genocide_country_has_active_camps = yes
+			genocide_country_has_foreign_observer_evidence_pressure = yes
+			NOT = { has_country_flag = genocide_coverup_recently_used }
+		}
+		complete_effect = {
+			genocide_hide_evidence_from_foreign_observers = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.hide_evidence_base
+			modifier = {
+				add = constant:genocide_ai_weight.evidence_destroy
+				surrender_progress > constant:genocide_ai_threshold.surrender_warning
+			}
+		}
+	}
+
+	genocide_suppress_internal_reports = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = constant:genocide_decision_cost.suppress_reports
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_crisis = yes
+		}
+		available = {
+			genocide_country_has_active_camps = yes
+		}
+		complete_effect = {
+			genocide_suppress_internal_reports = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.suppress_reports_base
+			modifier = {
+				add = constant:genocide_ai_weight.suppress_visibility_add
+				check_variable = { genocide_visibility > constant:genocide_ai_threshold.visibility_high }
+			}
+		}
+	}
+
+	genocide_redirect_trains_and_supplies = {
+		icon = GFX_decision_generic_train
+		cost = constant:genocide_decision_cost.redirect_trains
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_crisis = yes
+		}
+		available = {
+			genocide_country_has_active_camps = yes
+		}
+		complete_effect = {
+			genocide_redirect_trains_and_supplies = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.redirect_trains_base
+			modifier = {
+				add = constant:genocide_ai_weight.redirect_trains_germany_add
+				original_tag = GER
+				has_government = fascism
+			}
+		}
+	}
+
+	genocide_deal_with_resistance_sabotage = {
+		icon = GFX_decision_oppression
+		cost = constant:genocide_decision_cost.deal_with_sabotage
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_crisis = yes
+		}
+		available = {
+			genocide_country_has_active_camps = yes
+			check_variable = { genocide_resistance_pressure > constant:genocide_ai_threshold.resistance_low }
+		}
+		complete_effect = {
+			genocide_deal_with_resistance_sabotage = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.sabotage_base
+			modifier = {
+				add = constant:genocide_ai_weight.sabotage_resistance_add
+				check_variable = { genocide_resistance_pressure > constant:genocide_ai_threshold.resistance_high }
+			}
+		}
+	}
+
+	genocide_handle_refugee_waves = {
+		icon = GFX_decision_SWI_support_humanitarian_efforts
+		cost = constant:genocide_decision_cost.handle_refugees
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_crisis = yes
+		}
+		available = {
+			genocide_country_has_active_camps = yes
+			check_variable = { genocide_refugee_pressure > constant:genocide_ai_threshold.refugee_low }
+		}
+		complete_effect = {
+			genocide_handle_refugee_waves = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.refugee_base
+			modifier = {
+				add = constant:genocide_ai_weight.refugee_high_add
+				check_variable = { genocide_refugee_pressure > constant:genocide_ai_threshold.refugee_high }
+			}
+		}
+	}
+
+	genocide_manage_military_objections = {
+		icon = GFX_decision_generic_military
+		cost = constant:genocide_decision_cost.military_objections
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_crisis = yes
+		}
+		available = {
+			genocide_country_has_active_camps = yes
+			OR = {
+				has_stability < constant:genocide_ai_threshold.military_objection_stability
+				check_variable = { genocide_resistance_pressure > constant:genocide_ai_threshold.military_objection_resistance }
+			}
+		}
+		complete_effect = {
+			genocide_manage_military_objections = yes
+		}
+		ai_will_do = { base = constant:genocide_ai_weight.military_objections_base }
+	}
+
+	genocide_destroy_camp_evidence = {
+		icon = GFX_decision_generic_scorched_earth
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.destroy_evidence
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+
+		target_trigger = {
+			FROM = {
+				genocide_state_has_undiscovered_atrocity_evidence = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+		}
+
+		available = {
+			FROM = {
+				genocide_state_has_undiscovered_atrocity_evidence = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+		}
+
+		complete_effect = {
+			genocide_destroy_camp_evidence_in_from = yes
+		}
+
+		ai_will_do = {
+			base = constant:genocide_ai_weight.evidence_destroy
+			modifier = {
+				factor = constant:genocide_ai_weight.retreat_factor
+				surrender_progress > constant:genocide_ai_threshold.surrender_warning
+			}
+		}
+	}
+
+	genocide_dismantle_extermination_camp = {
+		icon = GFX_decision_generic_scorched_earth
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.dismantle_extermination
+		days_remove = constant:genocide_timing.state_modifier_days
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+
+		target_trigger = {
+			FROM = {
+				extermination_camp > 0
+				is_controlled_by = ROOT
+			}
+		}
+
+		available = {
+			FROM = {
+				extermination_camp > 0
+				is_controlled_by = ROOT
+			}
+		}
+
+		complete_effect = {
+			genocide_dismantle_extermination_camp_in_from = yes
+		}
+
+		ai_will_do = {
+			base = constant:genocide_ai_weight.hide_evidence_base
+			modifier = {
+				factor = constant:genocide_ai_weight.retreat_factor
+				surrender_progress > constant:genocide_ai_threshold.surrender_warning
+			}
+			modifier = {
+				factor = constant:genocide_ai_weight.block_factor
+				has_government = democratic
+			}
+		}
+	}
+
+	genocide_cover_up_liberated_camps = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = constant:genocide_decision_cost.hide_evidence
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+			genocide_country_has_discovered_sites = yes
+		}
+		available = {
+			genocide_country_has_discovered_sites = yes
+		}
+		complete_effect = {
+			genocide_cover_up_liberated_camps = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.exposed_coverup
+		}
+	}
+}
+
+imperial_occupation_crisis = {
+	japan_expand_forced_labor_camps = {
+		icon = GFX_decision_oppression
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.build_concentration
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = JAP
+			has_government = fascism
+		}
+		target_trigger = {
+			FROM = {
+				genocide_state_is_japanese_occupation_target = yes
+				NOT = { concentration_camp > 0 }
+			}
+		}
+		available = {
+			original_tag = JAP
+			has_government = fascism
+			FROM = { NOT = { concentration_camp > 0 } }
+		}
+		complete_effect = {
+			genocide_build_concentration_camp_in_from = yes
+			FROM = { set_state_flag = genocide_japanese_forced_labor_site }
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.japan_forced_labor
+			modifier = {
+				factor = constant:genocide_ai_weight.retreat_factor
+				has_war = yes
+			}
+		}
+	}
+
+	japan_conduct_anti_partisan_reprisals = {
+		icon = GFX_decision_oppression
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.deal_with_sabotage
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = JAP
+			has_government = fascism
+		}
+		target_trigger = {
+			FROM = { genocide_state_is_japanese_occupation_target = yes }
+		}
+		available = {
+			original_tag = JAP
+			has_government = fascism
+		}
+		complete_effect = {
+			genocide_japan_anti_partisan_reprisals_in_from = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.japan_terror
+			modifier = {
+				factor = constant:genocide_ai_weight.occupation_factor
+				FROM = { has_resistance = yes }
+			}
+		}
+	}
+
+	japan_transfer_prisoners_to_experimental_facilities = {
+		icon = GFX_decision_generic_research
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.redirect_trains
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = JAP
+			has_government = fascism
+			genocide_country_has_biowarfare_atrocity_capacity = yes
+		}
+		target_trigger = {
+			FROM = { genocide_state_is_japanese_occupation_target = yes }
+		}
+		available = {
+			original_tag = JAP
+			has_government = fascism
+			genocide_country_has_biowarfare_atrocity_capacity = yes
+		}
+		complete_effect = {
+			genocide_japan_prisoner_experimentation_in_from = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.japan_biowarfare
+			modifier = {
+				factor = constant:genocide_ai_weight.occupation_factor
+				has_tech = plague_bomb_delivery_systems
+			}
+			modifier = {
+				factor = constant:genocide_ai_weight.occupation_factor
+				has_tech = smallpox_bomb_delivery_systems
+			}
+		}
+	}
+
+	japan_destroy_occupation_records = {
+		icon = GFX_decision_generic_scorched_earth
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.destroy_evidence
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = JAP
+		}
+		target_trigger = {
+			FROM = {
+				genocide_state_has_undiscovered_atrocity_evidence = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+		}
+		available = {
+			FROM = {
+				genocide_state_has_undiscovered_atrocity_evidence = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+		}
+		complete_effect = {
+			genocide_destroy_camp_evidence_in_from = yes
+		}
+		ai_will_do = { base = constant:genocide_ai_weight.evidence_destroy }
+	}
+}
+
+gulag_and_mass_repression_system = {
+	sov_expand_gulag_network = {
+		icon = GFX_decision_oppression
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.build_gulag
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = SOV
+			has_government = communism
+		}
+		target_trigger = {
+			FROM = {
+				NOT = { gulag_labor_camp_network > 0 }
+				OR = {
+					genocide_state_is_soviet_gulag_target = yes
+					NOT = { is_core_of = ROOT }
+					has_resistance = yes
+				}
+			}
+		}
+		available = {
+			original_tag = SOV
+			has_government = communism
+			FROM = { NOT = { gulag_labor_camp_network > 0 } }
+		}
+		complete_effect = {
+			genocide_build_gulag_network_in_from = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.soviet_gulag
+			modifier = {
+				factor = constant:genocide_ai_weight.occupation_factor
+				has_stability < constant:genocide_ai_threshold.soviet_gulag_stability
+			}
+		}
+	}
+
+	sov_deport_suspected_opposition_groups = {
+		icon = GFX_decision_oppression
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.intensify_deportations
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = SOV
+			has_government = communism
+		}
+		target_trigger = {
+			FROM = {
+				OR = {
+					genocide_state_is_soviet_gulag_target = yes
+					has_resistance = yes
+					NOT = { is_core_of = ROOT }
+				}
+			}
+		}
+		available = {
+			original_tag = SOV
+			has_government = communism
+		}
+		complete_effect = {
+			genocide_soviet_deport_suspected_groups_in_from = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.soviet_deportation
+			modifier = {
+				factor = constant:genocide_ai_weight.occupation_factor
+				has_stability < constant:genocide_ai_threshold.soviet_deportation_stability
+			}
+		}
+	}
+
+	sov_confiscate_food_from_disloyal_regions = {
+		icon = GFX_decision_oppression
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.deal_with_sabotage
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = SOV
+			has_government = communism
+		}
+		target_trigger = {
+			FROM = {
+				OR = {
+					has_resistance = yes
+					NOT = { is_core_of = ROOT }
+				}
+			}
+		}
+		available = {
+			original_tag = SOV
+			has_government = communism
+		}
+		complete_effect = {
+			genocide_soviet_confiscate_food_in_from = yes
+		}
+		ai_will_do = {
+			base = constant:genocide_ai_weight.famine_pressure_base
+			modifier = {
+				add = constant:genocide_ai_weight.soviet_deportation
+				has_stability < constant:genocide_ai_threshold.soviet_famine_stability
+			}
+		}
+	}
+
+	sov_destroy_gulag_records = {
+		icon = GFX_decision_generic_scorched_earth
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:genocide_decision_cost.destroy_evidence
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			original_tag = SOV
+		}
+		target_trigger = {
+			FROM = {
+				genocide_state_has_undiscovered_atrocity_evidence = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+		}
+		available = {
+			FROM = {
+				genocide_state_has_undiscovered_atrocity_evidence = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+		}
+		complete_effect = {
+			genocide_destroy_camp_evidence_in_from = yes
+		}
+		ai_will_do = { base = constant:genocide_ai_weight.evidence_destroy }
+	}
+}
+
+genocide_foreign_response_category = {
+	genocide_publicize_survivor_testimony = {
+		icon = GFX_decision_generic_political_address
+		cost = constant:genocide_decision_cost.foreign_publicize
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			OR = {
+				is_major = yes
+				has_government = democratic
+				has_war = yes
+			}
+			any_country = { genocide_country_has_discovered_sites = yes }
+		}
+		target_trigger = {
+			genocide_country_has_discovered_sites = yes
+			NOT = { tag = ROOT }
+		}
+		available = {
+			FROM = { genocide_country_has_discovered_sites = yes }
+		}
+		complete_effect = {
+			genocide_foreign_publicize_target = yes
+		}
+		ai_will_do = { base = constant:genocide_ai_weight.foreign_response }
+	}
+
+	genocide_enact_sanctions = {
+		icon = GFX_decision_generic_political_discourse
+		cost = constant:genocide_decision_cost.foreign_sanctions
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			OR = {
+				is_major = yes
+				has_government = democratic
+			}
+			any_country = { genocide_country_condemnation_75 = yes }
+		}
+		target_trigger = {
+			genocide_country_condemnation_75 = yes
+			NOT = { tag = ROOT }
+		}
+		available = {
+			FROM = { genocide_country_condemnation_75 = yes }
+		}
+		complete_effect = {
+			genocide_foreign_sanction_target = yes
+		}
+		ai_will_do = { base = constant:genocide_ai_weight.foreign_response }
+	}
+
+	genocide_support_resistance_networks = {
+		icon = GFX_decision_generic_operation
+		cost = constant:genocide_decision_cost.foreign_resistance_support
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			has_war = yes
+			any_country = { genocide_country_condemnation_50 = yes }
+		}
+		target_trigger = {
+			genocide_country_condemnation_50 = yes
+			NOT = { tag = ROOT }
+		}
+		available = {
+			FROM = {
+				genocide_country_condemnation_50 = yes
+				has_war_with = ROOT
+			}
+		}
+		complete_effect = {
+			genocide_foreign_support_resistance_against_target = yes
+		}
+		ai_will_do = { base = constant:genocide_ai_weight.foreign_response }
+	}
+
+	genocide_prepare_tribunal_records = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = constant:genocide_decision_cost.foreign_tribunal
+		days_re_enable = constant:genocide_timing.decision_cooldown
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			any_country = { genocide_country_condemnation_100 = yes }
+		}
+		target_trigger = {
+			genocide_country_condemnation_100 = yes
+			NOT = { tag = ROOT }
+		}
+		available = {
+			FROM = { genocide_country_condemnation_100 = yes }
+		}
+		complete_effect = {
+			genocide_foreign_prepare_tribunal_against_target = yes
+		}
+		ai_will_do = { base = constant:genocide_ai_weight.foreign_response }
+	}
+}

@@ -117,6 +117,8 @@ This is the shared global aggregator for the mod-wide world-threat flag. It rebu
 Use this whenever a threat-specific system changes whether its own source flag should be active. The threat-specific system is responsible for setting or clearing its own source flag first, then calling this effect. The current registered source set includes:
 
 - `world_threat_source_zombies`
+- `world_threat_source_holy_realm`
+- `world_threat_source_mengele`
 
 Future threats should follow the same pattern:
 

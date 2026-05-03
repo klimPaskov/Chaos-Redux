@@ -1,0 +1,939 @@
+# ============================================================================
+# CHAOS REDUX - GERMANY MENGELE / TIBET EXPEDITION EFFECTS
+# ============================================================================
+# Overview:
+# - Centralizes the Auschwitz Experiments, Mengele coup, laboratory-state, and
+#   Tibet Expedition mechanics.
+# - Stores long-lived tuning in script constants and state in country variables
+#   or flags on Germany / the dynamic Mengele faction.
+# - Uses event targets for the dynamic Mengele faction and Holy Realm contact.
+# ============================================================================
+
+@MENGELE_PROGRAM_SPIRIT_DAYS = 730
+@MENGELE_INITIAL_REPORT_DAYS = 75
+@MENGELE_INITIAL_REPORT_RANDOM_DAYS = 35
+@MENGELE_INITIAL_COUP_MONITOR_DAYS = 180
+@MENGELE_INITIAL_COUP_MONITOR_RANDOM_DAYS = 90
+@MENGELE_COUP_COMPROMISE_DAYS = 12
+@MENGELE_COUP_COMPROMISE_RANDOM_DAYS = 8
+@MENGELE_LOYALIST_MONITOR_DAYS = 30
+@MENGELE_LOYALIST_MONITOR_RANDOM_DAYS = 15
+@MENGELE_TIBET_TRANSIT_DAYS = 45
+@MENGELE_TIBET_TRANSIT_RANDOM_DAYS = 20
+@MENGELE_ANGEL_SUPER_EVENT_DAYS = 30
+@MENGELE_FACILITY_DEMAND_COOLDOWN_DAYS = 180
+
+germany_mengele_add_autonomy = {
+	if = {
+		limit = { NOT = { has_variable = mengele_autonomy } }
+		set_variable = { mengele_autonomy = 0 }
+	}
+	add_to_variable = { mengele_autonomy = mengele_autonomy_delta }
+	clamp_variable = {
+		var = mengele_autonomy
+		min = 0
+		max = constant:germany_mengele_autonomy.autonomy_max
+	}
+}
+
+germany_mengele_add_condemnation = {
+	if = {
+		limit = { NOT = { has_variable = chem_warfare_condemnation } }
+		set_variable = { chem_warfare_condemnation = 0 }
+	}
+	add_to_variable = { chem_warfare_condemnation = mengele_condemnation_add }
+	chem_apply_condemnation_diplomatic_consequences = yes
+	refresh_chaos_meter_condemnation_view_if_open = yes
+}
+
+germany_mengele_add_chaos = {
+	save_event_target_as = chaos_history_actor
+	set_temp_variable = { chaos_change = mengele_chaos_change }
+	set_temp_variable = { chaos_history_reason = mengele_chaos_reason }
+	set_temp_variable = { chaos_history_reason_custom = 1 }
+	add_chaos_meter_value = yes
+}
+
+germany_mengele_record_stage = {
+	if = {
+		limit = { NOT = { has_variable = germany_mengele_current_stage } }
+		set_variable = { germany_mengele_current_stage = 0 }
+	}
+	if = {
+		limit = { check_variable = { mengele_stage_value > germany_mengele_current_stage } }
+		set_variable = { germany_mengele_current_stage = mengele_stage_value }
+	}
+}
+
+germany_mengele_count_biowarfare_facilities = {
+	set_temp_variable = { mengele_biowarfare_facility_count = 0 }
+	every_controlled_state = {
+		limit = { biowarfare_facility > 0 }
+		add_to_temp_variable = { mengele_biowarfare_facility_count = 1 }
+	}
+}
+
+germany_mengele_calculate_coup_pressure = {
+	if = {
+		limit = { has_variable = mengele_autonomy }
+		set_temp_variable = { mengele_coup_pressure = mengele_autonomy }
+	}
+	else = {
+		set_temp_variable = { mengele_coup_pressure = 0 }
+	}
+	germany_mengele_count_biowarfare_facilities = yes
+	set_temp_variable = { mengele_facility_pressure = mengele_biowarfare_facility_count }
+	multiply_temp_variable = { mengele_facility_pressure = constant:germany_mengele_autonomy.facility_count_factor }
+	add_to_temp_variable = { mengele_coup_pressure = mengele_facility_pressure }
+	if = {
+		limit = { has_war_with = SOV }
+		add_to_temp_variable = { mengele_coup_pressure = constant:germany_mengele_autonomy.war_with_soviets }
+	}
+	if = {
+		limit = { germany_mengele_has_high_fascist_support = yes }
+		add_to_temp_variable = { mengele_coup_pressure = constant:germany_mengele_autonomy.high_fascist_support }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		add_to_temp_variable = { mengele_coup_pressure = constant:germany_mengele_autonomy.high_chaos }
+	}
+	if = {
+		limit = { germany_mengele_is_desperate_in_war = yes }
+		add_to_temp_variable = { mengele_coup_pressure = constant:germany_mengele_autonomy.desperate_war }
+	}
+	if = {
+		limit = { has_variable = mengele_permission_level }
+		set_temp_variable = { mengele_permission_pressure = mengele_permission_level }
+		multiply_temp_variable = { mengele_permission_pressure = constant:germany_mengele_permission.coup_pressure_factor }
+		add_to_temp_variable = { mengele_coup_pressure = mengele_permission_pressure }
+	}
+}
+
+germany_mengele_register_experiment_deaths = {
+	set_temp_variable = { mengele_experiment_deaths = constant:germany_mengele_deaths.base }
+	if = {
+		limit = { has_variable = mengele_autonomy }
+		set_temp_variable = { mengele_autonomy_death_add = mengele_autonomy }
+		multiply_temp_variable = { mengele_autonomy_death_add = mengele_autonomy }
+		multiply_temp_variable = { mengele_autonomy_death_add = constant:germany_mengele_deaths.autonomy_square_factor }
+		add_to_temp_variable = { mengele_experiment_deaths = mengele_autonomy_death_add }
+	}
+	germany_mengele_count_biowarfare_facilities = yes
+	set_temp_variable = { mengele_facility_death_add = mengele_biowarfare_facility_count }
+	multiply_temp_variable = { mengele_facility_death_add = constant:germany_mengele_deaths.facility_factor }
+	add_to_temp_variable = { mengele_experiment_deaths = mengele_facility_death_add }
+	if = {
+		limit = { has_variable = mengele_permission_level }
+		set_temp_variable = { mengele_permission_death_add = mengele_permission_level }
+		multiply_temp_variable = { mengele_permission_death_add = constant:germany_mengele_permission.experiment_death_factor }
+		add_to_temp_variable = { mengele_experiment_deaths = mengele_permission_death_add }
+		set_temp_variable = { mengele_permission_hidden_atrocity = mengele_permission_level }
+		multiply_temp_variable = { mengele_permission_hidden_atrocity = constant:germany_mengele_permission.experiment_hidden_atrocity_factor }
+		add_to_variable = { hidden_atrocity_score = mengele_permission_hidden_atrocity }
+	}
+	if = {
+		limit = { 88 = { has_state_flag = genocide_auschwitz_experiment_site } }
+		add_to_temp_variable = { mengele_experiment_deaths = constant:germany_mengele_deaths.auschwitz_site_bonus }
+	}
+	clamp_temp_variable = {
+		var = mengele_experiment_deaths
+		min = 0
+		max = constant:germany_mengele_deaths.max_report_deaths
+	}
+	round_temp_variable = mengele_experiment_deaths
+	88 = {
+		set_temp_variable = { chaos_deaths_change = mengele_experiment_deaths }
+		set_temp_variable = { chaos_deaths_is_civilian = 1 }
+		set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+		set_temp_variable = { chaos_deaths_target_country = CONTROLLER }
+		set_temp_variable = { chaos_deaths_has_target_country = 1 }
+		chaos_meter_register_deaths = yes
+	}
+}
+
+germany_mengele_import_subjects_from_from_state = {
+	genocide_initialize_country_variables = yes
+	add_to_variable = { hidden_atrocity_score = constant:germany_mengele_foreign_subjects.hidden_atrocity }
+	add_to_variable = { genocide_tribunal_severity = constant:germany_mengele_foreign_subjects.hidden_atrocity }
+	add_political_power = constant:germany_mengele_foreign_subjects.germany_political_power
+	germany_mengele_raise_permission_to_limited = yes
+	set_temp_variable = { mengele_autonomy_delta = germany_mengele_foreign_subjects_autonomy }
+	germany_mengele_add_autonomy = yes
+	set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_foreign_subjects.condemnation }
+	germany_mengele_add_condemnation = yes
+	FROM = {
+		set_variable = { genocide_responsible_country = ROOT }
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = genocide_foreign_experimentation_source
+		set_state_flag = genocide_atrocity_site_known_to_regime
+		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.foreign_experimentation }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+		set_temp_variable = { chaos_deaths_target_country = ROOT }
+		set_temp_variable = { chaos_deaths_has_target_country = 1 }
+		chaos_meter_register_state_civilian_deaths_percent = yes
+		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
+		genocide_credit_state_deaths_to_responsible = yes
+		controller = {
+			add_political_power = constant:germany_mengele_foreign_subjects.cooperator_political_power
+			add_war_support = constant:germany_mengele_foreign_subjects.cooperator_war_support
+			add_army_experience = constant:germany_mengele_foreign_subjects.cooperator_army_experience
+		}
+	}
+}
+
+germany_mengele_register_coup_state_deaths = {
+	every_controlled_state = {
+		limit = {
+			OR = {
+				state = 88
+				biowarfare_facility > 0
+			}
+		}
+		set_temp_variable = { chaos_state_deaths_percent = constant:germany_mengele_deaths.coup_state_percent }
+		set_temp_variable = { chaos_state_deaths_cap_hard_max = constant:germany_mengele_deaths.max_coup_deaths }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+		chaos_meter_register_state_civilian_deaths_percent = yes
+	}
+}
+
+germany_mengele_refresh_world_threat = {
+	if = {
+		limit = {
+			has_global_flag = germany_mengele_civil_war_active
+			has_event_target = germany_mengele_faction
+			event_target:germany_mengele_faction = { exists = yes }
+		}
+		set_global_flag = world_threat_source_mengele
+	}
+	else = {
+		clr_global_flag = world_threat_source_mengele
+	}
+	refresh_world_threat_state = yes
+}
+
+germany_mengele_show_angel_coup_super_event = {
+	set_global_flag = {
+		flag = super_event_visible
+		days = @MENGELE_ANGEL_SUPER_EVENT_DAYS
+		value = 12
+	}
+	set_variable = { global.current_super_event_audio_id = 12 }
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
+	}
+}
+
+germany_mengele_mark_auschwitz_laboratory_site = {
+	genocide_initialize_country_variables = yes
+	88 = {
+		if = {
+			limit = { is_controlled_by = ROOT }
+			set_variable = { genocide_responsible_country = ROOT }
+			set_state_flag = genocide_site_has_responsible_country
+			set_state_flag = genocide_atrocity_site_known_to_regime
+			set_state_flag = genocide_auschwitz_experiment_site
+			set_state_flag = genocide_ss_laboratory_site
+		}
+	}
+	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
+	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_major }
+}
+
+germany_mengele_raise_permission_to_limited = {
+	if = {
+		limit = { NOT = { has_variable = mengele_permission_level } }
+		set_variable = { mengele_permission_level = constant:germany_mengele_permission.limited }
+	}
+	else_if = {
+		limit = { check_variable = { mengele_permission_level < constant:germany_mengele_permission.limited } }
+		set_variable = { mengele_permission_level = constant:germany_mengele_permission.limited }
+	}
+}
+
+germany_mengele_raise_permission_to_bypass = {
+	if = {
+		limit = { NOT = { has_variable = mengele_permission_level } }
+		set_variable = { mengele_permission_level = constant:germany_mengele_permission.bypass }
+	}
+	else_if = {
+		limit = { check_variable = { mengele_permission_level < constant:germany_mengele_permission.bypass } }
+		set_variable = { mengele_permission_level = constant:germany_mengele_permission.bypass }
+	}
+}
+
+germany_mengele_add_requested_biowarfare_facility = {
+	clr_country_flag = germany_mengele_facility_built_from_demand
+	if = {
+		limit = {
+			88 = {
+				is_controlled_by = ROOT
+				NOT = { biowarfare_facility > 0 }
+			}
+		}
+		88 = {
+			add_building_construction = {
+				type = biowarfare_facility
+				level = 1
+				instant_build = yes
+				province = { id = 9412 }
+			}
+			set_state_flag = genocide_ss_laboratory_site
+		}
+		set_country_flag = germany_mengele_facility_built_from_demand
+	}
+	else_if = {
+		limit = {
+			89 = {
+				is_controlled_by = ROOT
+				NOT = { biowarfare_facility > 0 }
+			}
+		}
+		89 = {
+			add_building_construction = {
+				type = biowarfare_facility
+				level = 1
+				instant_build = yes
+				province = { id = 11411 }
+			}
+			set_state_flag = genocide_ss_laboratory_site
+		}
+		set_country_flag = germany_mengele_facility_built_from_demand
+	}
+	else_if = {
+		limit = {
+			64 = {
+				is_controlled_by = ROOT
+				NOT = { biowarfare_facility > 0 }
+			}
+		}
+		64 = {
+			add_building_construction = {
+				type = biowarfare_facility
+				level = 1
+				instant_build = yes
+				province = { id = 3499 }
+			}
+			set_state_flag = genocide_ss_laboratory_site
+		}
+		set_country_flag = germany_mengele_facility_built_from_demand
+	}
+	else_if = {
+		limit = {
+			60 = {
+				is_controlled_by = ROOT
+				NOT = { biowarfare_facility > 0 }
+			}
+		}
+		60 = {
+			add_building_construction = {
+				type = biowarfare_facility
+				level = 1
+				instant_build = yes
+				province = { id = 3561 }
+			}
+			set_state_flag = genocide_ss_laboratory_site
+		}
+		set_country_flag = germany_mengele_facility_built_from_demand
+	}
+	if = {
+		limit = { has_country_flag = germany_mengele_facility_built_from_demand }
+		set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.facility_demand_autonomy }
+		germany_mengele_add_autonomy = yes
+		set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_permission.facility_demand_condemnation }
+		germany_mengele_add_condemnation = yes
+		set_temp_variable = { mengele_chaos_change = constant:germany_mengele_permission.facility_demand_chaos }
+		set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_authorization }
+		germany_mengele_add_chaos = yes
+		germany_mengele_mark_auschwitz_laboratory_site = yes
+	}
+}
+
+germany_mengele_roll_facility_project_unlock = {
+	set_temp_variable = { mengele_project_roll_none = constant:germany_mengele_random_weight.facility_project_none }
+	set_temp_variable = { mengele_project_roll_anthrax = constant:germany_mengele_random_weight.facility_project_anthrax }
+	set_temp_variable = { mengele_project_roll_plague = constant:germany_mengele_random_weight.facility_project_plague }
+	set_temp_variable = { mengele_project_roll_tularemia = constant:germany_mengele_random_weight.facility_project_tularemia }
+	set_temp_variable = { mengele_project_roll_smallpox = constant:germany_mengele_random_weight.facility_project_smallpox }
+	set_temp_variable = { mengele_project_roll_zombie = constant:germany_mengele_random_weight.facility_project_zombie }
+	random_list = {
+		mengele_project_roll_none = { }
+		mengele_project_roll_anthrax = {
+			if = {
+				limit = { NOT = { is_special_project_completed = sp:anthrax_bomb } }
+				complete_special_project = {
+					project = sp:anthrax_bomb
+					show_modifiers = no
+				}
+				set_country_flag = germany_mengele_facility_project_unlocked
+			}
+		}
+		mengele_project_roll_plague = {
+			if = {
+				limit = { NOT = { is_special_project_completed = sp:plague_bomb } }
+				complete_special_project = {
+					project = sp:plague_bomb
+					show_modifiers = no
+				}
+				set_country_flag = germany_mengele_facility_project_unlocked
+			}
+		}
+		mengele_project_roll_tularemia = {
+			if = {
+				limit = { NOT = { is_special_project_completed = sp:tularemia_bomb } }
+				complete_special_project = {
+					project = sp:tularemia_bomb
+					show_modifiers = no
+				}
+				set_country_flag = germany_mengele_facility_project_unlocked
+			}
+		}
+		mengele_project_roll_smallpox = {
+			if = {
+				limit = { NOT = { is_special_project_completed = sp:smallpox_bomb } }
+				complete_special_project = {
+					project = sp:smallpox_bomb
+					show_modifiers = no
+				}
+				set_country_flag = germany_mengele_facility_project_unlocked
+			}
+		}
+		mengele_project_roll_zombie = {
+			if = {
+				limit = { NOT = { is_special_project_completed = sp:weaponize_the_zombies } }
+				randomize_and_complete_weaponized_zombie_project = yes
+				set_country_flag = germany_mengele_facility_project_unlocked
+			}
+		}
+	}
+}
+
+germany_mengele_authorize_full_program = {
+	set_country_flag = germany_mengele_program_authorized
+	set_country_flag = germany_mengele_dossier_visible
+	set_variable = { mengele_permission_level = constant:germany_mengele_permission.full }
+	if = { limit = { NOT = { has_variable = mengele_autonomy } } set_variable = { mengele_autonomy = 0 } }
+	if = { limit = { NOT = { has_variable = racial_policy_radicalization } } set_variable = { racial_policy_radicalization = 0 } }
+	if = { limit = { NOT = { has_variable = ss_archive_control } } set_variable = { ss_archive_control = 0 } }
+	if = { limit = { NOT = { has_variable = ahnenerbe_influence } } set_variable = { ahnenerbe_influence = 0 } }
+	if = { limit = { NOT = { has_variable = foreign_atrocity_awareness } } set_variable = { foreign_atrocity_awareness = 0 } }
+	if = { limit = { NOT = { has_variable = aryan_origin_preparation } } set_variable = { aryan_origin_preparation = 0 } }
+	set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.full_authorization }
+	germany_mengele_add_autonomy = yes
+	add_timed_idea = {
+		idea = germany_auschwitz_experiments
+		days = @MENGELE_PROGRAM_SPIRIT_DAYS
+	}
+	set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.authorization }
+	germany_mengele_add_condemnation = yes
+	set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.authorization }
+	set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_authorization }
+	germany_mengele_add_chaos = yes
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.authorization }
+	germany_mengele_record_stage = yes
+	germany_mengele_mark_auschwitz_laboratory_site = yes
+	country_event = { id = germany_mengele.10 days = @MENGELE_INITIAL_REPORT_DAYS random_days = @MENGELE_INITIAL_REPORT_RANDOM_DAYS }
+	country_event = { id = germany_mengele.20 days = @MENGELE_INITIAL_COUP_MONITOR_DAYS random_days = @MENGELE_INITIAL_COUP_MONITOR_RANDOM_DAYS }
+	country_event = { id = germany_mengele.15 days = @MENGELE_PROGRAM_SPIRIT_DAYS }
+}
+
+germany_mengele_restrict_program = {
+	set_country_flag = germany_mengele_program_restricted
+	set_country_flag = germany_mengele_dossier_visible
+	set_variable = { mengele_permission_level = constant:germany_mengele_permission.restricted }
+	if = { limit = { NOT = { has_variable = mengele_autonomy } } set_variable = { mengele_autonomy = 0 } }
+	set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.restricted_authorization }
+	germany_mengele_add_autonomy = yes
+	add_timed_idea = {
+		idea = germany_auschwitz_experiments_restricted
+		days = @MENGELE_PROGRAM_SPIRIT_DAYS
+	}
+	set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.restriction }
+	set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_authorization }
+	germany_mengele_add_chaos = yes
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.authorization }
+	germany_mengele_record_stage = yes
+	germany_mengele_mark_auschwitz_laboratory_site = yes
+	country_event = { id = germany_mengele.15 days = @MENGELE_PROGRAM_SPIRIT_DAYS }
+}
+
+germany_mengele_reject_program = {
+	set_country_flag = germany_mengele_program_rejected
+	set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
+	add_stability = constant:germany_mengele_decision_value.rejection_stability
+	add_popularity = {
+		ideology = fascism
+		popularity = constant:germany_mengele_decision_value.rejection_fascism
+	}
+	set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.shutdown }
+	set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_purge }
+	germany_mengele_add_chaos = yes
+}
+
+germany_mengele_cancel_program = {
+	set_country_flag = germany_mengele_program_closed
+	set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
+	clr_country_flag = germany_mengele_program_recently_expired
+	if = { limit = { has_idea = germany_auschwitz_experiments } remove_ideas = germany_auschwitz_experiments }
+	if = { limit = { has_idea = germany_auschwitz_experiments_restricted } remove_ideas = germany_auschwitz_experiments_restricted }
+	set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.shutdown_reduction }
+	germany_mengele_add_autonomy = yes
+}
+
+germany_mengele_expire_program = {
+	set_country_flag = germany_mengele_program_expired
+	set_country_flag = germany_mengele_program_closed
+	set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
+	clr_country_flag = germany_mengele_program_recently_expired
+	if = { limit = { has_idea = germany_auschwitz_experiments } remove_ideas = germany_auschwitz_experiments }
+	if = { limit = { has_idea = germany_auschwitz_experiments_restricted } remove_ideas = germany_auschwitz_experiments_restricted }
+}
+
+germany_mengele_spawn_laboratory_units = {
+	division_template = {
+		name = "Experimental Twin Formation"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 0 y = 2 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+			infantry = { x = 1 y = 2 }
+			motorized = { x = 2 y = 0 }
+			motorized = { x = 2 y = 1 }
+		}
+		support = {
+			engineer = { x = 0 y = 0 }
+			recon = { x = 0 y = 1 }
+			field_hospital = { x = 0 y = 2 }
+		}
+	}
+	germany_mengele_count_biowarfare_facilities = yes
+	set_temp_variable = { mengele_unit_count = constant:germany_mengele_units.base_units }
+	set_temp_variable = { mengele_facility_unit_add = mengele_biowarfare_facility_count }
+	multiply_temp_variable = { mengele_facility_unit_add = constant:germany_mengele_units.facility_units }
+	add_to_temp_variable = { mengele_unit_count = mengele_facility_unit_add }
+	if = {
+		limit = { has_variable = mengele_permission_level }
+		set_temp_variable = { mengele_permission_unit_add = mengele_permission_level }
+		multiply_temp_variable = { mengele_permission_unit_add = constant:germany_mengele_units.permission_units }
+		add_to_temp_variable = { mengele_unit_count = mengele_permission_unit_add }
+	}
+	if = {
+		limit = { has_country_flag = germany_master_race_claim_established }
+		add_to_temp_variable = { mengele_unit_count = constant:germany_mengele_units.perfect_aryan_bonus_units }
+	}
+	clamp_temp_variable = {
+		var = mengele_unit_count
+		min = constant:germany_mengele_units.base_units
+		max = constant:germany_mengele_units.max_units
+	}
+	round_temp_variable = mengele_unit_count
+	set_temp_variable = { mengele_unit_experience = constant:germany_mengele_civil_war.unit_experience }
+	meta_effect = {
+		text = {
+			capital_scope = {
+				create_unit = {
+					division = "name = \"Laboratory Cohorts\" division_template = \"Experimental Twin Formation\" start_experience_factor = [EXPERIENCE]"
+					count = [COUNT]
+					owner = PREV
+				}
+			}
+		}
+		COUNT = "[?mengele_unit_count|.0]"
+		EXPERIENCE = "[?mengele_unit_experience]"
+	}
+}
+
+germany_mengele_transfer_laboratory_states = {
+	event_target:germany_mengele_loyalist = {
+		every_controlled_state = {
+			limit = {
+				OR = {
+					state = 88
+					biowarfare_facility > 0
+				}
+			}
+			transfer_state_to = event_target:germany_mengele_faction
+		}
+	}
+}
+
+germany_mengele_setup_faction = {
+	set_country_flag = germany_mengele_faction
+	save_global_event_target_as = germany_mengele_faction
+	set_cosmetic_tag = germany_mengele_directorate
+	set_politics = {
+		ruling_party = fascism
+		elections_allowed = no
+		election_frequency = 48
+	}
+	add_popularity = {
+		ideology = fascism
+		popularity = 1.00
+	}
+	retire_country_leader = yes
+	create_country_leader = {
+		name = "Josef Mengele"
+		picture = GFX_portrait_GER_josef_mengele
+		expire = "1965.1.1"
+		ideology = fascism_ideology
+		traits = {
+			angel_of_death
+			laboratory_autocrat
+			camp_command
+			pseudoscientific_fanatic
+		}
+	}
+	add_ideas = germany_mengele_laboratory_state
+	add_ideas = germany_mengele_cloning_manpower
+}
+
+germany_mengele_apply_master_claim_formations = {
+	if = {
+		limit = {
+			has_country_flag = germany_master_race_claim_established
+			NOT = { has_idea = germany_mengele_perfect_aryan_formations }
+		}
+		add_ideas = germany_mengele_perfect_aryan_formations
+	}
+	if = {
+		limit = {
+			has_country_flag = germany_master_race_claim_established
+			NOT = { has_country_flag = germany_mengele_perfect_aryans_overthrew_mengele }
+		}
+		set_temp_variable = { mengele_perfect_formations_remain = constant:germany_mengele_random_weight.perfect_formations_remain }
+		set_temp_variable = { mengele_perfect_formations_overthrow = constant:germany_mengele_random_weight.perfect_formations_overthrow }
+		random_list = {
+			mengele_perfect_formations_remain = { }
+			mengele_perfect_formations_overthrow = {
+				set_country_flag = germany_mengele_perfect_aryans_overthrew_mengele
+				retire_country_leader = yes
+				create_country_leader = {
+					name = "Perfect Aryan Directorate"
+					picture = GFX_portrait_GER_perfect_aryan
+					expire = "1965.1.1"
+					ideology = fascism_ideology
+					traits = {
+						laboratory_autocrat
+						camp_command
+						pseudoscientific_fanatic
+					}
+				}
+				country_event = { id = germany_mengele.37 days = 1 }
+			}
+		}
+	}
+}
+
+germany_mengele_start_coup = {
+	set_country_flag = germany_mengele_coup_fired
+	set_global_flag = germany_mengele_civil_war_active
+	save_global_event_target_as = germany_mengele_loyalist
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.coup }
+	germany_mengele_record_stage = yes
+	set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.coup }
+	set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_coup }
+	germany_mengele_add_chaos = yes
+	set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.coup }
+	germany_mengele_add_condemnation = yes
+	germany_mengele_register_coup_state_deaths = yes
+	if = {
+		limit = { has_country_flag = germany_tibet_expedition_active }
+		set_country_flag = germany_tibet_expedition_compromised_by_coup
+		add_to_variable = { tibet_expedition_exposure = constant:germany_mengele_tibet.coup_compromise_exposure }
+		country_event = { id = germany_mengele.46 days = @MENGELE_COUP_COMPROMISE_DAYS random_days = @MENGELE_COUP_COMPROMISE_RANDOM_DAYS }
+	}
+	start_civil_war = {
+		ideology = fascism
+		ruling_party = fascism
+		size = constant:germany_mengele_civil_war.size
+		army_ratio = constant:germany_mengele_civil_war.army_ratio
+		air_ratio = constant:germany_mengele_civil_war.air_ratio
+		navy_ratio = constant:germany_mengele_civil_war.navy_ratio
+		states = { 88 }
+		states_filter = { biowarfare_facility > 0 }
+		keep_political_leader = yes
+		germany_mengele_setup_faction = yes
+	}
+	if = {
+		limit = { has_event_target = germany_mengele_faction }
+		event_target:germany_mengele_faction = {
+			germany_mengele_transfer_laboratory_states = yes
+			if = {
+				limit = {
+					event_target:germany_mengele_loyalist = {
+						OR = {
+							has_country_flag = germany_master_race_claim_established
+							has_country_flag = germany_tibet_expedition_active
+						}
+					}
+				}
+				set_country_flag = germany_master_race_claim_established
+				set_country_flag = germany_tibet_expedition_seized_by_mengele
+				germany_mengele_apply_master_claim_formations = yes
+			}
+			germany_mengele_spawn_laboratory_units = yes
+		}
+	}
+	germany_mengele_refresh_world_threat = yes
+	germany_mengele_show_angel_coup_super_event = yes
+	if = {
+		limit = { has_event_target = germany_mengele_faction }
+		event_target:germany_mengele_faction = {
+			country_event = { id = germany_mengele.31 days = 1 }
+		}
+	}
+	country_event = { id = germany_mengele.30 days = 1 }
+	country_event = { id = germany_mengele.32 days = @MENGELE_LOYALIST_MONITOR_DAYS random_days = @MENGELE_LOYALIST_MONITOR_RANDOM_DAYS }
+	country_event = { id = germany_mengele.90 days = 1 }
+}
+
+germany_mengele_mark_defeated = {
+	set_country_flag = germany_mengele_defeated
+	clr_global_flag = germany_mengele_civil_war_active
+	if = { limit = { has_idea = germany_mengele_emergency_crackdown } remove_ideas = germany_mengele_emergency_crackdown }
+	if = {
+		limit = {
+			has_event_target = germany_mengele_faction
+			event_target:germany_mengele_faction = { exists = yes }
+		}
+		annex_country = {
+			target = event_target:germany_mengele_faction
+			transfer_troops = no
+		}
+	}
+	if = { limit = { has_event_target = germany_mengele_faction } clear_global_event_target = germany_mengele_faction }
+	if = { limit = { has_event_target = germany_mengele_loyalist } clear_global_event_target = germany_mengele_loyalist }
+	if = { limit = { has_event_target = germany_mengele_emergency_site } clear_global_event_target = germany_mengele_emergency_site }
+	if = { limit = { has_event_target = germany_mengele_emergency_invader } clear_global_event_target = germany_mengele_emergency_invader }
+	germany_mengele_refresh_world_threat = yes
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.resolution }
+	germany_mengele_record_stage = yes
+	set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.defeat }
+	set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_purge }
+	germany_mengele_add_chaos = yes
+}
+
+germany_mengele_mark_victory = {
+	set_country_flag = germany_mengele_victorious
+	set_country_flag = germany_master_race_claim_established
+	clr_global_flag = germany_mengele_civil_war_active
+	set_cosmetic_tag = germany_mengele_angelic_directorate
+	if = {
+		limit = {
+			has_event_target = germany_mengele_loyalist
+			event_target:germany_mengele_loyalist = {
+				exists = yes
+				NOT = { has_country_flag = germany_mengele_faction }
+			}
+		}
+		annex_country = {
+			target = event_target:germany_mengele_loyalist
+			transfer_troops = yes
+		}
+	}
+	add_ideas = germany_mengele_victory_state
+	set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.mengele_victory }
+	set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_victory }
+	germany_mengele_add_chaos = yes
+	set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.mengele_victory }
+	germany_mengele_add_condemnation = yes
+	complete_special_project = {
+		project = sp:anthrax_bomb
+		show_modifiers = no
+	}
+	complete_special_project = {
+		project = sp:plague_bomb
+		show_modifiers = no
+	}
+	complete_special_project = {
+		project = sp:tularemia_bomb
+		show_modifiers = no
+	}
+	complete_special_project = {
+		project = sp:smallpox_bomb
+		show_modifiers = no
+	}
+	randomize_and_complete_weaponized_zombie_project = yes
+	germany_mengele_apply_master_claim_formations = yes
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.resolution }
+	germany_mengele_record_stage = yes
+	germany_mengele_refresh_world_threat = yes
+	if = { limit = { has_event_target = germany_mengele_loyalist } clear_global_event_target = germany_mengele_loyalist }
+	if = { limit = { has_event_target = germany_mengele_faction } clear_global_event_target = germany_mengele_faction }
+	if = { limit = { has_event_target = germany_mengele_emergency_site } clear_global_event_target = germany_mengele_emergency_site }
+	if = { limit = { has_event_target = germany_mengele_emergency_invader } clear_global_event_target = germany_mengele_emergency_invader }
+}
+
+germany_tibet_reset_expedition_variables = {
+	set_variable = { tibet_expedition_progress = 0 }
+	set_variable = { tibet_expedition_integrity = 0 }
+	set_variable = { tibet_expedition_exposure = 0 }
+	set_variable = { tibet_expedition_holy_contact = 0 }
+}
+
+germany_tibet_cancel_expedition = {
+	clr_country_flag = germany_tibet_expedition_active
+	set_country_flag = germany_tibet_expedition_blocked
+	set_variable = { aryan_origin_preparation = 0 }
+	add_to_variable = { ahnenerbe_influence = constant:germany_mengele_tibet.ideology_cancel_ahnenerbe }
+	if = { limit = { has_event_target = germany_tibet_origin_country } clear_global_event_target = germany_tibet_origin_country }
+	if = { limit = { has_event_target = germany_tibet_holy_realm_contact_country } clear_global_event_target = germany_tibet_holy_realm_contact_country }
+}
+
+germany_tibet_cancel_preparation = {
+	set_country_flag = germany_tibet_expedition_blocked
+	set_variable = { aryan_origin_preparation = 0 }
+	add_to_variable = { ahnenerbe_influence = constant:germany_mengele_tibet.ideology_cancel_ahnenerbe }
+}
+
+germany_tibet_record_expedition_stage = {
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.expedition }
+	germany_mengele_record_stage = yes
+}
+
+germany_tibet_begin_expedition = {
+	set_country_flag = germany_tibet_expedition_active
+	save_global_event_target_as = germany_tibet_origin_country
+	germany_tibet_reset_expedition_variables = yes
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.expedition }
+	germany_mengele_record_stage = yes
+	country_event = { id = germany_mengele.41 days = @MENGELE_TIBET_TRANSIT_DAYS random_days = @MENGELE_TIBET_TRANSIT_RANDOM_DAYS }
+}
+
+germany_tibet_apply_holy_realm_contact = {
+	set_country_flag = germany_tibet_holy_realm_contact
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.holy_contact }
+	germany_mengele_record_stage = yes
+	if = {
+		limit = { has_event_target = holy_realm_country }
+		event_target:holy_realm_country = { save_global_event_target_as = germany_tibet_holy_realm_contact_country }
+	}
+	else = {
+		random_other_country = {
+			limit = { is_holy_realm_country = yes }
+			save_global_event_target_as = germany_tibet_holy_realm_contact_country
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = germany_tibet_holy_realm_contact_country
+			event_target:germany_tibet_holy_realm_contact_country = { holy_realm_has_final_silence_stage = yes }
+		}
+		add_to_variable = { tibet_expedition_exposure = constant:germany_mengele_tibet.holy_stage_final_silence_bonus }
+		set_country_flag = germany_tibet_route_final_silence_danger
+	}
+	else_if = {
+		limit = {
+			has_event_target = germany_tibet_holy_realm_contact_country
+			event_target:germany_tibet_holy_realm_contact_country = { holy_realm_has_divine_sovereignty = yes }
+		}
+		add_to_variable = { tibet_expedition_holy_contact = constant:germany_mengele_tibet.holy_stage_divine_bonus }
+	}
+	else_if = {
+		limit = {
+			has_event_target = germany_tibet_holy_realm_contact_country
+			event_target:germany_tibet_holy_realm_contact_country = { holy_realm_has_buddha_mandate = yes }
+		}
+		add_to_variable = { tibet_expedition_holy_contact = constant:germany_mengele_tibet.holy_stage_buddha_bonus }
+		set_country_flag = germany_tibet_holy_realm_claim_guaranteed
+	}
+	else_if = {
+		limit = {
+			has_event_target = germany_tibet_holy_realm_contact_country
+			event_target:germany_tibet_holy_realm_contact_country = { holy_realm_has_arhat_stage = yes }
+		}
+		add_to_variable = { tibet_expedition_holy_contact = constant:germany_mengele_tibet.holy_stage_arhat_bonus }
+	}
+	else = {
+		add_to_variable = { tibet_expedition_holy_contact = constant:germany_mengele_tibet.holy_stage_refuge_bonus }
+	}
+}
+
+germany_tibet_finish_expedition = {
+	clr_country_flag = germany_tibet_expedition_active
+	set_country_flag = germany_tibet_expedition_completed
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = germany_tibet_route_final_silence_danger
+				check_variable = { tibet_expedition_integrity < constant:germany_mengele_tibet.lost_threshold }
+			}
+		}
+		set_country_flag = germany_tibet_expedition_lost
+	}
+	else_if = {
+		limit = { check_variable = { tibet_expedition_exposure > constant:germany_mengele_tibet.scandal_threshold } }
+		set_country_flag = germany_tibet_expedition_scandal
+		set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.tibet_scandal }
+		set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.tibet_scandal }
+		germany_mengele_add_chaos = yes
+		set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.tibet_scandal }
+		germany_mengele_add_condemnation = yes
+		every_other_country = {
+			limit = {
+				exists = yes
+				is_major = yes
+				NOT = { original_tag = GER }
+			}
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = germany_tibet_expedition_rejected
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_country_flag = germany_tibet_holy_realm_claim_guaranteed
+				check_variable = { tibet_expedition_holy_contact > constant:germany_mengele_tibet.stage_outcome_threshold }
+			}
+		}
+		set_country_flag = germany_tibet_expedition_holy_confirmed
+		set_country_flag = germany_holy_realm_contact_positive
+		if = {
+			limit = { has_event_target = germany_tibet_holy_realm_contact_country }
+			event_target:germany_tibet_holy_realm_contact_country = {
+				set_country_flag = holy_realm_german_origin_claim_contact
+				if = {
+					limit = { has_variable = mandala_reach }
+					add_to_variable = { mandala_reach = constant:germany_mengele_tibet.holy_realm_mandala_reach }
+				}
+			}
+		}
+		set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.tibet_holy_confirmed }
+		set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.tibet_claim }
+		germany_mengele_add_chaos = yes
+		set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.tibet_holy_confirmed }
+		germany_mengele_add_condemnation = yes
+	}
+	else_if = {
+		limit = { has_country_flag = germany_tibet_fabricated_result }
+		set_country_flag = germany_tibet_expedition_fabricated_positive
+		set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.tibet_public_claim }
+		set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.tibet_claim }
+		germany_mengele_add_chaos = yes
+		set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.tibet_public_claim }
+		germany_mengele_add_condemnation = yes
+	}
+	else_if = {
+		limit = { check_variable = { tibet_expedition_progress > constant:germany_mengele_tibet.stage_outcome_threshold } }
+		set_country_flag = germany_tibet_expedition_ambiguous_positive
+	}
+	else = {
+		set_country_flag = germany_tibet_expedition_no_result
+	}
+	set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.resolution }
+	germany_mengele_record_stage = yes
+	if = { limit = { has_event_target = germany_tibet_origin_country } clear_global_event_target = germany_tibet_origin_country }
+	if = { limit = { has_event_target = germany_tibet_holy_realm_contact_country } clear_global_event_target = germany_tibet_holy_realm_contact_country }
+}

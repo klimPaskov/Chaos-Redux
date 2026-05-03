@@ -1,0 +1,363 @@
+# ============================================================================
+# CHAOS REDUX - GENOCIDE CRISIS TRIGGERS
+# ============================================================================
+# Shared gates for camps, hidden atrocity infrastructure, country-specific
+# atrocity AI paths, discovery, and foreign response thresholds.
+# ============================================================================
+
+genocide_state_has_active_camps = {
+	OR = {
+		concentration_camp > 0
+		extermination_camp > 0
+		gulag_labor_camp_network > 0
+	}
+}
+
+genocide_state_has_atrocity_evidence = {
+	OR = {
+		genocide_state_has_active_camps = yes
+		has_state_flag = genocide_destroyed_atrocity_site
+		has_state_flag = genocide_auschwitz_experiment_site
+		has_state_flag = genocide_ss_laboratory_site
+	}
+}
+
+genocide_state_has_undiscovered_atrocity_evidence = {
+	genocide_state_has_atrocity_evidence = yes
+	NOT = { has_state_flag = genocide_site_discovered }
+	has_variable = genocide_responsible_country
+}
+
+genocide_state_has_enemy_forces_near_root = {
+	OR = {
+		any_state_division = {
+			OWNER = {
+				has_war_with = ROOT
+			}
+		}
+		any_neighbor_state = {
+			OR = {
+				any_state_division = {
+					OWNER = {
+						has_war_with = ROOT
+					}
+				}
+				controller = {
+					has_war_with = ROOT
+				}
+			}
+		}
+	}
+}
+
+genocide_country_has_active_camps = {
+	any_controlled_state = {
+		genocide_state_has_active_camps = yes
+	}
+}
+
+genocide_state_has_foreign_population_context = {
+	NOT = { is_core_of = ROOT }
+}
+
+genocide_country_has_occupied_foreign_camp_system = {
+	any_controlled_state = {
+		genocide_state_has_active_camps = yes
+		genocide_state_has_foreign_population_context = yes
+	}
+}
+
+genocide_country_has_diplomatically_visible_war = {
+	any_enemy_country = {
+		OR = {
+			is_major = yes
+			has_government = democratic
+		}
+	}
+}
+
+genocide_country_has_crisis = {
+	OR = {
+		has_country_flag = genocide_crisis_active
+		genocide_country_has_active_camps = yes
+		check_variable = { genocide_escalation > 0 }
+		check_variable = { genocide_discovered_sites > 0 }
+	}
+}
+
+genocide_country_has_meaningful_internal_report_pressure = {
+	genocide_country_has_crisis = yes
+	OR = {
+		check_variable = {
+			var = genocide_escalation
+			value = constant:genocide_ai_threshold.internal_report_min_escalation
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = hidden_atrocity_score
+			value = constant:genocide_ai_threshold.internal_report_min_hidden_score
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = genocide_deaths
+			value = constant:genocide_ai_threshold.internal_report_min_deaths
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = genocide_decisions_taken
+			value = constant:genocide_ai_threshold.internal_report_min_decisions
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = genocide_extermination_sites
+			value = constant:genocide_ai_threshold.internal_report_min_extermination_sites
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = genocide_concentration_sites
+			value = constant:genocide_ai_threshold.internal_report_min_camp_sites
+			compare = greater_than_or_equals
+		}
+		genocide_country_has_discovered_sites = yes
+	}
+}
+
+genocide_country_has_foreign_observer_leak_or_discovery = {
+	OR = {
+		has_country_flag = genocide_evidence_reached_foreign_observers
+		has_country_flag = genocide_discovery_publicized
+		genocide_country_has_discovered_sites = yes
+		genocide_country_condemnation_25 = yes
+	}
+}
+
+genocide_country_has_foreign_observer_evidence_pressure = {
+	genocide_country_has_crisis = yes
+	OR = {
+		genocide_country_has_foreign_observer_leak_or_discovery = yes
+		check_variable = {
+			var = genocide_foreign_pressure
+			value = constant:genocide_ai_threshold.foreign_observer_pressure
+			compare = greater_than_or_equals
+		}
+		AND = {
+			genocide_country_has_occupied_foreign_camp_system = yes
+			OR = {
+				check_variable = {
+					var = genocide_visibility
+					value = constant:genocide_ai_threshold.foreign_observer_visibility
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = hidden_atrocity_score
+					value = constant:genocide_ai_threshold.foreign_observer_hidden_score
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = genocide_deaths
+					value = constant:genocide_ai_threshold.foreign_observer_deaths
+					compare = greater_than_or_equals
+				}
+				genocide_country_has_diplomatically_visible_war = yes
+			}
+		}
+	}
+}
+
+genocide_country_can_unlock_extermination_camps = {
+	OR = {
+		has_government = fascism
+		has_government = communism
+		has_doctrine = extermination_columns
+		has_completed_subdoctrine = extermination_columns
+		has_country_flag = genocide_extreme_doctrine_unlocked
+		has_country_flag = chaos_battalion_unlocked
+	}
+}
+
+genocide_country_should_use_camp_construction = {
+	OR = {
+		is_ai = no
+		has_country_flag = genocide_crisis_active
+		check_variable = { genocide_escalation > 0 }
+		has_doctrine = extermination_columns
+		has_completed_subdoctrine = extermination_columns
+		AND = {
+			original_tag = GER
+			has_government = fascism
+			has_war = yes
+		}
+		AND = {
+			original_tag = JAP
+			has_government = fascism
+			has_war = yes
+		}
+		AND = {
+			original_tag = SOV
+			has_government = communism
+		}
+		AND = {
+			has_government = fascism
+			has_war = yes
+			OR = {
+				has_stability < constant:genocide_ai_threshold.internal_crisis_stability
+				any_controlled_state = { has_resistance = yes }
+			}
+		}
+		AND = {
+			has_government = communism
+			has_war = yes
+			OR = {
+				has_stability < constant:genocide_ai_threshold.soviet_gulag_stability
+				any_controlled_state = { has_resistance = yes }
+			}
+		}
+	}
+	NOT = {
+		AND = {
+			is_ai = yes
+			OR = {
+				has_government = democratic
+				has_government = neutrality
+			}
+			NOT = { has_country_flag = genocide_extreme_doctrine_unlocked }
+			NOT = { has_doctrine = extermination_columns }
+			NOT = { has_completed_subdoctrine = extermination_columns }
+		}
+	}
+}
+
+genocide_country_prone_to_internal_crisis = {
+	genocide_country_has_crisis = yes
+	genocide_country_has_meaningful_internal_report_pressure = yes
+	OR = {
+		has_stability < constant:genocide_ai_threshold.internal_crisis_stability
+		check_variable = { genocide_resistance_pressure > constant:genocide_ai_threshold.internal_crisis_resistance }
+		AND = {
+			has_government = fascism
+			check_variable = { party_popularity@fascism < constant:genocide_ai_threshold.internal_crisis_party_support }
+		}
+		AND = {
+			has_government = communism
+			check_variable = { party_popularity@communism < constant:genocide_ai_threshold.internal_crisis_party_support }
+		}
+		AND = {
+			has_government = democratic
+			check_variable = { party_popularity@democratic < constant:genocide_ai_threshold.internal_crisis_party_support }
+		}
+		AND = {
+			has_government = neutrality
+			check_variable = { party_popularity@neutrality < constant:genocide_ai_threshold.internal_crisis_party_support }
+		}
+	}
+	NOT = {
+		AND = {
+			has_stability > constant:genocide_ai_threshold.internal_strong_stability
+			OR = {
+				AND = {
+					has_government = fascism
+					check_variable = { party_popularity@fascism > constant:genocide_ai_threshold.internal_strong_party_support }
+				}
+				AND = {
+					has_government = communism
+					check_variable = { party_popularity@communism > constant:genocide_ai_threshold.internal_strong_party_support }
+				}
+				AND = {
+					has_government = democratic
+					check_variable = { party_popularity@democratic > constant:genocide_ai_threshold.internal_strong_party_support }
+				}
+				AND = {
+					has_government = neutrality
+					check_variable = { party_popularity@neutrality > constant:genocide_ai_threshold.internal_strong_party_support }
+				}
+			}
+		}
+	}
+}
+
+genocide_country_has_discovered_sites = {
+	check_variable = { genocide_discovered_sites > 0 }
+}
+
+genocide_country_condemnation_25 = {
+	check_variable = {
+		var = chem_warfare_condemnation
+		value = constant:genocide_condemnation.newspaper_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+genocide_country_condemnation_50 = {
+	check_variable = {
+		var = chem_warfare_condemnation
+		value = constant:genocide_condemnation.refugee_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+genocide_country_condemnation_75 = {
+	check_variable = {
+		var = chem_warfare_condemnation
+		value = constant:genocide_condemnation.sanctions_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+genocide_country_condemnation_100 = {
+	check_variable = {
+		var = chem_warfare_condemnation
+		value = constant:genocide_condemnation.tribunal_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+genocide_state_is_german_occupied_poland_target = {
+	OR = {
+		state = 88
+		state = 89
+		state = 90
+		state = 92
+		state = 97
+		state = 762
+	}
+	OR = {
+		is_core_of = POL
+		is_core_of = SIL
+		is_core_of = UKR
+	}
+	is_controlled_by = GER
+}
+
+genocide_state_is_japanese_occupation_target = {
+	is_controlled_by = JAP
+	OR = {
+		is_core_of = CHI
+		is_core_of = PRC
+		is_core_of = GXC
+		is_core_of = MEN
+		is_core_of = MAN
+	}
+	NOT = { is_core_of = JAP }
+}
+
+genocide_country_has_biowarfare_atrocity_capacity = {
+	OR = {
+		has_tech = anthrax_bomb_delivery_systems
+		has_tech = plague_bomb_delivery_systems
+		has_tech = tularemia_bomb_delivery_systems
+		has_tech = smallpox_bomb_delivery_systems
+		any_controlled_state = { biowarfare_facility > 0 }
+	}
+}
+
+genocide_state_is_soviet_gulag_target = {
+	is_controlled_by = SOV
+	OR = {
+		state = 644
+		state = 874
+		state = 881
+		state = 516
+		state = 581
+		state = 582
+	}
+}

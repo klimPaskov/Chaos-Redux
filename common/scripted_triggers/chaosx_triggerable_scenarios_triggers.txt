@@ -1,0 +1,27 @@
+# ============================================================================
+# CHAOS REDUX - TRIGGERABLE SCENARIO TRIGGERS
+# ============================================================================
+# Shared gates for manual sandbox/challenge scenarios opened through the
+# triggerable scenario window.
+# ============================================================================
+
+triggerable_scenario_can_spawn_zombie_state = {
+	NOT = { is_zombie_controlled_state = yes }
+	controller = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+	}
+}
+
+triggerable_scenario_can_launch_selected = {
+	OR = {
+		check_variable = {
+			var = triggerable_scenarios_selected
+			value = constant:triggerable_scenario_id.zombie_apocalypse
+		}
+		check_variable = {
+			var = triggerable_scenarios_selected
+			value = constant:triggerable_scenario_id.mengele_clones
+		}
+	}
+}

@@ -21,6 +21,20 @@ Three internal rarity groups are now represented in the achievement list order:
   - `15_global_pariah_achievement`
 - Epic
   - `20_end_of_the_living_achievement`
+  - `21_weaponize_the_end_achievement`
+  - `22_fight_fire_with_fire_achievement`
+  - `23_we_made_a_cure_then_made_it_worse_achievement`
+  - `24_containment_was_temporary_achievement`
+  - `25_only_obeys_us_achievement`
+  - `26_a_friend_to_mankind_achievement`
+  - `27_the_wendigo_rises_achievement`
+  - `28_the_cure_is_real_achievement`
+  - `29_the_lamps_remain_lit_achievement`
+  - `30_mandala_of_nations_achievement`
+  - `31_mountain_circle_by_vow_achievement`
+  - `32_mandate_without_a_sword_achievement`
+  - `33_register_without_edges_achievement`
+  - `34_empty_mandala_achievement`
 
 HOI4 custom achievements do not expose a native tier field in the file format, so tiering is preserved through internal grouping, naming, and docs rather than a dedicated engine-side rarity value.
 
@@ -80,6 +94,18 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
 
 - `20_end_of_the_living_achievement`
   - Trigger the zombie apocalypse world-end scenario (`world_end_zombies`).
+- `29_the_lamps_remain_lit_achievement`
+  - As the Holy Realm, complete `THR_vow_against_annihilation`, renounce Final Silence, and keep Chaos below `600`.
+- `30_mandala_of_nations_achievement`
+  - As the Holy Realm, lead the Mandala of Nations and complete the three kindness acts.
+- `31_mountain_circle_by_vow_achievement`
+  - As the Holy Realm, unify the Himalayan circle peacefully and receive `holy_realm_himalayan_unity`.
+- `32_mandate_without_a_sword_achievement`
+  - As the Holy Realm, reach the Buddha Mandate with Compassion Drift below `1` and without arming Final Silence.
+- `33_register_without_edges_achievement`
+  - As the Holy Realm, complete Northern Indian and Eastern Mandala staged integration, then unlock `The World Is Asked to Kneel`.
+- `34_empty_mandala_achievement`
+  - As the Holy Realm, complete the Final Silence world-end scenario.
 
 ## Icons And GFX
 
@@ -171,3 +197,23 @@ Registered primary sprite aliases:
     - `gfx/achievements/20_end_of_the_living_achievement.dds`
     - `gfx/achievements/20_end_of_the_living_achievement_grey.dds`
     - `gfx/achievements/20_end_of_the_living_achievement_not_eligible.dds`
+
+The zombie special-project achievement icon sets `21` through `28` also use the same three-file pattern and have explicit sprite aliases in `interface/chaosx_achievements.gfx`. Sets `21` through `27` currently use placeholder copies until dedicated art is supplied.
+
+Holy Realm achievement icon sets use the same three-file pattern and are currently placeholder copies until dedicated art is supplied:
+
+- `29_the_lamps_remain_lit_achievement`
+- `30_mandala_of_nations_achievement`
+- `31_mountain_circle_by_vow_achievement`
+- `32_mandate_without_a_sword_achievement`
+- `33_register_without_edges_achievement`
+- `34_empty_mandala_achievement`
+
+Needed final achievement art:
+
+- `29_the_lamps_remain_lit_achievement`: a calm lamp or butter-lamp line in snow, hopeful gold/white, no weapons.
+- `30_mandala_of_nations_achievement`: a peaceful mandala/faction circle with small banners or open hands.
+- `31_mountain_circle_by_vow_achievement`: Tibet, Nepal, and Bhutan passes unified by prayer flags or a sealed mountain ring.
+- `32_mandate_without_a_sword_achievement`: Buddha Mandate seal with an empty scabbard, dove/white banner, or hands lowered.
+- `33_register_without_edges_achievement`: an Arhat ledger extending across India/China border maps, administrative rather than apocalyptic.
+- `34_empty_mandala_achievement`: a dark empty mandala, ash-white ring, silent world ledger; clearly Final Silence.

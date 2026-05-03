@@ -1,3 +1,8 @@
+@thr_focus_cost_short = 4
+@thr_focus_cost_medium = 6
+@thr_focus_cost_long = 8
+@thr_focus_cost_major = 10
+
 focus_tree = {
 	id = THR_focus
 
@@ -12,414 +17,2779 @@ focus_tree = {
 	default = no
 	continuous_focus_position = { x = 50 y = 1800 }
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_ENTRY
 	focus = {
 		id = THR_mountain_refuge
-		icon = GFX_goal_generic_construct_infrastructure
+		icon = GFX_goal_THR_refuge
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
 		x = 20
 		y = 0
-		cost = 5
-		completion_reward = {
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-			holy_realm_add_spiritual_legitimacy = yes
-			add_stability = 0.03
-			random_owned_controlled_state = {
-				add_building_construction = {
-					type = infrastructure
-					level = 1
-					instant_build = yes
+		cost = @thr_focus_cost_short
+			completion_reward = {
+				set_country_flag = holy_realm_focus_mountain_refuge
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+				add_stability = 0.12
+				add_political_power = 300
+				set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+				set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+				holy_realm_add_chaos = yes
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 				}
-			}
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_shelter_border_villages
-		icon = GFX_goal_generic_consumer_goods
+		icon = GFX_focus_generic_population_growth
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
 		x = 18
 		y = 1
-		cost = 5
+		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_mountain_refuge }
-		completion_reward = {
-			set_country_flag = holy_realm_memory_refugee_shelters
-			add_manpower = 12000
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
-			holy_realm_add_compassion_drift = yes
+			completion_reward = {
+				set_country_flag = holy_realm_focus_shelter_border_villages
+				set_country_flag = holy_realm_memory_refugee_shelters
+				add_manpower = 200000
+				add_stability = 0.08
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MILITARY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_guard_high_passes
-		icon = GFX_goal_generic_fortify_city
+		icon = GFX_focus_generic_home_defense
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
 		x = 22
 		y = 1
-		cost = 5
+		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_mountain_refuge }
 		completion_reward = {
-			add_war_support = 0.04
-			random_owned_controlled_state = {
-				add_building_construction = {
-					type = bunker
-					level = 2
-					instant_build = yes
+			set_country_flag = holy_realm_focus_guard_high_passes
+			set_country_flag = holy_realm_memory_high_passes_guarded
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+				add_war_support = 0.15
+				army_experience = 100
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = bunker
+						level = 5
+						instant_build = yes
+						province = {
+							all_provinces = yes
+							limit_to_border = yes
+						}
+					}
+					add_building_construction = { type = anti_air_building level = 2 instant_build = yes }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 				}
-			}
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_POLITICAL
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION, THR_TAG_UNLOCK
+	# role = THR_TAG_UNLOCK
 	focus = {
 		id = THR_bodhisattva_accepts_seal
-		icon = GFX_goal_generic_national_unity
+		icon = GFX_goal_THR_bodhisattva
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 2
-		cost = 7
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_shelter_border_villages }
 		prerequisite = { focus = THR_guard_high_passes }
 		completion_reward = {
+			set_country_flag = holy_realm_focus_bodhisattva_accepts_seal
 			country_event = { id = chaosx.nr3.10 }
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DOCTRINE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_first_doctrine_suffering
-		icon = GFX_goal_generic_political_reform
+		icon = GFX_focus_smiling_buddha
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 20
 		y = 3
-		cost = 5
+		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_bodhisattva_accepts_seal }
-		completion_reward = {
-			add_political_power = 75
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-			holy_realm_add_spiritual_legitimacy = yes
+		available = {
+			holy_realm_bodhisattva_path_unlocked = yes
+		}
+			completion_reward = {
+				set_country_flag = holy_realm_focus_first_doctrine_suffering
+				add_political_power = 350
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_rewrite_civil_register
-		icon = GFX_goal_generic_intelligence_exchange
+		icon = GFX_focus_generic_improve_the_administration
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
 		y = 4
-		cost = 6
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_first_doctrine_suffering }
-		completion_reward = {
-			set_country_flag = holy_realm_memory_civil_register
-			add_political_power = 50
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-			holy_realm_add_mandala_reach = yes
+		available = {
+			holy_realm_bodhisattva_path_unlocked = yes
+		}
+			completion_reward = {
+				set_country_flag = holy_realm_focus_rewrite_civil_register
+				set_country_flag = holy_realm_memory_civil_register
+				add_political_power = 350
+				add_stability = 0.06
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+			custom_effect_tooltip = THR_rewrite_civil_register_effect_tt
+			set_country_flag = holy_realm_civil_register_review_unlocked
+			every_owned_state = {
+				limit = {
+					is_controlled_by = ROOT
+					NOT = { is_core_of = ROOT }
+				}
+				set_compliance = 60
+				set_resistance = 0
+				set_state_flag = holy_realm_arhat_registered_state
+			}
+			every_owned_state = {
+				limit = {
+					is_controlled_by = ROOT
+					is_core_of = ROOT
+				}
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			country_event = { id = chaosx.nr3.111 days = 1 }
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_mandala_bureau
-		icon = GFX_goal_generic_production
+		icon = GFX_focus_generic_secret_service_agency
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
 		y = 5
-		cost = 7
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_rewrite_civil_register }
-		completion_reward = {
-			add_ideas = holy_realm_arhat_administration
-			random_owned_controlled_state = {
-				add_building_construction = {
-					type = industrial_complex
-					level = 1
-					instant_build = yes
+			completion_reward = {
+				set_country_flag = holy_realm_focus_mandala_bureau
+				set_country_flag = holy_realm_memory_mandala_bureau
+				add_political_power = 300
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+					add_building_construction = { type = arms_factory level = 1 instant_build = yes }
 				}
-			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_mandala_reach = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_arhat_examinations
-		icon = GFX_goal_generic_political_reform
+		icon = GFX_focus_generic_military_academy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 19
 		y = 5
-		cost = 7
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_rewrite_civil_register }
-		completion_reward = {
-			set_country_flag = holy_realm_memory_arhat_examinations
-			add_stability = 0.04
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
-			holy_realm_add_compassion_drift = yes
+			completion_reward = {
+				set_country_flag = holy_realm_focus_arhat_examinations
+				set_country_flag = holy_realm_memory_arhat_examinations
+				add_stability = 0.12
+				add_political_power = 250
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_UNLOCK
+	# role = THR_TAG_UNLOCK
 	focus = {
 		id = THR_arhats_take_office
-		icon = GFX_goal_generic_demand_territory
+		icon = GFX_goal_THR_arhat
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
 		y = 6
-		cost = 8
+		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_mandala_bureau }
 		prerequisite = { focus = THR_arhat_examinations }
 		completion_reward = {
+			set_country_flag = holy_realm_focus_arhats_take_office
 			country_event = { id = chaosx.nr3.20 }
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ECONOMY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_labs_snow_line
-		icon = GFX_goal_generic_scientific_exchange
+		icon = GFX_focus_research2
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
 		x = 13
 		y = 7
-		cost = 8
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_arhats_take_office }
-		completion_reward = {
-			add_research_slot = 1
-			add_tech_bonus = {
-				name = THR_labs_snow_line_bonus
-				bonus = 0.50
-				uses = 2
-				category = nuclear
+		available = {
+			holy_realm_arhat_path_unlocked = yes
+			custom_trigger_tooltip = {
+				tooltip = THR_vow_keeper_mandala_reach_required_tt
+				check_variable = { mandala_reach > 18 }
 			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_labs_snow_line
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			add_research_slot = 3
+			add_political_power = 250
+				add_tech_bonus = {
+					name = THR_labs_snow_line_bonus
+					bonus = 0.85
+					uses = 6
+					category = nuclear
+				}
 			set_country_flag = holy_realm_memory_snow_line_labs
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ECONOMY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_refuge_foundries
-		icon = GFX_goal_generic_construct_mil_factory
+		icon = GFX_focus_generic_industry_3
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
 		x = 15
 		y = 7
-		cost = 8
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_arhats_take_office }
+		available = {
+			holy_realm_arhat_path_unlocked = yes
+		}
 		completion_reward = {
-			random_owned_controlled_state = {
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
+			set_country_flag = holy_realm_focus_refuge_foundries
+			set_country_flag = holy_realm_memory_refuge_foundries
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 				}
-			}
-			add_war_support = 0.05
+				add_war_support = 0.18
+				add_political_power = 200
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MILITARY
+	# tone = THR_TAG_NEUTRAL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_vow_keeper_regiments
-		icon = GFX_goal_generic_army_doctrines
+		icon = GFX_goal_generic_special_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP }
 		x = 19
 		y = 7
-		cost = 8
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_arhats_take_office }
+		available = {
+			holy_realm_arhat_path_unlocked = yes
+		}
 		completion_reward = {
-			army_experience = 25
-			add_doctrine_cost_reduction = {
-				name = THR_vow_keeper_regiments_bonus
-				cost_reduction = 0.50
-				uses = 1
-				category = land_doctrine
-			}
+				set_country_flag = holy_realm_focus_vow_keeper_regiments
+				set_country_flag = holy_realm_memory_vow_keeper_regiments
+				custom_effect_tooltip = THR_vow_keeper_regiments_effect_tt
+				add_manpower = 250000
+				army_experience = 160
+				holy_realm_spawn_vow_keeper_mountaineers = yes
+				add_doctrine_cost_reduction = {
+					name = THR_vow_keeper_regiments_bonus
+					cost_reduction = 0.75
+					uses = 5
+					category = land_doctrine
+				}
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_quiet_envoys
-		icon = GFX_goal_generic_improve_relations
+		icon = GFX_focus_generic_diplomatic_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 21
 		y = 7
-		cost = 8
+		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_arhats_take_office }
+		available = {
+			holy_realm_arhat_path_unlocked = yes
+		}
 		completion_reward = {
-			set_country_flag = holy_realm_memory_quiet_envoys
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-			holy_realm_add_mandala_reach = yes
+				set_country_flag = holy_realm_focus_quiet_envoys
+				set_country_flag = holy_realm_memory_quiet_envoys
+				add_political_power = 300
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_POLITICAL
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_UNLOCK
+	# role = THR_TAG_UNLOCK
 	focus = {
 		id = THR_buddha_mandate
-		icon = GFX_goal_generic_major_war
+		icon = GFX_goal_THR_buddha
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
 		y = 8
-		cost = 10
+		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_labs_snow_line }
 		prerequisite = { focus = THR_refuge_foundries }
 		prerequisite = { focus = THR_vow_keeper_regiments }
 		prerequisite = { focus = THR_quiet_envoys }
+		available = {
+			holy_realm_arhat_path_unlocked = yes
+		}
 		completion_reward = {
+			set_country_flag = holy_realm_focus_buddha_mandate
 			country_event = { id = chaosx.nr3.30 }
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION, THR_TAG_FINAL_SILENCE_PRESSURE, THR_TAG_AI_PATH
+	# role = THR_TAG_BRANCH_ENTRY, THR_TAG_MUTUALLY_EXCLUSIVE
 	focus = {
 		id = THR_lamps_remain_lit
-		icon = GFX_goal_generic_national_unity
+		icon = GFX_goal_THR_mercy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
 		y = 9
-		cost = 8
+		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_buddha_mandate }
-		mutually_exclusive = { focus = THR_pacification_mandate }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+
+			holy_realm_buddha_path_unlocked = yes
+		}
 		mutually_exclusive = { focus = THR_throne_without_body }
 		completion_reward = {
+			set_country_flag = holy_realm_focus_lamps_remain_lit
 			set_country_flag = holy_realm_doctrine_restraint
 			set_country_flag = holy_realm_doctrine_chosen
 			add_ideas = holy_realm_peacekeeping_mandate
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
 			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 4
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_white_flags_foreign_roads
-		icon = GFX_goal_generic_allies_build_infantry
-		x = 12
+		icon = GFX_focus_generic_league_of_nations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
 		y = 10
-		cost = 8
+		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_lamps_remain_lit }
-		completion_reward = {
-			set_country_flag = holy_realm_doctrine_peacekeeping
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-			holy_realm_add_mandala_reach = yes
-			add_war_support = 0.03
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
 		}
-	}
 
-	focus = {
-		id = THR_vow_against_annihilation
-		icon = GFX_goal_generic_peaceful_revolution
-		x = 10
-		y = 11
-		cost = 8
-		prerequisite = { focus = THR_white_flags_foreign_roads }
 		completion_reward = {
-			holy_realm_renounce_final_silence = yes
-			set_country_flag = holy_realm_memory_vow_against_annihilation
-		}
-	}
-
-	focus = {
-		id = THR_pacification_mandate
-		icon = GFX_goal_generic_occupy_states_ongoing_war
-		x = 17
-		y = 9
-		cost = 8
-		prerequisite = { focus = THR_buddha_mandate }
-		mutually_exclusive = { focus = THR_lamps_remain_lit }
-		mutually_exclusive = { focus = THR_throne_without_body }
-		completion_reward = {
-			set_country_flag = holy_realm_doctrine_coercive_pacification
-			set_country_flag = holy_realm_doctrine_chosen
-			add_ideas = holy_realm_coercive_pacification
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-			holy_realm_add_final_silence_pressure = yes
-			set_temp_variable = { holy_realm_chaos_delta = 20 }
+				set_country_flag = holy_realm_focus_white_flags_foreign_roads
+				set_country_flag = holy_realm_doctrine_peacekeeping
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+				add_stability = 0.05
+				add_war_support = 0.08
+				set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
 			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_TERMINAL
+	focus = {
+		id = THR_vow_against_annihilation
+		icon = GFX_focus_generic_vatican_state
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 11
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_white_flags_foreign_roads }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_vow_against_annihilation
+			holy_realm_renounce_final_silence = yes
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = -0.18
+				tooltip_side = holy_realm_vow_against_annihilation_side
+			}
+			set_country_flag = holy_realm_memory_vow_against_annihilation
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE, THR_TAG_AI_PATH
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_pacification_mandate
+		icon = GFX_goal_THR_pacification
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 30
+		y = 5
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_letters_beyond_passes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mid_chaos_focus_tt
+				holy_realm_chaos_above_intervention_floor = yes
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_pacification_mandate
+			set_country_flag = holy_realm_doctrine_coercive_pacification
+			set_country_flag = holy_realm_doctrine_chosen
+			set_country_flag = holy_realm_expansion_path_hardened
+			add_ideas = holy_realm_coercive_pacification
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.5
+			modifier = {
+				factor = 2
+				has_war = yes
+			}
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > 600 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
 	focus = {
 		id = THR_release_through_administration
-		icon = GFX_goal_generic_position_armies
-		x = 17
-		y = 10
-		cost = 8
+		icon = GFX_focus_generic_concessions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_WAR_SUPPORT }
+		x = 30
+		y = 6
+		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_pacification_mandate }
 		completion_reward = {
+			set_country_flag = holy_realm_focus_release_through_administration
 			set_country_flag = holy_realm_memory_release_through_administration
 			add_war_support = 0.06
 			add_command_power = 25
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DOCTRINE
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE, THR_TAG_UNLOCK, THR_TAG_AI_PATH
+	# role = THR_TAG_BRANCH_ENTRY, THR_TAG_MUTUALLY_EXCLUSIVE
 	focus = {
 		id = THR_throne_without_body
-		icon = GFX_goal_generic_dangerous_deal
+		icon = GFX_focus_generic_monarchy_1
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
 		x = 24
 		y = 9
-		cost = 8
+		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_buddha_mandate }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_extreme_chaos_focus_tt
+				holy_realm_chaos_above_divine_floor = yes
+			}
+
+			holy_realm_buddha_path_unlocked = yes
+		}
 		mutually_exclusive = { focus = THR_lamps_remain_lit }
-		mutually_exclusive = { focus = THR_pacification_mandate }
 		completion_reward = {
+			set_country_flag = holy_realm_focus_throne_without_body
 			country_event = { id = chaosx.nr3.40 }
+		}
+		ai_will_do = {
+			factor = 0.45
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > 750 }
+			}
+			modifier = {
+				factor = 1.5
+				check_variable = { global.chaos_meter_value > 900 }
+			}
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+			}
+			modifier = {
+				factor = 2
+				has_country_flag = holy_realm_doctrine_coercive_pacification
+			}
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE, THR_TAG_UNLOCK
+	# role = THR_TAG_UNLOCK
 	focus = {
 		id = THR_doctrine_last_war
-		icon = GFX_goal_generic_secret_weapon
+		icon = GFX_focus_wonderweapons
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
 		x = 24
 		y = 10
-		cost = 10
+		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_throne_without_body }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_extreme_chaos_focus_tt
+				holy_realm_chaos_above_divine_floor = yes
+			}
+
+			holy_realm_divine_path_unlocked = yes
+		}
 		completion_reward = {
-			holy_realm_set_stage_divine_sovereignty = yes
-			set_country_flag = holy_realm_scripted_strike_network
-			add_ideas = holy_realm_final_silence_network
+			set_country_flag = holy_realm_focus_doctrine_last_war
+			holy_realm_set_stage_final_silence = yes
+			set_country_flag = holy_realm_memory_doctrine_last_war
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.35
+			modifier = {
+				factor = 3
+				check_variable = { global.chaos_meter_value > 900 }
+			}
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+			}
+			modifier = {
+				factor = 2
+				check_variable = { mandala_reach > 60 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_reactors_prayer_wheels
+		icon = GFX_focus_rocketry
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 22
+		y = 11
+		cost = @thr_focus_cost_major
+		prerequisite = { focus = THR_doctrine_last_war }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_extreme_chaos_focus_tt
+				holy_realm_chaos_above_divine_floor = yes
+			}
+
+			holy_realm_final_path_unlocked = yes
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_reactors_prayer_wheels
+			set_country_flag = holy_realm_final_silence_engine
+			custom_effect_tooltip = THR_reactors_prayer_wheels_effect_tt
+				add_tech_bonus = {
+					name = THR_final_silence_bonus
+					bonus = 1.00
+					uses = 3
+					category = nuclear
+				}
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = { type = nuclear_reactor level = 2 instant_build = yes }
+				}
+				capital_scope = {
+					add_building_construction = { type = nuclear_facility level = 1 instant_build = yes }
+				}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_all_roads_end_silence
+		icon = GFX_focus_generic_national_security
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 26
+		y = 11
+		cost = @thr_focus_cost_major
+		prerequisite = { focus = THR_doctrine_last_war }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_extreme_chaos_focus_tt
+				holy_realm_chaos_above_divine_floor = yes
+			}
+
+			holy_realm_final_path_unlocked = yes
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_all_roads_end_silence
+			set_country_flag = holy_realm_memory_final_roads_surveyed
+			news_event = { id = chaosx.news.83 days = 2 }
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.serious_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.2
+			modifier = {
+				factor = 3
+				date > 1943.12.31
+				check_variable = { global.chaos_meter_value > 900 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_no_one_leaves_mandala
+		icon = GFX_focus_generic_conspiracy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 24
+		y = 12
+		cost = @thr_focus_cost_major
+		prerequisite = { focus = THR_reactors_prayer_wheels }
+		prerequisite = { focus = THR_all_roads_end_silence }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = THR_extreme_chaos_focus_tt
+					holy_realm_chaos_above_divine_floor = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_signature_pressure_tt
+					check_variable = { final_silence_pressure > constant:holy_realm_counter.final_focus_signature_pressure }
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_bop_leans_final_tt
+					holy_realm_final_doctrine_balance_leans_final = yes
+				}
+
+				holy_realm_final_path_unlocked = yes
+			}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_no_one_leaves_mandala
+			set_country_flag = holy_realm_memory_no_one_leaves
+			custom_effect_tooltip = THR_no_one_leaves_mandala_effect_tt
 			add_tech_bonus = {
 				name = THR_final_silence_bonus
 				bonus = 0.75
 				uses = 2
 				category = nuclear
 			}
-		}
-	}
-
-	focus = {
-		id = THR_reactors_prayer_wheels
-		icon = GFX_goal_generic_nuclear
-		x = 22
-		y = 11
-		cost = 10
-		prerequisite = { focus = THR_doctrine_last_war }
-		completion_reward = {
-			set_country_flag = holy_realm_final_silence_engine
-			random_owned_controlled_state = {
-				add_building_construction = {
-					type = nuclear_reactor
-					level = 1
-					instant_build = yes
+			every_owned_state = {
+				limit = {
+					is_controlled_by = ROOT
+					OR = {
+						is_core_of = ROOT
+						has_state_flag = holy_realm_integrated_mandala_state
+					}
 				}
+				add_building_construction = { type = nuclear_reactor level = 1 instant_build = yes }
 			}
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-			holy_realm_add_final_silence_pressure = yes
-		}
-	}
-
-	focus = {
-		id = THR_all_roads_end_silence
-		icon = GFX_goal_generic_secret_weapon
-		x = 26
-		y = 11
-		cost = 10
-		prerequisite = { focus = THR_doctrine_last_war }
-		completion_reward = {
-			holy_realm_arm_final_silence = yes
-			country_event = { id = chaosx.nr3.70 days = 1 }
-		}
-	}
-
-	focus = {
-		id = THR_no_one_leaves_mandala
-		icon = GFX_goal_generic_propaganda
-		x = 24
-		y = 12
-		cost = 10
-		prerequisite = { focus = THR_reactors_prayer_wheels }
-		prerequisite = { focus = THR_all_roads_end_silence }
-		completion_reward = {
-			set_country_flag = holy_realm_memory_no_one_leaves
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
 			holy_realm_add_final_silence_pressure = yes
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.12
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+			holy_realm_add_chaos = yes
 		}
 	}
 
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_EXTREME_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_TERMINAL
 	focus = {
 		id = THR_final_silence
-		icon = GFX_goal_generic_nuke
+		icon = GFX_goal_THR_final
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
 		x = 24
 		y = 13
-		cost = 10
+		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_no_one_leaves_mandala }
-		available = {
-			holy_realm_can_start_final_silence = yes
-		}
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = THR_final_launch_chaos_tt
+					holy_realm_chaos_above_final_gate = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_silence_stockpile_required_tt
+					holy_realm_has_final_silence_nuke_stockpile = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_bop_dominant_tt
+					holy_realm_final_doctrine_balance_final_dominant = yes
+				}
+				holy_realm_can_start_final_silence = yes
+			}
 		bypass = {
 			has_country_flag = holy_realm_final_doctrine_renounced
 		}
 		completion_reward = {
+			set_country_flag = holy_realm_focus_final_silence
 			country_event = { id = chaosx.nr3.80 hours = 6 }
 		}
 	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_POLITICAL
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_convene_mountain_assembly
+		icon = GFX_focus_generic_self_management
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 1
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_mountain_refuge }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_convene_mountain_assembly
+			set_country_flag = holy_realm_memory_mountain_assembly
+			custom_effect_tooltip = THR_convene_mountain_assembly_effect_tt
+			set_country_flag = holy_realm_dharma_teachings_unlocked
+			add_political_power = 300
+			add_command_power = 50
+			holy_realm_advance_bodhisattva_bhumi = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+			country_event = { id = chaosx.nr3.110 days = 1 }
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_seal_of_refuge
+		icon = GFX_goal_generic_national_unity
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		x = 16
+		y = 2
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_convene_mountain_assembly }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_seal_of_refuge
+			set_country_flag = holy_realm_memory_seal_of_refuge
+			custom_effect_tooltip = THR_seal_of_refuge_effect_tt
+			set_country_flag = holy_realm_refuge_policy_codified
+			add_manpower = 180000
+			add_stability = 0.08
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				set_state_flag = holy_realm_protected_state
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_ministry_of_vows
+		icon = GFX_focus_generic_court
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 5
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_rewrite_civil_register }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_ministry_of_vows
+			set_country_flag = holy_realm_memory_ministry_of_vows
+			add_political_power = 40
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_silent_offices
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 6
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_ministry_of_vows }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_silent_offices
+			set_country_flag = holy_realm_memory_silent_offices
+			add_stability = 0.03
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_village_without_petitions
+		icon = GFX_focus_generic_vatican_agents
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 21
+		y = 6
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_arhat_examinations }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_village_without_petitions
+			country_event = { id = chaosx.nr3.21 hours = 6 }
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ARHAT
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_question_false_attainment_focus
+		icon = GFX_focus_generic_cryptologic_bomb
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 6
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_arhat_examinations }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_question_false_attainment_focus
+			country_event = { id = chaosx.nr3.22 hours = 6 }
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ECONOMY
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_count_mountain_roads
+		icon = GFX_focus_generic_improve_roads
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 11
+		y = 7
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_silent_offices }
+			completion_reward = {
+				set_country_flag = holy_realm_focus_count_mountain_roads
+				set_country_flag = holy_realm_memory_mountain_roads_counted
+				add_political_power = 150
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					add_building_construction = { type = radar_station level = 1 instant_build = yes }
+				}
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_mandala_reach = yes
+			}
+		}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ECONOMY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_monastic_labor_vows
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		x = 11
+		y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_silent_offices }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_monastic_labor_vows
+			set_country_flag = holy_realm_memory_monastic_labor_vows
+			add_political_power = 200
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MILITARY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_shelters_under_stone
+		icon = GFX_goal_generic_fortify_city
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 19
+		y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_vow_keeper_regiments }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_shelters_under_stone
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_country_flag = holy_realm_memory_shelters_under_stone
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = bunker
+					level = 5
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_border = yes
+					}
+				}
+				add_building_construction = { type = anti_air_building level = 2 instant_build = yes }
+			}
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MILITARY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_quiet_mobilization
+		icon = GFX_goal_generic_defence
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 21
+		y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_vow_keeper_regiments }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_quiet_mobilization
+			set_country_flag = holy_realm_memory_quiet_mobilization
+			add_manpower = 250000
+			add_war_support = 0.12
+			add_command_power = 100
+			army_experience = 140
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MILITARY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_mountain_artillery_mandalas
+		icon = GFX_goal_generic_army_artillery2
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+		x = 23
+		y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_vow_keeper_regiments }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_mountain_artillery_mandalas
+			set_country_flag = holy_realm_memory_mountain_artillery_mandalas
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			add_equipment_to_stockpile = {
+				type = artillery_equipment_1
+				amount = 1500
+			}
+			army_experience = 120
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_permit_foreign_pilgrimage
+		icon = GFX_goal_generic_positive_trade_relations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_lamps_remain_lit }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_peace_chaos_focus_tt
+				holy_realm_chaos_below_peace_focus_ceiling = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_permit_foreign_pilgrimage
+			set_country_flag = holy_realm_memory_foreign_pilgrimage
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_letters_to_war_tired
+		icon = GFX_focus_generic_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_lamps_remain_lit }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_peace_chaos_focus_tt
+				holy_realm_chaos_below_peace_focus_ceiling = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_letters_to_war_tired
+			set_country_flag = holy_realm_memory_letters_to_war_tired
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_shelter_exiles
+		icon = GFX_focus_generic_manpower
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 11
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_permit_foreign_pilgrimage }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+		}
+
+			completion_reward = {
+				set_country_flag = holy_realm_focus_shelter_exiles
+				set_country_flag = holy_realm_memory_exiles_sheltered
+				add_manpower = 250000
+				add_political_power = 150
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+				set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+				set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_mandala_of_nations
+		icon = GFX_goal_generic_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 11
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_permit_foreign_pilgrimage }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+		}
+
+			completion_reward = {
+				set_country_flag = holy_realm_focus_mandala_of_nations
+				set_country_flag = holy_realm_memory_mandala_of_nations
+				holy_realm_establish_mandala_of_nations = yes
+				add_faction_initiative = 2
+				add_faction_power_projection = 100
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
+				holy_realm_add_mandala_reach = yes
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+				set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+				set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+				holy_realm_add_chaos = yes
+			}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_refusal_of_empires
+		icon = GFX_goal_generic_political_pressure
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 11
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_letters_to_war_tired focus = THR_no_more_peace_delegations }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_refusal_of_empires
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_country_flag = holy_realm_memory_refusal_of_empires
+			add_war_support = 0.04
+			every_other_country = {
+				limit = {
+					is_major = yes
+					NOT = { is_holy_realm_country = yes }
+				}
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = holy_realm_condemned_opinion
+				}
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DOCTRINE
+	# tone = THR_TAG_NEUTRAL
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_no_victory_parades
+			icon = GFX_goal_generic_consumer_goods
+			search_filters = { FOCUS_FILTER_POLITICAL }
+			x = 26
+			y = 7
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_release_through_administration }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_no_victory_parades
+			set_country_flag = holy_realm_memory_no_victory_parades
+			set_country_flag = holy_realm_no_triumph_pacification_unlocked
+			custom_effect_tooltip = THR_no_victory_parades_effect_tt
+			add_political_power = 250
+			add_command_power = 75
+			add_stability = 0.06
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DOCTRINE
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_last_border_is_wound
+			icon = GFX_goal_generic_more_territorial_claims
+			search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+			x = 30
+			y = 7
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_release_through_administration }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_high_chaos_focus_tt
+				holy_realm_chaos_above_coercive_floor = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_last_border_is_wound
+			set_country_flag = holy_realm_memory_last_border_wound
+			set_country_flag = holy_realm_border_wound_pressure_unlocked
+			custom_effect_tooltip = THR_last_border_is_wound_effect_tt
+			add_political_power = 300
+			add_war_support = 0.10
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_last_human_signature
+		icon = GFX_focus_generic_pope
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 22
+		y = 12
+		cost = @thr_focus_cost_major
+		prerequisite = { focus = THR_no_one_leaves_mandala }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = THR_extreme_chaos_focus_tt
+					holy_realm_chaos_above_divine_floor = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_sermon_pressure_tt
+					check_variable = { final_silence_pressure > constant:holy_realm_counter.final_focus_sermon_pressure }
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_bop_leans_final_tt
+					holy_realm_final_doctrine_balance_leans_final = yes
+				}
+
+				holy_realm_final_path_unlocked = yes
+			}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_last_human_signature
+			set_country_flag = holy_realm_memory_last_human_signature
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.serious_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_sermon_without_translation
+		icon = GFX_goal_generic_secret_weapon
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 26
+		y = 12
+		cost = @thr_focus_cost_major
+		prerequisite = { focus = THR_no_one_leaves_mandala }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = THR_extreme_chaos_focus_tt
+					holy_realm_chaos_above_divine_floor = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_sermon_pressure_tt
+					check_variable = { final_silence_pressure > constant:holy_realm_counter.final_focus_sermon_pressure }
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_bop_leans_final_tt
+					holy_realm_final_doctrine_balance_leans_final = yes
+				}
+
+				holy_realm_final_path_unlocked = yes
+			}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_sermon_without_translation
+			set_country_flag = holy_realm_memory_sermon_without_translation
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.serious_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_TERMINAL
+	focus = {
+		id = THR_compassion_of_non_return
+		icon = GFX_goal_generic_forceful_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 22
+		y = 13
+		cost = @thr_focus_cost_major
+		prerequisite = { focus = THR_last_human_signature }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = THR_extreme_chaos_focus_tt
+					holy_realm_chaos_above_divine_floor = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_non_return_pressure_tt
+					check_variable = { final_silence_pressure > constant:holy_realm_counter.final_focus_non_return_pressure }
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_bop_dominant_tt
+					holy_realm_final_doctrine_balance_final_dominant = yes
+				}
+
+				holy_realm_final_path_unlocked = yes
+			}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_compassion_of_non_return
+			set_country_flag = holy_realm_memory_compassion_non_return
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_TERMINAL
+	focus = {
+		id = THR_ministry_of_release
+		icon = GFX_sp_thermo_nuclear_bomb
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 26
+		y = 13
+		cost = @thr_focus_cost_major
+		prerequisite = { focus = THR_sermon_without_translation }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = THR_extreme_chaos_focus_tt
+					holy_realm_chaos_above_divine_floor = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_ministry_pressure_tt
+					check_variable = { final_silence_pressure > constant:holy_realm_counter.final_focus_ministry_pressure }
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_ministry_reach_tt
+					check_variable = { mandala_reach > constant:holy_realm_counter.final_reach }
+				}
+				custom_trigger_tooltip = {
+					tooltip = THR_final_bop_dominant_tt
+					holy_realm_final_doctrine_balance_final_dominant = yes
+				}
+
+				holy_realm_final_path_unlocked = yes
+			}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_ministry_of_release
+			set_country_flag = holy_realm_memory_ministry_of_release
+			set_country_flag = holy_realm_scripted_strike_network
+			custom_effect_tooltip = THR_ministry_of_release_effect_tt
+			if = {
+				limit = { has_tech = thermonuclear_bombs }
+				set_variable = { holy_realm_thermonuclear_payloads_prepared = 24 }
+				set_country_flag = holy_realm_thermonuclear_doctrine
+			}
+			add_tech_bonus = {
+				name = THR_final_silence_bonus
+				bonus = 1.25
+				uses = 2
+				category = nuclear
+			}
+			capital_scope = {
+				add_building_construction = { type = nuclear_facility level = 1 instant_build = yes }
+				add_building_construction = { type = nuclear_reactor level = 3 instant_build = yes }
+			}
+			add_ideas = holy_realm_final_silence_network
+			holy_realm_try_form_master_idea = yes
+			country_event = { id = chaosx.nr3.70 days = 1 }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				add = 1.3
+				date > 1944.12.31
+				check_variable = { global.chaos_meter_value > 900 }
+				check_variable = { final_silence_pressure > 70 }
+				holy_realm_has_most_factories_in_world = yes
+			}
+			modifier = {
+				add = 1
+				date > 1944.12.31
+				check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+				check_variable = { final_silence_pressure > 80 }
+				holy_realm_has_most_factories_in_world = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DOCTRINE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_refuse_final_debate
+		icon = GFX_focus_generic_anti_fascist_diplomacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 12
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_vow_against_annihilation }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_refuse_final_debate
+			set_country_flag = holy_realm_memory_refuse_final_debate
+			holy_realm_renounce_final_silence = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DOCTRINE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_peace_without_ownership
+		icon = GFX_focus_generic_balkan_diplomacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 12
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_vow_against_annihilation }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_peace_without_ownership
+			set_country_flag = holy_realm_memory_peace_without_ownership
+			add_stability = 0.04
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION, THR_TAG_AI_PATH
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_world_still_burns
+		icon = GFX_focus_generic_africa_liberation
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		x = 12
+		y = 12
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_vow_against_annihilation }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_world_still_burns
+			set_country_flag = holy_realm_memory_world_still_burns
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_REDUCTION
+	# role = THR_TAG_TERMINAL
+	focus = {
+		id = THR_second_refuge
+		icon = GFX_focus_generic_africa_defense
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 13
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_peace_without_ownership }
+		prerequisite = { focus = THR_world_still_burns }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mercy_chaos_focus_tt
+				holy_realm_chaos_below_mercy_focus_ceiling = yes
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = holy_realm_focus_second_refuge
+			set_country_flag = holy_realm_memory_second_refuge
+			add_manpower = 300000
+			add_stability = 0.10
+			add_political_power = 300
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DOCTRINE
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_lamps_entered_register
+		icon = GFX_focus_generic_steel
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 2
+		y = 9
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_throne_without_body }
+		available = {
+			holy_realm_divine_path_unlocked = yes
+			custom_trigger_tooltip = {
+				tooltip = THR_high_chaos_focus_tt
+				holy_realm_chaos_above_intervention_floor = yes
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_lamps_entered_register
+			set_country_flag = holy_realm_memory_lamps_entered_register
+			set_country_flag = holy_realm_doctrine_strained_restraint
+			set_country_flag = holy_realm_doctrine_chosen
+			add_ideas = holy_realm_peacekeeping_mandate
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 3
+				holy_realm_chaos_above_coercive_floor = yes
+			}
+			modifier = {
+				factor = 0.25
+				holy_realm_chaos_below_peace_focus_ceiling = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_seal_roads_from_panic
+		icon = GFX_focus_generic_railroad
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 0
+		y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_lamps_entered_register }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_high_chaos_focus_tt
+				holy_realm_chaos_above_intervention_floor = yes
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_seal_roads_from_panic
+			set_country_flag = holy_realm_memory_sealed_roads_from_panic
+			add_stability = 0.03
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_no_more_peace_delegations
+		icon = GFX_focus_generic_strike_at_democracy1
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 2
+		y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_lamps_entered_register }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_high_chaos_focus_tt
+				holy_realm_chaos_above_intervention_floor = yes
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_no_more_peace_delegations
+			set_country_flag = holy_realm_memory_no_more_peace_delegations
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.serious_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.8
+			modifier = {
+				factor = 2
+				holy_realm_chaos_above_coercive_floor = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_REFUGE
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_sort_worthy_broken
+		icon = GFX_focus_generic_license_production
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER FOCUS_FILTER_POLITICAL }
+		x = 0
+		y = 11
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_seal_roads_from_panic }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_high_chaos_focus_tt
+				holy_realm_chaos_above_intervention_floor = yes
+			}
+		}
+			completion_reward = {
+				set_country_flag = holy_realm_focus_sort_worthy_broken
+				set_country_flag = holy_realm_memory_sort_worthy_broken
+				add_manpower = 220000
+				add_political_power = 180
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_DIPLOMACY
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_FINAL_SILENCE_PRESSURE, THR_TAG_AI_PATH
+	# role = THR_TAG_TERMINAL
+	focus = {
+		id = THR_world_marked_as_wound_focus
+		icon = GFX_focus_generic_japanese_imperial_glory
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 2
+		y = 11
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_no_more_peace_delegations }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_high_chaos_focus_tt
+				holy_realm_chaos_above_coercive_floor = yes
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_world_marked_as_wound_focus
+			set_country_flag = holy_realm_memory_world_marked_as_wound_diplomacy
+			set_country_flag = holy_realm_warning_world_marked_as_wound
+			custom_effect_tooltip = THR_world_marked_as_wound_effect_tt
+			holy_realm_refresh_world_threat_source = yes
+			country_event = { id = chaosx.nr3.113 days = 1 }
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_AI_PATH
+	# role = THR_TAG_BRANCH_SUPPORT, THR_TAG_BYPASSABLE
+	focus = {
+		id = THR_complete_himalayan_mandala
+		icon = GFX_focus_generic_annex_country
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 34
+		y = 1
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_mountain_refuge }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_complete_himalayan_mandala_available_tt
+				holy_realm_himalayan_mandala_incomplete = yes
+			}
+		}
+		bypass = {
+			custom_trigger_tooltip = {
+				tooltip = THR_complete_himalayan_mandala_bypass_tt
+				NOT = { holy_realm_himalayan_mandala_incomplete = yes }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_complete_himalayan_mandala
+			custom_effect_tooltip = THR_complete_himalayan_mandala_effect_tt
+			set_temp_variable = { holy_realm_himalayan_wargoals = 0 }
+			if = {
+				limit = { holy_realm_bhutan_conquest_target_valid = yes }
+				create_wargoal = {
+					type = annex_everything
+					target = BHU
+					expire = 0
+				}
+				set_country_flag = holy_realm_memory_bhutan_mandala_claim
+				add_to_temp_variable = { holy_realm_himalayan_wargoals = 1 }
+			}
+			if = {
+				limit = { holy_realm_nepal_conquest_target_valid = yes }
+				create_wargoal = {
+					type = annex_everything
+					target = NEP
+					expire = 0
+				}
+				set_country_flag = holy_realm_memory_nepal_mandala_claim
+				add_to_temp_variable = { holy_realm_himalayan_wargoals = 1 }
+			}
+			if = {
+				limit = { holy_realm_sikkim_conquest_target_valid = yes }
+				create_wargoal = {
+					type = annex_everything
+					target = SKK
+					expire = 0
+				}
+				set_country_flag = holy_realm_memory_sikkim_mandala_claim
+				add_to_temp_variable = { holy_realm_himalayan_wargoals = 1 }
+			}
+			if = {
+				limit = { check_variable = { holy_realm_himalayan_wargoals > 0 } }
+				set_country_flag = holy_realm_memory_himalayan_force_authorized
+				set_country_flag = holy_realm_himalayan_unity_forced
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_mandala_reach = yes
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_compassion_drift = yes
+			}
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 3
+				holy_realm_himalayan_mandala_incomplete = yes
+				num_divisions > 4
+			}
+			modifier = {
+				factor = 0
+				has_war = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_NEUTRAL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_guardians_outer_passes
+		icon = GFX_focus_generic_coastal_fort
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 34
+		y = 2
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_complete_himalayan_mandala }
+			completion_reward = {
+				set_country_flag = holy_realm_focus_guardians_outer_passes
+				set_country_flag = holy_realm_memory_outer_passes_secured
+				add_ideas = holy_realm_outer_pass_guardians
+				add_political_power = 200
+				add_command_power = 75
+				army_experience = 120
+				every_owned_state = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = bunker
+						level = 3
+						instant_build = yes
+						province = {
+							all_provinces = yes
+							limit_to_border = yes
+						}
+					}
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_mandala_reach = yes
+			}
+		}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_UI_STATE, THR_TAG_AI_PATH
+	# role = THR_TAG_BRANCH_ENTRY, THR_TAG_STANDALONE
+	focus = {
+		id = THR_letters_beyond_passes
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 34
+		y = 3
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_guardians_outer_passes }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_letters_beyond_passes
+			set_country_flag = holy_realm_expansion_tree_opened
+			set_country_flag = holy_realm_expansion_letters_unlocked
+			set_country_flag = holy_realm_peace_letter_minor_unlocked
+			set_country_flag = holy_realm_memory_letters_beyond_passes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = {
+			factor = 0.8
+			modifier = {
+				factor = 2
+				holy_realm_himalayan_mandala_incomplete = yes
+			}
+			modifier = {
+				factor = 2
+				holy_realm_chaos_above_intervention_floor = yes
+			}
+			modifier = {
+				factor = 0.25
+				has_war = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_UI_STATE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_mandala_receives_borderlands
+		icon = GFX_goal_generic_territory_or_war
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 34
+		y = 4
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_letters_beyond_passes }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_mandala_receives_borderlands
+			set_country_flag = holy_realm_borderland_letters_unlocked
+			set_country_flag = holy_realm_borderland_integration_unlocked
+			set_country_flag = holy_realm_memory_borderlands_received
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 2
+				check_variable = { mandala_reach > 40 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_EVENT_MEMORY, THR_TAG_UI_STATE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_high_pass_states_enter_mandala
+			icon = GFX_focus_generic_annex_country_2
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+			x = 34
+			y = 5
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_mandala_receives_borderlands }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_high_pass_states_enter_mandala
+			set_country_flag = holy_realm_memory_high_pass_states_enter_mandala
+			set_country_flag = holy_realm_high_pass_core_register_unlocked
+			set_country_flag = holy_realm_borderland_integration_unlocked
+			if = {
+				limit = {
+					985 = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						NOT = { is_core_of = ROOT }
+					}
+				}
+				985 = {
+					add_core_of = ROOT
+					set_state_flag = holy_realm_integrated_mandala_state
+					set_state_flag = holy_realm_protected_state
+				}
+			}
+			custom_effect_tooltip = THR_high_pass_states_enter_mandala_effect_tt
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+		ai_will_do = {
+			factor = 1.2
+			modifier = {
+				factor = 2
+				has_country_flag = holy_realm_himalayan_unity_peaceful
+			}
+			modifier = {
+				factor = 1.5
+				has_country_flag = holy_realm_himalayan_unity_forced
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_roads_must_be_quiet
+			icon = GFX_focus_generic_railway_gun
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+			x = 34
+			y = 6
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_high_pass_states_enter_mandala }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_roads_must_be_quiet
+			set_country_flag = holy_realm_memory_roads_must_be_quiet
+				set_country_flag = holy_realm_conquest_border_control_unlocked
+				add_ideas = holy_realm_border_quiet
+				add_political_power = 250
+				add_command_power = 75
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_compassion_drift = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_pacification_without_triumph
+			icon = GFX_goal_generic_occupy_start_war
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+			x = 32
+			y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_roads_must_be_quiet }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_mid_chaos_focus_tt
+				holy_realm_chaos_above_intervention_floor = yes
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_pacification_without_triumph
+				set_country_flag = holy_realm_memory_pacification_without_triumph
+				set_country_flag = holy_realm_conquest_pacification_unlocked
+				add_ideas = holy_realm_pacification_without_triumph
+				add_command_power = 125
+				army_experience = 120
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_compassion_drift = yes
+				set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.6
+			modifier = {
+				factor = 2
+				holy_realm_chaos_above_coercive_floor = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_outer_valleys_register
+			icon = GFX_focus_ger_reichskommisariats
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+			x = 36
+			y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_roads_must_be_quiet }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_outer_valleys_register
+				set_country_flag = holy_realm_memory_outer_valleys_register
+				set_country_flag = holy_realm_outer_valleys_register_unlocked
+				add_ideas = holy_realm_arhat_outer_register
+				add_political_power = 100
+				every_owned_state = {
+					limit = {
+						is_controlled_by = ROOT
+						NOT = { is_core_of = ROOT }
+					}
+					set_compliance = 35
+				set_resistance = 5
+				set_state_flag = holy_realm_arhat_registered_state
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_mandala_borders
+			icon = GFX_goal_generic_military_sphere
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+			x = 36
+			y = 9
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_outer_valleys_register }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_conquest_mandala_reach_required_tt
+				check_variable = { mandala_reach > 45 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_mandala_borders
+			set_country_flag = holy_realm_memory_mandala_borders
+				set_country_flag = holy_realm_mandala_border_pressure_unlocked
+				add_ideas = holy_realm_mandala_borders
+				add_political_power = 300
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			every_other_country = {
+				limit = {
+					is_major = yes
+					NOT = { is_holy_realm_country = yes }
+				}
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = holy_realm_condemned_opinion
+				}
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_MID_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_AI_PATH
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_peace_by_submission
+			icon = GFX_goal_generic_trade
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+			x = 34
+			y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_mandala_borders }
+		completion_reward = {
+				set_country_flag = holy_realm_focus_peace_by_submission
+				set_country_flag = holy_realm_peace_by_submission_unlocked
+				set_country_flag = holy_realm_memory_peace_by_submission
+				add_political_power = 250
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 2
+				num_divisions > 16
+				check_variable = { mandala_reach > 60 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_UI_STATE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_northern_indian_register
+			icon = GFX_focus_generic_attack_india
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+			x = 38
+			y = 10
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_mandala_borders }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_conquest_mandala_reach_required_tt
+				check_variable = { mandala_reach > 55 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_northern_indian_register
+				set_country_flag = holy_realm_northern_indian_register_unlocked
+				set_country_flag = holy_realm_memory_northern_indian_register
+				custom_effect_tooltip = THR_northern_indian_register_effect_tt
+				add_political_power = 350
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = {
+			factor = 0.7
+			modifier = {
+				factor = 2
+				holy_realm_chaos_above_coercive_floor = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_UI_STATE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_northern_indian_state_registers
+			icon = GFX_focus_RAJ_indian_gurkhas
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+			x = 38
+			y = 11
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_northern_indian_register }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_conquest_mandala_reach_required_tt
+				check_variable = { mandala_reach > 60 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_northern_indian_state_registers
+				set_country_flag = holy_realm_memory_northern_indian_state_registers
+				set_country_flag = holy_realm_northern_indian_core_register_unlocked
+				432 = { add_claim_by = ROOT }
+				435 = { add_claim_by = ROOT }
+				438 = { add_claim_by = ROOT }
+				439 = { add_claim_by = ROOT }
+				440 = { add_claim_by = ROOT }
+				441 = { add_claim_by = ROOT }
+				787 = { add_claim_by = ROOT }
+				986 = { add_claim_by = ROOT }
+				if = {
+					limit = {
+						RAJ = {
+							exists = yes
+							NOT = { is_subject_of = ROOT }
+						}
+						can_declare_war_on = RAJ
+					}
+					create_wargoal = {
+						type = annex_everything
+						target = RAJ
+						expire = 0
+					}
+				}
+				custom_effect_tooltip = THR_northern_indian_state_registers_effect_tt
+				add_political_power = 125
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = {
+			factor = 0.6
+			modifier = {
+				factor = 2
+				check_variable = { mandala_reach > 65 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_eastern_mandala
+			icon = GFX_focus_generic_befriend_sinkiang
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+			x = 40
+			y = 12
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_northern_indian_state_registers }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_high_chaos_focus_tt
+				holy_realm_chaos_above_coercive_floor = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = THR_conquest_mandala_reach_required_tt
+				check_variable = { mandala_reach > 70 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_eastern_mandala
+				set_country_flag = holy_realm_eastern_mandala_unlocked
+				set_country_flag = holy_realm_memory_eastern_mandala
+				custom_effect_tooltip = THR_eastern_mandala_effect_tt
+				add_political_power = 400
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.4
+			modifier = {
+				factor = 3
+				holy_realm_chaos_above_divine_floor = yes
+				check_variable = { mandala_reach > 75 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_HIGH_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_UI_STATE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_western_chinese_registers
+			icon = GFX_focus_CHI_lay_the_foundation_for_a_united_china
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+			x = 40
+			y = 13
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_eastern_mandala }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_conquest_mandala_reach_required_tt
+				check_variable = { mandala_reach > 75 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_western_chinese_registers
+				set_country_flag = holy_realm_memory_western_chinese_registers
+				set_country_flag = holy_realm_western_chinese_core_register_unlocked
+				283 = { add_claim_by = ROOT }
+				325 = { add_claim_by = ROOT }
+				604 = { add_claim_by = ROOT }
+				605 = { add_claim_by = ROOT }
+				616 = { add_claim_by = ROOT }
+				617 = { add_claim_by = ROOT }
+				621 = { add_claim_by = ROOT }
+				622 = { add_claim_by = ROOT }
+				if = {
+					limit = {
+						XSM = {
+							exists = yes
+							NOT = { is_subject_of = ROOT }
+						}
+						can_declare_war_on = XSM
+					}
+					create_wargoal = {
+						type = annex_everything
+						target = XSM
+						expire = 0
+					}
+				}
+				if = {
+					limit = {
+						SIK = {
+							exists = yes
+							NOT = { is_subject_of = ROOT }
+						}
+						can_declare_war_on = SIK
+					}
+					create_wargoal = {
+						type = annex_everything
+						target = SIK
+						expire = 0
+					}
+				}
+				custom_effect_tooltip = THR_western_chinese_registers_effect_tt
+				add_political_power = 125
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.35
+			modifier = {
+				factor = 2
+				holy_realm_chaos_above_divine_floor = yes
+				check_variable = { mandala_reach > 80 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_EXTREME_CHAOS
+	# systems = THR_TAG_MANDALA_REACH, THR_TAG_COMPASSION_DRIFT, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_UI_STATE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+			id = THR_eastern_chinese_registers
+			icon = GFX_focus_CHI_generalissimo_for_all_of_china
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+			x = 42
+			y = 14
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_western_chinese_registers }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_extreme_chaos_focus_tt
+				holy_realm_chaos_above_divine_floor = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = THR_conquest_mandala_reach_required_tt
+				check_variable = { mandala_reach > 85 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_eastern_chinese_registers
+				set_country_flag = holy_realm_memory_eastern_chinese_registers
+				set_country_flag = holy_realm_eastern_chinese_core_register_unlocked
+				592 = { add_claim_by = ROOT }
+				593 = { add_claim_by = ROOT }
+				595 = { add_claim_by = ROOT }
+				596 = { add_claim_by = ROOT }
+				597 = { add_claim_by = ROOT }
+				598 = { add_claim_by = ROOT }
+				600 = { add_claim_by = ROOT }
+				602 = { add_claim_by = ROOT }
+				603 = { add_claim_by = ROOT }
+				606 = { add_claim_by = ROOT }
+				607 = { add_claim_by = ROOT }
+				608 = { add_claim_by = ROOT }
+				609 = { add_claim_by = ROOT }
+				613 = { add_claim_by = ROOT }
+				614 = { add_claim_by = ROOT }
+				620 = { add_claim_by = ROOT }
+				if = {
+					limit = {
+						CHI = {
+							exists = yes
+							NOT = { is_subject_of = ROOT }
+						}
+						can_declare_war_on = CHI
+					}
+					create_wargoal = {
+						type = annex_everything
+						target = CHI
+						expire = 0
+					}
+				}
+				if = {
+					limit = {
+						PRC = {
+							exists = yes
+							NOT = { is_subject_of = ROOT }
+						}
+						can_declare_war_on = PRC
+					}
+					create_wargoal = {
+						type = annex_everything
+						target = PRC
+						expire = 0
+					}
+				}
+				custom_effect_tooltip = THR_eastern_chinese_registers_effect_tt
+				add_political_power = 150
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.2
+			modifier = {
+				factor = 3
+				holy_realm_chaos_above_final_gate = yes
+				check_variable = { mandala_reach > 90 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_CONQUEST
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_EXTREME_CHAOS
+	# systems = THR_TAG_COMPASSION_DRIFT, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE, THR_TAG_AI_PATH
+	# role = THR_TAG_TERMINAL
+	focus = {
+			id = THR_world_is_a_border
+			icon = GFX_focus_generic_arms_trade
+			search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+			x = 38
+			y = 15
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_peace_by_submission }
+		prerequisite = { focus = THR_eastern_chinese_registers }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_extreme_chaos_focus_tt
+				holy_realm_chaos_above_divine_floor = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = THR_conquest_high_doctrine_required_tt
+				OR = {
+					has_country_flag = holy_realm_doctrine_coercive_pacification
+					has_country_flag = holy_realm_expansion_path_hardened
+				}
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_world_is_a_border
+				set_country_flag = holy_realm_memory_world_is_a_border
+				set_country_flag = holy_realm_world_asked_to_kneel_unlocked
+				add_ideas = holy_realm_world_border_doctrine
+				add_political_power = 600
+				add_command_power = 150
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
+				holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.2
+			modifier = {
+				factor = 4
+				holy_realm_chaos_above_final_gate = yes
+				has_country_flag = holy_realm_doctrine_coercive_pacification
+			}
+		}
+	}
+
 }

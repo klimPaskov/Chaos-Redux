@@ -1,0 +1,61 @@
+# Overview:
+# - Reusable near-capitulation event-weight rescue support. Event chains opt in
+#   by registering a country scope with the event id that should receive a
+#   temporary weight floor while that country is close to capitulation.
+
+chaosx_initialize_crisis_rescue_registry = {
+	clear_array = global.crisis_rescue_countries
+	clear_array = global.crisis_rescue_event_ids
+	chaosx_register_default_crisis_rescue_targets = yes
+}
+
+chaosx_register_crisis_rescue_target = {
+	# COUNTRY scope. Input: temp variable crisis_rescue_event_id.
+	if = {
+		limit = {
+			exists = yes
+			NOT = { is_in_array = { array = global.crisis_rescue_countries value = THIS } }
+			check_variable = { crisis_rescue_event_id > 0 }
+		}
+		add_to_array = { global.crisis_rescue_countries = THIS }
+		add_to_array = { global.crisis_rescue_event_ids = crisis_rescue_event_id }
+	}
+}
+
+chaosx_register_default_crisis_rescue_targets = {
+	if = {
+		limit = { TIB = { exists = yes } }
+		TIB = {
+			set_temp_variable = { crisis_rescue_event_id = constant:holy_realm_event_log.event_id }
+			chaosx_register_crisis_rescue_target = yes
+		}
+	}
+}
+
+chaosx_apply_crisis_rescue_event_weight_adjustments = {
+	if = {
+		limit = { check_variable = { global.crisis_rescue_countries^num > 0 } }
+		for_loop_effect = {
+			start = 0
+			end = global.crisis_rescue_countries^num
+			value = crisis_rescue_index
+			set_temp_variable = { crisis_rescue_country = global.crisis_rescue_countries^crisis_rescue_index }
+			set_temp_variable = { crisis_rescue_event_id = global.crisis_rescue_event_ids^crisis_rescue_index }
+			var:crisis_rescue_country = {
+				if = {
+					limit = { chaosx_near_capitulation_crisis_rescue_candidate = yes }
+					set_country_flag = chaosx_near_capitulation_rescue_pressure
+					set_temp_variable = { event_id = crisis_rescue_event_id }
+					get_event_weight = yes
+					set_temp_variable = { crisis_rescue_weight_floor = global.default_event_weight }
+					multiply_temp_variable = { crisis_rescue_weight_floor = constant:chaosx_crisis_rescue.event_weight_multiplier }
+					if = {
+						limit = { check_variable = { event_weight < crisis_rescue_weight_floor } }
+						set_temp_variable = { new_weight = crisis_rescue_weight_floor }
+						set_event_weight = yes
+					}
+				}
+			}
+		}
+	}
+}

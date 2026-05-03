@@ -1,0 +1,294 @@
+# ============================================================================
+# CHAOS REDUX - GENOCIDE CRISIS CONSTANTS
+# ============================================================================
+# Shared tuning for camps, atrocity discovery, national crisis decisions, and
+# country-specific Germany/Japan/Soviet AI behavior.
+# ============================================================================
+
+genocide_death_percent = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	concentration_monthly = 0.002500
+	extermination_monthly = 0.035000
+	gulag_monthly = 0.001500
+	deportation_sweep = 0.018000
+	forced_labor_sweep = 0.006000
+	occupation_terror = 0.012000
+	evidence_destruction = 0.010000
+	biowarfare_experiment = 0.014000
+	foreign_experimentation = 0.018000
+	famine_pressure = 0.009000
+}
+
+genocide_death_cap = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	concentration = 35.00
+	extermination = 275.00
+	gulag = 22.00
+	decision = 180.00
+	evidence = 120.00
+}
+
+genocide_death_multiplier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	escalation_factor = 0.015
+	hardliner_bonus = 0.35
+	rail_priority_bonus = 0.30
+	auschwitz_bonus = 0.25
+	mengele_restricted_bonus = 0.25
+	mengele_full_bonus = 0.70
+	mengele_bypass_bonus = 1.15
+	max = 3.50
+}
+
+genocide_condemnation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	concentration_first = 8.00
+	concentration_repeat = 4.00
+	extermination_first = 30.00
+	extermination_repeat = 16.00
+	gulag_first = 12.00
+	gulag_repeat = 6.00
+	experiment_site_bonus = 14.00
+	experiment_autonomy_condemnation_factor = 0.12
+	experiment_permission_condemnation_factor = 3.00
+	mengele_faction_site_bonus = 22.00
+	destroyed_evidence_factor = 0.50
+	failed_coverup_factor = 1.45
+	repeat_floor = 0.25
+	repeat_max = 999.00
+	newspaper_threshold = 25.00
+	refugee_threshold = 50.00
+	sanctions_threshold = 75.00
+	tribunal_threshold = 100.00
+}
+
+genocide_crisis_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	concentration_escalation = 2.00
+	extermination_escalation = 9.00
+	gulag_escalation = 3.00
+	deportation_escalation = 4.00
+	forced_labor_escalation = 2.00
+	terror_escalation = 4.00
+	coverup_effort = 5.00
+	visibility_reduction = -4.00
+	visibility_minor = 2.00
+	visibility_major = 7.00
+	resistance_pressure_minor = 2.00
+	resistance_pressure_major = 5.00
+	refugee_pressure_minor = 2.00
+	refugee_pressure_major = 5.00
+	hidden_atrocity_minor = 2.00
+	hidden_atrocity_major = 8.00
+	discovery_visibility = 10.00
+	discovery_foreign_pressure = 12.00
+	biowarfare_outbreak_potency = 0.45
+	foreign_experimentation_hidden_atrocity = 14.00
+	dismantle_evidence_reduction = -10.00
+	dismantle_visibility_reduction = -5.00
+	dismantle_resistance_pressure = 4.00
+	dismantle_instability = -0.025
+	camp_administration_strength = 5.00
+}
+
+genocide_concentration_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	production_base = 0.080
+	production_network = 0.020
+	production_fascist = 0.040
+	production_escalation = 0.0015
+	production_hardliner = 0.050
+	production_rail_priority = 0.070
+	production_auschwitz = 0.040
+	production_admin = 0.010
+	production_max = 0.420
+	resources_base = 0.080
+	resources_network = 0.020
+	resources_hardliner = 0.040
+	resources_rail_priority = 0.060
+	resources_max = 0.320
+	resistance_base = 0.035
+	resistance_escalation = 0.0010
+	resistance_hardliner = 0.020
+	resistance_max = 0.150
+	compliance_base = -0.030
+	compliance_escalation = -0.0005
+	compliance_min = -0.120
+}
+
+genocide_cleanup = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	max_site_count = 9999
+}
+
+genocide_political_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	hardliner_stability = -0.015
+	hardliner_fascism = 0.010
+	hardliner_communism = 0.010
+	hardliner_neutrality = -0.010
+	hardliner_democratic = -0.010
+	exposure_stability = -0.035
+	discoverer_war_support = 0.040
+	discoverer_pp = 25.00
+	global_democratic_war_support = 0.020
+	internal_crisis_stability = -0.010
+	tribunal_stability = -0.050
+}
+
+genocide_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	decision_cooldown = 60
+	hardliner_days = 180
+	rail_priority_days = 120
+	sanctions_days = 365
+	news_cooldown_days = 120
+	internal_event_cooldown_days = 90
+	state_modifier_days = 120
+	coverup_cooldown_days = 120
+	biowarfare_outbreak_days = 120
+	event_short_delay_days = 1
+	event_medium_delay_days = 2
+	event_neighbor_delay_days = 3
+	discovery_discoverer_delay_hours = 6
+	discovery_responsible_delay_hours = 8
+	discovery_news_delay_hours = 12
+}
+
+genocide_decision_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	build_concentration = 25
+	build_extermination = 55
+	build_gulag = 35
+	intensify_deportations = 35
+	hide_evidence = 25
+	suppress_reports = 25
+	redirect_trains = 35
+	deal_with_sabotage = 30
+	handle_refugees = 30
+	military_objections = 25
+	destroy_evidence = 20
+	dismantle_extermination = 65
+	toggle_visibility = 0
+	foreign_publicize = 30
+	foreign_sanctions = 60
+	foreign_resistance_support = 45
+	foreign_tribunal = 35
+}
+
+genocide_ai_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	generic_concentration = 0.00
+	generic_extermination = 0.00
+	germany_concentration = 45.00
+	germany_occupied_poland = 55.00
+	germany_extermination = 70.00
+	germany_soviet_war = 1.75
+	japan_forced_labor = 42.00
+	japan_terror = 34.00
+	japan_biowarfare = 28.00
+	soviet_gulag = 38.00
+	soviet_deportation = 34.00
+	soviet_escalation = 12.00
+	evidence_destroy = 60.00
+	exposed_coverup = 10.00
+	foreign_response = 24.00
+	block_factor = 0.00
+	collapse_factor = 0.15
+	occupation_factor = 1.40
+	retreat_factor = 1.50
+	deportations_base = 2.00
+	hide_evidence_base = 6.00
+	suppress_reports_base = 8.00
+	suppress_visibility_add = 20.00
+	redirect_trains_base = 6.00
+	redirect_trains_germany_add = 15.00
+	sabotage_base = 12.00
+	sabotage_resistance_add = 20.00
+	refugee_base = 8.00
+	refugee_high_add = 18.00
+	military_objections_base = 8.00
+	famine_pressure_base = 14.00
+	extreme_path_concentration = 6.00
+	resistance_concentration_add = 10.00
+	war_concentration_factor = 1.35
+}
+
+genocide_ai_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	surrender_warning = 0.45
+	surrender_collapse = 0.65
+	visibility_high = 20.00
+	resistance_low = 4.00
+	resistance_high = 15.00
+	refugee_low = 3.00
+	refugee_high = 12.00
+	military_objection_resistance = 8.00
+	military_objection_stability = 0.60
+	soviet_gulag_stability = 0.55
+	soviet_deportation_stability = 0.50
+	soviet_famine_stability = 0.45
+	internal_crisis_stability = 0.55
+	internal_crisis_party_support = 0.55
+	internal_crisis_resistance = 10.00
+	internal_strong_stability = 0.75
+	internal_strong_party_support = 0.70
+	internal_report_min_escalation = 10.00
+	internal_report_min_hidden_score = 12.00
+	internal_report_min_deaths = 50000.00
+	internal_report_min_decisions = 2.00
+	internal_report_min_camp_sites = 4.00
+	internal_report_min_extermination_sites = 1.00
+	foreign_observer_visibility = 20.00
+	foreign_observer_pressure = 12.00
+	foreign_observer_hidden_score = 14.00
+	foreign_observer_deaths = 35000.00
+}

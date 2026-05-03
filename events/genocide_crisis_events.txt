@@ -1,0 +1,210 @@
+add_namespace = chaosx_genocide
+
+# ============================================================================
+# CHAOS REDUX - CAMPS AND GENOCIDE CRISIS EVENTS
+# ============================================================================
+# Overview:
+# - Fired by the genocide crisis scripted effects when camp evidence is
+#   discovered, condemnation thresholds are crossed, domestic crisis pressure
+#   appears, refugee pressure reaches neighbors, or tribunal preparations begin.
+# - These events are mechanic-support events, not random Chaos event entries.
+# ============================================================================
+
+country_event = {
+	id = chaosx_genocide.1
+	title = chaosx_genocide.1.t
+	desc = chaosx_genocide.1.d
+	picture = GFX_report_event_dead_jews
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.1.a
+		add_war_support = constant:genocide_political_effect.discoverer_war_support
+		add_political_power = constant:genocide_political_effect.discoverer_pp
+		if = {
+			limit = { has_event_target = genocide_responsible_country }
+			add_opinion_modifier = {
+				target = event_target:genocide_responsible_country
+				modifier = genocide_atrocity_condemned
+			}
+			set_country_flag = genocide_discovery_publicized
+		}
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.2
+	title = chaosx_genocide.2.t
+	desc = chaosx_genocide.2.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.2.a
+		genocide_cover_up_liberated_camps = yes
+	}
+}
+
+news_event = {
+	id = chaosx_genocide.3
+	title = chaosx_genocide.3.t
+	desc = chaosx_genocide.3.d
+	picture = GFX_news_dead_jews
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx_genocide.3.a
+		if = {
+			limit = { has_government = democratic }
+			add_war_support = constant:genocide_political_effect.global_democratic_war_support
+		}
+		if = {
+			limit = { has_event_target = genocide_responsible_country }
+			add_opinion_modifier = {
+				target = event_target:genocide_responsible_country
+				modifier = genocide_atrocity_condemned
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.5
+	title = chaosx_genocide.5.t
+	desc = chaosx_genocide.5.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.5.a
+		add_political_power = constant:genocide_political_effect.discoverer_pp
+		if = {
+			limit = { FROM = { exists = yes } }
+			add_opinion_modifier = {
+				target = FROM
+				modifier = genocide_refugee_aid_respect
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.10
+	title = chaosx_genocide.10.t
+	desc = chaosx_genocide.10.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.10.a
+		add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.11
+	title = chaosx_genocide.11.t
+	desc = chaosx_genocide.11.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.11.a
+		add_to_variable = { genocide_refugee_pressure = constant:genocide_crisis_value.refugee_pressure_major }
+		add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.12
+	title = chaosx_genocide.12.t
+	desc = chaosx_genocide.12.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.12.a
+		add_ideas = genocide_international_sanctions
+		add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.13
+	title = chaosx_genocide.13.t
+	desc = chaosx_genocide.13.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.13.a
+		add_ideas = genocide_tribunal_preparation
+		add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.hidden_atrocity_major }
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.20
+	title = chaosx_genocide.20.t
+	desc = chaosx_genocide.20.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.20.a
+		genocide_suppress_internal_reports = yes
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.21
+	title = chaosx_genocide.21.t
+	desc = chaosx_genocide.21.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.21.a
+		genocide_deal_with_resistance_sabotage = yes
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.22
+	title = chaosx_genocide.22.t
+	desc = chaosx_genocide.22.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.22.a
+		genocide_handle_refugee_waves = yes
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.23
+	title = chaosx_genocide.23.t
+	desc = chaosx_genocide.23.d
+	picture = GFX_report_event_intel_leak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.23.a
+		genocide_manage_military_objections = yes
+	}
+}
+
+country_event = {
+	id = chaosx_genocide.30
+	title = chaosx_genocide.30.t
+	desc = chaosx_genocide.30.d
+	picture = GFX_report_event_dead_jews
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_genocide.30.a
+		add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.discovery_foreign_pressure }
+	}
+}

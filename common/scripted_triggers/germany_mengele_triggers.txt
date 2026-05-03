@@ -1,0 +1,129 @@
+# ============================================================================
+# CHAOS REDUX - GERMANY MENGELE / TIBET EXPEDITION TRIGGERS
+# ============================================================================
+# Shared gates for the Auschwitz Experiments, Mengele coup, and Tibet
+# Expedition ecosystem.
+# ============================================================================
+
+germany_controls_auschwitz_area = {
+	88 = { is_controlled_by = ROOT }
+}
+
+germany_mengele_is_germany_scope = {
+	exists = yes
+	original_tag = GER
+	NOT = { has_country_flag = germany_mengele_faction }
+}
+
+germany_mengele_can_start_chain = {
+	germany_mengele_is_germany_scope = yes
+	has_government = fascism
+	date > 1940.06.13
+	germany_controls_auschwitz_area = yes
+	NOT = { has_country_flag = germany_mengele_program_rejected }
+	NOT = { has_country_flag = germany_mengele_program_closed }
+	NOT = { has_country_flag = germany_mengele_program_authorized }
+	NOT = { has_country_flag = germany_mengele_program_restricted }
+}
+
+germany_mengele_program_active = {
+	germany_mengele_is_germany_scope = yes
+	has_government = fascism
+	germany_controls_auschwitz_area = yes
+	has_country_flag = germany_mengele_program_authorized
+	OR = {
+		has_idea = germany_auschwitz_experiments
+		has_country_flag = germany_mengele_program_recently_expired
+	}
+	NOT = { has_country_flag = germany_mengele_program_closed }
+	NOT = { has_country_flag = germany_mengele_coup_fired }
+}
+
+germany_mengele_restricted_program_active = {
+	germany_mengele_is_germany_scope = yes
+	has_government = fascism
+	germany_controls_auschwitz_area = yes
+	has_country_flag = germany_mengele_program_restricted
+	has_idea = germany_auschwitz_experiments_restricted
+	NOT = { has_country_flag = germany_mengele_program_closed }
+}
+
+germany_mengele_is_desperate_in_war = {
+	has_war = yes
+	OR = {
+		surrender_progress > constant:germany_mengele_ai.desperate_surrender_threshold
+		AND = {
+			has_war_with = SOV
+			surrender_progress > constant:germany_mengele_ai.soviet_desperate_surrender_threshold
+		}
+	}
+}
+
+germany_mengele_has_high_fascist_support = {
+	check_variable = { party_popularity@fascism > constant:germany_mengele_ai.high_fascist_support_threshold }
+}
+
+germany_mengele_can_attempt_coup = {
+	germany_mengele_program_active = yes
+	date > 1942.12.31
+	has_war_with = SOV
+	germany_mengele_has_high_fascist_support = yes
+	check_variable = { mengele_autonomy > constant:germany_mengele_autonomy.coup_threshold }
+	NOT = { has_country_flag = germany_mengele_coup_blocked }
+}
+
+is_mengele_laboratory_state = {
+	has_country_flag = germany_mengele_faction
+}
+
+germany_has_active_mengele_faction = {
+	has_global_flag = germany_mengele_civil_war_active
+	has_event_target = germany_mengele_faction
+	event_target:germany_mengele_faction = {
+		exists = yes
+		is_mengele_laboratory_state = yes
+	}
+}
+
+germany_can_prepare_tibet_expedition = {
+	germany_mengele_is_germany_scope = yes
+	has_government = fascism
+	NOT = { has_country_flag = germany_tibet_expedition_active }
+	NOT = { has_country_flag = germany_tibet_expedition_lost }
+	NOT = { has_country_flag = germany_tibet_expedition_completed }
+	check_variable = { aryan_origin_preparation > constant:germany_mengele_tibet.preparation_threshold }
+}
+
+germany_tibet_has_holy_realm_contact = {
+	OR = {
+		has_event_target = holy_realm_country
+		any_other_country = {
+			is_holy_realm_country = yes
+		}
+	}
+}
+
+germany_mengele_should_cancel_program = {
+	OR = {
+		NOT = { has_government = fascism }
+		NOT = { germany_controls_auschwitz_area = yes }
+	}
+}
+
+germany_tibet_should_cancel_expedition = {
+	has_country_flag = germany_tibet_expedition_active
+	OR = {
+		NOT = { has_government = fascism }
+		has_country_flag = germany_tibet_expedition_blocked
+	}
+}
+
+germany_tibet_should_cancel_preparation = {
+	NOT = { has_government = fascism }
+	NOT = { has_country_flag = germany_tibet_expedition_completed }
+	NOT = { has_country_flag = germany_tibet_expedition_blocked }
+	OR = {
+		has_country_flag = germany_tibet_old_files_reopened
+		check_variable = { aryan_origin_preparation > 0 }
+	}
+}
