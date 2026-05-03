@@ -1,0 +1,115 @@
+# Overview:
+# - Balance of power for the Holy Realm's late doctrine dispute between the
+#   Vow against Annihilation and the Final Silence ledger.
+
+holy_realm_final_doctrine_balance = {
+	initial_value = -0.10
+	left_side = holy_realm_vow_against_annihilation_side
+	right_side = holy_realm_final_silence_side
+	decision_category = holy_realm_doctrine_balance_category
+
+	range = {
+		id = holy_realm_balance_middle_path_range
+		min = -0.20
+		max = 0.20
+		modifier = {
+			political_power_gain = 0.15
+			stability_factor = 0.05
+			custom_modifier_tooltip = holy_realm_balance_middle_path_range_tt
+		}
+		on_activate = {
+			clr_country_flag = holy_realm_bop_vow_influence
+			clr_country_flag = holy_realm_bop_vow_dominant
+			clr_country_flag = holy_realm_bop_final_influence
+			clr_country_flag = holy_realm_bop_final_dominant
+		}
+	}
+
+	side = {
+		id = holy_realm_vow_against_annihilation_side
+		icon = GFX_bop_THR_vow_against_annihilation_side
+
+		range = {
+			id = holy_realm_vow_influence_range
+			min = -0.55
+			max = -0.20
+			modifier = {
+				political_power_gain = 0.25
+				stability_factor = 0.10
+				defensive_war_stability_factor = 0.15
+				offensive_war_stability_factor = -0.20
+				custom_modifier_tooltip = holy_realm_vow_influence_range_tt
+			}
+			on_activate = {
+				set_country_flag = holy_realm_bop_vow_influence
+				clr_country_flag = holy_realm_bop_vow_dominant
+				clr_country_flag = holy_realm_bop_final_influence
+				clr_country_flag = holy_realm_bop_final_dominant
+			}
+		}
+
+		range = {
+			id = holy_realm_vow_dominant_range
+			min = -1.00
+			max = -0.55
+			modifier = {
+				political_power_gain = 0.45
+				stability_factor = 0.18
+				defensive_war_stability_factor = 0.25
+				offensive_war_stability_factor = -0.45
+				consumer_goods_factor = -0.05
+				custom_modifier_tooltip = holy_realm_vow_dominant_range_tt
+			}
+			on_activate = {
+				set_country_flag = holy_realm_bop_vow_influence
+				set_country_flag = holy_realm_bop_vow_dominant
+				clr_country_flag = holy_realm_bop_final_influence
+				clr_country_flag = holy_realm_bop_final_dominant
+			}
+		}
+	}
+
+	side = {
+		id = holy_realm_final_silence_side
+		icon = GFX_bop_THR_final_silence_side
+
+		range = {
+			id = holy_realm_final_silence_influence_range
+			min = 0.20
+			max = 0.55
+			modifier = {
+				political_power_gain = 0.30
+				war_support_factor = 0.08
+				nuclear_production_factor = 0.25
+				enemy_justify_war_goal_time = -0.12
+				custom_modifier_tooltip = holy_realm_final_silence_influence_range_tt
+			}
+			on_activate = {
+				clr_country_flag = holy_realm_bop_vow_influence
+				clr_country_flag = holy_realm_bop_vow_dominant
+				set_country_flag = holy_realm_bop_final_influence
+				clr_country_flag = holy_realm_bop_final_dominant
+			}
+		}
+
+		range = {
+			id = holy_realm_final_silence_dominant_range
+			min = 0.55
+			max = 1.00
+			modifier = {
+				political_power_gain = 0.55
+				war_support_factor = 0.18
+				nuclear_production_factor = 0.65
+				production_speed_nuclear_reactor_factor = 0.30
+				enemy_justify_war_goal_time = -0.35
+				custom_modifier_tooltip = holy_realm_final_silence_dominant_range_tt
+			}
+			on_activate = {
+				clr_country_flag = holy_realm_bop_vow_influence
+				clr_country_flag = holy_realm_bop_vow_dominant
+				set_country_flag = holy_realm_bop_final_influence
+				set_country_flag = holy_realm_bop_final_dominant
+			}
+		}
+	}
+}

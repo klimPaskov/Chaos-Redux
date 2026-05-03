@@ -1,0 +1,420 @@
+@MENGELE_EMERGENCY_CRACKDOWN_DAYS = 90
+@MENGELE_TEMPORARY_TRUCE_DAYS = 180
+
+germany_final_solution_category = {
+	centralize_race_offices = {
+		icon = GFX_decision_generic_political_discourse
+		cost = constant:germany_mengele_decision.centralize_race_offices_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = germany_race_offices_centralized }
+		}
+		complete_effect = {
+			set_country_flag = germany_race_offices_centralized
+			add_to_variable = { racial_policy_radicalization = constant:germany_mengele_decision_value.centralize_radicalization }
+			add_to_variable = { ss_archive_control = constant:germany_mengele_decision_value.centralize_archive_control }
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.centralize_race_offices }
+			germany_mengele_add_autonomy = yes
+			add_stability = constant:germany_mengele_decision_value.centralize_stability
+			country_event = { id = germany_mengele.4 days = 1 }
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.centralize_race_offices }
+	}
+
+	expand_ss_archive = {
+		icon = GFX_decision_hol_exchange_intelligence_data
+		cost = constant:germany_mengele_decision.expand_ss_archive_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = germany_ss_archive_expanded }
+		}
+		complete_effect = {
+			set_country_flag = germany_ss_archive_expanded
+			add_to_variable = { ss_archive_control = constant:germany_mengele_decision_value.expand_archive_control }
+			add_to_variable = { racial_policy_radicalization = constant:germany_mengele_decision_value.expand_radicalization }
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.expand_ss_archive }
+			germany_mengele_add_autonomy = yes
+			country_event = { id = germany_mengele.5 days = 1 }
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.expand_ss_archive }
+	}
+
+	classify_eastern_records = {
+		icon = GFX_decision_generic_operation
+		cost = constant:germany_mengele_decision.classify_records_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = germany_eastern_records_classified }
+		}
+		complete_effect = {
+			set_country_flag = germany_eastern_records_classified
+			add_to_variable = { ss_archive_control = constant:germany_mengele_decision_value.classify_archive_control }
+			add_to_variable = { foreign_atrocity_awareness = constant:germany_mengele_decision_value.classify_awareness }
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.classify_records }
+			germany_mengele_add_autonomy = yes
+			germany_mengele_raise_permission_to_limited = yes
+			country_event = { id = germany_mengele.6 days = 1 }
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.classify_eastern_records }
+	}
+
+	protect_ahnenerbe_budget = {
+		icon = GFX_decision_generic_research
+		cost = constant:germany_mengele_decision.protect_ahnenerbe_budget_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = germany_ahnenerbe_budget_protected }
+		}
+		complete_effect = {
+			set_country_flag = germany_ahnenerbe_budget_protected
+			add_to_variable = { ahnenerbe_influence = constant:germany_mengele_decision_value.protect_ahnenerbe }
+			add_to_variable = { aryan_origin_preparation = constant:germany_mengele_decision_value.protect_preparation }
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.protect_ahnenerbe_budget }
+			germany_mengele_add_autonomy = yes
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.protect_ahnenerbe_budget }
+	}
+
+	search_ancestral_traces = {
+		icon = GFX_decision_generic_research
+		cost = constant:germany_mengele_decision.search_ancestral_traces_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = germany_ancestral_traces_searched }
+		}
+		complete_effect = {
+			set_country_flag = germany_ancestral_traces_searched
+			add_to_variable = { aryan_origin_preparation = constant:germany_mengele_decision_value.search_preparation }
+			add_to_variable = { ahnenerbe_influence = constant:germany_mengele_decision_value.search_ahnenerbe }
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.search_ancestral_traces }
+			germany_mengele_add_autonomy = yes
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.search_ancestral_traces }
+	}
+
+	silence_dissenting_file = {
+		icon = GFX_decision_oppression
+		cost = constant:germany_mengele_decision.silence_dissent_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = germany_dissenting_file_silenced }
+		}
+		complete_effect = {
+			set_country_flag = germany_dissenting_file_silenced
+			add_to_variable = { racial_policy_radicalization = constant:germany_mengele_decision_value.silence_radicalization }
+			add_to_variable = { ss_archive_control = constant:germany_mengele_decision_value.silence_archive_control }
+			add_to_variable = { foreign_atrocity_awareness = constant:germany_mengele_decision_value.silence_awareness }
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.silence_dissent }
+			germany_mengele_add_autonomy = yes
+			germany_mengele_raise_permission_to_bypass = yes
+			add_stability = constant:germany_mengele_decision_value.silence_stability
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.silence_dissenting_file }
+	}
+
+	import_subjects_from_japanese_china = {
+		icon = GFX_decision_oppression
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		cost = constant:germany_mengele_decision.import_japanese_china_subjects_cost
+		days_re_enable = constant:germany_mengele_decision.foreign_subjects_re_enable_days
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			OR = {
+				germany_mengele_program_active = yes
+				germany_mengele_restricted_program_active = yes
+			}
+		}
+		target_trigger = {
+			FROM = {
+				NOT = { has_state_flag = germany_mengele_subjects_imported_from_state }
+				OR = {
+					is_core_of = CHI
+					is_core_of = PRC
+					is_core_of = GXC
+					is_core_of = MEN
+					is_core_of = MAN
+				}
+				controller = {
+					OR = {
+						tag = JAP
+						tag = MAN
+						is_in_faction_with = ROOT
+					}
+				}
+				NOT = { is_controlled_by = ROOT }
+			}
+		}
+		available = {
+			OR = {
+				germany_mengele_program_active = yes
+				germany_mengele_restricted_program_active = yes
+			}
+			FROM = {
+				NOT = { has_state_flag = germany_mengele_subjects_imported_from_state }
+			}
+		}
+		complete_effect = {
+			set_temp_variable = { germany_mengele_foreign_subjects_autonomy = constant:germany_mengele_foreign_subjects.japanese_china_autonomy }
+			FROM = { set_state_flag = germany_mengele_subjects_imported_from_state }
+			germany_mengele_import_subjects_from_from_state = yes
+			country_event = { id = germany_mengele.18 days = 1 }
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.silence_dissenting_file }
+	}
+
+	import_subjects_from_india = {
+		icon = GFX_decision_oppression
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		cost = constant:germany_mengele_decision.import_indian_subjects_cost
+		days_re_enable = constant:germany_mengele_decision.foreign_subjects_re_enable_days
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			OR = {
+				germany_mengele_program_active = yes
+				germany_mengele_restricted_program_active = yes
+			}
+		}
+		target_trigger = {
+			FROM = {
+				NOT = { has_state_flag = germany_mengele_subjects_imported_from_state }
+				is_core_of = RAJ
+				OR = {
+					is_controlled_by = ROOT
+					controller = { is_in_faction_with = ROOT }
+				}
+			}
+		}
+		available = {
+			OR = {
+				germany_mengele_program_active = yes
+				germany_mengele_restricted_program_active = yes
+			}
+			FROM = {
+				NOT = { has_state_flag = germany_mengele_subjects_imported_from_state }
+			}
+		}
+		complete_effect = {
+			set_temp_variable = { germany_mengele_foreign_subjects_autonomy = constant:germany_mengele_foreign_subjects.india_autonomy }
+			FROM = { set_state_flag = germany_mengele_subjects_imported_from_state }
+			germany_mengele_import_subjects_from_from_state = yes
+			country_event = { id = germany_mengele.19 days = 1 }
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.silence_dissenting_file }
+	}
+
+	import_subjects_from_africa = {
+		icon = GFX_decision_oppression
+		state_target = africa
+		on_map_mode = map_and_decisions_view
+		cost = constant:germany_mengele_decision.import_african_subjects_cost
+		days_re_enable = constant:germany_mengele_decision.foreign_subjects_re_enable_days
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = genocide_decisions_visible
+			}
+		}
+		target_root_trigger = {
+			OR = {
+				germany_mengele_program_active = yes
+				germany_mengele_restricted_program_active = yes
+			}
+		}
+		target_trigger = {
+			FROM = {
+				NOT = { has_state_flag = germany_mengele_subjects_imported_from_state }
+				NOT = { is_core_of = ROOT }
+				OR = {
+					is_controlled_by = ROOT
+					controller = { is_in_faction_with = ROOT }
+				}
+			}
+		}
+		available = {
+			OR = {
+				germany_mengele_program_active = yes
+				germany_mengele_restricted_program_active = yes
+			}
+			FROM = {
+				NOT = { has_state_flag = germany_mengele_subjects_imported_from_state }
+			}
+		}
+		complete_effect = {
+			set_temp_variable = { germany_mengele_foreign_subjects_autonomy = constant:germany_mengele_foreign_subjects.africa_autonomy }
+			FROM = { set_state_flag = germany_mengele_subjects_imported_from_state }
+			germany_mengele_import_subjects_from_from_state = yes
+			country_event = { id = germany_mengele.18 days = 1 }
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.silence_dissenting_file }
+	}
+
+	close_auschwitz_program = {
+		icon = GFX_decision_generic_protection
+		cost = constant:germany_mengele_decision.close_program_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			OR = {
+				germany_mengele_program_active = yes
+				germany_mengele_restricted_program_active = yes
+			}
+		}
+		complete_effect = {
+			germany_mengele_cancel_program = yes
+			set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.shutdown }
+			set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_purge }
+			germany_mengele_add_chaos = yes
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.close_program }
+	}
+
+	military_review_of_auschwitz = {
+		icon = GFX_decision_generic_military
+		cost = constant:germany_mengele_decision.military_review_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			germany_mengele_program_active = yes
+			NOT = { has_country_flag = germany_mengele_military_review_active }
+		}
+		complete_effect = {
+			set_country_flag = germany_mengele_military_review_active
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.military_review_reduction }
+			germany_mengele_add_autonomy = yes
+			add_stability = constant:germany_mengele_decision_value.military_review_stability
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.military_review }
+	}
+
+	purge_ss_medical_offices = {
+		icon = GFX_decision_generic_protection
+		cost = constant:germany_mengele_decision.purge_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			has_government = fascism
+			OR = {
+				germany_mengele_program_active = yes
+				has_country_flag = germany_mengele_warning_children
+				has_country_flag = germany_mengele_defeated
+			}
+			NOT = { has_country_flag = germany_mengele_purge_completed }
+		}
+		complete_effect = {
+			set_country_flag = germany_mengele_purge_completed
+			set_country_flag = germany_mengele_coup_blocked
+			germany_mengele_cancel_program = yes
+			set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.purge_reduction }
+			germany_mengele_add_autonomy = yes
+			set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.purge }
+			set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_purge }
+			germany_mengele_add_chaos = yes
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.purge }
+	}
+}
+
+germany_tibet_expedition_category = {
+	prepare_tibet_mission = {
+		icon = GFX_decision_generic_operation
+		cost = constant:germany_mengele_decision.prepare_tibet_mission_cost
+		days_re_enable = constant:germany_mengele_decision.tibet_route_days
+		available = {
+			germany_can_prepare_tibet_expedition = yes
+		}
+		complete_effect = {
+			country_event = { id = germany_mengele.40 days = 1 }
+		}
+		ai_will_do = {
+			base = constant:germany_mengele_decision_ai.prepare_tibet_mission
+			modifier = {
+				factor = constant:germany_mengele_ai.holy_contact_factor
+				germany_tibet_has_holy_realm_contact = yes
+			}
+		}
+	}
+}
+
+germany_mengele_response_category = {
+	crush_the_laboratory_state = {
+		icon = GFX_decision_generic_prepare_civil_war
+		cost = constant:germany_mengele_decision.crush_lab_cost
+		days_re_enable = constant:germany_mengele_decision.crackdown_days
+		available = {
+			germany_has_active_mengele_faction = yes
+			has_war_with = event_target:germany_mengele_faction
+		}
+		complete_effect = {
+			set_country_flag = germany_mengele_route_crush_lab
+			add_timed_idea = {
+				idea = germany_mengele_emergency_crackdown
+				days = @MENGELE_EMERGENCY_CRACKDOWN_DAYS
+			}
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.crush_laboratory_state }
+	}
+
+	reclaim_laboratory_results = {
+		icon = GFX_decision_generic_research
+		cost = constant:germany_mengele_decision.reclaim_results_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			OR = {
+				has_country_flag = germany_mengele_defeated
+				germany_has_active_mengele_faction = yes
+			}
+			NOT = { has_country_flag = germany_mengele_results_reclaimed }
+		}
+		complete_effect = {
+			set_country_flag = germany_mengele_results_reclaimed
+			set_country_flag = germany_mengele_route_reclaim_results
+			add_ideas = germany_mengele_reclaimed_results
+			set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.reports }
+			germany_mengele_add_condemnation = yes
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.reclaim_results }
+	}
+
+	temporary_truce_against_soviets = {
+		icon = GFX_decision_generic_military
+		cost = constant:germany_mengele_decision.truce_cost
+		days_re_enable = constant:germany_mengele_decision.re_enable_days
+		available = {
+			germany_has_active_mengele_faction = yes
+			has_war_with = event_target:germany_mengele_faction
+			has_war_with = SOV
+			germany_mengele_is_desperate_in_war = yes
+			NOT = { has_country_flag = germany_mengele_truce_active }
+		}
+		complete_effect = {
+			set_country_flag = germany_mengele_truce_active
+			add_timed_idea = {
+				idea = germany_mengele_temporary_truce
+				days = @MENGELE_TEMPORARY_TRUCE_DAYS
+			}
+			white_peace = event_target:germany_mengele_faction
+			set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.truce }
+			set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_truce }
+			germany_mengele_add_chaos = yes
+			set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.truce }
+			germany_mengele_add_condemnation = yes
+			country_event = { id = germany_mengele.35 days = @MENGELE_TEMPORARY_TRUCE_DAYS }
+		}
+		ai_will_do = { base = constant:germany_mengele_decision_ai.temporary_truce }
+	}
+}

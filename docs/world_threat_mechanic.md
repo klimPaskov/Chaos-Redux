@@ -16,6 +16,7 @@ Current registered source flags:
 
 - `world_threat_source_zombies`
 - `world_threat_source_holy_realm`
+- `world_threat_source_mengele`
 
 Shared aggregate flag:
 
@@ -61,7 +62,9 @@ This keeps the high-level flag generic and future-proof.
 
 The zombie source uses `refresh_zombie_world_threat_source` in `common/scripted_effects/002_zombie_outbreak_effects.txt`.
 
-The Holy Realm source uses `holy_realm_refresh_world_threat_source` in `common/scripted_effects/003_holy_realm_effects.txt`. It can become active after the Buddha Mandate, Divine Sovereignty, final warnings, or an armed final doctrine.
+The Holy Realm source uses `holy_realm_refresh_world_threat_source` in `common/scripted_effects/003_holy_realm_effects.txt`. It can become active after Divine Sovereignty, final warnings, or an armed final doctrine. The refuge, Bodhisattva stage, Arhat Administration, and Buddha Mandate do not count as world threats on their own.
+
+The Mengele source uses `germany_mengele_refresh_world_threat` in `common/scripted_effects/germany_mengele_effects.txt`. It is active while the Auschwitz Directorate civil war exists and is cleared when the laboratory state is defeated or consolidates into a post-coup country state.
 
 That effect:
 
@@ -89,6 +92,7 @@ Shared triggers:
 - `is_world_in_threat`
 - `has_world_threat_source_zombies`
 - `has_world_threat_source_holy_realm`
+- `has_world_threat_source_mengele`
 
 ## Adding future threats
 
@@ -105,7 +109,7 @@ Everything should fold back into the same source-counted system.
 ## Limitations
 
 - The current zombie source is refreshed from the existing zombie runtime rather than a dedicated global state-control hook. In practice that is good enough for the active zombie system, but it is still tied to zombie runtime execution rather than a universal threat bus.
-- Only zombies are registered right now, so the framework is generic by structure but not yet by population.
+- Zombies, the Holy Realm, and the active Mengele laboratory-state civil war are registered as source flags.
 - `world_in_threat` is intentionally just a state flag. It does not itself enforce diplomacy or AI behavior. Other systems must explicitly read it.
 
 ## Files

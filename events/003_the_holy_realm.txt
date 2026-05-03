@@ -1,397 +1,1593 @@
 add_namespace = chaosx.nr3
 
+###############################################################################################################
+#    ##    ## ########      #######
+#    ###   ## ##     ##    ##     ##
+#    ####  ## ##     ##           ##
+#    ## ## ## ########      #######
+#    ##  #### ##   ##             ##
+#    ##   ### ##    ##     ##     ##
+#    ##    ## ##     ##     #######
+###############################################################################################################
+#    ##     ##  #######  ##       ##    ##    ########  ########    ###    ##       ##     ##
+#    ##     ## ##     ## ##        ##  ##     ##     ## ##         ## ##   ##       ###   ###
+#    ##     ## ##     ## ##         ####      ##     ## ##        ##   ##  ##       #### ####
+#    ######### ##     ## ##          ##       ########  ######   ##     ## ##       ## ### ##
+#    ##     ## ##     ## ##          ##       ##   ##   ##       ######### ##       ##     ##
+#    ##     ## ##     ## ##          ##       ##    ##  ##       ##     ## ##       ##     ##
+#    ##     ##  #######  ########    ##       ##     ## ######## ##     ## ######## ##     ##
+###############################################################################################################
+
 # Overview:
 # - Holy Realm event ecosystem. Event 3 remains the stable fire-once entry.
 # - The chain transforms Tibet or a Tibet-centered country into the Holy Realm,
 #   tracks Mandala counters, logs evolution stages, opens doctrine decisions,
-#   warns foreign players, and can resolve into the Final Silence world-end.
+#   escalates through focus-gated stages, and can resolve into the Final Silence world-end.
 
 country_event = {
-	id = chaosx.nr3.1
-	title = chaosx.nr3.1.t
-	is_triggered_only = yes
-	hidden = yes
+    id = chaosx.nr3.1
+    title = chaosx.nr3.1.t
+    is_triggered_only = yes
+    hidden = yes
 
-	immediate = {
-		if = {
-			limit = {
-				TIB = { can_host_holy_realm_refuge = yes }
-			}
-			TIB = { country_event = { id = chaosx.nr3.2 days = 1 } }
-		}
-		else_if = {
-			limit = {
-				any_country = { can_host_holy_realm_refuge = yes }
-			}
-			random_country = {
-				limit = { can_host_holy_realm_refuge = yes }
-				country_event = { id = chaosx.nr3.2 days = 1 }
-			}
-		}
-	}
+    immediate = {
+        if = {
+            limit = {
+                TIB = { can_host_holy_realm_refuge = yes }
+            }
+            TIB = {
+                country_event = { id = chaosx.nr3.2 days = 1 }
+            }
+        }
+        else_if = {
+            limit = {
+                any_country = { can_host_holy_realm_refuge = yes }
+            }
+            random_country = {
+                limit = { can_host_holy_realm_refuge = yes }
+                if = {
+                    limit = { is_ai = no }
+                    country_event = { id = chaosx.nr3.2 days = 1 }
+                }
+                else = {
+                    set_country_flag = holy_realm_memory_invited_figure
+                    holy_realm_form_country = yes
+                    news_event = { id = chaosx.news.9 days = 2 }
+                    country_event = { id = chaosx.nr3.4 days = 20 }
+                }
+            }
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.2
-	title = chaosx.nr3.2.t
-	desc = chaosx.nr3.2.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.2
+    title = chaosx.nr3.2.t
+    desc = chaosx.nr3.2.d
+    picture = GFX_report_event_holy_realm_refuge
+    is_triggered_only = yes
 
-	trigger = {
-		can_host_holy_realm_refuge = yes
-		NOT = { has_global_flag = holy_realm_exists }
-	}
+    trigger = {
+        can_host_holy_realm_refuge = yes
+        NOT = { has_global_flag = holy_realm_exists }
+    }
 
-	option = {
-		name = chaosx.nr3.2.a
-		ai_chance = {
-			base = 70
-			modifier = {
-				factor = 0.35
-				check_variable = { global.chaos_meter_value < constant:holy_realm_chaos.formation_min }
-			}
-			modifier = {
-				factor = 2
-				OR = {
-					tag = TIB
-					original_tag = TIB
-				}
-			}
-		}
-		hidden_effect = {
-			holy_realm_form_country = yes
-			news_event = { id = chaosx.news.9 days = 2 }
-			BHU = {
-				if = {
-					limit = {
-						exists = yes
-						NOT = { tag = ROOT }
-					}
-					country_event = { id = chaosx.nr3.3 days = 2 }
-				}
-			}
-			NEP = {
-				if = {
-					limit = {
-						exists = yes
-						NOT = { tag = ROOT }
-					}
-					country_event = { id = chaosx.nr3.3 days = 3 }
-				}
-			}
-			TIB = {
-				if = {
-					limit = {
-						exists = yes
-						NOT = { tag = ROOT }
-					}
-					country_event = { id = chaosx.nr3.3 days = 1 }
-				}
-			}
-		}
-	}
+    option = {
+        name = chaosx.nr3.2.a
+        ai_chance = { base = 0 }
+        custom_effect_tooltip = chaosx_nr3_2_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_monastic_autonomy
+            set_country_flag = holy_realm_refused_calling
+            add_stability = 0.03
+        }
+    }
 
-	option = {
-		name = chaosx.nr3.2.b
-		ai_chance = { base = 30 }
-		set_country_flag = holy_realm_refused_calling
-		add_stability = -0.05
-	}
+    option = {
+        name = chaosx.nr3.2.b
+        ai_chance = {
+            base = 100
+            modifier = {
+                factor = 2
+                OR = {
+                    tag = TIB
+                    original_tag = TIB
+                }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_2_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_invited_figure
+            holy_realm_form_country = yes
+            news_event = { id = chaosx.news.9 days = 2 }
+            country_event = { id = chaosx.nr3.4 days = 20 }
+            BHU = {
+                if = {
+                    limit = {
+                        exists = yes
+                        NOT = { tag = ROOT }
+                    }
+                    country_event = { id = chaosx.nr3.3 days = 2 }
+                }
+            }
+            NEP = {
+                if = {
+                    limit = {
+                        exists = yes
+                        NOT = { tag = ROOT }
+                    }
+                    country_event = { id = chaosx.nr3.3 days = 3 }
+                }
+            }
+            TIB = {
+                if = {
+                    limit = {
+                        exists = yes
+                        NOT = { tag = ROOT }
+                    }
+                    country_event = { id = chaosx.nr3.3 days = 1 }
+                }
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.2.c
+        ai_chance = { base = 0 }
+        custom_effect_tooltip = chaosx_nr3_2_c_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_restricted_gatherings
+            set_country_flag = holy_realm_refused_calling
+            add_stability = -0.05
+            add_war_support = 0.03
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.2.e
+        ai_chance = {
+            base = 1
+            modifier = {
+                factor = 0
+                is_ai = yes
+            }
+            modifier = {
+                factor = 15
+                check_variable = { global.chaos_meter_value > 700 }
+            }
+            modifier = {
+                factor = 2
+                date > 1940.12.31
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_2_e_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_proclaimed_mandate
+            holy_realm_form_country = yes
+            news_event = { id = chaosx.news.9 days = 2 }
+            country_event = { id = chaosx.nr3.4 days = 10 }
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.3
-	title = chaosx.nr3.3.t
-	desc = chaosx.nr3.3.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.4
+    title = chaosx.nr3.4.t
+    desc = chaosx.nr3.4.d
+    picture = GFX_report_event_holy_realm_refuge
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.3.a
-		ai_chance = {
-			base = 45
-			modifier = {
-				factor = 2
-				check_variable = { global.chaos_meter_value > 400 }
-			}
-		}
-		hidden_effect = {
-			every_core_state = {
-				add_core_of = FROM
-			}
-			FROM = {
-				set_country_flag = holy_realm_memory_himalayan_unity
-				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-				holy_realm_add_mandala_reach = yes
-				annex_country = {
-					target = ROOT
-					transfer_troops = yes
-				}
-			}
-		}
-	}
+    trigger = {
+        is_holy_realm_country = yes
+    }
 
-	option = {
-		name = chaosx.nr3.3.b
-		ai_chance = { base = 55 }
-		add_stability = -0.03
-		FROM = {
-			set_country_flag = holy_realm_memory_himalayan_refusal
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
-			holy_realm_add_final_silence_pressure = yes
-			create_wargoal = {
-				target = ROOT
-				type = annex_everything
-			}
-		}
-	}
+    option = {
+        name = chaosx.nr3.4.a
+        ai_chance = { base = 40 }
+        custom_effect_tooltip = chaosx_nr3_4_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_open_refuge_roads
+            add_manpower = 180000
+            add_stability = -0.02
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+            holy_realm_add_spiritual_legitimacy = yes
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_compassion_drift = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.4.b
+        ai_chance = { base = 45 }
+        custom_effect_tooltip = chaosx_nr3_4_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_refugee_registry
+            add_political_power = 150
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+            holy_realm_add_mandala_reach = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.4.c
+        ai_chance = { base = 15 }
+        custom_effect_tooltip = chaosx_nr3_4_c_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_closed_refuge_roads
+            add_stability = 0.02
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
+            holy_realm_add_spiritual_legitimacy = yes
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+            holy_realm_add_chaos = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.10
-	title = chaosx.nr3.10.t
-	desc = chaosx.nr3.10.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.3
+    title = chaosx.nr3.3.t
+    desc = chaosx.nr3.3.d
+    picture = GFX_report_event_holy_realm_refuge
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.10.a
-		ai_chance = { base = 100 }
-		hidden_effect = {
-			holy_realm_set_stage_bodhisattva = yes
-		}
-	}
+    option = {
+        name = chaosx.nr3.3.a
+        ai_chance = {
+            base = 96
+            modifier = {
+                factor = 1.2
+                check_variable = { global.chaos_meter_value > 400 }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_3_a_tt
+        hidden_effect = {
+            every_core_state = {
+                add_core_of = event_target:holy_realm_country
+            }
+            event_target:holy_realm_country = {
+                set_country_flag = holy_realm_memory_himalayan_unity
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+                holy_realm_add_mandala_reach = yes
+                holy_realm_apply_himalayan_unity_bonus = yes
+                annex_country = {
+                    target = ROOT
+                    transfer_troops = yes
+                }
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.3.b
+        ai_chance = {
+            base = 4
+            modifier = {
+                factor = 2
+                is_in_faction = yes
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_3_b_tt
+        add_stability = -0.03
+        event_target:holy_realm_country = {
+            set_country_flag = holy_realm_memory_himalayan_refusal
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_mandala_reach = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.20
-	title = chaosx.nr3.20.t
-	desc = chaosx.nr3.20.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.10
+    title = chaosx.nr3.10.t
+    desc = chaosx.nr3.10.d
+    picture = GFX_report_event_holy_realm_refuge
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.20.a
-		ai_chance = { base = 65 }
-		hidden_effect = {
-			set_country_flag = holy_realm_memory_arhats_empowered
-			holy_realm_set_stage_arhat = yes
-		}
-	}
-
-	option = {
-		name = chaosx.nr3.20.b
-		ai_chance = { base = 35 }
-		hidden_effect = {
-			set_country_flag = holy_realm_memory_arhats_checked
-			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
-			holy_realm_add_compassion_drift = yes
-			holy_realm_set_stage_arhat = yes
-		}
-	}
+    option = {
+        name = chaosx.nr3.10.a
+        ai_chance = { base = 100 }
+        hidden_effect = {
+            holy_realm_set_stage_bodhisattva = yes
+            remove_ideas = holy_realm_mountain_refuge
+            add_ideas = holy_realm_bodhisattva_state
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.30
-	title = chaosx.nr3.30.t
-	desc = chaosx.nr3.30.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.20
+    title = chaosx.nr3.20.t
+    desc = chaosx.nr3.20.d
+    picture = GFX_report_event_holy_realm_arhat
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.30.a
-		ai_chance = { base = 100 }
-		hidden_effect = {
-			holy_realm_set_stage_buddha_mandate = yes
-			every_other_country = {
-				limit = {
-					exists = yes
-					NOT = { is_holy_realm_country = yes }
-					OR = {
-						is_major = yes
-						is_ai = no
-					}
-				}
-				country_event = { id = chaosx.nr3.71 days = 2 }
-			}
-		}
-	}
+    option = {
+        name = chaosx.nr3.20.a
+        ai_chance = { base = 65 }
+        custom_effect_tooltip = chaosx_nr3_20_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_arhats_empowered
+            holy_realm_set_stage_arhat = yes
+            add_ideas = holy_realm_arhat_administration
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.20.b
+        ai_chance = { base = 35 }
+        custom_effect_tooltip = chaosx_nr3_20_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_arhats_checked
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
+            holy_realm_add_compassion_drift = yes
+            holy_realm_set_stage_arhat = yes
+            add_ideas = holy_realm_arhat_administration
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.40
-	title = chaosx.nr3.40.t
-	desc = chaosx.nr3.40.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.21
+    title = chaosx.nr3.21.t
+    desc = chaosx.nr3.21.d
+    picture = GFX_report_event_holy_realm_arhat
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.40.a
-		ai_chance = {
-			base = 70
-			modifier = {
-				factor = 0.25
-				check_variable = { compassion_drift > 50 }
-			}
-		}
-		hidden_effect = {
-			holy_realm_set_stage_divine_sovereignty = yes
-		}
-	}
+    trigger = {
+        is_holy_realm_country = yes
+        holy_realm_has_arhat_stage = yes
+    }
 
-	option = {
-		name = chaosx.nr3.40.b
-		ai_chance = { base = 30 }
-		hidden_effect = {
-			set_country_flag = holy_realm_doctrine_restraint
-			set_country_flag = holy_realm_doctrine_chosen
-			holy_realm_renounce_final_silence = yes
-		}
-	}
+    option = {
+        name = chaosx.nr3.21.a
+        ai_chance = { base = 25 }
+        custom_effect_tooltip = chaosx_nr3_21_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_arhats_empowered
+            add_stability = 0.03
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_compassion_drift = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.21.b
+        ai_chance = { base = 45 }
+        custom_effect_tooltip = chaosx_nr3_21_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_arhat_inquiries
+            add_stability = -0.01
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_spiritual_legitimacy = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.21.c
+        ai_chance = { base = 20 }
+        custom_effect_tooltip = chaosx_nr3_21_c_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_arhat_removed
+            add_political_power = -25
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+            holy_realm_add_compassion_drift = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.21.e
+        ai_chance = { base = 10 }
+        custom_effect_tooltip = chaosx_nr3_21_e_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_silent_method_expanded
+            add_political_power = 35
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.serious_control_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+            holy_realm_add_chaos = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.70
-	title = chaosx.nr3.70.t
-	desc = chaosx.nr3.70.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.22
+    title = chaosx.nr3.22.t
+    desc = chaosx.nr3.22.d
+    picture = GFX_report_event_holy_realm_arhat
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.70.a
-		ai_chance = { base = 60 }
-		hidden_effect = {
-			holy_realm_arm_final_silence = yes
-		}
-	}
+    trigger = {
+        is_holy_realm_country = yes
+        holy_realm_has_arhat_stage = yes
+    }
 
-	option = {
-		name = chaosx.nr3.70.b
-		ai_chance = { base = 40 }
-		hidden_effect = {
-			holy_realm_renounce_final_silence = yes
-		}
-	}
+    option = {
+        name = chaosx.nr3.22.a
+        ai_chance = { base = 45 }
+        custom_effect_tooltip = chaosx_nr3_22_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_false_attainment_exposed
+            add_stability = -0.02
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+            holy_realm_add_spiritual_legitimacy = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.22.b
+        ai_chance = { base = 35 }
+        custom_effect_tooltip = chaosx_nr3_22_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_false_attainment_sealed
+            add_political_power = 50
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+            holy_realm_add_compassion_drift = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.22.c
+        ai_chance = { base = 20 }
+        custom_effect_tooltip = chaosx_nr3_22_c_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_memory_arhat_mercy_review
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.71
-	title = chaosx.nr3.71.t
-	desc = chaosx.nr3.71.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.30
+    title = chaosx.nr3.30.t
+    desc = chaosx.nr3.30.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.71.a
-		ai_chance = {
-			base = 80
-			modifier = {
-				factor = 2
-				is_major = yes
-			}
-		}
-		add_war_support = 0.02
-		set_country_flag = holy_realm_foreign_monitoring
-	}
+    option = {
+        name = chaosx.nr3.30.a
+        ai_chance = { base = 100 }
+        hidden_effect = {
+            holy_realm_set_stage_buddha_mandate = yes
+            remove_ideas = holy_realm_arhat_administration
+            add_ideas = holy_realm_buddha_mandate
+            holy_realm_try_form_master_idea = yes
+            set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.buddha_mandate }
+            holy_realm_show_super_event = yes
+            news_event = { id = chaosx.news.82 days = 2 }
+            country_event = { id = chaosx.nr3.31 days = 12 }
+            every_other_country = {
+                limit = {
+                    exists = yes
+                    NOT = { is_holy_realm_country = yes }
+                    OR = {
+                        is_major = yes
+                        is_ai = no
+                    }
+                }
+                country_event = { id = chaosx.nr3.71 days = 2 }
+            }
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.72
-	title = chaosx.nr3.72.t
-	desc = chaosx.nr3.72.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.31
+    title = chaosx.nr3.31.t
+    desc = chaosx.nr3.31.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.72.a
-		set_country_flag = holy_realm_multiplayer_warning_seen
-	}
+    trigger = {
+        is_holy_realm_country = yes
+        holy_realm_has_buddha_mandate = yes
+        NOT = { has_country_flag = holy_realm_doctrine_chosen }
+    }
+
+    option = {
+        name = chaosx.nr3.31.a
+        ai_chance = { base = 35 }
+        custom_effect_tooltip = chaosx_nr3_31_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_doctrine_chosen
+            set_country_flag = holy_realm_doctrine_restraint
+            set_country_flag = holy_realm_memory_quietists_heard
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.31.b
+        ai_chance = { base = 40 }
+        custom_effect_tooltip = chaosx_nr3_31_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_doctrine_chosen
+            set_country_flag = holy_realm_doctrine_peacekeeping
+            add_ideas = holy_realm_peacekeeping_mandate
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+            holy_realm_add_mandala_reach = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.31.c
+        ai_chance = {
+            base = 25
+            modifier = {
+                factor = 2
+                has_war = yes
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_31_c_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_doctrine_chosen
+            set_country_flag = holy_realm_doctrine_coercive_pacification
+            set_country_flag = holy_realm_memory_coercive_force
+            add_ideas = holy_realm_coercive_pacification
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.serious_control_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+            holy_realm_add_chaos = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.73
-	title = chaosx.nr3.73.t
-	desc = chaosx.nr3.73.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.40
+    title = chaosx.nr3.40.t
+    desc = chaosx.nr3.40.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.73.a
-		set_country_flag = holy_realm_final_silence_witness
-	}
+    option = {
+        name = chaosx.nr3.40.a
+        ai_chance = {
+            base = 100
+            modifier = {
+                factor = 0.25
+                check_variable = { compassion_drift > 50 }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_40_a_tt
+        hidden_effect = {
+            holy_realm_set_stage_divine_sovereignty = yes
+            remove_ideas = holy_realm_buddha_mandate
+            add_ideas = holy_realm_divine_sovereignty
+            holy_realm_try_form_master_idea = yes
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.divine_gain }
+            holy_realm_add_chaos = yes
+            if = {
+                limit = {
+                    OR = {
+                        check_variable = { global.chaos_meter_value > 700 }
+                        check_variable = { final_silence_pressure > constant:holy_realm_counter.divine_pressure }
+                        has_country_flag = holy_realm_doctrine_coercive_pacification
+                    }
+                }
+                set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.divine_sovereignty }
+                holy_realm_show_super_event = yes
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.40.b
+        ai_chance = {
+            base = 10
+            modifier = {
+                factor = 0
+                holy_realm_final_doctrine_balance_leans_final = yes
+            }
+            modifier = {
+                factor = 0
+                check_variable = { final_silence_pressure > 59 }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_40_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_doctrine_restraint
+            set_country_flag = holy_realm_doctrine_chosen
+            holy_realm_renounce_final_silence = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.80
-	title = chaosx.nr3.80.t
-	desc = chaosx.nr3.80.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.70
+    title = chaosx.nr3.70.t
+    desc = chaosx.nr3.70.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
 
-	trigger = {
-		holy_realm_can_start_final_silence = yes
-	}
+    option = {
+        name = chaosx.nr3.70.a
+        ai_chance = { base = 60 }
+        custom_effect_tooltip = chaosx_nr3_70_a_tt
+        hidden_effect = {
+            if = {
+                limit = { NOT = { has_country_flag = holy_realm_final_doctrine_armed } }
+                holy_realm_arm_final_silence = yes
+            }
+            country_event = { id = chaosx.nr3.74 days = 15 }
+        }
+    }
 
-	option = {
-		name = chaosx.nr3.80.a
-		ai_chance = { base = 100 }
-		hidden_effect = {
-			holy_realm_prepare_final_silence = yes
-			every_other_country = {
-				limit = {
-					exists = yes
-					NOT = { is_holy_realm_country = yes }
-				}
-				country_event = { id = chaosx.nr3.73 days = 1 }
-			}
-			holy_realm_apply_final_silence_wave = yes
-			if = {
-				limit = { NOT = { has_global_flag = world_end_final_silence_completed } }
-				country_event = { id = chaosx.nr3.82 days = 21 }
-			}
-			else = {
-				country_event = { id = chaosx.nr3.90 days = 1 }
-			}
-		}
-	}
+    option = {
+        name = chaosx.nr3.70.b
+        ai_chance = {
+            base = 40
+            modifier = {
+                factor = 0
+                holy_realm_final_doctrine_balance_leans_final = yes
+            }
+            modifier = {
+                factor = 0
+                check_variable = { final_silence_pressure > 59 }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_70_b_tt
+        hidden_effect = {
+            holy_realm_renounce_final_silence = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.82
-	title = chaosx.nr3.82.t
-	is_triggered_only = yes
-	hidden = yes
+    id = chaosx.nr3.74
+    title = chaosx.nr3.74.t
+    desc = chaosx.nr3.74.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
 
-	trigger = {
-		is_holy_realm_country = yes
-		has_global_flag = world_end_final_silence
-		NOT = { has_global_flag = world_end_final_silence_completed }
-	}
+    trigger = {
+        is_holy_realm_country = yes
+        has_country_flag = holy_realm_final_doctrine_armed
+    }
 
-	immediate = {
-		holy_realm_apply_final_silence_wave = yes
-		if = {
-			limit = { has_global_flag = world_end_final_silence_completed }
-			country_event = { id = chaosx.nr3.90 days = 1 }
-		}
-		else = {
-			country_event = { id = chaosx.nr3.82 days = 21 }
-		}
-	}
+    option = {
+        name = chaosx.nr3.74.a
+        custom_effect_tooltip = chaosx_nr3_74_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_warning_ledgers_sealed
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_warning_step_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+            holy_realm_add_chaos = yes
+            every_state = {
+                limit = {
+                    OWNER = { NOT = { is_holy_realm_country = yes } }
+                    CONTROLLER = { NOT = { is_holy_realm_country = yes } }
+                }
+                set_state_flag = holy_realm_final_silence_marked
+            }
+            set_temp_variable = { holy_realm_evolution_stage = 6 }
+            set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
+            holy_realm_record_evolution = yes
+            country_event = { id = chaosx.nr3.75 days = 20 }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.74.b
+        ai_chance = {
+            base = 30
+            modifier = {
+                factor = 0
+                holy_realm_final_doctrine_balance_leans_final = yes
+            }
+            modifier = {
+                factor = 0
+                check_variable = { final_silence_pressure > 59 }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_74_b_tt
+        hidden_effect = {
+            holy_realm_renounce_final_silence = yes
+        }
+    }
 }
 
 country_event = {
-	id = chaosx.nr3.90
-	title = chaosx.nr3.90.t
-	desc = chaosx.nr3.90.d
-	picture = GFX_report_event_lhasa
-	is_triggered_only = yes
+    id = chaosx.nr3.75
+    title = chaosx.nr3.75.t
+    desc = chaosx.nr3.75.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr3.90.a
-		hidden_effect = {
-			world_end_scenario_triggered = yes
-		}
-	}
+    trigger = {
+        is_holy_realm_country = yes
+        has_country_flag = holy_realm_final_doctrine_armed
+    }
+
+    option = {
+        name = chaosx.nr3.75.a
+        hidden_effect = {
+            set_country_flag = holy_realm_warning_no_more_delegations
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_warning_step_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+            holy_realm_add_chaos = yes
+            set_temp_variable = { holy_realm_evolution_stage = 6 }
+            set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
+            holy_realm_record_evolution = yes
+            every_other_country = {
+                limit = {
+                    exists = yes
+                    OR = {
+                        is_major = yes
+                        is_ai = no
+                    }
+                }
+                country_event = { id = chaosx.nr3.76 days = 2 }
+            }
+            country_event = { id = chaosx.nr3.77 days = 20 }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.76
+    title = chaosx.nr3.76.t
+    desc = chaosx.nr3.76.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.76.a
+        ai_chance = { base = 55 }
+        hidden_effect = {
+            set_country_flag = holy_realm_foreign_containment_pact
+            every_owned_state = {
+                set_state_flag = holy_realm_foreign_containment_state
+            }
+            add_war_support = 0.05
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.76.b
+        ai_chance = { base = 25 }
+        hidden_effect = {
+            set_country_flag = holy_realm_foreign_final_negotiation
+            add_stability = -0.01
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.76.c
+        ai_chance = { base = 20 }
+        hidden_effect = {
+            set_country_flag = holy_realm_foreign_evacuation
+            every_owned_state = {
+                set_state_flag = holy_realm_evacuation_state
+            }
+            add_stability = -0.03
+            add_war_support = 0.03
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.77
+    title = chaosx.nr3.77.t
+    desc = chaosx.nr3.77.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+        has_country_flag = holy_realm_final_doctrine_armed
+    }
+
+    option = {
+        name = chaosx.nr3.77.a
+        hidden_effect = {
+            set_country_flag = holy_realm_warning_sky_register
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_warning_step_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+            holy_realm_add_chaos = yes
+            set_temp_variable = { holy_realm_evolution_stage = 6 }
+            set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
+            holy_realm_record_evolution = yes
+            country_event = { id = chaosx.nr3.78 days = 20 }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.78
+    title = chaosx.nr3.78.t
+    desc = chaosx.nr3.78.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+        has_country_flag = holy_realm_final_doctrine_armed
+    }
+
+    option = {
+        name = chaosx.nr3.78.a
+        hidden_effect = {
+            set_country_flag = holy_realm_warning_last_debate_cancelled
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_warning_step_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+            holy_realm_add_chaos = yes
+            set_temp_variable = { holy_realm_evolution_stage = 6 }
+            set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
+            holy_realm_record_evolution = yes
+            country_event = { id = chaosx.nr3.79 days = 20 }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.79
+    title = chaosx.nr3.79.t
+    desc = chaosx.nr3.79.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+        has_country_flag = holy_realm_final_doctrine_armed
+    }
+
+    option = {
+        name = chaosx.nr3.79.a
+        hidden_effect = {
+            set_country_flag = holy_realm_warning_world_marked_as_wound
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_warning_step_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
+            holy_realm_add_chaos = yes
+            set_temp_variable = { holy_realm_evolution_stage = 6 }
+            set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
+            holy_realm_record_evolution = yes
+            holy_realm_emit_multiplayer_warning = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.71
+    title = chaosx.nr3.71.t
+    desc = chaosx.nr3.71.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.71.a
+        ai_chance = {
+            base = 80
+            modifier = {
+                factor = 2
+                is_major = yes
+            }
+        }
+        add_war_support = 0.02
+        set_country_flag = holy_realm_foreign_monitoring
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.72
+    title = chaosx.nr3.72.t
+    desc = chaosx.nr3.72.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.72.a
+        set_country_flag = holy_realm_multiplayer_warning_seen
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.73
+    title = chaosx.nr3.73.t
+    desc = chaosx.nr3.73.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.73.a
+        set_country_flag = holy_realm_final_silence_witness
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.80
+    title = chaosx.nr3.80.t
+    desc = chaosx.nr3.80.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    trigger = {
+        holy_realm_can_start_final_silence = yes
+    }
+
+    option = {
+        name = chaosx.nr3.80.a
+        ai_chance = { base = 100 }
+        custom_effect_tooltip = chaosx_nr3_80_a_tt
+        hidden_effect = {
+            holy_realm_prepare_final_silence = yes
+            every_other_country = {
+                limit = {
+                    exists = yes
+                    NOT = { is_holy_realm_country = yes }
+                }
+                country_event = { id = chaosx.nr3.73 days = 1 }
+            }
+            holy_realm_apply_final_silence_wave = yes
+            if = {
+                limit = { NOT = { has_global_flag = world_end_final_silence_completed } }
+                country_event = { id = chaosx.nr3.82 days = constant:holy_realm_final_silence.wave_days }
+            }
+            else = {
+                country_event = { id = chaosx.nr3.90 days = 1 }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.82
+    title = chaosx.nr3.82.t
+    is_triggered_only = yes
+    hidden = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+        has_global_flag = world_end_final_silence
+        NOT = { has_global_flag = world_end_final_silence_completed }
+        NOT = { has_global_flag = world_end_final_silence_interrupted }
+    }
+
+    immediate = {
+        holy_realm_apply_final_silence_wave = yes
+        if = {
+            limit = { has_global_flag = world_end_final_silence_completed }
+            country_event = { id = chaosx.nr3.90 days = 1 }
+        }
+        else = {
+            country_event = { id = chaosx.nr3.82 days = constant:holy_realm_final_silence.wave_days }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.83
+    title = chaosx.nr3.83.t
+    desc = chaosx.nr3.83.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+        has_global_flag = world_end_final_silence_interrupted
+    }
+
+    option = {
+        name = chaosx.nr3.83.a
+        hidden_effect = {
+            holy_realm_refresh_world_threat_source = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.84
+    title = chaosx.nr3.84.t
+    is_triggered_only = yes
+    hidden = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+        has_global_flag = world_end_final_silence
+        NOT = { has_global_flag = world_end_final_silence_interrupted }
+        any_state = { has_state_flag = holy_realm_final_silence_visual_pending }
+    }
+
+    immediate = {
+        set_temp_variable = { holy_realm_final_visual_strikes_left = constant:holy_realm_final_silence.visual_strikes_per_pulse }
+        while_loop_effect = {
+            limit = {
+                check_variable = { holy_realm_final_visual_strikes_left > 0 }
+                any_state = { has_state_flag = holy_realm_final_silence_visual_pending }
+            }
+            random_state = {
+                limit = { has_state_flag = holy_realm_final_silence_visual_pending }
+                holy_realm_launch_final_silence_visual_strike_on_state = yes
+            }
+            subtract_from_temp_variable = { holy_realm_final_visual_strikes_left = 1 }
+        }
+        if = {
+            limit = {
+                any_state = { has_state_flag = holy_realm_final_silence_visual_pending }
+            }
+            country_event = { id = chaosx.nr3.84 hours = 1 }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.90
+    title = chaosx.nr3.90.t
+    desc = chaosx.nr3.90.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.90.a
+        hidden_effect = {
+            world_end_scenario_triggered = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.100
+    title = chaosx.nr3.100.t
+    desc = chaosx.nr3.100.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+
+    trigger = {
+        FROM = { is_holy_realm_country = yes }
+        NOT = { is_holy_realm_country = yes }
+    }
+
+    option = {
+        name = chaosx.nr3.100.a
+        trigger = {
+            holy_realm_peace_letter_acceptance_possible = yes
+        }
+        ai_chance = {
+            base = 1
+            modifier = {
+                factor = 0
+                is_major = yes
+            }
+            modifier = {
+                factor = 0
+                is_in_faction = yes
+            }
+            modifier = {
+                factor = 2
+                has_war = yes
+            }
+            modifier = {
+                factor = 2
+                has_stability < 0.25
+            }
+            modifier = {
+                factor = 2
+                FROM = {
+                    has_country_flag = holy_realm_peace_by_submission_unlocked
+                    check_variable = { mandala_reach > 75 }
+                    num_divisions > 24
+                }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_100_a_tt
+        hidden_effect = {
+            save_event_target_as = holy_realm_peace_letter_target
+            clr_country_flag = holy_realm_peace_letter_pending
+            set_country_flag = holy_realm_peace_letter_accepted
+            every_owned_state = {
+                set_state_flag = holy_realm_peacefully_submitted_state
+                set_state_flag = holy_realm_protected_state
+                set_resistance = 0
+            }
+            FROM = {
+                country_event = { id = chaosx.nr3.101 }
+                set_country_flag = holy_realm_memory_peace_letter_accepted
+                set_country_flag = holy_realm_panel_expansion_peaceful_submission
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+                holy_realm_add_mandala_reach = yes
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_spiritual_legitimacy = yes
+                if = {
+                    limit = { NOT = { has_country_flag = holy_realm_chaos_peace_letter_acceptance_logged } }
+                    set_country_flag = holy_realm_chaos_peace_letter_acceptance_logged
+                    set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+                    set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+                    holy_realm_add_chaos = yes
+                }
+                holy_realm_receive_peaceful_submission_from_event_target = yes
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.100.b
+        ai_chance = {
+            base = 99
+            modifier = {
+                factor = 5
+                is_major = yes
+            }
+            modifier = {
+                factor = 5
+                is_in_faction = yes
+            }
+            modifier = {
+                factor = 2
+                has_stability > 0.5
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_100_b_tt
+        hidden_effect = {
+            save_event_target_as = holy_realm_peace_letter_target
+            clr_country_flag = holy_realm_peace_letter_pending
+            set_country_flag = holy_realm_refused_peace_letter
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_condemned_opinion
+            }
+            FROM = {
+                country_event = { id = chaosx.nr3.102 }
+                set_country_flag = holy_realm_memory_peace_letter_refused
+                set_country_flag = holy_realm_force_integration_unlocked
+                set_country_flag = holy_realm_panel_expansion_refusal_recorded
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_compassion_drift = yes
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_mandala_reach = yes
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.101
+    title = chaosx.nr3.101.t
+    desc = chaosx.nr3.101.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+    }
+
+    option = {
+        name = chaosx.nr3.101.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.102
+    title = chaosx.nr3.102.t
+    desc = chaosx.nr3.102.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+    }
+
+    option = {
+        name = chaosx.nr3.102.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.120
+    title = chaosx.nr3.120.t
+    desc = chaosx.nr3.120.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        FROM = { is_holy_realm_country = yes }
+        NOT = { is_holy_realm_country = yes }
+    }
+
+    option = {
+        name = chaosx.nr3.120.a
+        ai_chance = { base = 100 }
+        hidden_effect = {
+            set_country_flag = holy_realm_bodhisattva_recent_visit
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_quiet_envoys_opinion
+            }
+            add_stability = 0.01
+            FROM = {
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_spiritual_legitimacy = yes
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.121
+    title = chaosx.nr3.121.t
+    desc = chaosx.nr3.121.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        FROM = { is_holy_realm_country = yes }
+        NOT = { is_holy_realm_country = yes }
+    }
+
+    option = {
+        name = chaosx.nr3.121.a
+        ai_chance = { base = 80 }
+        hidden_effect = {
+            set_country_flag = holy_realm_bodhisattva_recent_visit
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_quiet_envoys_opinion
+            }
+            add_stability = 0.01
+            add_war_support = -0.01
+            FROM = {
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_mandala_reach = yes
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.121.b
+        ai_chance = { base = 20 }
+        hidden_effect = {
+            set_country_flag = holy_realm_bodhisattva_visit_rebuffed
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_condemned_opinion
+            }
+            FROM = {
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+                holy_realm_add_spiritual_legitimacy = yes
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.122
+    title = chaosx.nr3.122.t
+    desc = chaosx.nr3.122.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        FROM = { is_holy_realm_country = yes }
+        NOT = { is_holy_realm_country = yes }
+    }
+
+    option = {
+        name = chaosx.nr3.122.a
+        ai_chance = { base = 100 }
+        hidden_effect = {
+            set_country_flag = holy_realm_bodhisattva_recent_visit
+            set_country_flag = holy_realm_bodhisattva_collapse_visit
+            add_stability = 0.02
+            add_war_support = 0.02
+            FROM = {
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_spiritual_legitimacy = yes
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_mandala_reach = yes
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.123
+    title = chaosx.nr3.123.t
+    desc = chaosx.nr3.123.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        FROM = { is_holy_realm_country = yes }
+        has_country_flag = holy_realm_bodhisattva_recent_visit
+    }
+
+    option = {
+        name = chaosx.nr3.123.a
+        ai_chance = { base = 100 }
+        hidden_effect = {
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_quiet_envoys_opinion
+            }
+            FROM = {
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_spiritual_legitimacy = yes
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.124
+    title = chaosx.nr3.124.t
+    desc = chaosx.nr3.124.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+
+    trigger = {
+        FROM = { is_holy_realm_country = yes }
+        NOT = { is_holy_realm_country = yes }
+        has_country_flag = holy_realm_bodhisattva_recent_visit
+    }
+
+    option = {
+        name = chaosx.nr3.124.a
+        trigger = {
+            is_major = no
+            is_subject = no
+            is_in_faction = no
+            has_stability < 0.35
+            has_war_support < 0.45
+        }
+        ai_chance = {
+            base = 5
+            modifier = {
+                factor = 3
+                has_country_flag = holy_realm_mandala_mission
+            }
+            modifier = {
+                factor = 3
+                surrender_progress > 0.55
+            }
+            modifier = {
+                factor = 2
+                has_war = yes
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_124_a_tt
+        hidden_effect = {
+            save_event_target_as = holy_realm_peace_letter_target
+            set_country_flag = holy_realm_peace_letter_accepted
+            FROM = {
+                holy_realm_receive_peaceful_submission_from_event_target = yes
+                set_country_flag = holy_realm_memory_bodhisattva_conversion
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.124.b
+        ai_chance = { base = 95 }
+        custom_effect_tooltip = chaosx_nr3_124_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_bodhisattva_conversion_refused
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_condemned_opinion
+            }
+            FROM = {
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_mandala_reach = yes
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_compassion_drift = yes
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.110
+    title = chaosx.nr3.110.t
+    desc = chaosx.nr3.110.d
+    picture = GFX_report_event_holy_realm_refuge
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+    }
+
+    option = {
+        name = chaosx.nr3.110.a
+        custom_effect_tooltip = chaosx_nr3_110_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_pramudita_refuge
+            holy_realm_advance_bodhisattva_bhumi = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+            holy_realm_add_chaos = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.110.b
+        custom_effect_tooltip = chaosx_nr3_110_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_pramudita_discipline
+            holy_realm_advance_bodhisattva_bhumi = yes
+            add_political_power = 75
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_mandala_reach = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.111
+    title = chaosx.nr3.111.t
+    desc = chaosx.nr3.111.d
+    picture = GFX_report_event_holy_realm_arhat
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+    }
+
+    option = {
+        name = chaosx.nr3.111.a
+        custom_effect_tooltip = chaosx_nr3_111_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_vimala_review
+            holy_realm_advance_bodhisattva_bhumi = yes
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+            holy_realm_add_compassion_drift = yes
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_spiritual_legitimacy = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.111.b
+        custom_effect_tooltip = chaosx_nr3_111_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_vimala_order
+            holy_realm_advance_bodhisattva_bhumi = yes
+            add_political_power = 100
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_mandala_reach = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.112
+    title = chaosx.nr3.112.t
+    desc = chaosx.nr3.112.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+    }
+
+    option = {
+        name = chaosx.nr3.112.a
+        custom_effect_tooltip = chaosx_nr3_112_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_acala_protection
+            holy_realm_advance_bodhisattva_bhumi = yes
+            holy_realm_spawn_vow_keeper_mountaineers = yes
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_spiritual_legitimacy = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.112.b
+        custom_effect_tooltip = chaosx_nr3_112_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_acala_coercion
+            holy_realm_advance_bodhisattva_bhumi = yes
+            army_experience = 100
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_compassion_drift = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.113
+    title = chaosx.nr3.113.t
+    desc = chaosx.nr3.113.d
+    picture = GFX_report_event_holy_realm_final_silence
+    is_triggered_only = yes
+    minor_flavor = yes
+
+    trigger = {
+        is_holy_realm_country = yes
+    }
+
+    option = {
+        name = chaosx.nr3.113.a
+        custom_effect_tooltip = chaosx_nr3_113_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_dharmamegha_mercy
+            holy_realm_advance_bodhisattva_bhumi = yes
+            add_power_balance_value = {
+                id = holy_realm_final_doctrine_balance
+                value = -0.10
+                tooltip_side = holy_realm_vow_against_annihilation_side
+            }
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+            holy_realm_add_final_silence_pressure = yes
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.113.b
+        custom_effect_tooltip = chaosx_nr3_113_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_teaching_dharmamegha_silence
+            holy_realm_advance_bodhisattva_bhumi = yes
+            add_power_balance_value = {
+                id = holy_realm_final_doctrine_balance
+                value = 0.10
+                tooltip_side = holy_realm_final_silence_side
+            }
+            set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+            holy_realm_add_final_silence_pressure = yes
+            set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+            set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+            holy_realm_add_chaos = yes
+        }
+    }
 }

@@ -55,6 +55,8 @@ initialize_chaos_meter_system = {
     set_variable = { global.chaos_meter_deaths_civilian_total = 0 }
     set_variable = { global.chaos_meter_deaths_military_total = 0 }
     set_variable = { global.chaos_meter_deaths_last_change = 0 }
+    set_variable = { global.chaos_meter_deaths_previous_day_total = 0 }
+    set_variable = { global.chaos_meter_deaths_last_change_date = global.date }
     set_variable = { global.chaos_meter_deaths_chaos_buffer = 0 }
     set_variable = { global.chaos_meter_deaths_chaos_generated = 0 }
 	set_variable = { global.chaos_meter_deaths_sequence = 0 }
@@ -903,6 +905,36 @@ chaos_meter_add_country_deaths_cause_total = {
 				check_variable = {
 					var = chaos_deaths_country_cause_reason
 					value = constant:chaos_meter_deaths_reason.occupation_policy
+					compare = equals
+				}
+			}
+			add_to_variable = { chaos_meter_deaths_country_cause_occupation_policy = chaos_deaths_country_cause_value }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaos_deaths_country_cause_reason
+					value = constant:chaos_meter_deaths_reason.camp_atrocity
+					compare = equals
+				}
+			}
+			add_to_variable = { chaos_meter_deaths_country_cause_occupation_policy = chaos_deaths_country_cause_value }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaos_deaths_country_cause_reason
+					value = constant:chaos_meter_deaths_reason.extermination_camp
+					compare = equals
+				}
+			}
+			add_to_variable = { chaos_meter_deaths_country_cause_occupation_policy = chaos_deaths_country_cause_value }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaos_deaths_country_cause_reason
+					value = constant:chaos_meter_deaths_reason.gulag_repression
 					compare = equals
 				}
 			}
@@ -2072,8 +2104,19 @@ chaos_meter_register_deaths = {
             NOT = { has_global_flag = settings_chaos_deaths_disabled }
             check_variable = { chaos_deaths_change > 0 }
         }
+		if = {
+			limit = { NOT = { has_variable = global.chaos_meter_deaths_previous_day_total } }
+			set_variable = { global.chaos_meter_deaths_previous_day_total = global.chaos_meter_deaths_total }
+		}
         add_to_variable = { global.chaos_meter_deaths_total = chaos_deaths_change }
-        set_variable = { global.chaos_meter_deaths_last_change = chaos_deaths_change }
+        set_variable = { global.chaos_meter_deaths_last_change = global.chaos_meter_deaths_total }
+        subtract_from_variable = { global.chaos_meter_deaths_last_change = global.chaos_meter_deaths_previous_day_total }
+        clamp_variable = {
+            var = global.chaos_meter_deaths_last_change
+            min = 0
+            max = global.chaos_meter_deaths_total
+        }
+        set_variable = { global.chaos_meter_deaths_last_change_date = global.date }
 
 		if = {
 			limit = {
@@ -5367,6 +5410,7 @@ chaos_meter_daily_update = {
     # Check if chaos meter is disabled
     if = {
         limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+        chaos_meter_start_daily_deaths_window = yes
         chaos_meter_apply_daily_contamination_and_outbreak_deaths = yes
         chaos_meter_update_world_tension = yes
         chaos_meter_update_casualties = yes
@@ -5374,6 +5418,19 @@ chaos_meter_daily_update = {
         chaos_meter_update_divisions = yes
         chaos_meter_update_stability = yes
         chaos_meter_update_democracy = yes
+    }
+}
+
+chaos_meter_start_daily_deaths_window = {
+    if = {
+        limit = { NOT = { has_global_flag = settings_chaos_deaths_disabled } }
+        if = {
+            limit = { NOT = { has_variable = global.chaos_meter_deaths_total } }
+            set_variable = { global.chaos_meter_deaths_total = 0 }
+        }
+        set_variable = { global.chaos_meter_deaths_previous_day_total = global.chaos_meter_deaths_total }
+        set_variable = { global.chaos_meter_deaths_last_change = 0 }
+        set_variable = { global.chaos_meter_deaths_last_change_date = global.date }
     }
 }
 

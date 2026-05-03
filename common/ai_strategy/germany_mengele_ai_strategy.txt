@@ -1,0 +1,48 @@
+# Germany Mengele / Tibet Expedition AI strategy package.
+# The laboratory state acts aggressively and loyalist Germany prioritizes
+# survival while the Auschwitz Directorate exists.
+
+@MENGELE_AI_LAB_BUILD_ARMY = 120
+@MENGELE_AI_LAB_INFANTRY_MIN_FACTORIES = 4
+@MENGELE_AI_LAB_AVOID_WARS = -60
+@MENGELE_AI_LOYALIST_BUILD_ARMY = 100
+@MENGELE_AI_LOYALIST_AVOID_WARS = 80
+
+germany_mengele_laboratory_state_runtime = {
+	allowed = { always = yes }
+	enable = {
+		is_mengele_laboratory_state = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @MENGELE_AI_LAB_BUILD_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = infantry_equipment
+		value = @MENGELE_AI_LAB_INFANTRY_MIN_FACTORIES
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @MENGELE_AI_LAB_AVOID_WARS
+	}
+}
+
+germany_mengele_loyalist_runtime = {
+	allowed = { always = yes }
+	enable = {
+		original_tag = GER
+		germany_has_active_mengele_faction = yes
+		NOT = { has_country_flag = germany_mengele_faction }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @MENGELE_AI_LOYALIST_BUILD_ARMY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @MENGELE_AI_LOYALIST_AVOID_WARS
+	}
+}

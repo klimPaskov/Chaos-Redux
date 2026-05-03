@@ -24,35 +24,475 @@ holy_realm_ensure_counters = {
 
 holy_realm_add_spiritual_legitimacy = {
 	holy_realm_ensure_counters = yes
-	add_to_variable = { spiritual_legitimacy = holy_realm_delta }
+	set_temp_variable = { holy_realm_adjusted_delta = holy_realm_delta }
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { spiritual_legitimacy > constant:holy_realm_counter.soft_cap_start }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { spiritual_legitimacy > constant:holy_realm_counter.soft_cap_late }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	add_to_variable = { spiritual_legitimacy = holy_realm_adjusted_delta }
 	clamp_variable = { var = spiritual_legitimacy min = 0 max = 100 }
 }
 
 holy_realm_add_compassion_drift = {
 	holy_realm_ensure_counters = yes
-	add_to_variable = { compassion_drift = holy_realm_delta }
-	clamp_variable = { var = compassion_drift min = 0 max = 100 }
+	set_temp_variable = { holy_realm_adjusted_delta = holy_realm_delta }
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { compassion_drift > constant:holy_realm_counter.soft_cap_start }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { compassion_drift > constant:holy_realm_counter.soft_cap_late }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta < 0 }
+			check_variable = { compassion_drift < constant:holy_realm_counter.soft_cap_negative_start }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta < 0 }
+			check_variable = { compassion_drift < constant:holy_realm_counter.soft_cap_negative_late }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	add_to_variable = { compassion_drift = holy_realm_adjusted_delta }
+	clamp_variable = { var = compassion_drift min = -100 max = 100 }
 }
 
 holy_realm_add_mandala_reach = {
 	holy_realm_ensure_counters = yes
-	add_to_variable = { mandala_reach = holy_realm_delta }
+	set_temp_variable = { holy_realm_adjusted_delta = holy_realm_delta }
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { mandala_reach > constant:holy_realm_counter.soft_cap_start }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { mandala_reach > constant:holy_realm_counter.soft_cap_late }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	add_to_variable = { mandala_reach = holy_realm_adjusted_delta }
 	clamp_variable = { var = mandala_reach min = 0 max = 100 }
 }
 
 holy_realm_add_final_silence_pressure = {
 	holy_realm_ensure_counters = yes
-	add_to_variable = { final_silence_pressure = holy_realm_delta }
+	set_temp_variable = { holy_realm_adjusted_delta = holy_realm_delta }
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { final_silence_pressure > constant:holy_realm_counter.soft_cap_start }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	if = {
+		limit = {
+			check_variable = { holy_realm_adjusted_delta > 0 }
+			check_variable = { final_silence_pressure > constant:holy_realm_counter.soft_cap_late }
+		}
+		multiply_temp_variable = { holy_realm_adjusted_delta = constant:holy_realm_counter.soft_cap_multiplier }
+	}
+	add_to_variable = { final_silence_pressure = holy_realm_adjusted_delta }
 	clamp_variable = { var = final_silence_pressure min = 0 max = 100 }
+}
+
+holy_realm_refresh_bodhisattva_leader_trait = {
+	if = {
+		limit = { check_variable = { bodhisattva_bhumi > 9 } }
+		hidden_effect = {
+			remove_country_leader_trait = holy_realm_bodhisattva_pramudita
+			remove_country_leader_trait = holy_realm_bodhisattva_vimala
+			remove_country_leader_trait = holy_realm_bodhisattva_acala
+		}
+		if = {
+			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_dharmamegha } }
+			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha }
+			add_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+		}
+	}
+	else_if = {
+		limit = { check_variable = { bodhisattva_bhumi > 7 } }
+		hidden_effect = {
+			remove_country_leader_trait = holy_realm_bodhisattva_pramudita
+			remove_country_leader_trait = holy_realm_bodhisattva_vimala
+			remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+		}
+		if = {
+			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_acala } }
+			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_acala }
+			add_country_leader_trait = holy_realm_bodhisattva_acala
+		}
+	}
+	else_if = {
+		limit = { check_variable = { bodhisattva_bhumi > 3 } }
+		hidden_effect = {
+			remove_country_leader_trait = holy_realm_bodhisattva_pramudita
+			remove_country_leader_trait = holy_realm_bodhisattva_acala
+			remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+		}
+		if = {
+			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_vimala } }
+			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_vimala }
+			add_country_leader_trait = holy_realm_bodhisattva_vimala
+		}
+	}
+	else_if = {
+		limit = { check_variable = { bodhisattva_bhumi > 0 } }
+		hidden_effect = {
+			remove_country_leader_trait = holy_realm_bodhisattva_vimala
+			remove_country_leader_trait = holy_realm_bodhisattva_acala
+			remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+		}
+		if = {
+			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_pramudita } }
+			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_pramudita }
+			add_country_leader_trait = holy_realm_bodhisattva_pramudita
+		}
+	}
+	holy_realm_sync_bodhisattva_protectorate_leaders = yes
+}
+
+holy_realm_sync_bodhisattva_protectorate_leaders = {
+	every_subject_country = {
+		limit = { has_country_flag = holy_realm_mandala_protectorate }
+		set_country_leader_name = { name = "The Bodhisattva" }
+		if = {
+			limit = { OVERLORD = { check_variable = { bodhisattva_bhumi > 9 } } }
+			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_dharmamegha" }
+			hidden_effect = {
+				remove_country_leader_trait = holy_realm_bodhisattva_pramudita
+				remove_country_leader_trait = holy_realm_bodhisattva_vimala
+				remove_country_leader_trait = holy_realm_bodhisattva_acala
+			}
+			if = {
+				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_dharmamegha } }
+				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha }
+				add_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+			}
+		}
+		else_if = {
+			limit = { OVERLORD = { check_variable = { bodhisattva_bhumi > 7 } } }
+			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_acala" }
+			hidden_effect = {
+				remove_country_leader_trait = holy_realm_bodhisattva_pramudita
+				remove_country_leader_trait = holy_realm_bodhisattva_vimala
+				remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+			}
+			if = {
+				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_acala } }
+				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_acala }
+				add_country_leader_trait = holy_realm_bodhisattva_acala
+			}
+		}
+		else_if = {
+			limit = { OVERLORD = { check_variable = { bodhisattva_bhumi > 3 } } }
+			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_pramudita" }
+			hidden_effect = {
+				remove_country_leader_trait = holy_realm_bodhisattva_pramudita
+				remove_country_leader_trait = holy_realm_bodhisattva_acala
+				remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+			}
+			if = {
+				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_vimala } }
+				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_vimala }
+				add_country_leader_trait = holy_realm_bodhisattva_vimala
+			}
+		}
+		else = {
+			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_pramudita" }
+			hidden_effect = {
+				remove_country_leader_trait = holy_realm_bodhisattva_vimala
+				remove_country_leader_trait = holy_realm_bodhisattva_acala
+				remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+			}
+			if = {
+				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_pramudita } }
+				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_pramudita }
+				add_country_leader_trait = holy_realm_bodhisattva_pramudita
+			}
+		}
+	}
+}
+
+holy_realm_initialize_final_doctrine_balance = {
+	if = {
+		limit = {
+			NOT = {
+				has_power_balance = {
+					id = holy_realm_final_doctrine_balance
+				}
+			}
+		}
+		set_power_balance = {
+			id = holy_realm_final_doctrine_balance
+			left_side = holy_realm_vow_against_annihilation_side
+			right_side = holy_realm_final_silence_side
+			set_value = -0.10
+		}
+	}
+}
+
+holy_realm_daily_doctrine_balance_pulse = {
+	holy_realm_ensure_counters = yes
+	if = {
+		limit = {
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+			is_power_balance_in_range = {
+				id = holy_realm_final_doctrine_balance
+				range = holy_realm_final_silence_dominant_range
+			}
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.bop_daily_final_major }
+		holy_realm_add_final_silence_pressure = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.bop_daily_drift_major }
+		holy_realm_add_compassion_drift = yes
+	}
+	else_if = {
+		limit = {
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+			is_power_balance_in_range = {
+				id = holy_realm_final_doctrine_balance
+				range = holy_realm_final_silence_influence_range
+			}
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.bop_daily_final_minor }
+		holy_realm_add_final_silence_pressure = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.bop_daily_drift_minor }
+		holy_realm_add_compassion_drift = yes
+	}
+	else_if = {
+		limit = {
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			is_power_balance_in_range = {
+				id = holy_realm_final_doctrine_balance
+				range = holy_realm_vow_dominant_range
+			}
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.bop_daily_vow_major }
+		holy_realm_add_final_silence_pressure = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.bop_daily_mercy_drift }
+		holy_realm_add_compassion_drift = yes
+	}
+	else_if = {
+		limit = {
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			is_power_balance_in_range = {
+				id = holy_realm_final_doctrine_balance
+				range = holy_realm_vow_influence_range
+			}
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.bop_daily_vow_minor }
+		holy_realm_add_final_silence_pressure = yes
+	}
 }
 
 holy_realm_add_chaos = {
 	if = {
 		limit = { has_variable = holy_realm_chaos_delta }
 		set_temp_variable = { chaos_change = holy_realm_chaos_delta }
-		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.generic.increase }
+		if = {
+			limit = { has_variable = holy_realm_chaos_reason }
+			set_temp_variable = { chaos_history_reason = holy_realm_chaos_reason }
+		}
+		else_if = {
+			limit = { check_variable = { holy_realm_chaos_delta < 0 } }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+		}
+		else = {
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+		}
 		set_temp_variable = { chaos_history_reason_custom = 1 }
+		save_event_target_as = chaos_history_actor
 		add_chaos_meter_value = yes
+	}
+}
+
+holy_realm_advance_bodhisattva_bhumi = {
+	holy_realm_ensure_counters = yes
+	if = {
+		limit = { NOT = { has_variable = bodhisattva_bhumi } }
+		set_variable = { bodhisattva_bhumi = 0 }
+	}
+	if = {
+		limit = { check_variable = { bodhisattva_bhumi < 10 } }
+		add_to_variable = { bodhisattva_bhumi = 1 }
+	}
+	if = {
+		limit = { check_variable = { bodhisattva_bhumi > 9 } }
+		set_country_leader_portrait = {
+			portrait = "GFX_portrait_THR_bodhisattva_dharmamegha"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { bodhisattva_bhumi > 7 } }
+		set_country_leader_portrait = {
+			portrait = "GFX_portrait_THR_bodhisattva_acala"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { bodhisattva_bhumi > 0 } }
+		set_country_leader_portrait = {
+			portrait = "GFX_portrait_THR_bodhisattva_pramudita"
+		}
+	}
+	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+	holy_realm_add_spiritual_legitimacy = yes
+	if = {
+		limit = { check_variable = { bodhisattva_bhumi > 3 } }
+		add_political_power = 50
+	}
+	if = {
+		limit = { check_variable = { bodhisattva_bhumi > 6 } }
+		add_political_power = 75
+		add_command_power = 15
+	}
+	if = {
+		limit = { check_variable = { bodhisattva_bhumi > 8 } }
+		add_stability = 0.02
+	}
+	holy_realm_refresh_bodhisattva_leader_trait = yes
+}
+
+holy_realm_create_vow_keeper_template = {
+	if = {
+		limit = { NOT = { has_country_flag = holy_realm_vow_keeper_template_created } }
+		set_country_flag = holy_realm_vow_keeper_template_created
+		division_template = {
+			name = "Vow-Keeper Mountaineers"
+			is_locked = yes
+			force_allow_recruiting = yes
+			division_cap = 24
+			priority = 2
+			template_counter = 17
+			regiments = {
+				mountaineers = { x = 0 y = 0 }
+				mountaineers = { x = 0 y = 1 }
+				mountaineers = { x = 0 y = 2 }
+				mountaineers = { x = 1 y = 0 }
+				mountaineers = { x = 1 y = 1 }
+				mountaineers = { x = 1 y = 2 }
+				mountaineers = { x = 2 y = 0 }
+				mountaineers = { x = 2 y = 1 }
+				artillery_brigade = { x = 3 y = 0 }
+				artillery_brigade = { x = 3 y = 1 }
+			}
+			support = {
+				engineer = { x = 0 y = 0 }
+				recon = { x = 0 y = 1 }
+				artillery = { x = 0 y = 2 }
+				logistics_company = { x = 0 y = 3 }
+			}
+		}
+	}
+}
+
+holy_realm_spawn_vow_keeper_mountaineers = {
+	holy_realm_create_vow_keeper_template = yes
+	add_manpower = 120000
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = 12000
+	}
+	add_equipment_to_stockpile = {
+		type = artillery_equipment
+		amount = 720
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = 1800
+	}
+	capital_scope = {
+		create_unit = {
+			division = "name = \"Vow-Keeper Mountaineers\" division_template = \"Vow-Keeper Mountaineers\" start_experience_factor = 0.75 start_equipment_factor = 1 start_manpower_factor = 1"
+			owner = ROOT
+			count = 6
+		}
+	}
+}
+
+holy_realm_late_vow_against_annihilation_crusade = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = holy_realm_final_doctrine_armed
+				has_country_flag = holy_realm_stage_final_silence
+				check_variable = { final_silence_pressure > 70 }
+				date > 1944.12.31
+			}
+			NOT = { has_country_flag = holy_realm_late_vow_crusade_launched }
+		}
+		set_country_flag = holy_realm_late_vow_crusade_launched
+		add_ideas = holy_realm_vow_against_annihilation_crusade
+		if = {
+			limit = {
+				is_in_faction = yes
+				is_faction_leader = no
+			}
+			leave_faction = yes
+		}
+		if = {
+			limit = { is_in_faction = no }
+			create_faction_from_template = {
+				template = faction_template_holy_realm_mandala_of_nations
+				name = holy_realm_vow_against_annihilation_faction_name
+				icon = GFX_faction_logo_generic_democratic
+			}
+		}
+		set_global_flag = holy_realm_late_vow_war_declared
+		every_other_country = {
+			limit = {
+				exists = yes
+				uses_normal_civilian_systems = yes
+				NOT = { is_holy_realm_country = yes }
+				OR = {
+					has_government = communism
+					has_government = fascism
+				}
+				NOT = { has_war_with = ROOT }
+				ROOT = { can_declare_war_on = PREV }
+			}
+			save_event_target_as = holy_realm_annihilation_war_target
+			ROOT = {
+				declare_war_on = {
+					target = event_target:holy_realm_annihilation_war_target
+					type = annex_everything
+				}
+			}
+		}
 	}
 }
 
@@ -61,8 +501,271 @@ holy_realm_record_evolution = {
 	set_temp_variable = { events_log_evolution_type = constant:holy_realm_event_log.evolution_type }
 	set_temp_variable = { events_log_evolution_stage = holy_realm_evolution_stage }
 	set_temp_variable = { events_log_evolution_tier = holy_realm_evolution_tier }
-	save_event_target_as = events_log_evolution_actor
-	record_events_log_evolution_entry = yes
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		save_event_target_as = events_log_evolution_actor
+		record_events_log_evolution_entry = yes
+	}
+}
+
+holy_realm_apply_mandala_peace_vow = {
+	if = {
+		limit = { NOT = { has_country_flag = holy_realm_mandala_peace_vow_locked } }
+		set_country_flag = holy_realm_mandala_peace_vow_locked
+	}
+	if = {
+		limit = { NOT = { has_idea = holy_realm_mandala_peace_vow } }
+		add_ideas = holy_realm_mandala_peace_vow
+	}
+}
+
+holy_realm_clear_mandala_peace_vow = {
+	if = {
+		limit = { has_country_flag = holy_realm_mandala_peace_vow_locked }
+		clr_country_flag = holy_realm_mandala_peace_vow_locked
+	}
+	if = {
+		limit = { has_idea = holy_realm_mandala_peace_vow }
+		remove_ideas = holy_realm_mandala_peace_vow
+	}
+}
+
+holy_realm_refresh_mandala_of_nations_faction = {
+	if = {
+		limit = {
+			has_country_flag = holy_realm_mandala_of_nations_leader
+			is_faction_leader = yes
+			is_in_faction = yes
+		}
+		set_faction_manifest = faction_manifest_holy_realm_mandala_peace
+		set_faction_rule = thr_joining_rule_mandala_peace_only
+		set_faction_rule = thr_member_rule_vow_against_offensive_war
+		set_faction_rule = thr_member_rule_acts_of_kindness
+		set_faction_rule = goals_only_faction_leader
+
+		if = {
+			limit = { NOT = { has_faction_goal = faction_goal_thr_open_refuge_corridors } }
+			add_faction_goal = faction_goal_thr_open_refuge_corridors
+		}
+		if = {
+			limit = { NOT = { has_faction_goal = faction_goal_thr_white_flag_congress } }
+			add_faction_goal = faction_goal_thr_white_flag_congress
+		}
+		if = {
+			limit = { NOT = { has_faction_goal = faction_goal_thr_open_granaries } }
+			add_faction_goal = faction_goal_thr_open_granaries
+		}
+	}
+}
+
+holy_realm_establish_mandala_of_nations = {
+	if = {
+		limit = {
+			is_in_faction = yes
+			is_faction_leader = no
+		}
+		leave_faction = yes
+	}
+	if = {
+		limit = { is_in_faction = no }
+		create_faction_from_template = {
+			template = faction_template_holy_realm_mandala_of_nations
+			name = holy_realm_mandala_of_nations_faction_name
+			icon = GFX_faction_logo_generic_democratic
+		}
+	}
+	set_global_flag = holy_realm_mandala_of_nations_formed
+	set_country_flag = holy_realm_mandala_of_nations_leader
+	save_global_event_target_as = holy_realm_mandala_of_nations_leader
+	holy_realm_refresh_mandala_of_nations_faction = yes
+	every_faction_member = {
+		holy_realm_apply_mandala_peace_vow = yes
+	}
+}
+
+holy_realm_mandala_of_nations_member_joined = {
+	if = {
+		limit = { has_offensive_war = yes }
+		leave_faction = yes
+	}
+	else_if = {
+		limit = {
+			FROM = { has_country_flag = holy_realm_mandala_of_nations_leader }
+			NOT = { has_country_flag = holy_realm_mandala_joined_chaos_logged }
+		}
+		set_country_flag = holy_realm_mandala_joined_chaos_logged
+		holy_realm_apply_mandala_peace_vow = yes
+		FROM = {
+			holy_realm_refresh_mandala_of_nations_faction = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+}
+
+holy_realm_core_himalayan_mandala_states = {
+	every_owned_state = {
+		limit = {
+			is_controlled_by = ROOT
+			holy_realm_himalayan_core_state = yes
+			NOT = { is_core_of = ROOT }
+		}
+		add_core_of = ROOT
+		set_resistance = 0
+		set_state_flag = holy_realm_integrated_mandala_state
+		set_state_flag = holy_realm_protected_state
+	}
+}
+
+holy_realm_core_northern_indian_register_states = {
+	every_owned_state = {
+		limit = {
+			is_controlled_by = ROOT
+			holy_realm_northern_indian_core_state = yes
+			NOT = { is_core_of = ROOT }
+		}
+		add_core_of = ROOT
+		set_resistance = 2
+		set_state_flag = holy_realm_integrated_mandala_state
+		set_state_flag = holy_realm_arhat_registered_state
+	}
+}
+
+holy_realm_core_western_chinese_register_states = {
+	every_owned_state = {
+		limit = {
+			is_controlled_by = ROOT
+			holy_realm_western_chinese_core_state = yes
+			NOT = { is_core_of = ROOT }
+		}
+		add_core_of = ROOT
+		set_resistance = 4
+		set_state_flag = holy_realm_integrated_mandala_state
+		set_state_flag = holy_realm_arhat_registered_state
+	}
+}
+
+holy_realm_core_eastern_chinese_register_states = {
+	every_owned_state = {
+		limit = {
+			is_controlled_by = ROOT
+			holy_realm_eastern_chinese_core_state = yes
+			NOT = { is_core_of = ROOT }
+		}
+		add_core_of = ROOT
+		set_resistance = 6
+		set_state_flag = holy_realm_integrated_mandala_state
+		set_state_flag = holy_realm_arhat_registered_state
+	}
+}
+
+holy_realm_add_buddha_mandate_regional_claims = {
+	323 = { add_claim_by = ROOT }
+	324 = { add_claim_by = ROOT }
+	601 = { add_claim_by = ROOT }
+	985 = { add_claim_by = ROOT }
+	432 = { add_claim_by = ROOT }
+	441 = { add_claim_by = ROOT }
+	787 = { add_claim_by = ROOT }
+	283 = { add_claim_by = ROOT }
+	604 = { add_claim_by = ROOT }
+	617 = { add_claim_by = ROOT }
+}
+
+holy_realm_apply_buddha_mandate_expansion_unlocks = {
+	set_country_flag = holy_realm_buddha_expansion_authority
+	set_country_flag = holy_realm_direct_attack_paths_unlocked
+	set_country_flag = holy_realm_stronger_expansion_decisions_unlocked
+	set_country_flag = holy_realm_borderland_integration_unlocked
+	set_country_flag = holy_realm_expansion_letters_unlocked
+	set_country_flag = holy_realm_mandala_border_pressure_unlocked
+	set_country_flag = holy_realm_conquest_border_control_unlocked
+	holy_realm_add_buddha_mandate_regional_claims = yes
+	if = {
+		limit = { holy_realm_bhutan_conquest_target_valid = yes }
+		create_wargoal = {
+			type = annex_everything
+			target = BHU
+			expire = 0
+		}
+	}
+	if = {
+		limit = { holy_realm_nepal_conquest_target_valid = yes }
+		create_wargoal = {
+			type = annex_everything
+			target = NEP
+			expire = 0
+		}
+	}
+	if = {
+		limit = { holy_realm_sikkim_conquest_target_valid = yes }
+		create_wargoal = {
+			type = annex_everything
+			target = SKK
+			expire = 0
+		}
+	}
+	if = {
+		limit = {
+			RAJ = {
+				exists = yes
+				NOT = { is_subject_of = ROOT }
+			}
+			can_declare_war_on = RAJ
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = RAJ
+			expire = 0
+		}
+	}
+	if = {
+		limit = {
+			CHI = {
+				exists = yes
+				NOT = { is_subject_of = ROOT }
+			}
+			can_declare_war_on = CHI
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = CHI
+			expire = 0
+		}
+	}
+	if = {
+		limit = {
+			PRC = {
+				exists = yes
+				NOT = { is_subject_of = ROOT }
+			}
+			can_declare_war_on = PRC
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = PRC
+			expire = 0
+		}
+	}
+	if = {
+		limit = {
+			XSM = {
+				exists = yes
+				NOT = { is_subject_of = ROOT }
+			}
+			can_declare_war_on = XSM
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = XSM
+			expire = 0
+		}
+	}
 }
 
 holy_realm_refresh_world_threat_source = {
@@ -71,7 +774,6 @@ holy_realm_refresh_world_threat_source = {
 			any_country = {
 				is_holy_realm_country = yes
 				OR = {
-					holy_realm_has_buddha_mandate = yes
 					holy_realm_has_divine_sovereignty = yes
 					has_country_flag = holy_realm_final_warning_sent
 					has_country_flag = holy_realm_final_doctrine_armed
@@ -101,6 +803,7 @@ holy_realm_show_super_event = {
 		limit = { check_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.buddha_mandate } }
 		set_global_flag = {
 			flag = super_event_visible
+			days = 30
 			value = 7
 		}
 		set_variable = { global.current_super_event_audio_id = 7 }
@@ -109,6 +812,7 @@ holy_realm_show_super_event = {
 		limit = { check_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence } }
 		set_global_flag = {
 			flag = super_event_visible
+			days = 30
 			value = 8
 		}
 		set_variable = { global.current_super_event_audio_id = 8 }
@@ -117,11 +821,33 @@ holy_realm_show_super_event = {
 		limit = { check_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_thermonuclear } }
 		set_global_flag = {
 			flag = super_event_visible
+			days = 30
 			value = 9
 		}
 		set_variable = { global.current_super_event_audio_id = 9 }
 	}
-	play_current_super_event_audio = yes
+	else_if = {
+		limit = { check_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.mandala_breaks } }
+		set_global_flag = {
+			flag = super_event_visible
+			days = 30
+			value = 10
+		}
+		set_variable = { global.current_super_event_audio_id = 10 }
+	}
+	else_if = {
+		limit = { check_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.divine_sovereignty } }
+		set_global_flag = {
+			flag = super_event_visible
+			days = 30
+			value = 11
+		}
+		set_variable = { global.current_super_event_audio_id = 11 }
+	}
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
+	}
 }
 
 holy_realm_set_stage_refuge = {
@@ -131,6 +857,14 @@ holy_realm_set_stage_refuge = {
 	clr_country_flag = holy_realm_stage_buddha_mandate
 	clr_country_flag = holy_realm_stage_divine_sovereignty
 	clr_country_flag = holy_realm_stage_final_silence
+	set_party_name = {
+		ideology = neutrality
+		name = THR_party_refuge
+		long_name = THR_party_refuge_long
+	}
+	set_country_leader_portrait = {
+		portrait = "GFX_portrait_THR_refuge_bodhisattva"
+	}
 	set_temp_variable = { holy_realm_evolution_stage = 1 }
 	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_refuge }
 	holy_realm_record_evolution = yes
@@ -143,11 +877,14 @@ holy_realm_set_stage_bodhisattva = {
 	clr_country_flag = holy_realm_stage_buddha_mandate
 	clr_country_flag = holy_realm_stage_divine_sovereignty
 	clr_country_flag = holy_realm_stage_final_silence
-	add_ideas = holy_realm_bodhisattva_state
-	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-	holy_realm_add_spiritual_legitimacy = yes
-	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.bodhisattva_gain }
-	holy_realm_add_chaos = yes
+	set_party_name = {
+		ideology = neutrality
+		name = THR_party_bodhisattva
+		long_name = THR_party_bodhisattva_long
+	}
+	set_country_leader_portrait = {
+		portrait = "GFX_portrait_THR_bodhisattva_pramudita"
+	}
 	set_temp_variable = { holy_realm_evolution_stage = 2 }
 	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_bodhisattva }
 	holy_realm_record_evolution = yes
@@ -160,13 +897,14 @@ holy_realm_set_stage_arhat = {
 	clr_country_flag = holy_realm_stage_buddha_mandate
 	clr_country_flag = holy_realm_stage_divine_sovereignty
 	clr_country_flag = holy_realm_stage_final_silence
-	add_ideas = holy_realm_arhat_administration
-	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-	holy_realm_add_mandala_reach = yes
-	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
-	holy_realm_add_compassion_drift = yes
-	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.arhat_gain }
-	holy_realm_add_chaos = yes
+	set_party_name = {
+		ideology = neutrality
+		name = THR_party_arhat
+		long_name = THR_party_arhat_long
+	}
+	set_country_leader_portrait = {
+		portrait = "GFX_portrait_THR_arhat_administration"
+	}
 	set_temp_variable = { holy_realm_evolution_stage = 3 }
 	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_arhat }
 	holy_realm_record_evolution = yes
@@ -179,19 +917,19 @@ holy_realm_set_stage_buddha_mandate = {
 	set_country_flag = holy_realm_stage_buddha_mandate
 	clr_country_flag = holy_realm_stage_divine_sovereignty
 	clr_country_flag = holy_realm_stage_final_silence
-	add_ideas = holy_realm_buddha_mandate
-	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
-	holy_realm_add_spiritual_legitimacy = yes
-	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
-	holy_realm_add_mandala_reach = yes
-	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.buddha_gain }
-	holy_realm_add_chaos = yes
+	set_party_name = {
+		ideology = neutrality
+		name = THR_party_buddha
+		long_name = THR_party_buddha_long
+	}
+	set_country_leader_portrait = {
+		portrait = "GFX_portrait_THR_buddha_mandate"
+	}
 	set_temp_variable = { holy_realm_evolution_stage = 4 }
 	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_buddha }
 	holy_realm_record_evolution = yes
-	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.buddha_mandate }
-	holy_realm_show_super_event = yes
-	holy_realm_refresh_world_threat_source = yes
+	holy_realm_apply_buddha_mandate_expansion_unlocks = yes
+	holy_realm_try_form_master_idea = yes
 }
 
 holy_realm_set_stage_divine_sovereignty = {
@@ -201,21 +939,53 @@ holy_realm_set_stage_divine_sovereignty = {
 	clr_country_flag = holy_realm_stage_buddha_mandate
 	set_country_flag = holy_realm_stage_divine_sovereignty
 	clr_country_flag = holy_realm_stage_final_silence
-	add_ideas = holy_realm_divine_sovereignty
 	set_country_flag = holy_realm_doctrine_divine_sovereignty
-	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
-	holy_realm_add_final_silence_pressure = yes
-	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.divine_gain }
-	holy_realm_add_chaos = yes
+	set_party_name = {
+		ideology = neutrality
+		name = THR_party_divine
+		long_name = THR_party_divine_long
+	}
+	set_country_leader_portrait = {
+		portrait = "GFX_portrait_THR_divine_sovereignty"
+	}
 	set_temp_variable = { holy_realm_evolution_stage = 5 }
+	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_divine }
+	holy_realm_record_evolution = yes
+	holy_realm_refresh_world_threat_source = yes
+	holy_realm_try_form_master_idea = yes
+}
+
+holy_realm_set_stage_final_silence = {
+	clr_country_flag = holy_realm_stage_refuge
+	clr_country_flag = holy_realm_stage_bodhisattva
+	clr_country_flag = holy_realm_stage_arhat_administration
+	clr_country_flag = holy_realm_stage_buddha_mandate
+	clr_country_flag = holy_realm_stage_divine_sovereignty
+	set_country_flag = holy_realm_stage_final_silence
+	set_party_name = {
+		ideology = neutrality
+		name = THR_party_final
+		long_name = THR_party_final_long
+	}
+	set_country_leader_portrait = {
+		portrait = "GFX_portrait_THR_final_silence"
+	}
+	set_temp_variable = { holy_realm_evolution_stage = 6 }
 	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
 	holy_realm_record_evolution = yes
 	holy_realm_refresh_world_threat_source = yes
+	holy_realm_try_form_master_idea = yes
 }
 
 holy_realm_form_country = {
 	set_country_flag = holy_realm_active
 	set_global_flag = holy_realm_exists
+	set_global_flag = holy_realm_hook_tibetan_expedition_available
+	set_global_flag = holy_realm_hook_mengele_experiment_contact_reserved
+	set_global_flag = holy_realm_hook_malta_crusader_reaction_reserved
+	set_global_flag = holy_realm_hook_teutonic_order_contact_reserved
+	set_global_flag = holy_realm_hook_final_crusade_contrast_reserved
+	set_global_flag = holy_realm_hook_atlantis_betrayal_target_reserved
 	save_global_event_target_as = holy_realm_country
 	set_cosmetic_tag = THR
 	load_focus_tree = {
@@ -237,14 +1007,286 @@ holy_realm_form_country = {
 		ideology = despotism
 		traits = { }
 	}
+	every_owned_state = {
+		set_state_flag = holy_realm_protected_state
+	}
 	add_ideas = holy_realm_mountain_refuge
 	holy_realm_ensure_counters = yes
+	holy_realm_initialize_final_doctrine_balance = yes
 	holy_realm_set_stage_refuge = yes
-	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.formation_min }
-	holy_realm_add_chaos = yes
-	set_global_flag = holy_realm_global_warning
-	holy_realm_emit_multiplayer_warning = yes
+	holy_realm_apply_crisis_rescue_if_needed = yes
 	holy_realm_refresh_world_threat_source = yes
+}
+
+holy_realm_apply_crisis_rescue_if_needed = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = chaosx_near_capitulation_rescue_pressure
+				chaosx_near_capitulation_crisis_rescue_candidate = yes
+			}
+			NOT = { has_country_flag = holy_realm_near_capitulation_rescue_used }
+		}
+		set_country_flag = holy_realm_near_capitulation_rescue_used
+		add_timed_idea = {
+			idea = holy_realm_last_pass_mobilization
+			days = constant:holy_realm_crisis_rescue.emergency_idea_days
+		}
+		add_manpower = constant:holy_realm_crisis_rescue.emergency_manpower
+		add_equipment_to_stockpile = {
+			type = infantry_equipment
+			amount = constant:holy_realm_crisis_rescue.emergency_infantry_equipment
+		}
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = constant:holy_realm_crisis_rescue.emergency_support_equipment
+		}
+		holy_realm_create_vow_keeper_template = yes
+		set_temp_variable = { holy_realm_rescue_unit_count = constant:holy_realm_crisis_rescue.emergency_mountaineers }
+		capital_scope = {
+			create_unit = {
+				division = "name = \"Last-Pass Vow Keepers\" division_template = \"Vow-Keeper Mountaineers\" start_experience_factor = 0.80 start_equipment_factor = 1 start_manpower_factor = 1"
+				owner = ROOT
+				count = holy_realm_rescue_unit_count
+			}
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+		holy_realm_add_spiritual_legitimacy = yes
+	}
+}
+
+holy_realm_setup_mandala_protectorate_country = {
+	set_country_flag = holy_realm_mandala_protectorate
+	set_cosmetic_tag = holy_realm_mandala_protectorate
+	set_politics = {
+		ruling_party = neutrality
+		elections_allowed = no
+		election_frequency = 48
+	}
+	add_popularity = {
+		ideology = neutrality
+		popularity = 0.40
+	}
+	retire_country_leader = yes
+	create_country_leader = {
+		name = "The Bodhisattva"
+		picture = GFX_portrait_THR_bodhisattva_pramudita
+		expire = "1965.1.1"
+		ideology = despotism
+		traits = {
+			holy_realm_bodhisattva_pramudita
+		}
+	}
+	OVERLORD = {
+		if = {
+			limit = { is_holy_realm_country = yes }
+			holy_realm_sync_bodhisattva_protectorate_leaders = yes
+		}
+	}
+}
+
+holy_realm_receive_peaceful_submission_from_event_target = {
+	if = {
+		limit = {
+			has_event_target = holy_realm_peace_letter_target
+			event_target:holy_realm_peace_letter_target = { exists = yes }
+		}
+		save_event_target_as = holy_realm_war_victor
+		event_target:holy_realm_peace_letter_target = {
+			every_owned_state = {
+				set_state_flag = holy_realm_peacefully_submitted_state
+				set_state_flag = holy_realm_protected_state
+				if = {
+					limit = { NOT = { is_core_of = event_target:holy_realm_war_victor } }
+					set_resistance = 0
+				}
+			}
+		}
+		if = {
+			limit = {
+				event_target:holy_realm_peace_letter_target = {
+					any_owned_state = {
+						NOT = { holy_realm_state_can_be_annexed_or_soon_cored = yes }
+					}
+				}
+			}
+			set_autonomy = {
+				target = event_target:holy_realm_peace_letter_target
+				autonomy_state = autonomy_puppet
+				freedom_level = 0.05
+				end_wars = yes
+				end_civil_wars = yes
+			}
+			event_target:holy_realm_peace_letter_target = {
+				holy_realm_setup_mandala_protectorate_country = yes
+			}
+		}
+		else = {
+			annex_country = {
+				target = event_target:holy_realm_peace_letter_target
+				transfer_troops = yes
+			}
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+		holy_realm_add_mandala_reach = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+		holy_realm_add_spiritual_legitimacy = yes
+	}
+}
+
+holy_realm_integrate_state_from_protectorate_event_target = {
+	save_event_target_as = holy_realm_war_victor
+	if = {
+		limit = {
+			has_event_target = holy_realm_protectorate_target
+			event_target:holy_realm_protectorate_target = {
+				exists = yes
+				is_subject_of = ROOT
+				has_country_flag = holy_realm_mandala_protectorate
+				any_owned_state = { holy_realm_state_can_be_annexed_or_soon_cored = yes }
+			}
+		}
+		event_target:holy_realm_protectorate_target = {
+			random_owned_state = {
+				limit = { holy_realm_state_can_be_annexed_or_soon_cored = yes }
+				transfer_state_to = event_target:holy_realm_war_victor
+				set_state_flag = holy_realm_peacefully_submitted_state
+				set_state_flag = holy_realm_protected_state
+				set_resistance = 0
+			}
+		}
+		set_country_flag = holy_realm_memory_protectorate_state_integrated
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+		holy_realm_add_mandala_reach = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+		holy_realm_add_spiritual_legitimacy = yes
+		if = {
+			limit = {
+				event_target:holy_realm_protectorate_target = {
+					NOT = { any_owned_state = { is_owned_by = event_target:holy_realm_protectorate_target } }
+				}
+			}
+			annex_country = {
+				target = event_target:holy_realm_protectorate_target
+				transfer_troops = yes
+			}
+		}
+	}
+}
+
+holy_realm_on_country_capitulation = {
+	if = {
+		limit = {
+			FROM = { is_holy_realm_country = yes }
+			NOT = { is_holy_realm_country = yes }
+			NOT = { is_subject_of = FROM }
+		}
+		FROM = { save_event_target_as = holy_realm_war_victor }
+		save_event_target_as = holy_realm_defeated_country
+		every_owned_state = {
+			limit = { holy_realm_state_can_be_annexed_or_soon_cored = yes }
+			transfer_state_to = event_target:holy_realm_war_victor
+			set_state_flag = holy_realm_protected_state
+			set_state_flag = holy_realm_postwar_annexed_state
+			if = {
+				limit = { NOT = { is_core_of = event_target:holy_realm_war_victor } }
+				set_state_flag = holy_realm_arhat_registered_state
+				set_resistance = 0
+			}
+		}
+		if = {
+			limit = {
+				any_owned_state = { is_owned_by = ROOT }
+			}
+			FROM = {
+				set_autonomy = {
+					target = event_target:holy_realm_defeated_country
+					autonomy_state = autonomy_puppet
+					freedom_level = 0.05
+					end_wars = yes
+					end_civil_wars = yes
+				}
+			}
+			holy_realm_setup_mandala_protectorate_country = yes
+		}
+		else = {
+			FROM = {
+				annex_country = {
+					target = event_target:holy_realm_defeated_country
+					transfer_troops = yes
+				}
+			}
+		}
+		FROM = {
+			set_country_flag = holy_realm_memory_postwar_spiritual_settlement
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+	}
+}
+
+holy_realm_apply_himalayan_unity_bonus = {
+	set_country_flag = holy_realm_memory_himalayan_unity_by_vow
+	set_country_flag = holy_realm_himalayan_unity_peaceful
+	holy_realm_core_himalayan_mandala_states = yes
+	if = {
+		limit = { NOT = { has_idea = holy_realm_himalayan_unity } }
+		add_ideas = holy_realm_himalayan_unity
+	}
+	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+	holy_realm_add_spiritual_legitimacy = yes
+	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+	holy_realm_add_mandala_reach = yes
+	holy_realm_try_form_master_idea = yes
+}
+
+holy_realm_try_form_master_idea = {
+	if = {
+		limit = {
+			NOT = { has_idea = holy_realm_one_mandala_state }
+			has_idea = holy_realm_mountain_refuge
+			OR = {
+				has_idea = holy_realm_bodhisattva_state
+				has_country_flag = holy_realm_stage_bodhisattva
+				has_country_flag = holy_realm_stage_arhat_administration
+				has_country_flag = holy_realm_stage_buddha_mandate
+				has_country_flag = holy_realm_stage_divine_sovereignty
+				has_country_flag = holy_realm_stage_final_silence
+			}
+			OR = {
+				has_idea = holy_realm_arhat_administration
+				has_country_flag = holy_realm_stage_arhat_administration
+				has_country_flag = holy_realm_stage_buddha_mandate
+				has_country_flag = holy_realm_stage_divine_sovereignty
+				has_country_flag = holy_realm_stage_final_silence
+			}
+			OR = {
+				has_idea = holy_realm_buddha_mandate
+				has_country_flag = holy_realm_stage_buddha_mandate
+				has_country_flag = holy_realm_stage_divine_sovereignty
+				has_country_flag = holy_realm_stage_final_silence
+			}
+			OR = {
+				has_idea = holy_realm_divine_sovereignty
+				has_idea = holy_realm_world_border_doctrine
+				has_idea = holy_realm_final_silence_network
+				has_country_flag = holy_realm_stage_final_silence
+			}
+		}
+		remove_ideas = holy_realm_mountain_refuge
+		remove_ideas = holy_realm_bodhisattva_state
+		remove_ideas = holy_realm_arhat_administration
+		remove_ideas = holy_realm_buddha_mandate
+		if = { limit = { has_idea = holy_realm_himalayan_unity } remove_ideas = holy_realm_himalayan_unity }
+		add_ideas = holy_realm_one_mandala_state
+		set_country_flag = holy_realm_memory_one_mandala_state
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+		holy_realm_add_spiritual_legitimacy = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+		holy_realm_add_mandala_reach = yes
+	}
 }
 
 holy_realm_arm_final_silence = {
@@ -253,7 +1295,13 @@ holy_realm_arm_final_silence = {
 	set_global_flag = holy_realm_global_warning
 	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
 	holy_realm_add_final_silence_pressure = yes
+	add_power_balance_value = {
+		id = holy_realm_final_doctrine_balance
+		value = 0.12
+		tooltip_side = holy_realm_final_silence_side
+	}
 	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_warning_gain }
+	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
 	holy_realm_add_chaos = yes
 	holy_realm_emit_multiplayer_warning = yes
 	holy_realm_refresh_world_threat_source = yes
@@ -265,10 +1313,28 @@ holy_realm_renounce_final_silence = {
 	clr_country_flag = holy_realm_final_warning_sent
 	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_loss }
 	holy_realm_add_final_silence_pressure = yes
+	add_power_balance_value = {
+		id = holy_realm_final_doctrine_balance
+		value = -0.25
+		tooltip_side = holy_realm_vow_against_annihilation_side
+	}
+	if = {
+		limit = { NOT = { has_country_flag = holy_realm_chaos_mercy_renunciation_logged } }
+		set_country_flag = holy_realm_chaos_mercy_renunciation_logged
+		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.major_mercy_loss }
+		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+		holy_realm_add_chaos = yes
+	}
 	holy_realm_refresh_world_threat_source = yes
+	holy_realm_late_vow_against_annihilation_crusade = yes
 }
 
 holy_realm_prepare_final_silence = {
+	clr_country_flag = holy_realm_stage_refuge
+	clr_country_flag = holy_realm_stage_bodhisattva
+	clr_country_flag = holy_realm_stage_arhat_administration
+	clr_country_flag = holy_realm_stage_buddha_mandate
+	clr_country_flag = holy_realm_stage_divine_sovereignty
 	set_country_flag = holy_realm_stage_final_silence
 	set_global_flag = world_end
 	set_global_flag = world_end_final_silence
@@ -280,6 +1346,7 @@ holy_realm_prepare_final_silence = {
 		set_country_flag = holy_realm_thermonuclear_doctrine
 		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_thermonuclear }
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_thermonuclear_gain }
+		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_air_delta = constant:holy_realm_final_silence.thermonuclear_air_bp }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_thermonuclear }
 	}
@@ -287,6 +1354,7 @@ holy_realm_prepare_final_silence = {
 		clr_global_flag = world_end_final_silence_thermonuclear
 		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence }
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
+		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_air_delta = constant:holy_realm_final_silence.normal_air_bp }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_normal }
 	}
@@ -306,10 +1374,72 @@ holy_realm_prepare_final_silence = {
 	}
 	set_country_flag = used_unconventional_weapon
 	air_cleanliness_treaty_on_unconventional_use = yes
-	set_temp_variable = { holy_realm_evolution_stage = 5 }
+	set_temp_variable = { holy_realm_evolution_stage = 6 }
 	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
 	holy_realm_record_evolution = yes
 	holy_realm_refresh_world_threat_source = yes
+}
+
+holy_realm_interrupt_final_silence = {
+	if = {
+		limit = { has_global_flag = world_end_final_silence }
+		set_global_flag = world_end_final_silence_interrupted
+		set_global_flag = holy_realm_mandala_broken
+		clr_global_flag = world_end_final_silence
+		clr_global_flag = world_end_final_silence_thermonuclear
+		clr_global_flag = world_end
+		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.mandala_breaks }
+		holy_realm_show_super_event = yes
+	}
+	every_owned_state = {
+		set_state_flag = holy_realm_mandala_broken_state
+	}
+	set_country_flag = holy_realm_memory_mandala_broken
+	clr_country_flag = holy_realm_final_doctrine_armed
+	clr_country_flag = holy_realm_final_warning_sent
+	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_loss }
+	holy_realm_add_final_silence_pressure = yes
+	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mandala_break_gain }
+	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mandala_break }
+	holy_realm_add_chaos = yes
+	set_temp_variable = { holy_realm_evolution_stage = 6 }
+	set_temp_variable = { holy_realm_evolution_tier = constant:holy_realm_event_log.tier_final }
+	holy_realm_record_evolution = yes
+	holy_realm_refresh_world_threat_source = yes
+	country_event = { id = chaosx.nr3.83 hours = 6 }
+}
+
+holy_realm_delete_final_silence_state_buildings = {
+	remove_building = { type = industrial_complex level = 999 }
+	remove_building = { type = arms_factory level = 999 }
+	remove_building = { type = dockyard level = 999 }
+	remove_building = { type = infrastructure level = 999 }
+	remove_building = { type = air_base level = 999 }
+	remove_building = { type = anti_air_building level = 999 }
+	remove_building = { type = synthetic_refinery level = 999 }
+	remove_building = { type = fuel_silo level = 999 }
+	remove_building = { type = radar_station level = 999 }
+	remove_building = { type = rocket_site level = 999 }
+	remove_building = { type = nuclear_reactor level = 999 }
+	remove_building = { type = commercial_nuclear_reactor level = 999 }
+	remove_building = { type = nuclear_facility level = 999 }
+	remove_building = { type = air_facility level = 999 }
+	remove_building = { type = land_facility level = 999 }
+}
+
+holy_realm_apply_final_silence_fallout_to_realm_state = {
+	if = {
+		limit = {
+			OR = {
+				OWNER = { is_holy_realm_country = yes }
+				CONTROLLER = { is_holy_realm_country = yes }
+			}
+		}
+		set_state_flag = holy_realm_final_silence_realm_fallout
+		set_temp_variable = { chaos_fallout_duration_days = constant:holy_realm_final_silence.realm_fallout_days }
+		set_temp_variable = { chaos_fallout_intensity_add = constant:holy_realm_final_silence.realm_fallout_intensity }
+		chaos_meter_apply_nuclear_fallout_to_state = yes
+	}
 }
 
 holy_realm_apply_final_silence_wave_to_state = {
@@ -319,33 +1449,58 @@ holy_realm_apply_final_silence_wave_to_state = {
 			CONTROLLER = { NOT = { is_holy_realm_country = yes } }
 		}
 		set_state_flag = holy_realm_final_silence_struck
+		set_state_flag = holy_realm_final_silence_burning
+		set_state_flag = holy_realm_final_silence_visual_pending
 		if = {
 			limit = { has_global_flag = world_end_final_silence_thermonuclear }
 			set_temp_variable = { chaos_state_deaths_percent = constant:holy_realm_final_silence.thermonuclear_state_deaths_percent }
-			set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.thermonuke_cap_factor }
+			set_temp_variable = { chaos_state_deaths_cap_factor = constant:holy_realm_final_silence.thermonuclear_deaths_cap_factor }
+			set_temp_variable = { chaos_state_deaths_cap_hard_max = constant:holy_realm_final_silence.thermonuclear_deaths_cap_hard_max }
 			set_temp_variable = { chaos_fallout_duration_days = constant:holy_realm_final_silence.thermonuclear_fallout_days }
 			set_temp_variable = { chaos_fallout_intensity_add = constant:holy_realm_final_silence.thermonuclear_fallout_intensity }
-			air_contamination_degrade_state_category = yes
-			air_contamination_degrade_state_category = yes
-			air_contamination_degrade_state_category = yes
 		}
 		else = {
 			set_temp_variable = { chaos_state_deaths_percent = constant:holy_realm_final_silence.normal_state_deaths_percent }
-			set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.nuke_cap_factor }
+			set_temp_variable = { chaos_state_deaths_cap_factor = constant:holy_realm_final_silence.normal_deaths_cap_factor }
+			set_temp_variable = { chaos_state_deaths_cap_hard_max = constant:holy_realm_final_silence.normal_deaths_cap_hard_max }
 			set_temp_variable = { chaos_fallout_duration_days = constant:holy_realm_final_silence.normal_fallout_days }
 			set_temp_variable = { chaos_fallout_intensity_add = constant:holy_realm_final_silence.normal_fallout_intensity }
-			air_contamination_degrade_state_category = yes
-			air_contamination_degrade_state_category = yes
 		}
 		set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.nuclear_random_min }
 		set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.nuclear_random_span }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.nuclear_strike }
 		chaos_meter_register_state_civilian_deaths_percent = yes
 		chaos_meter_apply_nuclear_fallout_to_state = yes
+		holy_realm_delete_final_silence_state_buildings = yes
+		set_state_category = wasteland
+		set_state_flag = holy_realm_final_silence_wasteland
+		set_state_flag = holy_realm_final_silence_silent
+	}
+}
+
+holy_realm_launch_final_silence_visual_strike_on_state = {
+	if = {
+		limit = { has_state_flag = holy_realm_final_silence_visual_pending }
 		if = {
-			limit = { has_state_category = wasteland }
-			set_state_flag = holy_realm_final_silence_wasteland
+			limit = { has_global_flag = world_end_final_silence_thermonuclear }
+			ROOT = {
+				launch_nuke = {
+					state = PREV
+					use_nuke = no
+					nuke_type = thermonuclear_bomb
+				}
+			}
 		}
+		else = {
+			ROOT = {
+				launch_nuke = {
+					state = PREV
+					use_nuke = no
+					nuke_type = nuclear_bomb
+				}
+			}
+		}
+		clr_state_flag = holy_realm_final_silence_visual_pending
 	}
 }
 
@@ -355,9 +1510,23 @@ holy_realm_apply_final_silence_wave = {
 		limit = {
 			OWNER = { NOT = { is_holy_realm_country = yes } }
 			CONTROLLER = { NOT = { is_holy_realm_country = yes } }
-			NOT = { has_state_category = wasteland }
 		}
 		holy_realm_apply_final_silence_wave_to_state = yes
+	}
+	every_state = {
+		limit = {
+			OR = {
+				OWNER = { is_holy_realm_country = yes }
+				CONTROLLER = { is_holy_realm_country = yes }
+			}
+		}
+		holy_realm_apply_final_silence_fallout_to_realm_state = yes
+	}
+	if = {
+		limit = {
+			any_state = { has_state_flag = holy_realm_final_silence_visual_pending }
+		}
+		country_event = { id = chaosx.nr3.84 hours = 1 }
 	}
 	if = {
 		limit = {
@@ -370,5 +1539,12 @@ holy_realm_apply_final_silence_wave = {
 			}
 		}
 		set_global_flag = world_end_final_silence_completed
+		every_state = {
+			limit = {
+				OWNER = { NOT = { is_holy_realm_country = yes } }
+				CONTROLLER = { NOT = { is_holy_realm_country = yes } }
+			}
+			set_state_flag = holy_realm_final_silence_silent
+		}
 	}
 }
