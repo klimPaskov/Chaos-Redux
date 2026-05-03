@@ -62,6 +62,165 @@ clear_communism_state_control_modifier = {
 	}
 }
 
+clear_communism_state_control_runtime_values = {
+	# STATE SCOPE
+	clear_variable = communist_control_duration_months
+	clear_variable = communist_control_penalty_positive
+	clear_variable = communist_control_factory_penalty
+	clear_variable = communist_control_manpower_penalty
+	clear_variable = communist_control_resource_penalty
+	clear_variable = communist_control_supply_penalty
+	clear_variable = communist_control_building_speed_penalty
+	clear_variable = communist_control_resistance_target
+	clear_variable = communist_intervention_progress
+	clear_variable = communist_intervention_cost_months
+	clear_variable = communist_intervention_command_power_cost
+	clear_variable = communist_intervention_manpower_cost
+	clear_variable = communist_intervention_equipment_cost
+	clear_variable = communist_intervention_command_power_cost_negative
+	clear_variable = communist_intervention_manpower_cost_negative
+	clear_variable = communist_intervention_equipment_cost_negative
+}
+
+prepare_communism_local_intervention_costs = {
+	# STATE SCOPE
+	set_variable = { communist_intervention_cost_months = communist_control_duration_months }
+	clamp_variable = {
+		var = communist_intervention_cost_months
+		max = constant:communism_spread_intervention.max_duration_cost_months
+	}
+
+	if = {
+		limit = { has_state_flag = communist_control_level_1 }
+		set_variable = { communist_intervention_command_power_cost = constant:communism_spread_intervention.level_1_command_power }
+		set_variable = { communist_intervention_manpower_cost = constant:communism_spread_intervention.level_1_manpower }
+		set_variable = { communist_intervention_equipment_cost = constant:communism_spread_intervention.level_1_equipment }
+	}
+	else_if = {
+		limit = { has_state_flag = communist_control_level_2 }
+		set_variable = { communist_intervention_command_power_cost = constant:communism_spread_intervention.level_2_command_power }
+		set_variable = { communist_intervention_manpower_cost = constant:communism_spread_intervention.level_2_manpower }
+		set_variable = { communist_intervention_equipment_cost = constant:communism_spread_intervention.level_2_equipment }
+	}
+	else_if = {
+		limit = { has_state_flag = communist_control_level_3 }
+		set_variable = { communist_intervention_command_power_cost = constant:communism_spread_intervention.level_3_command_power }
+		set_variable = { communist_intervention_manpower_cost = constant:communism_spread_intervention.level_3_manpower }
+		set_variable = { communist_intervention_equipment_cost = constant:communism_spread_intervention.level_3_equipment }
+	}
+
+	set_temp_variable = { communist_intervention_duration_command_power = communist_intervention_cost_months }
+	multiply_temp_variable = { communist_intervention_duration_command_power = constant:communism_spread_intervention.duration_command_power }
+	add_to_variable = { communist_intervention_command_power_cost = communist_intervention_duration_command_power }
+
+	set_temp_variable = { communist_intervention_duration_manpower = communist_intervention_cost_months }
+	multiply_temp_variable = { communist_intervention_duration_manpower = constant:communism_spread_intervention.duration_manpower }
+	add_to_variable = { communist_intervention_manpower_cost = communist_intervention_duration_manpower }
+
+	set_temp_variable = { communist_intervention_duration_equipment = communist_intervention_cost_months }
+	multiply_temp_variable = { communist_intervention_duration_equipment = constant:communism_spread_intervention.duration_equipment }
+	add_to_variable = { communist_intervention_equipment_cost = communist_intervention_duration_equipment }
+
+	round_variable = communist_intervention_command_power_cost
+	round_variable = communist_intervention_manpower_cost
+	round_variable = communist_intervention_equipment_cost
+
+	set_variable = { communist_intervention_command_power_cost_negative = communist_intervention_command_power_cost }
+	multiply_variable = { communist_intervention_command_power_cost_negative = -1 }
+	set_variable = { communist_intervention_manpower_cost_negative = communist_intervention_manpower_cost }
+	multiply_variable = { communist_intervention_manpower_cost_negative = -1 }
+	set_variable = { communist_intervention_equipment_cost_negative = communist_intervention_equipment_cost }
+	multiply_variable = { communist_intervention_equipment_cost_negative = -1 }
+}
+
+refresh_communism_state_control_modifier = {
+	# STATE SCOPE
+	if = {
+		limit = { has_state_flag = communist_control_level_1 }
+		set_variable = { communist_control_penalty_positive = constant:communism_spread_state_penalties.level_1_base_penalty }
+		set_temp_variable = { communist_control_duration_penalty = communist_control_duration_months }
+		multiply_temp_variable = { communist_control_duration_penalty = constant:communism_spread_state_penalties.level_1_penalty_per_month }
+		add_to_variable = { communist_control_penalty_positive = communist_control_duration_penalty }
+		clamp_variable = {
+			var = communist_control_penalty_positive
+			max = constant:communism_spread_state_penalties.level_1_max_penalty
+		}
+	}
+	else_if = {
+		limit = { has_state_flag = communist_control_level_2 }
+		set_variable = { communist_control_penalty_positive = constant:communism_spread_state_penalties.level_2_base_penalty }
+		set_temp_variable = { communist_control_duration_penalty = communist_control_duration_months }
+		multiply_temp_variable = { communist_control_duration_penalty = constant:communism_spread_state_penalties.level_2_penalty_per_month }
+		add_to_variable = { communist_control_penalty_positive = communist_control_duration_penalty }
+		clamp_variable = {
+			var = communist_control_penalty_positive
+			max = constant:communism_spread_state_penalties.level_2_max_penalty
+		}
+	}
+	else_if = {
+		limit = { has_state_flag = communist_control_level_3 }
+		set_variable = { communist_control_penalty_positive = constant:communism_spread_state_penalties.level_3_base_penalty }
+		set_temp_variable = { communist_control_duration_penalty = communist_control_duration_months }
+		multiply_temp_variable = { communist_control_duration_penalty = constant:communism_spread_state_penalties.level_3_penalty_per_month }
+		add_to_variable = { communist_control_penalty_positive = communist_control_duration_penalty }
+		clamp_variable = {
+			var = communist_control_penalty_positive
+			max = constant:communism_spread_state_penalties.level_3_max_penalty
+		}
+	}
+
+	if = {
+		limit = { has_state_flag = communist_local_suppression_active }
+		multiply_variable = { communist_control_penalty_positive = constant:communism_spread_state_penalties.suppression_penalty_factor }
+	}
+
+	set_variable = { communist_control_factory_penalty = communist_control_penalty_positive }
+	multiply_variable = { communist_control_factory_penalty = -1 }
+	set_variable = { communist_control_manpower_penalty = communist_control_penalty_positive }
+	multiply_variable = { communist_control_manpower_penalty = -1 }
+	set_variable = { communist_control_resource_penalty = communist_control_penalty_positive }
+	multiply_variable = { communist_control_resource_penalty = constant:communism_spread_state_penalties.resources_factor }
+	multiply_variable = { communist_control_resource_penalty = -1 }
+	set_variable = { communist_control_supply_penalty = communist_control_penalty_positive }
+	multiply_variable = { communist_control_supply_penalty = constant:communism_spread_state_penalties.supplies_factor }
+	multiply_variable = { communist_control_supply_penalty = -1 }
+	set_variable = { communist_control_building_speed_penalty = communist_control_penalty_positive }
+	multiply_variable = { communist_control_building_speed_penalty = -1 }
+	set_variable = { communist_control_resistance_target = communist_control_penalty_positive }
+	multiply_variable = { communist_control_resistance_target = constant:communism_spread_state_penalties.resistance_factor }
+
+	prepare_communism_local_intervention_costs = yes
+
+	if = {
+		limit = {
+			has_state_flag = communist_control_level_1
+			NOT = { has_dynamic_modifier = communism_control_level_1 }
+		}
+		add_dynamic_modifier = { modifier = communism_control_level_1 }
+	}
+	else_if = {
+		limit = {
+			has_state_flag = communist_control_level_2
+			NOT = { has_dynamic_modifier = communism_control_level_2 }
+		}
+		add_dynamic_modifier = { modifier = communism_control_level_2 }
+	}
+	else_if = {
+		limit = {
+			has_state_flag = communist_control_level_3
+			NOT = { has_dynamic_modifier = communism_control_level_3 }
+		}
+		add_dynamic_modifier = { modifier = communism_control_level_3 }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+advance_communism_state_control_duration = {
+	# STATE SCOPE
+	add_to_variable = { communist_control_duration_months = constant:communism_spread_state_penalties.duration_months_per_pulse }
+	refresh_communism_state_control_modifier = yes
+}
+
 clear_communism_state_control = {
 	# STATE SCOPE
 	if = {
@@ -76,7 +235,9 @@ clear_communism_state_control = {
 	clr_state_flag = communist_worker_ritual_state
 	clr_state_flag = communist_world_revolution_whisper_state
 	clr_state_flag = communist_surprise_breakaway_state
+	clr_state_flag = communist_local_suppression_active
 	clear_communism_state_control_modifier = yes
+	clear_communism_state_control_runtime_values = yes
 }
 
 set_communism_state_control_level_1 = {
@@ -84,7 +245,9 @@ set_communism_state_control_level_1 = {
 	clear_communism_state_control = yes
 	set_state_flag = communist_controlled_state
 	set_state_flag = communist_control_level_1
-	add_dynamic_modifier = { modifier = communism_control_level_1 }
+	set_variable = { communist_control_duration_months = 0 }
+	set_variable = { communist_intervention_progress = 0 }
+	refresh_communism_state_control_modifier = yes
 }
 
 set_communism_state_control_level_2 = {
@@ -92,7 +255,9 @@ set_communism_state_control_level_2 = {
 	clear_communism_state_control = yes
 	set_state_flag = communist_controlled_state
 	set_state_flag = communist_control_level_2
-	add_dynamic_modifier = { modifier = communism_control_level_2 }
+	set_variable = { communist_control_duration_months = 0 }
+	set_variable = { communist_intervention_progress = 0 }
+	refresh_communism_state_control_modifier = yes
 }
 
 set_communism_state_control_level_3 = {
@@ -105,7 +270,9 @@ set_communism_state_control_level_3 = {
 		set_state_flag = communist_added_demilitarized_zone
 	}
 	set_demilitarized_zone = yes
-	add_dynamic_modifier = { modifier = communism_control_level_3 }
+	set_variable = { communist_control_duration_months = 0 }
+	set_variable = { communist_intervention_progress = 0 }
+	refresh_communism_state_control_modifier = yes
 }
 
 refresh_communism_spread_counts = {
@@ -136,8 +303,177 @@ refresh_communism_spread_counts = {
 	}
 }
 
+prepare_communism_national_action_costs = {
+	# COUNTRY SCOPE
+	set_variable = { communism_counter_agitation_state_cost_count = communism_controlled_states }
+	clamp_variable = {
+		var = communism_counter_agitation_state_cost_count
+		max = constant:communism_spread_countermeasures.national_max_state_cost_count
+	}
+	set_variable = { communism_counter_agitation_command_power_cost = constant:communism_spread_countermeasures.national_command_power }
+	set_temp_variable = { communism_counter_agitation_command_power_from_states = communism_counter_agitation_state_cost_count }
+	multiply_temp_variable = { communism_counter_agitation_command_power_from_states = constant:communism_spread_countermeasures.national_command_power_per_state }
+	add_to_variable = { communism_counter_agitation_command_power_cost = communism_counter_agitation_command_power_from_states }
+	set_variable = { communism_counter_agitation_political_power_cost = constant:communism_spread_countermeasures.national_political_power }
+	set_temp_variable = { communism_counter_agitation_political_power_from_states = communism_counter_agitation_state_cost_count }
+	multiply_temp_variable = { communism_counter_agitation_political_power_from_states = constant:communism_spread_countermeasures.national_political_power_per_state }
+	add_to_variable = { communism_counter_agitation_political_power_cost = communism_counter_agitation_political_power_from_states }
+	round_variable = communism_counter_agitation_command_power_cost
+	round_variable = communism_counter_agitation_political_power_cost
+	set_variable = { communism_counter_agitation_command_power_cost_negative = communism_counter_agitation_command_power_cost }
+	multiply_variable = { communism_counter_agitation_command_power_cost_negative = -1 }
+	set_variable = { communism_counter_agitation_political_power_cost_negative = communism_counter_agitation_political_power_cost }
+	multiply_variable = { communism_counter_agitation_political_power_cost_negative = -1 }
+
+	set_variable = { communism_emergency_state_cost_count = communism_controlled_states }
+	clamp_variable = {
+		var = communism_emergency_state_cost_count
+		max = constant:communism_spread_emergency.max_state_cost_count
+	}
+	set_variable = { communism_emergency_command_power_cost = constant:communism_spread_emergency.command_power }
+	set_variable = { communism_emergency_manpower_cost = constant:communism_spread_emergency.manpower }
+	set_variable = { communism_emergency_equipment_cost = constant:communism_spread_emergency.equipment }
+	set_variable = { communism_emergency_political_power_cost = constant:communism_spread_emergency.political_power }
+
+	set_temp_variable = { communism_emergency_command_power_from_states = communism_emergency_state_cost_count }
+	multiply_temp_variable = { communism_emergency_command_power_from_states = constant:communism_spread_emergency.command_power_per_state }
+	add_to_variable = { communism_emergency_command_power_cost = communism_emergency_command_power_from_states }
+	set_temp_variable = { communism_emergency_manpower_from_states = communism_emergency_state_cost_count }
+	multiply_temp_variable = { communism_emergency_manpower_from_states = constant:communism_spread_emergency.manpower_per_state }
+	add_to_variable = { communism_emergency_manpower_cost = communism_emergency_manpower_from_states }
+	set_temp_variable = { communism_emergency_equipment_from_states = communism_emergency_state_cost_count }
+	multiply_temp_variable = { communism_emergency_equipment_from_states = constant:communism_spread_emergency.equipment_per_state }
+	add_to_variable = { communism_emergency_equipment_cost = communism_emergency_equipment_from_states }
+	set_temp_variable = { communism_emergency_political_power_from_states = communism_emergency_state_cost_count }
+	multiply_temp_variable = { communism_emergency_political_power_from_states = constant:communism_spread_emergency.political_power_per_state }
+	add_to_variable = { communism_emergency_political_power_cost = communism_emergency_political_power_from_states }
+
+	set_temp_variable = { communism_emergency_command_power_from_level_3 = communism_control_level_3_states }
+	multiply_temp_variable = { communism_emergency_command_power_from_level_3 = constant:communism_spread_emergency.command_power_per_level_3_state }
+	add_to_variable = { communism_emergency_command_power_cost = communism_emergency_command_power_from_level_3 }
+	set_temp_variable = { communism_emergency_manpower_from_level_3 = communism_control_level_3_states }
+	multiply_temp_variable = { communism_emergency_manpower_from_level_3 = constant:communism_spread_emergency.manpower_per_level_3_state }
+	add_to_variable = { communism_emergency_manpower_cost = communism_emergency_manpower_from_level_3 }
+	set_temp_variable = { communism_emergency_equipment_from_level_3 = communism_control_level_3_states }
+	multiply_temp_variable = { communism_emergency_equipment_from_level_3 = constant:communism_spread_emergency.equipment_per_level_3_state }
+	add_to_variable = { communism_emergency_equipment_cost = communism_emergency_equipment_from_level_3 }
+	set_temp_variable = { communism_emergency_political_power_from_level_3 = communism_control_level_3_states }
+	multiply_temp_variable = { communism_emergency_political_power_from_level_3 = constant:communism_spread_emergency.political_power_per_level_3_state }
+	add_to_variable = { communism_emergency_political_power_cost = communism_emergency_political_power_from_level_3 }
+
+	round_variable = communism_emergency_command_power_cost
+	round_variable = communism_emergency_manpower_cost
+	round_variable = communism_emergency_equipment_cost
+	round_variable = communism_emergency_political_power_cost
+	set_variable = { communism_emergency_command_power_cost_negative = communism_emergency_command_power_cost }
+	multiply_variable = { communism_emergency_command_power_cost_negative = -1 }
+	set_variable = { communism_emergency_manpower_cost_negative = communism_emergency_manpower_cost }
+	multiply_variable = { communism_emergency_manpower_cost_negative = -1 }
+	set_variable = { communism_emergency_equipment_cost_negative = communism_emergency_equipment_cost }
+	multiply_variable = { communism_emergency_equipment_cost_negative = -1 }
+	set_variable = { communism_emergency_political_power_cost_negative = communism_emergency_political_power_cost }
+	multiply_variable = { communism_emergency_political_power_cost_negative = -1 }
+}
+
+reduce_communism_support_per_controlled_state = {
+	# COUNTRY SCOPE
+	every_owned_state = {
+		limit = { has_state_flag = communist_controlled_state }
+		ROOT = {
+			add_popularity = {
+				ideology = communism
+				popularity = constant:communism_spread_countermeasures.per_controlled_state_support_reduction
+			}
+		}
+	}
+}
+
+reduce_communism_support_after_emergency = {
+	# COUNTRY SCOPE
+	every_owned_state = {
+		limit = { has_state_flag = communist_controlled_state }
+		ROOT = {
+			add_popularity = {
+				ideology = communism
+				popularity = constant:communism_spread_emergency.emergency_support_reduction_per_state
+			}
+		}
+	}
+}
+
+apply_communism_local_intervention_payment = {
+	# COUNTRY SCOPE, with FROM as the targeted state.
+	set_temp_variable = { communist_local_command_power_payment = FROM.communist_intervention_command_power_cost_negative }
+	add_command_power = communist_local_command_power_payment
+	set_temp_variable = { communist_local_manpower_payment = FROM.communist_intervention_manpower_cost_negative }
+	add_manpower = communist_local_manpower_payment
+	set_temp_variable = { communist_local_equipment_payment = FROM.communist_intervention_equipment_cost_negative }
+	round_temp_variable = communist_local_equipment_payment
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = communist_local_equipment_payment
+	}
+}
+
+apply_communism_local_suppression = {
+	# STATE SCOPE
+	set_state_flag = {
+		flag = communist_local_suppression_active
+		days = constant:communism_spread_timing.local_suppression_days
+	}
+	add_dynamic_modifier = {
+		modifier = communism_post_crackdown_scars
+		days = constant:communism_spread_timing.local_suppression_days
+	}
+	refresh_communism_state_control_modifier = yes
+}
+
+add_communism_intervention_progress_partial = {
+	# STATE SCOPE
+	add_to_variable = { communist_intervention_progress = constant:communism_spread_intervention.progress_partial }
+}
+
+add_communism_intervention_progress_success = {
+	# STATE SCOPE
+	add_to_variable = { communist_intervention_progress = constant:communism_spread_intervention.progress_success }
+}
+
+try_finish_communism_level_1_intervention = {
+	# STATE SCOPE
+	if = {
+		limit = { check_variable = { communist_intervention_progress > constant:communism_spread_intervention.progress_threshold_check } }
+		clear_communism_state_control = yes
+		add_dynamic_modifier = {
+			modifier = communism_post_crackdown_scars
+			days = constant:communism_spread_timing.crackdown_scars_days
+		}
+	}
+	else = {
+		apply_communism_local_suppression = yes
+	}
+}
+
+try_finish_communism_level_2_intervention = {
+	# STATE SCOPE
+	if = {
+		limit = { check_variable = { communist_intervention_progress > constant:communism_spread_intervention.progress_threshold_check } }
+		set_communism_state_control_level_1 = yes
+		add_dynamic_modifier = {
+			modifier = communism_post_crackdown_scars
+			days = constant:communism_spread_timing.crackdown_scars_days
+		}
+	}
+	else = {
+		apply_communism_local_suppression = yes
+	}
+}
+
 refresh_communism_spread_pressure = {
 	refresh_communism_spread_counts = yes
+	every_owned_state = {
+		limit = { has_state_flag = communist_controlled_state }
+		refresh_communism_state_control_modifier = yes
+	}
 	set_variable = { communism_control_daily_drift = communism_controlled_states }
 	multiply_variable = { communism_control_daily_drift = constant:communism_spread_drift.per_controlled_state }
 	clamp_variable = {
@@ -159,6 +495,7 @@ refresh_communism_spread_pressure = {
 		}
 		remove_dynamic_modifier = { modifier = communism_state_control_pressure }
 	}
+	prepare_communism_national_action_costs = yes
 	refresh_communism_spread_dashboard_values = yes
 	force_update_dynamic_modifier = yes
 }
@@ -319,6 +656,117 @@ queue_communism_evolution_progression_cooldown = {
 	country_event = {
 		id = chaosx.nr1.33
 		days = constant:communism_spread_timing.evolution_progression_cooldown_days
+	}
+}
+
+apply_light_communist_sabotage_damage = {
+	# STATE SCOPE
+	if = {
+		limit = { industrial_complex > 0 }
+		damage_building = {
+			type = industrial_complex
+			damage = 0.20
+		}
+	}
+	else_if = {
+		limit = { arms_factory > 0 }
+		damage_building = {
+			type = arms_factory
+			damage = 0.15
+		}
+	}
+	else_if = {
+		limit = { infrastructure > 0 }
+		damage_building = {
+			type = infrastructure
+			damage = 0.12
+		}
+	}
+	else = {
+		add_dynamic_modifier = {
+			modifier = communism_post_crackdown_scars
+			days = 45
+		}
+	}
+}
+
+apply_moderate_communist_sabotage_damage = {
+	# STATE SCOPE
+	if = {
+		limit = { industrial_complex > 0 }
+		damage_building = {
+			type = industrial_complex
+			damage = 0.35
+		}
+	}
+	if = {
+		limit = { arms_factory > 0 }
+		damage_building = {
+			type = arms_factory
+			damage = 0.25
+		}
+	}
+	if = {
+		limit = {
+			industrial_complex < 1
+			arms_factory < 1
+			infrastructure > 0
+		}
+		damage_building = {
+			type = infrastructure
+			damage = 0.20
+		}
+	}
+	if = {
+		limit = {
+			industrial_complex < 1
+			arms_factory < 1
+			infrastructure < 1
+		}
+		add_dynamic_modifier = {
+			modifier = communism_post_crackdown_scars
+			days = 60
+		}
+	}
+}
+
+apply_heavy_communist_sabotage_damage = {
+	# STATE SCOPE
+	if = {
+		limit = { industrial_complex > 0 }
+		damage_building = {
+			type = industrial_complex
+			damage = 0.55
+		}
+	}
+	if = {
+		limit = { arms_factory > 0 }
+		damage_building = {
+			type = arms_factory
+			damage = 0.45
+		}
+	}
+	if = {
+		limit = {
+			industrial_complex < 1
+			arms_factory < 1
+			infrastructure > 0
+		}
+		damage_building = {
+			type = infrastructure
+			damage = 0.35
+		}
+	}
+	if = {
+		limit = {
+			industrial_complex < 1
+			arms_factory < 1
+			infrastructure < 1
+		}
+		add_dynamic_modifier = {
+			modifier = communism_post_crackdown_scars
+			days = 90
+		}
 	}
 }
 
@@ -1130,6 +1578,7 @@ spawn_communist_rebel_units_in_state = {
 }
 
 resolve_communist_emergency_without_uprising = {
+	reduce_communism_support_after_emergency = yes
 	every_owned_state = {
 		limit = { has_state_flag = communist_control_level_1 }
 		clear_communism_state_control = yes
@@ -1178,8 +1627,15 @@ create_communist_emergency_uprising = {
 		limit = {
 			any_owned_state = { has_state_flag = communist_uprising_convert }
 		}
+		reduce_communism_support_after_emergency = yes
 		create_dynamic_country = {
 			original_tag = ROOT
+			set_popularities = {
+				democratic = 0
+				fascism = 0
+				communism = 100
+				neutrality = 0
+			}
 			set_politics = {
 				ruling_party = communism
 				elections_allowed = no
@@ -1240,6 +1696,12 @@ create_communist_local_breakaway = {
 		event_target:communist_evolution_state = { set_state_flag = communist_surprise_breakaway_state }
 		create_dynamic_country = {
 			original_tag = ROOT
+			set_popularities = {
+				democratic = 0
+				fascism = 0
+				communism = 100
+				neutrality = 0
+			}
 			set_politics = {
 				ruling_party = communism
 				elections_allowed = no
@@ -1816,6 +2278,10 @@ run_communism_spread_maintenance = {
 			has_idea = communism_spread_idea
 			NOT = { has_government = communism }
 		}
+		every_owned_state = {
+			limit = { has_state_flag = communist_controlled_state }
+			advance_communism_state_control_duration = yes
+		}
 		refresh_communism_spread_pressure = yes
 		try_communism_evolution_progression = yes
 		try_communism_state_spread = yes
@@ -1908,6 +2374,20 @@ clear_communism_spread_system = {
 	clear_variable = communism_control_level_3_states
 	clear_variable = communism_control_daily_drift
 	clear_variable = communism_control_daily_drift_percent
+	clear_variable = communism_counter_agitation_state_cost_count
+	clear_variable = communism_counter_agitation_command_power_cost
+	clear_variable = communism_counter_agitation_political_power_cost
+	clear_variable = communism_counter_agitation_command_power_cost_negative
+	clear_variable = communism_counter_agitation_political_power_cost_negative
+	clear_variable = communism_emergency_state_cost_count
+	clear_variable = communism_emergency_command_power_cost
+	clear_variable = communism_emergency_manpower_cost
+	clear_variable = communism_emergency_equipment_cost
+	clear_variable = communism_emergency_political_power_cost
+	clear_variable = communism_emergency_command_power_cost_negative
+	clear_variable = communism_emergency_manpower_cost_negative
+	clear_variable = communism_emergency_equipment_cost_negative
+	clear_variable = communism_emergency_political_power_cost_negative
 	clear_variable = communism_revolutionary_threat
 	clear_variable = communism_revolutionary_threat_bar
 	try_defeat_communism_spread_system = yes

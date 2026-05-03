@@ -12,7 +12,8 @@
 8. [Multiplayer Compatibility](#multiplayer-compatibility)
 9. [Debug and Monitoring](#debug-and-monitoring)
 10. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
-11. [Chaos Warfare](#chaos-warfare)
+11. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
+12. [Chaos Warfare](#chaos-warfare)
 
 ---
 
@@ -656,6 +657,41 @@ What the player does:
 - Use only in extreme desperation when conventional defense is collapsing. (or you are a complete madman)
 
 <!-- IMAGE PLACEHOLDER: Bioweapon doomsday decision and the resulting news popup -->
+
+---
+
+## Camps and Genocide Mechanics
+
+The camp and genocide crisis system models state repression, forced labor, extermination sites, gulag networks, evidence destruction, discovery, foreign response, and tribunal pressure.
+
+The key rule is separation between hidden internal damage and external condemnation:
+
+- Camp systems reduce real state population through the Chaos Meter Deaths system.
+- Responsible countries accumulate hidden crisis variables such as `genocide_escalation`, `genocide_visibility`, `genocide_deaths`, `genocide_resistance_pressure`, `genocide_foreign_pressure`, `genocide_coverup_effort`, and `genocide_discovered_sites`.
+- Foreign condemnation does not rise passively while the responsible regime still controls the evidence.
+- Condemnation rises when enemy forces occupy or liberate a state containing undiscovered camp, gulag, or destroyed atrocity-site evidence.
+
+### Buildings and State Tracking
+
+The system uses three state buildings:
+
+- `concentration_camp`: detention, forced labor, deportation processing, and repression.
+- `extermination_camp`: systematic killing and the highest discovery condemnation.
+- `gulag_labor_camp_network`: Soviet forced labor and mass repression.
+
+These buildings are created through decisions and effects rather than ordinary construction. This allows each affected state to store `genocide_responsible_country`, so discovery targets the country that built or operated the site instead of the country that finds it.
+
+### Crisis Decisions and AI
+
+The generic crisis category covers camp expansion, deportations, evidence hiding, report suppression, train diversion, sabotage crackdowns, refugee pressure, military objections, evidence destruction, and post-liberation cover-up attempts.
+
+Country-specific categories handle:
+
+- Germany: concentration camps, occupied Poland escalation, extermination camps, deportation logistics, and retreat cover-ups.
+- Japan: forced labor camps, anti-partisan reprisals, prisoner experimentation, occupation records, and biological warfare links.
+- Soviet Union: gulag expansion, deportations, famine pressure, and record destruction.
+
+AI weights make fascist Germany, imperial Japan, and communist Soviet Union the primary users under historical or radicalized conditions. A separate AI strategy package adjusts broad behavior for active and exposed crisis regimes.
 
 ---
 

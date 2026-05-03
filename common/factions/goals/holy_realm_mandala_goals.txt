@@ -1,0 +1,125 @@
+# Overview:
+# - Manifest and goals for the Mandala of Nations faction.
+# - Goals represent visible acts of kindness that reduce global chaos without
+#   turning the faction into an offensive alliance.
+
+@thr_mandala_goal_projection_short = 60
+@thr_mandala_goal_projection_medium = 110
+@thr_mandala_goal_projection_long = 170
+@thr_mandala_goal_initiative_reward = 1
+
+faction_manifest_holy_realm_mandala_peace = {
+	name = faction_manifest_thr_mandala_peace_name
+	description = faction_manifest_thr_mandala_peace_desc
+	is_manifest = yes
+
+	ratio_progress = {
+		total_amount = 1
+		completed_amount = 1
+
+		scale = {
+			stability_factor = 0.03
+			political_power_gain = 0.03
+			research_sharing_per_country_bonus_factor = 0.10
+		}
+	}
+}
+
+faction_goal_thr_open_refuge_corridors = {
+	name = faction_goal_thr_open_refuge_corridors_name
+	description = faction_goal_thr_open_refuge_corridors_desc
+	category = short_term
+	group = FOCUS_FILTER_STABILITY
+
+	visible = {
+		ROOT = {
+			has_faction_template = faction_template_holy_realm_mandala_of_nations
+		}
+	}
+
+	available = {
+		has_country_flag = holy_realm_mandala_of_nations_leader
+	}
+
+	completed = {
+		has_country_flag = holy_realm_mandala_kindness_refuge_completed
+	}
+
+	complete_effect = {
+		add_faction_power_projection = @thr_mandala_goal_projection_short
+		add_faction_initiative = @thr_mandala_goal_initiative_reward
+		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+		holy_realm_add_chaos = yes
+	}
+
+	ai_will_do = {
+		base = 8
+	}
+}
+
+faction_goal_thr_white_flag_congress = {
+	name = faction_goal_thr_white_flag_congress_name
+	description = faction_goal_thr_white_flag_congress_desc
+	category = medium_term
+	group = FOCUS_FILTER_POLITICAL
+
+	visible = {
+		ROOT = {
+			has_faction_template = faction_template_holy_realm_mandala_of_nations
+		}
+	}
+
+	available = {
+		has_country_flag = holy_realm_mandala_of_nations_leader
+	}
+
+	completed = {
+		has_country_flag = holy_realm_mandala_kindness_congress_completed
+	}
+
+	complete_effect = {
+		add_faction_power_projection = @thr_mandala_goal_projection_medium
+		add_faction_initiative = @thr_mandala_goal_initiative_reward
+		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.major_mercy_loss }
+		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+		holy_realm_add_chaos = yes
+	}
+
+	ai_will_do = {
+		base = 6
+	}
+}
+
+faction_goal_thr_open_granaries = {
+	name = faction_goal_thr_open_granaries_name
+	description = faction_goal_thr_open_granaries_desc
+	category = long_term
+	group = FOCUS_FILTER_INDUSTRY
+
+	visible = {
+		ROOT = {
+			has_faction_template = faction_template_holy_realm_mandala_of_nations
+		}
+	}
+
+	available = {
+		has_country_flag = holy_realm_mandala_of_nations_leader
+	}
+
+	completed = {
+		has_country_flag = holy_realm_mandala_kindness_granaries_completed
+	}
+
+	complete_effect = {
+		add_faction_power_projection = @thr_mandala_goal_projection_long
+		add_faction_initiative = @thr_mandala_goal_initiative_reward
+		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+		holy_realm_add_chaos = yes
+	}
+
+	ai_will_do = {
+		base = 5
+	}
+}

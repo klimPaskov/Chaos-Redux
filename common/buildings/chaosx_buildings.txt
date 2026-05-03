@@ -1,3 +1,36 @@
+@CONCENTRATION_CAMP_BASE_COST = 5200
+@CONCENTRATION_CAMP_VALUE = 1
+@CONCENTRATION_CAMP_DAMAGE = 0.25
+@CONCENTRATION_CAMP_ICON_FRAME = 34
+@CONCENTRATION_CAMP_LOCAL_MANPOWER = -0.10
+@CONCENTRATION_CAMP_RECRUITABLE = -0.02
+@CONCENTRATION_CAMP_RESISTANCE = -0.04
+@CONCENTRATION_CAMP_COMPLIANCE = -0.04
+@CONCENTRATION_CAMP_RESOURCES = 0.08
+@CONCENTRATION_CAMP_PRODUCTION = 0.05
+
+@EXTERMINATION_CAMP_BASE_COST = 2600
+@EXTERMINATION_CAMP_VALUE = 3
+@EXTERMINATION_CAMP_DAMAGE = 0.40
+@EXTERMINATION_CAMP_ICON_FRAME = 35
+@EXTERMINATION_CAMP_LOCAL_MANPOWER = -0.35
+@EXTERMINATION_CAMP_RECRUITABLE = -0.08
+@EXTERMINATION_CAMP_RESISTANCE = 0.10
+@EXTERMINATION_CAMP_COMPLIANCE = -0.18
+@EXTERMINATION_CAMP_RESOURCES = -0.05
+@EXTERMINATION_CAMP_PRODUCTION = -0.08
+
+@GULAG_NETWORK_BASE_COST = 1800
+@GULAG_NETWORK_VALUE = 2
+@GULAG_NETWORK_DAMAGE = 0.30
+@GULAG_NETWORK_ICON_FRAME = 36
+@GULAG_NETWORK_LOCAL_MANPOWER = -0.16
+@GULAG_NETWORK_RECRUITABLE = -0.03
+@GULAG_NETWORK_RESISTANCE = 0.04
+@GULAG_NETWORK_COMPLIANCE = -0.07
+@GULAG_NETWORK_RESOURCES = 0.08
+@GULAG_NETWORK_PRODUCTION = 0.04
+
 buildings = {
     biowarfare_facility = {
         base_cost = 10000
@@ -70,4 +103,105 @@ buildings = {
             group_by = special_project_facility
         }
     }
+
+	concentration_camp = {
+		base_cost = @CONCENTRATION_CAMP_BASE_COST
+		infrastructure_construction_effect = yes
+		value = @CONCENTRATION_CAMP_VALUE
+		damage_factor = @CONCENTRATION_CAMP_DAMAGE
+		is_buildable = yes
+		need_detection = yes
+		detecting_intel_type = civilian
+		disabled_in_dmz = yes
+		only_display_if_exists = no
+		icon_frame = @CONCENTRATION_CAMP_ICON_FRAME
+		show_modifier = yes
+
+		tags = {
+			atrocity_infrastructure
+			camp_infrastructure
+		}
+
+		level_cap = {
+			shares_slots = no
+			state_max = 1
+		}
+
+		state_modifiers = {
+			local_manpower = @CONCENTRATION_CAMP_LOCAL_MANPOWER
+			recruitable_population_factor = @CONCENTRATION_CAMP_RECRUITABLE
+			resistance_target = @CONCENTRATION_CAMP_RESISTANCE
+			compliance_growth = @CONCENTRATION_CAMP_COMPLIANCE
+			state_resources_factor = @CONCENTRATION_CAMP_RESOURCES
+			state_production_speed_buildings_factor = @CONCENTRATION_CAMP_PRODUCTION
+		}
+	}
+
+	extermination_camp = {
+		base_cost = @EXTERMINATION_CAMP_BASE_COST
+		infrastructure_construction_effect = yes
+		value = @EXTERMINATION_CAMP_VALUE
+		damage_factor = @EXTERMINATION_CAMP_DAMAGE
+		is_buildable = no
+		need_detection = yes
+		detecting_intel_type = civilian
+		disabled_in_dmz = yes
+		only_display_if_exists = yes
+		icon_frame = @EXTERMINATION_CAMP_ICON_FRAME
+		show_modifier = yes
+
+		tags = {
+			atrocity_infrastructure
+			camp_infrastructure
+			extermination_infrastructure
+		}
+
+		level_cap = {
+			shares_slots = no
+			state_max = 1
+		}
+
+		state_modifiers = {
+			local_manpower = @EXTERMINATION_CAMP_LOCAL_MANPOWER
+			recruitable_population_factor = @EXTERMINATION_CAMP_RECRUITABLE
+			resistance_target = @EXTERMINATION_CAMP_RESISTANCE
+			compliance_growth = @EXTERMINATION_CAMP_COMPLIANCE
+			state_resources_factor = @EXTERMINATION_CAMP_RESOURCES
+			state_production_speed_buildings_factor = @EXTERMINATION_CAMP_PRODUCTION
+		}
+	}
+
+	gulag_labor_camp_network = {
+		base_cost = @GULAG_NETWORK_BASE_COST
+		infrastructure_construction_effect = yes
+		value = @GULAG_NETWORK_VALUE
+		damage_factor = @GULAG_NETWORK_DAMAGE
+		is_buildable = no
+		need_detection = yes
+		detecting_intel_type = civilian
+		disabled_in_dmz = yes
+		only_display_if_exists = yes
+		icon_frame = @GULAG_NETWORK_ICON_FRAME
+		show_modifier = yes
+
+		tags = {
+			atrocity_infrastructure
+			camp_infrastructure
+			gulag_infrastructure
+		}
+
+		level_cap = {
+			shares_slots = no
+			state_max = 1
+		}
+
+		state_modifiers = {
+			local_manpower = @GULAG_NETWORK_LOCAL_MANPOWER
+			recruitable_population_factor = @GULAG_NETWORK_RECRUITABLE
+			resistance_target = @GULAG_NETWORK_RESISTANCE
+			compliance_growth = @GULAG_NETWORK_COMPLIANCE
+			state_resources_factor = @GULAG_NETWORK_RESOURCES
+			state_production_speed_buildings_factor = @GULAG_NETWORK_PRODUCTION
+		}
+	}
 }

@@ -1,0 +1,108 @@
+# Overview:
+# - Faction rules for the Mandala of Nations.
+# - The rules make the peaceful Holy Realm faction visibly defensive and bind
+#   members to acts of kindness rather than offensive wars.
+
+@thr_mandala_rule_stability = 0.04
+@thr_mandala_rule_pp = 0.05
+@thr_mandala_rule_defensive_stability = 0.10
+@thr_mandala_rule_research_sharing = 0.15
+
+thr_joining_rule_mandala_peace_only = {
+	type = joining_rules
+
+	visible = {
+		has_faction_template = faction_template_holy_realm_mandala_of_nations
+	}
+
+	available = {
+		has_country_flag = holy_realm_mandala_of_nations_leader
+	}
+
+	can_remove = {
+		always = no
+	}
+
+	trigger = {
+		is_major = no
+		is_in_faction = no
+		has_offensive_war = no
+		NOT = { has_war_with = FROM }
+		NOT = { has_country_flag = holy_realm_peace_letter_blocked }
+	}
+
+	ai_will_do = {
+		base = 0.1
+		modifier = {
+			factor = 2
+			has_war = no
+		}
+		modifier = {
+			factor = 0
+			is_major = yes
+		}
+		modifier = {
+			factor = 0
+			is_in_faction = yes
+		}
+		modifier = {
+			factor = 0
+			has_offensive_war = yes
+		}
+	}
+}
+
+thr_member_rule_vow_against_offensive_war = {
+	type = war_declaration_rule
+
+	visible = {
+		has_faction_template = faction_template_holy_realm_mandala_of_nations
+	}
+
+	available = {
+		has_country_flag = holy_realm_mandala_of_nations_leader
+	}
+
+	can_remove = {
+		always = no
+	}
+
+	trigger = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+thr_member_rule_acts_of_kindness = {
+	type = member_rules
+
+	visible = {
+		has_faction_template = faction_template_holy_realm_mandala_of_nations
+	}
+
+	available = {
+		has_country_flag = holy_realm_mandala_of_nations_leader
+	}
+
+	can_remove = {
+		always = no
+	}
+
+	trigger = {
+		always = yes
+	}
+
+	modifier = {
+		stability_factor = @thr_mandala_rule_stability
+		political_power_gain = @thr_mandala_rule_pp
+		defensive_war_stability_factor = @thr_mandala_rule_defensive_stability
+		research_sharing_per_country_bonus_factor = @thr_mandala_rule_research_sharing
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}

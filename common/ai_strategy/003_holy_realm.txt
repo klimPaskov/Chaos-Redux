@@ -1,6 +1,6 @@
 # Holy Realm AI strategy package.
-# The Holy Realm stays defensive early, expands influence under the Buddha
-# Mandate, and foreign majors become more willing to contain the active carrier.
+# The Holy Realm stays defensive early, can open a separate expansion tree,
+# and foreign majors become more willing to contain the active carrier.
 
 holy_realm_refuge_defence = {
 	allowed = { always = yes }
@@ -20,11 +20,91 @@ holy_realm_refuge_defence = {
 	}
 }
 
+holy_realm_himalayan_consolidation = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		holy_realm_himalayan_mandala_incomplete = yes
+		NOT = { has_war = yes }
+		OR = {
+			holy_realm_has_bodhisattva_stage = yes
+			check_variable = { spiritual_legitimacy > 30 }
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = -20
+	}
+}
+
+holy_realm_expansionist_mandala = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		has_country_flag = holy_realm_expansion_tree_opened
+		NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+		OR = {
+			check_variable = { mandala_reach > 45 }
+			holy_realm_chaos_above_intervention_floor = yes
+			has_country_flag = holy_realm_memory_peace_letter_refused
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = 80
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = 30
+	}
+}
+
+holy_realm_expansionist_forced_integration = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		has_country_flag = holy_realm_expansion_path_hardened
+		NOT = { has_war = yes }
+		num_divisions > 18
+		holy_realm_chaos_above_coercive_floor = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = -35
+	}
+}
+
+holy_realm_peaceful_power_growth = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		NOT = { holy_realm_has_buddha_mandate = yes }
+		holy_realm_chaos_below_peace_focus_ceiling = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = 60
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = 80
+	}
+}
+
 holy_realm_mandate_intervention = {
 	allowed = { always = yes }
 	enable = {
 		is_holy_realm_country = yes
 		holy_realm_has_buddha_mandate = yes
+		OR = {
+			has_country_flag = holy_realm_doctrine_peacekeeping
+			has_country_flag = holy_realm_doctrine_coercive_pacification
+		}
 		NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
 	}
 	abort_when_not_enabled = yes
@@ -32,9 +112,73 @@ holy_realm_mandate_intervention = {
 		type = send_volunteers_desire
 		value = 80
 	}
+}
+
+holy_realm_renunciation_restraint = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		has_country_flag = holy_realm_final_doctrine_renounced
+	}
+	abort_when_not_enabled = yes
 	ai_strategy = {
-		type = conquer
-		value = 50
+		type = avoid_starting_wars
+		value = 200
+	}
+	ai_strategy = {
+		type = send_volunteers_desire
+		value = 30
+	}
+}
+
+holy_realm_peacekeeper_route = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		has_country_flag = holy_realm_doctrine_peacekeeping
+		NOT = { has_country_flag = holy_realm_final_doctrine_armed }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = send_volunteers_desire
+		value = 120
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = 90
+	}
+}
+
+holy_realm_coercive_route = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		has_country_flag = holy_realm_doctrine_coercive_pacification
+		OR = {
+			has_war = yes
+			holy_realm_chaos_above_coercive_floor = yes
+			check_variable = { mandala_reach > 55 }
+		}
+		NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = -50
+	}
+}
+
+holy_realm_final_doctrine_restraint_until_gate = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_country = yes
+		has_country_flag = holy_realm_final_doctrine_armed
+		NOT = { holy_realm_can_start_final_silence = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = 120
 	}
 }
 
@@ -77,5 +221,25 @@ holy_realm_foreign_contain_nepal = {
 		type = antagonize
 		id = NEP
 		value = 100
+	}
+}
+
+holy_realm_foreign_emergency_response = {
+	allowed = { always = yes }
+	enable = {
+		is_holy_realm_foreign_responder = yes
+		OR = {
+			has_global_flag = world_end_final_silence
+			any_country = {
+				is_holy_realm_country = yes
+				has_country_flag = holy_realm_final_doctrine_armed
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = force_defend_ally_borders
+		target = asia
+		value = 150
 	}
 }

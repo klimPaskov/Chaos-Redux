@@ -1,0 +1,71 @@
+# Camps and genocide crisis AI strategy package.
+# Decision weights in genocide_crisis_decisions.txt drive site construction and
+# crisis actions; these strategies adjust broad behavior once the system exists.
+
+@GENOCIDE_AI_ACTIVE_BUILD_ARMY = 35
+@GENOCIDE_AI_EXPOSED_AVOID_WARS = 80
+@GENOCIDE_AI_SANCTIONED_BUILD_ARMY = 60
+@GENOCIDE_AI_JAP_INFANTRY_MIN_FACTORIES = 3
+@GENOCIDE_AI_SOV_INFANTRY_MIN_FACTORIES = 3
+
+genocide_crisis_active_regime_runtime = {
+	allowed = { always = yes }
+	enable = {
+		genocide_country_has_crisis = yes
+		OR = {
+			original_tag = GER
+			original_tag = JAP
+			original_tag = SOV
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @GENOCIDE_AI_ACTIVE_BUILD_ARMY
+	}
+}
+
+genocide_crisis_exposed_regime_runtime = {
+	allowed = { always = yes }
+	enable = {
+		genocide_country_has_discovered_sites = yes
+		genocide_country_condemnation_75 = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @GENOCIDE_AI_EXPOSED_AVOID_WARS
+	}
+	ai_strategy = {
+		type = build_army
+		value = @GENOCIDE_AI_SANCTIONED_BUILD_ARMY
+	}
+}
+
+genocide_crisis_japan_occupation_runtime = {
+	allowed = { always = yes }
+	enable = {
+		original_tag = JAP
+		genocide_country_has_crisis = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = infantry_equipment
+		value = @GENOCIDE_AI_JAP_INFANTRY_MIN_FACTORIES
+	}
+}
+
+genocide_crisis_soviet_repression_runtime = {
+	allowed = { always = yes }
+	enable = {
+		original_tag = SOV
+		genocide_country_has_crisis = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = infantry_equipment
+		value = @GENOCIDE_AI_SOV_INFANTRY_MIN_FACTORIES
+	}
+}
