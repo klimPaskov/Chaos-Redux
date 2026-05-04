@@ -62,8 +62,6 @@ If vanilla examples are insufficient or unclear, you are allowed to inspect well
 - You may read Kaiserreich files to understand how similar systems are implemented when vanilla does not provide a clear or complete example.
 - You may read other mod files as well (for example Kaiserredux 2076426030), if you don't find what you are looking for inside Kaiserreich.
 
----
-
 ## 1. Coding Style
 
 Clausewitz script is picky. Follow these rules strictly.
@@ -179,8 +177,6 @@ add_equipment_to_stockpile = {
 
 This gives 10 units of `artillery_equipment_2`.
 
----
-
 ## 2. Localisation and UI
 
 Localisation and UI must always be kept in sync with gameplay changes.
@@ -197,8 +193,6 @@ Localisation and UI must always be kept in sync with gameplay changes.
    - Copy placeholder sprites from vanilla files that match the new gfx definition, so later I can replace them with real sprites easily and that the game would run without complaining about missing sprites.
    - Register new UI assets before requesting art so filenames do not need to change later.
 
----
-
 ## 3. Naming and Prefix Rules
 
 Use prefixes only where they are needed.
@@ -207,8 +201,6 @@ Add prefixes if a folder is dedicated to Chaos Redux files that all share the pr
 Prefer short, descriptive names that reflect function and scope.
 
 Unnecessary prefixes make code harder to read and maintain. Keep names clean.
-
----
 
 ## 4. HOI4 Modding Rules Summary
 
@@ -236,8 +228,6 @@ When implementing any new mechanic, follow this checklist:
 Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
 If this checklist cannot be satisfied, stop and request more design input instead of guessing.
 
----
-
 ## 5. Event Integration
 
 For Chaos Redux event implementation, use the repo skill `chaos-redux-events`.
@@ -246,3 +236,32 @@ For Chaos Redux event implementation, use the repo skill `chaos-redux-events`.
 2. Wire event script, category registration, auto-firing, localisation/name mappings, event log actor mapping, and event details window content together in the same change.
 3. If the event has evolutions or world-end branches, wire the log entries, super-event integration, and related localisation in the same change.
 4. Keep gameplay files, docs, the event spreadsheet/presentation, and any other details aligned.
+
+## 6. Agent-generated visual assets
+
+When the user explicitly asks to create final visual assets, use the `chaos-redux-event-assets` skill.
+
+Use Codex’s official built-in `image_gen` tool for image generation by default.
+
+Rules:
+
+1. Use `image_gen` for the base artwork.
+2. Do not create core artwork with Python, simple shapes, contact sheets, or layout-only mockups.
+3. Python or scripts may be used after generation for cropping, resizing, organizing, contact sheets, manifests, and DDS conversion.
+4. Convert final generated PNG assets to DDS 32 bit unsigned BGRB 8.8.8.8.
+5. Keep the source PNG, processed PNG preview, final DDS path, sprite name, intended use, and target size in an asset manifest.
+6. Move final DDS files into the correct mod folders and wire their sprite definitions in the same change.
+
+## 7. Skill Maintenance
+
+When a task reveals a repeated workflow, repeated mistake, or reusable process, use the `skill-creator` skill.
+
+Use OpenAI’s official `skill-creator` skill.
+
+Rules:
+
+1. Add only concise, specific rules supported by the task.
+2. Do not rewrite existing skills unless needed.
+3. Prefer updating an existing skill over creating a new one if the workflow already belongs there.
+4. Keep skills focused on one reusable workflow.
+5. Report which skills were used, created, or updated at the end of each task.
