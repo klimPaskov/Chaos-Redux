@@ -38,6 +38,7 @@ country_event = {
                 random_state = {
                     limit = { is_island_state = no state_population_k > 1000 NOT = { is_controlled_by = ZZZ } } # At least 1 million
                     save_event_target_as = zombie_state
+                    save_global_event_target_as = outbreak_state
                     transfer_state_to = ZZZ # Sets ZZZ owner of the state
                     add_core_of = ZZZ
                     ZZZ = {
@@ -185,6 +186,18 @@ country_event = {
     hidden = yes
 
     immediate = {
+        if = {
+            limit = {
+                NOT = { has_event_target = outbreak_state }
+                ZZZ = { any_owned_state = { is_capital = yes } }
+            }
+            ZZZ = {
+                random_owned_state = {
+                    limit = { is_capital = yes }
+                    save_global_event_target_as = outbreak_state
+                }
+            }
+        }
         set_global_flag = {
             flag = super_event_visible
             days = 30

@@ -4,18 +4,18 @@
 
 The Holy Realm is event ID 3 and remains registered as a fire-once Chaos Redux event. It transforms Tibet, or a Tibet-centered Himalayan country, into a full country path rather than a short event chain. The route starts as a mountain refuge, becomes a Bodhisattva-led state, creates the Arhat Administration, reaches the Buddha Mandate, and then commits to one of two main branch identities: Peaceful Holy Realm or Final Silence Holy Realm. Expansionism is a separate optional tree with its own pressure, letter, war-goal, and integration tools, not a third main-branch identity.
 
-The temporary Holy Mandala scripted GUI is disabled until the replacement UI is redesigned. The current player-facing surface is the Holy Realm focus tree, decision categories, the built-in Vow and Final Silence balance of power, event choices, event log entries, super events, national spirits, achievements, and localisation. The four Holy Realm values are still live country variables and continue to drive focuses, decisions, AI, final warning logic, and event text:
+The current player-facing surface is the Holy Realm focus tree, decision categories, the compact Holy Mandala decision-category summary, the dedicated Bodhisattva category, the built-in Vow and Final Silence balance of power, event choices, event log entries, super events, national spirits, achievements, and localisation. The four Holy Realm values are live country variables and drive focuses, decisions, AI, final warning logic, and event text:
 
 - Spiritual Legitimacy
 - Compassion Drift
 - Mandala Reach
-- Sealed Ledger or Final Silence Pressure, depending on stage and warning state
+- Final Silence Pressure
 
 ## Flow
 
 1. `chaosx.nr3.1` redirects the event to Tibet if possible, otherwise to a Tibet-centered eligible country.
 2. `chaosx.nr3.2` offers the spec formation choices: leave the monastery outside government, invite the figure into government, restrict the gatherings, or proclaim the mandate immediately.
-3. A formed Realm sets cosmetic tag `THR`, loads `THR_focus`, initializes counters, records the refuge evolution, opens decisions, and broadcasts an ambiguous refuge news item.
+3. A formed Realm sets cosmetic tag `THR`, loads `THR_focus`, initializes counters, adds immediate Holy Realm cores on Bhutan and Nepal, records the refuge evolution, opens decisions, and broadcasts an ambiguous refuge news item.
 4. Refuge policy is remembered through `chaosx.nr3.4`: open roads, register names, or close passes.
 5. Bhutan, Nepal, and Tibet can receive a Himalayan unity invitation through `chaosx.nr3.3`.
 6. The focus tree drives the major stages. Evolutions are gates: they record that a spiritual or political stage has been reached, unlock the next focus path, and alter later text and AI willingness. Heavy mechanics are attached to focuses, decisions, and event choices inside those paths rather than to the evolution setter itself.
@@ -37,7 +37,7 @@ The Holy Realm extends existing Chaos Redux systems rather than creating paralle
 
 - Chaos Meter: early refuge, mercy, mediation, restrained Arhat, and renunciation content can reduce chaos modestly through `add_chaos_meter_value`; administrative control, coercive pacification, Divine Sovereignty, final warnings, Mandala Break, and Final Silence raise chaos. Stage unlock effects do not add chaos by themselves.
 - Evolutions: milestones record to the shared event-log evolution pipeline as evolution type `3` and act as focus-path gates. If a Holy Realm evolution is disabled from the event-details UI, the matching focus path is treated as unlocked without requiring that stage log.
-- Focus tags: every Holy Realm focus has a `# THR FOCUS TAGS:` comment with area, tone, chaos requirement, system, and path-role metadata for audits.
+- Focus tags: every Holy Realm focus has a `# THR FOCUS TAGS:` comment with area, tone, chaos requirement, system, and path-role metadata for audits. The focus tree also exposes custom sorting filters for Holy Realm Peace, Final Silence Pressure, and Mandala Integration.
 - Event logs: event ID 3 has a dedicated event-detail description and six Holy Realm evolution preview entries covering Mountain Refuge, Bodhisattva, Arhat Administration, Buddha Mandate, Divine Sovereignty, and Final Doctrine path gates. The evolution list row shows the short evolution name and chaos tier; the detailed panes keep the evolution stage.
 - Super events: values `7`, `8`, `9`, `10`, and `11` display Buddha Mandate, Final Silence, thermonuclear Final Silence, Mandala Breaks, and Divine Sovereignty.
 - World-end scenarios: Final Silence sets `world_end` and `world_end_final_silence`; interruption sets `world_end_final_silence_interrupted` and clears the active world-end flag.
@@ -55,12 +55,12 @@ The Holy Realm extends existing Chaos Redux systems rather than creating paralle
 
 ## Interactive Values
 
-The Holy Mandala Ledger category description is a colored dashboard summary instead of a wall of explanations. The detailed mechanics are hoverable read-only value rows:
+The Holy Mandala category uses a compact scripted GUI instead of a separate dashboard. It shows the three core values, Bodhisattva bhumi, colored Chaos value, and Final Silence Pressure without adding a duplicate title or direct warning labels. The detailed mechanics are hoverable read-only value rows:
 
 - `THR_status_spiritual_legitimacy` explains how Spiritual Legitimacy affects stage text, peaceful AI, Arhat legitimacy, and non-final authority.
 - `THR_status_compassion_drift` explains mercy versus coercive drift, event text changes, dangerous AI willingness, and final pressure interactions.
 - `THR_status_mandala_reach` explains diplomacy, peace letters, regional integration, Chinese registers, and Ministry of Release reach gates.
-- `THR_status_sealed_ledger` explains Sealed Ledger or Final Silence Pressure, the `45/55/65/75` preparation thresholds, and the hard launch gates.
+- `THR_status_sealed_ledger` displays Final Silence Pressure, the `45/55/65/75` preparation thresholds, and the hard launch gates.
 
 These rows are intentionally unavailable decisions so players can hover them without accidentally firing effects.
 
@@ -80,7 +80,7 @@ The Mandala of Nations is the peaceful faction route. Its goals are completed th
 
 Each act reduces chaos modestly and completes a visible faction goal that adds faction initiative and power projection. Additional countries joining the Mandala of Nations reduce chaos once per country.
 
-The Vow and Final Silence balance of power adds a second late-game management surface. It includes Political Power decisions for public vows, mercy councils, Bodhisattva council missions, sealed ledger readings, launch ledger sealing, silence-cell expansion, the White Mandala Oath, and the Empty Mandala Session. These decisions move the doctrine balance, alter Final Silence Pressure, alter Compassion Drift or Spiritual Legitimacy, and in some cases reduce or increase Chaos. The daily pulse is intentionally small so the balance creates pressure over time without replacing focus and decision choices.
+The Vow and Final Silence balance of power adds a second late-game management surface. It includes Political Power decisions for public vows, mercy councils, Bodhisattva council missions, lamp processions, lotus audits, outer-monastery reconciliation, sealed-name releases, sealed ledger readings, launch ledger sealing, silence-cell expansion, black ledger drills, silent transit codes, the Nuclear Sutra Committee, Last-Pass Watch, the White Mandala Oath, and the Empty Mandala Session. These decisions move the doctrine balance, alter Final Silence Pressure, alter Compassion Drift or Spiritual Legitimacy, and in some cases reduce or increase Chaos. The daily pulse is intentionally small so the balance creates pressure over time without replacing focus and decision choices.
 
 Expansion coring is progressive and direct:
 
@@ -161,7 +161,7 @@ Holy Realm achievements are registered in `common/achievements/chaos_redux_achie
 
 Holy Realm-specific sprite names are registered in `interface/003_holy_realm.gfx`, `interface/chaosx_achievements.gfx`, and `interface/chaosx_super_events.gfx`. Report-event, focus, idea, decision category, achievement, and super-event files use their normal Chaos Redux folders.
 
-The temporary Holy Mandala/Final Silence scripted GUI has been removed from load. The decision category keeps its custom category icon, but it no longer attaches a scripted GUI panel or map icon GUI until the replacement design and assets are ready. The old panel/ledger GUI file is intentionally not loaded, so no Holy Realm `has_state_flag` scripted-GUI scope checks remain active.
+The Holy Mandala scripted GUI is intentionally compact and attached only to the decision category. It does not replace the focus tree, the balance-of-power screen, or the Bodhisattva mission category.
 
 Imported package asset folders reserved for the later replacement UI:
 
@@ -194,9 +194,9 @@ The remaining Holy Realm focuses intentionally use unique vanilla/generic icons 
 
 Decision category icons:
 
-- `GFX_decision_category_holy_mandala`
-- `GFX_decision_category_final_ledger`
-- `GFX_decision_category_holy_doctrine_balance`
+- `GFX_decision_category_holy_mandala`: vanilla `gfx/interface/decisions/decision_category_generic_mountain_fortification.dds`
+- `GFX_decision_category_final_ledger`: `gfx/interface/decisions/holy_realm/decision_category_final_ledger.dds`
+- `GFX_decision_category_holy_doctrine_balance`: vanilla `gfx/interface/decisions/decision_category_generic_political_actions.dds`
 - vanilla `GFX_decision_category_generic_political_actions` for Letters of Peace and Authority
 - vanilla `GFX_faction_logo_generic_democratic` for the Mandala of Nations faction logo until custom faction art exists
 
@@ -209,7 +209,7 @@ Useful custom BoP icon replacements:
 
 - `bop_holy_realm_vow_against_annihilation.dds`: white lotus, open hand, or lamp over a sealed nuclear ledger.
 - `bop_holy_realm_final_silence.dds`: black ledger, closed mandala, pale launch seal, no gore.
-- `decision_category_holy_doctrine_balance.dds`: split mandala with white vow half and dark sealed-ledger half.
+- `decision_category_holy_doctrine_balance.dds`: optional custom split mandala with white vow half and dark sealed-ledger half.
 
 Decision icons:
 
@@ -278,11 +278,15 @@ Super-event art:
 
 Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The scripted GUI surface is disabled for now, so the player sees the Holy Realm through focus tree, decisions, events, super events, national spirits, achievements, and event log entries until the replacement UI is implemented.
 
+The Holy Mandala decision category includes routine actions for high-pass storehouses, relief caravans, civil-register scribes, snow-line signal posts, second refuge registration, Arhat road audits, and Mandala border courts. These decisions unlock from the existing focus and stage flags, and they move Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, local infrastructure, manpower, command resources, or foreign opinion instead of acting as simple flavour buttons.
+
+The Vow and Final Silence Balance of Power includes both Vow-leaning and Final-Silence-leaning choices before the final path is fully open. Guarded Silence Clause and Last-Resort Register provide small early pressure toward Final Silence without arming the final path. Peace decisions move the balance more slowly than before, so repeated doctrine work is needed to dominate the balance instead of one or two routine decisions ending the struggle.
+
 The former Mandala Panel package paths are not loaded while the scripted GUI is disabled. Use the replacement UI pass to reintroduce those assets under stable names after the new design is provided.
 
 Future visual interaction pass:
 
-- Put Spiritual Legitimacy, Compassion Drift, Mandala Reach, and Sealed Ledger values on individual hoverable bars with threshold markers at 45/55/60/65/70/75/90.
+- Put Spiritual Legitimacy, Compassion Drift, Mandala Reach, and Final Silence Pressure values on individual hoverable bars with threshold markers at 45/55/60/65/70/75/90.
 - Make the doctrine balance a central Vow-versus-Final-Silence slider with clickable decision buttons directly under each side.
 - Make Bodhisattva bhumi progression a ten-step vertical ladder; each step should reveal its Sanskrit name, current leader trait, next mission, and active country modifier.
 - Use map overlay icons for states under peace-letter demand, refused letters, Arhat administration, staged integration, and Final Silence marking.

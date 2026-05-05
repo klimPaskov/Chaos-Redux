@@ -2,6 +2,8 @@
 # COUNTRY SCOPE unless a block explicitly documents STATE SCOPE.
 # The system is self-scheduled from chaosx.nr1.20 instead of using another global monthly country sweep.
 
+@COMMUNISM_LOCAL_SUPPRESSION_DAYS = 90
+
 queue_communism_spread_maintenance = {
 	if = {
 		limit = {
@@ -403,6 +405,7 @@ reduce_communism_support_after_emergency = {
 
 apply_communism_local_intervention_payment = {
 	# COUNTRY SCOPE, with FROM as the targeted state.
+	FROM = { prepare_communism_local_intervention_costs = yes }
 	set_temp_variable = { communist_local_command_power_payment = FROM.communist_intervention_command_power_cost_negative }
 	add_command_power = communist_local_command_power_payment
 	set_temp_variable = { communist_local_manpower_payment = FROM.communist_intervention_manpower_cost_negative }
@@ -417,13 +420,14 @@ apply_communism_local_intervention_payment = {
 
 apply_communism_local_suppression = {
 	# STATE SCOPE
+	# Flag and dynamic-modifier duration fields reject script_constants here.
 	set_state_flag = {
 		flag = communist_local_suppression_active
-		days = constant:communism_spread_timing.local_suppression_days
+		days = 90
 	}
 	add_dynamic_modifier = {
 		modifier = communism_post_crackdown_scars
-		days = constant:communism_spread_timing.local_suppression_days
+		days = 90
 	}
 	refresh_communism_state_control_modifier = yes
 }
@@ -445,7 +449,7 @@ try_finish_communism_level_1_intervention = {
 		clear_communism_state_control = yes
 		add_dynamic_modifier = {
 			modifier = communism_post_crackdown_scars
-			days = constant:communism_spread_timing.crackdown_scars_days
+			days = 120
 		}
 	}
 	else = {
@@ -460,7 +464,7 @@ try_finish_communism_level_2_intervention = {
 		set_communism_state_control_level_1 = yes
 		add_dynamic_modifier = {
 			modifier = communism_post_crackdown_scars
-			days = constant:communism_spread_timing.crackdown_scars_days
+			days = 120
 		}
 	}
 	else = {
@@ -1584,7 +1588,7 @@ resolve_communist_emergency_without_uprising = {
 		clear_communism_state_control = yes
 		add_dynamic_modifier = {
 			modifier = communism_post_crackdown_scars
-			days = constant:communism_spread_timing.crackdown_scars_days
+			days = 120
 		}
 	}
 	every_owned_state = {
@@ -1594,7 +1598,7 @@ resolve_communist_emergency_without_uprising = {
 				clear_communism_state_control = yes
 				add_dynamic_modifier = {
 					modifier = communism_post_crackdown_scars
-					days = constant:communism_spread_timing.crackdown_scars_days
+					days = 120
 				}
 			}
 			35 = { set_communism_state_control_level_1 = yes }
@@ -1607,7 +1611,7 @@ resolve_communist_emergency_without_uprising = {
 				clear_communism_state_control = yes
 				add_dynamic_modifier = {
 					modifier = communism_post_crackdown_scars
-					days = constant:communism_spread_timing.crackdown_scars_days
+					days = 120
 				}
 			}
 			65 = { set_communism_state_control_level_2 = yes }
@@ -1668,9 +1672,17 @@ create_communist_emergency_uprising = {
 					clear_communism_state_control = yes
 				}
 			}
-			declare_war_on = {
-				target = event_target:communist_original_country
-				type = annex_everything
+			if = {
+				limit = { has_event_target = communist_original_country }
+				if = {
+					limit = {
+						event_target:communist_original_country = { exists = yes }
+					}
+					declare_war_on = {
+						target = event_target:communist_original_country
+						type = annex_everything
+					}
+				}
 			}
 		}
 		set_country_flag = fighting_communist_rebels
@@ -1723,9 +1735,17 @@ create_communist_local_breakaway = {
 					clear_communism_state_control = yes
 				}
 			}
-			declare_war_on = {
-				target = event_target:communist_original_country
-				type = annex_everything
+			if = {
+				limit = { has_event_target = communist_original_country }
+				if = {
+					limit = {
+						event_target:communist_original_country = { exists = yes }
+					}
+					declare_war_on = {
+						target = event_target:communist_original_country
+						type = annex_everything
+					}
+				}
 			}
 		}
 		set_country_flag = fighting_communist_rebels

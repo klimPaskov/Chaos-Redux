@@ -55,6 +55,133 @@ holy_realm_mandala_category = {
 		ai_will_do = { factor = 0 }
 	}
 
+	THR_repair_high_pass_storehouses = {
+		icon = generic_construction
+		cost = 40
+		days_remove = constant:holy_realm_decision.refuge_days
+		available = {
+			is_holy_realm_country = yes
+			OR = {
+				has_country_flag = holy_realm_focus_shelter_border_villages
+				has_country_flag = holy_realm_focus_guard_high_passes
+			}
+		}
+		visible = { is_holy_realm_country = yes }
+		complete_effect = {
+			random_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	THR_white_scarf_relief_caravans = {
+		icon = generic_welfare
+		cost = 55
+		days_remove = constant:holy_realm_decision.refuge_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_bodhisattva_path_unlocked = yes
+			OR = {
+				has_war = yes
+				check_variable = { global.chaos_meter_value > 200 }
+			}
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_bodhisattva_path_unlocked = yes
+		}
+		complete_effect = {
+			add_manpower = 45000
+			add_stability = 0.01
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	THR_mandala_ledger_scribes = {
+		icon = generic_political_discourse
+		cost = 50
+		days_remove = constant:holy_realm_decision.diplomacy_days
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_civil_register_review_unlocked
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_focus_rewrite_civil_register
+		}
+		complete_effect = {
+			add_political_power = 35
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = { factor = 1.5 }
+	}
+
+	THR_snow_line_signal_posts = {
+		icon = generic_army
+		cost = 65
+		days_remove = constant:holy_realm_decision.arhat_days
+		available = {
+			is_holy_realm_country = yes
+			OR = {
+				has_country_flag = holy_realm_focus_guard_high_passes
+				has_country_flag = holy_realm_focus_labs_snow_line
+			}
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_focus_guard_high_passes
+		}
+		complete_effect = {
+			add_command_power = 35
+			random_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+		ai_will_do = { factor = 1.5 }
+	}
+
+	THR_second_refuge_register = {
+		icon = generic_welfare
+		cost = 70
+		days_remove = constant:holy_realm_decision.refuge_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_bodhisattva_path_unlocked = yes
+			check_variable = { spiritual_legitimacy > 30 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_bodhisattva_path_unlocked = yes
+		}
+		complete_effect = {
+			add_manpower = 70000
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = { factor = 2 }
+	}
+
 	THR_open_refuge_roads = {
 		icon = generic_welfare
 		cost = constant:holy_realm_decision.refuge_commitment_cost
@@ -499,6 +626,37 @@ holy_realm_mandala_category = {
 		ai_will_do = { factor = 1 }
 	}
 
+	THR_arhat_road_audit = {
+		icon = generic_colonial_administration
+		cost = 85
+		days_remove = constant:holy_realm_decision.arhat_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_arhat_path_unlocked = yes
+			check_variable = { mandala_reach > 20 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_arhat_path_unlocked = yes
+		}
+		complete_effect = {
+			every_owned_state = {
+				limit = {
+					is_controlled_by = ROOT
+					NOT = { is_core_of = ROOT }
+				}
+				set_compliance = 50
+				set_resistance = 8
+			}
+			add_command_power = 20
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = { factor = 1.5 }
+	}
+
 	THR_send_quiet_envoys = {
 		icon = generic_political_discourse
 		cost = 45
@@ -533,6 +691,37 @@ holy_realm_mandala_category = {
 			}
 		}
 		ai_will_do = { factor = 2 }
+	}
+
+	THR_mandala_border_courts = {
+		icon = generic_political_address
+		cost = 90
+		days_remove = constant:holy_realm_decision.diplomacy_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+			check_variable = { mandala_reach > 45 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+		}
+		complete_effect = {
+			every_other_country = {
+				limit = {
+					exists = yes
+					NOT = { is_holy_realm_country = yes }
+				}
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = holy_realm_quiet_envoys_opinion
+				}
+			}
+			add_political_power = 25
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+		ai_will_do = { factor = 1.5 }
 	}
 
 	THR_offer_mediation_to_war_torn_state = {
@@ -1333,7 +1522,7 @@ holy_realm_doctrine_balance_category = {
 			set_country_flag = holy_realm_bop_public_vow_memory
 			add_power_balance_value = {
 				id = holy_realm_final_doctrine_balance
-				value = -0.12
+				value = -0.04
 				tooltip_side = holy_realm_vow_against_annihilation_side
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
@@ -1368,7 +1557,7 @@ holy_realm_doctrine_balance_category = {
 			set_country_flag = holy_realm_bop_mercy_council_memory
 			add_power_balance_value = {
 				id = holy_realm_final_doctrine_balance
-				value = -0.08
+				value = -0.03
 				tooltip_side = holy_realm_vow_against_annihilation_side
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
@@ -1406,7 +1595,7 @@ holy_realm_doctrine_balance_category = {
 			set_country_flag = holy_realm_bop_bodhisattva_council_memory
 			add_power_balance_value = {
 				id = holy_realm_final_doctrine_balance
-				value = -0.10
+				value = -0.04
 				tooltip_side = holy_realm_vow_against_annihilation_side
 			}
 			holy_realm_advance_bodhisattva_bhumi = yes
@@ -1414,6 +1603,188 @@ holy_realm_doctrine_balance_category = {
 			holy_realm_add_final_silence_pressure = yes
 		}
 		ai_will_do = { factor = 1.5 }
+	}
+
+	THR_bop_guarded_silence_clause = {
+		icon = generic_scorched_earth
+		cost = 55
+		days_remove = constant:holy_realm_decision.doctrine_days
+		available = {
+			is_holy_realm_country = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+		}
+		visible = { is_holy_realm_country = yes }
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.025
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = {
+			factor = 0.5
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > 650 }
+			}
+		}
+	}
+
+	THR_bop_last_resort_register = {
+		icon = generic_scorched_earth
+		cost = 70
+		days_remove = constant:holy_realm_decision.doctrine_days
+		available = {
+			is_holy_realm_country = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+			OR = {
+				check_variable = { global.chaos_meter_value > 250 }
+				check_variable = { mandala_reach > 15 }
+				check_variable = { compassion_drift > 15 }
+			}
+		}
+		visible = { is_holy_realm_country = yes }
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.03
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			add_command_power = 10
+		}
+		ai_will_do = {
+			factor = 0.4
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > 700 }
+			}
+		}
+	}
+
+	THR_bop_arhat_case_files = {
+		icon = generic_colonial_administration
+		cost = 80
+		days_remove = constant:holy_realm_decision.arhat_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_arhat_path_unlocked = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			OR = {
+				check_variable = { spiritual_legitimacy > 30 }
+				check_variable = { compassion_drift > 25 }
+			}
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_arhat_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.05
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			add_command_power = 20
+		}
+		ai_will_do = {
+			factor = 0.8
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > 600 }
+			}
+		}
+	}
+
+	THR_bop_border_silence_offices = {
+		icon = border_war
+		cost = 95
+		days_remove = constant:holy_realm_decision.diplomacy_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			check_variable = { mandala_reach > 35 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.06
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			add_war_support = 0.01
+		}
+		ai_will_do = {
+			factor = 0.7
+			modifier = {
+				factor = 2.5
+				check_variable = { global.chaos_meter_value > 700 }
+			}
+		}
+	}
+
+	THR_bop_forceful_mercy_precedent = {
+		icon = generic_scorched_earth
+		cost = 110
+		days_remove = constant:holy_realm_decision.doctrine_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			check_variable = { global.chaos_meter_value > 500 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.08
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.6
+			modifier = {
+				factor = 3
+				check_variable = { global.chaos_meter_value > 850 }
+			}
+		}
 	}
 
 	THR_bop_read_sealed_ledger = {
@@ -1539,7 +1910,7 @@ holy_realm_doctrine_balance_category = {
 			set_country_flag = holy_realm_bop_white_mandala_oath_memory
 			add_power_balance_value = {
 				id = holy_realm_final_doctrine_balance
-				value = -0.20
+				value = -0.08
 				tooltip_side = holy_realm_vow_against_annihilation_side
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
@@ -1594,6 +1965,248 @@ holy_realm_doctrine_balance_category = {
 				check_variable = { final_silence_pressure > 75 }
 			}
 		}
+	}
+
+	THR_bop_lamp_processions = {
+		icon = generic_protection
+		cost = 45
+		days_remove = constant:holy_realm_decision.doctrine_days
+		available = {
+			is_holy_realm_country = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+		}
+		visible = { is_holy_realm_country = yes }
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = -0.015
+				tooltip_side = holy_realm_vow_against_annihilation_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			add_stability = 0.01
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	THR_bop_open_lotus_audit = {
+		icon = generic_political_discourse
+		cost = 65
+		days_remove = constant:holy_realm_decision.doctrine_days
+		available = {
+			is_holy_realm_country = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+			check_variable = { final_silence_pressure > 15 }
+		}
+		visible = { is_holy_realm_country = yes }
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = -0.025
+				tooltip_side = holy_realm_vow_against_annihilation_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
+			holy_realm_add_final_silence_pressure = yes
+			add_political_power = 25
+		}
+		ai_will_do = {
+			factor = 1.5
+			modifier = {
+				factor = 2
+				holy_realm_final_doctrine_balance_leans_final = yes
+			}
+		}
+	}
+
+	THR_bop_reconcile_outer_monasteries = {
+		icon = generic_welfare
+		cost = 80
+		days_remove = constant:holy_realm_decision.diplomacy_days
+		available = {
+			is_holy_realm_country = yes
+			check_variable = { mandala_reach > 20 }
+		}
+		visible = { is_holy_realm_country = yes }
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = -0.03
+				tooltip_side = holy_realm_vow_against_annihilation_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = { factor = 1.5 }
+	}
+
+	THR_bop_release_sealed_names = {
+		icon = generic_welfare
+		cost = 110
+		days_remove = constant:holy_realm_decision.warning_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+			check_variable = { final_silence_pressure > 35 }
+			NOT = { has_country_flag = holy_realm_final_doctrine_armed }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = -0.05
+				tooltip_side = holy_realm_vow_against_annihilation_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			add_war_support = -0.02
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 2.5
+				holy_realm_final_doctrine_balance_leans_final = yes
+				check_variable = { global.chaos_meter_value < constant:holy_realm_chaos.final_silence_gate }
+			}
+		}
+	}
+
+	THR_bop_black_ledger_drills = {
+		icon = generic_scorched_earth
+		cost = 70
+		days_remove = constant:holy_realm_decision.warning_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.05
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			add_command_power = 25
+		}
+		ai_will_do = { factor = 0.7 }
+	}
+
+	THR_bop_silent_transit_codes = {
+		icon = generic_scorched_earth
+		cost = 95
+		days_remove = constant:holy_realm_decision.warning_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+			check_variable = { mandala_reach > 35 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.08
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			add_war_support = 0.02
+		}
+		ai_will_do = {
+			factor = 0.5
+			modifier = {
+				factor = 2
+				check_variable = { global.chaos_meter_value > 800 }
+			}
+		}
+	}
+
+	THR_bop_nuclear_sutra_committee = {
+		icon = generic_scorched_earth
+		cost = 130
+		days_remove = constant:holy_realm_decision.warning_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+			check_variable = { final_silence_pressure > 30 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.11
+				tooltip_side = holy_realm_final_silence_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			add_political_power = -25
+			add_command_power = 35
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.4
+			modifier = {
+				factor = 3
+				holy_realm_final_doctrine_balance_leans_final = yes
+				check_variable = { global.chaos_meter_value > 900 }
+			}
+		}
+	}
+
+	THR_bop_last_pass_watch = {
+		icon = generic_protection
+		cost = 90
+		days_remove = constant:holy_realm_decision.diplomacy_days
+		available = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+			check_variable = { spiritual_legitimacy > 45 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_final_path_unlocked = yes
+		}
+		complete_effect = {
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = -0.02
+				tooltip_side = holy_realm_vow_against_annihilation_side
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_final_silence_pressure = yes
+			add_command_power = 20
+			add_stability = 0.01
+		}
+		ai_will_do = { factor = 1.2 }
 	}
 }
 

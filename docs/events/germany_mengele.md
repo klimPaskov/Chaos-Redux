@@ -209,7 +209,7 @@ Registered leader portrait:
 - referenced in `interface/_scientists_portraits.gfx`
 - file path: `gfx/leaders/scientists/portrait_GER_perfect_aryan.dds`
 
-The portrait currently uses a vanilla unknown-leader placeholder. Replace it in place with final art; the GFX name and code references should remain unchanged.
+The portrait uses a vanilla German officer portrait copied into `gfx/leaders/scientists/portrait_GER_perfect_aryan.dds`. Dedicated final portrait art can replace that file in place; the GFX name and code references should remain unchanged.
 
 ## Future Plans
 

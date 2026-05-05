@@ -106,30 +106,28 @@ chaosx_communism_fight_category = {
 			OR = {
 				has_idea = communism_spread_idea
 				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
 			}
 		}
 
 		target_trigger = {
 			FROM = {
 				is_owned_by = ROOT
-				has_state_flag = communist_controlled_state
+				OR = {
+					has_state_flag = communist_controlled_state
+					has_state_flag = communist_control_level_1
+					has_state_flag = communist_control_level_2
+					has_state_flag = communist_control_level_3
+				}
 			}
 		}
 
 		custom_cost_trigger = {
-			command_power > FROM.communist_intervention_command_power_cost
-			has_manpower > FROM.communist_intervention_manpower_cost
-			has_equipment = {
-				infantry_equipment > FROM.communist_intervention_equipment_cost
-			}
+			always = yes
 		}
 
 		available = {
-			command_power > FROM.communist_intervention_command_power_cost
-			has_manpower > FROM.communist_intervention_manpower_cost
-			has_equipment = {
-				infantry_equipment > FROM.communist_intervention_equipment_cost
-			}
+			always = yes
 		}
 
 		visible = {
@@ -139,6 +137,7 @@ chaosx_communism_fight_category = {
 			OR = {
 				has_idea = communism_spread_idea
 				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
 			}
 		}
 
@@ -189,7 +188,7 @@ chaosx_communism_fight_category = {
 								clear_communism_state_control = yes
 								add_dynamic_modifier = {
 									modifier = communism_post_crackdown_scars
-									days = constant:communism_spread_timing.crackdown_scars_days
+									days = 120
 								}
 							}
 							country_event = { id = chaosx.nr1.6 }
@@ -324,7 +323,7 @@ chaosx_communism_fight_category = {
 			add_war_support = constant:communism_spread_emergency.war_support_loss
 			add_dynamic_modifier = {
 				modifier = communism_emergency_disruption
-				days = constant:communism_spread_timing.post_emergency_disruption_days
+				days = 150
 			}
 		}
 

@@ -615,19 +615,34 @@ Progression-state variants should use the same target size as the base asset.
 
 ## 24. DDS conversion
 
-Final PNG assets must be converted to:
+Final PNG assets must be converted with the repo wrapper:
 
 ```text
-DDS 32 bit unsigned BGRB 8.8.8.8
+.tools/convert_to_dds.py
 ```
 
-Use `tools/convert_to_dds.py` for DDS conversion.
+Use:
 
-The converter must produce DDS files using BGRA / `B8G8R8A8_UNORM`, equivalent to 32 bit unsigned BGRB 8.8.8.8 for Chaos Redux asset work.
+```bash
+python3 .tools/convert_to_dds.py \
+  --input <processed_png_path> \
+  --output <final_dds_path> \
+  --width <target_width> \
+  --height <target_height>
+```
 
-The default conversion command should use DirectXTex `texconv` through the wrapper script.
+Do not call DDS converters directly from event or asset tasks. Always use the wrapper so the command stays the same across machines.
 
-Do not call random DDS converters directly from event tasks. Use the wrapper so the workflow stays consistent.
+The wrapper is responsible for choosing the available backend on the current system.
+
+Backend expectations:
+
+- On WSL, the wrapper may use DirectXTex `texconv`, usually through a Windows `texconv.exe` path such as `TEXCONV_EXE` or `TEXCONV_PATH`.
+- On macOS, the wrapper may use its built-in pure Python DDS writer, or another explicitly configured backend if available.
+
+The output must be compatible with Chaos Redux’s expected 32-bit BGRA / B8G8R8A8-style DDS workflow.
+
+If conversion fails, stop and report the error. Do not invent another conversion route unless the user approves it.
 
 After conversion, confirm that:
 

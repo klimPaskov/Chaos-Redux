@@ -9,11 +9,12 @@
 5. [World End Scenario Mechanic](#world-end-scenario-mechanic)
 6. [Event Evolution and Event Logs](#event-evolution-and-event-logs)
 7. [Configuration and Settings](#configuration-and-settings)
-8. [Multiplayer Compatibility](#multiplayer-compatibility)
-9. [Debug and Monitoring](#debug-and-monitoring)
-10. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
-11. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
-12. [Chaos Warfare](#chaos-warfare)
+8. [Triggerable Scenarios](#triggerable-scenarios)
+9. [Multiplayer Compatibility](#multiplayer-compatibility)
+10. [Debug and Monitoring](#debug-and-monitoring)
+11. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
+12. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
+13. [Chaos Warfare](#chaos-warfare)
 
 ---
 
@@ -398,6 +399,21 @@ Any row in **History**, **Evolutions**, or **Events** can be clicked to open a s
 
 ---
 
+## Triggerable Scenarios
+
+The settings UI can open a separate movable Triggerable Scenarios window. This window uses generated log-style entries rather than hardcoded scenario buttons, and the list can be sorted by ID or name in either direction.
+
+Each scenario has a type control and a four-stop intensity slider. The selected values are stored before launch and are read by the scenario effects when the player presses **Launch Scenario**.
+
+Current entries:
+
+- **Zombie Apocalypse**: type controls outbreak structure, while intensity controls outbreak count, starting states, spawned divisions, and early pressure.
+- **Army of Mengele Clones**: type switches between the standard clone army and the stronger Aryan variant, while intensity controls starting territory, divisions, equipment, army strength, and pressure on neighboring countries.
+
+Detailed implementation notes live in `docs/systems/triggerable_scenarios.md`.
+
+---
+
 ## Multiplayer Compatibility
 
 ### Shared Systems
@@ -679,11 +695,15 @@ The system uses three state buildings:
 - `extermination_camp`: systematic killing and the highest discovery condemnation.
 - `gulag_labor_camp_network`: Soviet forced labor and mass repression.
 
-These buildings are created through decisions and effects rather than ordinary construction. This allows each affected state to store `genocide_responsible_country`, so discovery targets the country that built or operated the site instead of the country that finds it.
+Concentration camps are available in the normal construction interface at a low construction cost. Historical Germany, Japan, and the Soviet Union can begin with quiet concentration camp infrastructure already present, but those sites do not enter the active death, leak, or discovery loop until later escalation. Extermination camps and gulag networks are created through decisions and effects. Scripted creation stores `genocide_responsible_country` on the state, so discovery targets the country that built or operated the site instead of the country that finds it.
 
 ### Crisis Decisions and AI
 
-The generic crisis category covers camp expansion, deportations, evidence hiding, report suppression, train diversion, sabotage crackdowns, refugee pressure, military objections, evidence destruction, and post-liberation cover-up attempts.
+The generic crisis category covers upgrades from existing concentration camps into extermination camps. It is the lowest-priority decision category and appears only when a country has an eligible existing camp and an actual special decision available beyond the show/hide controls.
+
+The generic category no longer builds concentration camps by decision. Most operational genocide behavior is AI-driven or handled by country-specific categories, while the player-facing generic category reveals or hides only the eligible extermination-camp upgrade decision.
+
+Foreign-observer evidence pressure depends on context: occupied foreign territory, non-core target populations, diplomatic visibility, leaks, or discoveries. Domestic repression inside a closed authoritarian state does not automatically create foreign-observer pressure.
 
 Country-specific categories handle:
 
