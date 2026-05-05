@@ -20,6 +20,7 @@
 @GENOCIDE_COVERUP_COOLDOWN_DAYS = 120
 @GENOCIDE_EVENT_SHORT_DELAY_DAYS = 1
 @GENOCIDE_EVENT_MEDIUM_DELAY_DAYS = 2
+@GENOCIDE_HISTORICAL_FLAVOR_DELAY_DAYS = 180
 @GENOCIDE_EVENT_NEIGHBOR_DELAY_DAYS = 3
 @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS = 6
 @GENOCIDE_DISCOVERY_RESPONSIBLE_DELAY_HOURS = 8
@@ -41,6 +42,10 @@ genocide_initialize_country_variables = {
 	if = { limit = { NOT = { has_variable = genocide_decisions_taken } } set_variable = { genocide_decisions_taken = 0 } }
 	if = { limit = { NOT = { has_variable = genocide_tribunal_severity } } set_variable = { genocide_tribunal_severity = 0 } }
 	if = { limit = { NOT = { has_variable = genocide_camp_administration_strength } } set_variable = { genocide_camp_administration_strength = 0 } }
+	if = {
+		limit = { is_ai = yes }
+		set_country_flag = genocide_decisions_visible
+	}
 }
 
 genocide_activate_crisis = {
@@ -108,6 +113,30 @@ genocide_track_state_for_monthly_pulse = {
 			array = global.genocide_active_camp_states
 			value = THIS
 		}
+	}
+}
+
+genocide_add_historical_quiet_concentration_camp = {
+	set_state_flag = genocide_historical_quiet_camp
+	set_state_flag = genocide_historical_administrative_footprint
+	if = {
+		limit = { NOT = { concentration_camp > 0 } }
+		add_building_construction = {
+			type = concentration_camp
+			level = 1
+			instant_build = yes
+		}
+	}
+}
+
+genocide_queue_historical_camp_flavor_event = {
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_country_flag = genocide_historical_camp_flavor_seen }
+		}
+		set_country_flag = genocide_historical_camp_flavor_seen
+		country_event = { id = chaosx_genocide.40 days = @GENOCIDE_HISTORICAL_FLAVOR_DELAY_DAYS }
 	}
 }
 
@@ -282,6 +311,7 @@ genocide_register_extermination_site_for_root = {
 	set_state_flag = genocide_site_has_responsible_country
 	set_state_flag = genocide_extermination_site
 	set_state_flag = genocide_atrocity_site_known_to_regime
+	clr_state_flag = genocide_historical_quiet_camp
 	genocide_track_state_for_monthly_pulse = yes
 	if = {
 		limit = { NOT = { extermination_camp > 0 } }
@@ -513,12 +543,14 @@ genocide_register_constructed_concentration_camps = {
 			any_controlled_state = {
 				concentration_camp > 0
 				NOT = { has_state_flag = genocide_concentration_site }
+				NOT = { has_state_flag = genocide_historical_quiet_camp }
 			}
 		}
 		every_controlled_state = {
 			limit = {
 				concentration_camp > 0
 				NOT = { has_state_flag = genocide_concentration_site }
+				NOT = { has_state_flag = genocide_historical_quiet_camp }
 			}
 			genocide_register_concentration_site_for_root = yes
 		}
@@ -1202,7 +1234,7 @@ genocide_initialize_historical_german_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_dachau_area
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
 		64 = {
@@ -1210,7 +1242,7 @@ genocide_initialize_historical_german_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_sachsenhausen_area
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
 		60 = {
@@ -1218,9 +1250,10 @@ genocide_initialize_historical_german_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_buchenwald_area
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
+		genocide_queue_historical_camp_flavor_event = yes
 	}
 }
 
@@ -1236,7 +1269,7 @@ genocide_initialize_historical_japanese_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_manchurian_forced_labor
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
 		611 = {
@@ -1244,9 +1277,10 @@ genocide_initialize_historical_japanese_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_north_china_forced_labor
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
+		genocide_queue_historical_camp_flavor_event = yes
 	}
 }
 
@@ -1262,7 +1296,7 @@ genocide_initialize_historical_soviet_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_kolyma_gulag
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
 		874 = {
@@ -1270,7 +1304,7 @@ genocide_initialize_historical_soviet_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_magadan_gulag
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
 		881 = {
@@ -1278,9 +1312,10 @@ genocide_initialize_historical_soviet_sites = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
 				set_state_flag = genocide_historical_site_initialized
 				set_state_flag = genocide_historical_karagandy_labor_camp
-				set_state_flag = genocide_historical_administrative_footprint
+				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
+		genocide_queue_historical_camp_flavor_event = yes
 	}
 }
 

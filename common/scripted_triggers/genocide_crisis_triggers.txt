@@ -175,6 +175,21 @@ genocide_country_can_unlock_extermination_camps = {
 	}
 }
 
+genocide_country_has_extermination_upgrade_target = {
+	NOT = { original_tag = SOV }
+	genocide_country_can_unlock_extermination_camps = yes
+	NOT = {
+		AND = {
+			original_tag = GER
+			NOT = { germany_controls_auschwitz_area = yes }
+		}
+	}
+	any_controlled_state = {
+		concentration_camp > 0
+		NOT = { extermination_camp > 0 }
+	}
+}
+
 genocide_country_should_use_camp_construction = {
 	OR = {
 		is_ai = no

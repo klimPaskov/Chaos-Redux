@@ -7,6 +7,9 @@
 @GENOCIDE_AI_SANCTIONED_BUILD_ARMY = 60
 @GENOCIDE_AI_JAP_INFANTRY_MIN_FACTORIES = 3
 @GENOCIDE_AI_SOV_INFANTRY_MIN_FACTORIES = 3
+@GENOCIDE_AI_EARLY_CAMP_BUILDING = 12
+@GENOCIDE_AI_WARTIME_CAMP_BUILDING = 32
+@GENOCIDE_AI_OCCUPATION_CAMP_BUILDING = 48
 
 genocide_crisis_active_regime_runtime = {
 	allowed = { always = yes }
@@ -22,6 +25,126 @@ genocide_crisis_active_regime_runtime = {
 	ai_strategy = {
 		type = build_army
 		value = @GENOCIDE_AI_ACTIVE_BUILD_ARMY
+	}
+}
+
+genocide_crisis_limited_prewar_camp_construction = {
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		OR = {
+			has_government = fascism
+			has_government = communism
+			has_doctrine = extermination_columns
+			has_completed_subdoctrine = extermination_columns
+		}
+		NOT = {
+			any_controlled_state = {
+				count = 3
+				concentration_camp > 0
+			}
+		}
+		OR = {
+			NOT = { original_tag = GER }
+			date < 1939.1.1
+		}
+		OR = {
+			has_country_flag = genocide_crisis_active
+			check_variable = { genocide_escalation > 0 }
+			has_war = yes
+			original_tag = GER
+			original_tag = JAP
+			original_tag = SOV
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = concentration_camp
+		value = @GENOCIDE_AI_EARLY_CAMP_BUILDING
+	}
+}
+
+genocide_crisis_wartime_camp_construction = {
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		has_war = yes
+		OR = {
+			has_government = fascism
+			has_government = communism
+			has_doctrine = extermination_columns
+			has_completed_subdoctrine = extermination_columns
+		}
+		NOT = {
+			any_controlled_state = {
+				count = 8
+				concentration_camp > 0
+			}
+		}
+		NOT = {
+			AND = {
+				original_tag = GER
+				date < 1939.1.1
+				any_controlled_state = {
+					count = 3
+					concentration_camp > 0
+				}
+			}
+		}
+		OR = {
+			has_country_flag = genocide_crisis_active
+			check_variable = { genocide_escalation > 0 }
+			check_variable = { hidden_atrocity_score > 0 }
+			original_tag = JAP
+			original_tag = SOV
+			AND = {
+				original_tag = GER
+				date > 1938.12.31
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = concentration_camp
+		value = @GENOCIDE_AI_WARTIME_CAMP_BUILDING
+	}
+}
+
+genocide_crisis_occupied_territory_camp_construction = {
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		has_war = yes
+		OR = {
+			has_government = fascism
+			has_government = communism
+			has_doctrine = extermination_columns
+			has_completed_subdoctrine = extermination_columns
+		}
+		any_controlled_state = {
+			NOT = { is_core_of = ROOT }
+			NOT = { concentration_camp > 0 }
+		}
+		NOT = {
+			any_controlled_state = {
+				count = 12
+				concentration_camp > 0
+			}
+		}
+		NOT = {
+			AND = {
+				original_tag = GER
+				date < 1939.1.1
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = concentration_camp
+		value = @GENOCIDE_AI_OCCUPATION_CAMP_BUILDING
 	}
 }
 

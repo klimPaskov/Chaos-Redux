@@ -26,6 +26,33 @@ scripted_gui = {
         }
     }
 
+    chaosx_event_system_toggle_shortcut_gui = {
+        window_name = "chaosx_event_system_toggle_shortcut_container"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            always = yes
+        }
+
+        effects = {
+            event_system_toggle_shortcut_button_click = {
+                toggle_event_system = yes
+                initialize_welcome_screen_values = yes
+            }
+        }
+
+        triggers = {
+            event_system_toggle_shortcut_button_click_enabled = {
+                always = yes
+            }
+        }
+
+        ai_enabled = {
+            always = no
+        }
+    }
+
     chaosx_settings_gui = {
         window_name = "chaosx_settings_window"
         context_type = player_context
@@ -2320,20 +2347,48 @@ scripted_gui = {
                 close_chaosx_scenarios = yes
             }
 
-            scenario_zombie_entry_click = {
-                select_triggerable_scenario_zombie = yes
+            scenario_entry_open_details_button_click = {
+                set_variable = { triggerable_scenarios_selected = global.triggerable_scenario_view_ids^triggerable_scenario_entry_index }
             }
 
-            scenario_clones_entry_click = {
-                select_triggerable_scenario_clones = yes
+            scenario_sort_prev_button_click = {
+                triggerable_scenario_sort_previous = yes
             }
 
-            scenario_intensity_prev_button_click = {
+            scenario_sort_next_button_click = {
+                triggerable_scenario_sort_next = yes
+            }
+
+            scenario_sort_order_prev_button_click = {
+                triggerable_scenario_toggle_sort_order = yes
+            }
+
+            scenario_sort_order_next_button_click = {
+                triggerable_scenario_toggle_sort_order = yes
+            }
+
+            scenario_intensity_left_arrow_click = {
                 triggerable_scenario_intensity_previous = yes
             }
 
-            scenario_intensity_next_button_click = {
+            scenario_intensity_right_arrow_click = {
                 triggerable_scenario_intensity_next = yes
+            }
+
+            scenario_intensity_stop_low_click = {
+                set_triggerable_scenario_intensity_low = yes
+            }
+
+            scenario_intensity_stop_medium_click = {
+                set_triggerable_scenario_intensity_medium = yes
+            }
+
+            scenario_intensity_stop_high_click = {
+                set_triggerable_scenario_intensity_high = yes
+            }
+
+            scenario_intensity_stop_maximum_click = {
+                set_triggerable_scenario_intensity_maximum = yes
             }
 
             scenario_type_prev_button_click = {
@@ -2345,13 +2400,137 @@ scripted_gui = {
             }
 
             scenario_trigger_button_click = {
-                trigger_selected_chaosx_scenario = yes
+                open_triggerable_scenario_confirmation = yes
             }
         }
 
         triggers = {
+            scenario_entry_open_details_button_click_enabled = {
+                always = yes
+            }
+
+            scenario_sort_prev_button_click_enabled = {
+                always = yes
+            }
+
+            scenario_sort_next_button_click_enabled = {
+                always = yes
+            }
+
+            scenario_sort_order_prev_button_click_enabled = {
+                always = yes
+            }
+
+            scenario_sort_order_next_button_click_enabled = {
+                always = yes
+            }
+
+            scenario_intensity_left_arrow_click_enabled = {
+                always = yes
+            }
+
+            scenario_intensity_right_arrow_click_enabled = {
+                always = yes
+            }
+
+            scenario_intensity_stop_low_click_enabled = {
+                always = yes
+            }
+
+            scenario_intensity_stop_medium_click_enabled = {
+                always = yes
+            }
+
+            scenario_intensity_stop_high_click_enabled = {
+                always = yes
+            }
+
+            scenario_intensity_stop_maximum_click_enabled = {
+                always = yes
+            }
+
+            scenario_type_prev_button_click_enabled = {
+                always = yes
+            }
+
+            scenario_type_next_button_click_enabled = {
+                always = yes
+            }
+
             scenario_trigger_button_click_enabled = {
                 triggerable_scenario_can_launch_selected = yes
+            }
+
+            scenario_intensity_slider_knob_low_visible = {
+                has_country_flag = chaosx_scenarios_open
+                check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+            }
+
+            scenario_intensity_slider_knob_medium_visible = {
+                has_country_flag = chaosx_scenarios_open
+                check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+            }
+
+            scenario_intensity_slider_knob_high_visible = {
+                has_country_flag = chaosx_scenarios_open
+                check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+            }
+
+            scenario_intensity_slider_knob_maximum_visible = {
+                has_country_flag = chaosx_scenarios_open
+                check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+            }
+        }
+
+        dynamic_lists = {
+            scenario_list_dynamic_list = {
+                array = global.triggerable_scenario_view_ids
+                value = triggerable_scenario_entry_id
+                index = triggerable_scenario_entry_index
+                entry_container = "triggerable_scenario_entry_generic"
+            }
+        }
+
+        ai_enabled = {
+            always = no
+        }
+    }
+
+    chaosx_scenario_confirmation_gui = {
+        window_name = "chaosx_scenario_confirm_window"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            has_country_flag = chaosx_scenario_confirm_open
+        }
+
+        effects = {
+            scenario_confirm_launch_button_click = {
+                close_triggerable_scenario_confirmation = yes
+                trigger_selected_chaosx_scenario = yes
+            }
+
+            scenario_confirm_cancel_button_click = {
+                close_triggerable_scenario_confirmation = yes
+            }
+
+            scenario_confirm_close_button_click = {
+                close_triggerable_scenario_confirmation = yes
+            }
+        }
+
+        triggers = {
+            scenario_confirm_launch_button_click_enabled = {
+                triggerable_scenario_can_launch_selected = yes
+            }
+
+            scenario_confirm_cancel_button_click_enabled = {
+                always = yes
+            }
+
+            scenario_confirm_close_button_click_enabled = {
+                always = yes
             }
         }
 

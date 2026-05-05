@@ -123,11 +123,10 @@ A strong specification usually explores:
 - how AI countries react
 - how the event changes under different world conditions
 - whether the event should create focus tree content
-- whether the event should use a super-event
+- whether the event should use a super-event(s)
 - what UI or visual presentation would make it stronger
 - what other Chaos Redux systems it should interact with
 - what assets the event needs
-- what the coding agent needs to know before implementation
 
 When exploring these areas, do not stop at the first obvious answer. Consider multiple possible versions of the event, then choose or describe the strongest ones.
 
@@ -153,6 +152,12 @@ Possible links include:
 - biological warfare
 - world threats
 - existing or planned events
+
+Mention only direct, non-obvious, or event-specific integrations.
+
+Do not explain automatic HOI4 or Chaos Redux behavior that will happen without special event work. For example, do not say that a war feeds world tension, that normal combat creates casualties, or that existing global systems react to their usual inputs unless the event must add special wiring.
+
+For event clusters, use plain wording. State which cluster the event belongs to and any secondary connection if useful. Do not add vague cluster-purpose phrasing unless the cluster membership changes mechanics, visibility, weighting, or event log behavior.
 
 Leave out connections that feel artificial.
 
@@ -235,16 +240,34 @@ The event spec should provide enough direction for `chaos-redux-super-events` to
 
 Write in a serious, direct, grounded HOI4 style.
 
+The specification should be concise by default. Depth means useful design decisions, not more words.
+
 Avoid:
 
 - generic disaster wording
 - empty dramatic language
+- vague purpose lines
+- word salad
 - making every event apocalyptic
 - random chaos without purpose
 - implementation code
 - excessive technical detail
+- repeating facts already obvious
+- explaining automatic vanilla or existing Chaos Redux behavior
 
-Mention implementation only where it matters for the design, such as super-event treatment, custom UI, AI behavior, documentation, assets, or important system connections.
+Do not use filler phrases such as:
+
+- source of global instability
+- raises the stakes
+- deepens the chaos
+- creates a layered experience
+- adds more depth
+- the world descends further
+- tension spreads across the globe
+
+Replace vague explanation with direct event rules. Say what happens, who is affected, what changes, and what the coding agent must implement.
+
+Mention implementation only where it matters for the design, such as custom UI, AI behavior, documentation, assets, or important system connections.
 
 ## 11. Specification shape
 
@@ -253,6 +276,83 @@ Do not force the specification into a fixed template.
 Choose the structure that best fits the event idea.
 
 The specification should still be easy for a coding agent to use. Use clear headings, explain the logic in a natural order, and make sure the important design decisions are not buried.
+
+### 11.1 No spreadsheet metadata block
+
+Do not start the specification with a metadata block that repeats spreadsheet fields.
+
+Avoid blocks like:
+
+```markdown
+- **Event ID:** ...
+- **Event name:** ...
+- **Type:** ...
+- **Status:** ...
+- **Cluster:** ...
+- **Event availability:** ...
+- **Evolution track:** ...
+```
+
+The filename, title, spreadsheet row, and implementation prompt can carry those facts. The specification should begin with the actual event design.
+
+If a spreadsheet field needs clarification, mention it in the relevant section only. For example, if an event is available from the start but its cluster appears later, explain that where availability or cluster behavior is discussed.
+
+### 11.2 No negative feature inventory
+
+Do not list things the event does not have.
+
+Avoid sections or bullets such as:
+
+- no custom GUI
+- no decisions
+- no focus tree
+- no super-event
+- no world-end branch
+
+If the spec does not mention a feature, the coding agent should assume it is not part of the design.
+
+Only mention an excluded feature when it prevents a likely implementation mistake or corrects a user request.
+
+### 11.3 No obvious system restatement
+
+Do not include lines that only describe automatic game behavior.
+
+Avoid saying that:
+
+- wars increase world tension through normal gameplay
+- normal combat can create deaths
+- existing systems react to their normal inputs
+- standard event registration needs to happen unless a special rule is needed
+
+Mention a system only when the event adds special logic, changes weighting, creates a new variable, writes to a log, overrides normal behavior, gates content, or requires careful exclusion handling.
+
+### 11.4 Plain cluster wording
+
+Cluster sections should be plain.
+
+Use direct wording such as:
+
+```markdown
+This event belongs in the X cluster.
+```
+
+If there is a secondary connection, state it directly. Do not add abstract justification unless it affects gameplay, visibility, weighting, or documentation.
+
+### 11.5 Direct sections
+
+Every section should answer an implementation question. Useful sections often cover:
+
+- when the event can fire
+- who can be selected
+- what the event does
+- what options exist
+- how evolutions change behavior
+- AI behavior
+- cooldowns and exclusions
+- event log text needs
+- assets that are actually needed
+
+Remove sections that only restate theme, identity, or mood without changing design or implementation.
 
 ## 12. Depth and continuation
 
@@ -271,6 +371,8 @@ Do not summarize later sections just because the current response is getting lon
 For major events, the final combined specification may be extremely long. That is acceptable. A 10,000+ line specification is valid if the event truly needs that much design detail.
 
 Avoid filler. Every section should add useful design, player-facing detail, implementation clarity, asset direction, or system connection.
+
+Small events should stay small when the idea does not justify more. A compact event can still have evolutions, variants, cooldowns, and clear AI behavior without becoming a major system.
 
 ## 13. Asset planning
 
@@ -318,7 +420,9 @@ The asset prompt must state the correct source mode where relevant.
 
 Use `chaos-redux-event-assets` rules for source selection. For example, symbolic icons usually use `image_gen`, while news event images, report event images, super-event images, and real leader portraits use sourced images unless the user explicitly asks otherwise.
 
-Do not make the asset prompt vague.
+For generic events, prefer existing vanilla HOI4 or existing Chaos Redux images when they fit. Do not require new assets only to make the asset list look complete.
+
+Do not make the asset prompt vague. Do not include assets that the event does not need.
 
 ## 15. HOI4 asset size reference
 
@@ -444,3 +548,5 @@ The prompt must tell the coding agent to:
 - report anything that cannot be implemented cleanly
 - keep iterating until the full spec is implemented
 - avoid fallbacks, simplifications, temporary versions, and good-enough approximations
+
+The coding-agent prompt should follow the same concise rules as the spec. Do not add negative feature lists or obvious automatic-system explanations unless they are needed to prevent a likely implementation mistake.
