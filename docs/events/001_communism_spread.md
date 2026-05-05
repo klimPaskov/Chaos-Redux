@@ -55,9 +55,9 @@ The system does not rely on the old monthly on-action updater anymore. Each affe
 
 State control uses three levels:
 
-- Level 1, `communism_control_level_1`: Agitation Zone. Mild factory, manpower, resources, supply, construction, and unrest penalties. Regular intervention can clear it.
-- Level 2, `communism_control_level_2`: Insurgent Stronghold. Stronger penalties and harder local intervention. It can be reduced or cleared, but failure can push it to Level 3.
-- Level 3, `communism_control_level_3`: Communist Lockdown. Severe penalties, blocked strategic redeployment, and a state-level demilitarized zone. Normal local intervention cannot clear it; emergency intervention is required. The demilitarized-zone status is only removed when this system clears the state control it added.
+- Level 1, `communism_control_level_1`: Agitation Zone. Mild factory, manpower, resources, supply, construction, and unrest penalties. Regular intervention can clear it, but can also only suppress or partially reduce it.
+- Level 2, `communism_control_level_2`: Insurgent Stronghold. Stronger penalties and harder local intervention. It usually needs multiple interventions and normally regresses to Level 1 after enough progress instead of clearing immediately.
+- Level 3, `communism_control_level_3`: Communist Lockdown. Severe penalties, blocked strategic redeployment, and a state-level demilitarized zone. Normal local intervention cannot clear it; it only suppresses the worst local effects. Emergency intervention, civil-war resolution, or stronger national mechanics are required. The demilitarized-zone status is only removed when this system clears the state control it added.
 
 The old weekly stability and weekly war support penalties were removed from the national idea. The old generic industry damage event was replaced by `chaosx.nr1.2`, which always targets a specific controlled state.
 
@@ -110,7 +110,7 @@ The rebel country receives a pool of templates covering worker militias, red gua
 - `common/scripted_triggers/001_communism_spread_triggers.txt`: reusable state-control availability triggers
 - `common/dynamic_modifiers/chaosx_dynamic_modifiers.txt`: national pressure, three state control levels, crackdown scars, worker ritual fear, and emergency disruption
 - `common/ideas/chaosx_ideas.txt`: simplified `communism_spread_idea`
-- `common/decisions/chaosx_communism_fight_decisions.txt`: national counter-agitation, state intervention, factory protection, and emergency intervention
+- `common/decisions/chaosx_communism_fight_decisions.txt`: national counter-agitation, one state-targeted local intervention per controlled state, and emergency intervention
 - `common/scripted_guis/chaosx_scripted_guis.txt`: decision-category dashboard registration
 - `common/scripted_localisation/chaosx_scripted_localisation.txt`: dashboard sprite, threat status, and state-control level text
 - `interface/chaosx_decisions.gui`: dashboard layout above the communism decisions
@@ -162,11 +162,10 @@ State-targeted intervention decisions reuse the Norwegian communist preparation 
 - two dots: Communist Insurgent Stronghold
 - three dots: Communist Lockdown
 
-The level icons in the dashboard have tooltips showing how many controlled states are currently in that level. The same dot treatment is used on the local intervention and factory protection state-targeted decisions so the player can distinguish control levels directly from the map decision icons. Controlled states also receive a passive state-map icon through `communism_control_state_mapicon_scripted_gui`, while intervention decisions use the engine's predefined yellow-style state outline color for hover highlights.
+The level icons in the dashboard have tooltips showing how many controlled states are currently in that level. The same dot treatment is used on the local intervention state-targeted decisions so the player can distinguish control levels directly from the map decision icons. Controlled states also receive a passive state-map icon through `communism_control_state_mapicon_scripted_gui`, while intervention decisions use the engine's predefined yellow-style state outline color for hover highlights.
 
 - `communism_national_counter_agitation`: national. Reduces communist party support by `2%` after a timed operation, costs command power, political power, and stability, and can trigger country-level defeat once no controlled states remain.
-- `communism_local_military_intervention`: state-targeted. Works only on Level 1 and Level 2 states. Costs and outcome risk scale by level.
-- `communism_factory_protection`: state-targeted. Reduces sabotage pressure in an industrial controlled state but does not clear communist control.
+- `communism_local_military_intervention`: state-targeted. One visible decision appears for each owned communist-controlled state. Its text, tooltip, icon, cost, and outcome risk scale by control level and duration. Level 1 can sometimes clear; Level 2 normally needs repeated progress and usually regresses to Level 1; Level 3 cannot be cleared by local intervention and can only be temporarily suppressed.
 - `communism_emergency_intervention`: national. Affects all controlled states and may trigger the custom uprising.
 
 The old generic military, industrial, propaganda, economic, and emergency suppression loop was removed from the active decision file.
@@ -185,11 +184,10 @@ Industrial, high-population, developed-infrastructure, high-support, at-war, and
 
 ## Asset Wiring
 
-Gameplay currently runs with registered placeholder idea sprites and event pictures in `interface/001_communism_spread.gfx`. Decision icons reuse existing assets:
+Gameplay runs with registered vanilla-derived idea sprites and event pictures in `interface/001_communism_spread.gfx`. Decision icons reuse existing assets:
 
 - category: `GFX_decision_category_generic_communism`
 - local intervention: `GFX_decision_generic_military`
-- factory protection: `GFX_decision_generic_factory`
 - emergency intervention: `GFX_decision_generic_protection`
 - national pressure: `GFX_idea_communist_state_control_pressure`
 - Level 1 state control: `GFX_idea_communist_agitation_zone`
@@ -213,15 +211,15 @@ The Revolutionary Threat Meter uses these DDS assets in `gfx/interface/revolutio
 - `GFX_revolutionary_threat_meter_090`: `revolutionary_threat_meter_090.dds`
 - `GFX_revolutionary_threat_meter_100`: `revolutionary_threat_meter_100.dds`
 
-Dedicated art should replace the placeholder `idea_unknown.dds` paths later. Place sprites in `gfx/interface/ideas/` and keep these stable sprite names:
+The idea sprites reference fitting vanilla DDS art directly, without copying those vanilla files into the Chaos Redux folder:
 
-- `GFX_idea_communist_agitation_zone`
-- `GFX_idea_communist_insurgent_stronghold`
-- `GFX_idea_communist_lockdown`
-- `GFX_idea_communist_state_control_pressure`
-- `GFX_idea_communist_post_crackdown_scars`
-- `GFX_idea_communist_worker_ritual_fear`
-- `GFX_idea_communist_emergency_disruption`
+- `GFX_idea_communist_agitation_zone`: `gfx/interface/ideas/generic_communism_drift_bonus.dds`
+- `GFX_idea_communist_insurgent_stronghold`: `gfx/interface/ideas/idea_MEN_communist_revolutionaries.dds`
+- `GFX_idea_communist_lockdown`: `gfx/interface/ideas/idea_generic_purge.dds`
+- `GFX_idea_communist_state_control_pressure`: `gfx/interface/ideas/idea_generic_secret_police.dds`
+- `GFX_idea_communist_post_crackdown_scars`: `gfx/interface/ideas/idea_generic_army_problems.dds`
+- `GFX_idea_communist_worker_ritual_fear`: `gfx/interface/ideas/idea_generic_fascist_workers.dds`
+- `GFX_idea_communist_emergency_disruption`: `gfx/interface/ideas/FRA_factory_strikes.dds`
 
 Unique event pictures should replace the placeholder DDS files in `gfx/event_pictures/communism_spread/`. Keep the existing filenames and GFX names:
 

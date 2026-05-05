@@ -15,6 +15,22 @@ guiTypes = {
         }
     }
 
+    containerWindowType = {
+        name = "chaosx_event_system_toggle_shortcut_container"
+        position = { x = 0 y = 0 }
+        size = { width = 1 height = 1 }
+        Orientation = UPPER_LEFT
+
+        buttonType = {
+            name = "event_system_toggle_shortcut_button"
+            quadTextureSprite = "GFX_tiled_window_transparent"
+            size = { x = 1 y = 1 }
+            position = { x = 0 y = 0 }
+            clicksound = click_default
+            shortcut = "ctrl+shift+d"
+        }
+    }
+
     # Settings Button
     containerWindowType = {
         name = "chaosx_container"
@@ -2202,38 +2218,28 @@ guiTypes = {
 
     containerWindowType = {
         name = "chaosx_scenarios_window"
-        position = { x = -820 y = 100 }
+        position = { x = -790 y = 92 }
         size = { width = 760 height = 500 }
         orientation = UPPER_RIGHT
         moveable = yes
         click_to_front = yes
         show_sound = menu_open_window
         hide_sound = menu_close_window
-        show_position = { x = -1220 y = 100 }
-        show_animation_type = decelerated
-        hide_animation_type = accelerated
-        animation_time = 400
+        animation_time = 0
 
         background = {
             name = "Background"
-            quadTextureSprite = "GFX_chaosx_chaos_meter_bg"
-        }
-
-        iconType = {
-            name = "scenario_window_icon"
-            spriteType = "GFX_chaosx_icon"
-            position = { x = 24 y = 16 }
-            scale = 0.85
+            quadTextureSprite = "GFX_tiled_window_2b_border"
         }
 
         instantTextBoxType = {
             name = "scenario_window_title"
-            position = { x = 72 y = 14 }
+            position = { x = 0 y = 14 }
             textureFile = ""
             font = "hoi_24header"
             borderSize = { x = 0 y = 0 }
             text = "chaosx.scenarios.title"
-            maxWidth = 612
+            maxWidth = 760
             maxHeight = 32
             format = center
             alwaysTransparent = yes
@@ -2241,12 +2247,12 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_window_hint"
-            position = { x = 24 y = 50 }
+            position = { x = 48 y = 50 }
             textureFile = ""
             font = "hoi_16mbs"
             borderSize = { x = 0 y = 0 }
             text = "chaosx.scenarios.hint"
-            maxWidth = 700
+            maxWidth = 664
             maxHeight = 44
             format = center
             alwaysTransparent = yes
@@ -2263,12 +2269,12 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_list_header"
-            position = { x = 24 y = 104 }
+            position = { x = 22 y = 104 }
             textureFile = ""
             font = "hoi_18mbs"
             borderSize = { x = 0 y = 0 }
             text = "chaosx.scenarios.list"
-            maxWidth = 230
+            maxWidth = 260
             maxHeight = 24
             format = center
             alwaysTransparent = yes
@@ -2277,7 +2283,7 @@ guiTypes = {
         buttonType = {
             name = "scenario_sort_prev_button"
             spriteType = "GFX_chaosx_arrow_left"
-            position = { x = 34 y = 130 }
+            position = { x = 32 y = 130 }
             size = { x = 16 y = 16 }
             clicksound = click_default
             oversound = ui_menu_over
@@ -2286,12 +2292,12 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_sort_value"
-            position = { x = 58 y = 128 }
+            position = { x = 54 y = 128 }
             textureFile = ""
             font = "hoi_16mbs"
             borderSize = { x = 0 y = 0 }
             text = "[GetTriggerableScenarioSortName]"
-            maxWidth = 130
+            maxWidth = 96
             maxHeight = 20
             format = center
             alwaysTransparent = yes
@@ -2300,7 +2306,7 @@ guiTypes = {
         buttonType = {
             name = "scenario_sort_next_button"
             spriteType = "GFX_chaosx_arrow_right"
-            position = { x = 192 y = 130 }
+            position = { x = 154 y = 130 }
             size = { x = 16 y = 16 }
             clicksound = click_default
             oversound = ui_menu_over
@@ -2308,23 +2314,45 @@ guiTypes = {
         }
 
         buttonType = {
-            name = "scenario_sort_order_button"
-            spriteType = "GFX_sort_button_83x29"
-            position = { x = 214 y = 124 }
-            size = { x = 48 y = 24 }
-            buttonFont = "hoi_16mbs"
-            buttonText = "[GetTriggerableScenarioSortOrderName]"
+            name = "scenario_sort_order_prev_button"
+            spriteType = "GFX_chaosx_arrow_left"
+            position = { x = 184 y = 130 }
+            size = { x = 16 y = 16 }
+            clicksound = click_default
+            oversound = ui_menu_over
+            pdx_tooltip = "chaosx.scenarios.sort_order.tt"
+        }
+
+        instantTextBoxType = {
+            name = "scenario_sort_order_value"
+            position = { x = 204 y = 128 }
+            textureFile = ""
+            font = "hoi_16mbs"
+            borderSize = { x = 0 y = 0 }
+            text = "[GetTriggerableScenarioSortOrderName]"
+            maxWidth = 48
+            maxHeight = 20
+            format = center
+            alwaysTransparent = yes
+        }
+
+        buttonType = {
+            name = "scenario_sort_order_next_button"
+            spriteType = "GFX_chaosx_arrow_right"
+            position = { x = 254 y = 130 }
+            size = { x = 16 y = 16 }
             clicksound = click_default
             oversound = ui_menu_over
             pdx_tooltip = "chaosx.scenarios.sort_order.tt"
         }
 
         containerWindowType = {
-            name = "scenario_list_dynamic_list"
-            position = { x = 24 y = 160 }
-            size = { width = 238 height = 276 }
+            name = "scenario_list_box"
+            position = { x = 22 y = 160 }
+            size = { width = 260 height = 276 }
             margin = { top = 4 left = 4 bottom = 4 right = 14 }
             verticalScrollbar = "right_vertical_slider"
+            autohide_scrollbars = no
             scroll_wheel_factor = 44
             smooth_scrolling = yes
 
@@ -2332,23 +2360,35 @@ guiTypes = {
                 name = "Background"
                 quadTextureSprite = "GFX_tiled_plain_bg"
             }
+
+            gridBoxType = {
+                name = "scenario_list_dynamic_list"
+                position = { x = 8 y = 8 }
+                size = { width = 220 height = 260 }
+                max_slots_horizontal = 1
+                slotsize = { width = 224 height = 44 }
+            }
         }
 
-        iconType = {
-            name = "scenario_detail_icon"
-            spriteType = "GFX_chaosx_icon"
-            position = { x = 284 y = 116 }
-            scale = 1.25
+        containerWindowType = {
+            name = "scenario_detail_box"
+            position = { x = 300 y = 110 }
+            size = { width = 424 height = 326 }
+
+            background = {
+                name = "Background"
+                quadTextureSprite = "GFX_tiled_plain_bg"
+            }
         }
 
         instantTextBoxType = {
             name = "scenario_detail_title"
-            position = { x = 342 y = 114 }
+            position = { x = 310 y = 120 }
             textureFile = ""
             font = "hoi_24header"
             borderSize = { x = 0 y = 0 }
             text = "[GetTriggerableScenarioSelectedName]"
-            maxWidth = 360
+            maxWidth = 404
             maxHeight = 34
             format = center
             alwaysTransparent = yes
@@ -2356,34 +2396,34 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_detail_body"
-            position = { x = 284 y = 156 }
+            position = { x = 318 y = 160 }
             textureFile = ""
             font = "hoi_16mbs"
             borderSize = { x = 0 y = 0 }
             text = "[GetTriggerableScenarioSelectedDesc]"
-            maxWidth = 430
-            maxHeight = 116
+            maxWidth = 388
+            maxHeight = 104
             format = center
             alwaysTransparent = yes
         }
 
         instantTextBoxType = {
             name = "scenario_intensity_label"
-            position = { x = 284 y = 286 }
+            position = { x = 306 y = 276 }
             textureFile = ""
             font = "hoi_18mbs"
             borderSize = { x = 0 y = 0 }
             text = "chaosx.scenarios.intensity"
-            maxWidth = 140
+            maxWidth = 112
             maxHeight = 24
-            format = center
+            format = left
             alwaysTransparent = yes
         }
 
         buttonType = {
             name = "scenario_intensity_left_arrow"
             quadTextureSprite = "yearslider_leftbutton"
-            position = { x = 434 y = 288 }
+            position = { x = 434 y = 278 }
             size = { x = 16 y = 16 }
             clicksound = click_scroll
             oversound = ui_menu_over
@@ -2392,14 +2432,14 @@ guiTypes = {
 
         containerWindowType = {
             name = "scenario_intensity_slider_shell"
-            position = { x = 456 y = 284 }
-            size = { width = 168 height = 28 }
+            position = { x = 450 y = 278 }
+            size = { width = 120 height = 22 }
 
             iconType = {
                 name = "scenario_intensity_slider_background"
                 quadTextureSprite = "GFX_custom_setting_slider_bg"
-                position = { x = 0 y = 5 }
-                scale = 0.56
+                position = { x = 0 y = 4 }
+                scale = 0.40
                 alwaystransparent = yes
             }
 
@@ -2407,7 +2447,7 @@ guiTypes = {
                 name = "scenario_intensity_stop_low"
                 quadTextureSprite = "GFX_tiled_window_transparent"
                 position = { x = 0 y = 0 }
-                size = { x = 42 y = 28 }
+                size = { x = 30 y = 22 }
                 clicksound = click_scroll
                 oversound = ui_menu_over
                 pdx_tooltip = "chaosx.scenarios.intensity.tt"
@@ -2416,8 +2456,8 @@ guiTypes = {
             buttonType = {
                 name = "scenario_intensity_stop_medium"
                 quadTextureSprite = "GFX_tiled_window_transparent"
-                position = { x = 42 y = 0 }
-                size = { x = 42 y = 28 }
+                position = { x = 30 y = 0 }
+                size = { x = 30 y = 22 }
                 clicksound = click_scroll
                 oversound = ui_menu_over
                 pdx_tooltip = "chaosx.scenarios.intensity.tt"
@@ -2426,8 +2466,8 @@ guiTypes = {
             buttonType = {
                 name = "scenario_intensity_stop_high"
                 quadTextureSprite = "GFX_tiled_window_transparent"
-                position = { x = 84 y = 0 }
-                size = { x = 42 y = 28 }
+                position = { x = 60 y = 0 }
+                size = { x = 30 y = 22 }
                 clicksound = click_scroll
                 oversound = ui_menu_over
                 pdx_tooltip = "chaosx.scenarios.intensity.tt"
@@ -2436,38 +2476,38 @@ guiTypes = {
             buttonType = {
                 name = "scenario_intensity_stop_maximum"
                 quadTextureSprite = "GFX_tiled_window_transparent"
-                position = { x = 126 y = 0 }
-                size = { x = 42 y = 28 }
+                position = { x = 90 y = 0 }
+                size = { x = 30 y = 22 }
                 clicksound = click_scroll
                 oversound = ui_menu_over
                 pdx_tooltip = "chaosx.scenarios.intensity.tt"
             }
 
             iconType = {
-                name = "scenario_intensity_knob_low"
+                name = "scenario_intensity_slider_knob_low"
                 quadTextureSprite = "GFX_scroll_drager"
-                position = { x = 0 y = 4 }
+                position = { x = 0 y = 3 }
                 alwaystransparent = yes
             }
 
             iconType = {
-                name = "scenario_intensity_knob_medium"
+                name = "scenario_intensity_slider_knob_medium"
                 quadTextureSprite = "GFX_scroll_drager"
-                position = { x = 42 y = 4 }
+                position = { x = 34 y = 3 }
                 alwaystransparent = yes
             }
 
             iconType = {
-                name = "scenario_intensity_knob_high"
+                name = "scenario_intensity_slider_knob_high"
                 quadTextureSprite = "GFX_scroll_drager"
-                position = { x = 84 y = 4 }
+                position = { x = 68 y = 3 }
                 alwaystransparent = yes
             }
 
             iconType = {
-                name = "scenario_intensity_knob_maximum"
+                name = "scenario_intensity_slider_knob_maximum"
                 quadTextureSprite = "GFX_scroll_drager"
-                position = { x = 126 y = 4 }
+                position = { x = 102 y = 3 }
                 alwaystransparent = yes
             }
         }
@@ -2475,7 +2515,7 @@ guiTypes = {
         buttonType = {
             name = "scenario_intensity_right_arrow"
             quadTextureSprite = "yearslider_rightbutton"
-            position = { x = 630 y = 288 }
+            position = { x = 576 y = 278 }
             size = { x = 16 y = 16 }
             clicksound = click_scroll
             oversound = ui_menu_over
@@ -2484,12 +2524,12 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_intensity_value"
-            position = { x = 456 y = 312 }
+            position = { x = 470 y = 254 }
             textureFile = ""
             font = "hoi_16mbs"
             borderSize = { x = 0 y = 0 }
             text = "[GetTriggerableScenarioIntensityName]"
-            maxWidth = 168
+            maxWidth = 80
             maxHeight = 20
             format = center
             alwaysTransparent = yes
@@ -2497,22 +2537,22 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_type_label"
-            position = { x = 284 y = 346 }
+            position = { x = 306 y = 326 }
             textureFile = ""
             font = "hoi_18mbs"
             borderSize = { x = 0 y = 0 }
             text = "chaosx.scenarios.type"
-            maxWidth = 140
+            maxWidth = 112
             maxHeight = 24
-            format = center
+            format = left
             alwaysTransparent = yes
         }
 
         buttonType = {
             name = "scenario_type_prev_button"
-            spriteType = "GFX_chaosx_subtract_one"
-            position = { x = 436 y = 342 }
-            size = { x = 28 y = 28 }
+            spriteType = "GFX_chaosx_arrow_left"
+            position = { x = 432 y = 328 }
+            size = { x = 16 y = 16 }
             clicksound = click_default
             oversound = ui_menu_over
             pdx_tooltip = "chaosx.scenarios.type.tt"
@@ -2520,12 +2560,12 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_type_value"
-            position = { x = 470 y = 346 }
+            position = { x = 450 y = 324 }
             textureFile = ""
             font = "hoi_18mbs"
             borderSize = { x = 0 y = 0 }
             text = "[GetTriggerableScenarioTypeName]"
-            maxWidth = 160
+            maxWidth = 126
             maxHeight = 24
             format = center
             alwaysTransparent = yes
@@ -2533,9 +2573,9 @@ guiTypes = {
 
         buttonType = {
             name = "scenario_type_next_button"
-            spriteType = "GFX_chaosx_add_one"
-            position = { x = 638 y = 342 }
-            size = { x = 28 y = 28 }
+            spriteType = "GFX_chaosx_arrow_right"
+            position = { x = 582 y = 328 }
+            size = { x = 16 y = 16 }
             clicksound = click_default
             oversound = ui_menu_over
             pdx_tooltip = "chaosx.scenarios.type.tt"
@@ -2543,13 +2583,13 @@ guiTypes = {
 
         instantTextBoxType = {
             name = "scenario_warning"
-            position = { x = 284 y = 388 }
+            position = { x = 318 y = 366 }
             textureFile = ""
             font = "hoi_16mbs"
             borderSize = { x = 0 y = 0 }
             text = "[GetTriggerableScenarioWarning]"
-            maxWidth = 430
-            maxHeight = 46
+            maxWidth = 388
+            maxHeight = 40
             format = center
             alwaysTransparent = yes
         }
@@ -2557,31 +2597,98 @@ guiTypes = {
         buttonType = {
             name = "scenario_trigger_button"
             spriteType = "GFX_chaosx_settings_button_main"
-            position = { x = 512 y = 432 }
+            position = { x = 430 y = 416 }
             size = { x = 190 y = 34 }
+            buttonText = "chaosx.scenarios.trigger"
+            buttonFont = "hoi_16mbs"
             clicksound = click_default
             oversound = ui_menu_over
             pdx_tooltip = "chaosx.scenarios.trigger.tt"
         }
+    }
+
+    containerWindowType = {
+        name = "chaosx_scenario_confirm_window"
+        position = { x = 0 y = 0 }
+        size = { width = 480 height = 249 }
+        orientation = center
+        origo = center
+        moveable = yes
+        click_to_front = yes
+        show_sound = diplomatic_notification
+        hide_sound = menu_close_window
+
+        background = {
+            name = "Background"
+            spriteType = "GFX_generic_popup_win"
+        }
 
         instantTextBoxType = {
-            name = "scenario_trigger_text"
-            position = { x = 520 y = 441 }
+            name = "scenario_confirm_title"
+            position = { x = 80 y = 34 }
             textureFile = ""
-            font = "hoi_16mbs"
+            font = "hoi_24header"
             borderSize = { x = 0 y = 0 }
-            text = "chaosx.scenarios.trigger"
-            maxWidth = 174
-            maxHeight = 20
+            text = "chaosx.scenarios.confirm.title"
+            maxWidth = 320
+            maxHeight = 28
             format = center
             alwaysTransparent = yes
+        }
+
+        instantTextBoxType = {
+            name = "scenario_confirm_body"
+            position = { x = 58 y = 86 }
+            textureFile = ""
+            font = "hoi_18mbs"
+            borderSize = { x = 0 y = 0 }
+            text = "chaosx.scenarios.confirm.body"
+            maxWidth = 364
+            maxHeight = 68
+            format = center
+            alwaysTransparent = yes
+        }
+
+        buttonType = {
+            name = "scenario_confirm_launch_button"
+            quadTextureSprite = "GFX_button_148x34"
+            position = { x = 92 y = 178 }
+            size = { x = 148 y = 34 }
+            buttonText = "chaosx.scenarios.confirm.launch"
+            buttonFont = "hoi_20bs"
+            shortcut = "RETURN"
+            clicksound = click_ok
+            oversound = ui_menu_over
+            pdx_tooltip = "chaosx.scenarios.confirm.launch.tt"
+        }
+
+        buttonType = {
+            name = "scenario_confirm_cancel_button"
+            quadTextureSprite = "GFX_button_148x34"
+            position = { x = 240 y = 178 }
+            size = { x = 148 y = 34 }
+            buttonText = "chaosx.scenarios.confirm.cancel"
+            buttonFont = "hoi_20bs"
+            shortcut = "ESCAPE"
+            clicksound = click_close
+            oversound = ui_menu_over
+            pdx_tooltip = "chaosx.scenarios.confirm.cancel.tt"
+        }
+
+        buttonType = {
+            name = "scenario_confirm_close_button"
+            quadTextureSprite = "GFX_closebutton"
+            position = { x = 441 y = 13 }
+            shortcut = "ESCAPE"
+            clicksound = click_close
+            oversound = ui_menu_over
         }
     }
 
     containerWindowType = {
         name = "triggerable_scenario_entry_generic"
         position = { x = 0 y = 0 }
-        size = { width = 220 height = 42 }
+        size = { width = 224 height = 41 }
         orientation = upper_left
 
         background = {
@@ -2592,7 +2699,7 @@ guiTypes = {
         buttonType = {
             name = "scenario_entry_open_details_button"
             position = { x = 0 y = 0 }
-            size = { x = 220 y = 42 }
+            size = { x = 224 y = 41 }
             spriteType = "GFX_chaosx_chaos_meter_entry"
             clicksound = click_default
             oversound = ui_menu_over
@@ -2600,13 +2707,24 @@ guiTypes = {
         }
 
         instantTextBoxType = {
+            name = "scenario_entry_id_text"
+            position = { x = 8 y = 10 }
+            font = "hoi_14mbs"
+            text = "[GetTriggerableScenarioEntryId]"
+            maxWidth = 46
+            maxHeight = 20
+            format = center
+            alwaysTransparent = yes
+        }
+
+        instantTextBoxType = {
             name = "scenario_entry_text"
-            position = { x = 10 y = 6 }
+            position = { x = 58 y = 8 }
             font = "hoi_16mbs"
             text = "[GetTriggerableScenarioEntryName]"
-            maxWidth = 200
-            maxHeight = 30
-            format = center
+            maxWidth = 154
+            maxHeight = 24
+            format = left
             alwaysTransparent = yes
         }
     }

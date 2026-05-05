@@ -6,12 +6,30 @@
 # Soviet mass repression.
 # ============================================================================
 
+@GENOCIDE_EXTERMINATION_ARMY_XP_COST = 10
+@GENOCIDE_EXTERMINATION_ARMY_XP_COST_NEG = -10
+@GENOCIDE_EXTERMINATION_COMMAND_POWER_COST = 20
+@GENOCIDE_EXTERMINATION_COMMAND_POWER_COST_NEG = -20
+@GENOCIDE_DEPORTATION_COMMAND_POWER_COST = 15
+@GENOCIDE_DEPORTATION_COMMAND_POWER_COST_NEG = -15
+@GENOCIDE_SECURITY_COMMAND_POWER_COST = 20
+@GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG = -20
+@GENOCIDE_RAIL_ARMY_XP_COST = 5
+@GENOCIDE_RAIL_ARMY_XP_COST_NEG = -5
+@GENOCIDE_RECORDS_COMMAND_POWER_COST = 10
+@GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG = -10
+@GENOCIDE_GULAG_COMMAND_POWER_COST = 20
+@GENOCIDE_GULAG_COMMAND_POWER_COST_NEG = -20
+@GENOCIDE_GULAG_ARMY_XP_COST = 5
+@GENOCIDE_GULAG_ARMY_XP_COST_NEG = -5
+
 genocide_crisis_category = {
 	genocide_show_hidden_decisions = {
 		icon = GFX_decision_generic_political_discourse
 		cost = constant:genocide_decision_cost.toggle_visibility
 		visible = {
 			is_ai = no
+			genocide_country_has_extermination_upgrade_target = yes
 			NOT = { has_country_flag = genocide_decisions_visible }
 		}
 		available = { always = yes }
@@ -26,6 +44,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.toggle_visibility
 		visible = {
 			is_ai = no
+			genocide_country_has_extermination_upgrade_target = yes
 			has_country_flag = genocide_decisions_visible
 		}
 		available = { always = yes }
@@ -33,68 +52,6 @@ genocide_crisis_category = {
 			clr_country_flag = genocide_decisions_visible
 		}
 		ai_will_do = { base = 0 }
-	}
-
-	genocide_expand_camp_network = {
-		icon = GFX_decision_oppression
-		state_target = any_controlled_state
-		on_map_mode = map_and_decisions_view
-		cost = constant:genocide_decision_cost.build_concentration
-		days_re_enable = constant:genocide_timing.decision_cooldown
-		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
-		}
-
-		target_root_trigger = {
-			genocide_country_should_use_camp_construction = yes
-		}
-
-		target_trigger = {
-			FROM = {
-				NOT = { concentration_camp > 0 }
-			}
-		}
-
-		available = {
-			genocide_country_should_use_camp_construction = yes
-			FROM = {
-				NOT = { concentration_camp > 0 }
-			}
-		}
-
-		complete_effect = {
-			genocide_build_concentration_camp_in_from = yes
-		}
-
-		ai_will_do = {
-			base = constant:genocide_ai_weight.generic_concentration
-			modifier = {
-				add = constant:genocide_ai_weight.germany_concentration
-				original_tag = GER
-				has_government = fascism
-				has_war = yes
-			}
-			modifier = {
-				add = constant:genocide_ai_weight.germany_occupied_poland
-				original_tag = GER
-				has_government = fascism
-				FROM = { genocide_state_is_german_occupied_poland_target = yes }
-			}
-			modifier = {
-				add = constant:genocide_ai_weight.japan_forced_labor
-				original_tag = JAP
-				has_government = fascism
-				FROM = { genocide_state_is_japanese_occupation_target = yes }
-			}
-			modifier = {
-				factor = constant:genocide_ai_weight.block_factor
-				has_government = democratic
-				NOT = { has_doctrine = extermination_columns }
-			}
-		}
 	}
 
 	genocide_build_extermination_camp = {
@@ -108,6 +65,7 @@ genocide_crisis_category = {
 				is_ai = yes
 				has_country_flag = genocide_decisions_visible
 			}
+			genocide_country_has_extermination_upgrade_target = yes
 		}
 
 		target_root_trigger = {
@@ -122,27 +80,30 @@ genocide_crisis_category = {
 
 		target_trigger = {
 			FROM = {
+				concentration_camp > 0
 				NOT = { extermination_camp > 0 }
-				OR = {
-					concentration_camp > 0
-					NOT = { is_core_of = ROOT }
-					genocide_state_is_german_occupied_poland_target = yes
-				}
 			}
 		}
 
 		available = {
 			genocide_country_can_unlock_extermination_camps = yes
+			has_army_experience > @GENOCIDE_EXTERMINATION_ARMY_XP_COST
+			command_power > @GENOCIDE_EXTERMINATION_COMMAND_POWER_COST
 			NOT = {
 				AND = {
 					original_tag = GER
 					NOT = { germany_controls_auschwitz_area = yes }
 				}
 			}
-			FROM = { NOT = { extermination_camp > 0 } }
+			FROM = {
+				concentration_camp > 0
+				NOT = { extermination_camp > 0 }
+			}
 		}
 
 		complete_effect = {
+			army_experience = @GENOCIDE_EXTERMINATION_ARMY_XP_COST_NEG
+			add_command_power = @GENOCIDE_EXTERMINATION_COMMAND_POWER_COST_NEG
 			genocide_build_extermination_camp_in_from = yes
 		}
 
@@ -181,16 +142,15 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.intensify_deportations
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_crisis = yes
 		}
 		available = {
 			genocide_country_has_active_camps = yes
+			command_power > @GENOCIDE_DEPORTATION_COMMAND_POWER_COST
 		}
 		complete_effect = {
+			add_command_power = @GENOCIDE_DEPORTATION_COMMAND_POWER_COST_NEG
 			genocide_intensify_deportations = yes
 		}
 		ai_will_do = {
@@ -209,10 +169,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.hide_evidence
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_crisis = yes
 		}
 		available = {
@@ -237,10 +194,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.suppress_reports
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_crisis = yes
 		}
 		available = {
@@ -263,16 +217,15 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.redirect_trains
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_crisis = yes
 		}
 		available = {
 			genocide_country_has_active_camps = yes
+			has_army_experience > @GENOCIDE_RAIL_ARMY_XP_COST
 		}
 		complete_effect = {
+			army_experience = @GENOCIDE_RAIL_ARMY_XP_COST_NEG
 			genocide_redirect_trains_and_supplies = yes
 		}
 		ai_will_do = {
@@ -290,17 +243,16 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.deal_with_sabotage
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_crisis = yes
 		}
 		available = {
 			genocide_country_has_active_camps = yes
+			command_power > @GENOCIDE_SECURITY_COMMAND_POWER_COST
 			check_variable = { genocide_resistance_pressure > constant:genocide_ai_threshold.resistance_low }
 		}
 		complete_effect = {
+			add_command_power = @GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG
 			genocide_deal_with_resistance_sabotage = yes
 		}
 		ai_will_do = {
@@ -317,10 +269,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.handle_refugees
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_crisis = yes
 		}
 		available = {
@@ -344,10 +293,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.military_objections
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_crisis = yes
 		}
 		available = {
@@ -370,10 +316,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.destroy_evidence
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 		}
 
 		target_trigger = {
@@ -388,9 +331,11 @@ genocide_crisis_category = {
 				genocide_state_has_undiscovered_atrocity_evidence = yes
 				genocide_state_has_enemy_forces_near_root = yes
 			}
+			command_power > @GENOCIDE_RECORDS_COMMAND_POWER_COST
 		}
 
 		complete_effect = {
+			add_command_power = @GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG
 			genocide_destroy_camp_evidence_in_from = yes
 		}
 
@@ -410,10 +355,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.dismantle_extermination
 		days_remove = constant:genocide_timing.state_modifier_days
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 		}
 
 		target_trigger = {
@@ -452,10 +394,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.hide_evidence
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
+			is_ai = yes
 			genocide_country_has_discovered_sites = yes
 		}
 		available = {
@@ -533,8 +472,10 @@ imperial_occupation_crisis = {
 		available = {
 			original_tag = JAP
 			has_government = fascism
+			command_power > @GENOCIDE_SECURITY_COMMAND_POWER_COST
 		}
 		complete_effect = {
+			add_command_power = @GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG
 			genocide_japan_anti_partisan_reprisals_in_from = yes
 		}
 		ai_will_do = {
@@ -570,8 +511,10 @@ imperial_occupation_crisis = {
 			original_tag = JAP
 			has_government = fascism
 			genocide_country_has_biowarfare_atrocity_capacity = yes
+			has_army_experience > @GENOCIDE_RAIL_ARMY_XP_COST
 		}
 		complete_effect = {
+			army_experience = @GENOCIDE_RAIL_ARMY_XP_COST_NEG
 			genocide_japan_prisoner_experimentation_in_from = yes
 		}
 		ai_will_do = {
@@ -613,8 +556,10 @@ imperial_occupation_crisis = {
 				genocide_state_has_undiscovered_atrocity_evidence = yes
 				genocide_state_has_enemy_forces_near_root = yes
 			}
+			command_power > @GENOCIDE_RECORDS_COMMAND_POWER_COST
 		}
 		complete_effect = {
+			add_command_power = @GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG
 			genocide_destroy_camp_evidence_in_from = yes
 		}
 		ai_will_do = { base = constant:genocide_ai_weight.evidence_destroy }
@@ -626,7 +571,7 @@ gulag_and_mass_repression_system = {
 		icon = GFX_decision_oppression
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
-		cost = constant:genocide_decision_cost.build_gulag
+		cost = 0
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
 			OR = {
@@ -651,9 +596,11 @@ gulag_and_mass_repression_system = {
 		available = {
 			original_tag = SOV
 			has_government = communism
+			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST
 			FROM = { NOT = { gulag_labor_camp_network > 0 } }
 		}
 		complete_effect = {
+			add_command_power = @GENOCIDE_GULAG_COMMAND_POWER_COST_NEG
 			genocide_build_gulag_network_in_from = yes
 		}
 		ai_will_do = {
@@ -693,8 +640,10 @@ gulag_and_mass_repression_system = {
 		available = {
 			original_tag = SOV
 			has_government = communism
+			command_power > @GENOCIDE_DEPORTATION_COMMAND_POWER_COST
 		}
 		complete_effect = {
+			add_command_power = @GENOCIDE_DEPORTATION_COMMAND_POWER_COST_NEG
 			genocide_soviet_deport_suspected_groups_in_from = yes
 		}
 		ai_will_do = {
@@ -733,8 +682,10 @@ gulag_and_mass_repression_system = {
 		available = {
 			original_tag = SOV
 			has_government = communism
+			has_army_experience > @GENOCIDE_GULAG_ARMY_XP_COST
 		}
 		complete_effect = {
+			army_experience = @GENOCIDE_GULAG_ARMY_XP_COST_NEG
 			genocide_soviet_confiscate_food_in_from = yes
 		}
 		ai_will_do = {
@@ -772,8 +723,10 @@ gulag_and_mass_repression_system = {
 				genocide_state_has_undiscovered_atrocity_evidence = yes
 				genocide_state_has_enemy_forces_near_root = yes
 			}
+			command_power > @GENOCIDE_RECORDS_COMMAND_POWER_COST
 		}
 		complete_effect = {
+			add_command_power = @GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG
 			genocide_destroy_camp_evidence_in_from = yes
 		}
 		ai_will_do = { base = constant:genocide_ai_weight.evidence_destroy }

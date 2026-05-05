@@ -1670,6 +1670,7 @@ select_dynamic_zombie_outbreak_state = {
         random_scope_in_array = {
             array = global.dynamic_zombie_outbreak_state_pool
             save_event_target_as = outbreak_state
+            save_global_event_target_as = outbreak_state
         }
     }
 
@@ -2140,58 +2141,67 @@ spawn_selected_dynamic_zombie_outbreak = {
 
                 ZZZ = {
                     if = {
-                        limit = { has_idea = zombies_idea_0 }
-                        PREV = { add_ideas = zombies_idea_0 }
-                    }
-                    if = {
-                        limit = { has_idea = zombies_idea_1 }
-                        PREV = { add_ideas = zombies_idea_1 }
-                    }
-                    if = {
-                        limit = { has_idea = zombies_idea_2 }
-                        PREV = { add_ideas = zombies_idea_2 }
-                    }
-                    if = {
-                        limit = { has_idea = zombies_idea_3 }
-                        PREV = { add_ideas = zombies_idea_3 }
-                    }
+                        limit = { PREV = { NOT = { has_country_flag = weaponized_zombie_special_dynamic_outbreak } } }
+                        if = {
+                            limit = { has_idea = zombies_idea_0 }
+                            PREV = { add_ideas = zombies_idea_0 }
+                        }
+                        if = {
+                            limit = { has_idea = zombies_idea_1 }
+                            PREV = { add_ideas = zombies_idea_1 }
+                        }
+                        if = {
+                            limit = { has_idea = zombies_idea_2 }
+                            PREV = { add_ideas = zombies_idea_2 }
+                        }
+                        if = {
+                            limit = { has_idea = zombies_idea_3 }
+                            PREV = { add_ideas = zombies_idea_3 }
+                        }
 
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 0 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 0 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 1 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 1 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 2 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 2 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_current_tier value = 3 } }
-                        PREV = { set_country_flag = { flag = zombie_current_tier value = 3 } }
-                    }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+                            PREV = { set_country_flag = { flag = zombie_current_tier value = 0 } }
+                        }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_current_tier value = 1 } }
+                            PREV = { set_country_flag = { flag = zombie_current_tier value = 1 } }
+                        }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_current_tier value = 2 } }
+                            PREV = { set_country_flag = { flag = zombie_current_tier value = 2 } }
+                        }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+                            PREV = { set_country_flag = { flag = zombie_current_tier value = 3 } }
+                        }
 
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 0 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 0 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 1 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 1 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 2 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 2 } }
-                    }
-                    if = {
-                        limit = { has_country_flag = { flag = zombie_target_tier value = 3 } }
-                        PREV = { set_country_flag = { flag = zombie_target_tier value = 3 } }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_target_tier value = 0 } }
+                            PREV = { set_country_flag = { flag = zombie_target_tier value = 0 } }
+                        }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_target_tier value = 1 } }
+                            PREV = { set_country_flag = { flag = zombie_target_tier value = 1 } }
+                        }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_target_tier value = 2 } }
+                            PREV = { set_country_flag = { flag = zombie_target_tier value = 2 } }
+                        }
+                        if = {
+                            limit = { has_country_flag = { flag = zombie_target_tier value = 3 } }
+                            PREV = { set_country_flag = { flag = zombie_target_tier value = 3 } }
+                        }
                     }
                 }
 
-                refresh_dynamic_zombie_country_leader = yes
+                if = {
+                    limit = { has_country_flag = weaponized_zombie_special_dynamic_outbreak }
+                    weaponized_zombie_refresh_country_leader = yes
+                }
+                else = {
+                    refresh_dynamic_zombie_country_leader = yes
+                }
             }
 
             event_target:outbreak_state = {

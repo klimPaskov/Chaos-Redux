@@ -54,119 +54,67 @@ triggerable_scenarios_initialize_registry = {
 triggerable_scenarios_rebuild_view = {
 	clear_array = global.triggerable_scenario_view_ids
 	clear_array = global.triggerable_scenario_view_name_sort_values
-	clear_array = temp_triggerable_scenario_sort_ids
-	clear_array = temp_triggerable_scenario_sort_name_values
 
-	for_loop_effect = {
-		start = 0
-		end = global.triggerable_scenario_all_ids^num
-		value = triggerable_scenario_registry_index
-		add_to_array = {
-			array = temp_triggerable_scenario_sort_ids
-			value = global.triggerable_scenario_all_ids^triggerable_scenario_registry_index
+	if = {
+		limit = {
+			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.name }
+			NOT = { has_country_flag = triggerable_scenarios_sort_descending }
 		}
 		add_to_array = {
-			array = temp_triggerable_scenario_sort_name_values
-			value = global.triggerable_scenario_all_name_sort_values^triggerable_scenario_registry_index
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.mengele_clones
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.mengele_clones_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.zombie_apocalypse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.zombie_name
 		}
 	}
-
-	set_temp_variable = { triggerable_scenario_source_count = temp_triggerable_scenario_sort_ids^num }
-	set_temp_variable = { triggerable_scenario_sorted_count = 0 }
-	while_loop_effect = {
-		limit = { check_variable = { triggerable_scenario_sorted_count < triggerable_scenario_source_count } }
-
-		set_temp_variable = { triggerable_scenario_best_index = -1 }
-		set_temp_variable = { triggerable_scenario_scan_index = 0 }
-		while_loop_effect = {
-			limit = { check_variable = { triggerable_scenario_scan_index < triggerable_scenario_source_count } }
-			if = {
-				limit = {
-					check_variable = {
-						var = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index
-						value = 0
-						compare = greater_than
-					}
-				}
-
-				set_temp_variable = { triggerable_scenario_candidate_metric = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index }
-				if = {
-					limit = { check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.name } }
-					set_temp_variable = { triggerable_scenario_candidate_metric = temp_triggerable_scenario_sort_name_values^triggerable_scenario_scan_index }
-				}
-
-				if = {
-					limit = { check_variable = { triggerable_scenario_best_index < 0 } }
-					set_temp_variable = { triggerable_scenario_best_index = triggerable_scenario_scan_index }
-					set_temp_variable = { triggerable_scenario_best_metric = triggerable_scenario_candidate_metric }
-					set_temp_variable = { triggerable_scenario_best_id = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index }
-				}
-				else_if = {
-					limit = {
-						has_country_flag = triggerable_scenarios_sort_descending
-						check_variable = { triggerable_scenario_candidate_metric > triggerable_scenario_best_metric }
-					}
-					set_temp_variable = { triggerable_scenario_best_index = triggerable_scenario_scan_index }
-					set_temp_variable = { triggerable_scenario_best_metric = triggerable_scenario_candidate_metric }
-					set_temp_variable = { triggerable_scenario_best_id = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index }
-				}
-				else_if = {
-					limit = {
-						NOT = { has_country_flag = triggerable_scenarios_sort_descending }
-						check_variable = { triggerable_scenario_candidate_metric < triggerable_scenario_best_metric }
-					}
-					set_temp_variable = { triggerable_scenario_best_index = triggerable_scenario_scan_index }
-					set_temp_variable = { triggerable_scenario_best_metric = triggerable_scenario_candidate_metric }
-					set_temp_variable = { triggerable_scenario_best_id = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index }
-				}
-				else_if = {
-					limit = { check_variable = { triggerable_scenario_candidate_metric = triggerable_scenario_best_metric } }
-					if = {
-						limit = {
-							has_country_flag = triggerable_scenarios_sort_descending
-							check_variable = {
-								var = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index
-								value = triggerable_scenario_best_id
-								compare = greater_than
-							}
-						}
-						set_temp_variable = { triggerable_scenario_best_index = triggerable_scenario_scan_index }
-						set_temp_variable = { triggerable_scenario_best_metric = triggerable_scenario_candidate_metric }
-						set_temp_variable = { triggerable_scenario_best_id = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index }
-					}
-					else_if = {
-						limit = {
-							NOT = { has_country_flag = triggerable_scenarios_sort_descending }
-							check_variable = {
-								var = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index
-								value = triggerable_scenario_best_id
-								compare = less_than
-							}
-						}
-						set_temp_variable = { triggerable_scenario_best_index = triggerable_scenario_scan_index }
-						set_temp_variable = { triggerable_scenario_best_metric = triggerable_scenario_candidate_metric }
-						set_temp_variable = { triggerable_scenario_best_id = temp_triggerable_scenario_sort_ids^triggerable_scenario_scan_index }
-					}
-				}
-			}
-			add_to_temp_variable = { triggerable_scenario_scan_index = 1 }
+	else_if = {
+		limit = {
+			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
+			has_country_flag = triggerable_scenarios_sort_descending
 		}
-
-		if = {
-			limit = { check_variable = { triggerable_scenario_best_index > -1 } }
-			add_to_array = {
-				array = global.triggerable_scenario_view_ids
-				value = temp_triggerable_scenario_sort_ids^triggerable_scenario_best_index
-			}
-			add_to_array = {
-				array = global.triggerable_scenario_view_name_sort_values
-				value = temp_triggerable_scenario_sort_name_values^triggerable_scenario_best_index
-			}
-			set_variable = { temp_triggerable_scenario_sort_ids^triggerable_scenario_best_index = -1 }
-			add_to_temp_variable = { triggerable_scenario_sorted_count = 1 }
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.mengele_clones
 		}
-		else = {
-			set_temp_variable = { triggerable_scenario_sorted_count = triggerable_scenario_source_count }
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.mengele_clones_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.zombie_apocalypse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.zombie_name
+		}
+	}
+	else = {
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.zombie_apocalypse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.zombie_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.mengele_clones
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.mengele_clones_name
 		}
 	}
 }
@@ -206,6 +154,16 @@ open_chaosx_scenarios = {
 
 close_chaosx_scenarios = {
 	clr_country_flag = chaosx_scenarios_open
+	clr_country_flag = chaosx_scenario_confirm_open
+}
+
+open_triggerable_scenario_confirmation = {
+	initialize_triggerable_scenarios_settings = yes
+	set_country_flag = chaosx_scenario_confirm_open
+}
+
+close_triggerable_scenario_confirmation = {
+	clr_country_flag = chaosx_scenario_confirm_open
 }
 
 select_triggerable_scenario_zombie = {
@@ -271,35 +229,18 @@ triggerable_scenario_intensity_next = {
 triggerable_scenario_type_previous = {
 	initialize_triggerable_scenarios_settings = yes
 	if = {
-		limit = {
-			check_variable = {
-				var = triggerable_scenarios_selected
-				value = constant:triggerable_scenario_id.zombie_apocalypse
-			}
-		}
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.zombie_apocalypse } }
 		subtract_from_variable = { triggerable_scenarios_zombie_type = 1 }
 		if = {
-			limit = {
-				check_variable = {
-					var = triggerable_scenarios_zombie_type
-					value = constant:triggerable_scenario_zombie_type.diverse
-					compare = less_than
-				}
-			}
+			limit = { check_variable = { triggerable_scenarios_zombie_type < constant:triggerable_scenario_zombie_type.diverse } }
 			set_variable = { triggerable_scenarios_zombie_type = constant:triggerable_scenario_zombie_type.connected }
 		}
 	}
 	else = {
-		subtract_from_variable = { triggerable_scenarios_clone_type = 1 }
+		add_to_variable = { triggerable_scenarios_clone_type = 1 }
 		if = {
-			limit = {
-				check_variable = {
-					var = triggerable_scenarios_clone_type
-					value = constant:triggerable_scenario_clone_type.standard
-					compare = less_than
-				}
-			}
-			set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.aryan }
+			limit = { check_variable = { triggerable_scenarios_clone_type > constant:triggerable_scenario_clone_type.aryan } }
+			set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.standard }
 		}
 	}
 }
@@ -307,34 +248,17 @@ triggerable_scenario_type_previous = {
 triggerable_scenario_type_next = {
 	initialize_triggerable_scenarios_settings = yes
 	if = {
-		limit = {
-			check_variable = {
-				var = triggerable_scenarios_selected
-				value = constant:triggerable_scenario_id.zombie_apocalypse
-			}
-		}
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.zombie_apocalypse } }
 		add_to_variable = { triggerable_scenarios_zombie_type = 1 }
 		if = {
-			limit = {
-				check_variable = {
-					var = triggerable_scenarios_zombie_type
-					value = constant:triggerable_scenario_zombie_type.connected
-					compare = greater_than
-				}
-			}
+			limit = { check_variable = { triggerable_scenarios_zombie_type > constant:triggerable_scenario_zombie_type.connected } }
 			set_variable = { triggerable_scenarios_zombie_type = constant:triggerable_scenario_zombie_type.diverse }
 		}
 	}
 	else = {
 		add_to_variable = { triggerable_scenarios_clone_type = 1 }
 		if = {
-			limit = {
-				check_variable = {
-					var = triggerable_scenarios_clone_type
-					value = constant:triggerable_scenario_clone_type.aryan
-					compare = greater_than
-				}
-			}
+			limit = { check_variable = { triggerable_scenarios_clone_type > constant:triggerable_scenario_clone_type.aryan } }
 			set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.standard }
 		}
 	}
@@ -342,6 +266,11 @@ triggerable_scenario_type_next = {
 
 trigger_selected_chaosx_scenario = {
 	initialize_triggerable_scenarios_settings = yes
+	if = {
+		limit = { has_variable = event_timer_days }
+		set_temp_variable = { triggerable_scenario_preserved_event_timer_days = event_timer_days }
+		set_country_flag = triggerable_scenario_preserved_event_timer
+	}
 	if = {
 		limit = {
 			check_variable = {
@@ -359,6 +288,11 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		trigger_mengele_clone_army_scenario = yes
+	}
+	if = {
+		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
+		set_variable = { event_timer_days = triggerable_scenario_preserved_event_timer_days }
+		clr_country_flag = triggerable_scenario_preserved_event_timer
 	}
 }
 
@@ -423,6 +357,7 @@ triggerable_scenario_apply_zombie_profile_to_current_country = {
 	set_country_flag = weaponized_zombie_profile_public
 	set_country_flag = weaponized_zombie_triggerable_scenario
 	set_country_flag = weaponized_zombie_created_by_@ROOT
+	clr_country_flag = events_activated
 	set_popularities = {
 		democratic = 0
 		fascism = 0
@@ -550,16 +485,23 @@ triggerable_scenario_apply_zombie_profile_to_current_country = {
 	weaponized_zombie_apply_type_idea = yes
 	weaponized_zombie_apply_archetype_idea = yes
 	weaponized_zombie_refresh_country_leader = yes
-	set_country_flag = { flag = zombie_current_tier value = 3 }
-	set_country_flag = { flag = zombie_target_tier value = 3 }
 }
 
 triggerable_scenario_spawn_profiled_zombie_outbreak = {
+	if = {
+		limit = { NOT = { has_global_flag = triggerable_scenario_primary_outbreak_state_set } }
+		save_global_event_target_as = outbreak_state
+		set_global_flag = triggerable_scenario_primary_outbreak_state_set
+	}
+	set_variable = { global.triggerable_zombie_profile_type_for_spawn = triggerable_zombie_profile_type }
+	set_variable = { global.triggerable_zombie_profile_score_for_spawn = triggerable_zombie_profile_score }
 	create_dynamic_country = {
 		original_tag = ZZZ
 		copy_tag = ZZZ
 		set_temp_variable = { triggerable_zombie_new_country = this }
 		set_temp_variable = { weaponized_zombie_new_country = this }
+		set_variable = { triggerable_zombie_profile_type = global.triggerable_zombie_profile_type_for_spawn }
+		set_variable = { triggerable_zombie_profile_score = global.triggerable_zombie_profile_score_for_spawn }
 		triggerable_scenario_apply_zombie_profile_to_current_country = yes
 		ZZZ = {
 			every_core_state = {
@@ -595,12 +537,18 @@ triggerable_scenario_spawn_profiled_zombie_outbreak = {
 }
 
 triggerable_scenario_spawn_standard_zombie_outbreak = {
+	if = {
+		limit = { NOT = { has_global_flag = triggerable_scenario_primary_outbreak_state_set } }
+		save_global_event_target_as = outbreak_state
+		set_global_flag = triggerable_scenario_primary_outbreak_state_set
+	}
 	create_dynamic_country = {
 		original_tag = ZZZ
 		copy_tag = ZZZ
 		set_temp_variable = { triggerable_zombie_new_country = this }
 		set_country_flag = zombie_outbreak_dynamic_country
 		set_country_flag = zombie_triggerable_scenario_standard
+		clr_country_flag = events_activated
 		ZZZ = {
 			every_core_state = {
 				remove_core_of = PREV
@@ -615,9 +563,10 @@ triggerable_scenario_spawn_standard_zombie_outbreak = {
 			never_ending_hunger
 			tot_economic_mobilisation
 			extensive_conscription
+			zombies_idea_0
 		}
-		set_country_flag = { flag = zombie_current_tier value = 3 }
-		set_country_flag = { flag = zombie_target_tier value = 3 }
+		set_country_flag = { flag = zombie_current_tier value = 0 }
+		set_country_flag = { flag = zombie_target_tier value = 0 }
 		refresh_dynamic_zombie_country_leader = yes
 	}
 
@@ -633,7 +582,7 @@ triggerable_scenario_spawn_standard_zombie_outbreak = {
 		apply_standard_zombie_recruitment_profile = yes
 	}
 	create_unit = {
-		division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.5"
+		division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
 		owner = var:triggerable_zombie_new_country
 		count = triggerable_zombie_spawn_count
 		allow_spawning_on_enemy_provs = yes
@@ -1019,6 +968,7 @@ triggerable_scenario_spawn_connected_zombie_apocalypse = {
 
 trigger_zombie_apocalypse_scenario = {
 	triggerable_scenario_prepare_zombie_scale = yes
+	clr_global_flag = triggerable_scenario_primary_outbreak_state_set
 	set_global_flag = has_zombie_outbreak
 	if = {
 		limit = {
@@ -1099,6 +1049,7 @@ triggerable_scenario_prepare_clone_scale = {
 
 triggerable_scenario_setup_clone_country = {
 	set_country_flag = mengele_clone_army_scenario_country
+	clr_country_flag = events_activated
 	save_global_event_target_as = mengele_clone_army_scenario_country
 	set_cosmetic_tag = mengele_clone_army
 	set_politics = {

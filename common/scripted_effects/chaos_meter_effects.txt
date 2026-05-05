@@ -2130,27 +2130,7 @@ chaos_meter_register_deaths = {
 					has_variable = chaos_deaths_apply_state_pop
 					check_variable = { chaos_deaths_apply_state_pop > 0 }
 				}
-				set_temp_variable = { chaos_deaths_state_pop_delta = chaos_deaths_change }
-				multiply_temp_variable = { chaos_deaths_state_pop_delta = -1 }
-				add_manpower = var:chaos_deaths_state_pop_delta
-				add_to_variable = { chaos_state_civilian_deaths_total = chaos_deaths_change }
-
-				if = {
-					limit = { NOT = { has_variable = global.chaos_state_civilian_deaths_map_max } }
-					set_variable = { global.chaos_state_civilian_deaths_map_max = 0 }
-				}
-				if = {
-					limit = {
-						check_variable = {
-							var = chaos_state_civilian_deaths_total
-							value = global.chaos_state_civilian_deaths_map_max
-							compare = greater_than
-						}
-					}
-					set_variable = { global.chaos_state_civilian_deaths_map_max = chaos_state_civilian_deaths_total }
-				}
-
-				force_update_map_mode = { mapmode = deaths_state_map_mode }
+				chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = yes
 			}
 		}
         else = {
@@ -2168,6 +2148,33 @@ chaos_meter_register_deaths = {
 
     set_temp_variable = { chaos_deaths_target_country = 0 }
     set_temp_variable = { chaos_deaths_has_target_country = 0 }
+}
+
+chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = {
+	if = {
+		limit = { check_variable = { chaos_deaths_change > 0 } }
+		set_temp_variable = { chaos_deaths_state_pop_delta = chaos_deaths_change }
+		multiply_temp_variable = { chaos_deaths_state_pop_delta = -1 }
+		add_manpower = var:chaos_deaths_state_pop_delta
+		add_to_variable = { chaos_state_civilian_deaths_total = chaos_deaths_change }
+
+		if = {
+			limit = { NOT = { has_variable = global.chaos_state_civilian_deaths_map_max } }
+			set_variable = { global.chaos_state_civilian_deaths_map_max = 0 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = chaos_state_civilian_deaths_total
+					value = global.chaos_state_civilian_deaths_map_max
+					compare = greater_than
+				}
+			}
+			set_variable = { global.chaos_state_civilian_deaths_map_max = chaos_state_civilian_deaths_total }
+		}
+
+		force_update_map_mode = { mapmode = deaths_state_map_mode }
+	}
 }
 
 chaos_meter_calculate_combat_civilian_death_profile = {
@@ -2736,12 +2743,100 @@ chaos_meter_register_combat_civilian_deaths_to_state = {
 
 		if = {
 			limit = { check_variable = { chaos_deaths_change > 0 } }
+			set_temp_variable = { chaos_combat_civ_original_state_deaths = chaos_deaths_change }
 			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
 			set_temp_variable = { chaos_deaths_is_civilian = 1 }
-			set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
-			set_temp_variable = { chaos_deaths_target_country = CONTROLLER }
-			set_temp_variable = { chaos_deaths_has_target_country = 1 }
-			chaos_meter_register_deaths = yes
+			set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+			set_temp_variable = { chaos_combat_civ_core_count = 0 }
+			every_country = {
+				limit = {
+					PREV = { is_core_of = PREV }
+				}
+				add_to_temp_variable = { chaos_combat_civ_core_count = 1 }
+			}
+
+			if = {
+				limit = {
+					OWNER = { PREV = { is_core_of = PREV } }
+				}
+				if = {
+					limit = { check_variable = { chaos_combat_civ_core_count > 1 } }
+					set_temp_variable = { chaos_combat_civ_owner_share = chaos_combat_civ_original_state_deaths }
+					multiply_temp_variable = { chaos_combat_civ_owner_share = 0.5 }
+					round_temp_variable = chaos_combat_civ_owner_share
+					set_temp_variable = { chaos_combat_civ_other_core_count = chaos_combat_civ_core_count }
+					subtract_from_temp_variable = { chaos_combat_civ_other_core_count = 1 }
+					set_temp_variable = { chaos_combat_civ_other_share = chaos_combat_civ_original_state_deaths }
+					subtract_from_temp_variable = { chaos_combat_civ_other_share = chaos_combat_civ_owner_share }
+					divide_temp_variable = { chaos_combat_civ_other_share = chaos_combat_civ_other_core_count }
+					round_temp_variable = chaos_combat_civ_other_share
+
+					OWNER = {
+						set_temp_variable = { chaos_deaths_change = chaos_combat_civ_owner_share }
+						set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+						set_temp_variable = { chaos_deaths_is_civilian = 1 }
+						set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+						set_temp_variable = { chaos_deaths_target_country = THIS }
+						set_temp_variable = { chaos_deaths_has_target_country = 1 }
+						chaos_meter_register_deaths = yes
+					}
+					every_country = {
+						limit = {
+							PREV = { is_core_of = PREV }
+							NOT = { owns_state = PREV }
+						}
+						set_temp_variable = { chaos_deaths_change = chaos_combat_civ_other_share }
+						set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+						set_temp_variable = { chaos_deaths_is_civilian = 1 }
+						set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+						set_temp_variable = { chaos_deaths_target_country = THIS }
+						set_temp_variable = { chaos_deaths_has_target_country = 1 }
+						chaos_meter_register_deaths = yes
+					}
+				}
+				else = {
+					OWNER = {
+						set_temp_variable = { chaos_deaths_change = chaos_combat_civ_original_state_deaths }
+						set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+						set_temp_variable = { chaos_deaths_is_civilian = 1 }
+						set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+						set_temp_variable = { chaos_deaths_target_country = THIS }
+						set_temp_variable = { chaos_deaths_has_target_country = 1 }
+						chaos_meter_register_deaths = yes
+					}
+				}
+			}
+			else_if = {
+				limit = { check_variable = { chaos_combat_civ_core_count > 0 } }
+				set_temp_variable = { chaos_combat_civ_core_share = chaos_combat_civ_original_state_deaths }
+				divide_temp_variable = { chaos_combat_civ_core_share = chaos_combat_civ_core_count }
+				round_temp_variable = chaos_combat_civ_core_share
+				every_country = {
+					limit = {
+						PREV = { is_core_of = PREV }
+					}
+					set_temp_variable = { chaos_deaths_change = chaos_combat_civ_core_share }
+					set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+					set_temp_variable = { chaos_deaths_is_civilian = 1 }
+					set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+					set_temp_variable = { chaos_deaths_target_country = THIS }
+					set_temp_variable = { chaos_deaths_has_target_country = 1 }
+					chaos_meter_register_deaths = yes
+				}
+			}
+			else = {
+				OWNER = {
+					set_temp_variable = { chaos_deaths_change = chaos_combat_civ_original_state_deaths }
+					set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.civilian_combat }
+					set_temp_variable = { chaos_deaths_is_civilian = 1 }
+					set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+					set_temp_variable = { chaos_deaths_target_country = THIS }
+					set_temp_variable = { chaos_deaths_has_target_country = 1 }
+					chaos_meter_register_deaths = yes
+				}
+			}
+			set_temp_variable = { chaos_deaths_change = chaos_combat_civ_original_state_deaths }
+			chaos_meter_apply_state_civilian_pop_loss_from_deaths_change = yes
 		}
 	}
 }
@@ -2842,7 +2937,7 @@ chaos_meter_register_state_civilian_deaths_percent = {
             limit = { check_variable = { chaos_deaths_change > 0 } }
             set_temp_variable = { chaos_deaths_is_civilian = 1 }
             set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
-            set_temp_variable = { chaos_deaths_target_country = CONTROLLER }
+            set_temp_variable = { chaos_deaths_target_country = OWNER }
             set_temp_variable = { chaos_deaths_has_target_country = 1 }
             chaos_meter_register_deaths = yes
         }
@@ -4205,7 +4300,7 @@ air_contamination_apply_irreversible_effects = {
     every_state = {
         add_dynamic_modifier = {
             modifier = fallout_thermonuclear
-            days = constant:air_contamination_irreversible.global_state_modifier_days
+            days = 120
         }
     }
 

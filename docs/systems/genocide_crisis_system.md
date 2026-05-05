@@ -31,6 +31,7 @@ Supporting surfaces live in:
 - `common/ideas/genocide_crisis_ideas.txt`
 - `common/opinion_modifiers/genocide_crisis_opinion_modifiers.txt`
 - `interface/chaosx_buildings.gfx`
+- `gfx/entities/chaosx_buildings.asset`
 - `localisation/english/chaosx_buildings_l_english.yml`
 - `localisation/english/chaosx_decisions_l_english.yml`
 - `localisation/english/chaosx_ideas_l_english.yml`
@@ -40,13 +41,13 @@ Supporting surfaces live in:
 
 ## Buildings
 
-The system uses three hidden state buildings:
+The system uses three state buildings:
 
 - `concentration_camp`
 - `extermination_camp`
 - `gulag_labor_camp_network`
 
-They are not normal construction-tab buildings. They are built by decisions and scripted effects so each affected state can store `genocide_responsible_country`. That variable is the authority used later for discovery, condemnation, events, and tribunals.
+Concentration camps are available in the normal construction interface. Extermination camps and gulag networks are created by decisions and scripted effects. Whenever script creates or registers a site, the affected state stores `genocide_responsible_country`; that variable is the authority used later for discovery, condemnation, events, and tribunals.
 
 ### Concentration Camps
 
@@ -62,20 +63,32 @@ Gulag labor camp networks represent Soviet forced labor and mass repression. The
 
 ## Step-by-Step Flow
 
-1. Startup initializes historical sites for fascist Germany, fascist Japan, and communist Soviet Union.
-2. Decisions or country-specific AI build additional camp, extermination, forced labor, or gulag sites.
+1. Startup initializes country variables and quiet historical concentration camp buildings for fascist Germany, fascist Japan, and communist Soviet Union without registering active death-producing sites on day one.
+2. Construction, decisions, or country-specific AI build camp, extermination, forced labor, or gulag sites after escalation. AI countries build concentration camps through the construction system, not through generic construction decisions.
 3. Each created state stores `genocide_responsible_country = ROOT`.
 4. Each active camp state is registered into `global.genocide_active_camp_states`.
 5. The existing Chaos Meter monthly pulse runs `genocide_monthly_global_pulse`.
 6. Only registered states that still have active camp buildings are processed.
-7. Monthly camp deaths reduce real state population through the Chaos Meter deaths pipeline.
+7. Monthly camp deaths reduce real state population through the Chaos Meter deaths pipeline. When deaths happen in occupied territory, the state owner receives the registered death total while the occupier remains the responsible country for evidence and condemnation.
 8. Responsible countries accumulate hidden crisis variables such as `genocide_escalation`, `genocide_deaths`, `genocide_visibility`, `genocide_resistance_pressure`, `genocide_refugee_pressure`, and `hidden_atrocity_score`.
-9. Internal crisis events can fire if stability or party support is weak enough.
+9. Internal crisis events require meaningful escalation, hidden evidence, deaths, camp infrastructure, or repeated decisions; ideology alone is not enough.
 10. If enemy forces take a state with undiscovered atrocity evidence, `on_state_control_changed` attempts discovery.
 11. Discovery marks the state, calculates condemnation based on site type and repeat discoveries, and applies condemnation to the stored responsible country.
 12. The first discovery fires the discoverer event and responsible-country event. Extermination discoveries fire the global news event once.
 13. Condemnation thresholds at 25, 50, 75, and 100 trigger newspaper, refugee, sanctions, and tribunal-pressure events.
 14. If the responsible country capitulates after reaching tribunal-level condemnation, tribunal preparation activates.
+
+## Decision Visibility
+
+The `Camps and Genocide` category has the lowest priority and appears only when the country has an actual player action available beyond the show/hide controls. The generic category no longer offers concentration camp construction decisions; concentration camps are built through the normal construction interface. The generic category highlights only controlled states with an existing concentration camp that can be upgraded into an extermination camp.
+
+When a valid existing concentration camp can be upgraded, `genocide_show_hidden_decisions` reveals the extermination-camp upgrade decision and `genocide_hide_hidden_decisions` hides it again. The reveal decision remains available while valid upgrade targets exist, but the category disappears when the country has no existing concentration camps, no eligible upgrade targets, or no special decision to take.
+
+## Evidence And Foreign Observers
+
+Foreign-observer pressure is context-based. Domestic repression inside closed or authoritarian states does not automatically create a foreign evidence problem. Foreign pressure requires conditions such as occupied foreign camp systems, non-core target populations, diplomatic visibility, enemy or democratic exposure, discovered sites, or a leak that actually reaches outside observers.
+
+This means Soviet internal repression does not normally ask the player to hide evidence from foreign observers. If the Soviet Union operates camp infrastructure in occupied foreign territory, the foreign-observer chain can still apply. Japanese actions in occupied China are treated as occupation atrocities and local evidence unless visibility, leaks, diplomacy, or foreign-population context raises the pressure enough.
 
 ## Evidence Destruction
 
@@ -87,6 +100,8 @@ The evidence-destruction decisions are state-targeted and require:
 
 Success removes camp buildings and marks the state as a destroyed atrocity site, reducing later condemnation. Failure marks the state with failed cover-up evidence, increasing later condemnation. Both paths create additional deaths and leave discoverable state evidence.
 
+Internal report and leak pacing is throttled by escalation thresholds, hidden evidence thresholds, death thresholds, decision counts, camp-site counts, and cooldown flags. Early 1936 should stay quiet unless a country actually expands the system. Historical quiet camps can show one administrative flavor popup for the player, but they are not registered into monthly deaths, leaks, reports, or discovery pressure until escalated into active camp infrastructure.
+
 ## Country AI
 
 AI behavior is split between decision weights and broad AI strategy:
@@ -95,7 +110,7 @@ AI behavior is split between decision weights and broad AI strategy:
 - Japan is weighted toward forced labor camps, occupation reprisals, and prisoner experimentation when it controls Chinese or Manchurian target regions. Biowarfare experimentation connects to the existing biological contamination effects.
 - The Soviet Union is weighted toward gulag expansion, deportations, famine pressure, and record destruction in remote or borderland gulag target states.
 
-`common/ai_strategy/genocide_crisis_ai_strategy.txt` adjusts broad behavior for active and exposed crisis regimes, including army-building and reduced appetite for additional wars after high condemnation.
+`common/ai_strategy/genocide_crisis_ai_strategy.txt` adjusts broad behavior for active and exposed crisis regimes, including army-building, cautious concentration camp construction, and reduced appetite for additional wars after high condemnation. Germany has a small pre-1939 construction weight capped at a few early camps, then stronger wartime and occupied-territory weights only after 1939 or meaningful escalation.
 
 ## Existing-System Integration
 
@@ -103,7 +118,7 @@ AI behavior is split between decision weights and broad AI strategy:
 
 Camp deaths use the shared deaths system, reduce real state population, and appear in the Deaths tab as:
 
-- Camp atrocities
+- From concentration camps:
 - Extermination camp
 - Gulag repression
 
@@ -143,11 +158,13 @@ Required sprites:
 
 | Code icon | GFX entry | Sprite path |
 | --- | --- | --- |
-| `concentration_camp` | `GFX_building_concentration_camp` | `gfx/interface/buildings/building_concentration_camp.dds` |
-| `extermination_camp` | `GFX_building_extermination_camp` | `gfx/interface/buildings/building_extermination_camp.dds` |
+| `concentration_camp` | `GFX_building_concentration_camp` | vanilla `gfx/interface/buildings/building_fort_icon.dds` |
+| `extermination_camp` | `GFX_building_extermination_camp` | vanilla `gfx/interface/buildings/building_intel_icon.dds` |
 | `gulag_labor_camp_network` | `GFX_building_gulag_labor_camp_network` | `gfx/interface/buildings/building_gulag_labor_camp_network.dds` |
 
-The current files are placeholder sprites copied from vanilla-style building assets so the game has valid references. Replace those files in place when final art is ready; the GFX names and code references do not need to change.
+The concentration camp building entry uses a vanilla fort-style building icon and the vanilla bunker map mesh. The extermination camp building entry uses a distinct vanilla intelligence-building icon and the vanilla stronghold-network map mesh. Both building types have valid UI sprites and map entities until dedicated final camp art exists.
+
+Camp and Gulag decision categories use the existing Chaos Redux doom category icon `GFX_decision_category_chaos_doom`; no separate camp category DDS is required.
 
 The dynamic modifiers and ideas use existing `GFX_idea_jews_massacre` / `generic_oppression` style icons. The decisions use existing vanilla/Chaos decision icons and do not require additional sprites.
 
