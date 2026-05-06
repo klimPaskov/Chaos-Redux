@@ -28,16 +28,19 @@ Basic behavior:
 - if the selected event belongs to one or more clusters, the system checks whether a cluster should fire
 - if the cluster roll fails, the original event fires normally
 - if the cluster roll succeeds, the cluster fires instead
-- firing the cluster fires or processes every event in that cluster according to the cluster design
-- all events inside the cluster have their weights updated as if they had individually fired
+- the triggering event is processed as part of the cluster unless it has become invalid before firing
+- the cluster checks each member event's own eligibility before processing it
+- the cluster may skip optional member events based on chaos tier, validity, cooldown, and participation chance
+- firing or processing a member event updates that event's weight as if it had individually fired
 
-## 2. Cluster chance and chaos scaling
+## 2. Cluster chance, member chance, and chaos scaling
 
-Cluster chance should start low.
+There are two different chances:
 
-The chance should increase as the Chaos Meter rises.
+1. **Cluster roll chance**: the chance that the selected event turns into a cluster firing instead of firing alone.
+2. **Member participation chance**: the chance that an eligible optional member event fires when the cluster fires.
 
-The system should feel rare at low chaos and more likely during high chaos, but clusters should not become constant spam.
+Cluster roll chance should start low and increase as the Chaos Meter rises.
 
 Design intent:
 
@@ -46,11 +49,20 @@ Design intent:
 - Rising Chaos: clusters become noticeable
 - Chaos Tier: clusters become a real risk
 - Totalen Chaos: clusters become much more likely
-- World Collapse: clusters can happen frequently if the event system is still active
+- World Collapse: same as in totalen chaos
 
-Use existing Chaos Redux chaos tier logic where appropriate.
+Member participation chance is controlled per event inside the cluster.
 
-The exact values can be tuned, but the system should clearly scale upward with chaos.
+Rules:
+
+- required member events fire when valid
+- optional member events roll separately when the cluster fires
+- more dangerous optional events should usually have lower participation chance than safer events
+- eligible optional member events should not be weighted so low that they almost never appear
+- default minimum participation chance for an eligible optional member event should be 50%, unless a cluster definition gives a clear reason to block or gate it
+- the event that caused the cluster roll should be treated as required for that firing, unless it becomes invalid during cluster setup
+
+Use existing Chaos Redux chaos tier logic where appropriate. Values can be tuned, but the distinction between cluster roll chance and member participation chance must remain clear.
 
 ## 3. Event weight behavior when a cluster fires
 
@@ -80,7 +92,6 @@ Preferred behavior:
 
 - major events should only be placed in clusters intentionally
 - major-event cluster behavior must respect existing major event reset rules
-- if major events create balance problems inside clusters, gate them or document that major events should not be cluster members by default
 
 Do not let clusters accidentally bypass major-event pacing.
 
@@ -111,11 +122,26 @@ A cluster should have:
 - short description
 - member event IDs
 - cluster type, such as one-time or repeatable
-- base chance or chance profile
+- base cluster roll chance or chance profile
 - chaos scaling behavior
 - optional cooldown or gating rules
 - optional cluster-specific trigger rules
 - optional event ordering rules
+
+Each member event should be able to define:
+
+- member event ID
+- whether it is required or optional when the cluster fires
+- member participation chance if optional
+- minimum chaos tier to appear inside the cluster
+- danger level, such as low, medium, high, or severe
+- cluster order, usually from least dangerous to most dangerous
+- optional member-specific trigger rules
+- skip behavior if the event is unavailable, exhausted, disabled, or blocked by its own chaos requirement
+
+Cluster unlock and member event eligibility are separate.
+
+A cluster can become available at one chaos tier while some member events only become eligible later. If a member event requires a higher chaos tier than the current world state, it should be skipped for that cluster firing unless the cluster definition explicitly says otherwise.
 
 The system should be easy to extend with new clusters later.
 
@@ -130,7 +156,9 @@ Decide how the player experiences it.
 Preferred behavior:
 
 - show a cluster-facing popup or log entry first
-- then fire or queue the member events in a controlled order
+- then fire or queue member events in a controlled order
+- order member events from least dangerous to more dangerous unless the cluster defines a stronger narrative order
+- roll optional member events before presentation so the cluster log can show what happened and what was skipped
 - avoid overwhelming the player with too many popups at once
 - keep the cluster readable in logs
 - make sure event details remain accessible for each member event
@@ -175,6 +203,8 @@ Each member event entry should be clickable.
 Clicking a member event inside the cluster details window should open the normal event details window for that event.
 
 This means the player can inspect the cluster first, then drill down into each event.
+
+The cluster can be triggerable, just like with normal events.
 
 ## 9. Settings UI integration
 
@@ -221,8 +251,13 @@ Clusters should add tension and connectedness without breaking the existing even
 
 Design expectations:
 
-- low base chance
-- chaos-scaled chance increase
+- low base cluster roll chance
+- chaos-scaled cluster chance increase
+- member events keep their own eligibility rules
+- cluster unlock does not automatically unlock every member event
+- optional members use participation chance, not guaranteed firing
+- more dangerous optional members usually have lower chance and later order
+- eligible optional members should normally have at least 50% participation chance
 - cooldowns where needed
 - respect member event weights
 - no free bypass of fire-once limits
@@ -230,7 +265,7 @@ Design expectations:
 - cluster firing should feel special
 - clusters should not replace normal single-event firing
 
-If a cluster fires, it should feel like the world is becoming more unstable and related crises are converging.
+If a cluster fires, it should feel like related events are converging without dumping every possible member event into the player at once.
 
 ## 12. Documentation
 
@@ -239,8 +274,10 @@ Update the relevant documentation.
 The docs should explain:
 
 - what event clusters are
-- how cluster chance works
+- how cluster roll chance works
+- how member participation chance works
 - how chaos scaling affects clusters
+- how member event danger, ordering, and eligibility work
 - how member events are handled
 - how fire-once and repeatable member events update their weights
 - how repeatable clusters work
@@ -249,7 +286,7 @@ The docs should explain:
 - how manual cluster triggering works
 - how future clusters should be added
 
-If the existing event system docs or mechanics guide describes random event selection, update it so clusters are included.
+If the existing event system docs or mechanics guide describes random event selection, update it so clusters are included. Update the CHAOS_REDUX_MECHANICS.md specifically.
 
 ## 13. Spreadsheet updates
 
@@ -263,9 +300,14 @@ Possible spreadsheet fields:
 - cluster name
 - member event IDs
 - cluster type
-- base chance profile
+- base cluster roll chance profile
 - chaos scaling profile
 - repeatable or one-time
+- member required or optional status
+- member participation chance
+- member minimum chaos tier inside the cluster
+- member danger level
+- member cluster order
 - description
 - notes
 
@@ -279,7 +321,9 @@ Tooltips should explain:
 
 - what event clusters are
 - why a cluster can fire instead of a single event
-- how chaos affects cluster chance
+- how chaos affects cluster roll chance
+- how optional member participation works
+- why some cluster members may be skipped until higher chaos
 - how member events are handled
 - how repeatable clusters differ from one-time clusters
 - how to trigger a cluster by ID from settings
@@ -300,8 +344,12 @@ Before finishing, verify that:
 
 - events can belong to clusters
 - a selected event can roll into a cluster instead of firing alone
-- base cluster chance is low
+- base cluster roll chance is low
 - cluster chance increases with chaos tier
+- optional member participation chance works
+- cluster unlock and member minimum chaos tier are handled separately
+- more dangerous events usually fire later in the cluster order
+- eligible optional members normally have at least 50% participation chance
 - fire-once member events are permanently removed after cluster firing
 - repeatable member events apply normal repeatable weight reduction and recovery rules
 - repeatable clusters can fire more than once when valid

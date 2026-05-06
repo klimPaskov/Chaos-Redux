@@ -94,6 +94,22 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
 
 - `20_end_of_the_living_achievement`
   - Trigger the zombie apocalypse world-end scenario (`world_end_zombies`).
+- `21_weaponize_the_end_achievement`
+  - Complete a weaponized zombie project.
+- `22_fight_fire_with_fire_achievement`
+  - Create a weaponized zombie strain that can fight hostile outbreaks.
+- `23_we_made_a_cure_then_made_it_worse_achievement`
+  - Resolve the final strain into a cure-adapted variant.
+- `24_containment_was_temporary_achievement`
+  - Resolve the final strain into a containment-breach variant.
+- `25_only_obeys_us_achievement`
+  - Resolve the final strain into a controlled-loyalty variant.
+- `26_a_friend_to_mankind_achievement`
+  - Resolve the final strain into a purifier or semi-sapient variant.
+- `27_the_wendigo_rises_achievement`
+  - Trigger the Wendigo super event.
+- `28_the_cure_is_real_achievement`
+  - Be the country that triggers the first zombie-cure activation.
 - `29_the_lamps_remain_lit_achievement`
   - As the Holy Realm, complete `THR_vow_against_annihilation`, renounce Final Silence, and keep Chaos below `600`.
 - `30_mandala_of_nations_achievement`
@@ -198,9 +214,13 @@ Registered primary sprite aliases:
     - `gfx/achievements/20_end_of_the_living_achievement_grey.dds`
     - `gfx/achievements/20_end_of_the_living_achievement_not_eligible.dds`
 
-The zombie special-project achievement icon sets `21` through `28` also use the same three-file pattern and have explicit sprite aliases in `interface/chaosx_achievements.gfx`. Sets `21` through `27` currently use placeholder copies until dedicated art is supplied.
+The zombie special-project achievement icon sets `21` through `28` also use the same three-file pattern and have explicit sprite aliases in `interface/chaosx_achievements.gfx`.
 
-Holy Realm achievement icon sets use the same three-file pattern and are currently placeholder copies until dedicated art is supplied:
+The non-Holy Realm achievement icon sets `00` through `28` have custom generated art, processed PNG previews, and DDS files recorded in:
+
+- `docs/assets/achievement_icons_chaos_redux/manifest.md`
+
+Holy Realm achievement icon sets use the same three-file pattern and are intentionally maintained separately:
 
 - `29_the_lamps_remain_lit_achievement`
 - `30_mandala_of_nations_achievement`
@@ -208,12 +228,3 @@ Holy Realm achievement icon sets use the same three-file pattern and are current
 - `32_mandate_without_a_sword_achievement`
 - `33_register_without_edges_achievement`
 - `34_empty_mandala_achievement`
-
-Needed final achievement art:
-
-- `29_the_lamps_remain_lit_achievement`: a calm lamp or butter-lamp line in snow, hopeful gold/white, no weapons.
-- `30_mandala_of_nations_achievement`: a peaceful mandala/faction circle with small banners or open hands.
-- `31_mountain_circle_by_vow_achievement`: Tibet, Nepal, and Bhutan passes unified by prayer flags or a sealed mountain ring.
-- `32_mandate_without_a_sword_achievement`: Buddha Mandate seal with an empty scabbard, dove/white banner, or hands lowered.
-- `33_register_without_edges_achievement`: an Arhat ledger extending across India/China border maps, administrative rather than apocalyptic.
-- `34_empty_mandala_achievement`: a dark empty mandala, ash-white ring, silent world ledger; clearly Final Silence.

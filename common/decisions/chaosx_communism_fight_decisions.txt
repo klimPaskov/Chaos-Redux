@@ -79,7 +79,7 @@ chaosx_communism_fight_category = {
 				}
 			}
 		}
-		state_target = any_owned_state
+		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
 		days_remove = constant:communism_spread_timing.local_intervention_days
 		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
@@ -88,8 +88,9 @@ chaosx_communism_fight_category = {
 
 		highlight_states = {
 			highlight_states_trigger = {
-				is_owned_by = ROOT
+				is_controlled_by = ROOT
 				OR = {
+					has_state_flag = communist_controlled_state
 					has_state_flag = communist_control_level_1
 					has_state_flag = communist_control_level_2
 					has_state_flag = communist_control_level_3
@@ -112,7 +113,7 @@ chaosx_communism_fight_category = {
 
 		target_trigger = {
 			FROM = {
-				is_owned_by = ROOT
+				is_controlled_by = ROOT
 				OR = {
 					has_state_flag = communist_controlled_state
 					has_state_flag = communist_control_level_1
@@ -123,11 +124,9 @@ chaosx_communism_fight_category = {
 		}
 
 		custom_cost_trigger = {
-			always = yes
-		}
-
-		available = {
-			always = yes
+			command_power > FROM.communist_intervention_command_power_cost
+			has_manpower > FROM.communist_intervention_manpower_cost
+			has_equipment = { infantry_equipment > FROM.communist_intervention_equipment_cost }
 		}
 
 		visible = {
@@ -181,7 +180,18 @@ chaosx_communism_fight_category = {
 			hidden_effect = {
 				FROM = { save_event_target_as = communist_target_state }
 				if = {
-					limit = { FROM = { has_state_flag = communist_control_level_1 } }
+					limit = {
+						FROM = {
+							OR = {
+								has_state_flag = communist_control_level_1
+								AND = {
+									has_state_flag = communist_controlled_state
+									NOT = { has_state_flag = communist_control_level_2 }
+									NOT = { has_state_flag = communist_control_level_3 }
+								}
+							}
+						}
+					}
 					random_list = {
 						constant:communism_spread_intervention.level_1_success = {
 							FROM = {

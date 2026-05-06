@@ -38,6 +38,7 @@ Use this skill for:
 - decision category icons
 - idea icons
 - national spirit icons
+- officer corps spirit icons
 - focus icons
 - achievement icons
 - flags
@@ -107,29 +108,44 @@ Record that the image was user-provided in the manifest.
 
 Still crop, resize, convert, place, wire, and document it like any other source asset.
 
-## 4. Reference asset folder
+## 4. Reference asset examples
 
-This skill folder contains an `assets/` folder with reference images for how different asset types should look.
+This skill includes reference images that show how different Chaos Redux asset types should look.
 
-Before creating or processing an asset, inspect the relevant reference examples when they exist.
+Before generating, sourcing, processing, or wiring an asset, inspect the relevant reference folder for that asset type. Use the examples to match style, framing, contrast, readability, scale, texture, and HOI4 presentation.
 
-Reference examples may include:
+Use Linux project paths, not Windows UNC paths:
 
-- achievement icons
-- focus icons
-- idea icons
-- decision icons
-- leader portraits
-- flags
-- event images
-- news images
-- report images
-- super-event images
-- UI elements
+```text
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/tech_icons
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
+```
 
-Use these references to match style, framing, contrast, readability, and HOI4 presentation.
+Reference mapping:
+
+- idea and national spirit icons: `assets/ideas`
+- officer corps spirit icons: inspect vanilla `gfx/interface/officer_corp/spirits/`; final assets should be 45x45 DDS files with transparent backgrounds, no frames, no painted backdrop, no full-canvas opaque pixels, a readable dark/black outline, and a slight drop shadow, wired as `GFX_idea_<spirit_id>` sprites from a `.gfx` file.
+- news event images: `assets/news_event_images`
+- report event images: `assets/report_event_images`
+- super-event images: `assets/super_event_images`
+- tech icons: `assets/tech_icons`
+- achievement icons: `assets/achievements`
+- decision and decision category icons: `assets/decisions`
+- flags: `assets/flags`
+- focus icons: `assets/focuses`
+
+If a relevant reference folder exists, do not generate, source, crop, process, or wire new artwork until you have inspected it.
 
 Do not copy reference assets directly unless the user explicitly allows it. Use them as style and formatting guidance.
+
+If the needed asset type has no matching reference folder, inspect the closest relevant folder and existing Chaos Redux or vanilla assets before choosing a style.
 
 ## 5. No core artwork with scripts
 
@@ -154,6 +170,16 @@ Python or scripts may only be used after the source image exists for:
 - creating progression-state variants
 - converting final assets to DDS
 
+## 5.1 Icon Creation Rules
+
+Small gameplay icons must be readable at their final in-game size.
+
+- Use transparent backgrounds for asset types that are transparent in vanilla, especially officer corps spirit icons and small symbolic interface icons.
+- Keep unused pixels fully transparent. Do not leave a square opaque fill behind icons unless the asset type explicitly uses a painted frame or backdrop.
+- Give the icon silhouette a dark/black outline and a subtle drop shadow when the icon is displayed over variable UI backgrounds.
+- Avoid tiny interior detail that disappears at 45x45 or 64x64. Favor one clear subject, strong value contrast, and a centered silhouette.
+- Officer corps spirit icons specifically must be 45x45, transparent, unframed, and visually similar to vanilla officer corps spirit icons rather than national spirit cards.
+
 ## 6. Required asset workflow
 
 For every asset package:
@@ -165,7 +191,7 @@ For every asset package:
 5. Assign each asset a sprite name if it needs one.
 6. Identify the target size.
 7. Identify the intended in-game use.
-8. Inspect relevant examples in the skill `assets/` folder when they exist.
+8. Inspect the matching reference folder from section 4 before generating, sourcing, processing, or wiring the asset.
 9. Decide the source mode for each asset:
    - `image_gen`
    - internet source image
@@ -439,7 +465,7 @@ These icons usually do not need the full focus icon frame.
 
 Use `image_gen` for the base artwork unless the user provides or requests a specific source image.
 
-Inspect the skill reference assets for idea icons when available.
+Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas` before generating or processing idea icons.
 
 ## 17. Focus icons
 
@@ -469,7 +495,7 @@ Every focus icon should support the focus tree’s story, ideology, or gameplay 
 
 Use `image_gen` for the base artwork unless the user provides or requests a specific source image.
 
-Inspect the skill reference assets for focus icons when available.
+Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses` before generating or processing focus icons.
 
 ## 18. Decision icons
 
@@ -499,7 +525,7 @@ decision_category_
 
 Use `image_gen` for the base artwork unless the user provides or requests a specific source image.
 
-Inspect the skill reference assets for decision icons when available.
+Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions` before generating or processing decision icons.
 
 ## 19. Achievement icons
 
@@ -522,7 +548,7 @@ Target size:
 
 Use `achievement_` filename prefix.
 
-Inspect the skill reference assets for achievement icons when available.
+Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements` before generating or processing achievement icons.
 
 ## 20. Flags
 
@@ -567,7 +593,7 @@ Target size:
 156x210
 ```
 
-Inspect the skill reference assets for leader portraits when available.
+Inspect the closest relevant reference folder and existing Chaos Redux portraits before generating or processing fictional leader portraits.
 
 ## 22. UI panels and custom windows
 
@@ -723,7 +749,7 @@ Before finishing, confirm:
 
 1. Every required asset from the event spec is accounted for.
 2. Every asset uses the correct source mode: `image_gen` for generated symbolic or fictional assets, internet source images for news/report/super-event images, and real source images for real leader portraits.
-3. Relevant examples in the skill `assets/` folder were inspected when available.
+3. The matching reference folder from section 4 was inspected before generation, sourcing, processing, or wiring.
 4. Every generated, sourced, or provided asset has a source PNG.
 5. Every final asset has a processed PNG preview.
 6. Every final asset has a DDS output.
