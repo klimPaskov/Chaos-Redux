@@ -25,3 +25,59 @@ triggerable_scenario_can_launch_selected = {
 		}
 	}
 }
+
+is_triggerable_scenario_zombie_country = {
+	exists = yes
+	has_country_flag = zombie_outbreak_dynamic_country
+	num_of_controlled_states > 0
+	NOT = { has_capitulated = yes }
+	OR = {
+		has_country_flag = weaponized_zombie_triggerable_scenario
+		has_country_flag = zombie_triggerable_scenario_standard
+	}
+}
+
+triggerable_scenario_zombie_same_type_as_actor = {
+	OR = {
+		AND = {
+			OR = {
+				has_country_flag = zombie_triggerable_scenario_standard
+				has_country_flag = weaponized_zombie_type_infected
+			}
+			event_target:triggerable_zombie_relation_actor = {
+				OR = {
+					has_country_flag = zombie_triggerable_scenario_standard
+					has_country_flag = weaponized_zombie_type_infected
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_rabid
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_rabid }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_parasitic
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_parasitic }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_mutant
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_mutant }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_undead
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_undead }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_necrotic
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_necrotic }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_demonic
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_demonic }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_wendigo
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_wendigo }
+		}
+	}
+}

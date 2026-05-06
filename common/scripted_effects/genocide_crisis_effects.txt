@@ -25,6 +25,7 @@
 @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS = 6
 @GENOCIDE_DISCOVERY_RESPONSIBLE_DELAY_HOURS = 8
 @GENOCIDE_DISCOVERY_NEWS_DELAY_HOURS = 12
+@GENOCIDE_NEW_CAMP_REPORT_GRACE_DAYS = 180
 
 genocide_initialize_country_variables = {
 	if = { limit = { NOT = { has_variable = genocide_escalation } } set_variable = { genocide_escalation = 0 } }
@@ -295,6 +296,10 @@ genocide_register_concentration_site_for_root = {
 	}
 	PREV = {
 		genocide_activate_crisis = yes
+		set_country_flag = {
+			flag = genocide_new_camp_network_administrative_grace
+			days = @GENOCIDE_NEW_CAMP_REPORT_GRACE_DAYS
+		}
 		add_to_variable = { genocide_concentration_sites = 1 }
 		add_to_variable = { genocide_escalation = constant:genocide_crisis_value.concentration_escalation }
 		add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_minor }

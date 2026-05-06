@@ -3,13 +3,13 @@
 #   by registering a country scope with the event id that should receive a
 #   temporary weight floor while that country is close to capitulation.
 
-chaosx_initialize_crisis_rescue_registry = {
+initialize_crisis_rescue_registry = {
 	clear_array = global.crisis_rescue_countries
 	clear_array = global.crisis_rescue_event_ids
-	chaosx_register_default_crisis_rescue_targets = yes
+	register_default_crisis_rescue_targets = yes
 }
 
-chaosx_register_crisis_rescue_target = {
+register_crisis_rescue_target = {
 	# COUNTRY scope. Input: temp variable crisis_rescue_event_id.
 	if = {
 		limit = {
@@ -22,17 +22,17 @@ chaosx_register_crisis_rescue_target = {
 	}
 }
 
-chaosx_register_default_crisis_rescue_targets = {
+register_default_crisis_rescue_targets = {
 	if = {
 		limit = { TIB = { exists = yes } }
 		TIB = {
 			set_temp_variable = { crisis_rescue_event_id = constant:holy_realm_event_log.event_id }
-			chaosx_register_crisis_rescue_target = yes
+			register_crisis_rescue_target = yes
 		}
 	}
 }
 
-chaosx_apply_crisis_rescue_event_weight_adjustments = {
+apply_crisis_rescue_event_weight_adjustments = {
 	if = {
 		limit = { check_variable = { global.crisis_rescue_countries^num > 0 } }
 		for_loop_effect = {

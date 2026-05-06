@@ -3489,6 +3489,7 @@ initialize_timer_system_settings = {
     calculate_dynamic_caps = yes
     set_variable = { timer_min_decrement_cap = settings_timer_min_decrement_cap }
     set_variable = { timer_max_decrement_cap = settings_timer_max_decrement_cap }
+    update_timer_window_dynamic_range = yes
 
     set_variable = { settings_timer_increment_mode = 1 }
 
@@ -3511,6 +3512,7 @@ update_timer_from_settings = {
     set_variable = { timer_max_decrement_cap = settings_timer_max_decrement_cap }
 
     calculate_next_timer_value = yes
+    update_timer_window_dynamic_range = yes
     log = "CHAOS REDUX TIMER: Timer updated - new value: [?event_timer_days] min:[?settings_timer_min_days] max:[?settings_timer_max_days] min_cap:[?settings_timer_min_decrement_cap] max_cap:[?settings_timer_max_decrement_cap]"
 }
 
@@ -3528,6 +3530,7 @@ decrease_timer_min = {
 
     set_variable = { settings_timer_min_days = new_min }
     calculate_dynamic_caps = yes
+    update_timer_window_dynamic_range = yes
 }
 
 # Increase minimum timer value
@@ -3544,6 +3547,7 @@ increase_timer_min = {
 
     set_variable = { settings_timer_min_days = new_min }
     calculate_dynamic_caps = yes
+    update_timer_window_dynamic_range = yes
 }
 
 # Decrease maximum timer value
@@ -3560,6 +3564,7 @@ decrease_timer_max = {
 
     set_variable = { settings_timer_max_days = new_max }
     calculate_dynamic_caps = yes
+    update_timer_window_dynamic_range = yes
 }
 
 # Increase maximum timer value
@@ -3576,6 +3581,7 @@ increase_timer_max = {
 
     set_variable = { settings_timer_max_days = new_max }
     calculate_dynamic_caps = yes
+    update_timer_window_dynamic_range = yes
 }
 
 # Toggle timer system increment mode
@@ -3604,6 +3610,7 @@ toggle_timer_window = {
         log = "CHAOS REDUX SETTINGS: Timer window has been HIDDEN for [This.GetName]"
     }
     else = {
+        update_timer_window_dynamic_range = yes
         set_country_flag = timer_window_enabled
         log = "CHAOS REDUX SETTINGS: Timer window has been SHOWN for [This.GetName]"
     }
@@ -3634,11 +3641,92 @@ reset_timer_to_defaults = {
     clr_country_flag = timer_window_enabled
 
     set_country_flag = events_activated
+    update_timer_window_dynamic_range = yes
 }
 
 # ============================================================================
 # DYNAMIC CAP CALCULATION SYSTEM
 # ============================================================================
+
+update_timer_window_dynamic_range = {
+    set_temp_variable = { timer_window_range_min = timer_min_days }
+    set_temp_variable = { timer_window_range_max = timer_max_days }
+
+    if = {
+        limit = { has_variable = timer_max_cap_reduction }
+        subtract_from_temp_variable = { timer_window_range_max = timer_max_cap_reduction }
+    }
+
+    clamp_temp_variable = {
+        var = timer_window_range_max
+        min = 5
+    }
+
+    set_temp_variable = { timer_window_range_modifier = global.chaos_timer_modifier_calm }
+    if = { limit = { has_global_flag = { flag = chaos_tier value = 1 } } set_temp_variable = { timer_window_range_modifier = global.chaos_timer_modifier_gathering } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 2 } } set_temp_variable = { timer_window_range_modifier = global.chaos_timer_modifier_rising } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 3 } } set_temp_variable = { timer_window_range_modifier = global.chaos_timer_modifier_chaos } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 4 } } set_temp_variable = { timer_window_range_modifier = global.chaos_timer_modifier_critical } }
+    else_if = { limit = { has_global_flag = { flag = chaos_tier value = 5 } } set_temp_variable = { timer_window_range_modifier = global.chaos_timer_modifier_collapse } }
+
+    clamp_temp_variable = {
+        var = timer_window_range_min
+        min = 5
+        max = timer_window_range_max
+    }
+
+    round_temp_variable = timer_window_range_min
+    round_temp_variable = timer_window_range_max
+
+    if = {
+        limit = { has_variable = timer_day_decrement }
+        subtract_from_temp_variable = { timer_window_range_min = timer_day_decrement }
+        subtract_from_temp_variable = { timer_window_range_max = timer_day_decrement }
+    }
+
+    multiply_temp_variable = { timer_window_range_min = timer_window_range_modifier }
+    multiply_temp_variable = { timer_window_range_max = timer_window_range_modifier }
+    round_temp_variable = timer_window_range_min
+    round_temp_variable = timer_window_range_max
+
+    clamp_temp_variable = {
+        var = timer_window_range_min
+        min = constant:event_system_timer_defaults.minimum_days
+    }
+    clamp_temp_variable = {
+        var = timer_window_range_max
+        min = constant:event_system_timer_defaults.minimum_days
+    }
+
+    if = {
+        limit = {
+            check_variable = {
+                var = timer_window_range_max
+                value = timer_window_range_min
+                compare = less_than
+            }
+        }
+        set_temp_variable = { timer_window_range_max = timer_window_range_min }
+    }
+
+    set_variable = { timer_window_dynamic_min_days = timer_window_range_min }
+    set_variable = { timer_window_dynamic_max_days = timer_window_range_max }
+    if = {
+        limit = { has_variable = timer_day_decrement }
+        set_variable = { timer_window_dynamic_day_decrement = timer_day_decrement }
+    }
+    else = {
+        set_variable = { timer_window_dynamic_day_decrement = 0 }
+    }
+    if = {
+        limit = { has_variable = timer_max_cap_reduction }
+        set_variable = { timer_window_dynamic_max_cap_reduction = timer_max_cap_reduction }
+    }
+    else = {
+        set_variable = { timer_window_dynamic_max_cap_reduction = 0 }
+    }
+    set_variable = { timer_window_dynamic_modifier = timer_window_range_modifier }
+}
 
 # Calculate dynamic caps based on minValue and maxValue inputs
 calculate_dynamic_caps = {
@@ -5075,6 +5163,7 @@ update_all_timer_modifiers = {
     multiply_temp_variable = { critical_mod = 0.5 }
     set_variable = { global.chaos_timer_modifier_critical = critical_mod }
     set_variable = { global.chaos_timer_modifier_collapse = critical_mod }
+    update_timer_window_dynamic_range = yes
 }
 
 # ============================================================================

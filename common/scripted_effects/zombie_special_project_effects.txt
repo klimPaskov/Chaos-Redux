@@ -1817,53 +1817,131 @@ weaponized_zombie_apply_training_ai = {
 }
 
 weaponized_zombie_expand_against_neighbors = {
-	every_country = {
+	save_event_target_as = weaponized_zombie_expanding_country
+	save_event_target_as = triggerable_zombie_relation_actor
+	every_neighbor_country = {
 		limit = {
-            is_neighbor_of = ROOT
-            NOT = { has_war_with = ROOT }
-            OR = {
-                is_subject_of = ROOT
-                ROOT = { can_declare_war_on = PREV }
-            }
             OR = {
                 AND = {
-                    ROOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+					is_triggerable_scenario_zombie_country = yes
+					event_target:weaponized_zombie_expanding_country = { is_triggerable_scenario_zombie_country = yes }
+					OR = {
+						triggerable_scenario_zombie_same_type_as_actor = yes
+						event_target:weaponized_zombie_expanding_country = {
+							NOT = { has_war_with = PREV }
+							can_declare_war_on = PREV
+						}
+					}
+				}
+                AND = {
+					NOT = {
+						AND = {
+							is_triggerable_scenario_zombie_country = yes
+							event_target:weaponized_zombie_expanding_country = { is_triggerable_scenario_zombie_country = yes }
+						}
+					}
+                    event_target:weaponized_zombie_expanding_country = { has_country_flag = weaponized_zombie_friendly_to_humans }
                     is_actual_nonhuman_country = yes
                     OR = {
                         NOT = { is_zombie_outbreak_country = yes }
-                        ROOT = { has_country_flag = weaponized_zombie_attack_other_zombies }
+                        event_target:weaponized_zombie_expanding_country = { has_country_flag = weaponized_zombie_attack_other_zombies }
                     }
+					OR = {
+						is_subject_of = event_target:weaponized_zombie_expanding_country
+						event_target:weaponized_zombie_expanding_country = { can_declare_war_on = PREV }
+					}
+					event_target:weaponized_zombie_expanding_country = { NOT = { has_war_with = PREV } }
                 }
                 AND = {
-                    ROOT = { NOT = { has_country_flag = weaponized_zombie_friendly_to_humans } }
+					NOT = {
+						AND = {
+							is_triggerable_scenario_zombie_country = yes
+							event_target:weaponized_zombie_expanding_country = { is_triggerable_scenario_zombie_country = yes }
+						}
+					}
+                    event_target:weaponized_zombie_expanding_country = { NOT = { has_country_flag = weaponized_zombie_friendly_to_humans } }
                     OR = {
                         NOT = { is_zombie_outbreak_country = yes }
-                        ROOT = { has_country_flag = weaponized_zombie_attack_other_zombies }
+                        event_target:weaponized_zombie_expanding_country = { has_country_flag = weaponized_zombie_attack_other_zombies }
                     }
                     NOT = {
-                        ROOT = {
+                        event_target:weaponized_zombie_expanding_country = {
                             is_in_array = {
                                 array = weaponized_zombie_friendly_countries
                                 value = PREV
                             }
                         }
                     }
+					OR = {
+						is_subject_of = event_target:weaponized_zombie_expanding_country
+						event_target:weaponized_zombie_expanding_country = { can_declare_war_on = PREV }
+					}
+					event_target:weaponized_zombie_expanding_country = { NOT = { has_war_with = PREV } }
                 }
             }
         }
+		save_event_target_as = weaponized_zombie_neighbor_country
         if = {
-            limit = { NOT = { is_subject_of = ROOT } }
-            ROOT = {
+			limit = {
+				is_triggerable_scenario_zombie_country = yes
+				event_target:weaponized_zombie_expanding_country = { is_triggerable_scenario_zombie_country = yes }
+				triggerable_scenario_zombie_same_type_as_actor = yes
+			}
+			event_target:weaponized_zombie_expanding_country = {
+				set_variable = { weaponized_zombie_neighbor_merge_divisions = num_divisions }
+			}
+			set_variable = { weaponized_zombie_neighbor_merge_divisions = num_divisions }
+			if = {
+				limit = {
+					check_variable = {
+						var = weaponized_zombie_neighbor_merge_divisions
+						value = event_target:weaponized_zombie_expanding_country.weaponized_zombie_neighbor_merge_divisions
+						compare = greater_than
+					}
+				}
+				annex_country = {
+					target = event_target:weaponized_zombie_expanding_country
+					transfer_troops = yes
+				}
+			}
+			else = {
+				event_target:weaponized_zombie_expanding_country = {
+					annex_country = {
+						target = event_target:weaponized_zombie_neighbor_country
+						transfer_troops = yes
+					}
+				}
+			}
+        }
+		else_if = {
+			limit = {
+				is_triggerable_scenario_zombie_country = yes
+				event_target:weaponized_zombie_expanding_country = { is_triggerable_scenario_zombie_country = yes }
+				event_target:weaponized_zombie_expanding_country = {
+					NOT = { has_war_with = event_target:weaponized_zombie_neighbor_country }
+					can_declare_war_on = event_target:weaponized_zombie_neighbor_country
+				}
+			}
+            event_target:weaponized_zombie_expanding_country = {
                 declare_war_on = {
-                    target = PREV
+                    target = event_target:weaponized_zombie_neighbor_country
+                    type = annex_everything
+                }
+            }
+        }
+        else_if = {
+            limit = { NOT = { is_subject_of = event_target:weaponized_zombie_expanding_country } }
+            event_target:weaponized_zombie_expanding_country = {
+                declare_war_on = {
+                    target = event_target:weaponized_zombie_neighbor_country
                     type = annex_everything
                 }
             }
         }
         else = {
-            ROOT = {
+            event_target:weaponized_zombie_expanding_country = {
                 annex_country = {
-                    target = PREV
+                    target = event_target:weaponized_zombie_neighbor_country
                     transfer_troops = no
                 }
             }
@@ -2112,6 +2190,115 @@ weaponized_zombie_apply_profile_ideas_from_creator = {
     }
 }
 
+weaponized_zombie_apply_profile_ideas = {
+    remove_weaponized_zombie_profile_ideas = yes
+
+    if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_strength
+                value = 2
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_strength_strong
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_strength
+                value = 1
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_strength_medium
+    }
+
+    if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_infectiousness
+                value = 2
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_infectiousness_strong
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_infectiousness
+                value = 1
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_infectiousness_medium
+    }
+
+    if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_speed
+                value = 2
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_speed_strong
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_speed
+                value = 1
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_speed_medium
+    }
+
+    if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_durability
+                value = 2
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_durability_strong
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_durability
+                value = 1
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_durability_medium
+    }
+
+    if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_cure_resistance
+                value = 2
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_cure_resistance_strong
+    }
+    else_if = {
+        limit = {
+            check_variable = {
+                var = weaponized_zombie_cure_resistance
+                value = 1
+                compare = greater_than
+            }
+        }
+        add_ideas = weaponized_zombie_profile_cure_resistance_medium
+    }
+}
+
 apply_weaponized_zombie_completed_bonuses = {
     resolve_weaponized_zombie_profile = yes
     remove_weaponized_zombie_completion_ideas = yes
@@ -2253,11 +2440,9 @@ initialize_wendigo_incident_outbreak_country = {
         amount = 3000
         producer = CHI
     }
-    add_ideas = {
-        never_ending_hunger
-        tot_economic_mobilisation
-        extensive_conscription
-    }
+	add_ideas = {
+		never_ending_hunger
+	}
     remove_weaponized_zombie_stage_ideas = yes
     weaponized_zombie_apply_type_cosmetic_tag = yes
     weaponized_zombie_apply_type_idea = yes
@@ -2297,7 +2482,6 @@ spawn_wendigo_incident_from_completion = {
     }
 
     var:weaponized_zombie_new_country = {
-        set_country_flag = achievement_the_wendigo_rises
         trigger_wendigo_super_event = yes
     }
     weaponized_zombie_save_global_context_targets = yes
@@ -2817,8 +3001,6 @@ weaponized_zombie_copy_profile_to_outbreak = {
         }
         add_ideas = {
             never_ending_hunger
-            tot_economic_mobilisation
-            extensive_conscription
         }
         remove_weaponized_zombie_stage_ideas = yes
         weaponized_zombie_apply_type_cosmetic_tag = yes
@@ -2932,7 +3114,6 @@ spawn_weaponized_zombie_outbreak_from_creator = {
     var:weaponized_zombie_new_country = {
         if = {
             limit = { has_country_flag = weaponized_zombie_archetype_wendigo }
-            set_country_flag = achievement_the_wendigo_rises
             trigger_wendigo_super_event = yes
         }
         if = {
@@ -3655,6 +3836,7 @@ apply_weaponized_zombie_strike_consequences = {
 }
 
 trigger_wendigo_super_event = {
+    set_global_flag = achievement_the_wendigo_rises
     if = {
         limit = { has_event_target = weaponized_zombie_creator }
         event_target:weaponized_zombie_creator = {
