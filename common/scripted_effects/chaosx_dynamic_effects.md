@@ -1,6 +1,6 @@
 # chaosx_dynamic_effects
 
-This file documents reusable dynamic scripted effects from `common/scripted_effects/chaosx_dynamic_effects.txt`. The point of these effects is to keep complex variable/meta logic centralized so events can call one reusable block instead of duplicating large script chunks.
+This file documents reusable dynamic scripted effects from `common/scripted_effects/chaosx_dynamic_effects.txt` and subsystem-specific reusable effects that are intended to be called by multiple systems. The point of these effects is to keep complex variable/meta logic centralized so events can call one reusable block instead of duplicating large script chunks.
 
 ## Reuse guidance
 
@@ -13,6 +13,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [modify_state_population_by_percent](#modify_state_population_by_percent)
 - [get_random_sea_region](#get_random_sea_region)
 - [refresh_world_threat_state](#refresh_world_threat_state)
+- [apply_crisis_rescue_event_weight_adjustments](#apply_crisis_rescue_event_weight_adjustments)
 
 ## modify_value_based_on_chaos_tier
 
@@ -146,4 +147,36 @@ else = {
 	clr_global_flag = world_threat_source_my_threat
 }
 refresh_world_threat_state = yes
+```
+
+## apply_crisis_rescue_event_weight_adjustments
+
+This reusable effect lives in `common/scripted_effects/crisis_rescue_effects.txt` because it owns a small registry and helper effects. It walks the registered crisis-rescue country/event-id arrays and raises the matching event weight to a temporary floor when a registered country is close to capitulation.
+
+Use this for event chains that need a near-capitulation rescue chance without adding bespoke event-weight code to the core timer loop. Register a country with `register_crisis_rescue_target` by setting `crisis_rescue_event_id` in that country scope first. `initialize_crisis_rescue_registry` clears and rebuilds the default registry at event-system initialization.
+
+Inputs:
+
+- `global.crisis_rescue_countries`
+- `global.crisis_rescue_event_ids`
+- `global.default_event_weight`
+
+Output:
+
+- may update the target event's weight through `set_event_weight`
+- sets `chaosx_near_capitulation_rescue_pressure` on countries currently receiving the rescue weight floor
+
+Side effects:
+
+- reads `chaosx_near_capitulation_crisis_rescue_candidate`
+- uses `get_event_weight` and `set_event_weight` for the registered event id
+
+Example:
+
+```txt
+TIB = {
+	set_temp_variable = { crisis_rescue_event_id = constant:holy_realm_event_log.event_id }
+	register_crisis_rescue_target = yes
+}
+apply_crisis_rescue_event_weight_adjustments = yes
 ```

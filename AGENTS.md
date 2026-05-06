@@ -254,7 +254,7 @@ Rules:
 
 ## 7. Skill Maintenance
 
-When a task reveals a repeated workflow, repeated mistake, or reusable process, use the `skill-creator` skill.
+When a task reveals a repeated workflow, a mistake, or a reusable process, use the `skill-creator` skill.
 
 Use OpenAI’s official `skill-creator` skill.
 

@@ -3,6 +3,8 @@
 #   log evolution milestones, doctrine memory, world threat state, super events,
 #   and Final Silence strike waves.
 
+@HOLY_REALM_CHAOS_REDUCTION_COOLDOWN_DAYS = 720
+
 holy_realm_ensure_counters = {
 	if = {
 		limit = { NOT = { has_variable = spiritual_legitimacy } }
@@ -323,21 +325,36 @@ holy_realm_daily_doctrine_balance_pulse = {
 holy_realm_add_chaos = {
 	if = {
 		limit = { has_variable = holy_realm_chaos_delta }
-		set_temp_variable = { chaos_change = holy_realm_chaos_delta }
 		if = {
-			limit = { has_variable = holy_realm_chaos_reason }
-			set_temp_variable = { chaos_history_reason = holy_realm_chaos_reason }
-		}
-		else_if = {
-			limit = { check_variable = { holy_realm_chaos_delta < 0 } }
-			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			limit = {
+				check_variable = { holy_realm_chaos_delta < 0 }
+				has_country_flag = holy_realm_chaos_reduction_cooldown
+			}
 		}
 		else = {
-			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			if = {
+				limit = { check_variable = { holy_realm_chaos_delta < 0 } }
+				set_country_flag = {
+					flag = holy_realm_chaos_reduction_cooldown
+					days = @HOLY_REALM_CHAOS_REDUCTION_COOLDOWN_DAYS
+				}
+			}
+			set_temp_variable = { chaos_change = holy_realm_chaos_delta }
+			if = {
+				limit = { has_variable = holy_realm_chaos_reason }
+				set_temp_variable = { chaos_history_reason = holy_realm_chaos_reason }
+			}
+			else_if = {
+				limit = { check_variable = { holy_realm_chaos_delta < 0 } }
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			}
+			else = {
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			}
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			save_event_target_as = chaos_history_actor
+			add_chaos_meter_value = yes
 		}
-		set_temp_variable = { chaos_history_reason_custom = 1 }
-		save_event_target_as = chaos_history_actor
-		add_chaos_meter_value = yes
 	}
 }
 

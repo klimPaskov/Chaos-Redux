@@ -25,12 +25,12 @@ on_actions = {
             every_possible_country = {
                 limit = { always = yes }
 
-	                set_variable_to_random = {
-	                    var = event_timer_days
-	                    min = constant:event_system_timer_random_start.min
-	                    max = constant:event_system_timer_random_start.max
-	                    integer = yes
-	                }
+                set_variable_to_random = {
+                    var = event_timer_days
+                    min = constant:event_system_timer_random_start.min
+                    max = constant:event_system_timer_random_start.max
+                    integer = yes
+                }
                 if = {
                     limit = { is_ai = no }
                     log = "CHAOS REDUX EVENT SYSTEM: First event timer set to [?event_timer_days] days for [THIS.GetName]"
@@ -38,6 +38,7 @@ on_actions = {
 
                 initialize_dynamic_timer = yes
                 initialize_settings_system = yes
+                update_timer_window_dynamic_range = yes
             }
 
             random_country = {
@@ -148,6 +149,7 @@ on_actions = {
 
                 # Handle dynamic event timer
                 check_event_timer = yes
+                update_timer_window_dynamic_range = yes
 
                 # If timer reached 0, fire events
                 if = {
