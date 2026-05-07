@@ -8,14 +8,18 @@ is_holy_realm_country = {
 
 can_host_holy_realm_refuge = {
 	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
 	NOT = { has_country_flag = holy_realm_refused_calling }
 	OR = {
 		tag = TIB
-		tag = BHU
-		tag = NEP
-		original_tag = TIB
-		any_owned_state = {
-			is_core_of = TIB
+		AND = {
+			NOT = { TIB = { exists = yes } }
+			OR = {
+				tag = NEP
+				tag = BHU
+				tag = SKK
+			}
 		}
 	}
 }

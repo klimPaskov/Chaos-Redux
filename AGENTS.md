@@ -254,14 +254,20 @@ Rules:
 
 ## 7. Skill Maintenance
 
-When a task reveals a repeated workflow, a mistake, or a reusable process, use the `skill-creator` skill.
+Use skills actively. Skills are not only for cleanup at the end of a task. They are the agent's memory for repeated workflows, project-specific patterns, hard-won fixes, and instructions that should not be rediscovered every time.
 
-Use OpenAI’s official `skill-creator` skill.
+When a task reveals a repeated workflow, repeated mistake, reusable process, repo-specific convention, validation pattern, asset workflow, prompt pattern, or useful implementation rule, use OpenAI’s official `skill-creator` skill.
+
+Create or update skills more often during long tasks, especially when working through many events, mechanics, assets, localisation passes, or UI patterns. If the same reasoning would likely be needed again later in the run, capture it in a skill before moving on.
 
 Rules:
 
-1. Add only concise, specific rules supported by the task.
-2. Do not rewrite existing skills unless needed.
-3. Prefer updating an existing skill over creating a new one if the workflow already belongs there.
-4. Keep skills focused on one reusable workflow.
-5. Report which skills were used, created, or updated at the end of each task.
+1. Check whether an existing skill already covers the workflow before creating a new one.
+2. Prefer updating an existing skill when the workflow belongs there.
+3. Create a new skill when the workflow is reusable, distinct, and not covered by an existing skill.
+4. Add concise, specific rules based on actual task experience, not speculation.
+5. Record repo paths, commands, examples, gotchas, source folders, validation steps, and handoff rules when they prevent rediscovery.
+6. Keep each skill focused on one reusable workflow.
+7. Do not bloat skills with one-off details that will not help future tasks.
+8. During large multi-event runs, review skill gaps after each completed event or shared system. Update or create skills before starting the next event if something reusable was learned.
+9. Report which skills were used, created, or updated at the end of each task.
