@@ -121,17 +121,8 @@ prepare_communism_local_intervention_costs = {
 		set_variable = { communist_intervention_equipment_cost = constant:communism_spread_intervention.level_3_equipment }
 	}
 
-	set_temp_variable = { communist_intervention_duration_command_power = communist_intervention_cost_months }
-	multiply_temp_variable = { communist_intervention_duration_command_power = constant:communism_spread_intervention.duration_command_power }
-	add_to_variable = { communist_intervention_command_power_cost = communist_intervention_duration_command_power }
-
-	set_temp_variable = { communist_intervention_duration_manpower = communist_intervention_cost_months }
-	multiply_temp_variable = { communist_intervention_duration_manpower = constant:communism_spread_intervention.duration_manpower }
-	add_to_variable = { communist_intervention_manpower_cost = communist_intervention_duration_manpower }
-
-	set_temp_variable = { communist_intervention_duration_equipment = communist_intervention_cost_months }
-	multiply_temp_variable = { communist_intervention_duration_equipment = constant:communism_spread_intervention.duration_equipment }
-	add_to_variable = { communist_intervention_equipment_cost = communist_intervention_duration_equipment }
+	# Local intervention cost is tied to the current control stage.
+	# Duration still affects state penalties, but not the resource payment shown in the decision UI.
 
 	round_variable = communist_intervention_command_power_cost
 	round_variable = communist_intervention_manpower_cost
@@ -426,6 +417,121 @@ apply_communism_local_intervention_payment = {
 		type = infantry_equipment
 		amount = communist_local_equipment_payment
 	}
+}
+
+complete_communism_local_intervention = {
+	# COUNTRY SCOPE, with FROM as the targeted state.
+	hidden_effect = {
+		apply_communism_local_intervention_payment = yes
+		if = {
+			limit = { FROM = { has_state_flag = communist_worker_ritual_state } }
+			add_command_power = -10
+			add_stability = -0.005
+		}
+		if = {
+			limit = { FROM = { has_state_flag = communist_world_revolution_whisper_state } }
+			add_war_support = -0.005
+		}
+	}
+
+}
+
+resolve_communism_local_intervention = {
+	# COUNTRY SCOPE, with FROM as the targeted state.
+	hidden_effect = {
+		FROM = { save_event_target_as = communist_target_state }
+		if = {
+			limit = {
+				FROM = {
+					OR = {
+						has_state_flag = communist_control_level_1
+						AND = {
+							has_state_flag = communist_controlled_state
+							NOT = { has_state_flag = communist_control_level_2 }
+							NOT = { has_state_flag = communist_control_level_3 }
+						}
+					}
+				}
+			}
+			random_list = {
+				constant:communism_spread_intervention.level_1_success = {
+					FROM = {
+						clear_communism_state_control = yes
+						add_dynamic_modifier = {
+							modifier = communism_post_crackdown_scars
+							days = 120
+						}
+					}
+					country_event = { id = chaosx.nr1.6 }
+				}
+				constant:communism_spread_intervention.level_1_partial = {
+					FROM = {
+						add_communism_intervention_progress_partial = yes
+						try_finish_communism_level_1_intervention = yes
+					}
+					add_stability = -0.005
+					country_event = { id = chaosx.nr1.6 }
+				}
+				constant:communism_spread_intervention.level_1_bad_failure = {
+					FROM = { set_communism_state_control_level_2 = yes }
+					add_popularity = {
+						ideology = communism
+						popularity = constant:communism_spread_intervention.failed_support_gain
+					}
+					country_event = { id = chaosx.nr1.7 }
+				}
+			}
+		}
+		else_if = {
+			limit = { FROM = { has_state_flag = communist_control_level_2 } }
+			random_list = {
+				constant:communism_spread_intervention.level_2_success = {
+					FROM = {
+						add_communism_intervention_progress_success = yes
+						try_finish_communism_level_2_intervention = yes
+					}
+					country_event = { id = chaosx.nr1.6 }
+				}
+				constant:communism_spread_intervention.level_2_partial = {
+					FROM = {
+						add_communism_intervention_progress_partial = yes
+						try_finish_communism_level_2_intervention = yes
+					}
+					add_stability = -0.01
+					country_event = { id = chaosx.nr1.6 }
+				}
+				constant:communism_spread_intervention.level_2_bad_failure = {
+					FROM = { set_communism_state_control_level_3 = yes }
+					add_popularity = {
+						ideology = communism
+						popularity = constant:communism_spread_intervention.failed_support_gain
+					}
+					country_event = { id = chaosx.nr1.7 }
+				}
+			}
+		}
+		else_if = {
+			limit = { FROM = { has_state_flag = communist_control_level_3 } }
+			random_list = {
+				constant:communism_spread_intervention.level_3_suppression = {
+					FROM = { apply_communism_local_suppression = yes }
+					add_stability = -0.015
+					country_event = { id = chaosx.nr1.6 }
+				}
+				constant:communism_spread_intervention.level_3_bad_failure = {
+					FROM = { advance_communism_state_control_duration = yes }
+					add_popularity = {
+						ideology = communism
+						popularity = constant:communism_spread_intervention.failed_support_gain
+					}
+					add_stability = -0.02
+					country_event = { id = chaosx.nr1.7 }
+				}
+			}
+		}
+		refresh_communism_spread_pressure = yes
+	}
+
 }
 
 apply_communism_local_suppression = {
