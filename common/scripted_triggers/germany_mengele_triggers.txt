@@ -72,8 +72,205 @@ germany_mengele_can_attempt_coup = {
 	NOT = { has_country_flag = germany_mengele_coup_blocked }
 }
 
+germany_mengele_cloning_project_revolt_ready = {
+	OR = {
+		germany_mengele_program_active = yes
+		germany_mengele_restricted_program_active = yes
+	}
+	NOT = { has_country_flag = germany_mengele_coup_fired }
+}
+
 is_mengele_laboratory_state = {
 	has_country_flag = germany_mengele_faction
+}
+
+is_mengele_clone_directorate_country = {
+	exists = yes
+	OR = {
+		has_country_flag = mengele_clone_army_scenario_country
+		has_country_flag = germany_mengele_victorious
+		has_country_flag = germany_mengele_faction
+		has_cosmetic_tag = germany_mengele_angelic_directorate
+		has_cosmetic_tag = mengele_clone_army
+	}
+}
+
+mengele_clone_army_has_clone_deployment_command_power = {
+	OR = {
+		AND = {
+			has_country_flag = mengele_clone_decision_streamlined_deployment_unlocked
+			command_power > constant:mengele_clone_decision_threshold.raise_clone_wave_streamlined_command_power
+		}
+		AND = {
+			has_country_flag = mengele_clone_decision_discounted_deployment_unlocked
+			NOT = { has_country_flag = mengele_clone_decision_streamlined_deployment_unlocked }
+			command_power > constant:mengele_clone_decision_threshold.raise_clone_wave_discount_command_power
+		}
+		AND = {
+			NOT = { has_country_flag = mengele_clone_decision_discounted_deployment_unlocked }
+			NOT = { has_country_flag = mengele_clone_decision_streamlined_deployment_unlocked }
+			command_power > constant:mengele_clone_decision_threshold.raise_clone_wave_command_power
+		}
+	}
+}
+
+mengele_clone_world_order_uses_aryan_variant = {
+	OR = {
+		check_variable = { triggerable_clone_aryan_variant > 0 }
+		has_country_flag = mengele_clone_focus_perfect_aryan_regency
+		has_idea = germany_mengele_perfect_aryan_formations
+	}
+}
+
+is_mengele_clone_german_polish_heartland_state = {
+	OR = {
+		is_core_of = GER
+		is_core_of = POL
+	}
+}
+
+is_mengele_clone_western_command_state = {
+	OR = {
+		is_core_of = FRA
+		is_core_of = BEL
+		is_core_of = HOL
+		is_core_of = LUX
+		is_core_of = ENG
+	}
+}
+
+is_mengele_clone_eastern_command_state = {
+	OR = {
+		is_core_of = SOV
+		is_core_of = LIT
+		is_core_of = LAT
+		is_core_of = EST
+		is_core_of = UKR
+		is_core_of = BLR
+	}
+}
+
+is_mengele_clone_southern_command_state = {
+	OR = {
+		is_core_of = CZE
+		is_core_of = AUS
+		is_core_of = HUN
+		is_core_of = ROM
+		is_core_of = YUG
+		is_core_of = BUL
+		is_core_of = ITA
+		is_core_of = GRE
+		is_core_of = TUR
+	}
+}
+
+is_mengele_clone_continental_borderland_state = {
+	OR = {
+		is_mengele_clone_western_command_state = yes
+		is_mengele_clone_eastern_command_state = yes
+		is_mengele_clone_southern_command_state = yes
+	}
+}
+
+mengele_clone_army_controls_german_polish_heartland = {
+	GER = {
+		all_core_state = {
+			is_owned_and_controlled_by = ROOT
+		}
+	}
+	POL = {
+		all_core_state = {
+			is_owned_and_controlled_by = ROOT
+		}
+	}
+}
+
+mengele_clone_army_controls_and_cores_german_polish_heartland = {
+	mengele_clone_army_controls_german_polish_heartland = yes
+	GER = {
+		all_core_state = {
+			is_core_of = ROOT
+		}
+	}
+	POL = {
+		all_core_state = {
+			is_core_of = ROOT
+		}
+	}
+}
+
+mengele_clone_army_has_uncored_reclaimed_heartland = {
+	any_owned_state = {
+		is_mengele_clone_german_polish_heartland_state = yes
+		is_controlled_by = ROOT
+		NOT = { is_core_of = ROOT }
+	}
+}
+
+mengele_clone_army_has_uncored_continental_borderland = {
+	any_owned_state = {
+		is_mengele_clone_continental_borderland_state = yes
+		is_controlled_by = ROOT
+		NOT = { is_core_of = ROOT }
+	}
+}
+
+mengele_clone_army_has_heartland_occupier = {
+	any_other_country = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_mengele_clone_directorate_country = yes }
+		NOT = { has_war_with = ROOT }
+		NOT = { ROOT = { has_wargoal_against = PREV } }
+		ROOT = { can_declare_war_on = PREV }
+		any_owned_state = {
+			is_mengele_clone_german_polish_heartland_state = yes
+		}
+	}
+}
+
+mengele_hidden_clone_offer_target = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_mengele_clone_directorate_country = yes }
+	NOT = { has_country_flag = mengele_clone_client_regime }
+	NOT = { has_country_flag = mengele_hidden_clone_offer_rejected_recently }
+	NOT = { is_subject_of = ROOT }
+	NOT = { has_war_with = ROOT }
+	any_owned_state = {
+		is_controlled_by = PREV
+	}
+}
+
+mengele_hidden_clone_existing_host_target = {
+	mengele_hidden_clone_offer_target = yes
+	has_country_flag = mengele_hidden_clone_network_host
+	any_owned_state = {
+		is_controlled_by = PREV
+		NOT = { has_state_flag = mengele_hidden_clone_facility }
+	}
+}
+
+mengele_clone_world_order_rank_is_valid = {
+	has_country_flag = mengele_clone_world_order_rank_checked
+	OR = {
+		check_variable = { mengele_world_order_industrial_superiors < constant:mengele_clone_world_order.top_three_superior_limit }
+		check_variable = { mengele_world_order_military_superiors < constant:mengele_clone_world_order.top_three_superior_limit }
+	}
+}
+
+mengele_clone_world_order_can_launch = {
+	is_mengele_clone_directorate_country = yes
+	is_major = yes
+	has_completed_focus = MCL_global_replacement_maps
+	check_variable = { global.chaos_meter_value > constant:mengele_clone_world_order.world_end_chaos_gate }
+	check_variable = { var = mengele_clone_network_hosts value = constant:mengele_clone_world_order.min_hosts compare = greater_than_or_equals }
+	check_variable = { var = mengele_clone_network_facilities value = constant:mengele_clone_world_order.min_facilities compare = greater_than_or_equals }
+	check_variable = { var = mengele_clone_network_strength value = constant:mengele_clone_world_order.min_strength compare = greater_than_or_equals }
+	mengele_clone_world_order_rank_is_valid = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
 }
 
 germany_has_active_mengele_faction = {

@@ -176,6 +176,7 @@ initialize_trigger_events_settings = {
     clr_country_flag = event_id_manual_entry_active
 
     update_event_id_display = yes
+    initialize_event_cluster_settings = yes
 }
 
 # Open trigger events menu
@@ -184,6 +185,7 @@ open_trigger_events_menu = {
     set_country_flag = show_trigger_events_menu
     set_country_flag = show_events_view
     clr_country_flag = show_event_clusters_view
+    update_settings_cluster_display = yes
 }
 
 open_event_id_manual_entry = {
@@ -968,8 +970,13 @@ select_random_event_id = {
 # Fire event by ID
 fire_event_by_id = {
     set_temp_variable = { event_id = settings_selected_event_id }
-    fire_event_by_temp_id = yes
+    fire_event_by_temp_id_no_cluster = yes
     log = "CHAOS REDUX SETTINGS: Manually triggered event ID [?settings_selected_event_id]"
+}
+
+events_log_trigger_open_event_detail_entry = {
+    set_temp_variable = { event_id = global.events_log_open_event_detail_entries^events_log_open_event_detail_index }
+    fire_event_by_temp_id_no_cluster = yes
 }
 
 # Fire selected event
@@ -1004,6 +1011,7 @@ switch_trigger_events_headers = {
         # Already in events view, switch to clusters
         clr_country_flag = show_events_view
         set_country_flag = show_event_clusters_view
+        update_settings_cluster_display = yes
     }
     else = {
         # Switch to events view
@@ -1091,9 +1099,11 @@ toggle_events_log_popup = {
         clr_country_flag = events_log_history_tab
         clr_country_flag = events_log_evolutions_tab
         clr_country_flag = events_log_events_tab
+        clr_country_flag = events_log_clusters_tab
         clr_country_flag = events_log_event_details_open
         clr_country_flag = events_log_evolution_details_open
         clr_country_flag = events_log_detail_use_history_context
+        events_log_close_cluster_details_view = yes
         clear_array = global.events_log_open_event_detail_entries
         clear_array = global.events_log_open_event_detail_type_entries
         clear_array = global.events_log_open_event_detail_fired_entries
@@ -1116,17 +1126,22 @@ toggle_events_log_popup = {
         set_variable = { settings_events_log_evolution_filter_type = 0 }
         set_variable = { settings_events_log_events_sort_mode = 0 }
         set_variable = { settings_events_log_events_filter_type = 0 }
+        set_variable = { settings_events_log_cluster_sort_mode = 0 }
+        set_variable = { settings_events_log_cluster_filter_type = 0 }
         clr_country_flag = events_log_sort_descending
         clr_country_flag = events_log_evolution_sort_descending
         clr_country_flag = events_log_events_sort_descending
+        clr_country_flag = events_log_cluster_sort_descending
         events_log_close_history_details_view = yes
         set_country_flag = events_log_window_open
         set_country_flag = events_log_history_tab
         clr_country_flag = events_log_evolutions_tab
         clr_country_flag = events_log_events_tab
+        clr_country_flag = events_log_clusters_tab
         clr_country_flag = events_log_event_details_open
         clr_country_flag = events_log_evolution_details_open
         clr_country_flag = events_log_detail_use_history_context
+        events_log_close_cluster_details_view = yes
         clear_array = global.events_log_open_event_detail_entries
         clear_array = global.events_log_open_event_detail_type_entries
         clear_array = global.events_log_open_event_detail_fired_entries
@@ -1144,6 +1159,100 @@ toggle_events_log_popup = {
         rebuild_events_log_history_view = yes
         rebuild_events_log_evolution_view = yes
         rebuild_events_log_events_view = yes
+        rebuild_events_log_cluster_view = yes
+    }
+}
+
+open_events_log_events_tab = {
+    update_unfired_events_counts = yes
+    set_country_flag = events_log_window_open
+    clr_country_flag = events_log_history_tab
+    clr_country_flag = events_log_evolutions_tab
+    set_country_flag = events_log_events_tab
+    clr_country_flag = events_log_clusters_tab
+    events_log_close_all_event_details_entries = yes
+    events_log_close_history_details_view = yes
+    events_log_close_cluster_details_view = yes
+    clr_country_flag = events_log_evolution_details_open
+    rebuild_events_log_events_view = yes
+}
+
+update_chaosx_help_live_values = {
+    update_unfired_events_counts = yes
+    update_timer_window_dynamic_range = yes
+    update_settings_cluster_display = yes
+}
+
+clear_chaosx_help_tabs = {
+    clr_country_flag = chaosx_help_tab_overview
+    clr_country_flag = chaosx_help_tab_events
+    clr_country_flag = chaosx_help_tab_chaos_meter
+    clr_country_flag = chaosx_help_tab_threats
+    clr_country_flag = chaosx_help_tab_warfare
+    clr_country_flag = chaosx_help_tab_controls
+}
+
+open_chaosx_help_tab_overview = {
+    clear_chaosx_help_tabs = yes
+    set_country_flag = chaosx_help_tab_overview
+    update_chaosx_help_live_values = yes
+}
+
+open_chaosx_help_tab_events = {
+    clear_chaosx_help_tabs = yes
+    set_country_flag = chaosx_help_tab_events
+    update_chaosx_help_live_values = yes
+}
+
+open_chaosx_help_tab_chaos_meter = {
+    clear_chaosx_help_tabs = yes
+    set_country_flag = chaosx_help_tab_chaos_meter
+    update_chaosx_help_live_values = yes
+}
+
+open_chaosx_help_tab_warfare = {
+    clear_chaosx_help_tabs = yes
+    set_country_flag = chaosx_help_tab_warfare
+    update_chaosx_help_live_values = yes
+}
+
+open_chaosx_help_tab_controls = {
+    clear_chaosx_help_tabs = yes
+    set_country_flag = chaosx_help_tab_controls
+    update_chaosx_help_live_values = yes
+}
+
+open_chaosx_help_window = {
+    set_country_flag = chaosx_help_window_open
+    clr_country_flag = chaosx_help_tab_threats
+    if = {
+        limit = {
+            NOT = {
+                OR = {
+                    has_country_flag = chaosx_help_tab_overview
+                    has_country_flag = chaosx_help_tab_events
+                    has_country_flag = chaosx_help_tab_chaos_meter
+                    has_country_flag = chaosx_help_tab_warfare
+                    has_country_flag = chaosx_help_tab_controls
+                }
+            }
+        }
+        set_country_flag = chaosx_help_tab_overview
+    }
+    update_chaosx_help_live_values = yes
+}
+
+close_chaosx_help_window = {
+    clr_country_flag = chaosx_help_window_open
+}
+
+toggle_chaosx_help_window = {
+    if = {
+        limit = { has_country_flag = chaosx_help_window_open }
+        close_chaosx_help_window = yes
+    }
+    else = {
+        open_chaosx_help_window = yes
     }
 }
 
@@ -1593,6 +1702,36 @@ events_log_rebuild_open_event_details_view = {
             set_temp_variable = { events_log_event_detail_preview_stage = 6 }
             events_log_add_event_detail_evolution_preview = yes
         }
+
+        if = {
+            limit = {
+                check_variable = {
+                    var = event_id
+                    value = 4
+                    compare = equals
+                }
+            }
+            set_temp_variable = { events_log_event_detail_preview_type = constant:random_war_evolution_type.war_contagion }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_1 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:random_war_stage.gathering_storm }
+            events_log_add_event_detail_evolution_preview = yes
+            set_temp_variable = { events_log_event_detail_preview_type = constant:random_war_evolution_type.war_contagion }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_2 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:random_war_stage.rising_chaos }
+            events_log_add_event_detail_evolution_preview = yes
+            set_temp_variable = { events_log_event_detail_preview_type = constant:random_war_evolution_type.war_contagion }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:random_war_stage.chaos_tier }
+            events_log_add_event_detail_evolution_preview = yes
+            set_temp_variable = { events_log_event_detail_preview_type = constant:random_war_evolution_type.war_contagion }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_4 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:random_war_stage.totalen_chaos }
+            events_log_add_event_detail_evolution_preview = yes
+            set_temp_variable = { events_log_event_detail_preview_type = constant:random_war_evolution_type.war_contagion }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_final }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:random_war_stage.world_collapse }
+            events_log_add_event_detail_evolution_preview = yes
+        }
     }
 }
 
@@ -1700,6 +1839,7 @@ events_log_add_event_detail_evolution_preview = {
 }
 
 events_log_set_selected_evolution_display_values = {
+    set_variable = { events_log_selected_evolution_has_portrait = 0 }
     clear_variable = events_log_selected_zombie_supply_consumption_factor
     clear_variable = events_log_selected_zombie_conscription
     clear_variable = events_log_selected_zombie_defence
@@ -1709,6 +1849,21 @@ events_log_set_selected_evolution_display_values = {
     clear_variable = events_log_selected_zombie_night_attack
     clear_variable = events_log_selected_zombie_army_attack_factor
     clear_variable = events_log_selected_zombie_cure_days
+
+    if = {
+        limit = {
+            OR = {
+                AND = {
+                    check_variable = { events_log_selected_evolution_type = 1 }
+                    check_variable = { events_log_selected_evolution_stage > 0 }
+                    check_variable = { events_log_selected_evolution_stage < 4 }
+                }
+                check_variable = { events_log_selected_evolution_type = 2 }
+                check_variable = { events_log_selected_evolution_type = 3 }
+            }
+        }
+        set_variable = { events_log_selected_evolution_has_portrait = 1 }
+    }
 
     if = {
         limit = {
@@ -1940,6 +2095,83 @@ events_log_append_view_row_from_source = {
         array = global.events_log_view_has_actor_entries
         value = global.events_log_history_has_actor_entries^events_log_source_index
     }
+    add_to_array = {
+        array = global.events_log_view_cluster_id_entries
+        value = 0
+    }
+    add_to_array = {
+        array = global.events_log_view_cluster_sequence_entries
+        value = 0
+    }
+    add_to_array = {
+        array = global.events_log_view_cluster_type_entries
+        value = 0
+    }
+}
+
+events_log_append_cluster_history_row_from_source = {
+    add_to_array = {
+        array = global.events_log_view_sequence_entries
+        value = global.events_log_cluster_sequence_entries^events_log_cluster_history_source_index
+    }
+    add_to_array = {
+        array = global.events_log_view_date_entries
+        value = global.events_log_cluster_date_entries^events_log_cluster_history_source_index
+    }
+    add_to_array = {
+        array = global.events_log_view_event_id_entries
+        value = 0
+    }
+    add_to_array = {
+        array = global.events_log_view_event_type_entries
+        value = 0
+    }
+    add_to_array = {
+        array = global.events_log_view_actor_entries
+        value = global.events_log_cluster_actor_entries^events_log_cluster_history_source_index
+    }
+    add_to_array = {
+        array = global.events_log_view_has_actor_entries
+        value = global.events_log_cluster_has_actor_entries^events_log_cluster_history_source_index
+    }
+    add_to_array = {
+        array = global.events_log_view_cluster_id_entries
+        value = global.events_log_cluster_id_entries^events_log_cluster_history_source_index
+    }
+    add_to_array = {
+        array = global.events_log_view_cluster_sequence_entries
+        value = global.events_log_cluster_sequence_entries^events_log_cluster_history_source_index
+    }
+    add_to_array = {
+        array = global.events_log_view_cluster_type_entries
+        value = global.events_log_cluster_type_entries^events_log_cluster_history_source_index
+    }
+}
+
+events_log_append_cluster_history_rows = {
+    if = {
+        limit = {
+            check_variable = { settings_events_log_filter_type = 0 }
+            check_variable = { global.events_log_cluster_id_entries^num > 0 }
+        }
+        if = {
+            limit = { has_country_flag = events_log_sort_descending }
+            for_loop_effect = {
+                start = 0
+                end = global.events_log_cluster_id_entries^num
+                value = events_log_cluster_history_source_index
+                events_log_append_cluster_history_row_from_source = yes
+            }
+        }
+        else = {
+            set_temp_variable = { events_log_cluster_history_source_index = global.events_log_cluster_id_entries^num }
+            while_loop_effect = {
+                limit = { check_variable = { events_log_cluster_history_source_index > 0 } }
+                subtract_from_temp_variable = { events_log_cluster_history_source_index = 1 }
+                events_log_append_cluster_history_row_from_source = yes
+            }
+        }
+    }
 }
 
 events_log_history_append_rows_by_actor_sort = {
@@ -2131,6 +2363,9 @@ rebuild_events_log_history_view = {
     clear_array = global.events_log_view_event_type_entries
     clear_array = global.events_log_view_actor_entries
     clear_array = global.events_log_view_has_actor_entries
+    clear_array = global.events_log_view_cluster_id_entries
+    clear_array = global.events_log_view_cluster_sequence_entries
+    clear_array = global.events_log_view_cluster_type_entries
 
     set_temp_variable = { events_log_source_count = global.events_log_history_event_id_entries^num }
 
@@ -2228,6 +2463,8 @@ rebuild_events_log_history_view = {
             events_log_history_append_rows_by_actor_sort = yes
         }
     }
+
+    events_log_append_cluster_history_rows = yes
 }
 
 cycle_events_log_evolution_sort_mode_prev = {
@@ -2751,14 +2988,14 @@ cycle_events_log_events_sort_mode_prev = {
         subtract_from_variable = { settings_events_log_events_sort_mode = 1 }
     }
     else = {
-        set_variable = { settings_events_log_events_sort_mode = 2 }
+        set_variable = { settings_events_log_events_sort_mode = 3 }
     }
     rebuild_events_log_events_view = yes
 }
 
 cycle_events_log_events_sort_mode_next = {
     if = {
-        limit = { check_variable = { settings_events_log_events_sort_mode < 2 } }
+        limit = { check_variable = { settings_events_log_events_sort_mode < 3 } }
         add_to_variable = { settings_events_log_events_sort_mode = 1 }
     }
     else = {
@@ -2847,7 +3084,7 @@ rebuild_events_log_events_view = {
         set_variable = { settings_events_log_events_sort_mode = 0 }
     }
     if = {
-        limit = { check_variable = { settings_events_log_events_sort_mode > 2 } }
+        limit = { check_variable = { settings_events_log_events_sort_mode > 3 } }
         set_variable = { settings_events_log_events_sort_mode = 0 }
     }
     if = {
@@ -2873,6 +3110,7 @@ rebuild_events_log_events_view = {
     clear_array = global.events_log_view_event_type_entries
     clear_array = global.events_log_view_actor_entries
     clear_array = global.events_log_view_has_actor_entries
+    clear_array = global.events_log_view_cluster_type_entries
     clear_array = global.events_log_events_view_fired_entries
     clear_array = global.events_log_events_view_enabled_entries
     clear_array = global.events_log_events_view_unique_entries
@@ -2972,6 +3210,13 @@ rebuild_events_log_events_view = {
                 }
                 set_temp_variable = { events_log_events_live_weight = -1 }
             }
+            if = {
+                limit = {
+                    check_variable = { event_id = 3 }
+                    NOT = { holy_realm_has_valid_refuge_host = yes }
+                }
+                set_temp_variable = { events_log_events_live_weight = -1 }
+            }
 
             add_to_array = {
                 array = temp_events_log_events_source_event_id_entries
@@ -3026,6 +3271,10 @@ rebuild_events_log_events_view = {
                 else_if = {
                     limit = { check_variable = { settings_events_log_events_sort_mode = 2 } }
                     set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_weight_entries^events_log_events_scan_index }
+                }
+                else_if = {
+                    limit = { check_variable = { settings_events_log_events_sort_mode = 3 } }
+                    set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_event_type_entries^events_log_events_scan_index }
                 }
 
                 if = {
@@ -3128,6 +3377,7 @@ toggle_events_view = {
         # Switch to event clusters
         clr_country_flag = show_events_view
         set_country_flag = show_event_clusters_view
+        update_settings_cluster_display = yes
     }
     else = {
         # Switch to events
@@ -5441,17 +5691,28 @@ initialize_events_log_settings = {
     set_variable = { settings_events_log_filter_type = 0 } # 0 = all, 1 = major, 2 = repeatable, 3 = fire-once
     set_variable = { settings_events_log_evolution_sort_mode = 0 } # 0 = index, 1 = tier, 2 = stage, 3 = actor
     set_variable = { settings_events_log_evolution_filter_type = 0 } # 0 = all, 1 = major, 2 = minor
-    set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired, 2 = weight
+    set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired, 2 = weight, 3 = type
     set_variable = { settings_events_log_events_filter_type = 0 } # 0 = all, 1 = enabled, 2 = disabled
+    set_variable = { settings_events_log_cluster_sort_mode = 0 } # 0 = cluster id, 1 = type, 2 = roll, 3 = fired
+    set_variable = { settings_events_log_cluster_filter_type = 0 } # 0 = all, 1 = available, 2 = unavailable, 3 = enabled, 4 = disabled
     clr_country_flag = events_log_sort_descending
     clr_country_flag = events_log_evolution_sort_descending
     clr_country_flag = events_log_events_sort_descending
+    clr_country_flag = events_log_cluster_sort_descending
     clr_country_flag = events_log_history_tab
     clr_country_flag = events_log_evolutions_tab
     clr_country_flag = events_log_events_tab
+    clr_country_flag = events_log_clusters_tab
     clr_country_flag = events_log_event_details_open
     clr_country_flag = events_log_evolution_details_open
     clr_country_flag = events_log_detail_use_history_context
+    clr_country_flag = chaosx_help_window_open
+    clr_country_flag = chaosx_help_tab_overview
+    clr_country_flag = chaosx_help_tab_events
+    clr_country_flag = chaosx_help_tab_chaos_meter
+    clr_country_flag = chaosx_help_tab_threats
+    clr_country_flag = chaosx_help_tab_warfare
+    clr_country_flag = chaosx_help_tab_controls
     set_variable = { events_log_selected_event_id = 0 }
     set_variable = { events_log_selected_evolution_type = 0 }
     set_variable = { events_log_selected_evolution_tier = 0 }
@@ -5460,6 +5721,7 @@ initialize_events_log_settings = {
     set_variable = { events_log_selected_evolution_event_type = 0 }
     set_variable = { events_log_selected_evolution_actor = 0 }
     set_variable = { events_log_selected_evolution_has_actor = 0 }
+    set_variable = { events_log_selected_evolution_has_portrait = 0 }
     set_variable = { events_log_selected_evolution_date = 0 }
     clear_variable = events_log_selected_zombie_supply_consumption_factor
     clear_variable = events_log_selected_zombie_conscription
@@ -5523,13 +5785,17 @@ evaluate_random_event_selection_candidate = {
         limit = {
             OR = {
                 is_in_array = { global.disabled_events = random_event_selection_candidate_id }
-                AND = {
-                    check_variable = { random_event_selection_candidate_id = 91 }
-                    NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
-                }
-                AND = {
-                    is_in_array = { global.fired_events = random_event_selection_candidate_id }
-                    NOT = { is_in_array = { global.repeatable_events = random_event_selection_candidate_id } }
+				AND = {
+					check_variable = { random_event_selection_candidate_id = 91 }
+					NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+				}
+				AND = {
+					check_variable = { random_event_selection_candidate_id = 3 }
+					NOT = { holy_realm_has_valid_refuge_host = yes }
+				}
+				AND = {
+					is_in_array = { global.fired_events = random_event_selection_candidate_id }
+					NOT = { is_in_array = { global.repeatable_events = random_event_selection_candidate_id } }
                 }
             }
         }
@@ -5703,31 +5969,87 @@ select_unweighted_random_event_id = {
 
 fire_event_by_temp_id = {
     # Input: temp variable `event_id`
-    get_event_type = yes
+    set_temp_variable = { event_cluster_fired = 0 }
+    try_fire_event_cluster_for_selected_event = yes
 
     if = {
-        limit = { check_variable = { event_type = constant:event_system_event_type.major } }
-        on_major_event_fired = yes
-    }
-    else_if = {
-        limit = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
-        on_repeatable_event_fired = yes
-    }
-    else_if = {
-        limit = { check_variable = { event_type = constant:event_system_event_type.fire_once } }
-        on_fire_once_event_fired = yes
-    }
-
-    meta_effect = {
-        text = {
-            country_event = {
-                id = chaosx.nr[EVENT_ID].1
+        limit = {
+            check_variable = {
+                var = event_cluster_fired
+                value = 1
+                compare = less_than
             }
         }
-        EVENT_ID = "[?event_id]"
+        fire_event_by_temp_id_no_cluster = yes
     }
+}
 
-    update_last_fired_event_display = yes
+fire_event_by_temp_id_no_cluster = {
+    # Input: temp variable `event_id`
+    set_temp_variable = { event_single_fire_allowed = 1 }
+
+	if = {
+		limit = { check_variable = { event_id = 4 } }
+		random_war_setup_context = yes
+        if = {
+            limit = {
+                check_variable = {
+                    var = random_war_context_ready
+                    value = 1
+                    compare = less_than
+                }
+            }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { event_id = 3 }
+			NOT = { holy_realm_has_valid_refuge_host = yes }
+		}
+		set_temp_variable = { event_single_fire_allowed = 0 }
+	}
+
+	if = {
+        limit = {
+            check_variable = {
+                var = event_single_fire_allowed
+                value = 0
+                compare = greater_than
+            }
+        }
+        get_event_type = yes
+
+        if = {
+            limit = { check_variable = { event_type = constant:event_system_event_type.major } }
+            on_major_event_fired = yes
+        }
+        else_if = {
+            limit = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+            on_repeatable_event_fired = yes
+        }
+        else_if = {
+            limit = { check_variable = { event_type = constant:event_system_event_type.fire_once } }
+            on_fire_once_event_fired = yes
+        }
+
+        if = {
+            limit = { check_variable = { event_id = 4 } }
+            random_war_fire_current_context = yes
+        }
+        else = {
+            meta_effect = {
+                text = {
+                    country_event = {
+                        id = chaosx.nr[EVENT_ID].1
+                    }
+                }
+                EVENT_ID = "[?event_id]"
+            }
+        }
+
+        update_last_fired_event_display = yes
+    }
 }
 
 # ============================================================================

@@ -32,9 +32,25 @@ on_actions = {
 						has_country_flag = azl_leader
 						is_faction_leader = yes
 					}
+					is_valid_anti_zombie_league_country = yes
 				}
 				prepare_anti_zombie_league_member = yes
 				grant_anti_zombie_league_membership_benefits = yes
+			}
+			if = {
+				limit = {
+					has_global_flag = anti_zombie_league_formed
+					FROM = {
+						has_country_flag = azl_leader
+						is_faction_leader = yes
+					}
+					NOT = { is_valid_anti_zombie_league_country = yes }
+				}
+				if = {
+					limit = { is_in_faction = yes }
+					leave_faction = yes
+				}
+				remove_anti_zombie_league_membership_package = yes
 			}
 
 				if = {
@@ -81,6 +97,7 @@ on_actions = {
 					FROM = {
 						has_country_flag = azl_leader
 					}
+					is_valid_anti_zombie_league_country = yes
 				}
 				FROM = {
 					clr_country_flag = azl_leader
@@ -89,6 +106,20 @@ on_actions = {
 				save_global_event_target_as = azl_faction_leader
 				prepare_anti_zombie_league_member = yes
 				grant_anti_zombie_league_membership_benefits = yes
+			}
+			if = {
+				limit = {
+					has_global_flag = anti_zombie_league_formed
+					FROM = {
+						has_country_flag = azl_leader
+					}
+					NOT = { is_valid_anti_zombie_league_country = yes }
+				}
+				if = {
+					limit = { is_in_faction = yes }
+					leave_faction = yes
+				}
+				remove_anti_zombie_league_membership_package = yes
 			}
 		}
 	}

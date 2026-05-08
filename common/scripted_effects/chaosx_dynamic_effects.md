@@ -13,6 +13,8 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [modify_state_population_by_percent](#modify_state_population_by_percent)
 - [get_random_sea_region](#get_random_sea_region)
 - [refresh_world_threat_state](#refresh_world_threat_state)
+- [make_random_directorate_special_project_researchable](#make_random_directorate_special_project_researchable)
+- [make_all_directorate_special_projects_researchable](#make_all_directorate_special_projects_researchable)
 - [apply_crisis_rescue_event_weight_adjustments](#apply_crisis_rescue_event_weight_adjustments)
 
 ## modify_value_based_on_chaos_tier
@@ -147,6 +149,41 @@ else = {
 	clr_global_flag = world_threat_source_my_threat
 }
 refresh_world_threat_state = yes
+```
+
+## make_random_directorate_special_project_researchable
+
+This country-scope effect is the reusable Directorate special-project availability hook. It makes one hidden Directorate project researchable by setting that project's country flag, instead of completing the project or bypassing the special-project research system.
+
+Current registry entries:
+
+- `directorate_special_project_weaponized_zombies_available`, with compatibility flag `mengele_clone_army_zombie_project_authorized`
+- `directorate_special_project_cloning_available`
+
+Inputs: none.
+Output: sets one project availability flag on the current country.
+Side effects: if every registered project is already available, it calls `make_all_directorate_special_projects_researchable` so late rewards do not silently do nothing.
+
+When adding a new hidden Directorate special project, add its visibility/availability flag to the special project definition, add one weighted entry to this effect, and add the same flag to `make_all_directorate_special_projects_researchable`.
+
+Example:
+
+```txt
+make_random_directorate_special_project_researchable = yes
+```
+
+## make_all_directorate_special_projects_researchable
+
+This country-scope effect makes every hidden Directorate special project researchable. It is used by the late focus-tree capstones and is the single registry point for future clone, replication, biomedical, or unusual biowarfare projects that should become available to the Directorate without being instantly completed.
+
+Inputs: none.
+Output: sets `directorate_special_projects_all_available` and every registered project-specific availability flag on the current country.
+Side effects: none beyond research availability flags.
+
+Example:
+
+```txt
+make_all_directorate_special_projects_researchable = yes
 ```
 
 ## apply_crisis_rescue_event_weight_adjustments

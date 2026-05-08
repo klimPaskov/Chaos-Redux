@@ -321,6 +321,75 @@ news_event = {
 }
 
 ###############################################################################################################
+# Related To chaosx.nr4 - Random War
+###############################################################################################################
+# Related event: chaosx.nr4 - Random War
+# chaosx.news.104
+news_event = {
+	id = chaosx.news.104
+	title = chaosx.news.104.t
+	desc = chaosx.news.104.d
+	picture = GFX_news_event_generic_chaco_war
+
+	major = yes
+	is_triggered_only = yes
+
+	show_major = {
+		OR = {
+			is_ai = no
+			FROM = { is_major = yes }
+			AND = {
+				has_event_target = random_war_news_first_target
+				event_target:random_war_news_first_target = { is_major = yes }
+			}
+			AND = {
+				has_event_target = random_war_news_last_target
+				event_target:random_war_news_last_target = { is_major = yes }
+			}
+			AND = {
+				has_event_target = random_war_news_last_aggressor
+				event_target:random_war_news_last_aggressor = { is_major = yes }
+			}
+			is_neighbor_of = FROM
+			AND = {
+				has_event_target = random_war_news_first_target
+				is_neighbor_of = event_target:random_war_news_first_target
+			}
+			AND = {
+				has_event_target = random_war_news_last_target
+				is_neighbor_of = event_target:random_war_news_last_target
+			}
+			AND = {
+				has_event_target = random_war_news_last_aggressor
+				is_neighbor_of = event_target:random_war_news_last_aggressor
+			}
+			FROM = { chaosx_is_random_war_compatible_special_country = yes }
+			AND = {
+				has_event_target = random_war_news_first_target
+				event_target:random_war_news_first_target = { chaosx_is_random_war_compatible_special_country = yes }
+			}
+			AND = {
+				has_event_target = random_war_news_last_target
+				event_target:random_war_news_last_target = { chaosx_is_random_war_compatible_special_country = yes }
+			}
+			AND = {
+				has_event_target = random_war_news_last_aggressor
+				event_target:random_war_news_last_aggressor = { chaosx_is_random_war_compatible_special_country = yes }
+			}
+			check_variable = {
+				var = global.random_war_last_stage
+				value = constant:random_war_stage.chaos_tier
+				compare = greater_than_or_equals
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.news.104.a
+	}
+}
+
+###############################################################################################################
 # Related To chaosx.nr18 - Random Resource
 ###############################################################################################################
 # Related event: chaosx.nr18 - Random Resource

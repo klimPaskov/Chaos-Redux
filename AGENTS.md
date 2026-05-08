@@ -79,6 +79,7 @@ Clausewitz script is picky. Follow these rules strictly.
    - If you believe a whole world iteration is required, stop and ask for permission. Do not implement it until permission is granted.
 9. Constants `@MY_CONSTANT` cannot cross file boundaries. They are file scoped.
    - Prefer HOI4 `script_constants` for shared tuning values. They are global (available across script files), improve readability, and have no runtime cost (they are injected on load).
+   - Script constants are the preferred tuning source, but not every effect field parses `constant:` tokens. For duration fields that reject constants, such as `days =` inside timed flags, assign the constant to a normal or temporary variable first and pass that variable to `days =`.
    - Required vanilla docs:
      - `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md` (Script Constants section)
      - `~/projects/Hearts of Iron IV/common/script_constants/documentation.md` (schema + examples)

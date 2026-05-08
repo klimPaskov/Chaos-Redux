@@ -25,6 +25,7 @@ genocide_state_has_atrocity_evidence = {
 genocide_state_has_undiscovered_atrocity_evidence = {
 	genocide_state_has_atrocity_evidence = yes
 	NOT = { has_state_flag = genocide_site_discovered }
+	NOT = { has_state_flag = genocide_historical_quiet_camp }
 	has_variable = genocide_responsible_country
 }
 
@@ -56,6 +57,29 @@ genocide_country_has_active_camps = {
 	}
 }
 
+genocide_country_has_registered_active_camps = {
+	any_controlled_state = {
+		genocide_state_has_active_camps = yes
+		has_variable = genocide_responsible_country
+		NOT = { has_state_flag = genocide_historical_quiet_camp }
+	}
+}
+
+genocide_country_has_visible_or_active_camp_system = {
+	OR = {
+		is_ai = yes
+		has_country_flag = genocide_decisions_visible
+		has_country_flag = genocide_crisis_active
+		genocide_country_has_registered_active_camps = yes
+		check_variable = { genocide_decisions_taken > 0 }
+		check_variable = { genocide_concentration_sites > 0 }
+		check_variable = { genocide_extermination_sites > 0 }
+		check_variable = { genocide_gulag_sites > 0 }
+		check_variable = { genocide_escalation > 0 }
+		check_variable = { genocide_discovered_sites > 0 }
+	}
+}
+
 genocide_state_has_foreign_population_context = {
 	NOT = { is_core_of = ROOT }
 }
@@ -79,21 +103,14 @@ genocide_country_has_diplomatically_visible_war = {
 genocide_country_has_crisis = {
 	OR = {
 		has_country_flag = genocide_crisis_active
-		genocide_country_has_active_camps = yes
+		genocide_country_has_registered_active_camps = yes
 		check_variable = { genocide_escalation > 0 }
 		check_variable = { genocide_discovered_sites > 0 }
 	}
 }
 
-genocide_country_has_meaningful_internal_report_pressure = {
-	genocide_country_has_crisis = yes
-	NOT = { has_country_flag = genocide_new_camp_network_administrative_grace }
+genocide_country_has_meaningful_report_escalation = {
 	OR = {
-		check_variable = {
-			var = genocide_deaths
-			value = constant:genocide_ai_threshold.internal_report_min_deaths
-			compare = greater_than_or_equals
-		}
 		check_variable = {
 			var = genocide_decisions_taken
 			value = constant:genocide_ai_threshold.internal_report_min_decisions
@@ -121,7 +138,30 @@ genocide_country_has_meaningful_internal_report_pressure = {
 				compare = greater_than_or_equals
 			}
 		}
+	}
+}
+
+genocide_country_has_meaningful_internal_report_pressure = {
+	genocide_country_has_crisis = yes
+	NOT = { has_country_flag = genocide_new_camp_network_administrative_grace }
+	genocide_country_has_meaningful_report_escalation = yes
+	OR = {
+		check_variable = {
+			var = genocide_deaths
+			value = constant:genocide_ai_threshold.internal_report_min_deaths
+			compare = greater_than_or_equals
+		}
 		genocide_country_has_discovered_sites = yes
+		check_variable = {
+			var = genocide_resistance_pressure
+			value = constant:genocide_ai_threshold.internal_crisis_resistance
+			compare = greater_than
+		}
+		check_variable = {
+			var = genocide_refugee_pressure
+			value = constant:genocide_ai_threshold.internal_crisis_resistance
+			compare = greater_than
+		}
 	}
 }
 

@@ -8,6 +8,7 @@ add_namespace = germany_mengele
 @MENGELE_FOREIGN_FASCIST_ALLY_REACTION_DAYS = 120
 @MENGELE_FOREIGN_NEUTRAL_REACTION_DAYS = 90
 @MENGELE_FACILITY_DEMAND_COOLDOWN_DAYS = 180
+@MCL_WORLD_ORDER_FOREIGN_REJECTION_DAYS = 210
 @MENGELE_EMERGENCY_INVADER_DELAY_HOURS = 6
 @MENGELE_EMERGENCY_GERMANY_WAR_DELAY_DAYS = 120
 @MENGELE_EMERGENCY_GERMANY_WAR_RECHECK_DAYS = 60
@@ -675,6 +676,49 @@ country_event = {
 }
 
 country_event = {
+	id = germany_mengele.23
+	title = germany_mengele.23.t
+	desc = germany_mengele.23.d
+	picture = GFX_report_event_generic_biowarfare
+	is_triggered_only = yes
+
+	trigger = {
+		germany_mengele_program_active = yes
+		NOT = { has_country_flag = germany_mengele_cloning_project_available }
+		NOT = { has_country_flag = germany_mengele_cloning_project_completed }
+	}
+
+	option = {
+		name = germany_mengele.23.a
+		ai_chance = { base = 100 }
+		set_country_flag = germany_mengele_cloning_project_available
+		set_country_flag = directorate_special_project_cloning_available
+		add_breakthrough_progress = {
+			specialization = specialization_biowarfare
+			value = mengele_clone_focus_value.breakthrough_small
+		}
+	}
+}
+
+country_event = {
+	id = germany_mengele.24
+	title = germany_mengele.24.t
+	desc = germany_mengele.24.d
+	picture = GFX_report_event_generic_biowarfare
+	is_triggered_only = yes
+
+	trigger = {
+		germany_mengele_cloning_project_revolt_ready = yes
+	}
+
+	option = {
+		name = germany_mengele.24.a
+		ai_chance = { base = 100 }
+		germany_mengele_start_coup = yes
+	}
+}
+
+country_event = {
 	id = germany_mengele.30
 	title = germany_mengele.30.t
 	desc = germany_mengele.30.d
@@ -1218,6 +1262,134 @@ country_event = {
 		trigger = { has_country_flag = germany_tibet_expedition_lost }
 		ai_chance = { base = 100 }
 		add_stability = constant:germany_mengele_decision_value.lost_stability
+	}
+}
+
+country_event = {
+	id = germany_mengele.120
+	title = germany_mengele.120.t
+	desc = germany_mengele.120.d
+	picture = GFX_report_event_generic_biowarfare
+	is_triggered_only = yes
+
+	option = {
+		name = germany_mengele.120.a
+		ai_chance = {
+			base = constant:mengele_clone_world_order_ai.offer_accept_base
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.desperate_accept_factor
+				germany_mengele_is_desperate_in_war = yes
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.high_surrender_accept_factor
+				surrender_progress > 0.35
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.high_surrender_accept_factor
+				any_enemy_country = { is_major = yes }
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.authoritarian_accept_factor
+				OR = {
+					has_government = fascism
+					has_government = communism
+					has_government = neutrality
+				}
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.extremist_accept_factor
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.high_chaos_accept_factor
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 3 }
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.isolated_accept_factor
+				is_in_faction = no
+			}
+		}
+		mengele_hidden_clone_register_acceptance = yes
+	}
+
+	option = {
+		name = germany_mengele.120.b
+		ai_chance = {
+			base = constant:mengele_clone_world_order_ai.offer_decline_base
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.democratic_stable_refuse_factor
+				has_government = democratic
+				has_stability > 0.65
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.major_refuse_factor
+				is_major = yes
+				NOT = { surrender_progress > 0.20 }
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.hostile_refuse_factor
+				FROM = { has_war_with = ROOT }
+			}
+		}
+		set_country_flag = {
+			flag = mengele_hidden_clone_offer_rejected_recently
+			days = @MCL_WORLD_ORDER_FOREIGN_REJECTION_DAYS
+		}
+	}
+}
+
+country_event = {
+	id = germany_mengele.121
+	title = germany_mengele.121.t
+	desc = germany_mengele.121.d
+	picture = GFX_report_event_generic_biowarfare
+	is_triggered_only = yes
+
+	option = {
+		name = germany_mengele.121.a
+		ai_chance = {
+			base = constant:mengele_clone_world_order_ai.deep_accept_base
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.desperate_accept_factor
+				germany_mengele_is_desperate_in_war = yes
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.high_surrender_accept_factor
+				any_enemy_country = { is_major = yes }
+			}
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.high_chaos_accept_factor
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 3 }
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+			}
+		}
+		mengele_hidden_clone_register_deep_acceptance = yes
+	}
+
+	option = {
+		name = germany_mengele.121.b
+		ai_chance = {
+			base = constant:mengele_clone_world_order_ai.deep_decline_base
+			modifier = {
+				factor = constant:mengele_clone_world_order_ai.democratic_stable_refuse_factor
+				has_government = democratic
+				has_stability > 0.65
+			}
+		}
+		set_country_flag = {
+			flag = mengele_hidden_clone_offer_rejected_recently
+			days = @MCL_WORLD_ORDER_FOREIGN_REJECTION_DAYS
+		}
 	}
 }
 

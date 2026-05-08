@@ -66,6 +66,7 @@ Evolution design rules:
 - Keep consequences scaled to the target country or world state.
 - Use cooldowns and pacing so evolved incidents feel notable.
 - Make each evolution understandable in the event log and evolution view.
+- Evolution rows and event-detail preview rows should display the specific stage/evolution title, not the generic evolution type label, except as fallback text.
 - Document what new rare outcomes or variants the evolution unlocks.
 
 ### Evolution implementation
@@ -188,6 +189,8 @@ Frequently-needed companion files:
 
 If the event creates or manages non-standard countries (like special chaos countries and non-human countries), then account for that as well. Events interact with each other, so events that usually affect normal countries (like black plague or mass panic), shouldn't for example affect zombie or alien countries.
 
+Country-specific or tag-specific events must have a reusable valid-target trigger before they enter selection or manual firing. If the required country does not exist, the event should show `N/A` in the event list and must not queue a delayed event against the missing tag. For example, the Holy Realm checks for Tibet first, then Bhutan or Nepal only if Tibet is gone.
+
 ### 3. Register the event in the random-event system
 
 Update the event system registration in the same change.
@@ -242,7 +245,70 @@ Required detail-view plumbing:
 
 Do not hardcode one-off GUI behavior if it should be reusable by later events.
 
-### 6. Super-event integration
+### 6. Event cluster integration
+
+Event clusters are a catalogue layer above normal random events. The Clusters tab must show every registered cluster, while History shows only clusters that actually fired.
+
+Core files:
+
+- `common/script_constants/event_cluster_constants.txt`
+- `common/scripted_effects/chaosx_event_cluster_effects.txt`
+- `common/scripted_effects/chaosx_settings_effects.txt` when log/settings view state changes
+- `common/scripted_guis/chaosx_scripted_gui_events_log.txt` when cluster log UI behavior changes
+- `interface/chaosx_events_log_popup.gui` when cluster list/details layout changes
+- `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
+- `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
+- `localisation/english/chaosx_gui_l_english.yml`
+
+To add a new cluster:
+
+1. Add an ID in `event_cluster_id`.
+2. Add any cluster-specific tuning group, for example `event_cluster_<slug> = { unlock_tier cooldown_days }`.
+3. Register the cluster in `initialize_event_cluster_definitions` by pushing aligned entries into `global.event_clusters`, `global.event_cluster_type_entries`, and `global.event_cluster_unlock_tier_entries`.
+4. Map member events in `event_belongs_to_cluster`, from normal event ID to cluster ID.
+5. Add ordered member rows in `load_event_cluster_members`.
+6. Add or update cluster name/type/description scripted localisation and GUI localisation.
+7. If it needs custom runtime setup, add that branch to `event_cluster_prepare_runtime_context`.
+8. If it needs a custom cooldown or one-time state, update `mark_event_cluster_fired_state` and any availability logic in `can_event_cluster_fire`.
+
+Member attributes are parallel arrays in `load_event_cluster_members`:
+
+- `temp_event_cluster_member_event_id_entries`: normal event ID.
+- `temp_event_cluster_member_role_entries`: `event_cluster_member_role.required` or `event_cluster_member_role.optional`.
+- `temp_event_cluster_member_chance_entries`: participation chance for optional members, usually from `event_cluster_member_participation`.
+- `temp_event_cluster_member_min_tier_entries`: minimum chaos tier for that member.
+- `temp_event_cluster_member_danger_entries`: display severity in cluster details.
+
+To change a member's behavior, edit those attributes together. Do not reorder one array without the others.
+
+Cluster firing rules:
+
+- Automatic cluster firing happens from `try_fire_event_cluster_for_selected_event` after a member event is selected.
+- Automatic firing respects cluster unlock tier, cooldown, one-time state, member eligibility, optional participation rolls, and runtime context.
+- Manual firing from Settings uses `force_fire_event_cluster_by_temp_id`; it bypasses tier, cooldown, disabled-state, and member availability checks. Runtime context can still fail if the event cannot build the required scopes.
+- Cluster history rows are recorded by `record_events_log_cluster_entry`; cluster catalogue rows are rebuilt by `rebuild_events_log_cluster_view`.
+
+Cluster UI rules:
+
+- The Clusters tab is a catalogue, not a fired-history list.
+- Fired clusters belong in History and should open the same cluster details window as catalogue rows.
+- Keep cluster sort/filter controls, row text, details layout, and localisation in sync when adding new cluster attributes.
+
+### 7. Duration fields and constants
+
+Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.
+
+Known sensitive fields:
+
+- `set_country_flag = { days = ... }`
+- `set_global_flag = { days = ... }`
+- any other timed field that throws `Malformed token` for either `constant:category.key` or a variable token
+
+For those fields, use a file-scoped `@NAME = literal` constant in the same script file and pass `days = @NAME`. Keep the value mirrored with the matching `common/script_constants/` tuning entry, and update both in the same change.
+
+Do not work around this by setting a temp variable and passing `days = temp_name`; those fields can reject variable tokens too.
+
+### 8. Super-event integration
 
 If the event shows or drives a super event, wire the whole package:
 
@@ -261,7 +327,7 @@ That skill handles super-event title direction, description tone, quote research
 
 This skill handles implementation wiring: slot, flags, localisation, image, audio ID, scripted localisation, `.gfx`, docs, and spreadsheet updates.
 
-### 7. World-end integration
+### 9. World-end integration
 
 If the event can produce a terminal scenario:
 

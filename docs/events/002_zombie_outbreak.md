@@ -467,6 +467,7 @@ This means the League now has visible faction-level direction in the diplomacy s
 Important helpers:
 
 - `is_anti_zombie_league_member`
+- `is_valid_anti_zombie_league_country`
 - `can_lead_anti_zombie_league`
 - `can_join_anti_zombie_league`
 - `is_at_war_with_any_zombie_country`
@@ -494,7 +495,7 @@ Exposed values include:
 Current formation and join behavior:
 
 - the League can be formed a bit earlier than before
-- only countries that pass `uses_normal_civilian_systems = yes` can lead or join it
+- only countries that pass `is_valid_anti_zombie_league_country = yes` can lead, join, receive membership benefits, or be absorbed from another faction
 - if total live zombie strength is still below `650` divisions, AI countries are much less willing to join
 - the one-time `chaosx.nr2.7` formation invitation now only goes to countries that are actually pressured by the threat, not to every technically eligible country on the map
 - countries that pick `Consider Joining Later` now get the later join path explicitly; they do not jump straight from broad eligibility into the decision and faction-rule join logic
@@ -820,6 +821,7 @@ Shared triggers:
 
 - `is_zombie_outbreak_country`
 - `is_special_chaos_country`
+- `is_valid_anti_zombie_league_country`
 - `uses_normal_civilian_systems`
 
 Special countries currently covered:
@@ -833,10 +835,21 @@ Practical effect:
 
 - outbreak risk display and dynamic outbreaks skip them
 - mass panic is cleaned off them
+- Anti-Zombie League joins, faction-rule joins, membership benefits, and faction absorption reject them
 - normal civilian and political logic is prevented from treating them like standard countries
 - evacuation requests and refugee hosting also skip them
 
 This keeps nonstandard scenario actors out of mechanics that only make sense for normal societies.
+
+## Dynamic Special Outbreaks
+
+Dynamic rear-area outbreaks normally create standard zombie splinters. As chaos rises, they can rarely produce a special zombie type instead. The chance is `0` at Calm World, extremely low at Gathering Storm, and increases by chaos tier. Wendigo is excluded from this random dynamic roll.
+
+These random special outbreaks receive random profile attributes and the relevant live special-type idea, but they do not receive a reviewable weaponization profile. Only country-designed weaponized outbreaks expose profile review decisions.
+
+Standard cure research appears when any live standard zombie outbreak exists, including dynamic scenario outbreaks. Special cure research uses the weaponized-zombie countermeasure category and advances the selected zombie type only; cure sharing shares progress for that specific type, not all types at once.
+
+Anti-Zombie League membership keeps its direct targeted bonus against the literal `ZZZ` outbreak and also grants an outbreak-active army attack bonus so League members retain offensive value against dynamic special zombie countries.
 
 ## Flags, Variables, and Event Targets
 

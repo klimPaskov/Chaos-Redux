@@ -47,9 +47,9 @@ Current song routing:
 - The script now builds `chaosx_super_event_<id>_<volume_suffix>` dynamically through `meta_effect`.
 - Sound-channel playback builds `chaosx_super_event_<id>_sound_<volume_suffix>` the same way.
 - Current live super-event IDs `1`, `2`, and `3` reuse the zombie outbreak track definitions.
-- Current live super-event ID `4` reuses the default track definitions.
+- Current live super-event IDs `4`, `7`, `8`, `10`, `11`, `12`, and `13` reuse the default track definitions.
 - Current live super-event ID `5` uses the zombie-threat-defeated track definitions.
-- Current live super-event ID `6` uses the wendigo track definitions.
+- Current live super-event IDs `6` and `9` use the wendigo track definitions.
 
 The variant song IDs are defined in:
 - `music/chaosx_super_event_music.asset`

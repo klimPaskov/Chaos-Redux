@@ -30,6 +30,21 @@ is_live_weaponized_zombie_profile_country = {
 	NOT = { has_capitulated = yes }
 }
 
+is_live_standard_zombie_outbreak_country = {
+	exists = yes
+	is_zombie_outbreak_country = yes
+	num_of_controlled_states > 0
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = weaponized_zombie_outbreak_country }
+}
+
+is_reviewable_weaponized_zombie_profile_country = {
+	is_live_weaponized_zombie_profile_country = yes
+	is_weaponized_zombie_profile_visible_to_root = yes
+	NOT = { has_country_flag = weaponized_zombie_triggerable_scenario }
+	NOT = { has_country_flag = weaponized_zombie_special_dynamic_outbreak }
+}
+
 is_weaponized_zombie_profile_visible_to_root = {
 	OR = {
 		has_country_flag = weaponized_zombie_profile_public
@@ -158,38 +173,35 @@ is_anti_zombie_league_member = {
 	}
 }
 
-can_lead_anti_zombie_league = {
+is_valid_anti_zombie_league_country = {
 	uses_normal_civilian_systems = yes
-    is_major = yes
-    NOT = { original_tag = ZZZ }
-    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
-    NOT = { has_country_flag = weaponized_zombie_outbreak_country }
-    is_subject = no
+	exists = yes
+	NOT = { original_tag = ZZZ }
+	NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+	NOT = { has_country_flag = weaponized_zombie_outbreak_country }
+}
+
+can_lead_anti_zombie_league = {
+	is_valid_anti_zombie_league_country = yes
+	is_major = yes
+	is_subject = no
 }
 
 can_join_anti_zombie_league = {
-	uses_normal_civilian_systems = yes
+	is_valid_anti_zombie_league_country = yes
 	has_live_main_zombie_outbreak = yes
-    NOT = { original_tag = ZZZ }
-    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
-    NOT = { has_country_flag = weaponized_zombie_outbreak_country }
-    NOT = { is_anti_zombie_league_member = yes }
-    NOT = { has_country_flag = azl_left_due_distant_threat }
-    NOT = { has_country_flag = azl_left_after_main_outbreak_gone }
-    exists = yes
-    is_subject = no
+	NOT = { is_anti_zombie_league_member = yes }
+	NOT = { has_country_flag = azl_left_due_distant_threat }
+	NOT = { has_country_flag = azl_left_after_main_outbreak_gone }
+	is_subject = no
 }
 
 can_rejoin_anti_zombie_league = {
-	uses_normal_civilian_systems = yes
+	is_valid_anti_zombie_league_country = yes
 	has_live_main_zombie_outbreak = yes
-    NOT = { original_tag = ZZZ }
-    NOT = { has_country_flag = zombie_outbreak_dynamic_country }
-    NOT = { has_country_flag = weaponized_zombie_outbreak_country }
-    NOT = { is_anti_zombie_league_member = yes }
-    NOT = { has_country_flag = azl_left_after_main_outbreak_gone }
-    exists = yes
-    is_subject = no
+	NOT = { is_anti_zombie_league_member = yes }
+	NOT = { has_country_flag = azl_left_after_main_outbreak_gone }
+	is_subject = no
 }
 
 should_consider_joining_anti_zombie_league = {

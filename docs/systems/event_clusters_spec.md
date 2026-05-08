@@ -44,7 +44,7 @@ Cluster roll chance should start low and increase as the Chaos Meter rises.
 
 Design intent:
 
-- Calm World: clusters are very rare
+- Calm World: clusters that are not unlocked show 0% roll chance
 - Gathering Storm: clusters are possible but uncommon
 - Rising Chaos: clusters become noticeable
 - Chaos Tier: clusters become a real risk
@@ -173,7 +173,7 @@ Add event clusters to the event logs.
 
 The event log UI should support a clusters view.
 
-This clusters view should show the cluster event logs rather than individual event logs.
+This clusters view should show the registered cluster catalogue. Fired cluster rows belong in History.
 
 The clusters view should be switchable from the existing event log interface.
 
@@ -238,7 +238,7 @@ Suggested terms:
 - `Cluster Log`
 - `Cluster Details`
 - `Trigger Cluster by ID`
-- `Member Events`
+- `Members`
 - `Cluster Fired`
 - `Repeatable Cluster`
 - `One-Time Cluster`

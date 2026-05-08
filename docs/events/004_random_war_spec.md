@@ -305,11 +305,11 @@ If a new copied or processed asset is needed:
 
 ### Evolution names
 
-- War Contagion I: Triangular Incident
-- War Contagion II: Four Fronts
-- War Contagion III: Contagious Ultimatums
-- War Contagion IV: The War Week
-- War Contagion V: Open Season
+- Triangular Incident
+- Four Fronts
+- Contagious Ultimatums
+- The War Week
+- Open Season
 
 ### Event details text
 

@@ -1,0 +1,821 @@
+# ============================================================================
+# CHAOS REDUX - RANDOM WAR EFFECTS
+# ============================================================================
+# Event 4 prepares one valid aggressor/target pair before event-system accounting
+# so history and cluster logs can name the actor, then resolves the baseline or
+# War Contagion stage declaration web from the hidden root event.
+# ============================================================================
+
+@RANDOM_WAR_AGGRESSOR_COOLDOWN_DAYS = 90
+@RANDOM_WAR_TARGET_COOLDOWN_DAYS = 90
+@RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS = 1
+
+random_war_determine_stage = {
+	set_temp_variable = { random_war_stage = constant:random_war_stage.baseline }
+	get_current_chaos_tier_value = yes
+
+	if = {
+		limit = {
+			check_variable = {
+				var = current_chaos_tier_value
+				value = constant:chaos_meter_tier_id.tier_final
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { events_log_evolution_event_id = 4 }
+		set_temp_variable = { events_log_evolution_type = constant:random_war_evolution_type.war_contagion }
+		set_temp_variable = { events_log_evolution_stage = constant:random_war_stage.world_collapse }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_temp_variable = { random_war_stage = constant:random_war_stage.world_collapse }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.baseline
+				compare = equals
+			}
+			check_variable = {
+				var = current_chaos_tier_value
+				value = constant:chaos_meter_tier_id.tier_4
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { events_log_evolution_event_id = 4 }
+		set_temp_variable = { events_log_evolution_type = constant:random_war_evolution_type.war_contagion }
+		set_temp_variable = { events_log_evolution_stage = constant:random_war_stage.totalen_chaos }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_temp_variable = { random_war_stage = constant:random_war_stage.totalen_chaos }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.baseline
+				compare = equals
+			}
+			check_variable = {
+				var = current_chaos_tier_value
+				value = constant:chaos_meter_tier_id.tier_3
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { events_log_evolution_event_id = 4 }
+		set_temp_variable = { events_log_evolution_type = constant:random_war_evolution_type.war_contagion }
+		set_temp_variable = { events_log_evolution_stage = constant:random_war_stage.chaos_tier }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_temp_variable = { random_war_stage = constant:random_war_stage.chaos_tier }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.baseline
+				compare = equals
+			}
+			check_variable = {
+				var = current_chaos_tier_value
+				value = constant:chaos_meter_tier_id.tier_2
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { events_log_evolution_event_id = 4 }
+		set_temp_variable = { events_log_evolution_type = constant:random_war_evolution_type.war_contagion }
+		set_temp_variable = { events_log_evolution_stage = constant:random_war_stage.rising_chaos }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_temp_variable = { random_war_stage = constant:random_war_stage.rising_chaos }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.baseline
+				compare = equals
+			}
+			check_variable = {
+				var = current_chaos_tier_value
+				value = constant:chaos_meter_tier_id.tier_1
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { events_log_evolution_event_id = 4 }
+		set_temp_variable = { events_log_evolution_type = constant:random_war_evolution_type.war_contagion }
+		set_temp_variable = { events_log_evolution_stage = constant:random_war_stage.gathering_storm }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_temp_variable = { random_war_stage = constant:random_war_stage.gathering_storm }
+		}
+	}
+}
+
+random_war_set_declaration_profile = {
+	set_temp_variable = { random_war_declaration_target_count = constant:random_war_stage_declarations.baseline }
+	set_temp_variable = { random_war_special_chance = constant:random_war_special_chance.baseline }
+
+	if = {
+		limit = { check_variable = { random_war_stage = constant:random_war_stage.gathering_storm } }
+		set_temp_variable = { random_war_declaration_target_count = constant:random_war_stage_declarations.gathering_storm }
+		set_temp_variable = { random_war_special_chance = constant:random_war_special_chance.gathering_storm }
+	}
+	else_if = {
+		limit = { check_variable = { random_war_stage = constant:random_war_stage.rising_chaos } }
+		set_temp_variable = { random_war_declaration_target_count = constant:random_war_stage_declarations.rising_chaos }
+		set_temp_variable = { random_war_special_chance = constant:random_war_special_chance.rising_chaos }
+	}
+	else_if = {
+		limit = { check_variable = { random_war_stage = constant:random_war_stage.chaos_tier } }
+		set_temp_variable = { random_war_declaration_target_count = constant:random_war_stage_declarations.chaos_tier }
+		set_temp_variable = { random_war_special_chance = constant:random_war_special_chance.chaos_tier }
+	}
+	else_if = {
+		limit = { check_variable = { random_war_stage = constant:random_war_stage.totalen_chaos } }
+		set_temp_variable = { random_war_declaration_target_count = constant:random_war_stage_declarations.totalen_chaos }
+		set_temp_variable = { random_war_special_chance = constant:random_war_special_chance.totalen_chaos }
+	}
+	else_if = {
+		limit = { check_variable = { random_war_stage = constant:random_war_stage.world_collapse } }
+		set_variable_to_random = {
+			var = random_war_declaration_target_count
+			min = constant:random_war_stage_declarations.world_collapse_min
+			max = constant:random_war_stage_declarations.world_collapse_max
+			integer = yes
+		}
+		set_temp_variable = { random_war_special_chance = constant:random_war_special_chance.world_collapse }
+	}
+}
+
+random_war_save_pair_from_current_target = {
+	save_event_target_as = random_war_target
+	if = {
+		limit = { has_event_target = random_war_aggressor }
+		set_temp_variable = { random_war_pair_selected = 1 }
+
+		if = {
+			limit = {
+				OR = {
+					chaosx_is_random_war_compatible_special_country = yes
+					event_target:random_war_aggressor = { chaosx_is_random_war_compatible_special_country = yes }
+				}
+			}
+			set_temp_variable = { random_war_pair_special_involved = 1 }
+		}
+	}
+}
+
+random_war_try_select_special_aggressor_pair = {
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_pair_selected
+				value = 1
+				compare = less_than
+			}
+		}
+		random_country = {
+			limit = {
+				random_war_country_can_be_aggressor = yes
+				chaosx_is_random_war_compatible_special_country = yes
+				any_other_country = { random_war_target_valid_for_prev_aggressor = yes }
+			}
+			save_event_target_as = random_war_aggressor
+			random_other_country = {
+				limit = { random_war_target_valid_for_prev_aggressor = yes }
+				random_war_save_pair_from_current_target = yes
+			}
+		}
+	}
+}
+
+random_war_try_select_special_target_pair = {
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_pair_selected
+				value = 1
+				compare = less_than
+			}
+		}
+		random_country = {
+			limit = {
+				random_war_country_can_be_aggressor = yes
+				any_other_country = {
+					chaosx_is_random_war_compatible_special_country = yes
+					random_war_target_valid_for_prev_aggressor = yes
+				}
+			}
+			save_event_target_as = random_war_aggressor
+			random_other_country = {
+				limit = {
+					chaosx_is_random_war_compatible_special_country = yes
+					random_war_target_valid_for_prev_aggressor = yes
+				}
+				random_war_save_pair_from_current_target = yes
+			}
+		}
+	}
+}
+
+random_war_try_select_major_pair = {
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_pair_selected
+				value = 1
+				compare = less_than
+			}
+		}
+		random_country = {
+			limit = {
+				random_war_country_can_be_aggressor = yes
+				OR = {
+					is_major = yes
+					is_in_faction = yes
+				}
+				any_other_country = { random_war_target_valid_for_prev_aggressor = yes }
+			}
+			save_event_target_as = random_war_aggressor
+			random_other_country = {
+				limit = { random_war_target_valid_for_prev_aggressor = yes }
+				random_war_save_pair_from_current_target = yes
+			}
+		}
+	}
+}
+
+random_war_try_select_neighbor_pair = {
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_pair_selected
+				value = 1
+				compare = less_than
+			}
+		}
+		random_country = {
+			limit = {
+				random_war_country_can_be_aggressor = yes
+				any_other_country = {
+					is_neighbor_of = PREV
+					random_war_target_valid_for_prev_aggressor = yes
+				}
+			}
+			save_event_target_as = random_war_aggressor
+			random_other_country = {
+				limit = {
+					is_neighbor_of = PREV
+					random_war_target_valid_for_prev_aggressor = yes
+				}
+				random_war_save_pair_from_current_target = yes
+			}
+		}
+	}
+}
+
+random_war_try_select_global_pair = {
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_pair_selected
+				value = 1
+				compare = less_than
+			}
+		}
+		random_country = {
+			limit = {
+				random_war_country_can_be_aggressor = yes
+				any_other_country = { random_war_target_valid_for_prev_aggressor = yes }
+			}
+			save_event_target_as = random_war_aggressor
+			random_other_country = {
+				limit = { random_war_target_valid_for_prev_aggressor = yes }
+				random_war_save_pair_from_current_target = yes
+			}
+		}
+	}
+}
+
+random_war_select_pair = {
+	set_temp_variable = { random_war_pair_selected = 0 }
+	set_temp_variable = { random_war_pair_special_involved = 0 }
+
+	if = {
+		limit = { check_variable = { random_war_special_chance > 0 } }
+		set_variable_to_random = {
+			var = random_war_special_roll
+			min = constant:random_war_roll.minimum
+			max = constant:random_war_roll.maximum
+			integer = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_special_roll
+					value = random_war_special_chance
+					compare = less_than_or_equals
+				}
+			}
+			random_war_try_select_special_aggressor_pair = yes
+			random_war_try_select_special_target_pair = yes
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.chaos_tier
+				compare = greater_than_or_equals
+			}
+		}
+		random_war_try_select_major_pair = yes
+	}
+
+	random_war_try_select_neighbor_pair = yes
+	random_war_try_select_global_pair = yes
+}
+
+random_war_prepare_chain_context = {
+	set_temp_variable = { random_war_chain_active = 0 }
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.baseline
+				compare = greater_than
+			}
+			check_variable = {
+				var = random_war_pair_selected
+				value = 0
+				compare = greater_than
+			}
+			has_event_target = random_war_aggressor
+			has_event_target = random_war_target
+		}
+		event_target:random_war_aggressor = {
+			save_event_target_as = random_war_chain_origin
+			set_country_flag = {
+				flag = random_war_chain_member
+				days = @RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS
+			}
+		}
+		event_target:random_war_target = {
+			save_event_target_as = random_war_chain_next_aggressor
+			set_country_flag = {
+				flag = random_war_chain_member
+				days = @RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS
+			}
+		}
+		set_temp_variable = { random_war_chain_active = 1 }
+	}
+}
+
+random_war_select_chain_next_pair = {
+	set_temp_variable = { random_war_pair_selected = 0 }
+	set_temp_variable = { random_war_pair_special_involved = 0 }
+
+	if = {
+		limit = { has_event_target = random_war_chain_next_aggressor }
+		if = {
+			limit = { check_variable = { random_war_special_chance > 0 } }
+			set_variable_to_random = {
+				var = random_war_special_roll
+				min = constant:random_war_roll.minimum
+				max = constant:random_war_roll.maximum
+				integer = yes
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = random_war_special_roll
+						value = random_war_special_chance
+						compare = less_than_or_equals
+					}
+				}
+				event_target:random_war_chain_next_aggressor = {
+					save_event_target_as = random_war_aggressor
+					random_other_country = {
+						limit = {
+							random_war_target_valid_for_prev_aggressor = yes
+							chaosx_is_random_war_compatible_special_country = yes
+							NOT = { has_country_flag = random_war_chain_member }
+						}
+						random_war_save_pair_from_current_target = yes
+					}
+				}
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			has_event_target = random_war_chain_next_aggressor
+			check_variable = {
+				var = random_war_pair_selected
+				value = 1
+				compare = less_than
+			}
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.chaos_tier
+				compare = greater_than_or_equals
+			}
+		}
+		event_target:random_war_chain_next_aggressor = {
+			save_event_target_as = random_war_aggressor
+			random_other_country = {
+				limit = {
+					random_war_target_valid_for_prev_aggressor = yes
+					NOT = { has_country_flag = random_war_chain_member }
+					OR = {
+						is_major = yes
+						is_in_faction = yes
+					}
+				}
+				random_war_save_pair_from_current_target = yes
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			has_event_target = random_war_chain_next_aggressor
+			check_variable = {
+				var = random_war_pair_selected
+				value = 1
+				compare = less_than
+			}
+		}
+		event_target:random_war_chain_next_aggressor = {
+			save_event_target_as = random_war_aggressor
+			random_other_country = {
+				limit = {
+					random_war_target_valid_for_prev_aggressor = yes
+					NOT = { has_country_flag = random_war_chain_member }
+				}
+				random_war_save_pair_from_current_target = yes
+			}
+		}
+	}
+}
+
+random_war_select_chain_closure_pair = {
+	set_temp_variable = { random_war_pair_selected = 0 }
+	set_temp_variable = { random_war_pair_special_involved = 0 }
+
+	if = {
+		limit = {
+			has_event_target = random_war_chain_origin
+			has_event_target = random_war_chain_next_aggressor
+		}
+		event_target:random_war_chain_next_aggressor = {
+			if = {
+				limit = {
+					event_target:random_war_chain_origin = {
+						random_war_target_valid_for_prev_aggressor = yes
+					}
+				}
+				save_event_target_as = random_war_aggressor
+				event_target:random_war_chain_origin = {
+					save_event_target_as = random_war_target
+				}
+				set_temp_variable = { random_war_pair_selected = 1 }
+				if = {
+					limit = {
+						OR = {
+							chaosx_is_random_war_compatible_special_country = yes
+							event_target:random_war_chain_origin = { chaosx_is_random_war_compatible_special_country = yes }
+						}
+					}
+					set_temp_variable = { random_war_pair_special_involved = 1 }
+				}
+			}
+		}
+	}
+}
+
+random_war_log_stage_if_needed = {
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_stage
+				value = constant:random_war_stage.baseline
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { random_war_stage_log_needed = 0 }
+
+		if = {
+			limit = {
+				check_variable = { random_war_stage = constant:random_war_stage.gathering_storm }
+				NOT = { has_global_flag = random_war_stage_1_logged }
+			}
+			set_global_flag = random_war_stage_1_logged
+			set_temp_variable = { random_war_stage_log_needed = 1 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { random_war_stage = constant:random_war_stage.rising_chaos }
+				NOT = { has_global_flag = random_war_stage_2_logged }
+			}
+			set_global_flag = random_war_stage_2_logged
+			set_temp_variable = { random_war_stage_log_needed = 1 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { random_war_stage = constant:random_war_stage.chaos_tier }
+				NOT = { has_global_flag = random_war_stage_3_logged }
+			}
+			set_global_flag = random_war_stage_3_logged
+			set_temp_variable = { random_war_stage_log_needed = 1 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { random_war_stage = constant:random_war_stage.totalen_chaos }
+				NOT = { has_global_flag = random_war_stage_4_logged }
+			}
+			set_global_flag = random_war_stage_4_logged
+			set_temp_variable = { random_war_stage_log_needed = 1 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { random_war_stage = constant:random_war_stage.world_collapse }
+				NOT = { has_global_flag = random_war_stage_5_logged }
+			}
+			set_global_flag = random_war_stage_5_logged
+			set_temp_variable = { random_war_stage_log_needed = 1 }
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_stage_log_needed
+					value = 0
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { events_log_evolution_event_id = 4 }
+			set_temp_variable = { events_log_evolution_type = constant:random_war_evolution_type.war_contagion }
+			set_temp_variable = { events_log_evolution_stage = random_war_stage }
+			set_temp_variable = { events_log_evolution_tier = current_chaos_tier_value }
+			if = {
+				limit = { has_event_target = random_war_aggressor }
+				event_target:random_war_aggressor = { save_event_target_as = events_log_evolution_actor }
+			}
+			record_events_log_evolution_entry = yes
+		}
+	}
+}
+
+random_war_setup_context = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = random_war_context_ready }
+				check_variable = {
+					var = random_war_context_ready
+					value = 1
+					compare = less_than
+				}
+			}
+		}
+		set_temp_variable = { random_war_context_ready = 0 }
+		set_temp_variable = { random_war_first_pair_ready = 0 }
+		random_war_determine_stage = yes
+		random_war_set_declaration_profile = yes
+		random_war_select_pair = yes
+
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_pair_selected
+					value = 0
+					compare = greater_than
+				}
+				has_event_target = random_war_aggressor
+				has_event_target = random_war_target
+			}
+			set_temp_variable = { random_war_context_ready = 1 }
+			set_temp_variable = { random_war_first_pair_ready = 1 }
+			event_target:random_war_aggressor = { save_event_target_as = event_cluster_actor }
+			random_war_prepare_chain_context = yes
+			random_war_log_stage_if_needed = yes
+		}
+	}
+}
+
+random_war_apply_current_pair = {
+	set_temp_variable = { random_war_pair_applied = 0 }
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_pair_selected
+				value = 0
+				compare = greater_than
+			}
+			has_event_target = random_war_aggressor
+			has_event_target = random_war_target
+		}
+		event_target:random_war_aggressor = {
+			if = {
+				limit = {
+					ROOT = {
+						check_variable = {
+							var = random_war_declaration_fired_count
+							value = 1
+							compare = less_than
+						}
+					}
+				}
+				save_event_target_as = random_war_news_first_aggressor
+				set_variable = { global.random_war_news_first_aggressor = THIS.id }
+			}
+			save_event_target_as = random_war_news_last_aggressor
+			set_variable = { global.random_war_news_last_aggressor = THIS.id }
+			set_country_flag = {
+				flag = random_war_recent_aggressor
+				days = @RANDOM_WAR_AGGRESSOR_COOLDOWN_DAYS
+			}
+			set_variable = { global.random_war_last_aggressor = THIS.id }
+			declare_war_on = {
+				type = annex_everything
+				target = event_target:random_war_target
+			}
+			country_event = { id = chaosx.nr4.2 hours = 1 }
+		}
+		event_target:random_war_target = {
+			if = {
+				limit = {
+					ROOT = {
+						check_variable = {
+							var = random_war_declaration_fired_count
+							value = 1
+							compare = less_than
+						}
+					}
+				}
+				save_event_target_as = random_war_news_first_target
+				set_variable = { global.random_war_news_first_target = THIS.id }
+			}
+			if = {
+				limit = {
+					ROOT = {
+						check_variable = {
+							var = random_war_declaration_fired_count
+							value = 1
+							compare = equals
+						}
+					}
+				}
+				save_event_target_as = random_war_news_third_country
+				set_variable = { global.random_war_news_third_country = THIS.id }
+			}
+			save_event_target_as = random_war_news_last_target
+			set_variable = { global.random_war_news_last_target = THIS.id }
+			set_country_flag = {
+				flag = random_war_recent_target
+				days = @RANDOM_WAR_TARGET_COOLDOWN_DAYS
+			}
+			set_variable = { global.random_war_last_target = THIS.id }
+			country_event = { id = chaosx.nr4.3 hours = 1 }
+		}
+		set_temp_variable = { random_war_pair_applied = 1 }
+		add_to_temp_variable = { random_war_declaration_fired_count = 1 }
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_chain_active
+					value = 0
+					compare = greater_than
+				}
+			}
+			event_target:random_war_target = {
+				set_country_flag = {
+					flag = random_war_chain_member
+					days = @RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS
+				}
+				save_event_target_as = random_war_chain_next_aggressor
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_pair_special_involved
+					value = 0
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { random_war_special_involved = 1 }
+		}
+	}
+}
+
+random_war_fire_current_context = {
+	random_war_setup_context = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = random_war_context_ready
+				value = 0
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { random_war_declaration_fired_count = 0 }
+		set_temp_variable = { random_war_special_involved = 0 }
+		set_temp_variable = { random_war_remaining_declarations = random_war_declaration_target_count }
+
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = random_war_remaining_declarations
+					value = 0
+					compare = greater_than
+				}
+			}
+
+			if = {
+				limit = {
+					check_variable = {
+						var = random_war_first_pair_ready
+						value = 0
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { random_war_first_pair_ready = 0 }
+			}
+			else = {
+				if = {
+					limit = {
+						check_variable = {
+							var = random_war_chain_active
+							value = 0
+							compare = greater_than
+						}
+					}
+					if = {
+						limit = { check_variable = { random_war_remaining_declarations = constant:random_war_stage_declarations.baseline } }
+						random_war_select_chain_closure_pair = yes
+					}
+					else = {
+						random_war_select_chain_next_pair = yes
+					}
+				}
+				else = {
+					random_war_select_pair = yes
+				}
+			}
+
+			random_war_apply_current_pair = yes
+
+			if = {
+				limit = {
+					check_variable = {
+						var = random_war_pair_applied
+						value = 0
+						compare = greater_than
+					}
+				}
+				subtract_from_temp_variable = { random_war_remaining_declarations = 1 }
+			}
+			else = {
+				set_temp_variable = { random_war_remaining_declarations = 0 }
+			}
+		}
+
+		set_variable = { global.random_war_last_stage = random_war_stage }
+		set_variable = { global.random_war_last_declaration_count = random_war_declaration_fired_count }
+		set_variable = { global.random_war_last_special_involved = random_war_special_involved }
+		set_variable = { global.random_war_news_declaration_count = random_war_declaration_fired_count }
+		set_variable = { global.random_war_news_country_count = random_war_declaration_fired_count }
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_declaration_fired_count
+					value = 1
+					compare = equals
+				}
+			}
+			set_variable = { global.random_war_news_country_count = 2 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_declaration_fired_count
+					value = 0
+					compare = greater_than
+				}
+				has_event_target = random_war_news_first_aggressor
+			}
+			event_target:random_war_news_first_aggressor = {
+				news_event = { id = chaosx.news.104 }
+			}
+		}
+	}
+}

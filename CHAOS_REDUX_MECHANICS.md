@@ -8,13 +8,14 @@
 4. [Chaos Meter System](#chaos-meter-system)
 5. [World End Scenario Mechanic](#world-end-scenario-mechanic)
 6. [Event Evolution and Event Logs](#event-evolution-and-event-logs)
-7. [Configuration and Settings](#configuration-and-settings)
-8. [Triggerable Scenarios](#triggerable-scenarios)
-9. [Multiplayer Compatibility](#multiplayer-compatibility)
-10. [Debug and Monitoring](#debug-and-monitoring)
-11. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
-12. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
-13. [Chaos Warfare](#chaos-warfare)
+7. [Event Clusters](#event-clusters)
+8. [Configuration and Settings](#configuration-and-settings)
+9. [Triggerable Scenarios](#triggerable-scenarios)
+10. [Multiplayer Compatibility](#multiplayer-compatibility)
+11. [Debug and Monitoring](#debug-and-monitoring)
+12. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
+13. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
+14. [Chaos Warfare](#chaos-warfare)
 
 ---
 
@@ -111,6 +112,12 @@ When a major event fires:
 ---
 
 ## Event Classification
+
+### Country-Specific Target Gates
+
+Events that require a specific country or small set of country tags must have a reusable valid-target trigger before they can be selected or manually fired. If no valid target exists, the event is treated as unavailable, shows `N/A` in the event list, and is not queued against a nonexistent country.
+
+The Holy Realm uses this rule directly: Tibet is the normal host; if Tibet no longer exists, Bhutan or Nepal can host; if all three are gone or invalid, event ID `3` has no live weight.
 
 ### Fire-Once Events
 
@@ -343,16 +350,33 @@ Events can transform into more dangerous versions when chaos levels are sufficie
 
 The event logs window tracks what has happened and what can still happen.
 
-- Tabs: **Status**, **History**, **Evolutions**, **Events**
+- Tabs: **Status**, **History**, **Evolutions**, **Events**, **Clusters**
 - **Events** tab lists all available events.
+- **Clusters** tab lists cluster firings and member skip/fired reasons.
 - You can filter events by **All / Enabled / Disabled**.
 - You can sort by **Event ID**, **Fired count**, or **Weight** (ascending/descending).
 - Each event row has a quick toggle button to enable/disable that event.
 
-Any row in **History**, **Evolutions**, or **Events** can be clicked to open a separate detail window.
+Any row in **History**, **Evolutions**, **Events**, or **Clusters** can be clicked to open a separate detail window.
 
 <!-- IMAGE PLACEHOLDER: Events tab with filter/sort/toggle controls -->
 <!-- IMAGE PLACEHOLDER: Multiple event detail windows opened at once -->
+
+---
+
+## Event Clusters
+
+Event clusters are linked groups of normal events. The random-event picker still selects one event first; if that event belongs to a cluster, the cluster can roll to fire the wider incident instead of only the selected event.
+
+Cluster firing still runs member events through normal accounting, so repeatable caps, fire-once removal, major-event pacing, fired history, and event details stay aligned with the base event system.
+
+Current cluster:
+
+- **Wars**: repeatable cluster, active from Rising Chaos, currently containing Event 4 Random War as a required member.
+
+The settings UI has an Event Clusters view for selecting a cluster ID, checking availability, and manually triggering a cluster. Fired clusters appear in the event log **Clusters** tab with the cluster actor, tier, fired/skipped counts, and member reasons.
+
+Detailed implementation notes live in `docs/systems/event_clusters.md`.
 
 ---
 
@@ -408,7 +432,7 @@ Each scenario has a type control and a four-stop intensity slider. The selected 
 Current entries:
 
 - **Zombie Apocalypse**: type controls outbreak structure, while intensity controls outbreak count, starting states, spawned divisions, and early pressure.
-- **Army of Mengele Clones**: type switches between the standard clone army and the stronger Aryan variant, while intensity controls starting territory, divisions, equipment, army strength, and pressure on neighboring countries.
+- **Army of Clones**: type switches between the standard clone army and the stronger Aryan variant, while intensity controls starting territory, divisions, equipment, army strength, and pressure on neighboring countries.
 
 Detailed implementation notes live in `docs/systems/triggerable_scenarios.md`.
 
