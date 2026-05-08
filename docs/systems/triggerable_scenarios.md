@@ -36,7 +36,7 @@ Clicking a slider stop writes `triggerable_scenarios_intensity`. Arrow buttons c
 Type controls cycle scenario-specific type variables:
 
 - Zombie Apocalypse: diverse outbreaks, random outbreaks, standard everywhere, special-profile everywhere, or connected outbreak.
-- Army of Mengele Clones: standard clone army or Aryan variant.
+- Army of Clones: standard clone army or Aryan variant.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time.
 
@@ -44,15 +44,17 @@ The trigger button opens a separate confirmation window. Confirming reads the st
 
 ### SCN-001: Zombie Apocalypse
 
-The Zombie Apocalypse scenario launches hostile outbreaks according to the selected type. Diverse outbreaks guarantee coverage of the special zombie profiles, including Wendigo. Random outbreaks roll profiles independently. Single-profile types use the selected profile everywhere. Connected outbreak creates one concentrated front.
+The Zombie Apocalypse scenario launches hostile outbreaks according to the selected type. Diverse outbreaks always include at least one standard zombie outbreak so the normal cure path remains available, then guarantee coverage of the special zombie profiles, including Wendigo at maximum intensity. Random outbreaks roll profiles independently. Single-profile types use the selected profile everywhere. Connected outbreak creates one concentrated front.
+
+Scenario-created weaponized outbreaks are live special zombie types, but they do not create reviewable weaponization profiles. Profile review decisions are reserved for outbreaks that were designed by a country through the weaponized-zombie project chain.
 
 Intensity changes outbreak count, initial affected states, spawned divisions, and starting pressure.
 
-### SCN-002: Army of Mengele Clones
+### SCN-002: Army of Clones
 
-The Army of Mengele Clones scenario creates a hostile artificial army in Eastern Europe and the western Soviet borderlands. The standard version creates the baseline army; the Aryan variant adds stronger formations, more equipment, higher experience, and more aggressive pressure.
+The Army of Clones scenario creates a hostile artificial army in Eastern Europe and the western Soviet borderlands. The standard version creates the baseline army; the Aryan variant adds stronger formations, more equipment, higher experience, and more aggressive pressure.
 
-Intensity changes starting territory, division count, army experience, equipment stockpiles, and pressure on neighboring countries.
+Intensity changes starting territory, division count, army experience, equipment stockpiles, and pressure on neighboring countries. The manual scenario uses the shared clone division spawn helper so the scenario army and later clone-wave decisions use the same protected `Clone Shock Division` template.
 
 ## Assets
 

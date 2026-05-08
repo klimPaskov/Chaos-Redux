@@ -23,6 +23,7 @@ Current coverage includes:
 - `ZZZ`
 - dynamic zombie outbreak countries
 - weaponized zombie outbreak countries
+- Wendigo outbreak flags or the Wendigo cosmetic tag
 - `ZIN`
 - `THR` / countries using the `The Holy Realm` cosmetic tag
 

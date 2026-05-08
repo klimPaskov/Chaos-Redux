@@ -449,3 +449,49 @@ refresh_world_threat_state = {
 }
 
 ###############################################################################################################
+
+make_all_directorate_special_projects_researchable = {
+	set_country_flag = directorate_special_projects_all_available
+	set_country_flag = directorate_special_project_weaponized_zombies_available
+	set_country_flag = directorate_special_project_cloning_available
+	set_country_flag = mengele_clone_army_zombie_project_authorized
+}
+
+make_random_directorate_special_project_researchable = {
+	clr_country_flag = directorate_special_project_random_availability_granted
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_country_flag = directorate_special_project_weaponized_zombies_available }
+				NOT = { has_country_flag = directorate_special_project_cloning_available }
+			}
+		}
+		set_temp_variable = { directorate_special_project_weaponized_zombies_roll = constant:directorate_special_project_availability.weaponized_zombies_weight }
+		set_temp_variable = { directorate_special_project_cloning_roll = constant:directorate_special_project_availability.cloning_weight }
+		random_list = {
+			directorate_special_project_weaponized_zombies_roll = {
+				modifier = {
+					factor = 0
+					has_country_flag = directorate_special_project_weaponized_zombies_available
+				}
+				set_country_flag = directorate_special_project_weaponized_zombies_available
+				set_country_flag = mengele_clone_army_zombie_project_authorized
+				set_country_flag = directorate_special_project_random_availability_granted
+			}
+			directorate_special_project_cloning_roll = {
+				modifier = {
+					factor = 0
+					has_country_flag = directorate_special_project_cloning_available
+				}
+				set_country_flag = directorate_special_project_cloning_available
+				set_country_flag = directorate_special_project_random_availability_granted
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_country_flag = directorate_special_project_random_availability_granted } }
+		make_all_directorate_special_projects_researchable = yes
+	}
+}
+
+###############################################################################################################

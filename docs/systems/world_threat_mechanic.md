@@ -64,7 +64,7 @@ The zombie source uses `refresh_zombie_world_threat_source` in `common/scripted_
 
 The Holy Realm source uses `holy_realm_refresh_world_threat_source` in `common/scripted_effects/003_holy_realm_effects.txt`. It can become active after Divine Sovereignty, final warnings, or an armed final doctrine. The refuge, Bodhisattva stage, Arhat Administration, and Buddha Mandate do not count as world threats on their own.
 
-The Mengele source uses `germany_mengele_refresh_world_threat` in `common/scripted_effects/germany_mengele_effects.txt`. It is active while the Auschwitz Directorate civil war exists and is cleared when the laboratory state is defeated or consolidates into a post-coup country state.
+The Mengele source uses `germany_mengele_refresh_world_threat` and the clone world-order launch effects in `common/scripted_effects/germany_mengele_effects.txt`. It is active while the Auschwitz Directorate civil war exists. If the Directorate later launches the clone world-end path, `world_threat_source_mengele` is set permanently for that world-end state.
 
 That effect:
 
@@ -94,6 +94,11 @@ Shared triggers:
 - `has_world_threat_source_holy_realm`
 - `has_world_threat_source_mengele`
 
+Registered world-end flags under the Mengele source:
+
+- `world_end_angelic_world_order`
+- `world_end_aryan_supremacy`
+
 ## Adding future threats
 
 When another existential threat is added later, the intended pattern is:
@@ -109,7 +114,7 @@ Everything should fold back into the same source-counted system.
 ## Limitations
 
 - The current zombie source is refreshed from the existing zombie runtime rather than a dedicated global state-control hook. In practice that is good enough for the active zombie system, but it is still tied to zombie runtime execution rather than a universal threat bus.
-- Zombies, the Holy Realm, and the active Mengele laboratory-state civil war are registered as source flags.
+- Zombies, the Holy Realm, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
 - `world_in_threat` is intentionally just a state flag. It does not itself enforce diplomacy or AI behavior. Other systems must explicitly read it.
 
 ## Files

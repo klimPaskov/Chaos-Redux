@@ -417,8 +417,6 @@ Remove sections that only restate theme, identity, or mood without explaining th
 
 Create one complete Markdown specification file by default.
 
-Do not split the spec into `part_1`, `part_2`, or similar files unless the user explicitly asks for it or a tool limit makes a split unavoidable.
-
 A single spec file may be very large. That is acceptable when the event deserves it. Keep one clean document that can be read from top to bottom and implemented without merging multiple files later.
 
 If the spec is large, use headings and a table of contents instead of splitting it.
