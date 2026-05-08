@@ -134,6 +134,7 @@ genocide_queue_historical_camp_flavor_event = {
 	if = {
 		limit = {
 			is_ai = no
+			genocide_country_has_visible_or_active_camp_system = yes
 			NOT = { has_country_flag = genocide_historical_camp_flavor_seen }
 		}
 		set_country_flag = genocide_historical_camp_flavor_seen
@@ -488,6 +489,7 @@ genocide_apply_monthly_gulag_state_effects = {
 genocide_maybe_fire_internal_crisis_event = {
 	if = {
 		limit = {
+			genocide_country_has_visible_or_active_camp_system = yes
 			genocide_country_prone_to_internal_crisis = yes
 			NOT = { has_country_flag = genocide_internal_crisis_event_cooldown }
 		}
@@ -522,21 +524,24 @@ genocide_maybe_fire_internal_crisis_event = {
 
 genocide_apply_monthly_state_effects = {
 	if = {
-		limit = { concentration_camp > 0 }
-		genocide_apply_monthly_concentration_state_effects = yes
-	}
-	if = {
-		limit = { extermination_camp > 0 }
-		genocide_apply_monthly_extermination_state_effects = yes
-	}
-	if = {
-		limit = { gulag_labor_camp_network > 0 }
-		genocide_apply_monthly_gulag_state_effects = yes
-	}
-	if = {
-		limit = { has_variable = genocide_responsible_country }
-		var:genocide_responsible_country = {
-			genocide_maybe_fire_internal_crisis_event = yes
+		limit = { NOT = { has_state_flag = genocide_historical_quiet_camp } }
+		if = {
+			limit = { concentration_camp > 0 }
+			genocide_apply_monthly_concentration_state_effects = yes
+		}
+		if = {
+			limit = { extermination_camp > 0 }
+			genocide_apply_monthly_extermination_state_effects = yes
+		}
+		if = {
+			limit = { gulag_labor_camp_network > 0 }
+			genocide_apply_monthly_gulag_state_effects = yes
+		}
+		if = {
+			limit = { has_variable = genocide_responsible_country }
+			var:genocide_responsible_country = {
+				genocide_maybe_fire_internal_crisis_event = yes
+			}
 		}
 	}
 }

@@ -1,5 +1,8 @@
 @MENGELE_EMERGENCY_CRACKDOWN_DAYS = 90
 @MENGELE_TEMPORARY_TRUCE_DAYS = 180
+@MCL_CLONE_DECISION_TIMED_DAYS = 90
+@MCL_CLONE_ASSAULT_TIMED_DAYS = 120
+@MCL_DECISION_BIOWARFARE_BONUS = 0.75
 
 germany_final_solution_category = {
 	centralize_race_offices = {
@@ -416,5 +419,313 @@ germany_mengele_response_category = {
 			country_event = { id = germany_mengele.35 days = @MENGELE_TEMPORARY_TRUCE_DAYS }
 		}
 		ai_will_do = { base = constant:germany_mengele_decision_ai.temporary_truce }
+	}
+}
+
+mengele_clone_army_category = {
+	expand_growth_vats = {
+		icon = GFX_decision_generic_construction
+		cost = constant:mengele_clone_decision.expand_growth_vats_cost
+		days_re_enable = constant:mengele_clone_decision.re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_growth_vats_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+		}
+		complete_effect = {
+			add_manpower = constant:mengele_clone_decision.expand_growth_vats_manpower
+			mengele_clone_army_add_biowarfare_facility = yes
+			add_stability = constant:mengele_clone_decision_value.condition_clone_batches_stability
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.expand_growth_vats }
+	}
+
+	raise_clone_infantry_wave = {
+		icon = GFX_decision_generic_military
+		custom_cost_trigger = {
+			mengele_clone_army_has_clone_deployment_command_power = yes
+		}
+		custom_cost_text = mengele_clone_deployment_command_power_cost
+		days_re_enable = constant:mengele_clone_decision.raise_clone_wave_re_enable_days
+		visible = {
+			is_mengele_clone_directorate_country = yes
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+		}
+		complete_effect = {
+			hidden_effect = {
+				mengele_clone_army_spend_clone_deployment_command_power = yes
+			}
+			mengele_clone_army_raise_clone_wave = yes
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.raise_clone_infantry_wave }
+	}
+
+	raise_clone_assault_wave = {
+		icon = GFX_decision_generic_military
+		custom_cost_trigger = {
+			mengele_clone_army_has_clone_deployment_command_power = yes
+		}
+		custom_cost_text = mengele_clone_deployment_command_power_cost
+		days_re_enable = constant:mengele_clone_decision.raise_clone_wave_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_assault_series_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+		}
+		complete_effect = {
+			hidden_effect = {
+				mengele_clone_army_spend_clone_deployment_command_power = yes
+			}
+			mengele_clone_army_raise_assault_clone_wave = yes
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.raise_clone_infantry_wave }
+	}
+
+	raise_clone_guard_wave = {
+		icon = GFX_decision_generic_military
+		custom_cost_trigger = {
+			mengele_clone_army_has_clone_deployment_command_power = yes
+		}
+		custom_cost_text = mengele_clone_deployment_command_power_cost
+		days_re_enable = constant:mengele_clone_decision.raise_clone_wave_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_guard_series_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+		}
+		complete_effect = {
+			hidden_effect = {
+				mengele_clone_army_spend_clone_deployment_command_power = yes
+			}
+			mengele_clone_army_raise_guard_clone_wave = yes
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.raise_clone_infantry_wave }
+	}
+
+	number_reclaimed_heartland_administrations = {
+		icon = GFX_decision_generic_political_discourse
+		cost = constant:mengele_clone_decision.number_reclaimed_heartland_cost
+		days_re_enable = constant:mengele_clone_decision.heartland_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_heartland_integration_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			mengele_clone_army_has_uncored_reclaimed_heartland = yes
+		}
+		complete_effect = {
+			mengele_clone_army_core_reclaimed_heartland = yes
+			add_manpower = constant:mengele_clone_focus_int.heartland_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.small_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.number_reclaimed_heartland }
+	}
+
+	activate_continental_assault_protocols = {
+		icon = GFX_decision_generic_military
+		custom_cost_trigger = {
+			command_power > constant:mengele_clone_decision.continental_assault_command_power
+		}
+		custom_cost_text = mengele_clone_command_power_75
+		days_re_enable = constant:mengele_clone_decision.continental_assault_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_continental_assault_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			NOT = { has_idea = mengele_clone_continental_assault_protocols }
+		}
+		complete_effect = {
+			hidden_effect = {
+				mengele_clone_army_spend_continental_assault_command_power = yes
+			}
+			add_timed_idea = {
+				idea = mengele_clone_continental_assault_protocols
+				days = @MCL_CLONE_ASSAULT_TIMED_DAYS
+			}
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.activate_continental_assault_protocols }
+	}
+
+	establish_numbered_borderland_commands = {
+		icon = GFX_decision_generic_industry
+		cost = constant:mengele_clone_decision.borderland_command_cost
+		days_re_enable = constant:mengele_clone_decision.borderland_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_borderland_commands_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			mengele_clone_army_has_uncored_continental_borderland = yes
+		}
+		complete_effect = {
+			mengele_clone_army_core_reclaimed_continental_borderlands = yes
+			mengele_clone_army_fortify_continental_borderlands = yes
+			add_manpower = constant:mengele_clone_focus_int.continental_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.expansion_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.establish_numbered_borderland_commands }
+	}
+
+	condition_clone_batches = {
+		icon = GFX_decision_generic_industry
+		cost = constant:mengele_clone_decision.condition_clone_batches_cost
+		days_re_enable = constant:mengele_clone_decision.re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_conditioning_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			NOT = { has_idea = mengele_clone_conditioned_batch }
+		}
+		complete_effect = {
+			army_experience = constant:mengele_clone_decision.condition_clone_batches_army_experience
+			add_stability = constant:mengele_clone_decision_value.condition_clone_batches_stability
+			add_timed_idea = {
+				idea = mengele_clone_conditioned_batch
+				days = @MCL_CLONE_DECISION_TIMED_DAYS
+			}
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.condition_clone_batches }
+	}
+
+	select_genius_embryos = {
+		icon = GFX_decision_generic_research
+		cost = constant:mengele_clone_decision.select_genius_embryos_cost
+		days_re_enable = constant:mengele_clone_decision.re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_genius_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			NOT = { has_idea = mengele_clone_genius_selection }
+		}
+		complete_effect = {
+			add_political_power = constant:mengele_clone_decision.select_genius_embryos_political_power
+			add_stability = constant:mengele_clone_decision_value.genius_embryos_stability
+			add_timed_idea = {
+				idea = mengele_clone_genius_selection
+				days = @MCL_CLONE_DECISION_TIMED_DAYS
+			}
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.select_genius_embryos }
+	}
+
+	biowarfare_trial_series = {
+		icon = GFX_decision_generic_research
+		cost = constant:mengele_clone_decision.biowarfare_trial_series_cost
+		days_re_enable = constant:mengele_clone_decision.re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_biowarfare_trials_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+		}
+		complete_effect = {
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_decision_value.biowarfare_breakthrough
+			}
+			add_tech_bonus = {
+				name = mcl_decision_biowarfare_trial_bonus
+				bonus = @MCL_DECISION_BIOWARFARE_BONUS
+				uses = 1
+				category = biowarfare_tech
+			}
+			army_experience = constant:mengele_clone_decision.biowarfare_trial_army_experience
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.biowarfare_trial_series }
+	}
+
+	harden_clone_immunity = {
+		icon = GFX_decision_deploy_field_hospitals
+		cost = constant:mengele_clone_decision.harden_clone_immunity_cost
+		days_re_enable = constant:mengele_clone_decision.re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_immunity_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			NOT = { has_idea = mengele_clone_immunity_campaign }
+		}
+		complete_effect = {
+			add_stability = constant:mengele_clone_decision_value.immunity_stability
+			add_war_support = constant:mengele_clone_decision_value.immunity_war_support
+			add_timed_idea = {
+				idea = mengele_clone_immunity_campaign
+				days = @MCL_CLONE_DECISION_TIMED_DAYS
+			}
+		}
+		ai_will_do = { base = constant:mengele_clone_decision_ai.harden_clone_immunity }
+	}
+
+	dispatch_biomedical_aid_mission = {
+		icon = GFX_decision_mengele_hidden_clone_network
+		cost = constant:mengele_clone_decision.dispatch_biomedical_aid_mission_cost
+		days_re_enable = constant:mengele_clone_world_order_int.foreign_offer_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_hidden_network_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			NOT = { has_global_flag = world_end }
+			any_other_country = {
+				mengele_hidden_clone_offer_target = yes
+				NOT = { has_country_flag = mengele_hidden_clone_network_host }
+			}
+		}
+		complete_effect = {
+			mengele_clone_dispatch_biomedical_aid_mission = yes
+		}
+		ai_will_do = { base = constant:mengele_clone_world_order_ai.dispatch_mission }
+	}
+
+	deepen_foreign_tank_network = {
+		icon = GFX_decision_mengele_hidden_clone_network
+		cost = constant:mengele_clone_decision.deepen_foreign_tank_network_cost
+		days_re_enable = constant:mengele_clone_world_order_int.deepen_network_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_deepen_network_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			NOT = { has_global_flag = world_end }
+			any_other_country = { mengele_hidden_clone_existing_host_target = yes }
+		}
+		complete_effect = {
+			mengele_clone_deepen_foreign_tank_network = yes
+		}
+		ai_will_do = { base = constant:mengele_clone_world_order_ai.deepen_network }
+	}
+
+	compile_activation_ledger = {
+		icon = GFX_decision_generic_research
+		cost = constant:mengele_clone_decision.compile_activation_ledger_cost
+		days_re_enable = constant:mengele_clone_world_order_int.activation_ledger_re_enable_days
+		visible = {
+			has_country_flag = mengele_clone_decision_activation_ledger_unlocked
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			NOT = { has_global_flag = world_end }
+		}
+		complete_effect = {
+			mengele_clone_world_order_recalculate_network_totals = yes
+			mengele_clone_world_order_refresh_rank_status = yes
+		}
+		ai_will_do = { base = constant:mengele_clone_world_order_ai.activation_ledger }
 	}
 }

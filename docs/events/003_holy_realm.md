@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Holy Realm is event ID 3 and remains registered as a fire-once Chaos Redux event. It transforms Tibet, or a Tibet-centered Himalayan country, into a full country path rather than a short event chain. The route starts as a mountain refuge, becomes a Bodhisattva-led state, creates the Arhat Administration, reaches the Buddha Mandate, and then commits to one of two main branch identities: Peaceful Holy Realm or Final Silence Holy Realm. Expansionism is a separate optional tree with its own pressure, letter, war-goal, and integration tools, not a third main-branch identity.
+The Holy Realm is event ID 3 and remains registered as a fire-once Chaos Redux event. It transforms Tibet into a full country path rather than a short event chain; if Tibet no longer exists, Bhutan or Nepal can serve as the Himalayan fallback host. If none of those countries exists as a valid normal country, the event is unavailable and displays as N/A in the event list. The route starts as a mountain refuge, becomes a Bodhisattva-led state, creates the Arhat Administration, reaches the Buddha Mandate, and then commits to one of two main branch identities: Peaceful Holy Realm or Final Silence Holy Realm. Expansionism is a separate optional tree with its own pressure, letter, war-goal, and integration tools, not a third main-branch identity.
 
 The current player-facing surface is the Holy Realm focus tree, decision categories, the compact Holy Mandala decision-category summary, the dedicated Bodhisattva category, the built-in Vow and Final Silence balance of power, event choices, event log entries, super events, national spirits, achievements, and localisation. The four Holy Realm values are live country variables and drive focuses, decisions, AI, final warning logic, and event text:
 
@@ -13,7 +13,7 @@ The current player-facing surface is the Holy Realm focus tree, decision categor
 
 ## Flow
 
-1. `chaosx.nr3.1` redirects the event to Tibet if possible, otherwise to a Tibet-centered eligible country.
+1. `chaosx.nr3.1` redirects the event to Tibet if possible. If Tibet no longer exists, it can redirect only to Bhutan or Nepal. If none of those tags exists as a valid normal country, event selection treats the event as unavailable.
 2. `chaosx.nr3.2` offers the spec formation choices: leave the monastery outside government, invite the figure into government, restrict the gatherings, or proclaim the mandate immediately.
 3. A formed Realm sets cosmetic tag `THR`, loads `THR_focus`, initializes counters, adds immediate Holy Realm cores on Bhutan and Nepal, records the refuge evolution, opens decisions, and broadcasts an ambiguous refuge news item.
 4. Refuge policy is remembered through `chaosx.nr3.4`: open roads, register names, or close passes.

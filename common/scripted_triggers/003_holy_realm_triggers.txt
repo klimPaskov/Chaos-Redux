@@ -10,15 +10,29 @@ can_host_holy_realm_refuge = {
 	exists = yes
 	uses_normal_civilian_systems = yes
 	NOT = { is_special_chaos_country = yes }
+	NOT = { is_zombie_outbreak_country = yes }
+	NOT = { is_weaponized_zombie_outbreak_country = yes }
 	NOT = { has_country_flag = holy_realm_refused_calling }
 	OR = {
 		tag = TIB
 		AND = {
 			NOT = { TIB = { exists = yes } }
 			OR = {
-				tag = NEP
 				tag = BHU
-				tag = SKK
+				tag = NEP
+			}
+		}
+	}
+}
+
+holy_realm_has_valid_refuge_host = {
+	OR = {
+		TIB = { can_host_holy_realm_refuge = yes }
+		AND = {
+			NOT = { TIB = { exists = yes } }
+			OR = {
+				BHU = { can_host_holy_realm_refuge = yes }
+				NEP = { can_host_holy_realm_refuge = yes }
 			}
 		}
 	}

@@ -26,6 +26,58 @@ scripted_gui = {
         }
     }
 
+    chaosx_events_log_events_shortcut_gui = {
+        window_name = "chaosx_events_log_events_shortcut_container"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            always = yes
+        }
+
+        effects = {
+            events_log_events_shortcut_button_click = {
+                open_events_log_events_tab = yes
+            }
+        }
+
+        triggers = {
+            events_log_events_shortcut_button_click_enabled = {
+                always = yes
+            }
+        }
+
+        ai_enabled = {
+            always = no
+        }
+    }
+
+    chaosx_help_shortcut_gui = {
+        window_name = "chaosx_help_shortcut_container"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            always = yes
+        }
+
+        effects = {
+            help_shortcut_button_click = {
+                toggle_chaosx_help_window = yes
+            }
+        }
+
+        triggers = {
+            help_shortcut_button_click_enabled = {
+                NOT = { has_country_flag = chaosx_settings_open }
+            }
+        }
+
+        ai_enabled = {
+            always = no
+        }
+    }
+
     chaosx_event_system_toggle_shortcut_gui = {
         window_name = "chaosx_event_system_toggle_shortcut_container"
         context_type = player_context
@@ -44,7 +96,188 @@ scripted_gui = {
 
         triggers = {
             event_system_toggle_shortcut_button_click_enabled = {
+                NOT = {
+                    AND = {
+                        has_country_flag = chaosx_settings_open
+                        OR = {
+                            AND = {
+                                has_country_flag = show_trigger_events_menu
+                                has_country_flag = show_events_view
+                            }
+                            AND = {
+                                has_country_flag = show_timer_system_menu
+                                has_country_flag = show_timer_interval_view
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        ai_enabled = {
+            always = no
+        }
+    }
+
+    chaosx_timer_window_shortcut_gui = {
+        window_name = "chaosx_timer_window_shortcut_container"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            always = yes
+        }
+
+        effects = {
+            timer_window_shortcut_button_click = {
+                toggle_timer_window = yes
+            }
+        }
+
+        triggers = {
+            timer_window_shortcut_button_click_enabled = {
+                NOT = {
+                    has_country_flag = show_timer_system_menu
+                    has_country_flag = show_timer_interval_view
+                }
+            }
+        }
+
+        ai_enabled = {
+            always = no
+        }
+    }
+
+    chaosx_help_gui = {
+        window_name = "chaosx_help_window"
+        context_type = player_context
+        parent_window_token = top_bar
+
+        visible = {
+            has_country_flag = chaosx_help_window_open
+        }
+
+        effects = {
+            chaosx_help_close_button_click = {
+                close_chaosx_help_window = yes
+            }
+
+            chaosx_help_overview_tab_button_idle_click = {
+                open_chaosx_help_tab_overview = yes
+            }
+
+            chaosx_help_overview_tab_button_active_click = {
+                open_chaosx_help_tab_overview = yes
+            }
+
+            chaosx_help_events_tab_button_idle_click = {
+                open_chaosx_help_tab_events = yes
+            }
+
+            chaosx_help_events_tab_button_active_click = {
+                open_chaosx_help_tab_events = yes
+            }
+
+            chaosx_help_chaos_meter_tab_button_idle_click = {
+                open_chaosx_help_tab_chaos_meter = yes
+            }
+
+            chaosx_help_chaos_meter_tab_button_active_click = {
+                open_chaosx_help_tab_chaos_meter = yes
+            }
+
+            chaosx_help_warfare_tab_button_idle_click = {
+                open_chaosx_help_tab_warfare = yes
+            }
+
+            chaosx_help_warfare_tab_button_active_click = {
+                open_chaosx_help_tab_warfare = yes
+            }
+
+            chaosx_help_controls_tab_button_idle_click = {
+                open_chaosx_help_tab_controls = yes
+            }
+
+            chaosx_help_controls_tab_button_active_click = {
+                open_chaosx_help_tab_controls = yes
+            }
+        }
+
+        triggers = {
+            chaosx_help_close_button_click_enabled = {
                 always = yes
+            }
+            chaosx_help_overview_tab_button_idle_click_enabled = {
+                always = yes
+            }
+            chaosx_help_overview_tab_button_active_click_enabled = {
+                always = yes
+            }
+            chaosx_help_events_tab_button_idle_click_enabled = {
+                always = yes
+            }
+            chaosx_help_events_tab_button_active_click_enabled = {
+                always = yes
+            }
+            chaosx_help_chaos_meter_tab_button_idle_click_enabled = {
+                always = yes
+            }
+            chaosx_help_chaos_meter_tab_button_active_click_enabled = {
+                always = yes
+            }
+            chaosx_help_warfare_tab_button_idle_click_enabled = {
+                always = yes
+            }
+            chaosx_help_warfare_tab_button_active_click_enabled = {
+                always = yes
+            }
+            chaosx_help_controls_tab_button_idle_click_enabled = {
+                always = yes
+            }
+            chaosx_help_controls_tab_button_active_click_enabled = {
+                always = yes
+            }
+            chaosx_help_overview_tab_button_idle_visible = {
+                OR = {
+                    has_country_flag = chaosx_help_tab_events
+                    has_country_flag = chaosx_help_tab_chaos_meter
+                    has_country_flag = chaosx_help_tab_warfare
+                    has_country_flag = chaosx_help_tab_controls
+                }
+            }
+            chaosx_help_overview_tab_button_active_visible = {
+                NOT = {
+                    OR = {
+                        has_country_flag = chaosx_help_tab_events
+                        has_country_flag = chaosx_help_tab_chaos_meter
+                        has_country_flag = chaosx_help_tab_warfare
+                        has_country_flag = chaosx_help_tab_controls
+                    }
+                }
+            }
+            chaosx_help_events_tab_button_idle_visible = {
+                NOT = { has_country_flag = chaosx_help_tab_events }
+            }
+            chaosx_help_events_tab_button_active_visible = {
+                has_country_flag = chaosx_help_tab_events
+            }
+            chaosx_help_chaos_meter_tab_button_idle_visible = {
+                NOT = { has_country_flag = chaosx_help_tab_chaos_meter }
+            }
+            chaosx_help_chaos_meter_tab_button_active_visible = {
+                has_country_flag = chaosx_help_tab_chaos_meter
+            }
+            chaosx_help_warfare_tab_button_idle_visible = {
+                NOT = { has_country_flag = chaosx_help_tab_warfare }
+            }
+            chaosx_help_warfare_tab_button_active_visible = {
+                has_country_flag = chaosx_help_tab_warfare
+            }
+            chaosx_help_controls_tab_button_idle_visible = {
+                NOT = { has_country_flag = chaosx_help_tab_controls }
+            }
+            chaosx_help_controls_tab_button_active_visible = {
+                has_country_flag = chaosx_help_tab_controls
             }
         }
 
@@ -70,6 +303,10 @@ scripted_gui = {
             chaosx_events_log_button_click = {
                 toggle_events_log_popup = yes
                 update_unfired_events_counts = yes
+            }
+
+            chaosx_help_button_click = {
+                toggle_chaosx_help_window = yes
             }
 
             # Menu button clicks
@@ -120,6 +357,18 @@ scripted_gui = {
 
             clusters_header_right_arrow_click = {
                 switch_trigger_events_headers = yes  # Back to trigger events from clusters (same as left)
+            }
+
+            cluster_id_decrease_click = {
+                decrease_settings_cluster_id = yes
+            }
+
+            cluster_id_increase_click = {
+                increase_settings_cluster_id = yes
+            }
+
+            trigger_cluster_button_click = {
+                trigger_selected_event_cluster = yes
             }
 
             event_filter_left_arrow_click = {
@@ -630,6 +879,21 @@ scripted_gui = {
 
             clusters_header_right_arrow_click_enabled = {
                 always = no  # Disabled - using main header arrows instead
+            }
+
+            cluster_id_decrease_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_id_increase_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            trigger_cluster_button_click_enabled = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
             }
 
             event_filter_left_arrow_click_enabled = {
@@ -1390,6 +1654,10 @@ scripted_gui = {
                 always = yes
             }
 
+            chaosx_help_button_visible = {
+                always = yes
+            }
+
             force_trigger_button_visible = {
                 has_country_flag = show_trigger_events_menu
                 NOT = { has_country_flag = show_event_clusters_view }
@@ -1422,6 +1690,71 @@ scripted_gui = {
 
             # Event Clusters visibility
             event_clusters_content_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_id_label_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_id_decrease_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_id_bg_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_id_value_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_id_increase_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_name_display_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_type_display_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_unlock_display_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_roll_display_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_members_display_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            cluster_status_display_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            trigger_cluster_button_visible = {
+                has_country_flag = show_trigger_events_menu
+                has_country_flag = show_event_clusters_view
+            }
+
+            trigger_cluster_text_visible = {
                 has_country_flag = show_trigger_events_menu
                 has_country_flag = show_event_clusters_view
             }

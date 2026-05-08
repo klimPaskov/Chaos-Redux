@@ -1,0 +1,83 @@
+# Overview:
+# - Adds the hidden cloning project used by the Germany Mengele chain and the
+#   Angelic Directorate special-project registry.
+# - The project grants a dynamic weekly manpower modifier scaled by controlled
+#   biowarfare facilities and can trigger Mengele's revolt if Germany completes
+#   it while the program still has state backing.
+
+@sp_mengele_cloning_breakthrough_cost = 2
+@sp_mengele_cloning_steel_cost = 5
+@sp_mengele_cloning_chromium_cost = 3
+@sp_mengele_cloning_rubber_cost = 4
+@sp_mengele_cloning_ai_base = 2
+@sp_mengele_cloning_ai_directorate_factor = 4
+@sp_mengele_cloning_ai_active_program_factor = 3
+@sp_mengele_cloning_ai_war_factor = 2
+
+sp_mengele_cloning = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_mengele_cloning
+
+	allowed = { }
+
+	visible = {
+		FROM = {
+			OR = {
+				has_country_flag = germany_mengele_cloning_project_available
+				has_country_flag = directorate_special_project_cloning_available
+				has_country_flag = directorate_special_projects_all_available
+			}
+		}
+	}
+
+	available = {
+		FROM = {
+			OR = {
+				has_country_flag = germany_mengele_cloning_project_available
+				has_country_flag = directorate_special_project_cloning_available
+				has_country_flag = directorate_special_projects_all_available
+			}
+		}
+	}
+
+	breakthrough_cost = {
+		specialization_biowarfare = @sp_mengele_cloning_breakthrough_cost
+	}
+
+	prototype_time = sp_time.prototype.medium
+
+	resource_cost = {
+		resources = {
+			steel = @sp_mengele_cloning_steel_cost
+			chromium = @sp_mengele_cloning_chromium_cost
+			rubber = @sp_mengele_cloning_rubber_cost
+		}
+	}
+
+	complexity = sp_complexity.medium
+
+	ai_will_do = {
+		base = @sp_mengele_cloning_ai_base
+		modifier = {
+			factor = @sp_mengele_cloning_ai_directorate_factor
+			FROM = { is_mengele_clone_directorate_country = yes }
+		}
+		modifier = {
+			factor = @sp_mengele_cloning_ai_active_program_factor
+			FROM = { germany_mengele_program_active = yes }
+		}
+		modifier = {
+			factor = @sp_mengele_cloning_ai_war_factor
+			FROM = { has_war = yes }
+		}
+	}
+
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_mengele_cloning_completed_tt
+			hidden_effect = {
+				germany_mengele_complete_cloning_project = yes
+			}
+		}
+	}
+}

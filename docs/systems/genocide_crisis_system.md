@@ -100,7 +100,7 @@ The evidence-destruction decisions are state-targeted and require:
 
 Success removes camp buildings and marks the state as a destroyed atrocity site, reducing later condemnation. Failure marks the state with failed cover-up evidence, increasing later condemnation. Both paths create additional deaths and leave discoverable state evidence.
 
-Internal report and leak pacing is throttled by escalation thresholds, hidden evidence thresholds, death thresholds, decision counts, camp-site counts, and cooldown flags. Early 1936 should stay quiet unless a country actually expands the system. Historical quiet camps can show one administrative flavor popup for the player, but they are not registered into monthly deaths, leaks, reports, or discovery pressure until escalated into active camp infrastructure.
+Internal report and leak pacing is throttled by escalation thresholds, hidden evidence thresholds, death thresholds, decision counts, camp-site counts, and cooldown flags. Early 1936 stays quiet unless a country actually expands the system. Historical quiet camps are not registered into monthly deaths, leaks, reports, discovery pressure, or player popups until escalated into active camp infrastructure.
 
 ## Country AI
 

@@ -172,6 +172,10 @@ defined_text = {
 		localization_key = chaosx.events_log.events.sort.mode.weight
 	}
 	text = {
+		trigger = { check_variable = { settings_events_log_events_sort_mode = 3 } }
+		localization_key = chaosx.events_log.events.sort.mode.type
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.events.sort.mode.event_id
 	}
@@ -186,6 +190,66 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.events.sort.order.asc
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterFilterType
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_filter_type = 1 } }
+		localization_key = chaosx.events_log.cluster.filter.available
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_filter_type = 2 } }
+		localization_key = chaosx.events_log.cluster.filter.unavailable
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_filter_type = 3 } }
+		localization_key = chaosx.events_log.cluster.filter.enabled
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_filter_type = 4 } }
+		localization_key = chaosx.events_log.cluster.filter.disabled
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.filter.all
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterSortMode
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_sort_mode = 0 } }
+		localization_key = chaosx.events_log.cluster.sort.mode.cluster_id
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_sort_mode = 1 } }
+		localization_key = chaosx.events_log.cluster.sort.mode.type
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_sort_mode = 2 } }
+		localization_key = chaosx.events_log.cluster.sort.mode.roll
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_cluster_sort_mode = 3 } }
+		localization_key = chaosx.events_log.cluster.sort.mode.fired
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.sort.mode.cluster_id
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterSortOrder
+	text = {
+		trigger = { has_country_flag = events_log_cluster_sort_descending }
+		localization_key = chaosx.events_log.cluster.sort.order.desc
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.sort.order.asc
 	}
 }
 
@@ -551,128 +615,233 @@ defined_text = {
 		localization_key = chaosx.events_log.evolution.type.holy_realm
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+				value = constant:random_war_evolution_type.war_contagion
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.war_contagion
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.evolution.type.unknown
 	}
 }
 
 defined_text = {
-	name = GetEventsLogEvolutionNameView
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 3
-				compare = equals
+		name = GetEventsLogEvolutionNameView
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 1
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
-				value = 1
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_1
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_1
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 2
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
-				value = 2
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_2
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_2
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
-				value = 3
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_3
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_3
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 4
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
-				value = 4
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_4
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_4
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 5
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
-				value = 5
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_5
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_5
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 6
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
-				value = 6
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_6
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_6
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 1
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
 			}
+			localization_key = chaosx.events_log.evolution.type.holy_realm
 		}
-		localization_key = chaosx.events_log.evolution.type.zombie
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_evolution_view_type_entries^events_log_evolution_index
-				value = 2
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 1
+					compare = equals
+				}
 			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_1
 		}
-		localization_key = chaosx.events_log.evolution.type.communism
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 2
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_2
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 3
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_3
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 4
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_4
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_evolution_view_stage_entries^events_log_evolution_index
+					value = 5
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_5
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.event_detail
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 1
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.evolution.type.zombie
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = 2
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.evolution.type.communism
+		}
+		text = {
+			trigger = { always = yes }
+			localization_key = chaosx.events_log.evolution.type.unknown
+		}
 	}
-	text = {
-		trigger = { always = yes }
-		localization_key = chaosx.events_log.evolution.type.unknown
-	}
-}
 
 defined_text = {
 	name = GetEventsLogEvolutionStageView
@@ -843,128 +1012,233 @@ defined_text = {
 		localization_key = chaosx.events_log.evolution.type.holy_realm
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+				value = constant:random_war_evolution_type.war_contagion
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.war_contagion
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.evolution.type.unknown
 	}
 }
 
 defined_text = {
-	name = GetEventsLogSelectedHistoryEvolutionNameView
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 3
-				compare = equals
+		name = GetEventsLogSelectedHistoryEvolutionNameView
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 1
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
-				value = 1
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_1
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_1
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 2
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
-				value = 2
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_2
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_2
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
-				value = 3
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_3
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_3
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 4
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
-				value = 4
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_4
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_4
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 5
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
-				value = 5
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_5
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_5
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 6
+					compare = equals
+				}
 			}
-			check_variable = {
-				var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
-				value = 6
-				compare = equals
-			}
+			localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_6
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.stage_6
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 1
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
 			}
+			localization_key = chaosx.events_log.evolution.type.holy_realm
 		}
-		localization_key = chaosx.events_log.evolution.type.zombie
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
-				value = 2
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 1
+					compare = equals
+				}
 			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_1
 		}
-		localization_key = chaosx.events_log.evolution.type.communism
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 2
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_2
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 3
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_3
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 4
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_4
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index
+					value = 5
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_5
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.event_detail
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 1
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.evolution.type.zombie
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = 2
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.evolution.type.communism
+		}
+		text = {
+			trigger = { always = yes }
+			localization_key = chaosx.events_log.evolution.type.unknown
+		}
 	}
-	text = {
-		trigger = { always = yes }
-		localization_key = chaosx.events_log.evolution.type.unknown
-	}
-}
 
 defined_text = {
 	name = GetEventsLogSelectedHistoryEvolutionStageView
@@ -1135,6 +1409,16 @@ defined_text = {
 		localization_key = chaosx.events_log.evolution.type.holy_realm
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+				value = constant:random_war_evolution_type.war_contagion
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.evolution.type.war_contagion
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.evolution.type.unknown
 	}
@@ -1288,26 +1572,36 @@ defined_text = {
 		}
 		localization_key = chaosx.events_log.window.evolution_details.zombie.title.event_detail
 	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
-				value = 2
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+					value = 2
+					compare = equals
+				}
 			}
+			localization_key = chaosx.events_log.window.evolution_details.communism.title.event_detail
 		}
-		localization_key = chaosx.events_log.window.evolution_details.communism.title.event_detail
-	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
-				value = 3
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+					value = 3
+					compare = equals
+				}
 			}
+			localization_key = "[GetEventsLogEventDetailHolyRealmEvolutionTitle]"
 		}
-		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.event_detail
-	}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+					value = constant:random_war_evolution_type.war_contagion
+					compare = equals
+				}
+			}
+			localization_key = "[GetEventsLogEventDetailRandomWarEvolutionTitle]"
+		}
 	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.evolution.type.unknown
@@ -1333,6 +1627,16 @@ defined_text = {
 			}
 		}
 		localization_key = chaosx.events_log.window.evolution_details.holy_realm.body.event_detail
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+				value = constant:random_war_evolution_type.war_contagion
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body.event_detail
 	}
 	text = {
 		trigger = { always = yes }
@@ -1625,8 +1929,46 @@ defined_text = {
 		localization_key = chaosx.events_log.window.event_details.holy_realm
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = event_id
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.random_war
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.window.event_details.entry_placeholder.generic
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedRandomWarEvolutionTitle
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 1 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_1
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 2 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_2
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 3 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_3
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 4 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_4
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 5 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.event_detail
 	}
 }
 
@@ -1651,6 +1993,12 @@ defined_text = {
 		localization_key = chaosx.events_log.window.evolution_details.holy_realm.title.selected
 	}
 	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:random_war_evolution_type.war_contagion }
+		}
+		localization_key = "[GetEventsLogSelectedRandomWarEvolutionTitle]"
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.window.evolution_details.title.generic
 	}
@@ -1663,6 +2011,12 @@ defined_text = {
 			check_variable = { events_log_selected_evolution_type = 3 }
 		}
 		localization_key = chaosx.events_log.window.evolution_details.summary.holy_realm
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:random_war_evolution_type.war_contagion }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.summary.progression
 	}
 	text = {
 		trigger = {
@@ -1701,6 +2055,12 @@ defined_text = {
 		localization_key = chaosx.events_log.window.evolution_details.holy_realm.body
 	}
 	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:random_war_evolution_type.war_contagion }
+		}
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.window.evolution_details.placeholder.generic
 	}
@@ -1735,6 +2095,92 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.evolution.type.holy_realm
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedRandomWarEvolutionBody
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 1 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body.stage_1
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 2 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body.stage_2
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 3 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body.stage_3
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 4 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body.stage_4
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = 5 } }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body.stage_5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.body.event_detail
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailRandomWarEvolutionTitle
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 1
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_1
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 2
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_2
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 3
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_3
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_4
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index
+				value = 5
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.stage_5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.war_contagion.title.event_detail
 	}
 }
 
@@ -2142,6 +2588,24 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = "GFX_portrait_unknown"
+	}
+}
+
+defined_text = {
+	name = GetEventsLogHistoryRowText
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_cluster_id_entries^events_log_history_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.events_log.window.history.dynamic_entry.cluster
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.history.dynamic_entry.event
 	}
 }
 
@@ -3140,5 +3604,517 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = "Unknown event"
+	}
+}
+
+defined_text = {
+	name = GetEventsLogHistoryClusterName
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_cluster_id_entries^events_log_history_index
+				value = constant:event_cluster_id.wars
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.wars.name
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.invalid.name
+	}
+}
+
+defined_text = {
+	name = GetEventsLogHistoryClusterType
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_cluster_type_entries^events_log_history_index
+				value = constant:event_cluster_type.one_time
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.type.one_time
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_cluster_type_entries^events_log_history_index
+				value = constant:event_cluster_type.repeatable
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.type.repeatable
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.type.invalid
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterNameView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_view_id_entries^events_log_cluster_index
+				value = constant:event_cluster_id.wars
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.wars.name
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.invalid.name
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterName
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_cluster_id
+				value = constant:event_cluster_id.wars
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.wars.name
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.invalid.name
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterTypeView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_view_type_entries^events_log_cluster_index
+				value = constant:event_cluster_type.one_time
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.type.one_time
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_view_type_entries^events_log_cluster_index
+				value = constant:event_cluster_type.repeatable
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.type.repeatable
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.type.invalid
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterType
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_cluster_type
+				value = constant:event_cluster_type.one_time
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.type.one_time
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_cluster_type
+				value = constant:event_cluster_type.repeatable
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_cluster.type.repeatable
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.type.invalid
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterDescription
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_cluster_id
+				value = constant:event_cluster_id.wars
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.window.cluster_details.description.wars
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.cluster_details.description.generic
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterMetaPrimary
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_sequence > 0 } }
+		localization_key = chaosx.events_log.window.cluster_details.meta_primary.history
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.cluster_details.meta_primary.catalogue
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterMetaSecondary
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_sequence > 0 } }
+		localization_key = chaosx.events_log.window.cluster_details.meta_secondary.history
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.cluster_details.meta_secondary.catalogue
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterMetaTertiary
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_sequence > 0 } }
+		localization_key = chaosx.events_log.window.cluster_details.meta_tertiary.history
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.cluster_details.meta_tertiary.catalogue
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterAvailabilityView
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_view_available_entries^events_log_cluster_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.event_cluster.availability.available
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.availability.unavailable
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterEnabledLabel
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_view_enabled_entries^events_log_cluster_index
+				value = 0
+				compare = less_than_or_equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.enabled.disabled
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.enabled.enabled
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterRollDisplay
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_view_tier_entries^events_log_cluster_index
+				value = global.events_log_cluster_view_unlock_tier_entries^events_log_cluster_index
+				compare = less_than
+			}
+		}
+		localization_key = chaosx.event_cluster.roll.na
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.roll.view.percent
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterAvailability
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_cluster_available
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.event_cluster.availability.available
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.availability.unavailable
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterRollDisplay
+	text = {
+		trigger = {
+			check_variable = {
+				var = events_log_selected_cluster_tier
+				value = events_log_selected_cluster_unlock_tier
+				compare = less_than
+			}
+		}
+		localization_key = chaosx.event_cluster.roll.na
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.roll.selected.percent
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterTierView
+	text = {
+		trigger = { check_variable = { global.events_log_cluster_view_tier_entries^events_log_cluster_index = 0 } }
+		localization_key = chaosx.events_log.evolution.tier.0
+	}
+	text = {
+		trigger = { check_variable = { global.events_log_cluster_view_tier_entries^events_log_cluster_index = 1 } }
+		localization_key = chaosx.events_log.evolution.tier.1
+	}
+	text = {
+		trigger = { check_variable = { global.events_log_cluster_view_tier_entries^events_log_cluster_index = 2 } }
+		localization_key = chaosx.events_log.evolution.tier.2
+	}
+	text = {
+		trigger = { check_variable = { global.events_log_cluster_view_tier_entries^events_log_cluster_index = 3 } }
+		localization_key = chaosx.events_log.evolution.tier.3
+	}
+	text = {
+		trigger = { check_variable = { global.events_log_cluster_view_tier_entries^events_log_cluster_index = 4 } }
+		localization_key = chaosx.events_log.evolution.tier.4
+	}
+	text = {
+		trigger = { check_variable = { global.events_log_cluster_view_tier_entries^events_log_cluster_index = 5 } }
+		localization_key = chaosx.events_log.evolution.tier.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.tier.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterTier
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_tier = 0 } }
+		localization_key = chaosx.events_log.evolution.tier.0
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_tier = 1 } }
+		localization_key = chaosx.events_log.evolution.tier.1
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_tier = 2 } }
+		localization_key = chaosx.events_log.evolution.tier.2
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_tier = 3 } }
+		localization_key = chaosx.events_log.evolution.tier.3
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_tier = 4 } }
+		localization_key = chaosx.events_log.evolution.tier.4
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_tier = 5 } }
+		localization_key = chaosx.events_log.evolution.tier.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.tier.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterUnlockTier
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_unlock_tier = 0 } }
+		localization_key = chaosx.events_log.evolution.tier.0
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_unlock_tier = 1 } }
+		localization_key = chaosx.events_log.evolution.tier.1
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_unlock_tier = 2 } }
+		localization_key = chaosx.events_log.evolution.tier.2
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_unlock_tier = 3 } }
+		localization_key = chaosx.events_log.evolution.tier.3
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_unlock_tier = 4 } }
+		localization_key = chaosx.events_log.evolution.tier.4
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_cluster_unlock_tier = 5 } }
+		localization_key = chaosx.events_log.evolution.tier.5
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.evolution.tier.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterMemberEventName
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_event_id_entries^events_log_cluster_detail_member_index
+				value = 4
+				compare = equals
+			}
+		}
+		localization_key = chaosx.event_name.4
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.member.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterMemberStatus
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_status_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_status.fired
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.status.fired
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_status_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_status.skipped_disabled
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.status.skipped_disabled
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_status_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_status.skipped_unavailable
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.status.skipped_unavailable
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_status_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_status.skipped_chaos_tier
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.status.skipped_chaos_tier
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_status_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_status.skipped_participation
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.status.skipped_participation
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_status_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_status.available
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.status.available
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.member.status.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterMemberDanger
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_danger_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_danger.low
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.danger.low
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_danger_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_danger.medium
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.danger.medium
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_danger_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_danger.high
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.danger.high
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_danger_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_danger.severe
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.danger.severe
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.member.danger.unknown
 	}
 }

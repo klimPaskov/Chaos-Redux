@@ -1,0 +1,35 @@
+# Overview:
+# - Random War eligibility gates for sovereign participants, compatible special
+#   countries, and declaration pairs selected by Event 4.
+
+chaosx_is_random_war_compatible_special_country = {
+	OR = {
+		is_special_chaos_country = yes
+		is_holy_realm_country = yes
+		has_country_flag = germany_mengele_civil_war_country
+		has_country_flag = germany_mengele_post_coup_state
+	}
+}
+
+random_war_country_can_be_aggressor = {
+	exists = yes
+	num_of_controlled_states > 0
+	is_subject = no
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = random_war_recent_aggressor }
+	NOT = { has_country_flag = random_war_staff_blamed }
+}
+
+random_war_country_can_be_target = {
+	exists = yes
+	num_of_controlled_states > 0
+	is_subject = no
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = random_war_recent_target }
+}
+
+random_war_target_valid_for_prev_aggressor = {
+	random_war_country_can_be_target = yes
+	NOT = { has_war_with = PREV }
+	NOT = { is_subject_of = PREV }
+}

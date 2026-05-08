@@ -1,0 +1,1245 @@
+@mcl_focus_cost_short = 4
+@mcl_focus_cost_medium = 6
+@mcl_focus_cost_long = 8
+@mcl_focus_bonus_biowarfare = 1.00
+@mcl_focus_bonus_infantry = 0.75
+@mcl_focus_bonus_doctrine = 0.75
+@mcl_focus_bonus_industry = 0.75
+
+# Overview:
+# - Focus tree for the dynamic Army of Clones / Aryan clone scenario country.
+# - The tree is loaded directly when the triggerable scenario creates the
+#   dynamic country, because the scenario country is not a normal history tag.
+
+focus_tree = {
+	id = mengele_clone_army_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 50
+			has_country_flag = mengele_clone_army_scenario_country
+		}
+		modifier = {
+			add = 50
+			has_country_flag = germany_mengele_victorious
+		}
+		modifier = {
+			add = 50
+			has_cosmetic_tag = germany_mengele_angelic_directorate
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 50 y = 1800 }
+
+	focus = {
+		id = MCL_directorate_of_replication
+		icon = GFX_goal_generic_secret_weapon
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 10
+		y = 0
+		cost = @mcl_focus_cost_short
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_directorate
+			add_ideas = mengele_clone_directorate
+			add_political_power = constant:mengele_clone_focus_int.directorate_political_power
+			add_stability = constant:mengele_clone_focus_value.directorate_stability
+			add_war_support = constant:mengele_clone_focus_value.directorate_war_support
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MCL_secure_the_growth_vats
+		icon = GFX_focus_generic_population_growth
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 8
+		y = 1
+		cost = @mcl_focus_cost_short
+		prerequisite = { focus = MCL_directorate_of_replication }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_secure_growth_vats
+			add_ideas = mengele_clone_vat_network
+			add_manpower = constant:mengele_clone_focus_int.secure_vats_manpower
+			add_stability = constant:mengele_clone_focus_value.secure_vats_stability
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MCL_war_laboratory_state
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 1
+		cost = @mcl_focus_cost_short
+		prerequisite = { focus = MCL_directorate_of_replication }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_war_laboratory_state
+			add_ideas = mengele_clone_biowarfare_directorate
+			add_war_support = constant:mengele_clone_focus_value.laboratory_war_support
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_medium
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MCL_silesian_biological_axis
+		icon = GFX_goal_generic_construct_mil_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 2
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_war_laboratory_state }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_silesian_biological_axis
+			mengele_clone_army_add_biowarfare_facility = yes
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_small
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MCL_auschwitz_lab_grid
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 3
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_silesian_biological_axis }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_auschwitz_lab_grid
+			mengele_clone_army_add_biowarfare_facility = yes
+			mengele_clone_army_add_biowarfare_facility = yes
+			add_tech_bonus = {
+				name = mcl_biological_axis_bonus
+				bonus = @mcl_focus_bonus_industry
+				uses = 1
+				category = construction_tech
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MCL_mobile_pathogen_sections
+		icon = GFX_goal_generic_army_artillery
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 4
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_auschwitz_lab_grid }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_mobile_pathogen_sections
+			army_experience = constant:mengele_clone_focus_int.small_army_experience
+			add_equipment_to_stockpile = {
+				type = artillery_equipment
+				amount = constant:mengele_clone_focus_int.artillery_equipment
+				producer = ROOT
+			}
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_small
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_specimen_acquisition_board
+		icon = GFX_goal_generic_secret_weapon
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 2
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_mobile_pathogen_sections }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_specimen_acquisition_board
+			custom_effect_tooltip = MCL_specimen_acquisition_board_tt
+			make_random_directorate_special_project_researchable = yes
+			add_tech_bonus = {
+				name = mcl_anthrax_delivery_bonus
+				bonus = @mcl_focus_bonus_biowarfare
+				uses = 1
+				category = biowarfare_tech
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_deniable_trials_office
+		icon = GFX_goal_generic_dangerous_deal
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_mobile_pathogen_sections }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_deniable_trials_office
+			custom_effect_tooltip = MCL_deniable_trials_office_tt
+			make_random_directorate_special_project_researchable = yes
+			add_tech_bonus = {
+				name = mcl_plague_delivery_bonus
+				bonus = @mcl_focus_bonus_biowarfare
+				uses = 1
+				category = biowarfare_tech
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_containment_breach_exercises
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 6
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_mobile_pathogen_sections }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_containment_breach_exercises
+			custom_effect_tooltip = MCL_containment_breach_exercises_tt
+			make_random_directorate_special_project_researchable = yes
+			add_tech_bonus = {
+				name = mcl_tularemia_delivery_bonus
+				bonus = @mcl_focus_bonus_biowarfare
+				uses = 1
+				category = biowarfare_tech
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_restricted_project_council
+		icon = GFX_goal_generic_radar
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 6
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_specimen_acquisition_board }
+		prerequisite = { focus = MCL_deniable_trials_office }
+		prerequisite = { focus = MCL_containment_breach_exercises }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_restricted_project_council
+			custom_effect_tooltip = MCL_restricted_project_council_tt
+			make_random_directorate_special_project_researchable = yes
+			add_tech_bonus = {
+				name = mcl_smallpox_delivery_bonus
+				bonus = @mcl_focus_bonus_biowarfare
+				uses = 2
+				category = biowarfare_tech
+			}
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MCL_pathogen_handling_cadre
+		icon = GFX_focus_research
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 6
+		y = 6
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_restricted_project_council }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_pathogen_handling_cadre
+			set_country_flag = mengele_clone_decision_immunity_unlocked
+			set_technology = {
+				pathogen_handling_protocols = 1
+				popup = no
+			}
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_medium
+			}
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MCL_unnatural_payload_authority
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_ARMY_XP }
+		x = 2
+		y = 7
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_restricted_project_council }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_unnatural_payload_authority
+			custom_effect_tooltip = MCL_unnatural_payload_authority_tt
+			make_random_directorate_special_project_researchable = yes
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_large
+			}
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_black_archive_release
+		icon = GFX_focus_generic_cryptologic_bomb
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 8
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_pathogen_handling_cadre }
+		prerequisite = { focus = MCL_unnatural_payload_authority }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_black_archive_release
+			custom_effect_tooltip = MCL_black_archive_release_tt
+			make_all_directorate_special_projects_researchable = yes
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_large
+			}
+		}
+		ai_will_do = { base = 3 }
+	}
+
+	focus = {
+		id = MCL_clone_muster_rolls
+		icon = GFX_goal_generic_axis_build_infantry
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 9
+		y = 2
+		cost = @mcl_focus_cost_short
+		prerequisite = { focus = MCL_secure_the_growth_vats }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_clone_muster_rolls
+			add_manpower = constant:mengele_clone_focus_int.clone_muster_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.small_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MCL_accelerated_barracks
+		icon = GFX_goal_generic_construct_military
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 11
+		y = 2
+		cost = @mcl_focus_cost_short
+		prerequisite = { focus = MCL_secure_the_growth_vats }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_accelerated_barracks
+			add_manpower = constant:mengele_clone_focus_int.accelerated_barracks_manpower
+			army_experience = constant:mengele_clone_focus_int.small_army_experience
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = MCL_expand_clone_vats
+		icon = GFX_focus_generic_manpower
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 9
+		y = 3
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_clone_muster_rolls }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_expand_clone_vats
+			set_country_flag = mengele_clone_decision_growth_vats_unlocked
+			add_manpower = constant:mengele_clone_focus_int.growth_vats_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.medium_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MCL_batch_accounting_offices
+		icon = GFX_goal_generic_production
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 4
+		cost = @mcl_focus_cost_short
+		prerequisite = { focus = MCL_expand_clone_vats }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_batch_accounting_offices
+			set_country_flag = mengele_clone_decision_discounted_deployment_unlocked
+			set_temp_variable = { mcl_focus_command_power = constant:mengele_clone_focus_int.deployment_command_power }
+			add_command_power = mcl_focus_command_power
+			add_manpower = constant:mengele_clone_focus_int.clone_muster_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.small_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MCL_stabilized_growth_series
+		icon = GFX_goal_generic_production
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 11
+		y = 3
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_accelerated_barracks }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_stabilized_growth_series
+			set_country_flag = mengele_clone_decision_conditioning_unlocked
+			add_ideas = mengele_clone_conditioning_protocols
+			army_experience = constant:mengele_clone_focus_int.medium_army_experience
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MCL_conditioned_battle_memory
+		icon = GFX_goal_generic_army_doctrines
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		x = 9
+		y = 4
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_expand_clone_vats }
+		prerequisite = { focus = MCL_stabilized_growth_series }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_conditioned_battle_memory
+			add_tech_bonus = {
+				name = mcl_conditioned_battle_memory_bonus
+				bonus = @mcl_focus_bonus_infantry
+				uses = 2
+				category = infantry_weapons
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_assault_clone_series
+		icon = GFX_goal_generic_special_forces
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_batch_accounting_offices }
+		prerequisite = { focus = MCL_conditioned_battle_memory }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_assault_clone_series
+			set_country_flag = mengele_clone_decision_assault_series_unlocked
+			army_experience = constant:mengele_clone_focus_int.medium_army_experience
+			add_manpower = constant:mengele_clone_focus_int.growth_vats_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.medium_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_clone_officer_cadres
+		icon = GFX_focus_generic_military_academy
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 11
+		y = 4
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_stabilized_growth_series }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_clone_officer_cadres
+			add_ideas = mengele_clone_officer_cadres
+			army_experience = constant:mengele_clone_focus_int.large_army_experience
+			add_tech_bonus = {
+				name = mcl_clone_officer_doctrine_bonus
+				bonus = @mcl_focus_bonus_doctrine
+				uses = 1
+				category = land_doctrine
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_guard_clone_series
+		icon = GFX_goal_generic_axis_build_infantry
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 12
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_clone_officer_cadres }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_guard_clone_series
+			set_country_flag = mengele_clone_decision_guard_series_unlocked
+			army_experience = constant:mengele_clone_focus_int.large_army_experience
+			add_manpower = constant:mengele_clone_focus_int.growth_vats_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.medium_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_deployment_ledger_automation
+		icon = GFX_goal_generic_construct_military
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 6
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_assault_clone_series }
+		prerequisite = { focus = MCL_guard_clone_series }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_deployment_ledger_automation
+			set_country_flag = mengele_clone_decision_streamlined_deployment_unlocked
+			set_temp_variable = { mcl_focus_command_power = constant:mengele_clone_focus_int.deployment_command_power }
+			add_command_power = mcl_focus_command_power
+			add_manpower = constant:mengele_clone_focus_int.replacement_pipeline_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.large_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_genius_cohorts
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 10
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_conditioned_battle_memory }
+		prerequisite = { focus = MCL_clone_officer_cadres }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_genius_cohorts
+			set_country_flag = mengele_clone_decision_genius_unlocked
+			add_ideas = mengele_clone_genius_cohorts
+			add_research_slot = 1
+			add_stability = constant:mengele_clone_focus_value.research_slot_stability
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_research_twins
+		icon = GFX_focus_research2
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 10
+		y = 6
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_genius_cohorts }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_research_twins
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_medium
+			}
+			add_tech_bonus = {
+				name = mcl_research_twins_bonus
+				bonus = @mcl_focus_bonus_biowarfare
+				uses = 2
+				category = biowarfare_tech
+			}
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MCL_perfected_muscle_memory
+		icon = GFX_goal_generic_special_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 8
+		y = 7
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_research_twins }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_perfected_muscle_memory
+			add_ideas = mengele_clone_perfected_muscle_memory
+			army_experience = constant:mengele_clone_focus_int.medium_army_experience
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MCL_replacement_pipeline
+		icon = GFX_goal_generic_production2
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 7
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_research_twins }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_replacement_pipeline
+			add_ideas = mengele_clone_replacement_pipeline
+			add_manpower = constant:mengele_clone_focus_int.replacement_pipeline_manpower
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MCL_numbered_legions
+		icon = GFX_goal_generic_major_war
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 8
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_perfected_muscle_memory }
+		prerequisite = { focus = MCL_replacement_pipeline }
+		prerequisite = { focus = MCL_deployment_ledger_automation }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_numbered_legions
+			add_manpower = constant:mengele_clone_focus_int.numbered_legions_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.large_equipment
+				producer = ROOT
+			}
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:mengele_clone_focus_int.support_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_command_purity_oath
+		icon = GFX_goal_generic_propaganda
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 2
+		cost = @mcl_focus_cost_short
+		prerequisite = { focus = MCL_war_laboratory_state }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_command_purity_oath
+			add_political_power = constant:mengele_clone_focus_int.directorate_political_power
+			add_war_support = constant:mengele_clone_focus_value.directorate_war_support
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = MCL_slave_logistics_grid
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 15
+		y = 3
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_command_purity_oath }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_slave_logistics_grid
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MCL_requisition_continental_stockpiles
+		icon = GFX_focus_generic_arms_trade
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 17
+		y = 3
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_command_purity_oath }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_requisition_continental_stockpiles
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.medium_equipment
+				producer = ROOT
+			}
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:mengele_clone_focus_int.support_equipment
+				producer = ROOT
+			}
+			army_experience = constant:mengele_clone_focus_int.small_army_experience
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MCL_biological_war_ministry
+		icon = GFX_goal_generic_military_deal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 16
+		y = 4
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_slave_logistics_grid }
+		prerequisite = { focus = MCL_requisition_continental_stockpiles }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_biological_war_ministry
+			set_country_flag = mengele_clone_decision_biowarfare_trials_unlocked
+			add_political_power = constant:mengele_clone_focus_int.logistics_political_power
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_medium
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MCL_occupation_experiment_zones
+		icon = GFX_goal_generic_occupy_states_ongoing_war
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_biological_war_ministry }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_occupation_experiment_zones
+			add_stability = constant:mengele_clone_focus_value.occupation_stability
+			mengele_clone_army_add_biowarfare_facility = yes
+			every_owned_state = {
+				limit = {
+					is_controlled_by = ROOT
+					NOT = { is_core_of = ROOT }
+				}
+				set_compliance = 45
+				set_resistance = 15
+			}
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MCL_aryan_variant_board
+		icon = GFX_goal_generic_national_unity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 18
+		y = 5
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_biological_war_ministry }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_aryan_variant_board
+			add_war_support = constant:mengele_clone_focus_value.aryan_board_war_support
+			add_tech_bonus = {
+				name = mcl_aryan_variant_infantry_bonus
+				bonus = @mcl_focus_bonus_infantry
+				uses = 2
+				category = infantry_weapons
+			}
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_perfect_aryan_regency
+		icon = GFX_goal_generic_forceful_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 18
+		y = 6
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_aryan_variant_board }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_perfect_aryan_regency
+			add_ideas = germany_mengele_perfect_aryan_formations
+			army_experience = constant:mengele_clone_focus_int.medium_army_experience
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_doctrine_of_the_replicated_state
+		icon = GFX_goal_generic_army_doctrines
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		x = 16
+		y = 7
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_occupation_experiment_zones }
+		prerequisite = { focus = MCL_perfect_aryan_regency }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_doctrine_of_the_replicated_state
+			army_experience = constant:mengele_clone_focus_int.large_army_experience
+			add_tech_bonus = {
+				name = mcl_replicated_state_doctrine_bonus
+				bonus = @mcl_focus_bonus_doctrine
+				uses = 2
+				category = land_doctrine
+			}
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_the_numbered_future
+		icon = GFX_goal_generic_major_war
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER FOCUS_FILTER_RESEARCH }
+		x = 10
+		y = 10
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_black_archive_release }
+		prerequisite = { focus = MCL_numbered_legions }
+		prerequisite = { focus = MCL_doctrine_of_the_replicated_state }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_the_numbered_future
+			set_country_flag = mengele_clone_decision_growth_vats_unlocked
+			set_country_flag = mengele_clone_decision_conditioning_unlocked
+			set_country_flag = mengele_clone_decision_genius_unlocked
+			set_country_flag = mengele_clone_decision_biowarfare_trials_unlocked
+			set_country_flag = mengele_clone_decision_immunity_unlocked
+			add_ideas = mengele_clone_future_state
+			add_manpower = constant:mengele_clone_focus_int.numbered_legions_manpower
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_large
+			}
+			mark_focus_tree_layout_dirty = yes
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_reclamation_war_cabinet
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 13
+		y = 12
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_the_numbered_future }
+			completion_reward = {
+				set_country_flag = mengele_clone_focus_reclamation_war_cabinet
+				set_country_flag = mengele_clone_decision_heartland_integration_unlocked
+				add_ideas = mengele_clone_reclamation_authority
+				add_political_power = constant:mengele_clone_focus_int.heartland_political_power
+				add_manpower = constant:mengele_clone_focus_int.heartland_manpower
+				custom_effect_tooltip = MCL_reclamation_war_cabinet_tt
+				hidden_effect = {
+					mengele_clone_army_claim_german_polish_heartland = yes
+					mengele_clone_army_create_wargoals_on_heartland_owners = yes
+				}
+			}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_number_the_old_heartland
+		icon = GFX_goal_generic_occupy_states_ongoing_war
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 13
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_reclamation_war_cabinet }
+		available = {
+			mengele_clone_army_controls_german_polish_heartland = yes
+		}
+			completion_reward = {
+				set_country_flag = mengele_clone_focus_number_the_old_heartland
+				add_stability = constant:mengele_clone_focus_value.heartland_stability
+				add_equipment_to_stockpile = {
+					type = infantry_equipment
+					amount = constant:mengele_clone_focus_int.medium_equipment
+					producer = ROOT
+			}
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:mengele_clone_focus_int.support_equipment
+					producer = ROOT
+				}
+				custom_effect_tooltip = MCL_number_the_old_heartland_tt
+				hidden_effect = {
+					mengele_clone_army_core_reclaimed_heartland = yes
+					mengele_clone_army_fortify_reclaimed_heartland = yes
+				}
+			}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_continental_dominance_protocol
+		icon = GFX_goal_generic_position_armies
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 13
+		y = 14
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_number_the_old_heartland }
+		allow_branch = {
+			has_completed_focus = MCL_number_the_old_heartland
+		}
+		available = {
+			mengele_clone_army_controls_and_cores_german_polish_heartland = yes
+		}
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_continental_dominance_protocol
+			set_country_flag = mengele_clone_decision_continental_assault_unlocked
+			set_country_flag = mengele_clone_decision_borderland_commands_unlocked
+			add_ideas = mengele_clone_continental_dominance
+			add_war_support = constant:mengele_clone_focus_value.expansion_war_support
+			army_experience = constant:mengele_clone_focus_int.large_army_experience
+			set_temp_variable = { mcl_focus_command_power = constant:mengele_clone_focus_int.continental_command_power }
+			add_command_power = mcl_focus_command_power
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.large_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_rhine_specimen_corridor
+		icon = GFX_goal_generic_attack_allies
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 15
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_continental_dominance_protocol }
+			completion_reward = {
+				set_country_flag = mengele_clone_focus_rhine_specimen_corridor
+				add_ideas = mengele_clone_western_command
+				add_political_power = constant:mengele_clone_focus_int.expansion_political_power
+				add_equipment_to_stockpile = {
+					type = infantry_equipment
+					amount = constant:mengele_clone_focus_int.expansion_equipment
+					producer = ROOT
+				}
+				custom_effect_tooltip = MCL_rhine_specimen_corridor_tt
+				hidden_effect = {
+					mengele_clone_army_claim_western_command_states = yes
+					mengele_clone_army_create_wargoals_on_western_commands = yes
+				}
+			}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_channel_replacement_ports
+		icon = GFX_focus_generic_arms_trade
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 16
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_rhine_specimen_corridor }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_channel_replacement_ports
+			mengele_clone_army_create_wargoals_on_western_commands = yes
+			mengele_clone_army_core_reclaimed_western_command = yes
+			mengele_clone_army_fortify_continental_borderlands = yes
+			add_manpower = constant:mengele_clone_focus_int.continental_manpower
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:mengele_clone_focus_int.support_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_eastern_laboratory_march
+		icon = GFX_goal_generic_major_war
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 13
+		y = 15
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_continental_dominance_protocol }
+			completion_reward = {
+				set_country_flag = mengele_clone_focus_eastern_laboratory_march
+				add_ideas = mengele_clone_eastern_command
+				army_experience = constant:mengele_clone_focus_int.large_army_experience
+				add_equipment_to_stockpile = {
+					type = artillery_equipment
+					amount = constant:mengele_clone_focus_int.artillery_equipment
+					producer = ROOT
+				}
+				custom_effect_tooltip = MCL_eastern_laboratory_march_tt
+				hidden_effect = {
+					mengele_clone_army_claim_eastern_command_states = yes
+					mengele_clone_army_create_wargoals_on_eastern_commands = yes
+				}
+			}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_moscow_numbering_office
+		icon = GFX_focus_generic_cryptologic_bomb
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER }
+		x = 13
+		y = 16
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_eastern_laboratory_march }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_moscow_numbering_office
+			mengele_clone_army_create_wargoals_on_eastern_commands = yes
+			mengele_clone_army_core_reclaimed_eastern_command = yes
+			mengele_clone_army_add_biowarfare_facility = yes
+			add_manpower = constant:mengele_clone_focus_int.continental_manpower
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_medium
+			}
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_danubian_replacement_zone
+		icon = GFX_goal_generic_forceful_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 15
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_continental_dominance_protocol }
+			completion_reward = {
+				set_country_flag = mengele_clone_focus_danubian_replacement_zone
+				add_ideas = mengele_clone_southern_command
+				add_political_power = constant:mengele_clone_focus_int.expansion_political_power
+				add_equipment_to_stockpile = {
+					type = infantry_equipment
+					amount = constant:mengele_clone_focus_int.expansion_equipment
+					producer = ROOT
+				}
+				custom_effect_tooltip = MCL_danubian_replacement_zone_tt
+				hidden_effect = {
+					mengele_clone_army_claim_southern_command_states = yes
+					mengele_clone_army_create_wargoals_on_southern_commands = yes
+				}
+			}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MCL_mediterranean_growth_axis
+		icon = GFX_goal_generic_construct_military
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		x = 16
+		y = 16
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_danubian_replacement_zone }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_mediterranean_growth_axis
+			mengele_clone_army_create_wargoals_on_southern_commands = yes
+			mengele_clone_army_core_reclaimed_southern_command = yes
+			mengele_clone_army_fortify_continental_borderlands = yes
+			add_manpower = constant:mengele_clone_focus_int.continental_manpower
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:mengele_clone_focus_int.support_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_continental_command_spine
+		icon = GFX_focus_generic_military_academy
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 13
+		y = 17
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_channel_replacement_ports }
+		prerequisite = { focus = MCL_moscow_numbering_office }
+		prerequisite = { focus = MCL_mediterranean_growth_axis }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_continental_command_spine
+			set_country_flag = mengele_clone_decision_borderland_commands_unlocked
+			add_ideas = mengele_clone_continental_command_spine
+			mengele_clone_army_core_reclaimed_continental_borderlands = yes
+			mengele_clone_army_fortify_continental_borderlands = yes
+			army_experience = constant:mengele_clone_focus_int.large_army_experience
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.large_equipment
+				producer = ROOT
+			}
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_assert_world_dominance
+		icon = GFX_goal_generic_national_unity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 13
+		y = 18
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_continental_command_spine }
+		available = {
+			is_major = yes
+			mengele_clone_army_controls_and_cores_german_polish_heartland = yes
+		}
+			completion_reward = {
+				set_country_flag = mengele_clone_focus_assert_world_dominance
+				add_ideas = mengele_clone_world_dominance_protocols
+				set_rule = { can_declare_war_on_same_ideology = yes }
+				add_manpower = constant:mengele_clone_focus_int.world_dominance_manpower
+				add_political_power = constant:mengele_clone_focus_int.logistics_political_power
+			set_temp_variable = { mcl_focus_command_power = constant:mengele_clone_focus_int.world_dominance_command_power }
+			add_command_power = mcl_focus_command_power
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:mengele_clone_focus_int.world_dominance_equipment
+				producer = ROOT
+			}
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:mengele_clone_focus_int.support_equipment
+				producer = ROOT
+			}
+			add_equipment_to_stockpile = {
+				type = artillery_equipment
+				amount = constant:mengele_clone_focus_int.artillery_equipment
+					producer = ROOT
+				}
+				custom_effect_tooltip = MCL_assert_world_dominance_tt
+				hidden_effect = {
+					mengele_clone_army_create_wargoals_on_remaining_majors = yes
+				}
+			}
+		ai_will_do = { base = 3 }
+	}
+
+	focus = {
+		id = MCL_foreign_aid_fronts
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 6
+		y = 12
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_the_numbered_future }
+		allow_branch = {
+			has_completed_focus = MCL_the_numbered_future
+		}
+		available = {
+			is_mengele_clone_directorate_country = yes
+			is_major = yes
+			check_variable = { global.chaos_meter_value > constant:mengele_clone_world_order.late_branch_chaos_gate }
+		}
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_foreign_aid_fronts
+			set_country_flag = mengele_clone_decision_hidden_network_unlocked
+			add_political_power = constant:mengele_clone_focus_int.logistics_political_power
+			mengele_clone_world_order_recalculate_network_totals = yes
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_embassy_science_cells
+		icon = GFX_goal_generic_scientific_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 8
+		y = 13
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_foreign_aid_fronts }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_embassy_science_cells
+			add_ideas = mengele_clone_foreign_science_front
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_medium
+			}
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_hidden_tank_consortia
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 13
+		cost = @mcl_focus_cost_medium
+		prerequisite = { focus = MCL_foreign_aid_fronts }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_hidden_tank_consortia
+			set_country_flag = mengele_clone_decision_deepen_network_unlocked
+			add_ideas = mengele_clone_foreign_tank_consortia
+			add_tech_bonus = {
+				name = mcl_hidden_tank_consortia_bonus
+				bonus = @mcl_focus_bonus_industry
+				uses = 1
+				category = construction_tech
+			}
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = MCL_directorate_project_registry
+		icon = GFX_goal_generic_secret_weapon
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 6
+		y = 14
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_embassy_science_cells }
+		prerequisite = { focus = MCL_hidden_tank_consortia }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_directorate_project_registry
+			custom_effect_tooltip = MCL_directorate_project_registry_tt
+			make_all_directorate_special_projects_researchable = yes
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = mengele_clone_focus_value.breakthrough_large
+			}
+		}
+		ai_will_do = { base = 3 }
+	}
+
+	focus = {
+		id = MCL_global_replacement_maps
+		icon = GFX_focus_generic_cryptologic_bomb
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER FOCUS_FILTER_RESEARCH }
+		x = 6
+		y = 15
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_directorate_project_registry }
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_global_replacement_maps
+			set_country_flag = mengele_clone_decision_activation_ledger_unlocked
+			add_ideas = mengele_clone_global_replacement_maps
+			mengele_clone_world_order_recalculate_network_totals = yes
+			mengele_clone_world_order_refresh_rank_status = yes
+			mark_focus_tree_layout_dirty = yes
+		}
+		ai_will_do = { base = 3 }
+	}
+
+	focus = {
+		id = MCL_the_numbered_world
+		icon = GFX_focus_mengele_numbered_world
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER FOCUS_FILTER_RESEARCH }
+		x = 6
+		y = 17
+		cost = @mcl_focus_cost_long
+		prerequisite = { focus = MCL_global_replacement_maps }
+		allow_branch = {
+			has_completed_focus = MCL_global_replacement_maps
+		}
+		available = {
+			mengele_clone_world_order_can_launch = yes
+		}
+		completion_reward = {
+			set_country_flag = mengele_clone_focus_the_numbered_world
+			mengele_clone_world_order_launch = yes
+		}
+		ai_will_do = { base = 2 }
+	}
+}

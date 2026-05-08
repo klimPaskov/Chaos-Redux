@@ -403,9 +403,7 @@ triggerable_scenario_apply_zombie_profile_to_current_country = {
 	set_country_flag = zombie_outbreak_dynamic_country
 	set_country_flag = weaponized_zombie_outbreak_country
 	set_country_flag = weaponized_zombie_independent_outbreak
-	set_country_flag = weaponized_zombie_profile_public
 	set_country_flag = weaponized_zombie_triggerable_scenario
-	set_country_flag = weaponized_zombie_created_by_@ROOT
 	clr_country_flag = events_activated
 	set_popularities = {
 		democratic = 0
@@ -500,20 +498,20 @@ triggerable_scenario_apply_zombie_profile_to_current_country = {
 		set_country_flag = weaponized_zombie_life_transformed
 		set_country_flag = weaponized_zombie_archetype_purifier
 	}
-		else_if = {
-			limit = {
-				check_variable = {
-					var = triggerable_zombie_profile_type
-					value = constant:triggerable_scenario_zombie_type.single_wendigo
-					compare = equals
-				}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_zombie_profile_type
+				value = constant:triggerable_scenario_zombie_type.single_wendigo
+				compare = equals
 			}
-			set_country_flag = weaponized_zombie_type_wendigo
-			set_country_flag = weaponized_zombie_nature_demonic
-			set_country_flag = weaponized_zombie_life_transformed
-			set_country_flag = weaponized_zombie_archetype_wendigo
-			set_global_flag = weaponized_zombie_wendigo_exists
 		}
+		set_country_flag = weaponized_zombie_type_wendigo
+		set_country_flag = weaponized_zombie_nature_demonic
+		set_country_flag = weaponized_zombie_life_transformed
+		set_country_flag = weaponized_zombie_archetype_wendigo
+		set_global_flag = weaponized_zombie_wendigo_exists
+	}
 	else = {
 		set_country_flag = weaponized_zombie_type_infected
 		set_country_flag = weaponized_zombie_nature_neurobiological
@@ -794,10 +792,13 @@ prepare_dynamic_zombie_special_profile_roll = {
 	subtract_from_temp_variable = { dynamic_zombie_special_no_chance = dynamic_zombie_special_chance }
 	clamp_temp_variable = { var = dynamic_zombie_special_no_chance min = 1 }
 
-	random_list = {
-		dynamic_zombie_special_no_chance = { }
-		dynamic_zombie_special_chance = {
-			triggerable_scenario_select_random_special_zombie_profile = yes
+	if = {
+		limit = { check_variable = { dynamic_zombie_special_chance > 0 } }
+		random_list = {
+			dynamic_zombie_special_no_chance = { }
+			dynamic_zombie_special_chance = {
+				triggerable_scenario_select_random_special_zombie_profile = yes
+			}
 		}
 	}
 }
@@ -1137,7 +1138,9 @@ triggerable_scenario_spawn_zombie_profile_in_continent = {
 }
 
 triggerable_scenario_spawn_diverse_zombie_apocalypse = {
-	set_temp_variable = { triggerable_zombie_guaranteed_outbreak_count = 6 }
+	set_temp_variable = { triggerable_zombie_guaranteed_outbreak_count = 7 }
+	set_temp_variable = { triggerable_zombie_profile_type = constant:triggerable_scenario_zombie_type.single_standard }
+	triggerable_scenario_spawn_zombie_profile_in_random_state = yes
 	set_temp_variable = { triggerable_zombie_profile_type = constant:triggerable_scenario_zombie_type.single_rabid }
 	set_temp_variable = { triggerable_zombie_continent = 1 }
 	triggerable_scenario_spawn_zombie_profile_in_continent = yes
@@ -1168,7 +1171,7 @@ triggerable_scenario_spawn_diverse_zombie_apocalypse = {
 		set_temp_variable = { triggerable_zombie_profile_type = constant:triggerable_scenario_zombie_type.single_wendigo }
 		set_temp_variable = { triggerable_zombie_continent = 7 }
 		triggerable_scenario_spawn_zombie_profile_in_continent = yes
-		set_temp_variable = { triggerable_zombie_guaranteed_outbreak_count = 7 }
+		set_temp_variable = { triggerable_zombie_guaranteed_outbreak_count = 8 }
 	}
 
 	set_temp_variable = { triggerable_zombie_extra_count = triggerable_zombie_outbreak_count }
@@ -1330,6 +1333,9 @@ triggerable_scenario_prepare_clone_scale = {
 	round_variable = triggerable_clone_infantry_equipment
 	round_variable = triggerable_clone_support_equipment
 	round_variable = triggerable_clone_artillery
+	set_variable = { triggerable_clone_manpower = triggerable_clone_units }
+	multiply_variable = { triggerable_clone_manpower = constant:triggerable_scenario_clone_scale.manpower_per_unit }
+	round_variable = triggerable_clone_manpower
 }
 
 triggerable_scenario_setup_clone_country = {
@@ -1339,10 +1345,14 @@ triggerable_scenario_setup_clone_country = {
 	set_variable = { triggerable_clone_infantry_equipment = ROOT.triggerable_clone_infantry_equipment }
 	set_variable = { triggerable_clone_support_equipment = ROOT.triggerable_clone_support_equipment }
 	set_variable = { triggerable_clone_artillery = ROOT.triggerable_clone_artillery }
+	set_variable = { triggerable_clone_manpower = ROOT.triggerable_clone_manpower }
 	set_country_flag = mengele_clone_army_scenario_country
 	clr_country_flag = events_activated
 	save_global_event_target_as = mengele_clone_army_scenario_country
 	set_cosmetic_tag = mengele_clone_army
+	load_focus_tree = {
+		tree = mengele_clone_army_focus_tree
+	}
 	set_politics = {
 		ruling_party = fascism
 		elections_allowed = no
@@ -1383,7 +1393,7 @@ triggerable_scenario_setup_clone_country = {
 		}
 	}
 	add_ideas = mengele_clone_army_scenario_state
-	load_oob = "MCL_1936"
+	add_manpower = triggerable_clone_manpower
 	add_equipment_to_stockpile = {
 		type = infantry_equipment
 		amount = triggerable_clone_infantry_equipment
@@ -1452,37 +1462,33 @@ triggerable_scenario_transfer_clone_states = {
 }
 
 triggerable_scenario_spawn_clone_units = {
-	set_temp_variable = { triggerable_clone_spawn_count = triggerable_clone_units }
-	set_temp_variable = { triggerable_clone_spawn_experience = triggerable_clone_experience }
-	capital_scope = {
-		meta_effect = {
-			text = {
-				create_unit = {
-					division = "name = \"Clone Infantry Division\" division_template = \"Clone Shock Division\" start_experience_factor = [EXPERIENCE] start_equipment_factor = 1 start_manpower_factor = 1"
-					count = [COUNT]
-					owner = PREV
-					allow_spawning_on_enemy_provs = yes
-				}
-			}
-			COUNT = "[?triggerable_clone_spawn_count|.0]"
-			EXPERIENCE = "[?triggerable_clone_spawn_experience]"
-		}
-	}
+	round_variable = triggerable_clone_units
+	set_temp_variable = { mengele_clone_spawn_count = triggerable_clone_units }
+	set_temp_variable = { mengele_clone_spawn_experience = triggerable_clone_experience }
+	mengele_clone_army_spawn_clone_divisions = yes
 }
 
 triggerable_scenario_clone_army_declare_neighbor_wars = {
-	every_neighbor_country = {
-		limit = {
-			exists = yes
-			NOT = { tag = event_target:triggerable_clone_country }
-			NOT = { is_subject_of = event_target:triggerable_clone_country }
-			event_target:triggerable_clone_country = { can_declare_war_on = PREV }
-		}
-		save_event_target_as = triggerable_clone_neighbor_country
-		event_target:triggerable_clone_country = {
-			declare_war_on = {
-				target = event_target:triggerable_clone_neighbor_country
-				type = annex_everything
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = {
+				controller = {
+					exists = yes
+					NOT = { tag = event_target:triggerable_clone_country }
+					NOT = { is_subject_of = event_target:triggerable_clone_country }
+				}
+			}
+			controller = { save_event_target_as = triggerable_clone_neighbor_country }
+			event_target:triggerable_clone_country = {
+				if = {
+					limit = {
+						NOT = { has_war_with = event_target:triggerable_clone_neighbor_country }
+					}
+					declare_war_on = {
+						target = event_target:triggerable_clone_neighbor_country
+						type = annex_everything
+					}
+				}
 			}
 		}
 	}
@@ -1495,6 +1501,7 @@ trigger_mengele_clone_army_scenario = {
 	set_variable = { triggerable_clone_infantry_equipment = triggerable_clone_infantry_equipment }
 	set_variable = { triggerable_clone_support_equipment = triggerable_clone_support_equipment }
 	set_variable = { triggerable_clone_artillery = triggerable_clone_artillery }
+	set_variable = { triggerable_clone_manpower = triggerable_clone_manpower }
 	create_dynamic_country = {
 		original_tag = GER
 		copy_tag = GER
@@ -1506,6 +1513,7 @@ trigger_mengele_clone_army_scenario = {
 	}
 	triggerable_scenario_transfer_clone_states = yes
 	var:triggerable_clone_country = {
+		load_oob = "MCL_1936"
 		triggerable_scenario_spawn_clone_units = yes
 		triggerable_scenario_clone_army_declare_neighbor_wars = yes
 		country_event = { id = chaosx.triggerable_scenarios.3 days = 1 }
