@@ -32,4 +32,23 @@ random_war_target_valid_for_prev_aggressor = {
 	random_war_country_can_be_target = yes
 	NOT = { has_war_with = PREV }
 	NOT = { is_subject_of = PREV }
+	random_war_calm_world_pair_scale_valid_for_prev_aggressor = yes
+}
+
+random_war_calm_world_pair_scale_valid_for_prev_aggressor = {
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 1 }
+		has_global_flag = { flag = chaos_tier value = 2 }
+		has_global_flag = { flag = chaos_tier value = 3 }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+		AND = {
+			is_major = yes
+			PREV = { is_major = yes }
+		}
+		AND = {
+			is_major = no
+			PREV = { is_major = no }
+		}
+	}
 }

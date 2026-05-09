@@ -1850,20 +1850,12 @@ events_log_set_selected_evolution_display_values = {
     clear_variable = events_log_selected_zombie_army_attack_factor
     clear_variable = events_log_selected_zombie_cure_days
 
-    if = {
-        limit = {
-            OR = {
-                AND = {
-                    check_variable = { events_log_selected_evolution_type = 1 }
-                    check_variable = { events_log_selected_evolution_stage > 0 }
-                    check_variable = { events_log_selected_evolution_stage < 4 }
-                }
-                check_variable = { events_log_selected_evolution_type = 2 }
-                check_variable = { events_log_selected_evolution_type = 3 }
-            }
-        }
-        set_variable = { events_log_selected_evolution_has_portrait = 1 }
-    }
+	if = {
+		limit = {
+			has_events_log_selected_evolution_authored_portrait = yes
+		}
+		set_variable = { events_log_selected_evolution_has_portrait = 1 }
+	}
 
     if = {
         limit = {

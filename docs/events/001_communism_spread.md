@@ -10,6 +10,7 @@ The event does not unlock World Revolution immediately. World Revolution enters 
 
 - `chaosx.nr1.1`: starts the system, gives the national idea, seeds one Level 1 controlled state, and queues maintenance
 - `chaosx.nr1.2`: state-based industry sabotage in a controlled state
+- `chaosx.nr1.34`: coordinated strike wave in a controlled state
 - `chaosx.nr1.3`: emergency intervention outcome shell for manual/forced use
 - `chaosx.nr1.4`: new state falls under communist control
 - `chaosx.nr1.5`: controlled state escalates to a stronger level
@@ -35,7 +36,7 @@ The event does not unlock World Revolution immediately. World Revolution enters 
 
 ## Trigger And Runtime Flow
 
-The root event remains fire-once event `1` in the Chaos Redux event system. When it fires, every non-communist country receives `communism_spread_idea`, a small initial communist popularity increase, one immediate Level 1 communist-controlled state, and a queued maintenance event. The initial state seed is explicit so the player immediately sees the state-control layer and the decision category.
+The root event remains fire-once event `1` in the Chaos Redux event system. When it fires, every eligible non-communist country with more than one owned state receives `communism_spread_idea`, one immediate non-capital Level 1 communist-controlled state, and a queued maintenance event. The initial communist popularity increase scales by the current chaos tier: `4%` at Calm World, `8%` at Gathering Storm, `10%` at Rising Chaos, `12%` at Chaos Tier, `15%` at Totalen Chaos, and `20%` at World Collapse. One-state countries are not valid recipients because the crisis needs a non-capital territorial front.
 
 Countries matching `is_special_chaos_country = yes` are excluded from the root event spread, maintenance, decisions, and World Revolution state handoff. This keeps the insurgency focused on regular countries instead of special Chaos actors.
 
@@ -46,7 +47,7 @@ The system does not rely on the old monthly on-action updater anymore. Each affe
 3. tries to add one new controlled state if under the soft support-based ceiling
 4. tries to escalate one existing controlled state
 5. checks for communist evolution milestones
-6. may fire a state-based sabotage event
+6. may fire a state-based sabotage or strike event, with the chance and cooldown scaling from the number and ratio of communist-controlled states
 7. may fire one rare evolution incident if its incident cooldown is clear
 8. may warn of revolutionary war if at least half the country is controlled or two Level 3 states exist
 9. queues the next maintenance pulse
@@ -59,7 +60,7 @@ State control uses three levels:
 - Level 2, `communism_control_level_2`: Insurgent Stronghold. Stronger penalties and harder local intervention. It usually needs multiple interventions and normally regresses to Level 1 after enough progress instead of clearing immediately.
 - Level 3, `communism_control_level_3`: Communist Lockdown. Severe penalties, blocked strategic redeployment, and a state-level demilitarized zone. Normal local intervention cannot clear it; it only suppresses the worst local effects. Emergency intervention, civil-war resolution, or stronger national mechanics are required. The demilitarized-zone status is only removed when this system clears the state control it added.
 
-The old weekly stability and weekly war support penalties were removed from the national idea. The old generic industry damage event was replaced by `chaosx.nr1.2`, which always targets a specific controlled state.
+The old weekly stability and weekly war support penalties were removed from the national idea. The old generic industry damage event was replaced by controlled-state disruption events. `chaosx.nr1.2` targets industry directly, while `chaosx.nr1.34` represents coordinated strike waves. Both use the same targeted state-selection logic, and their cadence becomes more aggressive as communist control expands, as higher-level controlled states appear, and as national conditions deteriorate.
 
 ## Defeating The Event
 
@@ -135,13 +136,7 @@ Emergency intervention rolls for uprising risk from:
 - communist party support scaled by `45`
 - maximum chance: `90`
 
-If an uprising happens, this system does not use vanilla `start_civil_war`. It marks states for conversion by level:
-
-- Level 1: `40%`
-- Level 2: `80%`
-- Level 3: `100%`
-
-Capital states are excluded from emergency and local breakaway conversion so the original country remains valid for the rebel war declaration.
+If an uprising happens, this system does not use vanilla `start_civil_war`. It marks controlled states for conversion through a priority budget: Level 3 states are selected first, then Level 2, then Level 1. Capital states are excluded from emergency and local breakaway conversion so the original country remains valid for the rebel war declaration. Emergency conversion uses a capped non-capital budget based on revolutionary threat, communist support, and Level 3 state count, and never exceeds `owned states - 1`.
 
 A dynamic communist rebel country is created, receives its own communist politics and leader, receives spawned division templates, and takes only the converted controlled states. It does not inherit half the original country's stockpile.
 
@@ -154,7 +149,7 @@ The decision category includes a crisis dashboard above the decisions. The dashb
 - controlled-state totals split by Agitation Zone, Insurgent Stronghold, and Communist Lockdown icons
 - current daily communist support from controlled states, shown as the raw daily support value
 
-The dashboard threat value is rebuilt by `refresh_communism_spread_dashboard_values`. It combines communist party support, the number and level of communist-controlled states, active evolution stages, and open rebel war pressure. The visual meter uses the nearest 10% progress sprite through `GetCommunismThreatMeterSprite`.
+The dashboard threat value is rebuilt by `refresh_communism_spread_dashboard_values`. It combines communist party support, the number and level of communist-controlled states, active evolution stages, and open rebel war pressure. The visual meter uses the nearest 10% progress sprite through `GetCommunismThreatMeterSprite`. The rebel-war warning is gated by the same rebuilt threat value and cannot fire while the meter is below the configured 50% warning threshold.
 
 State-targeted intervention decisions reuse the Norwegian communist preparation dot icons:
 
@@ -180,7 +175,7 @@ World Revolution strength by state level:
 - Level 2 states transfer as organized strongholds and add stronger militia, railway, urban, and factory formations.
 - Level 3 states transfer as prepared revolutionary bases and can spawn elite guards, motorized columns, armored defectors, armored revolutionary columns, revolutionary cavalry, and strong revolutionary infantry.
 
-Industrial, high-population, developed-infrastructure, high-support, at-war, and major-country contexts add extra REV units. Countries with no communist-controlled states do not provide a territorial basis to REV.
+Industrial, high-population, developed-infrastructure, high-support, high-threat, low-stability, low-war-support, at-war, major-country, large-army, and large-factory contexts add extra communist rebel units. Countries with no communist-controlled states do not provide a territorial basis to REV.
 
 ## Asset Wiring
 
@@ -243,16 +238,17 @@ Unique event pictures should replace the placeholder DDS files in `gfx/event_pic
 
 ## Limitations
 
-State selection is priority-tiered. It first looks for vulnerable states neighboring existing communist control with industry, population, arms factories, or developed infrastructure, then neighboring states, then strategic industrial/population states, and finally any eligible non-capital owned state when no strategic target exists.
+State selection is priority-tiered. Successful spread usually looks for vulnerable states neighboring existing communist control with industry, population, arms factories, or developed infrastructure, then neighboring states, then strategic industrial/population states, and finally any eligible non-capital owned state when no strategic target exists. Communist control can also occasionally seed a non-adjacent owned non-capital state through underground cells; this remote spread remains less common than neighbor spread, but becomes more likely under high communist support, low stability, war, or a large owned-state count. Spread rolls use an assertive base chance, then add pressure from controlled-state count, controlled-state ratio, communist support, low stability, low war support, war, and large-country room to expand. The controlled-state count contribution is capped by a country-size-scaled cap, while the controlled-state ratio contribution makes small-country saturation matter without letting large countries require unrealistic percentages. Successful spread also schedules a dynamic cooldown: the base cooldown is shortened by controlled-state ratio, support, instability, war pressure, and country size, down to a minimum cooldown. Smaller countries weight upgrades more heavily, while larger countries weight state spread more heavily; large-country upgrades can still happen, but spread should dominate more often once there is room for the network to expand.
 
 Map highlighting uses state-targeted decisions and highlighted controlled-state triggers. There is no custom map mode in this pass.
 
 ## Open Tuning Notes And Future Expansion
 
 - `maintenance_min_days` and `maintenance_max_days` control the broad pacing of the system.
-- `state_spread_cooldown_days`, `state_escalation_cooldown_days`, and `sabotage_cooldown_days` are the main anti-spam controls.
+- `state_spread_cooldown_days` is the base spread cooldown and `state_spread_min_cooldown_days` is the pressure floor after dynamic reductions. `state_escalation_cooldown_days` and `sabotage_cooldown_days` are the main escalation and incident anti-spam controls.
+- `communism_spread_strikes` controls the chance, dynamic cooldown reductions, and event mix for controlled-state sabotage and strike waves. The most important values are `base_chance`, `controlled_state_chance`, `controlled_state_ratio_chance_scale`, and `min_cooldown_days`.
 - `defeat_grace_days = 180` prevents a country from defeating the system immediately through early suppression.
 - `evolution_incident_cooldown_days`, `surprise_revolt_chance`, `worker_ritual_chance`, and `world_revolution_whisper_chance` control how often evolution incidents appear.
 - `communism_spread_drift.per_controlled_state = 0.01` is fixed to the spec.
 - Emergency uprising risk may need live-session tuning for large majors; `per_controlled_state_uprising_chance` and `communism_support_uprising_scale` are the first values to adjust.
-- Rebel unit counts are score-based, but the exact thresholds will need live-session tuning. The first values to adjust are `level_1_units`, `level_2_units`, `level_3_units`, industry bonuses, and the evolution conversion bonuses.
+- Rebel unit counts are score-based, but the exact thresholds will need live-session tuning. The first values to adjust are `level_1_units`, `level_2_units`, `level_3_units`, industry bonuses, threat/support bonuses, and army/factory strength thresholds.

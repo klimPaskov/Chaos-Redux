@@ -26,7 +26,7 @@ Pairs are checked with:
 
 - no existing war between aggressor and target
 - target is not a subject of the aggressor
-- aggressor can declare war on the target
+- Calm World does not pair a major country against a non-major country; major-minor pairings open once the chaos tier has advanced beyond Calm World
 
 Compatible special countries use `chaosx_is_random_war_compatible_special_country`. It currently includes existing Chaos Redux special-country markers and Holy Realm compatibility.
 

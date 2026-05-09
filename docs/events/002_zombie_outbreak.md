@@ -703,6 +703,8 @@ Current coastal breakout tuning:
 
 This is the air-contamination collapse world-end event in the same namespace. It is not a zombie outbreak event, but it shares the same super-event numbering block and therefore belongs in this namespace-level documentation.
 
+The fallout super-event uses image sprite `GFX_super_event_fallout`, DDS file `gfx/super_events/super_event_fallout.dds`, audio ID `4`, music file `music/super_event_fallout.ogg`, and sound definition `chaosx_super_event_fallout_track`. The image source and conversion notes are recorded in `docs/assets/fallout_super_event/manifest.md`. Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
+
 #### `chaosx.nr2.11`: Wendigo ascendancy
 
 This hidden repeatable-check event handles the weaponized Wendigo end-state.
@@ -967,7 +969,9 @@ Mapped in `common/scripted_localisation/chaosx_scripted_localisation_super_event
 
 - slot `1`: zombie outbreak
 - slot `3`: zombie apocalypse world-end
+- slot `4`: fallout air-contamination collapse
 - slot `5`: final zombie defeat
+- slot `6`: Wendigo ascendancy
 
 Sprite definitions live in `interface/chaosx_super_events.gfx`.
 
@@ -983,6 +987,7 @@ Existing outbreak-related assets already used by the system:
 
 - `gfx/super_events/super_event_zombies.dds`
 - `gfx/super_events/super_event_zombie_apocalypse.dds`
+- `gfx/super_events/super_event_fallout.dds`
 - `GFX_news_zombie_outbreak`
 - `GFX_report_event_generic_research_lab`
 - `GFX_report_event_generic_sign_treaty2`

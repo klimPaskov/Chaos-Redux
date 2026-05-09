@@ -41,7 +41,7 @@ The zombie outbreak event has authored gameplay text in the event-details window
 17. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
 	   - evolution title and summary,
 	   - logged actor country link,
-	   - a portrait only for evolution types that have a dedicated portrait,
+	   - a portrait only when that evolution family has an authored portrait mapping for the selected stage,
 	   - stage-specific modifier breakdown for the zombie horde.
 
 Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text.
@@ -141,9 +141,16 @@ Sprites currently used:
 - `GFX_portrait_ZZZ_leader_2`
 - `GFX_portrait_ZZZ_leader_3`
 - `GFX_portrait_ZZZ_leader_4`
+- `GFX_portrait_communist_rebels`
+- `GFX_portrait_THR_refuge_bodhisattva`
+- `GFX_portrait_THR_bodhisattva_pramudita`
+- `GFX_portrait_THR_arhat_administration`
+- `GFX_portrait_THR_buddha_mandate`
+- `GFX_portrait_THR_divine_sovereignty`
+- `GFX_portrait_THR_final_silence`
 
 New art required:
-- None for the current event/evolution detail implementation. Portraits are shown only for evolution types with a dedicated portrait sprite; details without a portrait use the wide text body.
+- None for the current event/evolution detail implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage; stages without an authored mapping keep the wide text body.
 
 If new art is required later:
 - Put textures in `gfx/interface/`.

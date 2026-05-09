@@ -114,7 +114,7 @@ Final Silence uses strict standard conditions:
 - `world_end` is not already active
 - `world_end_disabled` is not set
 
-If the date is later than 1946.12.31, thermonuclear technology or doctrine exists, the shared nuclear stockpile is at `999`, and `holy_realm_thermonuclear_payloads_prepared` is above `99`, the thermonuclear variant is used. The focus path grants `990` normal nukes and `100` thermonuclear payloads when the technology exists, forcing the Holy Realm to produce at least `9` normal nukes itself. The variant applies larger air damage, higher death percentages, stronger fallout, a separate global flag, and super-event image/audio ID `9`.
+If the date is later than 1946.12.31, thermonuclear technology or doctrine exists, the shared nuclear stockpile is at `999`, and `holy_realm_thermonuclear_payloads_prepared` is above `99`, the thermonuclear variant is used. The focus path grants `990` normal nukes and `100` thermonuclear payloads when the technology exists, forcing the Holy Realm to produce at least `9` normal nukes itself. The variant applies larger air damage, higher death percentages, stronger fallout, a separate global flag, super-event image ID `9`, and the shared Final Silence audio track through audio ID `9`.
 
 Before launch, the armed doctrine runs a warning chain. This chain can be completed before Chaos Meter reaches `1000`; it is a launch prerequisite, not the launch trigger itself:
 
@@ -275,6 +275,26 @@ Super-event art:
 - `gfx/super_events/super_event_divine_sovereignty.dds`
   - referenced as `GFX_super_event_divine_sovereignty`
   - registered in `interface/chaosx_super_events.gfx`; fires when Divine Sovereignty is accepted under high crisis, high Final Silence Pressure, or prior coercive doctrine
+
+Super-event audio:
+
+- The Buddha Mandate, audio ID `7`:
+  - music file: `music/super_event_buddha_mandate.ogg`
+  - sound definition: `chaosx_super_event_buddha_mandate_track`
+- Final Silence, audio ID `8`:
+  - music file: `music/super_event_final_silence.ogg`
+  - sound definition: `chaosx_super_event_final_silence_track`
+- Thermonuclear Final Silence, audio ID `9`:
+  - music file: `music/super_event_final_silence.ogg`
+  - sound definition: `chaosx_super_event_final_silence_track`
+  - intentionally shares the normal Final Silence track
+- The Mandala Breaks, audio ID `10`:
+  - music file: `music/super_event_mandala_breaks.ogg`
+  - sound definition: `chaosx_super_event_mandala_breaks_track`
+- Divine Sovereignty, audio ID `11`:
+  - music file: `music/super_event_divine_sovereignty.ogg`
+  - sound definition: `chaosx_super_event_divine_sovereignty_track`
+- Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The scripted GUI surface is disabled for now, so the player sees the Holy Realm through focus tree, decisions, events, super events, national spirits, achievements, and event log entries until the replacement UI is implemented.
 

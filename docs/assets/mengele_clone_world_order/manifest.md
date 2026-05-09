@@ -36,4 +36,26 @@ Ideology-suffixed flag copies are included for the Angelic Directorate and clone
 
 ## Source Notes
 
-The source visuals are custom-generated symbolic Chaos Redux assets produced for this package. They use the requested red, black, and white authoritarian research-state palette. The Angelic Directorate flag includes the requested real swastika with a central fictional biomedical replication mark.
+The source visuals are custom-generated symbolic Chaos Redux assets produced for this package. They use the requested red, black, and white authoritarian research-state palette.
+
+The current Angelic World Order super-event art is generated symbolic artwork with no real-world extremist insignia. It shows a hidden biomedical command cathedral, rows of clone soldiers, laboratory tanks, and a winged medical-industrial statue to match the clone world-end activation.
+
+## Super-Event Art Record
+
+- Asset name: Angelic World Order
+- Related event id: `super_event.13.*`
+- Related event slug: `mengele_clone_world_order`
+- Asset type: super-event image
+- Intended in-game use: world-end super-event image for `GFX_super_event_angelic_world_order`
+- Source mode: `image_gen`
+- Image generation prompt: `Create a single HOI4 super-event image in a dark alternate-history documentary style, intended to be cropped to 457x328. Subject: "Angelic World Order" as a terrifying hidden clone-state activation. Scene: a vast underground biomedical command cathedral, rows of identical uniformed clone soldiers seen from behind, cold laboratory tanks and medical-industrial machinery lining the sides, a central winged statue or angelic medical emblem looming above a command dais, sterile lamps, black steel, pale stone, deep shadows, severe composition, high contrast, ominous ceremonial atmosphere. Visual language: cinematic black-and-white with restrained dark red accents, grainy wartime archival texture, realistic painted-photographic finish, strong central composition readable at small size. Avoid: text, captions, UI elements, watermarks, swastikas, real-world extremist insignia, real people, gore, cluttered tiny details.`
+- Source PNG path: `docs/assets/mengele_clone_world_order/source_png/super_event_angelic_world_order_source.png`
+- Processed PNG path: `docs/assets/mengele_clone_world_order/processed_png/super_event_angelic_world_order.png`
+- Final DDS path: `gfx/super_events/super_event_angelic_world_order.dds`
+- Target size: 457x328
+- Sprite name: `GFX_super_event_angelic_world_order`
+- `.gfx` file: `interface/chaosx_super_events.gfx`
+- Related super-event: `13`
+- Review status: `needs_user_review`
+- Notes: cropped and resized to 457x328, converted to uncompressed ARGB8888 DDS, replacing the previous symbolic DDS under the same stable filename and sprite name.
+- Asset status: `wired`

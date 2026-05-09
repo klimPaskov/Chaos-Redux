@@ -28,6 +28,7 @@ country_event = {
 
     trigger = {
         hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+        has_communism_spread_minimum_country_size = yes
     }
 
     immediate = {
@@ -36,7 +37,10 @@ country_event = {
                 limit = { NOT = { has_global_flag = communism_spread } }
                 set_global_flag = communism_spread
                 every_other_country = {
-                    limit = { hidden_trigger = { NOT = { is_special_chaos_country = yes } } }
+                    limit = {
+                        hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+                        has_communism_spread_minimum_country_size = yes
+                    }
                     country_event = { id = chaosx.nr1.1 }
                 }
             }
@@ -44,6 +48,7 @@ country_event = {
             if = {
                 limit = {
                     hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+                    has_communism_spread_minimum_country_size = yes
                     NOT = { has_government = communism }
                 }
                 if = {
@@ -51,13 +56,7 @@ country_event = {
                     add_ideas = communism_spread_idea
                 }
                 queue_communism_spread_defeat_grace_timeout = yes
-                set_temp_variable = { base_value = 0.04 }
-                set_temp_variable = { base_add = 0.01 }
-                modify_value_based_on_chaos_tier = yes
-                add_popularity = {
-                    ideology = communism
-                    popularity = var:modified_value
-                }
+                apply_communism_spread_initial_support = yes
                 seed_initial_communist_control_state = yes
                 refresh_communism_spread_pressure = yes
                 queue_initial_communism_spread_maintenance = yes
@@ -68,6 +67,7 @@ country_event = {
     option = {
         trigger = {
             hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+            has_communism_spread_minimum_country_size = yes
             NOT = { has_government = communism }
         }
         name = chaosx.nr1.1.a
@@ -75,13 +75,14 @@ country_event = {
             add_ideas = communism_spread_idea
             add_popularity = {
                 ideology = communism
-                popularity = 0.04
+                popularity = var:communism_spread_initial_support_effect
             }
         }
     }
     option = {
         trigger = {
             hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+            has_communism_spread_minimum_country_size = yes
             has_government = communism
         }
         name = chaosx.nr1.1.b
@@ -165,6 +166,51 @@ country_event = {
                         35 = { }
                     }
                 }
+            }
+            refresh_communism_spread_pressure = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr1.34
+    title = chaosx.nr1.34.t
+    desc = chaosx.nr1.34.d
+    picture = GFX_report_event_communist_industry_sabotage
+
+    is_triggered_only = yes
+
+    immediate = {
+        hidden_effect = {
+            if = {
+                limit = { NOT = { has_event_target = communist_sabotage_state } }
+                select_communist_sabotage_state = yes
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr1.34.a
+        custom_effect_tooltip = chaosx_tt_1_34a
+        add_stability = constant:communism_spread_strikes.strike_stability_loss
+        add_war_support = constant:communism_spread_strikes.strike_war_support_loss
+        hidden_effect = {
+            event_target:communist_sabotage_state = {
+                if = {
+                    limit = { has_state_flag = communist_control_level_1 }
+                    apply_light_communist_sabotage_damage = yes
+                }
+                else_if = {
+                    limit = { has_state_flag = communist_control_level_2 }
+                    apply_moderate_communist_sabotage_damage = yes
+                }
+                else = {
+                    apply_heavy_communist_sabotage_damage = yes
+                }
+            }
+            add_popularity = {
+                ideology = communism
+                popularity = constant:communism_spread_strikes.strike_support_gain
             }
             refresh_communism_spread_pressure = yes
         }
@@ -286,6 +332,11 @@ country_event = {
     picture = GFX_report_event_communist_war_warning
 
     is_triggered_only = yes
+
+    trigger = {
+        has_communism_spread_minimum_country_size = yes
+        has_communism_rebel_war_warning_pressure = yes
+    }
 
     option = {
         name = chaosx.nr1.8.a
