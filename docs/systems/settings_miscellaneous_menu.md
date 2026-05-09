@@ -46,10 +46,16 @@ Behavior:
 Current song routing:
 - The script now builds `chaosx_super_event_<id>_<volume_suffix>` dynamically through `meta_effect`.
 - Sound-channel playback builds `chaosx_super_event_<id>_sound_<volume_suffix>` the same way.
-- Current live super-event IDs `1`, `2`, and `3` reuse the zombie outbreak track definitions.
-- Current live super-event IDs `4`, `7`, `8`, `10`, `11`, `12`, and `13` reuse the default track definitions.
+- Current live super-event IDs `1`, `2`, and `3` use the zombie outbreak track definitions.
+- Current live super-event ID `4` uses the fallout track definitions.
 - Current live super-event ID `5` uses the zombie-threat-defeated track definitions.
-- Current live super-event IDs `6` and `9` use the wendigo track definitions.
+- Current live super-event ID `6` uses the Wendigo track definitions.
+- Current live super-event ID `7` uses the Buddha Mandate track definitions.
+- Current live super-event IDs `8` and `9` use the shared Final Silence track definitions.
+- Current live super-event ID `10` uses the Mandala Breaks track definitions.
+- Current live super-event ID `11` uses the Divine Sovereignty track definitions.
+- Current live super-event ID `12` uses the Angel Directorate track definitions.
+- Current live super-event ID `13` uses the Angelic World Order track definitions.
 
 The variant song IDs are defined in:
 - `music/chaosx_super_event_music.asset`
@@ -192,11 +198,27 @@ Audio assets used:
   - `music/zombies.ogg`
   - `music/zombies_defeat.ogg`
   - `music/wendigo.ogg`
+  - `music/super_event_fallout.ogg`
+  - `music/super_event_buddha_mandate.ogg`
+  - `music/super_event_final_silence.ogg`
+  - `music/super_event_mandala_breaks.ogg`
+  - `music/super_event_divine_sovereignty.ogg`
+  - `music/super_event_angel_directorate.ogg`
+  - `music/super_event_angelic_world_order.ogg`
 - Sound-channel sources:
   - `sound/chaosx_super_event_default.wav`
   - `sound/chaosx_super_event_zombies.wav`
   - `sound/chaosx_super_event_zombies_defeat.wav`
   - `sound/chaosx_super_event_wendigo.wav`
+  - `sound/chaosx_super_event_fallout.wav`
+  - `sound/chaosx_super_event_buddha_mandate.wav`
+  - `sound/chaosx_super_event_final_silence.wav`
+  - `sound/chaosx_super_event_mandala_breaks.wav`
+  - `sound/chaosx_super_event_divine_sovereignty.wav`
+  - `sound/chaosx_super_event_angel_directorate.wav`
+  - `sound/chaosx_super_event_angelic_world_order.wav`
+- Audio source and license documentation:
+  - `docs/super_events/super_event_audio_packages.md`
 
 If custom art is later desired for the Miscellaneous menu or sync controls:
 - Put textures in `gfx/interface/`
