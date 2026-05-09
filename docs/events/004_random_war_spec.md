@@ -41,6 +41,7 @@ Available from campaign start when Event ID 4 is enabled and selected by the ran
 Result:
 
 - 1 eligible aggressor declares war on 1 eligible target.
+- Calm World baseline pair selection blocks major-versus-non-major pairings so the first-stage event stays regional or scale-matched instead of opening with a major power overrunning a minor.
 - Aggressor and target are saved for localisation and event log text.
 - Aggressor and target receive short cooldowns so the same countries are not selected repeatedly.
 

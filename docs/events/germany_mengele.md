@@ -250,6 +250,14 @@ Registered super-event image:
 
 The super-event image is registered under the final filename and currently contains the default super-event art so the game has no missing sprite. Replace that DDS with final art under the same filename.
 
+Registered super-event audio:
+
+- slot and audio ID: `12`
+- music file: `music/super_event_angel_directorate.ogg`
+- sound definition: `chaosx_super_event_angel_directorate_track`
+- sound-channel derivative: `sound/chaosx_super_event_angel_directorate.wav`
+- source, license, duration, and conversion notes: `docs/super_events/super_event_audio_packages.md`
+
 Registered leader portrait:
 
 - `GFX_portrait_GER_perfect_aryan`
@@ -270,6 +278,8 @@ Clone world-order assets:
 - `GFX_super_event_angelic_world_order` in `gfx/super_events/super_event_angelic_world_order.dds`
 - Asset manifest: `docs/assets/mengele_clone_world_order/manifest.md`
 - Artificial Army Crisis icon manifest: `docs/assets/mengele_artificial_army_crisis/manifest.md`
+
+The Angelic World Order super-event art is generated symbolic art of a hidden biomedical command cathedral and clone mustering hall. The source PNG, processed preview, final DDS path, prompt, and review status are recorded in `docs/assets/mengele_clone_world_order/manifest.md`.
 
 ## Future Plans
 

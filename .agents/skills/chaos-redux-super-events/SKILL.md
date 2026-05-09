@@ -400,21 +400,64 @@ Use quotes about knowledge, arrogance, forbidden inquiry, unintended consequence
 
 Super-event audio should make the moment feel distinct.
 
-Each super-event should have a unique audio id.
+Core rule: a super-event task is not complete unless its audio is selected, verified, converted, wired, and documented.
 
-When the final track is not ready, copy an existing audio file as a placeholder so the game can run, but document that it is a placeholder.
+Every super-event implementation must include complete audio wiring. Do not leave a completed super-event on default, placeholder, mismatched, wrong-format, or undocumented audio.
+
+Each super-event should have a unique audio id unless reuse is intentional, tone-appropriate, and documented. Variants of the same crisis may share one track when they are meant to feel connected.
+
+The final audio should be actual music by default: a musical recording, chant, hymn, orchestral excerpt, song, march, or other track with musical structure. Do not use pure sound effects, drones, pulses, room tone, one-shot stingers, abstract ambience, or texture beds for a super-event unless the user explicitly asks for non-musical audio and the exception is documented.
 
 The final music should be chosen intentionally.
 
 ## 13. Audio research rules
 
-For each proposed track, document:
+Before looking outside the repository, check whether an approved suitable track already exists in the repo. Inspect:
+
+- existing `music/*.ogg`
+- existing `sound/*.wav`
+- `music/chaosx_super_event_music.asset`
+- `music/chaosx_super_event_music.txt`
+- `sound/chaosx_sound.asset`
+- `music/chaosx_music_track_list.html`
+- existing docs or manifests that identify source and license
+
+Use an existing track only when its source, license, duration, and intended use are already documented well enough to trust, and when its tone fits the specific super-event role and pacing.
+
+If no approved suitable track exists, search the internet using the configured internet search MCP server from `AGENTS.md`. Do not use unapproved web browsing tools for this repo.
+
+Find music that fits the exact super-event tone, role, and pacing. Prefer tracks between 1 and 2 minutes long. If a better track falls outside that range, document the exception before use and trim the final in-game file to 2 minutes or less unless the user explicitly approves a longer final track.
+
+Prefer:
+
+- public domain audio
+- Creative Commons audio
+- government or institutional recordings with clear use terms
+- official archive recordings with clear rights
+- user-provided audio with explicit permission
+- otherwise clearly licensed audio that permits the intended mod use
+
+Reject:
+
+- tracks that are primarily sound effects, drones, stingers, loops, abstract ambience, or texture beds when the request is for music
+- tracks with unclear licensing
+- YouTube uploads with no license information
+- vague "royalty free" claims without usage terms
+- modern commercial recordings with unclear rights
+- copyrighted film, game, trailer, or album music without clear permission
+- tracks where the composition is public domain but the recording is not usable
+
+For each candidate and final selected track, verify and document:
 
 - title
-- composer
+- creator or composer
 - performer or recording source if relevant
-- composition public domain status
-- recording license status
+- source URL
+- license
+- license confidence
+- duration
+- usage terms
+- attribution text if required
 - source link
 - why it fits the super-event
 - suggested in-game use
@@ -426,28 +469,30 @@ Check composition rights and recording rights separately.
 
 A public domain composition does not automatically make a recording public domain.
 
-Prefer:
-
-- public domain compositions
-- public domain recordings
-- clearly licensed recordings
-- official archive recordings with clear rights
-- government or institutional recordings with clear use status
-- user-provided audio with permission
-
-Avoid:
-
-- modern commercial recordings with unclear rights
-- YouTube uploads with no license information
-- unclear "royalty free" claims
-- copyrighted film, game, or trailer music
-- tracks where the composition is public domain but the recording is not usable
-
-If the license is unclear, mark it as uncertain or unsuitable and find another option.
+If the license is unclear, mark it unsuitable and find another option. Do not wire uncertain audio into a completed super-event.
 
 Do not claim a track is public domain without checking.
 
-## 14. Audio editing notes
+## 14. Audio implementation workflow
+
+For every super-event audio package:
+
+1. Select the track after repository and internet-source checks.
+2. Verify the track title, creator or composer, source, license, duration, and usage terms.
+3. Download the selected audio from its legitimate source.
+4. Preserve the downloaded source file under an appropriate docs or source-audio path when practical.
+5. Convert the final in-game file to game-ready `.ogg`.
+6. Place the final `.ogg` in the correct mod audio folder, normally `music/` for super-event music-channel playback.
+7. Add or update `music/chaosx_super_event_music.asset` definitions for every dynamic volume variant that the current audio helper can call.
+8. Add or update `music/chaosx_super_event_music.txt` so the station includes a representative entry for every final super-event track.
+9. Add or update `sound/chaosx_sound.asset` sound and soundeffect definitions for sound-channel playback.
+10. Wire the super-event to the correct audio id through `global.current_super_event_audio_id` and the settings-aware playback helper.
+11. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`; every super-event track must have a row in the HTML music table, and that row must list the super-event id or ids using the track.
+12. Verify the final file paths, definitions, ids, and docs before calling the super-event complete.
+
+Use the existing Chaos Redux settings-aware playback helper. Do not bypass it.
+
+## 15. Audio editing notes
 
 For every suitable track, propose practical editing notes.
 
@@ -470,7 +515,7 @@ Do not perform destructive edits without preserving the original source file.
 
 Document any edited derivative file.
 
-## 15. Audio implementation expectations
+## 16. Audio implementation expectations
 
 When implementing audio, follow the existing Chaos Redux audio pattern.
 
@@ -484,35 +529,57 @@ The implementation should keep these aligned:
 - localisation
 - documentation
 
-Every super-event must have a unique audio id.
+Every super-event must have a specific audio id. Shared audio ids are allowed only when the reuse is intentional, tone-appropriate, and documented.
 
 Use the settings-aware playback helper rather than bypassing it.
 
-If the final audio is not available, use a copied existing audio as a placeholder only when the implementation needs a playable file. Mark it clearly as placeholder in docs.
+Fallbacks are not allowed without discussing them with the user. If final audio is unavailable, stop and explain the blocker instead of silently leaving default or placeholder audio.
 
-## 16. Audio documentation
+## 17. Audio documentation
 
-Update the music or audio documentation used by the repo.
+Always update `music/chaosx_music_track_list.html` for every super-event track. Every final super-event track must have a row in that table, and the row must show the super-event ID or IDs that use the track.
 
-If the repository uses `.html` documentation for music files, update it.
+Update any additional music or audio documentation used by the repo.
 
-Document:
+For each super-event audio package, document:
 
-- in-game audio id
-- file path
 - title
-- composer
+- creator or composer
 - performer or recording source if relevant
-- source link
-- license or public domain status
-- whether the file is placeholder or final
-- editing notes
-- super-event slot or event id
-- why the track fits
+- source URL
+- license
+- license confidence
+- usage terms
+- duration
+- attribution text if required
+- downloaded source path
+- final `.ogg` path
+- sound definition id
+- super-event id or key using the track
+- `music/chaosx_music_track_list.html` row with the final track and super-event ID or IDs
+- editing or conversion steps
+- uncertainties, if any
+- why the track fits the super-event tone, role, and pacing
 
-If metadata cannot identify the author, title, or source, and the user did not provide it, ask the user for the missing information instead of guessing.
+If metadata cannot identify the author, title, source, license, or duration, and the user did not provide it, reject the track or ask the user for the missing information instead of guessing.
 
-## 17. Super-event image handoff
+## 18. Audio validation checklist
+
+Before finishing any super-event task, confirm:
+
+- the final `.ogg` exists
+- the file is in the correct folder
+- the selected track is between 1 and 2 minutes long, or the exception is documented
+- the music definitions point to the correct `.ogg`
+- `music/chaosx_super_event_music.txt` includes the final super-event track or a representative helper song id for that track
+- the sound definitions point to the correct file or intended sound wrapper
+- the super-event points to the correct audio id
+- `music/chaosx_music_track_list.html` documents every super-event track and shows the super-event ID or IDs using it
+- documentation records the source, license, and duration
+- documentation records the downloaded source path, final `.ogg` path, sound definition id, and super-event use
+- no placeholder, default, mismatched, or wrong-format audio remains for completed super-events
+
+## 19. Super-event image handoff
 
 Super-event images are handled through `chaos-redux-event-assets`.
 
@@ -542,7 +609,7 @@ The asset skill handles:
 - `.gfx` wiring
 - manifest
 
-## 18. Super-event slot wiring
+## 20. Super-event slot wiring
 
 When wiring a super-event, choose the slot intentionally.
 
@@ -562,7 +629,7 @@ Do not reuse a slot accidentally.
 
 Do not let two unrelated super-events point to the same current image, text, or audio unless the reuse is intentional and documented.
 
-## 19. World-end super-events
+## 21. World-end super-events
 
 World-end super-events need stricter alignment.
 
@@ -578,7 +645,7 @@ When a super-event represents a world-end scenario:
 
 A world-end super-event should feel like an end-state, not a normal escalation.
 
-## 20. Defeat aftermath super-events
+## 22. Defeat aftermath super-events
 
 Use defeat aftermath super-events only when the defeated threat was global or near-global, long enough, and costly enough to reshape the campaign.
 
@@ -592,7 +659,7 @@ The super-event should communicate:
 
 Quotes and music should usually feel reflective, not triumphant without cost.
 
-## 21. Documentation requirements
+## 23. Documentation requirements
 
 The event documentation should explain:
 
@@ -605,12 +672,13 @@ The event documentation should explain:
 - what quote it uses
 - what source the quote came from
 - what audio source is used
-- whether any image or audio is placeholder
+- whether any image is placeholder or needs review
+- confirmation that audio is final and not placeholder/default
 - whether user review is still needed
 
 Do not leave the docs saying only "super-event added."
 
-## 22. Manifest or research note
+## 24. Manifest or research note
 
 For every super-event research package, create or update a markdown note.
 
@@ -637,12 +705,25 @@ The note should include:
 - image asset manifest path
 - audio candidates
 - selected audio
-- audio source and license notes
+- track title
+- creator or composer
+- performer or recording source if relevant
+- source URL
+- license
+- license confidence
+- duration
+- attribution text if required
+- downloaded source path
+- final `.ogg` path
+- sound definition id
+- super-event id or key using the track
+- editing or conversion steps
+- uncertainties, if any
 - implementation notes
 - open questions
 - user review status
 
-## 23. Final checklist
+## 25. Final checklist
 
 Before closing a super-event task, confirm:
 
@@ -657,18 +738,26 @@ Before closing a super-event task, confirm:
 9. The image direction has been handed to `chaos-redux-event-assets`.
 10. The super-event image is sourced or generated according to the asset rules.
 11. Super-event image review status is recorded.
-12. Audio candidates were researched.
-13. Composition rights and recording rights were considered separately.
-14. License or public domain status is documented.
-15. Selected audio has title, composer, source, and suitability notes.
-16. Placeholder audio is clearly marked if used.
-17. The audio id is unique.
-18. `global.current_super_event_audio_id` is set correctly.
-19. Settings-aware playback is used.
-20. Scripted localisation is updated.
-21. Player-facing localisation is updated.
-22. Image wiring is updated.
-23. Audio wiring is updated.
-24. Music or audio documentation is updated.
-25. Event docs are updated.
-26. Spreadsheet or event catalog is updated if relevant.
+12. An approved existing track was checked first.
+13. If no approved track existed, the configured internet search MCP server from `AGENTS.md` was used.
+14. Audio candidates were researched against the event tone, role, and pacing.
+15. Composition rights and recording rights were considered separately.
+16. Tracks with unclear licensing were rejected.
+17. License or public domain status is documented.
+18. Selected audio has title, creator or composer, source, license, duration, usage terms, and suitability notes.
+19. The final `.ogg` exists in the correct folder.
+20. The selected track is between 1 and 2 minutes long, or the exception is documented.
+21. Music definitions point to the correct `.ogg`.
+22. `music/chaosx_super_event_music.txt` includes the final super-event track or a representative helper song id for that track.
+23. Sound definitions point to the correct file or wrapper.
+24. The audio id is specific to the super-event or intentionally shared and documented.
+25. `global.current_super_event_audio_id` is set correctly.
+26. Settings-aware playback is used.
+27. Scripted localisation is updated.
+28. Player-facing localisation is updated.
+29. Image wiring is updated.
+30. Audio wiring is updated.
+31. Music or audio documentation is updated with source, license, duration, paths, sound definition id, super-event use, and conversion steps.
+32. No placeholder, default, mismatched, or wrong-format audio remains for completed super-events.
+33. Event docs are updated.
+33. Spreadsheet or event catalog is updated if relevant.
