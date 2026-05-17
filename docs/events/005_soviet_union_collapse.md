@@ -106,8 +106,11 @@ The first high-chaos successor tags are registered for spawn and mechanics work:
 20. `GAC` - Green Army Congress, led by the Peasant Congress Council, with existing flag and leader assets.
 21. `DHC` - Don Host Emergency Circle, led by the Host Emergency Circle, with existing flag and leader assets.
 22. `KHC` - Kuban Host Provisional Council, led by the Kuban Provisional Council, with existing flag and leader assets.
+23. `FEV` - Far Eastern Republic Revival, led by the Far Eastern Buffer Committee, with existing flag and leader assets.
+24. `SZA` - Siberian Zemstvo Authority, led by the Siberian Regional Assembly, with existing flag and leader assets.
+25. `UWD` - Ural Workers' Directorate, led by the Factory Directorate, with existing flag and leader assets.
 
-These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, evolution-log entries, and runtime focus trees: `CFR` has its 58-focus Construction Directorate tree, `MFR` has its 46-focus Arsenal Board tree, `OGB` has its 54-focus Volga Bulgar Restoration tree, and `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, and `KHC` each have 24-focus custom splinter trees.
+These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, evolution-log entries, and runtime focus trees: `CFR` has its 58-focus Construction Directorate tree, `MFR` has its 46-focus Arsenal Board tree, `OGB` has its 54-focus Volga Bulgar Restoration tree, and `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, and `UWD` each have 24-focus custom splinter trees.
 
 At high chaos, the Soviet opening hook can create the implemented successor states without using any recurring on-action loop. Each spawn is gated by `is_soviet_collapse_high_chaos_successor_spawn_ready`, which requires the Soviet Collapse to be active for `SOV` and either chaos tier 4, chaos tier 5, or `soviet_collapse_evolution_weirdness` reaching `constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate`. Each successor also respects the evolution disable UI by checking `is_current_evolution_enabled` for its own high-chaos stage before any state transfer happens.
 
@@ -135,6 +138,9 @@ The exact opening state packages are:
 20. `GAC` receives Orel (`222`) and Bryansk (`224`) if both are owned and controlled by `SOV` and the peasant-anger mission fails.
 21. `DHC` receives Rostov Area (`218`) and Volgodonsk (`238`) if both are owned and controlled by `SOV` and the village-negotiation mission fails.
 22. `KHC` receives Krasnodar (`234`) and Stavropol (`235`) if both are owned and controlled by `SOV` and the Caucasus mountain administration mission fails.
+23. `FEV` receives Vladivostok (`408`) and Khabarovsk (`409`) if both are owned and controlled by `SOV` and the Vladivostok central-command mission fails.
+24. `SZA` receives Tomsk (`578`) and Tobolsk (`580`) if both are owned and controlled by `SOV` and the Siberian distance command mission fails.
+25. `UWD` receives Southern Urals (`582`) and Northern Urals (`581`) if both are owned and controlled by `SOV` and the Ural factory gates mission fails.
 
 These are strict prerequisites, not contingency pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, its tag-specific runtime focus tree with a clean focus state, and an event notice in `events/005_soviet_collapse_factory_ancient.txt` or `events/005_soviet_collapse_custom.txt`. The first eligible successor in each high-chaos tier records an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`; later successor notices in the same tier remain normal reports so the crisis does not flood the evolution log.
 
@@ -162,6 +168,9 @@ Each tag also has an opening decision board:
 20. `GAC` uses `Green Army Congress` with village-congress consolidation, signature-force mobilisation, and the Land and Bread Against the World endgame.
 21. `DHC` uses `Don Host Emergency Circle` with host-circle consolidation, signature-force mobilisation, and the Southern Host Command endgame.
 22. `KHC` uses `Kuban Host Provisional Council` with crossing-council consolidation, signature-force mobilisation, and the Kuban Line Command endgame.
+23. `FEV` uses `Far Eastern Republic Revival` with buffer-committee consolidation, railway-guard mobilisation, and the Far Eastern Line Command endgame.
+24. `SZA` uses `Siberian Zemstvo Authority` with zemstvo consolidation, city-guard mobilisation, and the Siberian Depth Command endgame.
+25. `UWD` uses `Ural Workers' Directorate` with factory-committee consolidation, worker-battalion mobilisation, and the Arsenal Autonomy endgame.
 
 These decision boards are deliberately small foundations. They provide the variables, costs, blocked-cost localisation, ideas, and first rewards for tag-specific focus trees and event spawn effects.
 
