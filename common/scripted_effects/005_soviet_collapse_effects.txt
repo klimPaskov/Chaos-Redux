@@ -918,6 +918,54 @@ soviet_collapse_apply_mfr_convert_depots_to_arms_lines = {
 	}
 }
 
+soviet_collapse_apply_mfr_focus_quota_gain = {
+	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	add_ideas = mfr_arsenal_quotas
+	army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+}
+
+soviet_collapse_apply_mfr_focus_arms_output = {
+	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_spend }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_small }
+	random_owned_controlled_state = {
+		add_extra_state_shared_building_slots = 1
+		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+	}
+}
+
+soviet_collapse_apply_mfr_focus_security_state = {
+	add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+	add_ideas = mfr_factory_guard_state
+	random_owned_controlled_state = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+}
+
+soviet_collapse_apply_mfr_focus_foreign_shipments = {
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+			add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_mfr_focus_unsafe_output = {
+	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+	add_ideas = mfr_factory_guard_state
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+			add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
 soviet_collapse_apply_ogb_claim_volga_crossings = {
 	command_power = constant:soviet_collapse_factory_ancient.command_power_low_spend
 	add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
@@ -989,6 +1037,7 @@ soviet_collapse_setup_mfr_successor = {
 		remember_old_capital = no
 	}
 	soviet_collapse_setup_breakaway_country = yes
+	load_focus_tree = { tree = MFR_soviet_collapse_focus_tree keep_completed = no }
 	set_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
 	add_ideas = mfr_arsenal_quotas
 	add_ideas = mfr_factory_guard_state
