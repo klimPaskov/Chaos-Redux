@@ -2,7 +2,7 @@
 
 This ledger documents the implemented Belarus and Kazakhstan runtime focus icon assignments:
 
-- Belarus: 28 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, currently covering the clean-spec Minsk opening, first political route-lock block, and first rail-sovereignty branch.
+- Belarus: 39 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, currently covering the clean-spec Minsk opening, first political route-lock block, first rail-sovereignty branch, and first forest-defense branch.
 - Kazakhstan: 12 focuses in `common/national_focus/005_soviet_collapse_republics.txt`
 
 Both trees use branch-level sprites defined in `interface/005_soviet_collapse_blr_icons.gfx` and `interface/005_soviet_collapse_kaz_icons.gfx`. The branch-icon assignment is deliberate for the current implementation; each dedicated DDS is derived from existing generated Event 005 focus art that matches the branch gameplay subject. Belarus remains in progress toward the 83-focus clean-spec target.
@@ -12,13 +12,13 @@ Both trees use branch-level sprites defined in `interface/005_soviet_collapse_bl
 | Branch | Focuses | Sprite | Final DDS | Reuse rationale |
 | --- | ---: | --- | --- | --- |
 | rail | 5 | `GFX_blr_soviet_collapse_rail` | `gfx/interface/goals/blr_soviet_collapse_rail.dds` | Common timetable art fits Minsk junction authority. |
-| forest | 1 | `GFX_blr_soviet_collapse_forest` | `gfx/interface/goals/blr_soviet_collapse_forest.dds` | Forest corridor art fits marsh defense and partisan memory. |
-| corridor | 8 | `GFX_blr_soviet_collapse_corridor` | `gfx/interface/goals/blr_soviet_collapse_corridor.dds` | Border-line art fits western passage and corridor-state outcomes. |
+| forest | 8 | `GFX_blr_soviet_collapse_forest` | `gfx/interface/goals/blr_soviet_collapse_forest.dds` | Forest corridor art fits marsh defense and partisan memory. |
+| corridor | 10 | `GFX_blr_soviet_collapse_corridor` | `gfx/interface/goals/blr_soviet_collapse_corridor.dds` | Border-line art fits western passage and corridor-state outcomes. |
 | legal | 2 | `GFX_blr_soviet_collapse_legal` | `gfx/interface/goals/blr_soviet_collapse_legal.dds` | Republican legality art fits statutes and civic law. |
 | socialist | 2 | `GFX_blr_soviet_collapse_socialist` | `gfx/interface/goals/blr_soviet_collapse_socialist.dds` | Socialist sovereignty art fits workers' councils. |
 | foreign_transit | 3 | `GFX_blr_soviet_collapse_foreign_transit` | `gfx/interface/goals/blr_soviet_collapse_foreign_transit.dds` | External mission art fits observer and relief transit. |
 | counterintel | 3 | `GFX_blr_soviet_collapse_counterintel` | `gfx/interface/goals/blr_soviet_collapse_counterintel.dds` | Ministry-ledger art fits archives and security review. |
-| civic | 4 | `GFX_blr_soviet_collapse_civic` | `gfx/interface/goals/blr_soviet_collapse_civic.dds` | First-orders art fits citizenship and post-corridor identity. |
+| civic | 6 | `GFX_blr_soviet_collapse_civic` | `gfx/interface/goals/blr_soviet_collapse_civic.dds` | First-orders art fits citizenship and post-corridor identity. |
 
 ## Kazakhstan Sprite Mapping
 
@@ -37,9 +37,9 @@ Both trees use branch-level sprites defined in `interface/005_soviet_collapse_bl
 
 The current tree parse confirms:
 
-- Belarus has 28 focus blocks.
+- Belarus has 39 focus blocks.
 - Kazakhstan has 12 focus blocks.
-- Together, the two trees have 40 implemented focuses with wired branch sprites.
+- Together, the two trees have 51 implemented focuses with wired branch sprites.
 
 ## Historical Per-Focus Continuation Draft Entries
 
