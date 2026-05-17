@@ -1103,6 +1103,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_084_done hidden_effect = { add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_success_league } } soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_084_negotiate_with_the_villages_before_the_league_does_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_084_done hidden_effect = { add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_failure_league } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_084_negotiate_with_the_villages_before_the_league_does_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_085_guard_the_monasteries_and_mosques_from_politics = {
+		icon = GFX_decision_soviet_collapse_old_movement_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_guard_soviet_collapse_monasteries_and_mosques_from_politics = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_085_done hidden_effect = { add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.foreign_success_foreign } } soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_085_guard_the_monasteries_and_mosques_from_politics_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_085_done soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_085_guard_the_monasteries_and_mosques_from_politics_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_086_break_the_basmachi_supply_chain = {
+		icon = GFX_decision_soviet_collapse_old_movement_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_break_soviet_collapse_basmachi_supply_chain = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_086_done soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_086_break_the_basmachi_supply_chain_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_086_done hidden_effect = { if = { limit = { is_soviet_collapse_southern_breakaway_active = yes } for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway OR = { tag = UZB tag = KYR tag = TAJ tag = TMS } } add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.extra_infantry_equipment_per_chaos_band } add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_support.extra_support_equipment_per_chaos_band } add_ideas = soviet_collapse_old_underground_networks } } } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_086_break_the_basmachi_supply_chain_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
