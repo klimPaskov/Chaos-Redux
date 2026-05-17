@@ -2701,6 +2701,293 @@ focus_tree = {
 		}
 	}
 
+	# role: crosslink | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_audit_the_sponsor_crates
+		icon = GFX_ukr_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 2
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_sponsors_cabinet_list }
+		prerequisite = { focus = ukr_soviet_collapse_depot_motor_columns }
+		available = { has_country_flag = soviet_collapse_ukraine_route_foreign_provisional_authority }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_audit_sponsor_crates
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_route_foreign_provisional_authority }
+		}
+	}
+
+	# role: side | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_refuse_the_political_advisers
+		icon = GFX_ukr_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 0
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_sponsors_cabinet_list }
+		mutually_exclusive = { focus = ukr_soviet_collapse_let_the_advisers_write_memos }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_refuse_political_advisers
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_no_foreign_master }
+		}
+	}
+
+	# role: route_lock | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_let_the_advisers_write_memos
+		icon = GFX_ukr_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_sponsors_cabinet_list }
+		mutually_exclusive = { focus = ukr_soviet_collapse_refuse_the_political_advisers }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_advisers_write_memos
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_route_foreign_provisional_authority }
+		}
+	}
+
+	# role: league | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_league_arbitration_board
+		icon = GFX_ukr_soviet_collapse_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_league_founding_charter }
+		available = { has_country_flag = soviet_collapse_free_republics_league_founder }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_league_arbitration_board
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_league_of_equals }
+		}
+	}
+
+	# role: league | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_shared_depot_ledger
+		icon = GFX_ukr_soviet_collapse_league
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_league_arbitration_board }
+		prerequisite = { focus = ukr_soviet_collapse_arsenal_cities }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_shared_depot_ledger
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_arsenal_cities }
+		}
+	}
+
+	# role: league | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_republics_joint_staff
+		icon = GFX_ukr_soviet_collapse_league
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_league_founding_charter }
+		prerequisite = { focus = ukr_soviet_collapse_army_of_the_republic }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_republics_joint_staff
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_army_of_the_republic }
+		}
+	}
+
+	# role: expansion | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_the_border_mandate_vote
+		icon = GFX_ukr_soviet_collapse_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 9
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_league_mandated_security_zones }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_border_mandate_vote
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_league_security_zones }
+		}
+	}
+
+	# role: diplomacy | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_black_sea_customs_union
+		icon = GFX_ukr_soviet_collapse_expansion
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 24
+		y = 18
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_black_sea_hegemony focus = ukr_soviet_collapse_granary_of_free_republics }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_black_sea_customs_union
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_black_sea_hegemony }
+		}
+	}
+
+	# role: units | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_ports_need_soldiers
+		icon = GFX_ukr_soviet_collapse_armed_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 24
+		y = 19
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_black_sea_customs_union }
+		available = {
+			any_owned_state = {
+				is_coastal = yes
+				is_controlled_by = ROOT
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_ports_need_soldiers
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	# role: expansion | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_the_western_question_cannot_wait
+		icon = GFX_ukr_soviet_collapse_expansion
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 16
+		y = 17
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_western_border_question }
+		available = {
+			SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } }
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_western_question_cannot_wait
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_western_border_question }
+		}
+	}
+
+	# role: high_chaos | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_the_bread_line_becomes_a_border
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 32
+		y = 20
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_bread_state_whispers }
+		prerequisite = { focus = ukr_soviet_collapse_beyond_the_defensive_line }
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_bread_line_becomes_border
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
+
+	# role: late_game | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_endgame_kyiv_writes_the_settlement
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 19
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_republic_of_laws focus = ukr_soviet_collapse_a_red_republic_of_our_own focus = ukr_soviet_collapse_the_directory_state focus = ukr_soviet_collapse_the_second_hetmanate }
+		available = {
+			OR = {
+				NOT = { has_war_with = SOV }
+				SOV = { has_capitulated = yes }
+				NOT = { SOV = { exists = yes } }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_writes_the_settlement
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	# role: late_game | filter: foreign_aid
+	focus = {
+		id = ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map
+		icon = GFX_ukr_soviet_collapse_expansion
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 16
+		y = 20
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_great_steppe_and_sea_plan focus = ukr_soviet_collapse_black_sea_customs_union focus = ukr_soviet_collapse_the_western_question_cannot_wait }
+		available = { is_subject = no }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_outside_the_old_map
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_great_steppe_and_sea_plan }
+		}
+	}
+
 	# role: hidden | filter: high_chaos
 	focus = {
 		id = ukr_soviet_collapse_bread_state_whispers
