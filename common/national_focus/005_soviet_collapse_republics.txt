@@ -7062,4 +7062,160 @@ focus_tree = {
 		}
 		ai_will_do = { base = 6 }
 	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_steppe_remembers_old_states
+		icon = GFX_kaz_soviet_collapse_myth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 34
+		y = 5
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_the_congress_chooses_a_past }
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_old_states_remembered
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_basmachi_roads_reopen
+		icon = GFX_kaz_soviet_collapse_myth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 36
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_the_steppe_remembers_old_states }
+		available = { is_soviet_collapse_southern_breakaway_active = yes }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_basmachi_roads_reopen
+			add_ideas = soviet_collapse_old_underground_networks
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 is_soviet_collapse_southern_breakaway_active = yes }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_make_peace_with_the_roads
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 34
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_basmachi_roads_reopen }
+		mutually_exclusive = { focus = kaz_soviet_collapse_crush_the_road_militias }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_roads_pacified
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_crush_the_road_militias
+		icon = GFX_kaz_soviet_collapse_military
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 38
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_basmachi_roads_reopen }
+		mutually_exclusive = { focus = kaz_soviet_collapse_make_peace_with_the_roads }
+		available = { has_country_flag = soviet_collapse_kazakhstan_army_crosses_distance }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_roads_suppressed
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_country_flag = soviet_collapse_kazakhstan_army_crosses_distance }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_star_over_the_empty_steppe
+		icon = GFX_kaz_soviet_collapse_myth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 40
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_the_steppe_remembers_old_states }
+		available = { SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_empty_steppe_star
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_last_caravan_tax
+		icon = GFX_kaz_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 36
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_make_peace_with_the_roads focus = kaz_soviet_collapse_crush_the_road_militias }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_last_caravan_tax
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = { base = 3 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_a_state_under_open_sky
+		icon = GFX_kaz_soviet_collapse_myth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 38
+		y = 13
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_the_last_caravan_tax focus = kaz_soviet_collapse_the_star_over_the_empty_steppe }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_state_under_open_sky
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = { base = 3 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_southern_republics_do_not_kneel
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 34
+		y = 15
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_the_southern_shield }
+		prerequisite = { focus = kaz_soviet_collapse_a_state_under_open_sky }
+		available = { SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_southern_republics_do_not_kneel
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } } }
+		}
+	}
 }
