@@ -14,7 +14,7 @@ The implemented opening slices cover the crisis scaffold and the first intervent
 - `common/scripted_triggers/005_soviet_collapse_triggers.txt` adds active-crisis, breakaway, patron, and cost triggers.
 - `common/scripted_effects/005_soviet_collapse_effects.txt` initializes the crisis meter, clamps and recalculates total threat, releases the opening breakaways, gives starting forces, and enforces the Soviet objective cap.
 - `common/ideas/005_soviet_collapse_ideas.txt` adds country spirits for the union crisis, Moscow response routes, loyalist officers, captured depots, and breakaway defensive coordination.
-- `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, ten opening goal-style missions, four breakaway emergency actions, and seven targeted foreign patron decisions.
+- `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, twelve opening goal-style missions, four breakaway emergency actions, and seven targeted foreign patron decisions.
 - `events/005_soviet_collapse.txt` replaces the old hidden release stub with a visible opening event and four posture choices.
 - `events/005_soviet_collapse_factory_ancient.txt` adds the triggered notices for the first high-chaos factory and Volga successor states.
 
@@ -126,6 +126,8 @@ The Soviet category currently activates these opening goal-style missions:
 8. `soviet_collapse_soviet_mission_008_audit_the_republic_radios`
 9. `soviet_collapse_soviet_mission_009_open_the_loyalist_courier_line`
 10. `soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area`
+11. `soviet_collapse_soviet_mission_011_announce_the_legal_continuity_decree`
+12. `soviet_collapse_soviet_mission_012_convene_loyal_republican_deputies`
 
 The activation effect counts active missions before activating the next one and stops at `constant:soviet_collapse_soviet_objective.active_cap`, currently 10. The missions use equipment, manpower, fuel, trains, stability, war support, army experience, and command power as requirements or costs; political power is not the default cost.
 
@@ -146,7 +148,7 @@ This slice reuses existing wired sprites. No new art was generated.
 
 ## Future Plans
 
-- Expand the Soviet objective board beyond the first ten missions while preserving the ten-active cap.
+- Expand the Soviet objective board beyond the first twelve missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
 - Expand the compact Ukraine, Belarus, and Kazakhstan runtime focus trees into full country packages, then add regional republic and contingency breakaway trees with AI behavior after their state and tag rules are specified.
 - Implement full focus-tree packages and longer event chains for every custom country and serious splinter whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist.
