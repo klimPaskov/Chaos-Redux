@@ -863,6 +863,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_064_done soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_064_prevent_baltic_port_transfers_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_064_done soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_064_prevent_baltic_port_transfers_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_065_secure_caucasus_oil_accounting = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_secure_soviet_collapse_caucasus_oil_accounting = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_065_done add_fuel = constant:soviet_collapse_soviet_objective.fuel_req soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_065_secure_caucasus_oil_accounting_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_065_done hidden_effect = { if = { limit = { AZR = { exists = yes has_country_flag = soviet_collapse_breakaway } } AZR = { add_fuel = constant:soviet_collapse_soviet_objective.fuel_req add_ideas = soviet_collapse_defensive_coordination } } if = { limit = { GEO = { exists = yes has_country_flag = soviet_collapse_breakaway } } GEO = { add_ideas = soviet_collapse_defensive_coordination } } if = { limit = { ARM = { exists = yes has_country_flag = soviet_collapse_breakaway } } ARM = { add_ideas = soviet_collapse_defensive_coordination } } } soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_065_secure_caucasus_oil_accounting_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_066_lock_the_ural_factory_gates = {
+		icon = GFX_decision_soviet_collapse_command_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_lock_soviet_collapse_ural_factory_gates = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_066_done soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_066_lock_the_ural_factory_gates_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_066_done soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_066_lock_the_ural_factory_gates_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {

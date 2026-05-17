@@ -582,6 +582,44 @@ can_prevent_soviet_collapse_baltic_port_transfers = {
 	}
 }
 
+can_secure_soviet_collapse_caucasus_oil_accounting = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	229 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	OR = {
+		GEO = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		ARM = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		AZR = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+	}
+}
+
+can_lock_soviet_collapse_ural_factory_gates = {
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	num_of_military_factories > constant:soviet_collapse_soviet_objective.military_factory_req
+	653 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	572 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	OR = {
+		can_soviet_collapse_spawn_cfr = yes
+		can_soviet_collapse_spawn_mfr = yes
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
