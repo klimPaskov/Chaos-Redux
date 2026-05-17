@@ -146,6 +146,8 @@ The activation effect counts active missions before activating the next one and 
 
 Mission outcomes use family-specific crisis pressure helpers tuned through `constant:soviet_collapse_objective_pressure`. Authority, command, rail, depot, foreign, cleanup, and settlement objectives no longer share the same flat success and failure effects; each family adjusts the relevant Union Crisis Threat components and then recalculates the total threat.
 
+Failed Soviet objective families also trigger short report events in `events/005_soviet_collapse.txt`: authority (`chaosx.nr5.10`), command (`chaosx.nr5.11`), rail (`chaosx.nr5.12`), depot (`chaosx.nr5.13`), foreign exposure (`chaosx.nr5.14`), cleanup/backlog (`chaosx.nr5.15`), and settlement (`chaosx.nr5.16`). These are normal crisis reports, not evolution logs.
+
 ## Icon Wiring
 
 This slice reuses existing wired sprites. No new art was generated.
