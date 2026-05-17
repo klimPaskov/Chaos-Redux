@@ -1391,6 +1391,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_108_done set_country_flag = soviet_collapse_league_border_dispute_forced soviet_collapse_apply_successful_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_108_force_a_league_border_dispute_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_108_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_ideas = soviet_collapse_defensive_coordination } } } soviet_collapse_apply_failed_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_108_force_a_league_border_dispute_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_109_classify_the_impossible_reports = {
+		icon = GFX_decision_soviet_collapse_old_movement_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_classify_soviet_collapse_impossible_reports = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_109_done set_country_flag = soviet_collapse_impossible_reports_classified soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_109_classify_the_impossible_reports_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_109_done hidden_effect = { add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_109_classify_the_impossible_reports_failure_tt hidden_effect = { soviet_collapse_maybe_spawn_high_chaos_successors = yes soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_110_guard_the_hospitals_from_politics = {
+		icon = GFX_decision_soviet_collapse_cleanup_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_guard_soviet_collapse_hospitals_from_politics = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_110_done set_country_flag = soviet_collapse_hospital_records_guarded soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_110_guard_the_hospitals_from_politics_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_110_done hidden_effect = { if = { limit = { OGB = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor } } OGB = { add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain } add_ideas = ogb_volga_legitimacy } } add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_110_guard_the_hospitals_from_politics_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
