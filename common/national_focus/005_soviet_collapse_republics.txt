@@ -575,6 +575,213 @@ focus_tree = {
 		ai_will_do = { base = 2 }
 	}
 
+	# role: side | filter: political
+	focus = {
+		id = ukr_soviet_collapse_coalition_of_three_ministries
+		icon = GFX_ukr_soviet_collapse_democratic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_convene_the_central_rada }
+		prerequisite = { focus = ukr_soviet_collapse_elections_under_shellfire }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_coalition_of_three_ministries
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_route_democratic_rada }
+		}
+	}
+
+	# role: side | filter: political
+	focus = {
+		id = ukr_soviet_collapse_rural_deputy_bloc
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_coalition_of_three_ministries }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_ukraine_peasant_bargain
+				has_country_flag = soviet_collapse_ukraine_village_granary_guards
+				has_country_flag = soviet_collapse_ukraine_keep_bread_moving
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_rural_deputy_bloc
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_peasant_bargain }
+		}
+	}
+
+	# role: side | filter: political
+	focus = {
+		id = ukr_soviet_collapse_minority_autonomy_statutes
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 5
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_coalition_of_three_ministries }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_minority_autonomy_statutes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	# role: side | filter: political
+	focus = {
+		id = ukr_soviet_collapse_emergency_court_of_kyiv
+		icon = GFX_ukr_soviet_collapse_democratic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 7
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_constitution_before_victory }
+		available = { has_country_flag = soviet_collapse_ukraine_route_democratic_rada }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_emergency_court_of_kyiv
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	# role: crosslink | filter: political
+	focus = {
+		id = ukr_soviet_collapse_parliament_votes_on_the_front
+		icon = GFX_ukr_soviet_collapse_democratic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 9
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_emergency_court_of_kyiv }
+		prerequisite = { focus = ukr_soviet_collapse_republican_general_staff }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_parliament_votes_on_front
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_republican_general_staff }
+		}
+	}
+
+	# role: fork | filter: political
+	focus = {
+		id = ukr_soviet_collapse_provincial_governors_or_elected_radas
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_rural_deputy_bloc }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_governor_question_open
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	# role: route_lock | filter: political
+	focus = {
+		id = ukr_soviet_collapse_elected_radas
+		icon = GFX_ukr_soviet_collapse_democratic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 0
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_provincial_governors_or_elected_radas }
+		mutually_exclusive = { focus = ukr_soviet_collapse_appointed_governors }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_elected_radas
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability > 0.45 }
+		}
+	}
+
+	# role: route_lock | filter: political
+	focus = {
+		id = ukr_soviet_collapse_appointed_governors
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 4
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_provincial_governors_or_elected_radas }
+		mutually_exclusive = { focus = ukr_soviet_collapse_elected_radas }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_appointed_governors
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	# role: finisher | filter: political
+	focus = {
+		id = ukr_soviet_collapse_republic_of_laws
+		icon = GFX_ukr_soviet_collapse_democratic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 5
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_emergency_court_of_kyiv }
+		prerequisite = { focus = ukr_soviet_collapse_elected_radas focus = ukr_soviet_collapse_appointed_governors }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_republic_of_laws
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_elected_radas }
+		}
+	}
+
+	# role: crosslink | filter: political
+	focus = {
+		id = ukr_soviet_collapse_civilian_command_over_the_army
+		icon = GFX_ukr_soviet_collapse_democratic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 9
+		y = 13
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_republic_of_laws }
+		prerequisite = { focus = ukr_soviet_collapse_army_of_the_republic }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_civilian_command_over_army
+			soviet_collapse_apply_focus_legal_recognition = yes
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_republic_of_laws }
+		}
+	}
+
 	# role: fork | filter: military
 	focus = {
 		id = ukr_soviet_collapse_republican_general_staff
