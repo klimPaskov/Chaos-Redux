@@ -4,7 +4,10 @@
 
 Event clusters are a layer above the normal random-event picker. The picker still selects an individual event first. If that event belongs to a cluster, the cluster system can roll to fire a linked sequence instead of only the selected event.
 
-The current registered cluster is **Wars** (`constant:event_cluster_id.wars = 1`). Its theme is sudden wars and armed conflicts between countries, where local disputes, opportunistic attacks, and border shocks can turn into a wider chain of fighting.
+The registered clusters are:
+
+- **Wars** (`constant:event_cluster_id.wars = 1`): sudden wars and armed conflicts between countries, where local disputes, opportunistic attacks, and border shocks can turn into a wider chain of fighting.
+- **Liberations** (`constant:event_cluster_id.liberations = 2`): independence waves, subject breakaways, imperial ruptures, republican secessions, and disorder that creates new states.
 
 ## Runtime Flow
 
@@ -27,8 +30,11 @@ Cluster tuning lives in:
 Important constants:
 
 - `event_cluster_id.wars = 1`
+- `event_cluster_id.liberations = 2`
 - `event_cluster_wars.unlock_tier = 1`
 - `event_cluster_wars.cooldown_days = 120`
+- `event_cluster_liberations.unlock_tier = 0`
+- `event_cluster_liberations.cooldown_days = 90`
 - `event_cluster_roll.minimum` and `event_cluster_roll.maximum` define the shared percentile roll range
 - `event_cluster_roll_chance_default.*` defines tier-based cluster roll chance
 - `event_cluster_member_participation.*` defines member participation chance
@@ -38,6 +44,14 @@ Important constants:
 The default tier roll chances are 5% at Calm World, 10% at Gathering Storm, 15% at Rising Chaos, 25% at Chaos Tier, 35% at Totalen Chaos, and 50% at World Collapse. A cluster that is still locked by chaos tier displays `N/A` for its roll chance.
 
 The cluster roll and member participation roll are separate. A selected member can cause the cluster roll, while each optional member still rolls its own participation chance. Required members fire when valid.
+
+Current membership:
+
+| Cluster | Member | Danger | Participation |
+| --- | --- | --- | --- |
+| Wars | Event 4, Random War | High | Required member when selected or manually queued |
+| Liberations | Event 6, Independence Wave | Medium | Optional member |
+| Liberations | Event 5, Soviet Union Collapse | Severe | Optional member, fire-once, gated by Soviet crisis eligibility |
 
 ## Member Order And Cooldown
 
@@ -113,4 +127,5 @@ If a future cluster needs a dedicated icon, define the sprite in an `interface/.
 ## Future Plans
 
 - Add more Wars members, such as border incidents, faction breakups, and regional war chains.
+- Add more Liberations members for subject breakaways, occupation collapses, and regional independence chains.
 - Add non-war clusters for economy, disasters, and anomalies.

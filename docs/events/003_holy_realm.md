@@ -194,7 +194,7 @@ The remaining Holy Realm focuses intentionally use unique vanilla/generic icons 
 
 Decision category icons:
 
-- `GFX_decision_category_holy_mandala`: vanilla `gfx/interface/decisions/decision_category_generic_mountain_fortification.dds`
+- `GFX_decision_category_holy_mandala`: `gfx/interface/decisions/holy_realm/decision_category_holy_mandala.dds`
 - `GFX_decision_category_final_ledger`: `gfx/interface/decisions/holy_realm/decision_category_final_ledger.dds`
 - `GFX_decision_category_holy_doctrine_balance`: vanilla `gfx/interface/decisions/decision_category_generic_political_actions.dds`
 - vanilla `GFX_decision_category_generic_political_actions` for Letters of Peace and Authority

@@ -84,8 +84,6 @@ Use `chaos-redux-event-assets` for:
 
 Super-event images should use internet source images by default unless the event is fictional, symbolic, supernatural, or fully invented.
 
-Super-event images must be marked for user review before final use.
-
 ### This skill
 
 This skill owns:
@@ -228,7 +226,7 @@ Examples of the kind of source that may be considered include Steely Dan lyrics,
 
 Do not choose a reference only because it is recognizable.
 
-Use the configured internet search MCP server from `AGENTS.md` to verify the exact wording and source of any referenced line.
+Use the repository web research workflow from `AGENTS.md` to verify the exact wording and source of any referenced line.
 
 For modern copyrighted songs, films, books, or games, keep the line very short. Prefer a short fragment, a title-like reference, or a paraphrased allusion when a direct quote would be too long.
 
@@ -253,7 +251,7 @@ Do not misattribute quotes.
 
 Do not use a quote unless it fits the specific event.
 
-Use the configured internet search MCP server from `AGENTS.md` to find and verify real quotes.
+Use the repository web research workflow from `AGENTS.md` to find and verify real quotes.
 
 Prefer quotes that can be checked against a reliable source. Primary sources are best. If a primary source is not available, use reputable quote collections, archives, books, speeches, scripture references, or other traceable sources.
 
@@ -284,13 +282,13 @@ Avoid:
 
 Modern songs, films, books, and games are better suited for the button text or remark (`.a`) than the main quote (`.q`).
 
-If a modern cultural line is used as the main quote anyway, it must be very short, clearly sourced, and marked for user review.
+If a modern cultural line is used as the main quote anyway, it must be very short, and clearly sourced
 
 If attribution is uncertain, mark it uncertain or choose another quote.
 
 ## 10. Quote research workflow
 
-Use the configured internet search MCP server from `AGENTS.md` for quote research.
+Use the repository web research workflow from `AGENTS.md` for quote research.
 
 Search for quotes by combining the event's core themes with terms such as:
 
@@ -336,7 +334,7 @@ The button text (`.a`) can be a meaningful remark or cultural reference.
 
 This is separate from the main quote (`.q`).
 
-Use the configured internet search MCP server from `AGENTS.md` to find and verify cultural references.
+Use the repository web research workflow from `AGENTS.md` to find and verify cultural references.
 
 Good cultural remark sources can include:
 
@@ -362,7 +360,6 @@ For every cultural remark candidate, document:
 - source link
 - why it fits the super-event
 - whether it is a direct quote, short fragment, title reference, or paraphrase
-- whether it needs user review
 
 Do not invent a cultural reference.
 
@@ -424,7 +421,7 @@ Before looking outside the repository, check whether an approved suitable track 
 
 Use an existing track only when its source, license, duration, and intended use are already documented well enough to trust, and when its tone fits the specific super-event role and pacing.
 
-If no approved suitable track exists, search the internet using the configured internet search MCP server from `AGENTS.md`. Do not use unapproved web browsing tools for this repo.
+If no approved suitable track exists, search the internet using the repository web research workflow from `AGENTS.md`. Do not use unapproved web browsing tools for this repo.
 
 Find music that fits the exact super-event tone, role, and pacing. Prefer tracks between 1 and 2 minutes long. If a better track falls outside that range, document the exception before use and trim the final in-game file to 2 minutes or less unless the user explicitly approves a longer final track.
 
@@ -586,8 +583,7 @@ Super-event images are handled through `chaos-redux-event-assets`.
 Default rule:
 
 - use internet source images for super-event images
-- do not generate them with `image_gen` unless the user explicitly asks for fictional, symbolic, supernatural, or fully invented super-event art
-- mark super-event images as `needs_user_review` before final use
+- do not generate them with `$imagegen` unless the user explicitly asks for fictional, symbolic, supernatural, or fully invented super-event art, and then follow `chaos-redux-event-assets` and the official `$imagegen` workflow
 
 The super-event skill should define the image direction:
 
@@ -618,7 +614,7 @@ Make sure the implementation:
 1. sets the correct visibility flag
 2. sets `global.current_super_event_audio_id`
 3. uses the settings-aware playback helper
-4. updates scripted localisation
+4. updates scripted localisation, including `GetSuperEventImage` for the slot's sprite and the title/description/quote/remark getters
 5. updates player-facing localisation
 6. updates image wiring in the correct `.gfx` file
 7. updates audio wiring
@@ -672,9 +668,8 @@ The event documentation should explain:
 - what quote it uses
 - what source the quote came from
 - what audio source is used
-- whether any image is placeholder or needs review
+- whether any image is placeholder
 - confirmation that audio is final and not placeholder/default
-- whether user review is still needed
 
 Do not leave the docs saying only "super-event added."
 
@@ -721,7 +716,6 @@ The note should include:
 - uncertainties, if any
 - implementation notes
 - open questions
-- user review status
 
 ## 25. Final checklist
 
@@ -730,34 +724,33 @@ Before closing a super-event task, confirm:
 1. The super-event role is clear.
 2. The slot is chosen intentionally.
 3. Title, description, button text, and quote exist.
-4. The configured internet search MCP server was used to find and verify real quote candidates.
+4. The repository web research workflow from `AGENTS.md` was used to find and verify real quote candidates.
 5. The quote is sourced and not invented.
 6. Quote attribution is documented.
 7. Button text cultural references are sourced when applicable.
-8. Modern copyrighted lyrics, film lines, book lines, or game lines are kept very short and marked for user review when needed.
+8. Modern copyrighted lyrics, film lines, book lines, or game lines are kept very short.
 9. The image direction has been handed to `chaos-redux-event-assets`.
 10. The super-event image is sourced or generated according to the asset rules.
-11. Super-event image review status is recorded.
-12. An approved existing track was checked first.
-13. If no approved track existed, the configured internet search MCP server from `AGENTS.md` was used.
-14. Audio candidates were researched against the event tone, role, and pacing.
-15. Composition rights and recording rights were considered separately.
-16. Tracks with unclear licensing were rejected.
-17. License or public domain status is documented.
-18. Selected audio has title, creator or composer, source, license, duration, usage terms, and suitability notes.
-19. The final `.ogg` exists in the correct folder.
-20. The selected track is between 1 and 2 minutes long, or the exception is documented.
-21. Music definitions point to the correct `.ogg`.
-22. `music/chaosx_super_event_music.txt` includes the final super-event track or a representative helper song id for that track.
-23. Sound definitions point to the correct file or wrapper.
-24. The audio id is specific to the super-event or intentionally shared and documented.
-25. `global.current_super_event_audio_id` is set correctly.
-26. Settings-aware playback is used.
-27. Scripted localisation is updated.
-28. Player-facing localisation is updated.
-29. Image wiring is updated.
-30. Audio wiring is updated.
-31. Music or audio documentation is updated with source, license, duration, paths, sound definition id, super-event use, and conversion steps.
-32. No placeholder, default, mismatched, or wrong-format audio remains for completed super-events.
-33. Event docs are updated.
+11. An approved existing track was checked first.
+12. If no approved track existed, the repository web research workflow from `AGENTS.md` was used.
+13. Audio candidates were researched against the event tone, role, and pacing.
+14. Composition rights and recording rights were considered separately.
+15. Tracks with unclear licensing were rejected.
+16. License or public domain status is documented.
+17. Selected audio has title, creator or composer, source, license, duration, usage terms, and suitability notes.
+18. The final `.ogg` exists in the correct folder.
+19. The selected track is between 1 and 2 minutes long, or the exception is documented.
+20. Music definitions point to the correct `.ogg`.
+21. `music/chaosx_super_event_music.txt` includes the final super-event track or a representative helper song id for that track.
+22. Sound definitions point to the correct file or wrapper.
+23. The audio id is specific to the super-event or intentionally shared and documented.
+24. `global.current_super_event_audio_id` is set correctly.
+25. Settings-aware playback is used.
+26. Scripted localisation is updated, including `GetSuperEventImage`; otherwise the slot can show default art while the text/audio work.
+27. Player-facing localisation is updated.
+28. Image wiring is updated.
+29. Audio wiring is updated.
+30. Music or audio documentation is updated with source, license, duration, paths, sound definition id, super-event use, and conversion steps.
+31. No placeholder, default, mismatched, or wrong-format audio remains for completed super-events.
+32. Event docs are updated.
 33. Spreadsheet or event catalog is updated if relevant.
