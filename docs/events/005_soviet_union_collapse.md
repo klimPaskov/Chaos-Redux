@@ -144,6 +144,8 @@ The Soviet category currently activates these opening goal-style missions:
 
 The activation effect counts active missions before activating the next one and stops at `constant:soviet_collapse_soviet_objective.active_cap`, currently 10. The missions use equipment, manpower, fuel, trains, stability, war support, army experience, and command power as requirements or costs; political power is not the default cost.
 
+Mission outcomes use family-specific crisis pressure helpers tuned through `constant:soviet_collapse_objective_pressure`. Authority, command, rail, depot, foreign, cleanup, and settlement objectives no longer share the same flat success and failure effects; each family adjusts the relevant Union Crisis Threat components and then recalculates the total threat.
+
 ## Icon Wiring
 
 This slice reuses existing wired sprites. No new art was generated.
