@@ -1295,6 +1295,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_100_done soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_100_vladivostok_does_not_negotiate_alone_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_100_done hidden_effect = { add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.foreign_failure_foreign } if = { limit = { VLA = { exists = yes has_country_flag = soviet_collapse_breakaway } } VLA = { add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress } add_ideas = soviet_collapse_defensive_coordination } } if = { limit = { FER = { exists = yes has_country_flag = soviet_collapse_breakaway } } FER = { add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress } add_ideas = soviet_collapse_defensive_coordination } } } soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_100_vladivostok_does_not_negotiate_alone_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_101_deny_the_league_founding_quorum = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_deny_soviet_collapse_league_founding_quorum = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_101_done soviet_collapse_apply_successful_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_101_deny_the_league_founding_quorum_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_101_done soviet_collapse_apply_failed_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_101_deny_the_league_founding_quorum_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_102_split_the_league_between_west_and_south = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_split_soviet_collapse_league_west_and_south = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_102_done soviet_collapse_apply_successful_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_102_split_the_league_between_west_and_south_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_102_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway OR = { tag = UKR tag = BLR tag = LIT tag = LAT tag = EST tag = UZB tag = KYR tag = TAJ tag = TMS } } add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress } add_ideas = soviet_collapse_defensive_coordination } } } soviet_collapse_apply_failed_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_102_split_the_league_between_west_and_south_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
