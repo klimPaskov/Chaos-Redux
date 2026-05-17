@@ -79,7 +79,7 @@ The exact opening state packages are:
 2. `MFR` receives Nizhny Novgorod (`252`) and Samara (`251`) if both are owned and controlled by `SOV`.
 3. `OGB` receives Kazan (`249`) and Volga Germany (`829`) if both are owned and controlled by `SOV`.
 
-These are strict prerequisites, not fallback pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, an event notice in `events/005_soviet_collapse_factory_ancient.txt`, and an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`.
+These are strict prerequisites, not contingency pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, and an event notice in `events/005_soviet_collapse_factory_ancient.txt`. The first eligible successor in each high-chaos tier also records an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`; later successor notices in the same tier remain normal reports so the crisis does not flood the evolution log.
 
 Each tag also has an opening decision board:
 
