@@ -329,6 +329,21 @@ soviet_collapse_setup_breakaway_country = {
 	add_ideas = soviet_collapse_captured_soviet_depots
 	add_ideas = soviet_collapse_defensive_coordination
 
+	if = {
+		limit = { SOV = { exists = yes has_country_flag = soviet_collapse_next_declaration_unarmed } }
+		add_manpower = constant:soviet_collapse_breakaway_support.preempted_declaration_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.preempted_declaration_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_support.preempted_declaration_support_equipment }
+		SOV = { clr_country_flag = soviet_collapse_next_declaration_unarmed }
+	}
+	if = {
+		limit = { SOV = { exists = yes has_country_flag = soviet_collapse_next_declaration_armed } }
+		add_manpower = constant:soviet_collapse_breakaway_support.emboldened_declaration_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.emboldened_declaration_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_support.emboldened_declaration_support_equipment }
+		SOV = { clr_country_flag = soviet_collapse_next_declaration_armed }
+	}
+
 	division_template = {
 		name = "Emergency Republican Guard"
 		is_locked = yes
@@ -1108,6 +1123,8 @@ soviet_collapse_count_active_soviet_objectives = {
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_044_stop_the_volunteer_review } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_045_discredit_the_first_republic_army } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_046_break_the_defense_committees_supply } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_047_keep_the_next_declaration_unarmed } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_048_force_the_league_to_choose_a_front } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 }
 
 soviet_collapse_activate_opening_objectives = {
@@ -1159,4 +1176,6 @@ soviet_collapse_activate_opening_objectives = {
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_044_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_044_stop_the_volunteer_review } } activate_mission = soviet_collapse_soviet_mission_044_stop_the_volunteer_review add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_045_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_045_discredit_the_first_republic_army } } activate_mission = soviet_collapse_soviet_mission_045_discredit_the_first_republic_army add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_046_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_046_break_the_defense_committees_supply } } activate_mission = soviet_collapse_soviet_mission_046_break_the_defense_committees_supply add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_047_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_047_keep_the_next_declaration_unarmed } } activate_mission = soviet_collapse_soviet_mission_047_keep_the_next_declaration_unarmed add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_048_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_048_force_the_league_to_choose_a_front } } activate_mission = soviet_collapse_soviet_mission_048_force_the_league_to_choose_a_front add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 }
