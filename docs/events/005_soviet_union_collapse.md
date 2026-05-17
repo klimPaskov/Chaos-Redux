@@ -68,7 +68,15 @@ The first high-chaos successor tag foundations are registered for later spawn an
 2. `MFR` - Military Factory of Russia, led by the Arsenal Board, with existing flag and leader assets.
 3. `OGB` - Old Great Bulgaria on the Volga, led by the Volga Restoration Council, with existing flag and leader assets.
 
-These tags currently define country files, history files, politics, basic technologies, leader portraits, and localisation. Their decision mechanics, focus trees, event spawn effects, and evolution-log entries remain separate implementation slices.
+These tags currently define country files, history files, politics, basic technologies, leader portraits, localisation, and opening decision mechanics. Their focus trees, event spawn effects, and evolution-log entries remain separate implementation slices.
+
+Each tag also has an opening decision board:
+
+1. `CFR` uses `The Reconstruction State` with `Construction Mandates`, `Survey the Unfinished Sites`, and `Issue Reconstruction Contracts`.
+2. `MFR` uses `The Arsenal State` with `Arsenal Quotas`, `Audit Arsenal Orders`, and `Convert Depots to Arms Lines`.
+3. `OGB` uses `The Volga Restoration` with `Volga Legitimacy`, `Claim the Volga Crossings`, and `Convene Bolghar Scholars`.
+
+These decision boards are deliberately small foundations. They provide the variables, costs, blocked-cost localisation, ideas, and first rewards that later focus trees and event spawn effects can expand.
 
 ## Intervention Decisions
 
