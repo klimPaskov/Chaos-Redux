@@ -595,9 +595,16 @@ soviet_collapse_record_high_chaos_successor_evolution = {
 		set_temp_variable = { events_log_evolution_tier = constant:soviet_collapse_high_chaos_event_log.world_collapse_tier }
 	}
 	if = {
-		limit = { is_current_evolution_enabled = yes }
+		limit = { can_soviet_collapse_record_high_chaos_evolution_this_tier = yes }
 		save_event_target_as = events_log_evolution_actor
 		record_events_log_evolution_entry = yes
+		if = {
+			limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+			set_global_flag = soviet_collapse_high_chaos_evolution_tier_5_recorded
+		}
+		else = {
+			set_global_flag = soviet_collapse_high_chaos_evolution_tier_4_recorded
+		}
 	}
 }
 
