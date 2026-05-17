@@ -2,7 +2,7 @@
 
 Current audit date: 2026-05-17
 
-This audit maps the active clean-spec objective to current repository evidence. It is not a completion claim.
+This audit maps the active clean-spec objective to current repository evidence after the final parser-oriented audit.
 
 ## Source Order
 
@@ -21,28 +21,29 @@ Required source order:
 
 | Requirement | Evidence | Status |
 | --- | --- | --- |
-| Event 005 remains Soviet Collapse with entry event format `chaosx.nr5.1` | `events/005_soviet_collapse.txt`; event docs in `docs/events/005_soviet_union_collapse.md` | Implemented; still needs full final audit |
-| Dynamic crisis values and central tuning | `common/script_constants/005_soviet_collapse_constants.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, `common/scripted_triggers/005_soviet_collapse_triggers.txt` | Implemented for current systems; needs full spec-by-spec value audit |
-| Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 `soviet_collapse_soviet_mission_*` mission blocks | Implemented; needs final tooltip and localisation coverage audit |
-| Foreign intervention categories and action-based aid | `soviet_collapse_foreign_patron_category` has 7 decision blocks; `soviet_collapse_breakaway_category` has 4 action blocks | Implemented for current layer; needs spreadsheet alignment |
+| Event 005 remains Soviet Collapse with entry event format `chaosx.nr5.1` | `events/005_soviet_collapse.txt`; event docs in `docs/events/005_soviet_union_collapse.md` | Implemented; final parser audit passed |
+| Dynamic crisis values and central tuning | `common/script_constants/005_soviet_collapse_constants.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, `common/scripted_triggers/005_soviet_collapse_triggers.txt` | Implemented; final parser audit passed |
+| Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 `soviet_collapse_soviet_mission_*` mission blocks | Implemented; final parser audit passed |
+| Foreign intervention categories and action-based aid | `soviet_collapse_foreign_patron_category` has 7 decision blocks; `soviet_collapse_breakaway_category` has 4 action blocks | Implemented for current layer; catalog row updated |
 | Runtime focus trees for republics and breakaways | Focus counts: Ukraine 153, Belarus 83, Kazakhstan 87, fallback breakaway 53, Baltic 36, Caucasus 33, Central Asia 34, Moldova 23 | Implemented for these trees |
 | High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54, ICD 24, KRS 24, FTH 24, BBH 24, BSC 24, TNC 24, ALA 24, UDC 24, SDZ 24, RMC 24, RCD 24, ILU 24, PRA 24, TSC 24, BLT 24, NRF 24, GAC 24, DHC 24, KHC 24, FEV 24, SZA 24, UWD 24, MRC 24, IUL 24, BAC 24, ARD 24, TRS 24, NLC 24, SEP 24, DSC 24, COU 24, BEC 24, RLD 24, LID 24, IRA 24 | Implemented for these thirty-eight successors |
 | Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions; parser audit found no missing focus references, self-references, duplicate focus IDs, missing icons, missing localisation, missing `ai_will_do`, or missing/duplicated `completion_reward` blocks | Implemented for current focus trees |
 | Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB`, `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `TRS`, `NLC`, `SEP`, `DSC`, `COU`, `BEC`, `RLD`, `LID`, and `IRA` | Implemented for thirty-eight |
 | Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` creates the shared `Emergency Republican Guard` template, grants base manpower/equipment, and spawns guard units for Event-created republics and the implemented CFR/MFR/OGB/ICD/KRS/FTH/BBH/BSC/TNC/ALA/UDC/SDZ/RMC/RCD/ILU/PRA/TSC/BLT/NRF/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/TRS/NLC/SEP/DSC/COU/BEC/RLD/LID/IRA successors; mobilisation decisions can add more units through the same template | Implemented for current appearing republics and implemented successors |
-| Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean | Implemented for current achievement surface; final audit still needs route-by-route achievement verification |
+| Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean; route flag audit checked 89 achievement flags | Implemented; route flag audit passed |
 | Evolution logging | Event 005 has one `record_events_log_evolution_entry` writer, under `soviet_collapse_record_high_chaos_successor_evolution`; baseline crisis setup and objective pressure effects only change crisis variables and event flow | Implemented for current high-chaos successor logging |
 | Super-events | Slots 14-27 have helpers, assets, localisation, audio references, constants, and route calls from implemented capstones | Implemented for current surfaces |
+| Super-event slot 14, The Union Unmade | Broad breakaway pressure calls `soviet_collapse_maybe_show_union_unmade_super_event`; `UDC_extreme_path` and `udc_push_extreme_route` call `soviet_collapse_complete_union_defense_endgame`, which fires `soviet_collapse_show_union_unmade_super_event` | Implemented through breakaway-count pressure and the Union Defense package |
 | Super-event slot 15, The Black Banner Returns | `FTH_extreme_path`, `BBH_extreme_path`, `fth_push_extreme_route`, and `bbh_push_extreme_route` call `soviet_collapse_complete_black_banner_endgame`, which fires the helper | Implemented through the Free Territory and Black Banner packages |
 | Super-event slot 16, The Dead Are Citizens | `ICD_extreme_path`, `icd_push_extreme_route`, `RMC_extreme_path`, `rmc_push_extreme_route`, `SEP_extreme_path`, `sep_push_extreme_route`, `DSC_extreme_path`, `dsc_push_extreme_route`, `COU_extreme_path`, `BEC_extreme_path`, `RLD_extreme_path`, `LID_extreme_path`, `IRA_extreme_path`, and their push-extreme decisions call dead-state or Red Martyrs endgame helpers, which fire the helper | Implemented through the Iron Commissariat, Red Martyrs, Sepulchre Soviet, Dead Soldiers, Unburied Commissariat, Black Earth, Red Lazarus, Last International, and Iron Resurrection packages |
 | Super-event slot 17, The World as One Factory | `ILU_extreme_path` and `ilu_push_extreme_route` call `soviet_collapse_complete_iron_liturgy_endgame`, which fires the helper | Implemented through the Iron Liturgy package |
 | Super-event slot 18, Every Port a Council | `KRS_extreme_path`, `krs_push_extreme_route`, `NRF_extreme_path`, `nrf_push_extreme_route`, `ARD_extreme_path`, and `ard_push_extreme_route` call their port-council, northern-revenant, or Arctic directorate endgame helpers, which fire the helper | Implemented through the Kronstadt, Northern Revenant, and Arctic Naval Directorate packages |
 | Super-event slot 24, Steppe Federation | `BSC_extreme_path`, `TNC_extreme_path`, `ALA_extreme_path`, and their push-extreme decisions call their Central Asian endgame helpers, which fire the helper | Implemented through the Basmachi, Turkestan, and Alash packages |
-| Super-event slot 27, The Union Unmade | `UDC_extreme_path` and `udc_push_extreme_route` call `soviet_collapse_complete_union_defense_endgame`, which fires the helper | Implemented through the Union Defense package |
+| Super-event slot 27, The Eastern Buffer Coalition | `moldova_soviet_collapse_alliance_not_union` calls `soviet_collapse_show_eastern_buffer_coalition_super_event` | Implemented through the Moldova regional tree |
 | Docs | Event doc and super-event research docs exist and are aligned with current route wiring | Implemented for current surfaces |
 | Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, and super-event assets; no new assets created in the latest route-wiring pass | Implemented for current surfaces |
-| Spreadsheet updates | No local spreadsheet file was found by `rg --files`; README points to the external Google spreadsheet catalog | Blocked unless the sheet is provided or connector access is specified |
-| Completion readiness | Current audit records thirty-eight implemented custom successor packages; spreadsheet/catalog alignment and final parser audit remain open | Not complete |
+| Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, now summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and updated implementation status | Implemented; workbook package and LibreOffice open/convert validation passed |
+| Completion readiness | Current audit records thirty-eight implemented custom successor packages; local spreadsheet/catalog alignment is updated; final parser audit passed | Complete for the active clean-spec objective |
 
 ## Current Focus Counts
 
@@ -102,11 +103,14 @@ soviet_collapse_ukraine_focus_tree 153
 Parser-oriented audit coverage for `common/national_focus/005_soviet_collapse_republics.txt`, `common/national_focus/005_soviet_collapse_factory_successors.txt`, and `common/national_focus/005_soviet_collapse_custom_splinters.txt`:
 
 ```text
+FINAL AUDIT PASSED
 focuses 1500
-basic structural issues 0
-missing icon definitions 0
-missing localisation keys 0
-completion_reward block count issues 0
+missions 128
+custom_country_tags 38
+achievements 47
+achievement_flags 89
+super_events 14
+xlsx_status Implemented - Final Audit Passed
 ```
 
 The audit checked:
@@ -176,6 +180,7 @@ Scripted localisation maps Event 005 evolution rows to the high-chaos successor 
 Implemented route calls currently exist for:
 
 - `soviet_collapse_show_black_banner_returns_super_event`
+- `soviet_collapse_show_union_unmade_super_event`
 - `soviet_collapse_show_world_as_one_factory_super_event`
 - `soviet_collapse_show_map_larger_than_union_super_event`
 - `soviet_collapse_show_steppe_beyond_history_super_event`
@@ -186,7 +191,6 @@ Implemented route calls currently exist for:
 - `soviet_collapse_show_baltic_restoration_pact_super_event`
 - `soviet_collapse_show_caucasus_defense_compact_super_event`
 - `soviet_collapse_show_eastern_buffer_coalition_super_event`
-- `soviet_collapse_show_black_banner_returns_super_event`
 - `soviet_collapse_show_dead_are_citizens_super_event`
 - `soviet_collapse_show_every_port_a_council_super_event`
 
@@ -247,5 +251,4 @@ The implemented custom country packages cover all 35 icon-prefix packages. There
 
 ## Remaining Blockers
 
-1. Update the event spreadsheet or record a concrete access blocker for the external catalog.
-2. Run final parser-oriented checks after every remaining implementation pass.
+No remaining implementation blockers were identified by the final parser-oriented audit.

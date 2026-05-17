@@ -620,6 +620,8 @@ soviet_collapse_apply_breakaway_front_coordination = {
 }
 
 soviet_collapse_apply_foreign_recognition_aid = {
+	if = { limit = { has_government = democratic } set_country_flag = soviet_collapse_democratic_patron_contest_completed }
+	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_stability = constant:soviet_collapse_foreign_intervention.recognition_stability_spend
 	add_war_support = constant:soviet_collapse_foreign_intervention.recognition_war_support_spend
 	FROM = {
@@ -637,6 +639,8 @@ soviet_collapse_apply_foreign_recognition_aid = {
 }
 
 soviet_collapse_apply_foreign_liaison_aid = {
+	if = { limit = { has_government = democratic } set_country_flag = soviet_collapse_democratic_patron_contest_completed }
+	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_stability = constant:soviet_collapse_foreign_intervention.liaison_stability_spend
 	if = { limit = { has_government = communism } FROM = { add_popularity = { ideology = communism popularity = constant:soviet_collapse_foreign_intervention.liaison_ideology_popularity } } }
 	if = { limit = { has_government = democratic } FROM = { add_popularity = { ideology = democratic popularity = constant:soviet_collapse_foreign_intervention.liaison_ideology_popularity } } }
@@ -656,6 +660,7 @@ soviet_collapse_apply_foreign_liaison_aid = {
 }
 
 soviet_collapse_apply_foreign_armaments_aid = {
+	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.armaments_infantry_equipment_spend }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.armaments_support_equipment_spend }
 	FROM = {
@@ -675,6 +680,7 @@ soviet_collapse_apply_foreign_armaments_aid = {
 }
 
 soviet_collapse_apply_foreign_adviser_aid = {
+	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	army_experience = constant:soviet_collapse_foreign_intervention.advisers_army_xp_spend
 	add_manpower = constant:soviet_collapse_foreign_intervention.advisers_manpower_spend
 	FROM = {
@@ -694,6 +700,7 @@ soviet_collapse_apply_foreign_adviser_aid = {
 }
 
 soviet_collapse_apply_foreign_intelligence_aid = {
+	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_fuel = constant:soviet_collapse_foreign_intervention.intelligence_fuel_spend
 	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_foreign_intervention.intelligence_train_spend }
 	FROM = {
@@ -711,6 +718,8 @@ soviet_collapse_apply_foreign_intelligence_aid = {
 }
 
 soviet_collapse_apply_foreign_volunteer_aid = {
+	if = { limit = { has_government = democratic } set_country_flag = soviet_collapse_democratic_patron_contest_completed }
+	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_manpower = constant:soviet_collapse_foreign_intervention.volunteers_manpower_spend
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.volunteers_infantry_equipment_spend }
 	FROM = {
@@ -730,6 +739,8 @@ soviet_collapse_apply_foreign_volunteer_aid = {
 }
 
 soviet_collapse_apply_foreign_trade_aid = {
+	if = { limit = { has_government = democratic } set_country_flag = soviet_collapse_democratic_patron_contest_completed }
+	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_fuel = constant:soviet_collapse_foreign_intervention.trade_fuel_spend
 	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_foreign_intervention.trade_convoy_spend }
 	FROM = {
@@ -1225,6 +1236,7 @@ soviet_collapse_apply_custom_splinter_push_extreme_route = {
 }
 
 soviet_collapse_complete_dead_state_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	set_country_flag = soviet_collapse_dead_international_endgame
 	add_ideas = icd_total_mobilization_of_the_dead
@@ -1237,12 +1249,14 @@ soviet_collapse_complete_dead_state_endgame = {
 }
 
 soviet_collapse_complete_port_council_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_port_council_endgame
 	add_ideas = krs_every_port_a_council
 	soviet_collapse_show_every_port_a_council_super_event = yes
 }
 
 soviet_collapse_complete_black_banner_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_black_banner_endgame
 	if = {
 		limit = { tag = FTH }
@@ -1261,6 +1275,7 @@ soviet_collapse_complete_black_banner_endgame = {
 }
 
 soviet_collapse_complete_basmachi_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_basmachi_endgame
 	add_ideas = bsc_road_beyond_the_steppe
 	if = {
@@ -1272,6 +1287,7 @@ soviet_collapse_complete_basmachi_endgame = {
 }
 
 soviet_collapse_complete_turkestan_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_turkestan_endgame
 	add_ideas = tnc_new_turkestan
 	if = {
@@ -1283,6 +1299,8 @@ soviet_collapse_complete_turkestan_endgame = {
 }
 
 soviet_collapse_complete_alash_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_returned_names_claim_lines_active
 	set_country_flag = soviet_collapse_alash_endgame
 	add_ideas = ala_national_modernization
 	if = {
@@ -1294,17 +1312,21 @@ soviet_collapse_complete_alash_endgame = {
 }
 
 soviet_collapse_complete_union_defense_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_union_of_bad_ideas_program
 	set_country_flag = soviet_collapse_union_defense_endgame
 	add_ideas = udc_purified_union_command
 	soviet_collapse_show_union_unmade_super_event = yes
 }
 
 soviet_collapse_complete_security_directorate_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_security_directory_endgame
 	add_ideas = sdz_world_in_one_archive
 }
 
 soviet_collapse_complete_red_martyrs_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_red_martyrs_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	add_ideas = rmc_every_grave_a_barracks
@@ -1312,85 +1334,105 @@ soviet_collapse_complete_red_martyrs_endgame = {
 }
 
 soviet_collapse_complete_red_cosmist_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_red_cosmist_endgame
 	add_ideas = rcd_no_grave_outside_the_state
 }
 
 soviet_collapse_complete_iron_liturgy_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_iron_liturgy_endgame
 	add_ideas = ilu_world_as_one_factory
 	soviet_collapse_show_world_as_one_factory_super_event = yes
 }
 
 soviet_collapse_complete_pale_railway_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_pale_railway_endgame
 	add_ideas = pra_every_junction_under_authority
 }
 
 soviet_collapse_complete_tunguska_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_tunguska_star_endgame
 	add_ideas = tsc_bring_the_fire_west
 }
 
 soviet_collapse_complete_last_tsar_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_returned_names_claim_lines_active
 	set_country_flag = soviet_collapse_last_tsar_endgame
 	set_country_flag = soviet_collapse_monarchist_restoration_endgame
 	add_ideas = blt_universal_throne
 }
 
 soviet_collapse_complete_northern_revenant_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_northern_revenant_endgame
 	add_ideas = nrf_every_coast_a_northern_port
 	soviet_collapse_show_every_port_a_council_super_event = yes
 }
 
 soviet_collapse_complete_green_army_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_green_army_endgame
 	add_ideas = gac_land_and_bread_against_the_world
 }
 
 soviet_collapse_complete_don_host_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_don_host_endgame
 	add_ideas = dhc_southern_host_command
 }
 
 soviet_collapse_complete_kuban_host_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_kuban_host_endgame
 	add_ideas = khc_kuban_line_command
 }
 
 soviet_collapse_complete_far_eastern_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_eastern_buffer_secured
 	set_country_flag = soviet_collapse_far_eastern_endgame
 	add_ideas = fev_far_eastern_line_command
 }
 
 soviet_collapse_complete_siberian_zemstvo_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_siberian_zemstvo_endgame
 	add_ideas = sza_siberian_depth_command
 }
 
 soviet_collapse_complete_ural_workers_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_ural_workers_endgame
 	add_ideas = uwd_arsenal_autonomy_directorate
 }
 
 soviet_collapse_complete_mountain_republic_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_returned_names_claim_lines_active
 	set_country_flag = soviet_collapse_mountain_republic_endgame
 	add_ideas = mrc_mountain_republic_mandate
 }
 
 soviet_collapse_complete_idel_ural_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_returned_names_claim_lines_active
 	set_country_flag = soviet_collapse_idel_ural_endgame
 	add_ideas = iul_federal_corridor_authority
 }
 
 soviet_collapse_complete_birobidzhan_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_birobidzhan_endgame
 	add_ideas = bac_autonomous_commune_mandate
 }
 
 
 soviet_collapse_complete_arctic_directorate_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_arctic_directorate_endgame
 	set_country_flag = soviet_collapse_port_council_endgame
 	soviet_collapse_show_every_port_a_council_super_event = yes
@@ -1398,18 +1440,22 @@ soviet_collapse_complete_arctic_directorate_endgame = {
 }
 
 soviet_collapse_complete_third_rome_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_returned_names_claim_lines_active
 	set_country_flag = soviet_collapse_third_rome_endgame
 	set_country_flag = soviet_collapse_monarchist_restoration_endgame
 	add_ideas = trs_fourth_testament_of_moscow
 }
 
 soviet_collapse_complete_northern_lights_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_northern_lights_endgame
 	set_country_flag = soviet_collapse_northern_revenant_endgame
 	add_ideas = nlc_world_after_capitals
 }
 
 soviet_collapse_complete_sepulchre_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_sepulchre_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	soviet_collapse_show_dead_are_citizens_super_event = yes
@@ -1417,6 +1463,7 @@ soviet_collapse_complete_sepulchre_endgame = {
 }
 
 soviet_collapse_complete_dead_soldiers_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_dead_soldiers_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	soviet_collapse_show_dead_are_citizens_super_event = yes
@@ -1425,6 +1472,7 @@ soviet_collapse_complete_dead_soldiers_endgame = {
 
 
 soviet_collapse_complete_unburied_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_unburied_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	set_country_flag = soviet_collapse_death_state
@@ -1433,6 +1481,7 @@ soviet_collapse_complete_unburied_endgame = {
 }
 
 soviet_collapse_complete_black_earth_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_black_earth_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	set_country_flag = soviet_collapse_death_state
@@ -1441,6 +1490,7 @@ soviet_collapse_complete_black_earth_endgame = {
 }
 
 soviet_collapse_complete_red_lazarus_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_red_lazarus_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	set_country_flag = soviet_collapse_death_state
@@ -1449,6 +1499,7 @@ soviet_collapse_complete_red_lazarus_endgame = {
 }
 
 soviet_collapse_complete_last_international_dead_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_last_international_dead_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	set_country_flag = soviet_collapse_death_state
@@ -1457,6 +1508,7 @@ soviet_collapse_complete_last_international_dead_endgame = {
 }
 
 soviet_collapse_complete_iron_resurrection_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_iron_resurrection_endgame
 	set_country_flag = soviet_collapse_death_state_military_endgame
 	set_country_flag = soviet_collapse_death_state

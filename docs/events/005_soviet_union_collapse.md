@@ -49,7 +49,7 @@ When Kazakhstan appears as an event-created opening breakaway, the southern casc
 
 Future breakaway setup also consumes one-use Soviet mission flags. `soviet_collapse_next_declaration_unarmed` reduces the next breakaway support package, while `soviet_collapse_next_declaration_armed` increases it; either flag clears after it is applied to one breakaway.
 
-This is still an incomplete Event 005 implementation. Remaining work is concentrated in the external event catalog/spreadsheet audit and final parser-oriented review, while the current opening, republic, regional, and custom successor focus surfaces are wired.
+The local event catalog workbook row for Event 005 matches the current clean-spec implementation, and the final parser-oriented review passed across the opening, republic, regional, custom successor, achievement, spreadsheet, and super-event surfaces.
 
 ## Republic Focus Trees
 
