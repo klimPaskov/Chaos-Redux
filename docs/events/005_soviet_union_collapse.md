@@ -60,6 +60,16 @@ The implemented trees are:
 
 Focus rewards call shared scripted effects for legal recognition, socialist sovereignty, military consolidation, depot control, League preparation, foreign channels, and high-chaos identity pressure. Those effects adjust local breakaway variables and feed the Soviet crisis meter through constants in `soviet_collapse_republic_focus`.
 
+## High-Chaos Tags
+
+The first high-chaos successor tag foundations are registered for later spawn and mechanics work:
+
+1. `CFR` - Civilian Factory of Russia, led by the Construction Board, with existing flag and leader assets.
+2. `MFR` - Military Factory of Russia, led by the Arsenal Board, with existing flag and leader assets.
+3. `OGB` - Old Great Bulgaria on the Volga, led by the Volga Restoration Council, with existing flag and leader assets.
+
+These tags currently define country files, history files, politics, basic technologies, leader portraits, and localisation. Their decision mechanics, focus trees, event spawn effects, and evolution-log entries remain separate implementation slices.
+
 ## Intervention Decisions
 
 Breakaway republics have a small playable emergency board:
@@ -113,6 +123,7 @@ This slice reuses existing wired sprites. No new art was generated.
 - Soviet objectives use the shared goal sprites in `interface/005_soviet_collapse_icons.gfx`, including `GFX_decision_soviet_collapse_authority_goal`, `GFX_decision_soviet_collapse_command_goal`, `GFX_decision_soviet_collapse_rail_goal`, `GFX_decision_soviet_collapse_depot_goal`, `GFX_decision_soviet_collapse_border_goal`, `GFX_decision_soviet_collapse_foreign_goal`, and `GFX_decision_soviet_collapse_cleanup_goal`.
 - The visible opening event uses `GFX_report_union_crisis`; the news event uses `GFX_news_soviet_union_collapse`.
 - Republic focus trees use existing sprites from `interface/005_soviet_collapse_icons.gfx`, `interface/005_soviet_collapse_ukraine_icons.gfx`, `interface/005_soviet_collapse_blr_icons.gfx`, and `interface/005_soviet_collapse_kaz_icons.gfx`. No additional focus sprite filenames are required for this slice.
+- High-chaos tag foundations use flag assets under `gfx/flags/`, leader portraits under `gfx/leaders/005_soviet_collapse/`, and portrait sprite keys in `interface/005_soviet_collapse_factory_ancient_icons.gfx`.
 
 ## Future Plans
 
