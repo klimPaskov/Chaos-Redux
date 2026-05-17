@@ -6568,7 +6568,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = soviet_collapse_kazakhstan_league_resource_pool
 			soviet_collapse_apply_focus_league_preparation = yes
-			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_republic_focus.medium_league_gain }
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
 		}
 		ai_will_do = {
 			base = 5
@@ -6791,5 +6791,275 @@ focus_tree = {
 			soviet_collapse_apply_focus_military_consolidation = yes
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_invite_the_uzbek_delegates
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 5
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = kaz_soviet_collapse_the_south_asks_for_guarantees }
+		available = { UZB = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_uzbek_delegates_invited
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 UZB = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_tajik_mountain_envoys
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30
+		y = 6
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = kaz_soviet_collapse_the_south_asks_for_guarantees }
+		available = { TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_tajik_envoys_invited
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_turkmen_rail_and_desert_talks
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 28
+		y = 7
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = kaz_soviet_collapse_the_south_asks_for_guarantees }
+		available = { TMS = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_turkmen_talks_opened
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 TMS = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_kyrgyz_border_assembly
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 30
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = kaz_soviet_collapse_the_south_asks_for_guarantees }
+		available = { KYR = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_kyrgyz_assembly_invited
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 KYR = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_steppe_federation_charter
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_invite_the_uzbek_delegates focus = kaz_soviet_collapse_tajik_mountain_envoys focus = kaz_soviet_collapse_turkmen_rail_and_desert_talks focus = kaz_soviet_collapse_kyrgyz_border_assembly }
+		mutually_exclusive = { focus = kaz_soviet_collapse_lone_steppe_state }
+		available = {
+			OR = {
+				AND = {
+					has_completed_focus = kaz_soviet_collapse_invite_the_uzbek_delegates
+					has_completed_focus = kaz_soviet_collapse_tajik_mountain_envoys
+				}
+				AND = {
+					has_completed_focus = kaz_soviet_collapse_invite_the_uzbek_delegates
+					has_completed_focus = kaz_soviet_collapse_turkmen_rail_and_desert_talks
+				}
+				AND = {
+					has_completed_focus = kaz_soviet_collapse_invite_the_uzbek_delegates
+					has_completed_focus = kaz_soviet_collapse_kyrgyz_border_assembly
+				}
+				AND = {
+					has_completed_focus = kaz_soviet_collapse_tajik_mountain_envoys
+					has_completed_focus = kaz_soviet_collapse_turkmen_rail_and_desert_talks
+				}
+				AND = {
+					has_completed_focus = kaz_soviet_collapse_tajik_mountain_envoys
+					has_completed_focus = kaz_soviet_collapse_kyrgyz_border_assembly
+				}
+				AND = {
+					has_completed_focus = kaz_soviet_collapse_turkmen_rail_and_desert_talks
+					has_completed_focus = kaz_soviet_collapse_kyrgyz_border_assembly
+				}
+			}
+			OR = {
+				has_war = yes
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_steppe_federation_charter
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 3 is_soviet_collapse_southern_breakaway_active = yes }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_lone_steppe_state
+		icon = GFX_kaz_soviet_collapse_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_the_steppe_arsenal focus = kaz_soviet_collapse_the_army_that_crosses_distance focus = kaz_soviet_collapse_no_single_capital_can_hold_the_steppe }
+		mutually_exclusive = { focus = kaz_soviet_collapse_steppe_federation_charter }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_kazakhstan_steppe_arsenal
+				has_country_flag = soviet_collapse_kazakhstan_army_crosses_distance
+				has_country_flag = soviet_collapse_kazakhstan_decentralized_state_model
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_lone_steppe_state
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 NOT = { is_soviet_collapse_southern_breakaway_active = yes } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_iranian_and_turkish_listening_posts
+		icon = GFX_kaz_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_the_south_asks_for_guarantees focus = kaz_soviet_collapse_resource_concessions_debate }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_iranian_turkish_posts
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_british_and_american_engineers
+		icon = GFX_kaz_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 14
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_foreign_technical_missions }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_anglo_american_engineers
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_japanese_eastern_rumors
+		icon = GFX_kaz_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_iranian_and_turkish_listening_posts }
+		available = {
+			OR = {
+				JAP = { exists = yes has_war_with = SOV }
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_japanese_eastern_rumors
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 JAP = { exists = yes has_war_with = SOV } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_a_federation_that_can_fight
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 14
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_steppe_federation_charter }
+		prerequisite = { focus = kaz_soviet_collapse_the_army_that_crosses_distance }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_federation_can_fight
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_no_concession_without_a_republic
+		icon = GFX_kaz_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 14
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_resource_concessions_debate }
+		available = { SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_no_concession_without_republic
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_southern_shield
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 28
+		y = 16
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_a_federation_that_can_fight focus = kaz_soviet_collapse_kyrgyz_border_assembly focus = kaz_soviet_collapse_lone_steppe_state }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_southern_shield
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+		}
+		ai_will_do = { base = 6 }
 	}
 }
