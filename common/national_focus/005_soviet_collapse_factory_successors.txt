@@ -1031,3 +1031,816 @@ focus_tree = {
 		ai_will_do = { base = 10 }
 	}
 }
+
+focus_tree = {
+	id = MFR_soviet_collapse_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 20
+			tag = MFR
+			has_country_flag = soviet_collapse_high_chaos_successor
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 50 y = 1200 }
+	initial_show_position = { x = 10 y = 0 }
+
+	focus = {
+		id = MFR_orders_outlive_ministries
+		icon = GFX_focus_MFR_orders_outlive_ministries
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 0
+		cost = @soviet_collapse_focus_short
+		completion_reward = {
+			set_country_flag = mfr_focus_orders_outlive_ministries
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	focus = {
+		id = MFR_arsenal_board_meets
+		icon = GFX_focus_MFR_arsenal_board_meets
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_orders_outlive_ministries }
+		completion_reward = {
+			set_country_flag = mfr_focus_arsenal_board_meets
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+			soviet_collapse_apply_mfr_focus_security_state = yes
+		}
+		ai_will_do = { base = 11 }
+	}
+
+	focus = {
+		id = MFR_machine_tool_seizures
+		icon = GFX_focus_MFR_machine_tool_seizures
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_arsenal_board_meets }
+		completion_reward = {
+			set_country_flag = mfr_focus_machine_tool_seizures
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MFR_factory_guard_oaths
+		icon = GFX_focus_MFR_factory_guard_oaths
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_machine_tool_seizures }
+		completion_reward = {
+			set_country_flag = mfr_focus_factory_guard_oaths
+			soviet_collapse_apply_mfr_focus_security_state = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MFR_arsenal_ration_law
+		icon = GFX_focus_MFR_arsenal_ration_law
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 4
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_guard_oaths }
+		completion_reward = {
+			set_country_flag = mfr_focus_arsenal_ration_law
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = MFR_who_owns_the_rifle
+		icon = GFX_focus_MFR_who_owns_the_rifle
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_arsenal_ration_law }
+		completion_reward = {
+			set_country_flag = mfr_focus_who_owns_the_rifle
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MFR_officers_chair_the_board
+		icon = GFX_focus_MFR_officers_chair_the_board
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 1
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_who_owns_the_rifle }
+		mutually_exclusive = { focus = MFR_armorers_elect_delegates }
+		mutually_exclusive = { focus = MFR_merchants_of_ammunition }
+		mutually_exclusive = { focus = MFR_eternal_arsenal }
+		completion_reward = {
+			set_country_flag = mfr_route_officer_board
+			soviet_collapse_apply_mfr_focus_security_state = yes
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = MFR_armorers_elect_delegates
+		icon = GFX_focus_MFR_armorers_elect_delegates
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_who_owns_the_rifle }
+		mutually_exclusive = { focus = MFR_officers_chair_the_board }
+		mutually_exclusive = { focus = MFR_merchants_of_ammunition }
+		mutually_exclusive = { focus = MFR_eternal_arsenal }
+		completion_reward = {
+			set_country_flag = mfr_route_worker_delegates
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_small }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < 0.5 }
+		}
+	}
+
+	focus = {
+		id = MFR_merchants_of_ammunition
+		icon = GFX_focus_MFR_merchants_of_ammunition
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 11
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_who_owns_the_rifle }
+		mutually_exclusive = { focus = MFR_officers_chair_the_board }
+		mutually_exclusive = { focus = MFR_armorers_elect_delegates }
+		mutually_exclusive = { focus = MFR_eternal_arsenal }
+		completion_reward = {
+			set_country_flag = mfr_route_ammunition_merchants
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_eternal_arsenal
+		icon = GFX_focus_MFR_eternal_arsenal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_who_owns_the_rifle }
+		mutually_exclusive = { focus = MFR_officers_chair_the_board }
+		mutually_exclusive = { focus = MFR_armorers_elect_delegates }
+		mutually_exclusive = { focus = MFR_merchants_of_ammunition }
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = mfr_route_eternal_arsenal
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+			add_popularity = { ideology = fascism popularity = constant:soviet_collapse_factory_ancient.popularity_small }
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = MFR_military_accounting_courts
+		icon = GFX_focus_MFR_military_accounting_courts
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 1
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_officers_chair_the_board }
+		completion_reward = {
+			set_country_flag = mfr_focus_military_accounting_courts
+			soviet_collapse_apply_mfr_focus_security_state = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_shop_floor_committees
+		icon = GFX_focus_MFR_shop_floor_committees
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_armorers_elect_delegates }
+		completion_reward = {
+			set_country_flag = mfr_focus_shop_floor_committees
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_every_buyer_has_a_flag
+		icon = GFX_focus_MFR_every_buyer_has_a_flag
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 11
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_merchants_of_ammunition }
+		completion_reward = {
+			set_country_flag = mfr_focus_every_buyer_has_flag
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_quota_above_life
+		icon = GFX_focus_MFR_quota_above_life
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_eternal_arsenal }
+		completion_reward = {
+			set_country_flag = mfr_focus_quota_above_life
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_factory_war_cabinet
+		icon = GFX_focus_MFR_factory_war_cabinet
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = {
+			focus = MFR_military_accounting_courts
+			focus = MFR_shop_floor_committees
+			focus = MFR_every_buyer_has_a_flag
+			focus = MFR_quota_above_life
+		}
+		completion_reward = {
+			set_country_flag = mfr_focus_factory_war_cabinet
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MFR_rifles_before_speeches
+		icon = GFX_focus_MFR_rifles_before_speeches
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 1
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_rifles_before_speeches
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = MFR_artillery_from_broken_foundries
+		icon = GFX_focus_MFR_artillery_from_broken_foundries
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 6
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_artillery_broken_foundries
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_repair_the_tank_lines
+		icon = GFX_focus_MFR_repair_the_tank_lines
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 11
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_repair_tank_lines
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_aircraft_parts_in_secret_workshops
+		icon = GFX_focus_MFR_aircraft_parts_in_secret_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_aircraft_parts_secret_workshops
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_shells_without_sleep
+		icon = GFX_focus_MFR_shells_without_sleep
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 21
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		available = { has_country_flag = mfr_route_eternal_arsenal }
+		completion_reward = {
+			set_country_flag = mfr_focus_shells_without_sleep
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = mfr_route_eternal_arsenal }
+		}
+	}
+
+	focus = {
+		id = MFR_standardize_the_rifle_line
+		icon = GFX_focus_MFR_standardize_the_rifle_line
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 1
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_rifles_before_speeches }
+		completion_reward = {
+			set_country_flag = mfr_focus_standardize_rifle_line
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_battery_cities
+		icon = GFX_focus_MFR_battery_cities
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_artillery_from_broken_foundries }
+		completion_reward = {
+			set_country_flag = mfr_focus_battery_cities
+			soviet_collapse_apply_mfr_focus_security_state = yes
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_plate_steel_rationing
+		icon = GFX_focus_MFR_plate_steel_rationing
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 11
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_repair_the_tank_lines }
+		completion_reward = {
+			set_country_flag = mfr_focus_plate_steel_rationing
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = MFR_engines_from_evacuation_stores
+		icon = GFX_focus_MFR_engines_from_evacuation_stores
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_aircraft_parts_in_secret_workshops }
+		completion_reward = {
+			set_country_flag = mfr_focus_engines_from_evacuation_stores
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_red_warning_lamps
+		icon = GFX_focus_MFR_red_warning_lamps
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 21
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_shells_without_sleep }
+		completion_reward = {
+			set_country_flag = mfr_focus_red_warning_lamps
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MFR_arms_for_recognition
+		icon = GFX_focus_MFR_arms_for_recognition
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 25
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_every_buyer_has_a_flag }
+		completion_reward = {
+			set_country_flag = mfr_focus_arms_for_recognition
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_rifles_for_the_league
+		icon = GFX_focus_MFR_rifles_for_the_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 23
+		y = 10
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_arms_for_recognition }
+		completion_reward = {
+			set_country_flag = mfr_focus_rifles_for_league
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_rifles_against_the_league
+		icon = GFX_focus_MFR_rifles_against_the_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 27
+		y = 10
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_arms_for_recognition }
+		completion_reward = {
+			set_country_flag = mfr_focus_rifles_against_league
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = MFR_german_orders
+		icon = GFX_focus_MFR_german_orders
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 25
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = {
+			focus = MFR_rifles_for_the_league
+			focus = MFR_rifles_against_the_league
+		}
+		completion_reward = {
+			set_country_flag = mfr_focus_german_orders
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_no_serial_numbers
+		icon = GFX_focus_MFR_no_serial_numbers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 25
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_german_orders }
+		completion_reward = {
+			set_country_flag = mfr_focus_no_serial_numbers
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MFR_no_shell_without_obedience
+		icon = GFX_focus_MFR_no_shell_without_obedience
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 3
+		y = 14
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_no_shell_without_obedience
+			soviet_collapse_apply_mfr_focus_security_state = yes
+			add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_unsafe_production_surge
+		icon = GFX_focus_MFR_unsafe_production_surge
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 14
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_unsafe_production_surge
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_factory_guard_columns
+		icon = GFX_focus_MFR_factory_guard_columns
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 13
+		y = 14
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_factory_guard_columns
+			soviet_collapse_apply_mfr_focus_security_state = yes
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = MFR_armored_train_workshops
+		icon = GFX_focus_MFR_armored_train_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 18
+		y = 14
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_guard_columns }
+		completion_reward = {
+			set_country_flag = mfr_focus_armored_train_workshops
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+			soviet_collapse_apply_mfr_focus_security_state = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_workers_must_not_flee
+		icon = GFX_focus_MFR_workers_must_not_flee
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 21
+		y = 13
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_red_warning_lamps }
+		completion_reward = {
+			set_country_flag = mfr_focus_workers_must_not_flee
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MFR_civilian_factory_rivalry
+		icon = GFX_focus_MFR_civilian_factory_rivalry
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 25
+		y = 14
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_factory_war_cabinet }
+		completion_reward = {
+			set_country_flag = mfr_focus_civilian_factory_rivalry
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_contracts_with_builders
+		icon = GFX_focus_MFR_contracts_with_builders
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 23
+		y = 15
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_civilian_factory_rivalry }
+		completion_reward = {
+			set_country_flag = mfr_focus_contracts_with_builders
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_builders_waste_steel
+		icon = GFX_focus_MFR_builders_waste_steel
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 27
+		y = 15
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = MFR_civilian_factory_rivalry }
+		completion_reward = {
+			set_country_flag = mfr_focus_builders_waste_steel
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = MFR_the_arsenal_state
+		icon = GFX_focus_MFR_the_arsenal_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = {
+			focus = MFR_standardize_the_rifle_line
+			focus = MFR_battery_cities
+			focus = MFR_plate_steel_rationing
+			focus = MFR_engines_from_evacuation_stores
+			focus = MFR_workers_must_not_flee
+			focus = MFR_no_serial_numbers
+			focus = MFR_contracts_with_builders
+			focus = MFR_builders_waste_steel
+		}
+		completion_reward = {
+			set_country_flag = mfr_focus_the_arsenal_state
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			soviet_collapse_apply_mfr_focus_security_state = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = MFR_a_rifle_in_every_treaty
+		icon = GFX_focus_MFR_a_rifle_in_every_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 17
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_the_arsenal_state }
+		completion_reward = {
+			set_country_flag = mfr_focus_rifle_in_every_treaty
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_output_is_victory
+		icon = GFX_focus_MFR_output_is_victory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 17
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_the_arsenal_state }
+		available = { has_country_flag = mfr_route_eternal_arsenal }
+		completion_reward = {
+			set_country_flag = mfr_focus_output_is_victory
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_workers_own_the_arsenal
+		icon = GFX_focus_MFR_workers_own_the_arsenal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 17
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_the_arsenal_state }
+		available = { has_country_flag = mfr_route_worker_delegates }
+		completion_reward = {
+			set_country_flag = mfr_focus_workers_own_arsenal
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_medium }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_state_as_one_arms_order
+		icon = GFX_focus_MFR_state_as_one_arms_order
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 18
+		cost = @soviet_collapse_focus_long
+		prerequisite = {
+			focus = MFR_a_rifle_in_every_treaty
+			focus = MFR_output_is_victory
+			focus = MFR_workers_own_the_arsenal
+		}
+		completion_reward = {
+			set_country_flag = mfr_focus_state_as_one_arms_order
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = MFR_arm_all_clients
+		icon = GFX_focus_MFR_arm_all_clients
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 19
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_state_as_one_arms_order }
+		completion_reward = {
+			set_country_flag = mfr_focus_arm_all_clients
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = MFR_export_serials_without_names
+		icon = GFX_focus_MFR_export_serials_without_names
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 14
+		y = 19
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = MFR_state_as_one_arms_order }
+		completion_reward = {
+			set_country_flag = mfr_focus_export_serials_without_names
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = MFR_every_order_a_rifle
+		icon = GFX_focus_MFR_every_order_a_rifle
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 20
+		cost = @soviet_collapse_focus_long
+		prerequisite = {
+			focus = MFR_arm_all_clients
+			focus = MFR_export_serials_without_names
+		}
+		completion_reward = {
+			set_country_flag = mfr_focus_every_order_a_rifle
+			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			soviet_collapse_apply_mfr_focus_foreign_shipments = yes
+			soviet_collapse_apply_mfr_focus_arms_output = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+}

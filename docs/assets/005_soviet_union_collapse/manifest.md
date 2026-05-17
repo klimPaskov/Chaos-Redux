@@ -532,6 +532,8 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 `CFR_soviet_collapse_focus_tree` uses 58 focuses in `common/national_focus/005_soviet_collapse_factory_successors.txt`. The tree reuses the 33 existing `GFX_focus_CFR_*` sprites and their shine variants from `interface/005_soviet_collapse_factory_ancient_icons.gfx`; no new focus DDS files are required for this pass.
 
+`MFR_soviet_collapse_focus_tree` uses 46 focuses in `common/national_focus/005_soviet_collapse_factory_successors.txt`. The tree reuses the 46 existing `GFX_focus_MFR_*` sprites and their shine variants from `interface/005_soviet_collapse_factory_ancient_icons.gfx`; no new focus DDS files are required for this pass.
+
 ### Returned Names Placeholder Asset Records
 
 Returned Names decisions and ideas are wired through existing Event 005 icon reuse in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Final art can replace the referenced sprites later if the museum-cabinet, old-banner, toll-route, Sogdian, Khwarazmian, Alan, and anti-antiquarian concepts need unique DDS files.
