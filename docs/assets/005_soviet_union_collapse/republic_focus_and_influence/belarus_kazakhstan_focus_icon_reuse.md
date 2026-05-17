@@ -3,7 +3,7 @@
 This ledger documents the implemented Belarus and Kazakhstan runtime focus icon assignments:
 
 - Belarus: 83 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, covering the clean-spec Minsk opening, first political route-lock block, rail-sovereignty branch, forest-defense branches, diplomacy/corridor branch, deeper logistics branch, late forest/military branch, and final diplomacy, League, and high-chaos finishers.
-- Kazakhstan: 26 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, covering the clean-spec Alma-Ata opening, southern-wire crisis, first route-lock block, decentralization convergence, and Karaganda resource-industry branch.
+- Kazakhstan: 36 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, covering the clean-spec Alma-Ata opening, southern-wire crisis, first route-lock block, decentralization convergence, Karaganda resource-industry branch, and mobile steppe army branch.
 
 Both trees use branch-level sprites defined in `interface/005_soviet_collapse_blr_icons.gfx` and `interface/005_soviet_collapse_kaz_icons.gfx`. The branch-icon assignment is deliberate for the current implementation; each dedicated DDS is derived from existing generated Event 005 focus art that matches the branch gameplay subject. Belarus now satisfies the 83-focus clean-spec target.
 
@@ -26,11 +26,11 @@ Both trees use branch-level sprites defined in `interface/005_soviet_collapse_bl
 | --- | ---: | --- | --- | --- |
 | alash | 3 | `GFX_kaz_soviet_collapse_alash` | `gfx/interface/goals/kaz_soviet_collapse_alash.dds` | Republican legality art fits the congress identity fork and Alash courts. |
 | steppe_socialist | 2 | `GFX_kaz_soviet_collapse_steppe_socialist` | `gfx/interface/goals/kaz_soviet_collapse_steppe_socialist.dds` | Socialist sovereignty art fits the steppe republic and aul teachers. |
-| federation | 5 | `GFX_kaz_soviet_collapse_federation` | `gfx/interface/goals/kaz_soviet_collapse_federation.dds` | Steppe congress art fits Alma-Ata, southern wires, Turkestan mandate, oasis-steppe congress, and League resource pooling. |
+| federation | 6 | `GFX_kaz_soviet_collapse_federation` | `gfx/interface/goals/kaz_soviet_collapse_federation.dds` | Steppe congress art fits Alma-Ata, southern wires, Turkestan mandate, oasis-steppe congress, League resource pooling, and League cavalry schooling. |
 | resources | 8 | `GFX_kaz_soviet_collapse_resources` | `gfx/interface/goals/kaz_soviet_collapse_resources.dds` | Factory-defense art fits resource-town guards, the directorate, engineers, Karaganda boards, guarded oil, mine rail, pithead factories, and domestic resource control. |
 | foreign | 3 | `GFX_kaz_soviet_collapse_foreign` | `gfx/interface/goals/kaz_soviet_collapse_foreign.dds` | External mission art fits southern guarantee diplomacy, concession debates, and technical missions. |
 | myth | 0 | `GFX_kaz_soviet_collapse_myth` | `gfx/interface/goals/kaz_soviet_collapse_myth.dds` | Wired for the later high-chaos steppe branch, not used by the current opening slice. |
-| military | 3 | `GFX_kaz_soviet_collapse_military` | `gfx/interface/goals/kaz_soviet_collapse_military.dds` | Field battalion art fits district inventory, resource-to-arms exchange, and the Steppe Arsenal. |
+| military | 12 | `GFX_kaz_soviet_collapse_military` | `gfx/interface/goals/kaz_soviet_collapse_military.dds` | Field battalion art fits district inventory, resource-to-arms exchange, the Steppe Arsenal, mobile staff, local registers, columns, guards, doctrine, and the first army convergence. |
 | settlement | 2 | `GFX_kaz_soviet_collapse_settlement` | `gfx/interface/goals/kaz_soviet_collapse_settlement.dds` | Steppe congress art fits distance-state and decentralized capital focuses. |
 
 ## Verification
@@ -38,8 +38,8 @@ Both trees use branch-level sprites defined in `interface/005_soviet_collapse_bl
 The current tree parse confirms:
 
 - Belarus has 83 focus blocks.
-- Kazakhstan has 26 focus blocks.
-- Together, the two trees have 109 implemented focuses with wired branch sprites.
+- Kazakhstan has 36 focus blocks.
+- Together, the two trees have 119 implemented focuses with wired branch sprites.
 
 ## Historical Per-Focus Continuation Draft Entries
 
