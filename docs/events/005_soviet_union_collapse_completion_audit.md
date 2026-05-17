@@ -31,6 +31,7 @@ Required source order:
 | Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB` | Implemented for three; many planned serious splinters remain unimplemented |
 | Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` creates the shared `Emergency Republican Guard` template, grants base manpower/equipment, and spawns guard units for Event-created republics and the implemented CFR/MFR/OGB successors; mobilisation decisions can add more units through the same template | Implemented for current appearing republics and implemented successors |
 | Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean | Implemented for current achievement surface; future-only splinter achievements depend on missing packages |
+| Evolution logging | Event 005 has one `record_events_log_evolution_entry` writer, under `soviet_collapse_record_high_chaos_successor_evolution`; baseline crisis setup and objective pressure effects only change crisis variables and event flow | Implemented for current high-chaos successor logging |
 | Super-events | Slots 14-27 have helpers, assets, localisation, audio references, and constants. Route calls now exist for all except 16 and 18 | Partially implemented |
 | Super-event slot 16, The Dead Are Citizens | Helper exists; no implemented death-state route calls it | Blocked by missing death-state package |
 | Super-event slot 18, Every Port a Council | Helper exists; no implemented naval council route calls it | Blocked by missing naval/Kronstadt package |
@@ -101,6 +102,36 @@ Chaos Redux country tags and history files found for CFR MFR OGB.
 
 The implemented high-chaos successor history files intentionally do not declare static OOBs because their military is assigned after runtime state transfer through `soviet_collapse_setup_breakaway_country`.
 
+## Evolution Log Audit
+
+Event 005 currently writes to the evolution log only through `soviet_collapse_record_high_chaos_successor_evolution`.
+
+Audit evidence:
+
+```text
+common/scripted_effects/005_soviet_collapse_effects.txt
+record_events_log_evolution_entry 1
+events_log_evolution_event_id 4
+events_log_evolution_type 4
+events_log_evolution_stage 6
+soviet_collapse_high_chaos_evolution_tier_4_recorded 1
+soviet_collapse_high_chaos_evolution_tier_5_recorded 1
+
+common/scripted_triggers/005_soviet_collapse_triggers.txt
+soviet_collapse_high_chaos_evolution_tier_4_recorded 1
+soviet_collapse_high_chaos_evolution_tier_5_recorded 1
+```
+
+Logging behavior:
+
+- Baseline crisis setup and objective pressure effects modify crisis variables such as `soviet_collapse_moscow_authority`, `soviet_collapse_republic_confidence`, and `soviet_collapse_evolution_weirdness`; they do not record baseline stages as evolution entries.
+- `soviet_collapse_record_high_chaos_successor_evolution` sets Event ID 5, high-chaos evolution type 5, the current chaos tier bucket, saves the successor actor, and records only if `can_soviet_collapse_record_high_chaos_evolution_this_tier = yes`.
+- The tier gate records at most one non-tier-5 high-chaos successor evolution through `soviet_collapse_high_chaos_evolution_tier_4_recorded`.
+- Chaos tier 5 can record one separate high-chaos successor evolution through `soviet_collapse_high_chaos_evolution_tier_5_recorded`.
+- CFR, MFR, and OGB each set their own stage before calling the shared writer, so whichever successor records first in that tier owns the visible evolution entry while later successors remain normal event notices.
+
+Scripted localisation maps Event 005 evolution rows to the high-chaos successor type and tag-specific successor notices. General Soviet Collapse mutation localisation remains available for future mutation tracks, but the current Event 005 script does not write baseline crisis stages into the evolution log.
+
 ## Super-Event Route Coverage
 
 Implemented route calls currently exist for:
@@ -143,6 +174,5 @@ Those icon-prefix packages are not all registered country packages. The clean-sp
 1. Implement or explicitly defer the missing serious splinter packages from Part 4 with full country packages, including tag, history, localisation, ideology names, leaders or councils, flags, ideas, decisions, AI, focus content, assets, and docs.
 2. Wire `The Dead Are Citizens` only after a death-state route exists and satisfies the high-chaos trigger direction.
 3. Wire `Every Port a Council` only after a naval council or Kronstadt route exists and satisfies the trigger direction.
-4. Audit evolution logging so baseline crisis stages are not recorded as evolutions and only one Soviet Collapse evolution log is recorded per chaos tier unless the clean spec explicitly allows more.
-5. Update the event spreadsheet or record a concrete access blocker for the external catalog.
-6. Run final parser-oriented checks after every remaining implementation pass.
+4. Update the event spreadsheet or record a concrete access blocker for the external catalog.
+5. Run final parser-oriented checks after every remaining implementation pass.
