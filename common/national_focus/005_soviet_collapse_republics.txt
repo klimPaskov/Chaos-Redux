@@ -1898,6 +1898,258 @@ focus_tree = {
 			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_granary_of_free_republics }
 		}
 	}
+
+	# role: high_chaos_gate | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_the_bread_state_emergency
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 28
+		y = 15
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_breadbasket_empire }
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_bread_state_emergency
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_hostage_silos
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 26
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_bread_state_emergency }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_hostage_silos
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_the_hunger_ledger
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_bread_state_emergency }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_hunger_ledger
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_breadbasket_empire }
+		}
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_penalty_battalions_from_the_files
+		icon = GFX_ukr_soviet_collapse_armed_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 32
+		y = 17
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_hunger_ledger }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_penalty_battalions_from_files
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 has_war_with = SOV }
+		}
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_break_the_black_earth
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 27
+		y = 18
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_hostage_silos }
+		prerequisite = { focus = ukr_soviet_collapse_the_hunger_ledger }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_break_the_black_earth
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_the_ministry_of_silence
+		icon = GFX_ukr_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30
+		y = 18
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_hunger_ledger }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_ministry_of_silence
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	# role: high_chaos_fork | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_the_necessary_terror_debate
+		icon = GFX_ukr_soviet_collapse_armed_forces
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 31
+		y = 19
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_ministry_of_silence }
+		prerequisite = { focus = ukr_soviet_collapse_penalty_battalions_from_the_files }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_necessary_terror_debate
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	# role: high_chaos_route | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_the_grain_dictatorship
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 31
+		y = 20
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_the_necessary_terror_debate }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_grain_dictatorship
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_necessary_terror_debate }
+		}
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_march_the_hungry_west
+		icon = GFX_ukr_soviet_collapse_expansion
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 28
+		y = 21
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_grain_dictatorship }
+		prerequisite = { focus = ukr_soviet_collapse_western_border_question focus = ukr_soviet_collapse_direct_national_claims }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_march_the_hungry_west
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_war_support = constant:soviet_collapse_republic_focus.war_support_small
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 has_war_with = SOV }
+		}
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_factories_under_guard
+		icon = GFX_ukr_soviet_collapse_industry
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 34
+		y = 21
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_grain_dictatorship }
+		prerequisite = { focus = ukr_soviet_collapse_industrial_mobilization_council focus = ukr_soviet_collapse_economic_sovereignty }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_factories_under_guard
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = { base = 3 }
+	}
+
+	# role: high_chaos_side | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_enemies_of_the_bread
+		icon = GFX_ukr_soviet_collapse_armed_forces
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 34
+		y = 19
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_ministry_of_silence }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_enemies_of_the_bread
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_ministry_of_silence }
+		}
+	}
+
+	# role: high_chaos_capstone | filter: emergency
+	focus = {
+		id = ukr_soviet_collapse_the_empty_village_reports
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 31
+		y = 22
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_march_the_hungry_west focus = ukr_soviet_collapse_factories_under_guard focus = ukr_soviet_collapse_enemies_of_the_bread }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_empty_village_reports
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
 }
 
 focus_tree = {
