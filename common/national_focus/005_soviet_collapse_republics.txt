@@ -4689,6 +4689,252 @@ focus_tree = {
 		}
 		ai_will_do = { base = 7 }
 	}
+
+	focus = {
+		id = blr_soviet_collapse_nationalize_the_rail_schedules
+		icon = GFX_blr_soviet_collapse_rail
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_the_rail_map_on_the_wall }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_rail_schedules_nationalized
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_seal_the_minsk_junction
+		icon = GFX_blr_soviet_collapse_rail
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 7
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_nationalize_the_rail_schedules }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_minsk_junction_sealed
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_western_corridor_switchmen
+		icon = GFX_blr_soviet_collapse_corridor
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 9
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_nationalize_the_rail_schedules }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_western_corridor_switchmen
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_eastern_line_watch
+		icon = GFX_blr_soviet_collapse_counterintel
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_nationalize_the_rail_schedules }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_eastern_line_watch
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than } } }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_depot_cars_without_labels
+		icon = GFX_blr_soviet_collapse_counterintel
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_nationalize_the_rail_schedules }
+		available = { SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_depot_cars_without_labels
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_railway_guard_regiments
+		icon = GFX_blr_soviet_collapse_corridor
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 7
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_seal_the_minsk_junction }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_railway_guard_regiments
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_timetable_state
+		icon = GFX_blr_soviet_collapse_rail
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 7
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = blr_soviet_collapse_seal_the_minsk_junction }
+		prerequisite = { focus = blr_soviet_collapse_western_corridor_switchmen }
+		prerequisite = { focus = blr_soviet_collapse_eastern_line_watch }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_timetable_state
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_railway_neutrality
+		icon = GFX_blr_soviet_collapse_rail
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_timetable_state }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_belarus_route_national_council
+				has_country_flag = soviet_collapse_belarus_route_socialist_autonomy
+			}
+		}
+		mutually_exclusive = { focus = blr_soviet_collapse_rail_war_state }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_railway_neutrality
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability > 0.45 }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_rail_war_state
+		icon = GFX_blr_soviet_collapse_corridor
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_timetable_state }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_belarus_route_military_transit
+				has_war_with = SOV
+			}
+		}
+		mutually_exclusive = { focus = blr_soviet_collapse_railway_neutrality }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_rail_war_state
+			add_war_support = constant:soviet_collapse_republic_focus.war_support_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_league_supply_timetables
+		icon = GFX_blr_soviet_collapse_corridor
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 8
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_timetable_state }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_free_republics_league_member
+				has_country_flag = soviet_collapse_free_republics_league_founder
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_league_supply_timetables
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_free_republics_league_member }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_foreign_aid_through_brest
+		icon = GFX_blr_soviet_collapse_foreign_transit
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 5
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_western_corridor_switchmen }
+		available = { SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_foreign_aid_through_brest
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = soviet_collapse_belarus_route_foreign_corridor }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_last_train_east
+		icon = GFX_blr_soviet_collapse_counterintel
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_evacuation_choice }
+		available = {
+			OR = {
+				NOT = { capital_scope = { is_controlled_by = ROOT } }
+				has_war_with = SOV
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_last_train_east
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
 }
 
 focus_tree = {
