@@ -1702,6 +1702,50 @@ can_confirm_soviet_collapse_new_union_budget = {
 	}
 }
 
+can_seal_soviet_collapse_last_recognition_file = {
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+	check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+	OR = {
+		has_country_flag = soviet_collapse_new_union_budget_confirmed
+		has_country_flag = soviet_collapse_first_restored_budget_published
+		has_country_flag = soviet_collapse_mission_105_done
+		has_country_flag = soviet_collapse_mission_078_done
+	}
+	OR = {
+		has_recovered_soviet_collapse_breakaway_capital = yes
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+	}
+}
+
+can_record_soviet_collapse_crisis_as_temporary_disorder = {
+	capital_scope = { is_controlled_by = ROOT }
+	has_recovered_soviet_collapse_breakaway_capital = yes
+	has_stability > constant:soviet_collapse_soviet_objective.good_stability
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
+	check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+	OR = {
+		has_country_flag = soviet_collapse_mission_029_done
+		has_country_flag = soviet_collapse_crown_kept_in_archive
+		has_country_flag = soviet_collapse_impossible_reports_classified
+	}
+	OR = {
+		has_country_flag = soviet_collapse_first_restored_budget_published
+		has_country_flag = soviet_collapse_local_units_returned_to_barracks
+		has_country_flag = soviet_collapse_mission_041_done
+	}
+	OR = {
+		has_country_flag = soviet_collapse_soviet_identity_preserved
+		has_country_flag = soviet_collapse_new_union_budget_rejected
+		NOT = { has_idea = soviet_collapse_new_union_negotiations }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
