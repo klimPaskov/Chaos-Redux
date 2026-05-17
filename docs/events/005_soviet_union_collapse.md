@@ -53,7 +53,7 @@ This is only the opening support package. Later slices still need full republic 
 
 ## Republic Focus Trees
 
-Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, prepared regional tags, and any remaining event-created breakaway without a bespoke tree receive runtime focus trees through `load_focus_tree` after the release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries.
+Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, prepared regional tags, and any remaining event-created breakaway without a bespoke tree receive runtime focus trees through `load_focus_tree` after the release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries. The high-chaos `CFR` successor is loaded directly from its setup effect with `keep_completed = no`, because it is a custom crisis country rather than a standard released republic.
 
 The implemented trees are:
 
@@ -65,6 +65,7 @@ The implemented trees are:
 6. `soviet_collapse_central_asia_focus_tree`: 34 focuses, rebuilt to the clean-spec Central Asian regional target. The tree opens from the Southern Emergency Majlis into oasis and pass guards, irrigation and bread councils, and border caravans, then branches into local republic, Turkestan federation, military border authority, and foreign border patronage routes with southern coordination, Basmachi, oasis arsenal, foreign-aid, pact/federation, cotton, high-chaos Khwarazm, and southern survival finishers.
 7. `soviet_collapse_moldova_focus_tree`: 23 focuses for event-created Moldova, rebuilt to the clean-spec regional target. The tree opens from the Chisinau Emergency Council into Dniester crossing guards, Bessarabian legal files, and the Romanian question, then branches into an Independent Republic Council, Dniester Defense Directorate, Romanian Alignment Office, and Ukrainian Border Compact with river guard, Bessarabian negotiation, grain road, union-question, and small-state survival finishers.
 8. `soviet_collapse_breakaway_focus_tree`: 53 focuses for remaining event-created breakaways without bespoke runtime trees. The fallback now follows the clean-spec emergency replacement map: emergency government trunk, legal restoration, socialist sovereignty, military defense, foreign liaison, depot and garrison defense, League preparation, neutrality, high-chaos evolution hooks, capital-or-field committee governance, logistics identity, and late survival finishers. It reuses the already wired shared focus icons rather than introducing new sprite names.
+9. `CFR_soviet_collapse_focus_tree`: 58 focuses for the Civilian Factory of Russia high-chaos successor. The tree opens through crane, trust-office, ration-card, cement, and unfinished-city focuses, then splits into Worker Cooperative, Planner Directorate, Foreign Contract Board, and Concrete Committee governance routes. Its construction strategy fork covers Cities First, Rails First, Factories First, and Contracts First, while side branches cover construction battalions, foreign reconstruction contracts, the coercive City Without Citizens route, and late builder-state convergence.
 
 Focus rewards call shared scripted effects for legal recognition, socialist sovereignty, military consolidation, depot control, League preparation, foreign channels, and high-chaos identity pressure. Those effects adjust local breakaway variables and feed the Soviet crisis meter through constants in `soviet_collapse_republic_focus`. Ukraine's replacement slice also documents each focus role in script comments, uses focus filters on every focus, keeps League escalation locked behind crisis pressure through `is_soviet_collapse_league_pressure_ready`, and keeps foreign provisional authority behind an actual liaison-office state and high foreign pressure.
 
@@ -72,13 +73,13 @@ The Ukraine middle-branch slices add the General Staff frontier choice, Republic
 
 ## High-Chaos Tags
 
-The first high-chaos successor tag foundations are registered for later spawn and mechanics work:
+The first high-chaos successor tags are registered for spawn and mechanics work:
 
 1. `CFR` - Civilian Factory of Russia, led by the Construction Board, with existing flag and leader assets.
 2. `MFR` - Military Factory of Russia, led by the Arsenal Board, with existing flag and leader assets.
 3. `OGB` - Old Great Bulgaria on the Volga, led by the Volga Restoration Council, with existing flag and leader assets.
 
-These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, and evolution-log entries. Their larger focus-tree packages remain separate implementation slices.
+These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, and evolution-log entries. `CFR` also has its full 58-focus Construction Directorate runtime tree; the larger `MFR` and `OGB` focus-tree packages remain separate implementation slices.
 
 At high chaos, the Soviet opening hook can create the first three successor states without using any recurring on-action loop. Each spawn is gated by `is_soviet_collapse_high_chaos_successor_spawn_ready`, which requires the Soviet Collapse to be active for `SOV` and either chaos tier 4, chaos tier 5, or `soviet_collapse_evolution_weirdness` reaching `constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate`. Each successor also respects the evolution disable UI by checking `is_current_evolution_enabled` for its own high-chaos stage before any state transfer happens.
 
@@ -88,7 +89,7 @@ The exact opening state packages are:
 2. `MFR` receives Nizhny Novgorod (`252`) and Samara (`251`) if both are owned and controlled by `SOV`.
 3. `OGB` receives Kazan (`249`) and Volga Germany (`829`) if both are owned and controlled by `SOV`.
 
-These are strict prerequisites, not contingency pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, and an event notice in `events/005_soviet_collapse_factory_ancient.txt`. The first eligible successor in each high-chaos tier also records an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`; later successor notices in the same tier remain normal reports so the crisis does not flood the evolution log.
+These are strict prerequisites, not contingency pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, and an event notice in `events/005_soviet_collapse_factory_ancient.txt`. `CFR` also receives `CFR_soviet_collapse_focus_tree` immediately with a clean focus state. The first eligible successor in each high-chaos tier records an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`; later successor notices in the same tier remain normal reports so the crisis does not flood the evolution log.
 
 Each tag also has an opening decision board:
 
@@ -96,7 +97,7 @@ Each tag also has an opening decision board:
 2. `MFR` uses `The Arsenal State` with `Arsenal Quotas`, `Audit Arsenal Orders`, and `Convert Depots to Arms Lines`.
 3. `OGB` uses `The Volga Restoration` with `Volga Legitimacy`, `Claim the Volga Crossings`, and `Convene Bolghar Scholars`.
 
-These decision boards are deliberately small foundations. They provide the variables, costs, blocked-cost localisation, ideas, and first rewards that later focus trees and event spawn effects can expand.
+These decision boards are deliberately small foundations. They provide the variables, costs, blocked-cost localisation, ideas, and first rewards for tag-specific focus trees and event spawn effects.
 
 ## Intervention Decisions
 
@@ -273,6 +274,7 @@ This slice reuses existing wired sprites. No new art was generated.
 - Soviet objectives use the shared goal sprites in `interface/005_soviet_collapse_icons.gfx`, including `GFX_decision_soviet_collapse_authority_goal`, `GFX_decision_soviet_collapse_command_goal`, `GFX_decision_soviet_collapse_rail_goal`, `GFX_decision_soviet_collapse_depot_goal`, `GFX_decision_soviet_collapse_old_movement_goal`, `GFX_decision_soviet_collapse_border_goal`, `GFX_decision_soviet_collapse_foreign_goal`, and `GFX_decision_soviet_collapse_cleanup_goal`.
 - The visible opening event uses `GFX_report_union_crisis`; the news event uses `GFX_news_soviet_union_collapse`.
 - Republic focus trees use existing sprites from `interface/005_soviet_collapse_icons.gfx`, `interface/005_soviet_collapse_ukraine_icons.gfx`, `interface/005_soviet_collapse_blr_icons.gfx`, `interface/005_soviet_collapse_kaz_icons.gfx`, and `interface/005_soviet_collapse_regional_icons.gfx`. No additional focus sprite filenames are required for this slice.
+- `CFR_soviet_collapse_focus_tree` reuses the existing 33 Civilian Factory focus sprites in `interface/005_soviet_collapse_factory_ancient_icons.gfx` across 58 focuses. No new CFR focus art is required for this slice.
 - High-chaos tag foundations use flag assets under `gfx/flags/`, leader portraits under `gfx/leaders/005_soviet_collapse/`, and portrait sprite keys in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. The factory/ancient notice events currently reuse `GFX_report_union_crisis`, so no new report sprite is required for this slice.
 
 ## Future Plans
@@ -280,6 +282,6 @@ This slice reuses existing wired sprites. No new art was generated.
 - Expand the Soviet objective board beyond the first one hundred twenty-eight missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
 - With Ukraine, Belarus, and Kazakhstan at their clean-spec focus-count targets, expand the remaining regional and contingency breakaway runtime focus trees into full country packages with the larger focus counts mapped in the final clean specification.
-- Implement full focus-tree packages and longer event chains for every custom country and serious splinter whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist.
+- Implement full focus-tree packages and longer event chains for remaining custom countries and serious splinters whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist, including the `MFR` and `OGB` high-chaos successors.
 - Wire Free Republics' League formation, super-events, achievements, and evolution logs only where the clean specification allows them.
 - Audit existing Soviet Collapse evolution localisation so ordinary crisis stages are not presented as evolutions.
