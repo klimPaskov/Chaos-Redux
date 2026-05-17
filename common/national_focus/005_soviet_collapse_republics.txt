@@ -7218,4 +7218,180 @@ focus_tree = {
 			modifier = { factor = 3 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } } }
 		}
 	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_written_alash_program
+		icon = GFX_kaz_soviet_collapse_alash
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_alash_memory_restored }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_written_alash_program
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_teachers_of_the_new_steppe
+		icon = GFX_kaz_soviet_collapse_steppe_socialist
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 14
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_aul_councils_and_red_teachers }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_new_steppe_teachers
+			soviet_collapse_apply_focus_socialist_sovereignty = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_directorate_counts_every_mine
+		icon = GFX_kaz_soviet_collapse_resources
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 14
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_engineers_hold_the_state }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_directorate_mine_census
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { soviet_collapse_resource_authority = constant:soviet_collapse_republic_focus.medium_depot_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_two_capitals_of_the_steppe
+		icon = GFX_kaz_soviet_collapse_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_no_single_capital_can_hold_the_steppe }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_two_capitals_question
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_distributed_congress_government
+		icon = GFX_kaz_soviet_collapse_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_two_capitals_of_the_steppe }
+		mutually_exclusive = { focus = kaz_soviet_collapse_alma_ata_central_authority }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_distributed_congress_government
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_kazakhstan_route_turkestan_federation }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_alma_ata_central_authority
+		icon = GFX_kaz_soviet_collapse_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_two_capitals_of_the_steppe }
+		mutually_exclusive = { focus = kaz_soviet_collapse_distributed_congress_government }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_alma_ata_central_authority
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_kazakhstan_route_resource_directorate }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_southern_deputies_demand_seats
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 22
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_turkestan_federation_mandate }
+		available = { is_soviet_collapse_southern_breakaway_active = yes }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_southern_deputies
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 is_soviet_collapse_southern_breakaway_active = yes }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_resource_towns_demand_seats
+		icon = GFX_kaz_soviet_collapse_resources
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_resource_defense_directorate }
+		prerequisite = { focus = kaz_soviet_collapse_two_capitals_of_the_steppe }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_resource_town_seats
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_no_steppe_without_the_south
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 17
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_steppe_federation_charter }
+		prerequisite = { focus = kaz_soviet_collapse_southern_deputies_demand_seats }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_no_steppe_without_south
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_kazakhstan_alone
+		icon = GFX_kaz_soviet_collapse_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 17
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_lone_steppe_state }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_alone
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_kazakhstan_lone_steppe_state }
+		}
+	}
 }
