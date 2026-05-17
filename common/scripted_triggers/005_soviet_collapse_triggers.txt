@@ -1,0 +1,54 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 SOVIET COLLAPSE TRIGGERS
+# ============================================================================
+# Shared readable triggers for the Soviet Collapse crisis, breakaway countries,
+# Soviet mission board, and foreign intervention layer.
+# ============================================================================
+
+is_soviet_collapse_active = {
+	has_global_flag = soviet_collapse_active
+}
+
+is_soviet_collapse_breakaway_country = {
+	OR = {
+		has_country_flag = soviet_collapse_breakaway
+		tag = UKR
+		tag = BLR
+		tag = KAZ
+		tag = LIT
+		tag = LAT
+		tag = EST
+		tag = GEO
+		tag = ARM
+		tag = AZR
+		tag = MOL
+		tag = UZB
+		tag = KYR
+		tag = TAJ
+		tag = TMS
+	}
+}
+
+is_soviet_collapse_foreign_patron_candidate = {
+	NOT = { tag = SOV }
+	is_major = yes
+	OR = {
+		has_war_with = SOV
+		has_opinion = { target = SOV value < 0 }
+	}
+}
+
+can_pay_soviet_collapse_restore_party_control_cost = {
+	has_equipment = { support_equipment > constant:soviet_collapse_decision_cost.restore_party_control_support_equipment }
+	has_manpower > constant:soviet_collapse_decision_cost.restore_party_control_manpower
+}
+
+can_pay_soviet_collapse_send_loyalist_officers_cost = {
+	has_army_experience > constant:soviet_collapse_decision_cost.send_loyalist_officers_army_xp
+	has_equipment = { infantry_equipment > constant:soviet_collapse_decision_cost.send_loyalist_officers_equipment }
+}
+
+can_pay_soviet_collapse_cut_rebel_supply_routes_cost = {
+	has_fuel > constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_fuel
+	has_equipment = { train_equipment > constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_trains }
+}
