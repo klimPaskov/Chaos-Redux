@@ -215,6 +215,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_010_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_010_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_011_announce_the_legal_continuity_decree = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { capital_scope = { is_controlled_by = ROOT } has_stability > constant:soviet_collapse_soviet_objective.good_stability check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals } }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_011_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_011_announce_the_legal_continuity_decree_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_011_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_011_announce_the_legal_continuity_decree_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_012_convene_loyal_republican_deputies = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_stability > constant:soviet_collapse_soviet_objective.min_stability has_war_support > constant:soviet_collapse_soviet_objective.min_war_support check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals } check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than } }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_012_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_012_convene_loyal_republican_deputies_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_012_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_012_convene_loyal_republican_deputies_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
