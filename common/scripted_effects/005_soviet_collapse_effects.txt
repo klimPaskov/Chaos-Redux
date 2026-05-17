@@ -1311,6 +1311,22 @@ soviet_collapse_complete_red_martyrs_endgame = {
 	soviet_collapse_show_dead_are_citizens_super_event = yes
 }
 
+soviet_collapse_complete_red_cosmist_endgame = {
+	set_country_flag = soviet_collapse_red_cosmist_endgame
+	add_ideas = rcd_no_grave_outside_the_state
+}
+
+soviet_collapse_complete_iron_liturgy_endgame = {
+	set_country_flag = soviet_collapse_iron_liturgy_endgame
+	add_ideas = ilu_world_as_one_factory
+	soviet_collapse_show_world_as_one_factory_super_event = yes
+}
+
+soviet_collapse_complete_pale_railway_endgame = {
+	set_country_flag = soviet_collapse_pale_railway_endgame
+	add_ideas = pra_every_junction_under_authority
+}
+
 soviet_collapse_record_high_chaos_successor_evolution = {
 	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
 	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
@@ -1545,6 +1561,54 @@ soviet_collapse_setup_rmc_successor = {
 	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.red_martyrs_stage }
 	soviet_collapse_record_high_chaos_successor_evolution = yes
 	country_event = { id = chaosx.nr5_custom.6 hours = 20 }
+}
+
+soviet_collapse_setup_rcd_successor = {
+	set_country_flag = soviet_collapse_high_chaos_successor
+	set_country_flag = soviet_collapse_red_cosmist_successor
+	set_capital = {
+		state = 570
+		remember_old_capital = no
+	}
+	soviet_collapse_setup_breakaway_country = yes
+	load_focus_tree = { tree = RCD_soviet_collapse_focus_tree keep_completed = no }
+	add_ideas = rcd_common_task_directorate
+	add_ideas = rcd_internal_factions
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.red_cosmist_stage }
+	soviet_collapse_record_high_chaos_successor_evolution = yes
+	country_event = { id = chaosx.nr5_custom.7 hours = 20 }
+}
+
+soviet_collapse_setup_ilu_successor = {
+	set_country_flag = soviet_collapse_high_chaos_successor
+	set_country_flag = soviet_collapse_iron_liturgy_successor
+	set_capital = {
+		state = 653
+		remember_old_capital = no
+	}
+	soviet_collapse_setup_breakaway_country = yes
+	load_focus_tree = { tree = ILU_soviet_collapse_focus_tree keep_completed = no }
+	add_ideas = ilu_iron_liturgy
+	add_ideas = ilu_internal_factions
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.iron_liturgy_stage }
+	soviet_collapse_record_high_chaos_successor_evolution = yes
+	country_event = { id = chaosx.nr5_custom.8 hours = 20 }
+}
+
+soviet_collapse_setup_pra_successor = {
+	set_country_flag = soviet_collapse_high_chaos_successor
+	set_country_flag = soviet_collapse_pale_railway_successor
+	set_capital = {
+		state = 242
+		remember_old_capital = no
+	}
+	soviet_collapse_setup_breakaway_country = yes
+	load_focus_tree = { tree = PRA_soviet_collapse_focus_tree keep_completed = no }
+	add_ideas = pra_pale_railway_timetable
+	add_ideas = pra_internal_factions
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.pale_railway_stage }
+	soviet_collapse_record_high_chaos_successor_evolution = yes
+	country_event = { id = chaosx.nr5_custom.9 hours = 20 }
 }
 
 soviet_collapse_spawn_cfr_if_enabled = {
@@ -1882,6 +1946,75 @@ soviet_collapse_spawn_rmc_if_enabled = {
 	}
 }
 
+soviet_collapse_spawn_rcd_if_enabled = {
+	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.red_cosmist_stage }
+	if = {
+		limit = {
+			can_soviet_collapse_spawn_rcd = yes
+			is_current_evolution_enabled = yes
+		}
+		570 = {
+			add_core_of = RCD
+			transfer_state_to = RCD
+		}
+		568 = {
+			add_core_of = RCD
+			transfer_state_to = RCD
+		}
+		RCD = { soviet_collapse_setup_rcd_successor = yes }
+		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.old_movement_failure_confidence }
+		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+	}
+}
+
+soviet_collapse_spawn_ilu_if_enabled = {
+	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.iron_liturgy_stage }
+	if = {
+		limit = {
+			can_soviet_collapse_spawn_ilu = yes
+			is_current_evolution_enabled = yes
+		}
+		653 = {
+			add_core_of = ILU
+			transfer_state_to = ILU
+		}
+		572 = {
+			add_core_of = ILU
+			transfer_state_to = ILU
+		}
+		ILU = { soviet_collapse_setup_ilu_successor = yes }
+		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+	}
+}
+
+soviet_collapse_spawn_pra_if_enabled = {
+	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.pale_railway_stage }
+	if = {
+		limit = {
+			can_soviet_collapse_spawn_pra = yes
+			is_current_evolution_enabled = yes
+		}
+		242 = {
+			add_core_of = PRA
+			transfer_state_to = PRA
+		}
+		241 = {
+			add_core_of = PRA
+			transfer_state_to = PRA
+		}
+		PRA = { soviet_collapse_setup_pra_successor = yes }
+		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+	}
+}
+
 soviet_collapse_maybe_spawn_high_chaos_successors = {
 	if = {
 		limit = { is_soviet_collapse_high_chaos_successor_spawn_ready = yes }
@@ -1898,6 +2031,9 @@ soviet_collapse_maybe_spawn_high_chaos_successors = {
 		soviet_collapse_spawn_udc_if_enabled = yes
 		soviet_collapse_spawn_sdz_if_enabled = yes
 		soviet_collapse_spawn_rmc_if_enabled = yes
+		soviet_collapse_spawn_rcd_if_enabled = yes
+		soviet_collapse_spawn_ilu_if_enabled = yes
+		soviet_collapse_spawn_pra_if_enabled = yes
 		soviet_collapse_recalculate_total_threat = yes
 	}
 }
