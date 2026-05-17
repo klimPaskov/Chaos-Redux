@@ -667,6 +667,222 @@ focus_tree = {
 		ai_will_do = { base = 8 }
 	}
 
+	# role: side | filter: military
+	focus = {
+		id = ukr_soviet_collapse_field_headquarters_takes_precedence
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 12
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_military_directory }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_field_headquarters_precedence
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_route_military_directory }
+		}
+	}
+
+	# role: units | filter: military
+	focus = {
+		id = ukr_soviet_collapse_mobilization_by_district
+		icon = GFX_ukr_soviet_collapse_armed_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 13
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_field_headquarters_takes_precedence }
+		prerequisite = { focus = ukr_soviet_collapse_republican_general_staff }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_mobilization_by_district
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	# role: intelligence | filter: military
+	focus = {
+		id = ukr_soviet_collapse_officer_patronage_lists
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_officers_above_parties }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_officer_patronage_lists
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_officers_above_parties }
+		}
+	}
+
+	# role: side | filter: military
+	focus = {
+		id = ukr_soviet_collapse_military_courts_at_the_depots
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_officer_patronage_lists }
+		prerequisite = { focus = ukr_soviet_collapse_count_the_depot_keys }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_military_courts_at_depots
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	# role: side | filter: military
+	focus = {
+		id = ukr_soviet_collapse_general_staff_war_college
+		icon = GFX_ukr_soviet_collapse_armed_forces
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 15
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_army_of_the_republic }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_general_staff_war_college
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	# role: fork | filter: military
+	focus = {
+		id = ukr_soviet_collapse_the_commander_or_the_cabinet
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 14
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_field_headquarters_takes_precedence }
+		available = {
+			has_country_flag = soviet_collapse_ukraine_route_military_directory
+			OR = {
+				has_country_flag = soviet_collapse_ukraine_emergency_law_until_victory
+				has_country_flag = soviet_collapse_ukraine_civilian_institutions
+				has_country_flag = soviet_collapse_ukraine_republican_foreign_office
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_commander_or_cabinet_question
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	# role: route_lock | filter: military
+	focus = {
+		id = ukr_soviet_collapse_army_supremacy
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 12
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_commander_or_the_cabinet }
+		mutually_exclusive = { focus = ukr_soviet_collapse_mixed_emergency_cabinet }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_army_supremacy
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	# role: route_lock | filter: military
+	focus = {
+		id = ukr_soviet_collapse_mixed_emergency_cabinet
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_commander_or_the_cabinet }
+		mutually_exclusive = { focus = ukr_soviet_collapse_army_supremacy }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_mixed_emergency_cabinet
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	# role: expansion | filter: military
+	focus = {
+		id = ukr_soviet_collapse_war_plans_beyond_the_border
+		icon = GFX_ukr_soviet_collapse_expansion
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 12
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_commander_or_the_cabinet }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_ukraine_army_supremacy
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_war_plans_beyond_border
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_country_flag = soviet_collapse_ukraine_army_supremacy }
+		}
+	}
+
+	# role: finisher | filter: military
+	focus = {
+		id = ukr_soviet_collapse_the_directory_state
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 13
+		y = 15
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_general_staff_war_college }
+		prerequisite = { focus = ukr_soviet_collapse_army_supremacy focus = ukr_soviet_collapse_mixed_emergency_cabinet }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_directory_state
+			add_war_support = constant:soviet_collapse_republic_focus.war_support_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_general_staff_war_college }
+		}
+	}
+
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_old_families_return_quietly

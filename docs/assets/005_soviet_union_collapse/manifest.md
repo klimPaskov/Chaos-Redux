@@ -328,7 +328,7 @@ These assets belong to evolution tracks or custom tags that are not active yet. 
 
 ## Ukraine Runtime Focus Tree Branch Icons
 
-The expanded `soviet_collapse_ukraine_focus_tree` is active gameplay and currently uses 122 focuses. Its branch-level sprites are wired in `interface/005_soviet_collapse_ukraine_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art. The expansion asset ledger records the matching processed PNG files and source art. This branch-icon package documents deliberate sprite reuse for the current expanded tree; it does not prove the literal 208-focus target from older prompt material.
+The expanded `soviet_collapse_ukraine_focus_tree` is active gameplay and currently uses 132 focuses. Its branch-level sprites are wired in `interface/005_soviet_collapse_ukraine_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art. The expansion asset ledger records the matching processed PNG files and source art. This branch-icon package documents deliberate sprite reuse for the current expanded tree; it does not prove the literal 208-focus target from older prompt material.
 
 | Branch sprite | Final DDS | Usage | Status |
 | --- | --- | --- | --- |
