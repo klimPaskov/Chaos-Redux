@@ -26,15 +26,15 @@ Required source order:
 | Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 `soviet_collapse_soviet_mission_*` mission blocks | Implemented; needs final tooltip and localisation coverage audit |
 | Foreign intervention categories and action-based aid | `soviet_collapse_foreign_patron_category` has 7 decision blocks; `soviet_collapse_breakaway_category` has 4 action blocks | Implemented for current layer; needs spreadsheet alignment |
 | Runtime focus trees for republics and breakaways | Focus counts: Ukraine 153, Belarus 83, Kazakhstan 87, fallback breakaway 53, Baltic 36, Caucasus 33, Central Asia 34, Moldova 23 | Implemented for these trees |
-| High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54 | Implemented for these three successors |
+| High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54, ICD 24, KRS 24 | Implemented for these five successors |
 | Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions; parser audit found no missing focus references, self-references, duplicate focus IDs, missing icons, missing localisation, missing `ai_will_do`, or missing/duplicated `completion_reward` blocks | Implemented for current focus trees |
-| Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB` | Implemented for three; many planned serious splinters remain unimplemented |
-| Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` creates the shared `Emergency Republican Guard` template, grants base manpower/equipment, and spawns guard units for Event-created republics and the implemented CFR/MFR/OGB successors; mobilisation decisions can add more units through the same template | Implemented for current appearing republics and implemented successors |
+| Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB`, `ICD`, `KRS` | Implemented for five; many planned serious splinters remain unimplemented |
+| Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` creates the shared `Emergency Republican Guard` template, grants base manpower/equipment, and spawns guard units for Event-created republics and the implemented CFR/MFR/OGB/ICD/KRS successors; mobilisation decisions can add more units through the same template | Implemented for current appearing republics and implemented successors |
 | Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean | Implemented for current achievement surface; future-only splinter achievements depend on missing packages |
 | Evolution logging | Event 005 has one `record_events_log_evolution_entry` writer, under `soviet_collapse_record_high_chaos_successor_evolution`; baseline crisis setup and objective pressure effects only change crisis variables and event flow | Implemented for current high-chaos successor logging |
-| Super-events | Slots 14-27 have helpers, assets, localisation, audio references, and constants. Route calls now exist for all except 16 and 18 | Partially implemented |
-| Super-event slot 16, The Dead Are Citizens | Helper exists; no implemented death-state route calls it | Blocked by missing death-state package |
-| Super-event slot 18, Every Port a Council | Helper exists; no implemented naval council route calls it | Blocked by missing naval/Kronstadt package |
+| Super-events | Slots 14-27 have helpers, assets, localisation, audio references, constants, and route calls from implemented capstones | Implemented for current surfaces |
+| Super-event slot 16, The Dead Are Citizens | `ICD_extreme_path` and `icd_push_extreme_route` call `soviet_collapse_complete_dead_state_endgame`, which fires the helper | Implemented through the Iron Commissariat package |
+| Super-event slot 18, Every Port a Council | `KRS_extreme_path` and `krs_push_extreme_route` call `soviet_collapse_complete_port_council_endgame`, which fires the helper | Implemented through the Kronstadt package |
 | Docs | Event doc and super-event research docs exist and are aligned with current route wiring | Implemented for current surfaces |
 | Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, and super-event assets; no new assets created in the latest route-wiring pass | Implemented for current surfaces |
 | Spreadsheet updates | No local spreadsheet file was found by `rg --files`; README points to the external Google spreadsheet catalog | Blocked unless the sheet is provided or connector access is specified |
@@ -46,6 +46,8 @@ Command evidence:
 
 ```text
 CFR_soviet_collapse_focus_tree 58
+ICD_soviet_collapse_focus_tree 24
+KRS_soviet_collapse_focus_tree 24
 MFR_soviet_collapse_focus_tree 46
 OGB_soviet_collapse_focus_tree 54
 soviet_collapse_baltic_focus_tree 36
@@ -97,7 +99,7 @@ Static package coverage:
 
 ```text
 Vanilla country tags and history files found for UKR BLR KAZ UZB KYR TAJ TMS LIT LAT EST GEO ARM AZR MOL.
-Chaos Redux country tags and history files found for CFR MFR OGB.
+Chaos Redux country tags and history files found for CFR MFR OGB ICD KRS.
 ```
 
 The implemented high-chaos successor history files intentionally do not declare static OOBs because their military is assigned after runtime state transfer through `soviet_collapse_setup_breakaway_country`.
@@ -128,7 +130,7 @@ Logging behavior:
 - `soviet_collapse_record_high_chaos_successor_evolution` sets Event ID 5, high-chaos evolution type 5, the current chaos tier bucket, saves the successor actor, and records only if `can_soviet_collapse_record_high_chaos_evolution_this_tier = yes`.
 - The tier gate records at most one non-tier-5 high-chaos successor evolution through `soviet_collapse_high_chaos_evolution_tier_4_recorded`.
 - Chaos tier 5 can record one separate high-chaos successor evolution through `soviet_collapse_high_chaos_evolution_tier_5_recorded`.
-- CFR, MFR, and OGB each set their own stage before calling the shared writer, so whichever successor records first in that tier owns the visible evolution entry while later successors remain normal event notices.
+- CFR, MFR, OGB, ICD, and KRS each set their own stage before calling the shared writer, so whichever successor records first in that tier owns the visible evolution entry while later successors remain normal event notices.
 
 Scripted localisation maps Event 005 evolution rows to the high-chaos successor type and tag-specific successor notices. General Soviet Collapse mutation localisation remains available for future mutation tracks, but the current Event 005 script does not write baseline crisis stages into the evolution log.
 
@@ -147,11 +149,12 @@ Implemented route calls currently exist for:
 - `soviet_collapse_show_baltic_restoration_pact_super_event`
 - `soviet_collapse_show_caucasus_defense_compact_super_event`
 - `soviet_collapse_show_eastern_buffer_coalition_super_event`
+- `soviet_collapse_show_dead_are_citizens_super_event`
+- `soviet_collapse_show_every_port_a_council_super_event`
 
 Helpers without implemented route calls:
 
-- `soviet_collapse_show_dead_are_citizens_super_event`
-- `soviet_collapse_show_every_port_a_council_super_event`
+- None for the currently wired super-event helper surface.
 
 ## Custom Country Gap
 
@@ -160,6 +163,8 @@ Current registered special Event 005 custom country tags are:
 - `CFR`
 - `MFR`
 - `OGB`
+- `ICD`
+- `KRS`
 
 The custom icon surface references 35 tag prefixes:
 
@@ -167,12 +172,10 @@ The custom icon surface references 35 tag prefixes:
 ALA ARD BAC BBH BEC BLT BSC COU DHC DSC FEV FTH GAC ICD ILU IRA IUL KHC KRS LID MRC NLC NRF PRA RCD RLD RMC SDZ SEP SZA TNC TRS TSC UDC UWD
 ```
 
-Those icon-prefix packages are not all registered country packages. The clean-spec objective requires full packages for every implemented country, but it also expects serious splinter packages that are not currently implemented. This is the largest remaining blocker.
+Those icon-prefix packages are not all registered country packages. `ICD` and `KRS` now convert two previously blocked high-chaos routes into real packages, but the clean-spec objective still expects more serious splinter packages than the five currently implemented tags.
 
 ## Remaining Blockers
 
-1. Implement or explicitly defer the missing serious splinter packages from Part 4 with full country packages, including tag, history, localisation, ideology names, leaders or councils, flags, ideas, decisions, AI, focus content, assets, and docs.
-2. Wire `The Dead Are Citizens` only after a death-state route exists and satisfies the high-chaos trigger direction.
-3. Wire `Every Port a Council` only after a naval council or Kronstadt route exists and satisfies the trigger direction.
-4. Update the event spreadsheet or record a concrete access blocker for the external catalog.
-5. Run final parser-oriented checks after every remaining implementation pass.
+1. Implement or explicitly defer the remaining serious splinter packages from Part 4 with full country packages, including tag, history, localisation, ideology names, leaders or councils, flags, ideas, decisions, AI, focus content, assets, and docs.
+2. Update the event spreadsheet or record a concrete access blocker for the external catalog.
+3. Run final parser-oriented checks after every remaining implementation pass.
