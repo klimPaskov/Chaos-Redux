@@ -6425,4 +6425,193 @@ focus_tree = {
 		}
 		ai_will_do = { base = 7 }
 	}
+
+	focus = {
+		id = kaz_soviet_collapse_karaganda_emergency_board
+		icon = GFX_kaz_soviet_collapse_resources
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_guard_the_resource_towns }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_karaganda_board
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { soviet_collapse_resource_authority = constant:soviet_collapse_republic_focus.medium_depot_gain }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_oil_field_protection_orders
+		icon = GFX_kaz_soviet_collapse_resources
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 4
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = kaz_soviet_collapse_karaganda_emergency_board }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_oil_fields_guarded
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_rail_to_the_mines
+		icon = GFX_kaz_soviet_collapse_resources
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 14
+		y = 4
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = kaz_soviet_collapse_karaganda_emergency_board }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_mine_rail_links
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_factories_around_the_pitheads
+		icon = GFX_kaz_soviet_collapse_resources
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_rail_to_the_mines }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_pithead_factories
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { soviet_collapse_resource_authority = constant:soviet_collapse_republic_focus.medium_depot_gain }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_coal_for_rifles_oil_for_trucks
+		icon = GFX_kaz_soviet_collapse_military
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 16
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_factories_around_the_pitheads }
+		prerequisite = { focus = kaz_soviet_collapse_steppe_district_inventories }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_resource_arms_exchange
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_resource_concessions_debate
+		icon = GFX_kaz_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 20
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_oil_field_protection_orders }
+		available = {
+			OR = {
+				SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } }
+				has_country_flag = soviet_collapse_kazakhstan_southern_guarantees_requested
+				has_country_flag = soviet_collapse_kazakhstan_route_turkestan_federation
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_concessions_debate
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_domestic_resource_state
+		icon = GFX_kaz_soviet_collapse_resources
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_resource_concessions_debate }
+		mutually_exclusive = { focus = kaz_soviet_collapse_league_resource_pool }
+		mutually_exclusive = { focus = kaz_soviet_collapse_foreign_technical_missions }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_domestic_resource_state
+			add_to_variable = { soviet_collapse_resource_authority = constant:soviet_collapse_republic_focus.large_depot_gain }
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_league_resource_pool
+		icon = GFX_kaz_soviet_collapse_federation
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 20
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_resource_concessions_debate }
+		mutually_exclusive = { focus = kaz_soviet_collapse_domestic_resource_state }
+		mutually_exclusive = { focus = kaz_soviet_collapse_foreign_technical_missions }
+		available = { is_soviet_collapse_league_pressure_ready = yes }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_league_resource_pool
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_republic_focus.medium_league_gain }
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 3 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_foreign_technical_missions
+		icon = GFX_kaz_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = kaz_soviet_collapse_resource_concessions_debate }
+		mutually_exclusive = { focus = kaz_soviet_collapse_domestic_resource_state }
+		mutually_exclusive = { focus = kaz_soviet_collapse_league_resource_pool }
+		available = { SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_foreign_technical_missions
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_to_variable = { soviet_collapse_resource_authority = constant:soviet_collapse_republic_focus.medium_depot_gain }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = kaz_soviet_collapse_the_steppe_arsenal
+		icon = GFX_kaz_soviet_collapse_military
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 20
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_domestic_resource_state focus = kaz_soviet_collapse_league_resource_pool focus = kaz_soviet_collapse_foreign_technical_missions }
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_steppe_arsenal
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 7 }
+	}
 }
