@@ -1202,6 +1202,56 @@ can_delay_soviet_collapse_kazakhstan_first_wave = {
 	}
 }
 
+can_keep_soviet_collapse_siberian_distance_command = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	OR = {
+		AND = {
+			574 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			578 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		}
+		AND = {
+			575 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			576 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		}
+		AND = {
+			577 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			580 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		}
+	}
+	OR = {
+		FER = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		VLA = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		YAK = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+	}
+}
+
+can_keep_soviet_collapse_vladivostok_under_central_command = {
+	has_manpower > constant:soviet_collapse_soviet_objective.high_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.equipment_req }
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	has_navy_size = { size > 0 }
+	408 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	OR = {
+		409 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		657 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		560 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	OR = {
+		has_war_with = JAP
+		JAP = { exists = yes has_opinion = { target = ROOT value < 0 } }
+		FER = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		VLA = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
