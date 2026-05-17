@@ -1160,6 +1160,48 @@ can_screen_soviet_collapse_ashgabat_border = {
 	}
 }
 
+can_control_soviet_collapse_bishkek_mountain_signals = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.equipment_req }
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	586 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	OR = {
+		588 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		742 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		405 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	OR = {
+		KYR = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		SIK = { exists = yes }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+	}
+}
+
+can_delay_soviet_collapse_kazakhstan_first_wave = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	NOT = { is_soviet_collapse_southern_breakaway_active = yes }
+	NOT = { KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+	586 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	OR = {
+		583 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		587 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		588 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 3 }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
