@@ -206,11 +206,23 @@ chaosx_ach_steppe_mandate = {
 	happened = {
 		custom_override_tooltip = {
 			tooltip = chaosx_ach_steppe_mandate_tooltip
-			tag = KAZ
 			is_subject = no
-			has_country_flag = soviet_collapse_kazakhstan_steppe_federation_charter
-			has_country_flag = soviet_collapse_kazakhstan_steppe_arsenal
-			has_country_flag = soviet_collapse_kazakhstan_mobile_steppe_staff
+			OR = {
+				AND = {
+					tag = KAZ
+					has_country_flag = soviet_collapse_kazakhstan_steppe_federation_charter
+					has_country_flag = soviet_collapse_kazakhstan_steppe_arsenal
+					has_country_flag = soviet_collapse_kazakhstan_mobile_steppe_staff
+				}
+				AND = {
+					tag = TNC
+					has_country_flag = soviet_collapse_turkestan_endgame
+				}
+				AND = {
+					tag = ALA
+					has_country_flag = soviet_collapse_alash_endgame
+				}
+			}
 		}
 	}
 }
@@ -220,10 +232,18 @@ chaosx_ach_alash_does_not_apologize = {
 	happened = {
 		custom_override_tooltip = {
 			tooltip = chaosx_ach_alash_does_not_apologize_tooltip
-			tag = KAZ
 			is_subject = no
-			has_country_flag = soviet_collapse_kazakhstan_route_alash
-			has_country_flag = soviet_collapse_kazakhstan_written_alash_program
+			OR = {
+				AND = {
+					tag = KAZ
+					has_country_flag = soviet_collapse_kazakhstan_route_alash
+					has_country_flag = soviet_collapse_kazakhstan_written_alash_program
+				}
+				AND = {
+					tag = ALA
+					has_country_flag = soviet_collapse_alash_endgame
+				}
+			}
 		}
 	}
 }
@@ -295,8 +315,16 @@ chaosx_ach_basmachi_roads = {
 		custom_override_tooltip = {
 			tooltip = chaosx_ach_basmachi_roads_tooltip
 			is_subject = no
-			OR = { tag = UZB tag = KYR tag = TAJ tag = TMS }
-			has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+			OR = {
+				AND = {
+					OR = { tag = UZB tag = KYR tag = TAJ tag = TMS }
+					has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+				}
+				AND = {
+					tag = BSC
+					has_country_flag = soviet_collapse_basmachi_endgame
+				}
+			}
 		}
 	}
 }
@@ -493,9 +521,17 @@ chaosx_ach_southern_cascade = {
 		custom_override_tooltip = {
 			tooltip = chaosx_ach_southern_cascade_tooltip
 			is_subject = no
-			OR = { tag = UZB tag = KYR tag = TAJ tag = TMS }
-			KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway }
-			has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+			OR = {
+				AND = {
+					OR = { tag = UZB tag = KYR tag = TAJ tag = TMS }
+					KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway }
+					has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+				}
+				AND = {
+					OR = { tag = BSC tag = TNC tag = ALA }
+					has_global_flag = soviet_collapse_super_event_steppe_federation_fired
+				}
+			}
 		}
 	}
 }
