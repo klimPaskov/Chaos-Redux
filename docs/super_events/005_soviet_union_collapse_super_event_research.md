@@ -111,7 +111,7 @@ The custom extreme paths and republic transformation routes have thirteen rare b
 | --- | --- | --- |
 | `15` | The Black Banner Returns | Ukraine completes `ukr_soviet_collapse_black_banner_takes_the_villages` |
 | `16` | The Dead Are Citizens | Helper present; no implemented death-state route currently calls it |
-| `17` | The World as One Factory | Helper present; no implemented industrial machine route currently calls it |
+| `17` | The World as One Factory | `MFR_state_as_one_arms_order` |
 | `18` | Every Port a Council | Helper present; no implemented naval council route currently calls it |
 | `19` | A Map Larger than the Union | Ukraine completes `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map` |
 | `20` | The Steppe Beyond History | Helper present; no implemented Steppe Beyond History route currently calls it |
@@ -165,14 +165,14 @@ Audio notes:
 
 ## Package Audit Matrix
 
-This matrix maps the implemented Event 005 super-events to their current artifact evidence. Localisation keys are in `localisation/english/005_soviet_collapse_l_english.yml`; image sprites are in `interface/chaosx_super_events.gfx`; audio variants are in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`; show helpers live in `common/scripted_effects/005_soviet_collapse_effects.txt`, with implemented route calls in `common/national_focus/005_soviet_collapse_republics.txt`.
+This matrix maps the implemented Event 005 super-events to their current artifact evidence. Localisation keys are in `localisation/english/005_soviet_collapse_l_english.yml`; image sprites are in `interface/chaosx_super_events.gfx`; audio variants are in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`; show helpers live in `common/scripted_effects/005_soviet_collapse_effects.txt`, with implemented route calls in `common/national_focus/005_soviet_collapse_republics.txt` and `common/national_focus/005_soviet_collapse_factory_successors.txt`.
 
 | Slot | Title | Text keys | Quote/source status | Image status | Audio status | Trigger status | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `14` | The Union Unmade | `super_event.14.t/d/a/q` | Weber quote documented with Archive.org source note | sourced DDS wired | unique audio id wired from Coriolan package | fires from `soviet_collapse_setup_breakaway_country` through `soviet_collapse_maybe_show_union_unmade_super_event` | sourced image wired |
 | `15` | The Black Banner Returns | `super_event.15.t/d/a/q` | Proudhon quote note documented; attribution remains reviewable | generated DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_black_banner_takes_the_villages` | none for generated image |
 | `16` | The Dead Are Citizens | `super_event.16.t/d/a/q` | Ecclesiastes quote note documented | generated DDS wired | slot audio id wired from Final Silence package | helper present; no implemented death-state route currently calls it | none for generated image |
-| `17` | The World as One Factory | `super_event.17.t/d/a/q` | Marx quote note documented | generated DDS wired | slot audio id wired from Angelic World Order package | helper present; no implemented industrial machine route currently calls it | none for generated image |
+| `17` | The World as One Factory | `super_event.17.t/d/a/q` | Marx quote note documented | generated DDS wired | slot audio id wired from Angelic World Order package | `MFR_state_as_one_arms_order` calls `soviet_collapse_show_world_as_one_factory_super_event` | none for generated image |
 | `18` | Every Port a Council | `super_event.18.t/d/a/q` | Kronstadt slogan note documented | generated DDS wired | slot audio id wired from Coriolan package | helper present; no implemented naval council route currently calls it | none for generated image |
 | `19` | A Map Larger than the Union | `super_event.19.t/d/a/q` | Mackinder quote documented against Archive.org scan text of the 1919 Henry Holt edition | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map` | sourced image wired |
 | `20` | The Steppe Beyond History | `super_event.20.t/d/a/q` | Herodotus quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | helper present; no implemented Steppe Beyond History route currently calls it | sourced image wired |
