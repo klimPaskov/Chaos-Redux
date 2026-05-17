@@ -887,6 +887,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_066_done soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_066_lock_the_ural_factory_gates_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_066_done soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_066_lock_the_ural_factory_gates_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_067_inspect_the_siberian_storehouses = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_inspect_soviet_collapse_siberian_storehouses = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_067_done soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_067_inspect_the_siberian_storehouses_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_067_done soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_067_inspect_the_siberian_storehouses_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_068_move_the_fuel_before_the_flags_change = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_move_soviet_collapse_fuel_before_flags_change = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_068_done add_fuel = constant:soviet_collapse_soviet_objective.fuel_req soviet_collapse_apply_successful_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_068_move_the_fuel_before_the_flags_change_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_068_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_fuel = constant:soviet_collapse_breakaway_action.coordinate_fuel } } } soviet_collapse_apply_failed_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_068_move_the_fuel_before_the_flags_change_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
