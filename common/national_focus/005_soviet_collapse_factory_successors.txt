@@ -1,0 +1,1033 @@
+@soviet_collapse_focus_short = 4
+@soviet_collapse_focus_medium = 6
+@soviet_collapse_focus_long = 8
+
+# ============================================================================
+# CHAOS REDUX - EVENT 005 HIGH-CHAOS FACTORY SUCCESSOR FOCUS TREES
+# ============================================================================
+# Runtime focus packages for high-chaos special countries created by the Soviet
+# Union Collapse event. Civilian Factory of Russia uses Construction Mandates
+# as its tuning spine and branches through governance, construction strategy,
+# defense engineering, foreign contracts, and the coercive worksite state.
+# ============================================================================
+
+focus_tree = {
+	id = CFR_soviet_collapse_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 20
+			tag = CFR
+			has_country_flag = soviet_collapse_high_chaos_successor
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 50 y = 1200 }
+	initial_show_position = { x = 10 y = 0 }
+
+	focus = {
+		id = CFR_count_the_cranes
+		icon = GFX_focus_CFR_sites_become_government
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 0
+		cost = @soviet_collapse_focus_short
+		completion_reward = {
+			set_country_flag = cfr_focus_count_the_cranes
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	focus = {
+		id = CFR_the_trust_office_takes_the_seal
+		icon = GFX_focus_CFR_cement_allocation_boards
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_count_the_cranes }
+		completion_reward = {
+			set_country_flag = cfr_focus_trust_office_seal
+			soviet_collapse_apply_cfr_focus_public_works = yes
+		}
+		ai_will_do = { base = 11 }
+	}
+
+	focus = {
+		id = CFR_ration_cards_for_workers
+		icon = GFX_focus_CFR_housing_ration_cards
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_the_trust_office_takes_the_seal }
+		completion_reward = {
+			set_country_flag = cfr_focus_ration_cards_workers
+			soviet_collapse_apply_cfr_focus_housing_state = yes
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = CFR_emergency_cement_accounts
+		icon = GFX_focus_CFR_emergency_cement_imports
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_ration_cards_for_workers }
+		completion_reward = {
+			set_country_flag = cfr_focus_emergency_cement_accounts
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = CFR_the_unfinished_city_speaks
+		icon = GFX_focus_CFR_reconstruction_contract_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_emergency_cement_accounts }
+		completion_reward = {
+			set_country_flag = cfr_focus_unfinished_city_speaks
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			soviet_collapse_apply_cfr_focus_public_works = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = CFR_map_the_unfinished_cities
+		icon = GFX_focus_CFR_map_the_unfinished_cities
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_count_the_cranes }
+		completion_reward = {
+			set_country_flag = cfr_focus_map_unfinished_cities
+			soviet_collapse_apply_cfr_focus_public_works = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_bridge_permit_ministries
+		icon = GFX_focus_CFR_bridge_permit_ministries
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_map_the_unfinished_cities }
+		completion_reward = {
+			set_country_flag = cfr_focus_bridge_permit_ministries
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_worker_hostel_registers
+		icon = GFX_focus_CFR_worker_hostel_registers
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 3
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_bridge_permit_ministries }
+		completion_reward = {
+			set_country_flag = cfr_focus_worker_hostel_registers
+			soviet_collapse_apply_cfr_focus_housing_state = yes
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_elect_the_site_committees
+		icon = GFX_focus_CFR_municipal_board_elections
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_unfinished_city_speaks }
+		mutually_exclusive = { focus = CFR_publish_the_planners_charter }
+		mutually_exclusive = { focus = CFR_invite_the_foreign_contract_board }
+		mutually_exclusive = { focus = CFR_the_concrete_committee }
+		completion_reward = {
+			set_country_flag = cfr_governance_site_committees
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_medium }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < 0.5 }
+		}
+	}
+
+	focus = {
+		id = CFR_publish_the_planners_charter
+		icon = GFX_focus_CFR_concrete_republic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_unfinished_city_speaks }
+		mutually_exclusive = { focus = CFR_elect_the_site_committees }
+		mutually_exclusive = { focus = CFR_invite_the_foreign_contract_board }
+		mutually_exclusive = { focus = CFR_the_concrete_committee }
+		completion_reward = {
+			set_country_flag = cfr_governance_planner_directorate
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+			add_popularity = { ideology = communism popularity = constant:soviet_collapse_factory_ancient.popularity_medium }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_invite_the_foreign_contract_board
+		icon = GFX_focus_CFR_foreign_engineer_desks
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 11
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_unfinished_city_speaks }
+		mutually_exclusive = { focus = CFR_elect_the_site_committees }
+		mutually_exclusive = { focus = CFR_publish_the_planners_charter }
+		mutually_exclusive = { focus = CFR_the_concrete_committee }
+		completion_reward = {
+			set_country_flag = cfr_governance_foreign_contract_board
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_to_variable = { cfr_construction_mandates = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = CFR_the_concrete_committee
+		icon = GFX_focus_CFR_concrete_committee
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_unfinished_city_speaks }
+		mutually_exclusive = { focus = CFR_elect_the_site_committees }
+		mutually_exclusive = { focus = CFR_publish_the_planners_charter }
+		mutually_exclusive = { focus = CFR_invite_the_foreign_contract_board }
+		completion_reward = {
+			set_country_flag = cfr_governance_concrete_committee
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+			add_popularity = { ideology = fascism popularity = constant:soviet_collapse_factory_ancient.popularity_small }
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = CFR_minutes_from_every_workshop
+		icon = GFX_focus_CFR_municipal_board_elections
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 7
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_elect_the_site_committees }
+		completion_reward = {
+			set_country_flag = cfr_focus_workshop_minutes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_cfr_focus_housing_state = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_the_engineers_overrule_the_party
+		icon = GFX_focus_CFR_engineers_without_flags
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 7
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_publish_the_planners_charter }
+		completion_reward = {
+			set_country_flag = cfr_focus_engineers_overrule_party
+			soviet_collapse_apply_cfr_focus_public_works = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_contracts_before_ideology
+		icon = GFX_focus_CFR_contract_dependency_web
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 11
+		y = 7
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_invite_the_foreign_contract_board }
+		completion_reward = {
+			set_country_flag = cfr_focus_contracts_before_ideology
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_housing_as_discipline
+		icon = GFX_focus_CFR_housing_courts
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 7
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_the_concrete_committee }
+		completion_reward = {
+			set_country_flag = cfr_focus_housing_as_discipline
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_the_board_becomes_the_cabinet
+		icon = GFX_focus_CFR_the_builder_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = {
+			focus = CFR_minutes_from_every_workshop
+			focus = CFR_the_engineers_overrule_the_party
+			focus = CFR_contracts_before_ideology
+			focus = CFR_housing_as_discipline
+		}
+		completion_reward = {
+			set_country_flag = cfr_focus_board_becomes_cabinet
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = CFR_cities_first
+		icon = GFX_focus_CFR_housing_before_flags
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
+		mutually_exclusive = { focus = CFR_rails_first }
+		mutually_exclusive = { focus = CFR_factories_first }
+		mutually_exclusive = { focus = CFR_contracts_first }
+		completion_reward = {
+			set_country_flag = cfr_strategy_cities_first
+			soviet_collapse_apply_cfr_focus_housing_state = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < 0.5 }
+		}
+	}
+
+	focus = {
+		id = CFR_rails_first
+		icon = GFX_focus_CFR_bridge_permit_ministries
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 6
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
+		mutually_exclusive = { focus = CFR_cities_first }
+		mutually_exclusive = { focus = CFR_factories_first }
+		mutually_exclusive = { focus = CFR_contracts_first }
+		completion_reward = {
+			set_country_flag = cfr_strategy_rails_first
+			soviet_collapse_apply_cfr_focus_public_works = yes
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_factories_first
+		icon = GFX_focus_CFR_civilian_hegemony_project
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 11
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
+		mutually_exclusive = { focus = CFR_cities_first }
+		mutually_exclusive = { focus = CFR_rails_first }
+		mutually_exclusive = { focus = CFR_contracts_first }
+		completion_reward = {
+			set_country_flag = cfr_strategy_factories_first
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_contracts_first
+		icon = GFX_focus_CFR_client_factory_permits
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
+		mutually_exclusive = { focus = CFR_cities_first }
+		mutually_exclusive = { focus = CFR_rails_first }
+		mutually_exclusive = { focus = CFR_factories_first }
+		completion_reward = {
+			set_country_flag = cfr_strategy_contracts_first
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_apartment_blocks_for_loyalty
+		icon = GFX_focus_CFR_housing_before_flags
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+		x = 1
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_cities_first }
+		completion_reward = {
+			set_country_flag = cfr_focus_apartment_blocks_loyalty
+			soviet_collapse_apply_cfr_focus_housing_state = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_repair_the_bridges_before_the_flags
+		icon = GFX_focus_CFR_bridge_permit_ministries
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 6
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_rails_first }
+		completion_reward = {
+			set_country_flag = cfr_focus_bridges_before_flags
+			soviet_collapse_apply_cfr_focus_public_works = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_machine_tools_from_empty_ministries
+		icon = GFX_focus_CFR_cement_allocation_boards
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 11
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_factories_first }
+		completion_reward = {
+			set_country_flag = cfr_focus_machine_tools_empty_ministries
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_build_their_parliament_own_their_debt
+		icon = GFX_focus_CFR_client_city_charters
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_contracts_first }
+		completion_reward = {
+			set_country_flag = cfr_focus_parliament_debt
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_to_variable = { cfr_construction_mandates = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_the_concrete_price_index
+		icon = GFX_focus_CFR_cement_allocation_boards
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 1
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_apartment_blocks_for_loyalty }
+		completion_reward = {
+			set_country_flag = cfr_focus_concrete_price_index
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_a_factory_where_the_school_was
+		icon = GFX_focus_CFR_civilian_hegemony_project
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_repair_the_bridges_before_the_flags }
+		completion_reward = {
+			set_country_flag = cfr_focus_factory_where_school_was
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_no_ruins_without_receipts
+		icon = GFX_focus_CFR_no_ruins_without_receipts
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 11
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_machine_tools_from_empty_ministries }
+		completion_reward = {
+			set_country_flag = cfr_focus_no_ruins_without_receipts
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_client_city_charters
+		icon = GFX_focus_CFR_client_city_charters
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_build_their_parliament_own_their_debt }
+		completion_reward = {
+			set_country_flag = cfr_focus_client_city_charters
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_the_first_new_district
+		icon = GFX_focus_CFR_the_permit_state
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_concrete_price_index }
+		completion_reward = {
+			set_country_flag = cfr_focus_first_new_district
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = CFR_a_civilian_factory_in_every_capital
+		icon = GFX_focus_CFR_civilian_hegemony_project
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 11
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_no_ruins_without_receipts }
+		completion_reward = {
+			set_country_flag = cfr_focus_civilian_factory_every_capital
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = CFR_the_debt_map
+		icon = GFX_focus_CFR_contract_dependency_web
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_client_city_charters }
+		completion_reward = {
+			set_country_flag = cfr_focus_debt_map
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_to_variable = { cfr_construction_mandates = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = CFR_construction_battalions
+		icon = GFX_focus_CFR_forced_labor_barracks
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 23
+		y = 6
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_the_unfinished_city_speaks }
+		completion_reward = {
+			set_country_flag = cfr_focus_construction_battalions
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_fortify_the_worksite_gates
+		icon = GFX_focus_CFR_silent_site_guards
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 7
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_construction_battalions }
+		completion_reward = {
+			set_country_flag = cfr_focus_fortify_worksite_gates
+			soviet_collapse_apply_cfr_focus_defense_build = yes
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_small }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = CFR_blueprints_for_field_shelters
+		icon = GFX_focus_CFR_union_of_construction_cities
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 23
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_fortify_the_worksite_gates }
+		completion_reward = {
+			set_country_flag = cfr_focus_field_shelter_blueprints
+			soviet_collapse_apply_cfr_focus_public_works = yes
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_the_crane_as_watchtower
+		icon = GFX_focus_CFR_silent_site_guards
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 9
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_blueprints_for_field_shelters }
+		completion_reward = {
+			set_country_flag = cfr_focus_crane_as_watchtower
+			soviet_collapse_apply_cfr_focus_defense_build = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_sappers_of_the_builder_state
+		icon = GFX_focus_CFR_forced_labor_barracks
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 23
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_crane_as_watchtower }
+		completion_reward = {
+			set_country_flag = cfr_focus_sappers_builder_state
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = CFR_german_concrete_offers
+		icon = GFX_focus_CFR_foreign_engineer_desks
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 23
+		y = 12
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_invite_the_foreign_contract_board }
+		completion_reward = {
+			set_country_flag = cfr_focus_german_concrete_offers
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			soviet_collapse_apply_cfr_focus_public_works = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_british_reconstruction_credit
+		icon = GFX_focus_CFR_reconstruction_credit_unions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 23
+		y = 13
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_german_concrete_offers }
+		completion_reward = {
+			set_country_flag = cfr_focus_british_reconstruction_credit
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_american_machine_tool_mission
+		icon = GFX_focus_CFR_foreign_engineer_desks
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 23
+		y = 14
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_british_reconstruction_credit }
+		completion_reward = {
+			set_country_flag = cfr_focus_american_machine_tool_mission
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_contracts_with_the_league
+		icon = GFX_focus_CFR_rebuild_for_the_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_american_machine_tool_mission }
+		completion_reward = {
+			set_country_flag = cfr_focus_contracts_with_league
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_build_the_border_bend_the_border
+		icon = GFX_focus_CFR_contract_dependency_web
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 23
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_contracts_with_the_league }
+		completion_reward = {
+			set_country_flag = cfr_focus_border_bend_border
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_to_variable = { cfr_construction_mandates = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_the_city_without_citizens
+		icon = GFX_focus_CFR_city_without_citizens
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_concrete_committee }
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = cfr_dark_city_without_citizens
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+			add_popularity = { ideology = fascism popularity = constant:soviet_collapse_factory_ancient.popularity_medium }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = CFR_concrete_courts
+		icon = GFX_focus_CFR_housing_courts
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 9
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_the_city_without_citizens }
+		completion_reward = {
+			set_country_flag = cfr_dark_concrete_courts
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = CFR_seal_the_dormitories
+		icon = GFX_focus_CFR_labor_passport_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 10
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_concrete_courts }
+		completion_reward = {
+			set_country_flag = cfr_dark_seal_dormitories
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = CFR_no_empty_lots_no_empty_lives
+		icon = GFX_focus_CFR_the_city_without_citizens_deepens
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 11
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_seal_the_dormitories }
+		completion_reward = {
+			set_country_flag = cfr_dark_no_empty_lots
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = CFR_the_concrete_republic
+		icon = GFX_focus_CFR_concrete_republic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 18
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_no_empty_lots_no_empty_lives }
+		completion_reward = {
+			set_country_flag = cfr_dark_concrete_republic
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_the_state_that_builds
+		icon = GFX_focus_CFR_the_builder_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 8
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = {
+			focus = CFR_the_first_new_district
+			focus = CFR_a_factory_where_the_school_was
+			focus = CFR_a_civilian_factory_in_every_capital
+			focus = CFR_the_debt_map
+		}
+		completion_reward = {
+			set_country_flag = cfr_focus_state_that_builds
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = CFR_reconstruction_protectorates
+		icon = GFX_focus_CFR_client_factory_permits
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_state_that_builds }
+		completion_reward = {
+			set_country_flag = cfr_focus_reconstruction_protectorates
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_buy_peace_with_concrete
+		icon = GFX_focus_CFR_reconstruction_contract_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_state_that_builds }
+		completion_reward = {
+			set_country_flag = cfr_focus_buy_peace_with_concrete
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			soviet_collapse_apply_cfr_focus_housing_state = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = no }
+		}
+	}
+
+	focus = {
+		id = CFR_the_builder_state_marches_east
+		icon = GFX_focus_CFR_every_region_a_worksite
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
+		x = 12
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_state_that_builds }
+		completion_reward = {
+			set_country_flag = cfr_focus_builder_state_marches_east
+			soviet_collapse_apply_cfr_focus_public_works = yes
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_factories_as_embassies
+		icon = GFX_focus_CFR_civilian_hegemony_project
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 16
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_state_that_builds }
+		completion_reward = {
+			set_country_flag = cfr_focus_factories_as_embassies
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_the_workers_keep_the_keys
+		icon = GFX_focus_CFR_municipal_board_elections
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 4
+		y = 17
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_reconstruction_protectorates }
+		available = { has_country_flag = cfr_governance_site_committees }
+		completion_reward = {
+			set_country_flag = cfr_focus_workers_keep_keys
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_small }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_the_plan_is_the_law
+		icon = GFX_focus_CFR_concrete_republic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 8
+		y = 17
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_buy_peace_with_concrete }
+		available = { has_country_flag = cfr_governance_planner_directorate }
+		completion_reward = {
+			set_country_flag = cfr_focus_plan_is_law
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			add_popularity = { ideology = communism popularity = constant:soviet_collapse_factory_ancient.popularity_small }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_the_foreigners_hold_the_mortgage
+		icon = GFX_focus_CFR_contract_dependency_web
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 17
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = CFR_factories_as_embassies }
+		available = { has_country_flag = cfr_governance_foreign_contract_board }
+		completion_reward = {
+			set_country_flag = cfr_focus_foreigners_hold_mortgage
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = CFR_pour_the_final_foundation
+		icon = GFX_focus_CFR_the_builder_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 18
+		cost = @soviet_collapse_focus_long
+		prerequisite = {
+			focus = CFR_the_workers_keep_the_keys
+			focus = CFR_the_plan_is_the_law
+			focus = CFR_the_foreigners_hold_the_mortgage
+			focus = CFR_the_builder_state_marches_east
+		}
+		completion_reward = {
+			set_country_flag = cfr_focus_pour_final_foundation
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = CFR_nothing_but_foundations
+		icon = GFX_focus_CFR_city_as_machine
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 19
+		cost = @soviet_collapse_focus_long
+		prerequisite = {
+			focus = CFR_pour_the_final_foundation
+			focus = CFR_the_concrete_republic
+		}
+		completion_reward = {
+			set_country_flag = cfr_focus_nothing_but_foundations
+			soviet_collapse_apply_cfr_focus_coercive_build = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = cfr_dark_city_without_citizens }
+		}
+	}
+
+	focus = {
+		id = CFR_rebuild_russia_without_moscow
+		icon = GFX_focus_CFR_rebuild_russia_without_moscow
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 20
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = CFR_nothing_but_foundations }
+		completion_reward = {
+			set_country_flag = cfr_focus_rebuild_russia_without_moscow
+			soviet_collapse_apply_cfr_focus_civilian_build = yes
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = { base = 10 }
+	}
+}
