@@ -1075,6 +1075,53 @@ can_issue_soviet_collapse_baltic_legal_counterclaim = {
 	}
 }
 
+can_hold_soviet_collapse_caucasus_mountain_administration = {
+	has_manpower > constant:soviet_collapse_soviet_objective.high_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.equipment_req }
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	OR = {
+		AND = {
+			229 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			231 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		}
+		AND = {
+			229 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			230 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		}
+		AND = {
+			231 = { is_owned_by = ROOT is_controlled_by = ROOT }
+			233 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		}
+	}
+	OR = {
+		GEO = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		ARM = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		AZR = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+	}
+}
+
+can_anchor_soviet_collapse_tashkent = {
+	has_manpower > constant:soviet_collapse_soviet_objective.high_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.high_equipment_req }
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	405 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	OR = {
+		585 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		584 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		742 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	OR = {
+		is_soviet_collapse_southern_breakaway_active = yes
+		KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
