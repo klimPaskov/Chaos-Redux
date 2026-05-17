@@ -269,6 +269,21 @@ soviet_collapse_apply_failed_settlement_objective_pressure = {
 	country_event = { id = chaosx.nr5.16 days = 1 }
 }
 
+soviet_collapse_apply_successful_league_objective_pressure = {
+	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.league_success_confidence }
+	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.league_success_foreign }
+	add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_success_league }
+	soviet_collapse_recalculate_total_threat = yes
+}
+
+soviet_collapse_apply_failed_league_objective_pressure = {
+	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.league_failure_confidence }
+	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.league_failure_foreign }
+	add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_failure_league }
+	soviet_collapse_recalculate_total_threat = yes
+	country_event = { id = chaosx.nr5.15 days = 1 }
+}
+
 soviet_collapse_spawn_loyalist_militias = {
 	division_template = {
 		name = "Emergency Loyalist Militia"
@@ -1083,6 +1098,8 @@ soviet_collapse_count_active_soviet_objectives = {
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_034_secure_the_last_loyal_rail_spine } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_035_buy_time_with_local_militias } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_036_offer_amnesty_to_the_second_line } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_037_break_the_leagues_first_calendar } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_038_publicly_recover_a_lost_depot } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 }
 
 soviet_collapse_activate_opening_objectives = {
@@ -1124,4 +1141,6 @@ soviet_collapse_activate_opening_objectives = {
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_034_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_034_secure_the_last_loyal_rail_spine } } activate_mission = soviet_collapse_soviet_mission_034_secure_the_last_loyal_rail_spine add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_035_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_035_buy_time_with_local_militias } } activate_mission = soviet_collapse_soviet_mission_035_buy_time_with_local_militias add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_036_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_036_offer_amnesty_to_the_second_line } } activate_mission = soviet_collapse_soviet_mission_036_offer_amnesty_to_the_second_line add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_037_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_037_break_the_leagues_first_calendar } } activate_mission = soviet_collapse_soviet_mission_037_break_the_leagues_first_calendar add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_038_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_038_publicly_recover_a_lost_depot } } activate_mission = soviet_collapse_soviet_mission_038_publicly_recover_a_lost_depot add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 }
