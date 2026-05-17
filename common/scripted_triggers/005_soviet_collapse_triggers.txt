@@ -1601,6 +1601,35 @@ can_seal_soviet_collapse_northern_fleet_signals = {
 	}
 }
 
+can_keep_soviet_collapse_priests_out_of_war_room = {
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	capital_scope = { is_controlled_by = ROOT }
+	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
+	OR = {
+		has_country_flag = soviet_collapse_mission_085_done
+		has_country_flag = soviet_collapse_district_war_rooms_reopened
+		has_country_flag = soviet_collapse_crown_left_archive
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+	}
+}
+
+can_order_soviet_collapse_graves_counted_by_living = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	capital_scope = { is_controlled_by = ROOT }
+	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
+	OR = {
+		has_country_flag = soviet_collapse_mission_090_done
+		has_country_flag = soviet_collapse_hospital_records_guarded
+		has_country_flag = soviet_collapse_wrong_resurrection_committee_political
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
