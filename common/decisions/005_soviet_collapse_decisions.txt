@@ -1199,6 +1199,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_092_done soviet_collapse_apply_successful_legal_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_092_baltic_legal_counterclaim_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_092_done hidden_effect = { add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.foreign_failure_foreign } } soviet_collapse_apply_failed_legal_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_092_baltic_legal_counterclaim_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_093_caucasus_mountain_administration = {
+		icon = GFX_decision_soviet_collapse_border_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_hold_soviet_collapse_caucasus_mountain_administration = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_093_done soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_093_caucasus_mountain_administration_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_093_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway OR = { tag = GEO tag = ARM tag = AZR } } add_ideas = soviet_collapse_defensive_coordination add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress } } } } soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_093_caucasus_mountain_administration_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_094_the_tashkent_anchor = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_anchor_soviet_collapse_tashkent = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_094_done soviet_collapse_apply_successful_rail_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_094_the_tashkent_anchor_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_094_done hidden_effect = { if = { limit = { is_soviet_collapse_southern_breakaway_active = yes } for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway OR = { tag = UZB tag = KYR tag = TAJ tag = TMS } } add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.extra_infantry_equipment_per_chaos_band } add_ideas = soviet_collapse_defensive_coordination } } } } soviet_collapse_apply_failed_rail_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_094_the_tashkent_anchor_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
