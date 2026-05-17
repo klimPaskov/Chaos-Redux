@@ -911,6 +911,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_068_done add_fuel = constant:soviet_collapse_soviet_objective.fuel_req soviet_collapse_apply_successful_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_068_move_the_fuel_before_the_flags_change_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_068_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_fuel = constant:soviet_collapse_breakaway_action.coordinate_fuel } } } soviet_collapse_apply_failed_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_068_move_the_fuel_before_the_flags_change_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_069_guard_the_ammunition_census = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_guard_soviet_collapse_ammunition_census = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_069_done soviet_collapse_apply_successful_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_069_guard_the_ammunition_census_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_069_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.extra_infantry_equipment_per_chaos_band } add_equipment_to_stockpile = { type = artillery_equipment amount = constant:soviet_collapse_breakaway_support.extra_artillery_equipment_per_chaos_band } } } } soviet_collapse_apply_failed_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_069_guard_the_ammunition_census_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_070_reopen_the_northern_port_books = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_reopen_soviet_collapse_northern_port_books = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_070_done soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_070_reopen_the_northern_port_books_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_070_done hidden_effect = { if = { limit = { OR = { has_global_flag = { flag = chaos_tier value = 4 } has_global_flag = { flag = chaos_tier value = 5 } } } add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } } } soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_070_reopen_the_northern_port_books_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
