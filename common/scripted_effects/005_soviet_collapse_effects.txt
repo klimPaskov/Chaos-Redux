@@ -391,25 +391,196 @@ soviet_collapse_apply_foreign_trade_aid = {
 	}
 }
 
-soviet_collapse_release_initial_republics = {
-	if = { limit = { UKR = { exists = no } } release = UKR }
-	if = { limit = { BLR = { exists = no } } release = BLR }
+soviet_collapse_load_event_created_focus_tree = {
 	if = {
 		limit = {
-			OR = {
-				has_global_flag = { flag = chaos_tier value = 3 }
-				has_global_flag = { flag = chaos_tier value = 4 }
-				has_global_flag = { flag = chaos_tier value = 5 }
-				has_stability < constant:soviet_collapse_soviet_objective.min_stability
-				has_war_support < constant:soviet_collapse_soviet_objective.min_war_support
-			}
+			has_country_flag = soviet_collapse_event_created_republic
+			tag = UKR
 		}
-		if = { limit = { KAZ = { exists = no } } release = KAZ }
+		load_focus_tree = { tree = soviet_collapse_ukraine_focus_tree }
+	}
+	if = {
+		limit = {
+			has_country_flag = soviet_collapse_event_created_republic
+			tag = BLR
+		}
+		load_focus_tree = { tree = soviet_collapse_belarus_focus_tree }
+	}
+	if = {
+		limit = {
+			has_country_flag = soviet_collapse_event_created_republic
+			tag = KAZ
+		}
+		load_focus_tree = { tree = soviet_collapse_kazakhstan_focus_tree }
+	}
+}
+
+soviet_collapse_apply_focus_legal_recognition = {
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+	add_ideas = soviet_collapse_legal_restoration_claim
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_focus_socialist_sovereignty = {
+	add_stability = constant:soviet_collapse_republic_focus.stability_small
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	add_ideas = soviet_collapse_socialist_sovereignty
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_focus_military_consolidation = {
+	add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+	army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+	add_ideas = soviet_collapse_military_defense_council
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_republic_focus.military_obedience_focus_pressure }
+			add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_republic_focus.soviet_pressure_medium }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_focus_depot_and_supply_control = {
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+	add_ideas = soviet_collapse_captured_soviet_depots
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_republic_focus.soviet_pressure_medium }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_focus_league_preparation = {
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+	add_ideas = soviet_collapse_defensive_coordination
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_republic_focus.medium_league_gain }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_focus_foreign_channel = {
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+	add_ideas = soviet_collapse_foreign_volunteers
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_republic_focus.soviet_pressure_medium }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_focus_high_chaos_identity = {
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	add_ideas = soviet_collapse_old_underground_networks
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_republic_focus.medium_weirdness_gain }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_setup_southern_republic_if_valid = {
+	set_country_flag = soviet_collapse_event_created_republic
+	soviet_collapse_setup_breakaway_country = yes
+}
+
+soviet_collapse_release_initial_republics = {
+	if = {
+		limit = { UKR = { exists = no } }
+		release = UKR
+		UKR = { set_country_flag = soviet_collapse_event_created_republic }
+	}
+	if = {
+		limit = { BLR = { exists = no } }
+		release = BLR
+		BLR = { set_country_flag = soviet_collapse_event_created_republic }
+	}
+	if = {
+		limit = { can_soviet_collapse_open_kazakhstan_first_wave = yes }
+		if = {
+			limit = { KAZ = { exists = no } }
+			release = KAZ
+			KAZ = { set_country_flag = soviet_collapse_event_created_republic }
+		}
 	}
 
 	if = { limit = { UKR = { exists = yes } } UKR = { soviet_collapse_setup_breakaway_country = yes } }
 	if = { limit = { BLR = { exists = yes } } BLR = { soviet_collapse_setup_breakaway_country = yes } }
-	if = { limit = { KAZ = { exists = yes } } KAZ = { soviet_collapse_setup_breakaway_country = yes } }
+	if = {
+		limit = {
+			KAZ = {
+				exists = yes
+				has_country_flag = soviet_collapse_event_created_republic
+			}
+		}
+		KAZ = { soviet_collapse_setup_breakaway_country = yes }
+		if = {
+			limit = { UZB = { exists = no } }
+			release = UZB
+			UZB = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 3 }
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+				KYR = { exists = no }
+			}
+			release = KYR
+			KYR = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+				TAJ = { exists = no }
+			}
+			release = TAJ
+			TAJ = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+		if = {
+			limit = {
+				has_global_flag = { flag = chaos_tier value = 5 }
+				TMS = { exists = no }
+			}
+			release = TMS
+			TMS = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+	}
+
+	if = { limit = { UKR = { exists = yes } } UKR = { soviet_collapse_load_event_created_focus_tree = yes } }
+	if = { limit = { BLR = { exists = yes } } BLR = { soviet_collapse_load_event_created_focus_tree = yes } }
+	if = { limit = { KAZ = { exists = yes } } KAZ = { soviet_collapse_load_event_created_focus_tree = yes } }
 }
 
 soviet_collapse_count_active_soviet_objectives = {
