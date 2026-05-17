@@ -1,37 +1,99 @@
 add_namespace = chaosx.nr5
 
 ##############################################################################################################
-#    ##    ## ########     ########
-#    ###   ## ##     ##    ##
-#    ####  ## ##     ##    ##
-#    ## ## ## ########     #######
-#    ##  #### ##   ##            ##
-#    ##   ### ##    ##     ##    ##
-#    ##    ## ##     ##     ######
+# CHAOS REDUX - EVENT 005: SOVIET UNION COLLAPSE
 ##############################################################################################################
-#   #     #  #####   #####  ######
-#   #     # #     # #     # #     #     ####   ####  #      #        ##   #####   ####  ######
-#   #     # #       #       #     #    #    # #    # #      #       #  #  #    # #      #
-#   #     #  #####   #####  ######     #      #    # #      #      #    # #    #  ####  #####
-#   #     #       #       # #   #      #      #    # #      #      ###### #####       # #
-#   #     # #     # #     # #    #     #    # #    # #      #      #    # #      #    # #
-#    #####   #####   #####  #     #     ####   ####  ###### ###### #    # #       ####  ######
-
+# Entry event remains chaosx.nr5.1 for compatibility with the random-event
+# system. The visible opening event initializes the crisis meter, releases the
+# first breakaways, grants defenders, and activates the first Soviet objectives.
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr5.1
-    title = chaosx.nr5.1.t
+	id = chaosx.nr5.1
+	title = chaosx.nr5.1.t
 
-    hidden = yes
-    is_triggered_only = yes
+	hidden = yes
+	is_triggered_only = yes
 
-    immediate = {
-        SOV = {
-            release = UKR
-            release = BLR
-        }
-        news_event = { id = chaosx.news.5 days = 2 }
-    }
+	immediate = {
+		if = {
+			limit = {
+				SOV = { exists = yes }
+				NOT = { has_global_flag = soviet_collapse_active }
+			}
+			SOV = { country_event = { id = chaosx.nr5.2 } }
+		}
+	}
+}
 
+country_event = {
+	id = chaosx.nr5.2
+	title = chaosx.nr5.2.t
+	desc = chaosx.nr5.2.d
+	picture = GFX_report_union_crisis
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = soviet_collapse_active } }
+			soviet_collapse_initialize_crisis_values = yes
+			soviet_collapse_release_initial_republics = yes
+			soviet_collapse_activate_opening_objectives = yes
+			news_event = { id = chaosx.news.5 days = 2 }
+		}
+	}
+
+	option = {
+		name = chaosx.nr5.2.a
+		set_country_flag = soviet_collapse_posture_indivisible_union
+		add_ideas = soviet_collapse_emergency_union_authority
+		add_to_variable = { soviet_collapse_military_obedience = 4 }
+		add_to_variable = { soviet_collapse_moscow_authority = 2 }
+		add_to_variable = { soviet_collapse_republic_confidence = 5 }
+		add_to_variable = { soviet_collapse_evolution_weirdness = 2 }
+		soviet_collapse_recalculate_total_threat = yes
+		custom_effect_tooltip = soviet_collapse_declare_union_indivisible_tt
+	}
+
+	option = {
+		name = chaosx.nr5.2.b
+		set_country_flag = soviet_collapse_posture_autonomy_settlement
+		add_ideas = soviet_collapse_new_union_negotiations
+		add_to_variable = { soviet_collapse_moscow_authority = -3 }
+		add_to_variable = { soviet_collapse_republic_confidence = -4 }
+		add_to_variable = { soviet_collapse_foreign_appetite = -2 }
+		add_to_variable = { soviet_collapse_league_cohesion = 2 }
+		soviet_collapse_recalculate_total_threat = yes
+		custom_effect_tooltip = soviet_collapse_offer_autonomy_tt
+	}
+
+	option = {
+		name = chaosx.nr5.2.c
+		set_country_flag = soviet_collapse_posture_isolate_separatists
+		add_to_variable = { soviet_collapse_depot_vulnerability = -5 }
+		add_to_variable = { soviet_collapse_foreign_appetite = -2 }
+		add_to_variable = { soviet_collapse_republic_confidence = 3 }
+		add_to_variable = { soviet_collapse_league_cohesion = -2 }
+		soviet_collapse_recalculate_total_threat = yes
+		custom_effect_tooltip = soviet_collapse_isolate_separatists_tt
+	}
+
+	option = {
+		name = chaosx.nr5.2.e
+		trigger = {
+			OR = {
+				has_government = communism
+				has_government = democratic
+				has_stability > constant:soviet_collapse_soviet_objective.good_stability
+			}
+		}
+		set_country_flag = soviet_collapse_posture_restore_discipline_quietly
+		add_to_variable = { soviet_collapse_moscow_authority = 3 }
+		add_to_variable = { soviet_collapse_military_obedience = 3 }
+		add_to_variable = { soviet_collapse_republic_confidence = -2 }
+		add_to_variable = { soviet_collapse_evolution_weirdness = -2 }
+		soviet_collapse_recalculate_total_threat = yes
+		custom_effect_tooltip = soviet_collapse_restore_party_discipline_tt
+	}
 }

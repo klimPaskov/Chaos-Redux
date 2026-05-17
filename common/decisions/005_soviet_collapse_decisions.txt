@@ -1,0 +1,215 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 SOVIET COLLAPSE DECISIONS
+# ============================================================================
+# Opening Soviet goal-style objectives are hidden from normal purchase flow and
+# activated by scripted effects with a ten-active-objective cap.
+# ============================================================================
+
+@soviet_collapse_opening_mission_days = 35
+@soviet_collapse_response_days_reenable = 28
+
+soviet_collapse_soviet_category = {
+	soviet_collapse_restore_party_control = {
+		icon = GFX_decision_restore_party_control
+		available = { can_pay_soviet_collapse_restore_party_control_cost = yes }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_restore_party_control_cost = yes }
+		custom_cost_text = soviet_collapse_restore_party_control_cost_text
+		days_re_enable = @soviet_collapse_response_days_reenable
+		complete_effect = {
+			add_manpower = constant:soviet_collapse_decision_cost.restore_party_control_manpower_spend
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_decision_cost.restore_party_control_support_equipment_spend }
+			add_to_variable = { soviet_collapse_moscow_authority = 5 }
+			add_to_variable = { soviet_collapse_military_obedience = 2 }
+			add_to_variable = { soviet_collapse_republic_confidence = -3 }
+			add_ideas = soviet_collapse_emergency_union_authority
+			soviet_collapse_recalculate_total_threat = yes
+			custom_effect_tooltip = soviet_collapse_restore_party_control_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	soviet_collapse_send_loyalist_officers = {
+		icon = GFX_decision_send_loyalist_officers
+		available = { can_pay_soviet_collapse_send_loyalist_officers_cost = yes }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_send_loyalist_officers_cost = yes }
+		custom_cost_text = soviet_collapse_send_loyalist_officers_cost_text
+		days_re_enable = @soviet_collapse_response_days_reenable
+		complete_effect = {
+			army_experience = constant:soviet_collapse_decision_cost.send_loyalist_officers_army_xp_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_decision_cost.send_loyalist_officers_equipment_spend }
+			add_to_variable = { soviet_collapse_military_obedience = 7 }
+			add_to_variable = { soviet_collapse_depot_vulnerability = -2 }
+			add_ideas = soviet_collapse_loyalist_officer_corps
+			soviet_collapse_recalculate_total_threat = yes
+			custom_effect_tooltip = soviet_collapse_send_loyalist_officers_tt
+		}
+		ai_will_do = { factor = 3 }
+	}
+
+	soviet_collapse_cut_rebel_supply_routes = {
+		icon = GFX_decision_cut_rebel_supply_routes
+		available = { can_pay_soviet_collapse_cut_rebel_supply_routes_cost = yes }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_cut_rebel_supply_routes_cost = yes }
+		custom_cost_text = soviet_collapse_cut_rebel_supply_routes_cost_text
+		days_re_enable = @soviet_collapse_response_days_reenable
+		complete_effect = {
+			add_fuel = constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_fuel_spend
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_decision_cost.cut_rebel_supply_routes_train_spend }
+			add_to_variable = { soviet_collapse_depot_vulnerability = -6 }
+			add_to_variable = { soviet_collapse_league_cohesion = -3 }
+			add_to_variable = { soviet_collapse_foreign_appetite = -2 }
+			soviet_collapse_recalculate_total_threat = yes
+			custom_effect_tooltip = soviet_collapse_cut_rebel_supply_routes_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	soviet_collapse_emergency_mobilize_reserves = {
+		icon = GFX_decision_emergency_mobilization
+		available = {
+			has_stability > constant:soviet_collapse_soviet_objective.min_stability
+			has_war_support > constant:soviet_collapse_soviet_objective.min_war_support
+		}
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		custom_cost_trigger = {
+			has_stability > constant:soviet_collapse_soviet_objective.min_stability
+			has_war_support > constant:soviet_collapse_soviet_objective.min_war_support
+		}
+		custom_cost_text = soviet_collapse_emergency_mobilization_cost_text
+		days_re_enable = 42
+		complete_effect = {
+			add_stability = constant:soviet_collapse_decision_cost.emergency_mobilization_stability
+			add_war_support = constant:soviet_collapse_decision_cost.emergency_mobilization_war_support
+			add_manpower = constant:soviet_collapse_decision_cost.emergency_mobilization_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_decision_cost.emergency_mobilization_equipment }
+			add_to_variable = { soviet_collapse_military_obedience = 3 }
+			add_to_variable = { soviet_collapse_depot_vulnerability = -2 }
+			soviet_collapse_recalculate_total_threat = yes
+			custom_effect_tooltip = soviet_collapse_emergency_mobilization_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command = {
+		icon = GFX_decision_soviet_collapse_command_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req has_army_experience > constant:soviet_collapse_soviet_objective.good_army_xp }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_001_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_001_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_002_seal_the_first_circular = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_002_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_002_seal_the_first_circular_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_002_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_002_seal_the_first_circular_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_003_guard_the_peoples_commissariats = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { capital_scope = { is_controlled_by = ROOT } has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_003_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_003_guard_the_peoples_commissariats_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_003_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_003_guard_the_peoples_commissariats_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_004_establish_the_crisis_desk = {
+		icon = GFX_decision_soviet_collapse_cleanup_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_stability > constant:soviet_collapse_soviet_objective.min_stability has_war_support > constant:soviet_collapse_soviet_objective.min_war_support }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_004_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_004_establish_the_crisis_desk_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_004_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_004_establish_the_crisis_desk_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_005_count_the_missing_trains = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req } has_fuel > constant:soviet_collapse_soviet_objective.fuel_req }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_005_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_005_count_the_missing_trains_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_005_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_005_count_the_missing_trains_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_006_freeze_unapproved_transfers = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.equipment_req } has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req } }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_006_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_006_freeze_unapproved_transfers_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_006_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_006_freeze_unapproved_transfers_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_007_order_the_border_posts_to_report_twice = {
+		icon = GFX_decision_soviet_collapse_border_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_army_experience > constant:soviet_collapse_soviet_objective.min_army_xp command_power > constant:soviet_collapse_soviet_objective.good_command_power }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_007_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_007_order_the_border_posts_to_report_twice_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_007_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_007_order_the_border_posts_to_report_twice_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_008_audit_the_republic_radios = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_stability > constant:soviet_collapse_soviet_objective.min_stability command_power > constant:soviet_collapse_soviet_objective.min_command_power }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_008_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_008_audit_the_republic_radios_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_008_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_008_audit_the_republic_radios_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_009_open_the_loyalist_courier_line = {
+		icon = GFX_decision_soviet_collapse_command_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_manpower > constant:soviet_collapse_soviet_objective.low_manpower_req has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.low_equipment_req } }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_009_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_009_open_the_loyalist_courier_line_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_009_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_009_open_the_loyalist_courier_line_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area = {
+		icon = GFX_decision_soviet_collapse_cleanup_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { has_manpower > constant:soviet_collapse_soviet_objective.high_manpower_req has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.high_equipment_req } has_fuel > constant:soviet_collapse_soviet_objective.fuel_req }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_010_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_010_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+}
