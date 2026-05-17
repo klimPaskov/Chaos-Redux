@@ -44,6 +44,8 @@ When focus counts change, update every count-bearing surface in the same pass: f
 
 Generated focus trees need a direct self-reference check in addition to missing-reference checks. A focus with `prerequisite = { focus = <same_focus_id> }` can survive brace, count, icon, localisation, and dangling-reference validation while still making the branch impossible to progress. Scan `prerequisite` and `mutually_exclusive` targets for both missing IDs and self-targets before updating docs or reporting completion.
 
+For completion audits on large runtime focus systems, make the focus validation parser-oriented enough to prove: unique focus IDs, no missing `prerequisite`/`mutually_exclusive` targets, no self-targets, exactly one `completion_reward` block per focus, required `icon`/`ai_will_do` fields, icon sprite definitions across mod and vanilla `.gfx`, and name/description localisation. GFX sprite names may be inline on `spriteType = { name = ... }` lines, so do not only match line-leading `name =`.
+
 When cleaning up generated focus trees, check reward uniqueness before preserving branches. Repeated focus IDs with the same completion helper should usually collapse into one focus using the shared helper, or into a shared runtime tree if the same chain was cloned per tag. After pruning, run a dangling-reference check for `prerequisite = { focus = ... }` and `mutually_exclusive = { focus = ... }`, because removed focuses can leave invalid layout references even when brace counts and icon counts still pass.
 
 When an event continuation goal cannot be completed because named prompt/spec inputs or source-of-truth classifications are missing, make the blocker reproducible instead of ending with a loose note. Add or update an input-file audit with exact path state, line/byte counts and SHA-256 for present files, and exact filename recovery searches for missing files. Add a blocked completion report that lists the requested final-report categories without claiming completion. If the blocked state is likely to be resumed later, add a blocker resolution checklist and a resume packet that record the exact source decisions required, follow-up implementation paths, and validation gates before the final audit can pass. Do not mark the active goal complete while any named input or source-of-truth classification remains unresolved.
@@ -86,6 +88,7 @@ Then:
 - gate the milestone with `is_current_evolution_enabled = yes` only if it should be disableable from the UI
 - call `record_events_log_evolution_entry = yes`
 - If a helper sets a `*_recorded` flag or unlocks follow-up content, set the shared evolution context before its `limit` and include `is_current_evolution_enabled = yes` in that same limit. Disabled evolutions must not set recorded flags that later stages, decisions, reports, or focus branches read.
+- Before reporting evolution logging complete, grep the event surface for `record_events_log_evolution_entry`, `events_log_evolution_event_id`, `events_log_evolution_type`, `events_log_evolution_stage`, and any `*_recorded` flags. Confirm baseline stages do not call the evolution writer unless deliberately specified, and confirm each intended track has an explicit duplicate-prevention flag or other one-entry gate.
 
 Implementation design rules:
 
