@@ -364,7 +364,7 @@ The replacement `soviet_collapse_belarus_focus_tree` is active gameplay for Even
 
 ## Kazakhstan Runtime Focus Tree Branch Icons
 
-The compact 12-focus `soviet_collapse_kazakhstan_focus_tree` is active gameplay for Event 005-created Kazakhstan. Its branch-level sprites are wired in `interface/005_soviet_collapse_kaz_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art.
+The 16-focus opening slice of `soviet_collapse_kazakhstan_focus_tree` is active gameplay for Event 005-created Kazakhstan. Its branch-level sprites are wired in `interface/005_soviet_collapse_kaz_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art.
 
 | Branch sprite | Final DDS | Usage | Status |
 | --- | --- | --- | --- |
