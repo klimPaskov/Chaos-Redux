@@ -1281,10 +1281,10 @@ chem_consume_chlorine_cylinders = {
         }
         set_temp_variable = { var = chem_required_amount value = 1 }
     }
+    OWNER = { save_event_target_as = chem_ability_stockpile_owner }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_chlorine_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_total_available value = num_equipment@chemical_chlorine_payload_cylinder }
     }
     set_temp_variable = { var = chem_consume_scale value = 0 }
     if = {
@@ -1315,37 +1315,25 @@ chem_consume_chlorine_cylinders = {
         }
         set_temp_variable = { var = chem_consume_upgrade_amount value = chem_consume_upgrade }
         multiply_temp_variable = { var = chem_consume_upgrade_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_chlorine_payload_cylinder_1
-                    amount = chem_consume_upgrade_amount
-                }
-            }
-        }
-        set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
-        multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
-        add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
-        set_temp_variable = { var = chem_consume_base value = chem_remaining }
-        set_temp_variable = { var = chem_available_base value = 0 }
-        OWNER = { set_temp_variable = { var = chem_available_base value = num_equipment@chemical_chlorine_payload_cylinder } }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = chem_available_base compare = greater_than } }
-            set_temp_variable = { var = chem_consume_base value = chem_available_base }
-        }
-        set_temp_variable = { var = chem_consume_base_amount value = chem_consume_base }
-        multiply_temp_variable = { var = chem_consume_base_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_chlorine_payload_cylinder
-                    amount = chem_consume_base_amount
-                }
-            }
-        }
-    }
+		if = {
+			limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
+			OWNER = {
+				meta_effect = {
+					text = {
+						add_equipment_to_stockpile = {
+							type = chemical_chlorine_payload_cylinder_1
+							amount = chem_consume_upgrade_amount
+							producer = [CHEM_STOCKPILE_PRODUCER]
+						}
+					}
+					CHEM_STOCKPILE_PRODUCER = "[chem_ability_stockpile_owner.GetTag]"
+				}
+			}
+		}
+		set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
+		multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
+		add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
+	}
     set_temp_variable = { var = chem_available_after value = chem_total_available }
     set_temp_variable = { var = chem_consumed_amount_neg value = chem_consumed_amount }
     multiply_temp_variable = { var = chem_consumed_amount_neg value = -1 }
@@ -1384,10 +1372,10 @@ chem_consume_phosgene_cylinders = {
         }
         set_temp_variable = { var = chem_required_amount value = 1 }
     }
+    OWNER = { save_event_target_as = chem_ability_stockpile_owner }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_phosgene_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_total_available value = num_equipment@chemical_phosgene_payload_cylinder }
     }
     set_temp_variable = { var = chem_consume_scale value = 0 }
     if = {
@@ -1418,37 +1406,25 @@ chem_consume_phosgene_cylinders = {
         }
         set_temp_variable = { var = chem_consume_upgrade_amount value = chem_consume_upgrade }
         multiply_temp_variable = { var = chem_consume_upgrade_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_phosgene_payload_cylinder_1
-                    amount = chem_consume_upgrade_amount
-                }
-            }
-        }
-        set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
-        multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
-        add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
-        set_temp_variable = { var = chem_consume_base value = chem_remaining }
-        set_temp_variable = { var = chem_available_base value = 0 }
-        OWNER = { set_temp_variable = { var = chem_available_base value = num_equipment@chemical_phosgene_payload_cylinder } }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = chem_available_base compare = greater_than } }
-            set_temp_variable = { var = chem_consume_base value = chem_available_base }
-        }
-        set_temp_variable = { var = chem_consume_base_amount value = chem_consume_base }
-        multiply_temp_variable = { var = chem_consume_base_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_phosgene_payload_cylinder
-                    amount = chem_consume_base_amount
-                }
-            }
-        }
-    }
+		if = {
+			limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
+			OWNER = {
+				meta_effect = {
+					text = {
+						add_equipment_to_stockpile = {
+							type = chemical_phosgene_payload_cylinder_1
+							amount = chem_consume_upgrade_amount
+							producer = [CHEM_STOCKPILE_PRODUCER]
+						}
+					}
+					CHEM_STOCKPILE_PRODUCER = "[chem_ability_stockpile_owner.GetTag]"
+				}
+			}
+		}
+		set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
+		multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
+		add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
+	}
     set_temp_variable = { var = chem_available_after value = chem_total_available }
     set_temp_variable = { var = chem_consumed_amount_neg value = chem_consumed_amount }
     multiply_temp_variable = { var = chem_consumed_amount_neg value = -1 }
@@ -1487,10 +1463,10 @@ chem_consume_mustard_cylinders = {
         }
         set_temp_variable = { var = chem_required_amount value = 1 }
     }
+    OWNER = { save_event_target_as = chem_ability_stockpile_owner }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_mustard_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_total_available value = num_equipment@chemical_mustard_payload_cylinder }
     }
     set_temp_variable = { var = chem_consume_scale value = 0 }
     if = {
@@ -1521,37 +1497,25 @@ chem_consume_mustard_cylinders = {
         }
         set_temp_variable = { var = chem_consume_upgrade_amount value = chem_consume_upgrade }
         multiply_temp_variable = { var = chem_consume_upgrade_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_mustard_payload_cylinder_1
-                    amount = chem_consume_upgrade_amount
-                }
-            }
-        }
-        set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
-        multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
-        add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
-        set_temp_variable = { var = chem_consume_base value = chem_remaining }
-        set_temp_variable = { var = chem_available_base value = 0 }
-        OWNER = { set_temp_variable = { var = chem_available_base value = num_equipment@chemical_mustard_payload_cylinder } }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = chem_available_base compare = greater_than } }
-            set_temp_variable = { var = chem_consume_base value = chem_available_base }
-        }
-        set_temp_variable = { var = chem_consume_base_amount value = chem_consume_base }
-        multiply_temp_variable = { var = chem_consume_base_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_mustard_payload_cylinder
-                    amount = chem_consume_base_amount
-                }
-            }
-        }
-    }
+		if = {
+			limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
+			OWNER = {
+				meta_effect = {
+					text = {
+						add_equipment_to_stockpile = {
+							type = chemical_mustard_payload_cylinder_1
+							amount = chem_consume_upgrade_amount
+							producer = [CHEM_STOCKPILE_PRODUCER]
+						}
+					}
+					CHEM_STOCKPILE_PRODUCER = "[chem_ability_stockpile_owner.GetTag]"
+				}
+			}
+		}
+		set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
+		multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
+		add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
+	}
     set_temp_variable = { var = chem_available_after value = chem_total_available }
     set_temp_variable = { var = chem_consumed_amount_neg value = chem_consumed_amount }
     multiply_temp_variable = { var = chem_consumed_amount_neg value = -1 }
@@ -1590,10 +1554,10 @@ chem_consume_lewisite_cylinders = {
         }
         set_temp_variable = { var = chem_required_amount value = 1 }
     }
+    OWNER = { save_event_target_as = chem_ability_stockpile_owner }
     set_temp_variable = { var = chem_total_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_total_available value = num_equipment@chemical_lewisite_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_total_available value = num_equipment@chemical_lewisite_payload_cylinder }
     }
     set_temp_variable = { var = chem_consume_scale value = 0 }
     if = {
@@ -1624,37 +1588,25 @@ chem_consume_lewisite_cylinders = {
         }
         set_temp_variable = { var = chem_consume_upgrade_amount value = chem_consume_upgrade }
         multiply_temp_variable = { var = chem_consume_upgrade_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_lewisite_payload_cylinder_1
-                    amount = chem_consume_upgrade_amount
-                }
-            }
-        }
-        set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
-        multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
-        add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
-        set_temp_variable = { var = chem_consume_base value = chem_remaining }
-        set_temp_variable = { var = chem_available_base value = 0 }
-        OWNER = { set_temp_variable = { var = chem_available_base value = num_equipment@chemical_lewisite_payload_cylinder } }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = chem_available_base compare = greater_than } }
-            set_temp_variable = { var = chem_consume_base value = chem_available_base }
-        }
-        set_temp_variable = { var = chem_consume_base_amount value = chem_consume_base }
-        multiply_temp_variable = { var = chem_consume_base_amount value = -1 }
-        if = {
-            limit = { check_variable = { var = chem_consume_base value = 0 compare = greater_than } }
-            OWNER = {
-                add_equipment_to_stockpile = {
-                    type = chemical_lewisite_payload_cylinder
-                    amount = chem_consume_base_amount
-                }
-            }
-        }
-    }
+		if = {
+			limit = { check_variable = { var = chem_consume_upgrade value = 0 compare = greater_than } }
+			OWNER = {
+				meta_effect = {
+					text = {
+						add_equipment_to_stockpile = {
+							type = chemical_lewisite_payload_cylinder_1
+							amount = chem_consume_upgrade_amount
+							producer = [CHEM_STOCKPILE_PRODUCER]
+						}
+					}
+					CHEM_STOCKPILE_PRODUCER = "[chem_ability_stockpile_owner.GetTag]"
+				}
+			}
+		}
+		set_temp_variable = { var = chem_consume_upgrade_neg value = chem_consume_upgrade }
+		multiply_temp_variable = { var = chem_consume_upgrade_neg value = -1 }
+		add_to_temp_variable = { var = chem_remaining value = chem_consume_upgrade_neg }
+	}
     set_temp_variable = { var = chem_available_after value = chem_total_available }
     set_temp_variable = { var = chem_consumed_amount_neg value = chem_consumed_amount }
     multiply_temp_variable = { var = chem_consumed_amount_neg value = -1 }
@@ -1971,7 +1923,6 @@ chem_update_chlorine_preview = {
     set_temp_variable = { var = chem_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_available value = num_equipment@chemical_chlorine_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_available value = num_equipment@chemical_chlorine_payload_cylinder }
         set_variable = { var = chem_available_chlorine value = chem_available }
     }
     set_temp_variable = { var = chem_ratio value = 0 }
@@ -2139,7 +2090,6 @@ chem_update_phosgene_preview = {
     set_temp_variable = { var = chem_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_available value = num_equipment@chemical_phosgene_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_available value = num_equipment@chemical_phosgene_payload_cylinder }
         set_variable = { var = chem_available_phosgene value = chem_available }
     }
     set_temp_variable = { var = chem_ratio value = 0 }
@@ -2586,7 +2536,6 @@ chem_update_mustard_preview = {
     set_temp_variable = { var = chem_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_available value = num_equipment@chemical_mustard_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_available value = num_equipment@chemical_mustard_payload_cylinder }
         set_variable = { var = chem_available_mustard value = chem_available }
     }
     set_temp_variable = { var = chem_ratio value = 0 }
@@ -2753,7 +2702,6 @@ chem_update_lewisite_preview = {
     set_temp_variable = { var = chem_available value = 0 }
     OWNER = {
         set_temp_variable = { var = chem_available value = num_equipment@chemical_lewisite_payload_cylinder_1 }
-        add_to_temp_variable = { var = chem_available value = num_equipment@chemical_lewisite_payload_cylinder }
         set_variable = { var = chem_available_lewisite value = chem_available }
     }
     set_temp_variable = { var = chem_ratio value = 0 }

@@ -268,6 +268,7 @@ The portrait uses a vanilla German officer portrait copied into `gfx/leaders/sci
 
 Clone world-order assets:
 
+- `mengele_clone_army` flags in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, with ideology-suffixed copies.
 - `germany_mengele_angelic_directorate` flags in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, with ideology-suffixed copies.
 - `mengele_clone_client_regime` flags in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, with ideology-suffixed copies.
 - `GFX_idea_mengele_clone_world_order` in `gfx/interface/ideas/idea_mengele_clone_world_order.dds`
