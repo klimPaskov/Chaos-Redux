@@ -1538,6 +1538,39 @@ can_deny_soviet_collapse_star_iron_rumor = {
 	}
 }
 
+can_break_soviet_collapse_funeral_train_schedule = {
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
+	OR = {
+		242 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		206 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		570 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	OR = {
+		has_country_flag = soviet_collapse_hospital_records_guarded
+		has_country_flag = soviet_collapse_mission_090_done
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+	}
+}
+
+can_prevent_soviet_collapse_crown_leaving_archive = {
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	capital_scope = { is_controlled_by = ROOT }
+	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
+	OR = {
+		has_country_flag = soviet_collapse_mission_029_done
+		has_country_flag = soviet_collapse_mission_085_done
+		has_country_flag = soviet_collapse_soviet_identity_preserved
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
