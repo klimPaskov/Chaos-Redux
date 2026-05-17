@@ -166,6 +166,23 @@ can_quiet_second_soviet_collapse_republic = {
 	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
 }
 
+can_rebuild_soviet_collapse_provincial_office = {
+	capital_scope = { is_controlled_by = ROOT }
+	has_stability > constant:soviet_collapse_soviet_objective.good_stability
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
+	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
+}
+
+can_assign_soviet_collapse_emergency_procurators = {
+	capital_scope = { is_controlled_by = ROOT }
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	has_war_support > constant:soviet_collapse_soviet_objective.min_war_support
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
+	check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes

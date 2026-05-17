@@ -146,6 +146,21 @@ soviet_collapse_apply_failed_authority_objective_pressure = {
 	country_event = { id = chaosx.nr5.10 days = 1 }
 }
 
+soviet_collapse_apply_successful_legal_objective_pressure = {
+	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.legal_success_authority }
+	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.legal_success_confidence }
+	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.legal_success_weirdness }
+	soviet_collapse_recalculate_total_threat = yes
+}
+
+soviet_collapse_apply_failed_legal_objective_pressure = {
+	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.legal_failure_authority }
+	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.legal_failure_confidence }
+	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.legal_failure_weirdness }
+	soviet_collapse_recalculate_total_threat = yes
+	country_event = { id = chaosx.nr5.10 days = 1 }
+}
+
 soviet_collapse_apply_successful_command_objective_pressure = {
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.command_success_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_success_obedience }
@@ -1011,6 +1026,8 @@ soviet_collapse_count_active_soviet_objectives = {
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_020_declare_the_union_treaty_valid_until_rewritten } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_021_prove_one_republic_can_be_recovered } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_022_keep_the_second_republic_quiet } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_023_rebuild_a_provincial_party_office } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_024_assign_the_emergency_procurators } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 }
 
 soviet_collapse_activate_opening_objectives = {
@@ -1038,4 +1055,6 @@ soviet_collapse_activate_opening_objectives = {
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_020_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_020_declare_the_union_treaty_valid_until_rewritten } } activate_mission = soviet_collapse_soviet_mission_020_declare_the_union_treaty_valid_until_rewritten add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_021_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_021_prove_one_republic_can_be_recovered } } activate_mission = soviet_collapse_soviet_mission_021_prove_one_republic_can_be_recovered add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_022_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_022_keep_the_second_republic_quiet } } activate_mission = soviet_collapse_soviet_mission_022_keep_the_second_republic_quiet add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_023_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_023_rebuild_a_provincial_party_office } } activate_mission = soviet_collapse_soviet_mission_023_rebuild_a_provincial_party_office add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
+	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_024_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_024_assign_the_emergency_procurators } } activate_mission = soviet_collapse_soviet_mission_024_assign_the_emergency_procurators add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 }
