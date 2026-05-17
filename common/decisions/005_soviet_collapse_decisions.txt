@@ -1343,6 +1343,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_104_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination } remove_ideas = soviet_collapse_defensive_coordination } } } soviet_collapse_apply_successful_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_104_break_the_shared_defense_calendar_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_104_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_ideas = soviet_collapse_defensive_coordination } } } soviet_collapse_apply_failed_league_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_104_break_the_shared_defense_calendar_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_105_discredit_the_leagues_foreign_envoys = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_discredit_soviet_collapse_league_foreign_envoys = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_105_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway check_variable = { var = soviet_collapse_recognition_progress value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than } } add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_objective_pressure.league_success_confidence } clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max } } } } soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_105_discredit_the_leagues_foreign_envoys_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_105_done hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.recognition_progress } } } } soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_105_discredit_the_leagues_foreign_envoys_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_106_prove_the_league_cannot_protect_depots = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_prove_soviet_collapse_league_cannot_protect_depots = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_106_done hidden_effect = { add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_success_league } } soviet_collapse_apply_successful_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_106_prove_the_league_cannot_protect_depots_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_106_done hidden_effect = { add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_failure_league } for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.extra_infantry_equipment_per_chaos_band } add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_support.extra_support_equipment_per_chaos_band } add_ideas = soviet_collapse_defensive_coordination } } } soviet_collapse_apply_failed_depot_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_106_prove_the_league_cannot_protect_depots_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
