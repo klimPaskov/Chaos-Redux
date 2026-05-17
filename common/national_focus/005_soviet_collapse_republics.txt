@@ -5635,6 +5635,253 @@ focus_tree = {
 			modifier = { factor = 2 NOT = { has_war_with = SOV } }
 		}
 	}
+
+	focus = {
+		id = blr_soviet_collapse_forest_ammunition_hides
+		icon = GFX_blr_soviet_collapse_forest
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 12
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_decentralized_detachments focus = blr_soviet_collapse_regular_forest_brigades }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_forest_ammunition_hides
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_the_local_guide_oath
+		icon = GFX_blr_soviet_collapse_forest
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_guide_companies }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_local_guide_oath
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_no_burning_the_villages
+		icon = GFX_blr_soviet_collapse_civic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_village_warning_bells }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_no_burning_villages
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_burned_roads_safe_villages
+		icon = GFX_blr_soviet_collapse_forest
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_no_burning_the_villages }
+		available = {
+			OR = {
+				has_war_with = SOV
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } }
+			}
+		}
+		mutually_exclusive = { focus = blr_soviet_collapse_open_roads_for_relief }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_burned_roads_safe_villages
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_open_roads_for_relief
+		icon = GFX_blr_soviet_collapse_civic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_no_burning_the_villages }
+		mutually_exclusive = { focus = blr_soviet_collapse_burned_roads_safe_villages }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_open_roads_for_relief
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_belarus_railway_neutrality }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_forest_courts
+		icon = GFX_blr_soviet_collapse_legal
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 14
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_a_forest_that_can_govern }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_forest_courts
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_the_forest_does_not_vote_on_timetables
+		icon = GFX_blr_soviet_collapse_forest
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_a_forest_that_can_govern }
+		prerequisite = { focus = blr_soviet_collapse_minsk_central_dispatch focus = blr_soviet_collapse_timetable_state }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_belarus_decentralized_detachments
+				SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_forest_timetable_conflict
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_country_flag = soviet_collapse_belarus_decentralized_detachments }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_minsk_compromises_with_the_woods
+		icon = GFX_blr_soviet_collapse_civic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 16
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = blr_soviet_collapse_forest_courts }
+		prerequisite = { focus = blr_soviet_collapse_minsk_central_dispatch focus = blr_soviet_collapse_timetable_state }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_minsk_compromises_with_woods
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_the_forest_republic_rumor_becomes_law
+		icon = GFX_blr_soviet_collapse_forest
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 14
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = blr_soviet_collapse_the_roads_forget_moscow }
+		available = {
+			OR = {
+				has_country_flag = soviet_collapse_belarus_minsk_does_not_own_every_tree
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_forest_republic_rumor_law
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_last_capital_under_the_trees
+		icon = GFX_blr_soviet_collapse_forest
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 16
+		y = 15
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = blr_soviet_collapse_evacuation_choice }
+		available = {
+			OR = {
+				NOT = { capital_scope = { is_controlled_by = ROOT } }
+				has_war_with = SOV
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_last_capital_under_trees
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = blr_soviet_collapse_the_green_rail_pact
+		icon = GFX_blr_soviet_collapse_rail
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 11
+		y = 16
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = blr_soviet_collapse_a_forest_that_can_govern }
+		prerequisite = { focus = blr_soviet_collapse_minsk_central_dispatch focus = blr_soviet_collapse_the_schedules_defeat_moscow }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_green_rail_pact
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = blr_soviet_collapse_belarus_between_no_empires
+		icon = GFX_blr_soviet_collapse_civic
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 17
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = blr_soviet_collapse_permanent_neutral_corridor focus = blr_soviet_collapse_join_the_league_when_war_comes }
+		completion_reward = {
+			set_country_flag = soviet_collapse_belarus_between_no_empires
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_belarus_permanent_neutral_corridor }
+			modifier = { factor = 2 has_country_flag = soviet_collapse_free_republics_league_member }
+		}
+	}
 }
 
 focus_tree = {
