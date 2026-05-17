@@ -900,6 +900,170 @@ focus_tree = {
 		ai_will_do = { base = 5 }
 	}
 
+	# role: industry | filter: political
+	focus = {
+		id = ukr_soviet_collapse_estate_credit_offices
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_hetmanate_file }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_estate_credit_offices
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_route_hetmanate }
+		}
+	}
+
+	# role: fork | filter: political
+	focus = {
+		id = ukr_soviet_collapse_the_crown_without_a_crown
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_hetmanate_file }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_crown_question_open
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	# role: route_lock | filter: political
+	focus = {
+		id = ukr_soviet_collapse_symbolic_hetmanate
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 0
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_crown_without_a_crown }
+		mutually_exclusive = { focus = ukr_soviet_collapse_executive_hetmanate }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_symbolic_hetmanate
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability > 0.45 }
+		}
+	}
+
+	# role: route_lock | filter: political
+	focus = {
+		id = ukr_soviet_collapse_executive_hetmanate
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 2
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_the_crown_without_a_crown }
+		mutually_exclusive = { focus = ukr_soviet_collapse_symbolic_hetmanate }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_executive_hetmanate
+			add_stability = constant:soviet_collapse_republic_focus.stability_penalty_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	# role: military | filter: political
+	focus = {
+		id = ukr_soviet_collapse_conservative_officer_circles
+		icon = GFX_ukr_soviet_collapse_directory
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 4
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_symbolic_hetmanate focus = ukr_soviet_collapse_executive_hetmanate }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_conservative_officer_circles
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_executive_hetmanate }
+		}
+	}
+
+	# role: side | filter: political
+	focus = {
+		id = ukr_soviet_collapse_the_church_and_the_grain
+		icon = GFX_ukr_soviet_collapse_bread
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 0
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_estate_credit_offices }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_church_and_grain
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_estate_credit_offices }
+		}
+	}
+
+	# role: diplomacy | filter: political
+	focus = {
+		id = ukr_soviet_collapse_foreign_courts_notice_kyiv
+		icon = GFX_ukr_soviet_collapse_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ukr_soviet_collapse_symbolic_hetmanate }
+		prerequisite = { focus = ukr_soviet_collapse_recognition_before_war }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_foreign_courts_notice_kyiv
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_symbolic_hetmanate }
+		}
+	}
+
+	# role: finisher | filter: political
+	focus = {
+		id = ukr_soviet_collapse_the_second_hetmanate
+		icon = GFX_ukr_soviet_collapse_identity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 13
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_symbolic_hetmanate focus = ukr_soviet_collapse_executive_hetmanate }
+		prerequisite = { focus = ukr_soviet_collapse_conservative_officer_circles }
+		prerequisite = { focus = ukr_soviet_collapse_the_church_and_the_grain }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_second_hetmanate
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_conservative_officer_circles }
+		}
+	}
+
 	# role: side | filter: political
 	focus = {
 		id = ukr_soviet_collapse_no_masters_in_the_villages
