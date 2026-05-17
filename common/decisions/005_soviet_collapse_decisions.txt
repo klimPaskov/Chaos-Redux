@@ -1161,7 +1161,7 @@ soviet_collapse_soviet_category = {
 		is_good = yes
 		days_mission_timeout = @soviet_collapse_opening_mission_days
 		complete_effect = { set_country_flag = soviet_collapse_mission_089_done hidden_effect = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_success_obedience } } soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_089_stop_the_sailor_assembly_before_it_votes_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
-		timeout_effect = { set_country_flag = soviet_collapse_mission_089_done hidden_effect = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_089_stop_the_sailor_assembly_before_it_votes_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_089_done set_country_flag = soviet_collapse_sailor_assembly_voted hidden_effect = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_089_stop_the_sailor_assembly_before_it_votes_failure_tt hidden_effect = { soviet_collapse_maybe_spawn_high_chaos_successors = yes soviet_collapse_activate_opening_objectives = yes } }
 	}
 
 	soviet_collapse_soviet_mission_090_contain_the_grave_registers = {
@@ -1485,7 +1485,7 @@ soviet_collapse_soviet_category = {
 		is_good = yes
 		days_mission_timeout = @soviet_collapse_opening_mission_days
 		complete_effect = { set_country_flag = soviet_collapse_mission_116_done set_country_flag = soviet_collapse_northern_fleet_signals_sealed soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_116_seal_the_northern_fleet_signals_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
-		timeout_effect = { set_country_flag = soviet_collapse_mission_116_done set_country_flag = soviet_collapse_northern_fleet_signals_unsealed hidden_effect = { add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small } } soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_116_seal_the_northern_fleet_signals_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_116_done set_country_flag = soviet_collapse_northern_fleet_signals_unsealed hidden_effect = { add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small } } soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_116_seal_the_northern_fleet_signals_failure_tt hidden_effect = { soviet_collapse_maybe_spawn_high_chaos_successors = yes soviet_collapse_activate_opening_objectives = yes } }
 	}
 
 	soviet_collapse_soviet_mission_117_keep_the_priests_out_of_the_war_room = {
@@ -1509,7 +1509,7 @@ soviet_collapse_soviet_category = {
 		is_good = yes
 		days_mission_timeout = @soviet_collapse_opening_mission_days
 		complete_effect = { set_country_flag = soviet_collapse_mission_118_done set_country_flag = soviet_collapse_graves_counted_by_living_offices soviet_collapse_apply_successful_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_118_order_the_graves_counted_by_the_living_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
-		timeout_effect = { set_country_flag = soviet_collapse_mission_118_done set_country_flag = soviet_collapse_graves_counted_by_dead_state hidden_effect = { add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_118_order_the_graves_counted_by_the_living_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_118_done set_country_flag = soviet_collapse_graves_counted_by_dead_state hidden_effect = { add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } } soviet_collapse_apply_failed_old_movement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_118_order_the_graves_counted_by_the_living_failure_tt hidden_effect = { soviet_collapse_maybe_spawn_high_chaos_successors = yes soviet_collapse_activate_opening_objectives = yes } }
 	}
 
 	soviet_collapse_soviet_mission_119_publish_the_first_restored_budget = {
@@ -1892,5 +1892,99 @@ soviet_collapse_volga_restoration = {
 			custom_effect_tooltip = ogb_convene_bolghar_scholars_tt
 		}
 		ai_will_do = { factor = 2 }
+	}
+}
+
+soviet_collapse_iron_commissariat = {
+	icon = GFX_decision_category_soviet_collapse_returned_names
+
+	icd_consolidate_claim = {
+		icon = GFX_decision_icd_consolidate_claim
+		available = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		visible = { tag = ICD is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_low_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
+			custom_effect_tooltip = icd_consolidate_claim_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	icd_mobilize_signature_forces = {
+		icon = GFX_decision_icd_mobilize_signature_forces
+		available = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		visible = { tag = ICD is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
+			custom_effect_tooltip = icd_mobilize_signature_forces_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	icd_push_extreme_route = {
+		icon = GFX_decision_icd_push_extreme_route
+		available = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		visible = { tag = ICD is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_dead_international_endgame } }
+		custom_cost_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
+			soviet_collapse_complete_dead_state_endgame = yes
+			custom_effect_tooltip = icd_push_extreme_route_tt
+		}
+		ai_will_do = { factor = 1 }
+	}
+}
+
+soviet_collapse_kronstadt_council = {
+	icon = GFX_decision_category_soviet_collapse_returned_names
+
+	krs_consolidate_claim = {
+		icon = GFX_decision_krs_consolidate_claim
+		available = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		visible = { tag = KRS is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_low_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
+			custom_effect_tooltip = krs_consolidate_claim_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	krs_mobilize_signature_forces = {
+		icon = GFX_decision_krs_mobilize_signature_forces
+		available = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		visible = { tag = KRS is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
+			custom_effect_tooltip = krs_mobilize_signature_forces_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	krs_push_extreme_route = {
+		icon = GFX_decision_krs_push_extreme_route
+		available = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		visible = { tag = KRS is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_port_council_endgame } }
+		custom_cost_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
+			soviet_collapse_complete_port_council_endgame = yes
+			custom_effect_tooltip = krs_push_extreme_route_tt
+		}
+		ai_will_do = { factor = 1 }
 	}
 }
