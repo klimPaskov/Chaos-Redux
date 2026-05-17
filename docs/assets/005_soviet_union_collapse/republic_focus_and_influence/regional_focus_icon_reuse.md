@@ -1,6 +1,6 @@
 # Regional Republic Focus Icon Ledger
 
-This ledger documents the 87 implemented regional runtime focuses in `common/national_focus/005_soviet_collapse_republics.txt`.
+This ledger documents the 112 implemented regional runtime focuses in `common/national_focus/005_soviet_collapse_republics.txt`.
 
 The Baltic, Caucasus, Central Asian, and Moldovan trees use dedicated runtime sprite names defined in `interface/005_soviet_collapse_regional_icons.gfx`. Each dedicated DDS is derived from already generated Event 005 focus art that matches the focus subject, with processed PNG previews preserved under `docs/assets/005_soviet_union_collapse/processed_png/regional_republic_focus_icons/`.
 
@@ -10,12 +10,14 @@ The Baltic, Caucasus, Central Asian, and Moldovan trees use dedicated runtime sp
 | --- | --- | ---: |
 | `soviet_collapse_baltic_focus_tree` | `LIT`, `LAT`, `EST` | 36 |
 | `soviet_collapse_caucasus_focus_tree` | `GEO`, `AZR`, `ARM` | 33 |
-| `soviet_collapse_central_asia_focus_tree` | `UZB`, `KYR`, `TAJ` | 9 |
+| `soviet_collapse_central_asia_focus_tree` | `UZB`, `KYR`, `TAJ`, `TMS` | 34 |
 | `soviet_collapse_moldova_focus_tree` | `MOL` | 9 |
 
 The 36-focus Baltic clean-spec replacement deliberately reuses the eight existing Baltic regional sprites. Legal continuity, archive, deputy, legal-front, and second-restoration focuses reuse `GFX_baltic_soviet_collapse_restore_legal_continuity`; radio and high-chaos civic-mobilization focuses reuse `GFX_baltic_soviet_collapse_wire_rooms`; forest and marsh defense focuses reuse `GFX_baltic_soviet_collapse_forest_belts`; port, rail, economy, and customs focuses reuse `GFX_baltic_soviet_collapse_port_customs`; foreign observer and adviser focuses reuse `GFX_baltic_soviet_collapse_observer_missions`; border government, border guard, coastal defense, volunteer, and capital-defense focuses reuse `GFX_baltic_soviet_collapse_home_guard_staff`; compact and war-room focuses reuse `GFX_baltic_soviet_collapse_restoration_pact`; joint army, shield doctrine, and final Baltic-question focuses reuse `GFX_baltic_soviet_collapse_sovereign_baltic_front`.
 
 The 33-focus Caucasus clean-spec replacement deliberately reuses the eight existing Caucasus regional sprites. Council, federal, autonomy, and pass-vote focuses reuse `GFX_caucasus_soviet_collapse_mountain_councils`; pass defense, shared-pass, and Caspian watch focuses reuse `GFX_caucasus_soviet_collapse_pass_guards`; oil, pipeline, sea-route, oil-command, and oil-without-masters focuses reuse `GFX_caucasus_soviet_collapse_oil_route_offices`; national-restoration, community-balancing, valley, and oil-oversight focuses reuse `GFX_caucasus_soviet_collapse_border_arbitration`; foreign-guarantee, consulate, oil-for-recognition, Turkish, and Iranian corridor focuses reuse `GFX_caucasus_soviet_collapse_foreign_missions`; artillery and border-war focuses reuse `GFX_caucasus_soviet_collapse_mountain_brigades`; compact and capital-talk focuses reuse `GFX_caucasus_soviet_collapse_defense_compact`; standing, ancient-claim, and crown focuses reuse `GFX_caucasus_soviet_collapse_sovereign_mountains`.
+
+The 34-focus Central Asian clean-spec replacement deliberately reuses the eight existing Central Asian regional sprites. Majlis, local council, Samarkand, and anti-distant-capital focuses reuse `GFX_central_asia_soviet_collapse_supply_congress`; irrigation, bread, oasis arsenal, and cotton focuses reuse `GFX_central_asia_soviet_collapse_rail_and_irrigation_boards`; border caravans, scouts, and route-control focuses reuse `GFX_central_asia_soviet_collapse_caravan_border_offices`; Basmachi, amnesty, mountain-band, and Khwarazm high-chaos focuses reuse `GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls`; patronage, bazaar liaison, foreign schools, and desert aid focuses reuse `GFX_central_asia_soviet_collapse_foreign_balance_desks`; border authority, oasis guard, pass reserve, and commanders reuse `GFX_central_asia_soviet_collapse_steppe_defense_council`; Turkestan and federation-state focuses reuse `GFX_central_asia_soviet_collapse_steppe_federation`; southern coordination, loose pact, shield, and final settlement focuses reuse `GFX_central_asia_soviet_collapse_inland_republics_compact`.
 
 ## Source Art Summary
 
