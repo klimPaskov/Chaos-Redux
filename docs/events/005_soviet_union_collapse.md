@@ -94,8 +94,11 @@ The first high-chaos successor tags are registered for spawn and mechanics work:
 8. `BSC` - Basmachi Confederation, led by the Oasis War Council, with existing flag and leader assets.
 9. `TNC` - Turkestan National Council, led by the Turkestan Civic Council, with existing flag and leader assets.
 10. `ALA` - Alash Restoration Authority, led by the Alash Restoration Council, with existing flag and leader assets.
+11. `UDC` - Union Defense Committee, led by the Emergency Military Committee, with existing flag and leader assets.
+12. `SDZ` - Security Directorate Zone, led by the Directorate Collegium, with existing flag and leader assets.
+13. `RMC` - Red Martyrs' Resurrection Cult, led by the Funeral Commissar, with existing flag and leader assets.
 
-These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, evolution-log entries, and runtime focus trees: `CFR` has its 58-focus Construction Directorate tree, `MFR` has its 46-focus Arsenal Board tree, `OGB` has its 54-focus Volga Bulgar Restoration tree, and `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, and `ALA` each have 24-focus custom splinter trees.
+These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, evolution-log entries, and runtime focus trees: `CFR` has its 58-focus Construction Directorate tree, `MFR` has its 46-focus Arsenal Board tree, `OGB` has its 54-focus Volga Bulgar Restoration tree, and `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, and `RMC` each have 24-focus custom splinter trees.
 
 At high chaos, the Soviet opening hook can create the implemented successor states without using any recurring on-action loop. Each spawn is gated by `is_soviet_collapse_high_chaos_successor_spawn_ready`, which requires the Soviet Collapse to be active for `SOV` and either chaos tier 4, chaos tier 5, or `soviet_collapse_evolution_weirdness` reaching `constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate`. Each successor also respects the evolution disable UI by checking `is_current_evolution_enabled` for its own high-chaos stage before any state transfer happens.
 
@@ -111,6 +114,9 @@ The exact opening state packages are:
 8. `BSC` receives Atyrau (`405`), Turkmenistan (`584`), and Stalinabad (`742`) if all three are owned and controlled by `SOV` and the Basmachi supply-chain mission fails.
 9. `TNC` receives Uzbekistan (`585`) if it is owned and controlled by `SOV` and the Tashkent anchor mission fails. Kyrgyzstan (`586`) is added when the same ownership and control conditions hold there as well.
 10. `ALA` receives Kazakhstan (`583`) and Western Kazakhstan (`587`) if both are owned and controlled by `SOV`, Kazakhstan has not already appeared, and the Kazakhstan-first-wave mission fails. Some Mountains (`588`) is added when the same ownership and control conditions hold there as well.
+11. `UDC` receives Tula (`223`), Kursk Area (`220`), and Voronezh (`240`) if all three are owned and controlled by `SOV` and the loyal military districts mission fails.
+12. `SDZ` receives Yaroslavl (`248`) and Vologda (`351`) if both are owned and controlled by `SOV` and the union archives mission fails.
+13. `RMC` receives Stalingrad Area (`217`) and Borisoglbsk (`260`) if both are owned and controlled by `SOV` and the grave registers mission fails.
 
 These are strict prerequisites, not contingency pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, its tag-specific runtime focus tree with a clean focus state, and an event notice in `events/005_soviet_collapse_factory_ancient.txt` or `events/005_soviet_collapse_custom.txt`. The first eligible successor in each high-chaos tier records an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`; later successor notices in the same tier remain normal reports so the crisis does not flood the evolution log.
 
@@ -126,6 +132,9 @@ Each tag also has an opening decision board:
 8. `BSC` uses `Basmachi Confederation` with oasis consolidation, pass-guard mobilisation, and the Road Beyond the Steppe endgame.
 9. `TNC` uses `Turkestan National Council` with civic consolidation, railway-guard mobilisation, and the New Turkestan endgame.
 10. `ALA` uses `Alash Restoration Authority` with congress consolidation, cavalry-guard mobilisation, and the National Modernization Mandate endgame.
+11. `UDC` uses `Union Defense Committee` with command consolidation, signature-force mobilisation, and the Provisional Soviet Command endgame.
+12. `SDZ` uses `Security Directorate Zone` with archive consolidation, signature-force mobilisation, and the World in One Archive endgame.
+13. `RMC` uses `Red Martyrs' Resurrection Cult` with register consolidation, signature-force mobilisation, and the Every Grave a Barracks endgame.
 
 These decision boards are deliberately small foundations. They provide the variables, costs, blocked-cost localisation, ideas, and first rewards for tag-specific focus trees and event spawn effects.
 
@@ -307,7 +316,7 @@ This slice reuses existing wired sprites. No new art was generated.
 - `CFR_soviet_collapse_focus_tree` reuses the existing 33 Civilian Factory focus sprites in `interface/005_soviet_collapse_factory_ancient_icons.gfx` across 58 focuses. No new CFR focus art is required for this slice.
 - `MFR_soviet_collapse_focus_tree` reuses the existing 46 Military Factory focus sprites in `interface/005_soviet_collapse_factory_ancient_icons.gfx` across 46 focuses. No new MFR focus art is required for this slice.
 - `OGB_soviet_collapse_focus_tree` reuses the existing 54 Old Great Bulgaria focus sprites in `interface/005_soviet_collapse_factory_ancient_icons.gfx` across 54 focuses. No new OGB focus art is required for this slice.
-- `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, and `ALA` custom-splinter focus trees reuse the 24 existing per-tag `GFX_focus_TAG_*` sprites in `interface/005_soviet_collapse_custom_icons.gfx`. No new custom-splinter focus art is required for this slice.
+- `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, and `RMC` custom-splinter focus trees reuse the 24 existing per-tag `GFX_focus_TAG_*` sprites in `interface/005_soviet_collapse_custom_icons.gfx`. No new custom-splinter focus art is required for this slice.
 - High-chaos tag foundations use flag assets under `gfx/flags/`, leader portraits under `gfx/leaders/005_soviet_collapse/`, and portrait sprite keys in `interface/005_soviet_collapse_factory_ancient_icons.gfx` or `interface/005_soviet_collapse_custom_icons.gfx`. The high-chaos notice events currently reuse `GFX_report_union_crisis`, so no new report sprite is required for this slice.
 - Event 005 achievements use `common/achievements/chaos_redux_achievements.txt`, localisation in `localisation/english/chaosx_achievements_l_english.yml`, sprites in `interface/chaosx_achievements.gfx`, and the icon ledger in `docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md`.
 
