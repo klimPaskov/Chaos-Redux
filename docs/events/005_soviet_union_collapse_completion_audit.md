@@ -1,0 +1,107 @@
+# Event 005 Soviet Union Collapse Completion Audit
+
+Current audit date: 2026-05-17
+
+This audit maps the active clean-spec objective to current repository evidence. It is not a completion claim.
+
+## Source Order
+
+Required source order:
+
+1. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
+2. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
+3. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
+4. `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
+5. `AGENTS.md`
+6. `chaos-redux-events`
+7. `chaos-redux-event-assets`
+8. `chaos-redux-super-events`
+
+## Prompt To Artifact Checklist
+
+| Requirement | Evidence | Status |
+| --- | --- | --- |
+| Event 005 remains Soviet Collapse with entry event format `chaosx.nr5.1` | `events/005_soviet_collapse.txt`; event docs in `docs/events/005_soviet_union_collapse.md` | Implemented; still needs full final audit |
+| Dynamic crisis values and central tuning | `common/script_constants/005_soviet_collapse_constants.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, `common/scripted_triggers/005_soviet_collapse_triggers.txt` | Implemented for current systems; needs full spec-by-spec value audit |
+| Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 `soviet_collapse_soviet_mission_*` mission blocks | Implemented; needs final tooltip and localisation coverage audit |
+| Foreign intervention categories and action-based aid | `soviet_collapse_foreign_patron_category` has 7 decision blocks; `soviet_collapse_breakaway_category` has 4 action blocks | Implemented for current layer; needs spreadsheet alignment |
+| Runtime focus trees for republics and breakaways | Focus counts: Ukraine 153, Belarus 83, Kazakhstan 87, fallback breakaway 53, Baltic 36, Caucasus 33, Central Asia 34, Moldova 23 | Implemented for these trees |
+| High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54 | Implemented for these three successors |
+| Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions | Partially verified; needs automated self-reference and duplicate-effect audit before completion |
+| Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB` | Implemented for three; many planned serious splinters remain unimplemented |
+| Starting divisions for appearing republics and serious splinters | Needs audit against history files and spawn effects | Not fully verified |
+| Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean | Implemented for current achievement surface; future-only splinter achievements depend on missing packages |
+| Super-events | Slots 14-27 have helpers, assets, localisation, audio references, and constants. Route calls now exist for all except 16 and 18 | Partially implemented |
+| Super-event slot 16, The Dead Are Citizens | Helper exists; no implemented death-state route calls it | Blocked by missing death-state package |
+| Super-event slot 18, Every Port a Council | Helper exists; no implemented naval council route calls it | Blocked by missing naval/Kronstadt package |
+| Docs | Event doc and super-event research docs exist and are aligned with current route wiring | Implemented for current surfaces |
+| Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, and super-event assets; no new assets created in the latest route-wiring pass | Implemented for current surfaces |
+| Spreadsheet updates | No local spreadsheet file was found by `rg --files`; README points to the external Google spreadsheet catalog | Blocked unless the sheet is provided or connector access is specified |
+| Completion readiness | Dirty worktree check after last committed route pass was clean | Not complete |
+
+## Current Focus Counts
+
+Command evidence:
+
+```text
+CFR_soviet_collapse_focus_tree 58
+MFR_soviet_collapse_focus_tree 46
+OGB_soviet_collapse_focus_tree 54
+soviet_collapse_baltic_focus_tree 36
+soviet_collapse_belarus_focus_tree 83
+soviet_collapse_breakaway_focus_tree 53
+soviet_collapse_caucasus_focus_tree 33
+soviet_collapse_central_asia_focus_tree 34
+soviet_collapse_kazakhstan_focus_tree 87
+soviet_collapse_moldova_focus_tree 23
+soviet_collapse_ukraine_focus_tree 153
+```
+
+## Super-Event Route Coverage
+
+Implemented route calls currently exist for:
+
+- `soviet_collapse_show_black_banner_returns_super_event`
+- `soviet_collapse_show_world_as_one_factory_super_event`
+- `soviet_collapse_show_map_larger_than_union_super_event`
+- `soviet_collapse_show_steppe_beyond_history_super_event`
+- `soviet_collapse_show_corridors_decide_super_event`
+- `soviet_collapse_show_bread_state_super_event`
+- `soviet_collapse_show_league_equal_republics_super_event`
+- `soviet_collapse_show_steppe_federation_super_event`
+- `soviet_collapse_show_baltic_restoration_pact_super_event`
+- `soviet_collapse_show_caucasus_defense_compact_super_event`
+- `soviet_collapse_show_eastern_buffer_coalition_super_event`
+
+Helpers without implemented route calls:
+
+- `soviet_collapse_show_dead_are_citizens_super_event`
+- `soviet_collapse_show_every_port_a_council_super_event`
+
+## Custom Country Gap
+
+Current registered special Event 005 custom country tags are:
+
+- `CFR`
+- `MFR`
+- `OGB`
+
+The custom icon surface references 35 tag prefixes:
+
+```text
+ALA ARD BAC BBH BEC BLT BSC COU DHC DSC FEV FTH GAC ICD ILU IRA IUL KHC KRS LID MRC NLC NRF PRA RCD RLD RMC SDZ SEP SZA TNC TRS TSC UDC UWD
+```
+
+Those icon-prefix packages are not all registered country packages. The clean-spec objective requires full packages for every implemented country, but it also expects serious splinter packages that are not currently implemented. This is the largest remaining blocker.
+
+## Remaining Blockers
+
+1. Implement or explicitly defer the missing serious splinter packages from Part 4 with full country packages, including tag, history, localisation, ideology names, leaders or councils, flags, ideas, decisions, AI, focus content, assets, and docs.
+2. Wire `The Dead Are Citizens` only after a death-state route exists and satisfies the high-chaos trigger direction.
+3. Wire `Every Port a Council` only after a naval council or Kronstadt route exists and satisfies the trigger direction.
+4. Audit evolution logging so baseline crisis stages are not recorded as evolutions and only one Soviet Collapse evolution log is recorded per chaos tier unless the clean spec explicitly allows more.
+5. Audit all focus trees for self-references, missing prerequisite targets, duplicate completion effects, missing icons, missing localisation, and missing `ai_will_do`.
+6. Audit starting divisions and reinforcement routes for every appearing republic and implemented serious splinter.
+7. Update the event spreadsheet or record a concrete access blocker for the external catalog.
+8. Run final parser-oriented checks after every remaining implementation pass.
+
