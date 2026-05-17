@@ -311,6 +311,164 @@ soviet_collapse_spawn_loyalist_militias = {
 	}
 }
 
+soviet_collapse_emit_super_event = {
+	meta_effect = {
+		text = {
+			set_global_flag = {
+				flag = super_event_visible
+				days = 30
+				value = [SUPER_EVENT_ID]
+			}
+		}
+		SUPER_EVENT_ID = "[?soviet_collapse_super_event_id|.0]"
+	}
+	set_variable = { global.current_super_event_audio_id = soviet_collapse_super_event_id }
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
+	}
+}
+
+soviet_collapse_show_union_unmade_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_union_unmade_fired } }
+		set_global_flag = soviet_collapse_super_event_union_unmade_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.union_unmade }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_maybe_show_union_unmade_super_event = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = soviet_collapse_super_event_union_unmade_fired }
+			check_variable = {
+				var = soviet_collapse_breakaway_count
+				value = constant:soviet_collapse_super_event.min_breakaways_for_union_unmade
+				compare = greater_than
+			}
+		}
+		soviet_collapse_show_union_unmade_super_event = yes
+	}
+}
+
+soviet_collapse_show_black_banner_returns_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_black_banner_returns_fired } }
+		set_global_flag = soviet_collapse_super_event_black_banner_returns_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.black_banner_returns }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_dead_are_citizens_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_dead_are_citizens_fired } }
+		set_global_flag = soviet_collapse_super_event_dead_are_citizens_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.dead_are_citizens }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_world_as_one_factory_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_world_as_one_factory_fired } }
+		set_global_flag = soviet_collapse_super_event_world_as_one_factory_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.world_as_one_factory }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_every_port_a_council_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_every_port_a_council_fired } }
+		set_global_flag = soviet_collapse_super_event_every_port_a_council_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.every_port_a_council }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_map_larger_than_union_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_map_larger_than_union_fired } }
+		set_global_flag = soviet_collapse_super_event_map_larger_than_union_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.map_larger_than_union }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_steppe_beyond_history_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_steppe_beyond_history_fired } }
+		set_global_flag = soviet_collapse_super_event_steppe_beyond_history_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.steppe_beyond_history }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_corridors_decide_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_corridors_decide_fired } }
+		set_global_flag = soviet_collapse_super_event_corridors_decide_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.corridors_decide }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_bread_state_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_bread_state_fired } }
+		set_global_flag = soviet_collapse_super_event_bread_state_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.bread_state }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_league_equal_republics_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_league_equal_republics_fired } }
+		set_global_flag = soviet_collapse_super_event_league_equal_republics_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.league_equal_republics }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_steppe_federation_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_steppe_federation_fired } }
+		set_global_flag = soviet_collapse_super_event_steppe_federation_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.steppe_federation }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_baltic_restoration_pact_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_baltic_restoration_pact_fired } }
+		set_global_flag = soviet_collapse_super_event_baltic_restoration_pact_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.baltic_restoration_pact }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_caucasus_defense_compact_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_caucasus_defense_compact_fired } }
+		set_global_flag = soviet_collapse_super_event_caucasus_defense_compact_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.caucasus_defense_compact }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
+soviet_collapse_show_eastern_buffer_coalition_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_super_event_eastern_buffer_coalition_fired } }
+		set_global_flag = soviet_collapse_super_event_eastern_buffer_coalition_fired
+		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.eastern_buffer_coalition }
+		soviet_collapse_emit_super_event = yes
+	}
+}
+
 soviet_collapse_setup_breakaway_country = {
 	set_country_flag = soviet_collapse_breakaway
 	add_to_array = {
@@ -320,7 +478,10 @@ soviet_collapse_setup_breakaway_country = {
 	add_to_variable = { global.soviet_collapse_breakaway_count = 1 }
 	if = {
 		limit = { SOV = { exists = yes } }
-		SOV = { add_to_variable = { soviet_collapse_breakaway_count = 1 } }
+		SOV = {
+			add_to_variable = { soviet_collapse_breakaway_count = 1 }
+			soviet_collapse_maybe_show_union_unmade_super_event = yes
+		}
 	}
 
 	add_manpower = constant:soviet_collapse_breakaway_support.base_manpower
