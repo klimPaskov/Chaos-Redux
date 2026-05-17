@@ -27,7 +27,7 @@ Required source order:
 | Foreign intervention categories and action-based aid | `soviet_collapse_foreign_patron_category` has 7 decision blocks; `soviet_collapse_breakaway_category` has 4 action blocks | Implemented for current layer; needs spreadsheet alignment |
 | Runtime focus trees for republics and breakaways | Focus counts: Ukraine 153, Belarus 83, Kazakhstan 87, fallback breakaway 53, Baltic 36, Caucasus 33, Central Asia 34, Moldova 23 | Implemented for these trees |
 | High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54 | Implemented for these three successors |
-| Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions | Partially verified; needs automated self-reference and duplicate-effect audit before completion |
+| Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions; parser audit found no missing focus references, self-references, duplicate focus IDs, missing icons, missing localisation, missing `ai_will_do`, or missing/duplicated `completion_reward` blocks | Implemented for current focus trees |
 | Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB` | Implemented for three; many planned serious splinters remain unimplemented |
 | Starting divisions for appearing republics and serious splinters | Needs audit against history files and spawn effects | Not fully verified |
 | Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean | Implemented for current achievement surface; future-only splinter achievements depend on missing packages |
@@ -56,6 +56,28 @@ soviet_collapse_kazakhstan_focus_tree 87
 soviet_collapse_moldova_focus_tree 23
 soviet_collapse_ukraine_focus_tree 153
 ```
+
+## Focus Tree Integrity Audit
+
+Parser-oriented audit coverage for `common/national_focus/005_soviet_collapse_republics.txt` and `common/national_focus/005_soviet_collapse_factory_successors.txt`:
+
+```text
+focuses 660
+basic structural issues 0
+missing icon definitions 0
+missing localisation keys 0
+completion_reward block count issues 0
+```
+
+The audit checked:
+
+- unique focus IDs across the Event 005 focus files
+- `prerequisite` and `mutually_exclusive` focus targets
+- focus self-references
+- presence of `icon`, `completion_reward`, and `ai_will_do`
+- focus icon sprite definitions across mod and vanilla `interface/*.gfx`
+- focus name and description localisation keys across mod and vanilla English localisation
+- exactly one `completion_reward` block per focus
 
 ## Super-Event Route Coverage
 
@@ -100,8 +122,6 @@ Those icon-prefix packages are not all registered country packages. The clean-sp
 2. Wire `The Dead Are Citizens` only after a death-state route exists and satisfies the high-chaos trigger direction.
 3. Wire `Every Port a Council` only after a naval council or Kronstadt route exists and satisfies the trigger direction.
 4. Audit evolution logging so baseline crisis stages are not recorded as evolutions and only one Soviet Collapse evolution log is recorded per chaos tier unless the clean spec explicitly allows more.
-5. Audit all focus trees for self-references, missing prerequisite targets, duplicate completion effects, missing icons, missing localisation, and missing `ai_will_do`.
-6. Audit starting divisions and reinforcement routes for every appearing republic and implemented serious splinter.
-7. Update the event spreadsheet or record a concrete access blocker for the external catalog.
-8. Run final parser-oriented checks after every remaining implementation pass.
-
+5. Audit starting divisions and reinforcement routes for every appearing republic and implemented serious splinter.
+6. Update the event spreadsheet or record a concrete access blocker for the external catalog.
+7. Run final parser-oriented checks after every remaining implementation pass.
