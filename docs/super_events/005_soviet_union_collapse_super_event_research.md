@@ -114,7 +114,7 @@ The custom extreme paths and republic transformation routes have thirteen rare b
 | `17` | The World as One Factory | `MFR_state_as_one_arms_order` |
 | `18` | Every Port a Council | Helper present; no implemented naval council route currently calls it |
 | `19` | A Map Larger than the Union | Ukraine completes `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map` |
-| `20` | The Steppe Beyond History | Helper present; no implemented Steppe Beyond History route currently calls it |
+| `20` | The Steppe Beyond History | `kaz_soviet_collapse_the_southern_republics_do_not_kneel` |
 | `21` | The Corridors Decide | Belarus completes `blr_soviet_collapse_the_corridor_state` or `blr_soviet_collapse_the_leagues_spine` |
 | `22` | The Bread State | Ukraine completes `ukr_soviet_collapse_last_harvest_plan` |
 | `23` | The League of Equal Republics | Ukraine completes `ukr_soviet_collapse_league_of_equals` |
@@ -175,7 +175,7 @@ This matrix maps the implemented Event 005 super-events to their current artifac
 | `17` | The World as One Factory | `super_event.17.t/d/a/q` | Marx quote note documented | generated DDS wired | slot audio id wired from Angelic World Order package | `MFR_state_as_one_arms_order` calls `soviet_collapse_show_world_as_one_factory_super_event` | none for generated image |
 | `18` | Every Port a Council | `super_event.18.t/d/a/q` | Kronstadt slogan note documented | generated DDS wired | slot audio id wired from Coriolan package | helper present; no implemented naval council route currently calls it | none for generated image |
 | `19` | A Map Larger than the Union | `super_event.19.t/d/a/q` | Mackinder quote documented against Archive.org scan text of the 1919 Henry Holt edition | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map` | sourced image wired |
-| `20` | The Steppe Beyond History | `super_event.20.t/d/a/q` | Herodotus quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | helper present; no implemented Steppe Beyond History route currently calls it | sourced image wired |
+| `20` | The Steppe Beyond History | `super_event.20.t/d/a/q` | Herodotus quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | `kaz_soviet_collapse_the_southern_republics_do_not_kneel` calls `soviet_collapse_show_steppe_beyond_history_super_event` | sourced image wired |
 | `21` | The Corridors Decide | `super_event.21.t/d/a/q` | Clausewitz quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `blr_soviet_collapse_the_corridor_state` or `blr_soviet_collapse_the_leagues_spine` | sourced image wired |
 | `22` | The Bread State | `super_event.22.t/d/a/q` | Deuteronomy quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Final Silence package | fires from `ukr_soviet_collapse_last_harvest_plan` | sourced image wired |
 | `23` | The League of Equal Republics | `super_event.23.t/d/a/q` | Articles of Confederation quote documented with National Archives source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_league_of_equals` | sourced image wired |
@@ -225,7 +225,7 @@ Image package:
 - Super-event slot: `20`
 - Localisation keys: `super_event.20.t`, `super_event.20.d`, `super_event.20.a`, `super_event.20.q`
 - Trigger effect: `soviet_collapse_show_steppe_beyond_history_super_event`
-- Trigger direction: presentation helper exists; no implemented Steppe Beyond History focus or route currently calls it.
+- Trigger direction: fires once from the Kazakhstan focus `kaz_soviet_collapse_the_southern_republics_do_not_kneel`.
 - Role: high-chaos regional transformation, not a world-end scenario by default.
 - Button text: `The horizon answers.`
 - Button source: original remark, not a direct cultural quotation.
