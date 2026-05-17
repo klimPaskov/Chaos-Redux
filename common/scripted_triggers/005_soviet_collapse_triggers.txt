@@ -380,6 +380,26 @@ can_stop_soviet_collapse_volunteer_review = {
 	check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
 }
 
+can_discredit_soviet_collapse_first_republic_army = {
+	has_war_support > constant:soviet_collapse_soviet_objective.min_war_support
+	has_manpower > constant:soviet_collapse_soviet_objective.high_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.high_equipment_req }
+	has_army_experience > constant:soviet_collapse_soviet_objective.min_army_xp
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+	check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
+}
+
+can_break_soviet_collapse_defense_committees_supply = {
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.equipment_req }
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+	check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+	check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
