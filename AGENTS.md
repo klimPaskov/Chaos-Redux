@@ -185,10 +185,11 @@ Localisation and UI must always be kept in sync with gameplay changes.
 1. Localisation files must be encoded as **UTF 8 with BOM**. Wrong encoding breaks strings in game.
 2. When you add or rename anything that appears on screen, update localisation in the same change.
 3. In scripted localisation, do not write format characters like `§` or `£` directly.
-4. Localisation keys:
+4. Player-facing game text must describe the current world state and player choices, not implementation history or tuning mechanics. Do not say a value was capped, hardcoded, newly added, reworked, or changed because of an update request; keep those notes in docs or comments instead.
+5. Localisation keys:
    - Do not use `:0`. Write keys as `key_name: "Text"` without `0` and without a leading space before the key.
    - Keep key names consistent and readable. No unnecessary prefixes.
-5. Icons and UI assets:
+6. Icons and UI assets:
    - Define icons in `interface/...` and keep naming stable.
    - When something needs icons, define them in a correct `.gfx` file. I will provide the sprites myself, you just have to tell me what folder to put them in and with what name.
    - Copy placeholder sprites from vanilla files that match the new gfx definition, so later I can replace them with real sprites easily and that the game would run without complaining about missing sprites.
@@ -261,6 +262,8 @@ When a task reveals a repeated workflow, repeated mistake, reusable process, rep
 
 Create or update skills more often during long tasks, especially when working through many events, mechanics, assets, localisation passes, or UI patterns. If the same reasoning would likely be needed again later in the run, capture it in a skill before moving on.
 
+Never put event specific context inside skills!
+
 Rules:
 
 1. Check whether an existing skill already covers the workflow before creating a new one.
@@ -272,3 +275,13 @@ Rules:
 7. Do not bloat skills with one-off details that will not help future tasks.
 8. During large multi-event runs, review skill gaps after each completed event or shared system. Update or create skills before starting the next event if something reusable was learned.
 9. Report which skills were used, created, or updated at the end of each task.
+
+## 8. Git
+
+After completing each meaningful goal, create a Git commit.
+
+The commit must only include changes related to that goal. Before committing, review the diff, verify that the implementation is complete.
+
+Use a clear commit message that describes what was implemented.
+
+Do not commit broken, unrelated, or half-finished work. If the goal cannot be completed cleanly, report the blocker instead of creating a misleading commit.

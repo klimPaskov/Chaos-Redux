@@ -14,10 +14,10 @@ Source and processed PNG previews live under:
 | Asset | Type | Final path | Sprite or tag | Size |
 | --- | --- | --- | --- | --- |
 | Angelic Directorate flag | flag | `gfx/flags/germany_mengele_angelic_directorate.tga` | `germany_mengele_angelic_directorate` | 82x52 |
-| Angelic Directorate flag | flag | `gfx/flags/medium/germany_mengele_angelic_directorate.tga` | `germany_mengele_angelic_directorate` | 42x26 |
+| Angelic Directorate flag | flag | `gfx/flags/medium/germany_mengele_angelic_directorate.tga` | `germany_mengele_angelic_directorate` | 41x26 |
 | Angelic Directorate flag | flag | `gfx/flags/small/germany_mengele_angelic_directorate.tga` | `germany_mengele_angelic_directorate` | 10x7 |
 | Clone Client flag | flag | `gfx/flags/mengele_clone_client_regime.tga` | `mengele_clone_client_regime` | 82x52 |
-| Clone Client flag | flag | `gfx/flags/medium/mengele_clone_client_regime.tga` | `mengele_clone_client_regime` | 42x26 |
+| Clone Client flag | flag | `gfx/flags/medium/mengele_clone_client_regime.tga` | `mengele_clone_client_regime` | 41x26 |
 | Clone Client flag | flag | `gfx/flags/small/mengele_clone_client_regime.tga` | `mengele_clone_client_regime` | 10x7 |
 | Centralized Replication Command | idea icon | `gfx/interface/ideas/idea_mengele_clone_world_order.dds` | `GFX_idea_mengele_clone_world_order` | 64x64 |
 | Clone Client Regime | idea icon | `gfx/interface/ideas/idea_mengele_clone_client_state.dds` | `GFX_idea_mengele_clone_client_state` | 64x64 |
@@ -37,6 +37,10 @@ Ideology-suffixed flag copies are included for the Angelic Directorate and clone
 ## Source Notes
 
 The source visuals are custom-generated symbolic Chaos Redux assets produced for this package. They use the requested red, black, and white authoritarian research-state palette.
+
+The flag and idea icon art was refreshed with Codex built-in `image_gen` from dedicated generated sources rather than a packed sheet. Cropped per-asset source PNGs and processed previews are preserved under this package.
+
+The Numbered World focus icon was regenerated with Codex built-in `image_gen` from the generated focus/category sheet preserved at `docs/assets/holy_realm_decision_categories/source_png/generated_focus_category_sheet_source.png`.
 
 The current Angelic World Order super-event art is generated symbolic artwork with no real-world extremist insignia. It shows a hidden biomedical command cathedral, rows of clone soldiers, laboratory tanks, and a winged medical-industrial statue to match the clone world-end activation.
 
@@ -59,3 +63,16 @@ The current Angelic World Order super-event art is generated symbolic artwork wi
 - Review status: `needs_user_review`
 - Notes: cropped and resized to 457x328, converted to uncompressed ARGB8888 DDS, replacing the previous symbolic DDS under the same stable filename and sprite name.
 - Asset status: `wired`
+
+## Refreshed Flag And Idea Icon Records
+
+Shared image generation prompt summary: dedicated HOI4-style symbolic assets for the Angelic Directorate, Clone Client Regime, Centralized Replication Command, Clone Client State, Hidden Clone Network, and The Numbered World; strong centered silhouettes, high contrast, no text, no labels, no watermarks, no real-world extremist insignia, no swastikas, no gore.
+
+| Asset name | Type | Source PNG | Processed PNG | Final runtime path | Target size | Sprite or tag | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Angelic Directorate flag | flag | `docs/assets/mengele_clone_world_order/source_png/germany_mengele_angelic_directorate_flag_source.png` | `docs/assets/mengele_clone_world_order/processed_png/germany_mengele_angelic_directorate_flag.png` | `gfx/flags/germany_mengele_angelic_directorate.tga`, medium and small copies, plus ideology-suffixed copies | 82x52, 41x26, 10x7 | `germany_mengele_angelic_directorate` | complete |
+| Clone Client Regime flag | flag | `docs/assets/mengele_clone_world_order/source_png/mengele_clone_client_regime_flag_source.png` | `docs/assets/mengele_clone_world_order/processed_png/mengele_clone_client_regime_flag.png` | `gfx/flags/mengele_clone_client_regime.tga`, medium and small copies, plus ideology-suffixed copies | 82x52, 41x26, 10x7 | `mengele_clone_client_regime` | complete |
+| Hidden Clone Network | decision icon | `docs/assets/mengele_clone_world_order/source_png/decision_mengele_hidden_clone_network_source.png` | `docs/assets/mengele_clone_world_order/processed_png/decision_mengele_hidden_clone_network.png` | `gfx/interface/decisions/decision_mengele_hidden_clone_network.dds` | 32x32 | `GFX_decision_mengele_hidden_clone_network` | complete |
+| Centralized Replication Command | idea icon | `docs/assets/mengele_clone_world_order/source_png/idea_mengele_clone_world_order_source.png` | `docs/assets/mengele_clone_world_order/processed_png/idea_mengele_clone_world_order.png` | `gfx/interface/ideas/idea_mengele_clone_world_order.dds` | 64x64 | `GFX_idea_mengele_clone_world_order` | complete |
+| Clone Client State | idea icon | `docs/assets/mengele_clone_world_order/source_png/idea_mengele_clone_client_state_source.png` | `docs/assets/mengele_clone_world_order/processed_png/idea_mengele_clone_client_state.png` | `gfx/interface/ideas/idea_mengele_clone_client_state.dds` | 64x64 | `GFX_idea_mengele_clone_client_state` | complete |
+| The Numbered World | focus icon | `docs/assets/mengele_clone_world_order/source_png/focus_mengele_numbered_world_source.png` | `docs/assets/mengele_clone_world_order/processed_png/focus_mengele_numbered_world.png` | `gfx/interface/goals/focus_mengele_numbered_world.dds` | 94x86 | `GFX_focus_mengele_numbered_world` | complete |

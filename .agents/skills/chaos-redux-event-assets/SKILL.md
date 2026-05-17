@@ -56,9 +56,9 @@ Use this skill when the implementation task includes generated, sourced, or user
 
 Choose the source mode based on asset type.
 
-### Use `image_gen` for generated symbolic or fictional assets
+### Use `$imagegen` for generated symbolic or fictional assets
 
-Use Codex's official built-in `image_gen` tool by default for:
+Use Codex's official `$imagegen` skill by default for:
 
 - idea icons
 - focus icons
@@ -72,13 +72,15 @@ Use Codex's official built-in `image_gen` tool by default for:
 - progression-state base art
 - other symbolic or fictional static assets
 
-Do not use an image generation MCP, API script, or CLI fallback by default.
+When creating generated assets, follow the `$imagegen` skill workflow. Do not define a separate image generation route in this skill.
 
-If built-in `image_gen` is unavailable, report that clearly and ask before using a fallback route.
+For transparent icons, ask `$imagegen` for the required transparent output and follow the `$imagegen` skill's transparent image workflow. The final PNG must have real transparency, no fake checkerboard, no white halo, no white outline, and no opaque square background unless the asset type explicitly uses a painted backdrop.
+
+If `$imagegen` is unavailable, report that clearly and stop before using an alternate route.
 
 ### Use internet source images for event photo assets
 
-Do not generate these asset types with `image_gen` by default:
+Do not generate these asset types with `$imagegen` by default:
 
 - news event images
 - report event images
@@ -88,17 +90,29 @@ For these asset types, find suitable images from the internet, then process them
 
 Follow the repository web research rules from `AGENTS.md` when searching for source images.
 
-Record the image source, source link, author or archive if available, license or public domain status if available, and any uncertainty in the manifest.
+For event photo assets that are meant to represent the World War II era, search for period-matching source imagery from roughly 1936 to 1945 unless the event spec gives a narrower date range. Prefer contemporary photographs, war correspondents' photographs, press agency images, propaganda posters, maps, newspapers, official records, government or military archive images, museum scans, library scans, and period illustrations. Do not use modern photographs, reenactment images, film stills, AI-looking reconstructions, postwar uniforms, streets, weapons, vehicles, buildings, colorized tourist photos, reenactments, or modern props when they do not fit the era. If no suitable period source can be found, mark the asset as blocked instead of substituting a modern image.
 
-Report event images and super-event images must be marked for user review before they are treated as final.
+Record the image source, source link, author or archive if available, license or public domain status if available, estimated date or date range, why the image fits the World War II era, and any uncertainty in the manifest.
 
 ### Real leader portraits
 
 Do not generate a leader portrait for a real person.
 
-For real people, use a real source image from the internet or a user-provided image, then crop, resize, process, convert, and document it.
+For real people, use a real source image from the internet or a user-provided image, then crop, resize, process, convert, and document it. Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
 
-Record the source link, author or archive if available, and license or public domain status if available.
+Real leader portraits should be processed toward the HOI4 portrait style rather than left as raw photos: bust or upper-torso crop, face readable, subdued contrast, mild painterly or period texture, HOI4-like color grading, no modern UI artifacts, no hard white cutout halo, and no over-smoothed face. Do not change the person's identity or generate missing facial features.
+
+Record the source link, author or archive if available, license or public domain status if available, source image path, processed PNG path, final DDS path, and sprite name
+
+### Fictional leader portraits
+
+Fictional leaders, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits may use `$imagegen`.
+
+Generated leader portraits should follow HOI4 leader portrait conventions: 156x210 final DDS unless an existing sprite uses another size, bust or upper-torso framing, strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, transparent or HOI4-compatible portrait background as required by the existing asset pattern, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
+
+When generated portrait sheets use different aspect ratios in the same package, do not reuse one fixed crop for every sheet. Review the final 156x210 contact sheet for horizontal drift, cut-off heads, and inconsistent eye height.
+
+For council or collective leaders, use one clear symbolic council portrait rather than a cluttered crowd. Keep the subject readable at leader portrait size and document that the leader is fictional or collective.
 
 ### User-provided assets
 
@@ -131,7 +145,7 @@ Use Linux project paths, not Windows UNC paths:
 Reference mapping:
 
 - idea and national spirit icons: `assets/ideas`
-- officer corps spirit icons: inspect vanilla `gfx/interface/officer_corp/spirits/`; final assets should be 45x45 DDS files with transparent backgrounds, no frames, no painted backdrop, no full-canvas opaque pixels, a readable dark/black outline, and a slight drop shadow, wired as `GFX_idea_<spirit_id>` sprites from a `.gfx` file.
+- officer corps spirit icons: inspect vanilla `gfx/interface/officer_corp/spirits/`. Final assets should be 45x45 DDS files with transparent backgrounds, no frames, no painted backdrop, no full-canvas opaque pixels, a readable dark or black outline, and a slight drop shadow. Wire them as `GFX_idea_<spirit_id>` sprites from a `.gfx` file.
 - news event images: `assets/news_event_images`
 - report event images: `assets/report_event_images`
 - super-event images: `assets/super_event_images`
@@ -147,38 +161,31 @@ Do not copy reference assets directly unless the user explicitly allows it. Use 
 
 If the needed asset type has no matching reference folder, inspect the closest relevant folder and existing Chaos Redux or vanilla assets before choosing a style.
 
-## 5. No core artwork with scripts
+## 5. Generated artwork rules
 
-Do not create core artwork with:
+Do not create core artwork from simple shapes, placeholders, contact sheets, layout-only mockups, empty UI boxes, or generated charts.
 
-- Python drawing
-- simple geometric shapes
-- flat placeholder symbols
-- contact-sheet mockups
-- layout-only mockups
-- basic generated charts
-- empty UI boxes with no real art
+Use `$imagegen` for generated artwork and follow the `$imagegen` skill workflow for the source image.
 
-Python or scripts may only be used after the source image exists for:
+Generated artwork must be real source art that can be processed into the final game asset. Do not use contact sheets, review boards, or layout drafts as final source art.
 
-- cropping
-- resizing
-- organizing files
-- creating manifests
-- creating contact sheets
-- creating achievement state variants
-- creating progression-state variants
-- converting final assets to DDS
-
-## 5.1 Icon Creation Rules
+## 5.1 Icon creation rules
 
 Small gameplay icons must be readable at their final in-game size.
 
 - Use transparent backgrounds for asset types that are transparent in vanilla, especially officer corps spirit icons and small symbolic interface icons.
 - Keep unused pixels fully transparent. Do not leave a square opaque fill behind icons unless the asset type explicitly uses a painted frame or backdrop.
-- Give the icon silhouette a dark/black outline and a subtle drop shadow when the icon is displayed over variable UI backgrounds.
+- Give the icon silhouette a dark or black outline and a subtle drop shadow when the icon is displayed over variable UI backgrounds.
 - Avoid tiny interior detail that disappears at 45x45 or 64x64. Favor one clear subject, strong value contrast, and a centered silhouette.
 - Officer corps spirit icons specifically must be 45x45, transparent, unframed, and visually similar to vanilla officer corps spirit icons rather than national spirit cards.
+- Avoid fake checkerboard pixels, white halos, white outlines, oversized medallion fills, and square opaque backdrops.
+- Decision icons must be processed as their own 32x32 asset type, not as scaled-down 60x68 idea icons. Match the decision references: one centered readable object or emblem, transparent unused canvas, no idea-card framing, and no leftover neighboring sheet art.
+- When generated sheets pack multiple icons, audit the processed alpha bounds before conversion. Reject cells with off-center subjects, clipped subjects, or multiple unrelated neighboring fragments in one output.
+- Validate icon alignment by opacity-weighted visual mass as well as alpha bounding box. A centered bounding box can still read off-center in HOI4 frames when the painted subject is visually heavier on one side or at the bottom. Recenter processed transparent icons before DDS conversion when the visual mass is visibly displaced, while keeping the alpha bounds unclipped.
+
+For every generated icon, follow the `$imagegen` skill's transparent image workflow. This skill must not provide its own transparency cleanup method. Preserve the original generated image, create a processed PNG preview, convert to DDS, and validate the final appearance over a checker background before treating the icon as complete.
+
+The final icon should have transparent unused canvas, no fake checker or matte pixels, no transparent holes inside the painted subject, a slight black outline, a subtle drop shadow, and a centered subject that remains readable at final size.
 
 ## 6. Required asset workflow
 
@@ -193,10 +200,10 @@ For every asset package:
 7. Identify the intended in-game use.
 8. Inspect the matching reference folder from section 4 before generating, sourcing, processing, or wiring the asset.
 9. Decide the source mode for each asset:
-   - `image_gen`
+   - `$imagegen`
    - internet source image
    - user-provided source image
-10. For `image_gen` assets, write a specific image generation prompt and generate the base artwork with Codex's official built-in `image_gen` tool.
+10. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
 11. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
 12. For user-provided assets, record that the image was provided by the user.
 13. Save the original generated, sourced, or provided image as a source PNG.
@@ -210,8 +217,6 @@ For every asset package:
 21. Report all created files and any blocked assets.
 
 Do not mark assets complete until the DDS files exist, the sprite definitions are wired, and the manifest is written.
-
-Report event images and super-event images are not final until the user has reviewed them.
 
 ## 7. Asset package structure
 
@@ -252,11 +257,13 @@ Each asset entry should include:
 - related event slug
 - asset type
 - intended in-game use
-- source mode: `image_gen`, internet source image, or user-provided source image
-- image generation prompt if generated with `image_gen`
+- source mode: `$imagegen`, internet source image, or user-provided source image
+- image generation prompt if generated with `$imagegen`
 - source link if internet-sourced
 - source author, archive, or collection if available
+- source date or estimated date range if internet-sourced
 - license or public domain status if available
+- era-fit note for World War II-era assets
 - source PNG path
 - processed PNG path
 - final DDS path
@@ -265,11 +272,12 @@ Each asset entry should include:
 - `.gfx` file
 - localisation key if relevant
 - related focus, idea, event, decision, UI element, or super-event if relevant
-- review status: `not_needed`, `needs_user_review`, `approved`, or `rejected`
 - notes
 - asset status
 
 Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `wired`, `complete`, or `blocked` as asset statuses.
+
+For large focus trees that deliberately reuse branch-level icon sprites instead of unique art for every focus, create a separate reuse ledger under the asset package. The ledger must be based on the actual focus file, state the real focus count, map each branch sprite to its final DDS and reuse rationale, and either list every focus or provide branch counts that can be verified from the tree. Do not treat branch-level reuse as complete unless the `.gfx` sprites are wired and the manifest links to that ledger.
 
 ## 9. Standard HOI4 asset sizes
 
@@ -279,7 +287,7 @@ Use these sizes unless the event spec or an existing repo pattern gives a better
 - news event images: 397x153, black and white
 - leader portraits: 156x210
 - flags small: 10x7
-- flags medium: 42x26
+- flags medium: 41x26
 - flags normal: 82x52
 - tech icons small: 64x64
 - tech icons medium: 132x52
@@ -289,7 +297,7 @@ Use these sizes unless the event spec or an existing repo pattern gives a better
 - idea and national spirit icons: 64x64
 - focus icons: 94x86
 
-Use other sizes when the event’s UI or asset type requires it.
+Use other sizes when the event's UI or asset type requires it.
 
 When unsure, inspect the existing Chaos Redux pattern and vanilla HOI4 assets before choosing.
 
@@ -315,7 +323,7 @@ For event-specific assets, include the event id or slug where useful.
 
 ## 11. Image generation prompt rules
 
-Every `image_gen` prompt should be specific enough to produce usable game art.
+Every `$imagegen` prompt should be specific enough to produce usable game art.
 
 A good prompt should include:
 
@@ -327,40 +335,48 @@ A good prompt should include:
 - what must be avoided
 - whether the result must be readable at small size
 
-Do not ask for vague “cool icon” style outputs.
+Do not ask for vague "cool icon" style outputs.
 
 Do not rely on text inside generated images. Generated text is unreliable.
 
 Prefer strong symbols, clear silhouettes, and readable composition.
 
+For transparent icon prompts, explicitly request a transparent canvas, no fake checkerboard, no white rim, no white outline, no glow, no sticker border, no opaque square background, and a clean silhouette suitable for HOI4 UI.
+
 ## 12. Internet source image rules
 
 When using internet source images:
 
-1. Search for images that fit the event tone and target use.
-2. Prefer public domain, archival, official, or clearly licensed sources.
-3. Record source links and license or public domain status when available.
-4. If licensing is unclear, mark it as uncertain in the manifest.
-5. Process the image into the correct HOI4 size and style.
-6. Preserve the source image path and processed preview path.
+1. Search for images that fit the event tone, target use, and intended era.
+2. For World War II-era event assets, search for source images from roughly 1936 to 1945 unless the event spec gives a narrower date range.
+3. Prefer contemporary or near-contemporary public domain, archival, official, museum, library, newspaper, map, press photograph, propaganda poster, government record, military record, period illustration, or clearly licensed sources.
+4. Reject modern photographs, reenactments, film stills, postwar streets, uniforms, props, weapons, vehicles, buildings, AI-looking reconstructions, and later stylized images when they do not fit the era.
+5. Record source links, source date or estimated date range, and license or public domain status when available.
+6. If licensing, date, or era fit is unclear, mark it as uncertain in the manifest.
+7. Process the image into the correct HOI4 size and style.
+8. Preserve the source image path and processed preview path.
 
-For public-facing or uncertain assets, keep the manifest honest about the source status.
+For public-facing or uncertain assets, keep the manifest honest about the source status, date uncertainty, and World War II-era fit uncertainty.
 
 ## 13. Report event images
 
 Report event images should use internet source images by default.
 
-Do not generate report event images with `image_gen` unless the user explicitly asks for a fictional or symbolic report image.
+Do not generate report event images with `$imagegen` unless the user explicitly asks for a fictional or symbolic report image.
 
-Report event images should look like documentary-style photographs or field documentation.
+Report event images should look like documentary-style photographs, field documentation, or period documentary material.
+
+For World War II-era subjects, prefer contemporary photographs, war correspondents' photographs, press agency images, propaganda posters, newspapers, maps, official records, military archive images, museum or library scans, or period illustrations. Do not use modern reenactment photos or modern documentary photos that visually belong to a later era.
 
 Use:
 
-- realistic source imagery
+- realistic or period-authentic source imagery
+- World War II-era visual fit when the event belongs to that era
 - period-appropriate framing where possible
 - strong subject clarity
 - natural composition
 - no modern UI overlays
+- no modern clothing, streets, weapons, vehicles, buildings, or props unless they are intentionally part of the event
 - no generated text
 
 Target size:
@@ -371,23 +387,25 @@ Target size:
 
 Use colour unless the event spec asks otherwise.
 
-Report event images must be marked `needs_user_review` in the manifest before being treated as final.
-
 ## 14. News event images
 
 News event images should use internet source images by default.
 
-Do not generate news event images with `image_gen` unless the user explicitly asks for a fictional or symbolic news image.
+Do not generate news event images with `$imagegen` unless the user explicitly asks for a fictional or symbolic news image.
 
-News images should look like black-and-white documentary photographs.
+News images should look like black-and-white documentary photographs or period news illustrations.
+
+For World War II-era subjects, prefer contemporary newspapers, news photographs, war correspondents' photographs, press agency images, propaganda posters, maps, official visual records, military archive images, museum or library scans, or period illustrations. Do not use modern reenactment photos, modern news photos, film stills, or later images that do not fit the era.
 
 Use:
 
-- old news photograph style
+- old news photograph or period press illustration style
+- World War II-era visual fit when the event belongs to that era
 - clear central subject
 - strong contrast
 - period-appropriate composition
 - no modern UI overlays
+- no modern clothing, streets, weapons, vehicles, buildings, or props unless they are intentionally part of the event
 - no generated text
 
 Target size:
@@ -404,7 +422,7 @@ Record the source link and license or public domain status if available.
 
 Super-event images should use internet source images by default.
 
-Do not generate super-event images with `image_gen` unless the user explicitly asks for fictional, symbolic, supernatural, or fully invented super-event art.
+Do not generate super-event images with `$imagegen` unless the user explicitly asks for fictional, symbolic, supernatural, or fully invented super-event art.
 
 Super-event images should have:
 
@@ -412,7 +430,9 @@ Super-event images should have:
 - clear dramatic theme
 - readable subject
 - enough contrast for HOI4 UI
+- World War II-era visual fit when the event belongs to that era
 - no generated text
+- no modern clothing, streets, weapons, vehicles, buildings, props, film stills, or reenactment imagery when they do not fit the era
 - no cluttered small details that disappear at final size
 
 Target size:
@@ -420,8 +440,6 @@ Target size:
 ```text
 457x328
 ```
-
-Super-event images must be marked `needs_user_review` in the manifest before being treated as final.
 
 If a super-event needs music, research suitable public domain or clearly licensed music.
 
@@ -463,7 +481,9 @@ Use `idea_` filename prefix.
 
 These icons usually do not need the full focus icon frame.
 
-Use `image_gen` for the base artwork unless the user provides or requests a specific source image.
+Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
+
+Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
 Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas` before generating or processing idea icons.
 
@@ -489,11 +509,13 @@ Target size:
 
 Use `goal_` filename prefix.
 
-Do not make focus icons look like generic AI art thumbnails.
+Do not make focus icons look like generic generated thumbnails.
 
-Every focus icon should support the focus tree’s story, ideology, or gameplay purpose.
+Every focus icon should support the focus tree's story, ideology, or gameplay purpose.
 
-Use `image_gen` for the base artwork unless the user provides or requests a specific source image.
+Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
+
+Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
 Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses` before generating or processing focus icons.
 
@@ -523,7 +545,9 @@ Decision category icons may use:
 decision_category_
 ```
 
-Use `image_gen` for the base artwork unless the user provides or requests a specific source image.
+Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
+
+Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
 
 Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions` before generating or processing decision icons.
 
@@ -531,14 +555,14 @@ Inspect `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/d
 
 Achievement icons should be compact and readable at 64x64.
 
-Generate the completed achievement icon first with `image_gen`.
+Generate the completed achievement icon first with `$imagegen`.
 
 Then create:
 
 - grey variant
 - not-eligible variant
 
-The variants may be created with scripting or image editing after the completed icon exists.
+The variants may be created after the completed icon exists.
 
 Target size:
 
@@ -559,18 +583,26 @@ They must remain readable at HOI4 sizes.
 Required flag sizes:
 
 - small: 10x7
-- medium: 42x26
+- medium: 41x26
 - normal: 82x52
 
 Avoid overly detailed symbols.
 
 Avoid generated text unless the design absolutely requires it and the final output is manually checked.
 
-Use `image_gen` for fictional flags and user-provided or internet source images for historical or real-world flags when appropriate.
+Use `$imagegen` for fictional flags and user-provided or internet source images for historical or real-world flags when appropriate.
+
+When exporting HOI4 `.tga` flags with ImageMagick, write 32bpp TGA files and validate orientation against the PNG source. A reliable pattern is to resize, vertically flip the pixel rows before writing, force alpha, and verify the rendered TGA matches the expected PNG with `compare -metric RMSE`:
+
+```bash
+convert source.png -resize 82x52! -flip -alpha set -channel A -evaluate set 100% +channel -depth 8 -type TrueColorAlpha -define tga:bits-per-pixel=32 -compress none gfx/flags/TAG.tga
+```
+
+Repeat for `41x26` and `10x7`. Check the header reports `bpp=32`, descriptor `0x8`, and alpha bits `8`, then render the TGA back to PNG and compare it against an upright resized source.
 
 ## 21. Leader portraits
 
-For real people, do not generate leader portraits with `image_gen`.
+For real people, do not generate leader portraits with `$imagegen`.
 
 Use a real source image from the internet or a user-provided image, then crop, resize, process, convert, and document it.
 
@@ -583,7 +615,7 @@ Record:
 - processed PNG path
 - final DDS path
 
-For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `image_gen` may be used to create the base portrait.
+For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait.
 
 Leader portraits should match the intended Chaos Redux visual direction for the character or country.
 
@@ -599,7 +631,7 @@ Inspect the closest relevant reference folder and existing Chaos Redux portraits
 
 For UI panels, dossier windows, ledgers, investigation boards, and similar assets, separate artwork from functional UI.
 
-Use `image_gen` for:
+Use `$imagegen` for:
 
 - illustrated background panels
 - thematic decorations
@@ -607,7 +639,7 @@ Use `image_gen` for:
 - propaganda visuals
 - report board visual elements
 
-Use scripts or UI editing for:
+Use normal UI editing for:
 
 - exact layout slicing
 - cropping
@@ -641,32 +673,9 @@ Progression-state variants should use the same target size as the base asset.
 
 ## 24. DDS conversion
 
-Final PNG assets must be converted with the repo wrapper:
+Final PNG assets must be converted to DDS using the repository's standard DDS conversion workflow.
 
-```text
-.tools/convert_to_dds.py
-```
-
-Use:
-
-```bash
-python3 .tools/convert_to_dds.py \
-  --input <processed_png_path> \
-  --output <final_dds_path> \
-  --width <target_width> \
-  --height <target_height>
-```
-
-Do not call DDS converters directly from event or asset tasks. Always use the wrapper so the command stays the same across machines.
-
-The wrapper is responsible for choosing the available backend on the current system.
-
-Backend expectations:
-
-- On WSL, the wrapper may use DirectXTex `texconv`, usually through a Windows `texconv.exe` path such as `TEXCONV_EXE` or `TEXCONV_PATH`.
-- On macOS, the wrapper may use its built-in pure Python DDS writer, or another explicitly configured backend if available.
-
-The output must be compatible with Chaos Redux’s expected 32-bit BGRA / B8G8R8A8-style DDS workflow.
+The output must be compatible with Chaos Redux's expected 32-bit BGRA or B8G8R8A8-style DDS workflow.
 
 If conversion fails, stop and report the error. Do not invent another conversion route unless the user approves it.
 
@@ -707,7 +716,6 @@ The docs should mention:
 - where the DDS files live
 - which `.gfx` file defines them
 - which sprite names are used
-- which assets need user review, if any
 - which assets are placeholders, if any
 - what still needs final art, if anything
 
@@ -727,7 +735,6 @@ The contact sheet should make it easy to see:
 - asset type
 - selected final version
 - rejected alternatives if relevant
-- review status if relevant
 
 ## 28. Handling blocked assets
 
@@ -741,14 +748,14 @@ Record:
 - what is needed from the user
 - whether implementation can continue without it
 
-Do not invent a fallback asset unless the user explicitly approves it.
+Do not invent a substitute asset unless the user explicitly approves it.
 
 ## 29. Final checklist
 
 Before finishing, confirm:
 
 1. Every required asset from the event spec is accounted for.
-2. Every asset uses the correct source mode: `image_gen` for generated symbolic or fictional assets, internet source images for news/report/super-event images, and real source images for real leader portraits.
+2. Every asset uses the correct source mode: `$imagegen` for generated symbolic or fictional assets, internet source images for news/report/super-event images, and real source images for real leader portraits.
 3. The matching reference folder from section 4 was inspected before generation, sourcing, processing, or wiring.
 4. Every generated, sourced, or provided asset has a source PNG.
 5. Every final asset has a processed PNG preview.
@@ -757,9 +764,9 @@ Before finishing, confirm:
 8. DDS files are moved into the correct mod folders.
 9. Sprite definitions are added or updated.
 10. The asset manifest exists.
-11. Internet-sourced assets record source links and license or public domain status if available.
-12. Report event images and super-event images are marked for user review before final use.
-14. Fictional or non-human portraits generated with `image_gen` are clearly marked as fictional or generated in the manifest.
-15. Docs are updated where relevant.
-16. The event implementation knows which sprite names to use.
-17. No final asset remains only in a temporary folder.
+11. Internet-sourced assets record source links, source date or estimated date range, license or public domain status if available, and era-fit notes for World War II-era assets.
+12. Fictional or non-human portraits generated with `$imagegen` are clearly marked as fictional or generated in the manifest.
+13. Docs are updated where relevant.
+14. Transparent icons have been checked over a contact sheet and by alpha/visual-mass alignment metrics, not only by file dimensions.
+14. The event implementation knows which sprite names to use.
+15. No final asset remains only in a temporary folder.

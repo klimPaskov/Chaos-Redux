@@ -2260,11 +2260,14 @@ spawn_selected_dynamic_zombie_outbreak = {
 	                        else = {
 	                            load_oob = "ZZZ_weaponized_1936"
 	                        }
-	                        weaponized_zombie_unlock_profiled_template = yes
-	                    }
-	                    set_temp_variable = { weaponized_zombie_new_country = dynamic_zombie_new_country }
-	                    set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_0_divisions }
-	                    if = {
+		                        weaponized_zombie_unlock_profiled_template = yes
+		                    }
+		                    set_temp_variable = { weaponized_zombie_new_country = dynamic_zombie_new_country }
+		                    var:weaponized_zombie_new_country = {
+		                        save_event_target_as = weaponized_zombie_new_country
+		                    }
+		                    set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_0_divisions }
+		                    if = {
 	                        limit = { ZZZ = { has_country_flag = { flag = zombie_current_tier value = 1 } } }
 	                        set_temp_variable = { weaponized_zombie_spawn_count = constant:zombie_outbreak.dynamic_outbreak_tier_1_divisions }
 	                    }

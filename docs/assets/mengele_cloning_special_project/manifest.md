@@ -28,4 +28,4 @@ Source and processed PNG previews live under:
 - Processed PNG: `docs/assets/mengele_cloning_special_project/processed_png/sp_mengele_cloning.png`
 - Final DDS format: uncompressed 32-bit ARGB8888 DDS
 
-Generation prompt summary: HOI4-style special project icon showing a dark biomedical laboratory, cloning tanks, red warning light, steel pipes, and blueprint-like military science mood with no text, real logos, flags, gore, or explicit violence.
+Generation prompt summary: HOI4-style special project icon showing a dark biomedical laboratory, a red-lit cloning cylinder with a metallic DNA helix, steel pipes, and military science mood with no text, real logos, flags, gore, or explicit violence.

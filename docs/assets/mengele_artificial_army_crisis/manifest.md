@@ -10,5 +10,9 @@
 - Final DDS: `gfx/interface/ideas/idea_mengele_artificial_army_crisis.dds`
 - Target size: 64x64
 - GFX wiring: `interface/chaosx_ideas.gfx`
+- Review status: `not_needed`
+- Asset status: `complete`
 
-Generation prompt summary: HOI4-style national spirit icon showing a dark biomedical laboratory, rows of clone soldiers, growth vats, and red emergency light, with no text, no flags, and no political symbols.
+Generation prompt summary: HOI4-style national spirit icon showing identical faceless steel infantry helmets emerging from a red-lit cloning vat, with aged painted texture, strong silhouette, no text, no labels, no watermarks, no real-world extremist insignia, no swastikas, and no gore.
+
+The icon was refreshed from the dedicated source PNG preserved at `docs/assets/mengele_artificial_army_crisis/source_png/idea_mengele_artificial_army_crisis_source.png`.
