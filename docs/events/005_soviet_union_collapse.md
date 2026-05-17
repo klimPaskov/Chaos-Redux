@@ -10,11 +10,11 @@ The baseline crisis stages are ordinary crisis progression, not evolution logs. 
 
 The implemented opening slices cover the crisis scaffold and the first intervention layer:
 
-- `common/script_constants/005_soviet_collapse_constants.txt` centralizes opening crisis values, breakaway support, objective requirements, objective pressure families, and first response costs.
-- `common/scripted_triggers/005_soviet_collapse_triggers.txt` adds active-crisis, breakaway, patron, cost, recovered-capital, second-wave quieting, provincial office, emergency procurator, capital district, western telegraph, grain-file, governors' oath, archive, negotiated-corridor, government-file, regional-command, inner-ring, loyal-rail, militia, amnesty, League-calendar, lost-depot, Soviet-identity, rump-preparation, victory-parade, shared-road, depot-retaking, volunteer-route, republic-army, and defense-committee triggers.
+- `common/script_constants/005_soviet_collapse_constants.txt` centralizes opening crisis values, breakaway support, future declaration support adjustments, objective requirements, objective pressure families, and first response costs.
+- `common/scripted_triggers/005_soviet_collapse_triggers.txt` adds active-crisis, breakaway, patron, cost, recovered-capital, second-wave quieting, provincial office, emergency procurator, capital district, western telegraph, grain-file, governors' oath, archive, negotiated-corridor, government-file, regional-command, inner-ring, loyal-rail, militia, amnesty, League-calendar, lost-depot, Soviet-identity, rump-preparation, victory-parade, shared-road, depot-retaking, volunteer-route, republic-army, defense-committee, next-declaration, and League-front triggers.
 - `common/scripted_effects/005_soviet_collapse_effects.txt` initializes the crisis meter, clamps and recalculates total threat, releases the opening breakaways, gives starting forces, and enforces the Soviet objective cap.
 - `common/ideas/005_soviet_collapse_ideas.txt` adds country spirits for the union crisis, Moscow response routes, loyalist officers, captured depots, and breakaway defensive coordination.
-- `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, forty-six opening goal-style missions, four breakaway emergency actions, and seven targeted foreign patron decisions.
+- `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, forty-eight opening goal-style missions, four breakaway emergency actions, and seven targeted foreign patron decisions.
 - `events/005_soviet_collapse.txt` replaces the old hidden release stub with a visible opening event and four posture choices.
 - `events/005_soviet_collapse_factory_ancient.txt` adds the triggered notices for the first high-chaos factory and Volga successor states.
 
@@ -46,6 +46,8 @@ The normal opening release tries Ukraine and Belarus. Kazakhstan can appear in t
 - one extra division and extra stores in higher chaos bands
 
 When Kazakhstan appears as an event-created opening breakaway, the southern cascade can also begin. Uzbekistan appears with Kazakhstan, Kyrgyzstan can appear at chaos tier 3 and above, Tajikistan can appear at chaos tier 4 and above, and Turkmenistan can appear at chaos tier 5. These southern republics receive the standard breakaway setup package and the shared Central Asian runtime focus tree.
+
+Future breakaway setup also consumes one-use Soviet mission flags. `soviet_collapse_next_declaration_unarmed` reduces the next breakaway support package, while `soviet_collapse_next_declaration_armed` increases it; either flag clears after it is applied to one breakaway.
 
 This is only the opening support package. Later slices still need full republic focus expansions, custom countries, serious splinters, AI, and reinforcement routes.
 
@@ -167,6 +169,8 @@ The Soviet category currently activates these opening goal-style missions:
 44. `soviet_collapse_soviet_mission_044_stop_the_volunteer_review`
 45. `soviet_collapse_soviet_mission_045_discredit_the_first_republic_army`
 46. `soviet_collapse_soviet_mission_046_break_the_defense_committees_supply`
+47. `soviet_collapse_soviet_mission_047_keep_the_next_declaration_unarmed`
+48. `soviet_collapse_soviet_mission_048_force_the_league_to_choose_a_front`
 
 The activation effect counts active missions before activating the next one and stops at `constant:soviet_collapse_soviet_objective.active_cap`, currently 10. The missions use equipment, manpower, fuel, trains, stability, war support, army experience, and command power as requirements or costs; political power is not the default cost.
 
@@ -191,7 +195,7 @@ This slice reuses existing wired sprites. No new art was generated.
 
 ## Future Plans
 
-- Expand the Soviet objective board beyond the first forty-six missions while preserving the ten-active cap.
+- Expand the Soviet objective board beyond the first forty-eight missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
 - Expand the compact Ukraine, Belarus, Kazakhstan, regional, and contingency breakaway runtime focus trees into full country packages with the larger focus counts mapped in the final clean specification.
 - Implement full focus-tree packages and longer event chains for every custom country and serious splinter whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist.
