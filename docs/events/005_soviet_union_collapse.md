@@ -53,7 +53,7 @@ This is only the opening support package. Later slices still need full republic 
 
 ## Republic Focus Trees
 
-Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, prepared regional tags, and any remaining event-created breakaway without a bespoke tree receive runtime focus trees through `load_focus_tree` after the release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries. The high-chaos `CFR`, `MFR`, `OGB`, `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, and `ALA` successors are loaded directly from their setup effects with `keep_completed = no`, because they are custom crisis countries rather than standard released republics.
+Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, prepared regional tags, and any remaining event-created breakaway without a bespoke tree receive runtime focus trees through `load_focus_tree` after the release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries. The high-chaos `CFR`, `MFR`, `OGB`, `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, and `BAC` successors are loaded directly from their setup effects with `keep_completed = no`, because they are custom crisis countries rather than standard released republics.
 
 The implemented trees are:
 
@@ -109,8 +109,11 @@ The first high-chaos successor tags are registered for spawn and mechanics work:
 23. `FEV` - Far Eastern Republic Revival, led by the Far Eastern Buffer Committee, with existing flag and leader assets.
 24. `SZA` - Siberian Zemstvo Authority, led by the Siberian Regional Assembly, with existing flag and leader assets.
 25. `UWD` - Ural Workers' Directorate, led by the Factory Directorate, with existing flag and leader assets.
+26. `MRC` - Mountain Republic of the Caucasus, led by the Mountain Republic Council, with existing flag and leader assets.
+27. `IUL` - Idel-Ural League, led by the Volga-Ural Federal Council, with existing flag and leader assets.
+28. `BAC` - Birobidzhan Autonomous Commune, led by the Settlement Defense Council, with existing flag and leader assets.
 
-These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, evolution-log entries, and runtime focus trees: `CFR` has its 58-focus Construction Directorate tree, `MFR` has its 46-focus Arsenal Board tree, `OGB` has its 54-focus Volga Bulgar Restoration tree, and `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, and `UWD` each have 24-focus custom splinter trees.
+These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, evolution-log entries, and runtime focus trees: `CFR` has its 58-focus Construction Directorate tree, `MFR` has its 46-focus Arsenal Board tree, `OGB` has its 54-focus Volga Bulgar Restoration tree, and `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, and `BAC` each have 24-focus custom splinter trees.
 
 At high chaos, the Soviet opening hook can create the implemented successor states without using any recurring on-action loop. Each spawn is gated by `is_soviet_collapse_high_chaos_successor_spawn_ready`, which requires the Soviet Collapse to be active for `SOV` and either chaos tier 4, chaos tier 5, or `soviet_collapse_evolution_weirdness` reaching `constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate`. Each successor also respects the evolution disable UI by checking `is_current_evolution_enabled` for its own high-chaos stage before any state transfer happens.
 
@@ -141,6 +144,9 @@ The exact opening state packages are:
 23. `FEV` receives Vladivostok (`408`) and Khabarovsk (`409`) if both are owned and controlled by `SOV` and the Vladivostok central-command mission fails.
 24. `SZA` receives Tomsk (`578`) and Tobolsk (`580`) if both are owned and controlled by `SOV` and the Siberian distance command mission fails.
 25. `UWD` receives Southern Urals (`582`) and Northern Urals (`581`) if both are owned and controlled by `SOV` and the Ural factory gates mission fails.
+26. `MRC` receives Dagestan (`232`), Chechnya-Ingushetia (`821`), Kabardino-Balkaria (`827`), and North Ossetia (`828`) if all are owned and controlled by `SOV` and the Caucasus mountain administration mission fails.
+27. `IUL` receives Ufa (`651`) and Ulyanovsk (`250`) if both are owned and controlled by `SOV` and the Volga names mission fails.
+28. `BAC` receives Birobidzhan (`657`) and Amur (`561`) if both are owned and controlled by `SOV` and the Vladivostok central-command mission fails.
 
 These are strict prerequisites, not contingency pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, its tag-specific runtime focus tree with a clean focus state, and an event notice in `events/005_soviet_collapse_factory_ancient.txt` or `events/005_soviet_collapse_custom.txt`. The first eligible successor in each high-chaos tier records an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`; later successor notices in the same tier remain normal reports so the crisis does not flood the evolution log.
 
@@ -171,6 +177,9 @@ Each tag also has an opening decision board:
 23. `FEV` uses `Far Eastern Republic Revival` with buffer-committee consolidation, railway-guard mobilisation, and the Far Eastern Line Command endgame.
 24. `SZA` uses `Siberian Zemstvo Authority` with zemstvo consolidation, city-guard mobilisation, and the Siberian Depth Command endgame.
 25. `UWD` uses `Ural Workers' Directorate` with factory-committee consolidation, worker-battalion mobilisation, and the Arsenal Autonomy endgame.
+26. `MRC` uses `Mountain Republic of the Caucasus` with elder-council consolidation, pass-guard mobilisation, and the Mountain Republic Mandate endgame.
+27. `IUL` uses `Idel-Ural League` with corridor-office consolidation, river-guard mobilisation, and the Federal Corridor Authority endgame.
+28. `BAC` uses `Birobidzhan Autonomous Commune` with settlement-committee consolidation, militia mobilisation, and the Autonomous Commune Mandate endgame.
 
 These decision boards are deliberately small foundations. They provide the variables, costs, blocked-cost localisation, ideas, and first rewards for tag-specific focus trees and event spawn effects.
 
