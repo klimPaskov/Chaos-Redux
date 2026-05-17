@@ -353,6 +353,419 @@ focus_tree = {
 }
 
 focus_tree = {
+	id = soviet_collapse_breakaway_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 10
+			has_country_flag = soviet_collapse_event_created_republic
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 50 y = 1000 }
+	initial_show_position = { x = 10 y = 0 }
+
+	focus = {
+		id = soviet_collapse_assemble_emergency_government
+		icon = GFX_focus_soviet_collapse_assemble_emergency_government
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 0
+		cost = @soviet_collapse_focus_short
+		completion_reward = {
+			set_country_flag = soviet_collapse_emergency_government_assembled
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	focus = {
+		id = soviet_collapse_guard_the_radio_stations
+		icon = GFX_focus_soviet_collapse_guard_the_radio_stations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = soviet_collapse_assemble_emergency_government }
+		completion_reward = {
+			set_country_flag = soviet_collapse_radio_stations_guarded
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = soviet_collapse_secure_ministry_ledgers
+		icon = GFX_focus_soviet_collapse_secure_ministry_ledgers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = soviet_collapse_assemble_emergency_government }
+		completion_reward = {
+			set_country_flag = soviet_collapse_ministry_ledgers_secured
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = soviet_collapse_factory_defense_committees
+		icon = GFX_focus_soviet_collapse_factory_defense_committees
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = soviet_collapse_assemble_emergency_government }
+		completion_reward = {
+			add_ideas = soviet_collapse_popular_defense_committees
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = soviet_collapse_claim_republican_legality
+		icon = GFX_focus_soviet_collapse_claim_republican_legality
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = soviet_collapse_guard_the_radio_stations }
+		mutually_exclusive = { focus = soviet_collapse_commit_to_socialist_sovereignty }
+		mutually_exclusive = { focus = soviet_collapse_republican_general_staff }
+		completion_reward = {
+			set_country_flag = soviet_collapse_route_legal_restoration
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability > 0.45 }
+		}
+	}
+
+	focus = {
+		id = soviet_collapse_commit_to_socialist_sovereignty
+		icon = GFX_focus_soviet_collapse_commit_to_socialist_sovereignty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = soviet_collapse_secure_ministry_ledgers }
+		mutually_exclusive = { focus = soviet_collapse_claim_republican_legality }
+		mutually_exclusive = { focus = soviet_collapse_republican_general_staff }
+		completion_reward = {
+			set_country_flag = soviet_collapse_route_socialist_sovereignty
+			soviet_collapse_apply_focus_socialist_sovereignty = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_government = communism }
+		}
+	}
+
+	focus = {
+		id = soviet_collapse_republican_general_staff
+		icon = GFX_focus_soviet_collapse_republican_general_staff
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 17
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = soviet_collapse_factory_defense_committees }
+		mutually_exclusive = { focus = soviet_collapse_claim_republican_legality }
+		mutually_exclusive = { focus = soviet_collapse_commit_to_socialist_sovereignty }
+		completion_reward = {
+			set_country_flag = soviet_collapse_route_military_defense
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = soviet_collapse_audit_local_depots
+		icon = GFX_focus_soviet_collapse_audit_local_depots
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 7
+		y = 4
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = soviet_collapse_secure_ministry_ledgers }
+		completion_reward = {
+			set_country_flag = soviet_collapse_local_depots_audited
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = soviet_collapse_field_emergency_battalions
+		icon = GFX_focus_soviet_collapse_field_emergency_battalions
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 13
+		y = 4
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = soviet_collapse_audit_local_depots }
+		completion_reward = {
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = soviet_collapse_request_external_missions
+		icon = GFX_focus_soviet_collapse_request_external_missions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = soviet_collapse_claim_republican_legality }
+		completion_reward = {
+			set_country_flag = soviet_collapse_external_missions_requested
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = soviet_collapse_open_volunteer_channels
+		icon = GFX_focus_soviet_collapse_open_volunteer_channels
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 17
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = soviet_collapse_field_emergency_battalions }
+		completion_reward = {
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = soviet_collapse_convene_league_liaisons
+		icon = GFX_focus_soviet_collapse_convene_league_liaisons
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = soviet_collapse_request_external_missions }
+		prerequisite = { focus = soviet_collapse_open_volunteer_channels }
+		available = { is_soviet_collapse_league_pressure_ready = yes }
+		completion_reward = {
+			set_country_flag = soviet_collapse_league_liaisons_convened
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = soviet_collapse_common_front_timetables
+		icon = GFX_focus_soviet_collapse_common_front_timetables
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = soviet_collapse_convene_league_liaisons }
+		completion_reward = {
+			set_country_flag = soviet_collapse_common_front_timetables_ready
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = soviet_collapse_survive_the_first_orders
+		icon = GFX_focus_soviet_collapse_survive_the_first_orders
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = soviet_collapse_common_front_timetables }
+		completion_reward = {
+			set_country_flag = soviet_collapse_first_orders_survived
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = soviet_collapse_ukrainian_grain_and_rails
+		icon = GFX_focus_soviet_collapse_ukrainian_grain_and_rails
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 0
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		available = { tag = UKR }
+		prerequisite = { focus = soviet_collapse_request_external_missions }
+		completion_reward = {
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = soviet_collapse_belarusian_forest_corridors
+		icon = GFX_focus_soviet_collapse_belarusian_forest_corridors
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 2
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		available = { tag = BLR }
+		prerequisite = { focus = soviet_collapse_open_volunteer_channels }
+		completion_reward = {
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = soviet_collapse_baltic_wire_rooms
+		icon = GFX_focus_soviet_collapse_baltic_wire_rooms
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 4
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		available = {
+			OR = {
+				tag = LIT
+				tag = LAT
+				tag = EST
+			}
+		}
+		prerequisite = { focus = soviet_collapse_request_external_missions }
+		completion_reward = {
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = soviet_collapse_caucasus_pass_guards
+		icon = GFX_focus_soviet_collapse_caucasus_pass_guards
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 16
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		available = {
+			OR = {
+				tag = GEO
+				tag = ARM
+				tag = AZR
+			}
+		}
+		prerequisite = { focus = soviet_collapse_open_volunteer_channels }
+		completion_reward = {
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = soviet_collapse_steppe_supply_congress
+		icon = GFX_focus_soviet_collapse_steppe_supply_congress
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		available = {
+			OR = {
+				tag = KAZ
+				tag = UZB
+				tag = KYR
+				tag = TAJ
+				tag = TMS
+			}
+		}
+		prerequisite = { focus = soviet_collapse_request_external_missions }
+		completion_reward = {
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = soviet_collapse_black_sea_dniester_line
+		icon = GFX_focus_soviet_collapse_black_sea_dniester_line
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 20
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		available = {
+			OR = {
+				tag = MOL
+				tag = UKR
+			}
+		}
+		prerequisite = { focus = soviet_collapse_open_volunteer_channels }
+		completion_reward = {
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = soviet_collapse_huliaipole_black_flag
+		icon = GFX_focus_soviet_collapse_huliaipole_black_flag
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 23
+		y = 4
+		cost = @soviet_collapse_focus_long
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		prerequisite = { focus = soviet_collapse_factory_defense_committees }
+		completion_reward = {
+			set_country_flag = soviet_collapse_huliaipole_black_flag_pressure
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 3 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = soviet_collapse_no_masters_in_kyiv_or_moscow
+		icon = GFX_focus_soviet_collapse_no_masters_in_kyiv_or_moscow
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = soviet_collapse_huliaipole_black_flag }
+		completion_reward = {
+			set_country_flag = soviet_collapse_no_masters_pressure
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 4 }
+	}
+}
+
+focus_tree = {
 	id = soviet_collapse_baltic_focus_tree
 
 	country = {
