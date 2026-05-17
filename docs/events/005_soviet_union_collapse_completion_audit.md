@@ -29,7 +29,7 @@ Required source order:
 | High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54 | Implemented for these three successors |
 | Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions; parser audit found no missing focus references, self-references, duplicate focus IDs, missing icons, missing localisation, missing `ai_will_do`, or missing/duplicated `completion_reward` blocks | Implemented for current focus trees |
 | Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB` | Implemented for three; many planned serious splinters remain unimplemented |
-| Starting divisions for appearing republics and serious splinters | Needs audit against history files and spawn effects | Not fully verified |
+| Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` creates the shared `Emergency Republican Guard` template, grants base manpower/equipment, and spawns guard units for Event-created republics and the implemented CFR/MFR/OGB successors; mobilisation decisions can add more units through the same template | Implemented for current appearing republics and implemented successors |
 | Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean | Implemented for current achievement surface; future-only splinter achievements depend on missing packages |
 | Super-events | Slots 14-27 have helpers, assets, localisation, audio references, and constants. Route calls now exist for all except 16 and 18 | Partially implemented |
 | Super-event slot 16, The Dead Are Citizens | Helper exists; no implemented death-state route calls it | Blocked by missing death-state package |
@@ -79,6 +79,28 @@ The audit checked:
 - focus name and description localisation keys across mod and vanilla English localisation
 - exactly one `completion_reward` block per focus
 
+## Starting Division And Reinforcement Audit
+
+Event 005 uses runtime setup instead of static OOB files for mid-game republics and successors. This matches the engine model where OOB files are loaded at game start through country history or explicitly through `load_oob`, while these countries are created or converted during the event chain.
+
+Audited runtime setup:
+
+- `soviet_collapse_release_initial_republics` releases and flags UKR, BLR, KAZ, UZB, KYR, TAJ, and TMS when their route conditions are met.
+- `soviet_collapse_setup_southern_republic_if_valid` flags southern republics and sends them through the shared setup effect.
+- `soviet_collapse_spawn_cfr_if_enabled`, `soviet_collapse_spawn_mfr_if_enabled`, and `soviet_collapse_spawn_ogb_if_enabled` transfer the successor states before calling their setup effects.
+- `soviet_collapse_setup_breakaway_country` grants the base manpower, infantry equipment, support equipment, defensive ideas, one locked `Emergency Republican Guard` template, and three starting guard units at `capital_scope`.
+- Chaos tier 3 and above adds another guard unit through `soviet_collapse_setup_breakaway_country`.
+- `soviet_collapse_apply_breakaway_mobilization` adds manpower, equipment, defensive ideas, and additional guard units for later reinforcement.
+
+Static package coverage:
+
+```text
+Vanilla country tags and history files found for UKR BLR KAZ UZB KYR TAJ TMS LIT LAT EST GEO ARM AZR MOL.
+Chaos Redux country tags and history files found for CFR MFR OGB.
+```
+
+The implemented high-chaos successor history files intentionally do not declare static OOBs because their military is assigned after runtime state transfer through `soviet_collapse_setup_breakaway_country`.
+
 ## Super-Event Route Coverage
 
 Implemented route calls currently exist for:
@@ -122,6 +144,5 @@ Those icon-prefix packages are not all registered country packages. The clean-sp
 2. Wire `The Dead Are Citizens` only after a death-state route exists and satisfies the high-chaos trigger direction.
 3. Wire `Every Port a Council` only after a naval council or Kronstadt route exists and satisfies the trigger direction.
 4. Audit evolution logging so baseline crisis stages are not recorded as evolutions and only one Soviet Collapse evolution log is recorded per chaos tier unless the clean spec explicitly allows more.
-5. Audit starting divisions and reinforcement routes for every appearing republic and implemented serious splinter.
-6. Update the event spreadsheet or record a concrete access blocker for the external catalog.
-7. Run final parser-oriented checks after every remaining implementation pass.
+5. Update the event spreadsheet or record a concrete access blocker for the external catalog.
+6. Run final parser-oriented checks after every remaining implementation pass.
