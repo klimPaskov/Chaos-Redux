@@ -16,6 +16,7 @@ The implemented opening slices cover the crisis scaffold and the first intervent
 - `common/ideas/005_soviet_collapse_ideas.txt` adds country spirits for the union crisis, Moscow response routes, loyalist officers, captured depots, and breakaway defensive coordination.
 - `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, ten opening goal-style missions, four breakaway emergency actions, and seven targeted foreign patron decisions.
 - `events/005_soviet_collapse.txt` replaces the old hidden release stub with a visible opening event and four posture choices.
+- `events/005_soviet_collapse_factory_ancient.txt` adds the triggered notices for the first high-chaos factory and Volga successor states.
 
 ## Crisis Meter
 
@@ -68,7 +69,17 @@ The first high-chaos successor tag foundations are registered for later spawn an
 2. `MFR` - Military Factory of Russia, led by the Arsenal Board, with existing flag and leader assets.
 3. `OGB` - Old Great Bulgaria on the Volga, led by the Volga Restoration Council, with existing flag and leader assets.
 
-These tags currently define country files, history files, politics, basic technologies, leader portraits, localisation, and opening decision mechanics. Their focus trees, event spawn effects, and evolution-log entries remain separate implementation slices.
+These tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, and evolution-log entries. Their larger focus-tree packages remain separate implementation slices.
+
+At high chaos, the Soviet opening hook can create the first three successor states without using any recurring on-action loop. Each spawn is gated by `is_soviet_collapse_high_chaos_successor_spawn_ready`, which requires the Soviet Collapse to be active for `SOV` and either chaos tier 4, chaos tier 5, or `soviet_collapse_evolution_weirdness` reaching `constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate`. Each successor also respects the evolution disable UI by checking `is_current_evolution_enabled` for its own high-chaos stage before any state transfer happens.
+
+The exact opening state packages are:
+
+1. `CFR` receives Yaroslavl (`248`) and Ivanovo (`253`) if both are owned and controlled by `SOV`.
+2. `MFR` receives Nizhny Novgorod (`252`) and Samara (`251`) if both are owned and controlled by `SOV`.
+3. `OGB` receives Kazan (`249`) and Volga Germany (`829`) if both are owned and controlled by `SOV`.
+
+These are strict prerequisites, not fallback pools. If a required state has already left Soviet ownership or control, that successor is not created by the opening hook. A created high-chaos successor receives the normal breakaway support package, its tag-specific opening ideas, an event notice in `events/005_soviet_collapse_factory_ancient.txt`, and an actor-linked evolution-log entry under `Soviet Collapse: High-Chaos Aberrations`.
 
 Each tag also has an opening decision board:
 
@@ -131,13 +142,13 @@ This slice reuses existing wired sprites. No new art was generated.
 - Soviet objectives use the shared goal sprites in `interface/005_soviet_collapse_icons.gfx`, including `GFX_decision_soviet_collapse_authority_goal`, `GFX_decision_soviet_collapse_command_goal`, `GFX_decision_soviet_collapse_rail_goal`, `GFX_decision_soviet_collapse_depot_goal`, `GFX_decision_soviet_collapse_border_goal`, `GFX_decision_soviet_collapse_foreign_goal`, and `GFX_decision_soviet_collapse_cleanup_goal`.
 - The visible opening event uses `GFX_report_union_crisis`; the news event uses `GFX_news_soviet_union_collapse`.
 - Republic focus trees use existing sprites from `interface/005_soviet_collapse_icons.gfx`, `interface/005_soviet_collapse_ukraine_icons.gfx`, `interface/005_soviet_collapse_blr_icons.gfx`, and `interface/005_soviet_collapse_kaz_icons.gfx`. No additional focus sprite filenames are required for this slice.
-- High-chaos tag foundations use flag assets under `gfx/flags/`, leader portraits under `gfx/leaders/005_soviet_collapse/`, and portrait sprite keys in `interface/005_soviet_collapse_factory_ancient_icons.gfx`.
+- High-chaos tag foundations use flag assets under `gfx/flags/`, leader portraits under `gfx/leaders/005_soviet_collapse/`, and portrait sprite keys in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. The factory/ancient notice events currently reuse `GFX_report_union_crisis`, so no new report sprite is required for this slice.
 
 ## Future Plans
 
 - Expand the Soviet objective board beyond the first ten missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
-- Expand the compact Ukraine, Belarus, and Kazakhstan runtime focus trees into full country packages, then add regional republic and fallback breakaway trees with AI behavior.
-- Implement full packages for every custom country and serious splinter: tag, history, localisation, ideas, decisions, leaders or councils, flags, focus content, and docs.
+- Expand the compact Ukraine, Belarus, and Kazakhstan runtime focus trees into full country packages, then add regional republic and contingency breakaway trees with AI behavior after their state and tag rules are specified.
+- Implement full focus-tree packages and longer event chains for every custom country and serious splinter whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist.
 - Wire Free Republics' League formation, super-events, achievements, and evolution logs only where the clean specification allows them.
 - Audit existing Soviet Collapse evolution localisation so ordinary crisis stages are not presented as evolutions.

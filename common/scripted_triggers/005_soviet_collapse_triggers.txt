@@ -153,6 +153,59 @@ can_soviet_collapse_open_kazakhstan_first_wave = {
 	}
 }
 
+is_soviet_collapse_high_chaos_successor_spawn_ready = {
+	tag = SOV
+	is_soviet_collapse_active = yes
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+		check_variable = {
+			var = soviet_collapse_evolution_weirdness
+			value = constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+can_soviet_collapse_spawn_cfr = {
+	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
+	CFR = { exists = no }
+	248 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	253 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+can_soviet_collapse_spawn_mfr = {
+	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
+	MFR = { exists = no }
+	252 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	251 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+can_soviet_collapse_spawn_ogb = {
+	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
+	OGB = { exists = no }
+	249 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	829 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
 can_pay_cfr_survey_unfinished_sites_cost = {
 	tag = CFR
 	command_power > constant:soviet_collapse_factory_ancient.command_power_low_cost
