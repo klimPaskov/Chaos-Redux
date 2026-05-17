@@ -1559,6 +1559,30 @@ soviet_collapse_soviet_category = {
 		complete_effect = { set_country_flag = soviet_collapse_mission_122_done set_country_flag = soviet_collapse_new_union_budget_confirmed soviet_collapse_apply_successful_settlement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_122_confirm_the_new_union_budget_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_122_done set_country_flag = soviet_collapse_new_union_budget_rejected soviet_collapse_apply_failed_settlement_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_122_confirm_the_new_union_budget_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 	}
+
+	soviet_collapse_soviet_mission_123_seal_the_last_recognition_file = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_seal_soviet_collapse_last_recognition_file = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_123_done set_country_flag = soviet_collapse_last_recognition_file_sealed hidden_effect = { for_each_scope_loop = { array = global.soviet_collapse_breakaway_countries if = { limit = { exists = yes has_country_flag = soviet_collapse_breakaway } add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_objective_pressure.foreign_success_confidence } clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max } } } } soviet_collapse_apply_successful_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_123_seal_the_last_recognition_file_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_123_done set_country_flag = soviet_collapse_exile_governments_remain_credible soviet_collapse_apply_failed_foreign_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_123_seal_the_last_recognition_file_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+
+	soviet_collapse_soviet_mission_124_record_the_crisis_as_temporary_disorder = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		allowed = { always = no }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		available = { can_record_soviet_collapse_crisis_as_temporary_disorder = yes }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @soviet_collapse_opening_mission_days
+		complete_effect = { set_country_flag = soviet_collapse_mission_124_done set_country_flag = soviet_collapse_crisis_recorded_as_temporary_disorder soviet_collapse_apply_successful_legal_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_124_record_the_crisis_as_temporary_disorder_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+		timeout_effect = { set_country_flag = soviet_collapse_mission_124_done set_country_flag = soviet_collapse_suppressed_truth_feeds_future_evolutions soviet_collapse_apply_failed_legal_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_124_record_the_crisis_as_temporary_disorder_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
 }
 
 soviet_collapse_breakaway_category = {
