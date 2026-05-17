@@ -114,3 +114,41 @@ can_pay_soviet_collapse_foreign_trade_cost = {
 	has_fuel > constant:soviet_collapse_foreign_intervention.trade_fuel
 	has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.trade_convoys }
 }
+
+is_soviet_collapse_league_pressure_ready = {
+	OR = {
+		has_war_with = SOV
+		check_variable = { var = soviet_collapse_recognition_progress value = constant:soviet_collapse_republic_focus.large_recognition_gain compare = greater_than }
+		SOV = {
+			OR = {
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than }
+				check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than }
+			}
+		}
+	}
+}
+
+is_soviet_collapse_southern_breakaway_active = {
+	OR = {
+		UZB = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		KYR = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		TMS = { exists = yes has_country_flag = soviet_collapse_breakaway }
+	}
+}
+
+can_soviet_collapse_open_kazakhstan_first_wave = {
+	OR = {
+		is_soviet_collapse_southern_breakaway_active = yes
+		AND = {
+			has_global_flag = { flag = chaos_tier value = 3 }
+			OR = {
+				has_war = yes
+				has_stability < constant:soviet_collapse_soviet_objective.min_stability
+				has_war_support < constant:soviet_collapse_soviet_objective.min_war_support
+			}
+		}
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+	}
+}
