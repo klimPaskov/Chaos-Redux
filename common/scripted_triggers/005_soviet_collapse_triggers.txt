@@ -620,6 +620,40 @@ can_lock_soviet_collapse_ural_factory_gates = {
 	}
 }
 
+can_inspect_soviet_collapse_siberian_storehouses = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	570 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	571 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	566 = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+	OR = {
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+	}
+}
+
+can_move_soviet_collapse_fuel_before_flags_change = {
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	capital_scope = { is_controlled_by = ROOT }
+	check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
+	OR = {
+		check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+	}
+}
+
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
 		is_soviet_collapse_southern_breakaway_active = yes
