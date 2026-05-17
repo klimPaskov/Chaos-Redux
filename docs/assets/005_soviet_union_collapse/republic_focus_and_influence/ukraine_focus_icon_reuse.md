@@ -2,7 +2,7 @@
 
 This ledger documents the expanded Ukraine runtime focus icon assignments in `common/national_focus/005_soviet_collapse_republics.txt`.
 
-The tree currently uses 122 focuses and 12 branch-level sprites defined in `interface/005_soviet_collapse_ukraine_icons.gfx`. Each sprite points to a dedicated branch DDS derived from existing generated Event 005 focus art with matching subject matter. This is a deliberate branch-icon reuse package for the current expanded implementation, not evidence that the older literal 208-focus target is implemented.
+The tree currently uses 132 focuses and 12 branch-level sprites defined in `interface/005_soviet_collapse_ukraine_icons.gfx`. Each sprite points to a dedicated branch DDS derived from existing generated Event 005 focus art with matching subject matter. This is a deliberate branch-icon reuse package for the current expanded implementation, not evidence that the older literal 208-focus target is implemented.
 
 ## Sprite Mapping
 
