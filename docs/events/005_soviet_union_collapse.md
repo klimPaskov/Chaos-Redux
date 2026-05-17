@@ -53,11 +53,11 @@ This is only the opening support package. Later slices still need full republic 
 
 ## Republic Focus Trees
 
-Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, prepared regional tags, and any remaining event-created breakaway without a bespoke tree receive compact runtime focus trees through `load_focus_tree` after the release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries.
+Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, prepared regional tags, and any remaining event-created breakaway without a bespoke tree receive runtime focus trees through `load_focus_tree` after the release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries.
 
 The implemented trees are:
 
-1. `soviet_collapse_ukraine_focus_tree` in `common/national_focus/005_soviet_collapse_republics.txt`: 18 focuses covering the emergency Rada trunk, legal republic, socialist sovereignty, military directory, foreign liaison, League preparation, and a high-chaos Black Banner lane.
+1. `soviet_collapse_ukraine_focus_tree` in `common/national_focus/005_soviet_collapse_republics.txt`: 46 focuses, expanded from the previous 18-focus compact draft toward the 153-focus clean-spec target. The layout opens from the Emergency Rada into telegraph, grain, and depot side focuses, converges on the first republican line, then branches into six political route locks: Central Rada, socialist republic, military directory, Hetmanate file, Black Banner compact, and foreign provisional authority. The lower rows separate army, industry, diplomacy, League preparation, foreign-aid, and hidden high-chaos lanes so Ukraine no longer reads as a single vertical ladder.
 2. `soviet_collapse_belarus_focus_tree`: 14 focuses covering the Minsk junction trunk, legal/statute restoration, railway control, forest defense, counterintelligence, western gate offices, and League preparation.
 3. `soviet_collapse_kazakhstan_focus_tree`: 12 focuses covering the steppe congress trunk, Alash restoration, steppe soviets, mobile district command, resource sovereignty, steppe federation, and a high-chaos myth lane.
 4. `soviet_collapse_baltic_focus_tree`: 9 focuses for event-created Lithuania, Latvia, and Estonia, covering legal continuity, wire rooms, forests, ports, observers, home guards, restoration pact work, recognition dossiers, and a sovereign Baltic front.
@@ -66,7 +66,7 @@ The implemented trees are:
 7. `soviet_collapse_moldova_focus_tree`: 9 focuses for event-created Moldova, covering the Dniester line, river customs, Chisinau ledgers, Romanian and Ukrainian corridors, depot battalions, buffer compact, neutral transit, and bridge-state survival.
 8. `soviet_collapse_breakaway_focus_tree`: 22 focuses for remaining event-created breakaways, covering emergency government, legal restoration, socialist sovereignty, military defense, foreign missions, League liaison, regional specialization hooks, and a high-chaos Black Banner pressure lane.
 
-Focus rewards call shared scripted effects for legal recognition, socialist sovereignty, military consolidation, depot control, League preparation, foreign channels, and high-chaos identity pressure. Those effects adjust local breakaway variables and feed the Soviet crisis meter through constants in `soviet_collapse_republic_focus`.
+Focus rewards call shared scripted effects for legal recognition, socialist sovereignty, military consolidation, depot control, League preparation, foreign channels, and high-chaos identity pressure. Those effects adjust local breakaway variables and feed the Soviet crisis meter through constants in `soviet_collapse_republic_focus`. Ukraine's replacement slice also documents each focus role in script comments, uses focus filters on every focus, keeps League formation locked behind crisis pressure through `is_soviet_collapse_league_pressure_ready`, and keeps foreign provisional authority behind an actual liaison-office state and high foreign pressure.
 
 ## High-Chaos Tags
 
@@ -277,7 +277,7 @@ This slice reuses existing wired sprites. No new art was generated.
 
 - Expand the Soviet objective board beyond the first one hundred twenty-eight missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
-- Expand the compact Ukraine, Belarus, Kazakhstan, regional, and contingency breakaway runtime focus trees into full country packages with the larger focus counts mapped in the final clean specification.
+- Continue the Ukraine replacement from 46 focuses to the 153-focus clean-spec target, then expand Belarus, Kazakhstan, regional, and contingency breakaway runtime focus trees into full country packages with the larger focus counts mapped in the final clean specification.
 - Implement full focus-tree packages and longer event chains for every custom country and serious splinter whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist.
 - Wire Free Republics' League formation, super-events, achievements, and evolution logs only where the clean specification allows them.
 - Audit existing Soviet Collapse evolution localisation so ordinary crisis stages are not presented as evolutions.
