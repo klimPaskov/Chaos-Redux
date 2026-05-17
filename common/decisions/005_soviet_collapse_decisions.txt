@@ -7,6 +7,8 @@
 
 @soviet_collapse_opening_mission_days = 35
 @soviet_collapse_response_days_reenable = 28
+@soviet_collapse_breakaway_action_days_reenable = 35
+@soviet_collapse_foreign_intervention_days_reenable = 45
 
 soviet_collapse_soviet_category = {
 	soviet_collapse_restore_party_control = {
@@ -211,5 +213,177 @@ soviet_collapse_soviet_category = {
 		days_mission_timeout = @soviet_collapse_opening_mission_days
 		complete_effect = { set_country_flag = soviet_collapse_mission_010_done soviet_collapse_apply_successful_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area_success_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
 		timeout_effect = { set_country_flag = soviet_collapse_mission_010_done soviet_collapse_apply_failed_objective_pressure = yes custom_effect_tooltip = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area_failure_tt hidden_effect = { soviet_collapse_activate_opening_objectives = yes } }
+	}
+}
+
+soviet_collapse_breakaway_category = {
+	soviet_collapse_request_foreign_recognition = {
+		icon = GFX_decision_request_foreign_recognition
+		available = { can_pay_soviet_collapse_breakaway_recognition_cost = yes }
+		visible = { is_soviet_collapse_active = yes has_country_flag = soviet_collapse_breakaway }
+		custom_cost_trigger = { can_pay_soviet_collapse_breakaway_recognition_cost = yes }
+		custom_cost_text = soviet_collapse_breakaway_recognition_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_breakaway_recognition_request = yes
+			custom_effect_tooltip = soviet_collapse_request_foreign_recognition_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	soviet_collapse_mobilize_defense_units = {
+		icon = GFX_decision_mobilize_defense_units
+		available = { can_pay_soviet_collapse_breakaway_mobilize_cost = yes }
+		visible = { is_soviet_collapse_active = yes has_country_flag = soviet_collapse_breakaway }
+		custom_cost_trigger = { can_pay_soviet_collapse_breakaway_mobilize_cost = yes }
+		custom_cost_text = soviet_collapse_breakaway_mobilize_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_breakaway_mobilization = yes
+			custom_effect_tooltip = soviet_collapse_mobilize_defense_units_tt
+		}
+		ai_will_do = { factor = 3 }
+	}
+
+	soviet_collapse_seize_depots = {
+		icon = GFX_decision_seize_depots
+		available = { can_pay_soviet_collapse_breakaway_seize_depots_cost = yes }
+		visible = { is_soviet_collapse_active = yes has_country_flag = soviet_collapse_breakaway }
+		custom_cost_trigger = { can_pay_soviet_collapse_breakaway_seize_depots_cost = yes }
+		custom_cost_text = soviet_collapse_breakaway_seize_depots_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_breakaway_depot_seizure = yes
+			custom_effect_tooltip = soviet_collapse_seize_depots_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	soviet_collapse_coordinate_fronts = {
+		icon = GFX_decision_coordinate_fronts
+		available = { can_pay_soviet_collapse_breakaway_coordinate_fronts_cost = yes }
+		visible = { is_soviet_collapse_active = yes has_country_flag = soviet_collapse_breakaway }
+		custom_cost_trigger = { can_pay_soviet_collapse_breakaway_coordinate_fronts_cost = yes }
+		custom_cost_text = soviet_collapse_breakaway_coordinate_fronts_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_breakaway_front_coordination = yes
+			custom_effect_tooltip = soviet_collapse_coordinate_fronts_tt
+		}
+		ai_will_do = { factor = 1 }
+	}
+}
+
+soviet_collapse_foreign_patron_category = {
+	soviet_collapse_recognize_breakaway_government = {
+		icon = GFX_decision_soviet_collapse_foreign_recognition
+		available = { can_pay_soviet_collapse_foreign_recognition_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_recognition_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_recognition_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_aid = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_recognition_aid = yes
+			custom_effect_tooltip = soviet_collapse_recognize_breakaway_government_tt
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	soviet_collapse_fund_ideological_liaison_offices = {
+		icon = GFX_decision_soviet_collapse_foreign_recognition
+		available = { can_pay_soviet_collapse_foreign_liaison_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_liaison_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_liaison_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_aid = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_liaison_aid = yes
+			custom_effect_tooltip = soviet_collapse_fund_ideological_liaison_offices_tt
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	soviet_collapse_ship_border_armaments = {
+		icon = GFX_decision_soviet_collapse_foreign_armaments
+		available = { can_pay_soviet_collapse_foreign_armaments_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_armaments_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_armaments_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_aid = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_armaments_aid = yes
+			custom_effect_tooltip = soviet_collapse_ship_border_armaments_tt
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	soviet_collapse_dispatch_military_advisers = {
+		icon = GFX_decision_soviet_collapse_foreign_advisers
+		available = { can_pay_soviet_collapse_foreign_advisers_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_advisers_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_advisers_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_aid = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_adviser_aid = yes
+			custom_effect_tooltip = soviet_collapse_dispatch_military_advisers_tt
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	soviet_collapse_open_republican_intelligence_channel = {
+		icon = GFX_decision_soviet_collapse_foreign_intelligence
+		available = { can_pay_soviet_collapse_foreign_intelligence_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_intelligence_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_intelligence_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_aid = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_intelligence_aid = yes
+			custom_effect_tooltip = soviet_collapse_open_republican_intelligence_channel_tt
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	soviet_collapse_sponsor_volunteer_corps = {
+		icon = GFX_decision_soviet_collapse_foreign_volunteers
+		available = { can_pay_soviet_collapse_foreign_volunteers_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_volunteers_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_volunteers_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_aid = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_volunteer_aid = yes
+			custom_effect_tooltip = soviet_collapse_sponsor_volunteer_corps_tt
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	soviet_collapse_negotiate_republican_trade_mission = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		available = { can_pay_soviet_collapse_foreign_trade_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_trade_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_trade_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_aid = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_trade_aid = yes
+			custom_effect_tooltip = soviet_collapse_negotiate_republican_trade_mission_tt
+		}
+		ai_will_do = { factor = 1 }
 	}
 }

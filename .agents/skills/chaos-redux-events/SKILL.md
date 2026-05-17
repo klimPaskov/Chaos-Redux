@@ -227,6 +227,8 @@ When a decision, focus, or event option grants a one-time package through a shar
 
 When a decision fires a follow-up popup whose options need computed state from the decision, do not put those state variables in the decision's generic cleanup helper. Keep only immediate aid/cost variables in the cleanup helper, preserve the popup option state as scoped country variables, and clear that option state from each event option after it is consumed.
 
+For targeted decisions, mirror vanilla country-target patterns: `ROOT` is the acting country and `FROM` is the selected target inside `target_trigger`, `available`, `visible`, `complete_effect`, and `remove_effect`. Put array eligibility in a reusable target trigger, block `FROM = ROOT` when self-targeting is invalid, and document where the target array is populated and cleared.
+
 When a contest, rivalry, charter, or settlement event is meant to change later behavior, have each option set a persistent outcome flag and route future decisions/events through a small aftermath helper that reads those flags. Prefer this event-driven persistence over daily/weekly polling, and document which later action consumes the flags.
 
 When a focus reward or decision effect computes variables at completion time, do not expose the raw computed effect directly in the visible reward/payment tooltip. HOI4 can preview the variable before the helper runs and show `0` for equipment, manpower, army XP, PP, or CP. Use a `custom_effect_tooltip` for the player-facing text and put the computed variable setup plus final effect in `hidden_effect`; for decision payments, call a shared helper that refreshes the cost variables immediately before subtracting them.
