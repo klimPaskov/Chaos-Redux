@@ -279,7 +279,7 @@ This slice reuses existing wired sprites. No new art was generated.
 
 - Expand the Soviet objective board beyond the first one hundred twenty-eight missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
-- With Ukraine and Belarus at their clean-spec focus-count targets and Kazakhstan's opening, route-lock, resource-industry, military, southern diplomacy, high-chaos, and political consolidation slices in place, expand the remaining Kazakhstan, regional, and contingency breakaway runtime focus trees into full country packages with the larger focus counts mapped in the final clean specification.
+- With Ukraine and Belarus at their clean-spec focus-count targets and Kazakhstan's opening, route-lock, resource-industry, military, southern diplomacy, high-chaos, political consolidation, and late mobile-defense slices in place, expand the remaining Kazakhstan, regional, and contingency breakaway runtime focus trees into full country packages with the larger focus counts mapped in the final clean specification.
 - Implement full focus-tree packages and longer event chains for every custom country and serious splinter whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist.
 - Wire Free Republics' League formation, super-events, achievements, and evolution logs only where the clean specification allows them.
 - Audit existing Soviet Collapse evolution localisation so ordinary crisis stages are not presented as evolutions.
