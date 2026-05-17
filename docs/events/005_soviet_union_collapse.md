@@ -45,19 +45,23 @@ The normal opening release tries Ukraine and Belarus. Kazakhstan can appear in t
 - three `Emergency Republican Guard` divisions at its capital
 - one extra division and extra stores in higher chaos bands
 
-When Kazakhstan appears as an event-created opening breakaway, the southern cascade can also begin. Uzbekistan appears with Kazakhstan, Kyrgyzstan can appear at chaos tier 3 and above, Tajikistan can appear at chaos tier 4 and above, and Turkmenistan can appear at chaos tier 5. These southern republics currently receive the standard breakaway setup package and are reserved for later regional focus content.
+When Kazakhstan appears as an event-created opening breakaway, the southern cascade can also begin. Uzbekistan appears with Kazakhstan, Kyrgyzstan can appear at chaos tier 3 and above, Tajikistan can appear at chaos tier 4 and above, and Turkmenistan can appear at chaos tier 5. These southern republics receive the standard breakaway setup package and the shared Central Asian runtime focus tree.
 
-This is only the opening support package. Later slices still need regional republic focus trees, custom countries, serious splinters, AI, and reinforcement routes.
+This is only the opening support package. Later slices still need full republic focus expansions, custom countries, serious splinters, AI, and reinforcement routes.
 
 ## Republic Focus Trees
 
-Event-created Ukraine, Belarus, and Kazakhstan receive compact runtime focus trees through `load_focus_tree` after the opening release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries.
+Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, and prepared regional tags receive compact runtime focus trees through `load_focus_tree` after the release effect finishes. The loading effect only applies to countries with `soviet_collapse_event_created_republic`, and it does not use `keep_completed`, so it is intended for freshly released tags rather than replacing progress on existing countries.
 
 The implemented trees are:
 
 1. `soviet_collapse_ukraine_focus_tree` in `common/national_focus/005_soviet_collapse_republics.txt`: 18 focuses covering the emergency Rada trunk, legal republic, socialist sovereignty, military directory, foreign liaison, League preparation, and a high-chaos Black Banner lane.
 2. `soviet_collapse_belarus_focus_tree`: 14 focuses covering the Minsk junction trunk, legal/statute restoration, railway control, forest defense, counterintelligence, western gate offices, and League preparation.
 3. `soviet_collapse_kazakhstan_focus_tree`: 12 focuses covering the steppe congress trunk, Alash restoration, steppe soviets, mobile district command, resource sovereignty, steppe federation, and a high-chaos myth lane.
+4. `soviet_collapse_baltic_focus_tree`: 9 focuses for event-created Lithuania, Latvia, and Estonia, covering legal continuity, wire rooms, forests, ports, observers, home guards, restoration pact work, recognition dossiers, and a sovereign Baltic front.
+5. `soviet_collapse_caucasus_focus_tree`: 9 focuses for event-created Georgia, Armenia, and Azerbaijan, covering mountain councils, pass guards, oil routes, arbitration, foreign missions, mountain brigades, defense compacts, oilfield security, and sovereign mountain politics.
+6. `soviet_collapse_central_asia_focus_tree`: 9 focuses for event-created Uzbekistan, Kyrgyzstan, Tajikistan, and Turkmenistan, covering the supply congress, rail and irrigation, border offices, Basmachi pressure, foreign balance, defense council, federation, school boards, and inland compact.
+7. `soviet_collapse_moldova_focus_tree`: 9 focuses for event-created Moldova, covering the Dniester line, river customs, Chisinau ledgers, Romanian and Ukrainian corridors, depot battalions, buffer compact, neutral transit, and bridge-state survival.
 
 Focus rewards call shared scripted effects for legal recognition, socialist sovereignty, military consolidation, depot control, League preparation, foreign channels, and high-chaos identity pressure. Those effects adjust local breakaway variables and feed the Soviet crisis meter through constants in `soviet_collapse_republic_focus`.
 
@@ -143,14 +147,14 @@ This slice reuses existing wired sprites. No new art was generated.
 - The intervention and focus country spirits use `GFX_idea_popular_defense_committees`, `GFX_idea_foreign_volunteers`, `GFX_idea_legal_restoration_claim`, `GFX_idea_socialist_sovereignty`, `GFX_idea_military_defense_council`, and `GFX_idea_old_underground_networks`.
 - Soviet objectives use the shared goal sprites in `interface/005_soviet_collapse_icons.gfx`, including `GFX_decision_soviet_collapse_authority_goal`, `GFX_decision_soviet_collapse_command_goal`, `GFX_decision_soviet_collapse_rail_goal`, `GFX_decision_soviet_collapse_depot_goal`, `GFX_decision_soviet_collapse_border_goal`, `GFX_decision_soviet_collapse_foreign_goal`, and `GFX_decision_soviet_collapse_cleanup_goal`.
 - The visible opening event uses `GFX_report_union_crisis`; the news event uses `GFX_news_soviet_union_collapse`.
-- Republic focus trees use existing sprites from `interface/005_soviet_collapse_icons.gfx`, `interface/005_soviet_collapse_ukraine_icons.gfx`, `interface/005_soviet_collapse_blr_icons.gfx`, and `interface/005_soviet_collapse_kaz_icons.gfx`. No additional focus sprite filenames are required for this slice.
+- Republic focus trees use existing sprites from `interface/005_soviet_collapse_icons.gfx`, `interface/005_soviet_collapse_ukraine_icons.gfx`, `interface/005_soviet_collapse_blr_icons.gfx`, `interface/005_soviet_collapse_kaz_icons.gfx`, and `interface/005_soviet_collapse_regional_icons.gfx`. No additional focus sprite filenames are required for this slice.
 - High-chaos tag foundations use flag assets under `gfx/flags/`, leader portraits under `gfx/leaders/005_soviet_collapse/`, and portrait sprite keys in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. The factory/ancient notice events currently reuse `GFX_report_union_crisis`, so no new report sprite is required for this slice.
 
 ## Future Plans
 
 - Expand the Soviet objective board beyond the first twelve missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
-- Expand the compact Ukraine, Belarus, and Kazakhstan runtime focus trees into full country packages, then add regional republic and contingency breakaway trees with AI behavior after their state and tag rules are specified.
+- Expand the compact Ukraine, Belarus, Kazakhstan, and regional runtime focus trees into full country packages, then add the contingency breakaway tree with AI behavior after its state and tag rules are specified.
 - Implement full focus-tree packages and longer event chains for every custom country and serious splinter whose tag, history, localisation, ideas, decisions, leaders or councils, flags, opening spawn logic, and docs already exist.
 - Wire Free Republics' League formation, super-events, achievements, and evolution logs only where the clean specification allows them.
 - Audit existing Soviet Collapse evolution localisation so ordinary crisis stages are not presented as evolutions.
