@@ -775,6 +775,28 @@ def verify_prompt_artifact_checklist_surface() -> list[Check]:
 	]
 
 
+def verify_verifier_command_documentation_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	required_markers = [
+		"Verifier exit meanings:",
+		"`0`: all implementation gates passed and every required input is present.",
+		"`2`: implementation gates passed but one or more required source inputs are missing.",
+		"`1`: one or more implementation gates failed.",
+		"python3 .tools/verify_event005_completion_gate.py",
+		"python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec",
+		"Missing input blocker was waived for this verifier run.",
+		"blocked only by missing tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
+	]
+	missing = [marker for marker in required_markers if marker not in completion_audit]
+	return [
+		Check(
+			"verifier_command_documentation_surface",
+			not missing,
+			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} missing={len(missing)}",
+		)
+	]
+
+
 def verify_first_wave_and_forces() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -2097,6 +2119,7 @@ def verify_docs_surface() -> list[Check]:
 		"blocked_completion_surface",
 		"success_criteria_surface",
 		"prompt_artifact_checklist_surface",
+		"verifier_command_documentation_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2219,6 +2242,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_blocked_completion_surface())
 	checks.extend(verify_success_criteria_surface())
 	checks.extend(verify_prompt_artifact_checklist_surface())
+	checks.extend(verify_verifier_command_documentation_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
