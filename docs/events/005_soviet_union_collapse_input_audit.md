@@ -15,7 +15,7 @@ This audit records the source files available for the current Event 005 correcti
 | `tmp/error.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
 | `tmp/text.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
 | `AGENTS.md` | present | 287 | 19327 | `91da11f4d513562415356c9f52acc8bca3f9b3698eafb3d63b5b40c182d881eb` |
-| `.agents/skills/chaos-redux-events/SKILL.md` | present | 531 | 35684 | `c6527747478e5cafa8d98f95799ae14c8e67f9c03f08cb75031fdbab0887f4ff` |
+| `.agents/skills/chaos-redux-events/SKILL.md` | present | 533 | 36232 | `dcb96437bfadcad13ff808cffcfb7898e95519e2598610b875421332333019b8` |
 | `.agents/skills/chaos-redux-event-assets/SKILL.md` | present | 772 | 31044 | `9460971e44770723ffa650385907f1868dc3e893fb7204ddf0c096050efa1d96` |
 | `.agents/skills/chaos-redux-super-events/SKILL.md` | present | 756 | 25696 | `e1dcb0adafb186ace5e054a22576153ee3686f901864fbfd9ec98f8cd0b8212f` |
 
