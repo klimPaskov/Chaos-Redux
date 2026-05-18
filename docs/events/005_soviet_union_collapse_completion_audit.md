@@ -362,7 +362,7 @@ git diff --check clean
 unsupported operator/scope/localisation scan clean for the audited Event 005 files
 ```
 
-Current prompt-to-artifact spot audit after commit `8ac61ed`:
+Current prompt-to-artifact spot audit:
 
 ```text
 input_files spawn_spec present bytes 15899 lines 287 sha256 9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750
