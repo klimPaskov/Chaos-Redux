@@ -759,22 +759,52 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 		and "soviet_collapse_show_union_unmade_super_event = yes" in maybe_body
 	)
 	missions = set(re.findall(r"^\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)\s*=\s*\{", decisions, re.MULTILINE))
-	remove_refs = set(re.findall(r"remove_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", effects))
+	cleanup_blocks = named_blocks(effect_tokens, "soviet_collapse_cleanup_terminal_collapse_missions")
+	cleanup_body = " ".join(cleanup_blocks[0]) if cleanup_blocks else ""
+	cleanup_remove_refs = set(re.findall(r"remove_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", cleanup_body))
 	activate_refs = set(re.findall(r"activate_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", effects))
+	required_cleanup_flags = [
+		"clr_global_flag = soviet_collapse_active",
+		"clr_global_flag = soviet_collapse_opening_wave_active",
+		"clr_global_flag = soviet_collapse_union_unmade_first_month_lock",
+		"clr_country_flag = soviet_collapse_next_declaration_unarmed",
+		"clr_country_flag = soviet_collapse_next_declaration_armed",
+		"clr_country_flag = soviet_collapse_loyal_units_moved",
+		"clr_country_flag = soviet_collapse_district_war_rooms_reopened",
+		"set_temp_variable = { soviet_collapse_active_objectives = 0 }",
+	]
+	cleanup_flag_clear_ok = all(flag in cleanup_body for flag in required_cleanup_flags)
+	cleanup_helper_ok = (
+		len(cleanup_blocks) == 1
+		and missions <= cleanup_remove_refs
+		and not (cleanup_remove_refs - missions)
+		and cleanup_flag_clear_ok
+		and "soviet_collapse_cleanup_terminal_collapse_missions = yes" in effects
+		and "set_global_flag = soviet_collapse_terminal_collapse" in effects
+	)
 	cleanup_ok = (
 		len(missions) == 128
-		and missions <= remove_refs
+		and cleanup_helper_ok
 		and missions <= activate_refs
 		and "NOT = { has_global_flag = soviet_collapse_terminal_collapse }" in triggers
 	)
-	category_names = set(re.findall(r"^\s*(soviet_collapse_[A-Za-z0-9_]+_category)\s*=\s*\{", categories, re.MULTILINE))
-	categories_gated = all(
-		"is_soviet_collapse_active = yes" in re.search(
-			r"^\s*" + re.escape(category) + r"\s*=\s*\{(?P<body>.*?)(?=^\s*soviet_collapse_|\Z)",
-			categories,
-			re.MULTILINE | re.DOTALL,
-		).group("body")
-		for category in category_names
+	category_blocks = direct_child_blocks(tokens(categories))
+	decision_category_blocks = dict(direct_child_blocks(tokens(decisions)))
+	decision_blocks: list[tuple[str, list[str]]] = []
+	for _, decision_category_body in decision_category_blocks.items():
+		decision_blocks.extend(direct_child_blocks(decision_category_body))
+	categories_gated = True
+	categories_with_visible = 0
+	for _, category_body in category_blocks:
+		visible_blocks = top_level_block_bodies(category_body, "visible")
+		if visible_blocks:
+			categories_with_visible += 1
+		if not visible_blocks or "is_soviet_collapse_active = yes" not in " ".join(" ".join(block) for block in visible_blocks):
+			categories_gated = False
+	decision_categories_gated = all(
+		"is_soviet_collapse_active = yes" in " ".join(" ".join(block) for block in top_level_block_bodies(decision_body, "visible"))
+		for decision_name, decision_body in decision_blocks
+		if not decision_name.startswith("soviet_collapse_soviet_mission_")
 	)
 	return [
 		Check(
@@ -789,11 +819,14 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 		),
 		Check(
 			"terminal_mission_cleanup",
-			cleanup_ok and categories_gated,
+			cleanup_ok and categories_gated and decision_categories_gated,
 			(
-				f"missions={len(missions)} remove_refs={len(remove_refs & missions)} "
-				f"activate_refs={len(activate_refs & missions)} categories={len(category_names)} "
-				f"categories_gated={categories_gated}"
+				f"cleanup_helpers={len(cleanup_blocks)} missions={len(missions)} "
+				f"cleanup_remove_refs={len(cleanup_remove_refs & missions)} "
+				f"activate_refs={len(activate_refs & missions)} "
+				f"category_defs={len(category_blocks)} visible_category_defs={categories_with_visible} "
+				f"categories_gated={categories_gated} decision_categories={len(decision_category_blocks)} "
+				f"regular_decisions_gated={decision_categories_gated} cleanup_flags={cleanup_flag_clear_ok}"
 			),
 		),
 	]
