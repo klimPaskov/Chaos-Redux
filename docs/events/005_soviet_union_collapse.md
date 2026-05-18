@@ -61,7 +61,7 @@ High-chaos terminal collapse is additive. Chaos tier 4 and 5 attempt the impleme
 
 The same terminal effect closes the pre-collapse crisis board. `soviet_collapse_cleanup_terminal_collapse_missions` clears the active Soviet Collapse and opening-wave flags, clears one-use next-declaration flags, clears transient loyal-unit and district war-room helper flags, removes any active Soviet crisis mission from mission 1 through mission 128 with `remove_mission`, and leaves `soviet_collapse_terminal_collapse` as the outcome memory. Because `is_soviet_collapse_active` now excludes the terminal flag, Soviet response, breakaway action, regional faction, special-actor, and foreign patron categories no longer remain visible after full collapse. The current foreign patron layer uses repeatable targeted decisions with `days_re_enable`, not active timed missions, so there is no separate foreign mission instance to remove in the terminal pass.
 
-The local event catalog workbook row for Event 005 matches the current clean-spec implementation, and the final parser-oriented review passed across the opening, republic, regional, custom successor, achievement, spreadsheet, and super-event surfaces.
+The local event catalog workbook row for Event 005 matches the current clean-spec implementation, and the current parser-oriented audit passes across the opening, republic, regional, custom successor, achievement, spreadsheet, and super-event surfaces.
 
 ## Republic Focus Trees
 
