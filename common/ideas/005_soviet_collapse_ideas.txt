@@ -5,6 +5,30 @@
 # package. Icons are registered in interface/005_soviet_collapse_icons.gfx.
 # ============================================================================
 
+# Idea modifier blocks do not parse script_constants, so these mirror the
+# soviet_collapse_factory_ancient tuning values for modifier-only fields.
+@soviet_collapse_factory_ancient_stability_small = 0.01
+@soviet_collapse_factory_ancient_stability_medium = 0.02
+@soviet_collapse_factory_ancient_war_support_small = 0.01
+@soviet_collapse_factory_ancient_war_support_medium = 0.02
+@soviet_collapse_factory_ancient_cfr_construction_speed = 0.06
+@soviet_collapse_factory_ancient_cfr_consumer_goods = -0.02
+@soviet_collapse_factory_ancient_mfr_factory_output = 0.05
+@soviet_collapse_factory_ancient_mfr_consumer_goods = 0.01
+@soviet_collapse_factory_ancient_mfr_army_org = 0.02
+@soviet_collapse_factory_ancient_ogb_stability = 0.02
+@soviet_collapse_factory_ancient_ogb_trade_opinion = 0.05
+@soviet_collapse_factory_ancient_ogb_supply_consumption = -0.02
+@soviet_collapse_factory_ancient_icd_conscription_low = 0.01
+@soviet_collapse_factory_ancient_icd_conscription_high = 0.02
+@soviet_collapse_factory_ancient_krs_navy_org_small = 0.04
+@soviet_collapse_factory_ancient_krs_navy_org_large = 0.08
+@soviet_collapse_factory_ancient_krs_amphibious_invasion = 0.05
+@soviet_collapse_factory_ancient_krs_drift_defence_small = 0.08
+@soviet_collapse_factory_ancient_krs_drift_defence_large = 0.12
+@soviet_collapse_factory_ancient_krs_internal_stability_penalty = -0.02
+@soviet_collapse_factory_ancient_krs_internal_political_power = 0.05
+
 ideas = {
 	country = {
 		soviet_collapse_union_crisis = {
@@ -142,8 +166,8 @@ ideas = {
 			picture = cfr_construction_mandates
 			allowed_civil_war = { always = yes }
 			modifier = {
-				production_speed_buildings_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				consumer_goods_factor = constant:soviet_collapse_factory_ancient.cfr_consumer_goods
+				production_speed_buildings_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				consumer_goods_factor = @soviet_collapse_factory_ancient_cfr_consumer_goods
 			}
 		}
 
@@ -151,8 +175,8 @@ ideas = {
 			picture = cfr_housing_ration_boards
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				consumer_goods_factor = constant:soviet_collapse_factory_ancient.cfr_consumer_goods
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				consumer_goods_factor = @soviet_collapse_factory_ancient_cfr_consumer_goods
 			}
 		}
 
@@ -160,8 +184,8 @@ ideas = {
 			picture = mfr_arsenal_quotas
 			allowed_civil_war = { always = yes }
 			modifier = {
-				production_factory_max_efficiency_factor = constant:soviet_collapse_factory_ancient.mfr_factory_output
-				consumer_goods_factor = constant:soviet_collapse_factory_ancient.mfr_consumer_goods
+				production_factory_max_efficiency_factor = @soviet_collapse_factory_ancient_mfr_factory_output
+				consumer_goods_factor = @soviet_collapse_factory_ancient_mfr_consumer_goods
 			}
 		}
 
@@ -169,8 +193,8 @@ ideas = {
 			picture = mfr_factory_guard_state
 			allowed_civil_war = { always = yes }
 			modifier = {
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
-				production_factory_max_efficiency_factor = constant:soviet_collapse_factory_ancient.mfr_factory_output
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
+				production_factory_max_efficiency_factor = @soviet_collapse_factory_ancient_mfr_factory_output
 			}
 		}
 
@@ -178,8 +202,8 @@ ideas = {
 			picture = ogb_volga_legitimacy
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.ogb_stability
-				trade_opinion_factor = constant:soviet_collapse_factory_ancient.ogb_trade_opinion
+				stability_factor = @soviet_collapse_factory_ancient_ogb_stability
+				trade_opinion_factor = @soviet_collapse_factory_ancient_ogb_trade_opinion
 			}
 		}
 
@@ -187,8 +211,8 @@ ideas = {
 			picture = ogb_river_crossing_claims
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
 			}
 		}
 
@@ -196,9 +220,9 @@ ideas = {
 			picture = icd_dead_roll_commissariat
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
-				production_factory_max_efficiency_factor = constant:soviet_collapse_factory_ancient.mfr_factory_output
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
+				production_factory_max_efficiency_factor = @soviet_collapse_factory_ancient_mfr_factory_output
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
 			}
 		}
 
@@ -206,9 +230,9 @@ ideas = {
 			picture = icd_foundry_mortuaries
 			allowed_civil_war = { always = yes }
 			modifier = {
-				production_speed_industrial_complex_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				consumer_goods_factor = constant:soviet_collapse_factory_ancient.mfr_consumer_goods
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				production_speed_industrial_complex_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				consumer_goods_factor = @soviet_collapse_factory_ancient_mfr_consumer_goods
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -216,9 +240,9 @@ ideas = {
 			picture = icd_total_mobilization_of_the_dead
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
-				consumer_goods_factor = constant:soviet_collapse_factory_ancient.mfr_consumer_goods
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
+				consumer_goods_factor = @soviet_collapse_factory_ancient_mfr_consumer_goods
 			}
 		}
 
@@ -226,9 +250,9 @@ ideas = {
 			picture = krs_sailors_assembly
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				navy_org_factor = constant:soviet_collapse_factory_ancient.krs_navy_org_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				navy_org_factor = @soviet_collapse_factory_ancient_krs_navy_org_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -236,9 +260,9 @@ ideas = {
 			picture = krs_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
 			}
 		}
 
@@ -246,9 +270,9 @@ ideas = {
 			picture = krs_every_port_a_council
 			allowed_civil_war = { always = yes }
 			modifier = {
-				navy_org_factor = constant:soviet_collapse_factory_ancient.krs_navy_org_large
-				amphibious_invasion = constant:soviet_collapse_factory_ancient.krs_amphibious_invasion
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				navy_org_factor = @soviet_collapse_factory_ancient_krs_navy_org_large
+				amphibious_invasion = @soviet_collapse_factory_ancient_krs_amphibious_invasion
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -256,9 +280,9 @@ ideas = {
 			picture = fth_free_territory_communes
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
-				army_speed_factor = constant:soviet_collapse_factory_ancient.krs_amphibious_invasion
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
+				army_speed_factor = @soviet_collapse_factory_ancient_krs_amphibious_invasion
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -266,9 +290,9 @@ ideas = {
 			picture = fth_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
 			}
 		}
 
@@ -276,9 +300,9 @@ ideas = {
 			picture = fth_world_without_capitals
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				army_speed_factor = constant:soviet_collapse_factory_ancient.krs_amphibious_invasion
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				army_speed_factor = @soviet_collapse_factory_ancient_krs_amphibious_invasion
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -286,9 +310,9 @@ ideas = {
 			picture = bbh_black_column_militias
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
-				army_speed_factor = constant:soviet_collapse_factory_ancient.krs_amphibious_invasion
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
+				army_speed_factor = @soviet_collapse_factory_ancient_krs_amphibious_invasion
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
 			}
 		}
 
@@ -296,9 +320,9 @@ ideas = {
 			picture = bbh_commune_war_councils
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -306,9 +330,9 @@ ideas = {
 			picture = bbh_world_without_prisons
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				army_speed_factor = constant:soviet_collapse_factory_ancient.krs_amphibious_invasion
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				army_speed_factor = @soviet_collapse_factory_ancient_krs_amphibious_invasion
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -316,9 +340,9 @@ ideas = {
 			picture = bsc_oasis_confederation
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
 			}
 		}
 
@@ -326,9 +350,9 @@ ideas = {
 			picture = bsc_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -336,9 +360,9 @@ ideas = {
 			picture = bsc_road_beyond_the_steppe
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				army_speed_factor = constant:soviet_collapse_factory_ancient.krs_amphibious_invasion
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				army_speed_factor = @soviet_collapse_factory_ancient_krs_amphibious_invasion
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
 			}
 		}
 
@@ -346,9 +370,9 @@ ideas = {
 			picture = tnc_city_council_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				production_speed_industrial_complex_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				production_speed_industrial_complex_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
 			}
 		}
 
@@ -356,9 +380,9 @@ ideas = {
 			picture = tnc_oasis_bureau_rivalries
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -366,9 +390,9 @@ ideas = {
 			picture = tnc_new_turkestan
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -376,9 +400,9 @@ ideas = {
 			picture = ala_restoration_council
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				trade_opinion_factor = constant:soviet_collapse_factory_ancient.ogb_trade_opinion
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				trade_opinion_factor = @soviet_collapse_factory_ancient_ogb_trade_opinion
 			}
 		}
 
@@ -386,9 +410,9 @@ ideas = {
 			picture = ala_steppe_congress_rivalries
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -396,9 +420,9 @@ ideas = {
 			picture = ala_national_modernization
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				army_speed_factor = constant:soviet_collapse_factory_ancient.krs_amphibious_invasion
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				army_speed_factor = @soviet_collapse_factory_ancient_krs_amphibious_invasion
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -406,9 +430,9 @@ ideas = {
 			picture = udc_provisional_soviet_command
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -416,9 +440,9 @@ ideas = {
 			picture = udc_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -426,9 +450,9 @@ ideas = {
 			picture = udc_purified_union_command
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -436,9 +460,9 @@ ideas = {
 			picture = sdz_sealed_archives
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
 			}
 		}
 
@@ -446,9 +470,9 @@ ideas = {
 			picture = sdz_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -456,9 +480,9 @@ ideas = {
 			picture = sdz_world_in_one_archive
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
 			}
 		}
 
@@ -466,9 +490,9 @@ ideas = {
 			picture = rmc_final_registers
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -476,9 +500,9 @@ ideas = {
 			picture = rmc_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -486,9 +510,9 @@ ideas = {
 			picture = rmc_every_grave_a_barracks
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -496,9 +520,9 @@ ideas = {
 			picture = rcd_common_task_directorate
 			allowed_civil_war = { always = yes }
 			modifier = {
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
 			}
 		}
 
@@ -506,9 +530,9 @@ ideas = {
 			picture = rcd_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -516,9 +540,9 @@ ideas = {
 			picture = rcd_no_grave_outside_the_state
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
 			}
 		}
 
@@ -526,9 +550,9 @@ ideas = {
 			picture = ilu_iron_liturgy
 			allowed_civil_war = { always = yes }
 			modifier = {
-				production_speed_industrial_complex_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
+				production_speed_industrial_complex_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
 			}
 		}
 
@@ -536,9 +560,9 @@ ideas = {
 			picture = ilu_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -546,9 +570,9 @@ ideas = {
 			picture = ilu_world_as_one_factory
 			allowed_civil_war = { always = yes }
 			modifier = {
-				production_speed_industrial_complex_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				production_speed_arms_factory_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				production_speed_industrial_complex_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				production_speed_arms_factory_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -556,9 +580,9 @@ ideas = {
 			picture = pra_pale_railway_timetable
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -566,9 +590,9 @@ ideas = {
 			picture = pra_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -576,9 +600,9 @@ ideas = {
 			picture = pra_every_junction_under_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -586,9 +610,9 @@ ideas = {
 			picture = tsc_star_iron_stores
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
 			}
 		}
 
@@ -596,9 +620,9 @@ ideas = {
 			picture = tsc_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -606,9 +630,9 @@ ideas = {
 			picture = tsc_bring_the_fire_west
 			allowed_civil_war = { always = yes }
 			modifier = {
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -616,9 +640,9 @@ ideas = {
 			picture = blt_last_tsar_brotherhood
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
 			}
 		}
 
@@ -626,9 +650,9 @@ ideas = {
 			picture = blt_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -636,9 +660,9 @@ ideas = {
 			picture = blt_universal_throne
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -646,9 +670,9 @@ ideas = {
 			picture = nrf_revenant_fleet_watch
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_low
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_low
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -656,9 +680,9 @@ ideas = {
 			picture = nrf_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -666,9 +690,9 @@ ideas = {
 			picture = nrf_every_coast_a_northern_port
 			allowed_civil_war = { always = yes }
 			modifier = {
-				conscription = constant:soviet_collapse_factory_ancient.icd_conscription_high
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -676,9 +700,9 @@ ideas = {
 			picture = gac_village_congress
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -686,9 +710,9 @@ ideas = {
 			picture = gac_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -696,9 +720,9 @@ ideas = {
 			picture = gac_land_and_bread_against_the_world
 			allowed_civil_war = { always = yes }
 			modifier = {
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -706,9 +730,9 @@ ideas = {
 			picture = dhc_host_circle_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
 			}
 		}
 
@@ -716,9 +740,9 @@ ideas = {
 			picture = dhc_internal_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -726,9 +750,9 @@ ideas = {
 			picture = dhc_southern_host_command
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -736,9 +760,9 @@ ideas = {
 			picture = khc_crossing_council_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -746,9 +770,9 @@ ideas = {
 			picture = khc_stanitsa_committee_rivalries
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -756,9 +780,9 @@ ideas = {
 			picture = khc_kuban_line_command
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -766,9 +790,9 @@ ideas = {
 			picture = fev_buffer_committee_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -776,9 +800,9 @@ ideas = {
 			picture = fev_liaison_office_tensions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -786,9 +810,9 @@ ideas = {
 			picture = fev_far_eastern_line_command
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
 			}
 		}
 
@@ -796,9 +820,9 @@ ideas = {
 			picture = sza_zemstvo_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -806,9 +830,9 @@ ideas = {
 			picture = sza_city_guard_compromises
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -816,9 +840,9 @@ ideas = {
 			picture = sza_siberian_depth_command
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -826,9 +850,9 @@ ideas = {
 			picture = uwd_factory_committee_guard
 			allowed_civil_war = { always = yes }
 			modifier = {
-				production_speed_arms_factory_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				production_speed_arms_factory_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -836,9 +860,9 @@ ideas = {
 			picture = uwd_manager_officer_rivalries
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -846,9 +870,9 @@ ideas = {
 			picture = uwd_arsenal_autonomy_directorate
 			allowed_civil_war = { always = yes }
 			modifier = {
-				production_speed_arms_factory_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				production_speed_arms_factory_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -856,9 +880,9 @@ ideas = {
 			picture = mrc_mountain_council
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
 				max_dig_in = 2
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -866,9 +890,9 @@ ideas = {
 			picture = mrc_pass_confederation_rivalries
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -876,8 +900,8 @@ ideas = {
 			picture = mrc_mountain_republic_mandate
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
 				max_dig_in = 3
 			}
 		}
@@ -886,9 +910,9 @@ ideas = {
 			picture = iul_volga_ural_league
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -896,9 +920,9 @@ ideas = {
 			picture = iul_tatar_bashkir_committees
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -906,9 +930,9 @@ ideas = {
 			picture = iul_federal_corridor_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
 			}
 		}
 
@@ -916,9 +940,9 @@ ideas = {
 			picture = bac_settlement_defense_committees
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
 				max_dig_in = 2
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -926,9 +950,9 @@ ideas = {
 			picture = bac_refugee_archive_tensions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -936,9 +960,9 @@ ideas = {
 			picture = bac_autonomous_commune_mandate
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -946,9 +970,9 @@ ideas = {
 			picture = ard_northern_port_directorate
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
 			}
 		}
 
@@ -956,9 +980,9 @@ ideas = {
 			picture = ard_convoy_officer_tensions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -966,9 +990,9 @@ ideas = {
 			picture = ard_port_neutrality_mandate
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_small
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_small
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
 			}
 		}
 
@@ -976,9 +1000,9 @@ ideas = {
 			picture = trs_emergency_synod_authority
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
 			}
 		}
 
@@ -986,9 +1010,9 @@ ideas = {
 			picture = trs_synod_guard_disputes
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -996,9 +1020,9 @@ ideas = {
 			picture = trs_fourth_testament_of_moscow
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -1006,9 +1030,9 @@ ideas = {
 			picture = nlc_polar_survival_commune
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				supply_consumption_factor = constant:soviet_collapse_factory_ancient.ogb_supply_consumption
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				supply_consumption_factor = @soviet_collapse_factory_ancient_ogb_supply_consumption
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1016,9 +1040,9 @@ ideas = {
 			picture = nlc_scientific_refuge_council
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1026,9 +1050,9 @@ ideas = {
 			picture = nlc_world_after_capitals
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				production_speed_infrastructure_factor = constant:soviet_collapse_factory_ancient.cfr_construction_speed
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_large
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				production_speed_infrastructure_factor = @soviet_collapse_factory_ancient_cfr_construction_speed
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_large
 			}
 		}
 
@@ -1036,9 +1060,9 @@ ideas = {
 			picture = sep_burial_committees
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_low
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_low
 			}
 		}
 
@@ -1046,9 +1070,9 @@ ideas = {
 			picture = sep_grave_soviet
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1056,9 +1080,9 @@ ideas = {
 			picture = sep_world_cemetery_mandate
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_high
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_high
 			}
 		}
 
@@ -1066,9 +1090,9 @@ ideas = {
 			picture = dsc_veterans_congress
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1076,9 +1100,9 @@ ideas = {
 			picture = dsc_dead_regiment_myth
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1086,9 +1110,9 @@ ideas = {
 			picture = dsc_army_of_the_fallen
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				army_org_factor = constant:soviet_collapse_factory_ancient.mfr_army_org
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				army_org_factor = @soviet_collapse_factory_ancient_mfr_army_org
 			}
 		}
 
@@ -1096,9 +1120,9 @@ ideas = {
 			picture = cou_unburied_claims_commissariat
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_low
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_low
 			}
 		}
 
@@ -1106,9 +1130,9 @@ ideas = {
 			picture = cou_grave_claim_disputes
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1116,9 +1140,9 @@ ideas = {
 			picture = cou_no_burial_without_the_state
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_high
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_high
 			}
 		}
 
@@ -1126,9 +1150,9 @@ ideas = {
 			picture = bec_black_earth_synod
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_low
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_low
 			}
 		}
 
@@ -1136,9 +1160,9 @@ ideas = {
 			picture = bec_soil_rite_factions
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1146,9 +1170,9 @@ ideas = {
 			picture = bec_every_field_a_grave
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_high
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_high
 			}
 		}
 
@@ -1156,9 +1180,9 @@ ideas = {
 			picture = rld_lazarus_laboratories
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_low
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_low
 			}
 		}
 
@@ -1166,9 +1190,9 @@ ideas = {
 			picture = rld_return_committee_disputes
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1176,9 +1200,9 @@ ideas = {
 			picture = rld_the_return_is_mandatory
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_high
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_high
 			}
 		}
 
@@ -1186,9 +1210,9 @@ ideas = {
 			picture = lid_last_international_secretariat
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_low
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_low
 			}
 		}
 
@@ -1196,9 +1220,9 @@ ideas = {
 			picture = lid_dead_delegate_disputes
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1206,9 +1230,9 @@ ideas = {
 			picture = lid_all_dead_are_comrades
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_high
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_high
 			}
 		}
 
@@ -1216,9 +1240,9 @@ ideas = {
 			picture = ira_iron_resurrection_staff
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_small
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_low
+				stability_factor = @soviet_collapse_factory_ancient_stability_small
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_low
 			}
 		}
 
@@ -1226,9 +1250,9 @@ ideas = {
 			picture = ira_foundry_army_disputes
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.krs_internal_stability_penalty
-				political_power_factor = constant:soviet_collapse_factory_ancient.krs_internal_political_power
-				drift_defence_factor = constant:soviet_collapse_factory_ancient.krs_drift_defence_small
+				stability_factor = @soviet_collapse_factory_ancient_krs_internal_stability_penalty
+				political_power_factor = @soviet_collapse_factory_ancient_krs_internal_political_power
+				drift_defence_factor = @soviet_collapse_factory_ancient_krs_drift_defence_small
 			}
 		}
 
@@ -1236,9 +1260,9 @@ ideas = {
 			picture = ira_the_army_that_returns
 			allowed_civil_war = { always = yes }
 			modifier = {
-				stability_factor = constant:soviet_collapse_factory_ancient.stability_medium
-				war_support_factor = constant:soviet_collapse_factory_ancient.war_support_medium
-				conscription_factor = constant:soviet_collapse_factory_ancient.icd_conscription_high
+				stability_factor = @soviet_collapse_factory_ancient_stability_medium
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				conscription_factor = @soviet_collapse_factory_ancient_icd_conscription_high
 			}
 		}
 	}

@@ -36,6 +36,10 @@ Focus-tree work includes AI behavior. Even compact or runtime-only trees should 
 
 HOI4 parser gotcha: `num_divisions_in_states = { count > ... }` only accepts literal-style values after the comparator. Do not put `constant:category.key` there; use a file-local `@` constant or a literal value, and keep the tuning source documented where it is duplicated.
 
+HOI4 parser gotcha: idea modifier blocks do not parse `constant:category.key` values. If a national spirit modifier needs shared tuning, mirror the script constant into a file-local `@` constant in the same idea file, document that it is a modifier-only mirror, and keep the script constant as the source of truth for effects/triggers that support it.
+
+Decision parser gotcha: every category used as a top-level block in `common/decisions/*.txt` must be defined in `common/decisions/categories/*.txt`. Category UI fields such as `icon`, `priority`, and category `visible` belong in the category file, not inside the decision file's top-level category block.
+
 For objective boards that must cap visible missions, prefer manual mission activation over daily `activation` triggers. Set capped mission entries to `allowed = { always = no }`, then activate eligible missions with a scoped queue helper using `activate_mission`, `has_active_mission`, active-count variables, and queued-state flags. This avoids whole-world on-actions and gives a hard display cap while preserving goal-style auto-completion through each mission's `available` block.
 
 When extending an existing capped objective queue by numbered slices, update all four surfaces in the same pass: the readable scripted trigger, the decision/mission entry, the active-count helper, and the activation queue helper. Then update the event doc count and mission list. Before committing, run at least whitespace, unsupported-operator, brace-depth, tab-indentation, and mission-wiring checks through the new highest mission number; the wiring check should prove every queued ID has a decision block and name/success/failure localisation.
