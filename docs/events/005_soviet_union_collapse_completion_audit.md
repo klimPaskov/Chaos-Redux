@@ -19,9 +19,9 @@ Required source order:
 9. `chaos-redux-event-assets`
 10. `chaos-redux-super-events`
 
-`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is not present in `tmp/` during this audit. The current implementation was checked against the available spawn-balance cleanup spec and the four final clean specs; final closure should either restore the missing continuation spec or explicitly waive it.
+`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is not present in `tmp/` during this audit. The current implementation was checked against the available spawn-balance cleanup spec and the four final clean specs; final closure should either restore the missing continuation spec, explicitly waive it, or verify every requirement it would have covered against implementation evidence.
 
-The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent during this audit. No runtime log evidence from those paths is available for final closure, so they must also be restored or explicitly waived before closure.
+The previously referenced `tmp/error.log` and `tmp/text.log` files are absent because the logged errors were fixed and the files were intentionally removed. They are not current completion blockers.
 
 ## Input File Audit
 
@@ -35,8 +35,8 @@ Requested source files as of 2026-05-18:
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | Present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | Present | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md` | Present | 3889 | 148956 | `60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428` |
-| `tmp/error.log` | Missing | - | - | - |
-| `tmp/text.log` | Missing | - | - | - |
+| `tmp/error.log` | Intentionally removed after fixed errors | - | - | - |
+| `tmp/text.log` | Intentionally removed after fixed errors | - | - | - |
 
 Recovery searches performed:
 
@@ -105,8 +105,8 @@ Present `tmp/` Event 005 spec files are:
 | Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, super-event assets, and the 570-file custom flag orientation audit; no historical flags were regenerated in the latest pass | Implemented for current surfaces |
 | Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, decode cleanly, use vanilla-matching bottom-origin TGA headers, and average-downsample comparison finds no small/medium variant closer to a vertically flipped large source | Audit passed; no binary correction required by current evidence |
 | Localisation design-language cleanup | Search across `common/`, `events/`, `localisation/`, `interface/`, and `docs/` found no player-facing instance of the specified design-language sentence from the cleanup prompt | Implemented |
-| Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and blocked final-closure status while required input files remain absent | Implemented; workbook package and LibreOffice open/convert validation passed |
-| Completion readiness | Current audit records the available spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Not closed because one requested continuation spec file and two requested log files are absent from `tmp/` |
+| Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and blocked final-closure status while the required continuation spec remains absent | Implemented; workbook package and LibreOffice open/convert validation passed |
+| Completion readiness | Current audit records the available spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Not closed because one requested continuation spec file is absent from `tmp/`; the removed log files are no longer blockers |
 
 ## Current Focus Counts
 
@@ -524,13 +524,55 @@ super_event_14_sprite_present True
 super_event_14_dds_exists True
 ```
 
+Current Event 005 crisis-balance validation:
+
+```text
+baseline_moscow_authority 62
+baseline_total_threat_estimate 17.82
+opening_tier1_calm_threat_estimate 20.46
+opening_tier5_calm_threat_estimate 48.84
+opening_tier5_disaster_threat_estimate 74.58
+opening_tier5_disaster_authority_estimate 38
+total_threat_multiplier 0.33
+total_threat_floor 10
+total_threat_ceiling 100
+component_min_max 0/100
+init_sets_all_components True
+init_first_month_lock_days_31 True
+init_chaos_tier_adjustment_blocks 5
+init_uses_stability_war_support_war_capital_conditions True
+init_calls_recalculate True
+recalc_calls_component_clamp_helper True
+component_clamp_entries 7
+recalc_uses_all_components True
+recalc_uses_multiplier True
+recalc_clamps_total_threat True
+objective_pressure_helpers_total 22
+pressure_helpers_call_recalc 22 missing_recalc 0
+pressure_helper_variables_touched soviet_collapse_depot_vulnerability,soviet_collapse_evolution_weirdness,soviet_collapse_foreign_appetite,soviet_collapse_league_cohesion,soviet_collapse_military_obedience,soviet_collapse_moscow_authority,soviet_collapse_republic_confidence
+pressure_constants_count 72
+pressure_constants_has_positive_and_negative True
+decision_pressure_helper_variants_used 20
+decision_pressure_helper_calls 256
+opening_event_option_recalculate_calls 4
+opening_event_options_touch_components soviet_collapse_depot_vulnerability,soviet_collapse_evolution_weirdness,soviet_collapse_foreign_appetite,soviet_collapse_league_cohesion,soviet_collapse_military_obedience,soviet_collapse_moscow_authority,soviet_collapse_republic_confidence
+eventlog_detail_authority_function True
+eventlog_detail_threat_function True
+eventlog_detail_foreign_function True
+eventlog_detail_league_function True
+category_desc_mentions_moscow_authority True
+category_desc_mentions_union_crisis_threat True
+category_desc_visible_cause_hits 18
+banned_low_dynamic_baseline_phrase_hits 0
+```
+
 ## Remaining Blockers
 
-`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent. This prevents a strict final closure claim against every requested source and runtime evidence file until the missing files are restored or explicitly waived.
+`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored, explicitly waived, or fully covered by implementation evidence.
 
 ## Blocked Completion Report
 
-The requested final completion report categories are not closed because the missing continuation spec and requested runtime logs cannot be audited. Current evidence exists for:
+The requested final completion report categories are not closed because the missing continuation spec cannot be audited as a source file. Current evidence exists for:
 
 - implemented countries and packages: thirty-eight custom successors plus supported ordinary Soviet republics.
 - flags: 570 Event 005 custom flag files audited; no current binary correction indicated.
@@ -543,7 +585,6 @@ The requested final completion report categories are not closed because the miss
 Resume checklist:
 
 - restore or explicitly waive `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md`.
-- restore or explicitly waive `tmp/error.log` and `tmp/text.log` if they are still expected as runtime evidence.
 - audit the restored spec line-by-line against current event log, mission balance, and focus cleanup artifacts.
 - update this completion audit with any requirements that restored spec adds or changes.
 - rerun the latest validation snapshot after any follow-up edits.
@@ -551,7 +592,7 @@ Resume checklist:
 
 ## Resume Packet
 
-Current known-good repository head before any future resume work: `4e4f9e5 Clarify Soviet collapse missing log blockers`.
+Latest committed validation head before this audit update: `d1e5f3c Record Soviet collapse terminal validation`.
 
 Use this source order on resume:
 
@@ -566,14 +607,14 @@ Use this source order on resume:
 9. `.agents/skills/chaos-redux-event-assets/SKILL.md`
 10. `.agents/skills/chaos-redux-super-events/SKILL.md`
 
-The first file is present and remains the source of truth for this pass. The second file, `tmp/error.log`, and `tmp/text.log` are still absent from `tmp/`.
+The first file is present and remains the source of truth for this pass. The second file is still absent from `tmp/`. The previous `tmp/error.log` and `tmp/text.log` runtime logs were intentionally removed after the reported errors were fixed and are not current blockers.
 
 Do not redo already-passed implementation work unless a restored file contradicts current evidence. Current parser-oriented evidence covers strong ideas, randomized first-wave pools, Kazakhstan restraint, dynamic force packages, crisis meter dampening, Union Unmade first-month lock and gates, terminal ordinary republic release, terminal special-successor spawning, mission cleanup, focus layout, flag orientation, localisation phrase cleanup, AI weights, spreadsheet row status, and docs.
 
 First resume action:
 
 ```text
-find tmp -maxdepth 1 -type f \( -name '005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md' -o -name 'error.log' -o -name 'text.log' \) -printf '%f %s bytes\n' | sort
+find tmp -maxdepth 1 -type f -name '005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md' -printf '%f %s bytes\n' | sort
 ```
 
-If those files are present, record their line counts, bytes, and SHA-256 values in `docs/events/005_soviet_union_collapse_input_audit.md`, then audit any new requirements against the implementation. If they are still absent, keep the goal blocked and do not mark completion.
+If that file is present, record its line count, bytes, and SHA-256 value in `docs/events/005_soviet_union_collapse_input_audit.md`, then audit any new requirements against the implementation. If it is still absent and not explicitly waived, keep the goal blocked and do not mark completion.
