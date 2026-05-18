@@ -65,6 +65,22 @@ Present `tmp/` Event 005 spec files are:
 005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md
 ```
 
+## Concrete Success Criteria
+
+The Event 005 correction pass is complete only if current repository evidence proves all of the following:
+
+- weak Event 005 ideas and spirits are replaced by meaningful multi-effect packages, with small modifier values appearing only inside broader stacking packages.
+- the opening release wave is randomized from structured western or eastern European, Caucasus, and Central Asian pools; Kazakhstan is separately gated; opening wave size and support scale with chaos, Soviet condition, and crisis state.
+- every released republic or serious splinter, including final-collapse releases, receives dynamically scaled manpower, equipment, templates, and units.
+- Union Crisis Threat and Moscow Authority use visible causes, dampening, failed objectives, rail control, command obedience, foreign penetration, League victories, chaos, and prior crisis state without trivial calm-world collapse.
+- Union Unmade cannot fire during the ordinary first month and requires sustained failure signals; when it fires, unreleased ordinary Soviet republics are released and higher-chaos special actors are activated according to chaos tier.
+- full-collapse cleanup cancels or hides obsolete Soviet Collapse intervention categories and active missions.
+- runtime focus trees have clean layout, unique meaningful focuses, valid route content, valid icons/localisation/rewards/AI, and no one-way or repeated mutual-exclusion issues.
+- Soviet Collapse flags are orientation-audited without unnecessary historical flag regeneration.
+- player-facing localisation contains no `starts from a low dynamic baseline in calm conditions` wording and uses in-world crisis language instead.
+- AI, docs, spreadsheet status, event log details, evolutions, super-events, assets, and the final completion report are aligned with the implemented state.
+- every named source input is either present and audited, explicitly waived, or completely covered by direct implementation evidence; the missing continuation spec currently keeps final closure blocked.
+
 ## Prompt To Artifact Checklist
 
 | Requirement | Evidence | Status |
