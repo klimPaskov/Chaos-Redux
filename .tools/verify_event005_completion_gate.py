@@ -57,6 +57,19 @@ REQUIRED_CONTEXT_INPUTS = [
 	".agents/skills/chaos-redux-super-events/SKILL.md",
 ]
 
+REQUIRED_SOURCE_ORDER = [
+	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
+	"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
+	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
+	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
+	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
+	"tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md",
+	"AGENTS.md",
+	"chaos-redux-events",
+	"chaos-redux-event-assets",
+	"chaos-redux-super-events",
+]
+
 CUSTOM_TAGS = [
 	"CFR", "MFR", "OGB", "ICD", "KRS", "FTH", "BBH", "BSC", "TNC", "ALA",
 	"UDC", "SDZ", "RMC", "RCD", "ILU", "PRA", "TSC", "BLT", "NRF", "GAC",
@@ -588,6 +601,25 @@ def verify_source_context_files() -> list[Check]:
 			"source_context_files",
 			not missing and len(details) == len(REQUIRED_CONTEXT_INPUTS),
 			f"files={len(details)}/{len(REQUIRED_CONTEXT_INPUTS)} missing={len(missing)} {' '.join(details)}",
+		)
+	]
+
+
+def verify_source_order_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	try:
+		source_order = completion_audit.split("## Source Order", 1)[1].split("## Input File Audit", 1)[0]
+	except IndexError:
+		return [Check("source_order_surface", False, "source_order_section=False")]
+	missing = [item for item in REQUIRED_SOURCE_ORDER if item not in source_order]
+	positions = [source_order.find(item) for item in REQUIRED_SOURCE_ORDER]
+	ordered = positions == sorted(positions)
+	numbered = all(f"{index}. " in source_order for index in range(1, len(REQUIRED_SOURCE_ORDER) + 1))
+	return [
+		Check(
+			"source_order_surface",
+			not missing and ordered and numbered,
+			f"items={len(REQUIRED_SOURCE_ORDER) - len(missing)}/{len(REQUIRED_SOURCE_ORDER)} ordered={ordered} numbered={numbered}",
 		)
 	]
 
@@ -1908,6 +1940,7 @@ def verify_docs_surface() -> list[Check]:
 		"idea_package_surface",
 		"flag_orientation_surface",
 		"source_context_files",
+		"source_order_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2024,6 +2057,7 @@ def run_checks() -> list[Check]:
 	checks: list[Check] = []
 	checks.extend(verify_input_files())
 	checks.extend(verify_source_context_files())
+	checks.extend(verify_source_order_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
