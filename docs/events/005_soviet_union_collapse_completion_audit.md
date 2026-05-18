@@ -325,6 +325,7 @@ ideas 124 weak_lt3 0 no_modifier 0 tiny_only 0
 banned_phrase_hits 0
 flags_checked 570 flags_missing 0 decode_errors 0 bottom_origin 570 top_origin 0 orientation_mismatches 0
 crisis_scenarios calm_baseline authority 62 threat 17.82; modest_tier1 authority 62 threat 20.46; tier5_capital_lost_war_low_stability_low_support authority 38 threat 74.58
+core_crisis_meter_numeric_literals 0
 git diff --check clean
 unsupported operator/scope/localisation scan clean for the audited Event 005 files
 ```
