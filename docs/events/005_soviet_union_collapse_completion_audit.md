@@ -481,6 +481,49 @@ package_terminal_scaling True
 package_clears_one_use_flags True
 ```
 
+Current Event 005 Union Unmade and terminal-collapse validation:
+
+```text
+blocks_present True
+union_unmade_first_month_lock_gate True
+union_unmade_duplicate_gate True
+union_unmade_min_breakaway_gate True
+union_unmade_high_threat_gate True
+union_unmade_critical_authority_gate True
+union_unmade_contested_authority_gate True
+union_unmade_league_kaz_or_chaos_gate True
+union_unmade_deep_tier5_gate True
+show_sets_fired_flag True
+show_applies_terminal_collapse True
+show_sets_super_event_id True
+show_emits_super_event True
+terminal_idempotent_gate True
+terminal_in_progress_flag_wrap True
+terminal_calls_ordinary_release True
+terminal_calls_high_chaos_spawn True
+terminal_calls_mission_cleanup True
+ordinary_release_tags_count 14 expected_count 14 missing none extra none
+ordinary_releases_nonexistent_core_under_sov True
+ordinary_frees_existing_subjects True
+ordinary_calls_setup_and_focus True
+terminal_spawn_tier4_or_5_retry True
+terminal_spawn_tier5_prepare True
+highest_chaos_prepare_flags 26
+highest_chaos_sets_weirdness_floor True
+high_chaos_spawn_helpers 38
+high_chaos_setup_successor_helpers 38
+high_chaos_spawn_helpers_reach_breakaway_setup 38
+high_chaos_spawn_helpers_missing_setup_path 0
+mission_defs 128 cleanup_remove_refs 128 cleanup_active_refs 128 missing_remove 0 extra_remove 0 missing_active 0
+cleanup_clears_active_flags True
+cleanup_clears_transient_country_flags True
+event005_category_defs 42 categories_without_active_gate 0
+constants_union_unmade_slot True
+super_event_14_loc_keys_present True
+super_event_14_sprite_present True
+super_event_14_dds_exists True
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent. This prevents a strict final closure claim against every requested source and runtime evidence file until the missing files are restored or explicitly waived.
