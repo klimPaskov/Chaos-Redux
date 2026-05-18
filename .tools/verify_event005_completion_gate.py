@@ -267,11 +267,27 @@ def verify_focuses() -> list[Check]:
 	missing_reward = []
 	missing_icon = []
 	missing_coords = []
+	ai_block_count = 0
+	dynamic_ai = 0
+	mutual_focus_count = 0
+	dynamic_mutual_ai = 0
+	flat_mutual_ai = 0
 
 	for path, focus_id, block in focuses:
 		prereq_refs = collect_focus_refs(top_level_block_bodies(block, "prerequisite"))
 		mutual_blocks = top_level_block_bodies(block, "mutually_exclusive")
 		mutual_refs = collect_focus_refs(mutual_blocks)
+		ai_blocks = top_level_block_bodies(block, "ai_will_do")
+		ai_block_count += len(ai_blocks)
+		has_dynamic_ai = any("modifier" in ai_body for ai_body in ai_blocks)
+		if has_dynamic_ai:
+			dynamic_ai += 1
+		if mutual_refs:
+			mutual_focus_count += 1
+			if has_dynamic_ai:
+				dynamic_mutual_ai += 1
+			else:
+				flat_mutual_ai += 1
 		if len(mutual_blocks) > 1:
 			repeated_mutual_blocks += 1
 		for ref in prereq_refs + mutual_refs:
@@ -338,6 +354,21 @@ def verify_focuses() -> list[Check]:
 				f"min_y_span={min((row['y_span'] for row in layout_rows), default=0)} "
 				f"max_col={max((row['max_col'] for row in layout_rows), default=0)} "
 				f"max_row={max((row['max_row'] for row in layout_rows), default=0)}"
+			),
+		),
+		Check(
+			"focus_ai_surface",
+			(
+				ai_block_count == len(focuses)
+				and dynamic_ai >= 300
+				and mutual_focus_count >= 170
+				and dynamic_mutual_ai == mutual_focus_count
+				and flat_mutual_ai == 0
+			),
+			(
+				f"focuses={len(focuses)} ai_blocks={ai_block_count} dynamic_ai={dynamic_ai} "
+				f"mutual_route_choices={mutual_focus_count} dynamic_mutual_ai={dynamic_mutual_ai} "
+				f"flat_mutual_ai={flat_mutual_ai}"
 			),
 		),
 	]
@@ -1505,6 +1536,7 @@ def verify_docs_surface() -> list[Check]:
 		"event_log_mapping_surface",
 		"focus_layout_surface",
 		"first_wave_release_surface",
+		"focus_ai_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
