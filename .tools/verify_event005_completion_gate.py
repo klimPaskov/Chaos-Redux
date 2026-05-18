@@ -1490,6 +1490,7 @@ def verify_flags() -> list[Check]:
 	top_origin = 0
 	bottom_origin = 0
 	checked = 0
+	decoded = {}
 	for tag in CUSTOM_TAGS:
 		for variant in [""] + ["_" + ideology for ideology in IDEOLOGIES]:
 			for folder in [ROOT / "gfx/flags", ROOT / "gfx/flags/medium", ROOT / "gfx/flags/small"]:
@@ -1507,8 +1508,119 @@ def verify_flags() -> list[Check]:
 				else:
 					bottom_origin += 1
 				checked += 1
+				try:
+					decoded[path] = read_tga_rgb_rows(path)
+				except ValueError:
+					decode_errors.append(str(path.relative_to(ROOT)))
+	orientation_mismatches = []
+	comparisons = 0
+	source_dims = set()
+	for tag in CUSTOM_TAGS:
+		for variant in [""] + ["_" + ideology for ideology in IDEOLOGIES]:
+			large_path = ROOT / "gfx/flags" / f"{tag}{variant}.tga"
+			if large_path not in decoded:
+				continue
+			large_width, large_height, large_rows = decoded[large_path]
+			source_dims.add(f"{large_width}x{large_height}")
+			for folder in [ROOT / "gfx/flags/medium", ROOT / "gfx/flags/small"]:
+				path = folder / f"{tag}{variant}.tga"
+				if path not in decoded:
+					continue
+				width, height, rows = decoded[path]
+				normal_rows = downsample_rgb_rows(large_rows, width, height)
+				flipped_rows = downsample_rgb_rows(large_rows, width, height, flip_vertical=True)
+				normal_diff = mean_abs_rgb_diff(normal_rows, rows)
+				flipped_diff = mean_abs_rgb_diff(flipped_rows, rows)
+				if flipped_diff + 0.5 < normal_diff:
+					orientation_mismatches.append(f"{tag}{variant}:{folder.name}")
+				comparisons += 1
 	ok = checked == 570 and not missing and not decode_errors and top_origin == 0
-	return [Check("flag_orientation_headers", ok, f"flags_checked={checked} missing={len(missing)} decode_errors={len(decode_errors)} bottom_origin={bottom_origin} top_origin={top_origin}")]
+	surface_ok = ok and comparisons == 380 and not orientation_mismatches
+	return [
+		Check("flag_orientation_headers", ok, f"flags_checked={checked} missing={len(missing)} decode_errors={len(decode_errors)} bottom_origin={bottom_origin} top_origin={top_origin}"),
+		Check(
+			"flag_orientation_surface",
+			surface_ok,
+			(
+				f"comparisons={comparisons} expected=380 orientation_mismatches={len(orientation_mismatches)} "
+				f"source_dims={','.join(sorted(source_dims))}"
+			),
+		),
+	]
+
+
+def read_tga_rgb_rows(path: Path) -> tuple[int, int, list[list[tuple[int, int, int]]]]:
+	data = path.read_bytes()
+	if len(data) < 18:
+		raise ValueError("short TGA header")
+	image_type = data[2]
+	if image_type != 2:
+		raise ValueError(f"unsupported TGA type {image_type}")
+	width = data[12] | (data[13] << 8)
+	height = data[14] | (data[15] << 8)
+	bpp = data[16]
+	if width <= 0 or height <= 0 or bpp != 32:
+		raise ValueError(f"unsupported TGA geometry {width}x{height}x{bpp}")
+	step = bpp // 8
+	offset = 18 + data[0]
+	expected = offset + width * height * step
+	if len(data) < expected:
+		raise ValueError("truncated TGA pixel data")
+	rows = []
+	index = offset
+	for _ in range(height):
+		row = []
+		for _ in range(width):
+			blue, green, red = data[index], data[index + 1], data[index + 2]
+			row.append((red, green, blue))
+			index += step
+		rows.append(row)
+	descriptor = data[17]
+	if not descriptor & 0x20:
+		rows.reverse()
+	if descriptor & 0x10:
+		rows = [list(reversed(row)) for row in rows]
+	return width, height, rows
+
+
+def downsample_rgb_rows(rows: list[list[tuple[int, int, int]]], width: int, height: int, flip_vertical: bool = False) -> list[list[tuple[int, int, int]]]:
+	source = list(reversed(rows)) if flip_vertical else rows
+	source_height = len(source)
+	source_width = len(source[0])
+	output = []
+	for target_y in range(height):
+		source_y0 = int(target_y * source_height / height)
+		source_y1 = max(source_y0 + 1, int((target_y + 1) * source_height / height))
+		row = []
+		for target_x in range(width):
+			source_x0 = int(target_x * source_width / width)
+			source_x1 = max(source_x0 + 1, int((target_x + 1) * source_width / width))
+			red_total = 0
+			green_total = 0
+			blue_total = 0
+			count = 0
+			for source_y in range(source_y0, source_y1):
+				for source_x in range(source_x0, source_x1):
+					red, green, blue = source[source_y][source_x]
+					red_total += red
+					green_total += green
+					blue_total += blue
+					count += 1
+			row.append((red_total // count, green_total // count, blue_total // count))
+		output.append(row)
+	return output
+
+
+def mean_abs_rgb_diff(left: list[list[tuple[int, int, int]]], right: list[list[tuple[int, int, int]]]) -> float:
+	total = 0
+	count = 0
+	for left_row, right_row in zip(left, right):
+		for left_rgb, right_rgb in zip(left_row, right_row):
+			total += abs(left_rgb[0] - right_rgb[0])
+			total += abs(left_rgb[1] - right_rgb[1])
+			total += abs(left_rgb[2] - right_rgb[2])
+			count += 3
+	return total / count
 
 
 def verify_super_events_and_assets() -> list[Check]:
@@ -1768,6 +1880,7 @@ def verify_docs_surface() -> list[Check]:
 		"crisis_cause_surface",
 		"force_scaling_surface",
 		"idea_package_surface",
+		"flag_orientation_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
