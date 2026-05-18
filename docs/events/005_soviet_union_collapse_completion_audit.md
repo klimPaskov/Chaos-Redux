@@ -326,6 +326,7 @@ Command evidence from the 2026-05-18 continuation audit:
 ```text
 brace depth/min for Event 005 focus, effect, trigger, decision, idea, constant, and event files: depth=0 min=0
 focuses 1500 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 missing_ai 0 missing_reward 0 dynamic_ai 353 dynamic_mutual_ai 178 flat_mutual_ai 0
+national_focus_repeated_mutual_blocks 0
 missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0 decision_blocks 254 timed_decisions 128 timed_outside_soviet_missions 0 categories_without_active_visible 0
 non_mission_decision_ai dynamic_blocks 126 flat_blocks 0 timed_mission_missing_ai 128
 ideas 124 weak_lt3 0 no_modifier 0 tiny_only 0
@@ -337,7 +338,7 @@ git diff --check clean
 unsupported operator/scope/localisation scan clean for the audited Event 005 files
 ```
 
-The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` and `baltic_soviet_collapse_sponsor_fleet_rights` is covered by the reciprocal mutual-exclusion audit above.
+The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` and `baltic_soviet_collapse_sponsor_fleet_rights` was caused by repeated `mutually_exclusive` keys on the sponsor focus. Event 005 focus trees now use one mutual-exclusion block per focus, and the all-focus repeated-key scan returns zero hits.
 
 ## Remaining Blockers
 
