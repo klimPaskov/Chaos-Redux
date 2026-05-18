@@ -294,6 +294,34 @@ def verify_focuses() -> list[Check]:
 	]
 
 
+def event005_focus_ids() -> list[str]:
+	focus_ids = []
+	for path in EVENT005_FOCUS_FILES:
+		for block in named_blocks(tokens(read_text(path)), "focus"):
+			ids = top_level_values(block, "id")
+			if ids:
+				focus_ids.append(ids[0])
+	return focus_ids
+
+
+def event005_idea_ids() -> list[str]:
+	idea_ids = []
+	toks = tokens(read_text(ROOT / "common/ideas/005_soviet_collapse_ideas.txt"))
+	for ideas_body in named_blocks(toks, "ideas"):
+		for group_name, group_body in direct_child_blocks(ideas_body):
+			if group_name in {"country", "country_leader", "army_chief", "navy_chief", "air_chief"}:
+				idea_ids.extend(name for name, _ in direct_child_blocks(group_body))
+	return idea_ids
+
+
+def event005_decision_ids() -> list[str]:
+	decision_ids = []
+	toks = tokens(read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt"))
+	for _, category_body in direct_child_blocks(toks):
+		decision_ids.extend(name for name, _ in direct_child_blocks(category_body))
+	return decision_ids
+
+
 def parse_constants(text: str) -> dict[str, float]:
 	constants = {}
 	for match in re.finditer(r"^\s*(@[A-Za-z0-9_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*$", text, re.MULTILINE):
@@ -728,6 +756,60 @@ def verify_localisation_and_event_log() -> list[Check]:
 	]
 
 
+def verify_localisation_surface() -> list[Check]:
+	localisation_files = sorted((ROOT / "localisation/english").glob("*005_soviet*.yml")) + [
+		ROOT / "localisation/english/chaosx_achievements_l_english.yml",
+		ROOT / "localisation/english/chaosx_event_names_l_english.yml",
+		ROOT / "localisation/english/chaosx_gui_l_english.yml",
+	]
+	existing_files = [path for path in localisation_files if path.exists()]
+	bom_missing = [str(path.relative_to(ROOT)) for path in existing_files if not path.read_bytes().startswith(b"\xef\xbb\xbf")]
+	colon_zero = []
+	localisation_text = []
+	for path in existing_files:
+		text = read_text(path)
+		localisation_text.append(text)
+		for line_number, line in enumerate(text.splitlines(), start=1):
+			if re.search(r"^\s*[A-Za-z0-9_.-]+:0\s*\"", line):
+				colon_zero.append(f"{path.relative_to(ROOT)}:{line_number}")
+	combined = "\n".join(localisation_text)
+	keys = set(re.findall(r"^\s*([A-Za-z0-9_.-]+):\s*\"", combined, re.MULTILINE))
+	focus_ids = event005_focus_ids()
+	idea_ids = event005_idea_ids()
+	decision_ids = event005_decision_ids()
+	missing_focus_name = [focus_id for focus_id in focus_ids if focus_id not in keys]
+	missing_focus_desc = [focus_id for focus_id in focus_ids if f"{focus_id}_desc" not in keys]
+	missing_idea_name = [idea_id for idea_id in idea_ids if idea_id not in keys]
+	missing_idea_desc = [idea_id for idea_id in idea_ids if f"{idea_id}_desc" not in keys]
+	missing_decision_name = [decision_id for decision_id in decision_ids if decision_id not in keys]
+	missing_decision_desc = [decision_id for decision_id in decision_ids if f"{decision_id}_desc" not in keys]
+	ok = not any([
+		bom_missing,
+		colon_zero,
+		missing_focus_name,
+		missing_focus_desc,
+		missing_idea_name,
+		missing_idea_desc,
+		missing_decision_name,
+		missing_decision_desc,
+	])
+	return [
+		Check(
+			"localisation_surface",
+			ok,
+			(
+				f"files={len(existing_files)} bom_missing={len(bom_missing)} colon_zero={len(colon_zero)} "
+				f"focus_name_missing={len(missing_focus_name)}/{len(focus_ids)} "
+				f"focus_desc_missing={len(missing_focus_desc)}/{len(focus_ids)} "
+				f"idea_name_missing={len(missing_idea_name)}/{len(idea_ids)} "
+				f"idea_desc_missing={len(missing_idea_desc)}/{len(idea_ids)} "
+				f"decision_name_missing={len(missing_decision_name)}/{len(decision_ids)} "
+				f"decision_desc_missing={len(missing_decision_desc)}/{len(decision_ids)}"
+			),
+		)
+	]
+
+
 def verify_flags() -> list[Check]:
 	missing = []
 	decode_errors = []
@@ -1128,6 +1210,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_terminal_ordinary_republics())
 	checks.extend(verify_terminal_high_chaos_successors())
 	checks.extend(verify_localisation_and_event_log())
+	checks.extend(verify_localisation_surface())
 	checks.extend(verify_flags())
 	checks.extend(verify_super_events_and_assets())
 	checks.extend(verify_evolution_logging_surface())
