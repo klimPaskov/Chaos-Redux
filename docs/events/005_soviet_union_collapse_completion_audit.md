@@ -396,3 +396,32 @@ Resume checklist:
 - update this completion audit with any requirements that restored spec adds or changes.
 - rerun the latest validation snapshot after any follow-up edits.
 - only then mark the active Event 005 correction goal complete.
+
+## Resume Packet
+
+Current known-good repository head before any future resume work: `4e4f9e5 Clarify Soviet collapse missing log blockers`.
+
+Use this source order on resume:
+
+1. `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md`
+2. `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md`
+3. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
+4. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
+5. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
+6. `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
+7. `AGENTS.md`
+8. `.agents/skills/chaos-redux-events/SKILL.md`
+9. `.agents/skills/chaos-redux-event-assets/SKILL.md`
+10. `.agents/skills/chaos-redux-super-events/SKILL.md`
+
+The first file is present and remains the source of truth for this pass. The second file, `tmp/error.log`, and `tmp/text.log` are still absent from `tmp/`.
+
+Do not redo already-passed implementation work unless a restored file contradicts current evidence. Current parser-oriented evidence covers strong ideas, randomized first-wave pools, Kazakhstan restraint, dynamic force packages, crisis meter dampening, Union Unmade first-month lock and gates, terminal ordinary republic release, terminal special-successor spawning, mission cleanup, focus layout, flag orientation, localisation phrase cleanup, AI weights, spreadsheet row status, and docs.
+
+First resume action:
+
+```text
+find tmp -maxdepth 1 -type f \( -name '005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md' -o -name 'error.log' -o -name 'text.log' \) -printf '%f %s bytes\n' | sort
+```
+
+If those files are present, record their line counts, bytes, and SHA-256 values in `docs/events/005_soviet_union_collapse_input_audit.md`, then audit any new requirements against the implementation. If they are still absent, keep the goal blocked and do not mark completion.
