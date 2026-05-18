@@ -21,6 +21,8 @@ Required source order:
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is not present in `tmp/` during this audit. The current implementation was checked against the available spawn-balance cleanup spec and the four final clean specs; final closure should either restore the missing continuation spec or explicitly waive it.
 
+The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent during this audit. No runtime log evidence from those paths is available for final closure.
+
 ## Input File Audit
 
 Requested source files as of 2026-05-18:
@@ -33,6 +35,8 @@ Requested source files as of 2026-05-18:
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | Present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | Present | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md` | Present | 3889 | 148956 | `60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428` |
+| `tmp/error.log` | Missing | - | - | - |
+| `tmp/text.log` | Missing | - | - | - |
 
 Recovery searches performed:
 
@@ -45,6 +49,9 @@ result: no commits
 
 git log --all --name-only --pretty=format: | rg '005_soviet_union_collapse.*(event_log|mission_balance|focus_cleanup|cleanup).*spec\.md'
 result: no matching tracked history entry for the missing continuation spec
+
+find . -path './.git' -prune -o -type f \( -iname 'error.log' -o -iname 'text.log' -o -iname '*event_log*mission*balance*focus*cleanup*' -o -iname '*mission_balance_focus*' \) -printf '%p %s bytes\n' | sort
+result: no files
 ```
 
 Present `tmp/` Event 005 spec files are:
@@ -318,7 +325,7 @@ Command evidence from the 2026-05-18 continuation audit:
 
 ```text
 brace depth/min for Event 005 focus, effect, trigger, decision, idea, constant, and event files: depth=0 min=0
-focuses 1500 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 missing_ai 0 missing_reward 0 dynamic_ai 303 dynamic_mutual_ai 128 flat_mutual_ai 50
+focuses 1500 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 missing_ai 0 missing_reward 0 dynamic_ai 353 dynamic_mutual_ai 178 flat_mutual_ai 0
 missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0 decision_blocks 254 timed_decisions 128 timed_outside_soviet_missions 0 categories_without_active_visible 0
 main_crisis_decision_ai dynamic_blocks 15 flat_blocks 0
 ideas 124 weak_lt3 0 no_modifier 0 tiny_only 0
@@ -334,7 +341,7 @@ The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` an
 
 ## Remaining Blockers
 
-`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored or explicitly waived.
+`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent. This prevents a strict final closure claim against every requested source and runtime evidence file until the missing files are restored or explicitly waived.
 
 ## Blocked Completion Report
 
@@ -351,6 +358,7 @@ The requested final completion report categories are not closed because the miss
 Resume checklist:
 
 - restore or explicitly waive `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md`.
+- restore or explicitly waive `tmp/error.log` and `tmp/text.log` if they are still expected as runtime evidence.
 - audit the restored spec line-by-line against current event log, mission balance, and focus cleanup artifacts.
 - update this completion audit with any requirements that restored spec adds or changes.
 - rerun the latest validation snapshot after any follow-up edits.
