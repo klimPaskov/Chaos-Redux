@@ -720,6 +720,10 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	categories = read_text(ROOT / "common/decisions/categories/005_soviet_collapse_categories.txt")
+	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
+	effect_tokens = tokens(effects)
+	maybe_blocks = named_blocks(effect_tokens, "soviet_collapse_maybe_show_union_unmade_super_event")
+	maybe_body = " ".join(maybe_blocks[0]) if maybe_blocks else ""
 
 	union_ok = all(
 		item in effects + triggers
@@ -731,6 +735,28 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 			"soviet_collapse_release_terminal_ordinary_republics",
 			"soviet_collapse_spawn_terminal_high_chaos_successors",
 		]
+	)
+	union_pacing_ok = (
+		len(maybe_blocks) == 1
+		and constants.get("soviet_collapse_super_event.min_breakaways_for_union_unmade", 0) >= 5
+		and constants.get("soviet_collapse_super_event.union_unmade_high_threat", 0) >= 60
+		and constants.get("soviet_collapse_super_event.union_unmade_critical_authority", 100) <= 25
+		and constants.get("soviet_collapse_super_event.union_unmade_contested_authority", 100) <= 45
+		and "NOT = { has_global_flag = soviet_collapse_super_event_union_unmade_fired }" in maybe_body
+		and "NOT = { has_global_flag = soviet_collapse_union_unmade_first_month_lock }" in maybe_body
+		and "compare = greater_than_or_equals" in maybe_body
+		and "constant:soviet_collapse_super_event.min_breakaways_for_union_unmade" in maybe_body
+		and "soviet_collapse_total_collapse_threat" in maybe_body
+		and "constant:soviet_collapse_super_event.union_unmade_high_threat" in maybe_body
+		and "soviet_collapse_moscow_authority" in maybe_body
+		and "constant:soviet_collapse_super_event.union_unmade_critical_authority" in maybe_body
+		and "constant:soviet_collapse_super_event.union_unmade_contested_authority" in maybe_body
+		and "soviet_collapse_free_republics_league_announced" in maybe_body
+		and "soviet_collapse_kazakhstan_first_wave_failed" in maybe_body
+		and "has_global_flag = { flag = chaos_tier value = 4 }" in maybe_body
+		and "has_global_flag = { flag = chaos_tier value = 5 }" in maybe_body
+		and "constant:soviet_collapse_soviet_objective.deep_collapse_threat" in maybe_body
+		and "soviet_collapse_show_union_unmade_super_event = yes" in maybe_body
 	)
 	missions = set(re.findall(r"^\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)\s*=\s*\{", decisions, re.MULTILINE))
 	remove_refs = set(re.findall(r"remove_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", effects))
@@ -751,7 +777,16 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 		for category in category_names
 	)
 	return [
-		Check("union_unmade_pacing", union_ok, f"first_month_lock_and_terminal_release_gates={union_ok}"),
+		Check(
+			"union_unmade_pacing",
+			union_ok and union_pacing_ok,
+			(
+				f"first_month_lock_and_terminal_release_gates={union_ok} "
+				f"trigger_ingredients={union_pacing_ok} min_breakaways={constants.get('soviet_collapse_super_event.min_breakaways_for_union_unmade', '')} "
+				f"high_threat={constants.get('soviet_collapse_super_event.union_unmade_high_threat', '')} "
+				f"critical_authority={constants.get('soviet_collapse_super_event.union_unmade_critical_authority', '')}"
+			),
+		),
 		Check(
 			"terminal_mission_cleanup",
 			cleanup_ok and categories_gated,
