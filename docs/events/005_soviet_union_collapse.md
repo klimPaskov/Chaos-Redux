@@ -6,6 +6,8 @@ Soviet Union Collapse is a one-per-campaign Liberations cluster event that turns
 
 The baseline crisis stages are ordinary crisis progression, not evolution logs. Evolutions remain reserved for separate mutation tracks such as old movements, depot states, railway authorities, foreign liaison networks, and high-chaos splinters.
 
+The Event Logs event-detail entry for Event 005 now uses scripted localisation to show the live broad crisis state, first-wave status, Free Republics' League status, Moscow Authority condition, Union Crisis Threat severity, foreign intervention level, and old-movement or high-chaos splinter pressure. The text stays in-world and reads the same crisis variables and flags that drive the gameplay board instead of using debug-style implementation notes.
+
 ## Current Implementation
 
 The implemented opening slices cover the crisis scaffold and the first intervention layer:
