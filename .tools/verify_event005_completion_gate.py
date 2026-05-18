@@ -57,6 +57,10 @@ CUSTOM_TAGS = [
 	"NLC", "SEP", "DSC", "COU", "BEC", "RLD", "LID", "IRA",
 ]
 
+ORDINARY_REPUBLIC_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST", "GEO", "ARM", "AZR", "UZB", "KYR", "TAJ", "TMS", "KAZ"]
+FIRST_WAVE_WESTERN_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST"]
+FIRST_WAVE_CAUCASUS_TAGS = ["GEO", "ARM", "AZR"]
+FIRST_WAVE_CENTRAL_ASIA_TAGS = ["UZB", "KYR", "TAJ", "TMS"]
 IDEOLOGIES = ["communism", "democratic", "fascism", "neutrality"]
 BANNED_PHRASE = "starts from a low dynamic baseline in calm conditions"
 XLSX_NS = {"a": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
@@ -403,9 +407,17 @@ def verify_first_wave_and_forces() -> list[Check]:
 	trigger_tokens = tokens(triggers)
 	release_blocks = named_blocks(effect_tokens, "soviet_collapse_release_initial_republics")
 	setup_blocks = named_blocks(effect_tokens, "soviet_collapse_apply_breakaway_setup_package")
+	western_blocks = named_blocks(effect_tokens, "soviet_collapse_add_random_first_wave_western_republic")
+	caucasus_blocks = named_blocks(effect_tokens, "soviet_collapse_add_random_first_wave_caucasus_republic")
+	central_blocks = named_blocks(effect_tokens, "soviet_collapse_add_random_first_wave_central_asian_republic")
+	extra_blocks = named_blocks(effect_tokens, "soviet_collapse_add_random_extra_first_wave_republic")
 	kaz_blocks = named_blocks(trigger_tokens, "can_soviet_collapse_open_kazakhstan_first_wave")
 	release_body = " ".join(release_blocks[0]) if release_blocks else ""
 	setup_body = " ".join(setup_blocks[0]) if setup_blocks else ""
+	western_body = " ".join(western_blocks[0]) if western_blocks else ""
+	caucasus_body = " ".join(caucasus_blocks[0]) if caucasus_blocks else ""
+	central_body = " ".join(central_blocks[0]) if central_blocks else ""
+	extra_body = " ".join(extra_blocks[0]) if extra_blocks else ""
 	kaz_body = " ".join(kaz_blocks[0]) if kaz_blocks else ""
 
 	first_wave_ok = all(
@@ -419,6 +431,19 @@ def verify_first_wave_and_forces() -> list[Check]:
 			"global.soviet_collapse_first_wave_republics",
 		]
 	) and "can_soviet_collapse_open_kazakhstan_first_wave" in release_body
+	pool_ok = (
+		all(f"tag = {tag}" in western_body for tag in FIRST_WAVE_WESTERN_TAGS)
+		and all(f"tag = {tag}" in caucasus_body for tag in FIRST_WAVE_CAUCASUS_TAGS)
+		and all(f"tag = {tag}" in central_body for tag in FIRST_WAVE_CENTRAL_ASIA_TAGS)
+		and all(f"tag = {tag}" in extra_body for tag in FIRST_WAVE_WESTERN_TAGS + FIRST_WAVE_CAUCASUS_TAGS + FIRST_WAVE_CENTRAL_ASIA_TAGS)
+		and "tag = KAZ" not in western_body + caucasus_body + central_body + extra_body
+		and western_body.count("random_select_amount = 1") == 1
+		and caucasus_body.count("random_select_amount = 1") == 1
+		and central_body.count("random_select_amount = 1") == 1
+		and "add_to_array = { array = global.soviet_collapse_first_wave_republics value = THIS }" in western_body
+		and "add_to_array = { array = global.soviet_collapse_first_wave_republics value = THIS }" in caucasus_body
+		and "add_to_array = { array = global.soviet_collapse_first_wave_republics value = THIS }" in central_body
+	)
 	kaz_ok = "is_soviet_collapse_southern_breakaway_active" in kaz_body and "chaos_tier" in kaz_body
 	force_ok = all(
 		item in setup_body
@@ -434,8 +459,51 @@ def verify_first_wave_and_forces() -> list[Check]:
 		]
 	)
 	return [
-		Check("first_wave_structure", first_wave_ok and kaz_ok, f"structured_pools={first_wave_ok} kazakhstan_gate={kaz_ok}"),
+		Check("first_wave_structure", first_wave_ok and pool_ok and kaz_ok, f"structured_pools={first_wave_ok} randomized_pool_tags={pool_ok} kazakhstan_gate={kaz_ok}"),
 		Check("dynamic_force_package", force_ok, f"manpower_equipment_templates_units_terminal_scaling={force_ok}"),
+	]
+
+
+def verify_terminal_ordinary_republics() -> list[Check]:
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	effect_tokens = tokens(effects)
+	terminal_blocks = named_blocks(effect_tokens, "soviet_collapse_release_terminal_ordinary_republics")
+	terminal_body = " ".join(terminal_blocks[0]) if terminal_blocks else ""
+	missing_tags = [tag for tag in ORDINARY_REPUBLIC_TAGS if f"tag = {tag}" not in terminal_body]
+	release_and_subject_ok = all(
+		item in terminal_body
+		for item in [
+			"every_possible_country",
+			"exists = no",
+			"is_owned_by = SOV",
+			"is_controlled_by = SOV",
+			"SOV = { release = PREV }",
+			"exists = yes",
+			"is_subject_of = SOV",
+			"SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }",
+			"soviet_collapse_setup_breakaway_country",
+			"soviet_collapse_load_event_created_focus_tree",
+		]
+	)
+	terminal_collapse_ok = all(
+		item in effects
+		for item in [
+			"soviet_collapse_apply_terminal_collapse",
+			"soviet_collapse_release_terminal_ordinary_republics = yes",
+			"soviet_collapse_spawn_terminal_high_chaos_successors = yes",
+			"soviet_collapse_cleanup_terminal_collapse_missions = yes",
+		]
+	)
+	ok = len(terminal_blocks) == 1 and not missing_tags and release_and_subject_ok and terminal_collapse_ok
+	return [
+		Check(
+			"terminal_ordinary_republic_release_surface",
+			ok,
+			(
+				f"helpers={len(terminal_blocks)} ordinary_tags={len(ORDINARY_REPUBLIC_TAGS) - len(missing_tags)}/{len(ORDINARY_REPUBLIC_TAGS)} "
+				f"release_and_subject_paths={release_and_subject_ok} terminal_collapse_calls={terminal_collapse_ok}"
+			),
+		)
 	]
 
 
@@ -1057,6 +1125,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_first_wave_and_forces())
 	checks.extend(verify_crisis_balance())
 	checks.extend(verify_union_unmade_and_cleanup())
+	checks.extend(verify_terminal_ordinary_republics())
 	checks.extend(verify_terminal_high_chaos_successors())
 	checks.extend(verify_localisation_and_event_log())
 	checks.extend(verify_flags())
