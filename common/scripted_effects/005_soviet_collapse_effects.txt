@@ -847,7 +847,7 @@ soviet_collapse_apply_breakaway_setup_package = {
 	add_manpower = var:soviet_collapse_breakaway_manpower_package
 	add_equipment_to_stockpile = { type = infantry_equipment amount = var:soviet_collapse_breakaway_infantry_equipment_package }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = var:soviet_collapse_breakaway_support_equipment_package }
-	add_equipment_to_stockpile = { type = artillery_equipment amount = var:soviet_collapse_breakaway_artillery_equipment_package }
+	add_equipment_to_stockpile = { type = artillery_equipment_1 amount = var:soviet_collapse_breakaway_artillery_equipment_package }
 	add_ideas = soviet_collapse_captured_soviet_depots
 	add_ideas = soviet_collapse_defensive_coordination
 
@@ -990,6 +990,16 @@ soviet_collapse_apply_foreign_recognition_aid = {
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_stability = constant:soviet_collapse_foreign_intervention.recognition_stability_spend
 	add_war_support = constant:soviet_collapse_foreign_intervention.recognition_war_support_spend
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		add_stability = constant:soviet_collapse_foreign_intervention.recognition_regional_stability_extra_spend
+		add_war_support = constant:soviet_collapse_foreign_intervention.recognition_regional_war_support_extra_spend
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		add_stability = constant:soviet_collapse_foreign_intervention.recognition_major_stability_extra_spend
+		add_war_support = constant:soviet_collapse_foreign_intervention.recognition_major_war_support_extra_spend
+	}
 	FROM = {
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.recognition_progress }
 		add_ideas = soviet_collapse_legal_restoration_claim
@@ -1008,6 +1018,14 @@ soviet_collapse_apply_foreign_liaison_aid = {
 	if = { limit = { has_government = democratic } set_country_flag = soviet_collapse_democratic_patron_contest_completed }
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_stability = constant:soviet_collapse_foreign_intervention.liaison_stability_spend
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		add_stability = constant:soviet_collapse_foreign_intervention.liaison_regional_stability_extra_spend
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		add_stability = constant:soviet_collapse_foreign_intervention.liaison_major_stability_extra_spend
+	}
 	if = { limit = { has_government = communism } FROM = { add_popularity = { ideology = communism popularity = constant:soviet_collapse_foreign_intervention.liaison_ideology_popularity } } }
 	if = { limit = { has_government = democratic } FROM = { add_popularity = { ideology = democratic popularity = constant:soviet_collapse_foreign_intervention.liaison_ideology_popularity } } }
 	if = { limit = { has_government = fascism } FROM = { add_popularity = { ideology = fascism popularity = constant:soviet_collapse_foreign_intervention.liaison_ideology_popularity } } }
@@ -1029,6 +1047,16 @@ soviet_collapse_apply_foreign_armaments_aid = {
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.armaments_infantry_equipment_spend }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.armaments_support_equipment_spend }
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.armaments_regional_infantry_equipment_extra_spend }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.armaments_regional_support_equipment_extra_spend }
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.armaments_major_infantry_equipment_extra_spend }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.armaments_major_support_equipment_extra_spend }
+	}
 	FROM = {
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.armaments_target_infantry_equipment producer = ROOT }
 		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.armaments_target_support_equipment producer = ROOT }
@@ -1049,6 +1077,16 @@ soviet_collapse_apply_foreign_adviser_aid = {
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	army_experience = constant:soviet_collapse_foreign_intervention.advisers_army_xp_spend
 	add_manpower = constant:soviet_collapse_foreign_intervention.advisers_manpower_spend
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		army_experience = constant:soviet_collapse_foreign_intervention.advisers_regional_army_xp_extra_spend
+		add_manpower = constant:soviet_collapse_foreign_intervention.advisers_regional_manpower_extra_spend
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		army_experience = constant:soviet_collapse_foreign_intervention.advisers_major_army_xp_extra_spend
+		add_manpower = constant:soviet_collapse_foreign_intervention.advisers_major_manpower_extra_spend
+	}
 	FROM = {
 		army_experience = constant:soviet_collapse_foreign_intervention.advisers_target_army_xp
 		add_command_power = constant:soviet_collapse_foreign_intervention.advisers_target_command_power
@@ -1069,6 +1107,16 @@ soviet_collapse_apply_foreign_intelligence_aid = {
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_fuel = constant:soviet_collapse_foreign_intervention.intelligence_fuel_spend
 	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_foreign_intervention.intelligence_train_spend }
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		add_fuel = constant:soviet_collapse_foreign_intervention.intelligence_regional_fuel_extra_spend
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_foreign_intervention.intelligence_regional_train_extra_spend }
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		add_fuel = constant:soviet_collapse_foreign_intervention.intelligence_major_fuel_extra_spend
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_foreign_intervention.intelligence_major_train_extra_spend }
+	}
 	FROM = {
 		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_foreign_intervention.intelligence_depot_control }
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.intelligence_recognition_progress }
@@ -1088,6 +1136,16 @@ soviet_collapse_apply_foreign_volunteer_aid = {
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_manpower = constant:soviet_collapse_foreign_intervention.volunteers_manpower_spend
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.volunteers_infantry_equipment_spend }
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		add_manpower = constant:soviet_collapse_foreign_intervention.volunteers_regional_manpower_extra_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.volunteers_regional_infantry_equipment_extra_spend }
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		add_manpower = constant:soviet_collapse_foreign_intervention.volunteers_major_manpower_extra_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.volunteers_major_infantry_equipment_extra_spend }
+	}
 	FROM = {
 		add_manpower = constant:soviet_collapse_foreign_intervention.volunteers_target_manpower
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.volunteers_target_infantry_equipment producer = ROOT }
@@ -1109,6 +1167,16 @@ soviet_collapse_apply_foreign_trade_aid = {
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_fuel = constant:soviet_collapse_foreign_intervention.trade_fuel_spend
 	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_foreign_intervention.trade_convoy_spend }
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		add_fuel = constant:soviet_collapse_foreign_intervention.trade_regional_fuel_extra_spend
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_foreign_intervention.trade_regional_convoy_extra_spend }
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		add_fuel = constant:soviet_collapse_foreign_intervention.trade_major_fuel_extra_spend
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_foreign_intervention.trade_major_convoy_extra_spend }
+	}
 	FROM = {
 		add_stability = constant:soviet_collapse_foreign_intervention.trade_target_stability
 		add_political_power = constant:soviet_collapse_foreign_intervention.trade_target_political_power
