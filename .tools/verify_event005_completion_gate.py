@@ -826,9 +826,14 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 def verify_crisis_balance() -> list[Check]:
 	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	effect_tokens = tokens(effects)
 	calm_authority, calm_threat = crisis_scenario(constants)
 	tier1_authority, tier1_threat = crisis_scenario(constants, tier=1)
 	severe_authority, severe_threat = crisis_scenario(constants, tier=5, low_stability=True, low_war_support=True, active_war=True, capital_lost=True)
+	recalculate_blocks = named_blocks(effect_tokens, "soviet_collapse_recalculate_total_threat")
+	initialize_blocks = named_blocks(effect_tokens, "soviet_collapse_initialize_crisis_values")
+	recalculate_body = " ".join(recalculate_blocks[0]) if recalculate_blocks else ""
+	initialize_body = " ".join(initialize_blocks[0]) if initialize_blocks else ""
 	visible_causes = all(
 		item in effects
 		for item in [
@@ -844,6 +849,61 @@ def verify_crisis_balance() -> list[Check]:
 		]
 	)
 	pressure_helpers = len(re.findall(r"soviet_collapse_apply_(?:successful|failed)_[A-Za-z0-9_]*objective_pressure\s*=", effects))
+	component_variables = [
+		"soviet_collapse_moscow_authority",
+		"soviet_collapse_republic_confidence",
+		"soviet_collapse_military_obedience",
+		"soviet_collapse_depot_vulnerability",
+		"soviet_collapse_foreign_appetite",
+		"soviet_collapse_league_cohesion",
+		"soviet_collapse_evolution_weirdness",
+	]
+	recalculate_surface = (
+		len(recalculate_blocks) == 1
+		and "soviet_collapse_clamp_crisis_components = yes" in recalculate_body
+		and all(var in recalculate_body for var in component_variables)
+		and "subtract_from_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_moscow_authority }" in recalculate_body
+		and "subtract_from_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_military_obedience }" in recalculate_body
+		and "multiply_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_baseline.total_threat_multiplier }" in recalculate_body
+		and "clamp_variable = { var = soviet_collapse_total_collapse_threat min = constant:soviet_collapse_baseline.total_threat_floor max = constant:soviet_collapse_baseline.total_threat_ceiling }" in recalculate_body
+		and constants.get("soviet_collapse_baseline.total_threat_multiplier", 1) < 1
+	)
+	opening_surface = (
+		len(initialize_blocks) == 1
+		and all(f"set_variable = {{ {var} = constant:soviet_collapse_baseline.{var.removeprefix('soviet_collapse_')} }}" in initialize_body for var in component_variables)
+		and all(f"has_global_flag = {{ flag = chaos_tier value = {tier} }}" in initialize_body for tier in [1, 2, 3, 4, 5])
+		and "has_stability < constant:soviet_collapse_soviet_objective.good_stability" in initialize_body
+		and "has_war_support < constant:soviet_collapse_soviet_objective.good_war_support" in initialize_body
+		and "has_war = yes" in initialize_body
+		and "NOT = { capital_scope = { is_controlled_by = ROOT } }" in initialize_body
+		and "soviet_collapse_recalculate_total_threat = yes" in initialize_body
+	)
+	pressure_families = {
+		"authority": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite"],
+		"legal": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_evolution_weirdness"],
+		"command": ["soviet_collapse_moscow_authority", "soviet_collapse_military_obedience", "soviet_collapse_republic_confidence"],
+		"rail": ["soviet_collapse_military_obedience", "soviet_collapse_depot_vulnerability", "soviet_collapse_foreign_appetite"],
+		"depot": ["soviet_collapse_republic_confidence", "soviet_collapse_depot_vulnerability"],
+		"old_movement": ["soviet_collapse_moscow_authority", "soviet_collapse_depot_vulnerability", "soviet_collapse_evolution_weirdness"],
+		"foreign": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite"],
+		"cleanup": ["soviet_collapse_moscow_authority", "soviet_collapse_military_obedience", "soviet_collapse_depot_vulnerability"],
+		"settlement": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite", "soviet_collapse_league_cohesion"],
+		"league": ["soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite", "soviet_collapse_league_cohesion"],
+	}
+	covered_pressure_families = 0
+	for family, variables in pressure_families.items():
+		success_blocks = named_blocks(effect_tokens, f"soviet_collapse_apply_successful_{family}_objective_pressure")
+		failure_blocks = named_blocks(effect_tokens, f"soviet_collapse_apply_failed_{family}_objective_pressure")
+		success_body = " ".join(success_blocks[0]) if success_blocks else ""
+		failure_body = " ".join(failure_blocks[0]) if failure_blocks else ""
+		if (
+			len(success_blocks) == 1
+			and len(failure_blocks) == 1
+			and all(var in success_body + failure_body for var in variables)
+			and "soviet_collapse_recalculate_total_threat = yes" in success_body
+			and "soviet_collapse_recalculate_total_threat = yes" in failure_body
+		):
+			covered_pressure_families += 1
 	ok = (
 		calm_authority >= 50
 		and calm_threat < 25
@@ -854,6 +914,7 @@ def verify_crisis_balance() -> list[Check]:
 		and visible_causes
 		and pressure_helpers >= 20
 	)
+	cause_ok = recalculate_surface and opening_surface and covered_pressure_families == len(pressure_families)
 	return [
 		Check(
 			"crisis_balance_surface",
@@ -864,7 +925,16 @@ def verify_crisis_balance() -> list[Check]:
 				f"severe_authority={severe_authority:.0f} severe_threat={severe_threat:.2f} "
 				f"visible_causes={visible_causes} pressure_helpers={pressure_helpers}"
 			),
-		)
+		),
+		Check(
+			"crisis_cause_surface",
+			cause_ok,
+			(
+				f"recalculate_surface={recalculate_surface} opening_surface={opening_surface} "
+				f"pressure_families={covered_pressure_families}/{len(pressure_families)} "
+				f"multiplier={constants.get('soviet_collapse_baseline.total_threat_multiplier', 0):.2f}"
+			),
+		),
 	]
 
 
@@ -1537,6 +1607,7 @@ def verify_docs_surface() -> list[Check]:
 		"focus_layout_surface",
 		"first_wave_release_surface",
 		"focus_ai_surface",
+		"crisis_cause_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
