@@ -10,6 +10,12 @@
 @soviet_collapse_breakaway_action_days_reenable = 35
 @soviet_collapse_foreign_intervention_days_reenable = 45
 @soviet_collapse_factory_ancient_days_reenable = 42
+@soviet_collapse_ai_low = 1
+@soviet_collapse_ai_medium = 2
+@soviet_collapse_ai_high = 3
+@soviet_collapse_ai_calm_multiplier = 0.5
+@soviet_collapse_ai_pressure_multiplier = 2
+@soviet_collapse_ai_urgent_multiplier = 3
 
 soviet_collapse_soviet_category = {
 	soviet_collapse_restore_party_control = {
@@ -29,7 +35,21 @@ soviet_collapse_soviet_category = {
 			soviet_collapse_recalculate_total_threat = yes
 			custom_effect_tooltip = soviet_collapse_restore_party_control_tt
 		}
-		ai_will_do = { factor = 2 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
+			}
+		}
 	}
 
 	soviet_collapse_send_loyalist_officers = {
@@ -48,7 +68,21 @@ soviet_collapse_soviet_category = {
 			soviet_collapse_recalculate_total_threat = yes
 			custom_effect_tooltip = soviet_collapse_send_loyalist_officers_tt
 		}
-		ai_will_do = { factor = 3 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war = yes
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than }
+			}
+		}
 	}
 
 	soviet_collapse_cut_rebel_supply_routes = {
@@ -67,7 +101,21 @@ soviet_collapse_soviet_category = {
 			soviet_collapse_recalculate_total_threat = yes
 			custom_effect_tooltip = soviet_collapse_cut_rebel_supply_routes_tt
 		}
-		ai_will_do = { factor = 2 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_global_flag = soviet_collapse_free_republics_league_announced
+			}
+		}
 	}
 
 	soviet_collapse_emergency_mobilize_reserves = {
@@ -93,7 +141,21 @@ soviet_collapse_soviet_category = {
 			soviet_collapse_recalculate_total_threat = yes
 			custom_effect_tooltip = soviet_collapse_emergency_mobilization_tt
 		}
-		ai_will_do = { factor = 2 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war = yes
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than }
+			}
+		}
 	}
 
 	soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command = {
@@ -1645,7 +1707,21 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_breakaway_recognition_request = yes
 			custom_effect_tooltip = soviet_collapse_request_foreign_recognition_tt
 		}
-		ai_will_do = { factor = 2 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				NOT = { is_in_faction = yes }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals } }
+			}
+		}
 	}
 
 	soviet_collapse_mobilize_defense_units = {
@@ -1659,7 +1735,21 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_breakaway_mobilization = yes
 			custom_effect_tooltip = soviet_collapse_mobilize_defense_units_tt
 		}
-		ai_will_do = { factor = 3 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } }
+			}
+		}
 	}
 
 	soviet_collapse_seize_depots = {
@@ -1673,7 +1763,21 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_breakaway_depot_seizure = yes
 			custom_effect_tooltip = soviet_collapse_seize_depots_tt
 		}
-		ai_will_do = { factor = 2 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+		}
 	}
 
 	soviet_collapse_coordinate_fronts = {
@@ -1687,7 +1791,21 @@ soviet_collapse_breakaway_category = {
 			soviet_collapse_apply_breakaway_front_coordination = yes
 			custom_effect_tooltip = soviet_collapse_coordinate_fronts_tt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_global_flag = soviet_collapse_free_republics_league_announced
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				is_in_faction = yes
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than } }
+			}
+		}
 	}
 }
 
@@ -1705,7 +1823,21 @@ soviet_collapse_foreign_patron_category = {
 			soviet_collapse_apply_foreign_recognition_aid = yes
 			custom_effect_tooltip = soviet_collapse_recognize_breakaway_government_tt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				has_war_with = SOV
+			}
+		}
 	}
 
 	soviet_collapse_fund_ideological_liaison_offices = {
@@ -1721,7 +1853,17 @@ soviet_collapse_foreign_patron_category = {
 			soviet_collapse_apply_foreign_liaison_aid = yes
 			custom_effect_tooltip = soviet_collapse_fund_ideological_liaison_offices_tt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } }
+			}
+		}
 	}
 
 	soviet_collapse_ship_border_armaments = {
@@ -1737,7 +1879,17 @@ soviet_collapse_foreign_patron_category = {
 			soviet_collapse_apply_foreign_armaments_aid = yes
 			custom_effect_tooltip = soviet_collapse_ship_border_armaments_tt
 		}
-		ai_will_do = { factor = 2 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } }
+			}
+		}
 	}
 
 	soviet_collapse_dispatch_military_advisers = {
@@ -1753,7 +1905,17 @@ soviet_collapse_foreign_patron_category = {
 			soviet_collapse_apply_foreign_adviser_aid = yes
 			custom_effect_tooltip = soviet_collapse_dispatch_military_advisers_tt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+		}
 	}
 
 	soviet_collapse_open_republican_intelligence_channel = {
@@ -1769,7 +1931,17 @@ soviet_collapse_foreign_patron_category = {
 			soviet_collapse_apply_foreign_intelligence_aid = yes
 			custom_effect_tooltip = soviet_collapse_open_republican_intelligence_channel_tt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } }
+			}
+		}
 	}
 
 	soviet_collapse_sponsor_volunteer_corps = {
@@ -1785,7 +1957,17 @@ soviet_collapse_foreign_patron_category = {
 			soviet_collapse_apply_foreign_volunteer_aid = yes
 			custom_effect_tooltip = soviet_collapse_sponsor_volunteer_corps_tt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than } }
+			}
+		}
 	}
 
 	soviet_collapse_negotiate_republican_trade_mission = {
@@ -1801,7 +1983,17 @@ soviet_collapse_foreign_patron_category = {
 			soviet_collapse_apply_foreign_trade_aid = yes
 			custom_effect_tooltip = soviet_collapse_negotiate_republican_trade_mission_tt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_global_flag = soviet_collapse_free_republics_league_announced
+			}
+		}
 	}
 }
 
