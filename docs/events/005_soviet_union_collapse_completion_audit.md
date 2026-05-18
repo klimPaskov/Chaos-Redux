@@ -623,6 +623,32 @@ libreoffice_headless_convert ok
 stale_missing_logs_status_hits 0
 ```
 
+Current Event 005 comprehensive correction overlap validation:
+
+```text
+missing_continuation_spec_present False
+removed_runtime_logs_current_blockers False
+event5_detail_mapping True
+event_detail_main_loc_present True file localisation/english/chaosx_gui_l_english.yml
+event_detail_main_refs_count 7 missing_refs none
+event_detail_functions 7 missing_funcs none
+event_detail_function_fallback_missing none
+event_detail_function_loc_missing 0 detail_keys_missing_all 0
+event_detail_function_key_counts CrisisState:3,FirstWave:4,League:2,Authority:5,Threat:4,Foreign:4,Mutation:3
+event005_direct_evolution_writer_calls 1
+event005_record_helper_sets_event_type_tier True
+event005_record_helper_actor_target True
+event005_record_helper_duplicate_tier_flags True
+event005_setup_stage_record_calls 38
+event005_spawn_context_triplets 38
+event005_evolution_enabled_gates 38
+event005_baseline_event_file_direct_record False
+restore_party_control_expected_spends True
+send_loyalist_officers_expected_spends True
+send_loyalist_officers_equipment_or_manpower_spend False
+decision_cost_constants_missing none
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored, explicitly waived, or fully covered by implementation evidence.
@@ -649,7 +675,7 @@ Resume checklist:
 
 ## Resume Packet
 
-Latest committed validation head before this audit update: `d1e5f3c Record Soviet collapse terminal validation`.
+Latest committed validation head before this audit update: `9efdf57 Refresh Soviet collapse spreadsheet blocker status`.
 
 Use this source order on resume:
 
