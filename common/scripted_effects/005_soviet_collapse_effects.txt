@@ -7,6 +7,8 @@
 # separate mutation tracks and are not represented here as stage logs.
 # ============================================================================
 
+@soviet_collapse_progressive_release_cooldown_days = 30
+
 soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_moscow_authority min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_republic_confidence min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -3804,10 +3806,9 @@ soviet_collapse_release_one_threat_breakaway_republic = {
 	soviet_collapse_add_random_threat_breakaway_republic = yes
 	soviet_collapse_release_selected_first_wave_republics = yes
 	clear_array = global.soviet_collapse_first_wave_republics
-	set_temp_variable = { soviet_collapse_progressive_release_cooldown_days = constant:soviet_collapse_progressive_release.cooldown_days }
 	set_global_flag = {
 		flag = soviet_collapse_progressive_release_cooldown
-		days = soviet_collapse_progressive_release_cooldown_days
+		days = @soviet_collapse_progressive_release_cooldown_days
 	}
 }
 

@@ -360,6 +360,7 @@ def verify_focuses() -> list[Check]:
 		prereq_refs = collect_focus_refs(top_level_block_bodies(block, "prerequisite"))
 		mutual_blocks = top_level_block_bodies(block, "mutually_exclusive")
 		mutual_refs = collect_focus_refs(mutual_blocks)
+		completed_refs = re.findall(r"\bhas_completed_focus\s*=\s*([A-Za-z0-9_]+)", " ".join(block))
 		ai_blocks = top_level_block_bodies(block, "ai_will_do")
 		ai_block_count += len(ai_blocks)
 		has_dynamic_ai = any("modifier" in ai_body for ai_body in ai_blocks)
@@ -373,7 +374,7 @@ def verify_focuses() -> list[Check]:
 				flat_mutual_ai += 1
 		if len(mutual_blocks) > 1:
 			repeated_mutual_blocks += 1
-		for ref in prereq_refs + mutual_refs:
+		for ref in prereq_refs + mutual_refs + completed_refs:
 			if ref not in id_set:
 				missing_refs.append((focus_id, ref))
 			if ref == focus_id:
@@ -2642,6 +2643,7 @@ def verify_braces_and_unsupported() -> list[Check]:
 	bad_braces = []
 	bad_operator = []
 	bad_scoped_temp = []
+	bad_bare_days = []
 	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES:
 		text = read_text(path)
 		depth = 0
@@ -2658,10 +2660,13 @@ def verify_braces_and_unsupported() -> list[Check]:
 			bad_operator.append(str(path.relative_to(ROOT)))
 		if re.search(r"\b(?:ROOT|PREV|FROM|THIS)\.[A-Za-z0-9_]*temp[A-Za-z0-9_]*", text):
 			bad_scoped_temp.append(str(path.relative_to(ROOT)))
+		if re.search(r"\bdays\s*=\s*(?!constant:|var:|@)[A-Za-z_][A-Za-z0-9_]*", text):
+			bad_bare_days.append(str(path.relative_to(ROOT)))
 	return [
 		Check("brace_depth", not bad_braces, f"bad_files={len(bad_braces)}"),
 		Check("unsupported_operator_scan", not bad_operator, f"files_with_unsupported_operator={len(bad_operator)}"),
 		Check("scoped_temp_variable_scan", not bad_scoped_temp, f"files_with_scoped_temp_variables={len(bad_scoped_temp)}"),
+		Check("bare_days_token_scan", not bad_bare_days, f"files_with_bare_days_tokens={len(bad_bare_days)}"),
 	]
 
 
