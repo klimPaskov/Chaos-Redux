@@ -96,7 +96,7 @@ Present `tmp/` Event 005 spec files are:
 | Super-event slot 27, The Eastern Buffer Coalition | `moldova_soviet_collapse_alliance_not_union` calls `soviet_collapse_show_eastern_buffer_coalition_super_event` | Implemented through the Moldova regional tree |
 | Docs | Event doc and super-event research docs exist and are aligned with current route wiring | Implemented for current surfaces |
 | Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, super-event assets, and the 570-file custom flag orientation audit; no historical flags were regenerated in the latest pass | Implemented for current surfaces |
-| Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, use vanilla-matching bottom-origin TGA headers, and small/medium variants match their large source orientation rather than a flipped source | Audit passed; no binary correction required by current evidence |
+| Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, decode cleanly, use vanilla-matching bottom-origin TGA headers, and average-downsample comparison finds no small/medium variant closer to a vertically flipped large source | Audit passed; no binary correction required by current evidence |
 | Localisation design-language cleanup | Search across `common/`, `events/`, `localisation/`, `interface/`, and `docs/` found no player-facing instance of `starts from a low dynamic baseline in calm conditions` | Implemented |
 | Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, now summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and updated implementation status | Implemented; workbook package and LibreOffice open/convert validation passed |
 | Completion readiness | Current audit records the available spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Not closed because one requested continuation spec file is absent from `tmp/` |
@@ -322,7 +322,7 @@ missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 a
 main_crisis_decision_ai dynamic_blocks 15 flat_blocks 0
 ideas 124 weak_lt3 0 no_modifier 0
 banned_phrase_hits 0
-flags_checked 570 flags_missing 0 bottom_origin 570 top_origin 0
+flags_checked 570 flags_missing 0 decode_errors 0 bottom_origin 570 top_origin 0 orientation_mismatches 0
 git diff --check clean
 unsupported operator/scope/localisation scan clean for the audited Event 005 files
 ```
