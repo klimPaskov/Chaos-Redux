@@ -394,6 +394,26 @@ unsupported_operator_scan files_scanned 561 unsupported_operator_hits 0
 player_facing_banned_phrase_scan hits 0
 ```
 
+Current Event 005 localisation validation:
+
+```text
+files 8
+missing_bom 0
+decode_errors 0
+colon_zero_keys 0
+leading_key_space 0
+banned_phrase_hits 0
+utf8_bom_prefixes
+localisation/english/005_soviet_collapse_blr_focus_l_english.yml efbbbf
+localisation/english/005_soviet_collapse_custom_countries_l_english.yml efbbbf
+localisation/english/005_soviet_collapse_focus_decisions_l_english.yml efbbbf
+localisation/english/005_soviet_collapse_focus_expansion_l_english.yml efbbbf
+localisation/english/005_soviet_collapse_kaz_focus_l_english.yml efbbbf
+localisation/english/005_soviet_collapse_l_english.yml efbbbf
+localisation/english/005_soviet_collapse_regional_focus_l_english.yml efbbbf
+localisation/english/005_soviet_collapse_ukraine_focus_l_english.yml efbbbf
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent. This prevents a strict final closure claim against every requested source and runtime evidence file until the missing files are restored or explicitly waived.
