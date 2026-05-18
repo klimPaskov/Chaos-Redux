@@ -6,6 +6,7 @@ This audit records the source files available for the current Event 005 correcti
 
 | Requested input | State | Lines | Bytes | SHA-256 |
 | --- | --- | ---: | ---: | --- |
+| `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | present | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
 | `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` | present | 287 | 15899 | `9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750` |
 | `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` | missing | 0 | 0 | n/a |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md` | present | 3418 | 162378 | `c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7` |
@@ -69,4 +70,4 @@ The `/home/klim` hit is an unrelated zero-byte npm package log outside the Chaos
 
 ## Completion Impact
 
-The current pass can continue from the available source-of-truth files, especially `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md`. Final completion cannot be claimed from inputs alone while the exact named event-log/mission-balance/focus-cleanup spec remains absent; the final audit must either recover that exact file, explicitly waive it, or verify every requirement it would have covered against implementation evidence. The intentionally removed `tmp/error.log` and `tmp/text.log` files are not blockers after the user's 2026-05-18 clarification.
+The current pass can continue from the available source-of-truth files, especially `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` and the later spawn-balance cleanup spec. Final completion cannot be claimed from inputs alone while the exact named event-log/mission-balance/focus-cleanup spec remains absent; the final audit must either recover that exact file, explicitly waive it, or verify every requirement it would have covered against implementation evidence. The intentionally removed `tmp/error.log` and `tmp/text.log` files are not blockers after the user's 2026-05-18 clarification.

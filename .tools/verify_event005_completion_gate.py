@@ -43,6 +43,7 @@ EVENT005_SCRIPT_FILES = [
 ]
 
 REQUIRED_INPUTS = [
+	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
 	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
 	"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
@@ -78,6 +79,7 @@ REQUIRED_REFERENCE_INPUTS = [
 ]
 
 REQUIRED_SOURCE_ORDER = [
+	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
 	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
 	"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
@@ -924,6 +926,64 @@ def verify_available_source_acceptance_surface() -> list[Check]:
 	]
 
 
+def verify_comprehensive_source_acceptance_surface() -> list[Check]:
+	comprehensive_spec = read_text(ROOT / "tmp/005_soviet_union_collapse_comprehensive_correction_spec.md")
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	source_markers = [
+		"This file is the source of truth for the next correction pass",
+		"Event log window details are mandatory",
+		"Evolutions are not baseline stages",
+		"Mission duration correction",
+		"Decision cost corrections",
+		"Blocked decision and cost localisation",
+		"Remove design-language localisation",
+		"Threat balance correction",
+		"Moscow Authority correction",
+		"Stronger Soviet Collapse ideas",
+		"Random first-wave release rules",
+		"Chaos-scaled opening size and support",
+		"Starting divisions and release force scaling",
+		"Union Unmade pacing",
+		"Union Unmade release rule",
+		"Terminal collapse unit packages",
+		"Cleanup after full Soviet collapse",
+		"Focus tree cleanup",
+		"Flag orientation fix",
+		"Acceptance criteria",
+	]
+	audit_markers = [
+		"Comprehensive source-of-truth coverage",
+		"comprehensive_source_acceptance_surface",
+		"event_log_detail_surface",
+		"evolution_logging_surface",
+		"soviet_objective_board_surface",
+		"decision cost corrections",
+		"banned_phrase_cleanup",
+		"crisis_balance_surface",
+		"crisis_cause_surface",
+		"idea_package_surface",
+		"first_wave_release_surface",
+		"force_scaling_surface",
+		"union_unmade_pacing",
+		"terminal_mission_cleanup",
+		"focus_layout_surface",
+		"flag_orientation_surface",
+		"docs_completion_surface",
+	]
+	missing_source = [marker for marker in source_markers if marker not in comprehensive_spec]
+	missing_audit = [marker for marker in audit_markers if marker not in completion_audit]
+	return [
+		Check(
+			"comprehensive_source_acceptance_surface",
+			not missing_source and not missing_audit,
+			(
+				f"source_markers={len(source_markers) - len(missing_source)}/{len(source_markers)} "
+				f"audit_markers={len(audit_markers) - len(missing_audit)}/{len(audit_markers)}"
+			),
+		)
+	]
+
+
 def verify_prompt_artifact_checklist_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	try:
@@ -932,6 +992,7 @@ def verify_prompt_artifact_checklist_surface() -> list[Check]:
 		return [Check("prompt_artifact_checklist_surface", False, "checklist_section=False")]
 	required_rows = [
 		"Missing continuation direct coverage",
+		"Comprehensive source-of-truth coverage",
 		"Available source acceptance criteria coverage",
 		"Stronger Soviet Collapse ideas and spirits",
 		"Random first wave from structured pools",
@@ -2375,6 +2436,7 @@ def verify_docs_surface() -> list[Check]:
 		"resume_validation_commands_surface",
 		"success_criteria_surface",
 		"available_source_acceptance_surface",
+		"comprehensive_source_acceptance_surface",
 		"prompt_artifact_checklist_surface",
 		"verifier_command_documentation_surface",
 		"focus_tree_map_surface",
@@ -2505,6 +2567,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_resume_validation_commands_surface())
 	checks.extend(verify_success_criteria_surface())
 	checks.extend(verify_available_source_acceptance_surface())
+	checks.extend(verify_comprehensive_source_acceptance_surface())
 	checks.extend(verify_prompt_artifact_checklist_surface())
 	checks.extend(verify_verifier_command_documentation_surface())
 	checks.extend(verify_focus_tree_map_documentation_surface())
