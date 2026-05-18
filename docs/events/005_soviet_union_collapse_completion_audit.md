@@ -346,6 +346,28 @@ git diff --check clean
 unsupported operator/scope/localisation scan clean for the audited Event 005 files
 ```
 
+Current prompt-to-artifact spot audit after commit `8ac61ed`:
+
+```text
+input_files spawn_spec present bytes 15899 lines 287 sha256 9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750
+input_files continuation_spec missing
+input_files clean1 present bytes 162378 lines 3418 sha256 c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7
+input_files clean2 present bytes 191503 lines 6327 sha256 32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234
+input_files clean3 present bytes 554089 lines 7535 sha256 724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7
+input_files clean4 present bytes 148956 lines 3889 sha256 60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428
+input_files error_log missing
+input_files text_log missing
+ideas_audit ideas 124 no_mod 0 weak_lt3 0 tiny_only 0 min_mods 3 max_mods 7 missing_sprite 0 missing_dds 0 missing_loc_or_desc 0
+first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_random 1 normal_pool_has_kaz False kaz_gate_southern True kaz_gate_tier4 True extra_calls 3
+force_package_audit manpower True equipment 3 templates 2 create_unit 2 major_scaling True regional_scaling True chaos_scaling 4 war_scaling True weak_center_scaling True terminal_scaling True
+union_unmade_audit first_month_lock_in_init True lock_blocks_fire True min_breakaways_gate True high_threat_gate True critical_authority_gate True league_or_kaz_or_chaos True
+terminal_release_audit ordinary_tags_present 14 ordinary_expected 14 release_calls 1 free_subject_calls 1 setup_calls 2
+cleanup_audit missions 128 remove_refs 128 active_flag_cleared True categories_gated 42
+focus_surface_audit focuses 1500 continuous_positions 46
+localisation_phrase_audit banned_phrase_hits 0
+blockers missing_inputs ['continuation_spec', 'error_log', 'text_log']
+```
+
 The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` and `baltic_soviet_collapse_sponsor_fleet_rights` was caused by repeated `mutually_exclusive` keys on the sponsor focus. Event 005 focus trees now use one mutual-exclusion block per focus, and the all-focus repeated-key scan returns zero hits.
 
 ## Remaining Blockers
