@@ -312,6 +312,106 @@ has_recovered_soviet_collapse_breakaway_capital = {
 	}
 }
 
+can_confirm_soviet_collapse_emergency_chain_of_command = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_army_experience > constant:soviet_collapse_soviet_objective.good_army_xp
+	num_divisions_in_states = {
+		count > 6
+		states = { 219 214 195 209 }
+	}
+	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
+}
+
+can_seal_soviet_collapse_first_circular = {
+	capital_scope = { is_controlled_by = ROOT }
+	has_stability > constant:soviet_collapse_soviet_objective.good_stability
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
+}
+
+can_guard_soviet_collapse_peoples_commissariats = {
+	capital_scope = { is_controlled_by = ROOT }
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	num_divisions_in_states = {
+		count > 4
+		states = { 219 214 }
+	}
+	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
+}
+
+can_establish_soviet_collapse_crisis_desk = {
+	capital_scope = { is_controlled_by = ROOT }
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	has_war_support > constant:soviet_collapse_soviet_objective.min_war_support
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+	check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_baseline.total_threat_ceiling compare = less_than }
+}
+
+can_count_soviet_collapse_missing_trains = {
+	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	OR = {
+		219 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		242 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		206 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+}
+
+can_freeze_soviet_collapse_unapproved_transfers = {
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.equipment_req }
+	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
+	OR = {
+		242 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		229 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		405 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+}
+
+can_order_soviet_collapse_border_posts_to_report_twice = {
+	has_army_experience > constant:soviet_collapse_soviet_objective.min_army_xp
+	command_power > constant:soviet_collapse_soviet_objective.good_command_power
+	OR = {
+		206 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		229 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		742 = { is_owned_by = ROOT is_controlled_by = ROOT }
+	}
+	check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
+}
+
+can_audit_soviet_collapse_republic_radios = {
+	has_stability > constant:soviet_collapse_soviet_objective.min_stability
+	command_power > constant:soviet_collapse_soviet_objective.min_command_power
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+	OR = {
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_baseline.republic_confidence compare = greater_than }
+	}
+}
+
+can_open_soviet_collapse_loyalist_courier_line = {
+	capital_scope = { is_controlled_by = ROOT }
+	has_manpower > constant:soviet_collapse_soviet_objective.low_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.low_equipment_req }
+	num_divisions_in_states = {
+		count > 4
+		states = { 219 242 206 }
+	}
+}
+
+can_protect_soviet_collapse_first_reclamation_staging_area = {
+	has_manpower > constant:soviet_collapse_soviet_objective.high_manpower_req
+	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.high_equipment_req }
+	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.any_breakaway_count compare = greater_than }
+	OR = {
+		242 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		206 = { is_owned_by = ROOT is_controlled_by = ROOT }
+		has_recovered_soviet_collapse_breakaway_capital = yes
+	}
+}
+
 can_quiet_second_soviet_collapse_republic = {
 	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.one_breakaway_count compare = greater_than }
 	check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
