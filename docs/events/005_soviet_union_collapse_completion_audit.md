@@ -77,7 +77,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 - full-collapse cleanup cancels or hides obsolete Soviet Collapse intervention categories and active missions.
 - runtime focus trees have clean layout, unique meaningful focuses, valid route content, valid icons/localisation/rewards/AI, and no one-way or repeated mutual-exclusion issues.
 - Soviet Collapse flags are orientation-audited without unnecessary historical flag regeneration.
-- player-facing localisation contains no `starts from a low dynamic baseline in calm conditions` wording and uses in-world crisis language instead.
+- player-facing localisation contains no removed design-language baseline wording and uses in-world crisis language instead.
 - AI, docs, spreadsheet status, event log details, evolutions, super-events, assets, and the final completion report are aligned with the implemented state.
 - every named source input is either present and audited, explicitly waived, or completely covered by direct implementation evidence; the missing continuation spec currently keeps final closure blocked.
 
