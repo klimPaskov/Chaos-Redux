@@ -1,21 +1,25 @@
 # Event 005 Soviet Union Collapse Completion Audit
 
-Current audit date: 2026-05-17
+Current audit date: 2026-05-18
 
-This audit maps the active clean-spec objective to current repository evidence after the final parser-oriented audit.
+This audit maps the active Soviet Collapse correction objective to current repository evidence after the spawn-balance, collapse-pacing, focus-layout, terminal-cleanup, and flag-orientation passes.
 
 ## Source Order
 
 Required source order:
 
-1. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
-2. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
-3. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
-4. `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
-5. `AGENTS.md`
-6. `chaos-redux-events`
-7. `chaos-redux-event-assets`
-8. `chaos-redux-super-events`
+1. `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md`
+2. `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md`
+3. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
+4. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
+5. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
+6. `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
+7. `AGENTS.md`
+8. `chaos-redux-events`
+9. `chaos-redux-event-assets`
+10. `chaos-redux-super-events`
+
+`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is not present in `tmp/` during this audit. The current implementation was checked against the available spawn-balance cleanup spec and the four final clean specs; final closure should either restore the missing continuation spec or explicitly waive it.
 
 ## Prompt To Artifact Checklist
 
@@ -23,13 +27,21 @@ Required source order:
 | --- | --- | --- |
 | Event 005 remains Soviet Collapse with entry event format `chaosx.nr5.1` | `events/005_soviet_collapse.txt`; event docs in `docs/events/005_soviet_union_collapse.md` | Implemented; final parser audit passed |
 | Dynamic crisis values and central tuning | `common/script_constants/005_soviet_collapse_constants.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, `common/scripted_triggers/005_soviet_collapse_triggers.txt` | Implemented; final parser audit passed |
+| Stronger Soviet Collapse ideas and spirits | `common/ideas/005_soviet_collapse_ideas.txt` and the crisis effects use multi-modifier packages for Union Crisis, defensive coordination, depot seizures, legal claims, foreign volunteers, old networks, factory states, and high-chaos successors | Implemented for current surface |
+| Random first wave from structured pools | `soviet_collapse_release_initial_republics` clears and fills `global.soviet_collapse_first_wave_republics` through western, Caucasus, and Central Asian random pool helpers, then releases the selected scopes | Implemented |
+| Kazakhstan first-wave restraint | `can_soviet_collapse_open_kazakhstan_first_wave` requires southern breakaway pressure, weak obedience, war or low Soviet condition, or high chaos; Kazakhstan is outside the normal Central Asian first-wave pool | Implemented |
+| Union Crisis Threat and Moscow Authority pacing | Opening values start from central constants, apply visible condition modifiers, then use `soviet_collapse_recalculate_total_threat` with clamping and a 0.33 multiplier; Union Unmade uses high breakaway count plus authority, threat, League, and high-chaos gates | Implemented for current tuning |
 | Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 `soviet_collapse_soviet_mission_*` mission blocks | Implemented; final parser audit passed |
 | Foreign intervention categories and action-based aid | `soviet_collapse_foreign_patron_category` has 7 decision blocks; `soviet_collapse_breakaway_category` has 4 action blocks | Implemented for current layer; catalog row updated |
 | Runtime focus trees for republics and breakaways | Focus counts: Ukraine 153, Belarus 83, Kazakhstan 87, fallback breakaway 53, Baltic 36, Caucasus 33, Central Asia 34, Moldova 23 | Implemented for these trees |
 | High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54, ICD 24, KRS 24, FTH 24, BBH 24, BSC 24, TNC 24, ALA 24, UDC 24, SDZ 24, RMC 24, RCD 24, ILU 24, PRA 24, TSC 24, BLT 24, NRF 24, GAC 24, DHC 24, KHC 24, FEV 24, SZA 24, UWD 24, MRC 24, IUL 24, BAC 24, ARD 24, TRS 24, NLC 24, SEP 24, DSC 24, COU 24, BEC 24, RLD 24, LID 24, IRA 24 | Implemented for these thirty-eight successors |
 | Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions; parser audit found no missing focus references, self-references, duplicate focus IDs, missing icons, missing localisation, missing `ai_will_do`, or missing/duplicated `completion_reward` blocks | Implemented for current focus trees |
 | Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB`, `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `TRS`, `NLC`, `SEP`, `DSC`, `COU`, `BEC`, `RLD`, `LID`, and `IRA` | Implemented for thirty-eight |
-| Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` creates the shared `Emergency Republican Guard` template, grants base manpower/equipment, and spawns guard units for Event-created republics and the implemented CFR/MFR/OGB/ICD/KRS/FTH/BBH/BSC/TNC/ALA/UDC/SDZ/RMC/RCD/ILU/PRA/TSC/BLT/NRF/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/TRS/NLC/SEP/DSC/COU/BEC/RLD/LID/IRA successors; mobilisation decisions can add more units through the same template | Implemented for current appearing republics and implemented successors |
+| Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` creates the shared `Emergency Republican Guard` template, grants manpower/equipment, and scales guard and field unit packages by major/regional tag, chaos tier, Soviet war state, weak center state, one-use declaration flags, and terminal collapse state | Implemented for current appearing republics and implemented successors |
+| Union Unmade first-month lock | `soviet_collapse_initialize_crisis_values` sets `soviet_collapse_union_unmade_first_month_lock` for 31 days; `soviet_collapse_maybe_show_union_unmade_super_event` refuses to fire while the lock exists | Implemented |
+| Terminal ordinary republic release | `soviet_collapse_show_union_unmade_super_event` calls `SOV = { soviet_collapse_apply_terminal_collapse = yes }`; terminal collapse releases supported ordinary republics under Soviet control before adding high-chaos successors | Implemented |
+| Terminal high-chaos successor activation | `soviet_collapse_spawn_terminal_high_chaos_successors` retries high-chaos successor spawning and, at chaos tier 5, prepares terminal gate flags before activating all eligible special actors whose packages and territory gates pass | Implemented for current successor set |
+| Terminal mission and category cleanup | `is_soviet_collapse_active` excludes `soviet_collapse_terminal_collapse`; terminal cleanup clears active crisis flags and one-use declaration flags, removes all 128 active Soviet crisis missions, and blocks further objective activation | Implemented |
 | Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean; route flag audit checked 89 achievement flags | Implemented; route flag audit passed |
 | Evolution logging | Event 005 has one `record_events_log_evolution_entry` writer, under `soviet_collapse_record_high_chaos_successor_evolution`; baseline crisis setup and objective pressure effects only change crisis variables and event flow | Implemented for current high-chaos successor logging |
 | Super-events | Slots 14-27 have helpers, assets, localisation, audio references, constants, and route calls from implemented capstones | Implemented for current surfaces |
@@ -41,9 +53,11 @@ Required source order:
 | Super-event slot 24, Steppe Federation | `BSC_extreme_path`, `TNC_extreme_path`, `ALA_extreme_path`, and their push-extreme decisions call their Central Asian endgame helpers, which fire the helper | Implemented through the Basmachi, Turkestan, and Alash packages |
 | Super-event slot 27, The Eastern Buffer Coalition | `moldova_soviet_collapse_alliance_not_union` calls `soviet_collapse_show_eastern_buffer_coalition_super_event` | Implemented through the Moldova regional tree |
 | Docs | Event doc and super-event research docs exist and are aligned with current route wiring | Implemented for current surfaces |
-| Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, and super-event assets; no new assets created in the latest route-wiring pass | Implemented for current surfaces |
+| Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, super-event assets, and the 570-file custom flag orientation audit; no historical flags were regenerated in the latest pass | Implemented for current surfaces |
+| Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, use vanilla-matching bottom-origin TGA headers, and small/medium variants match their large source orientation rather than a flipped source | Audit passed; no binary correction required by current evidence |
+| Localisation design-language cleanup | Search across `common/`, `events/`, `localisation/`, `interface/`, and `docs/` found no player-facing instance of `starts from a low dynamic baseline in calm conditions` | Implemented |
 | Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, now summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and updated implementation status | Implemented; workbook package and LibreOffice open/convert validation passed |
-| Completion readiness | Current audit records thirty-eight implemented custom successor packages; local spreadsheet/catalog alignment is updated; final parser audit passed | Complete for the active clean-spec objective |
+| Completion readiness | Current audit records the available spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Not closed because one requested continuation spec file is absent from `tmp/` |
 
 ## Current Focus Counts
 
@@ -105,6 +119,12 @@ Parser-oriented audit coverage for `common/national_focus/005_soviet_collapse_re
 ```text
 FINAL AUDIT PASSED
 focuses 1500
+duplicates 0
+missing_refs 0
+self_refs 0
+nonreciprocal_mutual 0
+missing_ai 0
+missing_reward 0
 missions 128
 custom_country_tags 38
 achievements 47
@@ -129,11 +149,11 @@ Event 005 uses runtime setup instead of static OOB files for mid-game republics 
 
 Audited runtime setup:
 
-- `soviet_collapse_release_initial_republics` releases and flags UKR, BLR, KAZ, UZB, KYR, TAJ, and TMS when their route conditions are met.
+- `soviet_collapse_release_initial_republics` selects from western, Caucasus, and Central Asian pools, releases the selected scopes, and keeps Kazakhstan behind its separate southern and high-chaos gate.
 - `soviet_collapse_setup_southern_republic_if_valid` flags southern republics and sends them through the shared setup effect.
 - `soviet_collapse_spawn_cfr_if_enabled`, `soviet_collapse_spawn_mfr_if_enabled`, and `soviet_collapse_spawn_ogb_if_enabled` transfer the successor states before calling their setup effects.
-- `soviet_collapse_setup_breakaway_country` grants the base manpower, infantry equipment, support equipment, defensive ideas, one locked `Emergency Republican Guard` template, and three starting guard units at `capital_scope`.
-- Chaos tier 3 and above adds another guard unit through `soviet_collapse_setup_breakaway_country`.
+- `soviet_collapse_setup_breakaway_country` grants dynamic manpower, infantry equipment, support equipment, artillery, defensive ideas, one locked `Emergency Republican Guard` template, guard units, and field units at `capital_scope`.
+- Chaos tiers, major/regional identity, Soviet war state, weak center state, declaration flags, and terminal collapse state adjust the package before units are created.
 - `soviet_collapse_apply_breakaway_mobilization` adds manpower, equipment, defensive ideas, and additional guard units for later reinforcement.
 
 Static package coverage:
@@ -249,6 +269,22 @@ ALA ARD BAC BBH BEC BLT BSC COU DHC DSC FEV FTH GAC ICD ILU IRA IUL KHC KRS LID 
 
 The implemented custom country packages cover all 35 icon-prefix packages. There are no remaining custom icon-prefix reservations without registered country packages.
 
+## Latest Validation Snapshot
+
+Command evidence from the 2026-05-18 continuation audit:
+
+```text
+brace depth/min for Event 005 focus, effect, trigger, decision, idea, constant, and event files: depth=0 min=0
+focuses 1500 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 missing_ai 0 missing_reward 0
+missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0
+banned_phrase_hits 0
+flags_checked 570 flags_missing 0 bottom_origin 570 top_origin 0
+git diff --check clean
+unsupported operator/scope/localisation scan clean for the audited Event 005 files
+```
+
+The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` and `baltic_soviet_collapse_sponsor_fleet_rights` is covered by the reciprocal mutual-exclusion audit above.
+
 ## Remaining Blockers
 
-No remaining implementation blockers were identified by the final parser-oriented audit.
+`tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored or explicitly waived.
