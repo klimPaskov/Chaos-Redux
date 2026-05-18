@@ -566,6 +566,30 @@ category_desc_visible_cause_hits 18
 banned_low_dynamic_baseline_phrase_hits 0
 ```
 
+Current Event 005 mission-duration, cost-localisation, and focus-structure validation:
+
+```text
+mission_defs 128
+mission_duration_constants_used 11
+mission_duration_min 95
+mission_duration_max 365
+mission_duration_below_90 0
+missions_allowed_always_no 128 missing 0
+missions_complete_timeout 128 128 missing_complete 0 missing_timeout 0
+missions_success_failure_pressure 128 128 missing_success 0 missing_failure 0
+missions_requeue_objectives 128 missing 0
+event005_localisation_bom_prefix efbbbf
+event005_localisation_colon_zero_keys 0
+requires_hits_event005_loc 0
+blocked_or_cost_long_over_7_words 0
+banned_low_dynamic_baseline_phrase_hits 0
+focus_blocks 1500 duplicate_ids 0
+focus_missing_icon_reward_ai_filters 0 0 0 0
+focus_x_range 0 40
+focus_y_range 0 24
+continuous_focus_positions 46 y_min 1500 y_max 3400 below_1000 0
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored, explicitly waived, or fully covered by implementation evidence.
