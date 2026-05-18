@@ -590,6 +590,25 @@ focus_y_range 0 24
 continuous_focus_positions 46 y_min 1500 y_max 3400 below_1000 0
 ```
 
+Current Event 005 AI validation:
+
+```text
+decision_child_blocks 254
+missions_manual_activation_no_ai_expected 128
+regular_decisions 126
+regular_decisions_with_ai 126 missing_ai 0
+regular_decisions_dynamic_ai 126 flat_ai 0
+decision_categories_with_regular_decisions 41
+focus_blocks 1500
+focus_with_ai 1500 missing_ai 0
+focus_dynamic_ai 348 flat_ai 1152
+route_or_gate_focuses 384 dynamic 310 flat 74
+mutually_exclusive_focuses 178 dynamic 178 flat 0
+available_gate_focuses 157 dynamic 93 flat 64
+ai_pressure_ref_counts soviet_collapse_total_collapse_threat:11,soviet_collapse_moscow_authority:45,soviet_collapse_republic_confidence:2,soviet_collapse_military_obedience:12,soviet_collapse_depot_vulnerability:15,soviet_collapse_foreign_appetite:34,soviet_collapse_league_cohesion:0,soviet_collapse_evolution_weirdness:49
+ai_condition_counts has_war:60,has_war_with:52,stability:71,war_support:1,faction:4,country_flags:102,global_flags:84,SOV_scoped:160,check_variable:169,factor_zero:80
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored, explicitly waived, or fully covered by implementation evidence.
