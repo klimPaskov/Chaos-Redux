@@ -460,6 +460,17 @@ def verify_ideas() -> list[Check]:
 	text = read_text(path)
 	constants = parse_constants(text)
 	toks = tokens(text)
+	gfx_compact = " ".join(tokens("\n".join(read_text(gfx_path) for gfx_path in (ROOT / "interface").glob("*.gfx"))))
+	idea_sprites = {
+		match.group(1): match.group(2)
+		for match in re.finditer(r'name\s*=\s*"?(GFX_idea_[A-Za-z0-9_]+)"?\s*texturefile\s*=\s*"?([^"\s]+)"?', gfx_compact)
+	}
+	localisation_text = "\n".join(
+		read_text(loc_path)
+		for loc_path in (ROOT / "localisation/english").glob("*.yml")
+		if loc_path.exists()
+	)
+	localisation_keys = set(re.findall(r"^\s*([A-Za-z0-9_.-]+):\s*\"", localisation_text, re.MULTILINE))
 	idea_blocks: list[tuple[str, list[str]]] = []
 	for ideas_body in named_blocks(toks, "ideas"):
 		for group_name, group_body in direct_child_blocks(ideas_body):
@@ -470,19 +481,55 @@ def verify_ideas() -> list[Check]:
 	weak_lt3 = []
 	tiny_only = []
 	modifier_counts = []
+	total_modifier_entries = 0
+	tiny_components = 0
+	unresolved_constants = 0
+	missing_picture = []
+	missing_sprite = []
+	missing_dds = []
+	missing_name = []
+	missing_desc = []
 	for idea_id, block in idea_blocks:
+		pictures = top_level_values(block, "picture")
+		if not pictures:
+			missing_picture.append(idea_id)
+		else:
+			sprite = f"GFX_idea_{pictures[0]}"
+			dds = idea_sprites.get(sprite)
+			if not dds:
+				missing_sprite.append(idea_id)
+			elif not (ROOT / dds).exists():
+				missing_dds.append(idea_id)
+		if idea_id not in localisation_keys:
+			missing_name.append(idea_id)
+		if f"{idea_id}_desc" not in localisation_keys:
+			missing_desc.append(idea_id)
 		values = modifier_values(block, constants)
 		if not values:
 			no_modifier.append(idea_id)
 			continue
+		total_modifier_entries += len(values)
 		modifier_counts.append(len(values))
 		if len(values) < 3:
 			weak_lt3.append(idea_id)
 		numeric = [abs(value) for value in values if value is not None]
+		tiny_components += sum(1 for value in numeric if value <= 0.03)
+		unresolved_constants += sum(1 for value in values if value is None)
 		if numeric and all(value <= 0.03 for value in numeric):
 			tiny_only.append(idea_id)
 
 	ok = not no_modifier and not weak_lt3 and not tiny_only and len(idea_blocks) >= 120
+	package_ok = (
+		ok
+		and total_modifier_entries >= 390
+		and tiny_components <= 25
+		and unresolved_constants == 0
+		and not missing_picture
+		and not missing_sprite
+		and not missing_dds
+		and not missing_name
+		and not missing_desc
+	)
 	return [
 		Check(
 			"idea_strength",
@@ -492,7 +539,18 @@ def verify_ideas() -> list[Check]:
 				f"tiny_only={len(tiny_only)} min_modifiers={min(modifier_counts) if modifier_counts else 0} "
 				f"max_modifiers={max(modifier_counts) if modifier_counts else 0}"
 			),
-		)
+		),
+		Check(
+			"idea_package_surface",
+			package_ok,
+			(
+				f"ideas={len(idea_blocks)} modifier_entries={total_modifier_entries} "
+				f"tiny_components={tiny_components} unresolved_constants={unresolved_constants} "
+				f"missing_picture={len(missing_picture)} missing_sprite={len(missing_sprite)} "
+				f"missing_dds={len(missing_dds)} missing_name={len(missing_name)} "
+				f"missing_desc={len(missing_desc)}"
+			),
+		),
 	]
 
 
@@ -1709,6 +1767,7 @@ def verify_docs_surface() -> list[Check]:
 		"focus_ai_surface",
 		"crisis_cause_surface",
 		"force_scaling_surface",
+		"idea_package_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
