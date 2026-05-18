@@ -14,6 +14,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import hashlib
 import re
 import sys
@@ -68,6 +69,13 @@ REQUIRED_SOURCE_ORDER = [
 	"chaos-redux-events",
 	"chaos-redux-event-assets",
 	"chaos-redux-super-events",
+]
+
+RECOVERY_SEARCH_PATTERNS = [
+	"005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
+	"*event_log*mission*balance*focus*cleanup*",
+	"*mission_balance_focus*",
+	"*focus_cleanup*spec.md",
 ]
 
 CUSTOM_TAGS = [
@@ -642,6 +650,28 @@ def verify_input_audit_surface() -> list[Check]:
 			"input_audit_surface",
 			not missing_rows,
 			f"rows={len(expected_rows) - len(missing_rows)}/{len(expected_rows)} mismatches={len(missing_rows)}",
+		)
+	]
+
+
+def verify_recovery_search_surface() -> list[Check]:
+	matches = []
+	for path in ROOT.rglob("*"):
+		if not path.is_file():
+			continue
+		relative = path.relative_to(ROOT)
+		if ".git" in relative.parts:
+			continue
+		relative_text = relative.as_posix().lower()
+		name = path.name.lower()
+		if any(fnmatch.fnmatch(name, pattern) or fnmatch.fnmatch(relative_text, pattern) for pattern in RECOVERY_SEARCH_PATTERNS):
+			matches.append(relative.as_posix())
+	log_hits = [rel for rel in ["tmp/error.log", "tmp/text.log"] if (ROOT / rel).exists()]
+	return [
+		Check(
+			"recovery_search_surface",
+			not matches and not log_hits,
+			f"continuation_matches={len(matches)} removed_log_hits={len(log_hits)}",
 		)
 	]
 
@@ -1964,6 +1994,7 @@ def verify_docs_surface() -> list[Check]:
 		"source_context_files",
 		"source_order_surface",
 		"input_audit_surface",
+		"recovery_search_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2082,6 +2113,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_source_context_files())
 	checks.extend(verify_source_order_surface())
 	checks.extend(verify_input_audit_surface())
+	checks.extend(verify_recovery_search_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
