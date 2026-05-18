@@ -749,6 +749,7 @@ def verify_prompt_artifact_checklist_surface() -> list[Check]:
 		"Runtime focus trees for republics and breakaways",
 		"High-chaos successor focus trees",
 		"Non-linear focus structure, route locks, branch zones, focus filters, AI behavior",
+		"Focus tree map documentation",
 		"Starting divisions for appearing republics and serious splinters",
 		"Union Unmade first-month lock",
 		"Terminal ordinary republic release",
@@ -793,6 +794,39 @@ def verify_verifier_command_documentation_surface() -> list[Check]:
 			"verifier_command_documentation_surface",
 			not missing,
 			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} missing={len(missing)}",
+		)
+	]
+
+
+def verify_focus_tree_map_documentation_surface() -> list[Check]:
+	event_doc = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	required_markers = [
+		"## Republic Focus Trees",
+		"The implemented trees are:",
+		"soviet_collapse_ukraine_focus_tree",
+		"soviet_collapse_belarus_focus_tree",
+		"soviet_collapse_kazakhstan_focus_tree",
+		"soviet_collapse_breakaway_focus_tree",
+		"CFR_soviet_collapse_focus_tree",
+		"IRA_soviet_collapse_focus_tree",
+		"Continuous focus windows",
+	]
+	missing = [marker for marker in required_markers if marker not in event_doc]
+	audit_markers = [
+		"Focus tree map documentation",
+		"focus_tree_map_surface",
+		"post-cleanup focus-tree map",
+	]
+	missing_audit = [marker for marker in audit_markers if marker not in completion_audit]
+	return [
+		Check(
+			"focus_tree_map_surface",
+			not missing and not missing_audit,
+			(
+				f"event_markers={len(required_markers) - len(missing)}/{len(required_markers)} "
+				f"audit_markers={len(audit_markers) - len(missing_audit)}/{len(audit_markers)}"
+			),
 		)
 	]
 
@@ -2120,6 +2154,7 @@ def verify_docs_surface() -> list[Check]:
 		"success_criteria_surface",
 		"prompt_artifact_checklist_surface",
 		"verifier_command_documentation_surface",
+		"focus_tree_map_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2243,6 +2278,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_success_criteria_surface())
 	checks.extend(verify_prompt_artifact_checklist_surface())
 	checks.extend(verify_verifier_command_documentation_surface())
+	checks.extend(verify_focus_tree_map_documentation_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
