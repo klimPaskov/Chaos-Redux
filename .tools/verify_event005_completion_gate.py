@@ -58,6 +58,25 @@ REQUIRED_CONTEXT_INPUTS = [
 	".agents/skills/chaos-redux-super-events/SKILL.md",
 ]
 
+REQUIRED_REFERENCE_INPUTS = [
+	"paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Effect - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/On actions - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md",
+	"/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md",
+	"/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md",
+	"/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md",
+	"/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md",
+]
+
 REQUIRED_SOURCE_ORDER = [
 	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
 	"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
@@ -609,6 +628,47 @@ def verify_source_context_files() -> list[Check]:
 			"source_context_files",
 			not missing and len(details) == len(REQUIRED_CONTEXT_INPUTS),
 			f"files={len(details)}/{len(REQUIRED_CONTEXT_INPUTS)} missing={len(missing)} {' '.join(details)}",
+		)
+	]
+
+
+def verify_reference_context_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	missing_files = []
+	for rel in REQUIRED_REFERENCE_INPUTS:
+		path = Path(rel) if rel.startswith("/") else ROOT / rel
+		if not path.exists():
+			missing_files.append(rel)
+	required_markers = [
+		"Reference context surface",
+		"offline Paradox wiki snapshot",
+		"Vanilla documentation",
+		"Data structures",
+		"Triggers",
+		"Effects",
+		"Modifiers",
+		"Localisation",
+		"Scopes",
+		"On actions",
+		"Event modding",
+		"Decision modding",
+		"Idea modding",
+		"AI modding",
+		"National focus modding",
+		"effects_documentation.md",
+		"triggers_documentation.md",
+		"modifiers_documentation.md",
+		"script_concept_documentation.md",
+	]
+	missing_markers = [marker for marker in required_markers if marker not in completion_audit]
+	return [
+		Check(
+			"reference_context_surface",
+			not missing_files and not missing_markers,
+			(
+				f"files={len(REQUIRED_REFERENCE_INPUTS) - len(missing_files)}/{len(REQUIRED_REFERENCE_INPUTS)} "
+				f"markers={len(required_markers) - len(missing_markers)}/{len(required_markers)}"
+			),
 		)
 	]
 
@@ -2305,6 +2365,7 @@ def verify_docs_surface() -> list[Check]:
 		"idea_package_surface",
 		"flag_orientation_surface",
 		"source_context_files",
+		"reference_context_surface",
 		"source_order_surface",
 		"input_audit_surface",
 		"recovery_search_surface",
@@ -2434,6 +2495,7 @@ def run_checks() -> list[Check]:
 	checks: list[Check] = []
 	checks.extend(verify_input_files())
 	checks.extend(verify_source_context_files())
+	checks.extend(verify_reference_context_surface())
 	checks.extend(verify_source_order_surface())
 	checks.extend(verify_input_audit_surface())
 	checks.extend(verify_recovery_search_surface())
