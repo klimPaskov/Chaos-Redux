@@ -729,6 +729,52 @@ def verify_success_criteria_surface() -> list[Check]:
 	]
 
 
+def verify_prompt_artifact_checklist_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	try:
+		checklist = completion_audit.split("## Prompt To Artifact Checklist", 1)[1].split("## Current Focus Counts", 1)[0]
+	except IndexError:
+		return [Check("prompt_artifact_checklist_surface", False, "checklist_section=False")]
+	required_rows = [
+		"Stronger Soviet Collapse ideas and spirits",
+		"Random first wave from structured pools",
+		"Kazakhstan first-wave restraint",
+		"Dynamic starting force packages",
+		"Union Crisis Threat and Moscow Authority pacing",
+		"Soviet goal-style objectives with capacity limits",
+		"Longer varied Soviet mission deadlines",
+		"Decision cost corrections",
+		"Foreign intervention categories and action-based aid",
+		"Crisis decision AI behavior",
+		"Runtime focus trees for republics and breakaways",
+		"High-chaos successor focus trees",
+		"Non-linear focus structure, route locks, branch zones, focus filters, AI behavior",
+		"Starting divisions for appearing republics and serious splinters",
+		"Union Unmade first-month lock",
+		"Terminal ordinary republic release",
+		"Terminal high-chaos successor activation",
+		"Terminal mission and category cleanup",
+		"Event log details",
+		"Evolution logging",
+		"Super-events",
+		"Asset reuse and created assets",
+		"Flag orientation audit",
+		"Localisation design-language cleanup",
+		"Spreadsheet updates",
+		"Completion readiness",
+	]
+	missing = [row for row in required_rows if f"| {row} |" not in checklist]
+	implemented_rows = checklist.count("| Implemented")
+	blocked_rows = checklist.count("| Not closed")
+	return [
+		Check(
+			"prompt_artifact_checklist_surface",
+			not missing and implemented_rows >= 25 and blocked_rows >= 1,
+			f"rows={len(required_rows) - len(missing)}/{len(required_rows)} implemented_rows={implemented_rows} blocked_rows={blocked_rows}",
+		)
+	]
+
+
 def verify_first_wave_and_forces() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -2050,6 +2096,7 @@ def verify_docs_surface() -> list[Check]:
 		"recovery_search_surface",
 		"blocked_completion_surface",
 		"success_criteria_surface",
+		"prompt_artifact_checklist_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2171,6 +2218,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_recovery_search_surface())
 	checks.extend(verify_blocked_completion_surface())
 	checks.extend(verify_success_criteria_surface())
+	checks.extend(verify_prompt_artifact_checklist_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
