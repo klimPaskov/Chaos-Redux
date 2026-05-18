@@ -380,7 +380,7 @@ Implementation-gate verifier result with the missing input explicitly waived for
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
-result: exit 0; focus_integrity, idea_strength, first_wave_structure, dynamic_force_package, dynamic_force_coverage, crisis_balance_surface, union_unmade_pacing, terminal_mission_cleanup, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, localisation_surface, flag_orientation_headers, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
+result: exit 0; focus_integrity, idea_strength, first_wave_structure, dynamic_force_package, dynamic_force_coverage, crisis_balance_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, localisation_surface, flag_orientation_headers, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
 ```
 
 Current prompt-to-artifact spot audit:
@@ -400,6 +400,7 @@ force_package_audit manpower True equipment 3 templates 2 create_unit 2 major_sc
 union_unmade_audit first_month_lock_in_init True lock_blocks_fire True min_breakaways_gate True high_threat_gate True critical_authority_gate True league_or_kaz_or_chaos True
 terminal_release_audit ordinary_tags_present 14 ordinary_expected 14 release_calls 1 free_subject_calls 1 setup_calls 2
 cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_refs 128 category_defs 42 visible_category_defs 42 categories_gated True decision_categories 41 regular_decisions_gated True cleanup_flags True
+soviet_objective_board_surface missions 128 count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 128 manual_only 128 visible_gated 128 payloads 128 queue_restarts 128 done_flag_refs 128 timeout_bands 11 active_cap 10 queue_cap True
 focus_surface_audit focuses 1500 continuous_positions 46
 localisation_phrase_audit banned_phrase_hits 0
 blockers missing_inputs ['continuation_spec']
@@ -615,6 +616,7 @@ missions_allowed_always_no 128 missing 0
 missions_complete_timeout 128 128 missing_complete 0 missing_timeout 0
 missions_success_failure_pressure 128 128 missing_success 0 missing_failure 0
 missions_requeue_objectives 128 missing 0
+mission_board_cap_surface count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 128 active_cap 10 queue_cap True
 event005_localisation_bom_prefix efbbbf
 event005_localisation_colon_zero_keys 0
 requires_hits_event005_loc 0
