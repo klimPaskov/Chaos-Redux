@@ -58,6 +58,8 @@ When an event continuation goal cannot be completed because named prompt/spec in
 
 For large event correction passes with many repeated parser and surface checks, preserve a deterministic verifier script under `.tools/` instead of relying only on copied terminal output. The verifier should separate implementation failures from missing-input blockers, return a nonzero blocked status when required source files are absent, and optionally provide an explicit waiver mode for checking implementation gates without claiming final completion. Document the exact verifier commands and expected exit meanings in the event completion audit.
 
+When a completion verifier is added for a blocked event pass, include audit gates for source order, required context files, strict blocker documentation, direct coverage of any missing source file's named surfaces, stale validation snapshots, and resume validation commands. If `AGENTS.md` requires local wiki or vanilla references for the touched systems, record those reference files in the audit and verify they exist. Keep these gates generic and avoid storing event-specific details in the skill.
+
 ## Event anatomy
 
 - entry event: the canonical `chaosx.nr<ID>.1` start
