@@ -373,6 +373,27 @@ libreoffice_catalog_csv_convert status 0
 
 The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` and `baltic_soviet_collapse_sponsor_fleet_rights` was caused by repeated `mutually_exclusive` keys on the sponsor focus. Event 005 focus trees now use one mutual-exclusion block per focus, and the all-focus repeated-key scan returns zero hits.
 
+Current targeted validation rerun:
+
+```text
+focus_paths
+common/national_focus/005_soviet_collapse_republics.txt 502
+common/national_focus/005_soviet_collapse_factory_successors.txt 158
+common/national_focus/005_soviet_collapse_custom_splinters.txt 840
+focuses 1500
+duplicates 0
+missing_prereq 0
+self_prereq 0
+repeated_mutual_blocks 0
+missing_mutual 0
+self_mutual 0
+nonreciprocal_mutual 0
+pair_check baltic_soviet_collapse_a_port_without_a_master excludes baltic_soviet_collapse_sponsor_fleet_rights: True
+pair_check baltic_soviet_collapse_sponsor_fleet_rights excludes baltic_soviet_collapse_a_port_without_a_master: True
+unsupported_operator_scan files_scanned 561 unsupported_operator_hits 0
+player_facing_banned_phrase_scan hits 0
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent. This prevents a strict final closure claim against every requested source and runtime evidence file until the missing files are restored or explicitly waived.
