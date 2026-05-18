@@ -71,7 +71,7 @@ Present `tmp/` Event 005 spec files are:
 | --- | --- | --- |
 | Event 005 remains Soviet Collapse with entry event format `chaosx.nr5.1` | `events/005_soviet_collapse.txt`; event docs in `docs/events/005_soviet_union_collapse.md` | Implemented; final parser audit passed |
 | Dynamic crisis values and central tuning | `common/script_constants/005_soviet_collapse_constants.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, `common/scripted_triggers/005_soviet_collapse_triggers.txt` | Implemented; final parser audit passed |
-| Stronger Soviet Collapse ideas and spirits | `common/ideas/005_soviet_collapse_ideas.txt` and the crisis effects use multi-modifier packages for Union Crisis, defensive coordination, depot seizures, legal claims, foreign volunteers, old networks, factory states, and high-chaos successors; the current idea parser audit found no Event 005 idea with fewer than three modifier entries, no idea without modifiers, and no tiny-only package. The remaining 2-3% components appear only inside broader 3-5 modifier spirits. | Implemented for current surface |
+| Stronger Soviet Collapse ideas and spirits | `common/ideas/005_soviet_collapse_ideas.txt` and the crisis effects use multi-modifier packages for Union Crisis, defensive coordination, depot seizures, legal claims, foreign volunteers, old networks, factory states, and high-chaos successors; the current idea parser audit found no Event 005 idea with fewer than three modifier entries, no idea without modifiers, no tiny-only package, no missing idea picture sprite, no missing idea DDS, and no missing idea name/description localisation. The remaining 2-3% components appear only inside broader 3-5 modifier spirits. | Implemented for current surface |
 | Random first wave from structured pools | `soviet_collapse_release_initial_republics` clears and fills `global.soviet_collapse_first_wave_republics` through western, Caucasus, and Central Asian random pool helpers, then releases the selected scopes. Each pool can now select either nonexistent supported tags whose cores are owned and controlled by SOV or existing supported Soviet subjects, which are freed with `set_autonomy` before setup. | Implemented |
 | Kazakhstan first-wave restraint | `can_soviet_collapse_open_kazakhstan_first_wave` requires southern breakaway pressure, weak obedience, war or low Soviet condition, or high chaos; Kazakhstan is outside the normal Central Asian first-wave pool | Implemented |
 | Union Crisis Threat and Moscow Authority pacing | Opening values start from central constants, apply visible condition modifiers, then use `soviet_collapse_recalculate_total_threat` with clamping and `constant:soviet_collapse_baseline.total_threat_multiplier`; scenario audit gives calm baseline Authority 62 / Threat 17.82, tier 1 opening pressure Authority 62 / Threat 20.46, and tier 5 with capital lost, war, low stability, and low war support Authority 38 / Threat 74.58. Union Unmade uses high breakaway count plus authority, threat, League, and high-chaos gates. | Implemented for current tuning |
@@ -319,6 +319,8 @@ ALA ARD BAC BBH BEC BLT BSC COU DHC DSC FEV FTH GAC ICD ILU IRA IUL KHC KRS LID 
 
 The implemented custom country packages cover all 35 icon-prefix packages. There are no remaining custom icon-prefix reservations without registered country packages.
 
+Custom-splinter idea picture aliases cover 111 per-spirit `picture = ...` tokens across the 38 custom and factory successor tag DDS packages. These aliases live in `interface/005_soviet_collapse_icons.gfx` and point to the existing `gfx/interface/ideas/soviet_collapse/005_<tag>_custom_splinter_idea.dds` files.
+
 ## Latest Validation Snapshot
 
 Command evidence from the 2026-05-18 continuation audit:
@@ -329,7 +331,8 @@ focuses 1500 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 miss
 national_focus_repeated_mutual_blocks 0
 missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0 decision_blocks 254 timed_decisions 128 timed_outside_soviet_missions 0 categories_without_active_visible 0
 non_mission_decision_ai dynamic_blocks 126 flat_blocks 0 timed_mission_missing_ai 128
-ideas 124 weak_lt3 0 no_modifier 0 tiny_only 0
+idea_strength_checks ideas 124 constants 81 no_modifier 0 weak_lt3 0 tiny_only 0 min_modifiers 3 max_modifiers 7 avg_modifiers 3.19 total_modifier_entries 395 tiny_components 19 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_loc 0 missing_desc 0
+modifier_count_distribution 3:106 4:15 5:2 7:1
 banned_phrase_hits 0
 flags_checked 570 flags_missing 0 decode_errors 0 bottom_origin 570 top_origin 0 orientation_mismatches 0
 terminal_high_chaos_spawn_gates_with_required_flags 35 missing_required_flags 0
