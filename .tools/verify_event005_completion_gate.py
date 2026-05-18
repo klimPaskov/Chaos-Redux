@@ -296,6 +296,29 @@ def parse_constants(text: str) -> dict[str, float]:
 	return constants
 
 
+def parse_script_constants(text: str) -> dict[str, float]:
+	values: dict[str, float] = {}
+	for category, body in direct_child_blocks(tokens(text)):
+		depth = 0
+		i = 0
+		while i < len(body) - 2:
+			if body[i] == "{":
+				depth += 1
+			elif body[i] == "}":
+				depth -= 1
+			elif depth == 0 and body[i + 1] == "=":
+				try:
+					values[f"{category}.{body[i]}"] = float(body[i + 2])
+				except ValueError:
+					pass
+			i += 1
+	return values
+
+
+def clamp(value: float, low: float, high: float) -> float:
+	return max(low, min(high, value))
+
+
 def modifier_values(block: list[str], constants: dict[str, float]) -> list[float | None]:
 	values: list[float | None] = []
 	for modifier in top_level_block_bodies(block, "modifier"):
@@ -415,6 +438,114 @@ def verify_first_wave_and_forces() -> list[Check]:
 	]
 
 
+def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability: bool = False, low_war_support: bool = False, active_war: bool = False, capital_lost: bool = False) -> tuple[float, float]:
+	authority = constants["soviet_collapse_baseline.moscow_authority"]
+	confidence = constants["soviet_collapse_baseline.republic_confidence"]
+	obedience = constants["soviet_collapse_baseline.military_obedience"]
+	depot = constants["soviet_collapse_baseline.depot_vulnerability"]
+	foreign = constants["soviet_collapse_baseline.foreign_appetite"]
+	league = constants["soviet_collapse_baseline.league_cohesion"]
+	weirdness = constants["soviet_collapse_baseline.evolution_weirdness"]
+
+	if tier == 1:
+		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_1"]
+		depot += constants["soviet_collapse_opening_pressure.chaos_tier_1"]
+	elif tier == 2:
+		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_2"]
+		depot += constants["soviet_collapse_opening_pressure.chaos_tier_2"]
+		foreign += constants["soviet_collapse_opening_pressure.chaos_tier_2_foreign_appetite"]
+	elif tier == 3:
+		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_3"]
+		depot += constants["soviet_collapse_opening_pressure.chaos_tier_3"]
+		foreign += constants["soviet_collapse_opening_pressure.chaos_tier_3_foreign_appetite"]
+		weirdness += constants["soviet_collapse_opening_pressure.chaos_tier_3_weirdness"]
+	elif tier == 4:
+		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_4"]
+		depot += constants["soviet_collapse_opening_pressure.chaos_tier_4"]
+		foreign += constants["soviet_collapse_opening_pressure.chaos_tier_4_foreign_appetite"]
+		weirdness += constants["soviet_collapse_opening_pressure.chaos_tier_4_weirdness"]
+	elif tier == 5:
+		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_final"]
+		depot += constants["soviet_collapse_opening_pressure.chaos_tier_final"]
+		foreign += constants["soviet_collapse_opening_pressure.chaos_tier_final_foreign_appetite"]
+		weirdness += constants["soviet_collapse_opening_pressure.chaos_tier_final_weirdness"]
+
+	if low_stability:
+		confidence += constants["soviet_collapse_opening_pressure.low_stability"]
+		authority += constants["soviet_collapse_opening_pressure.low_stability_authority"]
+	if low_war_support:
+		obedience += constants["soviet_collapse_opening_pressure.low_war_support_obedience"]
+		confidence += constants["soviet_collapse_opening_pressure.low_war_support"]
+	if active_war:
+		depot += constants["soviet_collapse_opening_pressure.active_war"]
+		foreign += constants["soviet_collapse_opening_pressure.active_war"]
+	if capital_lost:
+		authority += constants["soviet_collapse_opening_pressure.capital_lost_authority"]
+		confidence += constants["soviet_collapse_opening_pressure.capital_lost"]
+
+	component_min = constants["soviet_collapse_baseline.component_min"]
+	component_max = constants["soviet_collapse_baseline.component_max"]
+	authority = clamp(authority, component_min, component_max)
+	confidence = clamp(confidence, component_min, component_max)
+	obedience = clamp(obedience, component_min, component_max)
+	depot = clamp(depot, component_min, component_max)
+	foreign = clamp(foreign, component_min, component_max)
+	league = clamp(league, component_min, component_max)
+	weirdness = clamp(weirdness, component_min, component_max)
+	threat = confidence + depot + foreign + league + weirdness
+	threat += constants["soviet_collapse_baseline.total_threat_offset"]
+	threat -= authority
+	threat -= obedience
+	threat *= constants["soviet_collapse_baseline.total_threat_multiplier"]
+	threat = clamp(threat, constants["soviet_collapse_baseline.total_threat_floor"], constants["soviet_collapse_baseline.total_threat_ceiling"])
+	return authority, threat
+
+
+def verify_crisis_balance() -> list[Check]:
+	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	calm_authority, calm_threat = crisis_scenario(constants)
+	tier1_authority, tier1_threat = crisis_scenario(constants, tier=1)
+	severe_authority, severe_threat = crisis_scenario(constants, tier=5, low_stability=True, low_war_support=True, active_war=True, capital_lost=True)
+	visible_causes = all(
+		item in effects
+		for item in [
+			"soviet_collapse_republic_confidence",
+			"soviet_collapse_depot_vulnerability",
+			"soviet_collapse_foreign_appetite",
+			"soviet_collapse_league_cohesion",
+			"soviet_collapse_evolution_weirdness",
+			"soviet_collapse_moscow_authority",
+			"soviet_collapse_military_obedience",
+			"total_threat_multiplier",
+			"clamp_variable = { var = soviet_collapse_total_collapse_threat",
+		]
+	)
+	pressure_helpers = len(re.findall(r"soviet_collapse_apply_(?:successful|failed)_[A-Za-z0-9_]*objective_pressure\s*=", effects))
+	ok = (
+		calm_authority >= 50
+		and calm_threat < 25
+		and tier1_authority >= 50
+		and tier1_threat < 30
+		and severe_authority > 0
+		and severe_threat < 100
+		and visible_causes
+		and pressure_helpers >= 20
+	)
+	return [
+		Check(
+			"crisis_balance_surface",
+			ok,
+			(
+				f"calm_authority={calm_authority:.0f} calm_threat={calm_threat:.2f} "
+				f"tier1_authority={tier1_authority:.0f} tier1_threat={tier1_threat:.2f} "
+				f"severe_authority={severe_authority:.0f} severe_threat={severe_threat:.2f} "
+				f"visible_causes={visible_causes} pressure_helpers={pressure_helpers}"
+			),
+		)
+	]
+
+
 def verify_union_unmade_and_cleanup() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -461,6 +592,41 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 				f"categories_gated={categories_gated}"
 			),
 		),
+	]
+
+
+def verify_terminal_high_chaos_successors() -> list[Check]:
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
+	effect_tokens = tokens(effects)
+	prepare_blocks = named_blocks(effect_tokens, "soviet_collapse_prepare_highest_chaos_terminal_successors")
+	maybe_blocks = named_blocks(effect_tokens, "soviet_collapse_maybe_spawn_high_chaos_successors")
+	terminal_blocks = named_blocks(effect_tokens, "soviet_collapse_spawn_terminal_high_chaos_successors")
+	prepare_body = " ".join(prepare_blocks[0]) if prepare_blocks else ""
+	maybe_body = " ".join(maybe_blocks[0]) if maybe_blocks else ""
+	terminal_body = " ".join(terminal_blocks[0]) if terminal_blocks else ""
+
+	prepare_flags = len(re.findall(r"\bset_country_flag\b", prepare_body))
+	expected_spawn_calls = {f"soviet_collapse_spawn_{tag.lower()}_if_enabled" for tag in CUSTOM_TAGS}
+	spawn_calls = {call for call in expected_spawn_calls if call in maybe_body}
+	ready_trigger_count = len(re.findall(r"is_soviet_collapse_high_chaos_successor_spawn_ready\s*=\s*yes", triggers))
+	ok = (
+		"has_global_flag = { flag = chaos_tier value = 5 }" in terminal_body
+		and "soviet_collapse_prepare_highest_chaos_terminal_successors" in terminal_body
+		and "soviet_collapse_maybe_spawn_high_chaos_successors" in terminal_body
+		and prepare_flags >= 25
+		and spawn_calls == expected_spawn_calls
+		and ready_trigger_count >= 35
+	)
+	return [
+		Check(
+			"terminal_high_chaos_successor_surface",
+			ok,
+			(
+				f"prepare_flags={prepare_flags} spawn_calls={len(spawn_calls)}/{len(expected_spawn_calls)} "
+				f"ready_trigger_refs={ready_trigger_count}"
+			),
+		)
 	]
 
 
@@ -695,7 +861,9 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
 	checks.extend(verify_first_wave_and_forces())
+	checks.extend(verify_crisis_balance())
 	checks.extend(verify_union_unmade_and_cleanup())
+	checks.extend(verify_terminal_high_chaos_successors())
 	checks.extend(verify_localisation_and_event_log())
 	checks.extend(verify_flags())
 	checks.extend(verify_super_events_and_assets())
