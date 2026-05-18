@@ -60,6 +60,7 @@ CUSTOM_TAGS = [
 IDEOLOGIES = ["communism", "democratic", "fascism", "neutrality"]
 BANNED_PHRASE = "starts from a low dynamic baseline in calm conditions"
 XLSX_NS = {"a": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+EVENT005_ACHIEVEMENT_COUNT = 47
 
 
 @dataclass
@@ -705,6 +706,199 @@ def verify_super_events_and_assets() -> list[Check]:
 	return [Check("super_event_surface", union_unmade_ok and len(slot_keys) == 14, f"union_unmade_package={union_unmade_ok} event005_slots={slot_keys}")]
 
 
+def event005_achievement_ids() -> list[str]:
+	gfx = read_text(ROOT / "interface/chaosx_achievements.gfx")
+	marker = "# EVENT 005 - SOVIET UNION COLLAPSE ACHIEVEMENTS"
+	if marker not in gfx:
+		return []
+	section = gfx[gfx.index(marker):]
+	ids = []
+	for match in re.finditer(r'name\s*=\s*"GFX_achievement_(chaosx_ach_[A-Za-z0-9_]+)"', section):
+		achievement_id = match.group(1)
+		if achievement_id.endswith("_grey") or achievement_id.endswith("_not_eligible"):
+			continue
+		ids.append(achievement_id)
+	return ids
+
+
+def verify_evolution_logging_surface() -> list[Check]:
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	event_log_loc = read_text(ROOT / "common/scripted_localisation/chaosx_scripted_localisation_events_log.txt")
+	custom_loc = read_text(ROOT / "localisation/english/005_soviet_collapse_custom_countries_l_english.yml")
+	effect_tokens = tokens(effects)
+	record_blocks = named_blocks(effect_tokens, "soviet_collapse_record_high_chaos_successor_evolution")
+	record_body = " ".join(record_blocks[0]) if record_blocks else ""
+	writer_count = len(re.findall(r"\brecord_events_log_evolution_entry\s*=\s*yes\b", effects))
+	helper_calls = len(re.findall(r"\bsoviet_collapse_record_high_chaos_successor_evolution\s*=\s*yes\b", effects))
+	record_context_ok = all(
+		item in record_body
+		for item in [
+			"events_log_evolution_event_id",
+			"events_log_evolution_type",
+			"events_log_evolution_tier",
+			"events_log_evolution_actor",
+		]
+	)
+	spawn_context_ok = all(
+		all(item in " ".join(named_blocks(effect_tokens, f"soviet_collapse_spawn_{tag.lower()}_if_enabled")[0]) for item in ["events_log_evolution_stage", "is_current_evolution_enabled"])
+		for tag in CUSTOM_TAGS
+		if named_blocks(effect_tokens, f"soviet_collapse_spawn_{tag.lower()}_if_enabled")
+	)
+	spawn_context_count = sum(
+		1
+		for tag in CUSTOM_TAGS
+		if named_blocks(effect_tokens, f"soviet_collapse_spawn_{tag.lower()}_if_enabled")
+		and all(item in " ".join(named_blocks(effect_tokens, f"soviet_collapse_spawn_{tag.lower()}_if_enabled")[0]) for item in ["events_log_evolution_stage", "is_current_evolution_enabled"])
+	)
+	duplicate_flags_ok = all(
+		item in record_body
+		for item in [
+			"soviet_collapse_high_chaos_evolution_tier_5_recorded",
+			"soviet_collapse_high_chaos_evolution_tier_4_recorded",
+		]
+	)
+	localisation_ok = all(
+		item in event_log_loc + custom_loc
+		for item in [
+			"chaosx.events_log.evolution.type.soviet_collapse_high_chaos",
+			"chaosx.events_log.window.evolution_details.soviet_collapse_high_chaos.title",
+			"chaosx.events_log.window.evolution_details.soviet_collapse_high_chaos.body",
+		]
+	)
+	ok = len(record_blocks) == 1 and writer_count == 1 and helper_calls == len(CUSTOM_TAGS) and record_context_ok and spawn_context_ok and duplicate_flags_ok and localisation_ok
+	return [
+		Check(
+			"evolution_logging_surface",
+			ok,
+			(
+				f"record_helpers={len(record_blocks)} writer_count={writer_count} "
+				f"successor_calls={helper_calls}/{len(CUSTOM_TAGS)} record_context={record_context_ok} "
+				f"spawn_context={spawn_context_count}/{len(CUSTOM_TAGS)} "
+				f"duplicate_flags={duplicate_flags_ok} localisation={localisation_ok}"
+			),
+		)
+	]
+
+
+def verify_achievement_surface() -> list[Check]:
+	achievement_ids = event005_achievement_ids()
+	achievements = read_text(ROOT / "common/achievements/chaos_redux_achievements.txt")
+	localisation = read_text(ROOT / "localisation/english/chaosx_achievements_l_english.yml")
+	gfx = read_text(ROOT / "interface/chaosx_achievements.gfx")
+	manifest = read_text(ROOT / "docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md")
+
+	missing_definitions = [
+		achievement_id for achievement_id in achievement_ids
+		if not re.search(r"^" + re.escape(achievement_id) + r"\s*=\s*\{", achievements, re.MULTILINE)
+	]
+	missing_possible = [
+		achievement_id for achievement_id in achievement_ids
+		if re.search(r"^" + re.escape(achievement_id) + r"\s*=\s*\{(?P<body>.*?)(?=^chaosx_ach_|\Z)", achievements, re.MULTILINE | re.DOTALL)
+		and "chaosx_ach_soviet_collapse_eligible_tooltip" not in re.search(
+			r"^" + re.escape(achievement_id) + r"\s*=\s*\{(?P<body>.*?)(?=^chaosx_ach_|\Z)",
+			achievements,
+			re.MULTILINE | re.DOTALL,
+		).group("body")
+	]
+	missing_name = [achievement_id for achievement_id in achievement_ids if not re.search(r"^" + re.escape(achievement_id) + r"_NAME\s*:", localisation, re.MULTILINE)]
+	missing_desc = [achievement_id for achievement_id in achievement_ids if not re.search(r"^" + re.escape(achievement_id) + r"_DESC\s*:", localisation, re.MULTILINE)]
+	missing_tooltip = [achievement_id for achievement_id in achievement_ids if not re.search(r"^" + re.escape(achievement_id) + r"_tooltip\s*:", localisation, re.MULTILINE)]
+	missing_gfx = []
+	missing_dds = []
+	missing_manifest = []
+	for achievement_id in achievement_ids:
+		for suffix in ["", "_grey", "_not_eligible"]:
+			sprite = f'GFX_achievement_{achievement_id}{suffix}'
+			dds_rel = f"gfx/achievements/{achievement_id}{suffix}.dds"
+			if sprite not in gfx or dds_rel not in gfx:
+				missing_gfx.append(f"{achievement_id}{suffix}")
+			if not (ROOT / dds_rel).exists():
+				missing_dds.append(dds_rel)
+		if f"`{achievement_id}`" not in manifest:
+			missing_manifest.append(achievement_id)
+
+	ok = (
+		len(achievement_ids) == EVENT005_ACHIEVEMENT_COUNT
+		and not missing_definitions
+		and not missing_possible
+		and not missing_name
+		and not missing_desc
+		and not missing_tooltip
+		and not missing_gfx
+		and not missing_dds
+		and not missing_manifest
+	)
+	return [
+		Check(
+			"achievement_surface",
+			ok,
+			(
+				f"ids={len(achievement_ids)} definitions_missing={len(missing_definitions)} "
+				f"missing_possible={len(missing_possible)} missing_name={len(missing_name)} "
+				f"missing_desc={len(missing_desc)} missing_tooltip={len(missing_tooltip)} "
+				f"missing_gfx={len(missing_gfx)} missing_dds={len(missing_dds)} "
+				f"missing_manifest={len(missing_manifest)}"
+			),
+		)
+	]
+
+
+def verify_asset_manifest_surface() -> list[Check]:
+	manifest_paths = [
+		ROOT / "docs/assets/005_soviet_union_collapse/manifest.md",
+		ROOT / "docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md",
+		ROOT / "docs/assets/005_soviet_union_collapse/republic_focus_and_influence/manifest.md",
+		ROOT / "docs/assets/005_soviet_union_collapse/contact_sheets/soviet_collapse_asset_records.tsv",
+		ROOT / "docs/super_events/005_soviet_union_collapse_super_event_research.md",
+	]
+	missing_manifests = [str(path.relative_to(ROOT)) for path in manifest_paths if not path.exists()]
+	base_manifest = read_text(manifest_paths[0]) if manifest_paths[0].exists() else ""
+	achievement_manifest = read_text(manifest_paths[1]) if manifest_paths[1].exists() else ""
+	republic_manifest = read_text(manifest_paths[2]) if manifest_paths[2].exists() else ""
+	records = read_text(manifest_paths[3]) if manifest_paths[3].exists() else ""
+	super_doc = read_text(manifest_paths[4]) if manifest_paths[4].exists() else ""
+
+	manifest_terms_ok = all(term in base_manifest for term in ["Source PNG", "Processed PNG", "Final DDS", "GFX file", "sourced"])
+	achievement_terms_ok = all(term in achievement_manifest for term in ["Source art", "Processed PNG", "Completed DDS", "Grey DDS", "Not eligible DDS"])
+	republic_terms_ok = all(term in republic_manifest for term in ["Source PNG", "Processed PNG", "Final DDS", "Sprite", "GFX file"])
+	record_lines = len([line for line in records.splitlines() if line.strip()])
+	record_header_ok = records.lstrip("\ufeff").startswith("name\tsource_png\tprocessed_png\tfinal_dds")
+	super_dds_paths = sorted(set(re.findall(r"Final DDS:\s*`([^`]+\.dds)`", super_doc)))
+	missing_super_dds = [path for path in super_dds_paths if not (ROOT / path).exists()]
+	representative_assets = [
+		"gfx/super_events/super_event_union_unmade.dds",
+		"gfx/event_pictures/report_union_crisis.dds",
+		"gfx/interface/ideas/soviet_collapse/idea_union_crisis.dds",
+		"gfx/achievements/chaosx_ach_soviet_unbroken_signal.dds",
+		"docs/assets/005_soviet_union_collapse/contact_sheets/event005_achievement_icons_complete.png",
+		"docs/assets/005_soviet_union_collapse/contact_sheets/event005_achievement_icons_not_eligible.png",
+	]
+	missing_representative = [path for path in representative_assets if not (ROOT / path).exists()]
+	ok = (
+		not missing_manifests
+		and manifest_terms_ok
+		and achievement_terms_ok
+		and republic_terms_ok
+		and record_header_ok
+		and record_lines >= 100
+		and len(super_dds_paths) >= 10
+		and not missing_super_dds
+		and not missing_representative
+	)
+	return [
+		Check(
+			"asset_manifest_surface",
+			ok,
+			(
+				f"missing_manifests={len(missing_manifests)} base_terms={manifest_terms_ok} "
+				f"achievement_terms={achievement_terms_ok} republic_terms={republic_terms_ok} "
+				f"record_lines={record_lines} super_dds={len(super_dds_paths)} "
+				f"missing_super_dds={len(missing_super_dds)} missing_representative={len(missing_representative)}"
+			),
+		)
+	]
+
+
 def verify_ai_surface() -> list[Check]:
 	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	decision_blocks: list[tuple[str, list[str]]] = []
@@ -867,6 +1061,9 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_localisation_and_event_log())
 	checks.extend(verify_flags())
 	checks.extend(verify_super_events_and_assets())
+	checks.extend(verify_evolution_logging_surface())
+	checks.extend(verify_achievement_surface())
+	checks.extend(verify_asset_manifest_surface())
 	checks.extend(verify_ai_surface())
 	checks.extend(verify_docs_surface())
 	checks.extend(verify_spreadsheet_surface())
