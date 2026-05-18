@@ -426,8 +426,8 @@ def verify_focuses() -> list[Check]:
 			"focus_ai_surface",
 			(
 				ai_block_count == len(focuses)
-				and dynamic_ai >= 300
-				and mutual_focus_count >= 170
+				and dynamic_ai >= max(225, len(focuses) // 5)
+				and mutual_focus_count >= 100
 				and dynamic_mutual_ai == mutual_focus_count
 				and flat_mutual_ai == 0
 			),

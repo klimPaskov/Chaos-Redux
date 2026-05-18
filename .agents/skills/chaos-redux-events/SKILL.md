@@ -30,15 +30,17 @@ Treat every event as a contract across some or all of these surfaces:
 - decisions, ideas, AI, characters, unit templates, or special-country handling
 - `docs/events/` documentation and spreadsheet
 
-If a task seems to need custom one-off plumbing, first check whether the same behavior should become generic for future events.
+If a task seems to require custom one-off plumbing, first check whether the same behavior should become generic for future events.
 
 Focus-tree work includes AI behavior. Even compact or runtime-only trees should avoid flat `ai_will_do` weights when campaign state matters; use existing constants, flags, and pressure variables so AI choices react to war state, stability, recognition, faction membership, and route eligibility.
 
 HOI4 parser gotcha: `num_divisions_in_states = { count > ... }` only accepts literal-style values after the comparator. Do not put `constant:category.key` there; use a file-local `@` constant or a literal value, and keep the tuning source documented where it is duplicated.
 
-HOI4 parser gotcha: idea modifier blocks do not parse `constant:category.key` values. If a national spirit modifier needs shared tuning, mirror the script constant into a file-local `@` constant in the same idea file, document that it is a modifier-only mirror, and keep the script constant as the source of truth for effects/triggers that support it.
+HOI4 parser gotcha: idea modifier blocks do not parse `constant:category.key` values. If a national spirit modifier requires shared tuning, mirror the script constant into a file-local `@` constant in the same idea file, document that it is a modifier-only mirror, and keep the script constant as the source of truth for effects/triggers that support it.
 
 Decision parser gotcha: every category used as a top-level block in `common/decisions/*.txt` must be defined in `common/decisions/categories/*.txt`. Category UI fields such as `icon`, `priority`, and category `visible` belong in the category file, not inside the decision file's top-level category block.
+
+Decision `custom_cost_text` and matching `_blocked` localisation should be bare cost displays: icon plus value groups only, separated by spaces. Do not add prose labels, explanatory verbs, or connector words between cost values.
 
 For objective boards that must cap visible missions, prefer manual mission activation over daily `activation` triggers. Set capped mission entries to `allowed = { always = no }`, then activate eligible missions with a scoped queue helper using `activate_mission`, `has_active_mission`, active-count variables, and queued-state flags. This avoids whole-world on-actions and gives a hard display cap while preserving goal-style auto-completion through each mission's `available` block.
 
@@ -48,7 +50,7 @@ When focus counts change, update every count-bearing surface in the same pass: f
 
 When a generated focus tree looks visually poor, reflow it from the prerequisite graph instead of nudging individual coordinates. Assign layers by prerequisite depth, order siblings within each layer to keep related branches near their parents, cap visible focuses per row, spread lanes with enough horizontal spacing, and place `continuous_focus_position` in a side panel outside the branch grid. Validate no duplicate coordinates, no missing focus references, row crowding, minimum x/y span, and continuous-panel placement before updating docs.
 
-Generated focus trees need a direct self-reference check in addition to missing-reference checks. A focus with `prerequisite = { focus = <same_focus_id> }` can survive brace, count, icon, localisation, and dangling-reference validation while still making the branch impossible to progress. Scan `prerequisite` and `mutually_exclusive` targets for both missing IDs and self-targets before updating docs or reporting completion.
+Generated focus trees require a direct self-reference check in addition to missing-reference checks. A focus with `prerequisite = { focus = <same_focus_id> }` can survive brace, count, icon, localisation, and dangling-reference validation while still making the branch impossible to progress. Scan `prerequisite` and `mutually_exclusive` targets for both missing IDs and self-targets before updating docs or reporting completion.
 
 For generated focus-tree mutual exclusions, prefer one `mutually_exclusive = { ... }` block per focus with multiple `focus = ...` entries. Repeated `mutually_exclusive` keys can produce misleading engine reciprocity errors even when a custom audit merges repeated keys correctly. Validate that no focus block has repeated `mutually_exclusive` keys before reporting the tree clean.
 
@@ -75,7 +77,7 @@ When a completion verifier is added for a blocked event pass, include audit gate
 
 The implementation must preserve the design split between baseline stages and evolutions.
 
-Baseline progression can use whatever state, flags, variables, decisions, or events the mechanic needs. Do not record every normal stage as an evolution unless the spec deliberately treats it as an evolution track.
+Baseline progression can use whatever state, flags, variables, decisions, or events the mechanic requires. Do not record every normal stage as an evolution unless the spec deliberately treats it as an evolution track.
 
 For actual evolutions, the usual pattern is:
 
@@ -108,7 +110,7 @@ Implementation design rules:
 - `type` separates parallel mutation tracks inside the same event.
 - `stage` is the milestone inside one mutation track, not the ordinary event stage.
 - `tier` is display-oriented. Do not use it as a substitute for real logic state.
-- When a track uses stage-specific incidents, wire the stage-specific display text across every event-log view that can show it: list/current view, history/detail view, event-detail view, selected-detail title, selected-detail body, and any stage-number or roman-numeral helpers needed by the highest stage.
+- When a track uses stage-specific incidents, wire the stage-specific display text across every event-log view that can show it: list/current view, history/detail view, event-detail view, selected-detail title, selected-detail body, and any stage-number or roman-numeral helpers required by the highest stage.
 - Use dynamic factor models for evolution chance, pacing, intensity, and aftermath.
 - If an evolution creates a persistent country, make the country playable or meaningful enough for its expected lifetime.
 
@@ -182,7 +184,7 @@ Core files to check:
 - `common/scripted_localisation/chaosx_scripted_localisation_debug.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
-Frequently-needed companion files:
+Frequent companion files:
 
 - `common/on_actions/chaosx_on_actions.txt`
 - `common/scripted_effects/chaosx_settings_effects.txt`
@@ -232,7 +234,7 @@ Do not add an event script and leave the event system unaware of it.
 
 ### 4. Handle supporting gameplay systems
 
-An event always needs more than its own script file.
+An event always requires more than its own script file.
 
 Touch the relevant systems in the same change:
 
@@ -244,7 +246,7 @@ Touch the relevant systems in the same change:
 
 When a decision, focus, or event option grants a one-time package through a shared helper effect, make the helper idempotent with a country/global flag and keep availability triggers aligned with that flag. Reused helper effects should be safe to call from later follow-up branches without duplicating manpower, equipment, PP, XP, or pressure adjustments.
 
-When a decision fires a follow-up popup whose options need computed state from the decision, do not put those state variables in the decision's generic cleanup helper. Keep only immediate aid/cost variables in the cleanup helper, preserve the popup option state as scoped country variables, and clear that option state from each event option after it is consumed.
+When a decision fires a follow-up popup whose options require computed state from the decision, do not put those state variables in the decision's generic cleanup helper. Keep only immediate aid/cost variables in the cleanup helper, preserve the popup option state as scoped country variables, and clear that option state from each event option after it is consumed.
 
 For targeted decisions, mirror vanilla country-target patterns: `ROOT` is the acting country and `FROM` is the selected target inside `target_trigger`, `available`, `visible`, `complete_effect`, and `remove_effect`. Put array eligibility in a reusable target trigger, block `FROM = ROOT` when self-targeting is invalid, and document where the target array is populated and cleared.
 
@@ -280,7 +282,7 @@ Required detail-view plumbing:
 
 - update the event-details text selectors in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - update the actual user-facing text in `localisation/english/chaosx_gui_l_english.yml`
-- if new generic event-log behavior is needed, wire it through:
+- if new generic event-log behavior is required, wire it through:
   - `common/scripted_effects/chaosx_settings_effects.txt`
   - `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
   - `interface/chaosx_events_log_popup.gui`
@@ -310,8 +312,8 @@ To add a new cluster:
 4. Map member events in `event_belongs_to_cluster`, from normal event ID to cluster ID.
 5. Add ordered member rows in `load_event_cluster_members`.
 6. Add or update cluster name/type/description scripted localisation and GUI localisation.
-7. If it needs custom runtime setup, add that branch to `event_cluster_prepare_runtime_context`.
-8. If it needs a custom cooldown or one-time state, update `mark_event_cluster_fired_state` and any availability logic in `can_event_cluster_fire`.
+7. If it requires custom runtime setup, add that branch to `event_cluster_prepare_runtime_context`.
+8. If it requires a custom cooldown or one-time state, update `mark_event_cluster_fired_state` and any availability logic in `can_event_cluster_fire`.
 
 Member attributes are parallel arrays in `load_event_cluster_members`:
 
@@ -459,7 +461,7 @@ Required tools and order:
 1. `pptx`
 2. `theme-factory`
 3. `canvas-design`
-4. LaTeX rendering when formulas or gameplay math need to be shown clearly
+4. LaTeX rendering when formulas or gameplay math must be shown clearly
 
 Visual standard:
 
@@ -519,10 +521,10 @@ Before closing an event task, verify:
 
 1. Event script is updated.
 2. Event classification/registration arrays are updated.
-3. Auto-firing or runtime hooks are updated if needed.
-4. Shared effects, triggers, and constants are updated if needed.
+3. Auto-firing or runtime hooks are updated when required.
+4. Shared effects, triggers, and constants are updated when required.
 5. Event-name and debug-name mappings are updated.
-6. Event log actor mapping is updated if needed.
+6. Event log actor mapping is updated when required.
 7. Event details window content is updated if the event appears there.
 8. Evolution logging and preview wiring are updated if relevant.
 9. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
