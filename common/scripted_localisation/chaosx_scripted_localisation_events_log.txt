@@ -2656,148 +2656,210 @@ defined_text = {
 }
 
 defined_text = {
-	name = GetEventsLogEventDetailDescription
+	name = GetEventsLogSovietCollapseDetailCrisisState
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 1
-				compare = equals
-			}
-		}
-		localization_key = chaosx.events_log.window.event_details.communism_spread
+		trigger = { has_global_flag = soviet_collapse_terminal_collapse }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.crisis.terminal
 	}
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 2
-				compare = equals
-			}
-		}
-		localization_key = chaosx.events_log.window.event_details.zombie_outbreak
+		trigger = { has_global_flag = soviet_collapse_active }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.crisis.active
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.crisis.dormant
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSovietCollapseDetailFirstWave
+	text = {
+		trigger = { has_global_flag = soviet_collapse_opening_wave_active }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.first_wave.active
+	}
+	text = {
+		trigger = { has_global_flag = soviet_collapse_terminal_collapse }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.first_wave.ended
+	}
+	text = {
+		trigger = { has_global_flag = soviet_collapse_active }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.first_wave.settled
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.first_wave.none
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSovietCollapseDetailLeague
+	text = {
+		trigger = { has_global_flag = soviet_collapse_free_republics_league_announced }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.league.exists
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.league.absent
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSovietCollapseDetailAuthority
+	text = {
+		trigger = { has_global_flag = soviet_collapse_terminal_collapse }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.authority.terminal
 	}
 	text = {
 		trigger = {
-			check_variable = {
-				var = event_id
-				value = 3
-				compare = equals
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.critical_authority compare = less_than }
 			}
 		}
-		localization_key = chaosx.events_log.window.event_details.holy_realm
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.authority.failing
 	}
 	text = {
 		trigger = {
-			check_variable = {
-				var = event_id
-				value = 4
-				compare = equals
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
 			}
-			}
-			localization_key = chaosx.events_log.window.event_details.random_war
 		}
-		text = {
-			trigger = { always = yes }
-			localization_key = chaosx.events_log.window.event_details.entry_placeholder.generic
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.authority.shaken
 	}
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.authority.recovering
 	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.authority.contested
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSovietCollapseDetailThreat
+	text = {
+		trigger = { has_global_flag = soviet_collapse_terminal_collapse }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.threat.terminal
+	}
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.threat.severe
+	}
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.threat.rising
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.threat.contained
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSovietCollapseDetailForeign
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.foreign.dominant
+	}
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.foreign.organized
+	}
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.foreign.limited
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.foreign.watchful
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSovietCollapseDetailMutation
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.mutation.high
+	}
+	text = {
+		trigger = {
+			SOV = {
+				exists = yes
+				check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than }
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.mutation.visible
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse.mutation.quiet
+	}
+}
 
 defined_text = {
 	name = GetEventsLogEventDetailDescription
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 1
-				compare = equals
-			}
-		}
+		trigger = { check_variable = { var = event_id value = 1 compare = equals } }
 		localization_key = chaosx.events_log.window.event_details.communism_spread
 	}
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 2
-				compare = equals
-			}
-		}
+		trigger = { check_variable = { var = event_id value = 2 compare = equals } }
 		localization_key = chaosx.events_log.window.event_details.zombie_outbreak
 	}
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 3
-				compare = equals
-			}
-		}
+		trigger = { check_variable = { var = event_id value = 3 compare = equals } }
 		localization_key = chaosx.events_log.window.event_details.holy_realm
 	}
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 4
-				compare = equals
-			}
-			}
-			localization_key = chaosx.events_log.window.event_details.random_war
-		}
-		text = {
-			trigger = { always = yes }
-			localization_key = chaosx.events_log.window.event_details.entry_placeholder.generic
-	}
-	}
-
-defined_text = {
-	name = GetEventsLogEventDetailDescription
-	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 1
-				compare = equals
-			}
-		}
-		localization_key = chaosx.events_log.window.event_details.communism_spread
+		trigger = { check_variable = { var = event_id value = 4 compare = equals } }
+		localization_key = chaosx.events_log.window.event_details.random_war
 	}
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 2
-				compare = equals
-			}
-		}
-		localization_key = chaosx.events_log.window.event_details.zombie_outbreak
+		trigger = { check_variable = { var = event_id value = 5 compare = equals } }
+		localization_key = chaosx.events_log.window.event_details.soviet_collapse
 	}
 	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 3
-				compare = equals
-			}
-		}
-		localization_key = chaosx.events_log.window.event_details.holy_realm
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.entry_placeholder.generic
 	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = event_id
-				value = 4
-				compare = equals
-			}
-			}
-			localization_key = chaosx.events_log.window.event_details.random_war
-		}
-		text = {
-			trigger = { always = yes }
-			localization_key = chaosx.events_log.window.event_details.entry_placeholder.generic
-	}
-	}
+}
 
 
 
