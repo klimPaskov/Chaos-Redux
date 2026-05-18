@@ -166,7 +166,7 @@ soviet_collapse_ukraine_focus_tree 153
 Parser-oriented audit coverage for `common/national_focus/005_soviet_collapse_republics.txt`, `common/national_focus/005_soviet_collapse_factory_successors.txt`, and `common/national_focus/005_soviet_collapse_custom_splinters.txt`:
 
 ```text
-FINAL AUDIT PASSED
+FOCUS PARSER AUDIT PASSED
 focuses 1500
 duplicates 0
 missing_refs 0
@@ -367,6 +367,7 @@ focus_surface_audit focuses 1500 continuous_positions 46
 localisation_phrase_audit banned_phrase_hits 0
 blockers missing_inputs ['continuation_spec', 'error_log', 'text_log']
 spreadsheet_row6_status L6 "Implemented - Final Closure Blocked" R6 "Blocked - Missing continuation spec/logs"
+spreadsheet_stale_status_scan visible_hits 2 xml_hits 2 stale_final_audit_passed_hits 0 formula_count 0 error_cells 0
 libreoffice_catalog_csv_convert status 0
 ```
 
