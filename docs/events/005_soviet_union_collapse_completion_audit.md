@@ -21,7 +21,7 @@ Required source order:
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is not present in `tmp/` during this audit. The current implementation was checked against the available spawn-balance cleanup spec and the four final clean specs; final closure should either restore the missing continuation spec or explicitly waive it.
 
-The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent during this audit. No runtime log evidence from those paths is available for final closure.
+The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent during this audit. No runtime log evidence from those paths is available for final closure, so they must also be restored or explicitly waived before closure.
 
 ## Input File Audit
 
@@ -106,7 +106,7 @@ Present `tmp/` Event 005 spec files are:
 | Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, decode cleanly, use vanilla-matching bottom-origin TGA headers, and average-downsample comparison finds no small/medium variant closer to a vertically flipped large source | Audit passed; no binary correction required by current evidence |
 | Localisation design-language cleanup | Search across `common/`, `events/`, `localisation/`, `interface/`, and `docs/` found no player-facing instance of the specified design-language sentence from the cleanup prompt | Implemented |
 | Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and blocked final-closure status while required input files remain absent | Implemented; workbook package and LibreOffice open/convert validation passed |
-| Completion readiness | Current audit records the available spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Not closed because one requested continuation spec file is absent from `tmp/` |
+| Completion readiness | Current audit records the available spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Not closed because one requested continuation spec file and two requested log files are absent from `tmp/` |
 
 ## Current Focus Counts
 
@@ -378,7 +378,7 @@ The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` an
 
 ## Blocked Completion Report
 
-The requested final completion report categories are not closed because the missing continuation spec cannot be audited. Current evidence exists for:
+The requested final completion report categories are not closed because the missing continuation spec and requested runtime logs cannot be audited. Current evidence exists for:
 
 - implemented countries and packages: thirty-eight custom successors plus supported ordinary Soviet republics.
 - flags: 570 Event 005 custom flag files audited; no current binary correction indicated.
