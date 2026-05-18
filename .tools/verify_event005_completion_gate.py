@@ -647,6 +647,7 @@ def verify_first_wave_and_forces() -> list[Check]:
 
 def verify_dynamic_force_coverage() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
 	effect_tokens = tokens(effects)
 	setup_blocks = named_blocks(effect_tokens, "soviet_collapse_setup_breakaway_country")
 	package_blocks = named_blocks(effect_tokens, "soviet_collapse_apply_breakaway_setup_package")
@@ -694,6 +695,92 @@ def verify_dynamic_force_coverage() -> list[Check]:
 			"create_unit",
 		]
 	)
+	force_package_vars = [
+		"soviet_collapse_breakaway_manpower_package",
+		"soviet_collapse_breakaway_infantry_equipment_package",
+		"soviet_collapse_breakaway_support_equipment_package",
+		"soviet_collapse_breakaway_artillery_equipment_package",
+		"soviet_collapse_breakaway_guard_unit_count",
+		"soviet_collapse_breakaway_field_unit_count",
+	]
+	base_scaling = all(
+		f"set_temp_variable = {{ {var} = constant:soviet_collapse_breakaway_support.base_" in package_body
+		for var in force_package_vars
+	)
+	major_scaling = (
+		"tag = UKR" in package_body
+		and "tag = KAZ" in package_body
+		and all(f"constant:soviet_collapse_breakaway_support.major_{suffix}" in package_body for suffix in ["manpower_bonus", "infantry_equipment_bonus", "support_equipment_bonus", "artillery_equipment_bonus", "guard_units_bonus", "field_units_bonus"])
+	)
+	regional_scaling = (
+		all(f"tag = {tag}" in package_body for tag in ["BLR", "GEO", "AZR", "UZB", "LIT", "LAT", "EST"])
+		and all(f"constant:soviet_collapse_breakaway_support.regional_{suffix}" in package_body for suffix in ["manpower_bonus", "infantry_equipment_bonus", "support_equipment_bonus", "artillery_equipment_bonus", "field_units_bonus"])
+	)
+	chaos_scaling = (
+		package_body.count("extra_manpower_per_chaos_band") == 4
+		and package_body.count("extra_infantry_equipment_per_chaos_band") == 4
+		and package_body.count("extra_field_units_per_chaos_band") == 4
+		and all(f"has_global_flag = {{ flag = chaos_tier value = {tier} }}" in package_body for tier in [2, 3, 4, 5])
+	)
+	condition_scaling = all(
+		item in package_body
+		for item in [
+			"SOV = { exists = yes has_war = yes }",
+			"constant:soviet_collapse_breakaway_support.soviet_war_manpower_bonus",
+			"check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }",
+			"check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than }",
+			"constant:soviet_collapse_breakaway_support.weak_center_manpower_bonus",
+			"check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_breakaway_support.high_depot_vulnerability_gate compare = greater_than }",
+			"constant:soviet_collapse_breakaway_support.depot_pressure_manpower_bonus",
+			"check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_breakaway_support.high_foreign_appetite_gate compare = greater_than }",
+			"constant:soviet_collapse_breakaway_support.foreign_access_manpower_bonus",
+			"has_global_flag = soviet_collapse_terminal_collapse_in_progress",
+			"constant:soviet_collapse_breakaway_support.terminal_manpower_bonus",
+		]
+	)
+	declaration_scaling = all(
+		item in package_body
+		for item in [
+			"soviet_collapse_next_declaration_unarmed",
+			"soviet_collapse_next_declaration_armed",
+			"constant:soviet_collapse_breakaway_support.preempted_declaration_manpower",
+			"constant:soviet_collapse_breakaway_support.emboldened_declaration_manpower",
+			"clr_country_flag = soviet_collapse_next_declaration_unarmed",
+			"clr_country_flag = soviet_collapse_next_declaration_armed",
+		]
+	)
+	unit_delivery = all(
+		item in package_body
+		for item in [
+			"clamp_temp_variable = { var = soviet_collapse_breakaway_field_unit_count min = 0 max = 12 }",
+			"add_manpower = var:soviet_collapse_breakaway_manpower_package",
+			"amount = var:soviet_collapse_breakaway_infantry_equipment_package",
+			"amount = var:soviet_collapse_breakaway_support_equipment_package",
+			"amount = var:soviet_collapse_breakaway_artillery_equipment_package",
+			"Emergency Republican Guard",
+			"Emergency Republican Field Brigade",
+			"GUARD_UNIT_COUNT = \"[?soviet_collapse_breakaway_guard_unit_count|.0]\"",
+			"FIELD_UNIT_COUNT = \"[?soviet_collapse_breakaway_field_unit_count|.0]\"",
+		]
+	)
+	constant_surface = all(
+		f"soviet_collapse_breakaway_support.{key}" in constants
+		for key in [
+			"base_manpower",
+			"base_infantry_equipment",
+			"base_guard_units",
+			"regional_manpower_bonus",
+			"major_manpower_bonus",
+			"extra_manpower_per_chaos_band",
+			"soviet_war_manpower_bonus",
+			"weak_center_manpower_bonus",
+			"high_depot_vulnerability_gate",
+			"depot_pressure_manpower_bonus",
+			"high_foreign_appetite_gate",
+			"foreign_access_manpower_bonus",
+			"terminal_manpower_bonus",
+		]
+	)
 	ok = (
 		len(setup_blocks) == 1
 		and len(package_blocks) == 1
@@ -704,6 +791,10 @@ def verify_dynamic_force_coverage() -> list[Check]:
 		and ordinary_release_paths
 		and package_dynamic_ok
 	)
+	scaling_ok = all([
+		base_scaling, major_scaling, regional_scaling, chaos_scaling,
+		condition_scaling, declaration_scaling, unit_delivery, constant_surface,
+	])
 	return [
 		Check(
 			"dynamic_force_coverage",
@@ -713,7 +804,16 @@ def verify_dynamic_force_coverage() -> list[Check]:
 				f"custom_successor_setup_refs={custom_setup_refs}/{len(CUSTOM_TAGS)} "
 				f"ordinary_release_paths={ordinary_release_paths} package_dynamic={package_dynamic_ok}"
 			),
-		)
+		),
+		Check(
+			"force_scaling_surface",
+			scaling_ok,
+			(
+				f"base={base_scaling} major={major_scaling} regional={regional_scaling} "
+				f"chaos_bands={chaos_scaling} conditions={condition_scaling} "
+				f"declarations={declaration_scaling} unit_delivery={unit_delivery} constants={constant_surface}"
+			),
+		),
 	]
 
 
@@ -1608,6 +1708,7 @@ def verify_docs_surface() -> list[Check]:
 		"first_wave_release_surface",
 		"focus_ai_surface",
 		"crisis_cause_surface",
+		"force_scaling_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
