@@ -14,6 +14,7 @@ The implemented opening slices cover the crisis scaffold and the first intervent
 - `common/scripted_triggers/005_soviet_collapse_triggers.txt` adds active-crisis, breakaway, patron, cost, recovered-capital, second-wave quieting, provincial office, emergency procurator, capital district, western telegraph, grain-file, governors' oath, archive, negotiated-corridor, government-file, regional-command, inner-ring, loyal-rail, militia, amnesty, League-calendar, lost-depot, Soviet-identity, rump-preparation, victory-parade, shared-road, depot-retaking, volunteer-route, republic-army, defense-committee, next-declaration, League-front, printing-office, foreign-photo, commander-reassignment, moved-unit reward, rail-junction, signal-school, navy-oath, armored-train, officer-conference, guards-division, commissar-escort, war-room, Smolensk-ledger, Ukrainian-depot, Belarusian-rail, Baltic-port, Caucasus-oil, Ural-factory, Siberian-storehouse, fuel-relocation, ammunition-census, northern-port, unofficial-consulate, western-corridor, Finnish-border, Turkish-mission, Iranian-road, Japanese-liaison, sponsor-price, neutral-observation, radio-link, humanitarian-aid, peasant-anger, civil-war-file, Huliaipole quieting, village-League negotiation, religious-institution, Basmachi-chain, Volga-name, factory-committee, sailor-assembly, grave-register, western-gate, Baltic-legal, Caucasus-mountain, Tashkent-anchor, Dushanbe-pass, Ashgabat-border, Bishkek-signal, Kazakhstan-first-wave, Siberian-distance, Vladivostok-command, League-quorum, League-split, separate-exit, shared-defense-calendar, foreign-envoy, League-depot, loyalist-pocket, League-border-dispute, high-chaos report-classification, hospital-record containment, factory-whistle, star-iron rumor, funeral-train, crown-archive, resurrection-committee, northern-fleet, religious-war-room, living-grave-census, restored-budget, civilian-school, local-unit-demobilization, New Union budget, recognition-file, temporary-disorder narrative, rewritten-union, emergency-command retirement, recovered-depot inventory, and crisis-desk disbanding triggers.
 - `common/scripted_effects/005_soviet_collapse_effects.txt` initializes the crisis meter, clamps and recalculates total threat, releases the opening breakaways, gives starting forces, and enforces the Soviet objective cap.
 - `common/ideas/005_soviet_collapse_ideas.txt` adds country spirits for the union crisis, Moscow response routes, the restored union recovery, loyalist officers, captured depots, and breakaway defensive coordination.
+- Soviet Collapse spirits use file-local tuning packages because idea modifier blocks do not parse shared script constants. The core spirits and special successor spirits are meant to change play through combined legitimacy, mobilization, command, supply, depot, defensive, manpower, production, and foreign-cohesion effects rather than isolated tiny percentages.
 - `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, one hundred twenty-eight opening goal-style missions, four breakaway emergency actions, and seven targeted foreign patron decisions.
 - `events/005_soviet_collapse.txt` replaces the old hidden release stub with a visible opening event and four posture choices.
 - `events/005_soviet_collapse_factory_ancient.txt` adds the triggered notices for the first high-chaos factory and Volga successor states.
@@ -32,20 +33,21 @@ The Soviet crisis category uses these variables:
 - `soviet_collapse_evolution_weirdness`
 - `soviet_collapse_breakaway_count`
 
-Opening values start from a low baseline in calm conditions, then change from chaos tier, Soviet stability, war support, active wars, and capital control. The total threat is recalculated from the component variables instead of being a fixed timer.
+In calm conditions, central authority still has room to answer the crisis. Opening values then change from chaos tier, Soviet stability, war support, active wars, and capital control. The total threat is recalculated from the component variables instead of being a fixed timer.
 
 ## Opening Breakaways
 
-The normal opening release tries Ukraine and Belarus. Kazakhstan can appear in the opening if chaos is high or the Soviet state is already unstable. Each appearing breakaway receives:
+The normal opening wave is selected from structured pools instead of hard-coding Ukraine and Belarus. When the map supports it, the first wave chooses one western or eastern European actor, one Caucasus republic, and one Central Asian republic other than Kazakhstan, then adds extra ordinary republics as chaos, war, stability, and Soviet condition worsen. Kazakhstan is outside the normal opening pools and only enters early when southern pressure or severe crisis conditions justify a steppe rupture. Each appearing breakaway receives:
 
 - `soviet_collapse_breakaway` country flag
 - manpower and equipment from script constants
 - `soviet_collapse_captured_soviet_depots`
 - `soviet_collapse_defensive_coordination`
-- three `Emergency Republican Guard` divisions at its capital
-- one extra division and extra stores in higher chaos bands
+- an `Emergency Republican Guard` template and capital guard divisions from the base package
+- an `Emergency Republican Field Brigade` template with artillery for larger or more chaotic releases
+- extra manpower, rifles, support equipment, artillery, guard units, and field brigades from tag strength, chaos tier, Soviet war state, weak Moscow Authority, and high Union Crisis Threat
 
-When Kazakhstan appears as an event-created opening breakaway, the southern cascade can also begin. Uzbekistan appears with Kazakhstan, Kyrgyzstan can appear at chaos tier 3 and above, Tajikistan can appear at chaos tier 4 and above, and Turkmenistan can appear at chaos tier 5. These southern republics receive the standard breakaway setup package and the shared Central Asian runtime focus tree.
+When Kazakhstan appears as an event-created opening breakaway, the southern cascade can also begin. Uzbekistan appears with Kazakhstan if still under Moscow control, Kyrgyzstan can appear at chaos tier 3 and above, Tajikistan can appear at chaos tier 4 and above, and Turkmenistan can appear at chaos tier 5. These southern republics receive the standard breakaway setup package and the shared Central Asian runtime focus tree.
 
 Future breakaway setup also consumes one-use Soviet mission flags. `soviet_collapse_next_declaration_unarmed` reduces the next breakaway support package, while `soviet_collapse_next_declaration_armed` increases it; either flag clears after it is applied to one breakaway.
 
@@ -397,7 +399,7 @@ The Soviet category currently activates these opening goal-style missions:
 127. `soviet_collapse_soviet_mission_127_inventory_the_recovered_depots`
 128. `soviet_collapse_soviet_mission_128_disband_the_crisis_desk`
 
-The activation effect counts active missions before activating the next one and stops at `constant:soviet_collapse_soviet_objective.active_cap`, currently 10. The missions use equipment, manpower, fuel, trains, stability, war support, army experience, and command power as requirements or costs; political power is not the default cost. Successful troop-placement missions can set `soviet_collapse_loyal_units_moved`, which mission 52 consumes and clears. Mission 60 can set `soviet_collapse_district_war_rooms_reopened` for later reclamation logic.
+The activation effect counts active missions before activating the next one and stops at `constant:soviet_collapse_soviet_objective.active_cap`, currently 10. The shared opening objective timeout is 120 days, so early failures cannot cascade during the first month. The missions use equipment, manpower, fuel, trains, stability, war support, army experience, and command power as requirements or costs; political power is not the default cost. Successful troop-placement missions can set `soviet_collapse_loyal_units_moved`, which mission 52 consumes and clears. Mission 60 can set `soviet_collapse_district_war_rooms_reopened` for later reclamation logic.
 
 Mission outcomes use family-specific crisis pressure helpers tuned through `constant:soviet_collapse_objective_pressure`. Authority, legal, command, rail, depot, old-movement, foreign, cleanup, and settlement objectives no longer share the same flat success and failure effects; each family adjusts the relevant Union Crisis Threat components and then recalculates the total threat.
 
