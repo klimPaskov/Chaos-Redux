@@ -3461,7 +3461,6 @@ soviet_collapse_maybe_spawn_high_chaos_successors = {
 soviet_collapse_add_random_first_wave_western_republic = {
 	every_possible_country = {
 		limit = {
-			exists = no
 			OR = {
 				tag = UKR
 				tag = BLR
@@ -3471,10 +3470,19 @@ soviet_collapse_add_random_first_wave_western_republic = {
 				tag = EST
 			}
 			NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }
-			any_state = {
-				is_core_of = PREV
-				is_owned_by = SOV
-				is_controlled_by = SOV
+			OR = {
+				AND = {
+					exists = no
+					any_state = {
+						is_core_of = PREV
+						is_owned_by = SOV
+						is_controlled_by = SOV
+					}
+				}
+				AND = {
+					exists = yes
+					is_subject_of = SOV
+				}
 			}
 		}
 		random_select_amount = 1
@@ -3485,17 +3493,25 @@ soviet_collapse_add_random_first_wave_western_republic = {
 soviet_collapse_add_random_first_wave_caucasus_republic = {
 	every_possible_country = {
 		limit = {
-			exists = no
 			OR = {
 				tag = GEO
 				tag = ARM
 				tag = AZR
 			}
 			NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }
-			any_state = {
-				is_core_of = PREV
-				is_owned_by = SOV
-				is_controlled_by = SOV
+			OR = {
+				AND = {
+					exists = no
+					any_state = {
+						is_core_of = PREV
+						is_owned_by = SOV
+						is_controlled_by = SOV
+					}
+				}
+				AND = {
+					exists = yes
+					is_subject_of = SOV
+				}
 			}
 		}
 		random_select_amount = 1
@@ -3506,7 +3522,6 @@ soviet_collapse_add_random_first_wave_caucasus_republic = {
 soviet_collapse_add_random_first_wave_central_asian_republic = {
 	every_possible_country = {
 		limit = {
-			exists = no
 			OR = {
 				tag = UZB
 				tag = KYR
@@ -3514,10 +3529,19 @@ soviet_collapse_add_random_first_wave_central_asian_republic = {
 				tag = TMS
 			}
 			NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }
-			any_state = {
-				is_core_of = PREV
-				is_owned_by = SOV
-				is_controlled_by = SOV
+			OR = {
+				AND = {
+					exists = no
+					any_state = {
+						is_core_of = PREV
+						is_owned_by = SOV
+						is_controlled_by = SOV
+					}
+				}
+				AND = {
+					exists = yes
+					is_subject_of = SOV
+				}
 			}
 		}
 		random_select_amount = 1
@@ -3528,7 +3552,6 @@ soviet_collapse_add_random_first_wave_central_asian_republic = {
 soviet_collapse_add_random_extra_first_wave_republic = {
 	every_possible_country = {
 		limit = {
-			exists = no
 			OR = {
 				tag = UKR
 				tag = BLR
@@ -3545,10 +3568,19 @@ soviet_collapse_add_random_extra_first_wave_republic = {
 				tag = TMS
 			}
 			NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }
-			any_state = {
-				is_core_of = PREV
-				is_owned_by = SOV
-				is_controlled_by = SOV
+			OR = {
+				AND = {
+					exists = no
+					any_state = {
+						is_core_of = PREV
+						is_owned_by = SOV
+						is_controlled_by = SOV
+					}
+				}
+				AND = {
+					exists = yes
+					is_subject_of = SOV
+				}
 			}
 		}
 		random_select_amount = 1
@@ -3562,6 +3594,14 @@ soviet_collapse_release_selected_first_wave_republics = {
 		if = {
 			limit = { exists = no }
 			SOV = { release = PREV }
+			set_country_flag = soviet_collapse_event_created_republic
+		}
+		if = {
+			limit = {
+				exists = yes
+				is_subject_of = SOV
+			}
+			SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
 			set_country_flag = soviet_collapse_event_created_republic
 		}
 		if = {
@@ -3630,6 +3670,11 @@ soviet_collapse_release_initial_republics = {
 			release = KAZ
 			KAZ = { set_country_flag = soviet_collapse_event_created_republic }
 		}
+		if = {
+			limit = { KAZ = { exists = yes is_subject_of = SOV } }
+			set_autonomy = { target = KAZ autonomy_state = autonomy_free }
+			KAZ = { set_country_flag = soviet_collapse_event_created_republic }
+		}
 	}
 
 	if = {
@@ -3643,6 +3688,11 @@ soviet_collapse_release_initial_republics = {
 		if = {
 			limit = { UZB = { exists = no } }
 			release = UZB
+			UZB = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+		if = {
+			limit = { UZB = { exists = yes is_subject_of = SOV } }
+			set_autonomy = { target = UZB autonomy_state = autonomy_free }
 			UZB = { soviet_collapse_setup_southern_republic_if_valid = yes }
 		}
 		if = {
@@ -3660,6 +3710,18 @@ soviet_collapse_release_initial_republics = {
 		if = {
 			limit = {
 				OR = {
+					has_global_flag = { flag = chaos_tier value = 3 }
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+				KYR = { exists = yes is_subject_of = SOV }
+			}
+			set_autonomy = { target = KYR autonomy_state = autonomy_free }
+			KYR = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+		if = {
+			limit = {
+				OR = {
 					has_global_flag = { flag = chaos_tier value = 4 }
 					has_global_flag = { flag = chaos_tier value = 5 }
 				}
@@ -3670,10 +3732,29 @@ soviet_collapse_release_initial_republics = {
 		}
 		if = {
 			limit = {
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+				TAJ = { exists = yes is_subject_of = SOV }
+			}
+			set_autonomy = { target = TAJ autonomy_state = autonomy_free }
+			TAJ = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+		if = {
+			limit = {
 				has_global_flag = { flag = chaos_tier value = 5 }
 				TMS = { exists = no }
 			}
 			release = TMS
+			TMS = { soviet_collapse_setup_southern_republic_if_valid = yes }
+		}
+		if = {
+			limit = {
+				has_global_flag = { flag = chaos_tier value = 5 }
+				TMS = { exists = yes is_subject_of = SOV }
+			}
+			set_autonomy = { target = TMS autonomy_state = autonomy_free }
 			TMS = { soviet_collapse_setup_southern_republic_if_valid = yes }
 		}
 	}
