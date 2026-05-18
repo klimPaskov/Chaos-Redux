@@ -379,7 +379,7 @@ Implementation-gate verifier result with the missing input explicitly waived for
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
-result: exit 0; focus_integrity, idea_strength, first_wave_structure, dynamic_force_package, union_unmade_pacing, terminal_mission_cleanup, banned_phrase_cleanup, event_log_detail_surface, flag_orientation_headers, and super_event_surface passed
+result: exit 0; focus_integrity, idea_strength, first_wave_structure, dynamic_force_package, union_unmade_pacing, terminal_mission_cleanup, banned_phrase_cleanup, event_log_detail_surface, flag_orientation_headers, super_event_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
 ```
 
 Current prompt-to-artifact spot audit:
