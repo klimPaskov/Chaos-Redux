@@ -45,7 +45,7 @@ can_pay_soviet_collapse_restore_party_control_cost = {
 
 can_pay_soviet_collapse_send_loyalist_officers_cost = {
 	has_army_experience > constant:soviet_collapse_decision_cost.send_loyalist_officers_army_xp
-	has_equipment = { infantry_equipment > constant:soviet_collapse_decision_cost.send_loyalist_officers_equipment }
+	command_power > constant:soviet_collapse_decision_cost.send_loyalist_officers_command_power
 }
 
 can_pay_soviet_collapse_cut_rebel_supply_routes_cost = {
@@ -1826,7 +1826,19 @@ can_disband_soviet_collapse_crisis_desk = {
 
 can_soviet_collapse_open_kazakhstan_first_wave = {
 	OR = {
-		is_soviet_collapse_southern_breakaway_active = yes
+		AND = {
+			is_soviet_collapse_southern_breakaway_active = yes
+			OR = {
+				has_war = yes
+				has_global_flag = { flag = chaos_tier value = 2 }
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+				check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than }
+				check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+				check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
+			}
+		}
 		AND = {
 			has_global_flag = { flag = chaos_tier value = 3 }
 			OR = {
