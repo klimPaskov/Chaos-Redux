@@ -832,6 +832,103 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 	]
 
 
+def verify_soviet_objective_board() -> list[Check]:
+	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
+	decision_blocks: list[tuple[str, list[str]]] = []
+	for _, category_body in direct_child_blocks(tokens(decisions)):
+		decision_blocks.extend(direct_child_blocks(category_body))
+
+	mission_re = re.compile(r"^soviet_collapse_soviet_mission_(\d{3})_")
+	missions = [(name, body) for name, body in decision_blocks if mission_re.match(name)]
+	mission_ids = {name for name, _ in missions}
+	effect_tokens = tokens(effects)
+	count_blocks = named_blocks(effect_tokens, "soviet_collapse_count_active_soviet_objectives")
+	activate_blocks = named_blocks(effect_tokens, "soviet_collapse_activate_opening_objectives")
+	count_body = " ".join(count_blocks[0]) if count_blocks else ""
+	activate_body = " ".join(activate_blocks[0]) if activate_blocks else ""
+	count_refs = set(re.findall(r"has_active_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", count_body))
+	activate_refs = set(re.findall(r"activate_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", activate_body))
+
+	manual_only = 0
+	visible_gated = 0
+	mission_payloads = 0
+	queue_restarts = 0
+	done_flag_refs = 0
+	mission_timeouts = set()
+	for name, body in missions:
+		number = mission_re.match(name).group(1)
+		body_text = " ".join(body)
+		allowed_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "allowed"))
+		visible_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "visible"))
+		complete_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "complete_effect"))
+		timeout_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "timeout_effect"))
+		if (
+			"always = no" in allowed_text
+			and top_level_values(body, "selectable_mission") == ["no"]
+			and top_level_values(body, "is_good") == ["yes"]
+			and "activation" not in body_text
+		):
+			manual_only += 1
+		if "tag = SOV" in visible_text and "is_soviet_collapse_active = yes" in visible_text:
+			visible_gated += 1
+		if (
+			top_level_values(body, "days_mission_timeout")
+			and "custom_effect_tooltip" in complete_text
+			and "custom_effect_tooltip" in timeout_text
+			and f"soviet_collapse_mission_{number}_done" in complete_text
+			and f"soviet_collapse_mission_{number}_done" in timeout_text
+			and "soviet_collapse_apply_successful_" in complete_text
+			and "soviet_collapse_apply_failed_" in timeout_text
+		):
+			mission_payloads += 1
+		if (
+			"soviet_collapse_activate_opening_objectives = yes" in complete_text
+			or "soviet_collapse_activate_opening_objectives = yes" in timeout_text
+			or "clr_global_flag = soviet_collapse_active" in complete_text
+		):
+			queue_restarts += 1
+		if f"soviet_collapse_mission_{number}_done" in activate_body:
+			done_flag_refs += 1
+		mission_timeouts.update(top_level_values(body, "days_mission_timeout"))
+
+	queue_cap_ok = (
+		constants.get("soviet_collapse_soviet_objective.active_cap") == 10
+		and activate_body.count("constant:soviet_collapse_soviet_objective.active_cap") >= 128
+		and activate_body.count("compare = less_than") >= 128
+		and activate_body.count("add_to_temp_variable = { soviet_collapse_active_objectives = 1 }") >= 128
+	)
+	ok = (
+		len(missions) == 128
+		and len(count_blocks) == 1
+		and len(activate_blocks) == 1
+		and count_refs == mission_ids
+		and activate_refs == mission_ids
+		and manual_only == len(missions)
+		and visible_gated == len(missions)
+		and mission_payloads == len(missions)
+		and queue_restarts == len(missions)
+		and done_flag_refs == len(missions)
+		and len(mission_timeouts) >= 8
+		and queue_cap_ok
+	)
+	return [
+		Check(
+			"soviet_objective_board_surface",
+			ok,
+			(
+				f"missions={len(missions)} count_helpers={len(count_blocks)} activation_helpers={len(activate_blocks)} "
+				f"count_refs={len(count_refs & mission_ids)} activate_refs={len(activate_refs & mission_ids)} "
+				f"manual_only={manual_only} visible_gated={visible_gated} payloads={mission_payloads} "
+				f"queue_restarts={queue_restarts} done_flag_refs={done_flag_refs} "
+				f"timeout_bands={len(mission_timeouts)} active_cap={constants.get('soviet_collapse_soviet_objective.active_cap', '')} "
+				f"queue_cap={queue_cap_ok}"
+			),
+		)
+	]
+
+
 def verify_terminal_high_chaos_successors() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -1226,6 +1323,7 @@ def verify_docs_surface() -> list[Check]:
 		".tools/verify_event005_completion_gate.py",
 		"Strict verifier result",
 		"Implementation-gate verifier result",
+		"soviet_objective_board_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -1348,6 +1446,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_dynamic_force_coverage())
 	checks.extend(verify_crisis_balance())
 	checks.extend(verify_union_unmade_and_cleanup())
+	checks.extend(verify_soviet_objective_board())
 	checks.extend(verify_terminal_ordinary_republics())
 	checks.extend(verify_terminal_high_chaos_successors())
 	checks.extend(verify_localisation_and_event_log())
