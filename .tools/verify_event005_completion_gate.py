@@ -698,6 +698,31 @@ def verify_blocked_completion_surface() -> list[Check]:
 	]
 
 
+def verify_strict_blocker_documentation_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	try:
+		strict_result = completion_audit.split("Strict verifier result:", 1)[1].split("Implementation-gate verifier result", 1)[0]
+	except IndexError:
+		return [Check("strict_blocker_documentation_surface", False, "strict_section=False")]
+	required_markers = [
+		"python3 .tools/verify_event005_completion_gate.py",
+		"result: exit 2; implementation gates passed; blocked only by missing tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
+	]
+	forbidden_markers = [
+		"result: exit 0",
+		"Missing input blocker was waived",
+	]
+	missing = [marker for marker in required_markers if marker not in strict_result]
+	forbidden = [marker for marker in forbidden_markers if marker in strict_result]
+	return [
+		Check(
+			"strict_blocker_documentation_surface",
+			not missing and not forbidden,
+			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} forbidden={len(forbidden)}",
+		)
+	]
+
+
 def verify_success_criteria_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	try:
@@ -2231,6 +2256,7 @@ def verify_docs_surface() -> list[Check]:
 		"input_audit_surface",
 		"recovery_search_surface",
 		"blocked_completion_surface",
+		"strict_blocker_documentation_surface",
 		"success_criteria_surface",
 		"available_source_acceptance_surface",
 		"prompt_artifact_checklist_surface",
@@ -2357,6 +2383,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_input_audit_surface())
 	checks.extend(verify_recovery_search_surface())
 	checks.extend(verify_blocked_completion_surface())
+	checks.extend(verify_strict_blocker_documentation_surface())
 	checks.extend(verify_success_criteria_surface())
 	checks.extend(verify_available_source_acceptance_surface())
 	checks.extend(verify_prompt_artifact_checklist_surface())
