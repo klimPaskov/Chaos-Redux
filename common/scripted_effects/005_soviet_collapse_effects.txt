@@ -338,6 +338,10 @@ soviet_collapse_show_union_unmade_super_event = {
 	if = {
 		limit = { NOT = { has_global_flag = soviet_collapse_super_event_union_unmade_fired } }
 		set_global_flag = soviet_collapse_super_event_union_unmade_fired
+		if = {
+			limit = { SOV = { exists = yes } }
+			SOV = { soviet_collapse_apply_terminal_collapse = yes }
+		}
 		set_temp_variable = { soviet_collapse_super_event_id = constant:soviet_collapse_super_event.union_unmade }
 		soviet_collapse_emit_super_event = yes
 	}
@@ -390,6 +394,114 @@ soviet_collapse_maybe_show_union_unmade_super_event = {
 			}
 		}
 		soviet_collapse_show_union_unmade_super_event = yes
+	}
+}
+
+soviet_collapse_release_terminal_ordinary_republics = {
+	every_possible_country = {
+		limit = {
+			exists = no
+			OR = {
+				tag = UKR
+				tag = BLR
+				tag = MOL
+				tag = LIT
+				tag = LAT
+				tag = EST
+				tag = GEO
+				tag = ARM
+				tag = AZR
+				tag = UZB
+				tag = KYR
+				tag = TAJ
+				tag = TMS
+				tag = KAZ
+			}
+			any_state = {
+				is_core_of = PREV
+				is_owned_by = SOV
+				is_controlled_by = SOV
+			}
+		}
+		SOV = { release = PREV }
+		if = {
+			limit = {
+				exists = yes
+				NOT = { has_country_flag = soviet_collapse_breakaway }
+			}
+			set_country_flag = soviet_collapse_event_created_republic
+			soviet_collapse_setup_breakaway_country = yes
+			soviet_collapse_load_event_created_focus_tree = yes
+		}
+	}
+}
+
+soviet_collapse_prepare_highest_chaos_terminal_successors = {
+	set_country_flag = soviet_collapse_graves_counted_by_dead_state
+	set_country_flag = soviet_collapse_northern_fleet_signals_unsealed
+	set_country_flag = soviet_collapse_sailor_assembly_voted
+	set_country_flag = soviet_collapse_huliaipole_quiet_failed
+	set_country_flag = soviet_collapse_basmachi_supply_chain_failed
+	set_country_flag = soviet_collapse_tashkent_anchor_failed
+	set_country_flag = soviet_collapse_kazakhstan_first_wave_failed
+	set_country_flag = soviet_collapse_loyal_military_districts_failed
+	set_country_flag = soviet_collapse_union_archives_failed
+	set_country_flag = soviet_collapse_grave_registers_failed
+	set_country_flag = soviet_collapse_wrong_resurrection_committee_political
+	set_country_flag = soviet_collapse_ural_factory_gates_failed
+	set_country_flag = soviet_collapse_funeral_train_schedule_survived
+	set_country_flag = soviet_collapse_star_iron_rumor_spread
+	set_country_flag = soviet_collapse_crown_left_archive
+	set_country_flag = soviet_collapse_peasant_anger_joined_green_army
+	set_country_flag = soviet_collapse_villages_negotiation_failed
+	set_country_flag = soviet_collapse_caucasus_mountain_administration_failed
+	set_country_flag = soviet_collapse_vladivostok_buffer_government_credible
+	set_country_flag = soviet_collapse_siberian_distance_command_failed
+	set_country_flag = soviet_collapse_ural_workers_directorate_declared
+	set_country_flag = soviet_collapse_mountain_republic_council_declared
+	set_country_flag = soviet_collapse_idel_ural_league_declared
+	set_country_flag = soviet_collapse_birobidzhan_commune_declared
+	set_country_flag = soviet_collapse_northern_port_directorate_declared
+	set_country_flag = soviet_collapse_religious_command_entered_war_room
+	if = {
+		limit = {
+			check_variable = {
+				var = soviet_collapse_evolution_weirdness
+				value = constant:soviet_collapse_republic_focus.ai_weirdness_high
+				compare = less_than
+			}
+		}
+		set_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_republic_focus.ai_weirdness_high }
+	}
+}
+
+soviet_collapse_spawn_terminal_high_chaos_successors = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		soviet_collapse_maybe_spawn_high_chaos_successors = yes
+	}
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+		soviet_collapse_prepare_highest_chaos_terminal_successors = yes
+		soviet_collapse_maybe_spawn_high_chaos_successors = yes
+	}
+}
+
+soviet_collapse_apply_terminal_collapse = {
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_terminal_collapse } }
+		set_global_flag = soviet_collapse_terminal_collapse_in_progress
+		soviet_collapse_release_terminal_ordinary_republics = yes
+		soviet_collapse_spawn_terminal_high_chaos_successors = yes
+		soviet_collapse_cleanup_terminal_collapse_missions = yes
+		set_global_flag = soviet_collapse_terminal_collapse
+		clr_global_flag = soviet_collapse_terminal_collapse_in_progress
+		soviet_collapse_recalculate_total_threat = yes
 	}
 }
 
@@ -654,6 +766,15 @@ soviet_collapse_setup_breakaway_country = {
 		add_to_temp_variable = { soviet_collapse_breakaway_support_equipment_package = constant:soviet_collapse_breakaway_support.emboldened_declaration_support_equipment }
 		add_to_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.emboldened_declaration_field_units }
 		SOV = { clr_country_flag = soviet_collapse_next_declaration_armed }
+	}
+	if = {
+		limit = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+		add_to_temp_variable = { soviet_collapse_breakaway_manpower_package = constant:soviet_collapse_breakaway_support.terminal_manpower_bonus }
+		add_to_temp_variable = { soviet_collapse_breakaway_infantry_equipment_package = constant:soviet_collapse_breakaway_support.terminal_infantry_equipment_bonus }
+		add_to_temp_variable = { soviet_collapse_breakaway_support_equipment_package = constant:soviet_collapse_breakaway_support.terminal_support_equipment_bonus }
+		add_to_temp_variable = { soviet_collapse_breakaway_artillery_equipment_package = constant:soviet_collapse_breakaway_support.terminal_artillery_equipment_bonus }
+		add_to_temp_variable = { soviet_collapse_breakaway_guard_unit_count = constant:soviet_collapse_breakaway_support.terminal_guard_units_bonus }
+		add_to_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.terminal_field_units_bonus }
 	}
 	clamp_temp_variable = { var = soviet_collapse_breakaway_field_unit_count min = 0 max = 12 }
 
@@ -3533,6 +3654,143 @@ soviet_collapse_release_initial_republics = {
 	soviet_collapse_maybe_spawn_high_chaos_successors = yes
 }
 
+soviet_collapse_cleanup_terminal_collapse_missions = {
+	clr_global_flag = soviet_collapse_active
+	clr_global_flag = soviet_collapse_opening_wave_active
+	clr_global_flag = soviet_collapse_union_unmade_first_month_lock
+	clr_country_flag = soviet_collapse_next_declaration_unarmed
+	clr_country_flag = soviet_collapse_next_declaration_armed
+	set_temp_variable = { soviet_collapse_active_objectives = 0 }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command } remove_mission = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_002_seal_the_first_circular } remove_mission = soviet_collapse_soviet_mission_002_seal_the_first_circular }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_003_guard_the_peoples_commissariats } remove_mission = soviet_collapse_soviet_mission_003_guard_the_peoples_commissariats }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_004_establish_the_crisis_desk } remove_mission = soviet_collapse_soviet_mission_004_establish_the_crisis_desk }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_005_count_the_missing_trains } remove_mission = soviet_collapse_soviet_mission_005_count_the_missing_trains }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_006_freeze_unapproved_transfers } remove_mission = soviet_collapse_soviet_mission_006_freeze_unapproved_transfers }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_007_order_the_border_posts_to_report_twice } remove_mission = soviet_collapse_soviet_mission_007_order_the_border_posts_to_report_twice }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_008_audit_the_republic_radios } remove_mission = soviet_collapse_soviet_mission_008_audit_the_republic_radios }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_009_open_the_loyalist_courier_line } remove_mission = soviet_collapse_soviet_mission_009_open_the_loyalist_courier_line }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area } remove_mission = soviet_collapse_soviet_mission_010_protect_the_first_reclamation_staging_area }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_011_announce_the_legal_continuity_decree } remove_mission = soviet_collapse_soviet_mission_011_announce_the_legal_continuity_decree }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_012_convene_loyal_republican_deputies } remove_mission = soviet_collapse_soviet_mission_012_convene_loyal_republican_deputies }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_013_publish_the_union_guarantee } remove_mission = soviet_collapse_soviet_mission_013_publish_the_union_guarantee }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_014_register_emergency_autonomy_charters } remove_mission = soviet_collapse_soviet_mission_014_register_emergency_autonomy_charters }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_015_use_the_supreme_soviet_as_a_shield } remove_mission = soviet_collapse_soviet_mission_015_use_the_supreme_soviet_as_a_shield }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_016_certify_loyal_military_districts } remove_mission = soviet_collapse_soviet_mission_016_certify_loyal_military_districts }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_017_restore_the_central_supply_seal } remove_mission = soviet_collapse_soviet_mission_017_restore_the_central_supply_seal }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_018_send_the_quiet_governors } remove_mission = soviet_collapse_soviet_mission_018_send_the_quiet_governors }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_019_prepare_the_reduced_union_formula } remove_mission = soviet_collapse_soviet_mission_019_prepare_the_reduced_union_formula }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_020_declare_the_union_treaty_valid_until_rewritten } remove_mission = soviet_collapse_soviet_mission_020_declare_the_union_treaty_valid_until_rewritten }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_021_prove_one_republic_can_be_recovered } remove_mission = soviet_collapse_soviet_mission_021_prove_one_republic_can_be_recovered }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_022_keep_the_second_republic_quiet } remove_mission = soviet_collapse_soviet_mission_022_keep_the_second_republic_quiet }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_023_rebuild_a_provincial_party_office } remove_mission = soviet_collapse_soviet_mission_023_rebuild_a_provincial_party_office }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_024_assign_the_emergency_procurators } remove_mission = soviet_collapse_soviet_mission_024_assign_the_emergency_procurators }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_025_hold_the_capital_district_parade } remove_mission = soviet_collapse_soviet_mission_025_hold_the_capital_district_parade }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_026_repair_the_western_telegraph_offices } remove_mission = soviet_collapse_soviet_mission_026_repair_the_western_telegraph_offices }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_027_secure_the_grain_accounting_files } remove_mission = soviet_collapse_soviet_mission_027_secure_the_grain_accounting_files }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_028_demand_the_governors_oaths } remove_mission = soviet_collapse_soviet_mission_028_demand_the_governors_oaths }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_029_guard_the_union_archives } remove_mission = soviet_collapse_soviet_mission_029_guard_the_union_archives }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_030_stabilize_the_first_negotiated_corridor } remove_mission = soviet_collapse_soviet_mission_030_stabilize_the_first_negotiated_corridor }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_031_move_the_government_files_east } remove_mission = soviet_collapse_soviet_mission_031_move_the_government_files_east }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_032_declare_emergency_regional_commands } remove_mission = soviet_collapse_soviet_mission_032_declare_emergency_regional_commands }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_033_hold_the_inner_ring } remove_mission = soviet_collapse_soviet_mission_033_hold_the_inner_ring }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_034_secure_the_last_loyal_rail_spine } remove_mission = soviet_collapse_soviet_mission_034_secure_the_last_loyal_rail_spine }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_035_buy_time_with_local_militias } remove_mission = soviet_collapse_soviet_mission_035_buy_time_with_local_militias }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_036_offer_amnesty_to_the_second_line } remove_mission = soviet_collapse_soviet_mission_036_offer_amnesty_to_the_second_line }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_037_break_the_leagues_first_calendar } remove_mission = soviet_collapse_soviet_mission_037_break_the_leagues_first_calendar }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_038_publicly_recover_a_lost_depot } remove_mission = soviet_collapse_soviet_mission_038_publicly_recover_a_lost_depot }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_039_keep_the_officers_from_choosing_russia_alone } remove_mission = soviet_collapse_soviet_mission_039_keep_the_officers_from_choosing_russia_alone }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_040_prepare_the_rump_state_without_admitting_it } remove_mission = soviet_collapse_soviet_mission_040_prepare_the_rump_state_without_admitting_it }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_041_deny_the_first_victory_parade } remove_mission = soviet_collapse_soviet_mission_041_deny_the_first_victory_parade }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_042_cut_the_republics_shared_road } remove_mission = soviet_collapse_soviet_mission_042_cut_the_republics_shared_road }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_043_prove_the_depots_can_be_retaken } remove_mission = soviet_collapse_soviet_mission_043_prove_the_depots_can_be_retaken }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_044_stop_the_volunteer_review } remove_mission = soviet_collapse_soviet_mission_044_stop_the_volunteer_review }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_045_discredit_the_first_republic_army } remove_mission = soviet_collapse_soviet_mission_045_discredit_the_first_republic_army }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_046_break_the_defense_committees_supply } remove_mission = soviet_collapse_soviet_mission_046_break_the_defense_committees_supply }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_047_keep_the_next_declaration_unarmed } remove_mission = soviet_collapse_soviet_mission_047_keep_the_next_declaration_unarmed }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_048_force_the_league_to_choose_a_front } remove_mission = soviet_collapse_soviet_mission_048_force_the_league_to_choose_a_front }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_049_capture_the_emergency_printing_office } remove_mission = soviet_collapse_soviet_mission_049_capture_the_emergency_printing_office }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_050_deny_the_first_foreign_mission_photo } remove_mission = soviet_collapse_soviet_mission_050_deny_the_first_foreign_mission_photo }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_051_reassign_the_local_born_commanders } remove_mission = soviet_collapse_soviet_mission_051_reassign_the_local_born_commanders }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_052_reward_the_units_that_moved } remove_mission = soviet_collapse_soviet_mission_052_reward_the_units_that_moved }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_053_send_political_officers_to_the_rail_junctions } remove_mission = soviet_collapse_soviet_mission_053_send_political_officers_to_the_rail_junctions }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_054_secure_the_signal_school } remove_mission = soviet_collapse_soviet_mission_054_secure_the_signal_school }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_055_audit_the_navys_oath } remove_mission = soviet_collapse_soviet_mission_055_audit_the_navys_oath }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_056_gather_the_armored_train_crews } remove_mission = soviet_collapse_soviet_mission_056_gather_the_armored_train_crews }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_057_stop_the_officers_private_conference } remove_mission = soviet_collapse_soviet_mission_057_stop_the_officers_private_conference }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_058_keep_the_guards_divisions_apolitical } remove_mission = soviet_collapse_soviet_mission_058_keep_the_guards_divisions_apolitical }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_059_escort_the_commissars_safely } remove_mission = soviet_collapse_soviet_mission_059_escort_the_commissars_safely }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_060_reopen_the_district_war_rooms } remove_mission = soviet_collapse_soviet_mission_060_reopen_the_district_war_rooms }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_061_seal_the_smolensk_ledger } remove_mission = soviet_collapse_soviet_mission_061_seal_the_smolensk_ledger }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_062_recount_the_ukrainian_depots } remove_mission = soviet_collapse_soviet_mission_062_recount_the_ukrainian_depots }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_063_guard_the_belarusian_rail_net } remove_mission = soviet_collapse_soviet_mission_063_guard_the_belarusian_rail_net }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_064_prevent_baltic_port_transfers } remove_mission = soviet_collapse_soviet_mission_064_prevent_baltic_port_transfers }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_065_secure_caucasus_oil_accounting } remove_mission = soviet_collapse_soviet_mission_065_secure_caucasus_oil_accounting }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_066_lock_the_ural_factory_gates } remove_mission = soviet_collapse_soviet_mission_066_lock_the_ural_factory_gates }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_067_inspect_the_siberian_storehouses } remove_mission = soviet_collapse_soviet_mission_067_inspect_the_siberian_storehouses }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_068_move_the_fuel_before_the_flags_change } remove_mission = soviet_collapse_soviet_mission_068_move_the_fuel_before_the_flags_change }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_069_guard_the_ammunition_census } remove_mission = soviet_collapse_soviet_mission_069_guard_the_ammunition_census }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_070_reopen_the_northern_port_books } remove_mission = soviet_collapse_soviet_mission_070_reopen_the_northern_port_books }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_071_close_the_unofficial_consulates } remove_mission = soviet_collapse_soviet_mission_071_close_the_unofficial_consulates }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_072_guard_the_polish_and_romanian_corridors } remove_mission = soviet_collapse_soviet_mission_072_guard_the_polish_and_romanian_corridors }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_073_watch_the_finnish_border_roads } remove_mission = soviet_collapse_soviet_mission_073_watch_the_finnish_border_roads }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_074_shadow_the_turkish_mission } remove_mission = soviet_collapse_soviet_mission_074_shadow_the_turkish_mission }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_075_seal_the_iranian_road } remove_mission = soviet_collapse_soviet_mission_075_seal_the_iranian_road }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_076_track_the_japanese_liaison_train } remove_mission = soviet_collapse_soviet_mission_076_track_the_japanese_liaison_train }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_077_expose_the_sponsors_price } remove_mission = soviet_collapse_soviet_mission_077_expose_the_sponsors_price }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_078_offer_safe_neutral_observation } remove_mission = soviet_collapse_soviet_mission_078_offer_safe_neutral_observation }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_079_cut_the_radio_link_abroad } remove_mission = soviet_collapse_soviet_mission_079_cut_the_radio_link_abroad }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_080_keep_humanitarian_aid_from_becoming_arms } remove_mission = soviet_collapse_soviet_mission_080_keep_humanitarian_aid_from_becoming_arms }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_081_separate_peasant_anger_from_separatism } remove_mission = soviet_collapse_soviet_mission_081_separate_peasant_anger_from_separatism }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_082_reopen_the_civil_war_files } remove_mission = soviet_collapse_soviet_mission_082_reopen_the_civil_war_files }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_083_keep_huliaipole_quiet } remove_mission = soviet_collapse_soviet_mission_083_keep_huliaipole_quiet }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_084_negotiate_with_the_villages_before_the_league_does } remove_mission = soviet_collapse_soviet_mission_084_negotiate_with_the_villages_before_the_league_does }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_085_guard_the_monasteries_and_mosques_from_politics } remove_mission = soviet_collapse_soviet_mission_085_guard_the_monasteries_and_mosques_from_politics }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_086_break_the_basmachi_supply_chain } remove_mission = soviet_collapse_soviet_mission_086_break_the_basmachi_supply_chain }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_087_quiet_the_volga_names } remove_mission = soviet_collapse_soviet_mission_087_quiet_the_volga_names }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_088_prevent_the_factory_committees_from_writing_law } remove_mission = soviet_collapse_soviet_mission_088_prevent_the_factory_committees_from_writing_law }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_089_stop_the_sailor_assembly_before_it_votes } remove_mission = soviet_collapse_soviet_mission_089_stop_the_sailor_assembly_before_it_votes }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_090_contain_the_grave_registers } remove_mission = soviet_collapse_soviet_mission_090_contain_the_grave_registers }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_091_western_gate_discipline } remove_mission = soviet_collapse_soviet_mission_091_western_gate_discipline }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_092_baltic_legal_counterclaim } remove_mission = soviet_collapse_soviet_mission_092_baltic_legal_counterclaim }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_093_caucasus_mountain_administration } remove_mission = soviet_collapse_soviet_mission_093_caucasus_mountain_administration }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_094_the_tashkent_anchor } remove_mission = soviet_collapse_soviet_mission_094_the_tashkent_anchor }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_095_dushanbe_pass_watch } remove_mission = soviet_collapse_soviet_mission_095_dushanbe_pass_watch }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_096_ashgabat_border_screen } remove_mission = soviet_collapse_soviet_mission_096_ashgabat_border_screen }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_097_bishkek_and_the_mountain_signals } remove_mission = soviet_collapse_soviet_mission_097_bishkek_and_the_mountain_signals }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_098_kazakhstan_must_not_be_first } remove_mission = soviet_collapse_soviet_mission_098_kazakhstan_must_not_be_first }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_099_siberian_distance_command } remove_mission = soviet_collapse_soviet_mission_099_siberian_distance_command }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_100_vladivostok_does_not_negotiate_alone } remove_mission = soviet_collapse_soviet_mission_100_vladivostok_does_not_negotiate_alone }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_101_deny_the_league_founding_quorum } remove_mission = soviet_collapse_soviet_mission_101_deny_the_league_founding_quorum }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_102_split_the_league_between_west_and_south } remove_mission = soviet_collapse_soviet_mission_102_split_the_league_between_west_and_south }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_103_offer_one_republic_a_separate_exit } remove_mission = soviet_collapse_soviet_mission_103_offer_one_republic_a_separate_exit }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_104_break_the_shared_defense_calendar } remove_mission = soviet_collapse_soviet_mission_104_break_the_shared_defense_calendar }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_105_discredit_the_leagues_foreign_envoys } remove_mission = soviet_collapse_soviet_mission_105_discredit_the_leagues_foreign_envoys }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_106_prove_the_league_cannot_protect_depots } remove_mission = soviet_collapse_soviet_mission_106_prove_the_league_cannot_protect_depots }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_107_keep_loyalists_alive_behind_the_league } remove_mission = soviet_collapse_soviet_mission_107_keep_loyalists_alive_behind_the_league }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_108_force_a_league_border_dispute } remove_mission = soviet_collapse_soviet_mission_108_force_a_league_border_dispute }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_109_classify_the_impossible_reports } remove_mission = soviet_collapse_soviet_mission_109_classify_the_impossible_reports }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_110_guard_the_hospitals_from_politics } remove_mission = soviet_collapse_soviet_mission_110_guard_the_hospitals_from_politics }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_111_keep_the_factory_whistles_ordinary } remove_mission = soviet_collapse_soviet_mission_111_keep_the_factory_whistles_ordinary }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_112_deny_the_star_iron_rumor } remove_mission = soviet_collapse_soviet_mission_112_deny_the_star_iron_rumor }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_113_break_the_funeral_train_schedule } remove_mission = soviet_collapse_soviet_mission_113_break_the_funeral_train_schedule }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_114_prevent_the_crown_from_leaving_the_archive } remove_mission = soviet_collapse_soviet_mission_114_prevent_the_crown_from_leaving_the_archive }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_115_silence_the_wrong_resurrection_committee } remove_mission = soviet_collapse_soviet_mission_115_silence_the_wrong_resurrection_committee }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_116_seal_the_northern_fleet_signals } remove_mission = soviet_collapse_soviet_mission_116_seal_the_northern_fleet_signals }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_117_keep_the_priests_out_of_the_war_room } remove_mission = soviet_collapse_soviet_mission_117_keep_the_priests_out_of_the_war_room }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_118_order_the_graves_counted_by_the_living } remove_mission = soviet_collapse_soviet_mission_118_order_the_graves_counted_by_the_living }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_119_publish_the_first_restored_budget } remove_mission = soviet_collapse_soviet_mission_119_publish_the_first_restored_budget }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_120_reopen_the_schools_without_soldiers } remove_mission = soviet_collapse_soviet_mission_120_reopen_the_schools_without_soldiers }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_121_return_the_local_units_to_barracks } remove_mission = soviet_collapse_soviet_mission_121_return_the_local_units_to_barracks }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_122_confirm_the_new_union_budget } remove_mission = soviet_collapse_soviet_mission_122_confirm_the_new_union_budget }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_123_seal_the_last_recognition_file } remove_mission = soviet_collapse_soviet_mission_123_seal_the_last_recognition_file }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_124_record_the_crisis_as_temporary_disorder } remove_mission = soviet_collapse_soviet_mission_124_record_the_crisis_as_temporary_disorder }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_125_admit_the_union_was_rewritten } remove_mission = soviet_collapse_soviet_mission_125_admit_the_union_was_rewritten }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_126_retire_the_emergency_commands } remove_mission = soviet_collapse_soviet_mission_126_retire_the_emergency_commands }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_127_inventory_the_recovered_depots } remove_mission = soviet_collapse_soviet_mission_127_inventory_the_recovered_depots }
+	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_128_disband_the_crisis_desk } remove_mission = soviet_collapse_soviet_mission_128_disband_the_crisis_desk }
+}
+
 soviet_collapse_count_active_soviet_objectives = {
 	set_temp_variable = { soviet_collapse_active_objectives = 0 }
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
@@ -3667,6 +3925,10 @@ soviet_collapse_count_active_soviet_objectives = {
 
 soviet_collapse_activate_opening_objectives = {
 	soviet_collapse_count_active_soviet_objectives = yes
+	if = {
+		limit = { has_global_flag = soviet_collapse_terminal_collapse }
+		set_temp_variable = { soviet_collapse_active_objectives = constant:soviet_collapse_soviet_objective.active_cap }
+	}
 
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_001_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command } } activate_mission = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 	if = { limit = { check_variable = { var = soviet_collapse_active_objectives value = constant:soviet_collapse_soviet_objective.active_cap compare = less_than } NOT = { has_country_flag = soviet_collapse_mission_002_done } NOT = { has_active_mission = soviet_collapse_soviet_mission_002_seal_the_first_circular } } activate_mission = soviet_collapse_soviet_mission_002_seal_the_first_circular add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
