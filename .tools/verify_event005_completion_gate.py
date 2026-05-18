@@ -973,23 +973,79 @@ def verify_localisation_and_event_log() -> list[Check]:
 				if BANNED_PHRASE in read_text(path):
 					hits.append(str(path.relative_to(ROOT)))
 	event_log = read_text(ROOT / "common/scripted_localisation/chaosx_scripted_localisation_events_log.txt")
+	debug_loc = read_text(ROOT / "common/scripted_localisation/chaosx_scripted_localisation_debug.txt")
+	settings_loc = read_text(ROOT / "common/scripted_localisation/chaosx_scripted_localisation_settings.txt")
+	event_names = read_text(ROOT / "localisation/english/chaosx_event_names_l_english.yml")
 	gui_loc = read_text(ROOT / "localisation/english/chaosx_gui_l_english.yml")
+	logic_effects = read_text(ROOT / "common/scripted_effects/chaosx_logic_effects.txt")
+	event_file = read_text(ROOT / "events/005_soviet_collapse.txt")
+	event_log_tokens = tokens(event_log)
+	event_log_blocks = named_blocks(event_log_tokens, "defined_text")
+	defined_texts = {
+		values[0]: block
+		for block in event_log_blocks
+		if (values := top_level_values(block, "name"))
+	}
+	detail_function_names = [
+		"GetEventsLogSovietCollapseDetailCrisisState",
+		"GetEventsLogSovietCollapseDetailFirstWave",
+		"GetEventsLogSovietCollapseDetailLeague",
+		"GetEventsLogSovietCollapseDetailAuthority",
+		"GetEventsLogSovietCollapseDetailThreat",
+		"GetEventsLogSovietCollapseDetailForeign",
+		"GetEventsLogSovietCollapseDetailMutation",
+	]
+	detail_function_keys = sorted({
+		match.group(1)
+		for name in detail_function_names
+		for match in re.finditer(r"localization_key\s*=\s*(chaosx\.events_log\.window\.event_details\.soviet_collapse\.[A-Za-z0-9_.-]+)", " ".join(defined_texts.get(name, [])))
+	})
 	detail_ok = all(
-		item in event_log + gui_loc
-		for item in [
-			"chaosx.events_log.window.event_details.soviet_collapse",
-			"GetEventsLogSovietCollapseDetailCrisisState",
-			"GetEventsLogSovietCollapseDetailFirstWave",
-			"GetEventsLogSovietCollapseDetailLeague",
-			"GetEventsLogSovietCollapseDetailAuthority",
-			"GetEventsLogSovietCollapseDetailThreat",
-			"GetEventsLogSovietCollapseDetailForeign",
-			"GetEventsLogSovietCollapseDetailMutation",
-		]
-	)
+		name in defined_texts
+		and "always = yes" in " ".join(defined_texts[name])
+		and f"[{name}]" in gui_loc
+		for name in detail_function_names
+	) and all(
+		re.search(r"^" + re.escape(key) + r"\s*:", gui_loc, re.MULTILINE)
+		for key in detail_function_keys
+	) and len(detail_function_keys) == 25
+	event_detail_block = " ".join(defined_texts.get("GetEventsLogEventDetailDescription", []))
+	logic_compact = " ".join(tokens(logic_effects))
+	event_compact = " ".join(tokens(event_file))
+	debug_compact = " ".join(tokens(debug_loc))
+	settings_compact = " ".join(tokens(settings_loc))
+	event_name_ok = bool(re.search(r"^chaosx\.event_name\.5\s*:\s*\"Soviet Union Collapse\"", event_names, re.MULTILINE))
+	debug_name_ok = "check_variable = { event_id = 5 }" in debug_compact and "localization_key = chaosx.event_name.5" in debug_compact
+	settings_name_ok = "check_variable = { settings_event_id = 5 }" in settings_compact and "localization_key = chaosx.event_name.5" in settings_compact
+	default_actor_ok = "check_variable = { event_id = 5 }" in logic_compact and "SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }" in logic_compact
+	detail_mapping_ok = "check_variable = { var = event_id value = 5 compare = equals }" in event_detail_block and "localization_key = chaosx.events_log.window.event_details.soviet_collapse" in event_detail_block
+	entry_event_ok = all(item in event_compact for item in ["add_namespace = chaosx.nr5", "id = chaosx.nr5.1", "id = chaosx.nr5.2", "news_event = { id = chaosx.news.5 days = 2 }"])
+	mapping_ok = all([
+		event_name_ok,
+		debug_name_ok,
+		settings_name_ok,
+		default_actor_ok,
+		detail_mapping_ok,
+		entry_event_ok,
+		"chaosx.events_log.window.event_details.soviet_collapse:" in gui_loc,
+		"Moscow Authority" in gui_loc,
+		"Union Crisis Threat" in gui_loc,
+	])
 	return [
 		Check("banned_phrase_cleanup", not hits, f"hits={len(hits)}"),
-		Check("event_log_detail_surface", detail_ok, f"detail_localisation_functions_present={detail_ok}"),
+		Check("event_log_detail_surface", detail_ok, f"detail_functions={sum(1 for name in detail_function_names if name in defined_texts)}/{len(detail_function_names)} detail_output_keys={len(detail_function_keys)}"),
+		Check(
+			"event_log_mapping_surface",
+			mapping_ok,
+			(
+				f"event_name={event_name_ok} "
+				f"debug_name={debug_name_ok} "
+				f"settings_name={settings_name_ok} "
+				f"default_actor={default_actor_ok} "
+				f"detail_mapping={detail_mapping_ok} "
+				f"entry_event={entry_event_ok}"
+			),
+		),
 	]
 
 
@@ -1324,6 +1380,7 @@ def verify_docs_surface() -> list[Check]:
 		"Strict verifier result",
 		"Implementation-gate verifier result",
 		"soviet_objective_board_surface",
+		"event_log_mapping_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
