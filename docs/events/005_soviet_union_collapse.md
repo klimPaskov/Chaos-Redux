@@ -415,6 +415,8 @@ Mission outcomes use family-specific crisis pressure helpers tuned through `cons
 
 Failed Soviet objective families also trigger short report events in `events/005_soviet_collapse.txt`: authority (`chaosx.nr5.10`), command (`chaosx.nr5.11`), rail (`chaosx.nr5.12`), depot (`chaosx.nr5.13`), foreign exposure (`chaosx.nr5.14`), cleanup/backlog (`chaosx.nr5.15`), and settlement (`chaosx.nr5.16`). These are normal crisis reports, not evolution logs.
 
+The main crisis decision AI weights react to the same crisis state. Soviet responses prefer authority restoration, loyalist officers, supply-route action, or reserve mobilization based on Moscow Authority, Military Obedience, Depot Vulnerability, Foreign Penetration, League coordination, active war, and Union Crisis Threat. Breakaway actions prefer recognition, mobilization, depot seizure, or front coordination based on Soviet weakness, war with Moscow, faction membership, League coordination, and chaos tier. Foreign patron actions prefer recognition, liaison, arms, advisers, intelligence, volunteers, or trade based on Soviet authority, foreign penetration, military obedience, depot vulnerability, war with Moscow, total threat, and League coordination.
+
 ## Icon Wiring
 
 This slice reuses existing wired sprites. No new art was generated.
