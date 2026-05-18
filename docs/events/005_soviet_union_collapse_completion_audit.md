@@ -70,6 +70,7 @@ Present `tmp/` Event 005 spec files are:
 | Union Crisis Threat and Moscow Authority pacing | Opening values start from central constants, apply visible condition modifiers, then use `soviet_collapse_recalculate_total_threat` with clamping and a 0.33 multiplier; Union Unmade uses high breakaway count plus authority, threat, League, and high-chaos gates | Implemented for current tuning |
 | Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 `soviet_collapse_soviet_mission_*` mission blocks | Implemented; final parser audit passed |
 | Foreign intervention categories and action-based aid | `soviet_collapse_foreign_patron_category` has 7 decision blocks; `soviet_collapse_breakaway_category` has 4 action blocks | Implemented for current layer; catalog row updated |
+| Crisis decision AI behavior | The four Soviet responses, four breakaway actions, and seven foreign patron actions use dynamic `ai_will_do` modifiers tied to crisis variables, war state, League coordination, faction state, and chaos tier; route-specific custom-country action boards keep their compact fixed weights for their foundational package | Implemented for the main crisis layer |
 | Runtime focus trees for republics and breakaways | Focus counts: Ukraine 153, Belarus 83, Kazakhstan 87, fallback breakaway 53, Baltic 36, Caucasus 33, Central Asia 34, Moldova 23 | Implemented for these trees |
 | High-chaos successor focus trees | Focus counts: CFR 58, MFR 46, OGB 54, ICD 24, KRS 24, FTH 24, BBH 24, BSC 24, TNC 24, ALA 24, UDC 24, SDZ 24, RMC 24, RCD 24, ILU 24, PRA 24, TSC 24, BLT 24, NRF 24, GAC 24, DHC 24, KHC 24, FEV 24, SZA 24, UWD 24, MRC 24, IUL 24, BAC 24, ARD 24, TRS 24, NLC 24, SEP 24, DSC 24, COU 24, BEC 24, RLD 24, LID 24, IRA 24 | Implemented for these thirty-eight successors |
 | Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions; parser audit found no missing focus references, self-references, duplicate focus IDs, missing icons, missing localisation, missing `ai_will_do`, or missing/duplicated `completion_reward` blocks | Implemented for current focus trees |
@@ -314,6 +315,7 @@ Command evidence from the 2026-05-18 continuation audit:
 brace depth/min for Event 005 focus, effect, trigger, decision, idea, constant, and event files: depth=0 min=0
 focuses 1500 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 missing_ai 0 missing_reward 0
 missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0
+main_crisis_decision_ai dynamic_blocks 15 flat_blocks 0
 banned_phrase_hits 0
 flags_checked 570 flags_missing 0 bottom_origin 570 top_origin 0
 git diff --check clean
@@ -333,7 +335,7 @@ The requested final completion report categories are not closed because the miss
 - implemented countries and packages: thirty-eight custom successors plus supported ordinary Soviet republics.
 - flags: 570 Event 005 custom flag files audited; no current binary correction indicated.
 - focus counts and branch maps: 1500 focus blocks across the Event 005 runtime focus files, with no duplicate IDs or invalid focus references.
-- missions and decisions: 128 Soviet crisis missions, 128 activation entries, and 128 terminal removal entries; Event 005 focus and decision files include AI weights.
+- missions and decisions: 128 Soviet crisis missions, 128 activation entries, and 128 terminal removal entries; main Soviet, breakaway, and foreign patron crisis decisions use dynamic AI weights.
 - evolutions and super-events: high-chaos successor evolution writer and super-event helpers remain wired for the current route surface.
 - achievements and assets: achievement, focus, flag, leader, and super-event asset surfaces are documented in the Event 005 docs and asset manifests.
 - tests and checks: brace depth, focus reference, mission wiring, localisation phrase, flag orientation, unsupported operator/scope, and whitespace checks passed in the latest audit.
