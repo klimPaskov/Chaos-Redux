@@ -414,6 +414,27 @@ localisation/english/005_soviet_collapse_regional_focus_l_english.yml efbbbf
 localisation/english/005_soviet_collapse_ukraine_focus_l_english.yml efbbbf
 ```
 
+Current Event 005 idea-strength validation:
+
+```text
+ideas 124
+constants 81
+modifier_entries_total 395
+min_modifiers 3
+max_modifiers 7
+avg_modifiers 3.19
+no_modifier 0
+weak_lt3 0
+tiny_only 0
+tiny_components 19
+unresolved_constants 0
+missing_picture 0
+missing_sprite 0
+missing_texture 0
+missing_dds 0
+missing_loc_or_desc 0
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent. This prevents a strict final closure claim against every requested source and runtime evidence file until the missing files are restored or explicitly waived.
