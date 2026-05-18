@@ -2192,10 +2192,10 @@ def verify_flags() -> list[Check]:
 				if flipped_diff + 0.5 < normal_diff:
 					orientation_mismatches.append(f"{tag}{variant}:{folder.name}")
 				comparisons += 1
-	ok = checked == 570 and not missing and not decode_errors and top_origin == 0
+	ok = checked == 570 and not missing and not decode_errors and top_origin == 570 and bottom_origin == 0
 	surface_ok = ok and comparisons == 380 and not orientation_mismatches
 	return [
-		Check("flag_orientation_headers", ok, f"flags_checked={checked} missing={len(missing)} decode_errors={len(decode_errors)} bottom_origin={bottom_origin} top_origin={top_origin}"),
+		Check("flag_orientation_headers", ok, f"flags_checked={checked} missing={len(missing)} decode_errors={len(decode_errors)} top_origin={top_origin} bottom_origin={bottom_origin}"),
 		Check(
 			"flag_orientation_surface",
 			surface_ok,
