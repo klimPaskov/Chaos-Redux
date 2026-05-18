@@ -667,6 +667,30 @@ soviet_collapse_apply_breakaway_setup_package = {
 		limit = { SOV = { exists = yes } }
 		SOV = {
 			add_to_variable = { soviet_collapse_breakaway_count = 1 }
+			if = {
+				limit = { has_global_flag = soviet_collapse_opening_wave_active }
+				add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_pressure.first_wave_breakaway_republic_confidence }
+				add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_opening_pressure.first_wave_breakaway_depot_vulnerability }
+				add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_opening_pressure.first_wave_breakaway_foreign_appetite }
+			}
+			if = {
+				limit = {
+					has_global_flag = soviet_collapse_opening_wave_active
+					PREV = { is_soviet_collapse_foreign_aid_major_target = yes }
+				}
+				add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_pressure.first_wave_major_republic_confidence }
+			}
+			if = {
+				limit = {
+					has_global_flag = soviet_collapse_opening_wave_active
+					PREV = { is_soviet_collapse_foreign_aid_regional_target = yes }
+				}
+				add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_pressure.first_wave_regional_republic_confidence }
+			}
+			if = {
+				limit = { has_global_flag = soviet_collapse_opening_wave_active }
+				soviet_collapse_recalculate_total_threat = yes
+			}
 			soviet_collapse_maybe_show_union_unmade_super_event = yes
 		}
 	}
@@ -3867,6 +3891,7 @@ soviet_collapse_release_initial_republics = {
 	if = { limit = { TAJ = { exists = yes has_country_flag = soviet_collapse_event_created_republic } } TAJ = { soviet_collapse_load_event_created_focus_tree = yes } }
 	if = { limit = { TMS = { exists = yes has_country_flag = soviet_collapse_event_created_republic } } TMS = { soviet_collapse_load_event_created_focus_tree = yes } }
 	soviet_collapse_maybe_spawn_high_chaos_successors = yes
+	clr_global_flag = soviet_collapse_opening_wave_active
 }
 
 soviet_collapse_cleanup_terminal_collapse_missions = {
