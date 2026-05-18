@@ -624,6 +624,28 @@ def verify_source_order_surface() -> list[Check]:
 	]
 
 
+def verify_input_audit_surface() -> list[Check]:
+	input_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_input_audit.md")
+	expected_rows = []
+	for rel in REQUIRED_INPUTS + REQUIRED_CONTEXT_INPUTS:
+		path = ROOT / rel
+		if path.exists():
+			text = read_text(path)
+			expected_rows.append(f"| `{rel}` | present | {len(text.splitlines())} | {path.stat().st_size} | `{sha256(path)}` |")
+		else:
+			expected_rows.append(f"| `{rel}` | missing | 0 | 0 | n/a |")
+	for rel in ["tmp/error.log", "tmp/text.log"]:
+		expected_rows.append(f"| `{rel}` | intentionally removed after fixed errors | 0 | 0 | n/a |")
+	missing_rows = [row for row in expected_rows if row not in input_audit]
+	return [
+		Check(
+			"input_audit_surface",
+			not missing_rows,
+			f"rows={len(expected_rows) - len(missing_rows)}/{len(expected_rows)} mismatches={len(missing_rows)}",
+		)
+	]
+
+
 def verify_first_wave_and_forces() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -1941,6 +1963,7 @@ def verify_docs_surface() -> list[Check]:
 		"flag_orientation_surface",
 		"source_context_files",
 		"source_order_surface",
+		"input_audit_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2058,6 +2081,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_input_files())
 	checks.extend(verify_source_context_files())
 	checks.extend(verify_source_order_surface())
+	checks.extend(verify_input_audit_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
