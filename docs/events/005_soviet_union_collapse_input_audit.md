@@ -48,6 +48,16 @@ find . -type f \( -name '005_soviet_union_collapse_event_log_mission_balance_foc
 result: no files found
 ```
 
+2026-05-18 repository near-name and history recheck:
+
+```text
+find . -path './.git' -prune -o -type f \( -iname '005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md' -o -iname '*event_log*mission*balance*focus*cleanup*' -o -iname '*mission_balance_focus*' -o -iname '*focus_cleanup*spec.md' \) -printf '%p %s bytes\n' | sort
+result: no files found
+
+git log --all --name-only --pretty=format: | rg '005_soviet_union_collapse.*(event_log|mission_balance|focus_cleanup|event_log_mission_balance_focus_cleanup).*spec\.md' | sort -u
+result: no matching tracked history entry
+```
+
 2026-05-18 home-directory exact-name recheck:
 
 ```text
