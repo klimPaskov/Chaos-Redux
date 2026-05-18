@@ -750,6 +750,31 @@ def verify_missing_continuation_direct_coverage_surface() -> list[Check]:
 	]
 
 
+def verify_resume_validation_commands_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	try:
+		resume_packet = completion_audit.split("## Resume Packet", 1)[1]
+	except IndexError:
+		return [Check("resume_validation_commands_surface", False, "resume_packet=False")]
+	required_markers = [
+		"Resume validation commands after restoring or waiving the missing continuation spec:",
+		"python3 -m py_compile .tools/verify_event005_completion_gate.py",
+		"git diff --check",
+		"python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec",
+		"python3 .tools/verify_event005_completion_gate.py",
+		"git status --short",
+		"The strict verifier must exit 0 only after the missing input is restored or explicitly waived",
+	]
+	missing = [marker for marker in required_markers if marker not in resume_packet]
+	return [
+		Check(
+			"resume_validation_commands_surface",
+			not missing,
+			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} missing={len(missing)}",
+		)
+	]
+
+
 def verify_success_criteria_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	try:
@@ -2286,6 +2311,7 @@ def verify_docs_surface() -> list[Check]:
 		"blocked_completion_surface",
 		"strict_blocker_documentation_surface",
 		"missing_continuation_direct_coverage_surface",
+		"resume_validation_commands_surface",
 		"success_criteria_surface",
 		"available_source_acceptance_surface",
 		"prompt_artifact_checklist_surface",
@@ -2414,6 +2440,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_blocked_completion_surface())
 	checks.extend(verify_strict_blocker_documentation_surface())
 	checks.extend(verify_missing_continuation_direct_coverage_surface())
+	checks.extend(verify_resume_validation_commands_surface())
 	checks.extend(verify_success_criteria_surface())
 	checks.extend(verify_available_source_acceptance_surface())
 	checks.extend(verify_prompt_artifact_checklist_surface())
