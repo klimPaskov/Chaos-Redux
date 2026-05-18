@@ -56,6 +56,8 @@ When cleaning up generated focus trees, check reward uniqueness before preservin
 
 When an event continuation goal cannot be completed because named prompt/spec inputs or source-of-truth classifications are missing, make the blocker reproducible instead of ending with a loose note. Add or update an input-file audit with exact path state, line/byte counts and SHA-256 for present files, and exact filename recovery searches for missing files. Add a blocked completion report that lists the requested final-report categories without claiming completion. If the blocked state is likely to be resumed later, add a blocker resolution checklist and a resume packet that record the exact source decisions required, follow-up implementation paths, and validation gates before the final audit can pass. Do not mark the active goal complete while any named input or source-of-truth classification remains unresolved.
 
+For large event correction passes with many repeated parser and surface checks, preserve a deterministic verifier script under `.tools/` instead of relying only on copied terminal output. The verifier should separate implementation failures from missing-input blockers, return a nonzero blocked status when required source files are absent, and optionally provide an explicit waiver mode for checking implementation gates without claiming final completion. Document the exact verifier commands and expected exit meanings in the event completion audit.
+
 ## Event anatomy
 
 - entry event: the canonical `chaosx.nr<ID>.1` start
