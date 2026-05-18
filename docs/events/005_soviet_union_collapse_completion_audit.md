@@ -179,7 +179,7 @@ custom_country_tags 38
 achievements 47
 achievement_flags 89
 super_events 14
-xlsx_status Implemented - Final Audit Passed
+xlsx_status Implemented - Final Closure Blocked
 ```
 
 The audit checked:
