@@ -258,6 +258,8 @@ When a focus reward or decision effect computes variables at completion time, do
 
 When a focus capstone should form or enter a system that also has a paid decision path, split the system effect into a no-cost core helper and a paid decision wrapper. Decisions pay costs and call the core helper; focus rewards call the core helper only after checking the same eligibility trigger, so focus integration does not secretly charge political power.
 
+For blocked decision cost localisation, show only the cost values/icons. Do not write prose such as "required" or insert "and" between cost entries; separate entries with spacing so the tooltip remains compact and scannable.
+
 When custom or special tags can qualify for multiple named systems through broad eligibility triggers, route focus hooks by explicit tag groups before calling the shared helper. Do not let a broad first-match order decide which faction/system the tag joins; encode the intended mapping in the hook and let already-joined members use a maintenance/strengthening effect instead of creating a second membership.
 
 If you add a new reusable dynamic scripted effect (an effect that could be generalized for all events), document it in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change.

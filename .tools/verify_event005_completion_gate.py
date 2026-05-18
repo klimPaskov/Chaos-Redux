@@ -43,6 +43,7 @@ EVENT005_SCRIPT_FILES = [
 ]
 
 REQUIRED_INPUTS = [
+	"tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md",
 	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
@@ -81,6 +82,7 @@ REQUIRED_REFERENCE_INPUTS = [
 ]
 
 REQUIRED_SOURCE_ORDER = [
+	"tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md",
 	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
@@ -263,15 +265,27 @@ def count_top_level_key(body: list[str], key: str) -> int:
 	return count
 
 
+def segments_cross(a: tuple[int, int], b: tuple[int, int], c: tuple[int, int], d: tuple[int, int]) -> bool:
+	if len({a, b, c, d}) < 4:
+		return False
+	def ccw(p: tuple[int, int], q: tuple[int, int], r: tuple[int, int]) -> bool:
+		return (r[1] - p[1]) * (q[0] - p[0]) > (q[1] - p[1]) * (r[0] - p[0])
+	return ccw(a, c, d) != ccw(b, c, d) and ccw(a, b, c) != ccw(a, b, d)
+
+
 def verify_focuses() -> list[Check]:
 	focuses = []
 	layout_rows = []
+	reward_bodies = []
 	for path in EVENT005_FOCUS_FILES:
 		toks = tokens(read_text(path))
 		for block in named_blocks(toks, "focus"):
 			ids = top_level_values(block, "id")
 			if ids:
 				focuses.append((path, ids[0], block))
+				rewards = top_level_block_bodies(block, "completion_reward")
+				if rewards:
+					reward_bodies.append((ids[0], " ".join(rewards[0])))
 		for tree_body in named_blocks(toks, "focus_tree"):
 			tree_ids = top_level_values(tree_body, "id")
 			tree_id = tree_ids[0] if tree_ids else "<missing>"
@@ -284,16 +298,26 @@ def verify_focuses() -> list[Check]:
 				continuous_x = xs[0] if xs else None
 				continuous_y = ys[0] if ys else None
 			tree_focuses = []
+			tree_prereq_edges = []
 			for focus_body in top_level_block_bodies(tree_body, "focus"):
 				ids = top_level_values(focus_body, "id")
 				xs = top_level_values(focus_body, "x")
 				ys = top_level_values(focus_body, "y")
 				if ids and xs and ys and xs[0].lstrip("-").isdigit() and ys[0].lstrip("-").isdigit():
 					tree_focuses.append((ids[0], int(xs[0]), int(ys[0])))
+					for ref in collect_focus_refs(top_level_block_bodies(focus_body, "prerequisite")):
+						tree_prereq_edges.append((ref, ids[0]))
 			if tree_focuses:
 				x_values = [x for _, x, _ in tree_focuses]
 				y_values = [y for _, _, y in tree_focuses]
 				coords = [(x, y) for _, x, y in tree_focuses]
+				coord_by_id = {focus_id: (x, y) for focus_id, x, y in tree_focuses}
+				edges = [(src, dst) for src, dst in tree_prereq_edges if src in coord_by_id and dst in coord_by_id]
+				edge_crossings = 0
+				for edge_index, first_edge in enumerate(edges):
+					for second_edge in edges[edge_index + 1:]:
+						if segments_cross(coord_by_id[first_edge[0]], coord_by_id[first_edge[1]], coord_by_id[second_edge[0]], coord_by_id[second_edge[1]]):
+							edge_crossings += 1
 				layout_rows.append(
 					{
 						"path": path,
@@ -308,6 +332,7 @@ def verify_focuses() -> list[Check]:
 						"duplicate_coords": len(coords) - len(set(coords)),
 						"max_col": max(x_values.count(x) for x in set(x_values)),
 						"max_row": max(y_values.count(y) for y in set(y_values)),
+						"edge_crossings": edge_crossings,
 						"continuous_x": continuous_x,
 						"continuous_y": continuous_y,
 					}
@@ -385,12 +410,33 @@ def verify_focuses() -> list[Check]:
 		row
 		for row in layout_rows
 		if row["duplicate_coords"] != 0
-		or row["x_span"] < 14
-		or row["y_span"] < 10
-		or row["max_row"] > 10
+		or row["edge_crossings"] != 0
+		or row["max_row"] > 22
+		or row["max_col"] > 14
 	]
-	wide_tree_count = sum(1 for row in layout_rows if row["x_span"] >= 14)
+	crossing_free_count = sum(1 for row in layout_rows if row["edge_crossings"] == 0)
 	continuous_positions = sum(1 for row in layout_rows if row["continuous_x"] is not None and row["continuous_y"] is not None)
+	reward_counts: dict[str, int] = {}
+	for _, reward_body in reward_bodies:
+		reward_counts[reward_body] = reward_counts.get(reward_body, 0) + 1
+	duplicate_reward_groups = sum(1 for count in reward_counts.values() if count > 1)
+	duplicate_reward_focuses = sum(count for count in reward_counts.values() if count > 1)
+	reward_category_markers = [
+		"add_ideas",
+		"add_building_construction",
+		"create_unit",
+		"division_template",
+		"add_equipment_to_stockpile",
+		"add_manpower",
+		"set_country_flag",
+		"add_to_variable",
+		"country_event",
+		"add_political_power",
+		"add_stability",
+		"add_war_support",
+	]
+	reward_categories = sum(1 for marker in reward_category_markers if any(marker in body for _, body in reward_bodies))
+	add_idea_rewards = sum(1 for _, body in reward_bodies if "add_ideas" in body)
 	ok = not any([
 		duplicates, missing_refs, self_refs, nonreciprocal, repeated_mutual_blocks,
 		missing_ai, missing_reward, missing_icon, missing_coords,
@@ -411,15 +457,25 @@ def verify_focuses() -> list[Check]:
 		),
 		Check(
 			"focus_layout_surface",
-			not layout_bad and not continuous_bad and continuous_positions == len(layout_rows) and wide_tree_count == len(layout_rows),
+			not layout_bad and not continuous_bad and continuous_positions == len(layout_rows) and crossing_free_count == len(layout_rows),
 			(
 				f"focus_trees={len(layout_rows)} continuous_positions={continuous_positions} "
 				f"layout_bad={len(layout_bad)} duplicate_coord_trees={sum(1 for row in layout_rows if row['duplicate_coords'])} "
-				f"continuous_side_bad={len(continuous_bad)} wide_trees={wide_tree_count} "
+				f"continuous_side_bad={len(continuous_bad)} crossing_free={crossing_free_count} "
+				f"edge_crossings={sum(row['edge_crossings'] for row in layout_rows)} "
 				f"min_x_span={min((row['x_span'] for row in layout_rows), default=0)} "
 				f"min_y_span={min((row['y_span'] for row in layout_rows), default=0)} "
 				f"max_col={max((row['max_col'] for row in layout_rows), default=0)} "
 				f"max_row={max((row['max_row'] for row in layout_rows), default=0)}"
+			),
+		),
+		Check(
+			"focus_reward_variety_surface",
+			duplicate_reward_groups == 0 and reward_categories >= 8 and add_idea_rewards <= len(focuses) // 4,
+			(
+				f"focuses={len(focuses)} duplicate_reward_groups={duplicate_reward_groups} "
+				f"duplicate_reward_focuses={duplicate_reward_focuses} reward_categories={reward_categories} "
+				f"add_idea_rewards={add_idea_rewards}"
 			),
 		),
 		Check(
@@ -1593,6 +1649,17 @@ def verify_crisis_balance() -> list[Check]:
 		and "NOT = { capital_scope = { is_controlled_by = ROOT } }" in initialize_body
 		and "soviet_collapse_recalculate_total_threat = yes" in initialize_body
 	)
+	first_wave_pressure_surface = all(
+		marker in effects
+		for marker in [
+			"first_wave_breakaway_republic_confidence",
+			"first_wave_breakaway_depot_vulnerability",
+			"first_wave_breakaway_foreign_appetite",
+			"first_wave_major_republic_confidence",
+			"first_wave_regional_republic_confidence",
+			"clr_global_flag = soviet_collapse_opening_wave_active",
+		]
+	)
 	pressure_families = {
 		"authority": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite"],
 		"legal": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_evolution_weirdness"],
@@ -1621,15 +1688,17 @@ def verify_crisis_balance() -> list[Check]:
 			covered_pressure_families += 1
 	ok = (
 		calm_authority >= 50
-		and calm_threat < 25
+		and 5 <= calm_threat <= 10
 		and tier1_authority >= 50
-		and tier1_threat < 30
+		and tier1_threat <= 15
 		and severe_authority > 0
-		and severe_threat < 100
+		and 35 <= severe_threat < 80
 		and visible_causes
 		and pressure_helpers >= 20
+		and constants.get("soviet_collapse_baseline.total_threat_multiplier", 1) <= 0.25
+		and constants.get("soviet_collapse_baseline.total_threat_floor", 1) == 0
 	)
-	cause_ok = recalculate_surface and opening_surface and covered_pressure_families == len(pressure_families)
+	cause_ok = recalculate_surface and opening_surface and first_wave_pressure_surface and covered_pressure_families == len(pressure_families)
 	return [
 		Check(
 			"crisis_balance_surface",
@@ -1638,7 +1707,8 @@ def verify_crisis_balance() -> list[Check]:
 				f"calm_authority={calm_authority:.0f} calm_threat={calm_threat:.2f} "
 				f"tier1_authority={tier1_authority:.0f} tier1_threat={tier1_threat:.2f} "
 				f"severe_authority={severe_authority:.0f} severe_threat={severe_threat:.2f} "
-				f"visible_causes={visible_causes} pressure_helpers={pressure_helpers}"
+				f"visible_causes={visible_causes} pressure_helpers={pressure_helpers} "
+				f"floor={constants.get('soviet_collapse_baseline.total_threat_floor', 0):.0f}"
 			),
 		),
 		Check(
@@ -1646,6 +1716,7 @@ def verify_crisis_balance() -> list[Check]:
 			cause_ok,
 			(
 				f"recalculate_surface={recalculate_surface} opening_surface={opening_surface} "
+				f"first_wave_pressure_surface={first_wave_pressure_surface} "
 				f"pressure_families={covered_pressure_families}/{len(pressure_families)} "
 				f"multiplier={constants.get('soviet_collapse_baseline.total_threat_multiplier', 0):.2f}"
 			),
@@ -1795,13 +1866,27 @@ def verify_soviet_objective_board() -> list[Check]:
 	queue_restarts = 0
 	done_flag_refs = 0
 	mission_timeouts = set()
+	available_bodies = []
+	weak_available = []
+	identical_outcomes = []
+	map_or_state_available = 0
 	for name, body in missions:
 		number = mission_re.match(name).group(1)
 		body_text = " ".join(body)
 		allowed_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "allowed"))
 		visible_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "visible"))
+		available_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "available"))
 		complete_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "complete_effect"))
 		timeout_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "timeout_effect"))
+		available_bodies.append(available_text)
+		if complete_text == timeout_text:
+			identical_outcomes.append(name)
+		if any(marker in available_text for marker in ["can_", "has_recovered_", "is_controlled_by", "is_owned_by", "capital_scope", "num_divisions_in_states", "any_owned_state"]):
+			map_or_state_available += 1
+		passive_markers = ["has_manpower", "has_equipment", "has_stability", "has_war_support", "has_army_experience", "command_power", "has_fuel"]
+		active_markers = ["can_", "has_recovered_", "is_controlled_by", "is_owned_by", "capital_scope", "num_divisions_in_states", "any_owned_state", "has_country_flag", "check_variable", "has_idea"]
+		if any(marker in available_text for marker in passive_markers) and not any(marker in available_text for marker in active_markers):
+			weak_available.append(name)
 		if (
 			"always = no" in allowed_text
 			and top_level_values(body, "selectable_mission") == ["no"]
@@ -1851,6 +1936,12 @@ def verify_soviet_objective_board() -> list[Check]:
 		and len(mission_timeouts) >= 8
 		and queue_cap_ok
 	)
+	quality_ok = (
+		len(set(available_bodies)) == len(available_bodies)
+		and not weak_available
+		and not identical_outcomes
+		and map_or_state_available >= len(missions) * 9 // 10
+	)
 	return [
 		Check(
 			"soviet_objective_board_surface",
@@ -1864,6 +1955,16 @@ def verify_soviet_objective_board() -> list[Check]:
 				f"queue_cap={queue_cap_ok}"
 			),
 		)
+		,
+		Check(
+			"mission_quality_surface",
+			quality_ok,
+			(
+				f"missions={len(missions)} unique_available={len(set(available_bodies))}/{len(available_bodies)} "
+				f"weak_available={len(weak_available)} identical_outcomes={len(identical_outcomes)} "
+				f"map_or_state_available={map_or_state_available}"
+			),
+		),
 	]
 
 

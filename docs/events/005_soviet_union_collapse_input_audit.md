@@ -6,6 +6,7 @@ This audit records the source files available for the current Event 005 correcti
 
 | Requested input | State | Lines | Bytes | SHA-256 |
 | --- | --- | ---: | ---: | --- |
+| `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md` | present | 512 | 16561 | `b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077` |
 | `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | present | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md` | present | 3418 | 162378 | `c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
@@ -15,7 +16,7 @@ This audit records the source files available for the current Event 005 correcti
 | `tmp/error.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
 | `tmp/text.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
 | `AGENTS.md` | present | 287 | 19327 | `91da11f4d513562415356c9f52acc8bca3f9b3698eafb3d63b5b40c182d881eb` |
-| `.agents/skills/chaos-redux-events/SKILL.md` | present | 535 | 36490 | `5b210e98628e2d367c5e8fa18b1a40011131b75e55db0f91e0f07efb9ff68d2c` |
+| `.agents/skills/chaos-redux-events/SKILL.md` | present | 537 | 36716 | `a7fe3101e66948b8b174df8ce5af6f3ffda313ae2a1d8a4c109d922730d748f4` |
 | `.agents/skills/chaos-redux-event-assets/SKILL.md` | present | 772 | 31044 | `9460971e44770723ffa650385907f1868dc3e893fb7204ddf0c096050efa1d96` |
 | `.agents/skills/chaos-redux-super-events/SKILL.md` | present | 756 | 25696 | `e1dcb0adafb186ace5e054a22576153ee3686f901864fbfd9ec98f8cd0b8212f` |
 
