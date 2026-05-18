@@ -352,6 +352,7 @@ idea_strength_checks ideas 124 constants 81 no_modifier 0 weak_lt3 0 tiny_only 0
 modifier_count_distribution 3:106 4:15 5:2 7:1
 banned_phrase_hits 0
 source_context_files files 4 missing 0
+source_order_surface items 10 ordered True numbered True
 flag_orientation_headers flags_checked 570 flags_missing 0 decode_errors 0 bottom_origin 570 top_origin 0
 flag_orientation_surface comparisons 380 expected 380 orientation_mismatches 0 flipped_closer 0
 terminal_high_chaos_spawn_gates_with_required_flags 35 missing_required_flags 0
@@ -382,7 +383,7 @@ Implementation-gate verifier result with the missing input explicitly waived for
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
-result: exit 0; source_context_files, focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, idea_package_surface, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, flag_orientation_surface, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
+result: exit 0; source_context_files, source_order_surface, focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, idea_package_surface, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, flag_orientation_surface, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
 ```
 
 Current prompt-to-artifact spot audit:
