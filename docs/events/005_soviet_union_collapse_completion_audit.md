@@ -105,8 +105,8 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` is an idempotent guarded wrapper; the internal setup package creates the shared `Emergency Republican Guard` template, grants manpower/equipment, and scales guard and field unit packages by major/regional tag, chaos tier, Soviet war state, weak center state, one-use declaration flags, and terminal collapse state without double-counting already-flagged breakaways | Implemented for current appearing republics and implemented successors |
 | Union Unmade first-month lock | `soviet_collapse_initialize_crisis_values` sets `soviet_collapse_union_unmade_first_month_lock` for 31 days; `soviet_collapse_maybe_show_union_unmade_super_event` refuses to fire while the lock exists | Implemented |
 | Terminal ordinary republic release | `soviet_collapse_show_union_unmade_super_event` calls `SOV = { soviet_collapse_apply_terminal_collapse = yes }`; terminal collapse releases unreleased supported ordinary republics under Soviet ownership/control and frees existing supported Soviet-subject republics before adding high-chaos successors | Implemented |
-| Terminal high-chaos successor activation | `soviet_collapse_spawn_terminal_high_chaos_successors` retries high-chaos successor spawning and, at chaos tier 5, prepares terminal gate flags before activating all eligible special actors whose packages and territory gates pass. The current gate audit found 35 special successor spawn gates with required preparation flags and zero required flags missing from `soviet_collapse_prepare_highest_chaos_terminal_successors`. | Implemented for current successor set |
-| Terminal mission and category cleanup | `is_soviet_collapse_active` excludes `soviet_collapse_terminal_collapse`; terminal cleanup clears active crisis flags, one-use declaration flags, stale loyal-unit and district war-room helper flags, removes all 128 active Soviet crisis missions, blocks further objective activation, and hides Soviet, breakaway, foreign patron, regional faction, and special-actor categories after terminal collapse. Category audit found 42 Event 005 category definitions, 41 used decision category blocks, and zero Event 005 category definitions without `is_soviet_collapse_active = yes`; decision audit found 254 decision blocks, 128 timed decisions, and zero timed decisions outside the Soviet crisis mission board. | Implemented |
+| Terminal high-chaos successor activation | `soviet_collapse_spawn_terminal_high_chaos_successors` retries high-chaos successor spawning and, at chaos tier 5, prepares terminal gate flags before activating all eligible special actors whose packages and territory gates pass. The current gate audit found 38 special successor spawn gates with required preparation flags and zero required flags missing from `soviet_collapse_prepare_highest_chaos_terminal_successors`. | Implemented for current successor set |
+| Terminal mission and category cleanup | `is_soviet_collapse_active` excludes `soviet_collapse_terminal_collapse`; terminal cleanup clears active crisis flags, one-use declaration flags, stale loyal-unit and district war-room helper flags, removes all 128 active Soviet crisis missions from the terminal cleanup helper, blocks further objective activation, and hides Soviet, breakaway, foreign patron, regional faction, and special-actor categories after terminal collapse. Category audit found 42 Event 005 category definitions with visible gates, 41 used decision category blocks, and zero Event 005 category definitions without `is_soviet_collapse_active = yes`; regular decision audit found all non-mission decisions gated by `is_soviet_collapse_active = yes`. | Implemented |
 | Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean; route flag audit checked 89 achievement flags | Implemented; route flag audit passed |
 | Event log details | `GetEventsLogEventDetailDescription` maps Event ID 5 to `chaosx.events_log.window.event_details.soviet_collapse`; that localisation composes live in-world status lines through `GetEventsLogSovietCollapseDetail*` scripted localisation for crisis state, first-wave state, League status, Moscow Authority, Union Crisis Threat, foreign intervention, and old-movement or high-chaos splinter pressure. The direct event-log detail audit checked 57 conditions: Event ID 5 mapping, all seven scripted detail functions referenced by the main text, every function defined with outputs and a fallback, and all 25 output localisation keys present. | Implemented |
 | Evolution logging | Event 005 has one `record_events_log_evolution_entry` writer, under `soviet_collapse_record_high_chaos_successor_evolution`; baseline crisis setup and objective pressure effects only change crisis variables and event flow | Implemented for current high-chaos successor logging |
@@ -399,12 +399,12 @@ first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_rando
 force_package_audit manpower True equipment 3 templates 2 create_unit 2 major_scaling True regional_scaling True chaos_scaling 4 war_scaling True weak_center_scaling True terminal_scaling True
 union_unmade_audit first_month_lock_in_init True lock_blocks_fire True min_breakaways_gate True high_threat_gate True critical_authority_gate True league_or_kaz_or_chaos True
 terminal_release_audit ordinary_tags_present 14 ordinary_expected 14 release_calls 1 free_subject_calls 1 setup_calls 2
-cleanup_audit missions 128 remove_refs 128 active_flag_cleared True categories_gated 42
+cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_refs 128 category_defs 42 visible_category_defs 42 categories_gated True decision_categories 41 regular_decisions_gated True cleanup_flags True
 focus_surface_audit focuses 1500 continuous_positions 46
 localisation_phrase_audit banned_phrase_hits 0
 blockers missing_inputs ['continuation_spec']
 spreadsheet_row6_status L6 "Implemented - Final Closure Blocked" R6 "Blocked - Missing continuation spec"
-spreadsheet_stale_status_scan stale_missing_logs_status_hits 0 stale_final_audit_passed_hits 0 formula_count 24 error_cells 0
+spreadsheet_stale_status_scan stale_missing_logs_status_hits 0 stale_final_audit_passed_hits 0 formula_count 0 error_cells 0
 libreoffice_catalog_csv_convert status 0
 ```
 
@@ -654,7 +654,7 @@ event005_row 6
 event005_status_cell L6 Implemented - Final Closure Blocked
 event005_cluster_status_cell R6 Blocked - Missing continuation spec
 workbook_zip_test ok
-workbook_formula_count 24
+workbook_formula_count 0
 workbook_formula_error_markers 0
 libreoffice_headless_convert ok
 stale_missing_logs_status_hits 0
