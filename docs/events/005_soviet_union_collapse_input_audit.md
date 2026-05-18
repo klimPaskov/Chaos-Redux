@@ -48,6 +48,15 @@ find . -type f \( -name '005_soviet_union_collapse_event_log_mission_balance_foc
 result: no files found
 ```
 
+2026-05-18 home-directory exact-name recheck:
+
+```text
+find /home/klim -path /home/klim/.cache -prune -o -path /home/klim/.local/share/Trash -prune -o -type f \( -name '005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md' -o -name 'error.log' -o -name 'text.log' \) -printf '%p %s bytes\n' 2>/dev/null | sort
+result: /home/klim/.npm/_npx/c31bc0d65f54f6ef/node_modules/@cyanheads/git-mcp-server/logs/error.log 0 bytes
+```
+
+The `/home/klim` hit is an unrelated zero-byte npm package log outside the Chaos Redux repository. It is not the requested `tmp/error.log` runtime evidence.
+
 ## Completion Impact
 
 The current pass can continue from the available source-of-truth files, especially `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md`. Final completion cannot be claimed from inputs alone while the exact named event-log/mission-balance/focus-cleanup spec and the two requested log files remain absent; the final audit must either recover those exact files or explicitly verify every requirement they would have covered against implementation evidence.
