@@ -50,6 +50,13 @@ REQUIRED_INPUTS = [
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md",
 ]
 
+REQUIRED_CONTEXT_INPUTS = [
+	"AGENTS.md",
+	".agents/skills/chaos-redux-events/SKILL.md",
+	".agents/skills/chaos-redux-event-assets/SKILL.md",
+	".agents/skills/chaos-redux-super-events/SKILL.md",
+]
+
 CUSTOM_TAGS = [
 	"CFR", "MFR", "OGB", "ICD", "KRS", "FTH", "BBH", "BSC", "TNC", "ALA",
 	"UDC", "SDZ", "RMC", "RCD", "ILU", "PRA", "TSC", "BLT", "NRF", "GAC",
@@ -564,6 +571,25 @@ def verify_input_files() -> list[Check]:
 		else:
 			checks.append(Check("input:" + rel, False, "missing", blocker=True))
 	return checks
+
+
+def verify_source_context_files() -> list[Check]:
+	missing = []
+	details = []
+	for rel in REQUIRED_CONTEXT_INPUTS:
+		path = ROOT / rel
+		if not path.exists():
+			missing.append(rel)
+			continue
+		text = read_text(path)
+		details.append(f"{rel}:{len(text.splitlines())}l:{path.stat().st_size}b:{sha256(path)[:12]}")
+	return [
+		Check(
+			"source_context_files",
+			not missing and len(details) == len(REQUIRED_CONTEXT_INPUTS),
+			f"files={len(details)}/{len(REQUIRED_CONTEXT_INPUTS)} missing={len(missing)} {' '.join(details)}",
+		)
+	]
 
 
 def verify_first_wave_and_forces() -> list[Check]:
@@ -1881,6 +1907,7 @@ def verify_docs_surface() -> list[Check]:
 		"force_scaling_surface",
 		"idea_package_surface",
 		"flag_orientation_surface",
+		"source_context_files",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -1996,6 +2023,7 @@ def verify_braces_and_unsupported() -> list[Check]:
 def run_checks() -> list[Check]:
 	checks: list[Check] = []
 	checks.extend(verify_input_files())
+	checks.extend(verify_source_context_files())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
