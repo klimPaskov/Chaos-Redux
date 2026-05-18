@@ -675,7 +675,7 @@ Resume checklist:
 
 ## Resume Packet
 
-Latest committed validation head before this audit update: `9efdf57 Refresh Soviet collapse spreadsheet blocker status`.
+Latest committed validation head before this audit update: `8da07e5 Refresh Soviet collapse blocker snapshot`.
 
 Use this source order on resume:
 
