@@ -492,6 +492,78 @@ def verify_first_wave_and_forces() -> list[Check]:
 	]
 
 
+def verify_dynamic_force_coverage() -> list[Check]:
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	effect_tokens = tokens(effects)
+	setup_blocks = named_blocks(effect_tokens, "soviet_collapse_setup_breakaway_country")
+	package_blocks = named_blocks(effect_tokens, "soviet_collapse_apply_breakaway_setup_package")
+	southern_blocks = named_blocks(effect_tokens, "soviet_collapse_setup_southern_republic_if_valid")
+	setup_body = " ".join(setup_blocks[0]) if setup_blocks else ""
+	package_body = " ".join(package_blocks[0]) if package_blocks else ""
+	southern_body = " ".join(southern_blocks[0]) if southern_blocks else ""
+	custom_setup_refs = 0
+	missing_custom_setup_refs = []
+	for tag in CUSTOM_TAGS:
+		blocks = named_blocks(effect_tokens, f"soviet_collapse_setup_{tag.lower()}_successor")
+		body = " ".join(blocks[0]) if blocks else ""
+		if "soviet_collapse_setup_breakaway_country" in body:
+			custom_setup_refs += 1
+		else:
+			missing_custom_setup_refs.append(tag)
+	ordinary_release_paths = all(
+		item in effects
+		for item in [
+			"soviet_collapse_release_selected_first_wave_republics",
+			"soviet_collapse_release_terminal_ordinary_republics",
+			"soviet_collapse_setup_breakaway_country = yes",
+			"soviet_collapse_setup_southern_republic_if_valid = yes",
+			"KAZ = { soviet_collapse_setup_breakaway_country = yes }",
+		]
+	)
+	package_dynamic_ok = all(
+		item in package_body
+		for item in [
+			"soviet_collapse_breakaway_manpower_package",
+			"soviet_collapse_breakaway_infantry_equipment_package",
+			"soviet_collapse_breakaway_support_equipment_package",
+			"soviet_collapse_breakaway_artillery_equipment_package",
+			"soviet_collapse_breakaway_guard_unit_count",
+			"soviet_collapse_breakaway_field_unit_count",
+			"soviet_collapse_total_collapse_threat",
+			"soviet_collapse_moscow_authority",
+			"soviet_collapse_depot_vulnerability",
+			"soviet_collapse_foreign_appetite",
+			"soviet_collapse_terminal_collapse",
+			"has_global_flag = { flag = chaos_tier value = 5 }",
+			"add_manpower",
+			"add_equipment_to_stockpile",
+			"division_template",
+			"create_unit",
+		]
+	)
+	ok = (
+		len(setup_blocks) == 1
+		and len(package_blocks) == 1
+		and len(southern_blocks) == 1
+		and "soviet_collapse_apply_breakaway_setup_package = yes" in setup_body
+		and "soviet_collapse_setup_breakaway_country = yes" in southern_body
+		and custom_setup_refs == len(CUSTOM_TAGS)
+		and ordinary_release_paths
+		and package_dynamic_ok
+	)
+	return [
+		Check(
+			"dynamic_force_coverage",
+			ok,
+			(
+				f"setup_helpers={len(setup_blocks)} package_helpers={len(package_blocks)} southern_helpers={len(southern_blocks)} "
+				f"custom_successor_setup_refs={custom_setup_refs}/{len(CUSTOM_TAGS)} "
+				f"ordinary_release_paths={ordinary_release_paths} package_dynamic={package_dynamic_ok}"
+			),
+		)
+	]
+
+
 def verify_terminal_ordinary_republics() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	effect_tokens = tokens(effects)
@@ -1205,6 +1277,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
 	checks.extend(verify_first_wave_and_forces())
+	checks.extend(verify_dynamic_force_coverage())
 	checks.extend(verify_crisis_balance())
 	checks.extend(verify_union_unmade_and_cleanup())
 	checks.extend(verify_terminal_ordinary_republics())
