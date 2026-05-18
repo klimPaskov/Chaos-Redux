@@ -217,6 +217,7 @@ def count_top_level_key(body: list[str], key: str) -> int:
 def verify_focuses() -> list[Check]:
 	focuses = []
 	continuous = []
+	layout_rows = []
 	for path in EVENT005_FOCUS_FILES:
 		toks = tokens(read_text(path))
 		for block in named_blocks(toks, "focus"):
@@ -227,6 +228,32 @@ def verify_focuses() -> list[Check]:
 			xs = top_level_values(block, "x")
 			ys = top_level_values(block, "y")
 			continuous.append((path, xs[0] if xs else None, ys[0] if ys else None))
+		for tree_body in named_blocks(toks, "focus_tree"):
+			tree_ids = top_level_values(tree_body, "id")
+			tree_id = tree_ids[0] if tree_ids else "<missing>"
+			tree_focuses = []
+			for focus_body in top_level_block_bodies(tree_body, "focus"):
+				ids = top_level_values(focus_body, "id")
+				xs = top_level_values(focus_body, "x")
+				ys = top_level_values(focus_body, "y")
+				if ids and xs and ys and xs[0].lstrip("-").isdigit() and ys[0].lstrip("-").isdigit():
+					tree_focuses.append((ids[0], int(xs[0]), int(ys[0])))
+			if tree_focuses:
+				x_values = [x for _, x, _ in tree_focuses]
+				y_values = [y for _, _, y in tree_focuses]
+				coords = [(x, y) for _, x, y in tree_focuses]
+				layout_rows.append(
+					{
+						"path": path,
+						"tree_id": tree_id,
+						"count": len(tree_focuses),
+						"x_span": max(x_values) - min(x_values),
+						"y_span": max(y_values) - min(y_values),
+						"duplicate_coords": len(coords) - len(set(coords)),
+						"max_col": max(x_values.count(x) for x in set(x_values)),
+						"max_row": max(y_values.count(y) for y in set(y_values)),
+					}
+				)
 
 	ids = [focus_id for _, focus_id, _ in focuses]
 	id_set = set(ids)
@@ -273,6 +300,16 @@ def verify_focuses() -> list[Check]:
 		for path, x, y in continuous
 		if x != "50" or y is None or not y.lstrip("-").isdigit() or int(y) < 1500
 	]
+	layout_bad = [
+		row
+		for row in layout_rows
+		if row["duplicate_coords"] != 0
+		or row["x_span"] < 14
+		or row["y_span"] < 9
+		or row["max_col"] > 12
+		or row["max_row"] > 14
+	]
+	wide_tree_count = sum(1 for row in layout_rows if row["x_span"] >= 20)
 	ok = not any([
 		duplicates, missing_refs, self_refs, nonreciprocal, repeated_mutual_blocks,
 		missing_ai, missing_reward, missing_icon, missing_coords,
@@ -290,7 +327,19 @@ def verify_focuses() -> list[Check]:
 				f"missing_coords={len(missing_coords)} continuous_positions={len(continuous)} "
 				f"continuous_bad={len(continuous_bad)}"
 			),
-		)
+		),
+		Check(
+			"focus_layout_surface",
+			not layout_bad and len(layout_rows) == len(continuous) and wide_tree_count >= 9,
+			(
+				f"focus_trees={len(layout_rows)} continuous_positions={len(continuous)} "
+				f"layout_bad={len(layout_bad)} duplicate_coord_trees={sum(1 for row in layout_rows if row['duplicate_coords'])} "
+				f"wide_trees={wide_tree_count} min_x_span={min((row['x_span'] for row in layout_rows), default=0)} "
+				f"min_y_span={min((row['y_span'] for row in layout_rows), default=0)} "
+				f"max_col={max((row['max_col'] for row in layout_rows), default=0)} "
+				f"max_row={max((row['max_row'] for row in layout_rows), default=0)}"
+			),
+		),
 	]
 
 
@@ -1381,6 +1430,7 @@ def verify_docs_surface() -> list[Check]:
 		"Implementation-gate verifier result",
 		"soviet_objective_board_surface",
 		"event_log_mapping_surface",
+		"focus_layout_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
