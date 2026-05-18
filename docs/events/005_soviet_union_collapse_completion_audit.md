@@ -355,8 +355,8 @@ input_files clean1 present bytes 162378 lines 3418 sha256 c0f474e97482a4eed3d4f9
 input_files clean2 present bytes 191503 lines 6327 sha256 32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234
 input_files clean3 present bytes 554089 lines 7535 sha256 724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7
 input_files clean4 present bytes 148956 lines 3889 sha256 60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428
-input_files error_log missing
-input_files text_log missing
+input_files error_log intentionally_removed_not_blocker
+input_files text_log intentionally_removed_not_blocker
 ideas_audit ideas 124 no_mod 0 weak_lt3 0 tiny_only 0 min_mods 3 max_mods 7 missing_sprite 0 missing_dds 0 missing_loc_or_desc 0
 first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_random 1 normal_pool_has_kaz False kaz_gate_southern True kaz_gate_tier4 True extra_calls 3
 force_package_audit manpower True equipment 3 templates 2 create_unit 2 major_scaling True regional_scaling True chaos_scaling 4 war_scaling True weak_center_scaling True terminal_scaling True
@@ -365,9 +365,9 @@ terminal_release_audit ordinary_tags_present 14 ordinary_expected 14 release_cal
 cleanup_audit missions 128 remove_refs 128 active_flag_cleared True categories_gated 42
 focus_surface_audit focuses 1500 continuous_positions 46
 localisation_phrase_audit banned_phrase_hits 0
-blockers missing_inputs ['continuation_spec', 'error_log', 'text_log']
-spreadsheet_row6_status L6 "Implemented - Final Closure Blocked" R6 "Blocked - Missing continuation spec/logs"
-spreadsheet_stale_status_scan visible_hits 2 xml_hits 2 stale_final_audit_passed_hits 0 formula_count 0 error_cells 0
+blockers missing_inputs ['continuation_spec']
+spreadsheet_row6_status L6 "Implemented - Final Closure Blocked" R6 "Blocked - Missing continuation spec"
+spreadsheet_stale_status_scan stale_missing_logs_status_hits 0 stale_final_audit_passed_hits 0 formula_count 24 error_cells 0
 libreoffice_catalog_csv_convert status 0
 ```
 
