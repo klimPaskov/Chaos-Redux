@@ -435,6 +435,52 @@ missing_dds 0
 missing_loc_or_desc 0
 ```
 
+Current Event 005 first-wave and force-package validation:
+
+```text
+kaz_gate_block_present True
+western_pool_count 6 tags BLR,EST,LAT,LIT,MOL,UKR
+caucasus_pool_count 3 tags ARM,AZR,GEO
+central_asia_pool_count 4 tags KYR,TAJ,TMS,UZB
+extra_pool_count 13 tags ARM,AZR,BLR,EST,GEO,KYR,LAT,LIT,MOL,TAJ,TMS,UKR,UZB
+normal_pools_include_kaz False
+required_pool_random_select_amount_1 all True
+required_pool_array_dedupe all True
+required_pool_supports_nonexistent_core_release_candidate all True
+required_pool_supports_existing_subject_candidate all True
+release_calls_required_pools True
+release_extra_random_calls 3
+release_extra_scaling_chaos_tier_mentions 21
+release_extra_scaling_has_war True
+release_extra_scaling_stability True
+release_extra_scaling_war_support True
+selected_release_nonexistent True
+selected_frees_existing_subject True
+selected_calls_setup_and_focus True
+kaz_gate_used True
+kaz_gate_requires_southern_or_high_pressure True
+kaz_gate_high_chaos_escape True
+southern_republic_setup_calls 8
+setup_idempotent_guard True
+setup_calls_package True
+package_adds_breakaway_array_and_counts True
+package_base_temp_variables 4
+package_manpower_var True
+package_equipment_var_entries 3
+package_division_templates 2
+package_meta_create_unit_entries 2
+package_dynamic_unit_count_tokens True
+package_clamps_field_units True
+package_major_scaling_tags KAZ,UKR
+package_regional_scaling_tag_count 7
+package_chaos_scaling_bands 10
+package_soviet_war_scaling True
+package_weak_center_scaling True
+package_one_use_declaration_scaling True
+package_terminal_scaling True
+package_clears_one_use_flags True
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. The previously referenced `tmp/error.log` and `tmp/text.log` files are also absent. This prevents a strict final closure claim against every requested source and runtime evidence file until the missing files are restored or explicitly waived.
