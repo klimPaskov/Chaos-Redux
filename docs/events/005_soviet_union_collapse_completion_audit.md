@@ -691,7 +691,11 @@ Resume checklist:
 
 ## Resume Packet
 
-Latest committed validation head before this audit update: `d672946 Record Soviet collapse missing spec recheck`.
+Current committed audit head should be checked on resume with:
+
+```text
+git log -1 --oneline
+```
 
 Use this source order on resume:
 
