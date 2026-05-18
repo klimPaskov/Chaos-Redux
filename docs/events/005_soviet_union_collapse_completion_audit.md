@@ -609,6 +609,20 @@ ai_pressure_ref_counts soviet_collapse_total_collapse_threat:11,soviet_collapse_
 ai_condition_counts has_war:60,has_war_with:52,stability:71,war_support:1,faction:4,country_flags:102,global_flags:84,SOV_scoped:160,check_variable:169,factor_zero:80
 ```
 
+Current Event 005 spreadsheet status validation:
+
+```text
+catalog_workbook docs/spreadsheets/chaos_redux_events_catalog.xlsx
+event005_row 6
+event005_status_cell L6 Implemented - Final Closure Blocked
+event005_cluster_status_cell R6 Blocked - Missing continuation spec
+workbook_zip_test ok
+workbook_formula_count 24
+workbook_formula_error_markers 0
+libreoffice_headless_convert ok
+stale_missing_logs_status_hits 0
+```
+
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored, explicitly waived, or fully covered by implementation evidence.
