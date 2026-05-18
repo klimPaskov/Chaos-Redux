@@ -380,7 +380,7 @@ Implementation-gate verifier result with the missing input explicitly waived for
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
-result: exit 0; focus_integrity, idea_strength, first_wave_structure, dynamic_force_package, dynamic_force_coverage, crisis_balance_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, localisation_surface, flag_orientation_headers, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
+result: exit 0; focus_integrity, idea_strength, first_wave_structure, dynamic_force_package, dynamic_force_coverage, crisis_balance_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
 ```
 
 Current prompt-to-artifact spot audit:
@@ -403,6 +403,7 @@ cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_re
 soviet_objective_board_surface missions 128 count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 128 manual_only 128 visible_gated 128 payloads 128 queue_restarts 128 done_flag_refs 128 timeout_bands 11 active_cap 10 queue_cap True
 focus_surface_audit focuses 1500 continuous_positions 46
 localisation_phrase_audit banned_phrase_hits 0
+event_log_mapping_surface event_name True debug_name True settings_name True default_actor True detail_mapping True entry_event True detail_functions 7 detail_output_keys 25
 blockers missing_inputs ['continuation_spec']
 spreadsheet_row6_status L6 "Implemented - Final Closure Blocked" R6 "Blocked - Missing continuation spec"
 spreadsheet_stale_status_scan stale_missing_logs_status_hits 0 stale_final_audit_passed_hits 0 formula_count 0 error_cells 0
