@@ -362,6 +362,26 @@ git diff --check clean
 unsupported operator/scope/localisation scan clean for the audited Event 005 files
 ```
 
+Reusable verifier added:
+
+```text
+.tools/verify_event005_completion_gate.py
+```
+
+Strict verifier result:
+
+```text
+python3 .tools/verify_event005_completion_gate.py
+result: exit 2; implementation gates passed; blocked only by missing tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md
+```
+
+Implementation-gate verifier result with the missing input explicitly waived for the tool run:
+
+```text
+python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
+result: exit 0; focus_integrity, idea_strength, first_wave_structure, dynamic_force_package, union_unmade_pacing, terminal_mission_cleanup, banned_phrase_cleanup, event_log_detail_surface, flag_orientation_headers, and super_event_surface passed
+```
+
 Current prompt-to-artifact spot audit:
 
 ```text
