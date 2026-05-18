@@ -105,7 +105,7 @@ Present `tmp/` Event 005 spec files are:
 | Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, super-event assets, and the 570-file custom flag orientation audit; no historical flags were regenerated in the latest pass | Implemented for current surfaces |
 | Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, decode cleanly, use vanilla-matching bottom-origin TGA headers, and average-downsample comparison finds no small/medium variant closer to a vertically flipped large source | Audit passed; no binary correction required by current evidence |
 | Localisation design-language cleanup | Search across `common/`, `events/`, `localisation/`, `interface/`, and `docs/` found no player-facing instance of the specified design-language sentence from the cleanup prompt | Implemented |
-| Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, now summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and updated implementation status | Implemented; workbook package and LibreOffice open/convert validation passed |
+| Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and blocked final-closure status while required input files remain absent | Implemented; workbook package and LibreOffice open/convert validation passed |
 | Completion readiness | Current audit records the available spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Not closed because one requested continuation spec file is absent from `tmp/` |
 
 ## Current Focus Counts
@@ -366,6 +366,8 @@ cleanup_audit missions 128 remove_refs 128 active_flag_cleared True categories_g
 focus_surface_audit focuses 1500 continuous_positions 46
 localisation_phrase_audit banned_phrase_hits 0
 blockers missing_inputs ['continuation_spec', 'error_log', 'text_log']
+spreadsheet_row6_status L6 "Implemented - Final Closure Blocked" R6 "Blocked - Missing continuation spec/logs"
+libreoffice_catalog_csv_convert status 0
 ```
 
 The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` and `baltic_soviet_collapse_sponsor_fleet_rights` was caused by repeated `mutually_exclusive` keys on the sponsor focus. Event 005 focus trees now use one mutual-exclusion block per focus, and the all-focus repeated-key scan returns zero hits.
