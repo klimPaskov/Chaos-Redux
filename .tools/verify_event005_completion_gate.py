@@ -17,6 +17,8 @@ import argparse
 import hashlib
 import re
 import sys
+import xml.etree.ElementTree as ET
+from zipfile import ZipFile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -57,6 +59,7 @@ CUSTOM_TAGS = [
 
 IDEOLOGIES = ["communism", "democratic", "fascism", "neutrality"]
 BANNED_PHRASE = "starts from a low dynamic baseline in calm conditions"
+XLSX_NS = {"a": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 
 
 @dataclass
@@ -536,6 +539,128 @@ def verify_super_events_and_assets() -> list[Check]:
 	return [Check("super_event_surface", union_unmade_ok and len(slot_keys) == 14, f"union_unmade_package={union_unmade_ok} event005_slots={slot_keys}")]
 
 
+def verify_ai_surface() -> list[Check]:
+	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	decision_blocks: list[tuple[str, list[str]]] = []
+	for _, category_body in direct_child_blocks(tokens(decisions)):
+		decision_blocks.extend(direct_child_blocks(category_body))
+
+	mission_re = re.compile(r"^soviet_collapse_soviet_mission_\d{3}_")
+	regular = [(name, body) for name, body in decision_blocks if not mission_re.match(name)]
+	missing_ai = [name for name, body in regular if not top_level_block_bodies(body, "ai_will_do")]
+	dynamic_ai = [
+		name
+		for name, body in regular
+		if top_level_block_bodies(body, "ai_will_do")
+		and any(token in " ".join(top_level_block_bodies(body, "ai_will_do")[0]) for token in ["modifier", "check_variable", "has_war", "has_country_flag", "has_global_flag"])
+	]
+	ok = len(regular) >= 120 and not missing_ai and len(dynamic_ai) >= 100
+	return [
+		Check(
+			"decision_ai_surface",
+			ok,
+			f"regular_decisions={len(regular)} missing_ai={len(missing_ai)} dynamic_ai={len(dynamic_ai)}",
+		)
+	]
+
+
+def verify_docs_surface() -> list[Check]:
+	event_doc = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	input_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_input_audit.md")
+	required_markers = [
+		"## Concrete Success Criteria",
+		"## Prompt To Artifact Checklist",
+		"## Remaining Blockers",
+		"## Blocked Completion Report",
+		".tools/verify_event005_completion_gate.py",
+		"Strict verifier result",
+		"Implementation-gate verifier result",
+	]
+	event_markers = [
+		"Event Logs event-detail entry for Event 005",
+		"soviet_collapse_cleanup_terminal_collapse_missions",
+		"Event 005 custom country flags were audited",
+		"570 TGA files",
+	]
+	input_markers = [
+		"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
+		"missing",
+		"intentionally removed after fixed errors",
+	]
+	missing_completion = [marker for marker in required_markers if marker not in completion_audit]
+	missing_event = [marker for marker in event_markers if marker not in event_doc]
+	missing_input = [marker for marker in input_markers if marker not in input_audit]
+	ok = not missing_completion and not missing_event and not missing_input
+	return [
+		Check(
+			"docs_completion_surface",
+			ok,
+			f"missing_completion={len(missing_completion)} missing_event_doc={len(missing_event)} missing_input_audit={len(missing_input)}",
+		)
+	]
+
+
+def xlsx_shared_strings(zip_file: ZipFile) -> list[str]:
+	try:
+		root = ET.fromstring(zip_file.read("xl/sharedStrings.xml"))
+	except KeyError:
+		return []
+	return [
+		"".join((text.text or "") for text in item.findall(".//a:t", XLSX_NS))
+		for item in root.findall("a:si", XLSX_NS)
+	]
+
+
+def xlsx_cell_value(cell: ET.Element, shared: list[str]) -> str:
+	inline = cell.find("a:is", XLSX_NS)
+	if inline is not None:
+		return "".join((text.text or "") for text in inline.findall(".//a:t", XLSX_NS))
+	value = cell.find("a:v", XLSX_NS)
+	if value is None or value.text is None:
+		return ""
+	raw = value.text
+	if cell.attrib.get("t") == "s":
+		return shared[int(raw)]
+	return raw
+
+
+def verify_spreadsheet_surface() -> list[Check]:
+	path = ROOT / "docs/spreadsheets/chaos_redux_events_catalog.xlsx"
+	row_values: dict[str, str] = {}
+	formula_count = 0
+	with ZipFile(path) as zip_file:
+		shared = xlsx_shared_strings(zip_file)
+		for sheet_name in [name for name in zip_file.namelist() if name.startswith("xl/worksheets/sheet") and name.endswith(".xml")]:
+			root = ET.fromstring(zip_file.read(sheet_name))
+			formula_count += len(root.findall(".//a:f", XLSX_NS))
+			for row in root.findall(".//a:row", XLSX_NS):
+				if row.attrib.get("r") != "6":
+					continue
+				for cell in row.findall("a:c", XLSX_NS):
+					ref = cell.attrib.get("r", "")
+					value = xlsx_cell_value(cell, shared)
+					if value:
+						row_values[ref] = value
+	stale_hits = [value for value in row_values.values() if "Missing continuation spec/logs" in value or "Missing logs" in value]
+	ok = (
+		row_values.get("B6") == "Soviet Union Collapse"
+		and row_values.get("L6") == "Implemented - Final Closure Blocked"
+		and row_values.get("R6") == "Blocked - Missing continuation spec"
+		and not stale_hits
+	)
+	return [
+		Check(
+			"spreadsheet_status_surface",
+			ok,
+			(
+				f"B6={row_values.get('B6', '')!r} L6={row_values.get('L6', '')!r} "
+				f"R6={row_values.get('R6', '')!r} formula_count={formula_count} stale_status_hits={len(stale_hits)}"
+			),
+		)
+	]
+
+
 def verify_braces_and_unsupported() -> list[Check]:
 	bad_braces = []
 	bad_operator = []
@@ -574,6 +699,9 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_localisation_and_event_log())
 	checks.extend(verify_flags())
 	checks.extend(verify_super_events_and_assets())
+	checks.extend(verify_ai_surface())
+	checks.extend(verify_docs_surface())
+	checks.extend(verify_spreadsheet_surface())
 	return checks
 
 
