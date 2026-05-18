@@ -380,7 +380,7 @@ Implementation-gate verifier result with the missing input explicitly waived for
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
-result: exit 0; focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
+result: exit 0; focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, idea_package_surface, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
 ```
 
 Current prompt-to-artifact spot audit:
@@ -395,6 +395,7 @@ input_files clean4 present bytes 148956 lines 3889 sha256 60e2cac0717579afc60a3a
 input_files error_log intentionally_removed_not_blocker
 input_files text_log intentionally_removed_not_blocker
 ideas_audit ideas 124 no_mod 0 weak_lt3 0 tiny_only 0 min_mods 3 max_mods 7 missing_sprite 0 missing_dds 0 missing_loc_or_desc 0
+idea_package_surface ideas 124 modifier_entries 395 tiny_components 19 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_name 0 missing_desc 0
 first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_random 1 normal_pool_has_kaz False kaz_gate_southern True kaz_gate_tier4 True extra_calls 3
 first_wave_release_surface pool_helpers 4 western_tags 6 caucasus_tags 3 central_tags 4 map_support_gates True extra_scaling True selected_release True kazakhstan_release True southern_cascade True
 focus_ai_surface focuses 1500 ai_blocks 1500 dynamic_ai 353 mutual_route_choices 178 dynamic_mutual_ai 178 flat_mutual_ai 0
