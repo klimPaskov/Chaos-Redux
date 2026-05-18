@@ -41,6 +41,13 @@ result: ./interface/005_soviet_collapse_faction_logos.gfx 17832 bytes
 
 The one returned file is an unrelated faction-logo GFX file whose name contains `log`; it is not a runtime log or continuation spec.
 
+2026-05-18 exact-name recheck:
+
+```text
+find . -type f \( -name '005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md' -o -name 'error.log' -o -name 'text.log' \) -printf '%p %s bytes\n' | sort
+result: no files found
+```
+
 ## Completion Impact
 
 The current pass can continue from the available source-of-truth files, especially `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md`. Final completion cannot be claimed from inputs alone while the exact named event-log/mission-balance/focus-cleanup spec and the two requested log files remain absent; the final audit must either recover those exact files or explicitly verify every requirement they would have covered against implementation evidence.
