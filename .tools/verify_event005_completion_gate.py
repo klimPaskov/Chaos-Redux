@@ -488,6 +488,7 @@ def verify_first_wave_and_forces() -> list[Check]:
 	caucasus_blocks = named_blocks(effect_tokens, "soviet_collapse_add_random_first_wave_caucasus_republic")
 	central_blocks = named_blocks(effect_tokens, "soviet_collapse_add_random_first_wave_central_asian_republic")
 	extra_blocks = named_blocks(effect_tokens, "soviet_collapse_add_random_extra_first_wave_republic")
+	selected_blocks = named_blocks(effect_tokens, "soviet_collapse_release_selected_first_wave_republics")
 	kaz_blocks = named_blocks(trigger_tokens, "can_soviet_collapse_open_kazakhstan_first_wave")
 	release_body = " ".join(release_blocks[0]) if release_blocks else ""
 	setup_body = " ".join(setup_blocks[0]) if setup_blocks else ""
@@ -495,6 +496,7 @@ def verify_first_wave_and_forces() -> list[Check]:
 	caucasus_body = " ".join(caucasus_blocks[0]) if caucasus_blocks else ""
 	central_body = " ".join(central_blocks[0]) if central_blocks else ""
 	extra_body = " ".join(extra_blocks[0]) if extra_blocks else ""
+	selected_body = " ".join(selected_blocks[0]) if selected_blocks else ""
 	kaz_body = " ".join(kaz_blocks[0]) if kaz_blocks else ""
 
 	first_wave_ok = all(
@@ -522,6 +524,66 @@ def verify_first_wave_and_forces() -> list[Check]:
 		and "add_to_array = { array = global.soviet_collapse_first_wave_republics value = THIS }" in central_body
 	)
 	kaz_ok = "is_soviet_collapse_southern_breakaway_active" in kaz_body and "chaos_tier" in kaz_body
+	pool_requirements = [
+		"every_possible_country",
+		"NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }",
+		"exists = no",
+		"any_state",
+		"is_core_of = PREV",
+		"is_owned_by = SOV",
+		"is_controlled_by = SOV",
+		"exists = yes",
+		"is_subject_of = SOV",
+		"random_select_amount = 1",
+		"add_to_array = { array = global.soviet_collapse_first_wave_republics value = THIS }",
+	]
+	pool_surface_ok = all(
+		all(item in body for item in pool_requirements)
+		for body in [western_body, caucasus_body, central_body, extra_body]
+	)
+	extra_scaling_ok = (
+		release_body.count("soviet_collapse_add_random_extra_first_wave_republic = yes") == 3
+		and all(f"has_global_flag = {{ flag = chaos_tier value = {tier} }}" in release_body for tier in [2, 3, 4, 5])
+		and "has_war = yes" in release_body
+		and "has_stability < constant:soviet_collapse_soviet_objective.good_stability" in release_body
+		and "has_war_support < constant:soviet_collapse_soviet_objective.good_war_support" in release_body
+		and "has_stability < constant:soviet_collapse_soviet_objective.min_stability" in release_body
+	)
+	selected_release_ok = all(
+		item in selected_body
+		for item in [
+			"for_each_scope_loop",
+			"array = global.soviet_collapse_first_wave_republics",
+			"SOV = { release = PREV }",
+			"SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }",
+			"set_country_flag = soviet_collapse_event_created_republic",
+			"soviet_collapse_setup_breakaway_country = yes",
+			"soviet_collapse_load_event_created_focus_tree = yes",
+		]
+	)
+	kaz_release_ok = all(
+		item in release_body
+		for item in [
+			"limit = { can_soviet_collapse_open_kazakhstan_first_wave = yes }",
+			"release = KAZ",
+			"set_autonomy = { target = KAZ autonomy_state = autonomy_free }",
+			"KAZ = { soviet_collapse_setup_breakaway_country = yes }",
+			"KAZ = { soviet_collapse_load_event_created_focus_tree = yes }",
+		]
+	)
+	southern_cascade_ok = all(
+		item in release_body
+		for item in [
+			"release = UZB",
+			"release = KYR",
+			"release = TAJ",
+			"release = TMS",
+			"UZB = { soviet_collapse_setup_southern_republic_if_valid = yes }",
+			"KYR = { soviet_collapse_setup_southern_republic_if_valid = yes }",
+			"TAJ = { soviet_collapse_setup_southern_republic_if_valid = yes }",
+			"TMS = { soviet_collapse_setup_southern_republic_if_valid = yes }",
+		]
+	) and release_body.count("soviet_collapse_setup_southern_republic_if_valid = yes") >= 8
 	force_ok = all(
 		item in setup_body
 		for item in [
@@ -537,6 +599,17 @@ def verify_first_wave_and_forces() -> list[Check]:
 	)
 	return [
 		Check("first_wave_structure", first_wave_ok and pool_ok and kaz_ok, f"structured_pools={first_wave_ok} randomized_pool_tags={pool_ok} kazakhstan_gate={kaz_ok}"),
+		Check(
+			"first_wave_release_surface",
+			pool_surface_ok and extra_scaling_ok and selected_release_ok and kaz_release_ok and southern_cascade_ok,
+			(
+				f"pool_helpers={len(western_blocks) + len(caucasus_blocks) + len(central_blocks) + len(extra_blocks)} "
+				f"western_tags={len(FIRST_WAVE_WESTERN_TAGS)} caucasus_tags={len(FIRST_WAVE_CAUCASUS_TAGS)} "
+				f"central_tags={len(FIRST_WAVE_CENTRAL_ASIA_TAGS)} map_support_gates={pool_surface_ok} "
+				f"extra_scaling={extra_scaling_ok} selected_release={selected_release_ok} "
+				f"kazakhstan_release={kaz_release_ok} southern_cascade={southern_cascade_ok}"
+			),
+		),
 		Check("dynamic_force_package", force_ok, f"manpower_equipment_templates_units_terminal_scaling={force_ok}"),
 	]
 
@@ -1431,6 +1504,7 @@ def verify_docs_surface() -> list[Check]:
 		"soviet_objective_board_surface",
 		"event_log_mapping_surface",
 		"focus_layout_surface",
+		"first_wave_release_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
