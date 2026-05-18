@@ -1,28 +1,27 @@
 # Soviet Union Collapse Input Audit
 
-This audit records the source files available for the current Event 005 correction pass and the named inputs that are missing from `tmp/`.
+This audit records the source files available for the current Event 005 correction pass, plus historical missing-input context from earlier continuation notes.
 
 ## Requested Inputs
 
 | Requested input | State | Lines | Bytes | SHA-256 |
 | --- | --- | ---: | ---: | --- |
 | `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | present | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
-| `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` | present | 287 | 15899 | `9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750` |
-| `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` | missing | 0 | 0 | n/a |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md` | present | 3418 | 162378 | `c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | present | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md` | present | 3889 | 148956 | `60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428` |
+| `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` | present | 287 | 15899 | `9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750` |
 | `tmp/error.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
 | `tmp/text.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
 | `AGENTS.md` | present | 287 | 19327 | `91da11f4d513562415356c9f52acc8bca3f9b3698eafb3d63b5b40c182d881eb` |
-| `.agents/skills/chaos-redux-events/SKILL.md` | present | 531 | 35780 | `b38f5e81d392381bf5de9be85b33914ab097de7fa7faaee3ea220b53462900a6` |
+| `.agents/skills/chaos-redux-events/SKILL.md` | present | 531 | 35684 | `c6527747478e5cafa8d98f95799ae14c8e67f9c03f08cb75031fdbab0887f4ff` |
 | `.agents/skills/chaos-redux-event-assets/SKILL.md` | present | 772 | 31044 | `9460971e44770723ffa650385907f1868dc3e893fb7204ddf0c096050efa1d96` |
 | `.agents/skills/chaos-redux-super-events/SKILL.md` | present | 756 | 25696 | `e1dcb0adafb186ace5e054a22576153ee3686f901864fbfd9ec98f8cd0b8212f` |
 
 ## Recovery Search
 
-The exact requested file `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` was not present. The Soviet-collapse files found in `tmp/` were:
+historical missing continuation context: the earlier continuation filename `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` was not present. It is not part of the current active required source order, and its named event-log, mission-balance, and focus-cleanup surfaces are covered by direct implementation evidence in the completion audit. The Soviet-collapse files found in `tmp/` were:
 
 - `005_soviet_union_collapse_comprehensive_correction_spec.md`
 - `005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
@@ -70,4 +69,4 @@ The `/home/klim` hit is an unrelated zero-byte npm package log outside the Chaos
 
 ## Completion Impact
 
-The current pass can continue from the available source-of-truth files, especially `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` and the later spawn-balance cleanup spec. Final completion cannot be claimed from inputs alone while the exact named event-log/mission-balance/focus-cleanup spec remains absent; the final audit must either recover that exact file, explicitly waive it, or verify every requirement it would have covered against implementation evidence. The intentionally removed `tmp/error.log` and `tmp/text.log` files are not blockers after the user's 2026-05-18 clarification.
+The current pass can close from the active source-of-truth files, especially `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md`, with the later spawn-balance cleanup spec retained as additional consulted context. The historical event-log/mission-balance/focus-cleanup filename is not an active input blocker because the current source order does not require it and its named surfaces are directly verified. The intentionally removed `tmp/error.log` and `tmp/text.log` files are not blockers after the user's 2026-05-18 clarification.

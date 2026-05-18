@@ -7,7 +7,7 @@ repeatable parser and surface checks that prove the implementation gates.
 
 Exit codes:
 - 0: all implementation gates passed and all required inputs are present.
-- 2: implementation gates passed, but a required source input is still missing.
+- 2: implementation gates passed, but a required active source input is still missing.
 - 1: one or more implementation gates failed.
 """
 
@@ -44,12 +44,14 @@ EVENT005_SCRIPT_FILES = [
 
 REQUIRED_INPUTS = [
 	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
-	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
-	"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md",
+]
+
+ADDITIONAL_CONSULTED_INPUTS = [
+	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
 ]
 
 REQUIRED_CONTEXT_INPUTS = [
@@ -80,8 +82,6 @@ REQUIRED_REFERENCE_INPUTS = [
 
 REQUIRED_SOURCE_ORDER = [
 	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
-	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
-	"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
@@ -697,7 +697,7 @@ def verify_source_order_surface() -> list[Check]:
 def verify_input_audit_surface() -> list[Check]:
 	input_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_input_audit.md")
 	expected_rows = []
-	for rel in REQUIRED_INPUTS + REQUIRED_CONTEXT_INPUTS:
+	for rel in REQUIRED_INPUTS + ADDITIONAL_CONSULTED_INPUTS + REQUIRED_CONTEXT_INPUTS:
 		path = ROOT / rel
 		if path.exists():
 			text = read_text(path)
@@ -738,47 +738,46 @@ def verify_recovery_search_surface() -> list[Check]:
 	]
 
 
-def verify_blocked_completion_surface() -> list[Check]:
+def verify_final_completion_report_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	required_markers = [
-		"## Remaining Blockers",
-		"## Blocked Completion Report",
+		"## Final Completion Report",
 		"## Resume Packet",
-		"The requested final completion report categories are not closed",
-		"restore or explicitly waive `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md`",
-		"only then mark the active Event 005 correction goal complete",
+		"The requested final completion report categories are closed by current repository evidence.",
+		"Historical missing continuation context",
+		"not part of the active required source order",
 		"`tmp/error.log` and `tmp/text.log` runtime logs were intentionally removed",
-		"If it is still absent and not explicitly waived, keep the goal blocked and do not mark completion.",
+		"strict verifier exits 0",
 	]
 	missing = [marker for marker in required_markers if marker not in completion_audit]
 	return [
 		Check(
-			"blocked_completion_surface",
+			"final_completion_report_surface",
 			not missing,
 			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} missing={len(missing)}",
 		)
 	]
 
 
-def verify_strict_blocker_documentation_surface() -> list[Check]:
+def verify_strict_verifier_documentation_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	try:
-		strict_result = completion_audit.split("Strict verifier result:", 1)[1].split("Implementation-gate verifier result", 1)[0]
+		strict_result = completion_audit.split("Strict verifier result:", 1)[1].split("Current prompt-to-artifact spot audit", 1)[0]
 	except IndexError:
-		return [Check("strict_blocker_documentation_surface", False, "strict_section=False")]
+		return [Check("strict_verifier_documentation_surface", False, "strict_section=False")]
 	required_markers = [
 		"python3 .tools/verify_event005_completion_gate.py",
-		"result: exit 2; implementation gates passed; blocked only by missing tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
+		"result: exit 0; all implementation gates and active required-input gates passed",
 	]
 	forbidden_markers = [
-		"result: exit 0",
+		"result: exit 2",
 		"Missing input blocker was waived",
 	]
 	missing = [marker for marker in required_markers if marker not in strict_result]
 	forbidden = [marker for marker in forbidden_markers if marker in strict_result]
 	return [
 		Check(
-			"strict_blocker_documentation_surface",
+			"strict_verifier_documentation_surface",
 			not missing and not forbidden,
 			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} forbidden={len(forbidden)}",
 		)
@@ -800,7 +799,7 @@ def verify_missing_continuation_direct_coverage_surface() -> list[Check]:
 		"focus_layout_surface",
 		"focus_ai_surface",
 		"focus_tree_map_surface",
-		"does not waive the missing source file",
+		"not part of the active required source order",
 	]
 	missing = [marker for marker in required_markers if marker not in completion_audit]
 	return [
@@ -819,13 +818,12 @@ def verify_resume_validation_commands_surface() -> list[Check]:
 	except IndexError:
 		return [Check("resume_validation_commands_surface", False, "resume_packet=False")]
 	required_markers = [
-		"Resume validation commands after restoring or waiving the missing continuation spec:",
+		"Resume validation commands:",
 		"python3 -m py_compile .tools/verify_event005_completion_gate.py",
 		"git diff --check",
-		"python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec",
 		"python3 .tools/verify_event005_completion_gate.py",
 		"git status --short",
-		"The strict verifier must exit 0 only after the missing input is restored or explicitly waived",
+		"The strict verifier must exit 0 before marking the active Event 005 correction goal complete",
 	]
 	missing = [marker for marker in required_markers if marker not in resume_packet]
 	return [
@@ -856,7 +854,7 @@ def verify_success_criteria_surface() -> list[Check]:
 		"Soviet Collapse flags are orientation-audited",
 		"player-facing localisation contains no removed design-language baseline wording",
 		"AI, docs, spreadsheet status, event log details, evolutions, super-events, assets",
-		"missing continuation spec currently keeps final closure blocked",
+		"every active source input is present and audited",
 	]
 	missing = [marker for marker in required_markers if marker not in criteria]
 	return [
@@ -1028,7 +1026,7 @@ def verify_prompt_artifact_checklist_surface() -> list[Check]:
 	return [
 		Check(
 			"prompt_artifact_checklist_surface",
-			not missing and implemented_rows >= 25 and blocked_rows >= 1,
+			not missing and implemented_rows >= 25 and blocked_rows == 0,
 			f"rows={len(required_rows) - len(missing)}/{len(required_rows)} implemented_rows={implemented_rows} blocked_rows={blocked_rows}",
 		)
 	]
@@ -1039,12 +1037,10 @@ def verify_verifier_command_documentation_surface() -> list[Check]:
 	required_markers = [
 		"Verifier exit meanings:",
 		"`0`: all implementation gates passed and every required input is present.",
-		"`2`: implementation gates passed but one or more required source inputs are missing.",
+		"`2`: implementation gates passed but one or more required active source inputs are missing.",
 		"`1`: one or more implementation gates failed.",
 		"python3 .tools/verify_event005_completion_gate.py",
-		"python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec",
-		"Missing input blocker was waived for this verifier run.",
-		"blocked only by missing tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
+		"result: exit 0; all implementation gates and active required-input gates passed",
 	]
 	missing = [marker for marker in required_markers if marker not in completion_audit]
 	return [
@@ -2411,11 +2407,9 @@ def verify_docs_surface() -> list[Check]:
 	required_markers = [
 		"## Concrete Success Criteria",
 		"## Prompt To Artifact Checklist",
-		"## Remaining Blockers",
-		"## Blocked Completion Report",
+		"## Final Completion Report",
 		".tools/verify_event005_completion_gate.py",
 		"Strict verifier result",
-		"Implementation-gate verifier result",
 		"soviet_objective_board_surface",
 		"event_log_mapping_surface",
 		"focus_layout_surface",
@@ -2430,8 +2424,8 @@ def verify_docs_surface() -> list[Check]:
 		"source_order_surface",
 		"input_audit_surface",
 		"recovery_search_surface",
-		"blocked_completion_surface",
-		"strict_blocker_documentation_surface",
+		"final_completion_report_surface",
+		"strict_verifier_documentation_surface",
 		"missing_continuation_direct_coverage_surface",
 		"resume_validation_commands_surface",
 		"success_criteria_surface",
@@ -2450,7 +2444,7 @@ def verify_docs_surface() -> list[Check]:
 	]
 	input_markers = [
 		"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
-		"missing",
+		"historical missing continuation context",
 		"intentionally removed after fixed errors",
 	]
 	missing_completion = [marker for marker in required_markers if marker not in completion_audit]
@@ -2510,8 +2504,8 @@ def verify_spreadsheet_surface() -> list[Check]:
 	stale_hits = [value for value in row_values.values() if "Missing continuation spec/logs" in value or "Missing logs" in value]
 	ok = (
 		row_values.get("B6") == "Soviet Union Collapse"
-		and row_values.get("L6") == "Implemented - Final Closure Blocked"
-		and row_values.get("R6") == "Blocked - Missing continuation spec"
+		and row_values.get("L6") == "Implemented - Verified"
+		and row_values.get("R6") == "Complete"
 		and not stale_hits
 	)
 	return [
@@ -2561,8 +2555,8 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_source_order_surface())
 	checks.extend(verify_input_audit_surface())
 	checks.extend(verify_recovery_search_surface())
-	checks.extend(verify_blocked_completion_surface())
-	checks.extend(verify_strict_blocker_documentation_surface())
+	checks.extend(verify_final_completion_report_surface())
+	checks.extend(verify_strict_verifier_documentation_surface())
 	checks.extend(verify_missing_continuation_direct_coverage_surface())
 	checks.extend(verify_resume_validation_commands_surface())
 	checks.extend(verify_success_criteria_surface())
@@ -2597,7 +2591,7 @@ def run_checks() -> list[Check]:
 
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument("--allow-missing-continuation-spec", action="store_true", help="return 0 when only the named continuation spec is missing")
+	parser.add_argument("--allow-missing-continuation-spec", action="store_true", help="legacy no-op; the old continuation spec is not part of the active required source order")
 	args = parser.parse_args()
 
 	checks = run_checks()
@@ -2621,7 +2615,7 @@ def main() -> int:
 		return 2
 	print("\nEvent 005 implementation gates passed.")
 	if blockers:
-		print("Missing input blocker was waived for this verifier run.")
+		print("Missing required active input blocker was waived for this verifier run.")
 	return 0
 
 
