@@ -21,6 +21,43 @@ Required source order:
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is not present in `tmp/` during this audit. The current implementation was checked against the available spawn-balance cleanup spec and the four final clean specs; final closure should either restore the missing continuation spec or explicitly waive it.
 
+## Input File Audit
+
+Requested source files as of 2026-05-18:
+
+| Path | State | Lines | Bytes | SHA-256 |
+| --- | --- | ---: | ---: | --- |
+| `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` | Present | 287 | 15899 | `9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750` |
+| `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` | Missing | - | - | - |
+| `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md` | Present | 3418 | 162378 | `c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7` |
+| `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | Present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
+| `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | Present | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
+| `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md` | Present | 3889 | 148956 | `60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428` |
+
+Recovery searches performed:
+
+```text
+find . -path './.git' -prune -o -type f \( -iname '*event_log*mission*balance*focus*cleanup*' -o -iname '*mission_balance_focus*' -o -iname '*005_soviet_union_collapse*cleanup*' \) -print
+result: only tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md
+
+git log --all --oneline -- tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md
+result: no commits
+
+git log --all --name-only --pretty=format: | rg '005_soviet_union_collapse.*(event_log|mission_balance|focus_cleanup|cleanup).*spec\.md'
+result: no matching tracked history entry for the missing continuation spec
+```
+
+Present `tmp/` Event 005 spec files are:
+
+```text
+005_soviet_union_collapse_comprehensive_correction_spec.md
+005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md
+005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md
+005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md
+005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md
+005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md
+```
+
 ## Prompt To Artifact Checklist
 
 | Requirement | Evidence | Status |
@@ -288,3 +325,23 @@ The reported focus error for `baltic_soviet_collapse_a_port_without_a_master` an
 ## Remaining Blockers
 
 `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` is listed in the active source order but is absent from `tmp/`. This prevents a strict final closure claim against every requested source file until the missing spec is restored or explicitly waived.
+
+## Blocked Completion Report
+
+The requested final completion report categories are not closed because the missing continuation spec cannot be audited. Current evidence exists for:
+
+- implemented countries and packages: thirty-eight custom successors plus supported ordinary Soviet republics.
+- flags: 570 Event 005 custom flag files audited; no current binary correction indicated.
+- focus counts and branch maps: 1500 focus blocks across the Event 005 runtime focus files, with no duplicate IDs or invalid focus references.
+- missions and decisions: 128 Soviet crisis missions, 128 activation entries, and 128 terminal removal entries; Event 005 focus and decision files include AI weights.
+- evolutions and super-events: high-chaos successor evolution writer and super-event helpers remain wired for the current route surface.
+- achievements and assets: achievement, focus, flag, leader, and super-event asset surfaces are documented in the Event 005 docs and asset manifests.
+- tests and checks: brace depth, focus reference, mission wiring, localisation phrase, flag orientation, unsupported operator/scope, and whitespace checks passed in the latest audit.
+
+Resume checklist:
+
+- restore or explicitly waive `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md`.
+- audit the restored spec line-by-line against current event log, mission balance, and focus cleanup artifacts.
+- update this completion audit with any requirements that restored spec adds or changes.
+- rerun the latest validation snapshot after any follow-up edits.
+- only then mark the active Event 005 correction goal complete.
