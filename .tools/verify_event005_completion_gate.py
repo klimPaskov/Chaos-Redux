@@ -729,6 +729,64 @@ def verify_success_criteria_surface() -> list[Check]:
 	]
 
 
+def verify_available_source_acceptance_surface() -> list[Check]:
+	spawn_spec = read_text(ROOT / "tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md")
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	source_markers = [
+		"Soviet Collapse ideas have meaningful effect packages and are not mostly tiny modifiers",
+		"the first wave is randomized across structured pools",
+		"the first wave includes at least one western or eastern European actor, one Caucasus republic, and one Central Asian republic when map state allows",
+		"Kazakhstan is not a normal first-wave default and is tied to southern cascade logic",
+		"first-wave size scales with chaos and Soviet condition",
+		"released republics spawn with dynamically scaled units",
+		"Union Crisis Threat no longer reaches 100 too easily",
+		"Moscow Authority does not start at 0 in calm or modest crisis conditions",
+		"Union Unmade cannot fire in the first month in ordinary play",
+		"Union Unmade releases all ordinary Soviet republics still under Moscow control",
+		"high chaos adds special chaos countries on top of ordinary republic releases",
+		"highest chaos terminal failure releases all eligible special chaos countries",
+		"final collapse releases each republic with dynamically scaled units",
+		"Soviet Collapse intervention categories and active missions are canceled or converted after terminal collapse",
+		"continuous focus boxes are moved to a cleaner location",
+		"focus trees are more visually readable",
+		"duplicate focuses are removed or rewritten",
+		"upside-down flags are fixed",
+		"removed design-language localisation is replaced with in-world text",
+		"AI behavior, docs, event log, achievements, and completion report reflect these corrections",
+	]
+	audit_markers = [
+		"Available source acceptance criteria coverage",
+		"available_source_acceptance_surface",
+		"idea_package_surface",
+		"first_wave_release_surface",
+		"force_scaling_surface",
+		"crisis_balance_surface",
+		"union_unmade_pacing",
+		"terminal_ordinary_republic_release_surface",
+		"terminal_high_chaos_successor_surface",
+		"terminal_mission_cleanup",
+		"focus_layout_surface",
+		"focus_tree_map_surface",
+		"flag_orientation_surface",
+		"banned_phrase_cleanup",
+		"event_log_mapping_surface",
+		"achievement_surface",
+		"docs_completion_surface",
+	]
+	missing_source = [marker for marker in source_markers if marker not in spawn_spec]
+	missing_audit = [marker for marker in audit_markers if marker not in completion_audit]
+	return [
+		Check(
+			"available_source_acceptance_surface",
+			not missing_source and not missing_audit,
+			(
+				f"source_markers={len(source_markers) - len(missing_source)}/{len(source_markers)} "
+				f"audit_markers={len(audit_markers) - len(missing_audit)}/{len(audit_markers)}"
+			),
+		)
+	]
+
+
 def verify_prompt_artifact_checklist_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	try:
@@ -736,6 +794,7 @@ def verify_prompt_artifact_checklist_surface() -> list[Check]:
 	except IndexError:
 		return [Check("prompt_artifact_checklist_surface", False, "checklist_section=False")]
 	required_rows = [
+		"Available source acceptance criteria coverage",
 		"Stronger Soviet Collapse ideas and spirits",
 		"Random first wave from structured pools",
 		"Kazakhstan first-wave restraint",
@@ -2152,6 +2211,7 @@ def verify_docs_surface() -> list[Check]:
 		"recovery_search_surface",
 		"blocked_completion_surface",
 		"success_criteria_surface",
+		"available_source_acceptance_surface",
 		"prompt_artifact_checklist_surface",
 		"verifier_command_documentation_surface",
 		"focus_tree_map_surface",
@@ -2276,6 +2336,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_recovery_search_surface())
 	checks.extend(verify_blocked_completion_surface())
 	checks.extend(verify_success_criteria_surface())
+	checks.extend(verify_available_source_acceptance_surface())
 	checks.extend(verify_prompt_artifact_checklist_surface())
 	checks.extend(verify_verifier_command_documentation_surface())
 	checks.extend(verify_focus_tree_map_documentation_surface())

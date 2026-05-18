@@ -87,6 +87,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | --- | --- | --- |
 | Event 005 remains Soviet Collapse with entry event format `chaosx.nr5.1` | `events/005_soviet_collapse.txt`; event docs in `docs/events/005_soviet_union_collapse.md` | Implemented; parser audit passed |
 | Dynamic crisis values and central tuning | `common/script_constants/005_soviet_collapse_constants.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, `common/scripted_triggers/005_soviet_collapse_triggers.txt` | Implemented; parser audit passed |
+| Available source acceptance criteria coverage | The source-of-truth spawn-balance cleanup spec has 20 acceptance bullets. The completion audit maps them to the concrete verifier surfaces `idea_package_surface`, `first_wave_release_surface`, `force_scaling_surface`, `crisis_balance_surface`, `union_unmade_pacing`, `terminal_ordinary_republic_release_surface`, `terminal_high_chaos_successor_surface`, `terminal_mission_cleanup`, `focus_layout_surface`, `focus_tree_map_surface`, `flag_orientation_surface`, `banned_phrase_cleanup`, `event_log_mapping_surface`, `achievement_surface`, and `docs_completion_surface`. The verifier checks this map as `available_source_acceptance_surface`. | Implemented for the available source spec |
 | Stronger Soviet Collapse ideas and spirits | `common/ideas/005_soviet_collapse_ideas.txt` and the crisis effects use multi-modifier packages for Union Crisis, defensive coordination, depot seizures, legal claims, foreign volunteers, old networks, factory states, and high-chaos successors; the current idea parser audit found no Event 005 idea with fewer than three modifier entries, no idea without modifiers, no tiny-only package, no missing idea picture sprite, no missing idea DDS, and no missing idea name/description localisation. The remaining 2-3% components appear only inside broader 3-5 modifier spirits. | Implemented for current surface |
 | Random first wave from structured pools | `soviet_collapse_release_initial_republics` clears and fills `global.soviet_collapse_first_wave_republics` through western, Caucasus, and Central Asian random pool helpers, then releases the selected scopes. Each pool can now select either nonexistent supported tags whose cores are owned and controlled by SOV or existing supported Soviet subjects, which are freed with `set_autonomy` before setup. | Implemented |
 | Kazakhstan first-wave restraint | `can_soviet_collapse_open_kazakhstan_first_wave` requires southern breakaway pressure, weak obedience, war or low Soviet condition, or high chaos; Kazakhstan is outside the normal Central Asian first-wave pool | Implemented |
@@ -358,7 +359,8 @@ input_audit_surface rows 12 mismatches 0
 recovery_search_surface continuation_matches 0 removed_log_hits 0
 blocked_completion_surface markers 8 missing 0
 success_criteria_surface markers 13 missing 0
-prompt_artifact_checklist_surface rows 27 implemented_rows 38 blocked_rows 1
+available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
+prompt_artifact_checklist_surface rows 28 implemented_rows 39 blocked_rows 1
 verifier_command_documentation_surface markers 8 missing 0
 focus_tree_map_surface event_markers 9/9 audit_markers 3/3
 flag_orientation_headers flags_checked 570 flags_missing 0 decode_errors 0 bottom_origin 570 top_origin 0
@@ -397,7 +399,7 @@ Implementation-gate verifier result with the missing input explicitly waived for
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
-result: exit 0; source_context_files, source_order_surface, input_audit_surface, recovery_search_surface, blocked_completion_surface, success_criteria_surface, prompt_artifact_checklist_surface, verifier_command_documentation_surface, focus_tree_map_surface, focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, idea_package_surface, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, flag_orientation_surface, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
+result: exit 0; source_context_files, source_order_surface, input_audit_surface, recovery_search_surface, blocked_completion_surface, success_criteria_surface, available_source_acceptance_surface, prompt_artifact_checklist_surface, verifier_command_documentation_surface, focus_tree_map_surface, focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, idea_package_surface, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, flag_orientation_surface, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
 Missing input blocker was waived for this verifier run.
 ```
 
@@ -414,6 +416,7 @@ input_files error_log intentionally_removed_not_blocker
 input_files text_log intentionally_removed_not_blocker
 ideas_audit ideas 124 no_mod 0 weak_lt3 0 tiny_only 0 min_mods 3 max_mods 7 missing_sprite 0 missing_dds 0 missing_loc_or_desc 0
 idea_package_surface ideas 124 modifier_entries 395 tiny_components 19 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_name 0 missing_desc 0
+available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_random 1 normal_pool_has_kaz False kaz_gate_southern True kaz_gate_tier4 True extra_calls 3
 first_wave_release_surface pool_helpers 4 western_tags 6 caucasus_tags 3 central_tags 4 map_support_gates True extra_scaling True selected_release True kazakhstan_release True southern_cascade True
 focus_ai_surface focuses 1500 ai_blocks 1500 dynamic_ai 353 mutual_route_choices 178 dynamic_mutual_ai 178 flat_mutual_ai 0
