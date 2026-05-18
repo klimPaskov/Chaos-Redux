@@ -265,7 +265,6 @@ def count_top_level_key(body: list[str], key: str) -> int:
 
 def verify_focuses() -> list[Check]:
 	focuses = []
-	continuous = []
 	layout_rows = []
 	for path in EVENT005_FOCUS_FILES:
 		toks = tokens(read_text(path))
@@ -273,13 +272,17 @@ def verify_focuses() -> list[Check]:
 			ids = top_level_values(block, "id")
 			if ids:
 				focuses.append((path, ids[0], block))
-		for block in named_blocks(toks, "continuous_focus_position"):
-			xs = top_level_values(block, "x")
-			ys = top_level_values(block, "y")
-			continuous.append((path, xs[0] if xs else None, ys[0] if ys else None))
 		for tree_body in named_blocks(toks, "focus_tree"):
 			tree_ids = top_level_values(tree_body, "id")
 			tree_id = tree_ids[0] if tree_ids else "<missing>"
+			continuous_blocks = top_level_block_bodies(tree_body, "continuous_focus_position")
+			continuous_x = None
+			continuous_y = None
+			if continuous_blocks:
+				xs = top_level_values(continuous_blocks[0], "x")
+				ys = top_level_values(continuous_blocks[0], "y")
+				continuous_x = xs[0] if xs else None
+				continuous_y = ys[0] if ys else None
 			tree_focuses = []
 			for focus_body in top_level_block_bodies(tree_body, "focus"):
 				ids = top_level_values(focus_body, "id")
@@ -296,11 +299,17 @@ def verify_focuses() -> list[Check]:
 						"path": path,
 						"tree_id": tree_id,
 						"count": len(tree_focuses),
+						"min_x": min(x_values),
+						"max_x": max(x_values),
+						"min_y": min(y_values),
+						"max_y": max(y_values),
 						"x_span": max(x_values) - min(x_values),
 						"y_span": max(y_values) - min(y_values),
 						"duplicate_coords": len(coords) - len(set(coords)),
 						"max_col": max(x_values.count(x) for x in set(x_values)),
 						"max_row": max(y_values.count(y) for y in set(y_values)),
+						"continuous_x": continuous_x,
+						"continuous_y": continuous_y,
 					}
 				)
 
@@ -360,21 +369,28 @@ def verify_focuses() -> list[Check]:
 			if ref in mutuals and focus_id not in mutuals[ref]:
 				nonreciprocal.append((focus_id, ref))
 
-	continuous_bad = [
-		(path.name, x, y)
-		for path, x, y in continuous
-		if x != "50" or y is None or not y.lstrip("-").isdigit() or int(y) < 1500
-	]
+	continuous_bad = []
+	for row in layout_rows:
+		x = row["continuous_x"]
+		y = row["continuous_y"]
+		if x is None or y is None or not x.lstrip("-").isdigit() or not y.lstrip("-").isdigit():
+			continuous_bad.append((row["tree_id"], x, y, "missing_or_non_numeric"))
+			continue
+		x_int = int(x)
+		y_int = int(y)
+		min_right_panel_x = (row["max_x"] + 4) * 96
+		if x_int < min_right_panel_x or y_int < 120 or y_int > 300:
+			continuous_bad.append((row["tree_id"], x, y, f"expected_right_panel_x_at_least_{min_right_panel_x}_and_y_120_300"))
 	layout_bad = [
 		row
 		for row in layout_rows
 		if row["duplicate_coords"] != 0
 		or row["x_span"] < 14
-		or row["y_span"] < 9
-		or row["max_col"] > 12
-		or row["max_row"] > 14
+		or row["y_span"] < 10
+		or row["max_row"] > 10
 	]
-	wide_tree_count = sum(1 for row in layout_rows if row["x_span"] >= 20)
+	wide_tree_count = sum(1 for row in layout_rows if row["x_span"] >= 14)
+	continuous_positions = sum(1 for row in layout_rows if row["continuous_x"] is not None and row["continuous_y"] is not None)
 	ok = not any([
 		duplicates, missing_refs, self_refs, nonreciprocal, repeated_mutual_blocks,
 		missing_ai, missing_reward, missing_icon, missing_coords,
@@ -389,17 +405,18 @@ def verify_focuses() -> list[Check]:
 				f"self_refs={len(self_refs)} nonreciprocal_mutual={len(nonreciprocal)} "
 				f"repeated_mutual_blocks={repeated_mutual_blocks} missing_ai={len(missing_ai)} "
 				f"missing_reward={len(missing_reward)} missing_icon={len(missing_icon)} "
-				f"missing_coords={len(missing_coords)} continuous_positions={len(continuous)} "
+				f"missing_coords={len(missing_coords)} continuous_positions={continuous_positions} "
 				f"continuous_bad={len(continuous_bad)}"
 			),
 		),
 		Check(
 			"focus_layout_surface",
-			not layout_bad and len(layout_rows) == len(continuous) and wide_tree_count >= 9,
+			not layout_bad and not continuous_bad and continuous_positions == len(layout_rows) and wide_tree_count == len(layout_rows),
 			(
-				f"focus_trees={len(layout_rows)} continuous_positions={len(continuous)} "
+				f"focus_trees={len(layout_rows)} continuous_positions={continuous_positions} "
 				f"layout_bad={len(layout_bad)} duplicate_coord_trees={sum(1 for row in layout_rows if row['duplicate_coords'])} "
-				f"wide_trees={wide_tree_count} min_x_span={min((row['x_span'] for row in layout_rows), default=0)} "
+				f"continuous_side_bad={len(continuous_bad)} wide_trees={wide_tree_count} "
+				f"min_x_span={min((row['x_span'] for row in layout_rows), default=0)} "
 				f"min_y_span={min((row['y_span'] for row in layout_rows), default=0)} "
 				f"max_col={max((row['max_col'] for row in layout_rows), default=0)} "
 				f"max_row={max((row['max_row'] for row in layout_rows), default=0)}"
