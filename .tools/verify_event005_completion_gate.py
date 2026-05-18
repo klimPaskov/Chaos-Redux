@@ -890,6 +890,27 @@ def verify_focus_tree_map_documentation_surface() -> list[Check]:
 	]
 
 
+def verify_validation_snapshot_freshness_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	required_markers = [
+		"validation_snapshot_freshness_surface",
+		"terminal_high_chaos_successor_surface prepare_flags 26 spawn_calls 38/38 ready_trigger_refs 38",
+		"highest_chaos_prepare_flags 26",
+	]
+	stale_markers = [
+		"terminal_high_chaos_spawn_gates_with_required_flags 35",
+	]
+	missing = [marker for marker in required_markers if marker not in completion_audit]
+	stale = [marker for marker in stale_markers if marker in completion_audit]
+	return [
+		Check(
+			"validation_snapshot_freshness_surface",
+			not missing and not stale,
+			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} stale={len(stale)}",
+		)
+	]
+
+
 def verify_first_wave_and_forces() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -2215,6 +2236,7 @@ def verify_docs_surface() -> list[Check]:
 		"prompt_artifact_checklist_surface",
 		"verifier_command_documentation_surface",
 		"focus_tree_map_surface",
+		"validation_snapshot_freshness_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2340,6 +2362,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_prompt_artifact_checklist_surface())
 	checks.extend(verify_verifier_command_documentation_surface())
 	checks.extend(verify_focus_tree_map_documentation_surface())
+	checks.extend(verify_validation_snapshot_freshness_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
