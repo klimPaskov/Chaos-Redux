@@ -51,6 +51,14 @@ When Kazakhstan appears as an event-created opening breakaway, the southern casc
 
 Future breakaway setup also consumes one-use Soviet mission flags. `soviet_collapse_next_declaration_unarmed` reduces the next breakaway support package, while `soviet_collapse_next_declaration_armed` increases it; either flag clears after it is applied to one breakaway.
 
+## Terminal Collapse
+
+`Union Unmade` now resolves the crisis instead of only presenting the super-event. When `soviet_collapse_show_union_unmade_super_event` fires, `soviet_collapse_apply_terminal_collapse` runs before the presentation layer. The terminal pass releases every ordinary non-Russian Soviet republic that is still unreleased, has core territory owned and controlled by `SOV`, and is part of the supported republic set: Ukraine, Belarus, Moldova, the Baltic republics, the Caucasus republics, Uzbekistan, Kyrgyzstan, Tajikistan, Turkmenistan, and Kazakhstan. Each republic released by this terminal pass receives `soviet_collapse_event_created_republic`, the normal breakaway setup package, its runtime focus tree, and an extra final-collapse military package from `constant:soviet_collapse_breakaway_support.terminal_*`.
+
+High-chaos terminal collapse is additive. Chaos tier 4 and 5 attempt the implemented high-chaos successor spawns after ordinary republic release, so special actors can appear where their required territories remain under Soviet ownership and control. At chaos tier 5, the terminal pass treats the containment network as having broadly failed, unlocks the high-chaos successor gates used by the existing spawn helpers, and raises old-movement weirdness to the high-chaos gate if it has not already reached it. The existing tag checks, evolution-enable settings, mutually exclusive tag conflicts, and territory ownership/control requirements still decide which special actors are eligible.
+
+The same terminal effect closes the pre-collapse crisis board. `soviet_collapse_cleanup_terminal_collapse_missions` clears the active Soviet Collapse and opening-wave flags, clears one-use next-declaration flags, removes any active Soviet crisis mission from mission 1 through mission 128 with `remove_mission`, and leaves `soviet_collapse_terminal_collapse` as the outcome memory. Because `is_soviet_collapse_active` now excludes the terminal flag, Soviet response, breakaway action, and foreign patron categories no longer remain visible after full collapse.
+
 The local event catalog workbook row for Event 005 matches the current clean-spec implementation, and the final parser-oriented review passed across the opening, republic, regional, custom successor, achievement, spreadsheet, and super-event surfaces.
 
 ## Republic Focus Trees
