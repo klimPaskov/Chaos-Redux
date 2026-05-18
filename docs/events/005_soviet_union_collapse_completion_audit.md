@@ -358,6 +358,7 @@ source_order_surface items 10 ordered True numbered True
 input_audit_surface rows 12 mismatches 0
 recovery_search_surface continuation_matches 0 removed_log_hits 0
 blocked_completion_surface markers 8 missing 0
+strict_blocker_documentation_surface markers 2/2 forbidden 0
 success_criteria_surface markers 13 missing 0
 available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 prompt_artifact_checklist_surface rows 28 implemented_rows 39 blocked_rows 1
@@ -400,7 +401,7 @@ Implementation-gate verifier result with the missing input explicitly waived for
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
-result: exit 0; source_context_files, source_order_surface, input_audit_surface, recovery_search_surface, blocked_completion_surface, success_criteria_surface, available_source_acceptance_surface, prompt_artifact_checklist_surface, verifier_command_documentation_surface, focus_tree_map_surface, validation_snapshot_freshness_surface, focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, idea_package_surface, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, flag_orientation_surface, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
+result: exit 0; source_context_files, source_order_surface, input_audit_surface, recovery_search_surface, blocked_completion_surface, strict_blocker_documentation_surface, success_criteria_surface, available_source_acceptance_surface, prompt_artifact_checklist_surface, verifier_command_documentation_surface, focus_tree_map_surface, validation_snapshot_freshness_surface, focus_integrity, focus_layout_surface, focus_ai_surface, idea_strength, idea_package_surface, first_wave_structure, first_wave_release_surface, dynamic_force_package, dynamic_force_coverage, force_scaling_surface, crisis_balance_surface, crisis_cause_surface, union_unmade_pacing, terminal_mission_cleanup, soviet_objective_board_surface, terminal_ordinary_republic_release_surface, terminal_high_chaos_successor_surface, banned_phrase_cleanup, event_log_detail_surface, event_log_mapping_surface, localisation_surface, flag_orientation_headers, flag_orientation_surface, super_event_surface, evolution_logging_surface, achievement_surface, asset_manifest_surface, decision_ai_surface, docs_completion_surface, and spreadsheet_status_surface passed
 Missing input blocker was waived for this verifier run.
 ```
 
