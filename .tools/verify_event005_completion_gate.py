@@ -723,6 +723,33 @@ def verify_strict_blocker_documentation_surface() -> list[Check]:
 	]
 
 
+def verify_missing_continuation_direct_coverage_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	required_markers = [
+		"Missing continuation direct coverage",
+		"event-log",
+		"mission-balance",
+		"focus-cleanup",
+		"event_log_detail_surface",
+		"event_log_mapping_surface",
+		"soviet_objective_board_surface",
+		"terminal_mission_cleanup",
+		"focus_integrity",
+		"focus_layout_surface",
+		"focus_ai_surface",
+		"focus_tree_map_surface",
+		"does not waive the missing source file",
+	]
+	missing = [marker for marker in required_markers if marker not in completion_audit]
+	return [
+		Check(
+			"missing_continuation_direct_coverage_surface",
+			not missing,
+			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} missing={len(missing)}",
+		)
+	]
+
+
 def verify_success_criteria_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	try:
@@ -819,6 +846,7 @@ def verify_prompt_artifact_checklist_surface() -> list[Check]:
 	except IndexError:
 		return [Check("prompt_artifact_checklist_surface", False, "checklist_section=False")]
 	required_rows = [
+		"Missing continuation direct coverage",
 		"Available source acceptance criteria coverage",
 		"Stronger Soviet Collapse ideas and spirits",
 		"Random first wave from structured pools",
@@ -2257,6 +2285,7 @@ def verify_docs_surface() -> list[Check]:
 		"recovery_search_surface",
 		"blocked_completion_surface",
 		"strict_blocker_documentation_surface",
+		"missing_continuation_direct_coverage_surface",
 		"success_criteria_surface",
 		"available_source_acceptance_surface",
 		"prompt_artifact_checklist_surface",
@@ -2384,6 +2413,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_recovery_search_surface())
 	checks.extend(verify_blocked_completion_surface())
 	checks.extend(verify_strict_blocker_documentation_surface())
+	checks.extend(verify_missing_continuation_direct_coverage_surface())
 	checks.extend(verify_success_criteria_surface())
 	checks.extend(verify_available_source_acceptance_surface())
 	checks.extend(verify_prompt_artifact_checklist_surface())
