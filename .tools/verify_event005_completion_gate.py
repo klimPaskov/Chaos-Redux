@@ -676,6 +676,28 @@ def verify_recovery_search_surface() -> list[Check]:
 	]
 
 
+def verify_blocked_completion_surface() -> list[Check]:
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	required_markers = [
+		"## Remaining Blockers",
+		"## Blocked Completion Report",
+		"## Resume Packet",
+		"The requested final completion report categories are not closed",
+		"restore or explicitly waive `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md`",
+		"only then mark the active Event 005 correction goal complete",
+		"`tmp/error.log` and `tmp/text.log` runtime logs were intentionally removed",
+		"If it is still absent and not explicitly waived, keep the goal blocked and do not mark completion.",
+	]
+	missing = [marker for marker in required_markers if marker not in completion_audit]
+	return [
+		Check(
+			"blocked_completion_surface",
+			not missing,
+			f"markers={len(required_markers) - len(missing)}/{len(required_markers)} missing={len(missing)}",
+		)
+	]
+
+
 def verify_first_wave_and_forces() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -1995,6 +2017,7 @@ def verify_docs_surface() -> list[Check]:
 		"source_order_surface",
 		"input_audit_surface",
 		"recovery_search_surface",
+		"blocked_completion_surface",
 	]
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
@@ -2114,6 +2137,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_source_order_surface())
 	checks.extend(verify_input_audit_surface())
 	checks.extend(verify_recovery_search_surface())
+	checks.extend(verify_blocked_completion_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
