@@ -1236,8 +1236,6 @@ def verify_available_source_acceptance_surface() -> list[Check]:
 		"Moscow Authority does not start at 0 in calm or modest crisis conditions",
 		"Union Unmade cannot fire in the first month in ordinary play",
 		"Union Unmade releases all ordinary Soviet republics still under Moscow control",
-		"high chaos adds special chaos countries on top of ordinary republic releases",
-		"highest chaos terminal failure releases all eligible special chaos countries",
 		"final collapse releases each republic with dynamically scaled units",
 		"Soviet Collapse intervention categories and active missions are canceled or converted after terminal collapse",
 		"continuous focus boxes are moved to a cleaner location",
@@ -1256,7 +1254,7 @@ def verify_available_source_acceptance_surface() -> list[Check]:
 		"crisis_balance_surface",
 		"union_unmade_pacing",
 		"terminal_ordinary_republic_release_surface",
-		"terminal_high_chaos_successor_surface",
+		"hardcoded_high_chaos_successor_activation_removed",
 		"terminal_mission_cleanup",
 		"focus_layout_surface",
 		"focus_tree_map_surface",
@@ -1359,13 +1357,13 @@ def verify_prompt_artifact_checklist_surface() -> list[Check]:
 		"Foreign intervention categories and action-based aid",
 		"Crisis decision AI behavior",
 		"Runtime focus trees for republics and breakaways",
-		"High-chaos successor focus trees",
+		"Fixed successor focus trees removed from runtime",
 		"Non-linear focus structure, route locks, branch zones, focus filters, AI behavior",
 		"Focus tree map documentation",
 		"Starting divisions for appearing republics and serious splinters",
 		"Union Unmade first-month lock",
 		"Terminal ordinary republic release",
-		"Terminal high-chaos successor activation",
+		"Hardcoded high-chaos successor activation removed",
 		"Terminal mission and category cleanup",
 		"Event log details",
 		"Evolution logging",
@@ -1516,8 +1514,7 @@ def verify_validation_snapshot_freshness_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	required_markers = [
 		"validation_snapshot_freshness_surface",
-		"terminal_high_chaos_successor_surface prepare_flags 18 spawn_calls 21/21 ready_trigger_refs 21",
-		"highest_chaos_prepare_flags 18",
+		"hardcoded_high_chaos_successor_activation_removed active_calls=0 spawn_dispatches=0 regional_invites=0",
 	]
 	stale_markers = [
 		"terminal_high_chaos_spawn_gates_with_required_flags 35",
@@ -1868,7 +1865,6 @@ def verify_terminal_ordinary_republics() -> list[Check]:
 		for item in [
 			"soviet_collapse_apply_terminal_collapse",
 			"soviet_collapse_release_terminal_ordinary_republics = yes",
-			"soviet_collapse_spawn_terminal_high_chaos_successors = yes",
 			"soviet_collapse_cleanup_terminal_collapse_missions = yes",
 		]
 	)
@@ -3171,7 +3167,6 @@ def verify_local_league_surface() -> list[Check]:
 		"create_faction = soviet_collapse_caucasus_defense_compact_faction",
 		"create_faction = soviet_collapse_central_asian_league_faction",
 		"add_to_faction = LIT",
-		"add_to_faction = MRC",
 		"add_to_faction = KAZ",
 		"has_soviet_collapse_three_smaller_central_asian_republics_free = yes",
 		"declare_war_on =",
@@ -3243,7 +3238,6 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 			"soviet_collapse_maybe_show_union_unmade_super_event",
 			"soviet_collapse_apply_terminal_collapse",
 			"soviet_collapse_release_terminal_ordinary_republics",
-			"soviet_collapse_spawn_terminal_high_chaos_successors",
 		]
 	)
 	union_pacing_ok = (
@@ -3576,42 +3570,33 @@ def verify_soviet_objective_board() -> list[Check]:
 
 def verify_terminal_high_chaos_successors() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
-	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
+	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	effect_tokens = tokens(effects)
-	prepare_blocks = named_blocks(effect_tokens, "soviet_collapse_prepare_highest_chaos_terminal_successors")
 	maybe_blocks = named_blocks(effect_tokens, "soviet_collapse_maybe_spawn_high_chaos_successors")
 	terminal_blocks = named_blocks(effect_tokens, "soviet_collapse_spawn_terminal_high_chaos_successors")
-	prepare_body = " ".join(prepare_blocks[0]) if prepare_blocks else ""
 	maybe_body = " ".join(maybe_blocks[0]) if maybe_blocks else ""
 	terminal_body = " ".join(terminal_blocks[0]) if terminal_blocks else ""
 
-	prepare_flags = len(re.findall(r"\bset_country_flag\b", prepare_body))
-	expected_spawn_calls = {f"soviet_collapse_spawn_{tag.lower()}_if_enabled" for tag in CUSTOM_TAGS}
-	spawn_calls = {call for call in expected_spawn_calls if call in maybe_body}
-	disabled_spawn_calls = {f"soviet_collapse_spawn_{tag.lower()}_if_enabled" for tag in DISABLED_CUSTOM_TAGS}
-	disabled_calls_present = {call for call in disabled_spawn_calls if call in maybe_body}
-	ready_trigger_count = 0
-	for tag in CUSTOM_TAGS:
-		blocks = named_blocks(tokens(triggers), f"can_soviet_collapse_spawn_{tag.lower()}")
-		body = " ".join(blocks[0]) if blocks else ""
-		if "is_soviet_collapse_high_chaos_successor_spawn_ready = yes" in body:
-			ready_trigger_count += 1
+	active_text = "\n".join([effects, decisions])
+	active_calls = len(re.findall(r"\bsoviet_collapse_maybe_spawn_high_chaos_successors\s*=\s*yes\b", active_text))
+	active_calls += len(re.findall(r"\bsoviet_collapse_spawn_terminal_high_chaos_successors\s*=\s*yes\b", active_text))
+	spawn_dispatches = sum(1 for tag in CUSTOM_TAGS if f"soviet_collapse_spawn_{tag.lower()}_if_enabled = yes" in maybe_body)
+	regional_invites = len(re.findall(r"has_country_flag\s*=\s*soviet_collapse_high_chaos_successor", active_text))
 	ok = (
-		"has_global_flag = { flag = chaos_tier value = 5 }" in terminal_body
-		and "soviet_collapse_prepare_highest_chaos_terminal_successors" in terminal_body
-		and "soviet_collapse_maybe_spawn_high_chaos_successors" in terminal_body
-		and prepare_flags >= 18
-		and spawn_calls == expected_spawn_calls
-		and not disabled_calls_present
-		and ready_trigger_count == len(CUSTOM_TAGS)
+		len(maybe_blocks) == 1
+		and len(terminal_blocks) == 1
+		and active_calls == 0
+		and spawn_dispatches == 0
+		and regional_invites == 0
+		and not terminal_body.strip()
 	)
 	return [
 		Check(
-			"terminal_high_chaos_successor_surface",
+			"hardcoded_high_chaos_successor_activation_removed",
 			ok,
 			(
-				f"prepare_flags={prepare_flags} spawn_calls={len(spawn_calls)}/{len(expected_spawn_calls)} "
-				f"ready_trigger_refs={ready_trigger_count} disabled_spawn_calls={len(disabled_calls_present)}"
+				f"active_calls={active_calls} spawn_dispatches={spawn_dispatches} "
+				f"regional_invites={regional_invites}"
 			),
 		)
 	]
@@ -4400,8 +4385,8 @@ def verify_docs_surface() -> list[Check]:
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
 		"soviet_collapse_cleanup_terminal_collapse_missions",
-		"Event 005 active custom country flags were audited",
-		"315 active TGA files",
+		"Custom Event 005 country flags were audited",
+		"315 audited TGA files",
 	]
 	input_markers = [
 		"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
