@@ -352,7 +352,7 @@ def verify_focuses() -> list[Check]:
 				shallow_dead_end_focuses = sum(
 					1
 					for focus_id, (_, y) in coord_by_id.items()
-					if not children[focus_id] and y <= max(y_values) - 3
+					if not children[focus_id] and y <= max(y_values) - 2
 				)
 				layout_rows.append(
 					{
@@ -455,8 +455,8 @@ def verify_focuses() -> list[Check]:
 		or row["isolated_focuses"] != 0
 		or row["shallow_dead_end_focuses"] != 0
 		or row["component_count"] != 1
-		or row["y_span"] > 18
-		or row["min_mutual_distance"] < 4
+		or row["y_span"] > 14
+		or row["min_mutual_distance"] < 6
 		or row["max_row"] > 22
 		or row["max_col"] > 14
 	]
