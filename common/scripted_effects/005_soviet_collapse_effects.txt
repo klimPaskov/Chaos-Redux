@@ -645,12 +645,6 @@ soviet_collapse_prepare_highest_chaos_terminal_successors = {
 }
 
 soviet_collapse_spawn_terminal_high_chaos_successors = {
-	soviet_collapse_maybe_spawn_high_chaos_successors = yes
-	if = {
-		limit = { has_global_flag = { flag = chaos_tier value = 5 } }
-		soviet_collapse_prepare_highest_chaos_terminal_successors = yes
-		soviet_collapse_maybe_spawn_high_chaos_successors = yes
-	}
 }
 
 soviet_collapse_apply_terminal_collapse = {
@@ -658,7 +652,6 @@ soviet_collapse_apply_terminal_collapse = {
 		limit = { NOT = { has_global_flag = soviet_collapse_terminal_collapse } }
 		set_global_flag = soviet_collapse_terminal_collapse_in_progress
 		soviet_collapse_release_terminal_ordinary_republics = yes
-		soviet_collapse_spawn_terminal_high_chaos_successors = yes
 		soviet_collapse_cleanup_terminal_collapse_missions = yes
 		set_global_flag = soviet_collapse_terminal_collapse
 		clr_global_flag = soviet_collapse_terminal_collapse_in_progress
@@ -2409,7 +2402,6 @@ soviet_collapse_invite_caucasus_regional_partners = {
 	if = { limit = { GEO = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = GEO GEO = { soviet_collapse_join_caucasus_regional_faction = yes } }
 	if = { limit = { ARM = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = ARM ARM = { soviet_collapse_join_caucasus_regional_faction = yes } }
 	if = { limit = { AZR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = AZR AZR = { soviet_collapse_join_caucasus_regional_faction = yes } }
-	if = { limit = { MRC = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = MRC MRC = { soviet_collapse_join_caucasus_regional_faction = yes } }
 }
 
 soviet_collapse_invite_central_asian_regional_partners = {
@@ -2418,9 +2410,6 @@ soviet_collapse_invite_central_asian_regional_partners = {
 	if = { limit = { TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TAJ TAJ = { soviet_collapse_join_central_asian_regional_faction = yes } }
 	if = { limit = { TMS = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TMS TMS = { soviet_collapse_join_central_asian_regional_faction = yes } }
 	if = { limit = { KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_three_smaller_central_asian_republics_free = yes is_in_faction = no } } add_to_faction = KAZ KAZ = { soviet_collapse_join_central_asian_regional_faction = yes } }
-	if = { limit = { BSC = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = BSC BSC = { soviet_collapse_join_central_asian_regional_faction = yes } }
-	if = { limit = { TNC = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = TNC TNC = { soviet_collapse_join_central_asian_regional_faction = yes } }
-	if = { limit = { ALA = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = ALA ALA = { soviet_collapse_join_central_asian_regional_faction = yes } }
 }
 
 soviet_collapse_found_baltic_restoration_pact = {
@@ -3871,31 +3860,6 @@ soviet_collapse_spawn_nlc_if_enabled = {
 }
 
 soviet_collapse_maybe_spawn_high_chaos_successors = {
-	if = {
-		limit = { is_soviet_collapse_high_chaos_successor_spawn_ready = yes }
-		soviet_collapse_spawn_cfr_if_enabled = yes
-		soviet_collapse_spawn_mfr_if_enabled = yes
-		soviet_collapse_spawn_krs_if_enabled = yes
-		soviet_collapse_spawn_bbh_if_enabled = yes
-		soviet_collapse_spawn_fth_if_enabled = yes
-		soviet_collapse_spawn_bsc_if_enabled = yes
-		soviet_collapse_spawn_tnc_if_enabled = yes
-		soviet_collapse_spawn_ala_if_enabled = yes
-		soviet_collapse_spawn_udc_if_enabled = yes
-		soviet_collapse_spawn_sdz_if_enabled = yes
-		soviet_collapse_spawn_gac_if_enabled = yes
-		soviet_collapse_spawn_dhc_if_enabled = yes
-		soviet_collapse_spawn_khc_if_enabled = yes
-		soviet_collapse_spawn_fev_if_enabled = yes
-		soviet_collapse_spawn_sza_if_enabled = yes
-		soviet_collapse_spawn_uwd_if_enabled = yes
-		soviet_collapse_spawn_mrc_if_enabled = yes
-		soviet_collapse_spawn_iul_if_enabled = yes
-		soviet_collapse_spawn_bac_if_enabled = yes
-		soviet_collapse_spawn_ard_if_enabled = yes
-		soviet_collapse_spawn_nlc_if_enabled = yes
-		soviet_collapse_recalculate_total_threat = yes
-	}
 }
 
 soviet_collapse_add_random_first_wave_western_republic = {
@@ -4339,7 +4303,6 @@ soviet_collapse_release_initial_republics = {
 	if = { limit = { KYR = { exists = yes has_country_flag = soviet_collapse_event_created_republic } } KYR = { soviet_collapse_load_event_created_focus_tree = yes } }
 	if = { limit = { TAJ = { exists = yes has_country_flag = soviet_collapse_event_created_republic } } TAJ = { soviet_collapse_load_event_created_focus_tree = yes } }
 	if = { limit = { TMS = { exists = yes has_country_flag = soviet_collapse_event_created_republic } } TMS = { soviet_collapse_load_event_created_focus_tree = yes } }
-	soviet_collapse_maybe_spawn_high_chaos_successors = yes
 	clr_global_flag = soviet_collapse_opening_wave_active
 }
 
