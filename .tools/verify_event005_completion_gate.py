@@ -1211,6 +1211,58 @@ def verify_focus_tree_map_documentation_surface() -> list[Check]:
 	]
 
 
+def verify_mission_audit_documentation_surface() -> list[Check]:
+	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	event_doc = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	audit_path = ROOT / "docs/events/005_soviet_union_collapse_mission_audit.md"
+	if not audit_path.exists():
+		return [Check("mission_audit_documentation_surface", False, "doc_exists=False")]
+	audit_doc = read_text(audit_path)
+	mission_ids = set(re.findall(r"^\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)\s*=\s*\{", decisions, re.MULTILINE))
+	table_ids = set(re.findall(r"\bsoviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+\b", audit_doc))
+	table_rows = len(re.findall(r"^\| \d{3} `soviet_collapse_soviet_mission_", audit_doc, re.MULTILINE))
+	header = "| Mission | Owner | Purpose | Requirement | Success effect | Failure effect | Duplicate risk |"
+	required_markers = [
+		header,
+		"Trivial passive missions",
+		"Division-state and map requirements",
+		"Long trigger details",
+		"soviet_objective_board_surface",
+		"mission_quality_surface",
+		"localisation_surface",
+		"terminal_mission_cleanup",
+	]
+	validation_markers = [
+		"mission_audit_documentation_surface",
+		"rows 128",
+		"mission_ids 128/128",
+		"validation_markers 4/4",
+	]
+	missing_markers = [marker for marker in required_markers if marker not in audit_doc]
+	missing_validation = [marker for marker in validation_markers if marker not in completion_audit]
+	ok = (
+		not missing_markers
+		and not missing_validation
+		and table_rows == 128
+		and mission_ids
+		and mission_ids <= table_ids
+		and "005_soviet_union_collapse_mission_audit.md" in event_doc
+		and "Mission audit table" in completion_audit
+	)
+	return [
+		Check(
+			"mission_audit_documentation_surface",
+			ok,
+			(
+				f"rows={table_rows} mission_ids={len(mission_ids & table_ids)}/{len(mission_ids)} "
+				f"header={header in audit_doc} validation_markers={len(validation_markers) - len(missing_validation)}/{len(validation_markers)} "
+				f"missing_markers={len(missing_markers)}"
+			),
+		)
+	]
+
+
 def verify_validation_snapshot_freshness_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	required_markers = [
@@ -3179,6 +3231,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_prompt_artifact_checklist_surface())
 	checks.extend(verify_verifier_command_documentation_surface())
 	checks.extend(verify_focus_tree_map_documentation_surface())
+	checks.extend(verify_mission_audit_documentation_surface())
 	checks.extend(verify_validation_snapshot_freshness_surface())
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
