@@ -25,10 +25,10 @@ The implemented opening slices cover the crisis scaffold and the first intervent
 
 Foreign patron decisions build permanent pressure on the target republic instead of only granting one-off aid. Each targeted intervention records both a category total and a sponsor total on the republic:
 
-- category totals: recognition, arms, volunteers, industry, intelligence, ideology, logistics, and patronage risk
+- category totals: recognition, arms, volunteers, advisers, industry, intelligence, ideology, logistics, and patronage risk
 - sponsor totals: Germany, Britain, Japan, France, the United States, Turkey, Iran, Poland, Romania, Finland, Sweden, and Italy
 
-The category totals mature into three parallel staged spirit tracks. Diplomatic backing grows from contacts to missions to treaty backing. Material backing grows from supply contacts to corridors to a full supply network. Patronage grows from contacts to liaison to a patronage network. These spirits can coexist because the republic may be recognized by one sponsor, supplied by another, and advised by a third.
+The category totals mature into separate staged spirit tracks. Recognition grows from diplomatic contacts to missions to treaty backing. Investment grows from reconstruction offers to sponsored civil works to a sovereign reconstruction board. Volunteer support grows from foreign cadres to brigades to an international defense corps. Adviser support grows from observers to training missions to a joint staff mission. Material aid still grows from supply contacts to corridors to a full supply network, and patronage grows from contacts to liaison to a patronage network. These spirits can coexist because the republic may be recognized by one sponsor, supplied by another, rebuilt by several investors, and advised by a third.
 
 The foreign patron category now covers the first full investment set: recognition, ideological liaison, equipment convoys, military advisers, intelligence channels, volunteer corps, trade missions, civilian construction, military construction, press and radio networks, aid corridors, republic conference sponsorship, and an anti-puppet clause. Civilian construction adds a civilian factory and infrastructure to the target republic while applying a temporary consumer-goods and output burden to the sponsor. Military construction adds military industry and anti-air. Aid corridors open a target-side flag for later route logic. Volunteer corps now spawns a republican field brigade in addition to the manpower and equipment package.
 
