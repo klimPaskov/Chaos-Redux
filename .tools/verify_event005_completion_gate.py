@@ -1878,6 +1878,123 @@ def verify_foreign_influence_surface() -> list[Check]:
 	]
 
 
+def verify_reintegration_puppet_surface() -> list[Check]:
+	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
+	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
+	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
+	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	mechanic_docs = read_text(ROOT / "docs/events/005_soviet_union_collapse_reintegration_dependency.md")
+	constant_markers = [
+		"soviet_collapse_moscow_reintegration",
+		"soviet_collapse_puppet_pressure",
+		"moscow_union_treaty_influence",
+		"moscow_federal_compact_influence",
+		"protection_treaty_influence",
+		"adviser_privileges_influence",
+		"client_cabinet_influence",
+		"dominant_sponsor_influence",
+		"total_influence_floor",
+	]
+	moscow_decisions = [
+		"soviet_collapse_offer_new_union_treaty",
+		"soviet_collapse_offer_federal_reintegration_compact",
+	]
+	puppet_decisions = [
+		"soviet_collapse_offer_protection_treaty",
+		"soviet_collapse_demand_adviser_privileges",
+		"soviet_collapse_install_client_cabinet",
+	]
+	required_triggers = [
+		"can_pay_soviet_collapse_moscow_union_treaty_cost",
+		"can_pay_soviet_collapse_moscow_federal_compact_cost",
+		"can_pay_soviet_collapse_foreign_protection_treaty_cost",
+		"can_pay_soviet_collapse_foreign_adviser_privileges_cost",
+		"can_pay_soviet_collapse_foreign_client_cabinet_cost",
+		"is_soviet_collapse_moscow_dominant_influence_for_from",
+		"is_soviet_collapse_root_dominant_sponsor_for_from",
+		"can_target_soviet_collapse_breakaway_for_moscow_union_treaty",
+		"can_target_soviet_collapse_breakaway_for_moscow_federal_compact",
+		"can_target_soviet_collapse_breakaway_for_foreign_protection_treaty",
+		"can_target_soviet_collapse_breakaway_for_foreign_adviser_privileges",
+		"can_target_soviet_collapse_breakaway_for_foreign_client_cabinet",
+	]
+	required_effects = [
+		"soviet_collapse_apply_moscow_union_treaty_offer",
+		"soviet_collapse_apply_moscow_federal_compact",
+		"soviet_collapse_apply_foreign_protection_treaty",
+		"soviet_collapse_apply_foreign_adviser_privileges",
+		"soviet_collapse_apply_foreign_client_cabinet",
+	]
+	decision_loc_ok = all(
+		f"{decision}:" in loc and f"{decision}_desc:" in loc and f"{decision}_tt:" in loc
+		for decision in moscow_decisions + puppet_decisions
+	)
+	cost_loc_ok = all(
+		f"{key}_cost_text:" in loc and f"{key}_cost_text_blocked:" in loc
+		for key in [
+			"soviet_collapse_moscow_union_treaty",
+			"soviet_collapse_moscow_federal_compact",
+			"soviet_collapse_foreign_protection_treaty",
+			"soviet_collapse_foreign_adviser_privileges",
+			"soviet_collapse_foreign_client_cabinet",
+		]
+	)
+	highest_influence_ok = all(marker in triggers for marker in [
+		"soviet_collapse_influence_moscow",
+		"soviet_collapse_influence_germany value = soviet_collapse_influence_britain",
+		"soviet_collapse_influence_britain value = soviet_collapse_influence_germany",
+		"soviet_collapse_influence_italy value = soviet_collapse_influence_moscow",
+		"NOT = { is_soviet_collapse_republic_protected_from_external_dependency = yes }",
+		"NOT = { has_war_with = SOV }",
+	])
+	autonomy_ok = all(marker in effects for marker in [
+		"set_autonomy = { target = FROM autonomy_state = autonomy_puppet freedom_level = 0.6 end_wars = no }",
+		"set_autonomy = { target = FROM autonomy_state = autonomy_puppet freedom_level = 0.3 end_wars = no }",
+		"soviet_collapse_moscow_union_treaty_offered",
+		"soviet_collapse_moscow_federated_subject",
+		"soviet_collapse_foreign_protection_treaty_signed",
+		"soviet_collapse_foreign_adviser_privileges_granted",
+		"soviet_collapse_foreign_client_cabinet_installed",
+	])
+	docs_ok = "## Reintegration And Dependency Pressure" in docs and all(marker in docs for marker in [
+		"dominant Moscow influence",
+		"three-step dependency chain",
+		"Install Client Cabinet",
+		"strong League or faction protection",
+	]) and all(marker in mechanic_docs for marker in [
+		"## Moscow Path",
+		"## Foreign Sponsor Path",
+		"## Icons",
+		"reintegration_puppet_surface",
+	])
+	return [
+		Check(
+			"reintegration_puppet_surface",
+			(
+				all(marker in constants for marker in constant_markers)
+				and all(decision in decisions for decision in moscow_decisions + puppet_decisions)
+				and all(trigger in triggers for trigger in required_triggers)
+				and all(effect in effects for effect in required_effects)
+				and decision_loc_ok
+				and cost_loc_ok
+				and highest_influence_ok
+				and autonomy_ok
+				and docs_ok
+			),
+			(
+				f"constants={all(marker in constants for marker in constant_markers)} "
+				f"decisions={all(decision in decisions for decision in moscow_decisions + puppet_decisions)} "
+				f"triggers={all(trigger in triggers for trigger in required_triggers)} "
+				f"effects={all(effect in effects for effect in required_effects)} "
+				f"decision_loc={decision_loc_ok} cost_loc={cost_loc_ok} "
+				f"highest_influence={highest_influence_ok} autonomy={autonomy_ok} docs={docs_ok}"
+			),
+		)
+	]
+
+
 def verify_union_unmade_and_cleanup() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -2849,6 +2966,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_dynamic_force_coverage())
 	checks.extend(verify_crisis_balance())
 	checks.extend(verify_foreign_influence_surface())
+	checks.extend(verify_reintegration_puppet_surface())
 	checks.extend(verify_union_unmade_and_cleanup())
 	checks.extend(verify_soviet_objective_board())
 	checks.extend(verify_terminal_ordinary_republics())
