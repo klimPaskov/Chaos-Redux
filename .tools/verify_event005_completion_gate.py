@@ -2414,6 +2414,7 @@ def verify_soviet_objective_board() -> list[Check]:
 	weak_available = []
 	identical_outcomes = []
 	map_or_state_available = 0
+	raw_division_state_available = []
 	for name, body in missions:
 		number = mission_re.match(name).group(1)
 		body_text = " ".join(body)
@@ -2427,6 +2428,8 @@ def verify_soviet_objective_board() -> list[Check]:
 			identical_outcomes.append(name)
 		if any(marker in available_text for marker in ["can_", "has_recovered_", "is_controlled_by", "is_owned_by", "capital_scope", "num_divisions_in_states", "any_owned_state"]):
 			map_or_state_available += 1
+		if "num_divisions_in_states" in available_text:
+			raw_division_state_available.append(name)
 		passive_markers = ["has_manpower", "has_equipment", "has_stability", "has_war_support", "has_army_experience", "command_power", "has_fuel"]
 		active_markers = ["can_", "has_recovered_", "is_controlled_by", "is_owned_by", "capital_scope", "num_divisions_in_states", "any_owned_state", "has_country_flag", "check_variable", "has_idea"]
 		if any(marker in available_text for marker in passive_markers) and not any(marker in available_text for marker in active_markers):
@@ -2484,6 +2487,7 @@ def verify_soviet_objective_board() -> list[Check]:
 		len(set(available_bodies)) == len(available_bodies)
 		and not weak_available
 		and not identical_outcomes
+		and not raw_division_state_available
 		and map_or_state_available >= len(missions) * 9 // 10
 	)
 	return [
@@ -2506,6 +2510,7 @@ def verify_soviet_objective_board() -> list[Check]:
 			(
 				f"missions={len(missions)} unique_available={len(set(available_bodies))}/{len(available_bodies)} "
 				f"weak_available={len(weak_available)} identical_outcomes={len(identical_outcomes)} "
+				f"raw_division_state_available={len(raw_division_state_available)} "
 				f"map_or_state_available={map_or_state_available}"
 			),
 		),
