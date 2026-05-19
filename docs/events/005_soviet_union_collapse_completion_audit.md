@@ -147,7 +147,7 @@ soviet_collapse_caucasus_focus_tree 20
 soviet_collapse_central_asia_focus_tree 14
 soviet_collapse_moldova_focus_tree 17
 soviet_collapse_belarus_focus_tree 38
-soviet_collapse_kazakhstan_focus_tree 55
+soviet_collapse_kazakhstan_focus_tree 57
 CFR_soviet_collapse_focus_tree 45
 OGB_soviet_collapse_focus_tree 32
 MFR_soviet_collapse_focus_tree 37
