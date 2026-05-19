@@ -247,14 +247,14 @@ All source files below were downloaded from their legitimate Wikimedia Commons f
 - Soundeffect definitions: `chaosx_super_event_24_sound_0_5`, `chaosx_super_event_24_sound_1_0`, `chaosx_super_event_24_sound_1_5`, `chaosx_super_event_24_sound_2_0`, `chaosx_super_event_24_sound_2_5`, `chaosx_super_event_24_sound_3_0`
 - Suitability: the restrained orchestral crisis package fits a continental federation built from rail access, garrison politics, and uneasy patron pressure.
 
-- Super-event id or key: `25`, `super_event.25.*`, The Baltic Restoration Pact
+- Super-event id or key: `25`, `super_event.25.*`, The Baltic League
 - Audio source package reused: Beethoven Coriolan / `music/super_event_union_unmade.ogg`
 - Sound definition id reused: `chaosx_super_event_union_unmade_track`
 - Music definitions: `chaosx_super_event_25_0_5`, `chaosx_super_event_25_1_0`, `chaosx_super_event_25_1_5`, `chaosx_super_event_25_2_0`, `chaosx_super_event_25_2_5`, `chaosx_super_event_25_3_0`
 - Soundeffect definitions: `chaosx_super_event_25_sound_0_5`, `chaosx_super_event_25_sound_1_0`, `chaosx_super_event_25_sound_1_5`, `chaosx_super_event_25_sound_2_0`, `chaosx_super_event_25_sound_2_5`, `chaosx_super_event_25_sound_3_0`
 - Suitability: the restrained orchestral crisis package fits Baltic restoration politics, defensive legal continuity, and coast-watch pact formation.
 
-- Super-event id or key: `26`, `super_event.26.*`, The Caucasus Defense Compact
+- Super-event id or key: `26`, `super_event.26.*`, The Caucasus League
 - Audio source package reused: Beethoven Coriolan / `music/super_event_union_unmade.ogg`
 - Sound definition id reused: `chaosx_super_event_union_unmade_track`
 - Music definitions: `chaosx_super_event_26_0_5`, `chaosx_super_event_26_1_0`, `chaosx_super_event_26_1_5`, `chaosx_super_event_26_2_0`, `chaosx_super_event_26_2_5`, `chaosx_super_event_26_3_0`

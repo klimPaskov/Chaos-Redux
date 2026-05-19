@@ -2,7 +2,7 @@
 
 ## Overview
 
-Event 005 uses local leagues as the regional layer between isolated breakaway republics and the larger Free Republics' League. The Baltic Restoration Pact, Caucasus Defense Compact, and Central Asian League are founded through the `soviet_collapse_regional_faction_category` decision category once a valid breakaway or high-chaos successor exists.
+Event 005 uses local leagues as the regional layer between isolated breakaway republics and the larger Free Republics' League. The Baltic League, Caucasus League, and Central Asian League are founded through the `soviet_collapse_regional_faction_category` decision category once a valid breakaway or high-chaos successor exists.
 
 ## Flow
 
@@ -16,7 +16,7 @@ Event 005 uses local leagues as the regional layer between isolated breakaway re
 
 Local leagues protect republics from foreign client-state pressure by giving them faction membership and regional-faction flags. They also feed the wider `soviet_collapse_league_cohesion` variable, which increases release pressure and blocks calm reintegration routes when the bloc is strong.
 
-The Central Asian League keeps the existing Steppe Federation icon and some legacy keys for asset compatibility, but player-facing text uses Central Asian League language.
+The Baltic League, Caucasus League, and Central Asian League keep their existing scripted keys and wired sprites for asset compatibility, but player-facing text uses league names throughout.
 
 ## Icons
 
