@@ -278,6 +278,7 @@ def verify_focuses() -> list[Check]:
 	focuses = []
 	layout_rows = []
 	reward_bodies = []
+	max_visual_prereq_dx = 44
 	for path in EVENT005_FOCUS_FILES:
 		toks = tokens(read_text(path))
 		for block in named_blocks(toks, "focus"):
@@ -349,6 +350,11 @@ def verify_focuses() -> list[Check]:
 					for second_edge in edges[edge_index + 1:]:
 						if segments_cross(coord_by_id[first_edge[0]], coord_by_id[first_edge[1]], coord_by_id[second_edge[0]], coord_by_id[second_edge[1]]):
 							edge_crossings += 1
+				edge_dx_values = [
+					abs(coord_by_id[src][0] - coord_by_id[dst][0])
+					for src, dst in edges
+				]
+				visual_detached_edges = sum(1 for edge_dx in edge_dx_values if edge_dx > max_visual_prereq_dx)
 				shallow_dead_end_focuses = sum(
 					1
 					for focus_id, (_, y) in coord_by_id.items()
@@ -369,6 +375,8 @@ def verify_focuses() -> list[Check]:
 						"max_col": max(x_values.count(x) for x in set(x_values)),
 						"max_row": max(y_values.count(y) for y in set(y_values)),
 						"edge_crossings": edge_crossings,
+						"max_edge_dx": max(edge_dx_values) if edge_dx_values else 0,
+						"visual_detached_edges": visual_detached_edges,
 						"isolated_focuses": len(tree_focuses) - len(connected_focuses),
 						"terminal_leaf_count": sum(1 for focus_id in coord_by_id if not children[focus_id]),
 						"shallow_dead_end_focuses": shallow_dead_end_focuses,
@@ -466,6 +474,7 @@ def verify_focuses() -> list[Check]:
 		for row in layout_rows
 		if row["duplicate_coords"] != 0
 		or row["edge_crossings"] != 0
+		or row["visual_detached_edges"] != 0
 		or row["isolated_focuses"] != 0
 		or row["terminal_leaf_count"] != 1
 		or row["shallow_dead_end_focuses"] != 0
@@ -526,6 +535,8 @@ def verify_focuses() -> list[Check]:
 				f"layout_bad={len(layout_bad)} duplicate_coord_trees={sum(1 for row in layout_rows if row['duplicate_coords'])} "
 				f"continuous_side_bad={len(continuous_bad)} crossing_free={crossing_free_count} "
 				f"edge_crossings={sum(row['edge_crossings'] for row in layout_rows)} "
+				f"visual_detached_edges={sum(row['visual_detached_edges'] for row in layout_rows)} "
+				f"max_edge_dx={max((row['max_edge_dx'] for row in layout_rows), default=0)} "
 				f"isolated_focuses={sum(row['isolated_focuses'] for row in layout_rows)} "
 				f"terminal_leaf_trees={sum(1 for row in layout_rows if row['terminal_leaf_count'] == 1)}/{len(layout_rows)} "
 				f"shallow_dead_end_focuses={sum(row['shallow_dead_end_focuses'] for row in layout_rows)} "
