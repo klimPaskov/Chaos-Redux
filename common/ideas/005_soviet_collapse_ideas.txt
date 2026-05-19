@@ -74,6 +74,9 @@
 @soviet_collapse_foreign_diplomatic_stage_3_stability = 0.06
 @soviet_collapse_foreign_diplomatic_stage_3_political_power = 0.08
 @soviet_collapse_foreign_diplomatic_stage_3_drift = 0.15
+@soviet_collapse_foreign_diplomatic_stage_4_stability = 0.08
+@soviet_collapse_foreign_diplomatic_stage_4_political_power = 0.1
+@soviet_collapse_foreign_diplomatic_stage_4_drift = 0.22
 @soviet_collapse_foreign_material_stage_1_factory_output = 0.04
 @soviet_collapse_foreign_material_stage_1_army_org = 0.04
 @soviet_collapse_foreign_material_stage_1_supply = -0.04
@@ -94,6 +97,10 @@
 @soviet_collapse_foreign_investment_stage_3_factory_output = 0.06
 @soviet_collapse_foreign_investment_stage_3_supply = -0.05
 @soviet_collapse_foreign_investment_stage_3_consumer_goods = -0.04
+@soviet_collapse_foreign_investment_stage_4_construction = 0.11
+@soviet_collapse_foreign_investment_stage_4_factory_output = 0.08
+@soviet_collapse_foreign_investment_stage_4_supply = -0.06
+@soviet_collapse_foreign_investment_stage_4_consumer_goods = 0.04
 @soviet_collapse_foreign_volunteer_stage_1_org = 0.04
 @soviet_collapse_foreign_volunteer_stage_1_org_regain = 0.04
 @soviet_collapse_foreign_volunteer_stage_1_war_support = 0.04
@@ -106,6 +113,11 @@
 @soviet_collapse_foreign_volunteer_stage_3_org_regain = 0.08
 @soviet_collapse_foreign_volunteer_stage_3_war_support = 0.05
 @soviet_collapse_foreign_volunteer_stage_3_training = -0.07
+@soviet_collapse_foreign_volunteer_stage_4_org = 0.08
+@soviet_collapse_foreign_volunteer_stage_4_org_regain = 0.09
+@soviet_collapse_foreign_volunteer_stage_4_war_support = 0.04
+@soviet_collapse_foreign_volunteer_stage_4_training = -0.08
+@soviet_collapse_foreign_volunteer_stage_4_drift = -0.08
 @soviet_collapse_foreign_adviser_stage_1_org = 0.04
 @soviet_collapse_foreign_adviser_stage_1_org_regain = 0.04
 @soviet_collapse_foreign_adviser_stage_1_planning = 0.04
@@ -117,6 +129,11 @@
 @soviet_collapse_foreign_adviser_stage_3_org_regain = 0.07
 @soviet_collapse_foreign_adviser_stage_3_planning = 0.1
 @soviet_collapse_foreign_adviser_stage_3_reinforce = 0.035
+@soviet_collapse_foreign_adviser_stage_4_org = 0.08
+@soviet_collapse_foreign_adviser_stage_4_org_regain = 0.08
+@soviet_collapse_foreign_adviser_stage_4_planning = 0.12
+@soviet_collapse_foreign_adviser_stage_4_reinforce = 0.04
+@soviet_collapse_foreign_adviser_stage_4_drift = -0.08
 @soviet_collapse_foreign_patronage_stage_1_stability = -0.04
 @soviet_collapse_foreign_patronage_stage_1_political_power = 0.04
 @soviet_collapse_foreign_patronage_stage_1_drift = 0.05
@@ -126,6 +143,10 @@
 @soviet_collapse_foreign_patronage_stage_3_stability = -0.03
 @soviet_collapse_foreign_patronage_stage_3_political_power = 0.08
 @soviet_collapse_foreign_patronage_stage_3_drift = 0.14
+@soviet_collapse_foreign_patronage_stage_4_stability = -0.05
+@soviet_collapse_foreign_patronage_stage_4_political_power = 0.1
+@soviet_collapse_foreign_patronage_stage_4_drift = 0.18
+@soviet_collapse_foreign_patronage_stage_4_consumer_goods = 0.04
 @soviet_collapse_foreign_patron_burden_consumer_goods = 0.03
 @soviet_collapse_foreign_patron_burden_construction = -0.04
 @soviet_collapse_foreign_patron_burden_factory_output = -0.03
@@ -345,6 +366,16 @@ ideas = {
 			}
 		}
 
+		soviet_collapse_internationally_entrenched_republic = {
+			picture = legal_restoration_claim
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @soviet_collapse_foreign_diplomatic_stage_4_stability
+				political_power_factor = @soviet_collapse_foreign_diplomatic_stage_4_political_power
+				drift_defence_factor = @soviet_collapse_foreign_diplomatic_stage_4_drift
+			}
+		}
+
 		soviet_collapse_foreign_supply_contacts = {
 			picture = captured_soviet_depots
 			allowed_civil_war = { always = yes }
@@ -407,6 +438,17 @@ ideas = {
 			}
 		}
 
+		soviet_collapse_dependent_reconstruction_network = {
+			picture = captured_soviet_depots
+			allowed_civil_war = { always = yes }
+			modifier = {
+				production_speed_buildings_factor = @soviet_collapse_foreign_investment_stage_4_construction
+				industrial_capacity_factory = @soviet_collapse_foreign_investment_stage_4_factory_output
+				supply_consumption_factor = @soviet_collapse_foreign_investment_stage_4_supply
+				consumer_goods_factor = @soviet_collapse_foreign_investment_stage_4_consumer_goods
+			}
+		}
+
 		soviet_collapse_foreign_volunteer_cadres = {
 			picture = foreign_volunteers
 			allowed_civil_war = { always = yes }
@@ -437,6 +479,18 @@ ideas = {
 				army_org_regain = @soviet_collapse_foreign_volunteer_stage_3_org_regain
 				war_support_factor = @soviet_collapse_foreign_volunteer_stage_3_war_support
 				training_time_factor = @soviet_collapse_foreign_volunteer_stage_3_training
+			}
+		}
+
+		soviet_collapse_sponsor_dominated_volunteer_command = {
+			picture = foreign_volunteers
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @soviet_collapse_foreign_volunteer_stage_4_org
+				army_org_regain = @soviet_collapse_foreign_volunteer_stage_4_org_regain
+				war_support_factor = @soviet_collapse_foreign_volunteer_stage_4_war_support
+				training_time_factor = @soviet_collapse_foreign_volunteer_stage_4_training
+				drift_defence_factor = @soviet_collapse_foreign_volunteer_stage_4_drift
 			}
 		}
 
@@ -472,6 +526,18 @@ ideas = {
 			}
 		}
 
+		soviet_collapse_sponsor_directed_staff = {
+			picture = military_defense_council
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @soviet_collapse_foreign_adviser_stage_4_org
+				army_org_regain = @soviet_collapse_foreign_adviser_stage_4_org_regain
+				planning_speed = @soviet_collapse_foreign_adviser_stage_4_planning
+				land_reinforce_rate = @soviet_collapse_foreign_adviser_stage_4_reinforce
+				drift_defence_factor = @soviet_collapse_foreign_adviser_stage_4_drift
+			}
+		}
+
 		soviet_collapse_foreign_patron_contacts = {
 			picture = foreign_volunteers
 			allowed_civil_war = { always = yes }
@@ -499,6 +565,17 @@ ideas = {
 				stability_factor = @soviet_collapse_foreign_patronage_stage_3_stability
 				political_power_factor = @soviet_collapse_foreign_patronage_stage_3_political_power
 				drift_defence_factor = @soviet_collapse_foreign_patronage_stage_3_drift
+			}
+		}
+
+		soviet_collapse_foreign_dependency_network = {
+			picture = foreign_volunteers
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @soviet_collapse_foreign_patronage_stage_4_stability
+				political_power_factor = @soviet_collapse_foreign_patronage_stage_4_political_power
+				drift_defence_factor = @soviet_collapse_foreign_patronage_stage_4_drift
+				consumer_goods_factor = @soviet_collapse_foreign_patronage_stage_4_consumer_goods
 			}
 		}
 
