@@ -370,6 +370,7 @@ def verify_focuses() -> list[Check]:
 						"max_row": max(y_values.count(y) for y in set(y_values)),
 						"edge_crossings": edge_crossings,
 						"isolated_focuses": len(tree_focuses) - len(connected_focuses),
+						"terminal_leaf_count": sum(1 for focus_id in coord_by_id if not children[focus_id]),
 						"shallow_dead_end_focuses": shallow_dead_end_focuses,
 						"component_count": component_count,
 						"min_mutual_distance": min(mutual_distances) if mutual_distances else 99,
@@ -396,6 +397,7 @@ def verify_focuses() -> list[Check]:
 		"central_asia_soviet_collapse_the_southern_shield",
 		"kaz_soviet_collapse_the_steppe_arsenal",
 		"kaz_soviet_collapse_the_steppe_keeps_many_memories",
+		"kaz_soviet_collapse_the_steppe_outlives_the_union",
 	}
 	ai_block_count = 0
 	dynamic_ai = 0
@@ -465,6 +467,7 @@ def verify_focuses() -> list[Check]:
 		if row["duplicate_coords"] != 0
 		or row["edge_crossings"] != 0
 		or row["isolated_focuses"] != 0
+		or row["terminal_leaf_count"] != 1
 		or row["shallow_dead_end_focuses"] != 0
 		or row["component_count"] != 1
 		or row["y_span"] > 14
@@ -524,6 +527,7 @@ def verify_focuses() -> list[Check]:
 				f"continuous_side_bad={len(continuous_bad)} crossing_free={crossing_free_count} "
 				f"edge_crossings={sum(row['edge_crossings'] for row in layout_rows)} "
 				f"isolated_focuses={sum(row['isolated_focuses'] for row in layout_rows)} "
+				f"terminal_leaf_trees={sum(1 for row in layout_rows if row['terminal_leaf_count'] == 1)}/{len(layout_rows)} "
 				f"shallow_dead_end_focuses={sum(row['shallow_dead_end_focuses'] for row in layout_rows)} "
 				f"disconnected_trees={sum(1 for row in layout_rows if row['component_count'] != 1)} "
 				f"deep_trees={sum(1 for row in layout_rows if row['y_span'] > 18)} "
