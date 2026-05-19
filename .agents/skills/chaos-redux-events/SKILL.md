@@ -40,7 +40,7 @@ HOI4 parser gotcha: idea modifier blocks do not parse `constant:category.key` va
 
 Decision parser gotcha: every category used as a top-level block in `common/decisions/*.txt` must be defined in `common/decisions/categories/*.txt`. Category UI fields such as `icon`, `priority`, and category `visible` belong in the category file, not inside the decision file's top-level category block.
 
-Decision `custom_cost_text` and matching `_blocked` localisation should be bare cost displays: icon plus value groups only, separated by spaces. Do not add prose labels, explanatory verbs, or connector words between cost values.
+Decision `custom_cost_text` and matching `_blocked` localisation should be bare cost displays: icon plus value groups only, separated by spaces. Do not add prose labels, explanatory verbs, connector words between cost values, or wording such as `need`, `needs`, or `requires`.
 
 For objective boards that must cap visible missions, prefer manual mission activation over daily `activation` triggers. Set capped mission entries to `allowed = { always = no }`, then activate eligible missions with a scoped queue helper using `activate_mission`, `has_active_mission`, active-count variables, and queued-state flags. This avoids whole-world on-actions and gives a hard display cap while preserving goal-style auto-completion through each mission's `available` block.
 
@@ -336,17 +336,17 @@ Cluster firing rules:
 
 ### 7. Duration fields and constants
 
-Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.
+Use `script_constants` for shared tuning, but remember that some duration fields reject `constant:` tokens, and some also reject direct file-local `@` constants.
 
 Known sensitive fields:
 
 - `set_country_flag = { days = ... }`
 - `set_global_flag = { days = ... }`
-- any other timed field that throws `Malformed token` for either `constant:category.key` or a variable token
+- any other timed field that throws `Malformed token` for `constant:category.key` or `@NAME`
 
-For those fields, use a file-scoped `@NAME = literal` constant in the same script file and pass `days = @NAME`. Keep the value mirrored with the matching `common/script_constants/` tuning entry, and update both in the same change.
+For those fields, assign the file-scoped constant or script constant into a normal or temporary variable first, then pass the variable token to `days =`. Keep the value mirrored with the matching `common/script_constants/` tuning entry when that tuning is shared across files.
 
-Do not work around this by setting a temp variable and passing `days = temp_name`; those fields can reject variable tokens too.
+If a duration field also rejects variable tokens in game, replace the timed flag with an immediate guard flag plus a hidden delayed cleanup event, then document that shape in the event doc.
 
 For short-lived runtime guard flags that must be readable immediately in the same effect chain, prefer setting the guard flag directly without `days`, then schedule a hidden delayed event to clear it. This is safer than building a timed `set_country_flag` through `meta_effect`, because the next immediate scripted checks must observe the guard before any queued mission/objective refresh runs.
 

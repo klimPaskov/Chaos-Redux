@@ -21,6 +21,17 @@ The implemented opening slices cover the crisis scaffold and the first intervent
 - `events/005_soviet_collapse.txt` replaces the old hidden release stub with a visible opening event and four posture choices.
 - `events/005_soviet_collapse_factory_ancient.txt` adds the triggered notices for the first high-chaos factory and Volga successor states.
 
+## Foreign Influence Tracking
+
+Foreign patron decisions build permanent pressure on the target republic instead of only granting one-off aid. Each targeted intervention records both a category total and a sponsor total on the republic:
+
+- category totals: recognition, arms, volunteers, industry, intelligence, ideology, logistics, and patronage risk
+- sponsor totals: Germany, Britain, Japan, France, the United States, Turkey, Iran, Poland, Romania, Finland, Sweden, and Italy
+
+The category totals mature into three parallel staged spirit tracks. Diplomatic backing grows from contacts to missions to treaty backing. Material backing grows from supply contacts to corridors to a full supply network. Patronage grows from contacts to liaison to a patronage network. These spirits can coexist because the republic may be recognized by one sponsor, supplied by another, and advised by a third.
+
+No new icons are required for this slice. The staged spirits reuse the existing `legal_restoration_claim`, `captured_soviet_depots`, and `foreign_volunteers` idea pictures already registered by `interface/005_soviet_collapse_icons.gfx`.
+
 ## Crisis Meter
 
 The Soviet crisis category uses these variables:

@@ -1729,6 +1729,90 @@ def verify_crisis_balance() -> list[Check]:
 	]
 
 
+def verify_foreign_influence_surface() -> list[Check]:
+	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	ideas = read_text(ROOT / "common/ideas/005_soviet_collapse_ideas.txt")
+	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
+	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	required_constants = [
+		"soviet_collapse_influence_war",
+		"recognition_influence",
+		"liaison_ideology_influence",
+		"armaments_arms_influence",
+		"advisers_volunteer_influence",
+		"intelligence_influence",
+		"volunteers_influence",
+		"trade_industry_influence",
+		"stage_3_threshold",
+	]
+	category_vars = [
+		"soviet_collapse_influence_recognition_total",
+		"soviet_collapse_influence_arms_total",
+		"soviet_collapse_influence_volunteers_total",
+		"soviet_collapse_influence_industry_total",
+		"soviet_collapse_influence_intelligence_total",
+		"soviet_collapse_influence_ideology_total",
+		"soviet_collapse_influence_logistics_total",
+		"soviet_collapse_influence_patronage_risk",
+	]
+	sponsor_vars = [
+		"soviet_collapse_influence_germany",
+		"soviet_collapse_influence_britain",
+		"soviet_collapse_influence_japan",
+		"soviet_collapse_influence_france",
+		"soviet_collapse_influence_usa",
+		"soviet_collapse_influence_turkey",
+		"soviet_collapse_influence_iran",
+		"soviet_collapse_influence_poland",
+		"soviet_collapse_influence_romania",
+		"soviet_collapse_influence_finland",
+		"soviet_collapse_influence_sweden",
+		"soviet_collapse_influence_italy",
+	]
+	stage_ideas = [
+		"soviet_collapse_foreign_diplomatic_contacts",
+		"soviet_collapse_foreign_diplomatic_mission",
+		"soviet_collapse_foreign_treaty_backing",
+		"soviet_collapse_foreign_supply_contacts",
+		"soviet_collapse_foreign_supply_corridors",
+		"soviet_collapse_foreign_supply_network",
+		"soviet_collapse_foreign_patron_contacts",
+		"soviet_collapse_foreign_patron_liaison",
+		"soviet_collapse_foreign_patron_network",
+	]
+	aid_effects = [
+		"soviet_collapse_apply_foreign_recognition_aid",
+		"soviet_collapse_apply_foreign_liaison_aid",
+		"soviet_collapse_apply_foreign_armaments_aid",
+		"soviet_collapse_apply_foreign_adviser_aid",
+		"soviet_collapse_apply_foreign_intelligence_aid",
+		"soviet_collapse_apply_foreign_volunteer_aid",
+		"soviet_collapse_apply_foreign_trade_aid",
+	]
+	constants_ok = all(marker in constants for marker in required_constants)
+	category_ok = all(var in effects for var in category_vars)
+	sponsor_ok = all(var in effects for var in sponsor_vars)
+	stage_idea_defs_ok = all(idea in ideas for idea in stage_ideas)
+	stage_loc_ok = all(f"{idea}:" in loc and f"{idea}_desc:" in loc for idea in stage_ideas)
+	aid_effect_ok = all(
+		re.search(rf"{effect}\s*=\s*{{.*?soviet_collapse_apply_foreign_influence_delta\s*=\s*yes.*?soviet_collapse_update_foreign_investment_stage_ideas\s*=\s*yes", effects, re.S)
+		for effect in aid_effects
+	)
+	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in ["category totals", "sponsor totals", "staged spirit tracks"])
+	return [
+		Check(
+			"foreign_influence_surface",
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and docs_ok,
+			(
+				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
+				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
+				f"aid_effects={aid_effect_ok} docs={docs_ok}"
+			),
+		)
+	]
+
+
 def verify_union_unmade_and_cleanup() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -2647,7 +2731,7 @@ def verify_braces_and_unsupported() -> list[Check]:
 	bad_braces = []
 	bad_operator = []
 	bad_scoped_temp = []
-	bad_bare_days = []
+	bad_at_days = []
 	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES:
 		text = read_text(path)
 		depth = 0
@@ -2664,13 +2748,13 @@ def verify_braces_and_unsupported() -> list[Check]:
 			bad_operator.append(str(path.relative_to(ROOT)))
 		if re.search(r"\b(?:ROOT|PREV|FROM|THIS)\.[A-Za-z0-9_]*temp[A-Za-z0-9_]*", text):
 			bad_scoped_temp.append(str(path.relative_to(ROOT)))
-		if re.search(r"\bdays\s*=\s*(?!constant:|var:|@)[A-Za-z_][A-Za-z0-9_]*", text):
-			bad_bare_days.append(str(path.relative_to(ROOT)))
+		if re.search(r"\bdays\s*=\s*@", text):
+			bad_at_days.append(str(path.relative_to(ROOT)))
 	return [
 		Check("brace_depth", not bad_braces, f"bad_files={len(bad_braces)}"),
 		Check("unsupported_operator_scan", not bad_operator, f"files_with_unsupported_operator={len(bad_operator)}"),
 		Check("scoped_temp_variable_scan", not bad_scoped_temp, f"files_with_scoped_temp_variables={len(bad_scoped_temp)}"),
-		Check("bare_days_token_scan", not bad_bare_days, f"files_with_bare_days_tokens={len(bad_bare_days)}"),
+		Check("at_days_token_scan", not bad_at_days, f"files_with_at_days_tokens={len(bad_at_days)}"),
 	]
 
 
@@ -2699,6 +2783,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_first_wave_and_forces())
 	checks.extend(verify_dynamic_force_coverage())
 	checks.extend(verify_crisis_balance())
+	checks.extend(verify_foreign_influence_surface())
 	checks.extend(verify_union_unmade_and_cleanup())
 	checks.extend(verify_soviet_objective_board())
 	checks.extend(verify_terminal_ordinary_republics())
