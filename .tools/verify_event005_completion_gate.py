@@ -314,6 +314,24 @@ def verify_focuses() -> list[Check]:
 				coord_by_id = {focus_id: (x, y) for focus_id, x, y in tree_focuses}
 				edges = [(src, dst) for src, dst in tree_prereq_edges if src in coord_by_id and dst in coord_by_id]
 				connected_focuses = {focus_id for edge in edges for focus_id in edge}
+				graph = {focus_id: set() for focus_id, _, _ in tree_focuses}
+				for src, dst in edges:
+					graph[src].add(dst)
+					graph[dst].add(src)
+				seen_components = set()
+				component_count = 0
+				for focus_id, _, _ in tree_focuses:
+					if focus_id in seen_components:
+						continue
+					component_count += 1
+					stack = [focus_id]
+					seen_components.add(focus_id)
+					while stack:
+						current = stack.pop()
+						for neighbor in graph[current]:
+							if neighbor not in seen_components:
+								seen_components.add(neighbor)
+								stack.append(neighbor)
 				edge_crossings = 0
 				for edge_index, first_edge in enumerate(edges):
 					for second_edge in edges[edge_index + 1:]:
@@ -335,6 +353,7 @@ def verify_focuses() -> list[Check]:
 						"max_row": max(y_values.count(y) for y in set(y_values)),
 						"edge_crossings": edge_crossings,
 						"isolated_focuses": len(tree_focuses) - len(connected_focuses),
+						"component_count": component_count,
 						"continuous_x": continuous_x,
 						"continuous_y": continuous_y,
 					}
@@ -415,6 +434,7 @@ def verify_focuses() -> list[Check]:
 		if row["duplicate_coords"] != 0
 		or row["edge_crossings"] != 0
 		or row["isolated_focuses"] != 0
+		or row["component_count"] != 1
 		or row["max_row"] > 22
 		or row["max_col"] > 14
 	]
@@ -468,6 +488,7 @@ def verify_focuses() -> list[Check]:
 				f"continuous_side_bad={len(continuous_bad)} crossing_free={crossing_free_count} "
 				f"edge_crossings={sum(row['edge_crossings'] for row in layout_rows)} "
 				f"isolated_focuses={sum(row['isolated_focuses'] for row in layout_rows)} "
+				f"disconnected_trees={sum(1 for row in layout_rows if row['component_count'] != 1)} "
 				f"min_x_span={min((row['x_span'] for row in layout_rows), default=0)} "
 				f"min_y_span={min((row['y_span'] for row in layout_rows), default=0)} "
 				f"max_col={max((row['max_col'] for row in layout_rows), default=0)} "
