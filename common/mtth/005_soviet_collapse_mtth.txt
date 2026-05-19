@@ -1,0 +1,176 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 SOVIET COLLAPSE MTTH VARIABLES
+# ============================================================================
+# Computes progressive breakaway release weights for the SOV-only Event 005
+# scheduler. The event still controls pacing and eligibility; these entries
+# convert current crisis pressure into release and miss weights.
+# ============================================================================
+
+soviet_collapse_progressive_release_weight = {
+	base = constant:soviet_collapse_release_mtth.release_base
+
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.low_threat compare = greater_than_or_equals }
+		add = constant:soviet_collapse_release_mtth.low_threat_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
+		add = constant:soviet_collapse_release_mtth.moderate_threat_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = greater_than_or_equals }
+		add = constant:soviet_collapse_release_mtth.high_threat_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = greater_than_or_equals }
+		add = constant:soviet_collapse_release_mtth.severe_threat_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.critical_threat compare = greater_than_or_equals }
+		add = constant:soviet_collapse_release_mtth.critical_threat_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+		add = constant:soviet_collapse_release_mtth.weak_authority_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+		add = constant:soviet_collapse_release_mtth.weak_obedience_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.one_breakaway_count compare = greater_than }
+		add = constant:soviet_collapse_release_mtth.breakaway_cascade_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+		add = constant:soviet_collapse_release_mtth.depot_pressure_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
+		add = constant:soviet_collapse_release_mtth.foreign_pressure_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_baseline.league_cohesion compare = greater_than }
+		add = constant:soviet_collapse_release_mtth.league_pressure_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.small_weirdness_gain compare = greater_than }
+		add = constant:soviet_collapse_release_mtth.old_movement_add
+	}
+	modifier = {
+		OR = {
+			has_country_flag = soviet_collapse_union_archives_failed
+			has_country_flag = soviet_collapse_loyal_military_districts_failed
+			has_country_flag = soviet_collapse_tashkent_anchor_failed
+			has_country_flag = soviet_collapse_caucasus_mountain_administration_failed
+			has_country_flag = soviet_collapse_ural_factory_gates_failed
+			has_country_flag = soviet_collapse_basmachi_supply_chain_failed
+			has_country_flag = soviet_collapse_grave_registers_failed
+		}
+		add = constant:soviet_collapse_release_mtth.failed_mission_add
+	}
+	modifier = {
+		OR = {
+			has_war = yes
+			NOT = { capital_scope = { is_controlled_by = ROOT } }
+		}
+		add = constant:soviet_collapse_release_mtth.war_pressure_add
+	}
+	modifier = {
+		OR = {
+			is_soviet_collapse_southern_breakaway_active = yes
+			UKR = { exists = yes has_country_flag = soviet_collapse_breakaway }
+			BLR = { exists = yes has_country_flag = soviet_collapse_breakaway }
+			LIT = { exists = yes has_country_flag = soviet_collapse_breakaway }
+			LAT = { exists = yes has_country_flag = soviet_collapse_breakaway }
+			EST = { exists = yes has_country_flag = soviet_collapse_breakaway }
+			GEO = { exists = yes has_country_flag = soviet_collapse_breakaway }
+			ARM = { exists = yes has_country_flag = soviet_collapse_breakaway }
+			AZR = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		}
+		add = constant:soviet_collapse_release_mtth.regional_cascade_add
+	}
+	modifier = {
+		has_global_flag = { flag = chaos_tier value = 2 }
+		add = constant:soviet_collapse_release_mtth.chaos_tier_2_add
+	}
+	modifier = {
+		has_global_flag = { flag = chaos_tier value = 3 }
+		add = constant:soviet_collapse_release_mtth.chaos_tier_3_add
+	}
+	modifier = {
+		has_global_flag = { flag = chaos_tier value = 4 }
+		add = constant:soviet_collapse_release_mtth.chaos_tier_4_add
+	}
+	modifier = {
+		has_global_flag = { flag = chaos_tier value = 5 }
+		add = constant:soviet_collapse_release_mtth.chaos_tier_5_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.high_authority_factor
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.high_obedience_factor
+	}
+}
+
+soviet_collapse_progressive_release_miss_weight = {
+	base = constant:soviet_collapse_release_mtth.miss_base
+
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.low_threat compare = less_than }
+		factor = constant:soviet_collapse_release_mtth.low_threat_miss_factor
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.moderate_threat_miss_factor
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.high_threat_miss_factor
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.severe_threat_miss_factor
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.critical_threat compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.critical_threat_miss_factor
+	}
+	modifier = {
+		AND = {
+			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = greater_than_or_equals }
+		}
+		factor = constant:soviet_collapse_release_mtth.strong_center_miss_factor
+	}
+	modifier = {
+		OR = {
+			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.critical_authority compare = less_than }
+			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+		}
+		factor = constant:soviet_collapse_release_mtth.weak_center_miss_factor
+	}
+	modifier = {
+		OR = {
+			is_soviet_collapse_southern_breakaway_active = yes
+			check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.one_breakaway_count compare = greater_than }
+			check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_baseline.league_cohesion compare = greater_than }
+		}
+		factor = constant:soviet_collapse_release_mtth.cascade_miss_factor
+	}
+	modifier = {
+		OR = {
+			has_country_flag = soviet_collapse_union_archives_failed
+			has_country_flag = soviet_collapse_loyal_military_districts_failed
+			has_country_flag = soviet_collapse_tashkent_anchor_failed
+			has_country_flag = soviet_collapse_caucasus_mountain_administration_failed
+			has_country_flag = soviet_collapse_ural_factory_gates_failed
+			has_country_flag = soviet_collapse_basmachi_supply_chain_failed
+			has_country_flag = soviet_collapse_grave_registers_failed
+		}
+		factor = constant:soviet_collapse_release_mtth.failed_mission_miss_factor
+	}
+}
