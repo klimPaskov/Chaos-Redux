@@ -2733,6 +2733,119 @@ def verify_foreign_influence_surface() -> list[Check]:
 	]
 
 
+def verify_fuel_cost_surface() -> list[Check]:
+	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
+	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
+	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	expected_constants = {
+		"soviet_collapse_decision_cost.cut_rebel_supply_routes_fuel": 3000,
+		"soviet_collapse_breakaway_action.coordinate_fuel": 1800,
+		"soviet_collapse_foreign_intervention.intelligence_fuel": 2600,
+		"soviet_collapse_foreign_intervention.intelligence_regional_fuel": 4000,
+		"soviet_collapse_foreign_intervention.intelligence_major_fuel": 6000,
+		"soviet_collapse_foreign_intervention.trade_fuel": 3200,
+		"soviet_collapse_foreign_intervention.trade_regional_fuel": 5000,
+		"soviet_collapse_foreign_intervention.trade_major_fuel": 7000,
+		"soviet_collapse_foreign_intervention.civilian_construction_fuel": 2200,
+		"soviet_collapse_foreign_intervention.civilian_construction_regional_fuel": 3500,
+		"soviet_collapse_foreign_intervention.civilian_construction_major_fuel": 5200,
+		"soviet_collapse_foreign_intervention.military_construction_fuel": 3000,
+		"soviet_collapse_foreign_intervention.military_construction_regional_fuel": 4800,
+		"soviet_collapse_foreign_intervention.military_construction_major_fuel": 7000,
+		"soviet_collapse_foreign_intervention.aid_corridor_fuel": 4500,
+		"soviet_collapse_foreign_intervention.aid_corridor_regional_fuel": 7000,
+		"soviet_collapse_foreign_intervention.aid_corridor_major_fuel": 9500,
+		"soviet_collapse_foreign_intervention.league_logistics_fuel": 6000,
+		"soviet_collapse_foreign_intervention.league_logistics_regional_fuel": 8500,
+		"soviet_collapse_foreign_intervention.league_logistics_major_fuel": 12000,
+		"soviet_collapse_foreign_intervention.protection_treaty_fuel": 6000,
+		"soviet_collapse_foreign_intervention.client_cabinet_fuel": 8500,
+		"soviet_collapse_moscow_reintegration.union_treaty_fuel": 5000,
+		"soviet_collapse_moscow_reintegration.federal_compact_fuel": 9000,
+	}
+	expected_spends = {
+		"soviet_collapse_decision_cost.cut_rebel_supply_routes_fuel_spend": -3000,
+		"soviet_collapse_breakaway_action.coordinate_fuel_spend": -1800,
+		"soviet_collapse_foreign_intervention.intelligence_fuel_spend": -2600,
+		"soviet_collapse_foreign_intervention.intelligence_regional_fuel_extra_spend": -1400,
+		"soviet_collapse_foreign_intervention.intelligence_major_fuel_extra_spend": -3400,
+		"soviet_collapse_foreign_intervention.trade_fuel_spend": -3200,
+		"soviet_collapse_foreign_intervention.trade_regional_fuel_extra_spend": -1800,
+		"soviet_collapse_foreign_intervention.trade_major_fuel_extra_spend": -3800,
+		"soviet_collapse_foreign_intervention.civilian_construction_fuel_spend": -2200,
+		"soviet_collapse_foreign_intervention.civilian_construction_regional_fuel_extra_spend": -1300,
+		"soviet_collapse_foreign_intervention.civilian_construction_major_fuel_extra_spend": -3000,
+		"soviet_collapse_foreign_intervention.military_construction_fuel_spend": -3000,
+		"soviet_collapse_foreign_intervention.military_construction_regional_fuel_extra_spend": -1800,
+		"soviet_collapse_foreign_intervention.military_construction_major_fuel_extra_spend": -4000,
+		"soviet_collapse_foreign_intervention.aid_corridor_fuel_spend": -4500,
+		"soviet_collapse_foreign_intervention.aid_corridor_regional_fuel_extra_spend": -2500,
+		"soviet_collapse_foreign_intervention.aid_corridor_major_fuel_extra_spend": -5000,
+		"soviet_collapse_foreign_intervention.league_logistics_fuel_spend": -6000,
+		"soviet_collapse_foreign_intervention.league_logistics_regional_fuel_extra_spend": -2500,
+		"soviet_collapse_foreign_intervention.league_logistics_major_fuel_extra_spend": -6000,
+		"soviet_collapse_foreign_intervention.protection_treaty_fuel_spend": -6000,
+		"soviet_collapse_foreign_intervention.client_cabinet_fuel_spend": -8500,
+		"soviet_collapse_moscow_reintegration.union_treaty_fuel_spend": -5000,
+		"soviet_collapse_moscow_reintegration.federal_compact_fuel_spend": -9000,
+	}
+	expected_loc_values = {
+		"soviet_collapse_foreign_aid_intelligence_fuel_cost_base": "2600",
+		"soviet_collapse_foreign_aid_intelligence_fuel_cost_regional": "4000",
+		"soviet_collapse_foreign_aid_intelligence_fuel_cost_major": "6000",
+		"soviet_collapse_foreign_aid_trade_fuel_cost_base": "3200",
+		"soviet_collapse_foreign_aid_trade_fuel_cost_regional": "5000",
+		"soviet_collapse_foreign_aid_trade_fuel_cost_major": "7000",
+		"soviet_collapse_foreign_aid_civilian_construction_fuel_cost_base": "2200",
+		"soviet_collapse_foreign_aid_civilian_construction_fuel_cost_regional": "3500",
+		"soviet_collapse_foreign_aid_civilian_construction_fuel_cost_major": "5200",
+		"soviet_collapse_foreign_aid_military_construction_fuel_cost_base": "3000",
+		"soviet_collapse_foreign_aid_military_construction_fuel_cost_regional": "4800",
+		"soviet_collapse_foreign_aid_military_construction_fuel_cost_major": "7000",
+		"soviet_collapse_foreign_aid_corridor_fuel_cost_base": "4500",
+		"soviet_collapse_foreign_aid_corridor_fuel_cost_regional": "7000",
+		"soviet_collapse_foreign_aid_corridor_fuel_cost_major": "9500",
+		"soviet_collapse_foreign_aid_league_logistics_fuel_cost_base": "6000",
+		"soviet_collapse_foreign_aid_league_logistics_fuel_cost_regional": "8500",
+		"soviet_collapse_foreign_aid_league_logistics_fuel_cost_major": "12000",
+	}
+	expected_cost_text_values = {
+		"soviet_collapse_cut_rebel_supply_routes_cost_text": "£GFX_fuel_texticon 3000",
+		"soviet_collapse_breakaway_coordinate_fronts_cost_text": "£GFX_fuel_texticon 1800",
+		"soviet_collapse_moscow_union_treaty_cost_text": "£GFX_fuel_texticon 5000",
+		"soviet_collapse_moscow_federal_compact_cost_text": "£GFX_fuel_texticon 9000",
+		"soviet_collapse_foreign_protection_treaty_cost_text": "£GFX_fuel_texticon 6000",
+		"soviet_collapse_foreign_client_cabinet_cost_text": "£GFX_fuel_texticon 8500",
+	}
+	constants_ok = all(constants.get(key) == value for key, value in expected_constants.items())
+	spends_ok = all(constants.get(key) == value for key, value in expected_spends.items())
+	loc_values_ok = all(re.search(rf"{re.escape(key)}:\s*\"{re.escape(value)}\"", loc) for key, value in expected_loc_values.items())
+	cost_text_ok = all(re.search(rf"{re.escape(key)}:\s*\"[^\"]*{re.escape(value)}", loc) for key, value in expected_cost_text_values.items())
+	tier_order_ok = all(
+		constants[f"soviet_collapse_foreign_intervention.{base}"] < constants[f"soviet_collapse_foreign_intervention.{regional}"] < constants[f"soviet_collapse_foreign_intervention.{major}"]
+		and constants[f"soviet_collapse_foreign_intervention.{major}"] >= constants[f"soviet_collapse_foreign_intervention.{base}"] * 2
+		for base, regional, major in [
+			("intelligence_fuel", "intelligence_regional_fuel", "intelligence_major_fuel"),
+			("trade_fuel", "trade_regional_fuel", "trade_major_fuel"),
+			("civilian_construction_fuel", "civilian_construction_regional_fuel", "civilian_construction_major_fuel"),
+			("military_construction_fuel", "military_construction_regional_fuel", "military_construction_major_fuel"),
+			("aid_corridor_fuel", "aid_corridor_regional_fuel", "aid_corridor_major_fuel"),
+			("league_logistics_fuel", "league_logistics_regional_fuel", "league_logistics_major_fuel"),
+		]
+	)
+	docs_ok = "fuel-heavy target-tier costs" in docs
+	return [
+		Check(
+			"fuel_cost_surface",
+			constants_ok and spends_ok and loc_values_ok and cost_text_ok and tier_order_ok and docs_ok,
+			(
+				f"constants={constants_ok} spends={spends_ok} loc_values={loc_values_ok} "
+				f"cost_text={cost_text_ok} tier_order={tier_order_ok} docs={docs_ok}"
+			),
+		)
+	]
+
+
 def verify_reintegration_puppet_surface() -> list[Check]:
 	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -4289,6 +4402,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_dynamic_force_coverage())
 	checks.extend(verify_crisis_balance())
 	checks.extend(verify_foreign_influence_surface())
+	checks.extend(verify_fuel_cost_surface())
 	checks.extend(verify_reintegration_puppet_surface())
 	checks.extend(verify_local_league_surface())
 	checks.extend(verify_union_unmade_and_cleanup())
