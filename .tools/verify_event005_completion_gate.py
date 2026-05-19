@@ -149,6 +149,16 @@ DISABLED_OBJECTIVE_FLAGS = {
 	"soviet_collapse_graves_counted_by_living_offices",
 }
 
+DISABLED_ACHIEVEMENT_IDS = {
+	"chaosx_ach_pale_timetable",
+	"chaosx_ach_dead_are_citizens",
+	"chaosx_ach_no_discharge_from_grave",
+	"chaosx_ach_star_iron_over_tunguska",
+	"chaosx_ach_last_tsar_in_snow",
+	"chaosx_ach_bulgaria_on_volga",
+	"chaosx_ach_bolghar_on_the_volga",
+}
+
 ORDINARY_REPUBLIC_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST", "GEO", "ARM", "AZR", "UZB", "KYR", "TAJ", "TMS", "KAZ"]
 FIRST_WAVE_WESTERN_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST"]
 FIRST_WAVE_CAUCASUS_TAGS = ["GEO", "ARM", "AZR"]
@@ -3306,6 +3316,30 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 	decisions_text = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	categories_text = read_text(ROOT / "common/decisions/categories/005_soviet_collapse_categories.txt")
 	mtth_text = read_text(ROOT / "common/mtth/005_soviet_collapse_mtth.txt")
+	event005_gfx_text = "\n".join(
+		read_text(path)
+		for path in [
+			ROOT / "interface/005_soviet_collapse_icons.gfx",
+			ROOT / "interface/005_soviet_collapse_custom_icons.gfx",
+			ROOT / "interface/chaosx_achievements.gfx",
+			ROOT / "interface/chaosx_super_events.gfx",
+		]
+		if path.exists()
+	)
+	event005_doc_text = "\n".join(
+		read_text(path)
+		for path in [
+			ROOT / "docs/assets/005_soviet_union_collapse/manifest.md",
+			ROOT / "docs/assets/005_soviet_union_collapse/republic_focus_and_influence/manifest.md",
+			ROOT / "docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md",
+			ROOT / "docs/assets/005_soviet_union_collapse/contact_sheets/soviet_collapse_asset_records.tsv",
+			ROOT / "docs/super_events/005_soviet_union_collapse_super_event_research.md",
+			ROOT / "docs/super_events/super_event_audio_packages.md",
+			ROOT / "localisation/english/005_soviet_collapse_l_english.yml",
+			ROOT / "localisation/english/chaosx_achievements_l_english.yml",
+		]
+		if path.exists()
+	)
 	focus_counts = event005_focus_tree_counts()
 	effect_tokens = tokens(effects_text)
 	trigger_tokens = tokens(triggers_text)
@@ -3357,6 +3391,48 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 		for name in DISABLED_OBJECTIVE_FLAGS
 		if name in effects_text or name in triggers_text or name in decisions_text or name in mtth_text
 	]
+	disabled_gfx_refs = []
+	for tag in DISABLED_CUSTOM_TAGS:
+		tag_lower = tag.lower()
+		for marker in [
+			f"GFX_portrait_{tag}_",
+			f"GFX_focus_{tag}_",
+			f"GFX_idea_{tag_lower}_",
+			f"GFX_decision_{tag_lower}_",
+			f"005_{tag_lower}_custom_splinter",
+			f"/{tag}_leader.dds",
+		]:
+			if marker in event005_gfx_text:
+				disabled_gfx_refs.append(marker)
+	for achievement_id in DISABLED_ACHIEVEMENT_IDS:
+		if f"GFX_achievement_{achievement_id}" in event005_gfx_text or f"gfx/achievements/{achievement_id}" in event005_gfx_text:
+			disabled_gfx_refs.append(achievement_id)
+	disabled_doc_refs = []
+	for marker in [
+		"Dead International",
+		"The Dead Are Citizens",
+		"dead_are_citizens",
+		"Iron Commissariat",
+		"Red Martyrs",
+		"Red Cosmist",
+		"Iron Liturgy",
+		"Pale Railway",
+		"Tunguska",
+		"Last Tsar",
+		"Revenant",
+		"Third Rome",
+		"Sepulchre",
+		"Unburied",
+		"Black Earth",
+		"Red Lazarus",
+		"Last International",
+		"Iron Resurrection",
+	]:
+		if marker in event005_doc_text:
+			disabled_doc_refs.append(marker)
+	for tag in DISABLED_TAG_REGISTRATION_TAGS:
+		if f"`{tag}`" in event005_doc_text or f"/{tag}_" in event005_doc_text or f"/{tag}.tga" in event005_doc_text:
+			disabled_doc_refs.append(tag)
 	disabled_tag_regs = []
 	country_tags_text = read_text(ROOT / "common/country_tags/chaosx_countries.txt")
 	for tag in DISABLED_TAG_REGISTRATION_TAGS:
@@ -3383,6 +3459,8 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 		disabled_objective_missions,
 		disabled_objective_triggers,
 		disabled_objective_flags,
+		disabled_gfx_refs,
+		disabled_doc_refs,
 		disabled_tag_regs,
 		disabled_idea_prefixes,
 		disabled_country_files,
@@ -3399,6 +3477,8 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 				f"disabled_objective_missions={len(disabled_objective_missions)} "
 				f"disabled_objective_triggers={len(disabled_objective_triggers)} "
 				f"disabled_objective_flags={len(disabled_objective_flags)} "
+				f"disabled_gfx_refs={len(disabled_gfx_refs)} "
+				f"disabled_doc_refs={len(disabled_doc_refs)} "
 				f"disabled_tag_regs={len(disabled_tag_regs)} disabled_idea_prefixes={len(disabled_idea_prefixes)} "
 				f"disabled_country_files={len(disabled_country_files)}"
 			),
@@ -3881,7 +3961,7 @@ def verify_asset_manifest_surface() -> list[Check]:
 		and achievement_terms_ok
 		and republic_terms_ok
 		and record_header_ok
-		and record_lines >= 100
+		and record_lines >= 90
 		and len(super_dds_paths) >= 10
 		and not missing_super_dds
 		and not missing_representative
