@@ -44,6 +44,52 @@ soviet_collapse_recalculate_total_threat = {
 	}
 }
 
+soviet_collapse_register_monthly_threat_success = {
+	add_to_variable = { soviet_collapse_monthly_successful_objectives = 1 }
+}
+
+soviet_collapse_register_monthly_threat_failure = {
+	add_to_variable = { soviet_collapse_monthly_failed_objectives = 1 }
+}
+
+soviet_collapse_apply_monthly_threat_guard = {
+	set_temp_variable = { soviet_collapse_monthly_threat_delta = soviet_collapse_total_collapse_threat }
+	subtract_from_temp_variable = { soviet_collapse_monthly_threat_delta = soviet_collapse_last_month_total_threat }
+
+	if = {
+		limit = {
+			has_war = no
+			check_variable = { var = soviet_collapse_monthly_successful_objectives value = constant:soviet_collapse_threat_guard.success_floor compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_monthly_failed_objectives value = constant:soviet_collapse_threat_guard.failure_floor compare = less_than }
+			check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = less_than_or_equals }
+			check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_baseline.league_cohesion compare = less_than_or_equals }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.calm_success_month_cap compare = greater_than }
+		}
+		set_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_last_month_total_threat }
+		add_to_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.calm_success_month_cap }
+		clamp_variable = { var = soviet_collapse_total_collapse_threat min = constant:soviet_collapse_baseline.total_threat_floor max = constant:soviet_collapse_baseline.total_threat_ceiling }
+	}
+	else_if = {
+		limit = {
+			has_war = no
+			check_variable = { var = soviet_collapse_monthly_successful_objectives value = constant:soviet_collapse_threat_guard.success_floor compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_monthly_failed_objectives value = constant:soviet_collapse_threat_guard.failure_floor compare = less_than }
+			check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = less_than_or_equals }
+			check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_baseline.league_cohesion compare = less_than_or_equals }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.moderate_success_month_cap compare = greater_than }
+		}
+		set_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_last_month_total_threat }
+		add_to_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.moderate_success_month_cap }
+		clamp_variable = { var = soviet_collapse_total_collapse_threat min = constant:soviet_collapse_baseline.total_threat_floor max = constant:soviet_collapse_baseline.total_threat_ceiling }
+	}
+
+	set_variable = { soviet_collapse_last_month_total_threat = soviet_collapse_total_collapse_threat }
+	set_variable = { soviet_collapse_monthly_successful_objectives = 0 }
+	set_variable = { soviet_collapse_monthly_failed_objectives = 0 }
+}
+
 soviet_collapse_initialize_mission_requirements = {
 	set_variable = { soviet_collapse_soviet_mission_equipment_req = constant:soviet_collapse_soviet_objective.equipment_req }
 	set_variable = { soviet_collapse_soviet_mission_support_equipment_req = constant:soviet_collapse_soviet_objective.support_equipment_req }
@@ -130,10 +176,14 @@ soviet_collapse_initialize_crisis_values = {
 	}
 
 	soviet_collapse_recalculate_total_threat = yes
+	set_variable = { soviet_collapse_last_month_total_threat = soviet_collapse_total_collapse_threat }
+	set_variable = { soviet_collapse_monthly_successful_objectives = 0 }
+	set_variable = { soviet_collapse_monthly_failed_objectives = 0 }
 	country_event = { id = chaosx.nr5.129 days = 30 }
 }
 
 soviet_collapse_apply_successful_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.generic_success_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.generic_success_obedience }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.generic_success_confidence }
@@ -142,6 +192,7 @@ soviet_collapse_apply_successful_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.generic_failure_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.generic_failure_obedience }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.generic_failure_confidence }
@@ -151,6 +202,7 @@ soviet_collapse_apply_failed_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_authority_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.authority_success_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.authority_success_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.authority_success_foreign }
@@ -158,6 +210,7 @@ soviet_collapse_apply_successful_authority_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_authority_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.authority_failure_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.authority_failure_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.authority_failure_foreign }
@@ -166,6 +219,7 @@ soviet_collapse_apply_failed_authority_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_legal_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.legal_success_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.legal_success_confidence }
 	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.legal_success_weirdness }
@@ -173,6 +227,7 @@ soviet_collapse_apply_successful_legal_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_legal_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.legal_failure_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.legal_failure_confidence }
 	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.legal_failure_weirdness }
@@ -181,6 +236,7 @@ soviet_collapse_apply_failed_legal_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_command_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.command_success_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_success_obedience }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.command_success_confidence }
@@ -188,6 +244,7 @@ soviet_collapse_apply_successful_command_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_command_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.command_failure_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.command_failure_confidence }
@@ -196,6 +253,7 @@ soviet_collapse_apply_failed_command_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_rail_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.rail_success_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.rail_success_obedience }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.rail_success_depot }
@@ -203,6 +261,7 @@ soviet_collapse_apply_successful_rail_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_rail_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.rail_failure_obedience }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.rail_failure_depot }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.rail_failure_foreign }
@@ -211,12 +270,14 @@ soviet_collapse_apply_failed_rail_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_depot_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.depot_success_confidence }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.depot_success_depot }
 	soviet_collapse_recalculate_total_threat = yes
 }
 
 soviet_collapse_apply_failed_depot_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.depot_failure_confidence }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.depot_failure_depot }
 	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.depot_failure_weirdness }
@@ -225,6 +286,7 @@ soviet_collapse_apply_failed_depot_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_old_movement_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.old_movement_success_authority }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.old_movement_success_depot }
 	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.old_movement_success_weirdness }
@@ -232,6 +294,7 @@ soviet_collapse_apply_successful_old_movement_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_old_movement_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.old_movement_failure_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.old_movement_failure_confidence }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.old_movement_failure_depot }
@@ -241,6 +304,7 @@ soviet_collapse_apply_failed_old_movement_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_foreign_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.foreign_success_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.foreign_success_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.foreign_success_foreign }
@@ -248,6 +312,7 @@ soviet_collapse_apply_successful_foreign_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_foreign_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.foreign_failure_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.foreign_failure_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.foreign_failure_foreign }
@@ -256,6 +321,7 @@ soviet_collapse_apply_failed_foreign_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_cleanup_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.cleanup_success_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.cleanup_success_obedience }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.cleanup_success_depot }
@@ -263,6 +329,7 @@ soviet_collapse_apply_successful_cleanup_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_cleanup_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.cleanup_failure_authority }
 	add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.cleanup_failure_obedience }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.cleanup_failure_confidence }
@@ -272,6 +339,7 @@ soviet_collapse_apply_failed_cleanup_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_settlement_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.settlement_success_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.settlement_success_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.settlement_success_foreign }
@@ -280,6 +348,7 @@ soviet_collapse_apply_successful_settlement_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_settlement_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.settlement_failure_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.settlement_failure_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.settlement_failure_foreign }
@@ -289,6 +358,7 @@ soviet_collapse_apply_failed_settlement_objective_pressure = {
 }
 
 soviet_collapse_apply_successful_league_objective_pressure = {
+	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.league_success_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.league_success_foreign }
 	add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_success_league }
@@ -296,6 +366,7 @@ soviet_collapse_apply_successful_league_objective_pressure = {
 }
 
 soviet_collapse_apply_failed_league_objective_pressure = {
+	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.league_failure_confidence }
 	add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_objective_pressure.league_failure_foreign }
 	add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_failure_league }

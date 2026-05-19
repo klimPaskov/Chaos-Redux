@@ -1811,14 +1811,17 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 def verify_crisis_balance() -> list[Check]:
 	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	events = read_text(ROOT / "events/005_soviet_collapse.txt")
 	effect_tokens = tokens(effects)
 	calm_authority, calm_threat = crisis_scenario(constants)
 	tier1_authority, tier1_threat = crisis_scenario(constants, tier=1)
 	severe_authority, severe_threat = crisis_scenario(constants, tier=5, low_stability=True, low_war_support=True, active_war=True, capital_lost=True)
 	recalculate_blocks = named_blocks(effect_tokens, "soviet_collapse_recalculate_total_threat")
 	initialize_blocks = named_blocks(effect_tokens, "soviet_collapse_initialize_crisis_values")
+	monthly_guard_blocks = named_blocks(effect_tokens, "soviet_collapse_apply_monthly_threat_guard")
 	recalculate_body = " ".join(recalculate_blocks[0]) if recalculate_blocks else ""
 	initialize_body = " ".join(initialize_blocks[0]) if initialize_blocks else ""
+	monthly_guard_body = " ".join(monthly_guard_blocks[0]) if monthly_guard_blocks else ""
 	visible_causes = all(
 		item in effects
 		for item in [
@@ -1896,10 +1899,39 @@ def verify_crisis_balance() -> list[Check]:
 			len(success_blocks) == 1
 			and len(failure_blocks) == 1
 			and all(var in success_body + failure_body for var in variables)
+			and "soviet_collapse_register_monthly_threat_success = yes" in success_body
+			and "soviet_collapse_register_monthly_threat_failure = yes" in failure_body
 			and "soviet_collapse_recalculate_total_threat = yes" in success_body
 			and "soviet_collapse_recalculate_total_threat = yes" in failure_body
 		):
 			covered_pressure_families += 1
+	monthly_success_regs = effects.count("soviet_collapse_register_monthly_threat_success = yes")
+	monthly_failure_regs = effects.count("soviet_collapse_register_monthly_threat_failure = yes")
+	event129_guard = bool(re.search(r"id\s*=\s*chaosx\.nr5\.129[\s\S]*?soviet_collapse_apply_monthly_threat_guard\s*=\s*yes[\s\S]*?soviet_collapse_maybe_release_threat_breakaway\s*=\s*yes", events))
+	monthly_guard_ok = (
+		constants.get("soviet_collapse_threat_guard.calm_threat_ceiling", 100) <= 40
+		and constants.get("soviet_collapse_threat_guard.moderate_threat_ceiling", 100) <= 60
+		and constants.get("soviet_collapse_threat_guard.calm_success_month_cap", 100) <= 1
+		and constants.get("soviet_collapse_threat_guard.moderate_success_month_cap", 100) <= 4
+		and "set_variable = { soviet_collapse_last_month_total_threat = soviet_collapse_total_collapse_threat }" in initialize_body
+		and "set_variable = { soviet_collapse_monthly_successful_objectives = 0 }" in initialize_body
+		and "set_variable = { soviet_collapse_monthly_failed_objectives = 0 }" in initialize_body
+		and monthly_success_regs >= len(pressure_families) + 1
+		and monthly_failure_regs >= len(pressure_families) + 1
+		and len(monthly_guard_blocks) == 1
+		and "soviet_collapse_monthly_threat_delta" in monthly_guard_body
+		and "soviet_collapse_last_month_total_threat" in monthly_guard_body
+		and "soviet_collapse_monthly_successful_objectives" in monthly_guard_body
+		and "soviet_collapse_monthly_failed_objectives" in monthly_guard_body
+		and "constant:soviet_collapse_threat_guard.calm_success_month_cap" in monthly_guard_body
+		and "constant:soviet_collapse_threat_guard.moderate_success_month_cap" in monthly_guard_body
+		and "constant:soviet_collapse_baseline.foreign_appetite" in monthly_guard_body
+		and "constant:soviet_collapse_baseline.league_cohesion" in monthly_guard_body
+		and "has_war = no" in monthly_guard_body
+		and "set_variable = { soviet_collapse_monthly_successful_objectives = 0 }" in monthly_guard_body
+		and "set_variable = { soviet_collapse_monthly_failed_objectives = 0 }" in monthly_guard_body
+		and event129_guard
+	)
 	ok = (
 		calm_authority >= 50
 		and 5 <= calm_threat <= 10
@@ -1926,12 +1958,23 @@ def verify_crisis_balance() -> list[Check]:
 			),
 		),
 		Check(
+			"crisis_monthly_guard_surface",
+			monthly_guard_ok,
+			(
+				f"guard_constants={constants.get('soviet_collapse_threat_guard.calm_success_month_cap', '')}/"
+				f"{constants.get('soviet_collapse_threat_guard.moderate_success_month_cap', '')} "
+				f"success_regs={monthly_success_regs} failure_regs={monthly_failure_regs} "
+				f"guard_blocks={len(monthly_guard_blocks)} event129={event129_guard}"
+			),
+		),
+		Check(
 			"crisis_cause_surface",
-			cause_ok,
+			cause_ok and monthly_guard_ok,
 			(
 				f"recalculate_surface={recalculate_surface} opening_surface={opening_surface} "
 				f"first_wave_pressure_surface={first_wave_pressure_surface} "
 				f"pressure_families={covered_pressure_families}/{len(pressure_families)} "
+				f"monthly_guard={monthly_guard_ok} "
 				f"multiplier={constants.get('soviet_collapse_baseline.total_threat_multiplier', 0):.2f}"
 			),
 		),
