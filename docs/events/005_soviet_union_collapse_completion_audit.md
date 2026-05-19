@@ -383,7 +383,7 @@ terminal_high_chaos_successor_surface prepare_flags 26 spawn_calls 38/38 ready_t
 union_unmade_super_event_checks 18 failed 0
 event_log_detail_checks 57 failed 0 detail_functions 7 detail_output_localisation_keys 25
 mission_balance_checks missions 128 unique 128 timeout_constants_defined 11 timeout_constants_used 11 timeout_min 95 timeout_max 365 remove_refs 128 activate_refs 128 problems 0 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0
-focus_layout_checks trees 46 focuses 1121 duplicate_ids 0 coord_collisions 0 missing_coords 0 missing_search_filters 0 repeated_mutual_blocks 0 continuous_positions 46 continuous_side_bad 0 edge_crossings 0 shallow_dead_end_focuses 0 min_x_span 18 min_y_span 5 max_col 11 max_row 20
+focus_layout_checks trees 46 focuses 1122 duplicate_ids 0 coord_collisions 0 missing_coords 0 missing_search_filters 0 repeated_mutual_blocks 0 continuous_positions 46 continuous_side_bad 0 edge_crossings 0 shallow_dead_end_focuses 0 min_x_span 18 min_y_span 5 max_col 11 max_row 20
 crisis_scenarios calm_baseline authority 62 threat 7.25; modest_tier1 authority 62 threat 9.25; tier5_capital_lost_war_low_stability_low_support authority 38 threat 50.25
 crisis_monthly_guard_surface guard_constants 1.0/4.0 success_regs 11 failure_regs 11 guard_blocks 1 event129 True
 core_crisis_meter_numeric_literals 0
@@ -430,8 +430,8 @@ available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 comprehensive_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_random 1 normal_pool_has_kaz False kaz_gate_southern True kaz_gate_tier4 True extra_calls 3
 first_wave_release_surface pool_helpers 4 western_tags 6 caucasus_tags 3 central_tags 4 map_support_gates True extra_scaling True selected_release True kazakhstan_release True southern_cascade True
-focus_reward_variety_surface focuses 1121 duplicate_reward_groups 0 duplicate_reward_focuses 0 reward_categories 9 add_idea_rewards 145
-focus_ai_surface focuses 1121 ai_blocks 1121 dynamic_ai 227 mutual_route_choices 114 dynamic_mutual_ai 114 flat_mutual_ai 0
+focus_reward_variety_surface focuses 1122 duplicate_reward_groups 0 duplicate_reward_focuses 0 reward_categories 9 add_idea_rewards 145
+focus_ai_surface focuses 1122 ai_blocks 1122 dynamic_ai 228 mutual_route_choices 114 dynamic_mutual_ai 114 flat_mutual_ai 0
 force_package_audit manpower True equipment 3 templates 2 create_unit 2 major_scaling True regional_scaling True chaos_scaling 4 war_scaling True weak_center_scaling True terminal_scaling True
 force_scaling_surface base True major True regional True chaos_bands True conditions True declarations True unit_delivery True constants True
 crisis_monthly_guard_surface guard_constants=1.0/4.0 success_regs=11 failure_regs=11 guard_blocks=1 event129=True
@@ -444,7 +444,7 @@ mission_quality_surface missions 128 unique_available 128/128 weak_available 0 i
 mission_audit_documentation_surface rows 128 mission_ids 128/128 header True validation_markers 4/4
 focus_layout_surface focus_trees 46 continuous_positions 46 layout_bad 0 duplicate_coord_trees 0 continuous_side_bad 0 crossing_free 46 edge_crossings 0 isolated_focuses 0 shallow_dead_end_focuses 0 disconnected_trees 0 deep_trees 0 tight_mutual_trees 0 min_x_span 18 min_y_span 5 max_y_span 14 min_mutual_distance 6 max_col 11 max_row 20
 focus_tree_map_surface event_markers 9/9 audit_markers 3/3
-focus_surface_audit focuses 1121 continuous_positions 46
+focus_surface_audit focuses 1122 continuous_positions 46
 localisation_phrase_audit banned_phrase_hits 0
 event_log_mapping_surface event_name True debug_name True settings_name True default_actor True detail_mapping True entry_event True detail_functions 7 detail_output_keys 25
 blockers missing_inputs []
