@@ -2197,6 +2197,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
 	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	ideas = read_text(ROOT / "common/ideas/005_soviet_collapse_ideas.txt")
 	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
 	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
@@ -2345,6 +2346,41 @@ def verify_foreign_influence_surface() -> list[Check]:
 		])
 		and re.search(r"soviet_collapse_apply_foreign_influence_delta\s*=\s*{.*?soviet_collapse_update_sponsor_balance_pressure\s*=\s*yes", effects, re.S)
 	)
+	sponsor_style_triggers = [
+		"is_soviet_collapse_military_patron_style",
+		"is_soviet_collapse_relief_patron_style",
+		"is_soviet_collapse_client_patron_style",
+		"is_soviet_collapse_border_patron_style",
+		"is_soviet_collapse_league_conference_patron_style",
+		"is_soviet_collapse_reconstruction_patron_style",
+		"is_soviet_collapse_caucasus_central_asia_patron_style",
+		"is_soviet_collapse_caucasus_or_central_asia_breakaway",
+	]
+	sponsor_style_decision_pairs = [
+		("soviet_collapse_recognize_breakaway_government", "is_soviet_collapse_relief_patron_style"),
+		("soviet_collapse_fund_ideological_liaison_offices", "is_soviet_collapse_client_patron_style"),
+		("soviet_collapse_ship_border_armaments", "is_soviet_collapse_military_patron_style"),
+		("soviet_collapse_dispatch_military_advisers", "is_soviet_collapse_caucasus_central_asia_patron_style"),
+		("soviet_collapse_open_republican_intelligence_channel", "tag = JAP"),
+		("soviet_collapse_sponsor_volunteer_corps", "is_soviet_collapse_border_patron_style"),
+		("soviet_collapse_negotiate_republican_trade_mission", "is_soviet_collapse_reconstruction_patron_style"),
+		("soviet_collapse_fund_civilian_construction_mission", "is_soviet_collapse_reconstruction_patron_style"),
+		("soviet_collapse_fund_military_construction_mission", "is_soviet_collapse_military_patron_style"),
+		("soviet_collapse_sponsor_press_and_radio_network", "is_soviet_collapse_client_patron_style"),
+		("soviet_collapse_secure_republican_aid_corridor", "is_soviet_collapse_caucasus_or_central_asia_breakaway"),
+		("soviet_collapse_build_republics_league_conference", "is_soviet_collapse_league_conference_patron_style"),
+		("soviet_collapse_demand_anti_puppet_clause", "is_soviet_collapse_relief_patron_style"),
+		("soviet_collapse_offer_protection_treaty", "is_soviet_collapse_client_patron_style"),
+		("soviet_collapse_demand_adviser_privileges", "is_soviet_collapse_client_patron_style"),
+		("soviet_collapse_install_client_cabinet", "is_soviet_collapse_client_patron_style"),
+	]
+	sponsor_style_ok = (
+		all(marker in triggers for marker in sponsor_style_triggers)
+		and all(
+			re.search(rf"{decision}\s*=\s*{{.*?{re.escape(marker)}", decisions, re.S)
+			for decision, marker in sponsor_style_decision_pairs
+		)
+	)
 	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
 		"category totals",
 		"sponsor totals",
@@ -2358,17 +2394,20 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"active sponsor count",
 		"top sponsor",
 		"sponsor gap",
+		"sponsor-style triggers",
+		"Germany, Japan, Italy, Poland, Romania, and Finland",
+		"Turkey and Iran",
 	])
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and investment_surface_ok and sponsor_balance_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
 				f"aid_effects={aid_effect_ok} expanded_decisions={expanded_decisions_ok} "
 				f"expanded_effects={expanded_effects_ok} investment_surface={investment_surface_ok} "
-				f"sponsor_balance={bool(sponsor_balance_ok)} docs={docs_ok}"
+				f"sponsor_balance={bool(sponsor_balance_ok)} sponsor_styles={sponsor_style_ok} docs={docs_ok}"
 			),
 		)
 	]
