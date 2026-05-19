@@ -3316,14 +3316,19 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 	decisions_text = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	categories_text = read_text(ROOT / "common/decisions/categories/005_soviet_collapse_categories.txt")
 	mtth_text = read_text(ROOT / "common/mtth/005_soviet_collapse_mtth.txt")
-	event005_gfx_text = "\n".join(
+	event005_gfx_paths = sorted((ROOT / "interface").glob("005_soviet_collapse*.gfx")) + [
+		ROOT / "interface/chaosx_achievements.gfx",
+		ROOT / "interface/chaosx_super_events.gfx",
+	]
+	event005_gfx_text = "\n".join(read_text(path) for path in event005_gfx_paths if path.exists())
+	event005_active_gfx_text = "\n".join(
 		read_text(path)
-		for path in [
-			ROOT / "interface/005_soviet_collapse_icons.gfx",
-			ROOT / "interface/005_soviet_collapse_custom_icons.gfx",
-			ROOT / "interface/chaosx_achievements.gfx",
-			ROOT / "interface/chaosx_super_events.gfx",
-		]
+		for path in sorted((ROOT / "interface").glob("005_soviet_collapse*.gfx"))
+		if path.exists()
+	)
+	event005_localisation_text = "\n".join(
+		read_text(path)
+		for path in sorted((ROOT / "localisation/english").glob("005_soviet_collapse*.yml"))
 		if path.exists()
 	)
 	event005_doc_text = "\n".join(
@@ -3334,13 +3339,22 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 			ROOT / "docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md",
 			ROOT / "docs/assets/005_soviet_union_collapse/contact_sheets/soviet_collapse_asset_records.tsv",
 			ROOT / "docs/super_events/005_soviet_union_collapse_super_event_research.md",
-			ROOT / "docs/super_events/super_event_audio_packages.md",
-			ROOT / "localisation/english/005_soviet_collapse_l_english.yml",
-			ROOT / "localisation/english/005_soviet_collapse_custom_countries_l_english.yml",
-			ROOT / "localisation/english/chaosx_achievements_l_english.yml",
 		]
 		if path.exists()
-	)
+	) + "\n" + event005_localisation_text
+	event005_active_text = "\n".join([
+		effects_text,
+		triggers_text,
+		decisions_text,
+		categories_text,
+		mtth_text,
+		read_text(ROOT / "events/005_soviet_collapse.txt"),
+		read_text(ROOT / "common/ideas/005_soviet_collapse_ideas.txt"),
+		read_text(ROOT / "common/national_focus/005_soviet_collapse_republics.txt"),
+		read_text(ROOT / "common/national_focus/005_soviet_collapse_custom_splinters.txt"),
+		event005_active_gfx_text,
+		event005_doc_text,
+	])
 	focus_counts = event005_focus_tree_counts()
 	effect_tokens = tokens(effects_text)
 	trigger_tokens = tokens(triggers_text)
@@ -3415,7 +3429,6 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 		"Dead Citizens",
 		"dead_are_citizens",
 		"necromantic",
-		"a cult",
 		"weaponized memory",
 		"Iron Commissariat",
 		"Red Martyrs",
@@ -3435,9 +3448,32 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 	]:
 		if marker in event005_doc_text:
 			disabled_doc_refs.append(marker)
+	if re.search(r"\ba cult\b", event005_doc_text):
+		disabled_doc_refs.append("a cult")
 	for tag in DISABLED_TAG_REGISTRATION_TAGS:
 		if f"`{tag}`" in event005_doc_text or f"/{tag}_" in event005_doc_text or f"/{tag}.tga" in event005_doc_text:
 			disabled_doc_refs.append(tag)
+	active_forbidden_route_refs = []
+	for label, pattern in [
+		("dead_international", r"dead_international"),
+		("third_bulgar_realm", r"third_bulgar_realm"),
+		("sacred_restoration", r"sacred_restoration"),
+		("Third Bulgar Realm", r"Third Bulgar Realm"),
+		("Sacred Restoration", r"Sacred Restoration"),
+		("zombie", r"\bzombie\b"),
+		("undead", r"\bundead\b"),
+		("revenant", r"\brevenant\b"),
+		("necrom", r"\bnecrom"),
+		("resurrection", r"\bresurrection\b"),
+		("death cult", r"death[- ]cult"),
+		("machine-cult", r"machine-cult"),
+		("cult", r"\bcults?\b"),
+		("holy realm", r"holy realm"),
+		("holy", r"\bholy\b"),
+		("sacred", r"\bsacred\b"),
+	]:
+		if re.search(pattern, event005_active_text, re.IGNORECASE):
+			active_forbidden_route_refs.append(label)
 	disabled_tag_regs = []
 	country_tags_text = read_text(ROOT / "common/country_tags/chaosx_countries.txt")
 	for tag in DISABLED_TAG_REGISTRATION_TAGS:
@@ -3466,6 +3502,7 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 		disabled_objective_flags,
 		disabled_gfx_refs,
 		disabled_doc_refs,
+		active_forbidden_route_refs,
 		disabled_tag_regs,
 		disabled_idea_prefixes,
 		disabled_country_files,
@@ -3484,6 +3521,7 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 				f"disabled_objective_flags={len(disabled_objective_flags)} "
 				f"disabled_gfx_refs={len(disabled_gfx_refs)} "
 				f"disabled_doc_refs={len(disabled_doc_refs)} "
+				f"active_forbidden_route_refs={len(active_forbidden_route_refs)} "
 				f"disabled_tag_regs={len(disabled_tag_regs)} disabled_idea_prefixes={len(disabled_idea_prefixes)} "
 				f"disabled_country_files={len(disabled_country_files)}"
 			),
