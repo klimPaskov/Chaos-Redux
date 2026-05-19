@@ -1731,6 +1731,7 @@ def verify_crisis_balance() -> list[Check]:
 
 def verify_foreign_influence_surface() -> list[Check]:
 	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
+	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	ideas = read_text(ROOT / "common/ideas/005_soviet_collapse_ideas.txt")
 	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
@@ -1744,6 +1745,12 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"intelligence_influence",
 		"volunteers_influence",
 		"trade_industry_influence",
+		"civilian_construction_industry_influence",
+		"military_construction_arms_influence",
+		"press_network_ideology_influence",
+		"aid_corridor_logistics_influence",
+		"conference_independence_resilience",
+		"anti_puppet_clause_independence_resilience",
 		"stage_3_threshold",
 	]
 	category_vars = [
@@ -1780,6 +1787,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_foreign_patron_contacts",
 		"soviet_collapse_foreign_patron_liaison",
 		"soviet_collapse_foreign_patron_network",
+		"soviet_collapse_foreign_patron_burden",
 	]
 	aid_effects = [
 		"soviet_collapse_apply_foreign_recognition_aid",
@@ -1790,6 +1798,22 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_apply_foreign_volunteer_aid",
 		"soviet_collapse_apply_foreign_trade_aid",
 	]
+	expanded_decisions = [
+		"soviet_collapse_fund_civilian_construction_mission",
+		"soviet_collapse_fund_military_construction_mission",
+		"soviet_collapse_sponsor_press_and_radio_network",
+		"soviet_collapse_secure_republican_aid_corridor",
+		"soviet_collapse_build_republics_league_conference",
+		"soviet_collapse_demand_anti_puppet_clause",
+	]
+	expanded_effects = [
+		"soviet_collapse_apply_foreign_civilian_construction_aid",
+		"soviet_collapse_apply_foreign_military_construction_aid",
+		"soviet_collapse_apply_foreign_press_network_aid",
+		"soviet_collapse_apply_foreign_aid_corridor",
+		"soviet_collapse_apply_foreign_league_conference",
+		"soviet_collapse_apply_anti_puppet_clause",
+	]
 	constants_ok = all(marker in constants for marker in required_constants)
 	category_ok = all(var in effects for var in category_vars)
 	sponsor_ok = all(var in effects for var in sponsor_vars)
@@ -1799,15 +1823,35 @@ def verify_foreign_influence_surface() -> list[Check]:
 		re.search(rf"{effect}\s*=\s*{{.*?soviet_collapse_apply_foreign_influence_delta\s*=\s*yes.*?soviet_collapse_update_foreign_investment_stage_ideas\s*=\s*yes", effects, re.S)
 		for effect in aid_effects
 	)
-	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in ["category totals", "sponsor totals", "staged spirit tracks"])
+	expanded_decisions_ok = all(decision in decisions and f"{decision}:" in loc and f"{decision}_desc:" in loc for decision in expanded_decisions)
+	expanded_effects_ok = all(effect in effects for effect in expanded_effects) and all(trigger in decisions for trigger in [
+		"can_pay_soviet_collapse_foreign_civilian_construction_cost",
+		"can_pay_soviet_collapse_foreign_military_construction_cost",
+		"can_pay_soviet_collapse_foreign_press_network_cost",
+		"can_pay_soviet_collapse_foreign_aid_corridor_cost",
+		"can_pay_soviet_collapse_foreign_conference_cost",
+		"can_pay_soviet_collapse_anti_puppet_clause_cost",
+	])
+	investment_surface_ok = all(marker in effects for marker in [
+		"add_building_construction = { type = industrial_complex",
+		"add_building_construction = { type = arms_factory",
+		"add_building_construction = { type = anti_air_building",
+		"create_unit",
+		"soviet_collapse_foreign_aid_corridor_open",
+		"soviet_collapse_independence_resilience",
+		"soviet_collapse_influence_patronage_risk",
+		"add_timed_idea = { idea = soviet_collapse_foreign_patron_burden",
+	])
+	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in ["category totals", "sponsor totals", "staged spirit tracks", "civilian construction", "anti-puppet clause"])
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and investment_surface_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
-				f"aid_effects={aid_effect_ok} docs={docs_ok}"
+				f"aid_effects={aid_effect_ok} expanded_decisions={expanded_decisions_ok} "
+				f"expanded_effects={expanded_effects_ok} investment_surface={investment_surface_ok} docs={docs_ok}"
 			),
 		)
 	]
