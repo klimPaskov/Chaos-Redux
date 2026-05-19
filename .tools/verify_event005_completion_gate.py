@@ -2037,6 +2037,34 @@ def objective_pressure_success_audit(effect_tokens: list[str], constants: dict[s
 	return len(success_names), non_increasing, bad_component_changes, max_net_delta, missing_or_unresolved
 
 
+def objective_pressure_failure_pacing_audit(effect_tokens: list[str], constants: dict[str, float], calm_threat: float) -> tuple[int, float, float, list[str]]:
+	ordinary_failure_names = [
+		"soviet_collapse_apply_failed_authority_objective_pressure",
+		"soviet_collapse_apply_failed_legal_objective_pressure",
+		"soviet_collapse_apply_failed_command_objective_pressure",
+		"soviet_collapse_apply_failed_rail_objective_pressure",
+		"soviet_collapse_apply_failed_depot_objective_pressure",
+		"soviet_collapse_apply_failed_cleanup_objective_pressure",
+	]
+	max_net_delta = 0.0
+	missing_or_unresolved: list[str] = []
+	multiplier = constants.get("soviet_collapse_baseline.total_threat_multiplier", 1)
+	for name in ordinary_failure_names:
+		blocks = named_blocks(effect_tokens, name)
+		if len(blocks) != 1:
+			missing_or_unresolved.append(name)
+			continue
+		deltas = effect_variable_deltas(blocks[0], constants)
+		if not deltas:
+			missing_or_unresolved.append(name)
+			continue
+		net_delta = sum(THREAT_COMPONENT_WEIGHTS.get(var, 0) * delta for var, delta in deltas.items())
+		net_delta *= multiplier
+		max_net_delta = max(max_net_delta, net_delta)
+	months_to_eighty = (80 - calm_threat) / max_net_delta if max_net_delta > 0 else 99.0
+	return len(ordinary_failure_names), max_net_delta, months_to_eighty, missing_or_unresolved
+
+
 def verify_crisis_balance() -> list[Check]:
 	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
@@ -2137,6 +2165,7 @@ def verify_crisis_balance() -> list[Check]:
 	monthly_success_regs = effects.count("soviet_collapse_register_monthly_threat_success = yes")
 	monthly_failure_regs = effects.count("soviet_collapse_register_monthly_threat_failure = yes")
 	success_helper_count, non_increasing_success_helpers, bad_success_component_changes, max_success_delta, unresolved_success_helpers = objective_pressure_success_audit(effect_tokens, constants)
+	ordinary_failure_helper_count, max_ordinary_failure_delta, ordinary_failure_months_to_eighty, unresolved_ordinary_failure_helpers = objective_pressure_failure_pacing_audit(effect_tokens, constants, calm_threat)
 	event129_guard = bool(re.search(r"id\s*=\s*chaosx\.nr5\.129[\s\S]*?soviet_collapse_apply_monthly_threat_guard\s*=\s*yes[\s\S]*?soviet_collapse_maybe_release_threat_breakaway\s*=\s*yes", events))
 	monthly_guard_ok = (
 		constants.get("soviet_collapse_threat_guard.calm_threat_ceiling", 100) <= 40
@@ -2174,6 +2203,12 @@ def verify_crisis_balance() -> list[Check]:
 		and constants.get("soviet_collapse_baseline.total_threat_multiplier", 1) <= 0.25
 		and constants.get("soviet_collapse_baseline.total_threat_floor", 1) == 0
 	)
+	ordinary_failure_pacing_ok = (
+		ordinary_failure_helper_count == 6
+		and not unresolved_ordinary_failure_helpers
+		and max_ordinary_failure_delta <= 3
+		and ordinary_failure_months_to_eighty >= 24
+	)
 	cause_ok = recalculate_surface and opening_surface and first_wave_pressure_surface and covered_pressure_families == len(pressure_families)
 	return [
 		Check(
@@ -2189,12 +2224,15 @@ def verify_crisis_balance() -> list[Check]:
 		),
 		Check(
 			"crisis_monthly_guard_surface",
-			monthly_guard_ok,
+			monthly_guard_ok and ordinary_failure_pacing_ok,
 			(
 				f"guard_constants={constants.get('soviet_collapse_threat_guard.calm_success_month_cap', '')}/"
 				f"{constants.get('soviet_collapse_threat_guard.moderate_success_month_cap', '')} "
 				f"success_regs={monthly_success_regs} failure_regs={monthly_failure_regs} "
-				f"guard_blocks={len(monthly_guard_blocks)} event129={event129_guard}"
+				f"guard_blocks={len(monthly_guard_blocks)} event129={event129_guard} "
+				f"ordinary_failure_max_delta={max_ordinary_failure_delta:.2f} "
+				f"ordinary_failure_months_to_80={ordinary_failure_months_to_eighty:.2f} "
+				f"ordinary_failure_unresolved={len(unresolved_ordinary_failure_helpers)}"
 			),
 		),
 		Check(
