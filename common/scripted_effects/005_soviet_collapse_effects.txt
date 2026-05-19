@@ -1696,6 +1696,19 @@ soviet_collapse_apply_foreign_volunteer_aid = {
 	if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
 	add_manpower = constant:soviet_collapse_foreign_intervention.volunteers_manpower_spend
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.volunteers_infantry_equipment_spend }
+	transfer_units_fraction = {
+		target = FROM
+		target_organization = 1
+		source_organization = 1
+		size = 0
+		stockpile_ratio = 0
+		army_ratio = constant:soviet_collapse_foreign_intervention.volunteers_army_transfer_fraction
+		navy_ratio = 0
+		air_ratio = 0
+		keep_unit_leaders_trigger = {
+			always = yes
+		}
+	}
 	if = {
 		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
 		add_manpower = constant:soviet_collapse_foreign_intervention.volunteers_regional_manpower_extra_spend
