@@ -18,7 +18,7 @@ Foreign dependency is a three-step chain:
 2. `Demand Adviser Privileges`
 3. `Install Client Cabinet`
 
-The protection treaty requires the sponsor to be the dominant influence holder, the target to be weak, low target independence resilience, no active war with Moscow, no subject status, and no strong League or faction protection. Adviser privileges require the protection treaty. Client cabinet installation requires adviser privileges and then sets the target as the sponsor's puppet.
+The protection treaty requires the sponsor to be the dominant influence holder, the target to be weak, low target independence resilience, no active war with Moscow, no subject status, and no strong League or faction protection. Adviser privileges require the protection treaty. Client cabinet installation requires adviser privileges and then sets the target as the sponsor's puppet. All three dependency steps use the same ordinary, regional, and major target-tier cost model as direct foreign aid, so stronger republics demand larger political, command, fuel, army experience, and manpower commitments before they can be pulled into client status.
 
 The chain uses `soviet_collapse_influence_total`, sponsor-specific influence variables, `soviet_collapse_influence_patronage_risk`, and `soviet_collapse_independence_resilience`. Balanced sponsorship and League protection block or delay dependency, while one dominant sponsor can convert influence into puppet pressure.
 
@@ -29,6 +29,8 @@ Tuning lives in `common/script_constants/005_soviet_collapse_constants.txt`:
 - `soviet_collapse_moscow_reintegration`: Soviet treaty and compact costs, threat ceilings, authority floors, target weakness thresholds, and pressure effects.
 - `soviet_collapse_puppet_pressure`: sponsor dominance thresholds, total influence floor, target weakness thresholds, resilience limits, and local side effects.
 - `soviet_collapse_influence_war`: Moscow influence gains, protection treaty influence, adviser privilege influence, client cabinet influence, and patronage-risk deltas.
+
+Dependency-chain cost text is dynamic. `common/scripted_localisation/005_soviet_collapse_scripted_localisation.txt` selects ordinary, regional, or major values for protection treaty, adviser privileges, and client cabinet costs, and the matching `_cost_text` localisation shows only icon-value groups.
 
 ## Script Surfaces
 
