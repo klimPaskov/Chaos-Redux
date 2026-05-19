@@ -44,8 +44,7 @@ EVENT005_SCRIPT_FILES = [
 ]
 
 REQUIRED_INPUTS = [
-	"tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md",
-	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
+	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
@@ -53,6 +52,8 @@ REQUIRED_INPUTS = [
 ]
 
 ADDITIONAL_CONSULTED_INPUTS = [
+	"tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md",
+	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
 	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
 ]
 
@@ -83,8 +84,7 @@ REQUIRED_REFERENCE_INPUTS = [
 ]
 
 REQUIRED_SOURCE_ORDER = [
-	"tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md",
-	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
+	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
