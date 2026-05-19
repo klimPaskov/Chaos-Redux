@@ -2601,7 +2601,9 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 
 def verify_soviet_objective_board() -> list[Check]:
 	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
 	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
 	decision_blocks: list[tuple[str, list[str]]] = []
 	for _, category_body in direct_child_blocks(tokens(decisions)):
@@ -2610,6 +2612,9 @@ def verify_soviet_objective_board() -> list[Check]:
 	mission_re = re.compile(r"^soviet_collapse_soviet_mission_(\d{3})_")
 	missions = [(name, body) for name, body in decision_blocks if mission_re.match(name)]
 	mission_ids = {name for name, _ in missions}
+	trigger_tokens = tokens(triggers)
+	scripted_triggers = dict(direct_child_blocks(trigger_tokens))
+	loc_keys = set(re.findall(r"^\s*([A-Za-z0-9_.-]+):\s*\"", loc, re.MULTILINE))
 	effect_tokens = tokens(effects)
 	count_blocks = named_blocks(effect_tokens, "soviet_collapse_count_active_soviet_objectives")
 	activate_blocks = named_blocks(effect_tokens, "soviet_collapse_activate_opening_objectives")
@@ -2630,6 +2635,24 @@ def verify_soviet_objective_board() -> list[Check]:
 	map_or_state_available = 0
 	raw_division_state_available = []
 	long_inline_available = []
+	missing_scripted_requirement = []
+	thin_scripted_requirement = []
+	meter_only_requirement = []
+	passive_scripted_requirement = []
+	division_tooltip_keys = []
+	division_tooltip_missing_loc = []
+	forbidden_trivial_literals = []
+	requirement_family_counts = []
+	requirement_families = {
+		"stockpile": ["has_equipment", "has_fuel", "has_manpower", "has_army_experience", "command_power"],
+		"political": ["has_stability", "has_war_support"],
+		"map_control": ["is_controlled_by", "is_owned_by", "capital_scope", "any_owned_state"],
+		"division_position": ["num_divisions_in_states"],
+		"crisis_variable": ["check_variable"],
+		"flag_or_prior_action": ["has_country_flag", "has_global_flag", "has_recovered_", "has_idea"],
+		"war_or_diplomacy": ["has_war_with", "is_in_faction", "is_faction_leader"],
+		"special_spawn_gate": ["can_soviet_collapse_spawn_"],
+	}
 	for name, body in missions:
 		number = mission_re.match(name).group(1)
 		body_text = " ".join(body)
@@ -2640,6 +2663,36 @@ def verify_soviet_objective_board() -> list[Check]:
 		complete_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "complete_effect"))
 		timeout_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "timeout_effect"))
 		available_bodies.append(available_text)
+		requirement_refs = [
+			block[0]
+			for block in available_blocks
+			if len(block) == 3 and block[1] == "=" and block[2] == "yes"
+		]
+		requirement_text = " ".join(" ".join(scripted_triggers[ref]) for ref in requirement_refs if ref in scripted_triggers)
+		if len(requirement_refs) != 1 or any(ref not in scripted_triggers for ref in requirement_refs):
+			missing_scripted_requirement.append(name)
+		families = {
+			family
+			for family, markers in requirement_families.items()
+			if any(marker in requirement_text for marker in markers)
+		}
+		requirement_family_counts.append(len(families))
+		if len(families) < 2:
+			thin_scripted_requirement.append(name)
+		if families == {"crisis_variable"}:
+			meter_only_requirement.append(name)
+		passive_family_markers = ["has_manpower", "has_equipment", "has_stability", "has_war_support", "has_army_experience", "command_power", "has_fuel"]
+		active_family_markers = ["is_controlled_by", "is_owned_by", "capital_scope", "any_owned_state", "num_divisions_in_states", "has_country_flag", "has_global_flag", "has_recovered_", "has_idea", "has_war_with", "is_in_faction", "can_soviet_collapse_spawn_", "check_variable"]
+		if any(marker in requirement_text for marker in passive_family_markers) and not any(marker in requirement_text for marker in active_family_markers):
+			passive_scripted_requirement.append(name)
+		if re.search(r"\b20000\b|\b0\.35\b|35\s*percent", requirement_text):
+			forbidden_trivial_literals.append(name)
+		if "num_divisions_in_states" in requirement_text:
+			keys = re.findall(r"tooltip\s*=\s*([A-Za-z0-9_]+)", requirement_text)
+			division_tooltip_keys.extend(keys)
+			division_tooltip_missing_loc.extend(key for key in keys if key not in loc_keys)
+			if not keys or "custom_trigger_tooltip" not in requirement_text or "hidden_trigger" not in requirement_text:
+				raw_division_state_available.append(name)
 		if complete_text == timeout_text:
 			identical_outcomes.append(name)
 		if any(marker in available_text for marker in ["can_", "has_recovered_", "is_controlled_by", "is_owned_by", "capital_scope", "num_divisions_in_states", "any_owned_state"]):
@@ -2718,6 +2771,16 @@ def verify_soviet_objective_board() -> list[Check]:
 		and not long_inline_available
 		and map_or_state_available >= len(missions) * 9 // 10
 	)
+	requirements_ok = (
+		not missing_scripted_requirement
+		and not thin_scripted_requirement
+		and not meter_only_requirement
+		and not passive_scripted_requirement
+		and not forbidden_trivial_literals
+		and len(division_tooltip_keys) >= 4
+		and not division_tooltip_missing_loc
+		and min(requirement_family_counts or [0]) >= 2
+	)
 	return [
 		Check(
 			"soviet_objective_board_surface",
@@ -2741,6 +2804,17 @@ def verify_soviet_objective_board() -> list[Check]:
 				f"raw_division_state_available={len(raw_division_state_available)} "
 				f"long_inline_available={len(long_inline_available)} "
 				f"map_or_state_available={map_or_state_available}"
+			),
+		),
+		Check(
+			"mission_requirement_surface",
+			requirements_ok,
+			(
+				f"scripted_requirement_refs={len(missions) - len(missing_scripted_requirement)}/{len(missions)} "
+				f"thin_requirements={len(thin_scripted_requirement)} meter_only={len(meter_only_requirement)} "
+				f"passive_only={len(passive_scripted_requirement)} forbidden_trivial_literals={len(forbidden_trivial_literals)} "
+				f"division_tooltips={len(division_tooltip_keys)} missing_division_tooltip_loc={len(division_tooltip_missing_loc)} "
+				f"min_requirement_families={min(requirement_family_counts or [0])}"
 			),
 		),
 	]
