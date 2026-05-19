@@ -97,9 +97,9 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Stronger Soviet Collapse ideas and spirits | `common/ideas/005_soviet_collapse_ideas.txt` and the crisis effects use multi-modifier packages for Union Crisis, recoverable republican startup disorder, stabilized emergency administration, defensive coordination, depot seizures, legal claims, foreign volunteers, old networks, factory states, and high-chaos successors; the current idea parser audit found no Event 005 idea with fewer than three modifier entries, no idea without modifiers, no tiny-only package, no missing idea picture sprite, no missing idea DDS, and no missing idea name/description localisation. `breakaway_recovery_surface` proves ordinary breakaway setup adds exactly one starting idea, `soviet_collapse_republican_startup_disorder`, and that four breakaway decisions plus focus helpers advance a recovery chain that swaps to mitigated disorder and then removes the negative idea for stabilized emergency administration. The remaining 2-3% components appear only inside broader 3-5 modifier spirits. | Implemented for current surface |
 | Random first wave from structured pools | `soviet_collapse_release_initial_republics` clears and fills `global.soviet_collapse_first_wave_republics` through western, Caucasus, and Central Asian random pool helpers, then releases the selected scopes. Each pool can now select either nonexistent supported tags whose cores are owned and controlled by SOV or existing supported Soviet subjects, which are freed with `set_autonomy` before setup. | Implemented |
 | Kazakhstan first-wave restraint | `can_soviet_collapse_open_kazakhstan_first_wave` requires southern breakaway pressure, weak obedience, war or low Soviet condition, or high chaos; Kazakhstan is outside the normal Central Asian first-wave pool | Implemented |
-| Dynamic starting force packages | `soviet_collapse_apply_breakaway_setup_package` creates manpower, equipment, guard units, field brigades, and templates from central script constants. It is reached by ordinary first-wave releases, terminal ordinary republic releases, southern cascade republics, Kazakhstan, and all 38 high-chaos successor setup helpers. The package scales by republic size, chaos tier, Soviet war state, weak center conditions, declaration posture, terminal collapse, high depot vulnerability, and high foreign penetration. | Implemented; force coverage verifier passed |
+| Dynamic starting force packages | `soviet_collapse_apply_breakaway_setup_package` creates manpower, equipment, guard units, field brigades, and templates from central script constants. It is reached by ordinary first-wave releases, terminal ordinary republic releases, southern cascade republics, Kazakhstan, and all 21 active grounded high-chaos successor setup helpers. The package scales by republic size, chaos tier, Soviet war state, weak center conditions, declaration posture, terminal collapse, high depot vulnerability, and high foreign penetration. | Implemented; force coverage verifier passed |
 | Union Crisis Threat and Moscow Authority pacing | Opening values start from central constants, apply visible condition modifiers and generic prior-crisis memory from fired major-event count plus the shared `world_in_threat` source count, then use `soviet_collapse_recalculate_total_threat` with clamping and `constant:soviet_collapse_baseline.total_threat_multiplier`; scenario audit gives calm baseline Authority 62 / Threat 7.25, tier 1 opening pressure Authority 62 / Threat 9.25, tier 5 with capital lost, war, low stability, and low war support Authority 38 / Threat 50.25, and a generic prior-memory case that stays below early-collapse levels. The prior-crisis layer does not read individual crisis-source names. The 30-day crisis pulse applies a monthly guard before progressive releases: calm successful months without failed objectives, Soviet war, or above-baseline foreign/League pressure are capped to +1 threat, and moderate successful months are capped to +4. The verifier also resolves ordinary authority, legal, command, rail, depot, and cleanup failure helpers against the threat formula; the highest ordinary failure pressure is capped at three threat or less, proving the calm baseline needs at least 24 monthly ordinary failures to reach 80 without severe-overlap drivers. The mission-success pressure audit resolves all 11 successful objective helpers against the threat formula, found all 11 net non-increasing, found zero destabilizing component changes, and measured the highest successful net threat delta at -1.50. Union Unmade still uses its ordinary first-month gates in normal play, while a 100 threat ceiling immediately fires terminal collapse and releases every ordinary republic plus every eligible terminal special successor. | Implemented for current tuning |
-| Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 unique `soviet_collapse_soviet_mission_*` mission blocks. The direct mission-balance audit found 128 activation references, 128 terminal removal references, zero missing activation/removal refs, and zero mission block or localisation problems. | Implemented; parser audit passed |
+| Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 unique `soviet_collapse_soviet_mission_*` mission blocks. The direct mission-balance audit found 118 active queue references, 128 terminal removal references, ten deliberately inactive weird-route objective entries, and zero mission block or localisation problems. | Implemented; parser audit passed |
 | Longer varied Soviet mission deadlines | The 128 Soviet missions use all 11 named `@soviet_collapse_mission_days_*` constants ranging from 95 to 365 days; no mission uses a single shared `@soviet_collapse_opening_mission_days` timeout | Implemented; timeout audit passed |
 | Decision cost corrections | `Send Loyalist Officers` spends army XP and command power only; `Restore Party Control` spends 2,000 infantry equipment, 200 support equipment, and 10,000 manpower through central `soviet_collapse_decision_cost` constants and matching trigger/localisation keys | Implemented |
 | Blocked cost localisation | Event 005 blocked cost lines in `localisation/english/005_soviet_collapse_l_english.yml` use bare icon-and-value groups only, with no prose labels or connector words between costs. | Implemented; localisation audit passed |
@@ -108,15 +108,15 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Local leagues and high-threat coordination | The regional faction system implements the Baltic League, Caucasus League, Central Asian League, and Free Republics' League. `local_league_surface` verifies founding decisions, faction creation, partner recruitment, Kazakhstan's three-smaller-republic gate, high-threat defensive-war coordination, release-cooldown clearing, MTTH release acceleration, exact player-facing league names, and local-league documentation. | Implemented |
 | Crisis decision AI behavior | The four Soviet responses, four breakaway actions, seven foreign patron actions, six factory/Volga successor actions, and 105 custom-splinter action decisions use dynamic `ai_will_do` modifiers tied to crisis variables, war state, League coordination, faction state, stability, chaos tier, old-movement weirdness, and Soviet authority. Current decision parser evidence found 126 dynamic non-mission decision AI blocks, zero flat non-mission decision AI blocks, and 128 timed mission blocks without `ai_will_do` by design. | Implemented for the current decision layer |
 | Runtime focus trees for republics and breakaways | Focus counts after duplicate pruning: Ukraine 81, Belarus 38, Kazakhstan 57, fallback breakaway 27, Baltic 21, Caucasus 20, Central Asia 14, Moldova 17 | Implemented for these trees |
-| High-chaos successor focus trees | Focus counts after duplicate pruning: CFR 45, MFR 37, OGB 32, KRS 20, and ICD/FTH/BBH/BSC/TNC/ALA/UDC/SDZ/RMC/RCD/ILU/PRA/TSC/BLT/NRF/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/TRS/NLC/SEP/DSC/COU/BEC/RLD/LID/IRA at 21 each | Implemented for these thirty-eight successors |
+| High-chaos successor focus trees | Active grounded focus packages are CFR 45, MFR 37, KRS 20, and FTH/BBH/BSC/TNC/ALA/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC at 21 each. Older death-state, resurrection, cosmic, monarchist, and religious-restoration packages remain registered assets but are not called by the active Event 005 spawn helper. | Implemented for the active grounded successor set |
 | Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions; parser audit over 46 focus trees and 1,123 retained focus IDs found no duplicate IDs, missing focus references, self-references, one-way mutual exclusions, unknown mutual targets, exact coordinate collisions, missing icons, missing `ai_will_do`, or missing/duplicated `completion_reward` blocks. Focus AI audit found 229 dynamic AI blocks overall and 114 dynamic mutually exclusive route-choice blocks; no mutually exclusive route-choice focus currently uses flat AI. The rebuilt graph layout has zero duplicate coordinates, zero hard-prerequisite edge crossings, zero visually detached long prerequisite jumps, no isolated focuses, exactly one terminal leaf per tree, no shallow side-focus leaves, all 46 continuous-focus boxes in right-side panels, maximum prerequisite horizontal jump 43, maximum vertical span 14, minimum mutual-exclusion distance 7, maximum row width 20, maximum column stack 11, and no exact duplicate focus reward bodies. The republic focus file only allows documented OR prerequisite pools on explicit convergence capstones and opening fork nodes that need visible links for hidden branch gates; ordinary convergence nodes use separate AND prerequisite links. | Implemented for current focus trees |
 | Focus tree map documentation | `docs/events/005_soviet_union_collapse.md` contains the post-cleanup focus-tree map under `Republic Focus Trees`, listing all 46 implemented trees from Ukraine through `IRA_soviet_collapse_focus_tree`, their branch zones, route identities, and right-side continuous-focus placement. The verifier checks this as `focus_tree_map_surface`. | Implemented |
-| Full package for every implemented custom country | Registered special Event 005 custom tags currently found: `CFR`, `MFR`, `OGB`, `ICD`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `RMC`, `RCD`, `ILU`, `PRA`, `TSC`, `BLT`, `NRF`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `TRS`, `NLC`, `SEP`, `DSC`, `COU`, `BEC`, `RLD`, `LID`, and `IRA` | Implemented for thirty-eight |
+| Full package for every active custom country | Active special Event 005 custom tags currently called by the spawn helper: `CFR`, `MFR`, `KRS`, `FTH`, `BBH`, `BSC`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, and `NLC` | Implemented for twenty-one |
 | Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` is an idempotent guarded wrapper; the internal setup package creates the shared `Emergency Republican Guard` template, grants manpower/equipment, and scales guard and field unit packages by major/regional tag, chaos tier, Soviet war state, weak center state, one-use declaration flags, and terminal collapse state without double-counting already-flagged breakaways | Implemented for current appearing republics and implemented successors |
 | Union Unmade first-month lock | `soviet_collapse_initialize_crisis_values` sets `soviet_collapse_union_unmade_first_month_lock` for 31 days; `soviet_collapse_maybe_show_union_unmade_super_event` refuses to fire while the lock exists | Implemented |
 | Terminal ordinary republic release | `soviet_collapse_show_union_unmade_super_event` calls `SOV = { soviet_collapse_apply_terminal_collapse = yes }`; terminal collapse releases unreleased supported ordinary republics under Soviet ownership/control and frees existing supported Soviet-subject republics before adding high-chaos successors | Implemented |
-| Terminal high-chaos successor activation | `soviet_collapse_spawn_terminal_high_chaos_successors` retries high-chaos successor spawning and, at chaos tier 5, prepares terminal gate flags before activating all eligible special actors whose packages and territory gates pass. The current gate audit found 38 special successor spawn gates with required preparation flags and zero required flags missing from `soviet_collapse_prepare_highest_chaos_terminal_successors`. | Implemented for current successor set |
-| Terminal mission and category cleanup | `is_soviet_collapse_active` excludes `soviet_collapse_terminal_collapse`; terminal cleanup clears active crisis flags, one-use declaration flags, stale loyal-unit and district war-room helper flags, removes all 128 active Soviet crisis missions from the terminal cleanup helper, blocks further objective activation, and hides Soviet, breakaway, foreign patron, regional faction, and special-actor categories after terminal collapse. Category audit found 42 Event 005 category definitions with visible gates, 41 used decision category blocks, and zero Event 005 category definitions without `is_soviet_collapse_active = yes`; regular decision audit found all non-mission decisions gated by `is_soviet_collapse_active = yes`. | Implemented |
+| Terminal high-chaos successor activation | `soviet_collapse_spawn_terminal_high_chaos_successors` retries high-chaos successor spawning and, at chaos tier 5, prepares terminal gate flags before activating eligible grounded special actors whose packages and territory gates pass. The current gate audit found 21 active special successor spawn gates, 19 terminal preparation flags, and zero disabled death-state, resurrection, cosmic, monarchist, or religious-restoration spawn calls in `soviet_collapse_maybe_spawn_high_chaos_successors`. | Implemented for the active grounded successor set |
+| Terminal mission and category cleanup | `is_soviet_collapse_active` excludes `soviet_collapse_terminal_collapse`; terminal cleanup clears active crisis flags, one-use declaration flags, stale loyal-unit and district war-room helper flags, removes all 128 defined Soviet crisis missions from the terminal cleanup helper, blocks further objective activation, and hides Soviet, breakaway, foreign patron, regional faction, and special-actor categories after terminal collapse. Ten old objective entries tied to death-state, resurrection, cosmic, monarchist, and religious-restoration routes remain defined for parser stability but are no longer queued. Category audit found 42 Event 005 category definitions with visible gates, 41 used decision category blocks, and zero Event 005 category definitions without `is_soviet_collapse_active = yes`; regular decision audit found all non-mission decisions gated by `is_soviet_collapse_active = yes`. | Implemented |
 | Mission audit table | `docs/events/005_soviet_union_collapse_mission_audit.md` contains the required `Mission / Owner / Purpose / Requirement / Success effect / Failure effect / Duplicate risk` table with all 128 Soviet crisis missions. The table links duplicate-risk claims to `mission_quality_surface`, objective-board wiring to `soviet_objective_board_surface`, concrete scripted requirements to `mission_requirement_surface`, localisation coverage to `localisation_surface`, terminal cleanup to `terminal_mission_cleanup`, named division-state tooltip coverage to the raw division-state availability check, and long-trigger readability to the long-inline availability check. | Implemented |
 | Achievements | 47 Event 005 achievement definitions; 47 Event 005 NAME keys; GFX/DDS coverage previously checked clean; route flag audit checked 89 achievement flags | Implemented; route flag audit passed |
 | Event log details | `GetEventsLogEventDetailDescription` maps Event ID 5 to `chaosx.events_log.window.event_details.soviet_collapse`; that localisation composes live in-world status lines through `GetEventsLogSovietCollapseDetail*` scripted localisation for crisis state, first-wave state, League status, Moscow Authority, Union Crisis Threat, foreign intervention, and old-movement or high-chaos splinter pressure. The direct event-log detail audit checked 57 conditions: Event ID 5 mapping, all seven scripted detail functions referenced by the main text, every function defined with outputs and a fallback, and all 25 output localisation keys present. | Implemented |
@@ -130,11 +130,11 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Super-event slot 24, Steppe Federation | `BSC_extreme_path`, `TNC_extreme_path`, `ALA_extreme_path`, and their push-extreme decisions call their Central Asian endgame helpers, which fire the helper | Implemented through the Basmachi, Turkestan, and Alash packages |
 | Super-event slot 27, The Eastern Buffer Coalition | `moldova_soviet_collapse_alliance_not_union` calls `soviet_collapse_show_eastern_buffer_coalition_super_event` | Implemented through the Moldova regional tree |
 | Docs | Event doc and super-event research docs exist and are aligned with current route wiring | Implemented for current surfaces |
-| Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, super-event assets, and the 570-file custom flag orientation audit; no historical flags were regenerated in the latest pass | Implemented for current surfaces |
-| Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, decode cleanly, use vanilla-matching bottom-origin TGA headers, and average-downsample comparison finds no small/medium variant closer to a vertically flipped large source | Audit passed; no binary correction required by current evidence |
+| Asset reuse and created assets | Current Event 005 docs record reused focus, achievement, super-event assets, and the 315-file active custom flag orientation audit; no historical flags were regenerated in the latest pass | Implemented for current surfaces |
+| Flag orientation audit | 21 active Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 315 active files exist, decode cleanly, use vanilla-matching top-origin TGA headers, and average-downsample comparison finds no small/medium variant closer to a vertically flipped large source | Audit passed; no binary correction required by current evidence |
 | Localisation design-language cleanup | Search across `common/`, `events/`, `localisation/`, `interface/`, and `docs/` found no player-facing instance of the specified design-language sentence from the cleanup prompt | Implemented |
 | Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and verified final status for the active source order | Implemented; workbook package and XML package validation passed |
-| Completion readiness | Current audit records the active influence/threat/focus rework evidence, additional comprehensive and spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Implemented |
+| Completion readiness | Current audit records the active influence/threat/focus rework evidence, additional comprehensive and spawn-balance cleanup evidence, twenty-one active grounded custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Implemented |
 
 ## Current Focus Counts
 
@@ -203,7 +203,7 @@ nonreciprocal_mutual 0
 missing_ai 0
 missing_reward 0
 missions 128
-custom_country_tags 38
+active_custom_country_tags 21
 achievements 47
 achievement_flags 89
 super_events 14
@@ -357,7 +357,7 @@ Command evidence from the 2026-05-19 continuation audit:
 brace depth/min for Event 005 focus, effect, trigger, decision, idea, constant, and event files: depth=0 min=0
 focuses 1121 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 missing_ai 0 missing_reward 0 dynamic_ai 227 dynamic_mutual_ai 114 flat_mutual_ai 0
 national_focus_repeated_mutual_blocks 0
-missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0 decision_blocks 254 timed_decisions 128 timed_outside_soviet_missions 0 categories_without_active_visible 0
+missions 128 remove_refs 128 activate_refs 118 remove_missing 0 remove_extra 0 inactive_objectives 10 activate_extra 0 decision_blocks 254 timed_decisions 128 timed_outside_soviet_missions 0 categories_without_active_visible 0
 non_mission_decision_ai dynamic_blocks 126 flat_blocks 0 timed_mission_missing_ai 128
 idea_strength_checks ideas 146 constants 159 no_modifier 0 weak_lt3 0 tiny_only 0 min_modifiers 3 max_modifiers 7 avg_modifiers 3.24 total_modifier_entries 473 tiny_components 25 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_loc 0 missing_desc 0
 modifier_count_distribution 3:118 4:23 5:4 7:1
@@ -378,12 +378,12 @@ prompt_artifact_checklist_surface rows 30 implemented_rows 44 blocked_rows 0
 verifier_command_documentation_surface markers 6 missing 0
 focus_tree_map_surface event_markers 9/9 audit_markers 3/3
 validation_snapshot_freshness_surface markers 3/3 stale 0
-flag_orientation_headers flags_checked 570 flags_missing 0 decode_errors 0 top_origin 570 bottom_origin 0
-flag_orientation_surface comparisons 380 expected 380 orientation_mismatches 0
-terminal_high_chaos_successor_surface prepare_flags 26 spawn_calls 38/38 ready_trigger_refs 38
+flag_orientation_headers flags_checked 315 flags_missing 0 decode_errors 0 top_origin 315 bottom_origin 0
+flag_orientation_surface comparisons 210 expected 210 orientation_mismatches 0
+terminal_high_chaos_successor_surface prepare_flags 19 spawn_calls 21/21 ready_trigger_refs 21
 union_unmade_super_event_checks 18 failed 0
 event_log_detail_checks 57 failed 0 detail_functions 7 detail_output_localisation_keys 25
-mission_balance_checks missions 128 unique 128 timeout_constants_defined 11 timeout_constants_used 11 timeout_min 95 timeout_max 365 remove_refs 128 activate_refs 128 problems 0 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0
+mission_balance_checks missions 128 unique 128 timeout_constants_defined 11 timeout_constants_used 11 timeout_min 95 timeout_max 365 remove_refs 128 activate_refs 118 problems 0 remove_missing 0 remove_extra 0 inactive_objectives 10 activate_extra 0
 focus_layout_checks trees 46 focuses 1123 duplicate_ids 0 coord_collisions 0 missing_coords 0 missing_search_filters 0 repeated_mutual_blocks 0 continuous_positions 46 continuous_side_bad 0 edge_crossings 0 visual_detached_edges 0 max_edge_dx 44 terminal_leaf_trees 46/46 shallow_dead_end_focuses 0 min_x_span 18 min_y_span 5 max_col 11 max_row 20
 crisis_scenarios calm_baseline authority 62 threat 7.25; modest_tier1 authority 62 threat 9.25; tier5_capital_lost_war_low_stability_low_support authority 38 threat 50.25
 crisis_monthly_guard_surface guard_constants 1.0/4.0 success_regs 11 failure_regs 11 guard_blocks 1 event129 True
@@ -442,8 +442,8 @@ crisis_cause_surface recalculate_surface True opening_surface True first_wave_pr
 mission_success_pressure_surface success_helpers=11 non_increasing=11 bad_component_changes=0 max_net_delta=-1.50 unresolved=0
 union_unmade_audit first_month_lock_in_init True lock_blocks_fire True min_breakaways_gate True high_threat_gate True critical_authority_gate True league_or_kaz_or_chaos True
 terminal_release_audit ordinary_tags_present 14 ordinary_expected 14 release_calls 1 free_subject_calls 1 setup_calls 2
-cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_refs 128 category_defs 42 visible_category_defs 42 categories_gated True decision_categories 42 regular_decisions_gated True cleanup_flags True
-soviet_objective_board_surface missions 128 count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 128 manual_only 128 visible_gated 128 payloads 128 queue_restarts 128 done_flag_refs 128 timeout_bands 11 active_cap 10 queue_cap True
+cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_refs 118 category_defs 42 visible_category_defs 42 categories_gated True decision_categories 42 regular_decisions_gated True cleanup_flags True
+soviet_objective_board_surface missions 128 count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 118 manual_only 128 visible_gated 128 payloads 128 queue_restarts 128 done_flag_refs 118 timeout_bands 11 active_cap 10 queue_cap True
 mission_quality_surface missions 128 unique_available 128/128 weak_available 0 identical_outcomes 0 raw_division_state_available 0 long_inline_available 0 map_or_state_available 127
 mission_requirement_surface scripted_requirement_refs 128/128 thin_requirements 0 meter_only 0 passive_only 0 forbidden_trivial_literals 0 division_tooltips 4 missing_division_tooltip_loc 0 min_requirement_families 2
 mission_audit_documentation_surface rows 128 mission_ids 128/128 header True validation_markers 4/4
@@ -595,13 +595,13 @@ ordinary_frees_existing_subjects True
 ordinary_calls_setup_and_focus True
 terminal_spawn_tier4_or_5_retry True
 terminal_spawn_tier5_prepare True
-highest_chaos_prepare_flags 26
+highest_chaos_prepare_flags 19
 highest_chaos_sets_weirdness_floor True
-high_chaos_spawn_helpers 38
-high_chaos_setup_successor_helpers 38
-high_chaos_spawn_helpers_reach_breakaway_setup 38
+high_chaos_spawn_helpers 21
+high_chaos_setup_successor_helpers 21
+high_chaos_spawn_helpers_reach_breakaway_setup 21
 high_chaos_spawn_helpers_missing_setup_path 0
-mission_defs 128 cleanup_remove_refs 128 cleanup_active_refs 128 missing_remove 0 extra_remove 0 missing_active 0
+mission_defs 128 cleanup_remove_refs 128 cleanup_active_refs 118 missing_remove 0 extra_remove 0 inactive_objectives 10
 cleanup_clears_active_flags True
 cleanup_clears_transient_country_flags True
 event005_category_defs 42 categories_without_active_gate 0
@@ -669,7 +669,7 @@ missions_allowed_always_no 128 missing 0
 missions_complete_timeout 128 128 missing_complete 0 missing_timeout 0
 missions_success_failure_pressure 128 128 missing_success 0 missing_failure 0
 missions_requeue_objectives 128 missing 0
-mission_board_cap_surface count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 128 active_cap 10 queue_cap True
+mission_board_cap_surface count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 118 active_cap 10 queue_cap True
 event005_localisation_bom_prefix efbbbf
 event005_localisation_colon_zero_keys 0
 requires_hits_event005_loc 0
@@ -731,9 +731,9 @@ event005_direct_evolution_writer_calls 1
 event005_record_helper_sets_event_type_tier True
 event005_record_helper_actor_target True
 event005_record_helper_duplicate_tier_flags True
-event005_setup_stage_record_calls 38
-event005_spawn_context_triplets 38
-event005_evolution_enabled_gates 38
+event005_setup_stage_record_calls 21
+event005_spawn_context_triplets 21
+event005_evolution_enabled_gates 21
 event005_baseline_event_file_direct_record False
 restore_party_control_expected_spends True
 send_loyalist_officers_expected_spends True
@@ -747,10 +747,10 @@ The requested final completion report categories are closed by current repositor
 
 Current evidence exists for:
 
-- implemented countries and packages: thirty-eight custom successors plus supported ordinary Soviet republics.
-- flags: 570 Event 005 custom flag files audited; no current binary correction indicated.
+- implemented countries and packages: twenty-one active grounded custom successors plus supported ordinary Soviet republics.
+- flags: 315 active Event 005 custom flag files audited; no current binary correction indicated.
 - focus counts and branch maps: 1121 retained focus blocks across the Event 005 runtime focus files, with no duplicate IDs or invalid focus references.
-- missions and decisions: 128 Soviet crisis missions, 128 activation entries, and 128 terminal removal entries; main Soviet, breakaway, and foreign patron crisis decisions use dynamic AI weights.
+- missions and decisions: 128 Soviet crisis missions, 118 activation entries, ten deliberately inactive weird-route objective entries, and 128 terminal removal entries; main Soviet, breakaway, and foreign patron crisis decisions use dynamic AI weights.
 - evolutions and super-events: high-chaos successor evolution writer and super-event helpers remain wired for the current route surface.
 - achievements and assets: achievement, focus, flag, leader, and super-event asset surfaces are documented in the Event 005 docs and asset manifests.
 - tests and checks: brace depth, focus reference, mission wiring, idea-strength, localisation phrase, flag orientation, unsupported operator/scope, and whitespace checks passed in the latest audit.

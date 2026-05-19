@@ -103,11 +103,28 @@ RECOVERY_SEARCH_PATTERNS = [
 ]
 
 CUSTOM_TAGS = [
-	"CFR", "MFR", "OGB", "ICD", "KRS", "FTH", "BBH", "BSC", "TNC", "ALA",
-	"UDC", "SDZ", "RMC", "RCD", "ILU", "PRA", "TSC", "BLT", "NRF", "GAC",
-	"DHC", "KHC", "FEV", "SZA", "UWD", "MRC", "IUL", "BAC", "ARD", "TRS",
-	"NLC", "SEP", "DSC", "COU", "BEC", "RLD", "LID", "IRA",
+	"CFR", "MFR", "KRS", "FTH", "BBH", "BSC", "TNC", "ALA", "UDC", "SDZ",
+	"GAC", "DHC", "KHC", "FEV", "SZA", "UWD", "MRC", "IUL", "BAC", "ARD",
+	"NLC",
 ]
+
+DISABLED_CUSTOM_TAGS = [
+	"OGB", "ICD", "RMC", "RCD", "ILU", "PRA", "TSC", "BLT", "NRF", "TRS",
+	"SEP", "DSC", "COU", "BEC", "RLD", "LID", "IRA",
+]
+
+DISABLED_SOVIET_OBJECTIVE_MISSIONS = {
+	"soviet_collapse_soviet_mission_090_contain_the_grave_registers",
+	"soviet_collapse_soviet_mission_109_classify_the_impossible_reports",
+	"soviet_collapse_soviet_mission_110_guard_the_hospitals_from_politics",
+	"soviet_collapse_soviet_mission_112_deny_the_star_iron_rumor",
+	"soviet_collapse_soviet_mission_113_break_the_funeral_train_schedule",
+	"soviet_collapse_soviet_mission_114_prevent_the_crown_from_leaving_the_archive",
+	"soviet_collapse_soviet_mission_115_silence_the_wrong_resurrection_committee",
+	"soviet_collapse_soviet_mission_116_seal_the_northern_fleet_signals",
+	"soviet_collapse_soviet_mission_117_keep_the_priests_out_of_the_war_room",
+	"soviet_collapse_soviet_mission_118_order_the_graves_counted_by_the_living",
+}
 
 ORDINARY_REPUBLIC_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST", "GEO", "ARM", "AZR", "UZB", "KYR", "TAJ", "TMS", "KAZ"]
 FIRST_WAVE_WESTERN_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST"]
@@ -1412,8 +1429,8 @@ def verify_validation_snapshot_freshness_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	required_markers = [
 		"validation_snapshot_freshness_surface",
-		"terminal_high_chaos_successor_surface prepare_flags 26 spawn_calls 38/38 ready_trigger_refs 38",
-		"highest_chaos_prepare_flags 26",
+		"terminal_high_chaos_successor_surface prepare_flags 19 spawn_calls 21/21 ready_trigger_refs 21",
+		"highest_chaos_prepare_flags 19",
 	]
 	stale_markers = [
 		"terminal_high_chaos_spawn_gates_with_required_flags 35",
@@ -2870,6 +2887,7 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 		and "soviet_collapse_show_union_unmade_super_event = yes" in maybe_body
 	)
 	missions = set(re.findall(r"^\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)\s*=\s*\{", decisions, re.MULTILINE))
+	active_missions = missions - DISABLED_SOVIET_OBJECTIVE_MISSIONS
 	cleanup_blocks = named_blocks(effect_tokens, "soviet_collapse_cleanup_terminal_collapse_missions")
 	cleanup_body = " ".join(cleanup_blocks[0]) if cleanup_blocks else ""
 	cleanup_remove_refs = set(re.findall(r"remove_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", cleanup_body))
@@ -2896,7 +2914,8 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 	cleanup_ok = (
 		len(missions) == 128
 		and cleanup_helper_ok
-		and missions <= activate_refs
+		and active_missions <= activate_refs
+		and not (DISABLED_SOVIET_OBJECTIVE_MISSIONS & activate_refs)
 		and "NOT = { has_global_flag = soviet_collapse_terminal_collapse }" in triggers
 	)
 	category_blocks = direct_child_blocks(tokens(categories))
@@ -2956,6 +2975,7 @@ def verify_soviet_objective_board() -> list[Check]:
 	mission_re = re.compile(r"^soviet_collapse_soviet_mission_(\d{3})_")
 	missions = [(name, body) for name, body in decision_blocks if mission_re.match(name)]
 	mission_ids = {name for name, _ in missions}
+	active_mission_ids = mission_ids - DISABLED_SOVIET_OBJECTIVE_MISSIONS
 	trigger_tokens = tokens(triggers)
 	scripted_triggers = dict(direct_child_blocks(trigger_tokens))
 	loc_keys = set(re.findall(r"^\s*([A-Za-z0-9_.-]+):\s*\"", loc, re.MULTILINE))
@@ -3089,21 +3109,21 @@ def verify_soviet_objective_board() -> list[Check]:
 
 	queue_cap_ok = (
 		constants.get("soviet_collapse_soviet_objective.active_cap") == 10
-		and activate_body.count("constant:soviet_collapse_soviet_objective.active_cap") >= 128
-		and activate_body.count("compare = less_than") >= 128
-		and activate_body.count("add_to_temp_variable = { soviet_collapse_active_objectives = 1 }") >= 128
+		and activate_body.count("constant:soviet_collapse_soviet_objective.active_cap") >= len(active_mission_ids)
+		and activate_body.count("compare = less_than") >= len(active_mission_ids)
+		and activate_body.count("add_to_temp_variable = { soviet_collapse_active_objectives = 1 }") >= len(active_mission_ids)
 	)
 	ok = (
 		len(missions) == 128
 		and len(count_blocks) == 1
 		and len(activate_blocks) == 1
 		and count_refs == mission_ids
-		and activate_refs == mission_ids
+		and activate_refs == active_mission_ids
 		and manual_only == len(missions)
 		and visible_gated == len(missions)
 		and mission_payloads == len(missions)
 		and queue_restarts == len(missions)
-		and done_flag_refs == len(missions)
+		and done_flag_refs == len(active_mission_ids)
 		and len(mission_timeouts) >= 8
 		and queue_cap_ok
 	)
@@ -3178,14 +3198,22 @@ def verify_terminal_high_chaos_successors() -> list[Check]:
 	prepare_flags = len(re.findall(r"\bset_country_flag\b", prepare_body))
 	expected_spawn_calls = {f"soviet_collapse_spawn_{tag.lower()}_if_enabled" for tag in CUSTOM_TAGS}
 	spawn_calls = {call for call in expected_spawn_calls if call in maybe_body}
-	ready_trigger_count = len(re.findall(r"is_soviet_collapse_high_chaos_successor_spawn_ready\s*=\s*yes", triggers))
+	disabled_spawn_calls = {f"soviet_collapse_spawn_{tag.lower()}_if_enabled" for tag in DISABLED_CUSTOM_TAGS}
+	disabled_calls_present = {call for call in disabled_spawn_calls if call in maybe_body}
+	ready_trigger_count = 0
+	for tag in CUSTOM_TAGS:
+		blocks = named_blocks(tokens(triggers), f"can_soviet_collapse_spawn_{tag.lower()}")
+		body = " ".join(blocks[0]) if blocks else ""
+		if "is_soviet_collapse_high_chaos_successor_spawn_ready = yes" in body:
+			ready_trigger_count += 1
 	ok = (
 		"has_global_flag = { flag = chaos_tier value = 5 }" in terminal_body
 		and "soviet_collapse_prepare_highest_chaos_terminal_successors" in terminal_body
 		and "soviet_collapse_maybe_spawn_high_chaos_successors" in terminal_body
-		and prepare_flags >= 25
+		and prepare_flags >= 18
 		and spawn_calls == expected_spawn_calls
-		and ready_trigger_count >= 35
+		and not disabled_calls_present
+		and ready_trigger_count == len(CUSTOM_TAGS)
 	)
 	return [
 		Check(
@@ -3193,7 +3221,7 @@ def verify_terminal_high_chaos_successors() -> list[Check]:
 			ok,
 			(
 				f"prepare_flags={prepare_flags} spawn_calls={len(spawn_calls)}/{len(expected_spawn_calls)} "
-				f"ready_trigger_refs={ready_trigger_count}"
+				f"ready_trigger_refs={ready_trigger_count} disabled_spawn_calls={len(disabled_calls_present)}"
 			),
 		)
 	]
@@ -3388,15 +3416,17 @@ def verify_flags() -> list[Check]:
 				if flipped_diff + 0.5 < normal_diff:
 					orientation_mismatches.append(f"{tag}{variant}:{folder.name}")
 				comparisons += 1
-	ok = checked == 570 and not missing and not decode_errors and top_origin == 570 and bottom_origin == 0
-	surface_ok = ok and comparisons == 380 and not orientation_mismatches
+	expected_checked = len(CUSTOM_TAGS) * (len(IDEOLOGIES) + 1) * 3
+	expected_comparisons = len(CUSTOM_TAGS) * (len(IDEOLOGIES) + 1) * 2
+	ok = checked == expected_checked and not missing and not decode_errors and top_origin == expected_checked and bottom_origin == 0
+	surface_ok = ok and comparisons == expected_comparisons and not orientation_mismatches
 	return [
 		Check("flag_orientation_headers", ok, f"flags_checked={checked} missing={len(missing)} decode_errors={len(decode_errors)} top_origin={top_origin} bottom_origin={bottom_origin}"),
 		Check(
 			"flag_orientation_surface",
 			surface_ok,
 			(
-				f"comparisons={comparisons} expected=380 orientation_mismatches={len(orientation_mismatches)} "
+				f"comparisons={comparisons} expected={expected_comparisons} orientation_mismatches={len(orientation_mismatches)} "
 				f"source_dims={','.join(sorted(source_dims))}"
 			),
 		),
@@ -3519,7 +3549,12 @@ def verify_evolution_logging_surface() -> list[Check]:
 	record_blocks = named_blocks(effect_tokens, "soviet_collapse_record_high_chaos_successor_evolution")
 	record_body = " ".join(record_blocks[0]) if record_blocks else ""
 	writer_count = len(re.findall(r"\brecord_events_log_evolution_entry\s*=\s*yes\b", effects))
-	helper_calls = len(re.findall(r"\bsoviet_collapse_record_high_chaos_successor_evolution\s*=\s*yes\b", effects))
+	helper_calls = sum(
+		1
+		for tag in CUSTOM_TAGS
+		if named_blocks(effect_tokens, f"soviet_collapse_setup_{tag.lower()}_successor")
+		and "soviet_collapse_record_high_chaos_successor_evolution = yes" in " ".join(named_blocks(effect_tokens, f"soviet_collapse_setup_{tag.lower()}_successor")[0])
+	)
 	record_context_ok = all(
 		item in record_body
 		for item in [
@@ -3753,8 +3788,8 @@ def verify_docs_surface() -> list[Check]:
 	event_markers = [
 		"Event Logs event-detail entry for Event 005",
 		"soviet_collapse_cleanup_terminal_collapse_missions",
-		"Event 005 custom country flags were audited",
-		"570 TGA files",
+		"Event 005 active custom country flags were audited",
+		"315 active TGA files",
 	]
 	input_markers = [
 		"tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md",
