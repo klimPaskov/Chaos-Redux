@@ -327,6 +327,9 @@ def verify_focuses() -> list[Check]:
 				for src, dst in edges:
 					graph[src].add(dst)
 					graph[dst].add(src)
+				children = {focus_id: set() for focus_id, _, _ in tree_focuses}
+				for src, dst in edges:
+					children[src].add(dst)
 				seen_components = set()
 				component_count = 0
 				for focus_id, _, _ in tree_focuses:
@@ -346,6 +349,11 @@ def verify_focuses() -> list[Check]:
 					for second_edge in edges[edge_index + 1:]:
 						if segments_cross(coord_by_id[first_edge[0]], coord_by_id[first_edge[1]], coord_by_id[second_edge[0]], coord_by_id[second_edge[1]]):
 							edge_crossings += 1
+				shallow_dead_end_focuses = sum(
+					1
+					for focus_id, (_, y) in coord_by_id.items()
+					if not children[focus_id] and y <= max(y_values) - 3
+				)
 				layout_rows.append(
 					{
 						"path": path,
@@ -362,6 +370,7 @@ def verify_focuses() -> list[Check]:
 						"max_row": max(y_values.count(y) for y in set(y_values)),
 						"edge_crossings": edge_crossings,
 						"isolated_focuses": len(tree_focuses) - len(connected_focuses),
+						"shallow_dead_end_focuses": shallow_dead_end_focuses,
 						"component_count": component_count,
 						"min_mutual_distance": min(mutual_distances) if mutual_distances else 99,
 						"continuous_x": continuous_x,
@@ -444,6 +453,7 @@ def verify_focuses() -> list[Check]:
 		if row["duplicate_coords"] != 0
 		or row["edge_crossings"] != 0
 		or row["isolated_focuses"] != 0
+		or row["shallow_dead_end_focuses"] != 0
 		or row["component_count"] != 1
 		or row["y_span"] > 18
 		or row["min_mutual_distance"] < 4
@@ -500,6 +510,7 @@ def verify_focuses() -> list[Check]:
 				f"continuous_side_bad={len(continuous_bad)} crossing_free={crossing_free_count} "
 				f"edge_crossings={sum(row['edge_crossings'] for row in layout_rows)} "
 				f"isolated_focuses={sum(row['isolated_focuses'] for row in layout_rows)} "
+				f"shallow_dead_end_focuses={sum(row['shallow_dead_end_focuses'] for row in layout_rows)} "
 				f"disconnected_trees={sum(1 for row in layout_rows if row['component_count'] != 1)} "
 				f"deep_trees={sum(1 for row in layout_rows if row['y_span'] > 18)} "
 				f"tight_mutual_trees={sum(1 for row in layout_rows if row['min_mutual_distance'] < 4)} "
