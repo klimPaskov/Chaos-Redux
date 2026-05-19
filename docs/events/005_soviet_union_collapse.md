@@ -446,7 +446,7 @@ Failed Soviet objective families also trigger short report events in `events/005
 
 The main crisis decision AI weights react to the same crisis state. Soviet responses prefer authority restoration, loyalist officers, supply-route action, or reserve mobilization based on Moscow Authority, Military Obedience, Depot Vulnerability, Foreign Penetration, League coordination, active war, and Union Crisis Threat. Breakaway actions prefer recognition, mobilization, depot seizure, or front coordination based on Soviet weakness, war with Moscow, faction membership, League coordination, and chaos tier. Foreign patron actions prefer recognition, liaison, arms, advisers, intelligence, volunteers, or trade based on Soviet authority, foreign penetration, military obedience, depot vulnerability, war with Moscow, total threat, and League coordination.
 
-The full Soviet objective mission audit lives in `docs/events/005_soviet_union_collapse_mission_audit.md`. It records all 128 missions against owner, purpose, requirement summary, success helper, failure helper, and duplicate-risk evidence, and links the table to `soviet_objective_board_surface`, `mission_quality_surface`, `localisation_surface`, and `terminal_mission_cleanup`.
+The full Soviet objective mission audit lives in `docs/events/005_soviet_union_collapse_mission_audit.md`. It records all 128 missions against owner, purpose, requirement summary, success helper, failure helper, and duplicate-risk evidence, and links the table to `soviet_objective_board_surface`, `mission_quality_surface`, `mission_requirement_surface`, `localisation_surface`, and `terminal_mission_cleanup`.
 
 ## Icon Wiring
 
