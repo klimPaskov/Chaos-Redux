@@ -2759,7 +2759,11 @@ def verify_fuel_cost_surface() -> list[Check]:
 		"soviet_collapse_foreign_intervention.league_logistics_regional_fuel": 8500,
 		"soviet_collapse_foreign_intervention.league_logistics_major_fuel": 12000,
 		"soviet_collapse_foreign_intervention.protection_treaty_fuel": 6000,
+		"soviet_collapse_foreign_intervention.protection_treaty_regional_fuel": 8500,
+		"soviet_collapse_foreign_intervention.protection_treaty_major_fuel": 12000,
 		"soviet_collapse_foreign_intervention.client_cabinet_fuel": 8500,
+		"soviet_collapse_foreign_intervention.client_cabinet_regional_fuel": 12000,
+		"soviet_collapse_foreign_intervention.client_cabinet_major_fuel": 16000,
 		"soviet_collapse_moscow_reintegration.union_treaty_fuel": 5000,
 		"soviet_collapse_moscow_reintegration.federal_compact_fuel": 9000,
 	}
@@ -2785,7 +2789,11 @@ def verify_fuel_cost_surface() -> list[Check]:
 		"soviet_collapse_foreign_intervention.league_logistics_regional_fuel_extra_spend": -2500,
 		"soviet_collapse_foreign_intervention.league_logistics_major_fuel_extra_spend": -6000,
 		"soviet_collapse_foreign_intervention.protection_treaty_fuel_spend": -6000,
+		"soviet_collapse_foreign_intervention.protection_treaty_regional_fuel_extra_spend": -2500,
+		"soviet_collapse_foreign_intervention.protection_treaty_major_fuel_extra_spend": -6000,
 		"soviet_collapse_foreign_intervention.client_cabinet_fuel_spend": -8500,
+		"soviet_collapse_foreign_intervention.client_cabinet_regional_fuel_extra_spend": -3500,
+		"soviet_collapse_foreign_intervention.client_cabinet_major_fuel_extra_spend": -7500,
 		"soviet_collapse_moscow_reintegration.union_treaty_fuel_spend": -5000,
 		"soviet_collapse_moscow_reintegration.federal_compact_fuel_spend": -9000,
 	}
@@ -2808,14 +2816,20 @@ def verify_fuel_cost_surface() -> list[Check]:
 		"soviet_collapse_foreign_aid_league_logistics_fuel_cost_base": "6000",
 		"soviet_collapse_foreign_aid_league_logistics_fuel_cost_regional": "8500",
 		"soviet_collapse_foreign_aid_league_logistics_fuel_cost_major": "12000",
+		"soviet_collapse_foreign_protection_treaty_fuel_cost_base": "6000",
+		"soviet_collapse_foreign_protection_treaty_fuel_cost_regional": "8500",
+		"soviet_collapse_foreign_protection_treaty_fuel_cost_major": "12000",
+		"soviet_collapse_foreign_client_cabinet_fuel_cost_base": "8500",
+		"soviet_collapse_foreign_client_cabinet_fuel_cost_regional": "12000",
+		"soviet_collapse_foreign_client_cabinet_fuel_cost_major": "16000",
 	}
 	expected_cost_text_values = {
 		"soviet_collapse_cut_rebel_supply_routes_cost_text": "£GFX_fuel_texticon 3000",
 		"soviet_collapse_breakaway_coordinate_fronts_cost_text": "£GFX_fuel_texticon 1800",
 		"soviet_collapse_moscow_union_treaty_cost_text": "£GFX_fuel_texticon 5000",
 		"soviet_collapse_moscow_federal_compact_cost_text": "£GFX_fuel_texticon 9000",
-		"soviet_collapse_foreign_protection_treaty_cost_text": "£GFX_fuel_texticon 6000",
-		"soviet_collapse_foreign_client_cabinet_cost_text": "£GFX_fuel_texticon 8500",
+		"soviet_collapse_foreign_protection_treaty_cost_text": "£GFX_fuel_texticon [FROM.GetSovietCollapseForeignProtectionTreatyFuelCost]",
+		"soviet_collapse_foreign_client_cabinet_cost_text": "£GFX_fuel_texticon [FROM.GetSovietCollapseForeignClientCabinetFuelCost]",
 	}
 	constants_ok = all(constants.get(key) == value for key, value in expected_constants.items())
 	spends_ok = all(constants.get(key) == value for key, value in expected_spends.items())
@@ -2831,6 +2845,7 @@ def verify_fuel_cost_surface() -> list[Check]:
 			("military_construction_fuel", "military_construction_regional_fuel", "military_construction_major_fuel"),
 			("aid_corridor_fuel", "aid_corridor_regional_fuel", "aid_corridor_major_fuel"),
 			("league_logistics_fuel", "league_logistics_regional_fuel", "league_logistics_major_fuel"),
+			("protection_treaty_fuel", "protection_treaty_regional_fuel", "protection_treaty_major_fuel"),
 		]
 	)
 	docs_ok = "fuel-heavy target-tier costs" in docs
@@ -2848,10 +2863,12 @@ def verify_fuel_cost_surface() -> list[Check]:
 
 def verify_reintegration_puppet_surface() -> list[Check]:
 	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
+	constant_values = parse_script_constants(constants)
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
+	scripted_loc = read_text(ROOT / "common/scripted_localisation/005_soviet_collapse_scripted_localisation.txt")
 	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
 	mechanic_docs = read_text(ROOT / "docs/events/005_soviet_union_collapse_reintegration_dependency.md")
 	constant_markers = [
@@ -2910,6 +2927,78 @@ def verify_reintegration_puppet_surface() -> list[Check]:
 			"soviet_collapse_foreign_client_cabinet",
 		]
 	)
+	dynamic_dependency_cost_markers = [
+		"GetSovietCollapseForeignProtectionTreatyPPCost",
+		"GetSovietCollapseForeignProtectionTreatyCPCost",
+		"GetSovietCollapseForeignProtectionTreatyFuelCost",
+		"GetSovietCollapseForeignAdviserPrivilegesArmyXPCost",
+		"GetSovietCollapseForeignAdviserPrivilegesCPCost",
+		"GetSovietCollapseForeignAdviserPrivilegesManpowerCost",
+		"GetSovietCollapseForeignClientCabinetPPCost",
+		"GetSovietCollapseForeignClientCabinetCPCost",
+		"GetSovietCollapseForeignClientCabinetFuelCost",
+	]
+	dynamic_dependency_loc_ok = all(marker in scripted_loc for marker in dynamic_dependency_cost_markers) and all(
+		marker in loc
+		for marker in [
+			"soviet_collapse_foreign_protection_treaty_pp_cost_major",
+			"soviet_collapse_foreign_protection_treaty_cp_cost_major",
+			"soviet_collapse_foreign_protection_treaty_fuel_cost_major",
+			"soviet_collapse_foreign_adviser_privileges_army_xp_cost_major",
+			"soviet_collapse_foreign_adviser_privileges_cp_cost_major",
+			"soviet_collapse_foreign_adviser_privileges_manpower_cost_major",
+			"soviet_collapse_foreign_client_cabinet_pp_cost_major",
+			"soviet_collapse_foreign_client_cabinet_cp_cost_major",
+			"soviet_collapse_foreign_client_cabinet_fuel_cost_major",
+		]
+	) and all(f"FROM.{marker}" in loc for marker in dynamic_dependency_cost_markers)
+	dynamic_dependency_constants_ok = all(
+		marker in constants
+		for marker in [
+			"protection_treaty_regional_political_power",
+			"protection_treaty_major_fuel_extra_spend",
+			"adviser_privileges_regional_army_xp",
+			"adviser_privileges_major_manpower_extra_spend",
+			"client_cabinet_regional_command_power",
+			"client_cabinet_major_fuel_extra_spend",
+		]
+	)
+	dynamic_dependency_triggers_ok = all(
+		marker in triggers
+		for marker in [
+			"protection_treaty_major_political_power",
+			"protection_treaty_regional_fuel",
+			"adviser_privileges_major_army_xp",
+			"adviser_privileges_regional_manpower",
+			"client_cabinet_major_political_power",
+			"client_cabinet_regional_fuel",
+		]
+	)
+	dynamic_dependency_effects_ok = all(
+		marker in effects
+		for marker in [
+			"protection_treaty_major_fuel_extra_spend",
+			"protection_treaty_regional_command_power_extra_spend",
+			"adviser_privileges_major_manpower_extra_spend",
+			"adviser_privileges_regional_army_xp_extra_spend",
+			"client_cabinet_major_political_power_extra_spend",
+			"client_cabinet_regional_fuel_extra_spend",
+		]
+	)
+	dynamic_dependency_tier_order_ok = all(
+		constant_values[f"soviet_collapse_foreign_intervention.{base}"] < constant_values[f"soviet_collapse_foreign_intervention.{regional}"] < constant_values[f"soviet_collapse_foreign_intervention.{major}"]
+		for base, regional, major in [
+			("protection_treaty_political_power", "protection_treaty_regional_political_power", "protection_treaty_major_political_power"),
+			("protection_treaty_command_power", "protection_treaty_regional_command_power", "protection_treaty_major_command_power"),
+			("protection_treaty_fuel", "protection_treaty_regional_fuel", "protection_treaty_major_fuel"),
+			("adviser_privileges_army_xp", "adviser_privileges_regional_army_xp", "adviser_privileges_major_army_xp"),
+			("adviser_privileges_command_power", "adviser_privileges_regional_command_power", "adviser_privileges_major_command_power"),
+			("adviser_privileges_manpower", "adviser_privileges_regional_manpower", "adviser_privileges_major_manpower"),
+			("client_cabinet_political_power", "client_cabinet_regional_political_power", "client_cabinet_major_political_power"),
+			("client_cabinet_command_power", "client_cabinet_regional_command_power", "client_cabinet_major_command_power"),
+			("client_cabinet_fuel", "client_cabinet_regional_fuel", "client_cabinet_major_fuel"),
+		]
+	)
 	highest_influence_ok = all(marker in triggers for marker in [
 		"soviet_collapse_influence_moscow",
 		"soviet_collapse_influence_germany value = soviet_collapse_influence_britain",
@@ -2932,11 +3021,13 @@ def verify_reintegration_puppet_surface() -> list[Check]:
 		"three-step dependency chain",
 		"Install Client Cabinet",
 		"strong League or faction protection",
+		"dependency-chain actions use the same target-tier scripted localisation",
 	]) and all(marker in mechanic_docs for marker in [
 		"## Moscow Path",
 		"## Foreign Sponsor Path",
 		"## Icons",
 		"reintegration_puppet_surface",
+		"ordinary, regional, and major target-tier cost model",
 	])
 	return [
 		Check(
@@ -2948,6 +3039,11 @@ def verify_reintegration_puppet_surface() -> list[Check]:
 				and all(effect in effects for effect in required_effects)
 				and decision_loc_ok
 				and cost_loc_ok
+				and dynamic_dependency_loc_ok
+				and dynamic_dependency_constants_ok
+				and dynamic_dependency_triggers_ok
+				and dynamic_dependency_effects_ok
+				and dynamic_dependency_tier_order_ok
 				and highest_influence_ok
 				and autonomy_ok
 				and docs_ok
@@ -2958,6 +3054,9 @@ def verify_reintegration_puppet_surface() -> list[Check]:
 				f"triggers={all(trigger in triggers for trigger in required_triggers)} "
 				f"effects={all(effect in effects for effect in required_effects)} "
 				f"decision_loc={decision_loc_ok} cost_loc={cost_loc_ok} "
+				f"dynamic_dependency_loc={dynamic_dependency_loc_ok} dynamic_dependency_constants={dynamic_dependency_constants_ok} "
+				f"dynamic_dependency_triggers={dynamic_dependency_triggers_ok} dynamic_dependency_effects={dynamic_dependency_effects_ok} "
+				f"dynamic_dependency_tier_order={dynamic_dependency_tier_order_ok} "
 				f"highest_influence={highest_influence_ok} autonomy={autonomy_ok} docs={docs_ok}"
 			),
 		)
