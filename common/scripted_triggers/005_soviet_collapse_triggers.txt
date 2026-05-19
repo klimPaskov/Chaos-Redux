@@ -143,6 +143,55 @@ can_target_soviet_collapse_breakaway_for_aid = {
 	}
 	NOT = { tag = SOV }
 	has_soviet_collapse_foreign_aid_route_to_from = yes
+	has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = yes
+}
+
+has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = {
+	FROM = {
+		OR = {
+			has_war_with = SOV
+			NOT = { has_stability > constant:soviet_collapse_puppet_pressure.target_stability_ceiling }
+			NOT = { has_war_support > constant:soviet_collapse_puppet_pressure.target_war_support_ceiling }
+			NOT = { has_equipment = { infantry_equipment > constant:soviet_collapse_influence_war.target_acceptance_equipment_floor } }
+			has_country_flag = soviet_collapse_foreign_aid_corridor_open
+			has_country_flag = soviet_collapse_balanced_sponsors_two
+			has_country_flag = soviet_collapse_balanced_sponsors_three
+			check_variable = { var = soviet_collapse_recognition_progress value = constant:soviet_collapse_influence_war.target_acceptance_recognition_floor compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_independence_resilience value = constant:soviet_collapse_influence_war.target_acceptance_resilience_need_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_influence_patronage_risk value = constant:soviet_collapse_influence_war.target_acceptance_patronage_ceiling compare = less_than }
+		}
+	}
+	NOT = {
+		AND = {
+			FROM = {
+				has_country_flag = soviet_collapse_dominant_sponsor_lock
+				check_variable = { var = soviet_collapse_influence_patronage_risk value = constant:soviet_collapse_influence_war.target_acceptance_patronage_ceiling compare = greater_than_or_equals }
+				NOT = { has_war_with = SOV }
+				NOT = { has_country_flag = soviet_collapse_balanced_sponsors_two }
+				NOT = { has_country_flag = soviet_collapse_balanced_sponsors_three }
+			}
+			NOT = { is_soviet_collapse_relief_patron_style = yes }
+			NOT = { is_soviet_collapse_league_conference_patron_style = yes }
+		}
+	}
+	OR = {
+		FROM = { NOT = { is_soviet_collapse_republic_protected_from_external_dependency = yes } }
+		FROM = { has_war_with = SOV }
+		FROM = { has_country_flag = soviet_collapse_foreign_aid_corridor_open }
+		is_soviet_collapse_relief_patron_style = yes
+		is_soviet_collapse_league_conference_patron_style = yes
+	}
+	NOT = {
+		AND = {
+			is_soviet_collapse_client_patron_style = yes
+			FROM = {
+				check_variable = { var = soviet_collapse_influence_patronage_risk value = constant:soviet_collapse_influence_war.stage_2_threshold compare = greater_than_or_equals }
+				NOT = { has_war_with = SOV }
+				NOT = { has_country_flag = soviet_collapse_balanced_sponsors_two }
+				NOT = { has_country_flag = soviet_collapse_balanced_sponsors_three }
+			}
+		}
+	}
 }
 
 has_soviet_collapse_foreign_aid_route_to_from = {
