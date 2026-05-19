@@ -1187,6 +1187,217 @@ soviet_collapse_apply_foreign_influence_delta = {
 	if = { limit = { tag = FIN } FROM = { add_to_variable = { soviet_collapse_influence_finland = soviet_collapse_influence_delta } } }
 	if = { limit = { tag = SWE } FROM = { add_to_variable = { soviet_collapse_influence_sweden = soviet_collapse_influence_delta } } }
 	if = { limit = { tag = ITA } FROM = { add_to_variable = { soviet_collapse_influence_italy = soviet_collapse_influence_delta } } }
+	FROM = { soviet_collapse_update_sponsor_balance_pressure = yes }
+}
+
+soviet_collapse_update_sponsor_balance_pressure = {
+	set_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 0 }
+	set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = 0 }
+	set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = 0 }
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_germany value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_germany value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_germany }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_germany value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_germany }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_britain value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_britain value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_britain }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_britain value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_britain }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_japan value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_japan value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_japan }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_japan value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_japan }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_france value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_france value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_france }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_france value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_france }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_usa value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_usa value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_usa }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_usa value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_usa }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_turkey value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_turkey value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_turkey }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_turkey value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_turkey }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_iran value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_iran value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_iran }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_iran value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_iran }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_poland value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_poland value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_poland }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_poland value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_poland }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_romania value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_romania value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_romania }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_romania value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_romania }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_finland value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_finland value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_finland }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_finland value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_finland }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_sweden value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_sweden value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_sweden }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_sweden value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_sweden }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_italy value = constant:soviet_collapse_influence_war.balanced_sponsor_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { soviet_collapse_active_foreign_sponsor_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_italy value = soviet_collapse_top_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_top_foreign_sponsor_influence }
+		set_temp_variable = { soviet_collapse_top_foreign_sponsor_influence = soviet_collapse_influence_italy }
+	}
+	else_if = {
+		limit = { check_variable = { var = soviet_collapse_influence_italy value = soviet_collapse_second_foreign_sponsor_influence compare = greater_than } }
+		set_temp_variable = { soviet_collapse_second_foreign_sponsor_influence = soviet_collapse_influence_italy }
+	}
+	set_temp_variable = { soviet_collapse_foreign_sponsor_gap = soviet_collapse_top_foreign_sponsor_influence }
+	subtract_from_temp_variable = { soviet_collapse_foreign_sponsor_gap = soviet_collapse_second_foreign_sponsor_influence }
+	if = {
+		limit = {
+			NOT = { has_country_flag = soviet_collapse_balanced_sponsors_two }
+			check_variable = { var = soviet_collapse_active_foreign_sponsor_count value = 2 compare = greater_than_or_equals }
+		}
+		set_country_flag = soviet_collapse_balanced_sponsors_two
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.balanced_two_resilience }
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.balanced_two_patronage_risk }
+		clamp_variable = { var = soviet_collapse_independence_resilience min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+		clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = soviet_collapse_balanced_sponsors_three }
+			check_variable = { var = soviet_collapse_active_foreign_sponsor_count value = 3 compare = greater_than_or_equals }
+		}
+		set_country_flag = soviet_collapse_balanced_sponsors_three
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.balanced_three_resilience }
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.balanced_three_patronage_risk }
+		clamp_variable = { var = soviet_collapse_independence_resilience min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+		clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = soviet_collapse_dominant_sponsor_warning }
+			check_variable = { var = soviet_collapse_top_foreign_sponsor_influence value = constant:soviet_collapse_influence_war.dominant_warning_influence compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_foreign_sponsor_gap value = constant:soviet_collapse_influence_war.dominant_warning_gap compare = greater_than_or_equals }
+		}
+		set_country_flag = soviet_collapse_dominant_sponsor_warning
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.dominant_warning_patronage_risk }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.dominant_warning_resilience }
+		clamp_variable = { var = soviet_collapse_independence_resilience min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+		clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = soviet_collapse_dominant_sponsor_lock }
+			check_variable = { var = soviet_collapse_top_foreign_sponsor_influence value = constant:soviet_collapse_influence_war.dominant_lock_influence compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_foreign_sponsor_gap value = constant:soviet_collapse_influence_war.dominant_lock_gap compare = greater_than_or_equals }
+		}
+		set_country_flag = soviet_collapse_dominant_sponsor_lock
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.dominant_lock_patronage_risk }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.dominant_lock_resilience }
+		clamp_variable = { var = soviet_collapse_independence_resilience min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+		clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	}
 }
 
 soviet_collapse_update_foreign_investment_stage_ideas = {
