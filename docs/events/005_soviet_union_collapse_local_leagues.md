@@ -2,7 +2,7 @@
 
 ## Overview
 
-Event 005 uses local leagues as the regional layer between isolated breakaway republics and the larger Free Republics' League. The Baltic League, Caucasus League, and Central Asian League are founded through the `soviet_collapse_regional_faction_category` decision category once a valid breakaway or high-chaos successor exists.
+Event 005 uses local leagues as the regional layer between isolated breakaway republics and the larger Free Republics' League. The Baltic League, Caucasus League, and Central Asian League are founded through the `soviet_collapse_regional_faction_category` decision category once a valid breakaway or high-chaos successor exists and the crisis has enough pressure to justify regional coordination.
 
 ## Flow
 
@@ -15,6 +15,8 @@ Event 005 uses local leagues as the regional layer between isolated breakaway re
 ## Interactions
 
 Local leagues protect republics from foreign client-state pressure by giving them faction membership and regional-faction flags. They also feed the wider `soviet_collapse_league_cohesion` variable, which increases release pressure and blocks calm reintegration routes when the bloc is strong.
+
+Foundation is gated by pressure through `is_soviet_collapse_regional_league_foundation_pressure_ready`. That trigger accepts an existing war with Moscow, credible recognition progress, high Union Crisis Threat or republican confidence, multiple breakaways, high foreign appetite, or a fresh failed Soviet objective. A single calm breakaway no longer opens a league on its own.
 
 The Baltic League, Caucasus League, and Central Asian League keep their existing scripted keys and wired sprites for asset compatibility, but player-facing text uses league names throughout.
 
