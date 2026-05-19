@@ -893,9 +893,14 @@ has_recovered_soviet_collapse_breakaway_capital = {
 can_confirm_soviet_collapse_emergency_chain_of_command = {
 	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
 	has_army_experience > constant:soviet_collapse_soviet_objective.good_army_xp
-	num_divisions_in_states = {
-		count > 6
-		states = { 219 214 195 209 }
+	custom_trigger_tooltip = {
+		tooltip = soviet_collapse_hold_northern_signal_offices_tt
+		hidden_trigger = {
+			num_divisions_in_states = {
+				count > 6
+				states = { 219 214 195 209 }
+			}
+		}
 	}
 	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
 }
@@ -910,9 +915,14 @@ can_seal_soviet_collapse_first_circular = {
 can_guard_soviet_collapse_peoples_commissariats = {
 	capital_scope = { is_controlled_by = ROOT }
 	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
-	num_divisions_in_states = {
-		count > 4
-		states = { 219 214 }
+	custom_trigger_tooltip = {
+		tooltip = soviet_collapse_guard_capital_ministry_belt_tt
+		hidden_trigger = {
+			num_divisions_in_states = {
+				count > 4
+				states = { 219 214 }
+			}
+		}
 	}
 	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
 }
@@ -972,10 +982,31 @@ can_open_soviet_collapse_loyalist_courier_line = {
 	capital_scope = { is_controlled_by = ROOT }
 	has_manpower > constant:soviet_collapse_soviet_objective.low_manpower_req
 	has_equipment = { infantry_equipment > constant:soviet_collapse_soviet_objective.low_equipment_req }
-	num_divisions_in_states = {
-		count > 4
-		states = { 219 242 206 }
+	custom_trigger_tooltip = {
+		tooltip = soviet_collapse_hold_western_courier_belt_tt
+		hidden_trigger = {
+			num_divisions_in_states = {
+				count > 4
+				states = { 219 242 206 }
+			}
+		}
 	}
+}
+
+can_certify_soviet_collapse_loyal_military_districts = {
+	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
+	has_army_experience > constant:soviet_collapse_soviet_objective.good_army_xp
+	command_power > constant:soviet_collapse_soviet_objective.good_command_power
+	custom_trigger_tooltip = {
+		tooltip = soviet_collapse_certify_loyal_military_districts_tt
+		hidden_trigger = {
+			num_divisions_in_states = {
+				count > 8
+				states = { 219 242 206 229 }
+			}
+		}
+	}
+	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than }
 }
 
 can_protect_soviet_collapse_first_reclamation_staging_area = {
