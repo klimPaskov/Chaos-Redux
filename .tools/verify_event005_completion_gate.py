@@ -758,6 +758,73 @@ def verify_ideas() -> list[Check]:
 	]
 
 
+def verify_breakaway_recovery_surface() -> list[Check]:
+	effects_text = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	decisions_text = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	docs_text = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
+	effect_tokens = tokens(effects_text)
+	setup_blocks = named_blocks(effect_tokens, "soviet_collapse_apply_breakaway_setup_package")
+	recovery_blocks = named_blocks(effect_tokens, "soviet_collapse_check_republic_recovery")
+	starting_ideas = []
+	if setup_blocks:
+		setup_text = " ".join(setup_blocks[0])
+		starting_ideas = re.findall(r"\badd_ideas?\s*=\s*([A-Za-z0-9_]+)", setup_text)
+	recovery_text = " ".join(recovery_blocks[0]) if recovery_blocks else ""
+	breakaway_decision_block = ""
+	for category_name, category_body in direct_child_blocks(tokens(decisions_text)):
+		if category_name == "soviet_collapse_breakaway_category":
+			breakaway_decision_block = " ".join(category_body)
+			break
+	breakaway_decisions = re.findall(r"\bsoviet_collapse_(?:request_foreign_recognition|mobilize_defense_units|seize_depots|coordinate_fronts)\s*=", breakaway_decision_block)
+	decision_progress_refs = effects_text.count("soviet_collapse_add_republic_decision_recovery_progress = yes")
+	focus_progress_refs = effects_text.count("soviet_collapse_add_republic_focus_recovery_progress = yes")
+	recovery_constants = {
+		"partial": constants.get("soviet_collapse_breakaway_recovery.partial_recovery"),
+		"complete": constants.get("soviet_collapse_breakaway_recovery.recovery_complete"),
+		"decision": constants.get("soviet_collapse_breakaway_recovery.decision_progress"),
+		"focus": constants.get("soviet_collapse_breakaway_recovery.focus_progress"),
+	}
+	setup_ok = starting_ideas == ["soviet_collapse_republican_startup_disorder"]
+	recovery_ok = all(
+		marker in recovery_text
+		for marker in [
+			"swap_ideas",
+			"remove_idea = soviet_collapse_republican_startup_disorder",
+			"add_idea = soviet_collapse_republican_startup_disorder_mitigated",
+			"remove_ideas = soviet_collapse_republican_startup_disorder",
+			"remove_ideas = soviet_collapse_republican_startup_disorder_mitigated",
+			"add_ideas = soviet_collapse_emergency_administration_stabilized",
+			"soviet_collapse_republic_startup_disorder_resolved",
+		]
+	)
+	progress_ok = (
+		len(breakaway_decisions) == 4
+		and decision_progress_refs >= 4
+		and focus_progress_refs >= 6
+		and recovery_constants == {"partial": 2.0, "complete": 4.0, "decision": 1.0, "focus": 1.0}
+	)
+	docs_ok = all(
+		marker in docs_text
+		for marker in [
+			"A newly released republic starts with `soviet_collapse_republican_startup_disorder`",
+			"remove it and add `soviet_collapse_emergency_administration_stabilized`",
+		]
+	)
+	return [
+		Check(
+			"breakaway_recovery_surface",
+			setup_ok and recovery_ok and progress_ok and docs_ok,
+			(
+				f"starting_ideas={len(starting_ideas)} setup_only_disorder={setup_ok} "
+				f"recovery_swap_remove={recovery_ok} breakaway_decisions={len(breakaway_decisions)} "
+				f"decision_progress_refs={decision_progress_refs} focus_progress_refs={focus_progress_refs} "
+				f"constants={recovery_constants} docs={docs_ok}"
+			),
+		)
+	]
+
+
 def verify_input_files() -> list[Check]:
 	checks = []
 	for rel in REQUIRED_INPUTS:
@@ -3555,6 +3622,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_braces_and_unsupported())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
+	checks.extend(verify_breakaway_recovery_surface())
 	checks.extend(verify_first_wave_and_forces())
 	checks.extend(verify_dynamic_force_coverage())
 	checks.extend(verify_crisis_balance())
