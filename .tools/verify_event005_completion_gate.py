@@ -1890,7 +1890,7 @@ def verify_mtth_release_surface() -> list[Check]:
 	]
 
 
-def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability: bool = False, low_war_support: bool = False, active_war: bool = False, capital_lost: bool = False) -> tuple[float, float]:
+def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability: bool = False, low_war_support: bool = False, active_war: bool = False, capital_lost: bool = False, fired_major_events: int = 0, world_threat_sources: int = 0) -> tuple[float, float]:
 	authority = constants["soviet_collapse_baseline.moscow_authority"]
 	confidence = constants["soviet_collapse_baseline.republic_confidence"]
 	obedience = constants["soviet_collapse_baseline.military_obedience"]
@@ -1898,6 +1898,15 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 	foreign = constants["soviet_collapse_baseline.foreign_appetite"]
 	league = constants["soviet_collapse_baseline.league_cohesion"]
 	weirdness = constants["soviet_collapse_baseline.evolution_weirdness"]
+
+	if fired_major_events > 0:
+		confidence += fired_major_events * constants["soviet_collapse_opening_pressure.prior_major_event_republic_confidence"]
+		authority += fired_major_events * constants["soviet_collapse_opening_pressure.prior_major_event_authority"]
+	if world_threat_sources > 0:
+		authority += constants["soviet_collapse_opening_pressure.active_world_threat_authority"]
+		obedience += constants["soviet_collapse_opening_pressure.active_world_threat_obedience"]
+		foreign += constants["soviet_collapse_opening_pressure.active_world_threat_foreign_appetite"]
+		foreign += world_threat_sources * constants["soviet_collapse_opening_pressure.active_world_threat_source_foreign_appetite"]
 
 	if tier == 1:
 		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_1"]
@@ -2073,6 +2082,7 @@ def verify_crisis_balance() -> list[Check]:
 	calm_authority, calm_threat = crisis_scenario(constants)
 	tier1_authority, tier1_threat = crisis_scenario(constants, tier=1)
 	severe_authority, severe_threat = crisis_scenario(constants, tier=5, low_stability=True, low_war_support=True, active_war=True, capital_lost=True)
+	prior_memory_authority, prior_memory_threat = crisis_scenario(constants, fired_major_events=4, world_threat_sources=2)
 	recalculate_blocks = named_blocks(effect_tokens, "soviet_collapse_recalculate_total_threat")
 	initialize_blocks = named_blocks(effect_tokens, "soviet_collapse_initialize_crisis_values")
 	monthly_guard_blocks = named_blocks(effect_tokens, "soviet_collapse_apply_monthly_threat_guard")
@@ -2116,6 +2126,26 @@ def verify_crisis_balance() -> list[Check]:
 	opening_surface = (
 		len(initialize_blocks) == 1
 		and all(f"set_variable = {{ {var} = constant:soviet_collapse_baseline.{var.removeprefix('soviet_collapse_')} }}" in initialize_body for var in component_variables)
+		and "refresh_world_threat_state = yes" in initialize_body
+		and "count_fired_major_events = yes" in initialize_body
+		and "set_temp_variable = { soviet_collapse_current_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }" in initialize_body
+		and "is_in_array = { global.fired_events = soviet_collapse_current_event_id }" in initialize_body
+		and "subtract_from_temp_variable = { major_events_count = 1 }" in initialize_body
+		and "check_variable = { major_events_count > 0 }" in initialize_body
+		and all(f"soviet_collapse_opening_pressure.{marker}" in constants and marker in initialize_body for marker in [
+			"prior_major_event_republic_confidence",
+			"prior_major_event_authority",
+			"active_world_threat_authority",
+			"active_world_threat_obedience",
+			"active_world_threat_foreign_appetite",
+			"active_world_threat_source_foreign_appetite",
+		])
+		and all(marker in initialize_body for marker in [
+			"has_global_flag = world_in_threat",
+			"global.world_threat_source_count",
+			"soviet_collapse_active_world_threat_sources",
+		])
+		and not re.search(r"\bworld_threat_source_(?!count\b)[A-Za-z0-9_]+", initialize_body)
 		and all(f"has_global_flag = {{ flag = chaos_tier value = {tier} }}" in initialize_body for tier in [1, 2, 3, 4, 5])
 		and "has_stability < constant:soviet_collapse_soviet_objective.good_stability" in initialize_body
 		and "has_war_support < constant:soviet_collapse_soviet_objective.good_war_support" in initialize_body
@@ -2198,6 +2228,9 @@ def verify_crisis_balance() -> list[Check]:
 		and tier1_threat <= 15
 		and severe_authority > 0
 		and 35 <= severe_threat < 80
+		and prior_memory_authority < calm_authority
+		and prior_memory_threat > calm_threat
+		and prior_memory_threat < 20
 		and visible_causes
 		and pressure_helpers >= 20
 		and constants.get("soviet_collapse_baseline.total_threat_multiplier", 1) <= 0.25
@@ -2218,6 +2251,7 @@ def verify_crisis_balance() -> list[Check]:
 				f"calm_authority={calm_authority:.0f} calm_threat={calm_threat:.2f} "
 				f"tier1_authority={tier1_authority:.0f} tier1_threat={tier1_threat:.2f} "
 				f"severe_authority={severe_authority:.0f} severe_threat={severe_threat:.2f} "
+				f"prior_memory_authority={prior_memory_authority:.0f} prior_memory_threat={prior_memory_threat:.2f} "
 				f"visible_causes={visible_causes} pressure_helpers={pressure_helpers} "
 				f"floor={constants.get('soviet_collapse_baseline.total_threat_floor', 0):.0f}"
 			),
