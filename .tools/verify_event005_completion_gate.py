@@ -2336,6 +2336,10 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"balanced_three_resilience",
 		"dominant_warning_gap",
 		"dominant_lock_gap",
+		"target_acceptance_equipment_floor",
+		"target_acceptance_patronage_ceiling",
+		"target_acceptance_recognition_floor",
+		"target_acceptance_resilience_need_ceiling",
 		"stage_3_threshold",
 	]
 	category_vars = [
@@ -2530,6 +2534,26 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_free_republics_league_member",
 		"is_soviet_collapse_league_conference_patron_style = yes",
 	]) and triggers.count("has_soviet_collapse_foreign_aid_route_to_from = yes") >= 4
+	target_aid_block = re.search(r"can_target_soviet_collapse_breakaway_for_aid\s*=\s*{.*?^}", triggers, re.S | re.M)
+	target_acceptance_ok = (
+		"has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = yes" in triggers
+		and all(marker in triggers for marker in [
+			"has_soviet_collapse_target_acceptance_for_foreign_aid_from_root",
+			"target_acceptance_equipment_floor",
+			"target_acceptance_patronage_ceiling",
+			"target_acceptance_recognition_floor",
+			"target_acceptance_resilience_need_ceiling",
+			"has_country_flag = soviet_collapse_balanced_sponsors_two",
+			"has_country_flag = soviet_collapse_balanced_sponsors_three",
+			"has_country_flag = soviet_collapse_dominant_sponsor_lock",
+			"is_soviet_collapse_republic_protected_from_external_dependency = yes",
+			"is_soviet_collapse_client_patron_style = yes",
+			"is_soviet_collapse_relief_patron_style = yes",
+			"is_soviet_collapse_league_conference_patron_style = yes",
+		])
+		and bool(target_aid_block)
+		and "has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = yes" in target_aid_block.group(0)
+	)
 	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
 		"category totals",
 		"sponsor totals",
@@ -2548,11 +2572,14 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"Turkey and Iran",
 		"Expanded patron action costs scale by target tier",
 		"real access route",
+		"target-side acceptance gate",
+		"rifle shortage",
+		"dominant sponsor lock",
 	])
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and target_acceptance_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
@@ -2560,7 +2587,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 				f"expanded_effects={expanded_effects_ok} dynamic_expanded_costs={dynamic_expanded_cost_ok} "
 				f"investment_surface={investment_surface_ok} "
 				f"sponsor_balance={bool(sponsor_balance_ok)} sponsor_styles={sponsor_style_ok} "
-				f"access_routes={access_route_ok} docs={docs_ok}"
+				f"access_routes={access_route_ok} target_acceptance={target_acceptance_ok} docs={docs_ok}"
 			),
 		)
 	]
