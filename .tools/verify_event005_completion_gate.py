@@ -1966,6 +1966,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_influence_recognition_total",
 		"soviet_collapse_influence_arms_total",
 		"soviet_collapse_influence_volunteers_total",
+		"soviet_collapse_influence_advisers_total",
 		"soviet_collapse_influence_industry_total",
 		"soviet_collapse_influence_intelligence_total",
 		"soviet_collapse_influence_ideology_total",
@@ -1993,6 +1994,15 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_foreign_supply_contacts",
 		"soviet_collapse_foreign_supply_corridors",
 		"soviet_collapse_foreign_supply_network",
+		"soviet_collapse_foreign_reconstruction_offers",
+		"soviet_collapse_sponsored_civil_works",
+		"soviet_collapse_sovereign_reconstruction_board",
+		"soviet_collapse_foreign_volunteer_cadres",
+		"soviet_collapse_foreign_volunteer_brigades",
+		"soviet_collapse_international_defense_corps",
+		"soviet_collapse_foreign_military_observers",
+		"soviet_collapse_foreign_training_mission",
+		"soviet_collapse_joint_staff_mission",
 		"soviet_collapse_foreign_patron_contacts",
 		"soviet_collapse_foreign_patron_liaison",
 		"soviet_collapse_foreign_patron_network",
@@ -2051,7 +2061,17 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_influence_patronage_risk",
 		"add_timed_idea = { idea = soviet_collapse_foreign_patron_burden",
 	])
-	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in ["category totals", "sponsor totals", "staged spirit tracks", "civilian construction", "anti-puppet clause"])
+	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
+		"category totals",
+		"sponsor totals",
+		"staged spirit tracks",
+		"Recognition grows",
+		"Investment grows",
+		"Volunteer support grows",
+		"Adviser support grows",
+		"civilian construction",
+		"anti-puppet clause",
+	])
 	return [
 		Check(
 			"foreign_influence_surface",
