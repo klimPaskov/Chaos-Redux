@@ -1919,7 +1919,7 @@ def verify_mtth_release_surface() -> list[Check]:
 		"soviet_collapse_depot_vulnerability",
 		"soviet_collapse_foreign_appetite",
 		"soviet_collapse_league_cohesion",
-		"soviet_collapse_evolution_weirdness",
+		"soviet_collapse_old_movement_pressure",
 		"is_soviet_collapse_southern_breakaway_active",
 		"soviet_collapse_union_archives_failed",
 		"has_global_flag = { flag = chaos_tier value = 5 }",
@@ -2001,7 +2001,7 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 	depot = constants["soviet_collapse_baseline.depot_vulnerability"]
 	foreign = constants["soviet_collapse_baseline.foreign_appetite"]
 	league = constants["soviet_collapse_baseline.league_cohesion"]
-	weirdness = constants["soviet_collapse_baseline.evolution_weirdness"]
+	old_movement_pressure = constants["soviet_collapse_baseline.old_movement_pressure"]
 
 	if fired_major_events > 0:
 		confidence += fired_major_events * constants["soviet_collapse_opening_pressure.prior_major_event_republic_confidence"]
@@ -2023,17 +2023,17 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_3"]
 		depot += constants["soviet_collapse_opening_pressure.chaos_tier_3"]
 		foreign += constants["soviet_collapse_opening_pressure.chaos_tier_3_foreign_appetite"]
-		weirdness += constants["soviet_collapse_opening_pressure.chaos_tier_3_weirdness"]
+		old_movement_pressure += constants["soviet_collapse_opening_pressure.chaos_tier_3_old_movement_pressure"]
 	elif tier == 4:
 		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_4"]
 		depot += constants["soviet_collapse_opening_pressure.chaos_tier_4"]
 		foreign += constants["soviet_collapse_opening_pressure.chaos_tier_4_foreign_appetite"]
-		weirdness += constants["soviet_collapse_opening_pressure.chaos_tier_4_weirdness"]
+		old_movement_pressure += constants["soviet_collapse_opening_pressure.chaos_tier_4_old_movement_pressure"]
 	elif tier == 5:
 		confidence += constants["soviet_collapse_opening_pressure.chaos_tier_final"]
 		depot += constants["soviet_collapse_opening_pressure.chaos_tier_final"]
 		foreign += constants["soviet_collapse_opening_pressure.chaos_tier_final_foreign_appetite"]
-		weirdness += constants["soviet_collapse_opening_pressure.chaos_tier_final_weirdness"]
+		old_movement_pressure += constants["soviet_collapse_opening_pressure.chaos_tier_final_old_movement_pressure"]
 
 	if low_stability:
 		confidence += constants["soviet_collapse_opening_pressure.low_stability"]
@@ -2056,8 +2056,8 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 	depot = clamp(depot, component_min, component_max)
 	foreign = clamp(foreign, component_min, component_max)
 	league = clamp(league, component_min, component_max)
-	weirdness = clamp(weirdness, component_min, component_max)
-	threat = confidence + depot + foreign + league + weirdness
+	old_movement_pressure = clamp(old_movement_pressure, component_min, component_max)
+	threat = confidence + depot + foreign + league + old_movement_pressure
 	threat += constants["soviet_collapse_baseline.total_threat_offset"]
 	threat -= authority
 	threat -= obedience
@@ -2073,7 +2073,7 @@ THREAT_COMPONENT_WEIGHTS = {
 	"soviet_collapse_depot_vulnerability": 1,
 	"soviet_collapse_foreign_appetite": 1,
 	"soviet_collapse_league_cohesion": 1,
-	"soviet_collapse_evolution_weirdness": 1,
+	"soviet_collapse_old_movement_pressure": 1,
 }
 
 
@@ -2200,7 +2200,7 @@ def verify_crisis_balance() -> list[Check]:
 			"soviet_collapse_depot_vulnerability",
 			"soviet_collapse_foreign_appetite",
 			"soviet_collapse_league_cohesion",
-			"soviet_collapse_evolution_weirdness",
+			"soviet_collapse_old_movement_pressure",
 			"soviet_collapse_moscow_authority",
 			"soviet_collapse_military_obedience",
 			"total_threat_multiplier",
@@ -2215,7 +2215,7 @@ def verify_crisis_balance() -> list[Check]:
 		"soviet_collapse_depot_vulnerability",
 		"soviet_collapse_foreign_appetite",
 		"soviet_collapse_league_cohesion",
-		"soviet_collapse_evolution_weirdness",
+		"soviet_collapse_old_movement_pressure",
 	]
 	recalculate_surface = (
 		len(recalculate_blocks) == 1
@@ -2270,11 +2270,11 @@ def verify_crisis_balance() -> list[Check]:
 	)
 	pressure_families = {
 		"authority": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite"],
-		"legal": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_evolution_weirdness"],
+		"legal": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_old_movement_pressure"],
 		"command": ["soviet_collapse_moscow_authority", "soviet_collapse_military_obedience", "soviet_collapse_republic_confidence"],
 		"rail": ["soviet_collapse_military_obedience", "soviet_collapse_depot_vulnerability", "soviet_collapse_foreign_appetite"],
 		"depot": ["soviet_collapse_republic_confidence", "soviet_collapse_depot_vulnerability"],
-		"old_movement": ["soviet_collapse_moscow_authority", "soviet_collapse_depot_vulnerability", "soviet_collapse_evolution_weirdness"],
+		"old_movement": ["soviet_collapse_moscow_authority", "soviet_collapse_depot_vulnerability", "soviet_collapse_old_movement_pressure"],
 		"foreign": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite"],
 		"cleanup": ["soviet_collapse_moscow_authority", "soviet_collapse_military_obedience", "soviet_collapse_depot_vulnerability"],
 		"settlement": ["soviet_collapse_moscow_authority", "soviet_collapse_republic_confidence", "soviet_collapse_foreign_appetite", "soviet_collapse_league_cohesion"],
@@ -3578,7 +3578,7 @@ def verify_terminal_high_chaos_successors() -> list[Check]:
 	]
 
 
-def verify_disabled_weird_successor_surface() -> list[Check]:
+def verify_disabled_hardcoded_successor_surface() -> list[Check]:
 	effects_text = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers_text = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	decisions_text = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
@@ -3739,7 +3739,7 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 		("holy realm", r"holy realm"),
 		("holy", r"\bholy\b"),
 		("sacred", r"\bsacred\b"),
-		("soviet weirdness", r"Soviet weirdness"),
+		("weirdness", r"\bweirdness\b"),
 		("cosmic steppe", r"cosmic steppe"),
 		("abnormal route", r"abnormal route"),
 		("impossible registries", r"impossible registries"),
@@ -3783,7 +3783,7 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 	])
 	return [
 		Check(
-			"disabled_weird_successor_surface",
+			"disabled_hardcoded_successor_surface",
 			ok,
 			(
 				f"disabled_focus_trees={len(disabled_focus_trees)} disabled_load_refs={len(disabled_load_refs)} "
@@ -4509,7 +4509,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_terminal_ordinary_republics())
 	checks.extend(verify_mtth_release_surface())
 	checks.extend(verify_terminal_high_chaos_successors())
-	checks.extend(verify_disabled_weird_successor_surface())
+	checks.extend(verify_disabled_hardcoded_successor_surface())
 	checks.extend(verify_localisation_and_event_log())
 	checks.extend(verify_localisation_surface())
 	checks.extend(verify_flags())

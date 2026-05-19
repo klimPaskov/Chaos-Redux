@@ -99,7 +99,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Kazakhstan first-wave restraint | `can_soviet_collapse_open_kazakhstan_first_wave` requires southern breakaway pressure, weak obedience, war or low Soviet condition, or high chaos; Kazakhstan is outside the normal Central Asian first-wave pool | Implemented |
 | Dynamic starting force packages | `soviet_collapse_apply_breakaway_setup_package` creates manpower, equipment, guard units, field brigades, and templates from central script constants. It is reached by ordinary first-wave releases, terminal ordinary republic releases, southern cascade republics, Kazakhstan, and all 21 active grounded high-chaos successor setup helpers. The package scales by republic size, chaos tier, Soviet war state, weak center conditions, declaration posture, terminal collapse, high depot vulnerability, and high foreign penetration. | Implemented; force coverage verifier passed |
 | Union Crisis Threat and Moscow Authority pacing | Opening values start from central constants, apply visible condition modifiers and generic prior-crisis memory from fired major-event count plus the shared `world_in_threat` source count, then use `soviet_collapse_recalculate_total_threat` with clamping and `constant:soviet_collapse_baseline.total_threat_multiplier`; scenario audit gives calm baseline Authority 62 / Threat 7.25, tier 1 opening pressure Authority 62 / Threat 9.25, tier 5 with capital lost, war, low stability, and low war support Authority 38 / Threat 50.25, and a generic prior-memory case that stays below early-collapse levels. The prior-crisis layer does not read individual crisis-source names. The 30-day crisis pulse applies a monthly guard before progressive releases: calm successful months without failed objectives, Soviet war, or above-baseline foreign/League pressure are capped to +1 threat, and moderate successful months are capped to +4. The verifier also resolves ordinary authority, legal, command, rail, depot, and cleanup failure helpers against the threat formula; the highest ordinary failure pressure is capped at three threat or less, proving the calm baseline needs at least 24 monthly ordinary failures to reach 80 without severe-overlap drivers. The mission-success pressure audit resolves all 11 successful objective helpers against the threat formula, found all 11 net non-increasing, found zero destabilizing component changes, and measured the highest successful net threat delta at -1.50. Union Unmade still uses its ordinary first-month gates in normal play, while a 100 threat ceiling immediately fires terminal collapse and releases every ordinary republic plus every eligible terminal special successor. | Implemented for current tuning |
-| Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 118 unique `soviet_collapse_soviet_mission_*` mission blocks. The direct mission-balance audit found 118 active queue references, 118 terminal removal references, zero disabled weird-route objective entries, and zero mission block or localisation problems. | Implemented; parser audit passed |
+| Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 118 unique `soviet_collapse_soviet_mission_*` mission blocks. The direct mission-balance audit found 118 active queue references, 118 terminal removal references, zero disabled hardcoded-route objective entries, and zero mission block or localisation problems. | Implemented; parser audit passed |
 | Longer varied Soviet mission deadlines | The 118 Soviet missions use all 11 named `@soviet_collapse_mission_days_*` constants ranging from 95 to 365 days; no mission uses a single shared `@soviet_collapse_opening_mission_days` timeout | Implemented; timeout audit passed |
 | Decision cost corrections | `Send Loyalist Officers` spends army XP and command power only; `Restore Party Control` spends 2,000 infantry equipment, 200 support equipment, and 10,000 manpower through central `soviet_collapse_decision_cost` constants and matching trigger/localisation keys | Implemented |
 | Blocked cost localisation | Event 005 blocked cost lines in `localisation/english/005_soviet_collapse_l_english.yml` use bare icon-and-value groups only, with no prose labels or connector words between costs. | Implemented; localisation audit passed |
@@ -124,7 +124,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Super-events | Slots 14-27 retain assets, localisation, audio references, and constants; active route calls are limited to grounded Event 005 packages | Implemented for current surfaces |
 | Super-event slot 14, The Union Unmade | Broad breakaway pressure calls `soviet_collapse_maybe_show_union_unmade_super_event`; `UDC_extreme_path` and `udc_push_extreme_route` call `soviet_collapse_complete_union_defense_endgame`, which fires `soviet_collapse_show_union_unmade_super_event`. The direct package audit found the slot 14 script constant, show helper, visible flag emission, audio id assignment, image selector, title/description/button/quote selectors, sprite definition, DDS/source/preview assets, and manifest row all aligned. | Implemented through breakaway-count pressure and the Union Defense package |
 | Super-event slot 15, The Black Banner Returns | `FTH_extreme_path`, `BBH_extreme_path`, `fth_push_extreme_route`, and `bbh_push_extreme_route` call `soviet_collapse_complete_black_banner_endgame`, which fires the helper | Implemented through the Free Territory and Black Banner packages |
-| Retired hardcoded route slot | `disabled_weird_successor_surface` verifies no disabled focus tree, decision category, spawn trigger, setup effect, endgame helper, or route call remains active | Not active |
+| Retired hardcoded route slot | `disabled_hardcoded_successor_surface` verifies no disabled focus tree, decision category, spawn trigger, setup effect, endgame helper, or route call remains active | Not active |
 | Super-event slot 17, The Workshops Choose Their Councils | `mfr_focus_state_as_one_arms_order` calls `soviet_collapse_show_workshops_choose_councils_super_event` directly from the active Military Factory tree | Implemented through the Military Factory package |
 | Super-event slot 18, Every Port a Council | `KRS_extreme_path`, `krs_push_extreme_route`, `ARD_extreme_path`, and `ard_push_extreme_route` call port-council or Arctic directorate helpers, which fire the helper | Implemented through the Kronstadt and Arctic Naval Directorate packages |
 | Super-event slot 24, Steppe Federation | `BSC_extreme_path`, `TNC_extreme_path`, `ALA_extreme_path`, and their push-extreme decisions call their Central Asian endgame helpers, which fire the helper | Implemented through the Basmachi, Turkestan, and Alash packages |
@@ -248,7 +248,7 @@ soviet_collapse_high_chaos_evolution_tier_5_recorded 1
 
 Logging behavior:
 
-- Baseline crisis setup and objective pressure effects modify crisis variables such as `soviet_collapse_moscow_authority`, `soviet_collapse_republic_confidence`, and `soviet_collapse_evolution_weirdness`; they do not record baseline stages as evolution entries.
+- Baseline crisis setup and objective pressure effects modify crisis variables such as `soviet_collapse_moscow_authority`, `soviet_collapse_republic_confidence`, and `soviet_collapse_old_movement_pressure`; they do not record baseline stages as evolution entries.
 - `soviet_collapse_record_high_chaos_successor_evolution` sets Event ID 5, high-chaos evolution type 5, the current chaos tier bucket, saves the successor actor, and records only if `can_soviet_collapse_record_high_chaos_evolution_this_tier = yes`.
 - The tier gate records at most one non-tier-5 high-chaos successor evolution through `soviet_collapse_high_chaos_evolution_tier_4_recorded`.
 - Chaos tier 5 can record one separate high-chaos successor evolution through `soviet_collapse_high_chaos_evolution_tier_5_recorded`.
@@ -561,7 +561,7 @@ ordinary_calls_setup_and_focus True
 terminal_spawn_tier4_or_5_retry True
 terminal_spawn_tier5_prepare True
 highest_chaos_prepare_flags 18
-highest_chaos_sets_weirdness_floor True
+highest_chaos_sets_old_movement_pressure_floor True
 high_chaos_spawn_helpers 21
 high_chaos_setup_successor_helpers 21
 high_chaos_spawn_helpers_reach_breakaway_setup 21
@@ -605,13 +605,13 @@ recalc_uses_multiplier True
 recalc_clamps_total_threat True
 objective_pressure_helpers_total 22
 pressure_helpers_call_recalc 22 missing_recalc 0
-pressure_helper_variables_touched soviet_collapse_depot_vulnerability,soviet_collapse_evolution_weirdness,soviet_collapse_foreign_appetite,soviet_collapse_league_cohesion,soviet_collapse_military_obedience,soviet_collapse_moscow_authority,soviet_collapse_republic_confidence
+pressure_helper_variables_touched soviet_collapse_depot_vulnerability,soviet_collapse_old_movement_pressure,soviet_collapse_foreign_appetite,soviet_collapse_league_cohesion,soviet_collapse_military_obedience,soviet_collapse_moscow_authority,soviet_collapse_republic_confidence
 pressure_constants_count 72
 pressure_constants_has_positive_and_negative True
 decision_pressure_helper_variants_used 20
 decision_pressure_helper_calls 256
 opening_event_option_recalculate_calls 4
-opening_event_options_touch_components soviet_collapse_depot_vulnerability,soviet_collapse_evolution_weirdness,soviet_collapse_foreign_appetite,soviet_collapse_league_cohesion,soviet_collapse_military_obedience,soviet_collapse_moscow_authority,soviet_collapse_republic_confidence
+opening_event_options_touch_components soviet_collapse_depot_vulnerability,soviet_collapse_old_movement_pressure,soviet_collapse_foreign_appetite,soviet_collapse_league_cohesion,soviet_collapse_military_obedience,soviet_collapse_moscow_authority,soviet_collapse_republic_confidence
 eventlog_detail_authority_function True
 eventlog_detail_threat_function True
 eventlog_detail_foreign_function True
@@ -662,7 +662,7 @@ focus_dynamic_ai 227 flat_ai 894
 route_or_gate_focuses 255 dynamic 201 flat 54
 mutually_exclusive_focuses 114 dynamic 114 flat 0
 available_gate_focuses 112 dynamic 58 flat 54
-ai_pressure_ref_counts soviet_collapse_total_collapse_threat:11,soviet_collapse_moscow_authority:45,soviet_collapse_republic_confidence:2,soviet_collapse_military_obedience:12,soviet_collapse_depot_vulnerability:15,soviet_collapse_foreign_appetite:34,soviet_collapse_league_cohesion:0,soviet_collapse_evolution_weirdness:49
+ai_pressure_ref_counts soviet_collapse_total_collapse_threat:11,soviet_collapse_moscow_authority:45,soviet_collapse_republic_confidence:2,soviet_collapse_military_obedience:12,soviet_collapse_depot_vulnerability:15,soviet_collapse_foreign_appetite:34,soviet_collapse_league_cohesion:0,soviet_collapse_old_movement_pressure:49
 ai_condition_counts has_war:60,has_war_with:52,stability:71,war_support:1,faction:4,country_flags:102,global_flags:84,SOV_scoped:160,check_variable:169,factor_zero:80
 ```
 
@@ -715,7 +715,7 @@ Current evidence exists for:
 - implemented countries and packages: twenty-one active grounded custom successors plus supported ordinary Soviet republics.
 - flags: 315 active Event 005 custom flag files audited; no current binary correction indicated.
 - focus counts and branch maps: 755 retained focus blocks across the Event 005 runtime focus files, with no duplicate IDs or invalid focus references.
-- missions and decisions: 118 Soviet crisis missions, 118 activation entries, zero disabled weird-route objective entries, and 118 terminal removal entries; main Soviet, breakaway, and foreign patron crisis decisions use dynamic AI weights.
+- missions and decisions: 118 Soviet crisis missions, 118 activation entries, zero disabled hardcoded-route objective entries, and 118 terminal removal entries; main Soviet, breakaway, and foreign patron crisis decisions use dynamic AI weights.
 - evolutions and super-events: high-chaos successor evolution writer and super-event helpers remain wired for the current route surface.
 - achievements and assets: achievement, focus, flag, leader, and super-event asset surfaces are documented in the Event 005 docs and asset manifests.
 - tests and checks: brace depth, focus reference, mission wiring, idea-strength, localisation phrase, flag orientation, unsupported operator/scope, and whitespace checks passed in the latest audit.

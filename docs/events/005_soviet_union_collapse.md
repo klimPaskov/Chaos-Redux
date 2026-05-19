@@ -59,7 +59,7 @@ The Soviet crisis category uses these variables:
 - `soviet_collapse_depot_vulnerability`
 - `soviet_collapse_foreign_appetite`
 - `soviet_collapse_league_cohesion`
-- `soviet_collapse_evolution_weirdness`
+- `soviet_collapse_old_movement_pressure`
 - `soviet_collapse_breakaway_count`
 
 In calm conditions, central authority still has room to answer the crisis. Opening values then change from chaos tier, Soviet stability, war support, active wars, capital control, already fired major-event pressure, and the shared `world_in_threat` source count. The prior-crisis layer only reads generic event-system and world-threat signals; it does not key off individual crisis names. The total threat is recalculated from the component variables instead of being a fixed timer.
@@ -162,7 +162,7 @@ The reachable high-chaos successor tags are registered for spawn and mechanics w
 
 These active tags define country files, history files, politics, basic technologies, leader portraits, localisation, opening decision mechanics, event spawn effects, evolution-log entries, and runtime focus trees. `CFR` has its 45-focus Construction Directorate tree, `MFR` has its 37-focus Arsenal Board tree, `KRS` has its 20-focus Kronstadt tree, and the remaining active custom splinters use 21-focus trees after duplicate pruning. The disabled hardcoded route packages have no focus tree, decision category, spawn trigger, setup effect, endgame helper, or `load_focus_tree` path in the active Event 005 script surface.
 
-At high chaos, the Soviet opening hook can create the active grounded successor states without using any recurring on-action loop. Each active spawn is gated by `is_soviet_collapse_high_chaos_successor_spawn_ready`, which requires the Soviet Collapse to be active for `SOV` and either chaos tier 4, chaos tier 5, or `soviet_collapse_evolution_weirdness` reaching `constant:soviet_collapse_high_chaos_event_log.spawn_weirdness_gate`. Each active successor also respects the evolution disable UI by checking `is_current_evolution_enabled` for its own high-chaos stage before any state transfer happens.
+At high chaos, the Soviet opening hook can create the active grounded successor states without using any recurring on-action loop. Each active spawn is gated by `is_soviet_collapse_high_chaos_successor_spawn_ready`, which requires the Soviet Collapse to be active for `SOV` and either chaos tier 4, chaos tier 5, or `soviet_collapse_old_movement_pressure` reaching `constant:soviet_collapse_high_chaos_event_log.spawn_old_movement_pressure_gate`. Each active successor also respects the evolution disable UI by checking `is_current_evolution_enabled` for its own high-chaos stage before any state transfer happens.
 
 The exact active opening state packages are:
 
