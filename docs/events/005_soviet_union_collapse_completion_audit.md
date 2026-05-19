@@ -357,8 +357,8 @@ focuses 1121 duplicates 0 missing_refs 0 self_refs 0 nonreciprocal_mutual 0 miss
 national_focus_repeated_mutual_blocks 0
 missions 128 remove_refs 128 activate_refs 128 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0 decision_blocks 254 timed_decisions 128 timed_outside_soviet_missions 0 categories_without_active_visible 0
 non_mission_decision_ai dynamic_blocks 126 flat_blocks 0 timed_mission_missing_ai 128
-idea_strength_checks ideas 124 constants 81 no_modifier 0 weak_lt3 0 tiny_only 0 min_modifiers 3 max_modifiers 7 avg_modifiers 3.19 total_modifier_entries 395 tiny_components 19 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_loc 0 missing_desc 0
-modifier_count_distribution 3:106 4:15 5:2 7:1
+idea_strength_checks ideas 146 constants 159 no_modifier 0 weak_lt3 0 tiny_only 0 min_modifiers 3 max_modifiers 7 avg_modifiers 3.24 total_modifier_entries 473 tiny_components 25 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_loc 0 missing_desc 0
+modifier_count_distribution 3:118 4:23 5:4 7:1
 banned_phrase_hits 0
 source_context_files files 4 missing 0
 reference_context_surface files 16/16 markers 19/19
@@ -422,8 +422,8 @@ input_files clean3 present bytes 554089 lines 7535 sha256 724a3bfb7c00aa28debf78
 input_files clean4 present bytes 148956 lines 3889 sha256 60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428
 input_files error_log intentionally_removed_not_blocker
 input_files text_log intentionally_removed_not_blocker
-ideas_audit ideas 124 no_mod 0 weak_lt3 0 tiny_only 0 min_mods 3 max_mods 7 missing_sprite 0 missing_dds 0 missing_loc_or_desc 0
-idea_package_surface ideas 124 modifier_entries 395 tiny_components 19 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_name 0 missing_desc 0
+ideas_audit ideas 146 no_mod 0 weak_lt3 0 tiny_only 0 min_mods 3 max_mods 7 missing_sprite 0 missing_dds 0 missing_loc_or_desc 0
+idea_package_surface ideas 146 modifier_entries 473 tiny_components 25 unresolved_constants 0 missing_picture 0 missing_sprite 0 missing_dds 0 missing_name 0 missing_desc 0
 available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 comprehensive_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_random 1 normal_pool_has_kaz False kaz_gate_southern True kaz_gate_tier4 True extra_calls 3
@@ -435,7 +435,7 @@ force_scaling_surface base True major True regional True chaos_bands True condit
 crisis_cause_surface recalculate_surface True opening_surface True first_wave_pressure_surface True pressure_families 10/10 multiplier 0.25
 union_unmade_audit first_month_lock_in_init True lock_blocks_fire True min_breakaways_gate True high_threat_gate True critical_authority_gate True league_or_kaz_or_chaos True
 terminal_release_audit ordinary_tags_present 14 ordinary_expected 14 release_calls 1 free_subject_calls 1 setup_calls 2
-cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_refs 128 category_defs 42 visible_category_defs 42 categories_gated True decision_categories 41 regular_decisions_gated True cleanup_flags True
+cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_refs 128 category_defs 42 visible_category_defs 42 categories_gated True decision_categories 42 regular_decisions_gated True cleanup_flags True
 soviet_objective_board_surface missions 128 count_helpers 1 activation_helpers 1 count_refs 128 activate_refs 128 manual_only 128 visible_gated 128 payloads 128 queue_restarts 128 done_flag_refs 128 timeout_bands 11 active_cap 10 queue_cap True
 mission_quality_surface missions 128 unique_available 128/128 weak_available 0 identical_outcomes 0 raw_division_state_available 0 map_or_state_available 120
 mission_audit_documentation_surface rows 128 mission_ids 128/128 header True validation_markers 4/4
@@ -496,16 +496,16 @@ localisation/english/005_soviet_collapse_ukraine_focus_l_english.yml efbbbf
 Current Event 005 idea-strength validation:
 
 ```text
-ideas 124
-constants 81
-modifier_entries_total 395
+ideas 146
+constants 159
+modifier_entries_total 473
 min_modifiers 3
 max_modifiers 7
-avg_modifiers 3.19
+avg_modifiers 3.24
 no_modifier 0
 weak_lt3 0
 tiny_only 0
-tiny_components 19
+tiny_components 25
 unresolved_constants 0
 missing_picture 0
 missing_sprite 0
