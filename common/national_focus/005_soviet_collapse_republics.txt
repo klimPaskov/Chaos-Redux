@@ -1906,7 +1906,7 @@ focus_tree = {
 		x = 93
 		y = 11
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = ukr_soviet_collapse_no_one_leaves_the_bread_line }
+		prerequisite = { focus = ukr_soviet_collapse_no_one_leaves_the_bread_line focus = ukr_soviet_collapse_the_commune_war focus = ukr_soviet_collapse_the_double_republic }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_last_harvest_plan
@@ -2934,6 +2934,7 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_baltic_recognition_dossier }
 		prerequisite = { focus = baltic_soviet_collapse_german_border_pressure }
 		prerequisite = { focus = baltic_soviet_collapse_foreign_advisers_under_baltic_law }
+		prerequisite = { focus = baltic_soviet_collapse_tallinn_riga_vilnius_rotation }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_baltic_question_resolved
@@ -3395,6 +3396,7 @@ focus_tree = {
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = caucasus_soviet_collapse_tbilisi_baku_yerevan_talks }
+		prerequisite = { focus = caucasus_soviet_collapse_the_caucasus_stands }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_caucasus_compact_holds_ridge
@@ -3643,7 +3645,7 @@ focus_tree = {
 		x = 15
 		y = 5
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = central_asia_soviet_collapse_southern_republics_coordinate }
+		prerequisite = { focus = central_asia_soviet_collapse_southern_republics_coordinate focus = central_asia_soviet_collapse_the_basmachi_amnesty_ledger }
 		prerequisite = { focus = central_asia_soviet_collapse_foreign_border_schools }
 
 		completion_reward = {
@@ -4738,6 +4740,7 @@ focus_tree = {
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_decentralized_detachments }
+		prerequisite = { focus = blr_soviet_collapse_forest_ammunition_hides }
 		prerequisite = { focus = blr_soviet_collapse_the_league_depot_at_minsk }
 
 		available = {
@@ -5391,11 +5394,12 @@ focus_tree = {
 		icon = GFX_kaz_soviet_collapse_military
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 70
-		y = 5
+		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = kaz_soviet_collapse_rail_to_the_mines }
 		prerequisite = { focus = kaz_soviet_collapse_uzbek_industrial_bargain }
 		prerequisite = { focus = kaz_soviet_collapse_the_resource_towns_demand_seats }
+		prerequisite = { focus = kaz_soviet_collapse_domestic_resource_state focus = kaz_soviet_collapse_league_resource_pool focus = kaz_soviet_collapse_no_concession_without_a_republic }
 		completion_reward = {
 			set_country_flag = soviet_collapse_kazakhstan_steppe_arsenal
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
@@ -6094,18 +6098,38 @@ focus_tree = {
 		ai_will_do = { base = 3 }
 	}
 
+	focus = {
+		id = kaz_soviet_collapse_the_steppe_keeps_many_memories
+		icon = GFX_kaz_soviet_collapse_myth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 90
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = kaz_soviet_collapse_the_alash_courts focus = kaz_soviet_collapse_the_written_alash_program focus = kaz_soviet_collapse_teachers_of_the_new_steppe focus = kaz_soviet_collapse_crush_the_road_militias focus = kaz_soviet_collapse_basmachi_autonomy_offer }
 
-
+		completion_reward = {
+			set_country_flag = soviet_collapse_kazakhstan_steppe_keeps_memories
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than } } }
+		}
+	}
 
 	focus = {
 		id = kaz_soviet_collapse_the_southern_republics_write_together
 		icon = GFX_kaz_soviet_collapse_federation
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 0
+		x = 24
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = kaz_soviet_collapse_the_steppe_arbitration_court }
 		prerequisite = { focus = kaz_soviet_collapse_the_southern_republics_do_not_kneel }
+		prerequisite = { focus = kaz_soviet_collapse_the_last_caravan_tax }
+		prerequisite = { focus = kaz_soviet_collapse_kyrgyz_border_cavalry }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_kazakhstan_southern_republics_write_together

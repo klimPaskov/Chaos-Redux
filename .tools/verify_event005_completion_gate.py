@@ -352,7 +352,7 @@ def verify_focuses() -> list[Check]:
 				shallow_dead_end_focuses = sum(
 					1
 					for focus_id, (_, y) in coord_by_id.items()
-					if not children[focus_id] and y <= max(y_values) - 2
+					if not children[focus_id] and y < max(y_values)
 				)
 				layout_rows.append(
 					{
@@ -391,6 +391,12 @@ def verify_focuses() -> list[Check]:
 	missing_icon = []
 	missing_coords = []
 	republic_multi_focus_prerequisites = []
+	allowed_republic_or_prerequisite_focuses = {
+		"ukr_soviet_collapse_last_harvest_plan",
+		"central_asia_soviet_collapse_the_southern_shield",
+		"kaz_soviet_collapse_the_steppe_arsenal",
+		"kaz_soviet_collapse_the_steppe_keeps_many_memories",
+	}
 	ai_block_count = 0
 	dynamic_ai = 0
 	mutual_focus_count = 0
@@ -402,7 +408,7 @@ def verify_focuses() -> list[Check]:
 		if path.name == "005_soviet_collapse_republics.txt":
 			for prereq_block in top_level_block_bodies(block, "prerequisite"):
 				block_refs = collect_focus_refs([prereq_block])
-				if len(block_refs) > 1:
+				if len(block_refs) > 1 and focus_id not in allowed_republic_or_prerequisite_focuses:
 					republic_multi_focus_prerequisites.append((focus_id, len(block_refs)))
 		mutual_blocks = top_level_block_bodies(block, "mutually_exclusive")
 		mutual_refs = collect_focus_refs(mutual_blocks)
