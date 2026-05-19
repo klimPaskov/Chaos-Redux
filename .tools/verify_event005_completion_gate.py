@@ -1994,7 +1994,20 @@ def verify_mtth_release_surface() -> list[Check]:
 	]
 
 
-def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability: bool = False, low_war_support: bool = False, active_war: bool = False, capital_lost: bool = False, fired_major_events: int = 0, world_threat_sources: int = 0) -> tuple[float, float]:
+def crisis_scenario(
+	constants: dict[str, float],
+	*,
+	tier: int = 0,
+	low_stability: bool = False,
+	low_war_support: bool = False,
+	active_war: bool = False,
+	capital_lost: bool = False,
+	fired_major_events: int = 0,
+	world_threat_sources: int = 0,
+	first_wave_breakaways: int = 0,
+	first_wave_major_breakaways: int = 0,
+	first_wave_regional_breakaways: int = 0,
+) -> tuple[float, float]:
 	authority = constants["soviet_collapse_baseline.moscow_authority"]
 	confidence = constants["soviet_collapse_baseline.republic_confidence"]
 	obedience = constants["soviet_collapse_baseline.military_obedience"]
@@ -2047,6 +2060,14 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 	if capital_lost:
 		authority += constants["soviet_collapse_opening_pressure.capital_lost_authority"]
 		confidence += constants["soviet_collapse_opening_pressure.capital_lost"]
+	if first_wave_breakaways > 0:
+		confidence += first_wave_breakaways * constants["soviet_collapse_opening_pressure.first_wave_breakaway_republic_confidence"]
+		depot += first_wave_breakaways * constants["soviet_collapse_opening_pressure.first_wave_breakaway_depot_vulnerability"]
+		foreign += first_wave_breakaways * constants["soviet_collapse_opening_pressure.first_wave_breakaway_foreign_appetite"]
+	if first_wave_major_breakaways > 0:
+		confidence += first_wave_major_breakaways * constants["soviet_collapse_opening_pressure.first_wave_major_republic_confidence"]
+	if first_wave_regional_breakaways > 0:
+		confidence += first_wave_regional_breakaways * constants["soviet_collapse_opening_pressure.first_wave_regional_republic_confidence"]
 
 	component_min = constants["soviet_collapse_baseline.component_min"]
 	component_max = constants["soviet_collapse_baseline.component_max"]
@@ -2187,6 +2208,19 @@ def verify_crisis_balance() -> list[Check]:
 	tier1_authority, tier1_threat = crisis_scenario(constants, tier=1)
 	severe_authority, severe_threat = crisis_scenario(constants, tier=5, low_stability=True, low_war_support=True, active_war=True, capital_lost=True)
 	prior_memory_authority, prior_memory_threat = crisis_scenario(constants, fired_major_events=4, world_threat_sources=2)
+	ordinary_wave_authority, ordinary_wave_threat = crisis_scenario(
+		constants,
+		first_wave_breakaways=3,
+		first_wave_major_breakaways=1,
+		first_wave_regional_breakaways=1,
+	)
+	large_wave_authority, large_wave_threat = crisis_scenario(
+		constants,
+		tier=2,
+		first_wave_breakaways=6,
+		first_wave_major_breakaways=2,
+		first_wave_regional_breakaways=2,
+	)
 	recalculate_blocks = named_blocks(effect_tokens, "soviet_collapse_recalculate_total_threat")
 	initialize_blocks = named_blocks(effect_tokens, "soviet_collapse_initialize_crisis_values")
 	monthly_guard_blocks = named_blocks(effect_tokens, "soviet_collapse_apply_monthly_threat_guard")
@@ -2335,6 +2369,10 @@ def verify_crisis_balance() -> list[Check]:
 		and prior_memory_authority < calm_authority
 		and prior_memory_threat > calm_threat
 		and prior_memory_threat < 20
+		and ordinary_wave_authority >= 50
+		and 8 <= ordinary_wave_threat <= 12
+		and large_wave_authority >= 50
+		and ordinary_wave_threat < large_wave_threat < 30
 		and visible_causes
 		and pressure_helpers >= 20
 		and constants.get("soviet_collapse_baseline.total_threat_multiplier", 1) <= 0.25
@@ -2356,6 +2394,7 @@ def verify_crisis_balance() -> list[Check]:
 				f"tier1_authority={tier1_authority:.0f} tier1_threat={tier1_threat:.2f} "
 				f"severe_authority={severe_authority:.0f} severe_threat={severe_threat:.2f} "
 				f"prior_memory_authority={prior_memory_authority:.0f} prior_memory_threat={prior_memory_threat:.2f} "
+				f"ordinary_wave_threat={ordinary_wave_threat:.2f} large_wave_threat={large_wave_threat:.2f} "
 				f"visible_causes={visible_causes} pressure_helpers={pressure_helpers} "
 				f"floor={constants.get('soviet_collapse_baseline.total_threat_floor', 0):.0f}"
 			),
