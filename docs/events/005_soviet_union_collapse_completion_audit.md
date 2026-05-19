@@ -98,7 +98,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Random first wave from structured pools | `soviet_collapse_release_initial_republics` clears and fills `global.soviet_collapse_first_wave_republics` through western, Caucasus, and Central Asian random pool helpers, then releases the selected scopes. Each pool can now select either nonexistent supported tags whose cores are owned and controlled by SOV or existing supported Soviet subjects, which are freed with `set_autonomy` before setup. | Implemented |
 | Kazakhstan first-wave restraint | `can_soviet_collapse_open_kazakhstan_first_wave` requires southern breakaway pressure, weak obedience, war or low Soviet condition, or high chaos; Kazakhstan is outside the normal Central Asian first-wave pool | Implemented |
 | Dynamic starting force packages | `soviet_collapse_apply_breakaway_setup_package` creates manpower, equipment, guard units, field brigades, and templates from central script constants. It is reached by ordinary first-wave releases, terminal ordinary republic releases, southern cascade republics, Kazakhstan, and all 38 high-chaos successor setup helpers. The package scales by republic size, chaos tier, Soviet war state, weak center conditions, declaration posture, terminal collapse, high depot vulnerability, and high foreign penetration. | Implemented; force coverage verifier passed |
-| Union Crisis Threat and Moscow Authority pacing | Opening values start from central constants, apply visible condition modifiers, then use `soviet_collapse_recalculate_total_threat` with clamping and `constant:soviet_collapse_baseline.total_threat_multiplier`; scenario audit gives calm baseline Authority 62 / Threat 7.25, tier 1 opening pressure Authority 62 / Threat 9.25, and tier 5 with capital lost, war, low stability, and low war support Authority 38 / Threat 50.25. Union Unmade still uses its ordinary first-month gates in normal play, while a 100 threat ceiling immediately fires terminal collapse and releases every ordinary republic plus every eligible terminal special successor. | Implemented for current tuning |
+| Union Crisis Threat and Moscow Authority pacing | Opening values start from central constants, apply visible condition modifiers, then use `soviet_collapse_recalculate_total_threat` with clamping and `constant:soviet_collapse_baseline.total_threat_multiplier`; scenario audit gives calm baseline Authority 62 / Threat 7.25, tier 1 opening pressure Authority 62 / Threat 9.25, and tier 5 with capital lost, war, low stability, and low war support Authority 38 / Threat 50.25. The 30-day crisis pulse applies a monthly guard before progressive releases: calm successful months without failed objectives, Soviet war, or above-baseline foreign/League pressure are capped to +1 threat, and moderate successful months are capped to +4. Union Unmade still uses its ordinary first-month gates in normal play, while a 100 threat ceiling immediately fires terminal collapse and releases every ordinary republic plus every eligible terminal special successor. | Implemented for current tuning |
 | Soviet goal-style objectives with capacity limits | `common/decisions/005_soviet_collapse_decisions.txt` has 128 unique `soviet_collapse_soviet_mission_*` mission blocks. The direct mission-balance audit found 128 activation references, 128 terminal removal references, zero missing activation/removal refs, and zero mission block or localisation problems. | Implemented; parser audit passed |
 | Longer varied Soviet mission deadlines | The 128 Soviet missions use all 11 named `@soviet_collapse_mission_days_*` constants ranging from 95 to 365 days; no mission uses a single shared `@soviet_collapse_opening_mission_days` timeout | Implemented; timeout audit passed |
 | Decision cost corrections | `Send Loyalist Officers` spends army XP and command power only; `Restore Party Control` spends 2,000 infantry equipment, 200 support equipment, and 10,000 manpower through central `soviet_collapse_decision_cost` constants and matching trigger/localisation keys | Implemented |
@@ -384,6 +384,7 @@ event_log_detail_checks 57 failed 0 detail_functions 7 detail_output_localisatio
 mission_balance_checks missions 128 unique 128 timeout_constants_defined 11 timeout_constants_used 11 timeout_min 95 timeout_max 365 remove_refs 128 activate_refs 128 problems 0 remove_missing 0 remove_extra 0 activate_missing 0 activate_extra 0
 focus_layout_checks trees 46 focuses 1121 duplicate_ids 0 coord_collisions 0 missing_coords 0 missing_search_filters 0 repeated_mutual_blocks 0 continuous_positions 46 continuous_side_bad 0 edge_crossings 0 shallow_dead_end_focuses 0 min_x_span 18 min_y_span 5 max_col 11 max_row 20
 crisis_scenarios calm_baseline authority 62 threat 7.25; modest_tier1 authority 62 threat 9.25; tier5_capital_lost_war_low_stability_low_support authority 38 threat 50.25
+crisis_monthly_guard_surface guard_constants 1.0/4.0 success_regs 11 failure_regs 11 guard_blocks 1 event129 True
 core_crisis_meter_numeric_literals 0
 git diff --check clean
 unsupported operator/scope/localisation scan clean for the audited Event 005 files
@@ -432,7 +433,8 @@ focus_reward_variety_surface focuses 1121 duplicate_reward_groups 0 duplicate_re
 focus_ai_surface focuses 1121 ai_blocks 1121 dynamic_ai 227 mutual_route_choices 114 dynamic_mutual_ai 114 flat_mutual_ai 0
 force_package_audit manpower True equipment 3 templates 2 create_unit 2 major_scaling True regional_scaling True chaos_scaling 4 war_scaling True weak_center_scaling True terminal_scaling True
 force_scaling_surface base True major True regional True chaos_bands True conditions True declarations True unit_delivery True constants True
-crisis_cause_surface recalculate_surface True opening_surface True first_wave_pressure_surface True pressure_families 10/10 multiplier 0.25
+crisis_monthly_guard_surface guard_constants=1.0/4.0 success_regs=11 failure_regs=11 guard_blocks=1 event129=True
+crisis_cause_surface recalculate_surface True opening_surface True first_wave_pressure_surface True pressure_families 10/10 monthly_guard True multiplier 0.25
 union_unmade_audit first_month_lock_in_init True lock_blocks_fire True min_breakaways_gate True high_threat_gate True critical_authority_gate True league_or_kaz_or_chaos True
 terminal_release_audit ordinary_tags_present 14 ordinary_expected 14 release_calls 1 free_subject_calls 1 setup_calls 2
 cleanup_audit cleanup_helpers 1 missions 128 cleanup_remove_refs 128 activate_refs 128 category_defs 42 visible_category_defs 42 categories_gated True decision_categories 42 regular_decisions_gated True cleanup_flags True
@@ -607,14 +609,18 @@ Current Event 005 crisis-balance validation:
 
 ```text
 baseline_moscow_authority 62
-baseline_total_threat_estimate 17.82
-opening_tier1_calm_threat_estimate 20.46
-opening_tier5_calm_threat_estimate 48.84
-opening_tier5_disaster_threat_estimate 74.58
+baseline_total_threat_estimate 7.25
+opening_tier1_calm_threat_estimate 9.25
+opening_tier5_calm_threat_estimate 32.25
+opening_tier5_disaster_threat_estimate 50.25
 opening_tier5_disaster_authority_estimate 38
-total_threat_multiplier 0.33
-total_threat_floor 10
+total_threat_multiplier 0.25
+total_threat_floor 0
 total_threat_ceiling 100
+monthly_guard_calm_success_cap 1
+monthly_guard_moderate_success_cap 4
+monthly_guard_success_regs 11
+monthly_guard_failure_regs 11
 component_min_max 0/100
 init_sets_all_components True
 init_first_month_lock_days_31 True
