@@ -43,6 +43,16 @@ EVENT005_SCRIPT_FILES = [
 	ROOT / "events/005_soviet_collapse.txt",
 ]
 
+EVENT005_EXTERNAL_CRISIS_HOOK_BLOCKLIST = [
+	"zombie",
+	"has_zombie",
+	"is_zombie",
+	"weaponized_zombies",
+	"holy_realm",
+	"holy realm",
+	"holy_realm_",
+]
+
 REQUIRED_INPUTS = [
 	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
@@ -3813,6 +3823,22 @@ def verify_braces_and_unsupported() -> list[Check]:
 	]
 
 
+def verify_no_hardcoded_external_crisis_hooks() -> list[Check]:
+	hits = []
+	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES:
+		text = strip_comments(read_text(path)).lower()
+		for marker in EVENT005_EXTERNAL_CRISIS_HOOK_BLOCKLIST:
+			if marker in text:
+				hits.append(f"{path.relative_to(ROOT)}:{marker}")
+	return [
+		Check(
+			"no_hardcoded_external_crisis_hooks",
+			not hits,
+			f"blocked_hits={len(hits)} markers={','.join(EVENT005_EXTERNAL_CRISIS_HOOK_BLOCKLIST)}",
+		)
+	]
+
+
 def run_checks() -> list[Check]:
 	checks: list[Check] = []
 	checks.extend(verify_input_files())
@@ -3834,6 +3860,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_mission_audit_documentation_surface())
 	checks.extend(verify_validation_snapshot_freshness_surface())
 	checks.extend(verify_braces_and_unsupported())
+	checks.extend(verify_no_hardcoded_external_crisis_hooks())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
 	checks.extend(verify_breakaway_recovery_surface())
