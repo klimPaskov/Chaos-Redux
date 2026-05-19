@@ -17,7 +17,7 @@ The implemented opening slices cover the crisis scaffold and the first intervent
 - `common/scripted_effects/005_soviet_collapse_effects.txt` initializes the crisis meter, clamps and recalculates total threat, releases the opening breakaways, gives starting forces, applies recoverable republican startup disorder, runs progressive threat-based breakaway checks, and enforces the Soviet objective cap.
 - `common/ideas/005_soviet_collapse_ideas.txt` adds country spirits for the union crisis, Moscow response routes, the restored union recovery, loyalist officers, captured depots, and breakaway defensive coordination.
 - Soviet Collapse spirits use file-local tuning packages because idea modifier blocks do not parse shared script constants. The core spirits and special successor spirits are meant to change play through combined legitimacy, mobilization, command, supply, depot, defensive, manpower, production, and foreign-cohesion effects rather than isolated tiny percentages.
-- `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, one hundred twenty-eight opening goal-style missions, four breakaway emergency actions, and seven targeted foreign patron decisions.
+- `common/decisions/005_soviet_collapse_decisions.txt` adds four non-political-power Soviet response decisions, one hundred twenty-eight opening goal-style missions, four breakaway emergency actions, and thirteen targeted foreign patron decisions.
 - `events/005_soviet_collapse.txt` replaces the old hidden release stub with a visible opening event and four posture choices.
 - `events/005_soviet_collapse_factory_ancient.txt` adds the triggered notices for the first high-chaos factory and Volga successor states.
 
@@ -30,7 +30,11 @@ Foreign patron decisions build permanent pressure on the target republic instead
 
 The category totals mature into three parallel staged spirit tracks. Diplomatic backing grows from contacts to missions to treaty backing. Material backing grows from supply contacts to corridors to a full supply network. Patronage grows from contacts to liaison to a patronage network. These spirits can coexist because the republic may be recognized by one sponsor, supplied by another, and advised by a third.
 
-No new icons are required for this slice. The staged spirits reuse the existing `legal_restoration_claim`, `captured_soviet_depots`, and `foreign_volunteers` idea pictures already registered by `interface/005_soviet_collapse_icons.gfx`.
+The foreign patron category now covers the first full investment set: recognition, ideological liaison, equipment convoys, military advisers, intelligence channels, volunteer corps, trade missions, civilian construction, military construction, press and radio networks, aid corridors, republic conference sponsorship, and an anti-puppet clause. Civilian construction adds a civilian factory and infrastructure to the target republic while applying a temporary consumer-goods and output burden to the sponsor. Military construction adds military industry and anti-air. Aid corridors open a target-side flag for later route logic. Volunteer corps now spawns a republican field brigade in addition to the manpower and equipment package.
+
+The anti-puppet clause is the first rival-contest decision. It raises `soviet_collapse_independence_resilience` and lowers `soviet_collapse_influence_patronage_risk`, giving future puppet logic a resistance value that can come from balanced sponsorship instead of only raw strength.
+
+No new icons are required for this slice. The staged spirits and patron burden spirit reuse the existing `legal_restoration_claim`, `captured_soviet_depots`, and `foreign_volunteers` idea pictures already registered by `interface/005_soviet_collapse_icons.gfx`.
 
 ## Crisis Meter
 
