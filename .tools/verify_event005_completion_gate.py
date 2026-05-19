@@ -2671,6 +2671,26 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"less target dependency",
 		"No new icon is required",
 	])
+	volunteer_formation_transfer_ok = (
+		all(marker in constants for marker in [
+			"volunteers_base_min_divisions",
+			"volunteers_regional_min_divisions",
+			"volunteers_major_min_divisions",
+			"volunteers_army_transfer_fraction",
+		])
+		and all(marker in triggers for marker in [
+			"num_divisions > constant:soviet_collapse_foreign_intervention.volunteers_base_min_divisions",
+			"num_divisions > constant:soviet_collapse_foreign_intervention.volunteers_regional_min_divisions",
+			"num_divisions > constant:soviet_collapse_foreign_intervention.volunteers_major_min_divisions",
+		])
+		and bool(re.search(
+			r"soviet_collapse_apply_foreign_volunteer_aid\s*=\s*{.*?transfer_units_fraction\s*=\s*{.*?target\s*=\s*FROM.*?army_ratio\s*=\s*constant:soviet_collapse_foreign_intervention.volunteers_army_transfer_fraction.*?FROM\s*=\s*{.*?create_unit",
+			effects,
+			re.S,
+		))
+		and "transfers a sponsor field formation fraction" in docs
+		and "transferred sponsor field formation" in loc
+	)
 	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
 		"category totals",
 		"sponsor totals",
@@ -2697,7 +2717,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and target_acceptance_ok and league_mediated_aid_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and target_acceptance_ok and league_mediated_aid_ok and volunteer_formation_transfer_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
@@ -2706,7 +2726,8 @@ def verify_foreign_influence_surface() -> list[Check]:
 				f"investment_surface={investment_surface_ok} "
 				f"sponsor_balance={bool(sponsor_balance_ok)} sponsor_styles={sponsor_style_ok} "
 				f"access_routes={access_route_ok} target_acceptance={target_acceptance_ok} "
-				f"league_mediated_aid={league_mediated_aid_ok} docs={docs_ok}"
+				f"league_mediated_aid={league_mediated_aid_ok} "
+				f"volunteer_formation_transfer={volunteer_formation_transfer_ok} docs={docs_ok}"
 			),
 		)
 	]
