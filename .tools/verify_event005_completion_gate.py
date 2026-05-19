@@ -3527,6 +3527,12 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 		("holy realm", r"holy realm"),
 		("holy", r"\bholy\b"),
 		("sacred", r"\bsacred\b"),
+		("soviet weirdness", r"Soviet weirdness"),
+		("cosmic steppe", r"cosmic steppe"),
+		("abnormal route", r"abnormal route"),
+		("impossible registries", r"impossible registries"),
+		("founding myth", r"founding myth"),
+		("myth focus", r"myth focus"),
 	]:
 		if re.search(pattern, event005_active_text, re.IGNORECASE):
 			active_forbidden_route_refs.append(label)
