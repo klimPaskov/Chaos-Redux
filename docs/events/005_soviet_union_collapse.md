@@ -34,6 +34,8 @@ The foreign patron category now covers the first full investment set: recognitio
 
 The anti-puppet clause is the first rival-contest decision. It raises `soviet_collapse_independence_resilience` and lowers `soviet_collapse_influence_patronage_risk`, giving puppet logic a resistance value that can come from balanced sponsorship instead of only raw strength.
 
+Every foreign influence update now recalculates the target republic's active sponsor count, top sponsor, second sponsor, and sponsor gap. Two or three meaningful sponsors add one-time independence resilience and reduce patronage risk, while a large one-sponsor lead adds one-time patronage risk and lowers resilience. This lets broad sponsorship strengthen a republic without handing it to one patron, while a dominant sponsor makes the dependency chain easier only when the influence gap is truly one-sided.
+
 ## Reintegration And Dependency Pressure
 
 Moscow now participates in the influence contest through two targeted Soviet decisions. `Offer a New Union Treaty` is available only while Union Crisis Threat is low or moderate, Moscow Authority is credible, the target is not at war with Moscow, and the target is not protected by a strong League or faction. The treaty spends political power, command power, fuel, and trains, then raises `soviet_collapse_influence_moscow`, lowers target patronage risk and independence resistance, and applies New Union Negotiations. `Offer a Federal Reintegration Compact` is the follow-up: it requires the treaty channel, dominant Moscow influence, lower threat, stronger Moscow Authority, a weak target, low patronage lock-in, and no League protection. It federates the target as a Soviet autonomous subject through `set_autonomy` instead of annexing it outright.

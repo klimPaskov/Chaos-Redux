@@ -2011,6 +2011,11 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"aid_corridor_logistics_influence",
 		"conference_independence_resilience",
 		"anti_puppet_clause_independence_resilience",
+		"balanced_sponsor_floor",
+		"balanced_two_resilience",
+		"balanced_three_resilience",
+		"dominant_warning_gap",
+		"dominant_lock_gap",
 		"stage_3_threshold",
 	]
 	category_vars = [
@@ -2112,6 +2117,30 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_influence_patronage_risk",
 		"add_timed_idea = { idea = soviet_collapse_foreign_patron_burden",
 	])
+	sponsor_balance_markers = [
+		"soviet_collapse_update_sponsor_balance_pressure",
+		"soviet_collapse_active_foreign_sponsor_count",
+		"soviet_collapse_top_foreign_sponsor_influence",
+		"soviet_collapse_second_foreign_sponsor_influence",
+		"soviet_collapse_foreign_sponsor_gap",
+		"soviet_collapse_balanced_sponsors_two",
+		"soviet_collapse_balanced_sponsors_three",
+		"soviet_collapse_dominant_sponsor_warning",
+		"soviet_collapse_dominant_sponsor_lock",
+	]
+	sponsor_balance_ok = (
+		all(marker in effects for marker in sponsor_balance_markers)
+		and all(marker in constants for marker in [
+			"balanced_sponsor_floor",
+			"balanced_two_resilience",
+			"balanced_three_resilience",
+			"dominant_warning_influence",
+			"dominant_warning_gap",
+			"dominant_lock_influence",
+			"dominant_lock_gap",
+		])
+		and re.search(r"soviet_collapse_apply_foreign_influence_delta\s*=\s*{.*?soviet_collapse_update_sponsor_balance_pressure\s*=\s*yes", effects, re.S)
+	)
 	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
 		"category totals",
 		"sponsor totals",
@@ -2122,16 +2151,20 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"Adviser support grows",
 		"civilian construction",
 		"anti-puppet clause",
+		"active sponsor count",
+		"top sponsor",
+		"sponsor gap",
 	])
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and investment_surface_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and investment_surface_ok and sponsor_balance_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
 				f"aid_effects={aid_effect_ok} expanded_decisions={expanded_decisions_ok} "
-				f"expanded_effects={expanded_effects_ok} investment_surface={investment_surface_ok} docs={docs_ok}"
+				f"expanded_effects={expanded_effects_ok} investment_surface={investment_surface_ok} "
+				f"sponsor_balance={bool(sponsor_balance_ok)} docs={docs_ok}"
 			),
 		)
 	]
