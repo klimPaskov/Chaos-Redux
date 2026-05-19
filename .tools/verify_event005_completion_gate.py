@@ -2568,6 +2568,7 @@ def verify_local_league_surface() -> list[Check]:
 	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
 	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
 	league_docs = read_text(ROOT / "docs/events/005_soviet_union_collapse_local_leagues.md")
+	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	constants_ok = all(marker in constants for marker in [
 		"soviet_collapse_regional_faction",
 		"found_political_power",
@@ -2619,16 +2620,30 @@ def verify_local_league_surface() -> list[Check]:
 		"id = chaosx.nr5.43",
 	])
 	loc_ok = all(marker in loc for marker in [
+		"soviet_collapse_free_republics_league_faction: \"Free Republics' League\"",
+		"soviet_collapse_baltic_restoration_pact_faction: \"Baltic League\"",
+		"soviet_collapse_caucasus_defense_compact_faction: \"Caucasus League\"",
 		"soviet_collapse_central_asian_league_faction: \"Central Asian League\"",
+		"soviet_collapse_found_baltic_restoration_pact: \"Found the Baltic League\"",
+		"soviet_collapse_found_caucasus_defense_compact: \"Found the Caucasus League\"",
 		"soviet_collapse_found_steppe_federation: \"Found the Central Asian League\"",
+		"super_event.25.t: \"The Baltic League\"",
+		"super_event.26.t: \"The Caucasus League\"",
 		"soviet_collapse_call_regional_league_defensive_war:",
 		"soviet_collapse_regional_faction_found_cost_text: \"£pol_power 55  £command_power 20\"",
 	])
 	docs_ok = "Local leagues now operate as the regional layer" in docs and all(marker in league_docs for marker in [
 		"## Overview",
+		"The Baltic League, Caucasus League, and Central Asian League",
+		"Free Republics' League",
+		"player-facing text uses league names throughout",
 		"Central Asian League",
 		"Kazakhstan is restricted",
 		"## Icons",
+	]) and all(marker in completion_audit for marker in [
+		"Local leagues and high-threat coordination",
+		"exact player-facing league names",
+		"MTTH release acceleration",
 	])
 	return [
 		Check(

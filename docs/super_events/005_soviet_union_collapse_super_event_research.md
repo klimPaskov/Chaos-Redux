@@ -119,8 +119,8 @@ The custom extreme paths and republic transformation routes have thirteen rare b
 | `22` | The Bread State | Ukraine completes `ukr_soviet_collapse_last_harvest_plan` |
 | `23` | The League of Equal Republics | Ukraine completes `ukr_soviet_collapse_league_of_equals` |
 | `24` | The Steppe Federation | Kazakhstan completes `kaz_soviet_collapse_steppe_federation_charter` |
-| `25` | The Baltic Restoration Pact | The Baltic regional tree completes `baltic_soviet_collapse_baltic_defense_compact` |
-| `26` | The Caucasus Defense Compact | The Caucasus regional tree completes `caucasus_soviet_collapse_caucasus_defense_compact` |
+| `25` | The Baltic League | The Baltic regional tree completes `baltic_soviet_collapse_baltic_defense_compact` |
+| `26` | The Caucasus League | The Caucasus regional tree completes `caucasus_soviet_collapse_caucasus_defense_compact` |
 | `27` | The Eastern Buffer Coalition | Moldova completes `moldova_soviet_collapse_alliance_not_union` |
 
 Image coordination:
@@ -180,8 +180,8 @@ This matrix maps the implemented Event 005 super-events to their current artifac
 | `22` | The Bread State | `super_event.22.t/d/a/q` | Deuteronomy quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Final Silence package | fires from `ukr_soviet_collapse_last_harvest_plan` | sourced image wired |
 | `23` | The League of Equal Republics | `super_event.23.t/d/a/q` | Articles of Confederation quote documented with National Archives source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_league_of_equals` | sourced image wired |
 | `24` | The Steppe Federation | `super_event.24.t/d/a/q` | Federalist No. 5 quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `kaz_soviet_collapse_steppe_federation_charter` and the `BSC`, `TNC`, and `ALA` Central Asian endgame helpers | sourced image wired |
-| `25` | The Baltic Restoration Pact | `super_event.25.t/d/a/q` | Proverbs quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `baltic_soviet_collapse_baltic_defense_compact` | sourced image wired |
-| `26` | The Caucasus Defense Compact | `super_event.26.t/d/a/q` | Psalm quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `caucasus_soviet_collapse_caucasus_defense_compact` | sourced image wired |
+| `25` | The Baltic League | `super_event.25.t/d/a/q` | Proverbs quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `baltic_soviet_collapse_baltic_defense_compact` | sourced image wired |
+| `26` | The Caucasus League | `super_event.26.t/d/a/q` | Psalm quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `caucasus_soviet_collapse_caucasus_defense_compact` | sourced image wired |
 | `27` | The Eastern Buffer Coalition | `super_event.27.t/d/a/q` | Federalist No. 8 quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `moldova_soviet_collapse_alliance_not_union` | sourced image wired |
 
 ## A Map Larger than the Union
@@ -400,7 +400,7 @@ Image package:
 - Review status: `wired, documented`
 - Why it fits: the Turkestan-Siberia railway image gives the federation formation a concrete visual language of rail linkage, distance, and continental bargaining power.
 
-## The Baltic Restoration Pact
+## The Baltic League
 
 - Super-event slot: `25`
 - Localisation keys: `super_event.25.t`, `super_event.25.d`, `super_event.25.a`, `super_event.25.q`
@@ -416,7 +416,7 @@ Image package:
 - Source URL: `https://www.gutenberg.org/cache/epub/10/pg10.txt`
 - Attribution confidence: high for the source; the line is used here because the Baltic route frames restoration as refusal to accept an erased legal boundary.
 - Rights note: public-domain source text; the in-game excerpt is short.
-- Why it fits: the Baltic Restoration Pact is about legal continuity, restored state borders, coast-watch coordination, and defensive guarantees rather than conquest.
+- Why it fits: the Baltic League is about legal continuity, restored state borders, coast-watch coordination, and defensive guarantees rather than conquest.
 
 Image package:
 
@@ -436,7 +436,7 @@ Image package:
 - Review status: `wired, documented`
 - Why it fits: Lithuanian soldiers near the Vilnius region in 1939 give the pact a period restoration image built around legal continuity, state return, road control, and defensive mobilization rather than a late-Cold-War protest.
 
-## The Caucasus Defense Compact
+## The Caucasus League
 
 - Super-event slot: `26`
 - Localisation keys: `super_event.26.t`, `super_event.26.d`, `super_event.26.a`, `super_event.26.q`
@@ -452,7 +452,7 @@ Image package:
 - Source URL: `https://www.gutenberg.org/cache/epub/10/pg10.txt`
 - Attribution confidence: high for the source; the line is used here because the route frames collective mountain defense and encircled protection.
 - Rights note: public-domain source text; the in-game excerpt is short.
-- Why it fits: the Caucasus Defense Compact is about mountain passes, border roads, oil routes, and small republics using terrain and coordination to avoid being conquered separately.
+- Why it fits: the Caucasus League is about mountain passes, border roads, oil routes, and small republics using terrain and coordination to avoid being conquered separately.
 
 Image package:
 
