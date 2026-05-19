@@ -30,7 +30,7 @@ Foreign patron decisions build permanent pressure on the target republic instead
 
 The category totals mature into separate staged spirit tracks. Recognition grows from diplomatic contacts to missions to treaty backing. Investment grows from reconstruction offers to sponsored civil works to a sovereign reconstruction board. Volunteer support grows from foreign cadres to brigades to an international defense corps. Adviser support grows from observers to training missions to a joint staff mission. Material aid still grows from supply contacts to corridors to a full supply network, and patronage grows from contacts to liaison to a patronage network. These spirits can coexist because the republic may be recognized by one sponsor, supplied by another, rebuilt by several investors, and advised by a third.
 
-The foreign patron category now covers the first full investment set: recognition, ideological liaison, equipment convoys, military advisers, intelligence channels, volunteer corps, trade missions, civilian construction, military construction, press and radio networks, aid corridors, republic conference sponsorship, and an anti-puppet clause. Civilian construction adds a civilian factory and infrastructure to the target republic while applying a temporary consumer-goods and output burden to the sponsor. Military construction adds military industry and anti-air. Aid corridors open a target-side flag for later route logic. Volunteer corps now spawns a republican field brigade in addition to the manpower and equipment package.
+The foreign patron category now covers the first full investment set: recognition, ideological liaison, equipment convoys, military advisers, intelligence channels, volunteer corps, trade missions, civilian construction, military construction, press and radio networks, aid corridors, republic conference sponsorship, and an anti-puppet clause. Civilian construction adds a civilian factory and infrastructure to the target republic while applying a temporary consumer-goods and output burden to the sponsor. Military construction adds military industry and anti-air. Aid corridors open a target-side flag for later route logic. Volunteer corps now spawns a republican field brigade in addition to the manpower and equipment package. Expanded patron action costs scale by target tier: regional republics and major republics require higher political, command, equipment, fuel, train, convoy, or stability commitments than ordinary breakaways, and the decision cost text displays only the active icon-value costs for the selected target.
 
 Foreign patron AI uses sponsor-style triggers instead of treating all patrons as interchangeable. Germany, Japan, Italy, Poland, Romania, and Finland bias toward arms, volunteers, officers, intelligence, and client pressure. Britain, the United States, France, and Sweden bias toward recognition, relief, reconstruction, conferences, and anti-puppet guarantees. Poland, Romania, Finland, Turkey, Iran, and Japan bias toward border corridors, while Turkey and Iran receive extra weight around Caucasus and Central Asian targets.
 
@@ -304,8 +304,17 @@ Major foreign patron candidates that are hostile to Moscow can target entries fr
 5. `soviet_collapse_open_republican_intelligence_channel`
 6. `soviet_collapse_sponsor_volunteer_corps`
 7. `soviet_collapse_negotiate_republican_trade_mission`
+8. `soviet_collapse_fund_civilian_construction_mission`
+9. `soviet_collapse_fund_military_construction_mission`
+10. `soviet_collapse_sponsor_press_and_radio_network`
+11. `soviet_collapse_secure_republican_aid_corridor`
+12. `soviet_collapse_build_republics_league_conference`
+13. `soviet_collapse_demand_anti_puppet_clause`
+14. `soviet_collapse_offer_protection_treaty`
+15. `soviet_collapse_demand_adviser_privileges`
+16. `soviet_collapse_install_client_cabinet`
 
-The targeted decision scope follows the vanilla `target_array` pattern: the patron remains `ROOT`, and the chosen breakaway is `FROM`. The aid costs use stability, war support, equipment, army experience, manpower, trains, convoys, and higher fuel thresholds. Effects raise breakaway recognition or military capacity while feeding Soviet `Foreign Penetration`, `Depot Vulnerability`, `League Cohesion`, `Moscow Authority`, or `Armed Breakaway Momentum` as appropriate.
+The targeted decision scope follows the vanilla `target_array` pattern: the patron remains `ROOT`, and the chosen breakaway is `FROM`. The aid costs use stability, war support, equipment, army experience, manpower, trains, convoys, and higher fuel thresholds. Stronger target republics expose higher cost text and require larger payments before the action can fire. Effects raise breakaway recognition or military capacity while feeding Soviet `Foreign Penetration`, `Depot Vulnerability`, `League Cohesion`, `Moscow Authority`, or `Armed Breakaway Momentum` as appropriate.
 
 ## Soviet Objective Board
 

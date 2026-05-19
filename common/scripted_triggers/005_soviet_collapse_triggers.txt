@@ -346,36 +346,150 @@ can_pay_soviet_collapse_foreign_trade_cost = {
 }
 
 can_pay_soviet_collapse_foreign_civilian_construction_cost = {
-	has_political_power > constant:soviet_collapse_foreign_intervention.civilian_construction_political_power
-	has_fuel > constant:soviet_collapse_foreign_intervention.civilian_construction_fuel
-	has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.civilian_construction_convoys }
+	OR = {
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.civilian_construction_major_political_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.civilian_construction_major_fuel
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.civilian_construction_major_convoys }
+		}
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.civilian_construction_regional_political_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.civilian_construction_regional_fuel
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.civilian_construction_regional_convoys }
+		}
+		AND = {
+			FROM = {
+				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
+				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			}
+			has_political_power > constant:soviet_collapse_foreign_intervention.civilian_construction_political_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.civilian_construction_fuel
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.civilian_construction_convoys }
+		}
+	}
 }
 
 can_pay_soviet_collapse_foreign_military_construction_cost = {
-	command_power > constant:soviet_collapse_foreign_intervention.military_construction_command_power
-	has_fuel > constant:soviet_collapse_foreign_intervention.military_construction_fuel
-	has_equipment = { support_equipment > constant:soviet_collapse_foreign_intervention.military_construction_support_equipment }
+	OR = {
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
+			command_power > constant:soviet_collapse_foreign_intervention.military_construction_major_command_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.military_construction_major_fuel
+			has_equipment = { support_equipment > constant:soviet_collapse_foreign_intervention.military_construction_major_support_equipment }
+		}
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			command_power > constant:soviet_collapse_foreign_intervention.military_construction_regional_command_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.military_construction_regional_fuel
+			has_equipment = { support_equipment > constant:soviet_collapse_foreign_intervention.military_construction_regional_support_equipment }
+		}
+		AND = {
+			FROM = {
+				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
+				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			}
+			command_power > constant:soviet_collapse_foreign_intervention.military_construction_command_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.military_construction_fuel
+			has_equipment = { support_equipment > constant:soviet_collapse_foreign_intervention.military_construction_support_equipment }
+		}
+	}
 }
 
 can_pay_soviet_collapse_foreign_press_network_cost = {
-	has_political_power > constant:soviet_collapse_foreign_intervention.press_network_political_power
-	has_stability > constant:soviet_collapse_foreign_intervention.press_network_stability_floor
+	OR = {
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.press_network_major_political_power
+			has_stability > constant:soviet_collapse_foreign_intervention.press_network_major_stability_floor
+		}
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.press_network_regional_political_power
+			has_stability > constant:soviet_collapse_foreign_intervention.press_network_regional_stability_floor
+		}
+		AND = {
+			FROM = {
+				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
+				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			}
+			has_political_power > constant:soviet_collapse_foreign_intervention.press_network_political_power
+			has_stability > constant:soviet_collapse_foreign_intervention.press_network_stability_floor
+		}
+	}
 }
 
 can_pay_soviet_collapse_foreign_aid_corridor_cost = {
-	has_fuel > constant:soviet_collapse_foreign_intervention.aid_corridor_fuel
-	has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.aid_corridor_trains }
-	has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.aid_corridor_convoys }
+	OR = {
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
+			has_fuel > constant:soviet_collapse_foreign_intervention.aid_corridor_major_fuel
+			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.aid_corridor_major_trains }
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.aid_corridor_major_convoys }
+		}
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			has_fuel > constant:soviet_collapse_foreign_intervention.aid_corridor_regional_fuel
+			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.aid_corridor_regional_trains }
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.aid_corridor_regional_convoys }
+		}
+		AND = {
+			FROM = {
+				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
+				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			}
+			has_fuel > constant:soviet_collapse_foreign_intervention.aid_corridor_fuel
+			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.aid_corridor_trains }
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.aid_corridor_convoys }
+		}
+	}
 }
 
 can_pay_soviet_collapse_foreign_conference_cost = {
-	has_political_power > constant:soviet_collapse_foreign_intervention.conference_political_power
-	command_power > constant:soviet_collapse_foreign_intervention.conference_command_power
+	OR = {
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.conference_major_political_power
+			command_power > constant:soviet_collapse_foreign_intervention.conference_major_command_power
+		}
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.conference_regional_political_power
+			command_power > constant:soviet_collapse_foreign_intervention.conference_regional_command_power
+		}
+		AND = {
+			FROM = {
+				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
+				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			}
+			has_political_power > constant:soviet_collapse_foreign_intervention.conference_political_power
+			command_power > constant:soviet_collapse_foreign_intervention.conference_command_power
+		}
+	}
 }
 
 can_pay_soviet_collapse_anti_puppet_clause_cost = {
-	has_political_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_political_power
-	command_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_command_power
+	OR = {
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_major_political_power
+			command_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_major_command_power
+		}
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_regional_political_power
+			command_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_regional_command_power
+		}
+		AND = {
+			FROM = {
+				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
+				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			}
+			has_political_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_political_power
+			command_power > constant:soviet_collapse_foreign_intervention.anti_puppet_clause_command_power
+		}
+	}
 }
 
 can_pay_soviet_collapse_regional_faction_found_cost = {

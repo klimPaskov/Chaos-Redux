@@ -2340,6 +2340,27 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"can_pay_soviet_collapse_foreign_conference_cost",
 		"can_pay_soviet_collapse_anti_puppet_clause_cost",
 	])
+	dynamic_expanded_costs = [
+		("soviet_collapse_foreign_civilian_construction_cost_text", "GetSovietCollapseForeignAidCivilianConstructionPPCost", "civilian_construction_major_fuel_extra_spend"),
+		("soviet_collapse_foreign_military_construction_cost_text", "GetSovietCollapseForeignAidMilitaryConstructionCPCost", "military_construction_major_support_equipment_extra_spend"),
+		("soviet_collapse_foreign_press_network_cost_text", "GetSovietCollapseForeignAidPressNetworkPPCost", "press_network_major_stability_extra_spend"),
+		("soviet_collapse_foreign_aid_corridor_cost_text", "GetSovietCollapseForeignAidCorridorFuelCost", "aid_corridor_major_train_extra_spend"),
+		("soviet_collapse_foreign_conference_cost_text", "GetSovietCollapseForeignAidConferencePPCost", "conference_major_command_power_extra_spend"),
+		("soviet_collapse_anti_puppet_clause_cost_text", "GetSovietCollapseAntiPuppetClausePPCost", "anti_puppet_clause_major_command_power_extra_spend"),
+	]
+	dynamic_expanded_cost_ok = (
+		all(re.search(rf"{re.escape(cost_key)}:\s*\"[^\"]*FROM\.{loc_func}", loc) for cost_key, loc_func, _ in dynamic_expanded_costs)
+		and all(loc_func in read_text(ROOT / "common/scripted_localisation/005_soviet_collapse_scripted_localisation.txt") for _, loc_func, _ in dynamic_expanded_costs)
+		and all(extra_marker in constants and extra_marker in effects for _, _, extra_marker in dynamic_expanded_costs)
+		and all(marker in triggers for marker in [
+			"civilian_construction_major_political_power",
+			"military_construction_major_command_power",
+			"press_network_major_stability_floor",
+			"aid_corridor_major_fuel",
+			"conference_major_political_power",
+			"anti_puppet_clause_major_political_power",
+		])
+	)
 	investment_surface_ok = all(marker in effects for marker in [
 		"add_building_construction = { type = industrial_complex",
 		"add_building_construction = { type = arms_factory",
@@ -2425,16 +2446,18 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"sponsor-style triggers",
 		"Germany, Japan, Italy, Poland, Romania, and Finland",
 		"Turkey and Iran",
+		"Expanded patron action costs scale by target tier",
 	])
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
 				f"aid_effects={aid_effect_ok} expanded_decisions={expanded_decisions_ok} "
-				f"expanded_effects={expanded_effects_ok} investment_surface={investment_surface_ok} "
+				f"expanded_effects={expanded_effects_ok} dynamic_expanded_costs={dynamic_expanded_cost_ok} "
+				f"investment_surface={investment_surface_ok} "
 				f"sponsor_balance={bool(sponsor_balance_ok)} sponsor_styles={sponsor_style_ok} docs={docs_ok}"
 			),
 		)
