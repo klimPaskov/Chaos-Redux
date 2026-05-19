@@ -2473,6 +2473,19 @@ def verify_foreign_influence_surface() -> list[Check]:
 			for decision, marker in sponsor_style_decision_pairs
 		)
 	)
+	access_route_ok = all(marker in triggers for marker in [
+		"has_soviet_collapse_foreign_aid_route_to_from",
+		"has_war_with = SOV",
+		"NOT = { has_war_with = ROOT }",
+		"is_in_faction_with = FROM",
+		"any_neighbor_state",
+		"is_owned_by = FROM",
+		"any_owned_state = { is_coastal = yes }",
+		"FROM = { any_owned_state = { is_coastal = yes } }",
+		"soviet_collapse_foreign_aid_corridor_open",
+		"soviet_collapse_free_republics_league_member",
+		"is_soviet_collapse_league_conference_patron_style = yes",
+	]) and triggers.count("has_soviet_collapse_foreign_aid_route_to_from = yes") >= 4
 	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
 		"category totals",
 		"sponsor totals",
@@ -2490,18 +2503,20 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"Germany, Japan, Italy, Poland, Romania, and Finland",
 		"Turkey and Iran",
 		"Expanded patron action costs scale by target tier",
+		"real access route",
 	])
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
 				f"aid_effects={aid_effect_ok} expanded_decisions={expanded_decisions_ok} "
 				f"expanded_effects={expanded_effects_ok} dynamic_expanded_costs={dynamic_expanded_cost_ok} "
 				f"investment_surface={investment_surface_ok} "
-				f"sponsor_balance={bool(sponsor_balance_ok)} sponsor_styles={sponsor_style_ok} docs={docs_ok}"
+				f"sponsor_balance={bool(sponsor_balance_ok)} sponsor_styles={sponsor_style_ok} "
+				f"access_routes={access_route_ok} docs={docs_ok}"
 			),
 		)
 	]
@@ -2548,6 +2563,7 @@ def verify_reintegration_puppet_surface() -> list[Check]:
 		"can_target_soviet_collapse_breakaway_for_foreign_protection_treaty",
 		"can_target_soviet_collapse_breakaway_for_foreign_adviser_privileges",
 		"can_target_soviet_collapse_breakaway_for_foreign_client_cabinet",
+		"has_soviet_collapse_foreign_aid_route_to_from",
 	]
 	required_effects = [
 		"soviet_collapse_apply_moscow_union_treaty_offer",

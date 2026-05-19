@@ -139,8 +139,36 @@ can_target_soviet_collapse_breakaway_for_aid = {
 		is_soviet_collapse_breakaway_country = yes
 		NOT = { tag = SOV }
 		NOT = { tag = ROOT }
+		NOT = { has_war_with = ROOT }
 	}
 	NOT = { tag = SOV }
+	has_soviet_collapse_foreign_aid_route_to_from = yes
+}
+
+has_soviet_collapse_foreign_aid_route_to_from = {
+	OR = {
+		has_war_with = SOV
+		is_in_faction_with = FROM
+		FROM = { has_war_with = SOV }
+		FROM = { has_country_flag = soviet_collapse_foreign_aid_corridor_open }
+		AND = {
+			any_owned_state = {
+				any_neighbor_state = {
+					is_owned_by = FROM
+				}
+			}
+		}
+		AND = {
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.trade_convoys }
+			any_owned_state = { is_coastal = yes }
+			FROM = { any_owned_state = { is_coastal = yes } }
+		}
+		AND = {
+			has_global_flag = soviet_collapse_free_republics_league_announced
+			FROM = { has_country_flag = soviet_collapse_free_republics_league_member }
+			is_soviet_collapse_league_conference_patron_style = yes
+		}
+	}
 }
 
 is_soviet_collapse_foreign_aid_major_target = {
@@ -962,6 +990,7 @@ can_target_soviet_collapse_breakaway_for_foreign_protection_treaty = {
 		is_soviet_collapse_breakaway_country = yes
 		NOT = { tag = ROOT }
 		NOT = { tag = SOV }
+		NOT = { has_war_with = ROOT }
 		NOT = { has_war_with = SOV }
 		NOT = { is_subject = yes }
 		NOT = { has_country_flag = soviet_collapse_foreign_protection_treaty_signed }
@@ -970,6 +999,7 @@ can_target_soviet_collapse_breakaway_for_foreign_protection_treaty = {
 		check_variable = { var = soviet_collapse_independence_resilience value = constant:soviet_collapse_puppet_pressure.target_resilience_ceiling compare = less_than }
 	}
 	is_soviet_collapse_foreign_patron_candidate = yes
+	has_soviet_collapse_foreign_aid_route_to_from = yes
 	is_soviet_collapse_root_dominant_sponsor_for_from = yes
 }
 
@@ -980,6 +1010,7 @@ can_target_soviet_collapse_breakaway_for_foreign_adviser_privileges = {
 		is_soviet_collapse_breakaway_country = yes
 		NOT = { tag = ROOT }
 		NOT = { tag = SOV }
+		NOT = { has_war_with = ROOT }
 		NOT = { has_war_with = SOV }
 		NOT = { is_subject = yes }
 		NOT = { is_soviet_collapse_republic_protected_from_external_dependency = yes }
@@ -989,6 +1020,7 @@ can_target_soviet_collapse_breakaway_for_foreign_adviser_privileges = {
 		NOT = { has_country_flag = soviet_collapse_foreign_adviser_privileges_granted }
 	}
 	is_soviet_collapse_foreign_patron_candidate = yes
+	has_soviet_collapse_foreign_aid_route_to_from = yes
 	is_soviet_collapse_root_dominant_sponsor_for_from = yes
 }
 
@@ -999,6 +1031,7 @@ can_target_soviet_collapse_breakaway_for_foreign_client_cabinet = {
 		is_soviet_collapse_breakaway_country = yes
 		NOT = { tag = ROOT }
 		NOT = { tag = SOV }
+		NOT = { has_war_with = ROOT }
 		NOT = { has_war_with = SOV }
 		NOT = { is_subject = yes }
 		NOT = { is_soviet_collapse_republic_protected_from_external_dependency = yes }
@@ -1009,6 +1042,7 @@ can_target_soviet_collapse_breakaway_for_foreign_client_cabinet = {
 		NOT = { has_country_flag = soviet_collapse_foreign_client_cabinet_installed }
 	}
 	is_soviet_collapse_foreign_patron_candidate = yes
+	has_soviet_collapse_foreign_aid_route_to_from = yes
 	is_soviet_collapse_root_dominant_sponsor_for_from = yes
 }
 
