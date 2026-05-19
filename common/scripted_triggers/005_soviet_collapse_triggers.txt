@@ -146,6 +146,35 @@ can_target_soviet_collapse_breakaway_for_aid = {
 	has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = yes
 }
 
+can_target_soviet_collapse_breakaway_for_league_aid = {
+	FROM = {
+		exists = yes
+		has_country_flag = soviet_collapse_breakaway
+		is_soviet_collapse_breakaway_country = yes
+		has_country_flag = soviet_collapse_free_republics_league_member
+		NOT = { tag = SOV }
+		NOT = { tag = ROOT }
+		NOT = { has_war_with = ROOT }
+	}
+	NOT = { tag = SOV }
+	has_global_flag = soviet_collapse_free_republics_league_announced
+	has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = yes
+	OR = {
+		has_soviet_collapse_foreign_aid_route_to_from = yes
+		has_soviet_collapse_league_aid_channel_to_from = yes
+	}
+}
+
+has_soviet_collapse_league_aid_channel_to_from = {
+	has_global_flag = soviet_collapse_free_republics_league_announced
+	FROM = { has_country_flag = soviet_collapse_free_republics_league_member }
+	OR = {
+		is_soviet_collapse_league_conference_patron_style = yes
+		is_soviet_collapse_relief_patron_style = yes
+		is_soviet_collapse_reconstruction_patron_style = yes
+	}
+}
+
 has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = {
 	FROM = {
 		OR = {
@@ -542,6 +571,35 @@ can_pay_soviet_collapse_foreign_conference_cost = {
 			}
 			has_political_power > constant:soviet_collapse_foreign_intervention.conference_political_power
 			command_power > constant:soviet_collapse_foreign_intervention.conference_command_power
+		}
+	}
+}
+
+can_pay_soviet_collapse_foreign_league_logistics_cost = {
+	OR = {
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_major_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.league_logistics_major_political_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.league_logistics_major_fuel
+			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.league_logistics_major_trains }
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.league_logistics_major_convoys }
+		}
+		AND = {
+			FROM = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			has_political_power > constant:soviet_collapse_foreign_intervention.league_logistics_regional_political_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.league_logistics_regional_fuel
+			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.league_logistics_regional_trains }
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.league_logistics_regional_convoys }
+		}
+		AND = {
+			FROM = {
+				NOT = { is_soviet_collapse_foreign_aid_major_target = yes }
+				NOT = { is_soviet_collapse_foreign_aid_regional_target = yes }
+			}
+			has_political_power > constant:soviet_collapse_foreign_intervention.league_logistics_political_power
+			has_fuel > constant:soviet_collapse_foreign_intervention.league_logistics_fuel
+			has_equipment = { train_equipment > constant:soviet_collapse_foreign_intervention.league_logistics_trains }
+			has_equipment = { convoy_1 > constant:soviet_collapse_foreign_intervention.league_logistics_convoys }
 		}
 	}
 }

@@ -1990,6 +1990,50 @@ soviet_collapse_apply_foreign_league_conference = {
 	}
 }
 
+soviet_collapse_apply_foreign_league_logistics_aid = {
+	add_political_power = constant:soviet_collapse_foreign_intervention.league_logistics_political_power_spend
+	add_fuel = constant:soviet_collapse_foreign_intervention.league_logistics_fuel_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_foreign_intervention.league_logistics_train_spend }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_foreign_intervention.league_logistics_convoy_spend }
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+		add_political_power = constant:soviet_collapse_foreign_intervention.league_logistics_regional_political_power_extra_spend
+		add_fuel = constant:soviet_collapse_foreign_intervention.league_logistics_regional_fuel_extra_spend
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_foreign_intervention.league_logistics_regional_train_extra_spend }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_foreign_intervention.league_logistics_regional_convoy_extra_spend }
+	}
+	if = {
+		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+		add_political_power = constant:soviet_collapse_foreign_intervention.league_logistics_major_political_power_extra_spend
+		add_fuel = constant:soviet_collapse_foreign_intervention.league_logistics_major_fuel_extra_spend
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_foreign_intervention.league_logistics_major_train_extra_spend }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_foreign_intervention.league_logistics_major_convoy_extra_spend }
+	}
+	set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.league_logistics_influence }
+	soviet_collapse_apply_foreign_influence_delta = yes
+	FROM = {
+		set_country_flag = soviet_collapse_league_logistics_channel_open
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_foreign_intervention.league_logistics_infantry_equipment producer = ROOT }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.league_logistics_support_equipment producer = ROOT }
+		add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.league_logistics_influence }
+		add_to_variable = { soviet_collapse_influence_arms_total = constant:soviet_collapse_influence_war.league_logistics_arms_influence }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.league_logistics_independence_resilience }
+		add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_influence_war.league_logistics_league_influence }
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.league_logistics_patronage_risk }
+		clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+		soviet_collapse_add_republic_decision_recovery_progress = yes
+		soviet_collapse_update_foreign_investment_stage_ideas = yes
+	}
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_foreign_intervention.league_logistics_soviet_foreign_pressure }
+			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_foreign_intervention.league_logistics_soviet_league_pressure }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
 soviet_collapse_apply_anti_puppet_clause = {
 	add_political_power = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_political_power_spend
 	add_command_power = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_command_power_spend
