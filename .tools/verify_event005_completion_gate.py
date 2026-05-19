@@ -331,8 +331,10 @@ def verify_focuses() -> list[Check]:
 				for src, dst in edges:
 					graph[src].add(dst)
 					graph[dst].add(src)
+				parents = {focus_id: set() for focus_id, _, _ in tree_focuses}
 				children = {focus_id: set() for focus_id, _, _ in tree_focuses}
 				for src, dst in edges:
+					parents[dst].add(src)
 					children[src].add(dst)
 				seen_components = set()
 				component_count = 0
@@ -381,6 +383,7 @@ def verify_focuses() -> list[Check]:
 						"max_edge_dx": max(edge_dx_values) if edge_dx_values else 0,
 						"visual_detached_edges": visual_detached_edges,
 						"isolated_focuses": len(tree_focuses) - len(connected_focuses),
+						"root_count": sum(1 for focus_id in coord_by_id if not parents[focus_id]),
 						"terminal_leaf_count": sum(1 for focus_id in coord_by_id if not children[focus_id]),
 						"shallow_dead_end_focuses": shallow_dead_end_focuses,
 						"component_count": component_count,
@@ -490,6 +493,7 @@ def verify_focuses() -> list[Check]:
 		or row["edge_crossings"] != 0
 		or row["visual_detached_edges"] != 0
 		or row["isolated_focuses"] != 0
+		or row["root_count"] != 1
 		or row["terminal_leaf_count"] != 1
 		or row["shallow_dead_end_focuses"] != 0
 		or row["component_count"] != 1
@@ -554,6 +558,7 @@ def verify_focuses() -> list[Check]:
 				f"visual_detached_edges={sum(row['visual_detached_edges'] for row in layout_rows)} "
 				f"max_edge_dx={max((row['max_edge_dx'] for row in layout_rows), default=0)} "
 				f"isolated_focuses={sum(row['isolated_focuses'] for row in layout_rows)} "
+				f"single_root_trees={sum(1 for row in layout_rows if row['root_count'] == 1)}/{len(layout_rows)} "
 				f"terminal_leaf_trees={sum(1 for row in layout_rows if row['terminal_leaf_count'] == 1)}/{len(layout_rows)} "
 				f"shallow_dead_end_focuses={sum(row['shallow_dead_end_focuses'] for row in layout_rows)} "
 				f"disconnected_trees={sum(1 for row in layout_rows if row['component_count'] != 1)} "
