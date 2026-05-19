@@ -3124,6 +3124,20 @@ def verify_soviet_objective_board() -> list[Check]:
 		"war_or_diplomacy": ["has_war_with", "is_in_faction", "is_faction_leader"],
 		"special_spawn_gate": ["can_soviet_collapse_spawn_"],
 	}
+	passive_requirement_families = {"stockpile", "political", "crisis_variable"}
+
+	def expanded_scripted_trigger_body(ref: str, seen: set[str] | None = None) -> list[str]:
+		seen = set() if seen is None else seen
+		if ref in seen or ref not in scripted_triggers:
+			return []
+		seen.add(ref)
+		body = scripted_triggers[ref]
+		expanded = list(body)
+		for i, tok in enumerate(body[:-2]):
+			if tok in scripted_triggers and body[i + 1] == "=" and body[i + 2] == "yes":
+				expanded.extend(expanded_scripted_trigger_body(tok, seen))
+		return expanded
+
 	for name, body in missions:
 		number = mission_re.match(name).group(1)
 		body_text = " ".join(body)
@@ -3139,7 +3153,7 @@ def verify_soviet_objective_board() -> list[Check]:
 			for block in available_blocks
 			if len(block) == 3 and block[1] == "=" and block[2] == "yes"
 		]
-		requirement_text = " ".join(" ".join(scripted_triggers[ref]) for ref in requirement_refs if ref in scripted_triggers)
+		requirement_text = " ".join(" ".join(expanded_scripted_trigger_body(ref)) for ref in requirement_refs if ref in scripted_triggers)
 		if len(requirement_refs) != 1 or any(ref not in scripted_triggers for ref in requirement_refs):
 			missing_scripted_requirement.append(name)
 		families = {
@@ -3152,9 +3166,7 @@ def verify_soviet_objective_board() -> list[Check]:
 			thin_scripted_requirement.append(name)
 		if families == {"crisis_variable"}:
 			meter_only_requirement.append(name)
-		passive_family_markers = ["has_manpower", "has_equipment", "has_stability", "has_war_support", "has_army_experience", "command_power", "has_fuel"]
-		active_family_markers = ["is_controlled_by", "is_owned_by", "capital_scope", "any_owned_state", "num_divisions_in_states", "has_country_flag", "has_global_flag", "has_recovered_", "has_idea", "has_war_with", "is_in_faction", "can_soviet_collapse_spawn_", "check_variable"]
-		if any(marker in requirement_text for marker in passive_family_markers) and not any(marker in requirement_text for marker in active_family_markers):
+		if not (families - passive_requirement_families):
 			passive_scripted_requirement.append(name)
 		if re.search(r"\b20000\b|\b0\.35\b|35\s*percent", requirement_text):
 			forbidden_trivial_literals.append(name)
