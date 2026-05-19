@@ -2,14 +2,14 @@
 
 This audit covers the 128 Soviet crisis-board missions defined in `common/decisions/005_soviet_collapse_decisions.txt`. It exists to satisfy the influence/threat/focus rework requirement that the mission pool be audited for duplicate missions, trivial passive checks, readable requirements, distinct outcomes, and state or region clarity.
 
-The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` through `soviet_objective_board_surface` and `mission_quality_surface`. Current evidence proves 128 manual activation missions, 128 queue entries, 128 completion payloads, 128 timeout payloads, unique available blocks for every mission, zero weak passive-only available blocks, zero identical success/failure outcome bodies, zero raw `num_divisions_in_states` blocks exposed directly in decision availability, and 120 missions with map, state, or scoped-region requirements.
+The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` through `soviet_objective_board_surface` and `mission_quality_surface`. Current evidence proves 128 manual activation missions, 128 queue entries, 128 completion payloads, 128 timeout payloads, unique available blocks for every mission, zero weak passive-only available blocks, zero identical success/failure outcome bodies, zero raw `num_divisions_in_states` blocks exposed directly in decision availability, zero long inline mission availability blocks, and 127 missions with map, state, or scoped-region requirements.
 
 ## Audit Rules
 
 - Duplicate risk is low only when the mission has a distinct available-trigger signature and distinct success/failure outcome body in the verifier.
 - Trivial passive missions are rejected by the verifier when a mission only checks tiny manpower, equipment, stability, or war support thresholds without active map, state, variable, flag, war, control, or scoped-country requirements.
 - Division-state and map requirements use requirement localisation that names states or clear regions such as western military districts, southern gate, Volga assembly areas, Caucasus pass lines, rail belts, depot belts, port belts, or named republic capitals.
-- Long trigger details stay behind mission requirement localisation and scripted trigger surfaces; the decision UI should show the objective summary and live crisis values rather than a raw trigger dump.
+- Long trigger details stay behind mission requirement localisation and scripted trigger surfaces; the decision UI should show the objective summary and live crisis values rather than a raw trigger dump. The verifier rejects mission availability blocks that inline long requirement chains instead of using a named scripted trigger.
 
 ## Family Coverage
 
@@ -162,6 +162,6 @@ The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` 
 ## Validation Hooks
 
 - `soviet_objective_board_surface` proves the 128 missions are manually activated, visible only during the Soviet crisis, capped by the active mission queue, and wired to completion/timeout payloads.
-- `mission_quality_surface` proves duplicate mission signatures are absent, trivial passive available blocks are absent, raw division-state checks are hidden behind named trigger tooltips, and success/failure outcomes are not identical.
+- `mission_quality_surface` proves duplicate mission signatures are absent, trivial passive available blocks are absent, raw division-state checks are hidden behind named trigger tooltips, long mission availability chains are hidden behind scripted triggers, and success/failure outcomes are not identical.
 - `localisation_surface` proves mission names, descriptions, requirement summaries, success text, and failure text exist for every mission.
 - `terminal_mission_cleanup` proves terminal collapse removes every active Soviet crisis mission from the board.
