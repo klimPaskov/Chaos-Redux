@@ -1,4 +1,4 @@
-# Soviet Union Collapse Super-Event Research
+﻿# Soviet Union Collapse Super-Event Research
 
 ## Package
 
@@ -110,8 +110,8 @@ The custom extreme paths and republic transformation routes have thirteen rare b
 | Slot | Title | Trigger |
 | --- | --- | --- |
 | `15` | The Black Banner Returns | Ukraine completes `ukr_soviet_collapse_black_banner_takes_the_villages` |
-| `16` | The Dead Are Citizens | Helper present; no implemented death-state route currently calls it |
-| `17` | The World as One Factory | `MFR_state_as_one_arms_order` |
+| `16` | The Northern Signals Break | Helper present; no implemented death-state route currently calls it |
+| `17` | The Workshops Choose Their Councils | `MFR_state_as_one_arms_order` |
 | `18` | Every Port a Council | Helper present; no implemented naval council route currently calls it |
 | `19` | A Map Larger than the Union | Ukraine completes `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map` |
 | `20` | The Steppe Beyond History | `kaz_soviet_collapse_the_southern_republics_do_not_kneel` |
@@ -127,7 +127,7 @@ Image coordination:
 
 - Source sheet: `docs/assets/005_soviet_union_collapse/source_png/optional_super_event_sheet_source.png`
 - Processed PNGs: `docs/assets/005_soviet_union_collapse/processed_png/optional_super_events/`
-- Final DDS files: `gfx/super_events/super_event_black_banner_returns.dds`, `super_event_dead_are_citizens.dds`, `super_event_world_as_one_factory.dds`, `super_event_every_port_a_council.dds`
+- Final DDS files: `gfx/super_events/super_event_black_banner_returns.dds`, `super_event_northern_signals_break.dds`, `super_event_workshops_choose_councils.dds`, `super_event_every_port_a_council.dds`
 - Sprite definitions: `interface/chaosx_super_events.gfx`
 - Source mode: generated with Codex built-in `image_gen` because these scenes are fictional high-chaos branch reveals rather than documentary reporting.
 
@@ -171,8 +171,7 @@ This matrix maps the implemented Event 005 super-events to their current artifac
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `14` | The Union Unmade | `super_event.14.t/d/a/q` | Weber quote documented with Archive.org source note | sourced DDS wired | unique audio id wired from Coriolan package | fires from `soviet_collapse_setup_breakaway_country` through `soviet_collapse_maybe_show_union_unmade_super_event` | sourced image wired |
 | `15` | The Black Banner Returns | `super_event.15.t/d/a/q` | Proudhon quote note documented; attribution remains reviewable | generated DDS wired | slot audio id wired from Coriolan package | fires from the Ukraine black-banner route and the `FTH` / `BBH` endgame helpers | none for generated image |
-| `16` | The Dead Are Citizens | `super_event.16.t/d/a/q` | Ecclesiastes quote note documented | generated DDS wired | slot audio id wired from Final Silence package | fires from implemented dead-state capstones, including `ICD`, `RMC`, `SEP`, `DSC`, `COU`, `BEC`, `RLD`, `LID`, and `IRA` routes | none for generated image |
-| `17` | The World as One Factory | `super_event.17.t/d/a/q` | Marx quote note documented | generated DDS wired | slot audio id wired from Angelic World Order package | `ILU_extreme_path` and `ilu_push_extreme_route` call `soviet_collapse_show_world_as_one_factory_super_event` through the Iron Liturgy endgame helper | none for generated image |
+| `17` | The Workshops Choose Their Councils | `super_event.17.t/d/a/q` | local production quote note documented | generated DDS wired | slot audio id wired from the industrial package | `MFR_state_as_one_arms_order` calls `soviet_collapse_show_workshops_choose_councils_super_event` through the Military Factory package | none for generated image |
 | `18` | Every Port a Council | `super_event.18.t/d/a/q` | Kronstadt slogan note documented | generated DDS wired | slot audio id wired from Coriolan package | fires from implemented port-council capstones for `KRS`, `NRF`, and `ARD` routes | none for generated image |
 | `19` | A Map Larger than the Union | `super_event.19.t/d/a/q` | Mackinder quote documented against Archive.org scan text of the 1919 Henry Holt edition | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map` | sourced image wired |
 | `20` | The Steppe Beyond History | `super_event.20.t/d/a/q` | Herodotus quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | `kaz_soviet_collapse_the_southern_republics_do_not_kneel` calls `soviet_collapse_show_steppe_beyond_history_super_event` | sourced image wired |

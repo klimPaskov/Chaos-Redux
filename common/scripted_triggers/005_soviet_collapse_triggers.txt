@@ -270,7 +270,6 @@ is_soviet_collapse_foreign_aid_regional_target = {
 		tag = UZB
 		tag = CFR
 		tag = MFR
-		tag = OGB
 		is_in_faction = yes
 		check_variable = { var = soviet_collapse_recognition_progress value = constant:soviet_collapse_republic_focus.large_recognition_gain compare = greater_than }
 	}
@@ -1218,7 +1217,6 @@ has_recovered_soviet_collapse_breakaway_capital = {
 		TMS = { exists = yes has_country_flag = soviet_collapse_breakaway capital_scope = { is_controlled_by = ROOT } }
 		CFR = { exists = yes has_country_flag = soviet_collapse_breakaway capital_scope = { is_controlled_by = ROOT } }
 		MFR = { exists = yes has_country_flag = soviet_collapse_breakaway capital_scope = { is_controlled_by = ROOT } }
-		OGB = { exists = yes has_country_flag = soviet_collapse_breakaway capital_scope = { is_controlled_by = ROOT } }
 	}
 }
 
@@ -1498,7 +1496,6 @@ can_guard_soviet_collapse_union_archives = {
 		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
 		CFR = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor capital_scope = { is_controlled_by = ROOT } }
 		MFR = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor capital_scope = { is_controlled_by = ROOT } }
-		OGB = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor capital_scope = { is_controlled_by = ROOT } }
 	}
 }
 
@@ -2204,7 +2201,6 @@ can_guard_soviet_collapse_monasteries_and_mosques_from_politics = {
 		GEO = { exists = yes has_country_flag = soviet_collapse_breakaway }
 		ARM = { exists = yes has_country_flag = soviet_collapse_breakaway }
 		AZR = { exists = yes has_country_flag = soviet_collapse_breakaway }
-		OGB = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor }
 		is_soviet_collapse_southern_breakaway_active = yes
 		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
 		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
@@ -2235,7 +2231,6 @@ can_quiet_soviet_collapse_volga_names = {
 	829 = { is_owned_by = ROOT is_controlled_by = ROOT }
 	251 = { is_owned_by = ROOT is_controlled_by = ROOT }
 	OR = {
-		OGB = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor }
 		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
 		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
 	}
@@ -2277,19 +2272,6 @@ can_stop_soviet_collapse_sailor_assembly_before_vote = {
 		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.small_weirdness_gain compare = greater_than }
 		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than }
 	}
-}
-
-can_contain_soviet_collapse_grave_registers = {
-	capital_scope = { is_controlled_by = ROOT }
-	has_stability > constant:soviet_collapse_soviet_objective.min_stability
-	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	OR = {
-		has_global_flag = { flag = chaos_tier value = 4 }
-		has_global_flag = { flag = chaos_tier value = 5 }
-	}
-	check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
 }
 
 can_enforce_soviet_collapse_western_gate_discipline = {
@@ -2736,34 +2718,6 @@ is_soviet_collapse_high_chaos_containment_pressure_ready = {
 		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
 		CFR = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor }
 		MFR = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor }
-		OGB = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor }
-	}
-}
-
-can_classify_soviet_collapse_impossible_reports = {
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
-	has_stability > constant:soviet_collapse_soviet_objective.min_stability
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_baseline.evolution_weirdness compare = greater_than }
-	OR = {
-		has_country_flag = soviet_collapse_district_war_rooms_reopened
-		has_country_flag = soviet_collapse_soviet_identity_preserved
-		has_country_flag = soviet_collapse_rump_state_prepared
-	}
-}
-
-can_guard_soviet_collapse_hospitals_from_politics = {
-	has_manpower > constant:soviet_collapse_soviet_objective.manpower_req
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	has_stability > constant:soviet_collapse_soviet_objective.min_stability
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	OR = {
-		OGB = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor }
-		has_country_flag = soviet_collapse_mission_090_done
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
 	}
 }
 
@@ -2783,118 +2737,6 @@ can_keep_soviet_collapse_factory_whistles_ordinary = {
 	}
 }
 
-can_deny_soviet_collapse_star_iron_rumor = {
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
-	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	OR = {
-		570 = { is_owned_by = ROOT is_controlled_by = ROOT }
-		571 = { is_owned_by = ROOT is_controlled_by = ROOT }
-		566 = { is_owned_by = ROOT is_controlled_by = ROOT }
-		YAK = { exists = yes has_country_flag = soviet_collapse_breakaway }
-		FER = { exists = yes has_country_flag = soviet_collapse_breakaway }
-	}
-	OR = {
-		has_global_flag = { flag = chaos_tier value = 5 }
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
-		has_country_flag = soviet_collapse_impossible_reports_classified
-	}
-}
-
-can_break_soviet_collapse_funeral_train_schedule = {
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	has_equipment = { train_equipment > constant:soviet_collapse_soviet_objective.train_req }
-	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	OR = {
-		242 = { is_owned_by = ROOT is_controlled_by = ROOT }
-		206 = { is_owned_by = ROOT is_controlled_by = ROOT }
-		570 = { is_owned_by = ROOT is_controlled_by = ROOT }
-	}
-	OR = {
-		has_country_flag = soviet_collapse_hospital_records_guarded
-		has_country_flag = soviet_collapse_mission_090_done
-		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than }
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
-	}
-}
-
-can_prevent_soviet_collapse_crown_leaving_archive = {
-	has_stability > constant:soviet_collapse_soviet_objective.min_stability
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	capital_scope = { is_controlled_by = ROOT }
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	OR = {
-		has_country_flag = soviet_collapse_mission_029_done
-		has_country_flag = soviet_collapse_mission_085_done
-		has_country_flag = soviet_collapse_soviet_identity_preserved
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
-	}
-}
-
-can_silence_soviet_collapse_wrong_resurrection_committee = {
-	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	capital_scope = { is_controlled_by = ROOT }
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	OR = {
-		has_country_flag = soviet_collapse_hospital_records_guarded
-		has_country_flag = soviet_collapse_mission_090_done
-		has_country_flag = soviet_collapse_funeral_train_schedule_broken
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
-	}
-}
-
-can_seal_soviet_collapse_northern_fleet_signals = {
-	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	has_fuel > constant:soviet_collapse_soviet_objective.fuel_req
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	213 = { is_owned_by = ROOT is_controlled_by = ROOT }
-	214 = { is_owned_by = ROOT is_controlled_by = ROOT }
-	OR = {
-		has_country_flag = soviet_collapse_mission_070_done
-		has_country_flag = soviet_collapse_funeral_train_schedule_survived
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
-	}
-}
-
-can_keep_soviet_collapse_priests_out_of_war_room = {
-	has_stability > constant:soviet_collapse_soviet_objective.min_stability
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	capital_scope = { is_controlled_by = ROOT }
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	OR = {
-		has_country_flag = soviet_collapse_mission_085_done
-		has_country_flag = soviet_collapse_district_war_rooms_reopened
-		has_country_flag = soviet_collapse_crown_left_archive
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
-	}
-}
-
-can_order_soviet_collapse_graves_counted_by_living = {
-	has_manpower > constant:soviet_collapse_soviet_objective.medium_manpower_req
-	has_equipment = { support_equipment > constant:soviet_collapse_soviet_objective.support_equipment_req }
-	command_power > constant:soviet_collapse_soviet_objective.min_command_power
-	capital_scope = { is_controlled_by = ROOT }
-	is_soviet_collapse_high_chaos_containment_pressure_ready = yes
-	OR = {
-		has_country_flag = soviet_collapse_mission_090_done
-		has_country_flag = soviet_collapse_hospital_records_guarded
-		has_country_flag = soviet_collapse_wrong_resurrection_committee_political
-		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_republic_focus.ai_weirdness_high compare = greater_than }
-	}
-}
-
 can_publish_soviet_collapse_first_restored_budget = {
 	has_recovered_soviet_collapse_breakaway_capital = yes
 	capital_scope = { is_controlled_by = ROOT }
@@ -2906,7 +2748,6 @@ can_publish_soviet_collapse_first_restored_budget = {
 	OR = {
 		has_country_flag = soviet_collapse_league_border_dispute_forced
 		has_country_flag = soviet_collapse_factory_whistles_kept_ordinary
-		has_country_flag = soviet_collapse_star_iron_rumor_denied
 		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
 	}
 }
@@ -2925,8 +2766,7 @@ can_reopen_soviet_collapse_schools_without_soldiers = {
 	OR = {
 		check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_baseline.evolution_weirdness compare = greater_than }
 		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_baseline.republic_confidence compare = greater_than }
-		has_country_flag = soviet_collapse_hospital_records_guarded
-		has_country_flag = soviet_collapse_graves_counted_by_living_offices
+		has_country_flag = soviet_collapse_first_restored_budget_published
 	}
 }
 
@@ -2994,11 +2834,7 @@ can_record_soviet_collapse_crisis_as_temporary_disorder = {
 	command_power > constant:soviet_collapse_soviet_objective.min_command_power
 	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
 	check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.league_threat_gate compare = less_than }
-	OR = {
-		has_country_flag = soviet_collapse_mission_029_done
-		has_country_flag = soviet_collapse_crown_kept_in_archive
-		has_country_flag = soviet_collapse_impossible_reports_classified
-	}
+	has_country_flag = soviet_collapse_mission_029_done
 	OR = {
 		has_country_flag = soviet_collapse_first_restored_budget_published
 		has_country_flag = soviet_collapse_local_units_returned_to_barracks
@@ -3172,38 +3008,10 @@ can_soviet_collapse_spawn_mfr = {
 	}
 }
 
-can_soviet_collapse_spawn_ogb = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	OGB = { exists = no }
-	249 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	829 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_icd = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	ICD = { exists = no }
-	has_country_flag = soviet_collapse_graves_counted_by_dead_state
-	581 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	582 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
 can_soviet_collapse_spawn_krs = {
 	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
 	KRS = { exists = no }
 	OR = {
-		has_country_flag = soviet_collapse_northern_fleet_signals_unsealed
 		has_country_flag = soviet_collapse_sailor_assembly_voted
 	}
 	195 = {
@@ -3314,104 +3122,6 @@ can_soviet_collapse_spawn_sdz = {
 		is_controlled_by = ROOT
 	}
 	351 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_rmc = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	RMC = { exists = no }
-	has_country_flag = soviet_collapse_grave_registers_failed
-	217 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	260 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_rcd = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	RCD = { exists = no }
-	has_country_flag = soviet_collapse_wrong_resurrection_committee_political
-	570 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	568 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_ilu = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	ILU = { exists = no }
-	has_country_flag = soviet_collapse_ural_factory_gates_failed
-	653 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	572 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_pra = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	PRA = { exists = no }
-	has_country_flag = soviet_collapse_funeral_train_schedule_survived
-	242 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	241 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_tsc = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	TSC = { exists = no }
-	has_country_flag = soviet_collapse_star_iron_rumor_spread
-	566 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	571 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_blt = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	BLT = { exists = no }
-	has_country_flag = soviet_collapse_crown_left_archive
-	351 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	400 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_nrf = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	NRF = { exists = no }
-	has_country_flag = soviet_collapse_northern_fleet_signals_unsealed
-	213 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	214 = {
 		is_owned_by = ROOT
 		is_controlled_by = ROOT
 	}
@@ -3565,24 +3275,10 @@ can_soviet_collapse_spawn_ard = {
 	}
 }
 
-can_soviet_collapse_spawn_trs = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	TRS = { exists = no }
-	has_country_flag = soviet_collapse_religious_command_entered_war_room
-	219 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	254 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
 can_soviet_collapse_spawn_nlc = {
 	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
 	NLC = { exists = no }
-	has_country_flag = soviet_collapse_northern_fleet_signals_unsealed
+	has_country_flag = soviet_collapse_northern_port_directorate_declared
 	216 = {
 		is_owned_by = ROOT
 		is_controlled_by = ROOT
@@ -3593,103 +3289,6 @@ can_soviet_collapse_spawn_nlc = {
 	}
 }
 
-can_soviet_collapse_spawn_sep = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	SEP = { exists = no }
-	has_country_flag = soviet_collapse_graves_counted_by_dead_state
-	260 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	239 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_dsc = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	DSC = { exists = no }
-	has_country_flag = soviet_collapse_graves_counted_by_dead_state
-	220 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	222 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_cou = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	COU = { exists = no }
-	has_country_flag = soviet_collapse_funeral_train_schedule_survived
-	241 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	224 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_bec = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	BEC = { exists = no }
-	has_country_flag = soviet_collapse_grave_registers_failed
-	240 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	223 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_rld = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	RLD = { exists = no }
-	has_country_flag = soviet_collapse_wrong_resurrection_committee_political
-	254 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	223 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_lid = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	LID = { exists = no }
-	has_country_flag = soviet_collapse_graves_counted_by_dead_state
-	217 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	238 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
-
-can_soviet_collapse_spawn_ira = {
-	is_soviet_collapse_high_chaos_successor_spawn_ready = yes
-	IRA = { exists = no }
-	has_country_flag = soviet_collapse_ural_factory_gates_failed
-	572 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-	573 = {
-		is_owned_by = ROOT
-		is_controlled_by = ROOT
-	}
-}
 can_pay_soviet_collapse_custom_splinter_low_cost = {
 	has_stability > constant:soviet_collapse_breakaway_action.recognition_stability_floor
 	has_equipment = { support_equipment > constant:soviet_collapse_breakaway_action.coordinate_support_equipment }
@@ -3720,15 +3319,4 @@ can_pay_mfr_convert_depots_to_arms_lines_cost = {
 	tag = MFR
 	command_power > constant:soviet_collapse_factory_ancient.command_power_medium_cost
 	check_variable = { var = mfr_arsenal_quotas value = constant:soviet_collapse_factory_ancient.small_mandate_gain compare = greater_than_or_equals }
-}
-
-can_pay_ogb_claim_volga_crossings_cost = {
-	tag = OGB
-	command_power > constant:soviet_collapse_factory_ancient.command_power_low_cost
-}
-
-can_pay_ogb_convene_bolghar_scholars_cost = {
-	tag = OGB
-	command_power > constant:soviet_collapse_factory_ancient.command_power_medium_cost
-	check_variable = { var = ogb_volga_legitimacy value = constant:soviet_collapse_factory_ancient.small_mandate_gain compare = greater_than_or_equals }
 }

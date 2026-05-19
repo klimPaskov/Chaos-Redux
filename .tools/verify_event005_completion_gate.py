@@ -126,6 +126,29 @@ DISABLED_SOVIET_OBJECTIVE_MISSIONS = {
 	"soviet_collapse_soviet_mission_118_order_the_graves_counted_by_the_living",
 }
 
+DISABLED_OBJECTIVE_TRIGGERS = {
+	"can_contain_soviet_collapse_grave_registers",
+	"can_classify_soviet_collapse_impossible_reports",
+	"can_guard_soviet_collapse_hospitals_from_politics",
+	"can_deny_soviet_collapse_star_iron_rumor",
+	"can_break_soviet_collapse_funeral_train_schedule",
+	"can_prevent_soviet_collapse_crown_leaving_archive",
+	"can_silence_soviet_collapse_wrong_resurrection_committee",
+	"can_seal_soviet_collapse_northern_fleet_signals",
+	"can_keep_soviet_collapse_priests_out_of_war_room",
+	"can_order_soviet_collapse_graves_counted_by_living",
+}
+
+DISABLED_OBJECTIVE_FLAGS = {
+	"soviet_collapse_grave_registers_failed",
+	"soviet_collapse_impossible_reports_classified",
+	"soviet_collapse_hospital_records_guarded",
+	"soviet_collapse_star_iron_rumor_denied",
+	"soviet_collapse_crown_kept_in_archive",
+	"soviet_collapse_northern_fleet_signals_unsealed",
+	"soviet_collapse_graves_counted_by_living_offices",
+}
+
 ORDINARY_REPUBLIC_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST", "GEO", "ARM", "AZR", "UZB", "KYR", "TAJ", "TMS", "KAZ"]
 FIRST_WAVE_WESTERN_TAGS = ["UKR", "BLR", "MOL", "LIT", "LAT", "EST"]
 FIRST_WAVE_CAUCASUS_TAGS = ["GEO", "ARM", "AZR"]
@@ -133,7 +156,60 @@ FIRST_WAVE_CENTRAL_ASIA_TAGS = ["UZB", "KYR", "TAJ", "TMS"]
 IDEOLOGIES = ["communism", "democratic", "fascism", "neutrality"]
 BANNED_PHRASE = "starts from a low dynamic baseline in calm conditions"
 XLSX_NS = {"a": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
-EVENT005_ACHIEVEMENT_COUNT = 47
+EVENT005_ACHIEVEMENT_COUNT = 40
+
+DISABLED_TAG_REGISTRATION_TAGS = [tag for tag in DISABLED_CUSTOM_TAGS if tag != "OGB"]
+
+DISABLED_DECISION_CATEGORIES = {
+	"soviet_collapse_volga_restoration",
+	"soviet_collapse_iron_commissariat",
+	"soviet_collapse_red_martyrs_resurrection_cult",
+	"soviet_collapse_red_cosmist_directorate",
+	"soviet_collapse_iron_liturgy_of_the_urals",
+	"soviet_collapse_pale_railway_authority",
+	"soviet_collapse_tunguska_star_committee",
+	"soviet_collapse_brotherhood_of_the_last_tsar",
+	"soviet_collapse_northern_revenant_fleet",
+	"soviet_collapse_third_rome_emergency_synod",
+	"soviet_collapse_sepulchre_soviet",
+	"soviet_collapse_dead_soldiers_congress",
+	"soviet_collapse_commissariat_of_the_unburied",
+	"soviet_collapse_black_earth_resurrection_cult",
+	"soviet_collapse_red_lazarus_directorate",
+	"soviet_collapse_last_international_of_the_dead",
+	"soviet_collapse_iron_resurrection_army",
+}
+
+DISABLED_EFFECT_BLOCKS = {
+	"soviet_collapse_show_dead_are_citizens_super_event",
+	"soviet_collapse_apply_ogb_claim_volga_crossings",
+	"soviet_collapse_apply_ogb_convene_bolghar_scholars",
+	"soviet_collapse_apply_ogb_focus_legitimacy_gain",
+	"soviet_collapse_apply_ogb_focus_river_trade",
+	"soviet_collapse_apply_ogb_focus_patrols",
+	"soviet_collapse_apply_ogb_focus_foreign_contacts",
+	"soviet_collapse_apply_ogb_focus_sacred_restoration",
+	"soviet_collapse_complete_dead_state_endgame",
+	"soviet_collapse_complete_red_martyrs_endgame",
+	"soviet_collapse_complete_red_cosmist_endgame",
+	"soviet_collapse_complete_iron_liturgy_endgame",
+	"soviet_collapse_complete_pale_railway_endgame",
+	"soviet_collapse_complete_tunguska_endgame",
+	"soviet_collapse_complete_last_tsar_endgame",
+	"soviet_collapse_complete_northern_revenant_endgame",
+	"soviet_collapse_complete_third_rome_endgame",
+	"soviet_collapse_complete_sepulchre_endgame",
+	"soviet_collapse_complete_dead_soldiers_endgame",
+	"soviet_collapse_complete_unburied_endgame",
+	"soviet_collapse_complete_black_earth_endgame",
+	"soviet_collapse_complete_red_lazarus_endgame",
+	"soviet_collapse_complete_last_international_dead_endgame",
+	"soviet_collapse_complete_iron_resurrection_endgame",
+}
+
+for _disabled_tag in DISABLED_CUSTOM_TAGS:
+	DISABLED_EFFECT_BLOCKS.add(f"soviet_collapse_setup_{_disabled_tag.lower()}_successor")
+	DISABLED_EFFECT_BLOCKS.add(f"soviet_collapse_spawn_{_disabled_tag.lower()}_if_enabled")
 
 
 @dataclass
@@ -602,8 +678,8 @@ def verify_focuses() -> list[Check]:
 			"focus_ai_surface",
 			(
 				ai_block_count == len(focuses)
-				and dynamic_ai >= max(225, len(focuses) // 5)
-				and mutual_focus_count >= 100
+				and dynamic_ai >= max(180, len(focuses) // 4)
+				and mutual_focus_count >= 70
 				and dynamic_mutual_ai == mutual_focus_count
 				and flat_mutual_ai == 0
 			),
@@ -770,10 +846,10 @@ def verify_ideas() -> list[Check]:
 		if numeric and all(value <= 0.03 for value in numeric):
 			tiny_only.append(idea_id)
 
-	ok = not no_modifier and not weak_lt3 and not tiny_only and len(idea_blocks) >= 120
+	ok = not no_modifier and not weak_lt3 and not tiny_only and len(idea_blocks) >= 90
 	package_ok = (
 		ok
-		and total_modifier_entries >= 390
+		and total_modifier_entries >= 300
 		and tiny_components <= 25
 		and unresolved_constants == 0
 		and not missing_picture
@@ -1334,7 +1410,7 @@ def verify_focus_tree_map_documentation_surface() -> list[Check]:
 		"soviet_collapse_kazakhstan_focus_tree",
 		"soviet_collapse_breakaway_focus_tree",
 		"CFR_soviet_collapse_focus_tree",
-		"IRA_soviet_collapse_focus_tree",
+		"NLC_soviet_collapse_focus_tree",
 		"Continuous focus windows",
 	]
 	missing = [marker for marker in required_markers if marker not in event_doc]
@@ -1384,6 +1460,7 @@ def verify_mission_audit_documentation_surface() -> list[Check]:
 	mission_ids = set(re.findall(r"^\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)\s*=\s*\{", decisions, re.MULTILINE))
 	table_ids = set(re.findall(r"\bsoviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+\b", audit_doc))
 	table_rows = len(re.findall(r"^\| \d{3} `soviet_collapse_soviet_mission_", audit_doc, re.MULTILINE))
+	expected_rows = len(mission_ids)
 	header = "| Mission | Owner | Purpose | Requirement | Success effect | Failure effect | Duplicate risk |"
 	required_markers = [
 		header,
@@ -1397,8 +1474,8 @@ def verify_mission_audit_documentation_surface() -> list[Check]:
 	]
 	validation_markers = [
 		"mission_audit_documentation_surface",
-		"rows 128",
-		"mission_ids 128/128",
+		f"rows {expected_rows}",
+		f"mission_ids {expected_rows}/{expected_rows}",
 		"validation_markers 4/4",
 	]
 	missing_markers = [marker for marker in required_markers if marker not in audit_doc]
@@ -1406,7 +1483,7 @@ def verify_mission_audit_documentation_surface() -> list[Check]:
 	ok = (
 		not missing_markers
 		and not missing_validation
-		and table_rows == 128
+		and table_rows == expected_rows
 		and mission_ids
 		and mission_ids <= table_ids
 		and "005_soviet_union_collapse_mission_audit.md" in event_doc
@@ -1429,8 +1506,8 @@ def verify_validation_snapshot_freshness_surface() -> list[Check]:
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	required_markers = [
 		"validation_snapshot_freshness_surface",
-		"terminal_high_chaos_successor_surface prepare_flags 19 spawn_calls 21/21 ready_trigger_refs 21",
-		"highest_chaos_prepare_flags 19",
+		"terminal_high_chaos_successor_surface prepare_flags 18 spawn_calls 21/21 ready_trigger_refs 21",
+		"highest_chaos_prepare_flags 18",
 	]
 	stale_markers = [
 		"terminal_high_chaos_spawn_gates_with_required_flags 35",
@@ -2887,7 +2964,6 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 		and "soviet_collapse_show_union_unmade_super_event = yes" in maybe_body
 	)
 	missions = set(re.findall(r"^\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)\s*=\s*\{", decisions, re.MULTILINE))
-	active_missions = missions - DISABLED_SOVIET_OBJECTIVE_MISSIONS
 	cleanup_blocks = named_blocks(effect_tokens, "soviet_collapse_cleanup_terminal_collapse_missions")
 	cleanup_body = " ".join(cleanup_blocks[0]) if cleanup_blocks else ""
 	cleanup_remove_refs = set(re.findall(r"remove_mission\s*=\s*(soviet_collapse_soviet_mission_\d{3}_[A-Za-z0-9_]+)", cleanup_body))
@@ -2912,9 +2988,8 @@ def verify_union_unmade_and_cleanup() -> list[Check]:
 		and "set_global_flag = soviet_collapse_terminal_collapse" in effects
 	)
 	cleanup_ok = (
-		len(missions) == 128
-		and cleanup_helper_ok
-		and active_missions <= activate_refs
+		cleanup_helper_ok
+		and missions <= activate_refs
 		and not (DISABLED_SOVIET_OBJECTIVE_MISSIONS & activate_refs)
 		and "NOT = { has_global_flag = soviet_collapse_terminal_collapse }" in triggers
 	)
@@ -2975,7 +3050,6 @@ def verify_soviet_objective_board() -> list[Check]:
 	mission_re = re.compile(r"^soviet_collapse_soviet_mission_(\d{3})_")
 	missions = [(name, body) for name, body in decision_blocks if mission_re.match(name)]
 	mission_ids = {name for name, _ in missions}
-	active_mission_ids = mission_ids - DISABLED_SOVIET_OBJECTIVE_MISSIONS
 	trigger_tokens = tokens(triggers)
 	scripted_triggers = dict(direct_child_blocks(trigger_tokens))
 	loc_keys = set(re.findall(r"^\s*([A-Za-z0-9_.-]+):\s*\"", loc, re.MULTILINE))
@@ -3109,21 +3183,20 @@ def verify_soviet_objective_board() -> list[Check]:
 
 	queue_cap_ok = (
 		constants.get("soviet_collapse_soviet_objective.active_cap") == 10
-		and activate_body.count("constant:soviet_collapse_soviet_objective.active_cap") >= len(active_mission_ids)
-		and activate_body.count("compare = less_than") >= len(active_mission_ids)
-		and activate_body.count("add_to_temp_variable = { soviet_collapse_active_objectives = 1 }") >= len(active_mission_ids)
+		and activate_body.count("constant:soviet_collapse_soviet_objective.active_cap") >= len(mission_ids)
+		and activate_body.count("compare = less_than") >= len(mission_ids)
+		and activate_body.count("add_to_temp_variable = { soviet_collapse_active_objectives = 1 }") >= len(mission_ids)
 	)
 	ok = (
-		len(missions) == 128
-		and len(count_blocks) == 1
+		len(count_blocks) == 1
 		and len(activate_blocks) == 1
 		and count_refs == mission_ids
-		and activate_refs == active_mission_ids
+		and activate_refs == mission_ids
 		and manual_only == len(missions)
 		and visible_gated == len(missions)
 		and mission_payloads == len(missions)
 		and queue_restarts == len(missions)
-		and done_flag_refs == len(active_mission_ids)
+		and done_flag_refs == len(mission_ids)
 		and len(mission_timeouts) >= 8
 		and queue_cap_ok
 	)
@@ -3222,6 +3295,112 @@ def verify_terminal_high_chaos_successors() -> list[Check]:
 			(
 				f"prepare_flags={prepare_flags} spawn_calls={len(spawn_calls)}/{len(expected_spawn_calls)} "
 				f"ready_trigger_refs={ready_trigger_count} disabled_spawn_calls={len(disabled_calls_present)}"
+			),
+		)
+	]
+
+
+def verify_disabled_weird_successor_surface() -> list[Check]:
+	effects_text = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	triggers_text = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
+	decisions_text = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	categories_text = read_text(ROOT / "common/decisions/categories/005_soviet_collapse_categories.txt")
+	mtth_text = read_text(ROOT / "common/mtth/005_soviet_collapse_mtth.txt")
+	focus_counts = event005_focus_tree_counts()
+	effect_tokens = tokens(effects_text)
+	trigger_tokens = tokens(triggers_text)
+	decision_tokens = tokens(decisions_text)
+	category_tokens = tokens(categories_text)
+
+	disabled_focus_trees = [
+		f"{tag}_soviet_collapse_focus_tree"
+		for tag in DISABLED_CUSTOM_TAGS
+		if f"{tag}_soviet_collapse_focus_tree" in focus_counts
+	]
+	disabled_load_refs = [
+		tag
+		for tag in DISABLED_CUSTOM_TAGS
+		if f"load_focus_tree = {{ tree = {tag}_soviet_collapse_focus_tree" in effects_text
+	]
+	disabled_effects = [
+		name
+		for name in DISABLED_EFFECT_BLOCKS
+		if named_blocks(effect_tokens, name)
+	]
+	disabled_triggers = [
+		name
+		for name in [f"can_soviet_collapse_spawn_{tag.lower()}" for tag in DISABLED_CUSTOM_TAGS]
+		if named_blocks(trigger_tokens, name)
+	]
+	disabled_decision_categories = [
+		name
+		for name in DISABLED_DECISION_CATEGORIES
+		if named_blocks(decision_tokens, name)
+	]
+	disabled_category_defs = [
+		name
+		for name in DISABLED_DECISION_CATEGORIES
+		if named_blocks(category_tokens, name)
+	]
+	disabled_objective_missions = [
+		name
+		for name in DISABLED_SOVIET_OBJECTIVE_MISSIONS
+		if name in decisions_text or name in effects_text
+	]
+	disabled_objective_triggers = [
+		name
+		for name in DISABLED_OBJECTIVE_TRIGGERS
+		if named_blocks(trigger_tokens, name)
+	]
+	disabled_objective_flags = [
+		name
+		for name in DISABLED_OBJECTIVE_FLAGS
+		if name in effects_text or name in triggers_text or name in decisions_text or name in mtth_text
+	]
+	disabled_tag_regs = []
+	country_tags_text = read_text(ROOT / "common/country_tags/chaosx_countries.txt")
+	for tag in DISABLED_TAG_REGISTRATION_TAGS:
+		if re.search(rf"^{tag}\s*=", country_tags_text, re.MULTILINE):
+			disabled_tag_regs.append(tag)
+	disabled_idea_prefixes = [
+		tag.lower()
+		for tag in DISABLED_CUSTOM_TAGS
+		if any(idea_id.startswith(f"{tag.lower()}_") for idea_id in event005_idea_ids())
+	]
+	disabled_country_files = []
+	for tag in DISABLED_TAG_REGISTRATION_TAGS:
+		for path in (ROOT / "common/countries").glob(f"*{tag}*.txt"):
+			disabled_country_files.append(str(path.relative_to(ROOT)))
+		for path in (ROOT / "history/countries").glob(f"{tag} - *.txt"):
+			disabled_country_files.append(str(path.relative_to(ROOT)))
+	ok = not any([
+		disabled_focus_trees,
+		disabled_load_refs,
+		disabled_effects,
+		disabled_triggers,
+		disabled_decision_categories,
+		disabled_category_defs,
+		disabled_objective_missions,
+		disabled_objective_triggers,
+		disabled_objective_flags,
+		disabled_tag_regs,
+		disabled_idea_prefixes,
+		disabled_country_files,
+	])
+	return [
+		Check(
+			"disabled_weird_successor_surface",
+			ok,
+			(
+				f"disabled_focus_trees={len(disabled_focus_trees)} disabled_load_refs={len(disabled_load_refs)} "
+				f"disabled_effect_blocks={len(disabled_effects)} disabled_spawn_triggers={len(disabled_triggers)} "
+				f"disabled_decision_categories={len(disabled_decision_categories)} "
+				f"disabled_category_defs={len(disabled_category_defs)} "
+				f"disabled_objective_missions={len(disabled_objective_missions)} "
+				f"disabled_objective_triggers={len(disabled_objective_triggers)} "
+				f"disabled_objective_flags={len(disabled_objective_flags)} "
+				f"disabled_tag_regs={len(disabled_tag_regs)} disabled_idea_prefixes={len(disabled_idea_prefixes)} "
+				f"disabled_country_files={len(disabled_country_files)}"
 			),
 		)
 	]
@@ -3527,18 +3706,15 @@ def verify_super_events_and_assets() -> list[Check]:
 
 
 def event005_achievement_ids() -> list[str]:
-	gfx = read_text(ROOT / "interface/chaosx_achievements.gfx")
-	marker = "# EVENT 005 - SOVIET UNION COLLAPSE ACHIEVEMENTS"
-	if marker not in gfx:
+	achievements = read_text(ROOT / "common/achievements/chaos_redux_achievements.txt")
+	marker = "# EVENT 005 - SOVIET UNION COLLAPSE"
+	if marker not in achievements:
 		return []
-	section = gfx[gfx.index(marker):]
-	ids = []
-	for match in re.finditer(r'name\s*=\s*"GFX_achievement_(chaosx_ach_[A-Za-z0-9_]+)"', section):
-		achievement_id = match.group(1)
-		if achievement_id.endswith("_grey") or achievement_id.endswith("_not_eligible"):
-			continue
-		ids.append(achievement_id)
-	return ids
+	section = achievements[achievements.index(marker):]
+	end_match = re.search(r"^\d+_[A-Za-z0-9_]+_achievement\s*=", section, re.MULTILINE)
+	if end_match:
+		section = section[:end_match.start()]
+	return re.findall(r"^(chaosx_ach_[A-Za-z0-9_]+)\s*=\s*\{", section, re.MULTILINE)
 
 
 def verify_evolution_logging_surface() -> list[Check]:
@@ -3739,7 +3915,7 @@ def verify_ai_surface() -> list[Check]:
 		if top_level_block_bodies(body, "ai_will_do")
 		and any(token in " ".join(top_level_block_bodies(body, "ai_will_do")[0]) for token in ["modifier", "check_variable", "has_war", "has_country_flag", "has_global_flag"])
 	]
-	ok = len(regular) >= 120 and not missing_ai and len(dynamic_ai) >= 100
+	ok = len(regular) >= 90 and not missing_ai and len(dynamic_ai) >= 90
 	return [
 		Check(
 			"decision_ai_surface",
@@ -3935,6 +4111,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_terminal_ordinary_republics())
 	checks.extend(verify_mtth_release_surface())
 	checks.extend(verify_terminal_high_chaos_successors())
+	checks.extend(verify_disabled_weird_successor_surface())
 	checks.extend(verify_localisation_and_event_log())
 	checks.extend(verify_localisation_surface())
 	checks.extend(verify_flags())

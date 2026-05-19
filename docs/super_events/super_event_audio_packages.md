@@ -1,4 +1,4 @@
-# Super-Event Audio Packages
+﻿# Super-Event Audio Packages
 
 ## Overview
 
@@ -187,13 +187,13 @@ All source files below were downloaded from their legitimate Wikimedia Commons f
 - Music definitions: `chaosx_super_event_15_0_5`, `chaosx_super_event_15_1_0`, `chaosx_super_event_15_1_5`, `chaosx_super_event_15_2_0`, `chaosx_super_event_15_2_5`, `chaosx_super_event_15_3_0`
 - Soundeffect definitions: `chaosx_super_event_15_sound_0_5`, `chaosx_super_event_15_sound_1_0`, `chaosx_super_event_15_sound_1_5`, `chaosx_super_event_15_sound_2_0`, `chaosx_super_event_15_sound_2_5`, `chaosx_super_event_15_sound_3_0`
 
-- Super-event id or key: `16`, `super_event.16.*`, The Dead Are Citizens
+- Super-event id or key: `16`, `super_event.16.*`, The Northern Signals Break
 - Audio source package reused: Final Silence / `music/super_event_final_silence.ogg`
 - Sound definition id reused: `chaosx_super_event_final_silence_track`
 - Music definitions: `chaosx_super_event_16_0_5`, `chaosx_super_event_16_1_0`, `chaosx_super_event_16_1_5`, `chaosx_super_event_16_2_0`, `chaosx_super_event_16_2_5`, `chaosx_super_event_16_3_0`
 - Soundeffect definitions: `chaosx_super_event_16_sound_0_5`, `chaosx_super_event_16_sound_1_0`, `chaosx_super_event_16_sound_1_5`, `chaosx_super_event_16_sound_2_0`, `chaosx_super_event_16_sound_2_5`, `chaosx_super_event_16_sound_3_0`
 
-- Super-event id or key: `17`, `super_event.17.*`, The World as One Factory
+- Super-event id or key: `17`, `super_event.17.*`, The Workshops Choose Their Councils
 - Audio source package reused: Angelic World Order / `music/super_event_angelic_world_order.ogg`
 - Sound definition id reused: `chaosx_super_event_angelic_world_order_track`
 - Music definitions: `chaosx_super_event_17_0_5`, `chaosx_super_event_17_1_0`, `chaosx_super_event_17_1_5`, `chaosx_super_event_17_2_0`, `chaosx_super_event_17_2_5`, `chaosx_super_event_17_3_0`
