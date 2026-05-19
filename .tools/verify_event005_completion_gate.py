@@ -39,6 +39,7 @@ EVENT005_SCRIPT_FILES = [
 	ROOT / "common/decisions/categories/005_soviet_collapse_categories.txt",
 	ROOT / "common/ideas/005_soviet_collapse_ideas.txt",
 	ROOT / "common/script_constants/005_soviet_collapse_constants.txt",
+	ROOT / "common/mtth/005_soviet_collapse_mtth.txt",
 	ROOT / "events/005_soviet_collapse.txt",
 ]
 
@@ -1572,6 +1573,115 @@ def verify_terminal_ordinary_republics() -> list[Check]:
 	]
 
 
+def verify_mtth_release_surface() -> list[Check]:
+	mtth_path = ROOT / "common/mtth/005_soviet_collapse_mtth.txt"
+	mtth = read_text(mtth_path) if mtth_path.exists() else ""
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	events = read_text(ROOT / "events/005_soviet_collapse.txt")
+	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
+	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	mtth_doc_path = ROOT / "docs/events/005_soviet_union_collapse_mtth_releases.md"
+	mtth_doc = read_text(mtth_doc_path) if mtth_doc_path.exists() else ""
+	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
+	event_tokens = tokens(events)
+	event_blocks = {}
+	for block in named_blocks(event_tokens, "country_event"):
+		ids = top_level_values(block, "id")
+		if ids:
+			event_blocks[ids[0]] = " ".join(block)
+
+	mtth_entries_ok = all(
+		entry in mtth
+		for entry in [
+			"soviet_collapse_progressive_release_weight",
+			"soviet_collapse_progressive_release_miss_weight",
+			"base = constant:soviet_collapse_release_mtth.release_base",
+			"base = constant:soviet_collapse_release_mtth.miss_base",
+		]
+	)
+	mtth_factor_markers = [
+		"soviet_collapse_total_collapse_threat",
+		"soviet_collapse_moscow_authority",
+		"soviet_collapse_military_obedience",
+		"soviet_collapse_breakaway_count",
+		"soviet_collapse_depot_vulnerability",
+		"soviet_collapse_foreign_appetite",
+		"soviet_collapse_league_cohesion",
+		"soviet_collapse_evolution_weirdness",
+		"is_soviet_collapse_southern_breakaway_active",
+		"soviet_collapse_union_archives_failed",
+		"has_global_flag = { flag = chaos_tier value = 5 }",
+	]
+	mtth_factors_ok = all(marker in mtth for marker in mtth_factor_markers)
+	effect_surface_ok = all(
+		marker in effects
+		for marker in [
+			"set_temp_variable = { soviet_collapse_progressive_release_weight = mtth:soviet_collapse_progressive_release_weight }",
+			"set_temp_variable = { soviet_collapse_progressive_release_miss_weight = mtth:soviet_collapse_progressive_release_miss_weight }",
+			"soviet_collapse_fire_progressive_release_event",
+			"country_event = { id = chaosx.nr5.130 }",
+			"country_event = { id = chaosx.nr5.137 }",
+			"has_soviet_collapse_three_smaller_central_asian_republics_free = yes",
+		]
+	) and "constant:soviet_collapse_progressive_release.critical_release_weight" not in effects
+	event_ids = [f"chaosx.nr5.{event_id}" for event_id in range(130, 138)]
+	event_surface_ok = all(
+		event_id in event_blocks
+		and "is_triggered_only = yes" in event_blocks[event_id]
+		and "soviet_collapse_release_one_threat_breakaway_republic = yes" in event_blocks[event_id]
+		and "picture = GFX_report_union_crisis" in event_blocks[event_id]
+		for event_id in event_ids
+	)
+	loc_surface_ok = all(
+		f"{event_id}.t:" in loc and f"{event_id}.d:" in loc and f"{event_id}.a:" in loc
+		for event_id in event_ids
+	)
+	constant_surface_ok = all(
+		marker in constants
+		for marker in [
+			"soviet_collapse_release_mtth",
+			"release_base",
+			"miss_base",
+			"weak_authority_add",
+			"weak_obedience_add",
+			"failed_mission_add",
+			"cause_league_weight",
+		]
+	)
+	doc_surface_ok = all(
+		marker in docs + "\n" + mtth_doc
+		for marker in [
+			"common/mtth/005_soviet_collapse_mtth.txt",
+			"MTTH",
+			"chaosx.nr5.130",
+			"chaosx.nr5.137",
+			"GFX_report_union_crisis",
+			"has_soviet_collapse_three_smaller_central_asian_republics_free",
+		]
+	)
+	ok = (
+		mtth_path.exists()
+		and mtth_entries_ok
+		and mtth_factors_ok
+		and effect_surface_ok
+		and event_surface_ok
+		and loc_surface_ok
+		and constant_surface_ok
+		and doc_surface_ok
+	)
+	return [
+		Check(
+			"mtth_release_surface",
+			ok,
+			(
+				f"mtth_file={mtth_path.exists()} entries={mtth_entries_ok} factors={mtth_factors_ok} "
+				f"effects={effect_surface_ok} events={sum(1 for event_id in event_ids if event_id in event_blocks)}/8 "
+				f"loc={loc_surface_ok} constants={constant_surface_ok} docs={doc_surface_ok}"
+			),
+		)
+	]
+
+
 def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability: bool = False, low_war_support: bool = False, active_war: bool = False, capital_lost: bool = False) -> tuple[float, float]:
 	authority = constants["soviet_collapse_baseline.moscow_authority"]
 	confidence = constants["soviet_collapse_baseline.republic_confidence"]
@@ -2985,6 +3095,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_union_unmade_and_cleanup())
 	checks.extend(verify_soviet_objective_board())
 	checks.extend(verify_terminal_ordinary_republics())
+	checks.extend(verify_mtth_release_surface())
 	checks.extend(verify_terminal_high_chaos_successors())
 	checks.extend(verify_localisation_and_event_log())
 	checks.extend(verify_localisation_surface())
