@@ -1826,6 +1826,90 @@ def crisis_scenario(constants: dict[str, float], *, tier: int = 0, low_stability
 	return authority, threat
 
 
+THREAT_COMPONENT_WEIGHTS = {
+	"soviet_collapse_moscow_authority": -1,
+	"soviet_collapse_military_obedience": -1,
+	"soviet_collapse_republic_confidence": 1,
+	"soviet_collapse_depot_vulnerability": 1,
+	"soviet_collapse_foreign_appetite": 1,
+	"soviet_collapse_league_cohesion": 1,
+	"soviet_collapse_evolution_weirdness": 1,
+}
+
+
+def resolve_numeric_token(token: str, constants: dict[str, float]) -> float | None:
+	if token.startswith("constant:"):
+		return constants.get(token.removeprefix("constant:"))
+	try:
+		return float(token)
+	except ValueError:
+		return None
+
+
+def effect_variable_deltas(body: list[str], constants: dict[str, float]) -> dict[str, float]:
+	deltas: dict[str, float] = {}
+	for block in top_level_block_bodies(body, "add_to_variable"):
+		if len(block) >= 3 and block[1] == "=":
+			var = block[0]
+			value = resolve_numeric_token(block[2], constants)
+		else:
+			vars_ = top_level_values(block, "var")
+			values = top_level_values(block, "value")
+			var = vars_[0] if vars_ else ""
+			value = resolve_numeric_token(values[0], constants) if values else None
+		if var and value is not None:
+			deltas[var] = deltas.get(var, 0) + value
+	for block in top_level_block_bodies(body, "subtract_from_variable"):
+		if len(block) >= 3 and block[1] == "=":
+			var = block[0]
+			value = resolve_numeric_token(block[2], constants)
+		else:
+			vars_ = top_level_values(block, "var")
+			values = top_level_values(block, "value")
+			var = vars_[0] if vars_ else ""
+			value = resolve_numeric_token(values[0], constants) if values else None
+		if var and value is not None:
+			deltas[var] = deltas.get(var, 0) - value
+	return deltas
+
+
+def objective_pressure_success_audit(effect_tokens: list[str], constants: dict[str, float]) -> tuple[int, int, int, float, list[str]]:
+	success_names = sorted(
+		{
+			token
+			for token in effect_tokens
+			if re.fullmatch(r"soviet_collapse_apply_successful(?:_[A-Za-z0-9]+)*_objective_pressure", token)
+		}
+	)
+	non_increasing = 0
+	bad_component_changes = 0
+	max_net_delta = -999.0
+	missing_or_unresolved: list[str] = []
+	multiplier = constants.get("soviet_collapse_baseline.total_threat_multiplier", 1)
+	for name in success_names:
+		blocks = named_blocks(effect_tokens, name)
+		if len(blocks) != 1:
+			missing_or_unresolved.append(name)
+			continue
+		deltas = effect_variable_deltas(blocks[0], constants)
+		if not deltas:
+			missing_or_unresolved.append(name)
+			continue
+		net_delta = 0.0
+		for var, delta in deltas.items():
+			if var not in THREAT_COMPONENT_WEIGHTS:
+				continue
+			component_delta = THREAT_COMPONENT_WEIGHTS[var] * delta
+			net_delta += component_delta
+			if component_delta > 0:
+				bad_component_changes += 1
+		net_delta *= multiplier
+		max_net_delta = max(max_net_delta, net_delta)
+		if net_delta <= 0:
+			non_increasing += 1
+	return len(success_names), non_increasing, bad_component_changes, max_net_delta, missing_or_unresolved
+
+
 def verify_crisis_balance() -> list[Check]:
 	constants = parse_script_constants(read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt"))
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
@@ -1925,6 +2009,7 @@ def verify_crisis_balance() -> list[Check]:
 			covered_pressure_families += 1
 	monthly_success_regs = effects.count("soviet_collapse_register_monthly_threat_success = yes")
 	monthly_failure_regs = effects.count("soviet_collapse_register_monthly_threat_failure = yes")
+	success_helper_count, non_increasing_success_helpers, bad_success_component_changes, max_success_delta, unresolved_success_helpers = objective_pressure_success_audit(effect_tokens, constants)
 	event129_guard = bool(re.search(r"id\s*=\s*chaosx\.nr5\.129[\s\S]*?soviet_collapse_apply_monthly_threat_guard\s*=\s*yes[\s\S]*?soviet_collapse_maybe_release_threat_breakaway\s*=\s*yes", events))
 	monthly_guard_ok = (
 		constants.get("soviet_collapse_threat_guard.calm_threat_ceiling", 100) <= 40
@@ -1994,6 +2079,21 @@ def verify_crisis_balance() -> list[Check]:
 				f"pressure_families={covered_pressure_families}/{len(pressure_families)} "
 				f"monthly_guard={monthly_guard_ok} "
 				f"multiplier={constants.get('soviet_collapse_baseline.total_threat_multiplier', 0):.2f}"
+			),
+		),
+		Check(
+			"mission_success_pressure_surface",
+			(
+				success_helper_count >= len(pressure_families) + 1
+				and non_increasing_success_helpers == success_helper_count
+				and bad_success_component_changes == 0
+				and not unresolved_success_helpers
+				and max_success_delta <= 0
+			),
+			(
+				f"success_helpers={success_helper_count} non_increasing={non_increasing_success_helpers} "
+				f"bad_component_changes={bad_success_component_changes} max_net_delta={max_success_delta:.2f} "
+				f"unresolved={len(unresolved_success_helpers)}"
 			),
 		),
 	]
