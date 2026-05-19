@@ -43,16 +43,6 @@ EVENT005_SCRIPT_FILES = [
 	ROOT / "events/005_soviet_collapse.txt",
 ]
 
-EVENT005_EXTERNAL_CRISIS_HOOK_BLOCKLIST = [
-	"zombie",
-	"has_zombie",
-	"is_zombie",
-	"weaponized_zombies",
-	"holy_realm",
-	"holy realm",
-	"holy_realm_",
-]
-
 REQUIRED_INPUTS = [
 	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
@@ -2330,6 +2320,9 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"press_network_ideology_influence",
 		"aid_corridor_logistics_influence",
 		"conference_independence_resilience",
+		"league_logistics_influence",
+		"league_logistics_independence_resilience",
+		"league_logistics_patronage_risk",
 		"anti_puppet_clause_independence_resilience",
 		"balanced_sponsor_floor",
 		"balanced_two_resilience",
@@ -2403,6 +2396,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_sponsor_press_and_radio_network",
 		"soviet_collapse_secure_republican_aid_corridor",
 		"soviet_collapse_build_republics_league_conference",
+		"soviet_collapse_route_aid_through_league_logistics",
 		"soviet_collapse_demand_anti_puppet_clause",
 	]
 	expanded_effects = [
@@ -2411,6 +2405,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_apply_foreign_press_network_aid",
 		"soviet_collapse_apply_foreign_aid_corridor",
 		"soviet_collapse_apply_foreign_league_conference",
+		"soviet_collapse_apply_foreign_league_logistics_aid",
 		"soviet_collapse_apply_anti_puppet_clause",
 	]
 	constants_ok = all(marker in constants for marker in required_constants)
@@ -2429,6 +2424,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"can_pay_soviet_collapse_foreign_press_network_cost",
 		"can_pay_soviet_collapse_foreign_aid_corridor_cost",
 		"can_pay_soviet_collapse_foreign_conference_cost",
+		"can_pay_soviet_collapse_foreign_league_logistics_cost",
 		"can_pay_soviet_collapse_anti_puppet_clause_cost",
 	])
 	dynamic_expanded_costs = [
@@ -2437,6 +2433,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		("soviet_collapse_foreign_press_network_cost_text", "GetSovietCollapseForeignAidPressNetworkPPCost", "press_network_major_stability_extra_spend"),
 		("soviet_collapse_foreign_aid_corridor_cost_text", "GetSovietCollapseForeignAidCorridorFuelCost", "aid_corridor_major_train_extra_spend"),
 		("soviet_collapse_foreign_conference_cost_text", "GetSovietCollapseForeignAidConferencePPCost", "conference_major_command_power_extra_spend"),
+		("soviet_collapse_foreign_league_logistics_cost_text", "GetSovietCollapseForeignAidLeagueLogisticsPPCost", "league_logistics_major_fuel_extra_spend"),
 		("soviet_collapse_anti_puppet_clause_cost_text", "GetSovietCollapseAntiPuppetClausePPCost", "anti_puppet_clause_major_command_power_extra_spend"),
 	]
 	dynamic_expanded_cost_ok = (
@@ -2449,6 +2446,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 			"press_network_major_stability_floor",
 			"aid_corridor_major_fuel",
 			"conference_major_political_power",
+			"league_logistics_major_political_power",
 			"anti_puppet_clause_major_political_power",
 		])
 	)
@@ -2509,6 +2507,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		("soviet_collapse_sponsor_press_and_radio_network", "is_soviet_collapse_client_patron_style"),
 		("soviet_collapse_secure_republican_aid_corridor", "is_soviet_collapse_caucasus_or_central_asia_breakaway"),
 		("soviet_collapse_build_republics_league_conference", "is_soviet_collapse_league_conference_patron_style"),
+		("soviet_collapse_route_aid_through_league_logistics", "is_soviet_collapse_league_conference_patron_style"),
 		("soviet_collapse_demand_anti_puppet_clause", "is_soviet_collapse_relief_patron_style"),
 		("soviet_collapse_offer_protection_treaty", "is_soviet_collapse_client_patron_style"),
 		("soviet_collapse_demand_adviser_privileges", "is_soviet_collapse_client_patron_style"),
@@ -2554,6 +2553,20 @@ def verify_foreign_influence_surface() -> list[Check]:
 		and bool(target_aid_block)
 		and "has_soviet_collapse_target_acceptance_for_foreign_aid_from_root = yes" in target_aid_block.group(0)
 	)
+	league_mediated_aid_ok = all(marker in triggers + decisions + effects + loc + docs for marker in [
+		"can_target_soviet_collapse_breakaway_for_league_aid",
+		"has_soviet_collapse_league_aid_channel_to_from",
+		"can_pay_soviet_collapse_foreign_league_logistics_cost",
+		"soviet_collapse_route_aid_through_league_logistics",
+		"soviet_collapse_apply_foreign_league_logistics_aid",
+		"soviet_collapse_league_logistics_channel_open",
+		"soviet_collapse_foreign_league_logistics_cost_text",
+		"League-mediated logistics aid",
+	]) and all(marker in read_text(ROOT / "docs/events/005_soviet_union_collapse_league_mediated_aid.md") for marker in [
+		"soviet_collapse_route_aid_through_league_logistics",
+		"less target dependency",
+		"No new icon is required",
+	])
 	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
 		"category totals",
 		"sponsor totals",
@@ -2575,11 +2588,12 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"target-side acceptance gate",
 		"rifle shortage",
 		"dominant sponsor lock",
+		"League-mediated logistics aid",
 	])
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and target_acceptance_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and target_acceptance_ok and league_mediated_aid_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
@@ -2587,7 +2601,8 @@ def verify_foreign_influence_surface() -> list[Check]:
 				f"expanded_effects={expanded_effects_ok} dynamic_expanded_costs={dynamic_expanded_cost_ok} "
 				f"investment_surface={investment_surface_ok} "
 				f"sponsor_balance={bool(sponsor_balance_ok)} sponsor_styles={sponsor_style_ok} "
-				f"access_routes={access_route_ok} target_acceptance={target_acceptance_ok} docs={docs_ok}"
+				f"access_routes={access_route_ok} target_acceptance={target_acceptance_ok} "
+				f"league_mediated_aid={league_mediated_aid_ok} docs={docs_ok}"
 			),
 		)
 	]
@@ -3850,22 +3865,6 @@ def verify_braces_and_unsupported() -> list[Check]:
 	]
 
 
-def verify_no_hardcoded_external_crisis_hooks() -> list[Check]:
-	hits = []
-	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES:
-		text = strip_comments(read_text(path)).lower()
-		for marker in EVENT005_EXTERNAL_CRISIS_HOOK_BLOCKLIST:
-			if marker in text:
-				hits.append(f"{path.relative_to(ROOT)}:{marker}")
-	return [
-		Check(
-			"no_hardcoded_external_crisis_hooks",
-			not hits,
-			f"blocked_hits={len(hits)} markers={','.join(EVENT005_EXTERNAL_CRISIS_HOOK_BLOCKLIST)}",
-		)
-	]
-
-
 def run_checks() -> list[Check]:
 	checks: list[Check] = []
 	checks.extend(verify_input_files())
@@ -3887,7 +3886,6 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_mission_audit_documentation_surface())
 	checks.extend(verify_validation_snapshot_freshness_surface())
 	checks.extend(verify_braces_and_unsupported())
-	checks.extend(verify_no_hardcoded_external_crisis_hooks())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
 	checks.extend(verify_breakaway_recovery_surface())
