@@ -494,7 +494,7 @@ def verify_focuses() -> list[Check]:
 		or row["shallow_dead_end_focuses"] != 0
 		or row["component_count"] != 1
 		or row["y_span"] > 14
-		or row["min_mutual_distance"] < 6
+		or row["min_mutual_distance"] < 7
 		or row["max_row"] > 22
 		or row["max_col"] > 14
 	]
@@ -558,7 +558,7 @@ def verify_focuses() -> list[Check]:
 				f"shallow_dead_end_focuses={sum(row['shallow_dead_end_focuses'] for row in layout_rows)} "
 				f"disconnected_trees={sum(1 for row in layout_rows if row['component_count'] != 1)} "
 				f"deep_trees={sum(1 for row in layout_rows if row['y_span'] > 18)} "
-				f"tight_mutual_trees={sum(1 for row in layout_rows if row['min_mutual_distance'] < 4)} "
+				f"tight_mutual_trees={sum(1 for row in layout_rows if row['min_mutual_distance'] < 7)} "
 				f"min_x_span={min((row['x_span'] for row in layout_rows), default=0)} "
 				f"min_y_span={min((row['y_span'] for row in layout_rows), default=0)} "
 				f"max_y_span={max((row['y_span'] for row in layout_rows), default=0)} "
