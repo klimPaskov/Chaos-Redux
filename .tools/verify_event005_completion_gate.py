@@ -4497,11 +4497,14 @@ def verify_spreadsheet_surface() -> list[Check]:
 
 
 def verify_braces_and_unsupported() -> list[Check]:
+	bad_bom = []
 	bad_braces = []
 	bad_operator = []
 	bad_scoped_temp = []
 	bad_at_days = []
 	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES:
+		if path.read_bytes().startswith(b"\xef\xbb\xbf"):
+			bad_bom.append(str(path.relative_to(ROOT)))
 		text = read_text(path)
 		depth = 0
 		min_depth = 0
@@ -4520,6 +4523,7 @@ def verify_braces_and_unsupported() -> list[Check]:
 		if re.search(r"\bdays\s*=\s*@", text):
 			bad_at_days.append(str(path.relative_to(ROOT)))
 	return [
+		Check("script_bom_scan", not bad_bom, f"files_with_bom={len(bad_bom)}"),
 		Check("brace_depth", not bad_braces, f"bad_files={len(bad_braces)}"),
 		Check("unsupported_operator_scan", not bad_operator, f"files_with_unsupported_operator={len(bad_operator)}"),
 		Check("scoped_temp_variable_scan", not bad_scoped_temp, f"files_with_scoped_temp_variables={len(bad_scoped_temp)}"),
