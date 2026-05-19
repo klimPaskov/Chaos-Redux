@@ -2473,6 +2473,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"target_acceptance_recognition_floor",
 		"target_acceptance_resilience_need_ceiling",
 		"stage_3_threshold",
+		"stage_4_threshold",
 	]
 	category_vars = [
 		"soviet_collapse_influence_recognition_total",
@@ -2503,22 +2504,36 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_foreign_diplomatic_contacts",
 		"soviet_collapse_foreign_diplomatic_mission",
 		"soviet_collapse_foreign_treaty_backing",
+		"soviet_collapse_internationally_entrenched_republic",
 		"soviet_collapse_foreign_supply_contacts",
 		"soviet_collapse_foreign_supply_corridors",
 		"soviet_collapse_foreign_supply_network",
 		"soviet_collapse_foreign_reconstruction_offers",
 		"soviet_collapse_sponsored_civil_works",
 		"soviet_collapse_sovereign_reconstruction_board",
+		"soviet_collapse_dependent_reconstruction_network",
 		"soviet_collapse_foreign_volunteer_cadres",
 		"soviet_collapse_foreign_volunteer_brigades",
 		"soviet_collapse_international_defense_corps",
+		"soviet_collapse_sponsor_dominated_volunteer_command",
 		"soviet_collapse_foreign_military_observers",
 		"soviet_collapse_foreign_training_mission",
 		"soviet_collapse_joint_staff_mission",
+		"soviet_collapse_sponsor_directed_staff",
 		"soviet_collapse_foreign_patron_contacts",
 		"soviet_collapse_foreign_patron_liaison",
 		"soviet_collapse_foreign_patron_network",
+		"soviet_collapse_foreign_dependency_network",
 		"soviet_collapse_foreign_patron_burden",
+	]
+	stage_update_blocks = named_blocks(tokens(effects), "soviet_collapse_update_foreign_investment_stage_ideas")
+	stage_update_text = " ".join(stage_update_blocks[0]) if stage_update_blocks else ""
+	stage_4_ideas = [
+		"soviet_collapse_internationally_entrenched_republic",
+		"soviet_collapse_dependent_reconstruction_network",
+		"soviet_collapse_sponsor_dominated_volunteer_command",
+		"soviet_collapse_sponsor_directed_staff",
+		"soviet_collapse_foreign_dependency_network",
 	]
 	aid_effects = [
 		"soviet_collapse_apply_foreign_recognition_aid",
@@ -2552,6 +2567,15 @@ def verify_foreign_influence_surface() -> list[Check]:
 	sponsor_ok = all(var in effects for var in sponsor_vars)
 	stage_idea_defs_ok = all(idea in ideas for idea in stage_ideas)
 	stage_loc_ok = all(f"{idea}:" in loc and f"{idea}_desc:" in loc for idea in stage_ideas)
+	stage_update_logic_ok = (
+		bool(stage_update_blocks)
+		and all(f"remove_ideas = {idea}" in stage_update_text for idea in stage_ideas if idea != "soviet_collapse_foreign_patron_burden")
+		and all(f"stage_{stage}_threshold" in stage_update_text for stage in [1, 2, 3, 4])
+		and all(idea in stage_update_text for idea in stage_4_ideas)
+		and "has_country_flag = soviet_collapse_balanced_sponsors_two" in stage_update_text
+		and "has_country_flag = soviet_collapse_balanced_sponsors_three" in stage_update_text
+		and stage_update_text.count("has_country_flag = soviet_collapse_dominant_sponsor_lock") >= 2
+	)
 	aid_effect_ok = all(
 		re.search(rf"{effect}\s*=\s*{{.*?soviet_collapse_apply_foreign_influence_delta\s*=\s*yes.*?soviet_collapse_update_foreign_investment_stage_ideas\s*=\s*yes", effects, re.S)
 		for effect in aid_effects
@@ -2734,6 +2758,11 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"Investment grows",
 		"Volunteer support grows",
 		"Adviser support grows",
+		"Internationally Entrenched Republic",
+		"Dependent Reconstruction Network",
+		"Sponsor-Dominated Volunteer Command",
+		"Sponsor-Directed Staff",
+		"Foreign Dependency Network",
 		"civilian construction",
 		"anti-puppet clause",
 		"active sponsor count",
@@ -2752,10 +2781,11 @@ def verify_foreign_influence_surface() -> list[Check]:
 	return [
 		Check(
 			"foreign_influence_surface",
-			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and target_acceptance_ok and league_mediated_aid_ok and volunteer_formation_transfer_ok and docs_ok,
+			constants_ok and category_ok and sponsor_ok and stage_idea_defs_ok and stage_loc_ok and stage_update_logic_ok and aid_effect_ok and expanded_decisions_ok and expanded_effects_ok and dynamic_expanded_cost_ok and investment_surface_ok and sponsor_balance_ok and sponsor_style_ok and access_route_ok and target_acceptance_ok and league_mediated_aid_ok and volunteer_formation_transfer_ok and docs_ok,
 			(
 				f"constants={constants_ok} category_vars={category_ok} sponsor_vars={sponsor_ok} "
 				f"stage_ideas={stage_idea_defs_ok} stage_loc={stage_loc_ok} "
+				f"stage_update_logic={stage_update_logic_ok} "
 				f"aid_effects={aid_effect_ok} expanded_decisions={expanded_decisions_ok} "
 				f"expanded_effects={expanded_effects_ok} dynamic_expanded_costs={dynamic_expanded_cost_ok} "
 				f"investment_surface={investment_surface_ok} "
