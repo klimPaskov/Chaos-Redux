@@ -299,6 +299,7 @@ def verify_focuses() -> list[Check]:
 				continuous_y = ys[0] if ys else None
 			tree_focuses = []
 			tree_prereq_edges = []
+			tree_mutual_edges = []
 			for focus_body in top_level_block_bodies(tree_body, "focus"):
 				ids = top_level_values(focus_body, "id")
 				xs = top_level_values(focus_body, "x")
@@ -307,12 +308,19 @@ def verify_focuses() -> list[Check]:
 					tree_focuses.append((ids[0], int(xs[0]), int(ys[0])))
 					for ref in collect_focus_refs(top_level_block_bodies(focus_body, "prerequisite")):
 						tree_prereq_edges.append((ref, ids[0]))
+					for ref in collect_focus_refs(top_level_block_bodies(focus_body, "mutually_exclusive")):
+						tree_mutual_edges.append((ids[0], ref))
 			if tree_focuses:
 				x_values = [x for _, x, _ in tree_focuses]
 				y_values = [y for _, _, y in tree_focuses]
 				coords = [(x, y) for _, x, y in tree_focuses]
 				coord_by_id = {focus_id: (x, y) for focus_id, x, y in tree_focuses}
 				edges = [(src, dst) for src, dst in tree_prereq_edges if src in coord_by_id and dst in coord_by_id]
+				mutual_edges = [(src, dst) for src, dst in tree_mutual_edges if src in coord_by_id and dst in coord_by_id]
+				mutual_distances = [
+					abs(coord_by_id[src][0] - coord_by_id[dst][0]) + abs(coord_by_id[src][1] - coord_by_id[dst][1])
+					for src, dst in mutual_edges
+				]
 				connected_focuses = {focus_id for edge in edges for focus_id in edge}
 				graph = {focus_id: set() for focus_id, _, _ in tree_focuses}
 				for src, dst in edges:
@@ -354,6 +362,7 @@ def verify_focuses() -> list[Check]:
 						"edge_crossings": edge_crossings,
 						"isolated_focuses": len(tree_focuses) - len(connected_focuses),
 						"component_count": component_count,
+						"min_mutual_distance": min(mutual_distances) if mutual_distances else 99,
 						"continuous_x": continuous_x,
 						"continuous_y": continuous_y,
 					}
@@ -435,6 +444,8 @@ def verify_focuses() -> list[Check]:
 		or row["edge_crossings"] != 0
 		or row["isolated_focuses"] != 0
 		or row["component_count"] != 1
+		or row["y_span"] > 18
+		or row["min_mutual_distance"] < 4
 		or row["max_row"] > 22
 		or row["max_col"] > 14
 	]
@@ -489,8 +500,12 @@ def verify_focuses() -> list[Check]:
 				f"edge_crossings={sum(row['edge_crossings'] for row in layout_rows)} "
 				f"isolated_focuses={sum(row['isolated_focuses'] for row in layout_rows)} "
 				f"disconnected_trees={sum(1 for row in layout_rows if row['component_count'] != 1)} "
+				f"deep_trees={sum(1 for row in layout_rows if row['y_span'] > 18)} "
+				f"tight_mutual_trees={sum(1 for row in layout_rows if row['min_mutual_distance'] < 4)} "
 				f"min_x_span={min((row['x_span'] for row in layout_rows), default=0)} "
 				f"min_y_span={min((row['y_span'] for row in layout_rows), default=0)} "
+				f"max_y_span={max((row['y_span'] for row in layout_rows), default=0)} "
+				f"min_mutual_distance={min((row['min_mutual_distance'] for row in layout_rows), default=99)} "
 				f"max_col={max((row['max_col'] for row in layout_rows), default=0)} "
 				f"max_row={max((row['max_row'] for row in layout_rows), default=0)}"
 			),
