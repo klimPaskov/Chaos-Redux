@@ -68,7 +68,7 @@ The 30-day crisis pulse records successful and failed Soviet objectives before c
 
 ## Opening Breakaways
 
-The normal opening wave is selected from structured pools instead of hard-coding Ukraine and Belarus. When the map supports it, the first wave chooses one western or eastern European actor, one Caucasus republic, and one Central Asian republic other than Kazakhstan, then adds extra ordinary republics as chaos, war, stability, and Soviet condition worsen. Kazakhstan is outside the normal opening pools and only enters early when southern pressure or severe crisis conditions justify a steppe rupture. Each appearing breakaway receives:
+The normal opening wave is selected from structured pools instead of hard-coding Ukraine and Belarus. When the map supports it, the first wave chooses one western or eastern European actor, one Caucasus republic, and one Central Asian republic other than Kazakhstan, then adds extra ordinary republics as chaos, war, stability, and Soviet condition worsen. First-wave size feeds the threat formula through per-breakaway, major-republic, and regional-republic pressure constants; the completion verifier measures an ordinary three-republic wave and a larger six-republic tier-2 wave directly so the opening stays below terminal levels while still rising with scale. Kazakhstan is outside the normal opening pools and only enters early when southern pressure or severe crisis conditions justify a steppe rupture. Each appearing breakaway receives:
 
 - `soviet_collapse_breakaway` country flag
 - manpower and equipment from script constants
