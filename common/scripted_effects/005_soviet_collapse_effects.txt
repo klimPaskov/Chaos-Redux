@@ -1409,22 +1409,31 @@ soviet_collapse_update_foreign_investment_stage_ideas = {
 	remove_ideas = soviet_collapse_foreign_diplomatic_contacts
 	remove_ideas = soviet_collapse_foreign_diplomatic_mission
 	remove_ideas = soviet_collapse_foreign_treaty_backing
+	remove_ideas = soviet_collapse_internationally_entrenched_republic
 	remove_ideas = soviet_collapse_foreign_supply_contacts
 	remove_ideas = soviet_collapse_foreign_supply_corridors
 	remove_ideas = soviet_collapse_foreign_supply_network
 	remove_ideas = soviet_collapse_foreign_reconstruction_offers
 	remove_ideas = soviet_collapse_sponsored_civil_works
 	remove_ideas = soviet_collapse_sovereign_reconstruction_board
+	remove_ideas = soviet_collapse_dependent_reconstruction_network
 	remove_ideas = soviet_collapse_foreign_volunteer_cadres
 	remove_ideas = soviet_collapse_foreign_volunteer_brigades
 	remove_ideas = soviet_collapse_international_defense_corps
+	remove_ideas = soviet_collapse_sponsor_dominated_volunteer_command
 	remove_ideas = soviet_collapse_foreign_military_observers
 	remove_ideas = soviet_collapse_foreign_training_mission
 	remove_ideas = soviet_collapse_joint_staff_mission
+	remove_ideas = soviet_collapse_sponsor_directed_staff
 	remove_ideas = soviet_collapse_foreign_patron_contacts
 	remove_ideas = soviet_collapse_foreign_patron_liaison
 	remove_ideas = soviet_collapse_foreign_patron_network
+	remove_ideas = soviet_collapse_foreign_dependency_network
 	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_recognition_total value = constant:soviet_collapse_influence_war.stage_4_threshold compare = greater_than_or_equals } }
+		add_ideas = soviet_collapse_internationally_entrenched_republic
+	}
+	else_if = {
 		limit = { check_variable = { var = soviet_collapse_influence_recognition_total value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than_or_equals } }
 		add_ideas = soviet_collapse_foreign_treaty_backing
 	}
@@ -1454,6 +1463,21 @@ soviet_collapse_update_foreign_investment_stage_ideas = {
 	set_temp_variable = { soviet_collapse_investment_influence_total = soviet_collapse_influence_industry_total }
 	add_to_temp_variable = { soviet_collapse_investment_influence_total = soviet_collapse_influence_logistics_total }
 	if = {
+		limit = { check_variable = { var = soviet_collapse_investment_influence_total value = constant:soviet_collapse_influence_war.stage_4_threshold compare = greater_than_or_equals } }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = soviet_collapse_balanced_sponsors_two
+					has_country_flag = soviet_collapse_balanced_sponsors_three
+				}
+			}
+			add_ideas = soviet_collapse_sovereign_reconstruction_board
+		}
+		else = {
+			add_ideas = soviet_collapse_dependent_reconstruction_network
+		}
+	}
+	else_if = {
 		limit = { check_variable = { var = soviet_collapse_investment_influence_total value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than_or_equals } }
 		add_ideas = soviet_collapse_sovereign_reconstruction_board
 	}
@@ -1466,6 +1490,16 @@ soviet_collapse_update_foreign_investment_stage_ideas = {
 		add_ideas = soviet_collapse_foreign_reconstruction_offers
 	}
 	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_volunteers_total value = constant:soviet_collapse_influence_war.stage_4_threshold compare = greater_than_or_equals } }
+		if = {
+			limit = { has_country_flag = soviet_collapse_dominant_sponsor_lock }
+			add_ideas = soviet_collapse_sponsor_dominated_volunteer_command
+		}
+		else = {
+			add_ideas = soviet_collapse_international_defense_corps
+		}
+	}
+	else_if = {
 		limit = { check_variable = { var = soviet_collapse_influence_volunteers_total value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than_or_equals } }
 		add_ideas = soviet_collapse_international_defense_corps
 	}
@@ -1478,6 +1512,16 @@ soviet_collapse_update_foreign_investment_stage_ideas = {
 		add_ideas = soviet_collapse_foreign_volunteer_cadres
 	}
 	if = {
+		limit = { check_variable = { var = soviet_collapse_influence_advisers_total value = constant:soviet_collapse_influence_war.stage_4_threshold compare = greater_than_or_equals } }
+		if = {
+			limit = { has_country_flag = soviet_collapse_dominant_sponsor_lock }
+			add_ideas = soviet_collapse_sponsor_directed_staff
+		}
+		else = {
+			add_ideas = soviet_collapse_joint_staff_mission
+		}
+	}
+	else_if = {
 		limit = { check_variable = { var = soviet_collapse_influence_advisers_total value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than_or_equals } }
 		add_ideas = soviet_collapse_joint_staff_mission
 	}
@@ -1494,6 +1538,10 @@ soviet_collapse_update_foreign_investment_stage_ideas = {
 	add_to_temp_variable = { soviet_collapse_patron_influence_total = soviet_collapse_influence_ideology_total }
 	add_to_temp_variable = { soviet_collapse_patron_influence_total = soviet_collapse_influence_patronage_risk }
 	if = {
+		limit = { check_variable = { var = soviet_collapse_patron_influence_total value = constant:soviet_collapse_influence_war.stage_4_threshold compare = greater_than_or_equals } }
+		add_ideas = soviet_collapse_foreign_dependency_network
+	}
+	else_if = {
 		limit = { check_variable = { var = soviet_collapse_patron_influence_total value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than_or_equals } }
 		add_ideas = soviet_collapse_foreign_patron_network
 	}
