@@ -308,8 +308,10 @@ def verify_focuses() -> list[Check]:
 				ys = top_level_values(focus_body, "y")
 				if ids and xs and ys and xs[0].lstrip("-").isdigit() and ys[0].lstrip("-").isdigit():
 					tree_focuses.append((ids[0], int(xs[0]), int(ys[0])))
-					for ref in collect_focus_refs(top_level_block_bodies(focus_body, "prerequisite")):
-						tree_prereq_edges.append((ref, ids[0]))
+					for prereq_body in top_level_block_bodies(focus_body, "prerequisite"):
+						block_refs = collect_focus_refs([prereq_body])
+						for ref in block_refs:
+							tree_prereq_edges.append((ref, ids[0], len(block_refs) > 1))
 					for ref in collect_focus_refs(top_level_block_bodies(focus_body, "mutually_exclusive")):
 						tree_mutual_edges.append((ids[0], ref))
 			if tree_focuses:
@@ -317,7 +319,8 @@ def verify_focuses() -> list[Check]:
 				y_values = [y for _, _, y in tree_focuses]
 				coords = [(x, y) for _, x, y in tree_focuses]
 				coord_by_id = {focus_id: (x, y) for focus_id, x, y in tree_focuses}
-				edges = [(src, dst) for src, dst in tree_prereq_edges if src in coord_by_id and dst in coord_by_id]
+				edges = [(src, dst) for src, dst, _ in tree_prereq_edges if src in coord_by_id and dst in coord_by_id]
+				hard_edges = [(src, dst) for src, dst, is_or in tree_prereq_edges if not is_or and src in coord_by_id and dst in coord_by_id]
 				mutual_edges = [(src, dst) for src, dst in tree_mutual_edges if src in coord_by_id and dst in coord_by_id]
 				mutual_distances = [
 					abs(coord_by_id[src][0] - coord_by_id[dst][0]) + abs(coord_by_id[src][1] - coord_by_id[dst][1])
@@ -346,8 +349,8 @@ def verify_focuses() -> list[Check]:
 								seen_components.add(neighbor)
 								stack.append(neighbor)
 				edge_crossings = 0
-				for edge_index, first_edge in enumerate(edges):
-					for second_edge in edges[edge_index + 1:]:
+				for edge_index, first_edge in enumerate(hard_edges):
+					for second_edge in hard_edges[edge_index + 1:]:
 						if segments_cross(coord_by_id[first_edge[0]], coord_by_id[first_edge[1]], coord_by_id[second_edge[0]], coord_by_id[second_edge[1]]):
 							edge_crossings += 1
 				edge_dx_values = [
@@ -400,9 +403,16 @@ def verify_focuses() -> list[Check]:
 	missing_icon = []
 	missing_coords = []
 	republic_multi_focus_prerequisites = []
+	republic_hidden_focus_gates_without_visible_links = []
+	republic_hidden_focus_gates_requiring_visible_links = {
+		"blr_soviet_collapse_which_road_is_belarus",
+		"kaz_soviet_collapse_the_congress_chooses_a_past",
+	}
 	allowed_republic_or_prerequisite_focuses = {
 		"ukr_soviet_collapse_last_harvest_plan",
+		"blr_soviet_collapse_which_road_is_belarus",
 		"central_asia_soviet_collapse_the_southern_shield",
+		"kaz_soviet_collapse_the_congress_chooses_a_past",
 		"kaz_soviet_collapse_the_steppe_arsenal",
 		"kaz_soviet_collapse_the_steppe_keeps_many_memories",
 		"kaz_soviet_collapse_the_steppe_outlives_the_union",
@@ -423,6 +433,10 @@ def verify_focuses() -> list[Check]:
 		mutual_blocks = top_level_block_bodies(block, "mutually_exclusive")
 		mutual_refs = collect_focus_refs(mutual_blocks)
 		completed_refs = re.findall(r"\bhas_completed_focus\s*=\s*([A-Za-z0-9_]+)", " ".join(block))
+		if path.name == "005_soviet_collapse_republics.txt" and focus_id in republic_hidden_focus_gates_requiring_visible_links:
+			for ref in completed_refs:
+				if ref not in prereq_refs:
+					republic_hidden_focus_gates_without_visible_links.append((focus_id, ref))
 		ai_blocks = top_level_block_bodies(block, "ai_will_do")
 		ai_block_count += len(ai_blocks)
 		has_dynamic_ai = any("modifier" in ai_body for ai_body in ai_blocks)
@@ -511,6 +525,7 @@ def verify_focuses() -> list[Check]:
 		duplicates, missing_refs, self_refs, nonreciprocal, repeated_mutual_blocks,
 		missing_ai, missing_reward, missing_icon, missing_coords,
 		republic_multi_focus_prerequisites,
+		republic_hidden_focus_gates_without_visible_links,
 		continuous_bad,
 	])
 	return [
@@ -523,6 +538,7 @@ def verify_focuses() -> list[Check]:
 				f"repeated_mutual_blocks={repeated_mutual_blocks} missing_ai={len(missing_ai)} "
 				f"missing_reward={len(missing_reward)} missing_icon={len(missing_icon)} "
 				f"missing_coords={len(missing_coords)} republic_multi_focus_prerequisites={len(republic_multi_focus_prerequisites)} "
+				f"hidden_focus_gates_without_visible_links={len(republic_hidden_focus_gates_without_visible_links)} "
 				f"continuous_positions={continuous_positions} "
 				f"continuous_bad={len(continuous_bad)}"
 			),
