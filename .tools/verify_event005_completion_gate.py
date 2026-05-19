@@ -2131,6 +2131,91 @@ def verify_reintegration_puppet_surface() -> list[Check]:
 	]
 
 
+def verify_local_league_surface() -> list[Check]:
+	constants = read_text(ROOT / "common/script_constants/005_soviet_collapse_constants.txt")
+	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
+	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
+	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	categories = read_text(ROOT / "common/decisions/categories/005_soviet_collapse_categories.txt")
+	events = read_text(ROOT / "events/005_soviet_collapse.txt")
+	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
+	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
+	league_docs = read_text(ROOT / "docs/events/005_soviet_union_collapse_local_leagues.md")
+	constants_ok = all(marker in constants for marker in [
+		"soviet_collapse_regional_faction",
+		"found_political_power",
+		"soviet_release_pressure",
+		"war_equipment_reward",
+	])
+	triggers_ok = all(marker in triggers for marker in [
+		"can_found_soviet_collapse_baltic_league",
+		"can_found_soviet_collapse_caucasus_league",
+		"can_found_soviet_collapse_central_asian_league",
+		"can_soviet_collapse_call_regional_league_defensive_war",
+		"has_soviet_collapse_three_smaller_central_asian_republics_free = yes",
+	])
+	visibility_ok = all(marker in categories for marker in [
+		"can_found_soviet_collapse_baltic_league = yes",
+		"can_found_soviet_collapse_caucasus_league = yes",
+		"can_found_soviet_collapse_central_asian_league = yes",
+	])
+	decisions_ok = all(marker in decisions for marker in [
+		"soviet_collapse_found_baltic_restoration_pact",
+		"soviet_collapse_found_caucasus_defense_compact",
+		"soviet_collapse_found_steppe_federation",
+		"soviet_collapse_invite_regional_partners",
+		"soviet_collapse_coordinate_regional_faction",
+		"soviet_collapse_set_regional_defense_goal",
+		"soviet_collapse_call_regional_league_defensive_war",
+		"soviet_collapse_withdraw_from_regional_faction",
+	])
+	effects_ok = all(marker in effects for marker in [
+		"soviet_collapse_found_baltic_restoration_pact",
+		"soviet_collapse_found_caucasus_defense_compact",
+		"soviet_collapse_found_central_asian_league",
+		"create_faction = soviet_collapse_baltic_restoration_pact_faction",
+		"create_faction = soviet_collapse_caucasus_defense_compact_faction",
+		"create_faction = soviet_collapse_central_asian_league_faction",
+		"add_to_faction = LIT",
+		"add_to_faction = MRC",
+		"add_to_faction = KAZ",
+		"has_soviet_collapse_three_smaller_central_asian_republics_free = yes",
+		"declare_war_on =",
+		"add_to_war =",
+		"clr_global_flag = soviet_collapse_progressive_release_cooldown",
+		"soviet_collapse_maybe_release_threat_breakaway = yes",
+	])
+	events_ok = all(marker in events for marker in [
+		"id = chaosx.nr5.30",
+		"id = chaosx.nr5.31",
+		"id = chaosx.nr5.32",
+		"id = chaosx.nr5.43",
+	])
+	loc_ok = all(marker in loc for marker in [
+		"soviet_collapse_central_asian_league_faction: \"Central Asian League\"",
+		"soviet_collapse_found_steppe_federation: \"Found the Central Asian League\"",
+		"soviet_collapse_call_regional_league_defensive_war:",
+		"soviet_collapse_regional_faction_found_cost_text: \"£pol_power 55  £command_power 20\"",
+	])
+	docs_ok = "Local leagues now operate as the regional layer" in docs and all(marker in league_docs for marker in [
+		"## Overview",
+		"Central Asian League",
+		"Kazakhstan is restricted",
+		"## Icons",
+	])
+	return [
+		Check(
+			"local_league_surface",
+			constants_ok and triggers_ok and visibility_ok and decisions_ok and effects_ok and events_ok and loc_ok and docs_ok,
+			(
+				f"constants={constants_ok} triggers={triggers_ok} visibility={visibility_ok} "
+				f"decisions={decisions_ok} effects={effects_ok} events={events_ok} "
+				f"loc={loc_ok} docs={docs_ok}"
+			),
+		)
+	]
+
+
 def verify_union_unmade_and_cleanup() -> list[Check]:
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
@@ -3103,6 +3188,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_crisis_balance())
 	checks.extend(verify_foreign_influence_surface())
 	checks.extend(verify_reintegration_puppet_surface())
+	checks.extend(verify_local_league_surface())
 	checks.extend(verify_union_unmade_and_cleanup())
 	checks.extend(verify_soviet_objective_board())
 	checks.extend(verify_terminal_ordinary_republics())

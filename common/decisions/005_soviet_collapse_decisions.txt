@@ -2302,6 +2302,219 @@ soviet_collapse_foreign_patron_category = {
 	}
 }
 
+soviet_collapse_regional_faction_category = {
+	soviet_collapse_found_baltic_restoration_pact = {
+		icon = GFX_decision_soviet_collapse_baltic_restoration_pact
+		available = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		visible = { is_soviet_collapse_active = yes can_found_soviet_collapse_baltic_league = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_found_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_found_baltic_restoration_pact = yes
+			custom_effect_tooltip = soviet_collapse_found_baltic_restoration_pact_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				is_soviet_collapse_league_pressure_ready = yes
+			}
+		}
+	}
+
+	soviet_collapse_found_caucasus_defense_compact = {
+		icon = GFX_decision_soviet_collapse_caucasus_defense_compact
+		available = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		visible = { is_soviet_collapse_active = yes can_found_soviet_collapse_caucasus_league = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_found_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_found_caucasus_defense_compact = yes
+			custom_effect_tooltip = soviet_collapse_found_caucasus_defense_compact_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				is_soviet_collapse_league_pressure_ready = yes
+			}
+		}
+	}
+
+	soviet_collapse_found_steppe_federation = {
+		icon = GFX_decision_soviet_collapse_steppe_federation
+		available = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		visible = { is_soviet_collapse_active = yes can_found_soviet_collapse_central_asian_league = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_found_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_found_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_found_central_asian_league = yes
+			custom_effect_tooltip = soviet_collapse_found_steppe_federation_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				is_soviet_collapse_southern_breakaway_active = yes
+			}
+		}
+	}
+
+	soviet_collapse_invite_regional_partners = {
+		icon = GFX_decision_soviet_collapse_regional_invite
+		available = { can_pay_soviet_collapse_regional_faction_invite_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_regional_faction_leader = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_invite_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_invite_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_regional_faction_invite = yes
+			custom_effect_tooltip = soviet_collapse_invite_regional_partners_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } }
+			}
+		}
+	}
+
+	soviet_collapse_coordinate_regional_faction = {
+		icon = GFX_decision_soviet_collapse_regional_coordinate
+		available = { can_pay_soviet_collapse_regional_faction_coordinate_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_regional_faction_leader = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_coordinate_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_coordinate_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_regional_faction_coordinate = yes
+			custom_effect_tooltip = soviet_collapse_coordinate_regional_faction_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+		}
+	}
+
+	soviet_collapse_set_regional_defense_goal = {
+		icon = GFX_decision_soviet_collapse_regional_goal_defense
+		available = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_regional_faction_leader = yes NOT = { has_country_flag = soviet_collapse_regional_faction_defense_goal } }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_goal_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_set_regional_faction_defense_goal = yes
+			custom_effect_tooltip = soviet_collapse_set_regional_defense_goal_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war_with = SOV }
+		}
+	}
+
+	soviet_collapse_set_regional_recognition_goal = {
+		icon = GFX_decision_soviet_collapse_regional_goal_recognition
+		available = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_regional_faction_leader = yes NOT = { has_country_flag = soviet_collapse_regional_faction_recognition_goal } }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_goal_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_set_regional_faction_recognition_goal = yes
+			custom_effect_tooltip = soviet_collapse_set_regional_recognition_goal_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than } }
+			}
+		}
+	}
+
+	soviet_collapse_set_regional_logistics_goal = {
+		icon = GFX_decision_soviet_collapse_regional_goal_logistics
+		available = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_regional_faction_leader = yes NOT = { has_country_flag = soviet_collapse_regional_faction_logistics_goal } }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_goal_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_goal_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_set_regional_faction_logistics_goal = yes
+			custom_effect_tooltip = soviet_collapse_set_regional_logistics_goal_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_baseline.depot_vulnerability compare = greater_than } }
+			}
+		}
+	}
+
+	soviet_collapse_reduce_regional_faction_tension = {
+		icon = GFX_decision_soviet_collapse_regional_tension
+		available = { can_pay_soviet_collapse_regional_faction_tension_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_regional_faction_leader = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_tension_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_tension_cost_text
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_reduce_regional_faction_tension = yes
+			custom_effect_tooltip = soviet_collapse_reduce_regional_faction_tension_tt
+		}
+		ai_will_do = { base = @soviet_collapse_ai_low }
+	}
+
+	soviet_collapse_call_regional_league_defensive_war = {
+		icon = GFX_decision_soviet_collapse_regional_goal_defense
+		available = {
+			can_pay_soviet_collapse_regional_faction_war_cost = yes
+			can_soviet_collapse_call_regional_league_defensive_war = yes
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			is_soviet_collapse_regional_faction_member = yes
+			SOV = { exists = yes is_soviet_collapse_active = yes }
+			NOT = { has_country_flag = soviet_collapse_regional_league_defensive_war_called }
+		}
+		custom_cost_trigger = { can_pay_soviet_collapse_regional_faction_war_cost = yes }
+		custom_cost_text = soviet_collapse_regional_faction_war_cost_text
+		fire_only_once = yes
+		complete_effect = {
+			soviet_collapse_call_regional_league_defensive_war = yes
+			custom_effect_tooltip = soviet_collapse_call_regional_league_defensive_war_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.critical_threat compare = greater_than } }
+			}
+		}
+	}
+
+	soviet_collapse_withdraw_from_regional_faction = {
+		icon = GFX_decision_soviet_collapse_regional_withdraw
+		available = { is_soviet_collapse_regional_faction_member = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_regional_faction_member = yes }
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_withdraw_from_regional_faction = yes
+			custom_effect_tooltip = soviet_collapse_withdraw_from_regional_faction_tt
+		}
+		ai_will_do = { base = 0 }
+	}
+}
+
 soviet_collapse_reconstruction_state = {
 	cfr_survey_unfinished_sites = {
 		icon = GFX_decision_cfr_survey_unfinished_sites
