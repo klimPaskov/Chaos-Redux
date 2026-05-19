@@ -6,12 +6,13 @@ This audit records the source files available for the current Event 005 correcti
 
 | Requested input | State | Lines | Bytes | SHA-256 |
 | --- | --- | ---: | ---: | --- |
-| `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md` | present | 512 | 16561 | `b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077` |
-| `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | present | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
+| `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md` | present | 989 | 31351 | `b62d00c6a8947dd2ac2b97369b0871a611184ee27779c7342273d92f478bbdea` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md` | present | 3418 | 162378 | `c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | present | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md` | present | 3889 | 148956 | `60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428` |
+| `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md` | present | 512 | 16561 | `b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077` |
+| `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | present | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
 | `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` | present | 287 | 15899 | `9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750` |
 | `tmp/error.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
 | `tmp/text.log` | intentionally removed after fixed errors | 0 | 0 | n/a |
@@ -29,9 +30,10 @@ historical missing continuation context: the earlier continuation filename `tmp/
 - `005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
 - `005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
 - `005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
+- `005_soviet_union_collapse_influence_threat_focus_rework_spec.md`
 - `005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md`
 
-`tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` contains the event-log, mission-duration, blocked-localisation, threat-balance, Moscow Authority, strong-ideas, release-logic, Union Unmade, flag, and completion-gate cleanup themes that overlap with the missing filename. It is treated as recovered adjacent context, not as proof that the exact requested input exists.
+`tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md` is the active first source for the current influence, threat, decision-cost, and focus-tree rework pass. The older comprehensive and threat/mission/focus rework specs remain consulted adjacent context for event-log, mission-duration, blocked-localisation, threat-balance, Moscow Authority, strong-ideas, release-logic, Union Unmade, flag, and completion-gate cleanup themes that overlap with the missing filename. They are not proof that the exact requested missing continuation input exists.
 
 The exact requested log files `tmp/error.log` and `tmp/text.log` were not present. On 2026-05-18 the user clarified that the previous errors had already been fixed and those log files were removed intentionally, so their absence is no longer a completion blocker. The latest recovery search was:
 
@@ -70,4 +72,4 @@ The `/home/klim` hit is an unrelated zero-byte npm package log outside the Chaos
 
 ## Completion Impact
 
-The current pass can close from the active source-of-truth files, especially `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md`, with the later spawn-balance cleanup spec retained as additional consulted context. The historical event-log/mission-balance/focus-cleanup filename is not an active input blocker because the current source order does not require it and its named surfaces are directly verified. The intentionally removed `tmp/error.log` and `tmp/text.log` files are not blockers after the user's 2026-05-18 clarification.
+The current pass can close from the active source-of-truth files, especially `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md`, with the older comprehensive/threat specs and later spawn-balance cleanup spec retained as additional consulted context. The historical event-log/mission-balance/focus-cleanup filename is not an active input blocker because the current source order does not require it and its named surfaces are directly verified. The intentionally removed `tmp/error.log` and `tmp/text.log` files are not blockers after the user's 2026-05-18 clarification.

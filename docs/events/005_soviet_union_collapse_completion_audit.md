@@ -2,24 +2,23 @@
 
 Current audit date: 2026-05-19
 
-This audit maps the active Soviet Collapse correction objective to current repository evidence after the comprehensive-correction, spawn-balance, collapse-pacing, focus-layout, terminal-cleanup, and flag-orientation passes.
+This audit maps the active Soviet Collapse correction objective to current repository evidence after the influence/threat/focus rework, final-clean, spawn-balance, collapse-pacing, focus-layout, terminal-cleanup, and flag-orientation passes.
 
 ## Source Order
 
 Required source order:
 
-1. `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md`
-2. `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md`
-3. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
-4. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
-5. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
-6. `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
-7. `AGENTS.md`
-8. `chaos-redux-events`
-9. `chaos-redux-event-assets`
-10. `chaos-redux-super-events`
+1. `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md`
+2. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
+3. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
+4. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
+5. `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
+6. `AGENTS.md`
+7. `chaos-redux-events`
+8. `chaos-redux-event-assets`
+9. `chaos-redux-super-events`
 
-The later `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` remains additional consulted context because it contains acceptance bullets that overlap the comprehensive pass. The historical `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` filename is not present, but it is not part of the active required source order; its named event-log, mission-balance, and focus-cleanup surfaces are covered by direct implementation evidence below.
+The earlier `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md`, `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md`, and later `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` remain additional consulted context because they contain acceptance bullets that overlap the active source order. The historical `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` filename is not present, but it is not part of the active required source order; its named event-log, mission-balance, and focus-cleanup surfaces are covered by direct implementation evidence below.
 
 The previously referenced `tmp/error.log` and `tmp/text.log` files are absent because the logged errors were fixed and the files were intentionally removed. They are not current completion blockers.
 
@@ -29,12 +28,13 @@ Requested source files as of 2026-05-19:
 
 | Path | State | Lines | Bytes | SHA-256 |
 | --- | --- | ---: | ---: | --- |
-| `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md` | Present | 512 | 16561 | `b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077` |
-| `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | Present | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
+| `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md` | Present | 989 | 31351 | `b62d00c6a8947dd2ac2b97369b0871a611184ee27779c7342273d92f478bbdea` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md` | Present | 3418 | 162378 | `c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | Present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | Present | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md` | Present | 3889 | 148956 | `60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428` |
+| `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md` | Additional consulted context | 512 | 16561 | `b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077` |
+| `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | Additional consulted context | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
 | `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` | Additional consulted context | 287 | 15899 | `9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750` |
 | `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` | Historical missing continuation context; not active required input | - | - | - |
 | `tmp/error.log` | Intentionally removed after fixed errors | - | - | - |
@@ -64,6 +64,7 @@ Present `tmp/` Event 005 spec files are:
 005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md
 005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md
 005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md
+005_soviet_union_collapse_influence_threat_focus_rework_spec.md
 005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md
 ```
 
@@ -91,7 +92,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Dynamic crisis values and central tuning | `common/script_constants/005_soviet_collapse_constants.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, `common/scripted_triggers/005_soviet_collapse_triggers.txt` | Implemented; parser audit passed |
 | Reference context surface | The audit context includes the offline Paradox wiki snapshot pages for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, and National focus modding. Vanilla documentation context includes `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, and `script_concept_documentation.md`. The verifier checks this as `reference_context_surface` and keeps web references out of the audit. | Implemented |
 | Missing continuation direct coverage | The historical missing filename names event-log, mission-balance, and focus-cleanup surfaces. Direct implementation evidence for those surfaces is covered by `event_log_detail_surface`, `event_log_mapping_surface`, `soviet_objective_board_surface`, `terminal_mission_cleanup`, `focus_integrity`, `focus_layout_surface`, `focus_ai_surface`, and `focus_tree_map_surface`. The file is not part of the active required source order, so it is retained as recovery context rather than a final-closure blocker. | Covered by direct evidence |
-| Comprehensive source-of-truth coverage | `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` is explicitly required by the verifier as the first source input. Its source-of-truth sections for event log details, evolutions, mission duration, decision cost corrections, blocked localisation, design-language cleanup, threat and authority balance, stronger ideas, first-wave release logic, Kazakhstan handling, unit spawning, Union Unmade pacing/release rules, terminal cleanup, focus cleanup, flag orientation, and completion requirements are mapped to `comprehensive_source_acceptance_surface`, `event_log_detail_surface`, `evolution_logging_surface`, `soviet_objective_board_surface`, decision cost corrections, `banned_phrase_cleanup`, `crisis_balance_surface`, `crisis_cause_surface`, `idea_package_surface`, `first_wave_release_surface`, `force_scaling_surface`, `union_unmade_pacing`, `terminal_mission_cleanup`, `focus_layout_surface`, `flag_orientation_surface`, and `docs_completion_surface`. | Implemented for the available comprehensive source spec |
+| Comprehensive source-of-truth coverage | `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` is retained as additional consulted context and still maps its event log details, evolutions, mission duration, decision cost corrections, blocked localisation, design-language cleanup, threat and authority balance, stronger ideas, first-wave release logic, Kazakhstan handling, unit spawning, Union Unmade pacing/release rules, terminal cleanup, focus cleanup, flag orientation, and completion requirements to `comprehensive_source_acceptance_surface`, `event_log_detail_surface`, `evolution_logging_surface`, `soviet_objective_board_surface`, decision cost corrections, `banned_phrase_cleanup`, `crisis_balance_surface`, `crisis_cause_surface`, `idea_package_surface`, `first_wave_release_surface`, `force_scaling_surface`, `union_unmade_pacing`, `terminal_mission_cleanup`, `focus_layout_surface`, `flag_orientation_surface`, and `docs_completion_surface`. | Implemented for the available comprehensive source spec |
 | Available source acceptance criteria coverage | The source-of-truth spawn-balance cleanup spec has 20 acceptance bullets. The completion audit maps them to the concrete verifier surfaces `idea_package_surface`, `first_wave_release_surface`, `force_scaling_surface`, `crisis_balance_surface`, `union_unmade_pacing`, `terminal_ordinary_republic_release_surface`, `terminal_high_chaos_successor_surface`, `terminal_mission_cleanup`, `focus_layout_surface`, `focus_tree_map_surface`, `flag_orientation_surface`, `banned_phrase_cleanup`, `event_log_mapping_surface`, `achievement_surface`, and `docs_completion_surface`. The verifier checks this map as `available_source_acceptance_surface`. | Implemented for the available source spec |
 | Stronger Soviet Collapse ideas and spirits | `common/ideas/005_soviet_collapse_ideas.txt` and the crisis effects use multi-modifier packages for Union Crisis, recoverable republican startup disorder, stabilized emergency administration, defensive coordination, depot seizures, legal claims, foreign volunteers, old networks, factory states, and high-chaos successors; the current idea parser audit found no Event 005 idea with fewer than three modifier entries, no idea without modifiers, no tiny-only package, no missing idea picture sprite, no missing idea DDS, and no missing idea name/description localisation. The remaining 2-3% components appear only inside broader 3-5 modifier spirits. | Implemented for current surface |
 | Random first wave from structured pools | `soviet_collapse_release_initial_republics` clears and fills `global.soviet_collapse_first_wave_republics` through western, Caucasus, and Central Asian random pool helpers, then releases the selected scopes. Each pool can now select either nonexistent supported tags whose cores are owned and controlled by SOV or existing supported Soviet subjects, which are freed with `set_autonomy` before setup. | Implemented |
@@ -131,7 +132,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Flag orientation audit | 38 Event 005 custom tags across base, communism, democratic, fascism, and neutrality variants were checked in normal, medium, and small flag folders; all 570 files exist, decode cleanly, use vanilla-matching bottom-origin TGA headers, and average-downsample comparison finds no small/medium variant closer to a vertically flipped large source | Audit passed; no binary correction required by current evidence |
 | Localisation design-language cleanup | Search across `common/`, `events/`, `localisation/`, `interface/`, and `docs/` found no player-facing instance of the specified design-language sentence from the cleanup prompt | Implemented |
 | Spreadsheet updates | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, row 6 / Event ID 5, summarizes the current dynamic crisis, no-baseline-evolution rule, tier 4 and tier 5 high-chaos successor mutation logs, no dedicated world-end scenario, and verified final status for the active source order | Implemented; workbook package and XML package validation passed |
-| Completion readiness | Current audit records the comprehensive source evidence, additional spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Implemented |
+| Completion readiness | Current audit records the active influence/threat/focus rework evidence, additional comprehensive and spawn-balance cleanup evidence, thirty-eight implemented custom successor packages, terminal cleanup, focus-layout cleanup, flag orientation audit, and parser validations | Implemented |
 
 ## Current Focus Counts
 
@@ -361,8 +362,8 @@ modifier_count_distribution 3:106 4:15 5:2 7:1
 banned_phrase_hits 0
 source_context_files files 4 missing 0
 reference_context_surface files 16/16 markers 19/19
-source_order_surface items 10 ordered True numbered True
-input_audit_surface rows 13 mismatches 0
+source_order_surface items 9 ordered True numbered True
+input_audit_surface rows 14 mismatches 0
 recovery_search_surface continuation_matches 0 removed_log_hits 0
 final_completion_report_surface markers 7 missing 0
 strict_verifier_documentation_surface markers 2/2 forbidden 0
@@ -371,7 +372,7 @@ resume_validation_commands_surface markers 6/6 missing 0
 success_criteria_surface markers 13 missing 0
 available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 comprehensive_source_acceptance_surface source_markers 20/20 audit_markers 17/17
-prompt_artifact_checklist_surface rows 30 implemented_rows 42 blocked_rows 0
+prompt_artifact_checklist_surface rows 30 implemented_rows 43 blocked_rows 0
 verifier_command_documentation_surface markers 6 missing 0
 focus_tree_map_surface event_markers 9/9 audit_markers 3/3
 validation_snapshot_freshness_surface markers 3/3 stale 0
@@ -411,6 +412,7 @@ Current prompt-to-artifact spot audit:
 
 ```text
 input_files rebalance_spec present bytes 16561 lines 512 sha256 b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077
+input_files influence_rework_spec present bytes 31351 lines 989 sha256 b62d00c6a8947dd2ac2b97369b0871a611184ee27779c7342273d92f478bbdea
 input_files comprehensive_spec present bytes 18082 lines 517 sha256 409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17
 input_files spawn_spec present bytes 15899 lines 287 sha256 9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750
 input_files historical_continuation_spec missing_not_active_required
@@ -744,7 +746,8 @@ Current evidence exists for:
 Final checklist:
 
 - active source inputs are present and audited.
-- comprehensive correction source coverage maps to concrete verifier surfaces.
+- active influence/threat/focus rework source coverage is first in the verified source order.
+- comprehensive correction source coverage maps to concrete verifier surfaces as additional consulted context.
 - historical event-log/mission-balance/focus-cleanup continuation context is directly covered by implementation evidence.
 - `tmp/error.log` and `tmp/text.log` runtime logs were intentionally removed after fixed errors.
 - strict verifier exits 0 before marking the active Event 005 correction goal complete.
@@ -759,7 +762,7 @@ git log -1 --oneline
 
 Use this source order on resume:
 
-1. `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md`
+1. `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md`
 2. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
 3. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
 4. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
