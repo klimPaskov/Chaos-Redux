@@ -702,6 +702,7 @@ has_soviet_collapse_central_asian_league_member_ready = {
 
 can_found_soviet_collapse_baltic_league = {
 	is_soviet_collapse_regional_faction_candidate = yes
+	is_soviet_collapse_regional_league_foundation_pressure_ready = yes
 	OR = {
 		tag = LIT
 		tag = LAT
@@ -712,6 +713,7 @@ can_found_soviet_collapse_baltic_league = {
 
 can_found_soviet_collapse_caucasus_league = {
 	is_soviet_collapse_regional_faction_candidate = yes
+	is_soviet_collapse_regional_league_foundation_pressure_ready = yes
 	OR = {
 		tag = GEO
 		tag = ARM
@@ -723,6 +725,7 @@ can_found_soviet_collapse_caucasus_league = {
 
 can_found_soviet_collapse_central_asian_league = {
 	is_soviet_collapse_regional_faction_candidate = yes
+	is_soviet_collapse_regional_league_foundation_pressure_ready = yes
 	OR = {
 		tag = UZB
 		tag = KYR
@@ -737,6 +740,20 @@ can_found_soviet_collapse_central_asian_league = {
 		}
 	}
 	has_soviet_collapse_central_asian_league_member_ready = yes
+}
+
+is_soviet_collapse_regional_league_foundation_pressure_ready = {
+	OR = {
+		is_soviet_collapse_league_pressure_ready = yes
+		SOV = {
+			exists = yes
+			OR = {
+				check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.one_breakaway_count compare = greater_than }
+				check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_breakaway_support.high_foreign_appetite_gate compare = greater_than_or_equals }
+				check_variable = { var = soviet_collapse_monthly_failed_objectives value = constant:soviet_collapse_threat_guard.failure_floor compare = greater_than_or_equals }
+			}
+		}
+	}
 }
 
 is_soviet_collapse_regional_faction_leader = {
