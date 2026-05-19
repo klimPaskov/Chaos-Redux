@@ -604,6 +604,16 @@ def event005_focus_ids() -> list[str]:
 	return focus_ids
 
 
+def event005_focus_tree_counts() -> dict[str, int]:
+	tree_counts: dict[str, int] = {}
+	for path in EVENT005_FOCUS_FILES:
+		for tree_body in named_blocks(tokens(read_text(path)), "focus_tree"):
+			tree_ids = top_level_values(tree_body, "id")
+			if tree_ids:
+				tree_counts[tree_ids[0]] = len(top_level_block_bodies(tree_body, "focus"))
+	return tree_counts
+
+
 def event005_idea_ids() -> list[str]:
 	idea_ids = []
 	toks = tokens(read_text(ROOT / "common/ideas/005_soviet_collapse_ideas.txt"))
@@ -1293,6 +1303,7 @@ def verify_verifier_command_documentation_surface() -> list[Check]:
 def verify_focus_tree_map_documentation_surface() -> list[Check]:
 	event_doc = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	actual_counts = event005_focus_tree_counts()
 	required_markers = [
 		"## Republic Focus Trees",
 		"The implemented trees are:",
@@ -1311,13 +1322,30 @@ def verify_focus_tree_map_documentation_surface() -> list[Check]:
 		"post-cleanup focus-tree map",
 	]
 	missing_audit = [marker for marker in audit_markers if marker not in completion_audit]
+	event_count_mismatches = []
+	audit_count_mismatches = []
+	for tree_id, actual_count in actual_counts.items():
+		event_counts = [
+			int(match)
+			for match in re.findall(rf"`{re.escape(tree_id)}`[^\n]*?:\s*(\d+)\s+focuses", event_doc)
+		]
+		if len(event_counts) != 1 or event_counts[0] != actual_count:
+			event_count_mismatches.append((tree_id, actual_count, event_counts))
+		audit_counts = [
+			int(match)
+			for match in re.findall(rf"^{re.escape(tree_id)}\s+(\d+)\s*$", completion_audit, re.MULTILINE)
+		]
+		if len(audit_counts) != 1 or audit_counts[0] != actual_count:
+			audit_count_mismatches.append((tree_id, actual_count, audit_counts))
 	return [
 		Check(
 			"focus_tree_map_surface",
-			not missing and not missing_audit,
+			not missing and not missing_audit and not event_count_mismatches and not audit_count_mismatches,
 			(
 				f"event_markers={len(required_markers) - len(missing)}/{len(required_markers)} "
-				f"audit_markers={len(audit_markers) - len(missing_audit)}/{len(audit_markers)}"
+				f"audit_markers={len(audit_markers) - len(missing_audit)}/{len(audit_markers)} "
+				f"counted_trees={len(actual_counts)} event_count_mismatches={len(event_count_mismatches)} "
+				f"audit_count_mismatches={len(audit_count_mismatches)}"
 			),
 		)
 	]
