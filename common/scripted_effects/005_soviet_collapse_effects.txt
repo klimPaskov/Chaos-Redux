@@ -121,6 +121,35 @@ soviet_collapse_initialize_crisis_values = {
 	clear_array = global.soviet_collapse_first_wave_republics
 
 	soviet_collapse_initialize_mission_requirements = yes
+	refresh_world_threat_state = yes
+	count_fired_major_events = yes
+	set_temp_variable = { soviet_collapse_current_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
+	if = {
+		limit = {
+			check_variable = { major_events_count > 0 }
+			is_in_array = { global.fired_events = soviet_collapse_current_event_id }
+		}
+		subtract_from_temp_variable = { major_events_count = 1 }
+	}
+
+	if = {
+		limit = { check_variable = { major_events_count > 0 } }
+		set_temp_variable = { soviet_collapse_prior_major_event_confidence = major_events_count }
+		multiply_temp_variable = { soviet_collapse_prior_major_event_confidence = constant:soviet_collapse_opening_pressure.prior_major_event_republic_confidence }
+		add_to_variable = { soviet_collapse_republic_confidence = soviet_collapse_prior_major_event_confidence }
+		set_temp_variable = { soviet_collapse_prior_major_event_authority = major_events_count }
+		multiply_temp_variable = { soviet_collapse_prior_major_event_authority = constant:soviet_collapse_opening_pressure.prior_major_event_authority }
+		add_to_variable = { soviet_collapse_moscow_authority = soviet_collapse_prior_major_event_authority }
+	}
+	if = {
+		limit = { has_global_flag = world_in_threat }
+		add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_opening_pressure.active_world_threat_authority }
+		add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_opening_pressure.active_world_threat_obedience }
+		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_opening_pressure.active_world_threat_foreign_appetite }
+		set_temp_variable = { soviet_collapse_active_world_threat_sources = global.world_threat_source_count }
+		multiply_temp_variable = { soviet_collapse_active_world_threat_sources = constant:soviet_collapse_opening_pressure.active_world_threat_source_foreign_appetite }
+		add_to_variable = { soviet_collapse_foreign_appetite = soviet_collapse_active_world_threat_sources }
+	}
 
 	if = {
 		limit = { has_global_flag = { flag = chaos_tier value = 1 } }
