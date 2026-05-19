@@ -3336,6 +3336,7 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 			ROOT / "docs/super_events/005_soviet_union_collapse_super_event_research.md",
 			ROOT / "docs/super_events/super_event_audio_packages.md",
 			ROOT / "localisation/english/005_soviet_collapse_l_english.yml",
+			ROOT / "localisation/english/005_soviet_collapse_custom_countries_l_english.yml",
 			ROOT / "localisation/english/chaosx_achievements_l_english.yml",
 		]
 		if path.exists()
@@ -3411,7 +3412,11 @@ def verify_disabled_weird_successor_surface() -> list[Check]:
 	for marker in [
 		"Dead International",
 		"The Dead Are Citizens",
+		"Dead Citizens",
 		"dead_are_citizens",
+		"necromantic",
+		"a cult",
+		"weaponized memory",
 		"Iron Commissariat",
 		"Red Martyrs",
 		"Red Cosmist",
