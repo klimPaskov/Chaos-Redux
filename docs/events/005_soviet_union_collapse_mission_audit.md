@@ -1,12 +1,12 @@
 ﻿# Event 005 Soviet Objective Mission Audit
 
 
-The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` through `soviet_objective_board_surface`, `mission_quality_surface`, and `mission_requirement_surface`. Current evidence proves 118 manual activation missions, 118 queue entries, 118 completion payloads, 118 timeout payloads, unique available blocks for every mission, 118 named scripted requirement triggers, zero weak passive-only available blocks, zero thin requirement packages, zero identical success/failure outcome bodies, zero raw `num_divisions_in_states` blocks exposed directly in decision availability, zero long inline mission availability blocks, four localized division-position tooltips, and 117 missions with map, state, or scoped-region requirements.
+The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` through `soviet_objective_board_surface`, `mission_quality_surface`, and `mission_requirement_surface`. Current evidence proves 118 manual activation missions, 118 queue entries, 118 completion payloads, 118 timeout payloads, unique available blocks for every mission, 118 named scripted requirement triggers, zero weak passive-only available blocks, zero passive-or-meter-only requirement packages after recursive helper expansion, zero thin requirement packages, zero identical success/failure outcome bodies, zero raw `num_divisions_in_states` blocks exposed directly in decision availability, zero long inline mission availability blocks, four localized division-position tooltips, and 117 missions with map, state, or scoped-region requirements.
 
 ## Audit Rules
 
 - Duplicate risk is low only when the mission has a distinct available-trigger signature and distinct success/failure outcome body in the verifier.
-- Trivial passive missions are rejected by the verifier when a mission only checks tiny manpower, equipment, stability, or war support thresholds without active map, state, variable, flag, war, control, or scoped-country requirements.
+- Trivial passive missions are rejected by the verifier when a mission only checks manpower, equipment, stability, war support, or meter thresholds without active map, state, flag, war, control, or scoped-country requirements. The verifier expands nested scripted-trigger helpers before making that judgment.
 - Division-state and map requirements use requirement localisation that names states or clear regions such as western military districts, southern gate, Volga assembly areas, Caucasus pass lines, rail belts, depot belts, port belts, or named republic capitals.
 - Long trigger details stay behind mission requirement localisation and scripted trigger surfaces; the decision UI should show the objective summary and live crisis values rather than a raw trigger dump. The verifier rejects mission availability blocks that inline long requirement chains instead of using a named scripted trigger.
 
@@ -152,6 +152,6 @@ The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` 
 
 - `soviet_objective_board_surface` proves the 118 missions are manually activated, visible only during the Soviet crisis, capped by the active mission queue, and wired to completion/timeout payloads.
 - `mission_quality_surface` proves duplicate mission signatures are absent, trivial passive available blocks are absent, raw division-state checks are hidden behind named trigger tooltips, long mission availability chains are hidden behind scripted triggers, and success/failure outcomes are not identical.
-- `mission_requirement_surface` proves every mission has a named scripted requirement trigger, no mission is meter-only or passive-only, every mission has at least two requirement families, no mission contains the banned 20,000-manpower or literal 35-percent passive thresholds, and every division-position requirement has localisation.
+- `mission_requirement_surface` proves every mission has a named scripted requirement trigger, no mission is meter-only or passive-only after nested helper expansion, every mission has at least two requirement families, no mission contains the banned 20,000-manpower or literal 35-percent passive thresholds, and every division-position requirement has localisation.
 - `localisation_surface` proves mission names, descriptions, requirement summaries, success text, and failure text exist for every mission.
 - `terminal_mission_cleanup` proves terminal collapse removes every active Soviet crisis mission from the board.
