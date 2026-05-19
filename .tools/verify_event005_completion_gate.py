@@ -390,6 +390,7 @@ def verify_focuses() -> list[Check]:
 	missing_reward = []
 	missing_icon = []
 	missing_coords = []
+	republic_multi_focus_prerequisites = []
 	ai_block_count = 0
 	dynamic_ai = 0
 	mutual_focus_count = 0
@@ -398,6 +399,11 @@ def verify_focuses() -> list[Check]:
 
 	for path, focus_id, block in focuses:
 		prereq_refs = collect_focus_refs(top_level_block_bodies(block, "prerequisite"))
+		if path.name == "005_soviet_collapse_republics.txt":
+			for prereq_block in top_level_block_bodies(block, "prerequisite"):
+				block_refs = collect_focus_refs([prereq_block])
+				if len(block_refs) > 1:
+					republic_multi_focus_prerequisites.append((focus_id, len(block_refs)))
 		mutual_blocks = top_level_block_bodies(block, "mutually_exclusive")
 		mutual_refs = collect_focus_refs(mutual_blocks)
 		completed_refs = re.findall(r"\bhas_completed_focus\s*=\s*([A-Za-z0-9_]+)", " ".join(block))
@@ -486,6 +492,7 @@ def verify_focuses() -> list[Check]:
 	ok = not any([
 		duplicates, missing_refs, self_refs, nonreciprocal, repeated_mutual_blocks,
 		missing_ai, missing_reward, missing_icon, missing_coords,
+		republic_multi_focus_prerequisites,
 		continuous_bad,
 	])
 	return [
@@ -497,7 +504,8 @@ def verify_focuses() -> list[Check]:
 				f"self_refs={len(self_refs)} nonreciprocal_mutual={len(nonreciprocal)} "
 				f"repeated_mutual_blocks={repeated_mutual_blocks} missing_ai={len(missing_ai)} "
 				f"missing_reward={len(missing_reward)} missing_icon={len(missing_icon)} "
-				f"missing_coords={len(missing_coords)} continuous_positions={continuous_positions} "
+				f"missing_coords={len(missing_coords)} republic_multi_focus_prerequisites={len(republic_multi_focus_prerequisites)} "
+				f"continuous_positions={continuous_positions} "
 				f"continuous_bad={len(continuous_bad)}"
 			),
 		),
