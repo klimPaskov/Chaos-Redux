@@ -2841,6 +2841,27 @@ def verify_local_league_surface() -> list[Check]:
 	docs = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
 	league_docs = read_text(ROOT / "docs/events/005_soviet_union_collapse_local_leagues.md")
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
+	trigger_tokens = tokens(triggers)
+	foundation_pressure_blocks = named_blocks(trigger_tokens, "is_soviet_collapse_regional_league_foundation_pressure_ready")
+	foundation_pressure_body = " ".join(foundation_pressure_blocks[0]) if foundation_pressure_blocks else ""
+	found_trigger_bodies = " ".join(
+		" ".join(block)
+		for name in [
+			"can_found_soviet_collapse_baltic_league",
+			"can_found_soviet_collapse_caucasus_league",
+			"can_found_soviet_collapse_central_asian_league",
+		]
+		for block in named_blocks(trigger_tokens, name)
+	)
+	foundation_pressure_ok = bool(foundation_pressure_blocks) and all(marker in foundation_pressure_body for marker in [
+		"is_soviet_collapse_league_pressure_ready = yes",
+		"soviet_collapse_breakaway_count",
+		"constant:soviet_collapse_soviet_objective.one_breakaway_count",
+		"soviet_collapse_foreign_appetite",
+		"constant:soviet_collapse_breakaway_support.high_foreign_appetite_gate",
+		"soviet_collapse_monthly_failed_objectives",
+		"constant:soviet_collapse_threat_guard.failure_floor",
+	]) and found_trigger_bodies.count("is_soviet_collapse_regional_league_foundation_pressure_ready = yes") == 3
 	constants_ok = all(marker in constants for marker in [
 		"soviet_collapse_regional_faction",
 		"found_political_power",
@@ -2851,6 +2872,7 @@ def verify_local_league_surface() -> list[Check]:
 		"can_found_soviet_collapse_baltic_league",
 		"can_found_soviet_collapse_caucasus_league",
 		"can_found_soviet_collapse_central_asian_league",
+		"is_soviet_collapse_regional_league_foundation_pressure_ready",
 		"can_soviet_collapse_call_regional_league_defensive_war",
 		"has_soviet_collapse_three_smaller_central_asian_republics_free = yes",
 	])
@@ -2909,6 +2931,7 @@ def verify_local_league_surface() -> list[Check]:
 		"The Baltic League, Caucasus League, and Central Asian League",
 		"Free Republics' League",
 		"player-facing text uses league names throughout",
+		"Foundation is gated by pressure",
 		"Central Asian League",
 		"Kazakhstan is restricted",
 		"## Icons",
@@ -2920,9 +2943,9 @@ def verify_local_league_surface() -> list[Check]:
 	return [
 		Check(
 			"local_league_surface",
-			constants_ok and triggers_ok and visibility_ok and decisions_ok and effects_ok and events_ok and loc_ok and docs_ok,
+			constants_ok and triggers_ok and foundation_pressure_ok and visibility_ok and decisions_ok and effects_ok and events_ok and loc_ok and docs_ok,
 			(
-				f"constants={constants_ok} triggers={triggers_ok} visibility={visibility_ok} "
+				f"constants={constants_ok} triggers={triggers_ok} foundation_pressure={foundation_pressure_ok} visibility={visibility_ok} "
 				f"decisions={decisions_ok} effects={effects_ok} events={events_ok} "
 				f"loc={loc_ok} docs={docs_ok}"
 			),
