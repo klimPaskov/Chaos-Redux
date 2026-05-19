@@ -169,6 +169,66 @@ soviet_collapse_soviet_category = {
 		}
 	}
 
+	soviet_collapse_offer_new_union_treaty = {
+		icon = GFX_decision_soviet_collapse_regional_goal_recognition
+		available = { can_pay_soviet_collapse_moscow_union_treaty_cost = yes }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_moscow_union_treaty_cost = yes }
+		custom_cost_text = soviet_collapse_moscow_union_treaty_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_moscow_union_treaty = yes }
+		days_re_enable = @soviet_collapse_response_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_moscow_union_treaty_offer = yes
+			custom_effect_tooltip = soviet_collapse_offer_new_union_treaty_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_moscow_reintegration.union_treaty_threat_ceiling compare = less_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_moscow_reintegration.federal_compact_authority_floor compare = greater_than_or_equals }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				FROM = { is_in_faction = yes }
+			}
+		}
+	}
+
+	soviet_collapse_offer_federal_reintegration_compact = {
+		icon = GFX_decision_soviet_collapse_free_soviet_congress
+		available = { can_pay_soviet_collapse_moscow_federal_compact_cost = yes }
+		visible = { tag = SOV is_soviet_collapse_active = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_moscow_federal_compact_cost = yes }
+		custom_cost_text = soviet_collapse_moscow_federal_compact_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_moscow_federal_compact = yes }
+		days_re_enable = @soviet_collapse_response_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_moscow_federal_compact = yes
+			custom_effect_tooltip = soviet_collapse_offer_federal_reintegration_compact_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				FROM = { has_country_flag = soviet_collapse_moscow_union_treaty_offered }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_moscow_reintegration.federal_compact_threat_ceiling compare = less_than }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than }
+			}
+		}
+	}
+
 	soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command = {
 		icon = GFX_decision_soviet_collapse_command_goal
 		allowed = { always = no }
@@ -2159,6 +2219,84 @@ soviet_collapse_foreign_patron_category = {
 			modifier = {
 				factor = @soviet_collapse_ai_pressure_multiplier
 				FROM = { check_variable = { var = soviet_collapse_independence_resilience value = constant:soviet_collapse_influence_war.stage_2_threshold compare = less_than } }
+			}
+		}
+	}
+
+	soviet_collapse_offer_protection_treaty = {
+		icon = GFX_decision_soviet_collapse_foreign_recognition
+		available = { can_pay_soviet_collapse_foreign_protection_treaty_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_protection_treaty_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_protection_treaty_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_foreign_protection_treaty = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_protection_treaty = yes
+			custom_effect_tooltip = soviet_collapse_offer_protection_treaty_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				FROM = { check_variable = { var = soviet_collapse_influence_patronage_risk value = constant:soviet_collapse_puppet_pressure.target_patronage_floor compare = greater_than_or_equals } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				FROM = { check_variable = { var = soviet_collapse_independence_resilience value = constant:soviet_collapse_puppet_pressure.target_resilience_ceiling compare = less_than } }
+			}
+		}
+	}
+
+	soviet_collapse_demand_adviser_privileges = {
+		icon = GFX_decision_soviet_collapse_foreign_advisers
+		available = { can_pay_soviet_collapse_foreign_adviser_privileges_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_adviser_privileges_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_adviser_privileges_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_foreign_adviser_privileges = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_adviser_privileges = yes
+			custom_effect_tooltip = soviet_collapse_demand_adviser_privileges_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				FROM = { has_country_flag = soviet_collapse_foreign_protection_treaty_signed }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				FROM = { check_variable = { var = soviet_collapse_influence_patronage_risk value = constant:soviet_collapse_influence_war.stage_3_threshold compare = greater_than_or_equals } }
+			}
+		}
+	}
+
+	soviet_collapse_install_client_cabinet = {
+		icon = GFX_decision_soviet_collapse_foreign_ideology
+		available = { can_pay_soviet_collapse_foreign_client_cabinet_cost = yes }
+		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		custom_cost_trigger = { can_pay_soviet_collapse_foreign_client_cabinet_cost = yes }
+		custom_cost_text = soviet_collapse_foreign_client_cabinet_cost_text
+		target_array = global.soviet_collapse_breakaway_countries
+		target_trigger = { can_target_soviet_collapse_breakaway_for_foreign_client_cabinet = yes }
+		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_foreign_client_cabinet = yes
+			custom_effect_tooltip = soviet_collapse_install_client_cabinet_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				FROM = { has_country_flag = soviet_collapse_foreign_adviser_privileges_granted }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				FROM = { NOT = { has_stability > constant:soviet_collapse_puppet_pressure.target_stability_ceiling } }
 			}
 		}
 	}
