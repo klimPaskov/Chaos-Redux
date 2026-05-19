@@ -16,7 +16,7 @@ soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_depot_vulnerability min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_foreign_appetite min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_league_cohesion min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
-	clamp_variable = { var = soviet_collapse_evolution_weirdness min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	clamp_variable = { var = soviet_collapse_old_movement_pressure min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 }
 
 soviet_collapse_recalculate_total_threat = {
@@ -25,7 +25,7 @@ soviet_collapse_recalculate_total_threat = {
 	add_to_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_depot_vulnerability }
 	add_to_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_foreign_appetite }
 	add_to_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_league_cohesion }
-	add_to_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_evolution_weirdness }
+	add_to_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_old_movement_pressure }
 	add_to_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_baseline.total_threat_offset }
 	subtract_from_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_moscow_authority }
 	subtract_from_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_military_obedience }
@@ -114,7 +114,7 @@ soviet_collapse_initialize_crisis_values = {
 	set_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_baseline.depot_vulnerability }
 	set_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_baseline.foreign_appetite }
 	set_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_baseline.league_cohesion }
-	set_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_baseline.evolution_weirdness }
+	set_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_baseline.old_movement_pressure }
 	set_variable = { soviet_collapse_breakaway_count = 0 }
 	set_variable = { global.soviet_collapse_breakaway_count = 0 }
 	clear_array = global.soviet_collapse_breakaway_countries
@@ -167,21 +167,21 @@ soviet_collapse_initialize_crisis_values = {
 		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_pressure.chaos_tier_3 }
 		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_opening_pressure.chaos_tier_3 }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_opening_pressure.chaos_tier_3_foreign_appetite }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_opening_pressure.chaos_tier_3_weirdness }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_opening_pressure.chaos_tier_3_old_movement_pressure }
 	}
 	if = {
 		limit = { has_global_flag = { flag = chaos_tier value = 4 } }
 		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_pressure.chaos_tier_4 }
 		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_opening_pressure.chaos_tier_4 }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_opening_pressure.chaos_tier_4_foreign_appetite }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_opening_pressure.chaos_tier_4_weirdness }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_opening_pressure.chaos_tier_4_old_movement_pressure }
 	}
 	if = {
 		limit = { has_global_flag = { flag = chaos_tier value = 5 } }
 		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_pressure.chaos_tier_final }
 		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_opening_pressure.chaos_tier_final }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_opening_pressure.chaos_tier_final_foreign_appetite }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_opening_pressure.chaos_tier_final_weirdness }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_opening_pressure.chaos_tier_final_old_movement_pressure }
 	}
 	if = {
 		limit = { has_stability < constant:soviet_collapse_soviet_objective.good_stability }
@@ -251,7 +251,7 @@ soviet_collapse_apply_successful_legal_objective_pressure = {
 	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.legal_success_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.legal_success_confidence }
-	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.legal_success_weirdness }
+	add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_objective_pressure.legal_success_old_movement }
 	soviet_collapse_recalculate_total_threat = yes
 }
 
@@ -259,7 +259,7 @@ soviet_collapse_apply_failed_legal_objective_pressure = {
 	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.legal_failure_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.legal_failure_confidence }
-	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.legal_failure_weirdness }
+	add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_objective_pressure.legal_failure_old_movement }
 	soviet_collapse_recalculate_total_threat = yes
 	country_event = { id = chaosx.nr5.10 days = 1 }
 }
@@ -309,7 +309,7 @@ soviet_collapse_apply_failed_depot_objective_pressure = {
 	soviet_collapse_register_monthly_threat_failure = yes
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.depot_failure_confidence }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.depot_failure_depot }
-	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.depot_failure_weirdness }
+	add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_objective_pressure.depot_failure_old_movement }
 	soviet_collapse_recalculate_total_threat = yes
 	country_event = { id = chaosx.nr5.13 days = 1 }
 }
@@ -318,7 +318,7 @@ soviet_collapse_apply_successful_old_movement_objective_pressure = {
 	soviet_collapse_register_monthly_threat_success = yes
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.old_movement_success_authority }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.old_movement_success_depot }
-	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.old_movement_success_weirdness }
+	add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_objective_pressure.old_movement_success_pressure }
 	soviet_collapse_recalculate_total_threat = yes
 }
 
@@ -327,7 +327,7 @@ soviet_collapse_apply_failed_old_movement_objective_pressure = {
 	add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.old_movement_failure_authority }
 	add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.old_movement_failure_confidence }
 	add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_objective_pressure.old_movement_failure_depot }
-	add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_objective_pressure.old_movement_failure_weirdness }
+	add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_objective_pressure.old_movement_failure_pressure }
 	soviet_collapse_recalculate_total_threat = yes
 	country_event = { id = chaosx.nr5.15 days = 1 }
 }
@@ -635,12 +635,12 @@ soviet_collapse_prepare_highest_chaos_terminal_successors = {
 	if = {
 		limit = {
 			check_variable = {
-				var = soviet_collapse_evolution_weirdness
-				value = constant:soviet_collapse_republic_focus.ai_weirdness_high
+				var = soviet_collapse_old_movement_pressure
+				value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high
 				compare = less_than
 			}
 		}
-		set_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_republic_focus.ai_weirdness_high }
+		set_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high }
 	}
 }
 
@@ -2631,7 +2631,7 @@ soviet_collapse_apply_focus_high_chaos_identity = {
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
-			add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_republic_focus.medium_weirdness_gain }
+			add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.medium_old_movement_gain }
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -2721,7 +2721,7 @@ soviet_collapse_apply_cfr_focus_coercive_build = {
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
-			add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+			add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -2795,7 +2795,7 @@ soviet_collapse_apply_mfr_focus_unsafe_output = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
-			add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+			add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -2823,7 +2823,7 @@ soviet_collapse_apply_custom_splinter_push_extreme_route = {
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
-			add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+			add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -3361,7 +3361,7 @@ soviet_collapse_spawn_cfr_if_enabled = {
 		}
 		CFR = { soviet_collapse_setup_cfr_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
 	}
 }
 
@@ -3384,7 +3384,7 @@ soviet_collapse_spawn_mfr_if_enabled = {
 		}
 		MFR = { soviet_collapse_setup_mfr_successor = yes }
 		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3403,7 +3403,7 @@ soviet_collapse_spawn_krs_if_enabled = {
 		}
 		KRS = { soviet_collapse_setup_krs_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3426,7 +3426,7 @@ soviet_collapse_spawn_fth_if_enabled = {
 		}
 		FTH = { soviet_collapse_setup_fth_successor = yes }
 		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3461,7 +3461,7 @@ soviet_collapse_spawn_bbh_if_enabled = {
 		}
 		BBH = { soviet_collapse_setup_bbh_successor = yes }
 		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_large }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_large }
 	}
 }
 
@@ -3488,7 +3488,7 @@ soviet_collapse_spawn_bsc_if_enabled = {
 		}
 		BSC = { soviet_collapse_setup_bsc_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3519,7 +3519,7 @@ soviet_collapse_spawn_tnc_if_enabled = {
 		}
 		TNC = { soviet_collapse_setup_tnc_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3554,7 +3554,7 @@ soviet_collapse_spawn_ala_if_enabled = {
 		}
 		ALA = { soviet_collapse_setup_ala_successor = yes }
 		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3581,7 +3581,7 @@ soviet_collapse_spawn_udc_if_enabled = {
 		}
 		UDC = { soviet_collapse_setup_udc_successor = yes }
 		add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3604,7 +3604,7 @@ soviet_collapse_spawn_sdz_if_enabled = {
 		}
 		SDZ = { soviet_collapse_setup_sdz_successor = yes }
 		add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_objective_pressure.legal_failure_authority }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -3627,7 +3627,7 @@ soviet_collapse_spawn_gac_if_enabled = {
 		}
 		GAC = { soviet_collapse_setup_gac_successor = yes }
 		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.old_movement_failure_confidence }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
 	}
 }
 
@@ -3673,7 +3673,7 @@ soviet_collapse_spawn_khc_if_enabled = {
 		}
 		KHC = { soviet_collapse_setup_khc_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
 	}
 }
 
@@ -3773,7 +3773,7 @@ soviet_collapse_spawn_mrc_if_enabled = {
 		}
 		MRC = { soviet_collapse_setup_mrc_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
 	}
 }
 
@@ -3843,7 +3843,7 @@ soviet_collapse_spawn_ard_if_enabled = {
 		}
 		ARD = { soviet_collapse_setup_ard_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
 	}
 }
 
@@ -3866,7 +3866,7 @@ soviet_collapse_spawn_nlc_if_enabled = {
 		}
 		NLC = { soviet_collapse_setup_nlc_successor = yes }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-		add_to_variable = { soviet_collapse_evolution_weirdness = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 	}
 }
 
@@ -4106,7 +4106,7 @@ soviet_collapse_fire_progressive_release_event = {
 	}
 	if = {
 		limit = {
-			check_variable = { var = soviet_collapse_evolution_weirdness value = constant:soviet_collapse_baseline.evolution_weirdness compare = less_than_or_equals }
+			check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_baseline.old_movement_pressure compare = less_than_or_equals }
 		}
 		set_temp_variable = { soviet_collapse_release_cause_old_movement_weight = 0 }
 	}
