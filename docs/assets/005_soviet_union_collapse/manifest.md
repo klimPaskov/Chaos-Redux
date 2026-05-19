@@ -165,7 +165,6 @@ Decision icons use vanilla decision icon dimensions. Active decision DDS files a
 | `soviet_collapse_found_black_international` | `GFX_decision_soviet_collapse_black_international` | `gfx/interface/decisions/decision_soviet_collapse_black_international.dds` | complete |
 | `soviet_collapse_found_free_soviet_congress` | `GFX_decision_soviet_collapse_free_soviet_congress` | `gfx/interface/decisions/decision_soviet_collapse_free_soviet_congress.dds` | complete |
 | `soviet_collapse_found_eastern_buffer_coalition` | `GFX_decision_soviet_collapse_eastern_buffer_coalition` | `gfx/interface/decisions/decision_soviet_collapse_eastern_buffer_coalition.dds` | complete |
-| `soviet_collapse_found_dead_international` | `GFX_decision_soviet_collapse_dead_international` | `gfx/interface/decisions/decision_soviet_collapse_dead_international.dds` | complete |
 | `soviet_collapse_found_iron_production_bloc` | `GFX_decision_soviet_collapse_iron_production_bloc` | `gfx/interface/decisions/decision_soviet_collapse_iron_production_bloc.dds` | complete |
 | `soviet_collapse_invite_regional_partners` | `GFX_decision_soviet_collapse_regional_invite` | `gfx/interface/decisions/decision_soviet_collapse_regional_invite.dds` | complete |
 | `soviet_collapse_coordinate_regional_faction` | `GFX_decision_soviet_collapse_regional_coordinate` | `gfx/interface/decisions/decision_soviet_collapse_regional_coordinate.dds` | complete |
@@ -384,10 +383,8 @@ News and report backlog:
 - `GFX_news_far_eastern_buffer`
 - `GFX_news_old_fronts_return`
 - `GFX_news_northern_signals_break`
-- `GFX_news_tunguska_star_committee`
 - `GFX_news_workshops_choose_councils`
 - `GFX_news_every_port_a_council`
-- `GFX_report_high_chaos_cult`
 
 The Old Underground Wakes, Red Resistance without Moscow, The War of Committees, and The Flags Return Incorrectly are active event-log mutation tracks. The Ukrainian Black Banner Defense Committees contingency branch is active without branch-specific news/report imagery; those images remain unwired until the Free Territory or Black Banner branch becomes a major actor.
 
@@ -491,7 +488,7 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 `IUL` currently reuses the generated Ural Workers custom-splinter package as replacement-art candidate material. Stable paths are `gfx/flags/IUL.tga`, `gfx/flags/medium/IUL.tga`, `gfx/flags/small/IUL.tga`, `gfx/interface/goals/soviet_collapse/005_iul_custom_splinter_focus.dds`, `gfx/interface/ideas/soviet_collapse/005_iul_custom_splinter_idea.dds`, `gfx/interface/decisions/soviet_collapse/005_iul_custom_splinter_decision.dds`, and `gfx/leaders/005_soviet_collapse/IUL_leader.dds`. Source and processed PNG records live under `docs/assets/005_soviet_union_collapse/source_png/` and `docs/assets/005_soviet_union_collapse/processed_png/`.
 
-### Factory States and Volga Restoration Asset Records
+### Factory State Asset Records
 
 
 | Tag | Flag source and preview | Final flag paths | Leader source and preview | Leader portrait | Interface wiring | Status |
