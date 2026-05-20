@@ -3162,6 +3162,7 @@ def verify_local_league_surface() -> list[Check]:
 	triggers = read_text(ROOT / "common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	effects = read_text(ROOT / "common/scripted_effects/005_soviet_collapse_effects.txt")
 	decisions = read_text(ROOT / "common/decisions/005_soviet_collapse_decisions.txt")
+	republic_focuses = read_text(ROOT / "common/national_focus/005_soviet_collapse_republics.txt")
 	categories = read_text(ROOT / "common/decisions/categories/005_soviet_collapse_categories.txt")
 	events = read_text(ROOT / "events/005_soviet_collapse.txt")
 	loc = read_text(ROOT / "localisation/english/005_soviet_collapse_l_english.yml")
@@ -3180,6 +3181,9 @@ def verify_local_league_surface() -> list[Check]:
 		]
 		for block in named_blocks(trigger_tokens, name)
 	)
+	effect_tokens = tokens(effects)
+	found_central_asian_blocks = named_blocks(effect_tokens, "soviet_collapse_found_central_asian_league")
+	found_central_asian_body = " ".join(found_central_asian_blocks[0]) if found_central_asian_blocks else ""
 	foundation_pressure_ok = bool(foundation_pressure_blocks) and all(marker in foundation_pressure_body for marker in [
 		"is_soviet_collapse_league_pressure_ready = yes",
 		"soviet_collapse_breakaway_count",
@@ -3203,6 +3207,22 @@ def verify_local_league_surface() -> list[Check]:
 		"can_soviet_collapse_call_regional_league_defensive_war",
 		"has_soviet_collapse_three_smaller_central_asian_republics_free = yes",
 	])
+	quorum_ok = all(marker in triggers for marker in [
+		"has_soviet_collapse_baltic_league_quorum",
+		"has_soviet_collapse_caucasus_league_quorum",
+		"has_soviet_collapse_central_asian_league_quorum",
+		"has_soviet_collapse_baltic_league_quorum = yes",
+		"has_soviet_collapse_caucasus_league_quorum = yes",
+		"has_soviet_collapse_central_asian_league_quorum = yes",
+		"LIT = { exists = yes has_country_flag = soviet_collapse_breakaway }\n\t\t\tLAT = { exists = yes has_country_flag = soviet_collapse_breakaway }",
+		"GEO = { exists = yes has_country_flag = soviet_collapse_breakaway }\n\t\t\tARM = { exists = yes has_country_flag = soviet_collapse_breakaway }",
+		"UZB = { exists = yes has_country_flag = soviet_collapse_breakaway }\n\t\t\tKYR = { exists = yes has_country_flag = soviet_collapse_breakaway }",
+	])
+	no_local_super_events = all(marker not in effects and marker not in decisions and marker not in republic_focuses for marker in [
+		"soviet_collapse_show_league_equal_republics_super_event = yes",
+		"soviet_collapse_show_baltic_restoration_pact_super_event = yes",
+		"soviet_collapse_show_caucasus_defense_compact_super_event = yes",
+	]) and "soviet_collapse_show_steppe_federation_super_event = yes" not in republic_focuses and "soviet_collapse_show_steppe_federation_super_event = yes" not in found_central_asian_body
 	visibility_ok = all(marker in categories for marker in [
 		"can_found_soviet_collapse_baltic_league = yes",
 		"can_found_soviet_collapse_caucasus_league = yes",
@@ -3269,9 +3289,10 @@ def verify_local_league_surface() -> list[Check]:
 	return [
 		Check(
 			"local_league_surface",
-			constants_ok and triggers_ok and foundation_pressure_ok and visibility_ok and decisions_ok and effects_ok and events_ok and loc_ok and docs_ok,
+			constants_ok and triggers_ok and quorum_ok and no_local_super_events and foundation_pressure_ok and visibility_ok and decisions_ok and effects_ok and events_ok and loc_ok and docs_ok,
 			(
-				f"constants={constants_ok} triggers={triggers_ok} foundation_pressure={foundation_pressure_ok} visibility={visibility_ok} "
+				f"constants={constants_ok} triggers={triggers_ok} quorum={quorum_ok} local_super_events_removed={no_local_super_events} "
+				f"foundation_pressure={foundation_pressure_ok} visibility={visibility_ok} "
 				f"decisions={decisions_ok} effects={effects_ok} events={events_ok} "
 				f"loc={loc_ok} docs={docs_ok}"
 			),
@@ -4401,6 +4422,13 @@ def verify_docs_surface() -> list[Check]:
 	event_doc = read_text(ROOT / "docs/events/005_soviet_union_collapse.md")
 	completion_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_completion_audit.md")
 	input_audit = read_text(ROOT / "docs/events/005_soviet_union_collapse_input_audit.md")
+	required_audit_docs = {
+		"docs/events/005_soviet_collapse_implementation_audit.md": ["Current Implementation Surface", "local_super_events_removed=True"],
+		"docs/events/005_soviet_collapse_focus_tree_audit.md": ["Current Counts", "755 total focuses"],
+		"docs/events/005_soviet_collapse_balance_audit.md": ["Scenario", "quorum=True"],
+		"docs/events/005_soviet_collapse_mission_audit.md": ["Mission Catalogue", "118 missions"],
+		"docs/events/005_soviet_collapse_validation_report.md": ["Scenario Matrix", "local_super_events_removed=True"],
+	}
 	required_markers = [
 		"## Concrete Success Criteria",
 		"## Prompt To Artifact Checklist",
@@ -4447,12 +4475,23 @@ def verify_docs_surface() -> list[Check]:
 	missing_completion = [marker for marker in required_markers if marker not in completion_audit]
 	missing_event = [marker for marker in event_markers if marker not in event_doc]
 	missing_input = [marker for marker in input_markers if marker not in input_audit]
-	ok = not missing_completion and not missing_event and not missing_input
+	missing_audit_docs = []
+	for rel, markers in required_audit_docs.items():
+		path = ROOT / rel
+		if not path.exists():
+			missing_audit_docs.append(rel)
+			continue
+		text = read_text(path)
+		missing_audit_docs.extend(f"{rel}:{marker}" for marker in markers if marker not in text)
+	ok = not missing_completion and not missing_event and not missing_input and not missing_audit_docs
 	return [
 		Check(
 			"docs_completion_surface",
 			ok,
-			f"missing_completion={len(missing_completion)} missing_event_doc={len(missing_event)} missing_input_audit={len(missing_input)}",
+			(
+				f"missing_completion={len(missing_completion)} missing_event_doc={len(missing_event)} "
+				f"missing_input_audit={len(missing_input)} missing_required_audit_docs={len(missing_audit_docs)}"
+			),
 		)
 	]
 
