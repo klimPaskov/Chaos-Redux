@@ -3937,6 +3937,196 @@ focus_tree = {
 		ai_will_do = { base = 10 }
 	}
 
+	focus = {
+		id = central_asia_soviet_collapse_local_republic_council
+		icon = GFX_central_asia_soviet_collapse_supply_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_southern_route_fork }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_turkestan_federation_road }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_military_border_authority }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_foreign_border_patronage }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_route_local_council
+			soviet_collapse_apply_focus_legal_recognition = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_majlis_elections
+		icon = GFX_central_asia_soviet_collapse_supply_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_local_republic_council }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_majlis_elections
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_samarkand_letters
+		icon = GFX_central_asia_soviet_collapse_supply_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_majlis_elections }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_samarkand_letters
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 tag = UZB }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_no_more_distant_capitals
+		icon = GFX_central_asia_soviet_collapse_inland_republics_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = central_asia_soviet_collapse_samarkand_letters }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_no_distant_capitals
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_military_border_authority
+		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_southern_route_fork }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_local_republic_council }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_turkestan_federation_road }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_foreign_border_patronage }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_route_border_authority
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 is_at_war = yes }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_border_commanders
+		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_military_border_authority }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_border_commanders
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_southern_pass_reserve
+		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_border_commanders }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_pass_reserve
+			soviet_collapse_apply_focus_military_consolidation = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 tag = TAJ }
+			modifier = { factor = 2 tag = KYR }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_desert_scout_columns
+		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = central_asia_soviet_collapse_southern_pass_reserve }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_desert_scout_columns
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 tag = TMS }
+			modifier = { factor = 2 tag = KYR }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_foreign_border_patronage
+		icon = GFX_central_asia_soviet_collapse_foreign_balance_desks
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 19
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_southern_route_fork }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_local_republic_council }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_turkestan_federation_road }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_military_border_authority }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_route_foreign_patronage
+			soviet_collapse_apply_focus_foreign_channel = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
 
 	focus = {
 		id = central_asia_soviet_collapse_turkestan_federation_road
@@ -3946,6 +4136,9 @@ focus_tree = {
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = central_asia_soviet_collapse_southern_route_fork }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_local_republic_council }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_military_border_authority }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_foreign_border_patronage }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_central_asia_route_turkestan_federation
@@ -3957,7 +4150,25 @@ focus_tree = {
 		}
 	}
 
+	focus = {
+		id = central_asia_soviet_collapse_federation_delegates
+		icon = GFX_central_asia_soviet_collapse_steppe_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_turkestan_federation_road }
 
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_federation_delegates
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 is_soviet_collapse_southern_breakaway_active = yes }
+		}
+	}
 
 
 
@@ -3971,6 +4182,7 @@ focus_tree = {
 		y = 4
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = central_asia_soviet_collapse_turkestan_federation_road }
+		prerequisite = { focus = central_asia_soviet_collapse_federation_delegates }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_central_asia_republics_coordinate
@@ -4014,6 +4226,7 @@ focus_tree = {
 		prerequisite = { focus = central_asia_soviet_collapse_basmachi_roads_reopen }
 		prerequisite = { focus = central_asia_soviet_collapse_the_oasis_arsenal }
 		prerequisite = { focus = central_asia_soviet_collapse_the_oasis_guard }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_clear_the_mountain_bands }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_central_asia_bands_negotiated
@@ -4024,6 +4237,32 @@ focus_tree = {
 			base = 4
 			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } } }
 			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_clear_the_mountain_bands
+		icon = GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 11
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_basmachi_roads_reopen }
+		prerequisite = { focus = central_asia_soviet_collapse_the_oasis_arsenal }
+		prerequisite = { focus = central_asia_soviet_collapse_the_oasis_guard }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_negotiate_with_the_mountain_bands }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_bands_cleared
+			soviet_collapse_apply_focus_military_consolidation = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_stability < 0.45 }
+			modifier = { factor = 2 is_at_war = yes }
 		}
 	}
 
@@ -4045,7 +4284,28 @@ focus_tree = {
 		ai_will_do = { base = 7 }
 	}
 
+	focus = {
+		id = central_asia_soviet_collapse_the_cotton_question
+		icon = GFX_central_asia_soviet_collapse_rail_and_irrigation_boards
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_the_oasis_arsenal }
 
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_cotton_question
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 tag = UZB }
+			modifier = { factor = 2 tag = TMS }
+		}
+	}
 
 
 	focus = {
@@ -4055,8 +4315,13 @@ focus_tree = {
 		x = 15
 		y = 5
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = central_asia_soviet_collapse_southern_republics_coordinate focus = central_asia_soviet_collapse_the_basmachi_amnesty_ledger }
-		prerequisite = { focus = central_asia_soviet_collapse_foreign_border_schools }
+		prerequisite = {
+			focus = central_asia_soviet_collapse_no_more_distant_capitals
+			focus = central_asia_soviet_collapse_desert_scout_columns
+			focus = central_asia_soviet_collapse_southern_republics_coordinate
+			focus = central_asia_soviet_collapse_liaison_missions_in_the_bazaar
+			focus = central_asia_soviet_collapse_khwarazm_restoration_debate
+		}
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_central_asia_southern_shield
@@ -4066,6 +4331,88 @@ focus_tree = {
 		ai_will_do = { base = 7 }
 	}
 
+	focus = {
+		id = central_asia_soviet_collapse_federation_or_neighbor_pact
+		icon = GFX_central_asia_soviet_collapse_inland_republics_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_the_southern_shield }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_pact_choice_open
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_loose_southern_pact
+		icon = GFX_central_asia_soviet_collapse_inland_republics_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 7
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = central_asia_soviet_collapse_federation_or_neighbor_pact }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_federation_state }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_loose_southern_pact
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_federation_state
+		icon = GFX_central_asia_soviet_collapse_steppe_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 17
+		y = 7
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = central_asia_soviet_collapse_federation_or_neighbor_pact }
+		mutually_exclusive = { focus = central_asia_soviet_collapse_loose_southern_pact }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_federation_state
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 is_soviet_collapse_southern_breakaway_active = yes }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_the_south_survives_together
+		icon = GFX_central_asia_soviet_collapse_inland_republics_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = {
+			focus = central_asia_soviet_collapse_loose_southern_pact
+			focus = central_asia_soviet_collapse_federation_state
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_south_survives_together
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 8 }
+	}
 
 	focus = {
 		id = central_asia_soviet_collapse_the_oasis_guard
@@ -4095,7 +4442,10 @@ focus_tree = {
 		x = 9
 		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = central_asia_soviet_collapse_negotiate_with_the_mountain_bands }
+		prerequisite = {
+			focus = central_asia_soviet_collapse_negotiate_with_the_mountain_bands
+			focus = central_asia_soviet_collapse_clear_the_mountain_bands
+		}
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_central_asia_basmachi_ledger
@@ -4106,13 +4456,70 @@ focus_tree = {
 	}
 
 	focus = {
+		id = central_asia_soviet_collapse_khwarazm_and_older_names
+		icon = GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_the_basmachi_amnesty_ledger }
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 2 }
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_khwarazm_names
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 tag = TMS }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_khwarazm_restoration_debate
+		icon = GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = central_asia_soviet_collapse_khwarazm_and_older_names }
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 2 }
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_khwarazm_debate
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
 		id = central_asia_soviet_collapse_foreign_border_schools
 		icon = GFX_central_asia_soviet_collapse_foreign_balance_desks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 18
-		y = 3
+		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = central_asia_soviet_collapse_southern_route_fork }
+		prerequisite = { focus = central_asia_soviet_collapse_foreign_border_patronage }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_central_asia_foreign_border_schools
@@ -4122,9 +4529,42 @@ focus_tree = {
 		ai_will_do = { base = 5 }
 	}
 
+	focus = {
+		id = central_asia_soviet_collapse_desert_route_to_foreign_aid
+		icon = GFX_central_asia_soviet_collapse_foreign_balance_desks
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_foreign_border_schools }
 
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_desert_foreign_aid
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 tag = TMS }
+		}
+	}
 
+	focus = {
+		id = central_asia_soviet_collapse_liaison_missions_in_the_bazaar
+		icon = GFX_central_asia_soviet_collapse_foreign_balance_desks
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_foreign_border_schools }
 
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_bazaar_liaison_missions
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 5 }
+	}
 }
 
 focus_tree = {
