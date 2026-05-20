@@ -1,6 +1,6 @@
 # Regional Republic Focus Icon Ledger
 
-This ledger documents the 121 currently implemented regional runtime focuses in `common/national_focus/005_soviet_collapse_republics.txt`.
+This ledger documents the 127 currently implemented regional runtime focuses in `common/national_focus/005_soviet_collapse_republics.txt`.
 
 The Baltic, Caucasus, Central Asian, and Moldovan trees use dedicated regional runtime sprite names defined in `interface/005_soviet_collapse_regional_icons.gfx`. Each dedicated DDS is derived from already generated Event 005 focus art that matches the focus subject, with processed PNG previews preserved under `docs/assets/005_soviet_union_collapse/processed_png/regional_republic_focus_icons/`.
 
@@ -11,7 +11,7 @@ The Baltic, Caucasus, Central Asian, and Moldovan trees use dedicated regional r
 | `soviet_collapse_baltic_focus_tree` | `LIT`, `LAT`, `EST` | 36 |
 | `soviet_collapse_caucasus_focus_tree` | `GEO`, `AZR`, `ARM` | 34 |
 | `soviet_collapse_central_asia_focus_tree` | `UZB`, `KYR`, `TAJ`, `TMS` | 34 |
-| `soviet_collapse_moldova_focus_tree` | `MOL` | 17 |
+| `soviet_collapse_moldova_focus_tree` | `MOL` | 23 |
 
 The 36-focus Baltic runtime tree reuses the eight existing Baltic regional sprites. Legal continuity, archive, deputy, legal-front, and second-restoration focuses reuse `GFX_baltic_soviet_collapse_restore_legal_continuity`; radio and high-chaos civic-mobilization focuses reuse `GFX_baltic_soviet_collapse_wire_rooms`; forest and marsh defense focuses reuse `GFX_baltic_soviet_collapse_forest_belts`; port, rail, economy, and customs focuses reuse `GFX_baltic_soviet_collapse_port_customs`; foreign observer and adviser focuses reuse `GFX_baltic_soviet_collapse_observer_missions`; border government, border guard, coastal defense, volunteer, and capital-defense focuses reuse `GFX_baltic_soviet_collapse_home_guard_staff`; compact and war-room focuses reuse `GFX_baltic_soviet_collapse_restoration_pact`; joint army, shield doctrine, and final Baltic-question focuses reuse `GFX_baltic_soviet_collapse_sovereign_baltic_front`.
 
@@ -19,7 +19,7 @@ The 34-focus Caucasus runtime tree reuses the eight existing Caucasus regional s
 
 The 34-focus Central Asian clean-spec replacement deliberately reuses the eight existing Central Asian regional sprites. Majlis, local council, Samarkand, and anti-distant-capital focuses reuse `GFX_central_asia_soviet_collapse_supply_congress`; irrigation, bread, oasis arsenal, and cotton focuses reuse `GFX_central_asia_soviet_collapse_rail_and_irrigation_boards`; border caravans, scouts, and route-control focuses reuse `GFX_central_asia_soviet_collapse_caravan_border_offices`; Basmachi, amnesty, mountain-band, and Khwarazm high-chaos focuses reuse `GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls`; patronage, bazaar liaison, foreign schools, and desert aid focuses reuse `GFX_central_asia_soviet_collapse_foreign_balance_desks`; border authority, oasis guard, pass reserve, and commanders reuse `GFX_central_asia_soviet_collapse_steppe_defense_council`; Turkestan and federation-state focuses reuse `GFX_central_asia_soviet_collapse_steppe_federation`; southern coordination, loose pact, shield, and final settlement focuses reuse `GFX_central_asia_soviet_collapse_inland_republics_compact`.
 
-The 17-focus Moldova runtime tree currently reuses the eight existing Moldova regional sprites. Chisinau council and legal-file focuses reuse `GFX_moldova_soviet_collapse_chisinau_ledgers`; crossing and Dniester defense focuses reuse `GFX_moldova_soviet_collapse_dniester_line`; Romanian-question, alignment, negotiation, aid, and union focuses reuse `GFX_moldova_soviet_collapse_romanian_window`; Ukrainian compact and grain-road focuses reuse `GFX_moldova_soviet_collapse_ukrainian_corridor`; river guard and military-bureau focuses reuse `GFX_moldova_soviet_collapse_depot_battalions`; alliance-not-union reuses `GFX_moldova_soviet_collapse_eastern_buffer_compact`; grain-and-river trade reuses `GFX_moldova_soviet_collapse_river_customs`; route fork and final small-state focuses reuse `GFX_moldova_soviet_collapse_bridge_state`.
+The 23-focus Moldova runtime tree currently reuses the eight existing Moldova regional sprites. Chisinau council, legal-file, and reject-union focuses reuse `GFX_moldova_soviet_collapse_chisinau_ledgers`; crossing and Dniester defense focuses reuse `GFX_moldova_soviet_collapse_dniester_line`; Romanian-question, alignment, negotiation, aid, union-debate, and conditional-union focuses reuse `GFX_moldova_soviet_collapse_romanian_window`; Ukrainian compact and grain-road focuses reuse `GFX_moldova_soviet_collapse_ukrainian_corridor`; river guard and military-bureau focuses reuse `GFX_moldova_soviet_collapse_depot_battalions`; alliance-not-union reuses `GFX_moldova_soviet_collapse_eastern_buffer_compact`; grain-and-river trade reuses `GFX_moldova_soviet_collapse_river_customs`; route fork and final small-state focuses reuse `GFX_moldova_soviet_collapse_bridge_state`.
 
 ## Source Art Summary
 
