@@ -66,6 +66,7 @@ News/report events: ordinary league formation uses news events, while Union Unma
 - Added quorum triggers for Baltic, Caucasus, and Central Asian league founding so one free member cannot found a local league alone.
 - Removed ordinary local league and normal League-route super-event calls from regional founding effects and republic focus rewards.
 - Direct source inspection now confirms local league formation effects fire `news_event = { id = chaosx.nr5.30 }`, `.31`, and `.32`, and Moldova's Eastern Buffer Coalition route fires `news_event = { id = chaosx.nr5.35 }`.
+- Corrected the remaining Central Asian extreme-route custom-country tooltips so Basmachi, Turkestan, and Alash route pushes announce the Steppe Federation in-world instead of referring to a retired Steppe Federation super-event.
 
 ## 2026-05-20 Continuation Correction
 
@@ -89,6 +90,7 @@ rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt common/scr
 rg -n "country_event = \\{ id = chaosx\\.nr5\\.(30|31|32)" common events
 rg -n "soviet_collapse_show_(baltic_restoration_pact|caucasus_defense_compact|eastern_buffer_coalition)_super_event" common events interface
 rg -n "soviet_collapse_show_(league_equal_republics|steppe_federation)_super_event|GFX_super_event_(league_equal_republics|steppe_federation)|super_event\\.(23|24|25|26|27)\\." common interface localisation events
+rg -n "Steppe Federation super-event|fires the Steppe Federation super-event" localisation/english/005_soviet_collapse_custom_countries_l_english.yml
 ```
 
-Result: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, no active local-league super-event helper calls, and no remaining Free Republics' League, Steppe Federation, Baltic League, Caucasus League, or Eastern Buffer Coalition super-event localisation/sprite mappings.
+Result: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, no active local-league super-event helper calls, no remaining Free Republics' League, Steppe Federation, Baltic League, Caucasus League, or Eastern Buffer Coalition super-event localisation/sprite mappings, and no player-facing Steppe Federation tooltip still calling it a super-event.
