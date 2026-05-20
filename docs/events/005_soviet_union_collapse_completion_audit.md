@@ -1,6 +1,6 @@
 ﻿# Event 005 Soviet Union Collapse Completion Audit
 
-Current audit date: 2026-05-19
+Current audit date: 2026-05-20
 
 This audit maps the active Soviet Collapse correction objective to current repository evidence after the influence/threat/focus rework, final-clean, spawn-balance, collapse-pacing, focus-layout, terminal-cleanup, and flag-orientation passes.
 
@@ -8,31 +8,40 @@ This audit maps the active Soviet Collapse correction objective to current repos
 
 Required source order:
 
-1. `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md`
-2. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
-3. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
-4. `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`
+1. `tmp/005_soviet_union_collapse_terminal_release_league_threat_correction_spec.md`
+2. `tmp/soviet_collapse_republic_focus_tree_mandatory_package/`
+3. `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md`
+4. `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md`
 5. `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md`
 6. `AGENTS.md`
 7. `chaos-redux-events`
 8. `chaos-redux-event-assets`
 9. `chaos-redux-super-events`
 
-The earlier `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md`, `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md`, and later `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` remain additional consulted context because they contain acceptance bullets that overlap the active source order. The historical `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` filename is not present, but it is not part of the active required source order; its named event-log, mission-balance, and focus-cleanup surfaces are covered by direct implementation evidence below.
+The nested focus-tree package contains the binding universal rules, country specs, route matrix, prompts, and research notes for the republic trees. `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md`, `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md`, `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md`, `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md`, and `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` remain additional consulted context because they contain acceptance bullets that overlap the active source order. The historical `tmp/005_soviet_union_collapse_event_log_mission_balance_focus_cleanup_spec.md` filename is not present, but it is not part of the active required source order; its named event-log, mission-balance, and focus-cleanup surfaces are covered by direct implementation evidence below.
 
 The previously referenced `tmp/error.log` and `tmp/text.log` files are absent because the logged errors were fixed and the files were intentionally removed. They are not current completion blockers.
 
 ## Input File Audit
 
-Requested source files as of 2026-05-19:
+Requested source files as of 2026-05-20:
 
 | Path | State | Lines | Bytes | SHA-256 |
 | --- | --- | ---: | ---: | --- |
-| `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md` | Present | 989 | 31351 | `b62d00c6a8947dd2ac2b97369b0871a611184ee27779c7342273d92f478bbdea` |
+| `tmp/005_soviet_union_collapse_terminal_release_league_threat_correction_spec.md` | Present | 688 | 21178 | `1fdf6db8f91300cc2416fb4870f95ef7bce56ca6502ac670b1df0afeb1ae65e2` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_1_universal_rules.md` | Present | 330 | 13660 | `250c30addecefc39105f8237025991d4cf720f6b38e66334a0b7a2815c3afe8d` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_2_ukraine_belarus.md` | Present | 508 | 14006 | `551e73e083e5be8d6ea076fc0f843a35b70d2815c89c29987a4a688a3377a876` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_3_kazakhstan_central_asia.md` | Present | 341 | 8086 | `5713db78385bd192f7df9cfe4ea009a7f8c4f56893482ccc7695155d7f1fbda0` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_4_baltic_caucasus_moldova_karelia_fallback.md` | Present | 311 | 9505 | `12290251786de9fd15c81951678a3a9a6cec89038a040d5f463f44df0bbeadc8` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/matrices/005_soviet_union_collapse_republic_focus_tree_route_matrix.md` | Present | 20 | 3750 | `1f37b81a9aee5b81359aa743e49869b2f6151206d6e115475a235905a6c78d84` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/prompts/coding_prompt.md` | Present | 26 | 1573 | `ad5aafaf168c325491a2ff00cfac51a745abef3ad8f15a511e1d754bc6f0dd4a` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/prompts/goal_prompt.md` | Present | 30 | 2960 | `e2d34debe11a46ebf5c683ed4847c2375a2c5983c004a423374b7263f6c3ff83` |
+| `tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/research/005_soviet_union_collapse_republic_focus_tree_research_notes.md` | Present | 16 | 1310 | `2b30e3de500ec0506e76550b0db41e5a36d5fc361d7595de3fbfe6ced35749fa` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md` | Present | 3418 | 162378 | `c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md` | Present | 6327 | 191503 | `32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234` |
-| `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | Present | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
 | `tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md` | Present | 3889 | 148956 | `60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428` |
+| `tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md` | Additional consulted context | 989 | 31351 | `b62d00c6a8947dd2ac2b97369b0871a611184ee27779c7342273d92f478bbdea` |
+| `tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md` | Additional consulted context | 7535 | 554089 | `724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7` |
 | `tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md` | Additional consulted context | 512 | 16561 | `b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077` |
 | `tmp/005_soviet_union_collapse_comprehensive_correction_spec.md` | Additional consulted context | 517 | 18082 | `409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17` |
 | `tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md` | Additional consulted context | 287 | 15899 | `9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750` |
@@ -314,7 +323,7 @@ Custom-splinter idea picture aliases cover 111 per-spirit `picture = ...` tokens
 
 ## Latest Validation Snapshot
 
-Command evidence from the 2026-05-19 continuation audit:
+Command evidence from the 2026-05-20 continuation audit:
 
 ```text
 brace depth/min for Event 005 focus, effect, trigger, decision, idea, constant, and event files: depth=0 min=0
@@ -326,21 +335,21 @@ idea_strength_checks ideas 117 no_modifier 0 weak_lt3 0 tiny_only 0 min_modifier
 modifier_count_distribution current active surface retained 117 ideas
 banned_phrase_hits 0
 source_context_files files 4 missing 0
-reference_context_surface files 16/16 markers 19/19
+reference_context_surface files 20/20 markers 19/19
 source_order_surface items 9 ordered True numbered True
-input_audit_surface rows 14 mismatches 0
+input_audit_surface rows 23 mismatches 0
 recovery_search_surface continuation_matches 0 removed_log_hits 0
 final_completion_report_surface markers 7 missing 0
 strict_verifier_documentation_surface markers 2/2 forbidden 0
 missing_continuation_direct_coverage_surface markers 13/13 missing 0
 resume_validation_commands_surface markers 6/6 missing 0
 success_criteria_surface markers 13 missing 0
-available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
+available_source_acceptance_surface source_markers 18/18 audit_markers 17/17
 comprehensive_source_acceptance_surface source_markers 20/20 audit_markers 17/17
-prompt_artifact_checklist_surface rows 30 implemented_rows 44 blocked_rows 0
+prompt_artifact_checklist_surface rows 30 implemented_rows 42 blocked_rows 0
 verifier_command_documentation_surface markers 6 missing 0
 focus_tree_map_surface event_markers 9/9 audit_markers 3/3
-validation_snapshot_freshness_surface markers 3/3 stale 0
+validation_snapshot_freshness_surface markers 2/2 stale 0
 flag_orientation_headers flags_checked 315 flags_missing 0 decode_errors 0 top_origin 315 bottom_origin 0
 flag_orientation_surface comparisons 210 expected 210 orientation_mismatches 0
 hardcoded_high_chaos_successor_activation_removed active_calls=0 spawn_dispatches=0 regional_invites=0
@@ -378,14 +387,23 @@ result: exit 0; all implementation gates and active required-input gates passed
 Current prompt-to-artifact spot audit:
 
 ```text
-input_files rebalance_spec present bytes 16561 lines 512 sha256 b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077
-input_files influence_rework_spec present bytes 31351 lines 989 sha256 b62d00c6a8947dd2ac2b97369b0871a611184ee27779c7342273d92f478bbdea
+input_files terminal_release_league_threat_spec present bytes 21178 lines 688 sha256 1fdf6db8f91300cc2416fb4870f95ef7bce56ca6502ac670b1df0afeb1ae65e2
+input_files focus_package_universal_rules present bytes 13660 lines 330 sha256 250c30addecefc39105f8237025991d4cf720f6b38e66334a0b7a2815c3afe8d
+input_files focus_package_ukraine_belarus present bytes 14006 lines 508 sha256 551e73e083e5be8d6ea076fc0f843a35b70d2815c89c29987a4a688a3377a876
+input_files focus_package_kazakhstan_central_asia present bytes 8086 lines 341 sha256 5713db78385bd192f7df9cfe4ea009a7f8c4f56893482ccc7695155d7f1fbda0
+input_files focus_package_baltic_caucasus_moldova_karelia_fallback present bytes 9505 lines 311 sha256 12290251786de9fd15c81951678a3a9a6cec89038a040d5f463f44df0bbeadc8
+input_files focus_package_route_matrix present bytes 3750 lines 20 sha256 1f37b81a9aee5b81359aa743e49869b2f6151206d6e115475a235905a6c78d84
+input_files focus_package_coding_prompt present bytes 1573 lines 26 sha256 ad5aafaf168c325491a2ff00cfac51a745abef3ad8f15a511e1d754bc6f0dd4a
+input_files focus_package_goal_prompt present bytes 2960 lines 30 sha256 e2d34debe11a46ebf5c683ed4847c2375a2c5983c004a423374b7263f6c3ff83
+input_files focus_package_research_notes present bytes 1310 lines 16 sha256 2b30e3de500ec0506e76550b0db41e5a36d5fc361d7595de3fbfe6ced35749fa
+input_files rebalance_spec additional_context bytes 16561 lines 512 sha256 b91c2f0756de9210a5f1a70f5c00be39287068c6b212bea3655f4d3ab6448077
+input_files influence_rework_spec additional_context bytes 31351 lines 989 sha256 b62d00c6a8947dd2ac2b97369b0871a611184ee27779c7342273d92f478bbdea
 input_files comprehensive_spec present bytes 18082 lines 517 sha256 409ed5f06819419237776a3a0dd26f60977f1b28ff2bddc041b34fd674ca8e17
 input_files spawn_spec present bytes 15899 lines 287 sha256 9ac9d2553dffc54b6023c56f2dbde6efac310343b20873c77b1f50e6e5339750
 input_files historical_continuation_spec missing_not_active_required
 input_files clean1 present bytes 162378 lines 3418 sha256 c0f474e97482a4eed3d4f9b8cbead930471f296d741e9805a0fea03b38e685e7
 input_files clean2 present bytes 191503 lines 6327 sha256 32284c8e2f424818be5dfbb81c394d9c1de7e666a93545586a1e2e1710276234
-input_files clean3 present bytes 554089 lines 7535 sha256 724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7
+input_files clean3 additional_context bytes 554089 lines 7535 sha256 724a3bfb7c00aa28debf788649413da311224044fe4b0f4f8f726ee345275de7
 input_files clean4 present bytes 148956 lines 3889 sha256 60e2cac0717579afc60a3a6414558c00122d3fbae7d4e205af27671f7d6bc428
 input_files error_log intentionally_removed_not_blocker
 input_files text_log intentionally_removed_not_blocker
