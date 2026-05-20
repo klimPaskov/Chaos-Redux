@@ -42,11 +42,11 @@ Reference sheets:
 | `20` | The Steppe Beyond History | `GFX_super_event_steppe_beyond_history` | CC BY-SA 3.0 | [ ] | [ ] | [ ] |  |
 | `21` | The Corridors Decide | `GFX_super_event_corridors_decide` | public domain in Ukraine and the United States per Commons `PD-Ukraine` tag | [ ] | [ ] | [ ] | Tonal pass refreshed with the existing period refugee-train source. |
 | `22` | The Bread State | `GFX_super_event_bread_state` | public domain in Ukraine and the United States per Commons `PD-Ukraine` tag | [ ] | [ ] | [ ] | Tonal pass refreshed with the existing 1930 Ukrainian grain-delivery source. |
-| `23` | The League of Equal Republics | `GFX_super_event_league_equal_republics` | CC BY-SA 3.0 or GFDL | [ ] | [ ] | [ ] |  |
-| `24` | The Steppe Federation | `GFX_super_event_steppe_federation` | CC BY-SA 3.0; reuses the Steppe Beyond History source original | [ ] | [ ] | [ ] |  |
-| `25` | The Baltic League | `GFX_super_event_baltic_restoration_pact` | CC0 / public-domain dedication on Commons | [ ] | [ ] | [ ] | Replaced with Lithuanian Army near Vilnius Region, 1939. |
-| `26` | The Caucasus League | `GFX_super_event_caucasus_defense_compact` | public domain in the United States as a NASA work | [ ] | [ ] | [ ] |  |
-| `27` | The Eastern Buffer Coalition | `GFX_super_event_eastern_buffer_coalition` | public domain per Commons `PD-Russia-1996` tags | [ ] | [ ] | [ ] | Replaced with Soviet invasion of Poland column, 1939. |
+| `23` | The League of Equal Republics | `GFX_super_event_league_equal_republics` | CC BY-SA 3.0 or GFDL | [ ] | [ ] | [ ] | Retired from active super-event use; preserved as source reference. |
+| `24` | The Steppe Federation | `GFX_super_event_steppe_federation` | CC BY-SA 3.0; reuses the Steppe Beyond History source original | [ ] | [ ] | [ ] | Retired from active super-event use; `chaosx.nr5.36` reports the endgame. |
+| `25` | The Baltic League | `GFX_super_event_baltic_restoration_pact` | CC0 / public-domain dedication on Commons | [ ] | [ ] | [ ] | Retired from active super-event use; formation uses `chaosx.nr5.30`. |
+| `26` | The Caucasus League | `GFX_super_event_caucasus_defense_compact` | public domain in the United States as a NASA work | [ ] | [ ] | [ ] | Retired from active super-event use; formation uses `chaosx.nr5.31`. |
+| `27` | The Eastern Buffer Coalition | `GFX_super_event_eastern_buffer_coalition` | public domain per Commons `PD-Russia-1996` tags | [ ] | [ ] | [ ] | Retired from active super-event use; coalition reporting uses `chaosx.nr5.35`. |
 
 ## Latest Continuation Recheck
 
