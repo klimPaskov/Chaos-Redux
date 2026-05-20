@@ -6139,6 +6139,24 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_khabarovsk_assembly_records
+		icon = GFX_focus_FEV_legitimacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = FEV_birth }
+
+		completion_reward = {
+			set_country_flag = fev_focus_khabarovsk_assembly_records
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
 		id = FEV_stores
 		icon = GFX_focus_FEV_stores
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
@@ -6192,6 +6210,51 @@ focus_tree = {
 			}
 		}
 		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = FEV_amur_field_staff
+		icon = GFX_focus_FEV_doctrine
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = FEV_first_guard }
+
+		completion_reward = {
+			set_country_flag = fev_focus_amur_field_staff
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = FEV_ussuri_rail_court
+		icon = GFX_focus_FEV_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = FEV_stores focus = FEV_khabarovsk_assembly_records }
+
+		completion_reward = {
+			set_country_flag = fev_focus_ussuri_rail_court
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
 	}
 
 	focus = {
@@ -6283,6 +6346,26 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_customs_house_ledger
+		icon = GFX_focus_FEV_economy
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_inner_faction }
+
+		completion_reward = {
+			set_country_flag = fev_focus_customs_house_ledger
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
 		id = FEV_special_arm
 		icon = GFX_focus_FEV_special_arm
 		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
@@ -6297,6 +6380,27 @@ focus_tree = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
 		}
 		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = FEV_railway_militia_charter
+		icon = GFX_focus_FEV_special_arm
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 0
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_doctrine focus = FEV_special_arm }
+
+		completion_reward = {
+			set_country_flag = fev_focus_railway_militia_charter
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
 	}
 
 	focus = {
@@ -6368,6 +6472,51 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_free_port_merchants
+		icon = GFX_focus_FEV_civil_rule
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_civil_rule focus = FEV_customs_house_ledger }
+
+		completion_reward = {
+			set_country_flag = fev_focus_free_port_merchants
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = FEV_trans_siberian_dispatch_board
+		icon = GFX_focus_FEV_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_supply }
+
+		completion_reward = {
+			set_country_flag = fev_focus_trans_siberian_dispatch_board
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
 		id = FEV_settlement
 		icon = GFX_focus_FEV_settlement
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -6417,6 +6566,76 @@ focus_tree = {
 		ai_will_do = {
 			base = 5
 			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = FEV_harbor_fortress_line
+		icon = GFX_focus_FEV_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_NAVY_XP }
+		x = 0
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_railway_militia_charter }
+
+		completion_reward = {
+			set_country_flag = fev_focus_harbor_fortress_line
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 2 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = FEV_nikolsk_workshop_contracts
+		icon = GFX_focus_FEV_industry_plan
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_customs_house_ledger focus = FEV_trans_siberian_dispatch_board }
+
+		completion_reward = {
+			set_country_flag = fev_focus_nikolsk_workshop_contracts
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = FEV_sikhote_alin_watch_posts
+		icon = GFX_focus_FEV_enemy_front
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_trans_siberian_dispatch_board focus = FEV_enemy_front }
+
+		completion_reward = {
+			set_country_flag = fev_focus_sikhote_alin_watch_posts
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
 		}
 	}
 
@@ -6497,6 +6716,28 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_winter_rail_columns
+		icon = GFX_focus_FEV_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 0
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_war_plan focus = FEV_harbor_fortress_line }
+
+		completion_reward = {
+			set_country_flag = fev_focus_winter_rail_columns
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
 		id = FEV_vladivostok_harbor_board
 		icon = GFX_focus_FEV_supply
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
@@ -6531,6 +6772,50 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_razdolnoye_rear_area
+		icon = GFX_focus_FEV_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_winter_rail_columns }
+
+		completion_reward = {
+			set_country_flag = fev_focus_razdolnoye_rear_area
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = FEV_siberian_factory_letters
+		icon = GFX_focus_FEV_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_diplomatic_plan focus = FEV_nikolsk_workshop_contracts }
+
+		completion_reward = {
+			set_country_flag = fev_focus_siberian_factory_letters
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
 		id = FEV_amur_buffer_posts
 		icon = GFX_focus_FEV_war_plan
 		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
@@ -6557,6 +6842,26 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_amur_river_ports
+		icon = GFX_focus_FEV_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_sikhote_alin_watch_posts focus = FEV_siberian_factory_letters }
+
+		completion_reward = {
+			set_country_flag = fev_focus_amur_river_ports
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
 		id = FEV_pacific_observer_missions
 		icon = GFX_focus_FEV_diplomatic_plan
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -6576,6 +6881,48 @@ focus_tree = {
 			base = 7
 			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
 			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
+		id = FEV_sakhalin_ferry_protocols
+		icon = GFX_focus_FEV_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_diplomatic_plan focus = FEV_foreign }
+
+		completion_reward = {
+			set_country_flag = fev_focus_sakhalin_ferry_protocols
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = FEV_pacific_city_compact
+		icon = GFX_focus_FEV_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = FEV_pacific_observer_missions focus = FEV_sakhalin_ferry_protocols }
+
+		completion_reward = {
+			set_country_flag = fev_focus_pacific_city_compact
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
 		}
 	}
 
@@ -6619,6 +6966,52 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_no_foreign_command_on_the_line
+		icon = GFX_focus_FEV_radical_turn
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 4
+		y = 11
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = FEV_extreme_gate }
+
+		completion_reward = {
+			set_country_flag = fev_focus_no_foreign_command_on_the_line
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = FEV_far_eastern_staff_map
+		icon = GFX_focus_FEV_hidden_doctrine
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 11
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = FEV_extreme_gate focus = FEV_hidden_doctrine }
+
+		completion_reward = {
+			set_country_flag = fev_focus_far_eastern_staff_map
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
 		id = FEV_extreme_path
 		icon = GFX_focus_FEV_extreme_path
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
@@ -6635,15 +7028,59 @@ focus_tree = {
 	}
 
 	focus = {
+		id = FEV_authority_from_the_harbor
+		icon = GFX_focus_FEV_endgame
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = FEV_vladivostok_harbor_board focus = FEV_amur_river_ports }
+		prerequisite = { focus = FEV_pacific_city_compact focus = FEV_razdolnoye_rear_area }
+
+		completion_reward = {
+			set_country_flag = fev_focus_authority_from_the_harbor
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = FEV_pacific_between_empires
+		icon = GFX_focus_FEV_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = FEV_pacific_city_compact }
+
+		completion_reward = {
+			set_country_flag = fev_focus_pacific_between_empires
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
 		id = FEV_endgame
 		icon = GFX_focus_FEV_endgame
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
 		x = 16
 		y = 12
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = FEV_extreme_path }
-		prerequisite = { focus = FEV_vladivostok_harbor_board }
-		prerequisite = { focus = FEV_amur_buffer_posts focus = FEV_pacific_observer_missions }
+		prerequisite = { focus = FEV_extreme_path focus = FEV_settlement focus = FEV_authority_from_the_harbor }
+		prerequisite = { focus = FEV_vladivostok_harbor_board focus = FEV_razdolnoye_rear_area focus = FEV_far_eastern_staff_map }
+		prerequisite = { focus = FEV_amur_buffer_posts focus = FEV_pacific_between_empires focus = FEV_no_foreign_command_on_the_line }
 
 		completion_reward = {
 			set_country_flag = fev_focus_endgame
