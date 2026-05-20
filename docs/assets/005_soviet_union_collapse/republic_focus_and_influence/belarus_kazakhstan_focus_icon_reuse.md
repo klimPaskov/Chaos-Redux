@@ -3,7 +3,7 @@
 This ledger documents the implemented Belarus and Kazakhstan runtime focus icon assignments:
 
 - Belarus: 53 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, covering the clean-spec Minsk opening, first political route-lock block, military-transit route, rail-sovereignty branch, railway neutrality, rail-war logistics, forest-defense branches, diplomacy/corridor branch, League freight planning, late forest/military branch, and high-chaos finishers.
-- Kazakhstan: 57 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, covering the current Alma-Ata opening, southern-wire crisis, route locks, resource branch, mobile army branch, southern diplomacy, high-chaos old-roads branch, political consolidation, mobile defense, regional crosslinks, and final settlement branch.
+- Kazakhstan: 92 focuses in `common/national_focus/005_soviet_collapse_republics.txt`, covering the current Alma-Ata opening, southern-wire crisis, route locks, expanded Alash and socialist route institutions, resource sovereignty, mobile army branch, southern diplomacy, high-chaos old-roads branch, political consolidation, mobile defense, regional crosslinks, foreign mediation, and final settlement branch.
 
 Both trees use branch-level sprites defined in `interface/005_soviet_collapse_blr_icons.gfx` and `interface/005_soviet_collapse_kaz_icons.gfx`. The branch-icon assignment is deliberate for the current implementation; each dedicated DDS is derived from existing generated Event 005 focus art that matches the branch gameplay subject. Belarus has been expanded from its compact 38-focus implementation into a 53-focus path-level tree.
 
@@ -24,22 +24,22 @@ Both trees use branch-level sprites defined in `interface/005_soviet_collapse_bl
 
 | Branch | Focuses | Sprite | Final DDS | Reuse rationale |
 | --- | ---: | --- | --- | --- |
-| alash | 4 | `GFX_kaz_soviet_collapse_alash` | `gfx/interface/goals/kaz_soviet_collapse_alash.dds` | Republican legality art fits the congress identity fork, Alash courts, and the written Alash program. |
-| steppe_socialist | 3 | `GFX_kaz_soviet_collapse_steppe_socialist` | `gfx/interface/goals/kaz_soviet_collapse_steppe_socialist.dds` | Socialist sovereignty art fits the steppe republic, aul teachers, and teachers of the new steppe. |
-| federation | 14 | `GFX_kaz_soviet_collapse_federation` | `gfx/interface/goals/kaz_soviet_collapse_federation.dds` | Steppe congress art fits Alma-Ata, southern wires, Turkestan mandate, oasis-steppe congress, League resource pooling, cavalry schooling, delegate missions, federation chartering, fighting federation, southern shield, road peace, southern refusal, southern seats, no-steppe-without-south outcomes, League mobile reserve, Kyrgyz cavalry, federation rulebook, arbitration, and final southern writing. |
-| resources | 8 | `GFX_kaz_soviet_collapse_resources` | `gfx/interface/goals/kaz_soviet_collapse_resources.dds` | Factory-defense art fits resource-town guards, the directorate, engineers, Karaganda boards, guarded oil, mine rail, pithead factories, domestic resource control, mine census, resource-town seats, mine-guard law, and Uzbek industrial bargaining. |
-| foreign | 7 | `GFX_kaz_soviet_collapse_foreign` | `gfx/interface/goals/kaz_soviet_collapse_foreign.dds` | External mission art fits southern guarantee diplomacy, concession debates, technical missions, listening posts, foreign engineers, eastern rumors, concession law, caravan taxation, foreign truck protocols, and the Turkmen Caspian route. |
+| alash | 8 | `GFX_kaz_soviet_collapse_alash` | `gfx/interface/goals/kaz_soviet_collapse_alash.dds` | Republican legality art fits the congress identity fork, Alash courts, restored names, Semey legal work, land statutes, kurultai law, and the written Alash program. |
+| steppe_socialist | 9 | `GFX_kaz_soviet_collapse_steppe_socialist` | `gfx/interface/goals/kaz_soviet_collapse_steppe_socialist.dds` | Socialist sovereignty art fits the steppe republic, aul teachers, local soviets, mining councils, collective farm bargains, red nomad committees, planning boards, and sovereign steppe socialism. |
+| federation | 20 | `GFX_kaz_soviet_collapse_federation` | `gfx/interface/goals/kaz_soviet_collapse_federation.dds` | Steppe congress art fits Alma-Ata, southern wires, Turkestan mandate, oasis-steppe congress, League resource pooling, cavalry schooling, delegate missions, federation chartering, fighting federation, southern shield, southern refusal, southern seats, no-steppe-without-south outcomes, Kyrgyz cavalry, arbitration, congress delegates, common passports, defense council, and final southern writing. |
+| resources | 13 | `GFX_kaz_soviet_collapse_resources` | `gfx/interface/goals/kaz_soviet_collapse_resources.dds` | Factory-defense art fits resource-town guards, the directorate, Karaganda boards, guarded oil, mine rail, domestic resource control, coal accounting, oil boards, copper/chrome ledgers, mine guards, settlement compacts, resource sovereignty, resource-town seats, and Uzbek industrial bargaining. |
+| foreign | 13 | `GFX_kaz_soviet_collapse_foreign` | `gfx/interface/goals/kaz_soviet_collapse_foreign.dds` | External mission art fits southern guarantee diplomacy, concession debates, technical missions, foreign engineers, concession law, caravan taxation, foreign truck protocols, eastern liaison yurts, Turkish channels, Iranian Caspian notes, Japanese approaches, British mining observers, and multi-vector recognition. |
 | historical memory | 5 | `GFX_kaz_soviet_collapse_myth` | `gfx/interface/goals/kaz_soviet_collapse_myth.dds` | First-orders art fits old-state memory, reopened Basmachi roads, remote steppe reports, the open-sky state, Basmachi autonomy, khanate pamphlets, and the steppe survey committee. |
-| military | 13 | `GFX_kaz_soviet_collapse_military` | `gfx/interface/goals/kaz_soviet_collapse_military.dds` | Field battalion art fits district inventory, resource-to-arms exchange, the Steppe Arsenal, mobile staff, local registers, columns, guards, doctrine, road suppression, cavalry schools, fuel columns, anti-reclamation planning, mountain brigades, Tajik guarantees, encirclement doctrine, road war, army-of-distances, and thousand-kilometer defense. |
-| settlement | 3 | `GFX_kaz_soviet_collapse_settlement` | `gfx/interface/goals/kaz_soviet_collapse_settlement.dds` | Steppe congress art fits distance-state, decentralized capital, two-capitals debate, distributed government, central authority, lone-steppe, and Kazakhstan-alone focuses. |
+| military | 19 | `GFX_kaz_soviet_collapse_military` | `gfx/interface/goals/kaz_soviet_collapse_military.dds` | Field battalion art fits district inventory, the Steppe Arsenal, mobile staff, local registers, columns, guards, doctrine, road suppression, cavalry schools, Tajik guarantees, encirclement doctrine, army-of-distances, thousand-kilometer defense, mobile district command, rail guards, Caspian detachments, airstrips, and the open-horizon army. |
+| settlement | 5 | `GFX_kaz_soviet_collapse_settlement` | `gfx/interface/goals/kaz_soviet_collapse_settlement.dds` | Steppe congress art fits distance-state, decentralized authority, local notable compacts, industrial settlement compacts, lone-steppe, and final settlement focuses. |
 
 ## Verification
 
 The current tree parse confirms:
 
-- Belarus has 83 focus blocks.
-- Kazakhstan has 87 focus blocks.
-- Together, the two trees have 170 implemented focuses with wired branch sprites.
+- Belarus has 53 focus blocks.
+- Kazakhstan has 92 focus blocks.
+- Together, the two trees have 145 implemented focuses with wired branch sprites.
 
 ## Historical Per-Focus Continuation Draft Entries
 

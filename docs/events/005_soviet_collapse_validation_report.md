@@ -21,6 +21,10 @@ rg -n "^.*:0 " localisation/english/005_soviet_collapse_l_english.yml
 xxd -p -l 3 localisation/english/005_soviet_collapse_l_english.yml
 xxd -p -l 3 localisation/english/005_soviet_collapse_focus_expansion_l_english.yml
 rg -n "^.*:0 " localisation/english/005_soviet_collapse_focus_expansion_l_english.yml
+awk '/focus = \{/ { count++ } END { print "focus_blocks", count }' common/national_focus/005_soviet_collapse_republics.txt common/national_focus/005_soviet_collapse_custom_splinters.txt common/national_focus/005_soviet_collapse_factory_successors.txt
+awk '/id = soviet_collapse_kazakhstan_focus_tree/ { in_tree=1 } /id = soviet_collapse_baltic_focus_tree/ { in_tree=0 } in_tree && /focus = \{/ { focuses++ } in_tree && /completion_reward = \{/ { rewards++ } in_tree && /ai_will_do = \{/ { ai++ } END { print "kazakhstan", focuses, rewards, ai }' common/national_focus/005_soviet_collapse_republics.txt
+awk 'NR==FNR { sub(/:.*/, "", $1); loc[$1]=1; next } /id = soviet_collapse_kazakhstan_focus_tree/ { in_tree=1; next } /id = soviet_collapse_baltic_focus_tree/ { in_tree=0 } in_tree && /^\t\tid = / { id=$3; if (!(id in loc) || !((id "_desc") in loc)) print id }' localisation/english/005_soviet_collapse_kaz_focus_l_english.yml common/national_focus/005_soviet_collapse_republics.txt
+awk 'NR==FNR { if ($0 ~ /name = "GFX_kaz_soviet_collapse_/) { gsub(/.*name = "/, ""); gsub(/".*/, ""); icons[$0]=1 } next } /id = soviet_collapse_kazakhstan_focus_tree/ { in_tree=1; next } /id = soviet_collapse_baltic_focus_tree/ { in_tree=0 } in_tree && /^\t\ticon = / { if (!($3 in icons)) print $3 }' interface/005_soviet_collapse_kaz_icons.gfx common/national_focus/005_soviet_collapse_republics.txt
 ```
 
 Static checks for the current correction pass passed: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, no active local-league super-event helper calls, and no remaining Free Republics' League, Steppe Federation, Baltic League, Caucasus League, or Eastern Buffer Coalition super-event localisation/sprite mappings.
@@ -48,7 +52,7 @@ The main Soviet Collapse localisation phrase audit also has zero hits for the fo
 | New internal republic MTTH release | `mtth_release_surface` | MTTH weights, eight cause events, constants, docs pass |
 | Ukraine focus tree full route review | `focus_integrity`, `focus_reward_variety_surface`, `focus_ai_surface` | 81-focus tree passes parser, reward, AI, localisation, and icon checks |
 | Belarus focus tree full route review | same focus surfaces | 53-focus tree passes parser, reward, AI, localisation, icon, and route-reference checks |
-| Kazakhstan focus tree full route review | same focus surfaces | 57-focus tree passes parser, reward, AI, localisation, and icon checks |
+| Kazakhstan focus tree full route review | same focus surfaces | 92-focus tree passes parser, reward, AI, localisation, icon, and route-reference checks |
 | Regional republic focus tree review | same focus surfaces | regional/shared/custom trees pass parser, layout, reward, AI, localisation, and icon checks. The Baltic shared tree includes tag-gated Estonia, Latvia, and Lithuania branch pairs. |
 | Internal republic focus tree review | `internal_republic_focus_loader`, `internal_republic_focus_tree`, `internal_republic_focus_localisation` | vanilla-supported internal republic tags route to a 62-focus shared tree with northern, Volga-Ural, expanded Crimea, expanded eastern/inner-Asian, tag-specific regional, high-chaos, and common-front branches |
 
@@ -81,9 +85,10 @@ Mission outcome, cost, and selected route requirement localisation now describes
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 The generated focus-expansion description layer now uses in-world crisis prose for Ukraine, Belarus, Kazakhstan, regional, and fallback breakaway focus descriptions instead of the former placeholder "focus for the republic crisis path" construction.
-Event 005 focus integrity covers 1034 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus integrity covers 1069 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
 The Belarus tree has 53 focus IDs, 53 completion rewards, 53 AI blocks, no unresolved Belarus focus references, no missing Belarus focus localisation, and icon assignments resolved through `interface/005_soviet_collapse_blr_icons.gfx`.
-Event 005 focus reward variety covers at least 673 material reward focuses in the conservative direct shell scan, 491 shared focus-helper reward focuses, and no more than 57 focuses in the conservative add-ideas-without-material scan.
+The Kazakhstan tree has 92 focus IDs, 92 completion rewards, 92 AI blocks, no unresolved Kazakhstan focus references, no missing Kazakhstan focus localisation, and icon assignments resolved through `interface/005_soviet_collapse_kaz_icons.gfx`.
+Event 005 focus reward variety covers 817 material reward focuses in the conservative direct shell scan, 546 shared focus-helper reward focuses, and 19 focuses in the conservative add-ideas-without-material scan.
 Event 005 focus AI checks cover at least 353 focuses with contextual `ai_will_do` modifiers in the conservative direct shell scan.
 The internal republic tree has 62 focus IDs, 62 completion rewards, 62 AI blocks, no duplicate internal focus IDs, no unresolved internal prerequisites, and current Crimea and eastern/inner-Asian localisation coverage for the newly added settlement, mediation, fortress, compact observer, Yakut, Far Eastern, Buryat, and Tuvan focuses.
 The Kronstadt Free Soviet tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate KRS focus IDs, no unresolved KRS prerequisites, and current localisation coverage for campaign planning, port-council diplomacy, permanent arsenal, fortress signal rooms, Gulf battery posts, free-port conferences, and endgame focuses.
