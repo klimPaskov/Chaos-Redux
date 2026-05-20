@@ -4,13 +4,13 @@ Audit date: 2026-05-20
 
 ## Threat Model Evidence
 
-Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`, and `mission_success_pressure_surface`:
+Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`, `mission_success_pressure_surface`, `mission_failure_pressure_surface`, and `union_unmade_first_month_guard_surface`:
 
 | Scenario | Expected threat behavior | Scripted result after implementation |
 | --- | --- | --- |
 | Calm World, strong USSR, event fired manually | low opening threat, no first-month runaway | Moscow Authority 62, Union Crisis Threat 7.25 |
 | Calm World, strong USSR, first missions succeed | threat falls or stabilizes | 11 success helpers net non-increasing; highest success delta is -1.50 threat |
-| Calm World, first missions fail | modest rise, not terminal | ordinary failure max delta 2.75; estimated 26.45 ordinary failed months to reach 80 |
+| Calm World, first missions fail | modest rise, not terminal | largest single failure delta is 4.25; 10 simultaneous max-pressure failures reach 49.75, below the Union Unmade high-threat gate and far below terminal |
 | USSR at war with Germany | higher visible war pressure | war pressure contributes through opening and MTTH factors, still behind first-month Union Unmade lock |
 | USSR at war with Japan | eastern pressure without instant terminal collapse | Far Eastern missions and MTTH factors exist; no ordinary early terminal path without sustained severe ingredients |
 | High chaos opening | higher threat and more weirdness | tier 1 example threat 9.25; higher tiers add controlled pressure bands |
@@ -38,6 +38,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 - Terminal collapse now runs league formation before anti-Soviet war entry. Local leagues auto-form only where two-member regional quorum exists, while Free Republics' League expansion skips countries already committed to a local compact.
 - Monthly guard constants cap ordinary successful or moderate months at low deltas.
 - Mission success helpers do not raise the main threat total.
+- Mission failure helpers are bounded by a verified maximum single-failure delta of 4.25 threat. With the active mission cap at 10, even a full first wave of maximum-pressure failures from the calm baseline reaches 49.75.
 - Progressive release MTTH weighs threat, authority, command obedience, depot vulnerability, foreign penetration, League pressure, old movements, failed missions, war state, regional cascades, and chaos tier.
 
 ## Local League Correction
