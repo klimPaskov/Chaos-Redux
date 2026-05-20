@@ -177,8 +177,8 @@ This matrix maps the implemented Event 005 super-events to their current artifac
 | `20` | The Steppe Beyond History | `super_event.20.t/d/a/q` | Herodotus quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | `kaz_soviet_collapse_the_southern_republics_do_not_kneel` calls `soviet_collapse_show_steppe_beyond_history_super_event` | sourced image wired |
 | `21` | The Corridors Decide | `super_event.21.t/d/a/q` | Clausewitz quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `blr_soviet_collapse_the_corridor_state` or `blr_soviet_collapse_the_leagues_spine` | sourced image wired |
 | `22` | The Bread State | `super_event.22.t/d/a/q` | Deuteronomy quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Final Silence package | fires from `ukr_soviet_collapse_last_harvest_plan` | sourced image wired |
-| `23` | The League of Equal Republics | `super_event.23.t/d/a/q` | Articles of Confederation quote documented with National Archives source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_league_of_equals` | sourced image wired |
-| `24` | The Steppe Federation | `super_event.24.t/d/a/q` | Federalist No. 5 quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `kaz_soviet_collapse_steppe_federation_charter` and the `BSC`, `TNC`, and `ALA` Central Asian endgame helpers | sourced image wired |
+| `23` | The League of Equal Republics | retired keys; no active selector | Articles of Confederation quote documented with National Archives source | sourced DDS preserved | retired audio definitions preserved | retired; League route uses normal news/report presentation | sourced image preserved |
+| `24` | The Steppe Federation | retired keys; no active selector | Federalist No. 5 quote documented with Project Gutenberg source | sourced DDS preserved | retired audio definitions preserved | retired; Steppe Federation endgame reports through `chaosx.nr5.36` | sourced image preserved |
 | `25` | The Baltic League | `super_event.25.t/d/a/q` | Proverbs quote documented with Project Gutenberg source | sourced DDS preserved | slot audio id preserved from Coriolan package | retired; ordinary formation fires news event `chaosx.nr5.30` | sourced image preserved |
 | `26` | The Caucasus League | `super_event.26.t/d/a/q` | Psalm quote documented with Project Gutenberg source | sourced DDS preserved | slot audio id preserved from Coriolan package | retired; ordinary formation fires news event `chaosx.nr5.31` | sourced image preserved |
 | `27` | The Eastern Buffer Coalition | `super_event.27.t/d/a/q` | Federalist No. 8 quote documented with Project Gutenberg source | sourced DDS preserved | slot audio id preserved from Coriolan package | retired; ordinary coalition formation fires news event `chaosx.nr5.35` | sourced image preserved |
@@ -331,9 +331,9 @@ Image package:
 
 - Super-event slot: `23`
 - Localisation keys: `super_event.23.t`, `super_event.23.d`, `super_event.23.a`, `super_event.23.q`
-- Trigger effect: `soviet_collapse_show_league_equal_republics_super_event`
-- Trigger direction: fires once from the Ukraine focus `ukr_soviet_collapse_league_of_equals`.
-- Role: constitutional league transformation, not a world-end scenario by default.
+- Trigger effect: retired; no active Event 005 scripted effect selects slot `23`.
+- Trigger direction: the Ukraine league route uses normal event/report presentation rather than a super-event.
+- Role: retired super-event package preserved for source tracking only.
 - Button text: `No capital above the others.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `Each state retains its sovereignty, freedom and independence.`
@@ -360,16 +360,16 @@ Image package:
 - Processed PNG path: `docs/assets/005_soviet_union_collapse/processed_png/super_event_league_equal_republics.png`
 - Target size: 457x328
 - Processing notes: reused the League source original, cropped to the super-event aspect ratio, resized to 457x328, converted to black and white, and contrast-adjusted before DDS conversion.
-- Review status: `wired, documented`
-- Why it fits: the Baltic Way image emphasizes voluntary republican coordination and mass civic legitimacy rather than a single capital replacing Moscow.
+- Review status: `preserved, retired`
+- Why it fits: the Baltic Way image remains a useful retired source reference for voluntary republican coordination and mass civic legitimacy.
 
 ## The Steppe Federation
 
 - Super-event slot: `24`
 - Localisation keys: `super_event.24.t`, `super_event.24.d`, `super_event.24.a`, `super_event.24.q`
-- Trigger effect: `soviet_collapse_show_steppe_federation_super_event`
-- Trigger direction: fires once from the Kazakhstan focus `kaz_soviet_collapse_steppe_federation_charter`.
-- Role: regional faction formation, not a world-end scenario by default.
+- Trigger effect: retired; no active Event 005 scripted effect selects slot `24`.
+- Trigger direction: Steppe Federation endgame formation reports through `chaosx.nr5.36`.
+- Role: retired super-event package preserved for source tracking only.
 - Button text: `The rails count the votes.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `that combination and union of wills of arms and of resources,`
@@ -396,7 +396,7 @@ Image package:
 - Processed PNG path: `docs/assets/005_soviet_union_collapse/processed_png/super_event_steppe_federation.png`
 - Target size: 457x328
 - Processing notes: reused the Steppe Beyond History source original, cropped to the super-event aspect ratio, resized to 457x328, converted to black and white, and contrast-adjusted before DDS conversion.
-- Review status: `wired, documented`
+- Review status: `preserved, retired`
 - Why it fits: the Turkestan-Siberia railway image gives the federation formation a concrete visual language of rail linkage, distance, and continental bargaining power.
 
 ## The Baltic League
