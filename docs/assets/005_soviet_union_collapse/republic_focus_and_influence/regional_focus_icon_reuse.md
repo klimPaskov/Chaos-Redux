@@ -1,6 +1,6 @@
 # Regional Republic Focus Icon Ledger
 
-This ledger documents the 92 currently implemented regional runtime focuses in `common/national_focus/005_soviet_collapse_republics.txt`.
+This ledger documents the 107 currently implemented regional runtime focuses in `common/national_focus/005_soviet_collapse_republics.txt`.
 
 The Baltic, Caucasus, Central Asian, and Moldovan trees use dedicated regional runtime sprite names defined in `interface/005_soviet_collapse_regional_icons.gfx`. Each dedicated DDS is derived from already generated Event 005 focus art that matches the focus subject, with processed PNG previews preserved under `docs/assets/005_soviet_union_collapse/processed_png/regional_republic_focus_icons/`.
 
@@ -8,12 +8,12 @@ The Baltic, Caucasus, Central Asian, and Moldovan trees use dedicated regional r
 
 | Focus tree | Tags | Focuses |
 | --- | --- | ---: |
-| `soviet_collapse_baltic_focus_tree` | `LIT`, `LAT`, `EST` | 21 |
+| `soviet_collapse_baltic_focus_tree` | `LIT`, `LAT`, `EST` | 36 |
 | `soviet_collapse_caucasus_focus_tree` | `GEO`, `AZR`, `ARM` | 20 |
 | `soviet_collapse_central_asia_focus_tree` | `UZB`, `KYR`, `TAJ`, `TMS` | 34 |
 | `soviet_collapse_moldova_focus_tree` | `MOL` | 17 |
 
-The 21-focus Baltic runtime tree currently reuses the eight existing Baltic regional sprites. Legal continuity and restoration focuses reuse `GFX_baltic_soviet_collapse_restore_legal_continuity`; radio and wire-room focuses reuse `GFX_baltic_soviet_collapse_wire_rooms`; forest defense focuses reuse `GFX_baltic_soviet_collapse_forest_belts`; port, rail, economy, and customs focuses reuse `GFX_baltic_soviet_collapse_port_customs`; foreign observer focuses reuse `GFX_baltic_soviet_collapse_observer_missions`; border government, home guard, coastal defense, and capital-defense focuses reuse `GFX_baltic_soviet_collapse_home_guard_staff`; compact focuses reuse `GFX_baltic_soviet_collapse_restoration_pact`; final Baltic-front focuses reuse `GFX_baltic_soviet_collapse_sovereign_baltic_front`.
+The 36-focus Baltic runtime tree reuses the eight existing Baltic regional sprites. Legal continuity, archive, deputy, legal-front, and second-restoration focuses reuse `GFX_baltic_soviet_collapse_restore_legal_continuity`; radio and high-chaos civic-mobilization focuses reuse `GFX_baltic_soviet_collapse_wire_rooms`; forest and marsh defense focuses reuse `GFX_baltic_soviet_collapse_forest_belts`; port, rail, economy, and customs focuses reuse `GFX_baltic_soviet_collapse_port_customs`; foreign observer and adviser focuses reuse `GFX_baltic_soviet_collapse_observer_missions`; border government, border guard, coastal defense, volunteer, and capital-defense focuses reuse `GFX_baltic_soviet_collapse_home_guard_staff`; compact and war-room focuses reuse `GFX_baltic_soviet_collapse_restoration_pact`; joint army, shield doctrine, and final Baltic-question focuses reuse `GFX_baltic_soviet_collapse_sovereign_baltic_front`.
 
 The 20-focus Caucasus runtime tree currently reuses the eight existing Caucasus regional sprites. Council and federal focuses reuse `GFX_caucasus_soviet_collapse_mountain_councils`; pass defense and Caspian watch focuses reuse `GFX_caucasus_soviet_collapse_pass_guards`; oil, route, and infrastructure focuses reuse `GFX_caucasus_soviet_collapse_oil_route_offices`; national-restoration and arbitration focuses reuse `GFX_caucasus_soviet_collapse_border_arbitration`; foreign-guarantee and corridor focuses reuse `GFX_caucasus_soviet_collapse_foreign_missions`; artillery and border-war focuses reuse `GFX_caucasus_soviet_collapse_mountain_brigades`; compact focuses reuse `GFX_caucasus_soviet_collapse_defense_compact`; final mountain-sovereignty focuses reuse `GFX_caucasus_soviet_collapse_sovereign_mountains`.
 
