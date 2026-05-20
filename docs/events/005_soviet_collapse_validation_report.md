@@ -57,6 +57,7 @@ Vanilla-supported internal republic tags are included in terminal release and su
 Vanilla-supported internal republic tags route to `soviet_collapse_internal_republic_focus_tree` instead of the generic fallback tree.
 Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet war pass.
 Terminal collapse calls local-league and Free Republics' League formation between release/spawn and war entry.
+Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
 ```
 
 ## Blockers
