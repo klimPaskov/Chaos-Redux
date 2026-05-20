@@ -5385,6 +5385,108 @@ focus_tree = {
 	}
 
 	focus = {
+		id = central_asia_soviet_collapse_dushanbe_mountain_sovereignty
+		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 4
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_southern_pass_reserve }
+		allow_branch = { tag = TAJ }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_dushanbe_mountain_sovereignty
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = TAJ }
+			modifier = { factor = 2 is_at_war = yes }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_pamir_pass_fortresses
+		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_dushanbe_mountain_sovereignty }
+		allow_branch = { tag = TAJ }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_pamir_pass_fortresses
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 3 tag = TAJ }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_bishkek_pass_council
+		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 7
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_desert_scout_columns }
+		allow_branch = { tag = KYR }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_bishkek_pass_council
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = KYR }
+			modifier = { factor = 2 is_soviet_collapse_southern_breakaway_active = yes }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_tian_shan_horse_routes
+		icon = GFX_central_asia_soviet_collapse_inland_republics_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 7
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_bishkek_pass_council }
+		allow_branch = { tag = KYR }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_tian_shan_horse_routes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 3 tag = KYR }
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
 		id = central_asia_soviet_collapse_foreign_border_patronage
 		icon = GFX_central_asia_soviet_collapse_foreign_balance_desks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
