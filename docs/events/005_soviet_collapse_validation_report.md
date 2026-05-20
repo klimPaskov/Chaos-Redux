@@ -85,9 +85,10 @@ Mission outcome, cost, and selected route requirement localisation now describes
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 The generated focus-expansion description layer now uses in-world crisis prose for Ukraine, Belarus, Kazakhstan, regional, and fallback breakaway focus descriptions instead of the former placeholder "focus for the republic crisis path" construction.
-Event 005 focus integrity covers 1069 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus integrity covers 1094 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
 The Belarus tree has 53 focus IDs, 53 completion rewards, 53 AI blocks, no unresolved Belarus focus references, no missing Belarus focus localisation, and icon assignments resolved through `interface/005_soviet_collapse_blr_icons.gfx`.
 The Kazakhstan tree has 92 focus IDs, 92 completion rewards, 92 AI blocks, no unresolved Kazakhstan focus references, no missing Kazakhstan focus localisation, and icon assignments resolved through `interface/005_soviet_collapse_kaz_icons.gfx`.
+The Moldova tree has 48 focus IDs, 48 completion rewards, 48 AI blocks, no unresolved Moldova focus references, no missing Moldova focus localisation, no duplicate Moldova coordinates, and icon assignments resolved through `interface/005_soviet_collapse_regional_icons.gfx`.
 Event 005 focus reward variety covers 817 material reward focuses in the conservative direct shell scan, 546 shared focus-helper reward focuses, and 19 focuses in the conservative add-ideas-without-material scan.
 Event 005 focus AI checks cover at least 353 focuses with contextual `ai_will_do` modifiers in the conservative direct shell scan.
 The internal republic tree has 62 focus IDs, 62 completion rewards, 62 AI blocks, no duplicate internal focus IDs, no unresolved internal prerequisites, and current Crimea and eastern/inner-Asian localisation coverage for the newly added settlement, mediation, fortress, compact observer, Yakut, Far Eastern, Buryat, and Tuvan focuses.
