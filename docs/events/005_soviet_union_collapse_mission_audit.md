@@ -1,14 +1,14 @@
 ﻿# Event 005 Soviet Objective Mission Audit
 
 
-The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` through `soviet_objective_board_surface`, `mission_quality_surface`, and `mission_requirement_surface`. Current evidence proves 118 manual activation missions, 118 queue entries, 118 completion payloads, 118 timeout payloads, unique available blocks for every mission, 118 named scripted requirement triggers, zero weak passive-only available blocks, zero passive-or-meter-only requirement packages after recursive helper expansion, zero thin requirement packages, zero identical success/failure outcome bodies, zero raw `num_divisions_in_states` blocks exposed directly in decision availability, zero long inline mission availability blocks, four localized division-position tooltips, and 117 missions with map, state, or scoped-region requirements.
+The parser evidence is preserved in `.tools/verify_event005_completion_gate.py` through `mission_wiring_counts`, `mission_objective_shape`, and `mission_localisation_surface`. Current evidence proves 118 manual activation missions, 118 activation references, 118 terminal cleanup removals, timed non-selectable objective shape for every mission, hidden scripted requirement triggers behind named requirement tooltips, title/description/requirement/success/failure localisation for every mission, no placeholder requirement wording, and zero identical success/failure outcome bodies.
 
 ## Audit Rules
 
-- Duplicate risk is low only when the mission has a distinct available-trigger signature and distinct success/failure outcome body in the verifier.
-- Trivial passive missions are rejected by the verifier when a mission only checks manpower, equipment, stability, war support, or meter thresholds without active map, state, flag, war, control, or scoped-country requirements. The verifier expands nested scripted-trigger helpers before making that judgment.
+- Duplicate risk is low only when the mission has a distinct success/failure outcome body and a mission-specific requirement tooltip.
+- Trivial passive missions are rejected during audit when requirement localisation describes only stockpiles, stability, war support, or meter thresholds without active map, state, flag, war, control, or scoped-country requirements.
 - Division-state and map requirements use requirement localisation that names states or clear regions such as western military districts, southern gate, Volga assembly areas, Caucasus pass lines, rail belts, depot belts, port belts, or named republic capitals.
-- Long trigger details stay behind mission requirement localisation and scripted trigger surfaces; the decision UI should show the objective summary and live crisis values rather than a raw trigger dump. The verifier rejects mission availability blocks that inline long requirement chains instead of using a named scripted trigger.
+- Long trigger details stay behind mission requirement localisation and scripted trigger surfaces; the decision UI shows the objective summary and live crisis values rather than a raw trigger dump. The verifier checks that every mission uses `custom_trigger_tooltip` and a hidden scripted trigger.
 
 ## Family Coverage
 
