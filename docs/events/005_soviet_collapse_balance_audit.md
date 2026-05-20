@@ -23,7 +23,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 | Soviet puppet republics at Union Unmade | puppets become free | subject paths use `set_autonomy = { autonomy_state = autonomy_free }` before setup |
 | New internal republic MTTH release | release follows pressure and region logic | MTTH release surface passes: 8 cause events, release/miss weights, constants, docs |
 | Ukraine focus tree full route review | real path content, not filler | 81 focuses, route families present, focus integrity/reward/AI pass |
-| Belarus focus tree full route review | rail and forest identity works | 38 focuses, route families present, focus integrity/reward/AI pass |
+| Belarus focus tree full route review | rail and forest identity works | 53 focuses, with added military-transit, rail-neutrality, rail-war, forest-command, and League freight branches; focus integrity/reward/AI pass |
 | Kazakhstan focus tree full route review | southern and steppe identity works | 57 focuses, southern cascade and Central Asian League route present |
 | Regional republic focus tree review | non-generic regional content works | shared regional and custom successor trees pass parser, reward, localisation, icon, and AI checks |
 | Internal republic focus tree review | internal republics get regional path content | `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN` route to a 62-focus shared tree with tag-specific regional branches, including Crimea's settlement, mediation, fortress, and Black Sea compact route plus Yakut, Far Eastern, Buryat, and Tuvan eastern-survival routes |
