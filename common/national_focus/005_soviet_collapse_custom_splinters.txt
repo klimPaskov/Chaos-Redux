@@ -12427,6 +12427,463 @@ focus_tree = {
 		}
 	}
 
+	focus = {
+		id = BAC_birobidzhan_council_records
+		icon = GFX_focus_BAC_birobidzhan_council_records
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_settlement }
+
+		completion_reward = {
+			set_country_flag = bac_focus_birobidzhan_council_records
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = bac_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = BAC_amur_field_staff
+		icon = GFX_focus_BAC_amur_field_staff
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 0
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_war_plan }
+
+		completion_reward = {
+			set_country_flag = bac_focus_amur_field_staff
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_settlement_court_registers
+		icon = GFX_focus_BAC_settlement_court_registers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = bac_focus_settlement_court_registers
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = bac_focus_diplomatic_plan }
+		}
+	}
+
+	focus = {
+		id = BAC_yiddish_school_boards
+		icon = GFX_focus_BAC_yiddish_school_boards
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = bac_focus_yiddish_school_boards
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = BAC_amur_river_customs
+		icon = GFX_focus_BAC_amur_river_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_birobidzhan_archive_workshops }
+
+		completion_reward = {
+			set_country_flag = bac_focus_amur_river_customs
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = BAC_militia_training_yards
+		icon = GFX_focus_BAC_militia_training_yards
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_war_plan }
+
+		completion_reward = {
+			set_country_flag = bac_focus_militia_training_yards
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_grain_and_relief_escorts
+		icon = GFX_focus_BAC_grain_and_relief_escorts
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_birobidzhan_archive_workshops }
+
+		completion_reward = {
+			set_country_flag = bac_focus_grain_and_relief_escorts
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_border_crossing_batteries
+		icon = GFX_focus_BAC_border_crossing_batteries
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 0
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_amur_relief_posts }
+		prerequisite = { focus = BAC_amur_field_staff }
+
+		completion_reward = {
+			set_country_flag = bac_focus_border_crossing_batteries
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_birobidzhan_workshop_contracts
+		icon = GFX_focus_BAC_birobidzhan_workshop_contracts
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_amur_river_customs }
+		prerequisite = { focus = BAC_grain_and_relief_escorts }
+
+		completion_reward = {
+			set_country_flag = bac_focus_birobidzhan_workshop_contracts
+			random_owned_controlled_state = {
+				limit = {
+					free_building_slots = {
+						building = arms_factory
+						size > 0
+						include_locked = yes
+					}
+				}
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = BAC_taiga_watch_posts
+		icon = GFX_focus_BAC_taiga_watch_posts
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_militia_training_yards }
+		prerequisite = { focus = BAC_border_crossing_batteries }
+
+		completion_reward = {
+			set_country_flag = bac_focus_taiga_watch_posts
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_winter_road_columns
+		icon = GFX_focus_BAC_winter_road_columns
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 12
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_birobidzhan_workshop_contracts }
+
+		completion_reward = {
+			set_country_flag = bac_focus_winter_road_columns
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = BAC_obluchye_rear_area
+		icon = GFX_focus_BAC_obluchye_rear_area
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_taiga_watch_posts }
+
+		completion_reward = {
+			set_country_flag = bac_focus_obluchye_rear_area
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			random_owned_controlled_state = {
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_far_eastern_letters
+		icon = GFX_focus_BAC_far_eastern_letters
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_observer_relief_conference }
+		prerequisite = { focus = BAC_yiddish_school_boards }
+
+		completion_reward = {
+			set_country_flag = bac_focus_far_eastern_letters
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_volunteer_commune_schools
+		icon = GFX_focus_BAC_volunteer_commune_schools
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 20
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_settlement_court_registers }
+		prerequisite = { focus = BAC_yiddish_school_boards }
+
+		completion_reward = {
+			set_country_flag = bac_focus_volunteer_commune_schools
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = bac_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = BAC_river_port_tolls
+		icon = GFX_focus_BAC_river_port_tolls
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_amur_river_customs }
+		prerequisite = { focus = BAC_birobidzhan_council_records }
+
+		completion_reward = {
+			set_country_flag = bac_focus_river_port_tolls
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = BAC_league_relief_bargain
+		icon = GFX_focus_BAC_league_relief_bargain
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = BAC_far_eastern_letters }
+		prerequisite = { focus = BAC_volunteer_commune_schools }
+
+		completion_reward = {
+			set_country_flag = bac_focus_league_relief_bargain
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_hardline_against_border_troops
+		icon = GFX_focus_BAC_hardline_against_border_troops
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 4
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = BAC_radical_turn }
+		prerequisite = { focus = BAC_taiga_watch_posts }
+
+		completion_reward = {
+			set_country_flag = bac_focus_hardline_against_border_troops
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small } }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = BAC_commune_staff_map
+		icon = GFX_focus_BAC_commune_staff_map
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 8
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = BAC_hardline_against_border_troops }
+		prerequisite = { focus = BAC_winter_road_columns }
+
+		completion_reward = {
+			set_country_flag = bac_focus_commune_staff_map
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = BAC_autonomy_statute
+		icon = GFX_focus_BAC_autonomy_statute
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 13
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = BAC_league_relief_bargain }
+		prerequisite = { focus = BAC_settlement_court_registers }
+
+		completion_reward = {
+			set_country_flag = bac_focus_autonomy_statute
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = bac_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = BAC_amur_commune_endurance
+		icon = GFX_focus_BAC_amur_commune_endurance
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 14
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = BAC_river_port_tolls }
+		prerequisite = { focus = BAC_winter_road_columns }
+		prerequisite = { focus = BAC_autonomy_statute focus = BAC_commune_staff_map }
+
+		completion_reward = {
+			set_country_flag = bac_focus_amur_commune_endurance
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = bac_focus_settlement }
+			modifier = { factor = 2 has_country_flag = bac_focus_radical_turn }
+		}
+	}
+
 
 	focus = {
 		id = BAC_hidden_doctrine
@@ -12487,11 +12944,11 @@ focus_tree = {
 		icon = GFX_focus_BAC_endgame
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
 		x = 16
-		y = 12
+		y = 15
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = BAC_extreme_path }
-		prerequisite = { focus = BAC_birobidzhan_archive_workshops }
-		prerequisite = { focus = BAC_amur_relief_posts focus = BAC_observer_relief_conference }
+		prerequisite = { focus = BAC_extreme_path focus = BAC_amur_commune_endurance }
+		prerequisite = { focus = BAC_birobidzhan_workshop_contracts focus = BAC_river_port_tolls }
+		prerequisite = { focus = BAC_obluchye_rear_area focus = BAC_league_relief_bargain }
 
 		completion_reward = {
 			set_country_flag = bac_focus_endgame
