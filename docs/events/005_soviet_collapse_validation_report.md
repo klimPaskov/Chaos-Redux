@@ -51,6 +51,7 @@ That verifier cannot currently be rerun because the source file is absent. The l
 ```text
 Union Unmade threat-ceiling calls now route through the guarded maybe-show helper.
 Kazakhstan is included in terminal ordinary release and subject-freeing lists.
+Vanilla-supported internal republic tags are included in terminal release and subject-freeing lists.
 Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet war pass.
 ```
 
