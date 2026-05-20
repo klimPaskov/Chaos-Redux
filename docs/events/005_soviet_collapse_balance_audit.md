@@ -26,7 +26,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 | Belarus focus tree full route review | rail and forest identity works | 38 focuses, route families present, focus integrity/reward/AI pass |
 | Kazakhstan focus tree full route review | southern and steppe identity works | 57 focuses, southern cascade and Central Asian League route present |
 | Regional republic focus tree review | non-generic regional content works | shared regional and custom successor trees pass parser, reward, localisation, icon, and AI checks |
-| Internal republic focus tree review | internal republics get regional path content | `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN` route to a 32-focus shared tree |
+| Internal republic focus tree review | internal republics get regional path content | `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN` route to a 41-focus shared tree with tag-specific regional branches |
 
 ## Guards And Dampening
 
@@ -34,7 +34,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 - Union Unmade regular trigger ingredients: minimum breakaway count 5, high threat 60, critical authority 25, and sustained severe pressure alternatives.
 - Threat-ceiling recalculation and progressive-release checks route through `soviet_collapse_maybe_show_union_unmade_super_event`, so they use the same first-month and severe-failure gates instead of calling Union Unmade directly.
 - Terminal ordinary release includes Kazakhstan and vanilla-supported internal republic tags: `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`.
-- Event-created internal republic tags use `soviet_collapse_internal_republic_focus_tree` with legal, security, liaison, and regional branch content instead of the generic fallback tree.
+- Event-created internal republic tags use `soviet_collapse_internal_republic_focus_tree` with legal, security, liaison, and tag-specific regional branch content instead of the generic fallback tree.
 - Terminal collapse now runs league formation before anti-Soviet war entry. Local leagues auto-form only where two-member regional quorum exists, while Free Republics' League expansion skips countries already committed to a local compact.
 - Monthly guard constants cap ordinary successful or moderate months at low deltas.
 - Mission success helpers do not raise the main threat total.
