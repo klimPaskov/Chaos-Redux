@@ -10,7 +10,7 @@ Verifier evidence:
 
 - `mission_wiring_counts`: 118 mission blocks, 118 activation refs, and 118 terminal cleanup removals.
 - `mission_objective_shape`: every mission is a non-selectable, good, timed objective with `days_mission_timeout`, `custom_trigger_tooltip`, a named requirement tooltip, a hidden scripted trigger, a completion effect, and a timeout effect; no success and failure bodies are identical.
-- `mission_localisation_surface`: every mission has title, description, requirement tooltip, success tooltip, and failure tooltip localisation; requirement text contains no placeholder wording such as `required states`, `border states`, `TBD`, or `unknown`.
+- `mission_localisation_surface`: every mission has title, description, requirement tooltip, success tooltip, and failure tooltip localisation; requirement text contains no placeholder wording, unnamed state sets, or unknown targets.
 - `mission_audit_table_surface`: the full mission audit table has the required serious-audit columns and one row per active Soviet crisis mission.
 - `terminal_mission_cleanup`: the terminal cleanup pass removes all 118 active mission IDs.
 
@@ -37,8 +37,10 @@ Mission localisation uses named mission requirement keys such as `<mission_id>_r
 - Moscow and Arkhangelsk for the Capital Ministry Belt.
 - Moscow, Smolensk, and Minsk for the Western Courier Belt.
 - Moscow, Smolensk, Minsk, and Azerbaijan for loyal military districts.
+- Smolensk, Minsk, Baku, Tashkent, Novosibirsk, Omsk, Chelyabinsk, Ashkhabad, Alma-Ata, Sverdlovsk, and Stalinabad for depot hub missions.
+- Kyiv, Minsk, Alma-Ata, Vilnius, Riga, Tallinn, Tbilisi, Yerevan, Baku, Chisinau, Tashkent, Bishkek, Dushanbe, and Ashgabat for active or recovered breakaway-capital missions.
 
-The audit rejects generic text such as `required states` as proof of completion unless a named region or state list is present in the mission tooltip.
+The audit rejects generic state placeholders as proof of completion unless a named region or state list is present in the mission tooltip.
 
 ## Duplicate Cleanup Result
 
@@ -47,8 +49,8 @@ Passive stockpile, stability-only, war-support-only, manpower-only, and generic 
 ## Non-Python Verification Commands
 
 ```text
-rg -n "required states|border states|dynamic number|dynamic set|relevant border posts|equivalent Pacific port|distant military and rail districts|storehouse and rail states" localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md
-rg -n '<''=|>''=' localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md
+rg -n "required[ ]states|border[ ]states|dynamic[ ]number|dynamic[ ]set|relevant[ ]border[ ]posts|equivalent[ ]Pacific[ ]port|distant[ ]military[ ]and[ ]rail[ ]districts|storehouse[ ]and[ ]rail[ ]states|one[ ]or[ ]more[ ]depot[ ]states|that[ ]region|vulnerable[ ]depots|secure[ ]Soviet-controlled[ ]hubs|recovered[ ]depots|Belarusian[ ]rail[ ]hubs|a[ ]depot[ ]that[ ]the[ ]League[ ]publicly[ ]promised|ammunition[ ]depots[ ]controlled" localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md docs/events/005_soviet_collapse_mission_audit.md
+rg -n '<''=|>''=' localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md docs/events/005_soviet_collapse_mission_audit.md
 xxd -p -l 3 localisation/english/005_soviet_collapse_l_english.yml
 ```
 
