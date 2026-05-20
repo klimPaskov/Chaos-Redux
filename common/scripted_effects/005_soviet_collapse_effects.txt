@@ -38,7 +38,7 @@ soviet_collapse_recalculate_total_threat = {
 			}
 			NOT = { has_global_flag = soviet_collapse_super_event_union_unmade_fired }
 		}
-		soviet_collapse_show_union_unmade_super_event = yes
+		soviet_collapse_maybe_show_union_unmade_super_event = yes
 	}
 }
 
@@ -516,6 +516,7 @@ soviet_collapse_release_terminal_ordinary_republics = {
 			OR = {
 				tag = UKR
 				tag = BLR
+				tag = KAZ
 				tag = MOL
 				tag = LIT
 				tag = LAT
@@ -552,6 +553,7 @@ soviet_collapse_release_terminal_ordinary_republics = {
 			OR = {
 				tag = UKR
 				tag = BLR
+				tag = KAZ
 				tag = MOL
 				tag = LIT
 				tag = LAT
@@ -643,6 +645,44 @@ soviet_collapse_prepare_highest_chaos_terminal_successors = {
 }
 
 soviet_collapse_spawn_terminal_high_chaos_successors = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 5 }
+				check_variable = {
+					var = soviet_collapse_old_movement_pressure
+					value = constant:soviet_collapse_high_chaos_event_log.spawn_old_movement_pressure_gate
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		soviet_collapse_prepare_highest_chaos_terminal_successors = yes
+	}
+	soviet_collapse_maybe_spawn_high_chaos_successors = yes
+}
+
+soviet_collapse_join_terminal_anti_soviet_war = {
+	if = {
+		limit = {
+			SOV = { exists = yes }
+			NOT = { has_war_with = SOV }
+			can_declare_war_on = SOV
+		}
+		declare_war_on = {
+			target = SOV
+			type = annex_everything
+		}
+	}
+}
+
+soviet_collapse_start_terminal_anti_soviet_war = {
+	every_country = {
+		limit = {
+			is_soviet_collapse_breakaway_country = yes
+			NOT = { tag = SOV }
+		}
+		soviet_collapse_join_terminal_anti_soviet_war = yes
+	}
 }
 
 soviet_collapse_apply_terminal_collapse = {
@@ -650,6 +690,8 @@ soviet_collapse_apply_terminal_collapse = {
 		limit = { NOT = { has_global_flag = soviet_collapse_terminal_collapse } }
 		set_global_flag = soviet_collapse_terminal_collapse_in_progress
 		soviet_collapse_release_terminal_ordinary_republics = yes
+		soviet_collapse_spawn_terminal_high_chaos_successors = yes
+		soviet_collapse_start_terminal_anti_soviet_war = yes
 		soviet_collapse_cleanup_terminal_collapse_missions = yes
 		set_global_flag = soviet_collapse_terminal_collapse
 		clr_global_flag = soviet_collapse_terminal_collapse_in_progress
@@ -3943,6 +3985,27 @@ soviet_collapse_spawn_nlc_if_enabled = {
 }
 
 soviet_collapse_maybe_spawn_high_chaos_successors = {
+	soviet_collapse_spawn_cfr_if_enabled = yes
+	soviet_collapse_spawn_mfr_if_enabled = yes
+	soviet_collapse_spawn_krs_if_enabled = yes
+	soviet_collapse_spawn_fth_if_enabled = yes
+	soviet_collapse_spawn_bbh_if_enabled = yes
+	soviet_collapse_spawn_bsc_if_enabled = yes
+	soviet_collapse_spawn_tnc_if_enabled = yes
+	soviet_collapse_spawn_ala_if_enabled = yes
+	soviet_collapse_spawn_udc_if_enabled = yes
+	soviet_collapse_spawn_sdz_if_enabled = yes
+	soviet_collapse_spawn_gac_if_enabled = yes
+	soviet_collapse_spawn_dhc_if_enabled = yes
+	soviet_collapse_spawn_khc_if_enabled = yes
+	soviet_collapse_spawn_fev_if_enabled = yes
+	soviet_collapse_spawn_sza_if_enabled = yes
+	soviet_collapse_spawn_uwd_if_enabled = yes
+	soviet_collapse_spawn_mrc_if_enabled = yes
+	soviet_collapse_spawn_iul_if_enabled = yes
+	soviet_collapse_spawn_bac_if_enabled = yes
+	soviet_collapse_spawn_ard_if_enabled = yes
+	soviet_collapse_spawn_nlc_if_enabled = yes
 }
 
 soviet_collapse_add_random_first_wave_western_republic = {
@@ -4200,7 +4263,7 @@ soviet_collapse_maybe_release_threat_breakaway = {
 					compare = greater_than_or_equals
 				}
 			}
-			soviet_collapse_show_union_unmade_super_event = yes
+			soviet_collapse_maybe_show_union_unmade_super_event = yes
 		}
 		else = {
 			set_temp_variable = { soviet_collapse_progressive_release_weight = mtth:soviet_collapse_progressive_release_weight }
