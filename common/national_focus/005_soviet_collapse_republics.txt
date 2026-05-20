@@ -2,6 +2,7 @@
 @soviet_collapse_focus_medium = 6
 @soviet_collapse_focus_long = 8
 @soviet_collapse_caucasus_oil_resource_reward = 4
+@soviet_collapse_internal_resource_reward = 4
 
 # ============================================================================
 # CHAOS REDUX - EVENT 005 SOVIET COLLAPSE REPUBLIC FOCUS TREES
@@ -3102,6 +3103,126 @@ focus_tree = {
 	}
 
 	focus = {
+		id = internal_soviet_collapse_syktyvkar_emergency_council
+		icon = GFX_focus_soviet_collapse_claim_republican_legality
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_komi_river_and_mine_committees }
+
+		available = { tag = KOM }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_syktyvkar_emergency_council
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = internal_soviet_collapse_pechora_rail_survival
+		icon = GFX_focus_soviet_collapse_common_front_timetables
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 1
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_komi_river_and_mine_committees }
+
+		available = { tag = KOM }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_pechora_rail_survival
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = internal_soviet_collapse_komi_mine_and_timber_contracts
+		icon = GFX_focus_soviet_collapse_factory_defense_committees
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 0
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_pechora_rail_survival }
+
+		available = { tag = KOM }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_komi_mine_and_timber_contracts
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				add_resource = {
+					type = steel
+					amount = @soviet_collapse_internal_resource_reward
+				}
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = internal_soviet_collapse_exile_camp_reckoning
+		icon = GFX_focus_soviet_collapse_no_masters_in_kyiv_or_moscow
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_syktyvkar_emergency_council }
+
+		available = { tag = KOM }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_exile_camp_reckoning
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = internal_soviet_collapse_northern_republic_accord
+		icon = GFX_focus_soviet_collapse_convene_league_liaisons
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 2
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_komi_mine_and_timber_contracts }
+		prerequisite = { focus = internal_soviet_collapse_exile_camp_reckoning }
+
+		available = { tag = KOM }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_northern_republic_accord
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
 		id = internal_soviet_collapse_volga_oil_and_workshops
 		icon = GFX_focus_soviet_collapse_factory_defense_committees
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
@@ -3450,7 +3571,7 @@ focus_tree = {
 				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 				add_resource = {
 					type = steel
-					amount = 4
+					amount = @soviet_collapse_internal_resource_reward
 				}
 			}
 		}
