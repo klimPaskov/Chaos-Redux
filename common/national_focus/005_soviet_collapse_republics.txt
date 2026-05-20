@@ -3058,6 +3058,26 @@ focus_tree = {
 	}
 
 	focus = {
+		id = baltic_soviet_collapse_guard_the_archives
+		icon = GFX_baltic_soviet_collapse_restore_legal_continuity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = baltic_soviet_collapse_call_the_prewar_deputies }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_archives_guarded
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
 		id = baltic_soviet_collapse_emergency_border_guard
 		icon = GFX_baltic_soviet_collapse_home_guard_staff
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
@@ -3075,6 +3095,23 @@ focus_tree = {
 	}
 
 	focus = {
+		id = baltic_soviet_collapse_radio_appeals_to_the_north
+		icon = GFX_baltic_soviet_collapse_wire_rooms
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = baltic_soviet_collapse_restore_the_state_seal }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_radio_appeals_north
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
 		id = baltic_soviet_collapse_the_legal_state_or_the_front_state
 		icon = GFX_baltic_soviet_collapse_sovereign_baltic_front
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -3089,6 +3126,31 @@ focus_tree = {
 		ai_will_do = { base = 10 }
 	}
 
+	focus = {
+		id = baltic_soviet_collapse_legal_continuity_government
+		icon = GFX_baltic_soviet_collapse_restore_legal_continuity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_the_legal_state_or_the_front_state }
+		mutually_exclusive = { focus = baltic_soviet_collapse_military_border_government }
+		mutually_exclusive = { focus = baltic_soviet_collapse_baltic_league_first }
+		mutually_exclusive = { focus = baltic_soviet_collapse_foreign_protection_council }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_route_legal_continuity
+			soviet_collapse_apply_focus_legal_recognition = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
 
 	focus = {
 		id = baltic_soviet_collapse_military_border_government
@@ -3100,6 +3162,7 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_the_legal_state_or_the_front_state }
 
 		mutually_exclusive = {
+			focus = baltic_soviet_collapse_legal_continuity_government
 			focus = baltic_soviet_collapse_baltic_league_first
 			focus = baltic_soviet_collapse_foreign_protection_council
 		}
@@ -3129,6 +3192,7 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_the_legal_state_or_the_front_state }
 
 		mutually_exclusive = {
+			focus = baltic_soviet_collapse_legal_continuity_government
 			focus = baltic_soviet_collapse_military_border_government
 			focus = baltic_soviet_collapse_foreign_protection_council
 		}
@@ -3152,6 +3216,7 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_the_legal_state_or_the_front_state }
 
 		mutually_exclusive = {
+			focus = baltic_soviet_collapse_legal_continuity_government
 			focus = baltic_soviet_collapse_military_border_government
 			focus = baltic_soviet_collapse_baltic_league_first
 		}
@@ -3163,6 +3228,24 @@ focus_tree = {
 			base = 4
 			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
 		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_scandinavian_listening_mission
+		icon = GFX_baltic_soviet_collapse_observer_missions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 25
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_foreign_protection_council }
+		prerequisite = { focus = baltic_soviet_collapse_radio_appeals_to_the_north }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_scandinavian_listening_mission
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 5 }
 	}
 
 
@@ -3184,6 +3267,28 @@ focus_tree = {
 	}
 
 	focus = {
+		id = baltic_soviet_collapse_sponsor_fleet_rights
+		icon = GFX_baltic_soviet_collapse_observer_missions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 29
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_british_naval_observers }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_sponsor_fleet_rights
+			soviet_collapse_apply_focus_foreign_channel = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
 		id = baltic_soviet_collapse_german_border_pressure
 		icon = GFX_baltic_soviet_collapse_home_guard_staff
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
@@ -3198,6 +3303,27 @@ focus_tree = {
 			soviet_collapse_apply_focus_military_consolidation = yes
 		}
 		ai_will_do = { base = 3 }
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_a_port_without_a_master
+		icon = GFX_baltic_soviet_collapse_port_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = baltic_soviet_collapse_ports_before_patronage }
+		prerequisite = { focus = baltic_soviet_collapse_the_baltic_customs_desk }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_port_without_master
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 NOT = { has_war_with = SOV } }
+		}
 	}
 
 	focus = {
@@ -3218,6 +3344,41 @@ focus_tree = {
 	}
 
 	focus = {
+		id = baltic_soviet_collapse_the_legal_front_abroad
+		icon = GFX_baltic_soviet_collapse_restore_legal_continuity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_legal_continuity_government }
+		prerequisite = { focus = baltic_soviet_collapse_baltic_recognition_dossier }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_legal_front_abroad
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_the_second_restoration
+		icon = GFX_baltic_soviet_collapse_restore_legal_continuity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 5
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = baltic_soviet_collapse_the_legal_front_abroad }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_second_restoration
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
 		id = baltic_soviet_collapse_baltic_defense_compact
 		icon = GFX_baltic_soviet_collapse_restoration_pact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
@@ -3226,7 +3387,6 @@ focus_tree = {
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = baltic_soviet_collapse_baltic_league_first }
 		prerequisite = { focus = baltic_soviet_collapse_a_baltic_army_not_three_militias }
-		prerequisite = { focus = baltic_soviet_collapse_singing_barricades_early }
 
 		available = { is_soviet_collapse_league_pressure_ready = yes }
 		completion_reward = {
@@ -3237,6 +3397,41 @@ focus_tree = {
 			base = 4
 			modifier = { factor = 3 is_soviet_collapse_league_pressure_ready = yes }
 		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_pan_baltic_war_room
+		icon = GFX_baltic_soviet_collapse_restoration_pact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 23
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_baltic_defense_compact }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_pan_baltic_war_room
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_baltic_shield_doctrine
+		icon = GFX_baltic_soviet_collapse_sovereign_baltic_front
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 21
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = baltic_soviet_collapse_pan_baltic_war_room }
+		prerequisite = { focus = baltic_soviet_collapse_tallinn_riga_vilnius_rotation }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_shield_doctrine
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = { base = 6 }
 	}
 
 	focus = {
@@ -3261,6 +3456,25 @@ focus_tree = {
 		}
 	}
 
+	focus = {
+		id = baltic_soviet_collapse_the_baltic_customs_desk
+		icon = GFX_baltic_soviet_collapse_port_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_the_port_economy }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_customs_desk
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 6 }
+	}
+
 
 
 
@@ -3279,6 +3493,47 @@ focus_tree = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
 		}
 		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_coastal_defense_batteries
+		icon = GFX_baltic_soviet_collapse_home_guard_staff
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_emergency_border_guard }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_coastal_defense_batteries
+			soviet_collapse_apply_focus_military_consolidation = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_forest_and_marsh_lines
+		icon = GFX_baltic_soviet_collapse_forest_belts
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 8
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_emergency_border_guard }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_forest_marsh_lines
+			soviet_collapse_apply_focus_military_consolidation = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 6 }
 	}
 
 	focus = {
@@ -3314,6 +3569,30 @@ focus_tree = {
 		ai_will_do = { base = 7 }
 	}
 
+	focus = {
+		id = baltic_soviet_collapse_no_retreat_from_the_capital
+		icon = GFX_baltic_soviet_collapse_home_guard_staff
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 7
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_coastal_defense_batteries }
+		prerequisite = { focus = baltic_soviet_collapse_forest_and_marsh_lines }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_capital_stand
+			soviet_collapse_apply_focus_military_consolidation = yes
+			capital_scope = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
 
 	focus = {
 		id = baltic_soviet_collapse_a_baltic_army_not_three_militias
@@ -3336,16 +3615,40 @@ focus_tree = {
 	}
 
 	focus = {
+		id = baltic_soviet_collapse_the_border_front_at_home
+		icon = GFX_baltic_soviet_collapse_home_guard_staff
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 38
+		y = 4
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = baltic_soviet_collapse_military_border_government }
+		prerequisite = { focus = baltic_soviet_collapse_no_retreat_from_the_capital }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_baltic_border_front_home
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
 		id = baltic_soviet_collapse_the_baltic_question_resolved
 		icon = GFX_baltic_soviet_collapse_sovereign_baltic_front
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 27
 		y = 6
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = baltic_soviet_collapse_baltic_recognition_dossier }
-		prerequisite = { focus = baltic_soviet_collapse_german_border_pressure }
-		prerequisite = { focus = baltic_soviet_collapse_foreign_advisers_under_baltic_law }
-		prerequisite = { focus = baltic_soviet_collapse_tallinn_riga_vilnius_rotation }
+		prerequisite = {
+			focus = baltic_soviet_collapse_the_second_restoration
+			focus = baltic_soviet_collapse_baltic_shield_doctrine
+			focus = baltic_soviet_collapse_a_port_without_a_master
+			focus = baltic_soviet_collapse_the_border_front_at_home
+			focus = baltic_soviet_collapse_foreign_advisers_under_baltic_law
+		}
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_baltic_question_resolved
@@ -3386,6 +3689,7 @@ focus_tree = {
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = baltic_soviet_collapse_baltic_defense_compact }
+		prerequisite = { focus = baltic_soviet_collapse_pan_baltic_war_room }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_baltic_rotation_chair
@@ -3403,7 +3707,8 @@ focus_tree = {
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = baltic_soviet_collapse_foreign_protection_council }
-		prerequisite = { focus = baltic_soviet_collapse_military_border_government }
+		prerequisite = { focus = baltic_soviet_collapse_scandinavian_listening_mission }
+		prerequisite = { focus = baltic_soviet_collapse_sponsor_fleet_rights }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_baltic_advisers_under_law
