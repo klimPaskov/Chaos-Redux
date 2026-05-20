@@ -1500,6 +1500,411 @@ focus_tree = {
 	}
 
 	focus = {
+		id = TNC_tashkent_emergency_ministries
+		icon = GFX_focus_TNC_tashkent_emergency_ministries
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_tashkent_emergency_ministries
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = tnc_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = TNC_samarkand_bukhara_legitimacy
+		icon = GFX_focus_TNC_samarkand_bukhara_legitimacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 36
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_samarkand_bukhara_legitimacy
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = TNC_cotton_rail_republic
+		icon = GFX_focus_TNC_cotton_rail_republic
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 32
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_tashkent_emergency_ministries }
+		prerequisite = { focus = TNC_samarkand_bukhara_legitimacy }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_cotton_rail_republic
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_irrigation_boards
+		icon = GFX_focus_TNC_irrigation_boards
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 36
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_cotton_rail_republic }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_irrigation_boards
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_canal_guard_posts
+		icon = GFX_focus_TNC_canal_guard_posts
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 40
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_cotton_rail_republic }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_canal_guard_posts
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			random_owned_controlled_state = {
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = TNC_oasis_supply_hubs
+		icon = GFX_focus_TNC_oasis_supply_hubs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 36
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_irrigation_boards }
+		prerequisite = { focus = TNC_canal_guard_posts }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_oasis_supply_hubs
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_southern_pass_offices
+		icon = GFX_focus_TNC_southern_pass_offices
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 28
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_cotton_rail_republic }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_southern_pass_offices
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = soviet_collapse_central_asian_league_member }
+		}
+	}
+
+	focus = {
+		id = TNC_kyrgyz_contact_posts
+		icon = GFX_focus_TNC_kyrgyz_contact_posts
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 28
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = TNC_southern_pass_offices }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_kyrgyz_contact_posts
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = TNC_tajik_relief_corridors
+		icon = GFX_focus_TNC_tajik_relief_corridors
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 24
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = TNC_southern_pass_offices }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_tajik_relief_corridors
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_turkmen_caspian_letters
+		icon = GFX_focus_TNC_turkmen_caspian_letters
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 32
+		y = 8
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = TNC_southern_pass_offices }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_turkmen_caspian_letters
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_central_asian_defense_council
+		icon = GFX_focus_TNC_central_asian_defense_council
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 28
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TNC_kyrgyz_contact_posts }
+		prerequisite = { focus = TNC_tajik_relief_corridors }
+		prerequisite = { focus = TNC_turkmen_caspian_letters }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_central_asian_defense_council
+			set_country_flag = soviet_collapse_central_asian_league_prepared
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_central_asian_league_member }
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = TNC_station_court_registers
+		icon = GFX_focus_TNC_station_court_registers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = -4
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_doctrine }
+		prerequisite = { focus = TNC_civil_rule }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_station_court_registers
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_city_militia_charter
+		icon = GFX_focus_TNC_city_militia_charter
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_STABILITY }
+		x = -4
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_station_court_registers }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_city_militia_charter
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = TNC_timetable_signal_bureaus
+		icon = GFX_focus_TNC_timetable_signal_bureaus
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = -8
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_city_militia_charter }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_timetable_signal_bureaus
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			random_owned_controlled_state = {
+				add_building_construction = { type = rail_way level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_airfields_for_the_council
+		icon = GFX_focus_TNC_airfields_for_the_council
+		search_filters = { FOCUS_FILTER_AIR FOCUS_FILTER_ARMY }
+		x = -4
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_city_militia_charter }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_airfields_for_the_council
+			air_experience = constant:soviet_collapse_republic_focus.air_xp_small
+			random_owned_controlled_state = {
+				add_building_construction = { type = air_base level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_anti_puppet_charter_clause
+		icon = GFX_focus_TNC_anti_puppet_charter_clause
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_autonomy_guarantees }
+		prerequisite = { focus = TNC_settlement }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_anti_puppet_charter_clause
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = tnc_focus_diplomatic_plan }
+		}
+	}
+
+	focus = {
+		id = TNC_madrasah_school_compact
+		icon = GFX_focus_TNC_madrasah_school_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_autonomy_guarantees }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_madrasah_school_compact
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_water_and_bread_ledger
+		icon = GFX_focus_TNC_water_and_bread_ledger
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_madrasah_school_compact }
+		prerequisite = { focus = TNC_oasis_supply_hubs }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_water_and_bread_ledger
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TNC_foreign_mediation_board
+		icon = GFX_focus_TNC_foreign_mediation_board
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 24
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TNC_anti_puppet_charter_clause }
+		prerequisite = { focus = TNC_central_asian_defense_council }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_foreign_mediation_board
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = TNC_new_turkestan_statute
+		icon = GFX_focus_TNC_new_turkestan_statute
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 11
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TNC_water_and_bread_ledger }
+		prerequisite = { focus = TNC_foreign_mediation_board }
+
+		completion_reward = {
+			set_country_flag = tnc_focus_new_turkestan_statute
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = tnc_focus_settlement }
+			modifier = { factor = 2 has_country_flag = tnc_focus_central_asian_defense_council }
+		}
+	}
+
+	focus = {
 		id = TNC_propaganda
 		icon = GFX_focus_TNC_propaganda
 		search_filters = { FOCUS_FILTER_POLITICAL }
@@ -1637,6 +2042,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = TNC_hidden_doctrine }
 		prerequisite = { focus = TNC_autonomy_guarantees }
+		prerequisite = { focus = TNC_new_turkestan_statute }
 
 		completion_reward = {
 			set_country_flag = tnc_focus_endgame
