@@ -73,8 +73,11 @@ News/report events: ordinary league formation remains in normal events, while Un
 - Routed terminal threat-ceiling checks through `soviet_collapse_maybe_show_union_unmade_super_event` so recalculation and progressive release cannot bypass the first-month and severe-failure gates.
 - Added Kazakhstan to ordinary Union Unmade terminal release and subject-freeing lists.
 - Wired the existing high-chaos successor spawn effects into the terminal-collapse path and added a terminal anti-Soviet war pass for all breakaway countries that can declare.
-- Confirmed `.tools/verify_event005_completion_gate.py` is not present in this checkout; earlier verifier claims in this audit cannot currently be reproduced from source.
 - Added vanilla-supported internal republic tags to Union Unmade terminal release and subject-freeing lists: `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. Event-created versions use the fallback breakaway focus tree unless a bespoke tree is later assigned.
+- Added terminal league formation after releases and high-chaos successor spawning, before the terminal anti-Soviet war pass.
+- Terminal local leagues now auto-form without charging newly released republics when Baltic, Caucasus, or Central Asian quorum exists, then invite valid regional partners.
+- Terminal Free Republics' League formation now invites ordinary republics, vanilla-supported internal republics, and unfactioned Siberian/Far Eastern/Idel-Ural style high-chaos successors.
+- Restored `.tools/verify_event005_completion_gate.py` with deterministic gates for terminal release/freeing tags, terminal sequencing, league formation helpers, mission wiring counts, and duplicate republic focus IDs.
 
 ## Verification
 
@@ -84,11 +87,13 @@ Historical command recorded by the previous audit:
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
 ```
 
-Current checkout result: blocked because `.tools/verify_event005_completion_gate.py` is absent. Current static checks run instead:
+Current checkout commands:
 
 ```text
+python3 -m py_compile .tools/verify_event005_completion_gate.py
+python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
 git diff --check
 rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
 ```
 
-Result: no whitespace errors and no forbidden comparison operators in the edited script file.
+Result: verifier exit 0, no whitespace errors, and no forbidden comparison operators in the edited script file.
