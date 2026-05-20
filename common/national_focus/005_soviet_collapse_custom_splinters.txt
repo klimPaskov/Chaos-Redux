@@ -6710,6 +6710,24 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SZA_tomsk_city_duma_records
+		icon = GFX_focus_SZA_legitimacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = SZA_birth }
+
+		completion_reward = {
+			set_country_flag = sza_focus_tomsk_city_duma_records
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
 		id = SZA_stores
 		icon = GFX_focus_SZA_stores
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
@@ -6763,6 +6781,51 @@ focus_tree = {
 			}
 		}
 		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = SZA_omsk_field_staff
+		icon = GFX_focus_SZA_doctrine
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = SZA_first_guard }
+
+		completion_reward = {
+			set_country_flag = sza_focus_omsk_field_staff
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = SZA_novosibirsk_rail_court
+		icon = GFX_focus_SZA_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = SZA_stores focus = SZA_tomsk_city_duma_records }
+
+		completion_reward = {
+			set_country_flag = sza_focus_novosibirsk_rail_court
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
 	}
 
 	focus = {
@@ -6854,6 +6917,26 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SZA_zemstvo_tax_books
+		icon = GFX_focus_SZA_economy
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_inner_faction }
+
+		completion_reward = {
+			set_country_flag = sza_focus_zemstvo_tax_books
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
 		id = SZA_special_arm
 		icon = GFX_focus_SZA_special_arm
 		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
@@ -6868,6 +6951,27 @@ focus_tree = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
 		}
 		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = SZA_city_militia_charter
+		icon = GFX_focus_SZA_special_arm
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 0
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_doctrine focus = SZA_special_arm }
+
+		completion_reward = {
+			set_country_flag = sza_focus_city_militia_charter
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
 	}
 
 	focus = {
@@ -6939,6 +7043,51 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SZA_merchants_without_masters
+		icon = GFX_focus_SZA_civil_rule
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_civil_rule focus = SZA_zemstvo_tax_books }
+
+		completion_reward = {
+			set_country_flag = sza_focus_merchants_without_masters
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = SZA_trans_siberian_dispatch_board
+		icon = GFX_focus_SZA_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_supply }
+
+		completion_reward = {
+			set_country_flag = sza_focus_trans_siberian_dispatch_board
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
 		id = SZA_settlement
 		icon = GFX_focus_SZA_settlement
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -6989,6 +7138,70 @@ focus_tree = {
 			base = 5
 			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
 		}
+	}
+
+	focus = {
+		id = SZA_station_fortress_line
+		icon = GFX_focus_SZA_war_plan
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 0
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_city_militia_charter }
+
+		completion_reward = {
+			set_country_flag = sza_focus_station_fortress_line
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 2 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = SZA_kuznetsk_workshop_contracts
+		icon = GFX_focus_SZA_industry_plan
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_zemstvo_tax_books focus = SZA_trans_siberian_dispatch_board }
+
+		completion_reward = {
+			set_country_flag = sza_focus_kuznetsk_workshop_contracts
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = SZA_angara_timber_levies
+		icon = GFX_focus_SZA_economy
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_trans_siberian_dispatch_board focus = SZA_enemy_front }
+
+		completion_reward = {
+			set_country_flag = sza_focus_angara_timber_levies
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
 	}
 
 	focus = {
@@ -7060,6 +7273,28 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SZA_winter_column_registers
+		icon = GFX_focus_SZA_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 0
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_war_plan focus = SZA_station_fortress_line }
+
+		completion_reward = {
+			set_country_flag = sza_focus_winter_column_registers
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
 		id = SZA_tomsk_omsk_switchyards
 		icon = GFX_focus_SZA_supply
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
@@ -7081,6 +7316,50 @@ focus_tree = {
 			base = 7
 			modifier = { factor = 2 has_war = yes }
 			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = SZA_baikal_rear_area
+		icon = GFX_focus_SZA_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_winter_column_registers }
+
+		completion_reward = {
+			set_country_flag = sza_focus_baikal_rear_area
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = SZA_ural_factory_letters
+		icon = GFX_focus_SZA_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_diplomatic_plan focus = SZA_kuznetsk_workshop_contracts }
+
+		completion_reward = {
+			set_country_flag = sza_focus_ural_factory_letters
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
 		}
 	}
 
@@ -7111,6 +7390,26 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SZA_yenisei_river_ports
+		icon = GFX_focus_SZA_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_angara_timber_levies focus = SZA_ural_factory_letters }
+
+		completion_reward = {
+			set_country_flag = sza_focus_yenisei_river_ports
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
 		id = SZA_yenisei_city_federation
 		icon = GFX_focus_SZA_diplomatic_plan
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -7130,6 +7429,48 @@ focus_tree = {
 			base = 7
 			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
 			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
+		id = SZA_far_eastern_transit_protocols
+		icon = GFX_focus_SZA_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_diplomatic_plan focus = SZA_foreign }
+
+		completion_reward = {
+			set_country_flag = sza_focus_far_eastern_transit_protocols
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = SZA_league_of_distant_cities
+		icon = GFX_focus_SZA_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = SZA_yenisei_city_federation focus = SZA_far_eastern_transit_protocols }
+
+		completion_reward = {
+			set_country_flag = sza_focus_league_of_distant_cities
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
 		}
 	}
 
@@ -7172,6 +7513,52 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SZA_no_requisition_west_of_the_urals
+		icon = GFX_focus_SZA_radical_turn
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 4
+		y = 11
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SZA_extreme_gate }
+
+		completion_reward = {
+			set_country_flag = sza_focus_no_requisition_west_of_the_urals
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_republic_focus.small_depot_gain } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = SZA_siberian_staff_map
+		icon = GFX_focus_SZA_hidden_doctrine
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 11
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SZA_extreme_gate focus = SZA_hidden_doctrine }
+
+		completion_reward = {
+			set_country_flag = sza_focus_siberian_staff_map
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
 		id = SZA_extreme_path
 		icon = GFX_focus_SZA_extreme_path
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
@@ -7188,15 +7575,59 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SZA_authority_from_the_railhead
+		icon = GFX_focus_SZA_endgame
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SZA_tomsk_omsk_switchyards focus = SZA_yenisei_river_ports }
+		prerequisite = { focus = SZA_league_of_distant_cities focus = SZA_baikal_rear_area }
+
+		completion_reward = {
+			set_country_flag = sza_focus_authority_from_the_railhead
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = SZA_siberia_between_oceans
+		icon = GFX_focus_SZA_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SZA_league_of_distant_cities }
+
+		completion_reward = {
+			set_country_flag = sza_focus_siberia_between_oceans
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
 		id = SZA_endgame
 		icon = GFX_focus_SZA_endgame
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
 		x = 16
 		y = 12
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = SZA_extreme_path }
-		prerequisite = { focus = SZA_tomsk_omsk_switchyards }
-		prerequisite = { focus = SZA_yenisei_city_federation }
+		prerequisite = { focus = SZA_extreme_path focus = SZA_settlement focus = SZA_authority_from_the_railhead }
+		prerequisite = { focus = SZA_tomsk_omsk_switchyards focus = SZA_baikal_rear_area focus = SZA_siberian_staff_map }
+		prerequisite = { focus = SZA_yenisei_city_federation focus = SZA_siberia_between_oceans focus = SZA_no_requisition_west_of_the_urals }
 
 		completion_reward = {
 			set_country_flag = sza_focus_endgame
