@@ -347,7 +347,7 @@ Future bespoke artwork can replace these dedicated generated-reuse DDS files wit
 
 ## Belarus Runtime Focus Tree Branch Icons
 
-The replacement `soviet_collapse_belarus_focus_tree` is active gameplay for Event 005-created Belarus and now uses 83 focuses, matching the clean-spec target. Its branch-level sprites are wired in `interface/005_soviet_collapse_blr_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art.
+The replacement `soviet_collapse_belarus_focus_tree` is active gameplay for Event 005-created Belarus and now uses 53 focuses. Its branch-level sprites are wired in `interface/005_soviet_collapse_blr_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art.
 
 | Branch sprite | Final DDS | Usage | Status |
 | --- | --- | --- | --- |

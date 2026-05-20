@@ -99,7 +99,7 @@ Event-created Ukraine, Belarus, Kazakhstan, southern cascade republics, prepared
 The implemented trees are:
 
 1. `soviet_collapse_ukraine_focus_tree`: 81 focuses for Ukraine emergency republic tree with political route locks, depot and grain branches, League preparation, and late settlement tracks.
-2. `soviet_collapse_belarus_focus_tree`: 38 focuses for Belarus rail, forest, corridor, League logistics, and state-definition routes.
+2. `soviet_collapse_belarus_focus_tree`: 53 focuses for Belarus rail, forest, military-transit, corridor, League logistics, and state-definition routes.
 3. `soviet_collapse_kazakhstan_focus_tree`: 57 focuses for Kazakhstan steppe-congress tree with rail, depot, Alash, socialist, military, resource, federal, and southern-defense branches.
 4. `soviet_collapse_baltic_focus_tree`: 36 focuses for Baltic restoration, legal continuity, archive protection, border government, Baltic League, port/customs sovereignty, coastal and forest defense, foreign-protection, and recognition settlement routes.
 5. `soviet_collapse_caucasus_focus_tree`: 40 focuses for Caucasus mountain compact, oil emergency directorate, national restoration, pass defense, Georgian Tbilisi/Black Sea observer route, Armenian Yerevan relief and border-fortress route, Azerbaijani Baku oilfield and Caspian oil diplomacy route, sponsor-consulate, border treaty, compact, and high-chaos crown routes.

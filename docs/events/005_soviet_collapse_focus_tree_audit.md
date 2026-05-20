@@ -9,7 +9,7 @@ Current parser count across Event 005 focus files:
 | File | Tree | Focuses |
 | --- | --- | ---: |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_ukraine_focus_tree` | 81 |
-| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_belarus_focus_tree` | 38 |
+| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_belarus_focus_tree` | 53 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_kazakhstan_focus_tree` | 57 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_baltic_focus_tree` | 42 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_caucasus_focus_tree` | 40 |
@@ -21,13 +21,13 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 45 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 37 |
 
-The current shell recount counts 1019 total focuses across 30 trees.
+The current shell recount counts 1034 total focuses across 30 trees.
 
 ## Route Coverage
 
 Ukraine covers survival, Rada/democratic, socialist sovereignty, military directory, grain/industry, foreign influence, League leadership, Black Sea ambition, Black Banner, and Bread State route families.
 
-Belarus covers Minsk authority, legal restoration, rail sovereignty, forest defense, socialist autonomy, corridor diplomacy, League logistics, and high-chaos rail/forest routes.
+Belarus covers Minsk authority, legal restoration, socialist autonomy, military transit command, foreign corridor administration, rail sovereignty, railway neutrality, rail-war logistics, forest defense, regular forest brigades, decentralized forest detachments, corridor diplomacy, League freight planning, and high-chaos rail/forest routes.
 
 Kazakhstan covers steppe emergency authority, Alash restoration, socialist steppe republic, military district state, resource/rail economy, southern cascade, foreign mediation, Central Asian League, and high-chaos steppe pressure.
 
@@ -39,7 +39,11 @@ The internal republic tree covers the vanilla-supported internal Union Unmade ta
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 1019 focuses across the Event 005 focus files after the Baltic tag-branch expansion.
+- Event 005 focus recount: 1034 focuses across the Event 005 focus files after the Belarus rail, forest, military-transit, and League freight expansion.
+- Belarus tree recount: 53 focuses, 53 completion rewards, and 53 `ai_will_do` blocks.
+- Belarus focus references resolve to focus IDs defined inside the same tree, including the corrected League route prerequisite block that no longer requires mutually exclusive routes at the same time.
+- Belarus focus IDs have matching name and description localisation.
+- Belarus icon assignments resolve through `interface/005_soviet_collapse_blr_icons.gfx`.
 - Baltic tree recount: 42 focuses, 42 completion rewards, and 42 `ai_will_do` blocks.
 - Baltic focus references resolve to focus IDs defined inside the same tree.
 - Baltic focus IDs have matching name and description localisation.
