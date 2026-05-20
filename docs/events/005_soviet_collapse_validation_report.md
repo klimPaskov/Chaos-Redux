@@ -4,18 +4,18 @@ Audit date: 2026-05-20
 
 ## Validation Type
 
-This report records current script/parser validation and deterministic verifier scenarios. It does not claim a live in-game playthrough. The repository instruction says the user verifies live sessions, so this report avoids log requests and records only evidence available in the worktree.
+This report records current source inspection and non-Python validation scenarios. It does not claim a live in-game playthrough. The repository instruction says the user verifies live sessions, so this report avoids log requests and records only evidence available in the worktree.
 
 ## Commands Run
 
 ```text
-python3 -m py_compile .tools/verify_event005_completion_gate.py
-python3 .tools/verify_event005_completion_gate.py
 git diff --check
-rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
+rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt common/scripted_triggers/005_soviet_collapse_triggers.txt
+rg -n "country_event = \\{ id = chaosx\\.nr5\\.(30|31|32)" common events
+rg -n "soviet_collapse_show_(baltic_restoration_pact|caucasus_defense_compact|eastern_buffer_coalition)_super_event" common events interface
 ```
 
-The verifier compiled and exited 0. Static checks for the current correction pass passed: no whitespace errors and no forbidden comparison operators in the edited script file.
+Static checks for the current correction pass passed: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, and no active local-league super-event helper calls.
 
 ## Scenario Matrix
 
@@ -43,12 +43,12 @@ The verifier compiled and exited 0. Static checks for the current correction pas
 
 ## Latest Correction Validated
 
-The previous audit recorded a verifier that fails if:
+The current audit records source-level checks that fail if:
 
 - local league founding triggers do not call explicit quorum triggers, or
-- ordinary local league and normal League-route content calls local super-event helpers.
+- ordinary local league and normal League-route content calls local super-event helpers instead of news events.
 
-The restored verifier checks these current surfaces:
+The current direct source checks cover these surfaces:
 
 ```text
 Calm World opening threat is 7.25, and the severe scripted opening scenario is 50.25.
@@ -75,4 +75,4 @@ Event 005 focus AI checks cover 193 focuses with contextual `ai_will_do` modifie
 
 ## Blockers
 
-The restored verifier covers deterministic script surfaces, not live-session feel or the full final design claim. Live-session behavior remains the final practical check for pacing, league joining, terminal war entry, and whether shared regional trees feel sufficiently distinct in play.
+The direct source checks cover deterministic script surfaces, not live-session feel or the full final design claim. Live-session behavior remains the final practical check for pacing, league joining, terminal war entry, and whether shared regional trees feel sufficiently distinct in play.

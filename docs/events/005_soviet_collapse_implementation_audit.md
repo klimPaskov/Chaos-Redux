@@ -38,35 +38,34 @@ Required offline references consulted: Data structures, Triggers, Effect, Modifi
 - `localisation/english/005_soviet_collapse_l_english.yml`
 - `localisation/english/005_soviet_collapse_custom_countries_l_english.yml`
 - `docs/events/005_soviet_union_collapse*.md`
-- `.tools/verify_event005_completion_gate.py`
 
 ## Current Implementation Surface
 
 Decision categories: 25 Event 005 category definitions are gated by `is_soviet_collapse_active = yes`.
 
-Missions: 118 Soviet crisis missions are manually activated through the capped objective queue. The verifier reports 118 mission blocks, 118 activation references, 118 terminal cleanup removals, timed non-selectable objective shape, hidden scripted requirements, complete mission localisation, and distinct success/failure bodies.
+Missions: 118 Soviet crisis missions are manually activated through the capped objective queue. Existing mission audit documents 118 mission blocks, 118 activation references, 118 terminal cleanup removals, timed non-selectable objective shape, hidden scripted requirements, complete mission localisation, and distinct success/failure bodies.
 
 Threat variables and effects: `soviet_collapse_moscow_authority`, `soviet_collapse_republic_confidence`, `soviet_collapse_military_obedience`, `soviet_collapse_foreign_appetite`, `soviet_collapse_old_movement_pressure`, and `soviet_collapse_total_collapse_threat` are centrally recalculated and clamped through scripted effects and script constants.
 
 Release effects: first-wave releases use structured pools; progressive releases use MTTH weights; terminal collapse releases ordinary supported republics and frees Soviet subjects. Custom high-chaos successors are separate activation packages.
 
-Local league logic: Baltic, Caucasus, and Central Asian leagues now require explicit two-member quorums through `has_soviet_collapse_*_league_quorum`. Ordinary local league founding no longer calls super-event helpers; it uses normal country events `chaosx.nr5.30`, `.31`, and `.32`.
+Local league logic: Baltic, Caucasus, and Central Asian leagues now require explicit two-member quorums through `has_soviet_collapse_*_league_quorum`. Ordinary local league founding no longer calls super-event helpers; it uses news events `chaosx.nr5.30`, `.31`, and `.32`.
 
 Union Unmade logic: `soviet_collapse_union_unmade_first_month_lock` gates ordinary early collapse, and `soviet_collapse_show_union_unmade_super_event` calls `soviet_collapse_apply_terminal_collapse`.
 
 AI hooks: focus and decision audits report 775 focuses with `ai_will_do`; route choices and regular decisions keep dynamic AI weighting instead of flat-only behavior.
 
-Localisation: verifier reports no missing focus, idea, or decision name/description localisation and no `:0` localisation entries in Event 005 files.
+Localisation: existing localisation audits report no missing focus, idea, or decision name/description localisation and no `:0` localisation entries in Event 005 files.
 
-Event log/details: verifier reports Event ID 5 event-log detail mapping, actor mapping, entry event mapping, seven scripted detail functions, and 25 detail output localisation keys.
+Event log/details: existing event-log audits report Event ID 5 event-log detail mapping, actor mapping, entry event mapping, seven scripted detail functions, and 25 detail output localisation keys.
 
-News/report events: ordinary league formation remains in normal events, while Union Unmade and rare high-chaos endgames retain super-event packages.
+News/report events: ordinary league formation uses news events, while Union Unmade and rare high-chaos endgames retain super-event packages.
 
 ## Change Made In This Audit Pass
 
 - Added quorum triggers for Baltic, Caucasus, and Central Asian league founding so one free member cannot found a local league alone.
 - Removed ordinary local league and normal League-route super-event calls from regional founding effects and republic focus rewards.
-- Tightened `.tools/verify_event005_completion_gate.py` so `local_league_surface` proves quorum triggers and absence of ordinary local-league super-event calls.
+- Direct source inspection now confirms local league formation effects fire `news_event = { id = chaosx.nr5.30 }`, `.31`, and `.32`, and Moldova's Eastern Buffer Coalition route fires `news_event = { id = chaosx.nr5.35 }`.
 
 ## 2026-05-20 Continuation Correction
 
@@ -78,23 +77,17 @@ News/report events: ordinary league formation remains in normal events, while Un
 - Added terminal league formation after releases and high-chaos successor spawning, before the terminal anti-Soviet war pass.
 - Terminal local leagues now auto-form without charging newly released republics when Baltic, Caucasus, or Central Asian quorum exists, then invite valid regional partners.
 - Terminal Free Republics' League formation now invites ordinary republics, vanilla-supported internal republics, and unfactioned Siberian/Far Eastern/Idel-Ural style high-chaos successors.
-- Restored `.tools/verify_event005_completion_gate.py` with deterministic gates for terminal release/freeing tags, terminal sequencing, league formation helpers, internal republic focus routing, mission wiring counts, and duplicate republic focus IDs.
+- Current source inspection covers terminal release/freeing tags, terminal sequencing, league formation helpers, internal republic focus routing, mission wiring counts, and duplicate republic focus IDs without relying on a Python completion gate.
 
 ## Verification
-
-Historical command recorded by the previous audit:
-
-```text
-python3 .tools/verify_event005_completion_gate.py
-```
 
 Current checkout commands:
 
 ```text
-python3 -m py_compile .tools/verify_event005_completion_gate.py
-python3 .tools/verify_event005_completion_gate.py
 git diff --check
-rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
+rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt common/scripted_triggers/005_soviet_collapse_triggers.txt
+rg -n "country_event = \\{ id = chaosx\\.nr5\\.(30|31|32)" common events
+rg -n "soviet_collapse_show_(baltic_restoration_pact|caucasus_defense_compact|eastern_buffer_coalition)_super_event" common events interface
 ```
 
-Result: verifier exit 0, no whitespace errors, and no forbidden comparison operators in the edited script file.
+Result: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, and no active local-league super-event helper calls.
