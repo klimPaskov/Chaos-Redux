@@ -188,6 +188,7 @@ def main() -> int:
 	decisions = read("common/decisions/005_soviet_collapse_decisions.txt")
 	focus = read("common/national_focus/005_soviet_collapse_republics.txt")
 	all_focus = "\n".join(read(rel) for rel in FOCUS_FILES)
+	mission_audit = read("docs/events/005_soviet_union_collapse_mission_audit.md")
 	loc_paths = sorted((ROOT / "localisation/english").glob("005_soviet_collapse*_l_english.yml"))
 	localisation = "\n".join(path.read_text(encoding="utf-8-sig") for path in loc_paths)
 
@@ -344,6 +345,19 @@ def main() -> int:
 		"mission_localisation_surface",
 		not missing_mission_loc and not weak_requirement_loc,
 		"missing=" + ",".join(missing_mission_loc[:10]) + " weak_req=" + ",".join(weak_requirement_loc[:10]),
+	)
+	mission_audit_header = (
+		"| Mission | Owner | Category | Region | Target states or capitals | Duration | Success condition | "
+		"Failure condition | Success effect | Failure effect | Duplicate check |"
+	)
+	mission_audit_rows = re.findall(r"(?m)^\| \d{3} `soviet_collapse_soviet_mission_\d+_", mission_audit)
+	failed |= not check(
+		"mission_audit_table_surface",
+		mission_audit_header in mission_audit
+		and len(mission_audit_rows) == mission_count
+		and "mission_quality_surface" not in mission_audit
+		and "mission_requirement_surface" not in mission_audit,
+		f"rows={len(mission_audit_rows)} missions={mission_count}",
 	)
 
 	focus_ids = re.findall(r"(?m)^\s*id\s*=\s*([A-Za-z0-9_]+)", all_focus)
