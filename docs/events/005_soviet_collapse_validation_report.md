@@ -59,6 +59,7 @@ Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet wa
 Terminal collapse calls local-league and Free Republics' League formation between release/spawn and war entry.
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
+Event 005 focus integrity covers 775 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
 ```
 
 ## Blockers
