@@ -69,9 +69,9 @@ MTTH release checks cover release/miss weights, eight cause events, and cooldown
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
-Event 005 focus integrity covers 1007 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
-Event 005 focus reward variety covers at least 668 material reward focuses in the conservative direct shell scan, 486 shared focus-helper reward focuses, and no more than 57 focuses in the conservative add-ideas-without-material scan.
-Event 005 focus AI checks cover at least 347 focuses with contextual `ai_will_do` modifiers in the conservative direct shell scan.
+Event 005 focus integrity covers 1013 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus reward variety covers at least 673 material reward focuses in the conservative direct shell scan, 491 shared focus-helper reward focuses, and no more than 57 focuses in the conservative add-ideas-without-material scan.
+Event 005 focus AI checks cover at least 353 focuses with contextual `ai_will_do` modifiers in the conservative direct shell scan.
 The internal republic tree has 62 focus IDs, 62 completion rewards, 62 AI blocks, no duplicate internal focus IDs, no unresolved internal prerequisites, and current Crimea and eastern/inner-Asian localisation coverage for the newly added settlement, mediation, fortress, compact observer, Yakut, Far Eastern, Buryat, and Tuvan focuses.
 The Kronstadt Free Soviet tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate KRS focus IDs, no unresolved KRS prerequisites, and current localisation coverage for campaign planning, port-council diplomacy, permanent arsenal, fortress signal rooms, Gulf battery posts, free-port conferences, and endgame focuses.
 The Free Territory of Huliaipole tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate FTH focus IDs, no unresolved FTH prerequisites, and current localisation coverage for campaign planning, anti-capital diplomacy, free rail communes, tachanka front, roaming embassies, and endgame focuses.
@@ -90,6 +90,7 @@ The Ural Workers Directorate tree has 27 focus IDs, 27 completion rewards, 27 AI
 The Idel-Ural League tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate IUL focus IDs, no unresolved IUL prerequisites, and current localisation coverage for Volga-line war planning, corridor diplomacy, Kazan-Ufa workshop cordons, Orenburg approach posts, federal congress missions, and endgame focuses.
 The Birobidzhan Autonomous Commune tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate BAC focus IDs, no unresolved BAC prerequisites, and current localisation coverage for river-settlement defense planning, relief diplomacy, archive workshops, Amur relief posts, observer relief conferences, and endgame focuses.
 The Arctic Naval Directorate tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate ARD focus IDs, no unresolved ARD prerequisites, and current localisation coverage for northern sea denial, convoy recognition, Murmansk dockyard sheds, Kola denial posts, White Sea observer boards, and endgame focuses.
+The Northern Lights Commune tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate NLC focus IDs, no unresolved NLC prerequisites, no layout coordinate collisions, and current localisation coverage for northern recognition, Ice Watch school, icebound war planning, station mediation, winter guarantees, and endgame focuses.
 ```
 
 ## Blockers
