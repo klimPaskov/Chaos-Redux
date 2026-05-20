@@ -1,6 +1,7 @@
 @soviet_collapse_focus_short = 4
 @soviet_collapse_focus_medium = 6
 @soviet_collapse_focus_long = 8
+@soviet_collapse_caucasus_oil_resource_reward = 4
 
 # ============================================================================
 # CHAOS REDUX - EVENT 005 SOVIET COLLAPSE REPUBLIC FOCUS TREES
@@ -4612,6 +4613,59 @@ focus_tree = {
 		ai_will_do = { base = 6 }
 	}
 
+	focus = {
+		id = caucasus_soviet_collapse_tbilisi_black_sea_authority
+		icon = GFX_caucasus_soviet_collapse_oil_route_offices
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_black_sea_or_caspian_routes }
+		prerequisite = { focus = caucasus_soviet_collapse_national_restoration_councils }
+		allow_branch = { tag = GEO }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_tbilisi_black_sea_authority
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = air_base level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = GEO }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_black_sea_observer_desks
+		icon = GFX_caucasus_soviet_collapse_foreign_missions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 0
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_tbilisi_black_sea_authority }
+		allow_branch = { tag = GEO }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_black_sea_observer_desks
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 3 tag = GEO }
+			modifier = { factor = 2 is_at_war = yes }
+		}
+	}
+
 
 
 
@@ -4733,6 +4787,65 @@ focus_tree = {
 		}
 	}
 
+	focus = {
+		id = caucasus_soviet_collapse_baku_oilfield_guard
+		icon = GFX_caucasus_soviet_collapse_oil_route_offices
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 33
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_oil_emergency_directorate }
+		prerequisite = { focus = caucasus_soviet_collapse_pipeline_guard_corps }
+		allow_branch = { tag = AZR }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_baku_oilfield_guard
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = AZR }
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_caspian_oil_diplomacy
+		icon = GFX_caucasus_soviet_collapse_foreign_missions
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 33
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_baku_oilfield_guard }
+		prerequisite = { focus = caucasus_soviet_collapse_foreign_border_guarantees }
+		allow_branch = { tag = AZR }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_caspian_oil_diplomacy
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				add_resource = {
+					type = oil
+					amount = @soviet_collapse_caucasus_oil_resource_reward
+				}
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 3 tag = AZR }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
 
 
 	focus = {
@@ -4772,6 +4885,59 @@ focus_tree = {
 			soviet_collapse_apply_focus_military_consolidation = yes
 		}
 		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_yerevan_relief_networks
+		icon = GFX_caucasus_soviet_collapse_mountain_councils
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_mountain_federal_compact }
+		prerequisite = { focus = caucasus_soviet_collapse_national_restoration_councils }
+		allow_branch = { tag = ARM }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_yerevan_relief_networks
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = ARM }
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_ararat_border_fortresses
+		icon = GFX_caucasus_soviet_collapse_pass_guards
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 12
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_yerevan_relief_networks }
+		prerequisite = { focus = caucasus_soviet_collapse_mountain_artillery_schools }
+		allow_branch = { tag = ARM }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_ararat_border_fortresses
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 3 tag = ARM }
+			modifier = { factor = 2 has_war_with = SOV }
+		}
 	}
 
 	focus = {
