@@ -69,11 +69,12 @@ MTTH release checks cover release/miss weights, eight cause events, and cooldown
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
-Event 005 focus integrity covers 910 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
-Event 005 focus reward variety covers 613 material reward focuses, 399 shared focus-helper reward focuses, and only 37 idea-only focuses.
-Event 005 focus AI checks cover 324 focuses with contextual `ai_will_do` modifiers.
+Event 005 focus integrity covers 916 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus reward variety covers 619 material reward focuses, 405 shared focus-helper reward focuses, and only 37 idea-only focuses.
+Event 005 focus AI checks cover 330 focuses with contextual `ai_will_do` modifiers.
 The internal republic tree has 62 focus IDs, 62 completion rewards, 62 AI blocks, no duplicate internal focus IDs, no unresolved internal prerequisites, and current Crimea and eastern/inner-Asian localisation coverage for the newly added settlement, mediation, fortress, compact observer, Yakut, Far Eastern, Buryat, and Tuvan focuses.
 The Siberian Zemstvo Authority tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate SZA focus IDs, no unresolved SZA prerequisites, and current localisation coverage for the depth defense, rail diplomacy, Tomsk-Omsk, Irkutsk, Yenisei, and endgame focuses.
+The Far Eastern Republic Revival tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate FEV focus IDs, no unresolved FEV prerequisites, and current localisation coverage for port-rail war planning, rail diplomacy, Vladivostok harbor board, Amur buffer posts, Pacific observer missions, and endgame focuses.
 ```
 
 ## Blockers

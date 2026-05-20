@@ -120,7 +120,7 @@ The implemented trees are:
 20. `GAC_soviet_collapse_focus_tree`: 21 focuses for Green Army Congress village, land-and-bread, peasant guard, and rural defense routes.
 21. `DHC_soviet_collapse_focus_tree`: 21 focuses for Don Host Emergency Circle host-circle, cavalry, southern defense, and host command routes.
 22. `KHC_soviet_collapse_focus_tree`: 21 focuses for Kuban Host Provisional Council crossing-council, Kuban line, cavalry, and regional command routes.
-23. `FEV_soviet_collapse_focus_tree`: 21 focuses for Far Eastern Republic Revival buffer, railway guard, foreign-distance, and Pacific line routes.
+23. `FEV_soviet_collapse_focus_tree`: 27 focuses for Far Eastern Republic Revival buffer, railway guard, foreign-distance, Pacific line routes, port-rail war planning, Vladivostok harbor board logistics, Amur buffer posts, Pacific observer missions, and Far Eastern survival capstone routes.
 24. `SZA_soviet_collapse_focus_tree`: 27 focuses for Siberian Zemstvo Authority regional assembly, city guard, Trans-Siberian depot control, depth defense planning, Tomsk-Omsk switchyards, Irkutsk depth stores, Yenisei city federation, and Siberian survival routes.
 25. `UWD_soviet_collapse_focus_tree`: 21 focuses for Ural Workers Directorate factory committee, worker battalion, arsenal autonomy, and labor-defense routes.
 26. `MRC_soviet_collapse_focus_tree`: 27 focuses for Mountain Republic of the Caucasus elder council, pass closure, lowland depot raids, village autonomy, Caucasus negotiation, anti-border-troop, mountain federal authority, and mandate routes.
