@@ -105,28 +105,29 @@ The implemented trees are:
 5. `soviet_collapse_caucasus_focus_tree`: 34 focuses for Caucasus mountain compact, oil emergency directorate, national restoration, pass defense, sponsor-consulate, border treaty, Caspian/Black Sea route, compact, and high-chaos crown routes.
 6. `soviet_collapse_central_asia_focus_tree`: 34 focuses for Central Asian local republic, Turkestan federation, military border authority, foreign patronage, cotton/water logistics, Basmachi pressure, Khwarazm high-chaos, southern pact, and federation routes.
 7. `soviet_collapse_moldova_focus_tree`: 23 focuses for Moldova Dniester, Bessarabian, Romanian-alignment, union-debate, Ukrainian grain-road, Eastern Buffer, river-state, and small-state survival routes.
-8. `soviet_collapse_breakaway_focus_tree`: 27 focuses for Shared fallback tree for remaining event-created breakaways with emergency governance, defense, foreign liaison, League preparation, and survival lanes.
-9. `CFR_soviet_collapse_focus_tree`: 45 focuses for Civilian Factory of Russia construction-board tree with cooperative, planner, contract-board, concrete-committee, and builder-state routes.
-10. `MFR_soviet_collapse_focus_tree`: 37 focuses for Military Factory of Russia arsenal-board tree with officer, worker, merchant, unsafe-output, export, and arsenal-state routes.
-11. `KRS_soviet_collapse_focus_tree`: 20 focuses for Kronstadt Free Soviet sailor-assembly, fortress-store, naval-militia, port-council, and port-sovereignty routes.
-12. `FTH_soviet_collapse_focus_tree`: 21 focuses for Free Territory of Huliaipole commune, depot-raiding, League bargain, Black International, and anti-capital routes.
-13. `BBH_soviet_collapse_focus_tree`: 21 focuses for Black Banner Host mobile-column, commune-war, captured-store, anti-state, and anti-prison routes.
-14. `BSC_soviet_collapse_focus_tree`: 21 focuses for Basmachi Confederation oasis, pass-guard, caravan-store, road-control, and steppe federation routes.
-15. `TNC_soviet_collapse_focus_tree`: 21 focuses for Turkestan National Council civic-office, railway-guard, oasis-bureau, guarded-route, and New Turkestan routes.
-16. `ALA_soviet_collapse_focus_tree`: 21 focuses for Alash Restoration Authority congress, cavalry-guard, school, rail-station, and modernization routes.
-17. `UDC_soviet_collapse_focus_tree`: 21 focuses for Union Defense Committee loyal-district, provisional-command, signature-force, and emergency command routes.
-18. `SDZ_soviet_collapse_focus_tree`: 21 focuses for Security Directorate Zone archive, directorate, signature-force, and security-state routes.
-19. `GAC_soviet_collapse_focus_tree`: 21 focuses for Green Army Congress village, land-and-bread, peasant guard, and rural defense routes.
-20. `DHC_soviet_collapse_focus_tree`: 21 focuses for Don Host Emergency Circle host-circle, cavalry, southern defense, and host command routes.
-21. `KHC_soviet_collapse_focus_tree`: 21 focuses for Kuban Host Provisional Council crossing-council, Kuban line, cavalry, and regional command routes.
-22. `FEV_soviet_collapse_focus_tree`: 21 focuses for Far Eastern Republic Revival buffer, railway guard, foreign-distance, and Pacific line routes.
-23. `SZA_soviet_collapse_focus_tree`: 21 focuses for Siberian Zemstvo Authority regional assembly, city guard, depth command, and Siberian survival routes.
-24. `UWD_soviet_collapse_focus_tree`: 21 focuses for Ural Workers Directorate factory committee, worker battalion, arsenal autonomy, and labor-defense routes.
-25. `MRC_soviet_collapse_focus_tree`: 21 focuses for Mountain Republic of the Caucasus elder council, pass guard, mountain federal authority, and mandate routes.
-26. `IUL_soviet_collapse_focus_tree`: 21 focuses for Idel-Ural League Volga-Ural office, river guard, corridor authority, and federal-route branches.
-27. `BAC_soviet_collapse_focus_tree`: 21 focuses for Birobidzhan Autonomous Commune settlement, militia, autonomous office, and local defense routes.
-28. `ARD_soviet_collapse_focus_tree`: 21 focuses for Arctic Naval Directorate port directorate, convoy officer, northern logistics, and port-neutrality routes.
-29. `NLC_soviet_collapse_focus_tree`: 21 focuses for Northern Lights Commune polar survival, scientific refuge, northern logistics, and post-capital routes.
+8. `soviet_collapse_internal_republic_focus_tree`: 32 focuses for Karelia, Komi, Crimea, Tatarstan, Bashkiria, Far East, Yakutia, Buryatia, and Tuva with regional survival, industry, defense, foreign-channel, high-chaos, and common-front routes.
+9. `soviet_collapse_breakaway_focus_tree`: 27 focuses for Shared fallback tree for remaining event-created breakaways with emergency governance, defense, foreign liaison, League preparation, and survival lanes.
+10. `CFR_soviet_collapse_focus_tree`: 45 focuses for Civilian Factory of Russia construction-board tree with cooperative, planner, contract-board, concrete-committee, and builder-state routes.
+11. `MFR_soviet_collapse_focus_tree`: 37 focuses for Military Factory of Russia arsenal-board tree with officer, worker, merchant, unsafe-output, export, and arsenal-state routes.
+12. `KRS_soviet_collapse_focus_tree`: 20 focuses for Kronstadt Free Soviet sailor-assembly, fortress-store, naval-militia, port-council, and port-sovereignty routes.
+13. `FTH_soviet_collapse_focus_tree`: 21 focuses for Free Territory of Huliaipole commune, depot-raiding, League bargain, Black International, and anti-capital routes.
+14. `BBH_soviet_collapse_focus_tree`: 21 focuses for Black Banner Host mobile-column, commune-war, captured-store, anti-state, and anti-prison routes.
+15. `BSC_soviet_collapse_focus_tree`: 21 focuses for Basmachi Confederation oasis, pass-guard, caravan-store, road-control, and steppe federation routes.
+16. `TNC_soviet_collapse_focus_tree`: 21 focuses for Turkestan National Council civic-office, railway-guard, oasis-bureau, guarded-route, and New Turkestan routes.
+17. `ALA_soviet_collapse_focus_tree`: 21 focuses for Alash Restoration Authority congress, cavalry-guard, school, rail-station, and modernization routes.
+18. `UDC_soviet_collapse_focus_tree`: 21 focuses for Union Defense Committee loyal-district, provisional-command, signature-force, and emergency command routes.
+19. `SDZ_soviet_collapse_focus_tree`: 21 focuses for Security Directorate Zone archive, directorate, signature-force, and security-state routes.
+20. `GAC_soviet_collapse_focus_tree`: 21 focuses for Green Army Congress village, land-and-bread, peasant guard, and rural defense routes.
+21. `DHC_soviet_collapse_focus_tree`: 21 focuses for Don Host Emergency Circle host-circle, cavalry, southern defense, and host command routes.
+22. `KHC_soviet_collapse_focus_tree`: 21 focuses for Kuban Host Provisional Council crossing-council, Kuban line, cavalry, and regional command routes.
+23. `FEV_soviet_collapse_focus_tree`: 21 focuses for Far Eastern Republic Revival buffer, railway guard, foreign-distance, and Pacific line routes.
+24. `SZA_soviet_collapse_focus_tree`: 21 focuses for Siberian Zemstvo Authority regional assembly, city guard, depth command, and Siberian survival routes.
+25. `UWD_soviet_collapse_focus_tree`: 21 focuses for Ural Workers Directorate factory committee, worker battalion, arsenal autonomy, and labor-defense routes.
+26. `MRC_soviet_collapse_focus_tree`: 21 focuses for Mountain Republic of the Caucasus elder council, pass guard, mountain federal authority, and mandate routes.
+27. `IUL_soviet_collapse_focus_tree`: 21 focuses for Idel-Ural League Volga-Ural office, river guard, corridor authority, and federal-route branches.
+28. `BAC_soviet_collapse_focus_tree`: 21 focuses for Birobidzhan Autonomous Commune settlement, militia, autonomous office, and local defense routes.
+29. `ARD_soviet_collapse_focus_tree`: 21 focuses for Arctic Naval Directorate port directorate, convoy officer, northern logistics, and port-neutrality routes.
+30. `NLC_soviet_collapse_focus_tree`: 21 focuses for Northern Lights Commune polar survival, scientific refuge, northern logistics, and post-capital routes.
 
 Focus rewards call shared scripted effects for legal recognition, socialist sovereignty, military consolidation, depot control, League preparation, foreign channels, and high-chaos identity pressure. Those effects adjust local breakaway variables, update the consolidated staged republic spirits, add practical construction rewards where appropriate, and feed the Soviet crisis meter through constants in `soviet_collapse_republic_focus`. Military and League preparation focuses add defensive works; depot and supply focuses add civilian or military factories. Foreign-channel focuses do not grant foreign support spirits by themselves; those come from external support decisions. Ukraine's replacement slice also documents each focus role in script comments, uses focus filters on every focus, keeps League escalation locked behind crisis pressure through `is_soviet_collapse_league_pressure_ready`, and keeps foreign provisional authority behind an actual liaison-office state and high foreign pressure.
 

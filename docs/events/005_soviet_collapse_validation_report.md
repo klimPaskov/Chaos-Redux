@@ -39,7 +39,7 @@ Static checks for the current correction pass passed: no whitespace errors, no f
 | Belarus focus tree full route review | same focus surfaces | 38-focus tree passes parser, reward, AI, localisation, and icon checks |
 | Kazakhstan focus tree full route review | same focus surfaces | 57-focus tree passes parser, reward, AI, localisation, and icon checks |
 | Regional republic focus tree review | same focus surfaces | regional/shared/custom trees pass parser, layout, reward, AI, localisation, and icon checks |
-| Internal republic focus tree review | `internal_republic_focus_loader`, `internal_republic_focus_tree`, `internal_republic_focus_localisation` | vanilla-supported internal republic tags route to a 20-focus shared tree with regional branches |
+| Internal republic focus tree review | `internal_republic_focus_loader`, `internal_republic_focus_tree`, `internal_republic_focus_localisation` | vanilla-supported internal republic tags route to a 32-focus shared tree with northern, Volga-Ural, Crimea, Siberian/Far Eastern, high-chaos, and common-front branches |
 
 ## Latest Correction Validated
 
