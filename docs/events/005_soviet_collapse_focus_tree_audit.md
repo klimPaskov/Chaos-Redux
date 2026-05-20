@@ -92,6 +92,8 @@ The ordinary local league reward focuses no longer fire super-events:
 
 These focuses still apply league preparation rewards and flags, but local/faction formation presentation remains normal event/report/news flow.
 
+The remaining Central Asian custom route-push tooltips for Basmachi, Turkestan, and Alash also no longer refer to the retired Steppe Federation super-event; they describe the regional announcement that matches the `chaosx.nr5.36` news event.
+
 The vanilla-supported internal republics no longer use only the generic fallback tree. Event-created internal republic tags route to `soviet_collapse_internal_republic_focus_tree`, with localisation and verifier coverage for the loader, focus IDs, and focus text.
 
 The Central Asian shared tree now gives Uzbekistan its own route after the shared local council and cotton setup. `UZB` can build Tashkent emergency ministries, join Samarkand and Bukhara legitimacy work to the written-republic route, turn cotton and rail into material state capacity, and finish with a Turkestan city congress that prepares League leadership without replacing the other southern republics.
