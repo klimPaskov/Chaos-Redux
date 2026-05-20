@@ -39,6 +39,7 @@ The verifier compiled and exited 0. Static checks for the current correction pas
 | Belarus focus tree full route review | same focus surfaces | 38-focus tree passes parser, reward, AI, localisation, and icon checks |
 | Kazakhstan focus tree full route review | same focus surfaces | 57-focus tree passes parser, reward, AI, localisation, and icon checks |
 | Regional republic focus tree review | same focus surfaces | regional/shared/custom trees pass parser, layout, reward, AI, localisation, and icon checks |
+| Internal republic focus tree review | `internal_republic_focus_loader`, `internal_republic_focus_tree`, `internal_republic_focus_localisation` | vanilla-supported internal republic tags route to a 20-focus shared tree with regional branches |
 
 ## Latest Correction Validated
 
@@ -53,6 +54,7 @@ The restored verifier checks these current surfaces:
 Union Unmade threat-ceiling calls now route through the guarded maybe-show helper.
 Kazakhstan is included in terminal ordinary release and subject-freeing lists.
 Vanilla-supported internal republic tags are included in terminal release and subject-freeing lists.
+Vanilla-supported internal republic tags route to `soviet_collapse_internal_republic_focus_tree` instead of the generic fallback tree.
 Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet war pass.
 Terminal collapse calls local-league and Free Republics' League formation between release/spawn and war entry.
 ```
