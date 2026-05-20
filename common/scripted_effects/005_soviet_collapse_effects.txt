@@ -1466,7 +1466,9 @@ soviet_collapse_clear_republic_staged_ideas = {
 soviet_collapse_update_consolidated_republic_ideas = {
 	soviet_collapse_clear_republic_staged_ideas = yes
 	set_temp_variable = { soviet_collapse_foreign_support_strength = soviet_collapse_influence_total }
-	add_to_temp_variable = { soviet_collapse_foreign_support_strength = soviet_collapse_active_foreign_sponsor_count }
+	set_temp_variable = { soviet_collapse_foreign_sponsor_strength_bonus = soviet_collapse_active_foreign_sponsor_count }
+	multiply_temp_variable = { var = soviet_collapse_foreign_sponsor_strength_bonus value = constant:soviet_collapse_republic_idea.foreign_sponsor_stage_bonus }
+	add_to_temp_variable = { soviet_collapse_foreign_support_strength = soviet_collapse_foreign_sponsor_strength_bonus }
 	if = {
 		limit = { check_variable = { var = soviet_collapse_republic_institution_strength value = constant:soviet_collapse_republic_idea.stage_4 compare = greater_than_or_equals } }
 		add_ideas = soviet_collapse_republic_institutions_4
@@ -2327,6 +2329,13 @@ soviet_collapse_add_republic_factory_focus_reward = {
 	}
 }
 
+soviet_collapse_add_republic_civilian_focus_reward = {
+	random_owned_controlled_state = {
+		add_extra_state_shared_building_slots = 1
+		add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+	}
+}
+
 soviet_collapse_add_republic_fort_focus_reward = {
 	capital_scope = {
 		add_building_construction = { type = land_fort level = 1 instant_build = yes }
@@ -2340,6 +2349,7 @@ soviet_collapse_apply_focus_legal_recognition = {
 	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
 	soviet_collapse_add_republic_focus_recovery_progress = yes
+	soviet_collapse_add_republic_civilian_focus_reward = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -2355,6 +2365,7 @@ soviet_collapse_apply_focus_socialist_sovereignty = {
 	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
 	soviet_collapse_add_republic_focus_recovery_progress = yes
+	soviet_collapse_add_republic_civilian_focus_reward = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
