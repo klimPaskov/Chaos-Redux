@@ -69,13 +69,14 @@ MTTH release checks cover release/miss weights, eight cause events, and cooldown
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
-Event 005 focus integrity covers 922 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
-Event 005 focus reward variety covers 625 material reward focuses, 411 shared focus-helper reward focuses, and only 37 idea-only focuses.
-Event 005 focus AI checks cover 336 focuses with contextual `ai_will_do` modifiers.
+Event 005 focus integrity covers 928 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus reward variety covers 631 material reward focuses, 417 shared focus-helper reward focuses, and only 37 idea-only focuses.
+Event 005 focus AI checks cover 342 focuses with contextual `ai_will_do` modifiers.
 The internal republic tree has 62 focus IDs, 62 completion rewards, 62 AI blocks, no duplicate internal focus IDs, no unresolved internal prerequisites, and current Crimea and eastern/inner-Asian localisation coverage for the newly added settlement, mediation, fortress, compact observer, Yakut, Far Eastern, Buryat, and Tuvan focuses.
 The Siberian Zemstvo Authority tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate SZA focus IDs, no unresolved SZA prerequisites, and current localisation coverage for the depth defense, rail diplomacy, Tomsk-Omsk, Irkutsk, Yenisei, and endgame focuses.
 The Far Eastern Republic Revival tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate FEV focus IDs, no unresolved FEV prerequisites, and current localisation coverage for port-rail war planning, rail diplomacy, Vladivostok harbor board, Amur buffer posts, Pacific observer missions, and endgame focuses.
 The Idel-Ural League tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate IUL focus IDs, no unresolved IUL prerequisites, and current localisation coverage for Volga-line war planning, corridor diplomacy, Kazan-Ufa workshop cordons, Orenburg approach posts, federal congress missions, and endgame focuses.
+The Birobidzhan Autonomous Commune tree has 27 focus IDs, 27 completion rewards, 27 AI blocks, no duplicate BAC focus IDs, no unresolved BAC prerequisites, and current localisation coverage for river-settlement defense planning, relief diplomacy, archive workshops, Amur relief posts, observer relief conferences, and endgame focuses.
 ```
 
 ## Blockers
