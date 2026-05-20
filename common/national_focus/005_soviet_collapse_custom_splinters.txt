@@ -8533,6 +8533,456 @@ focus_tree = {
 
 
 	focus = {
+		id = UWD_sverdlovsk_factory_records
+		icon = GFX_focus_UWD_legitimacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = UWD_birth }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_sverdlovsk_factory_records
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = UWD_perm_field_staff
+		icon = GFX_focus_UWD_doctrine
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = UWD_first_guard }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_perm_field_staff
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_tagil_machine_tool_ledger
+		icon = GFX_focus_UWD_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = UWD_stores focus = UWD_sverdlovsk_factory_records }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_tagil_machine_tool_ledger
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = UWD_factory_militia_charter
+		icon = GFX_focus_UWD_special_arm
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 0
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_doctrine }
+		prerequisite = { focus = UWD_special_arm }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_factory_militia_charter
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_magnitogorsk_steel_quota
+		icon = GFX_focus_UWD_inner_faction
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_inner_faction }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_magnitogorsk_steel_quota
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = UWD_rail_yard_repair_trust
+		icon = GFX_focus_UWD_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_supply }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_rail_yard_repair_trust
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_blast_furnace_guard_posts
+		icon = GFX_focus_UWD_enemy_front
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_supply }
+		prerequisite = { focus = UWD_enemy_front }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_blast_furnace_guard_posts
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = UWD_chelyabinsk_airwatch_yards
+		icon = GFX_focus_UWD_enemy_front
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
+		x = 28
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_enemy_front }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_chelyabinsk_airwatch_yards
+			random_owned_controlled_state = {
+				add_building_construction = { type = air_base level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			air_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_workers_canteen_compact
+		icon = GFX_focus_UWD_civil_rule
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_shift_council_mediation }
+		prerequisite = { focus = UWD_magnitogorsk_steel_quota }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_workers_canteen_compact
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = UWD_kama_foundry_contracts
+		icon = GFX_focus_UWD_industry_plan
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 12
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_workers_canteen_compact }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_kama_foundry_contracts
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = UWD_trans_ural_dispatch_board
+		icon = GFX_focus_UWD_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_rail_yard_repair_trust }
+		prerequisite = { focus = UWD_blast_furnace_guard_posts }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_trans_ural_dispatch_board
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_volga_steel_letters
+		icon = GFX_focus_UWD_foreign
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_diplomatic_plan }
+		prerequisite = { focus = UWD_output_guarantees }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_volga_steel_letters
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = UWD_league_arsenal_bargain
+		icon = GFX_focus_UWD_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_diplomatic_plan }
+		prerequisite = { focus = UWD_output_guarantees }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_league_arsenal_bargain
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_rail_belt_armored_patrols
+		icon = GFX_focus_UWD_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 24
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_war_plan }
+		prerequisite = { focus = UWD_blast_furnace_guard_posts }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_rail_belt_armored_patrols
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_kurgan_rear_area
+		icon = GFX_focus_UWD_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 28
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = UWD_rail_belt_armored_patrols }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_kurgan_rear_area
+			random_owned_controlled_state = {
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = UWD_no_shipments_without_council
+		icon = GFX_focus_UWD_radical_turn
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 4
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = UWD_radical_turn }
+		prerequisite = { focus = UWD_war_plan }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_no_shipments_without_council
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war_with = SOV }
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = UWD_committee_staff_map
+		icon = GFX_focus_UWD_hidden_doctrine
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 12
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = UWD_hidden_doctrine }
+		prerequisite = { focus = UWD_no_shipments_without_council }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_committee_staff_map
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = UWD_arsenal_federation_terms
+		icon = GFX_focus_UWD_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = UWD_kama_foundry_contracts }
+		prerequisite = { focus = UWD_volga_steel_letters focus = UWD_league_arsenal_bargain }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_arsenal_federation_terms
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = uwd_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = UWD_industrial_neutrality_statute
+		icon = GFX_focus_UWD_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = UWD_arsenal_federation_terms }
+		prerequisite = { focus = UWD_league_arsenal_bargain }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_industrial_neutrality_statute
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = UWD_ural_factory_endurance
+		icon = GFX_focus_UWD_endgame
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = UWD_industrial_neutrality_statute }
+		prerequisite = { focus = UWD_kurgan_rear_area }
+
+		completion_reward = {
+			set_country_flag = uwd_focus_ural_factory_endurance
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = uwd_focus_settlement }
+		}
+	}
+
+	focus = {
 		id = UWD_industry_plan
 		icon = GFX_focus_UWD_industry_plan
 		search_filters = { FOCUS_FILTER_INDUSTRY }
@@ -8577,6 +9027,7 @@ focus_tree = {
 		y = 11
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = UWD_endgame }
+		prerequisite = { focus = UWD_hidden_doctrine }
 
 		available = {
 			OR = {
@@ -8598,7 +9049,7 @@ focus_tree = {
 		x = 16
 		y = 10
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = UWD_hidden_doctrine }
+		prerequisite = { focus = UWD_hidden_doctrine focus = UWD_ural_factory_endurance }
 		prerequisite = { focus = UWD_output_guarantees }
 
 		completion_reward = {
