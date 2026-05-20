@@ -68,12 +68,26 @@ News/report events: ordinary league formation remains in normal events, while Un
 - Removed ordinary local league and normal League-route super-event calls from regional founding effects and republic focus rewards.
 - Tightened `.tools/verify_event005_completion_gate.py` so `local_league_surface` proves quorum triggers and absence of ordinary local-league super-event calls.
 
+## 2026-05-20 Continuation Correction
+
+- Routed terminal threat-ceiling checks through `soviet_collapse_maybe_show_union_unmade_super_event` so recalculation and progressive release cannot bypass the first-month and severe-failure gates.
+- Added Kazakhstan to ordinary Union Unmade terminal release and subject-freeing lists.
+- Wired the existing high-chaos successor spawn effects into the terminal-collapse path and added a terminal anti-Soviet war pass for all breakaway countries that can declare.
+- Confirmed `.tools/verify_event005_completion_gate.py` is not present in this checkout; earlier verifier claims in this audit cannot currently be reproduced from source.
+
 ## Verification
 
-Command:
+Historical command recorded by the previous audit:
 
 ```text
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
 ```
 
-Result: exit 0. The local league surface now reports `quorum=True` and `local_super_events_removed=True`.
+Current checkout result: blocked because `.tools/verify_event005_completion_gate.py` is absent. Current static checks run instead:
+
+```text
+git diff --check
+rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
+```
+
+Result: no whitespace errors and no forbidden comparison operators in the edited script file.
