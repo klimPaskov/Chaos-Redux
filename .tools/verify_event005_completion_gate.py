@@ -246,6 +246,7 @@ def main() -> int:
 	soviet_objective = constant_values(constants, "soviet_collapse_soviet_objective")
 	objective_pressure = constant_values(constants, "soviet_collapse_objective_pressure")
 	super_event = constant_values(constants, "soviet_collapse_super_event")
+	release_mtth = constant_values(constants, "soviet_collapse_release_mtth")
 	calm_components = {
 		key: baseline[key]
 		for key in [
@@ -316,6 +317,18 @@ def main() -> int:
 		"31-day lock and severe ingredient gates present",
 	)
 	failed |= not check(
+		"union_unmade_pacing",
+		super_event["min_breakaways_for_union_unmade"] >= 5
+		and super_event["union_unmade_high_threat"] >= 60
+		and super_event["union_unmade_critical_authority"] <= 25
+		and super_event["union_unmade_contested_authority"] <= 45
+		and "constant:soviet_collapse_super_event.min_breakaways_for_union_unmade" in maybe_union_unmade
+		and "constant:soviet_collapse_super_event.union_unmade_high_threat" in maybe_union_unmade
+		and "constant:soviet_collapse_super_event.union_unmade_critical_authority" in maybe_union_unmade
+		and "constant:soviet_collapse_super_event.union_unmade_contested_authority" in maybe_union_unmade,
+		"breakaways=5 high_threat=60 critical_authority=25 contested_authority=45",
+	)
+	failed |= not check(
 		"union_unmade_guarded_ceiling",
 		"soviet_collapse_maybe_show_union_unmade_super_event = yes" in recalc
 		and "soviet_collapse_show_union_unmade_super_event = yes" not in recalc
@@ -336,6 +349,14 @@ def main() -> int:
 		all(f"tag = {tag}" in terminal_release for tag in required_terminal)
 		and "set_autonomy = { target = PREV autonomy_state = autonomy_free }" in terminal_release,
 		"ordinary and internal tags share release/freeing surface",
+	)
+	failed |= not check(
+		"terminal_ordinary_republic_release_surface",
+		required_terminal <= release_tags
+		and "release = PREV" in terminal_release
+		and "set_autonomy = { target = PREV autonomy_state = autonomy_free }" in terminal_release
+		and "soviet_collapse_setup_breakaway_country = yes" in terminal_release,
+		"ordinary and internal release/setup paths present",
 	)
 
 	terminal = block_after(effects, "soviet_collapse_apply_terminal_collapse")
@@ -377,6 +398,38 @@ def main() -> int:
 			"has_soviet_collapse_central_asian_league_quorum",
 		]),
 		"quorum triggers exist",
+	)
+	baltic_quorum = block_after(triggers, "has_soviet_collapse_baltic_league_quorum")
+	caucasus_quorum = block_after(triggers, "has_soviet_collapse_caucasus_league_quorum")
+	central_asian_quorum = block_after(triggers, "has_soviet_collapse_central_asian_league_quorum")
+	failed |= not check(
+		"local_league_surface",
+		all(tag in baltic_quorum for tag in ["LIT", "LAT", "EST"])
+		and all(tag in caucasus_quorum for tag in ["GEO", "ARM", "AZR"])
+		and all(tag in central_asian_quorum for tag in ["UZB", "KYR", "TAJ", "TMS", "KAZ"])
+		and not any(tag in caucasus_quorum for tag in ["MRC"])
+		and not any(tag in central_asian_quorum for tag in ["BSC", "TNC", "ALA"])
+		and "has_soviet_collapse_baltic_league_quorum = yes" in block_after(triggers, "can_found_soviet_collapse_baltic_league")
+		and "has_soviet_collapse_caucasus_league_quorum = yes" in block_after(triggers, "can_found_soviet_collapse_caucasus_league")
+		and "has_soviet_collapse_central_asian_league_quorum = yes" in block_after(triggers, "can_found_soviet_collapse_central_asian_league"),
+		"founding triggers require regional quorums",
+	)
+
+	progressive_release_effect = block_after(effects, "soviet_collapse_maybe_release_threat_breakaway")
+	progressive_release_event = block_after(effects, "soviet_collapse_fire_progressive_release_event")
+	release_cause_ids = {f"chaosx.nr5.{event_id}" for event_id in range(130, 138)}
+	release_causes = [
+		"ministry", "rail", "border", "party", "foreign", "depot", "old_movement", "league",
+	]
+	failed |= not check(
+		"mtth_release_surface",
+		release_mtth["release_base"] < release_mtth["miss_base"]
+		and all(f"constant:soviet_collapse_release_mtth.cause_{cause}_weight" in progressive_release_event for cause in release_causes)
+		and all(event_id in progressive_release_event for event_id in release_cause_ids)
+		and "mtth:soviet_collapse_progressive_release_weight" in progressive_release_effect
+		and "mtth:soviet_collapse_progressive_release_miss_weight" in progressive_release_effect
+		and "soviet_collapse_progressive_release_cooldown" in block_after(effects, "soviet_collapse_release_one_threat_breakaway_republic"),
+		"8 cause events, MTTH release/miss weights, and cooldown present",
 	)
 
 	loader = block_after(effects, "soviet_collapse_load_event_created_focus_tree")
@@ -446,10 +499,19 @@ def main() -> int:
 	mission_count = len(missions)
 	activation_refs = len(re.findall(r"\bactivate_mission\s*=\s*soviet_collapse_soviet_mission_\d+_", effects))
 	removal_refs = len(re.findall(r"\bremove_mission\s*=\s*soviet_collapse_soviet_mission_\d+_", effects))
+	terminal_cleanup = block_after(effects, "soviet_collapse_cleanup_terminal_collapse_missions")
+	terminal_cleanup_refs = len(re.findall(r"\bremove_mission\s*=\s*soviet_collapse_soviet_mission_\d+_", terminal_cleanup))
 	failed |= not check(
 		"mission_wiring_counts",
 		mission_count > 0 and mission_count == activation_refs == removal_refs,
 		f"missions={mission_count} activation={activation_refs} cleanup={removal_refs}",
+	)
+	failed |= not check(
+		"terminal_mission_cleanup",
+		mission_count > 0
+		and terminal_cleanup_refs == mission_count
+		and "soviet_collapse_cleanup_terminal_collapse_missions = yes" in terminal,
+		f"cleanup={terminal_cleanup_refs} missions={mission_count}",
 	)
 	failed |= not check(
 		"mission_objective_shape",
@@ -497,6 +559,32 @@ def main() -> int:
 		"event005_focus_integrity_surface",
 		len(focus_map) >= 775 and not missing_focus_shape and not missing_focus_refs,
 		f"focuses={len(focus_map)} bad_shape=" + ",".join(missing_focus_shape[:10]) + " missing_refs=" + ",".join(missing_focus_refs[:10]),
+	)
+	material_reward_pattern = (
+		r"\b(add_building_construction|add_extra_state_shared_building_slots|add_equipment_to_stockpile|"
+		r"add_manpower|add_political_power|add_stability|add_war_support|add_command_power|army_experience|add_to_faction)\b"
+	)
+	focus_helper_pattern = r"\bsoviet_collapse_apply_focus_[A-Za-z0-9_]+\b"
+	material_reward_focuses = sum(1 for block in focus_map.values() if re.search(material_reward_pattern, block))
+	focus_helper_reward_focuses = sum(1 for block in focus_map.values() if re.search(focus_helper_pattern, block))
+	idea_only_focuses = sum(
+		1 for block in focus_map.values()
+		if "add_ideas" in block
+		and not re.search(material_reward_pattern, block)
+		and not re.search(focus_helper_pattern, block)
+	)
+	ai_contextual_focuses = sum(1 for block in focus_map.values() if "ai_will_do" in block and "modifier =" in block)
+	failed |= not check(
+		"focus_reward_variety_surface",
+		material_reward_focuses >= 500
+		and focus_helper_reward_focuses >= 250
+		and idea_only_focuses <= 40,
+		f"material={material_reward_focuses} focus_helpers={focus_helper_reward_focuses} idea_only={idea_only_focuses}",
+	)
+	failed |= not check(
+		"focus_ai_surface",
+		ai_contextual_focuses >= 190,
+		f"contextual_ai={ai_contextual_focuses}",
 	)
 	missing_focus_loc = sorted(focus_id for focus_id in focus_ids if focus_id not in localisation_keys)
 	missing_focus_desc = sorted(

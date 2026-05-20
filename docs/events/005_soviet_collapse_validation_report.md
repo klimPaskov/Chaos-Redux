@@ -56,14 +56,21 @@ Mission success pressure helpers are net non-increasing; the least stabilizing h
 Mission failure pressure helpers are bounded; the largest single failure changes threat by 4.25, and the active-cap first wave remains under the Union Unmade high-threat gate.
 Union Unmade first-month lock is set for 31 days and the maybe-show helper requires the lock to be absent.
 Union Unmade threat-ceiling calls route through the guarded maybe-show helper.
+Union Unmade pacing constants require five breakaways, high threat 60, critical authority 25, and contested authority 45.
 Kazakhstan is included in terminal ordinary release and subject-freeing lists.
 Vanilla-supported internal republic tags are included in terminal release and subject-freeing lists.
 Vanilla-supported internal republic tags route to `soviet_collapse_internal_republic_focus_tree` instead of the generic fallback tree.
+Terminal ordinary republic release covers release, subject-freeing, breakaway setup, and runtime focus loading paths.
 Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet war pass.
 Terminal collapse calls local-league and Free Republics' League formation between release/spawn and war entry.
+Local league founding triggers require regional quorum triggers instead of one-member readiness checks.
+MTTH release checks cover release/miss weights, eight cause events, and cooldown wiring.
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
+Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 Event 005 focus integrity covers 775 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus reward variety covers 506 material reward focuses, 264 shared focus-helper reward focuses, and only 37 idea-only focuses.
+Event 005 focus AI checks cover 193 focuses with contextual `ai_will_do` modifiers.
 ```
 
 ## Blockers
