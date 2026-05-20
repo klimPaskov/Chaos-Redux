@@ -15,12 +15,16 @@ rg -n "country_event = \\{ id = chaosx\\.nr5\\.(30|31|32)" common events
 rg -n "soviet_collapse_show_(baltic_restoration_pact|caucasus_defense_compact|eastern_buffer_coalition)_super_event" common events interface
 rg -n "soviet_collapse_show_(league_equal_republics|steppe_federation)_super_event|GFX_super_event_(league_equal_republics|steppe_federation)|super_event\\.(23|24|25|26|27)\\." common interface localisation events
 rg -n "rather than repeating a generic checklist|generic checklist|is a .* focus for the republic crisis path|objective preparation|scaled reward|Dynamic .* reward|scales with|implementation|newly added|reworked" localisation/english/005_soviet_collapse_focus_expansion_l_english.yml
+rg -n "The effect scales|The backlash scales|Cost scales|Scales with|scale with|scales with|generic emergency battalion|required states|border states|nearby states|key states|some divisions|sufficient troops|enough equipment|capital-adjacent states|signal hub states|southern capitals|southern approach states|border routes" localisation/english/005_soviet_collapse_l_english.yml
+rg -n "^.*:0 " localisation/english/005_soviet_collapse_l_english.yml
+xxd -p -l 3 localisation/english/005_soviet_collapse_l_english.yml
 xxd -p -l 3 localisation/english/005_soviet_collapse_focus_expansion_l_english.yml
 rg -n "^.*:0 " localisation/english/005_soviet_collapse_focus_expansion_l_english.yml
 ```
 
 Static checks for the current correction pass passed: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, no active local-league super-event helper calls, and no remaining Free Republics' League, Steppe Federation, Baltic League, Caucasus League, or Eastern Buffer Coalition super-event localisation/sprite mappings.
 The focus-expansion localisation phrase audit also has zero hits for the former generated placeholder sentence, generic-checklist wording, implementation-update wording, and visible `Dynamic reward: scales...` tooltip phrasing; the file keeps the UTF-8 BOM (`efbbbf`) and has no `:0` keys.
+The main Soviet Collapse localisation phrase audit also has zero hits for the former mission outcome `scales with` wording, cost `Scales with` wording, generic emergency battalion wording, and vague mission-place phrases such as `required states`, `border states`, `nearby states`, `key states`, `some divisions`, `sufficient troops`, `enough equipment`, `capital-adjacent states`, `signal hub states`, `southern capitals`, `southern approach states`, and `border routes`; the file keeps the UTF-8 BOM (`efbbbf`) and has no `:0` keys.
 
 ## Scenario Matrix
 
@@ -71,6 +75,7 @@ Terminal collapse calls local-league and Free Republics' League formation betwee
 Local league founding triggers require regional quorum triggers instead of one-member readiness checks.
 MTTH release checks cover release/miss weights, eight cause events, and cooldown wiring.
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
+Mission outcome, cost, and selected route requirement localisation now describes visible pressure, named corridors, named capitals, and named route chains instead of exposing `scales with` tuning language or anonymous route/state wording.
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 The generated focus-expansion description layer now uses in-world crisis prose for Ukraine, Belarus, Kazakhstan, regional, and fallback breakaway focus descriptions instead of the former placeholder "focus for the republic crisis path" construction.
