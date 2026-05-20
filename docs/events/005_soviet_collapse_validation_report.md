@@ -9,12 +9,13 @@ This report records current script/parser validation and deterministic verifier 
 ## Commands Run
 
 ```text
-test -f .tools/verify_event005_completion_gate.py
+python3 -m py_compile .tools/verify_event005_completion_gate.py
+python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
 git diff --check
 rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
 ```
 
-The verifier source check failed because `.tools/verify_event005_completion_gate.py` is absent in this checkout. Static checks for the current correction pass passed: no whitespace errors and no forbidden comparison operators in the edited script file.
+The verifier compiled and exited 0. Static checks for the current correction pass passed: no whitespace errors and no forbidden comparison operators in the edited script file.
 
 ## Scenario Matrix
 
@@ -46,15 +47,16 @@ The previous audit recorded a verifier that fails if:
 - local league founding triggers do not call explicit quorum triggers, or
 - ordinary local league and normal League-route content calls local super-event helpers.
 
-That verifier cannot currently be rerun because the source file is absent. The latest script correction instead validated by static inspection that:
+The restored verifier checks these current surfaces:
 
 ```text
 Union Unmade threat-ceiling calls now route through the guarded maybe-show helper.
 Kazakhstan is included in terminal ordinary release and subject-freeing lists.
 Vanilla-supported internal republic tags are included in terminal release and subject-freeing lists.
 Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet war pass.
+Terminal collapse calls local-league and Free Republics' League formation between release/spawn and war entry.
 ```
 
 ## Blockers
 
-`.tools/verify_event005_completion_gate.py` is absent, so deterministic completion-gate claims in older audit text cannot currently be reproduced. Live-session behavior remains the final practical check for feel, pacing, league joining, and whether shared regional trees feel sufficiently distinct in play.
+The restored verifier covers deterministic script surfaces, not live-session feel or the full final design claim. Live-session behavior remains the final practical check for pacing, league joining, terminal war entry, and whether shared regional trees feel sufficiently distinct in play.

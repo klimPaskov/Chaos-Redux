@@ -33,6 +33,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 - Union Unmade regular trigger ingredients: minimum breakaway count 5, high threat 60, critical authority 25, and sustained severe pressure alternatives.
 - Threat-ceiling recalculation and progressive-release checks route through `soviet_collapse_maybe_show_union_unmade_super_event`, so they use the same first-month and severe-failure gates instead of calling Union Unmade directly.
 - Terminal ordinary release includes Kazakhstan and vanilla-supported internal republic tags: `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`.
+- Terminal collapse now runs league formation before anti-Soviet war entry. Local leagues auto-form only where two-member regional quorum exists, while Free Republics' League expansion skips countries already committed to a local compact.
 - Monthly guard constants cap ordinary successful or moderate months at low deltas.
 - Mission success helpers do not raise the main threat total.
 - Progressive release MTTH weighs threat, authority, command obedience, depot vulnerability, foreign penetration, League pressure, old movements, failed missions, war state, regional cascades, and chaos tier.
@@ -53,4 +54,4 @@ Ordinary local league formation no longer emits super-events. Formation still us
 python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
 ```
 
-Current checkout result: blocked because the verifier source is absent from `.tools/`. Static checks for this correction pass found no whitespace errors and no forbidden `<=`/`>=` operators in `common/scripted_effects/005_soviet_collapse_effects.txt`.
+Current checkout result: exit 0. Static checks also found no whitespace errors and no forbidden `<=`/`>=` operators in `common/scripted_effects/005_soviet_collapse_effects.txt`.
