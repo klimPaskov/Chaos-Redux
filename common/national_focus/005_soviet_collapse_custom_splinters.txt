@@ -13450,6 +13450,466 @@ focus_tree = {
 		}
 	}
 
+	focus = {
+		id = ARD_murmansk_port_records
+		icon = GFX_focus_ARD_murmansk_port_records
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_settlement }
+
+		completion_reward = {
+			set_country_flag = ard_focus_murmansk_port_records
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = ard_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = ARD_kola_field_staff
+		icon = GFX_focus_ARD_kola_field_staff
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 0
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_war_plan }
+
+		completion_reward = {
+			set_country_flag = ard_focus_kola_field_staff
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_convoy_court_registers
+		icon = GFX_focus_ARD_convoy_court_registers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = ard_focus_convoy_court_registers
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = ard_focus_diplomatic_plan }
+		}
+	}
+
+	focus = {
+		id = ARD_ice_watch_boards
+		icon = GFX_focus_ARD_ice_watch_boards
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = ard_focus_ice_watch_boards
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = ARD_white_sea_customs
+		icon = GFX_focus_ARD_white_sea_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_murmansk_dockyard_sheds }
+
+		completion_reward = {
+			set_country_flag = ard_focus_white_sea_customs
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ARD_naval_infantry_yards
+		icon = GFX_focus_ARD_naval_infantry_yards
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_war_plan }
+
+		completion_reward = {
+			set_country_flag = ard_focus_naval_infantry_yards
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_fuel_and_convoy_escorts
+		icon = GFX_focus_ARD_fuel_and_convoy_escorts
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 16
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_murmansk_dockyard_sheds }
+
+		completion_reward = {
+			set_country_flag = ard_focus_fuel_and_convoy_escorts
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_kola_battery_posts
+		icon = GFX_focus_ARD_kola_battery_posts
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 0
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_kola_denial_posts }
+		prerequisite = { focus = ARD_kola_field_staff }
+
+		completion_reward = {
+			set_country_flag = ard_focus_kola_battery_posts
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_murmansk_dockyard_contracts
+		icon = GFX_focus_ARD_murmansk_dockyard_contracts
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_white_sea_customs }
+		prerequisite = { focus = ARD_fuel_and_convoy_escorts }
+
+		completion_reward = {
+			set_country_flag = ard_focus_murmansk_dockyard_contracts
+			random_owned_controlled_state = {
+				limit = {
+					is_coastal = yes
+					free_building_slots = {
+						building = dockyard
+						size > 0
+						include_locked = yes
+					}
+				}
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ARD_tundra_watch_posts
+		icon = GFX_focus_ARD_tundra_watch_posts
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_naval_infantry_yards }
+		prerequisite = { focus = ARD_kola_battery_posts }
+
+		completion_reward = {
+			set_country_flag = ard_focus_tundra_watch_posts
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_winter_convoy_columns
+		icon = GFX_focus_ARD_winter_convoy_columns
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 12
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_murmansk_dockyard_contracts }
+
+		completion_reward = {
+			set_country_flag = ard_focus_winter_convoy_columns
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ARD_kandalaksha_rear_area
+		icon = GFX_focus_ARD_kandalaksha_rear_area
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_tundra_watch_posts }
+
+		completion_reward = {
+			set_country_flag = ard_focus_kandalaksha_rear_area
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			random_owned_controlled_state = {
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_foreign_fleet_letters
+		icon = GFX_focus_ARD_foreign_fleet_letters
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_white_sea_observer_board }
+		prerequisite = { focus = ARD_ice_watch_boards }
+
+		completion_reward = {
+			set_country_flag = ard_focus_foreign_fleet_letters
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_volunteer_port_schools
+		icon = GFX_focus_ARD_volunteer_port_schools
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 20
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_convoy_court_registers }
+		prerequisite = { focus = ARD_ice_watch_boards }
+
+		completion_reward = {
+			set_country_flag = ard_focus_volunteer_port_schools
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = ard_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = ARD_white_sea_port_tolls
+		icon = GFX_focus_ARD_white_sea_port_tolls
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 11
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_white_sea_customs }
+		prerequisite = { focus = ARD_murmansk_port_records }
+
+		completion_reward = {
+			set_country_flag = ard_focus_white_sea_port_tolls
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ARD_league_convoy_bargain
+		icon = GFX_focus_ARD_league_convoy_bargain
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 12
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_foreign_fleet_letters }
+		prerequisite = { focus = ARD_volunteer_port_schools }
+
+		completion_reward = {
+			set_country_flag = ard_focus_league_convoy_bargain
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_hardline_against_fleet_commissars
+		icon = GFX_focus_ARD_hardline_against_fleet_commissars
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 4
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ARD_radical_turn }
+		prerequisite = { focus = ARD_tundra_watch_posts }
+
+		completion_reward = {
+			set_country_flag = ard_focus_hardline_against_fleet_commissars
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small } }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = ARD_directorate_staff_map
+		icon = GFX_focus_ARD_directorate_staff_map
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 8
+		y = 13
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ARD_hardline_against_fleet_commissars }
+		prerequisite = { focus = ARD_winter_convoy_columns }
+
+		completion_reward = {
+			set_country_flag = ard_focus_directorate_staff_map
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ARD_port_neutrality_statute
+		icon = GFX_focus_ARD_port_neutrality_statute
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 13
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ARD_league_convoy_bargain }
+		prerequisite = { focus = ARD_convoy_court_registers }
+
+		completion_reward = {
+			set_country_flag = ard_focus_port_neutrality_statute
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = ard_focus_settlement }
+		}
+	}
+
+	focus = {
+		id = ARD_arctic_port_endurance
+		icon = GFX_focus_ARD_arctic_port_endurance
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 14
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ARD_white_sea_port_tolls }
+		prerequisite = { focus = ARD_winter_convoy_columns }
+		prerequisite = { focus = ARD_port_neutrality_statute focus = ARD_directorate_staff_map }
+
+		completion_reward = {
+			set_country_flag = ard_focus_arctic_port_endurance
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = ard_focus_settlement }
+			modifier = { factor = 2 has_country_flag = ard_focus_radical_turn }
+		}
+	}
+
 
 	focus = {
 		id = ARD_hidden_doctrine
@@ -13510,11 +13970,11 @@ focus_tree = {
 		icon = GFX_focus_ARD_endgame
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
 		x = 16
-		y = 12
+		y = 15
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = ARD_extreme_path }
-		prerequisite = { focus = ARD_murmansk_dockyard_sheds }
-		prerequisite = { focus = ARD_kola_denial_posts focus = ARD_white_sea_observer_board }
+		prerequisite = { focus = ARD_extreme_path focus = ARD_arctic_port_endurance }
+		prerequisite = { focus = ARD_murmansk_dockyard_contracts focus = ARD_white_sea_port_tolls }
+		prerequisite = { focus = ARD_kandalaksha_rear_area focus = ARD_league_convoy_bargain }
 
 		completion_reward = {
 			set_country_flag = ard_focus_endgame
