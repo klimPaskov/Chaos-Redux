@@ -74,6 +74,7 @@ News/report events: ordinary league formation remains in normal events, while Un
 - Added Kazakhstan to ordinary Union Unmade terminal release and subject-freeing lists.
 - Wired the existing high-chaos successor spawn effects into the terminal-collapse path and added a terminal anti-Soviet war pass for all breakaway countries that can declare.
 - Confirmed `.tools/verify_event005_completion_gate.py` is not present in this checkout; earlier verifier claims in this audit cannot currently be reproduced from source.
+- Added vanilla-supported internal republic tags to Union Unmade terminal release and subject-freeing lists: `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. Event-created versions use the fallback breakaway focus tree unless a bespoke tree is later assigned.
 
 ## Verification
 

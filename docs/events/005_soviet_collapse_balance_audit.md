@@ -32,6 +32,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 - Union Unmade first-month lock: `soviet_collapse_union_unmade_first_month_lock`.
 - Union Unmade regular trigger ingredients: minimum breakaway count 5, high threat 60, critical authority 25, and sustained severe pressure alternatives.
 - Threat-ceiling recalculation and progressive-release checks route through `soviet_collapse_maybe_show_union_unmade_super_event`, so they use the same first-month and severe-failure gates instead of calling Union Unmade directly.
+- Terminal ordinary release includes Kazakhstan and vanilla-supported internal republic tags: `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`.
 - Monthly guard constants cap ordinary successful or moderate months at low deltas.
 - Mission success helpers do not raise the main threat total.
 - Progressive release MTTH weighs threat, authority, command obedience, depot vulnerability, foreign penetration, League pressure, old movements, failed missions, war state, regional cascades, and chaos tier.
