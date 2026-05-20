@@ -4,13 +4,14 @@ Audit date: 2026-05-20
 
 ## Mission Catalogue
 
-The active Soviet crisis board contains 118 manually activated missions. The full 118-row mission table is maintained in `docs/events/005_soviet_union_collapse_mission_audit.md`; this file is the required current-path audit for the serious completion pass.
+The active Soviet crisis board contains 118 manually activated missions. The full 118-row mission table is maintained in `docs/events/005_soviet_union_collapse_mission_audit.md` with the serious-audit columns for owner, category, region, target surface, duration, success condition, failure condition, effects, and duplicate check.
 
 Verifier evidence:
 
 - `mission_wiring_counts`: 118 mission blocks, 118 activation refs, and 118 terminal cleanup removals.
 - `mission_objective_shape`: every mission is a non-selectable, good, timed objective with `days_mission_timeout`, `custom_trigger_tooltip`, a named requirement tooltip, a hidden scripted trigger, a completion effect, and a timeout effect; no success and failure bodies are identical.
 - `mission_localisation_surface`: every mission has title, description, requirement tooltip, success tooltip, and failure tooltip localisation; requirement text contains no placeholder wording such as `required states`, `border states`, `TBD`, or `unknown`.
+- `mission_audit_table_surface`: the full mission audit table has the required serious-audit columns and one row per active Soviet crisis mission.
 - `terminal_mission_cleanup`: the terminal cleanup pass removes all 118 active mission IDs.
 
 ## Family Coverage
