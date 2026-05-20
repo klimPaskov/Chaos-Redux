@@ -114,7 +114,7 @@ The implemented trees are:
 14. `BBH_soviet_collapse_focus_tree`: 21 focuses for Black Banner Host mobile-column, commune-war, captured-store, anti-state, and anti-prison routes.
 15. `BSC_soviet_collapse_focus_tree`: 21 focuses for Basmachi Confederation oasis, pass-guard, caravan-store, road-control, and steppe federation routes.
 16. `TNC_soviet_collapse_focus_tree`: 21 focuses for Turkestan National Council civic-office, railway-guard, oasis-bureau, guarded-route, and New Turkestan routes.
-17. `ALA_soviet_collapse_focus_tree`: 21 focuses for Alash Restoration Authority congress, cavalry-guard, school, rail-station, and modernization routes.
+17. `ALA_soviet_collapse_focus_tree`: 27 focuses for Alash Restoration Authority congress, cavalry-guard, Alash officer schools, rail-station, campaign planning, aksakal mediation, minority steppe guarantees, recognition, and modernization/endgame routes.
 18. `UDC_soviet_collapse_focus_tree`: 21 focuses for Union Defense Committee loyal-district, provisional-command, signature-force, and emergency command routes.
 19. `SDZ_soviet_collapse_focus_tree`: 21 focuses for Security Directorate Zone archive, directorate, signature-force, and security-state routes.
 20. `GAC_soviet_collapse_focus_tree`: 21 focuses for Green Army Congress village, land-and-bread, peasant guard, and rural defense routes.
