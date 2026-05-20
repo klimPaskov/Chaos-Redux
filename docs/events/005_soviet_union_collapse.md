@@ -104,7 +104,7 @@ The implemented trees are:
 4. `soviet_collapse_baltic_focus_tree`: 36 focuses for Baltic restoration, legal continuity, archive protection, border government, Baltic League, port/customs sovereignty, coastal and forest defense, foreign-protection, and recognition settlement routes.
 5. `soviet_collapse_caucasus_focus_tree`: 34 focuses for Caucasus mountain compact, oil emergency directorate, national restoration, pass defense, sponsor-consulate, border treaty, Caspian/Black Sea route, compact, and high-chaos crown routes.
 6. `soviet_collapse_central_asia_focus_tree`: 34 focuses for Central Asian local republic, Turkestan federation, military border authority, foreign patronage, cotton/water logistics, Basmachi pressure, Khwarazm high-chaos, southern pact, and federation routes.
-7. `soviet_collapse_moldova_focus_tree`: 17 focuses for Moldova Dniester, Bessarabian, Romanian-question, Ukrainian-border, grain-road, and small-state survival routes.
+7. `soviet_collapse_moldova_focus_tree`: 23 focuses for Moldova Dniester, Bessarabian, Romanian-alignment, union-debate, Ukrainian grain-road, Eastern Buffer, river-state, and small-state survival routes.
 8. `soviet_collapse_breakaway_focus_tree`: 27 focuses for Shared fallback tree for remaining event-created breakaways with emergency governance, defense, foreign liaison, League preparation, and survival lanes.
 9. `CFR_soviet_collapse_focus_tree`: 45 focuses for Civilian Factory of Russia construction-board tree with cooperative, planner, contract-board, concrete-committee, and builder-state routes.
 10. `MFR_soviet_collapse_focus_tree`: 37 focuses for Military Factory of Russia arsenal-board tree with officer, worker, merchant, unsafe-output, export, and arsenal-state routes.
