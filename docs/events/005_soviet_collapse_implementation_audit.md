@@ -53,7 +53,7 @@ Local league logic: Baltic, Caucasus, and Central Asian leagues now require expl
 
 Union Unmade logic: `soviet_collapse_union_unmade_first_month_lock` gates ordinary early collapse, and `soviet_collapse_show_union_unmade_super_event` calls `soviet_collapse_apply_terminal_collapse`.
 
-AI hooks: current focus checks report 971 focuses with `ai_will_do`; route choices and regular decisions keep dynamic AI weighting instead of flat-only behavior.
+AI hooks: current focus checks report 977 focuses with `ai_will_do`; route choices and regular decisions keep dynamic AI weighting instead of flat-only behavior.
 
 Localisation: existing localisation audits report no missing focus, idea, or decision name/description localisation and no `:0` localisation entries in Event 005 files.
 
