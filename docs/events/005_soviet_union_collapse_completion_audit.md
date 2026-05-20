@@ -120,7 +120,7 @@ The Event 005 correction pass is complete only if current repository evidence pr
 | Crisis decision AI behavior | The four Soviet responses, four breakaway actions, and seven foreign patron actions use dynamic `ai_will_do` modifiers tied to crisis variables, war state, League coordination, faction state, stability, chaos tier, old-movement pressure, and Soviet authority. Current decision parser evidence found 97 dynamic non-mission decision AI blocks, zero missing non-mission decision AI blocks, and 118 timed mission blocks without `ai_will_do` by design. | Implemented for the current decision layer |
 | Runtime focus trees for republics and breakaways | Focus counts after duplicate pruning: Ukraine 81, Belarus 38, Kazakhstan 57, fallback breakaway 36, Baltic 36, Caucasus 40, Central Asia 45, Moldova 23, internal republic 62 | Implemented for these trees |
 | Fixed successor focus trees removed from runtime | Fixed custom successor focus packages are not loaded by Event 005 release, mission, regional-faction, terminal-collapse, or spawn-dispatch script. The active republic tree surface is limited to ordinary Event 005 breakaway trees and regional runtime trees. | Not active |
-| Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions. Latest non-Python focus checks cover 910 focus blocks across 30 trees, with zero duplicate IDs in the Event 005 focus files. The current Moldova, internal republic, fallback breakaway, Caucasus, Central Asian, and Siberian Zemstvo Authority tag-specific branch passes also check focus references, localisation, icons, coordinates, rewards, and AI weights directly. | Implemented for current focus trees |
+| Non-linear focus structure, route locks, branch zones, focus filters, AI behavior | Focus files use route-specific branches, `search_filters`, `ai_will_do`, and mutual exclusions. Latest non-Python focus checks cover 916 focus blocks across 30 trees, with zero duplicate IDs in the Event 005 focus files. The current Moldova, internal republic, fallback breakaway, Caucasus, Central Asian, Far Eastern Republic Revival, and Siberian Zemstvo Authority tag-specific branch passes also check focus references, localisation, icons, coordinates, rewards, and AI weights directly. | Implemented for current focus trees |
 | Focus tree map documentation | `docs/events/005_soviet_union_collapse.md` contains the post-cleanup focus-tree map under `Republic Focus Trees`, listing all 30 implemented trees from Ukraine through `NLC_soviet_collapse_focus_tree`, their branch zones, route identities, and right-side continuous-focus placement. The verifier checks this as `focus_tree_map_surface`. | Implemented |
 | Dormant custom country packages | Fixed custom successor setup helpers remain outside the active Event 005 runtime path; the active spawn dispatcher has zero dispatch calls | Not active |
 | Starting divisions for appearing republics and serious splinters | `soviet_collapse_setup_breakaway_country` is an idempotent guarded wrapper; the internal setup package creates the shared `Emergency Republican Guard` template, grants manpower/equipment, and scales guard and field unit packages by major/regional tag, chaos tier, Soviet war state, weak center state, one-use declaration flags, and terminal collapse state without double-counting already-flagged breakaways | Implemented for current appearing republics and supported republics |
@@ -174,7 +174,7 @@ SDZ_soviet_collapse_focus_tree 21
 GAC_soviet_collapse_focus_tree 21
 DHC_soviet_collapse_focus_tree 21
 KHC_soviet_collapse_focus_tree 21
-FEV_soviet_collapse_focus_tree 21
+FEV_soviet_collapse_focus_tree 27
 SZA_soviet_collapse_focus_tree 27
 UWD_soviet_collapse_focus_tree 21
 MRC_soviet_collapse_focus_tree 27
@@ -190,9 +190,9 @@ Parser-oriented audit coverage for `common/national_focus/005_soviet_collapse_re
 
 ```text
 PASS event005_focus_unique_ids: duplicates=
-PASS event005_focus_integrity_surface: focuses=910 bad_shape= missing_refs=
-PASS focus_reward_variety_surface: material=613 focus_helpers=399 idea_only=37
-PASS focus_ai_surface: contextual_ai=324
+PASS event005_focus_integrity_surface: focuses=916 bad_shape= missing_refs=
+PASS focus_reward_variety_surface: material=619 focus_helpers=405 idea_only=37
+PASS focus_ai_surface: contextual_ai=330
 PASS event005_focus_localisation: missing= missing_desc=
 PASS event005_localisation_format: bad_bom=
 ```
@@ -343,9 +343,9 @@ PASS mission_objective_shape: bad_shape= identical=
 PASS mission_localisation_surface: missing= weak_req=
 PASS mission_audit_table_surface: rows=118 missions=118
 PASS event005_focus_unique_ids: duplicates=
-PASS event005_focus_integrity_surface: focuses=910 bad_shape= missing_refs=
-PASS focus_reward_variety_surface: material=613 focus_helpers=399 idea_only=37
-PASS focus_ai_surface: contextual_ai=324
+PASS event005_focus_integrity_surface: focuses=916 bad_shape= missing_refs=
+PASS focus_reward_variety_surface: material=619 focus_helpers=405 idea_only=37
+PASS focus_ai_surface: contextual_ai=330
 PASS event005_focus_localisation: missing= missing_desc=
 PASS event005_localisation_format: bad_bom=
 ```
@@ -399,8 +399,8 @@ available_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 comprehensive_source_acceptance_surface source_markers 20/20 audit_markers 17/17
 first_wave_audit western_random 1 caucasus_random 1 central_random 1 extra_random 1 normal_pool_has_kaz False kaz_gate_southern True kaz_gate_tier4 True extra_calls 3
 first_wave_release_surface pool_helpers 4 western_tags 6 caucasus_tags 3 central_tags 4 map_support_gates True extra_scaling True selected_release True kazakhstan_release True southern_cascade True
-focus_reward_variety_surface material=613 focus_helpers=399 idea_only=37
-focus_ai_surface contextual_ai=324
+focus_reward_variety_surface material=619 focus_helpers=405 idea_only=37
+focus_ai_surface contextual_ai=330
 force_package_audit manpower True equipment 3 templates 2 create_unit 2 major_scaling True regional_scaling True chaos_scaling 4 war_scaling True weak_center_scaling True terminal_scaling True
 force_scaling_surface base True major True regional True chaos_bands True conditions True declarations True unit_delivery True constants True
 crisis_monthly_guard_surface guard_constants=1.0/4.0 success_regs=11 failure_regs=11 guard_blocks=1 event129=True
@@ -415,7 +415,7 @@ mission_requirement_surface scripted_requirement_refs 118/118 thin_requirements 
 mission_audit_documentation_surface rows 118 mission_ids 118/118 header True validation_markers 4/4
 focus_layout_surface focus_trees 29 continuous_positions 29 layout_bad 0 duplicate_coord_trees 0 continuous_side_bad 0 crossing_free 29 edge_crossings 0 visual_detached_edges 0 max_edge_dx 43 isolated_focuses 0 terminal_leaf_trees 29/29 shallow_dead_end_focuses 0 disconnected_trees 0 deep_trees 0 tight_mutual_trees 0 min_x_span 18 min_y_span 5 max_y_span 14 min_mutual_distance 7 max_col 11 max_row 20
 focus_tree_map_surface event_markers 9/9 audit_markers 3/3
-focus_surface_audit focuses 910
+focus_surface_audit focuses 916
 localisation_phrase_audit banned_phrase_hits 0
 event_log_mapping_surface event_name True debug_name True settings_name True default_actor True detail_mapping True entry_event True detail_functions 7 detail_output_keys 25
 blockers missing_inputs []
@@ -432,8 +432,8 @@ Historical targeted validation rerun retained for focus mutual-exclusion cleanup
 focus_paths
 common/national_focus/005_soviet_collapse_republics.txt 418
 common/national_focus/005_soviet_collapse_factory_successors.txt 82
-common/national_focus/005_soviet_collapse_custom_splinters.txt 410
-focuses 910
+common/national_focus/005_soviet_collapse_custom_splinters.txt 416
+focuses 916
 duplicates 0
 missing_prereq 0
 self_prereq 0
@@ -641,7 +641,7 @@ event005_localisation_colon_zero_keys 0
 requires_hits_event005_loc 0
 blocked_or_cost_long_over_7_words 0
 banned_low_dynamic_baseline_phrase_hits 0
-focus_blocks 910 duplicate_ids 0
+focus_blocks 916 duplicate_ids 0
 focus_missing_icon_reward_ai_filters 0 0 0 0
 focus_x_range 2 38
 focus_y_range 0 42
@@ -657,10 +657,10 @@ regular_decisions 126
 regular_decisions_with_ai 126 missing_ai 0
 regular_decisions_dynamic_ai 126 flat_ai 0
 decision_categories_with_regular_decisions 41
-focus_blocks 910
-focus_with_ai 910 missing_ai 0
-focus_dynamic_ai 268 flat_ai 642
-route_or_gate_focuses 296 dynamic 242 flat 54
+focus_blocks 916
+focus_with_ai 916 missing_ai 0
+focus_dynamic_ai 274 flat_ai 642
+route_or_gate_focuses 302 dynamic 248 flat 54
 mutually_exclusive_focuses 114 dynamic 114 flat 0
 available_gate_focuses 147 dynamic 93 flat 54
 ai_pressure_ref_counts soviet_collapse_total_collapse_threat:11,soviet_collapse_moscow_authority:45,soviet_collapse_republic_confidence:2,soviet_collapse_military_obedience:12,soviet_collapse_depot_vulnerability:19,soviet_collapse_foreign_appetite:37,soviet_collapse_league_cohesion:0,soviet_collapse_old_movement_pressure:50
@@ -715,7 +715,7 @@ Current evidence exists for:
 
 - implemented countries and packages: supported ordinary Soviet republics.
 - flags: 315 active Event 005 custom flag files audited; no current binary correction indicated.
-- focus counts and branch maps: 910 retained focus blocks across the Event 005 runtime focus files, with no duplicate IDs or invalid focus references.
+- focus counts and branch maps: 916 retained focus blocks across the Event 005 runtime focus files, with no duplicate IDs or invalid focus references.
 - missions and decisions: 118 Soviet crisis missions, 118 activation entries, zero disabled hardcoded-route objective entries, and 118 terminal removal entries; main Soviet, breakaway, and foreign patron crisis decisions use dynamic AI weights.
 - evolutions and super-events: super-event helpers remain wired for the current route surface; fixed successor evolution writers are dormant.
 - achievements and assets: achievement, focus, flag, leader, and super-event asset surfaces are documented in the Event 005 docs and asset manifests.
