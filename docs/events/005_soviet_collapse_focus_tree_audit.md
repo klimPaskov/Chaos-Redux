@@ -39,9 +39,9 @@ The internal republic tree covers the vanilla-supported internal Union Unmade ta
 
 Verifier evidence:
 
-- `focus_integrity`: 775 focuses, zero duplicate IDs, zero missing references, zero self-references, zero nonreciprocal mutual exclusions, zero repeated mutual blocks, zero missing rewards, zero missing icons, zero missing coordinates.
-- `focus_reward_variety_surface`: zero duplicate reward groups, zero duplicate reward focuses, nine reward categories, 76 add-idea rewards across 775 focuses.
-- `focus_ai_surface`: every focus has `ai_will_do`; mutually exclusive route choices use dynamic AI rather than flat weights.
+- `event005_focus_integrity_surface`: 775 focuses, zero duplicate IDs, zero missing references, zero missing rewards, zero missing icons, and zero missing coordinates.
+- `focus_reward_variety_surface`: 506 focuses have direct material rewards, 264 use shared focus reward helpers, and only 37 are idea-only.
+- `focus_ai_surface`: every focus has `ai_will_do`; 193 focuses have contextual AI modifiers.
 - `focus_layout_surface`: no duplicate coordinates, no isolated focuses, no shallow dead-end leaves, no edge crossings, and all continuous focus positions are in right-side panels.
 
 ## Changes From This Audit Pass
