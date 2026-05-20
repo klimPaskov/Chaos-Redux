@@ -2504,7 +2504,7 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_influence_sweden",
 		"soviet_collapse_influence_italy",
 	]
-	stage_ideas = [
+	old_foreign_stage_ideas = [
 		"soviet_collapse_foreign_diplomatic_contacts",
 		"soviet_collapse_foreign_diplomatic_mission",
 		"soviet_collapse_foreign_treaty_backing",
@@ -2530,15 +2530,16 @@ def verify_foreign_influence_surface() -> list[Check]:
 		"soviet_collapse_foreign_dependency_network",
 		"soviet_collapse_foreign_patron_burden",
 	]
+	stage_ideas = [
+		"soviet_collapse_republic_foreign_support_1",
+		"soviet_collapse_republic_foreign_support_2",
+		"soviet_collapse_republic_foreign_support_3",
+		"soviet_collapse_republic_foreign_support_4",
+	]
 	stage_update_blocks = named_blocks(tokens(effects), "soviet_collapse_update_foreign_investment_stage_ideas")
 	stage_update_text = " ".join(stage_update_blocks[0]) if stage_update_blocks else ""
-	stage_4_ideas = [
-		"soviet_collapse_internationally_entrenched_republic",
-		"soviet_collapse_dependent_reconstruction_network",
-		"soviet_collapse_sponsor_dominated_volunteer_command",
-		"soviet_collapse_sponsor_directed_staff",
-		"soviet_collapse_foreign_dependency_network",
-	]
+	consolidated_update_blocks = named_blocks(tokens(effects), "soviet_collapse_update_consolidated_republic_ideas")
+	consolidated_update_text = " ".join(consolidated_update_blocks[0]) if consolidated_update_blocks else ""
 	aid_effects = [
 		"soviet_collapse_apply_foreign_recognition_aid",
 		"soviet_collapse_apply_foreign_liaison_aid",
@@ -2573,12 +2574,15 @@ def verify_foreign_influence_surface() -> list[Check]:
 	stage_loc_ok = all(f"{idea}:" in loc and f"{idea}_desc:" in loc for idea in stage_ideas)
 	stage_update_logic_ok = (
 		bool(stage_update_blocks)
-		and all(f"remove_ideas = {idea}" in stage_update_text for idea in stage_ideas if idea != "soviet_collapse_foreign_patron_burden")
-		and all(f"stage_{stage}_threshold" in stage_update_text for stage in [1, 2, 3, 4])
-		and all(idea in stage_update_text for idea in stage_4_ideas)
-		and "has_country_flag = soviet_collapse_balanced_sponsors_two" in stage_update_text
-		and "has_country_flag = soviet_collapse_balanced_sponsors_three" in stage_update_text
-		and stage_update_text.count("has_country_flag = soviet_collapse_dominant_sponsor_lock") >= 2
+		and bool(consolidated_update_blocks)
+		and "soviet_collapse_update_sponsor_balance_pressure = yes" in stage_update_text
+		and "soviet_collapse_update_consolidated_republic_ideas = yes" in stage_update_text
+		and all(f"remove_ideas = {idea}" in effects for idea in old_foreign_stage_ideas if idea != "soviet_collapse_foreign_patron_burden")
+		and all(f"remove_ideas = {idea}" in effects for idea in stage_ideas)
+		and all(f"stage_{stage}_threshold" in consolidated_update_text for stage in [1, 2, 3, 4])
+		and all(f"add_ideas = {idea}" in consolidated_update_text for idea in stage_ideas)
+		and "soviet_collapse_foreign_support_strength" in consolidated_update_text
+		and "soviet_collapse_active_foreign_sponsor_count" in consolidated_update_text
 	)
 	aid_effect_ok = all(
 		re.search(rf"{effect}\s*=\s*{{.*?soviet_collapse_apply_foreign_influence_delta\s*=\s*yes.*?soviet_collapse_update_foreign_investment_stage_ideas\s*=\s*yes", effects, re.S)
@@ -2757,16 +2761,9 @@ def verify_foreign_influence_surface() -> list[Check]:
 	docs_ok = "## Foreign Influence Tracking" in docs and all(marker in docs for marker in [
 		"category totals",
 		"sponsor totals",
-		"staged spirit tracks",
-		"Recognition grows",
-		"Investment grows",
-		"Volunteer support grows",
-		"Adviser support grows",
-		"Internationally Entrenched Republic",
-		"Dependent Reconstruction Network",
-		"Sponsor-Dominated Volunteer Command",
-		"Sponsor-Directed Staff",
-		"Foreign Dependency Network",
+		"one consolidated staged `Foreign Support` republic spirit",
+		"visible republic idea surface stays compact",
+		"outside support grows stronger",
 		"civilian construction",
 		"anti-puppet clause",
 		"active sponsor count",

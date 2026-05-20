@@ -7,7 +7,7 @@ Event 005 uses local leagues as the regional layer between isolated breakaway re
 ## Flow
 
 1. A breakaway republic or eligible local successor becomes a regional faction candidate.
-2. The relevant founding decision creates the faction, marks the founder and members, recruits aligned partners, applies `soviet_collapse_regional_faction_commitments`, and raises Soviet-facing League pressure.
+2. The relevant founding decision creates the faction, marks the founder and members, recruits aligned partners, strengthens each member's staged League coordination, and raises Soviet-facing League pressure.
 3. Faction leaders can invite partners, coordinate goals, adopt defense, recognition, or logistics priorities, and settle internal tension.
 4. Under high threat or direct war pressure, regional members can call a defensive war against Moscow. The call arms members, brings faction partners into the war, clears the progressive-release cooldown, and immediately checks the MTTH release scheduler.
 5. Kazakhstan is restricted from Central Asian League membership and release pressure until at least three smaller Central Asian republics are already free.
