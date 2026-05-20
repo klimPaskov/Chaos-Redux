@@ -164,6 +164,41 @@ def loc_keys(text: str) -> set[str]:
 	return set(re.findall(r"(?m)^([A-Za-z0-9_]+):\s*\"", text))
 
 
+def constant_values(text: str, section: str) -> dict[str, float]:
+	block = block_after(text, section)
+	return {
+		match.group(1): float(match.group(2))
+		for match in re.finditer(r"(?m)^\s*([A-Za-z0-9_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*$", block)
+	}
+
+
+def threat_value(components: dict[str, float], baseline: dict[str, float]) -> float:
+	raw = (
+		components["republic_confidence"]
+		+ components["depot_vulnerability"]
+		+ components["foreign_appetite"]
+		+ components["league_cohesion"]
+		+ components["old_movement_pressure"]
+		+ baseline["total_threat_offset"]
+		- components["moscow_authority"]
+		- components["military_obedience"]
+	)
+	threat = raw * baseline["total_threat_multiplier"]
+	return max(baseline["total_threat_floor"], min(baseline["total_threat_ceiling"], threat))
+
+
+def pressure_deltas(pressure: dict[str, float], outcome: str, multiplier: float) -> dict[str, float]:
+	deltas: dict[str, float] = {}
+	marker = f"_{outcome}_"
+	for key, value in pressure.items():
+		if marker not in key:
+			continue
+		family, component = key.split(marker, 1)
+		sign = -1 if component in {"authority", "obedience"} else 1
+		deltas[family] = deltas.get(family, 0.0) + sign * value * multiplier
+	return deltas
+
+
 def check(name: str, ok: bool, details: str = "") -> bool:
 	status = "PASS" if ok else "FAIL"
 	print(f"{status} {name}{': ' + details if details else ''}")
@@ -186,6 +221,7 @@ def main() -> int:
 	effects = read("common/scripted_effects/005_soviet_collapse_effects.txt")
 	triggers = read("common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	decisions = read("common/decisions/005_soviet_collapse_decisions.txt")
+	constants = read("common/script_constants/005_soviet_collapse_constants.txt")
 	focus = read("common/national_focus/005_soviet_collapse_republics.txt")
 	all_focus = "\n".join(read(rel) for rel in FOCUS_FILES)
 	mission_audit = read("docs/events/005_soviet_union_collapse_mission_audit.md")
@@ -200,6 +236,85 @@ def main() -> int:
 
 	recalc = block_after(effects, "soviet_collapse_recalculate_total_threat")
 	progressive = block_after(effects, "soviet_collapse_maybe_release_threat_breakaway")
+	init = block_after(effects, "soviet_collapse_initialize_crisis_values")
+	maybe_union_unmade = block_after(effects, "soviet_collapse_maybe_show_union_unmade_super_event")
+	monthly_guard = block_after(effects, "soviet_collapse_apply_monthly_threat_guard")
+	baseline = constant_values(constants, "soviet_collapse_baseline")
+	threat_guard = constant_values(constants, "soviet_collapse_threat_guard")
+	progressive_release = constant_values(constants, "soviet_collapse_progressive_release")
+	opening_pressure = constant_values(constants, "soviet_collapse_opening_pressure")
+	soviet_objective = constant_values(constants, "soviet_collapse_soviet_objective")
+	objective_pressure = constant_values(constants, "soviet_collapse_objective_pressure")
+	super_event = constant_values(constants, "soviet_collapse_super_event")
+	calm_components = {
+		key: baseline[key]
+		for key in [
+			"moscow_authority",
+			"republic_confidence",
+			"military_obedience",
+			"depot_vulnerability",
+			"foreign_appetite",
+			"league_cohesion",
+			"old_movement_pressure",
+		]
+	}
+	calm_threat = threat_value(calm_components, baseline)
+	severe_components = dict(calm_components)
+	severe_components["republic_confidence"] += (
+		opening_pressure["chaos_tier_final"]
+		+ opening_pressure["low_stability"]
+		+ opening_pressure["low_war_support"]
+		+ opening_pressure["capital_lost"]
+	)
+	severe_components["depot_vulnerability"] += opening_pressure["chaos_tier_final"] + opening_pressure["active_war"]
+	severe_components["foreign_appetite"] += opening_pressure["chaos_tier_final_foreign_appetite"] + opening_pressure["active_war"]
+	severe_components["old_movement_pressure"] += opening_pressure["chaos_tier_final_old_movement_pressure"]
+	severe_components["moscow_authority"] += opening_pressure["low_stability_authority"] + opening_pressure["capital_lost_authority"]
+	severe_components["military_obedience"] += opening_pressure["low_war_support_obedience"]
+	severe_threat = threat_value(severe_components, baseline)
+	success_deltas = pressure_deltas(objective_pressure, "success", baseline["total_threat_multiplier"])
+	failure_deltas = pressure_deltas(objective_pressure, "failure", baseline["total_threat_multiplier"])
+	max_success_delta = max(success_deltas.values())
+	max_failure_delta = max(failure_deltas.values())
+	active_cap = int(soviet_objective["active_cap"])
+	first_wave_failure_pressure = calm_threat + active_cap * max_failure_delta
+	failed |= not check(
+		"crisis_balance_surface",
+		calm_threat < threat_guard["calm_threat_ceiling"]
+		and severe_threat < super_event["union_unmade_high_threat"]
+		and severe_threat < progressive_release["severe_threat"],
+		f"calm={calm_threat:.2f} severe={severe_threat:.2f}",
+	)
+	failed |= not check(
+		"crisis_monthly_guard_surface",
+		"constant:soviet_collapse_threat_guard.calm_success_month_cap" in monthly_guard
+		and "constant:soviet_collapse_threat_guard.moderate_success_month_cap" in monthly_guard
+		and "soviet_collapse_monthly_successful_objectives" in monthly_guard
+		and "soviet_collapse_monthly_failed_objectives" in monthly_guard
+		and "set_variable = { soviet_collapse_last_month_total_threat = soviet_collapse_total_collapse_threat }" in monthly_guard,
+		"calm and moderate success-month caps present",
+	)
+	failed |= not check(
+		"mission_success_pressure_surface",
+		max_success_delta <= 0,
+		f"least_stabilizing={max_success_delta:.2f} strongest={min(success_deltas.values()):.2f}",
+	)
+	failed |= not check(
+		"mission_failure_pressure_surface",
+		max_failure_delta <= 4.25
+		and first_wave_failure_pressure < super_event["union_unmade_high_threat"],
+		f"max_failure={max_failure_delta:.2f} active_cap={active_cap} first_wave={first_wave_failure_pressure:.2f}",
+	)
+	failed |= not check(
+		"union_unmade_first_month_guard_surface",
+		"soviet_collapse_union_unmade_first_month_lock" in init
+		and "days = 31" in init
+		and "NOT = { has_global_flag = soviet_collapse_union_unmade_first_month_lock }" in maybe_union_unmade
+		and "constant:soviet_collapse_super_event.min_breakaways_for_union_unmade" in maybe_union_unmade
+		and "constant:soviet_collapse_super_event.union_unmade_high_threat" in maybe_union_unmade
+		and "constant:soviet_collapse_super_event.union_unmade_critical_authority" in maybe_union_unmade,
+		"31-day lock and severe ingredient gates present",
+	)
 	failed |= not check(
 		"union_unmade_guarded_ceiling",
 		"soviet_collapse_maybe_show_union_unmade_super_event = yes" in recalc

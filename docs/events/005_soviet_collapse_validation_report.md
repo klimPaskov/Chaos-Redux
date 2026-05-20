@@ -23,7 +23,7 @@ The verifier compiled and exited 0. Static checks for the current correction pas
 | --- | --- | --- |
 | Calm World, strong USSR, event fired manually | `crisis_balance_surface` | Authority 62, Threat 7.25 |
 | Calm World, strong USSR, Soviet missions succeed for six months | `mission_success_pressure_surface`, `crisis_monthly_guard_surface` | Success helpers are non-increasing; ordinary months are guarded |
-| Calm World, strong USSR, Soviet missions fail for six months | `crisis_monthly_guard_surface` | Ordinary failure max delta 2.75; not terminal in first month |
+| Calm World, strong USSR, Soviet missions fail for six months | `mission_failure_pressure_surface`, `union_unmade_first_month_guard_surface` | Largest single failure delta is 4.25; a 10-mission maximum-pressure first wave reaches 49.75 and cannot fire Union Unmade during the 31-day lock |
 | USSR at war with Germany | war-pressure factors in crisis and MTTH surfaces | Higher pressure requires visible war-state causes |
 | USSR at war with Japan | Far Eastern mission and release surfaces | Far Eastern pressure exists without automatic terminal collapse |
 | High chaos opening | `crisis_balance_surface` | Higher pressure than calm baseline, still below terminal |
@@ -51,7 +51,11 @@ The previous audit recorded a verifier that fails if:
 The restored verifier checks these current surfaces:
 
 ```text
-Union Unmade threat-ceiling calls now route through the guarded maybe-show helper.
+Calm World opening threat is 7.25, and the severe scripted opening scenario is 50.25.
+Mission success pressure helpers are net non-increasing; the least stabilizing helper changes threat by -1.50.
+Mission failure pressure helpers are bounded; the largest single failure changes threat by 4.25, and the active-cap first wave remains under the Union Unmade high-threat gate.
+Union Unmade first-month lock is set for 31 days and the maybe-show helper requires the lock to be absent.
+Union Unmade threat-ceiling calls route through the guarded maybe-show helper.
 Kazakhstan is included in terminal ordinary release and subject-freeing lists.
 Vanilla-supported internal republic tags are included in terminal release and subject-freeing lists.
 Vanilla-supported internal republic tags route to `soviet_collapse_internal_republic_focus_tree` instead of the generic fallback tree.
