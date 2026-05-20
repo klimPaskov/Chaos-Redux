@@ -43,6 +43,10 @@ EVENT005_SCRIPT_FILES = [
 	ROOT / "events/005_soviet_collapse.txt",
 ]
 
+SCRIPTED_LOCALISATION_SCRIPT_FILES = [
+	ROOT / "common/scripted_localisation/chaosx_scripted_localisation_events_log.txt",
+]
+
 REQUIRED_INPUTS = [
 	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
@@ -4502,9 +4506,11 @@ def verify_braces_and_unsupported() -> list[Check]:
 	bad_operator = []
 	bad_scoped_temp = []
 	bad_at_days = []
-	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES:
+	bad_flag_days_variable = []
+	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES + SCRIPTED_LOCALISATION_SCRIPT_FILES:
 		if path.read_bytes().startswith(b"\xef\xbb\xbf"):
 			bad_bom.append(str(path.relative_to(ROOT)))
+	for path in EVENT005_SCRIPT_FILES + EVENT005_FOCUS_FILES:
 		text = read_text(path)
 		depth = 0
 		min_depth = 0
@@ -4522,12 +4528,15 @@ def verify_braces_and_unsupported() -> list[Check]:
 			bad_scoped_temp.append(str(path.relative_to(ROOT)))
 		if re.search(r"\bdays\s*=\s*@", text):
 			bad_at_days.append(str(path.relative_to(ROOT)))
+		if re.search(r"\bdays\s*=\s*soviet_collapse_progressive_release_cooldown_days\b", text):
+			bad_flag_days_variable.append(str(path.relative_to(ROOT)))
 	return [
 		Check("script_bom_scan", not bad_bom, f"files_with_bom={len(bad_bom)}"),
 		Check("brace_depth", not bad_braces, f"bad_files={len(bad_braces)}"),
 		Check("unsupported_operator_scan", not bad_operator, f"files_with_unsupported_operator={len(bad_operator)}"),
 		Check("scoped_temp_variable_scan", not bad_scoped_temp, f"files_with_scoped_temp_variables={len(bad_scoped_temp)}"),
 		Check("at_days_token_scan", not bad_at_days, f"files_with_at_days_tokens={len(bad_at_days)}"),
+		Check("flag_days_variable_scan", not bad_flag_days_variable, f"files_with_flag_days_variables={len(bad_flag_days_variable)}"),
 	]
 
 
