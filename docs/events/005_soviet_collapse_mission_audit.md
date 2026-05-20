@@ -8,11 +8,10 @@ The active Soviet crisis board contains 118 manually activated missions. The ful
 
 Verifier evidence:
 
-- `soviet_objective_board_surface`: 118 missions, 118 activation refs, 118 completion payloads, 118 timeout payloads, 118 done-flag refs, 10 active mission cap.
-- `mission_quality_surface`: 118 unique available blocks, zero weak available blocks, zero identical success/failure outcomes, zero raw division-state available blocks, zero long inline availability blocks, 117 map or state requirements.
-- `mission_requirement_surface`: 118 scripted requirement refs, zero thin requirements, zero meter-only requirements, zero passive-only requirements, zero forbidden trivial literal thresholds, four division-position tooltips with localisation.
-- `decision_tooltip_surface`: 118 mission-specific requirement tooltips; no direct raw trigger blocks exposed in mission UI.
-- `terminal_mission_cleanup`: all 118 missions removed on terminal collapse.
+- `mission_wiring_counts`: 118 mission blocks, 118 activation refs, and 118 terminal cleanup removals.
+- `mission_objective_shape`: every mission is a non-selectable, good, timed objective with `days_mission_timeout`, `custom_trigger_tooltip`, a named requirement tooltip, a hidden scripted trigger, a completion effect, and a timeout effect; no success and failure bodies are identical.
+- `mission_localisation_surface`: every mission has title, description, requirement tooltip, success tooltip, and failure tooltip localisation; requirement text contains no placeholder wording such as `required states`, `border states`, `TBD`, or `unknown`.
+- `terminal_mission_cleanup`: the terminal cleanup pass removes all 118 active mission IDs.
 
 ## Family Coverage
 

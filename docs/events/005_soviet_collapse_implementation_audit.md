@@ -44,7 +44,7 @@ Required offline references consulted: Data structures, Triggers, Effect, Modifi
 
 Decision categories: 25 Event 005 category definitions are gated by `is_soviet_collapse_active = yes`.
 
-Missions: 118 Soviet crisis missions are manually activated through the capped objective queue. The verifier reports 118 mission blocks, 118 activation references, 118 terminal cleanup removals, and zero passive-only or meter-only missions after scripted trigger expansion.
+Missions: 118 Soviet crisis missions are manually activated through the capped objective queue. The verifier reports 118 mission blocks, 118 activation references, 118 terminal cleanup removals, timed non-selectable objective shape, hidden scripted requirements, complete mission localisation, and distinct success/failure bodies.
 
 Threat variables and effects: `soviet_collapse_moscow_authority`, `soviet_collapse_republic_confidence`, `soviet_collapse_military_obedience`, `soviet_collapse_foreign_appetite`, `soviet_collapse_old_movement_pressure`, and `soviet_collapse_total_collapse_threat` are centrally recalculated and clamped through scripted effects and script constants.
 

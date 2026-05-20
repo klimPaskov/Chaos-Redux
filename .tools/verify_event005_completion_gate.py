@@ -94,9 +94,13 @@ def read(rel: str) -> str:
 
 
 def block_after(text: str, name: str) -> str:
-	match = re.search(rf"(?m)^{re.escape(name)}\s*=\s*\{{", text)
+	match = re.search(rf"(?m)^\s*{re.escape(name)}\s*=\s*\{{", text)
 	if not match:
 		return ""
+	return block_from_match(text, match)
+
+
+def block_from_match(text: str, match: re.Match[str]) -> str:
 	start = match.end()
 	depth = 1
 	i = start
@@ -130,6 +134,17 @@ def focus_tree_block(text: str, tree_id: str) -> str:
 
 def tags_in(block: str) -> set[str]:
 	return set(re.findall(r"\btag\s*=\s*([A-Z][A-Z0-9]{2})\b", block))
+
+
+def mission_blocks(text: str) -> dict[str, str]:
+	blocks: dict[str, str] = {}
+	for match in re.finditer(r"(?m)^\s*(soviet_collapse_soviet_mission_\d+_[A-Za-z0-9_]+)\s*=\s*\{", text):
+		blocks[match.group(1)] = block_from_match(text, match)
+	return blocks
+
+
+def loc_keys(text: str) -> set[str]:
+	return set(re.findall(r"(?m)^([A-Za-z0-9_]+):\s*\"", text))
 
 
 def check(name: str, ok: bool, details: str = "") -> bool:
@@ -255,13 +270,61 @@ def main() -> int:
 		"tree and focus keys are localised",
 	)
 
-	mission_blocks = len(re.findall(r"(?m)^\s*soviet_collapse_soviet_mission_\d+_", decisions))
+	missions = mission_blocks(decisions)
+	mission_names = set(missions)
+	localisation_keys = loc_keys(localisation)
+	missing_mission_loc = sorted(
+		key
+		for mission in mission_names
+		for key in [mission, f"{mission}_desc", f"{mission}_req_tt", f"{mission}_success_tt", f"{mission}_failure_tt"]
+		if key not in localisation_keys
+	)
+	missing_shape = sorted(
+		mission for mission, block in missions.items()
+		if "selectable_mission = no" not in block
+		or "is_good = yes" not in block
+		or "days_mission_timeout =" not in block
+		or "custom_trigger_tooltip" not in block
+		or f"tooltip = {mission}_req_tt" not in block
+		or "hidden_trigger = {" not in block
+		or "complete_effect = {" not in block
+		or "timeout_effect = {" not in block
+	)
+	identical_outcomes = []
+	for mission, block in missions.items():
+		complete = re.search(r"(?m)^\s*complete_effect\s*=\s*\{(.*)\}\s*$", block)
+		timeout = re.search(r"(?m)^\s*timeout_effect\s*=\s*\{(.*)\}\s*$", block)
+		if complete and timeout and complete.group(1) == timeout.group(1):
+			identical_outcomes.append(mission)
+	weak_requirement_loc = sorted(
+		key[:-7]
+		for key in localisation_keys
+		if key.endswith("_req_tt")
+		and key[:-7] in mission_names
+		and re.search(
+			r"required states|border states|todo|tbd|placeholder|unknown",
+			re.search(rf"(?m)^{re.escape(key)}:\s*\"(.*)\"", localisation).group(1),
+			re.IGNORECASE,
+		)
+	)
+
+	mission_count = len(missions)
 	activation_refs = len(re.findall(r"\bactivate_mission\s*=\s*soviet_collapse_soviet_mission_\d+_", effects))
 	removal_refs = len(re.findall(r"\bremove_mission\s*=\s*soviet_collapse_soviet_mission_\d+_", effects))
 	failed |= not check(
 		"mission_wiring_counts",
-		mission_blocks > 0 and mission_blocks == activation_refs == removal_refs,
-		f"missions={mission_blocks} activation={activation_refs} cleanup={removal_refs}",
+		mission_count > 0 and mission_count == activation_refs == removal_refs,
+		f"missions={mission_count} activation={activation_refs} cleanup={removal_refs}",
+	)
+	failed |= not check(
+		"mission_objective_shape",
+		not missing_shape and not identical_outcomes,
+		"bad_shape=" + ",".join(missing_shape[:10]) + " identical=" + ",".join(identical_outcomes[:10]),
+	)
+	failed |= not check(
+		"mission_localisation_surface",
+		not missing_mission_loc and not weak_requirement_loc,
+		"missing=" + ",".join(missing_mission_loc[:10]) + " weak_req=" + ",".join(weak_requirement_loc[:10]),
 	)
 
 	focus_ids = re.findall(r"(?m)^\s*id\s*=\s*([A-Za-z0-9_]+)", focus)
