@@ -5302,6 +5302,110 @@ focus_tree = {
 	}
 
 	focus = {
+		id = central_asia_soviet_collapse_tashkent_emergency_ministries
+		icon = GFX_central_asia_soviet_collapse_supply_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 3
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_majlis_elections }
+		allow_branch = { tag = UZB }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_tashkent_emergency_ministries
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = UZB }
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_samarkand_bukhara_legitimacy
+		icon = GFX_central_asia_soviet_collapse_supply_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_tashkent_emergency_ministries }
+		prerequisite = { focus = central_asia_soviet_collapse_samarkand_letters }
+		allow_branch = { tag = UZB }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_samarkand_bukhara_legitimacy
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = UZB }
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_cotton_rail_republic
+		icon = GFX_central_asia_soviet_collapse_rail_and_irrigation_boards
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = central_asia_soviet_collapse_tashkent_emergency_ministries }
+		prerequisite = { focus = central_asia_soviet_collapse_the_cotton_question }
+		allow_branch = { tag = UZB }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_cotton_rail_republic
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 3 tag = UZB }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = central_asia_soviet_collapse_turkestan_city_congress
+		icon = GFX_central_asia_soviet_collapse_steppe_federation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 2
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = central_asia_soviet_collapse_samarkand_bukhara_legitimacy }
+		prerequisite = { focus = central_asia_soviet_collapse_cotton_rail_republic }
+		allow_branch = { tag = UZB }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_central_asia_turkestan_city_congress
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 3 tag = UZB }
+			modifier = { factor = 2 is_soviet_collapse_southern_breakaway_active = yes }
+		}
+	}
+
+	focus = {
 		id = central_asia_soviet_collapse_military_border_authority
 		icon = GFX_central_asia_soviet_collapse_steppe_defense_council
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
