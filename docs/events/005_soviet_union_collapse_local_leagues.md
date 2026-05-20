@@ -20,6 +20,8 @@ Foundation is gated by pressure through `is_soviet_collapse_regional_league_foun
 
 The Baltic League, Caucasus League, and Central Asian League keep their existing scripted keys and wired sprites for asset compatibility, but player-facing text uses league names throughout.
 
+League formation is reported through normal news events, not super-events. The Baltic, Caucasus, and Central Asian founding helpers fire `chaosx.nr5.30`, `chaosx.nr5.31`, and `chaosx.nr5.32`; the Steppe Federation endgame report uses `chaosx.nr5.36`. The retired league super-event helpers and sprite/localisation mappings are not active.
+
 ## Icons
 
 No new art is required for this pass.

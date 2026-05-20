@@ -269,13 +269,12 @@ Implemented route calls currently exist for:
 - `soviet_collapse_show_steppe_beyond_history_super_event`
 - `soviet_collapse_show_corridors_decide_super_event`
 - `soviet_collapse_show_bread_state_super_event`
-- `soviet_collapse_show_league_equal_republics_super_event`
-- `soviet_collapse_show_steppe_federation_super_event`
 - `soviet_collapse_show_every_port_a_council_super_event`
 
 Helpers without implemented route calls:
 
 - Retired hardcoded route helpers are absent from active script.
+- Free Republics' League, Steppe Federation, Baltic League, Caucasus League, and Eastern Buffer Coalition presentation is no longer wired as super-events; league formation and federation reports use news events instead.
 
 ## Custom Country Gap
 
