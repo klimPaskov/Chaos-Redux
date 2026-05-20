@@ -8008,6 +8008,56 @@ focus_tree = {
 		}
 	}
 
+	focus = {
+		id = ARD_war_plan
+		icon = GFX_focus_ARD_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_radical_turn }
+
+		completion_reward = {
+			set_country_flag = ard_focus_war_plan
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
+		id = ARD_diplomatic_plan
+		icon = GFX_focus_ARD_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_settlement }
+
+		completion_reward = {
+			set_country_flag = ard_focus_diplomatic_plan
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
 
 	focus = {
 		id = ARD_industry_plan
@@ -8026,6 +8076,89 @@ focus_tree = {
 			}
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ARD_murmansk_dockyard_sheds
+		icon = GFX_focus_ARD_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 12
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_industry_plan }
+
+		completion_reward = {
+			set_country_flag = ard_focus_murmansk_dockyard_sheds
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				limit = {
+					is_coastal = yes
+					free_building_slots = {
+						building = dockyard
+						size > 0
+						include_locked = yes
+					}
+				}
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = ARD_kola_denial_posts
+		icon = GFX_focus_ARD_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_war_plan }
+
+		completion_reward = {
+			set_country_flag = ard_focus_kola_denial_posts
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = ARD_white_sea_observer_board
+		icon = GFX_focus_ARD_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ARD_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = ard_focus_white_sea_observer_board
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
 	}
 
 
@@ -8081,6 +8214,31 @@ focus_tree = {
 			soviet_collapse_complete_arctic_directorate_endgame = yes
 		}
 		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = ARD_endgame
+		icon = GFX_focus_ARD_endgame
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ARD_extreme_path }
+		prerequisite = { focus = ARD_murmansk_dockyard_sheds }
+		prerequisite = { focus = ARD_kola_denial_posts focus = ARD_white_sea_observer_board }
+
+		completion_reward = {
+			set_country_flag = ard_focus_endgame
+			soviet_collapse_complete_arctic_directorate_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than } } }
+		}
 	}
 
 }
