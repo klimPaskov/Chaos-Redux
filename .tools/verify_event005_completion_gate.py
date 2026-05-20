@@ -48,14 +48,23 @@ SCRIPTED_LOCALISATION_SCRIPT_FILES = [
 ]
 
 REQUIRED_INPUTS = [
-	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
+	"tmp/005_soviet_union_collapse_terminal_release_league_threat_correction_spec.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_1_universal_rules.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_2_ukraine_belarus.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_3_kazakhstan_central_asia.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/specs/005_soviet_union_collapse_republic_focus_tree_part_4_baltic_caucasus_moldova_karelia_fallback.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/matrices/005_soviet_union_collapse_republic_focus_tree_route_matrix.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/prompts/coding_prompt.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/prompts/goal_prompt.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/research/005_soviet_union_collapse_republic_focus_tree_research_notes.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
-	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md",
 ]
 
 ADDITIONAL_CONSULTED_INPUTS = [
+	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
+	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
 	"tmp/005_soviet_union_collapse_threat_mission_focus_rebalance_spec.md",
 	"tmp/005_soviet_union_collapse_comprehensive_correction_spec.md",
 	"tmp/005_soviet_union_collapse_spawn_balance_collapse_pacing_cleanup_spec.md",
@@ -81,17 +90,21 @@ REQUIRED_REFERENCE_INPUTS = [
 	"paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md",
 	"paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md",
 	"paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Division modding - Hearts of Iron 4 Wiki.md",
+	"paradox_wiki/Equipment modding - Hearts of Iron 4 Wiki.md",
 	"/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md",
 	"/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md",
 	"/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md",
 	"/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md",
+	"/home/klim/projects/Hearts of Iron IV/common/script_constants/documentation.md",
 ]
 
 REQUIRED_SOURCE_ORDER = [
-	"tmp/005_soviet_union_collapse_influence_threat_focus_rework_spec.md",
+	"tmp/005_soviet_union_collapse_terminal_release_league_threat_correction_spec.md",
+	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
-	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md",
 	"AGENTS.md",
 	"chaos-redux-events",
