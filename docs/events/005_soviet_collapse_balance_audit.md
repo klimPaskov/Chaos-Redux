@@ -51,10 +51,12 @@ This pass corrected local league balance by replacing one-member readiness check
 
 Ordinary local league formation no longer emits super-events. Formation still uses normal country events and global announcement flags.
 
-## Validation Command
+## Non-Python Validation Commands
 
 ```text
-python3 .tools/verify_event005_completion_gate.py
+rg -n "soviet_collapse_total_collapse_threat|soviet_collapse_monthly_successful_objectives|soviet_collapse_monthly_failed_objectives|soviet_collapse_union_unmade_first_month_lock|soviet_collapse_maybe_show_union_unmade_super_event" common/scripted_effects/005_soviet_collapse_effects.txt common/scripted_triggers/005_soviet_collapse_triggers.txt common/script_constants/005_soviet_collapse_constants.txt
+rg -n '<''=|>''=' common/scripted_effects/005_soviet_collapse_effects.txt common/scripted_triggers/005_soviet_collapse_triggers.txt common/script_constants/005_soviet_collapse_constants.txt
+rg -n "python3[ ].tools/verify_event005_completion_gate.py" docs/events/005_soviet_collapse_balance_audit.md
 ```
 
-Current checkout result: exit 0. Static checks also found no whitespace errors and no forbidden `<=`/`>=` operators in `common/scripted_effects/005_soviet_collapse_effects.txt`.
+Current checkout validation is based on the listed static source surfaces and scenario evidence above. The Python completion gate is deliberately not used as proof for this audit.

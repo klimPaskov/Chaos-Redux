@@ -36,9 +36,13 @@ Mission localisation uses named mission requirement keys such as `<mission_id>_r
 - Moscow, Arkhangelsk, Leningrad, and Pskov for the Northern Signal Offices.
 - Moscow and Arkhangelsk for the Capital Ministry Belt.
 - Moscow, Smolensk, and Minsk for the Western Courier Belt.
+- Moscow, Smolensk, Minsk, Baku, Tashkent, and Sverdlovsk for radio/admin hub missions.
 - Moscow, Smolensk, Minsk, and Azerbaijan for loyal military districts.
 - Smolensk, Minsk, Baku, Tashkent, Novosibirsk, Omsk, Chelyabinsk, Ashkhabad, Alma-Ata, Sverdlovsk, and Stalinabad for depot hub missions.
 - Kyiv, Minsk, Alma-Ata, Vilnius, Riga, Tallinn, Tbilisi, Yerevan, Baku, Chisinau, Tashkent, Bishkek, Dushanbe, and Ashgabat for active or recovered breakaway-capital missions.
+- Kyiv, Minsk, Tashkent, and Sverdlovsk for west/south League route-splitting.
+- Kyiv, Minsk, Baku, Tashkent, and Sverdlovsk for League defensive calendar disruption.
+- Ukrainian-Belarusian, Baltic, Caucasus, and southern disputes for League border-dispute missions.
 
 The audit rejects generic state placeholders as proof of completion unless a named region or state list is present in the mission tooltip.
 
@@ -49,7 +53,7 @@ Passive stockpile, stability-only, war-support-only, manpower-only, and generic 
 ## Non-Python Verification Commands
 
 ```text
-rg -n "required[ ]states|border[ ]states|dynamic[ ]number|dynamic[ ]set|relevant[ ]border[ ]posts|equivalent[ ]Pacific[ ]port|distant[ ]military[ ]and[ ]rail[ ]districts|storehouse[ ]and[ ]rail[ ]states|one[ ]or[ ]more[ ]depot[ ]states|that[ ]region|vulnerable[ ]depots|secure[ ]Soviet-controlled[ ]hubs|recovered[ ]depots|Belarusian[ ]rail[ ]hubs|a[ ]depot[ ]that[ ]the[ ]League[ ]publicly[ ]promised|ammunition[ ]depots[ ]controlled" localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md docs/events/005_soviet_collapse_mission_audit.md
+rg -n "required[ ]states|border[ ]states|dynamic[ ]number|dynamic[ ]set|dynamic[ ]threshold|relevant[ ]border[ ]posts|equivalent[ ]Pacific[ ]port|distant[ ]military[ ]and[ ]rail[ ]districts|storehouse[ ]and[ ]rail[ ]states|one[ ]or[ ]more[ ]depot[ ]states|that[ ]region|vulnerable[ ]depots|secure[ ]Soviet-controlled[ ]hubs|recovered[ ]depots|Belarusian[ ]rail[ ]hubs|a[ ]depot[ ]that[ ]the[ ]League[ ]publicly[ ]promised|ammunition[ ]depots[ ]controlled|hold[ ]the[ ]capital[ ]area|disputed[ ]regions|loyal[ ]party[ ]offices[ ]in[ ]the[ ]region|core[ ]rail[ ]lines|wavering[ ]republics|selected[ ]republic[ ]capital|disputed[ ]state|regional[ ]clusters|one[ ]League[ ]member|key[ ]hub" localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md | rg "soviet_collapse_soviet_mission_|docs/events/005_soviet_union_collapse_mission_audit.md"
 rg -n '<''=|>''=' localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md docs/events/005_soviet_collapse_mission_audit.md
 xxd -p -l 3 localisation/english/005_soviet_collapse_l_english.yml
 ```
