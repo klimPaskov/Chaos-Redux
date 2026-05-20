@@ -111,7 +111,7 @@ The implemented trees are:
 11. `MFR_soviet_collapse_focus_tree`: 37 focuses for Military Factory of Russia arsenal-board tree with officer, worker, merchant, unsafe-output, export, and arsenal-state routes.
 12. `KRS_soviet_collapse_focus_tree`: 27 focuses for Kronstadt Free Soviet sailor-assembly, fortress-store, naval-militia, Gulf battery posts, fortress signal rooms, free-port conference, port-council, and port-sovereignty routes.
 13. `FTH_soviet_collapse_focus_tree`: 27 focuses for Free Territory of Huliaipole commune, depot-raiding, League bargain, tachanka front, free rail communes, roaming embassies, Black International, and anti-capital routes.
-14. `BBH_soviet_collapse_focus_tree`: 21 focuses for Black Banner Host mobile-column, commune-war, captured-store, anti-state, and anti-prison routes.
+14. `BBH_soviet_collapse_focus_tree`: 27 focuses for Black Banner Host mobile-column, commune-war, captured-store, anti-state, column schools, temporary anti-protectorate diplomacy, non-domination pacts, and anti-prison endgame routes.
 15. `BSC_soviet_collapse_focus_tree`: 27 focuses for Basmachi Confederation oasis, pass-guard, caravan-store, road-control, caravan officer school, road-and-water guarantees, recognition, and Steppe Federation news routes.
 16. `TNC_soviet_collapse_focus_tree`: 27 focuses for Turkestan National Council civic-office, railway-guard, oasis-bureau, guarded-route, railway officer school, autonomy guarantees, recognition, and New Turkestan routes.
 17. `ALA_soviet_collapse_focus_tree`: 27 focuses for Alash Restoration Authority congress, cavalry-guard, Alash officer schools, rail-station, campaign planning, aksakal mediation, minority steppe guarantees, recognition, and modernization/endgame routes.
