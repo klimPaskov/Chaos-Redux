@@ -125,7 +125,7 @@ The implemented trees are:
 25. `UWD_soviet_collapse_focus_tree`: 21 focuses for Ural Workers Directorate factory committee, worker battalion, arsenal autonomy, and labor-defense routes.
 26. `MRC_soviet_collapse_focus_tree`: 27 focuses for Mountain Republic of the Caucasus elder council, pass closure, lowland depot raids, village autonomy, Caucasus negotiation, anti-border-troop, mountain federal authority, and mandate routes.
 27. `IUL_soviet_collapse_focus_tree`: 27 focuses for Idel-Ural League Volga-Ural office, river guard, corridor authority, Volga-line war planning, Kazan-Ufa workshop cordons, Orenburg approach posts, federal congress missions, and federal corridor mandate routes.
-28. `BAC_soviet_collapse_focus_tree`: 21 focuses for Birobidzhan Autonomous Commune settlement, militia, autonomous office, and local defense routes.
+28. `BAC_soviet_collapse_focus_tree`: 27 focuses for Birobidzhan Autonomous Commune settlement, militia, autonomous office, river-settlement defense planning, Birobidzhan archive workshops, Amur relief posts, observer relief conferences, and autonomous commune mandate routes.
 29. `ARD_soviet_collapse_focus_tree`: 21 focuses for Arctic Naval Directorate port directorate, convoy officer, northern logistics, and port-neutrality routes.
 30. `NLC_soviet_collapse_focus_tree`: 21 focuses for Northern Lights Commune polar survival, scientific refuge, northern logistics, and post-capital routes.
 
