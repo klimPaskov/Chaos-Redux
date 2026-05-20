@@ -3448,10 +3448,11 @@ def verify_soviet_objective_board() -> list[Check]:
 		complete_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "complete_effect"))
 		timeout_text = " ".join(" ".join(block) for block in top_level_block_bodies(body, "timeout_effect"))
 		available_bodies.append(available_text)
+		available_tokens = [tok for block in available_blocks for tok in block]
 		requirement_refs = [
-			block[0]
-			for block in available_blocks
-			if len(block) == 3 and block[1] == "=" and block[2] == "yes"
+			tok
+			for i, tok in enumerate(available_tokens[:-2])
+			if tok in scripted_triggers and available_tokens[i + 1] == "=" and available_tokens[i + 2] == "yes"
 		]
 		requirement_text = " ".join(" ".join(expanded_scripted_trigger_body(ref)) for ref in requirement_refs if ref in scripted_triggers)
 		if len(requirement_refs) != 1 or any(ref not in scripted_triggers for ref in requirement_refs):
@@ -3482,16 +3483,7 @@ def verify_soviet_objective_board() -> list[Check]:
 			map_or_state_available += 1
 		if "num_divisions_in_states" in available_text:
 			raw_division_state_available.append(name)
-		if any(
-			len(block) > 8
-			or not (
-				len(block) == 3
-				and block[1] == "="
-				and block[2] == "yes"
-				and (block[0].startswith("can_") or block[0].startswith("has_") or block[0].startswith("is_"))
-			)
-			for block in available_blocks
-		):
+		if len(requirement_refs) != 1:
 			long_inline_available.append(name)
 		passive_markers = ["has_manpower", "has_equipment", "has_stability", "has_war_support", "has_army_experience", "command_power", "has_fuel"]
 		active_markers = ["can_", "has_recovered_", "is_controlled_by", "is_owned_by", "capital_scope", "num_divisions_in_states", "any_owned_state", "has_country_flag", "check_variable", "has_idea"]
@@ -4540,6 +4532,29 @@ def verify_braces_and_unsupported() -> list[Check]:
 	]
 
 
+def verify_decision_tooltip_surface() -> list[Check]:
+	path = ROOT / "common/decisions/005_soviet_collapse_decisions.txt"
+	text = read_text(path)
+	mission_ids = re.findall(r"^\t(soviet_collapse_soviet_mission_\d+_[A-Za-z0-9_]+) = \{", text, re.MULTILINE)
+	missing_mission_tooltips = []
+	for mission_id in mission_ids:
+		match = re.search(rf"^\t{re.escape(mission_id)} = \{{(?P<block>.*?)^\t\}}", text, re.MULTILINE | re.DOTALL)
+		block = match.group("block") if match else ""
+		if f"tooltip = {mission_id}_req_tt" not in block:
+			missing_mission_tooltips.append(mission_id)
+	direct_trigger_blocks = re.findall(
+		r"\b(?:available|target_trigger|custom_cost_trigger)\s*=\s*\{\s*(?:can_|has_|is_soviet_collapse_)[A-Za-z0-9_]+\s*=\s*yes\s*\}",
+		text,
+	)
+	return [
+		Check(
+			"decision_tooltip_surface",
+			not missing_mission_tooltips and not direct_trigger_blocks,
+			f"missions={len(mission_ids)} missing_mission_tooltips={len(missing_mission_tooltips)} direct_trigger_blocks={len(direct_trigger_blocks)}",
+		),
+	]
+
+
 def run_checks() -> list[Check]:
 	checks: list[Check] = []
 	checks.extend(verify_input_files())
@@ -4561,6 +4576,7 @@ def run_checks() -> list[Check]:
 	checks.extend(verify_mission_audit_documentation_surface())
 	checks.extend(verify_validation_snapshot_freshness_surface())
 	checks.extend(verify_braces_and_unsupported())
+	checks.extend(verify_decision_tooltip_surface())
 	checks.extend(verify_focuses())
 	checks.extend(verify_ideas())
 	checks.extend(verify_breakaway_recovery_surface())

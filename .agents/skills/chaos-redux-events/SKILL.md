@@ -42,6 +42,8 @@ Decision parser gotcha: every category used as a top-level block in `common/deci
 
 Decision `custom_cost_text` and matching `_blocked` localisation should be bare cost displays: icon plus value groups only, separated by spaces. Do not add prose labels, explanatory verbs, connector words between cost values, or wording such as `need`, `needs`, or `requires`.
 
+When Event 005 decisions call large scripted triggers from `available`, `target_trigger`, or `custom_cost_trigger`, hide the raw trigger call with `hidden_trigger`. For Soviet objective missions, wrap the requirement call in `custom_trigger_tooltip` using that mission's existing `<mission_id>_req_tt` localisation, with the real `can_*`/`has_*` check inside `hidden_trigger`.
+
 For objective boards that must cap visible missions, prefer manual mission activation over daily `activation` triggers. Set capped mission entries to `allowed = { always = no }`, then activate eligible missions with a scoped queue helper using `activate_mission`, `has_active_mission`, active-count variables, and queued-state flags. This avoids whole-world on-actions and gives a hard display cap while preserving goal-style auto-completion through each mission's `available` block.
 
 When extending an existing capped objective queue by numbered slices, update all four surfaces in the same pass: the readable scripted trigger, the decision/mission entry, the active-count helper, and the activation queue helper. Then update the event doc count and mission list. Before committing, run at least whitespace, unsupported-operator, brace-depth, tab-indentation, and mission-wiring checks through the new highest mission number; the wiring check should prove every queued ID has a decision block and name/success/failure localisation.
