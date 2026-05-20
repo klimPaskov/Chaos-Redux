@@ -53,7 +53,7 @@ Ordinary local league formation no longer emits super-events. Formation still us
 ## Validation Command
 
 ```text
-python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
+python3 .tools/verify_event005_completion_gate.py
 ```
 
 Current checkout result: exit 0. Static checks also found no whitespace errors and no forbidden `<=`/`>=` operators in `common/scripted_effects/005_soviet_collapse_effects.txt`.

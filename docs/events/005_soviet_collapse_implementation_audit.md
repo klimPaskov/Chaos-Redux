@@ -85,14 +85,14 @@ News/report events: ordinary league formation remains in normal events, while Un
 Historical command recorded by the previous audit:
 
 ```text
-python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
+python3 .tools/verify_event005_completion_gate.py
 ```
 
 Current checkout commands:
 
 ```text
 python3 -m py_compile .tools/verify_event005_completion_gate.py
-python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
+python3 .tools/verify_event005_completion_gate.py
 git diff --check
 rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
 ```
