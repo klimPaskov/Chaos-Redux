@@ -13,7 +13,7 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_kazakhstan_focus_tree` | 57 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_baltic_focus_tree` | 36 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_caucasus_focus_tree` | 34 |
-| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | 37 |
+| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | 41 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_moldova_focus_tree` | 23 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 41 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 36 |
@@ -21,7 +21,7 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 45 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 37 |
 
-The current shell recount counts 869 total focuses across 30 trees.
+The current shell recount counts 873 total focuses across 30 trees.
 
 ## Route Coverage
 
@@ -31,7 +31,7 @@ Belarus covers Minsk authority, legal restoration, rail sovereignty, forest defe
 
 Kazakhstan covers steppe emergency authority, Alash restoration, socialist steppe republic, military district state, resource/rail economy, southern cascade, foreign mediation, Central Asian League, and high-chaos steppe pressure.
 
-Baltic, Caucasus, Moldova, internal republic, fallback, and custom successor trees are implemented as shared or compact path-level trees with local route identities, focus icons, AI, localisation, and rewards. The Baltic shared tree is a 36-focus path-level tree with legal continuity, archive protection, border government, Baltic League, port/customs sovereignty, coastal and forest defense, foreign-protector, and recognition settlement routes. The Caucasus shared tree is a 34-focus path-level tree with mountain federal, national restoration, oil directorate, pass defense, sponsor-consulate, border treaty, compact, and high-chaos crown routes. The Central Asian shared tree has been expanded from its compact placeholder into a 37-focus path-level tree with local council, military border authority, foreign patronage, Turkmen Ashgabat/desert/Caspian authority, Turkestan federation, cotton/water logistics, Basmachi pressure, Khwarazm high-chaos, and southern pact/federation routes. The Moldova tree is a 23-focus path-level tree with Chisinau legitimacy, Dniester defense, Romanian alignment and union-debate routes, Ukrainian grain-road logistics, river-state consolidation, and the Eastern Buffer Coalition news-event hook. The fallback breakaway tree is now a 36-focus modular emergency tree with legal records, local court and militia rolls, depot repair, home industry, engineer rosters, border militia, many-patron ledgers, League observer access, and road-and-rail repair routes on top of the existing political, military, foreign-liaison, League, and high-chaos lanes. The internal republic tree is now a 41-focus tree with tag-specific Karelian border, Komi river-and-mine, Tatar Idel-Ural, Bashkir cavalry, Crimean peninsula-statute, Far Eastern port, Yakut resource, Buryat Baikal, and Tuvan steppe branches. The Mountain Republic of the Caucasus custom tree is now a 27-focus tree with dedicated pass-closure, elder-council, lowland-depot raid, Caucasus negotiation, village-autonomy, and anti-border-troop branches on top of the high-chaos successor core.
+Baltic, Caucasus, Moldova, internal republic, fallback, and custom successor trees are implemented as shared or compact path-level trees with local route identities, focus icons, AI, localisation, and rewards. The Baltic shared tree is a 36-focus path-level tree with legal continuity, archive protection, border government, Baltic League, port/customs sovereignty, coastal and forest defense, foreign-protector, and recognition settlement routes. The Caucasus shared tree is a 34-focus path-level tree with mountain federal, national restoration, oil directorate, pass defense, sponsor-consulate, border treaty, compact, and high-chaos crown routes. The Central Asian shared tree has been expanded from its compact placeholder into a 41-focus path-level tree with local council, military border authority, Tajik Dushanbe/Pamir mountain sovereignty, Kyrgyz Bishkek/Tian Shan pass authority, foreign patronage, Turkmen Ashgabat/desert/Caspian authority, Turkestan federation, cotton/water logistics, Basmachi pressure, Khwarazm high-chaos, and southern pact/federation routes. The Moldova tree is a 23-focus path-level tree with Chisinau legitimacy, Dniester defense, Romanian alignment and union-debate routes, Ukrainian grain-road logistics, river-state consolidation, and the Eastern Buffer Coalition news-event hook. The fallback breakaway tree is now a 36-focus modular emergency tree with legal records, local court and militia rolls, depot repair, home industry, engineer rosters, border militia, many-patron ledgers, League observer access, and road-and-rail repair routes on top of the existing political, military, foreign-liaison, League, and high-chaos lanes. The internal republic tree is now a 41-focus tree with tag-specific Karelian border, Komi river-and-mine, Tatar Idel-Ural, Bashkir cavalry, Crimean peninsula-statute, Far Eastern port, Yakut resource, Buryat Baikal, and Tuvan steppe branches. The Mountain Republic of the Caucasus custom tree is now a 27-focus tree with dedicated pass-closure, elder-council, lowland-depot raid, Caucasus negotiation, village-autonomy, and anti-border-troop branches on top of the high-chaos successor core.
 
 The internal republic tree covers the vanilla-supported internal Union Unmade tags `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. It gives them a 41-focus shared route set with legal, security, and liaison choices plus deeper tag-specific northern forest, Volga-Ural, Crimea, Siberian/Far Eastern, inner Asian, high-chaos old-name, and common-front branches.
 
@@ -39,7 +39,7 @@ The internal republic tree covers the vanilla-supported internal Union Unmade ta
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 869 focuses across the Event 005 focus files after the Turkmen desert-route expansion.
+- Event 005 focus recount: 873 focuses across the Event 005 focus files after the Tajik and Kyrgyz mountain-route expansion.
 - Baltic tree recount: 36 focuses, 36 completion rewards, and 36 `ai_will_do` blocks.
 - Baltic focus references resolve to focus IDs defined inside the same tree.
 - Baltic focus IDs have matching name and description localisation.
@@ -48,7 +48,7 @@ Current non-Python evidence:
 - Caucasus focus references resolve to focus IDs defined inside the same tree.
 - Caucasus focus IDs have matching name and description localisation.
 - Caucasus icon assignments resolve through the existing regional icon GFX files.
-- Central Asian tree recount: 37 focuses, 37 completion rewards, and 37 `ai_will_do` blocks.
+- Central Asian tree recount: 41 focuses, 41 completion rewards, and 41 `ai_will_do` blocks.
 - Central Asian focus references resolve to focus IDs defined inside the same tree.
 - Central Asian focus IDs have matching name and description localisation.
 - Central Asian icon assignments resolve through the existing regional icon GFX files.
