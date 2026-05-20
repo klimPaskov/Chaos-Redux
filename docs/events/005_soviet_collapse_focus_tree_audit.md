@@ -13,7 +13,7 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_kazakhstan_focus_tree` | 57 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_baltic_focus_tree` | 21 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_caucasus_focus_tree` | 20 |
-| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | 14 |
+| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | 34 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_moldova_focus_tree` | 17 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 20 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 27 |
@@ -21,7 +21,7 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 45 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 37 |
 
-The verifier counts 775 total focuses across 30 trees.
+The current shell recount counts 795 total focuses across 30 trees.
 
 ## Route Coverage
 
@@ -31,18 +31,19 @@ Belarus covers Minsk authority, legal restoration, rail sovereignty, forest defe
 
 Kazakhstan covers steppe emergency authority, Alash restoration, socialist steppe republic, military district state, resource/rail economy, southern cascade, foreign mediation, Central Asian League, and high-chaos steppe pressure.
 
-Baltic, Caucasus, Central Asian, Moldova, internal republic, fallback, and custom successor trees are implemented as shared or compact path-level trees with local route identities, focus icons, AI, localisation, and rewards.
+Baltic, Caucasus, Moldova, internal republic, fallback, and custom successor trees are implemented as shared or compact path-level trees with local route identities, focus icons, AI, localisation, and rewards. The Central Asian shared tree has been expanded from its compact placeholder into a 34-focus path-level tree with local council, military border authority, foreign patronage, Turkestan federation, cotton/water logistics, Basmachi pressure, Khwarazm high-chaos, and southern pact/federation routes.
 
 The internal republic tree covers the vanilla-supported internal Union Unmade tags `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. It gives them a 20-focus shared route set with legal, security, and liaison choices plus regional branches for northern forest republics, Volga-Ural republics, Crimea, and Siberian/Far Eastern/inner Asian republics.
 
 ## Duplicate And Reward Audit
 
-Verifier evidence:
+Current non-Python evidence:
 
-- `event005_focus_integrity_surface`: 775 focuses, zero duplicate IDs, zero missing references, zero missing rewards, zero missing icons, and zero missing coordinates.
-- `focus_reward_variety_surface`: 506 focuses have direct material rewards, 264 use shared focus reward helpers, and only 37 are idea-only.
-- `focus_ai_surface`: every focus has `ai_will_do`; 193 focuses have contextual AI modifiers.
-- `focus_layout_surface`: no duplicate coordinates, no isolated focuses, no shallow dead-end leaves, no edge crossings, and all continuous focus positions are in right-side panels.
+- Event 005 focus recount: 795 focuses across the Event 005 focus files after the Central Asian expansion.
+- Central Asian tree recount: 34 focuses, 34 completion rewards, and 34 `ai_will_do` blocks.
+- Central Asian focus references resolve to focus IDs defined inside the same tree.
+- Central Asian focus IDs have matching name and description localisation.
+- Central Asian icon assignments resolve through the existing regional icon GFX files.
 
 ## Changes From This Audit Pass
 
