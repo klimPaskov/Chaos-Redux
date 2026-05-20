@@ -26,7 +26,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 | Belarus focus tree full route review | rail and forest identity works | 38 focuses, route families present, focus integrity/reward/AI pass |
 | Kazakhstan focus tree full route review | southern and steppe identity works | 57 focuses, southern cascade and Central Asian League route present |
 | Regional republic focus tree review | non-generic regional content works | shared regional and custom successor trees pass parser, reward, localisation, icon, and AI checks |
-| Internal republic focus tree review | internal republics get regional path content | `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN` route to a 41-focus shared tree with tag-specific regional branches |
+| Internal republic focus tree review | internal republics get regional path content | `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN` route to a 54-focus shared tree with tag-specific regional branches, including Crimea's settlement, mediation, fortress, and Black Sea compact route |
 
 ## Guards And Dampening
 

@@ -3555,6 +3555,102 @@ focus_tree = {
 	}
 
 	focus = {
+		id = internal_soviet_collapse_ukraine_settlement_commission
+		icon = GFX_focus_soviet_collapse_claim_republican_legality
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_black_sea_minorities_statute }
+
+		available = { tag = CRI }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_ukraine_settlement_commission
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			196 = { add_claim_by = ROOT }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 UKR = { exists = yes has_country_flag = soviet_collapse_breakaway } }
+		}
+	}
+
+	focus = {
+		id = internal_soviet_collapse_turkish_black_sea_mediation
+		icon = GFX_focus_soviet_collapse_request_external_missions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_black_sea_minorities_statute }
+
+		available = { tag = CRI }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_turkish_black_sea_mediation
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = internal_soviet_collapse_peninsula_fortress_plan
+		icon = GFX_focus_soviet_collapse_black_sea_dniester_line
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 15
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_black_sea_minorities_statute }
+
+		available = { tag = CRI }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_peninsula_fortress_plan
+			capital_scope = {
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+				add_building_construction = { type = air_base level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = internal_soviet_collapse_black_sea_compact_observers
+		icon = GFX_focus_soviet_collapse_common_front_timetables
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 17
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = internal_soviet_collapse_ukraine_settlement_commission focus = internal_soviet_collapse_turkish_black_sea_mediation }
+		prerequisite = { focus = internal_soviet_collapse_peninsula_fortress_plan }
+
+		available = { tag = CRI }
+		completion_reward = {
+			set_country_flag = soviet_collapse_internal_black_sea_compact_observers
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+			modifier = { factor = 2 is_in_faction = no }
+		}
+	}
+
+	focus = {
 		id = internal_soviet_collapse_siberian_rail_authorities
 		icon = GFX_focus_soviet_collapse_common_front_timetables
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
