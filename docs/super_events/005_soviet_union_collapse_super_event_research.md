@@ -119,9 +119,9 @@ The custom extreme paths and republic transformation routes have thirteen rare b
 | `22` | The Bread State | Ukraine completes `ukr_soviet_collapse_last_harvest_plan` |
 | `23` | The League of Equal Republics | Ukraine completes `ukr_soviet_collapse_league_of_equals` |
 | `24` | The Steppe Federation | Kazakhstan completes `kaz_soviet_collapse_steppe_federation_charter` |
-| `25` | The Baltic League | The Baltic regional tree completes `baltic_soviet_collapse_baltic_defense_compact` |
-| `26` | The Caucasus League | The Caucasus regional tree completes `caucasus_soviet_collapse_caucasus_defense_compact` |
-| `27` | The Eastern Buffer Coalition | Moldova completes `moldova_soviet_collapse_alliance_not_union` |
+| `25` | The Baltic League | retired from active super-event use; ordinary formation uses `chaosx.nr5.30` as a news event |
+| `26` | The Caucasus League | retired from active super-event use; ordinary formation uses `chaosx.nr5.31` as a news event |
+| `27` | The Eastern Buffer Coalition | retired from active super-event use; ordinary coalition formation uses `chaosx.nr5.35` as a news event |
 
 Image coordination:
 
@@ -179,9 +179,9 @@ This matrix maps the implemented Event 005 super-events to their current artifac
 | `22` | The Bread State | `super_event.22.t/d/a/q` | Deuteronomy quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Final Silence package | fires from `ukr_soviet_collapse_last_harvest_plan` | sourced image wired |
 | `23` | The League of Equal Republics | `super_event.23.t/d/a/q` | Articles of Confederation quote documented with National Archives source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_league_of_equals` | sourced image wired |
 | `24` | The Steppe Federation | `super_event.24.t/d/a/q` | Federalist No. 5 quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `kaz_soviet_collapse_steppe_federation_charter` and the `BSC`, `TNC`, and `ALA` Central Asian endgame helpers | sourced image wired |
-| `25` | The Baltic League | `super_event.25.t/d/a/q` | Proverbs quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `baltic_soviet_collapse_baltic_defense_compact` | sourced image wired |
-| `26` | The Caucasus League | `super_event.26.t/d/a/q` | Psalm quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `caucasus_soviet_collapse_caucasus_defense_compact` | sourced image wired |
-| `27` | The Eastern Buffer Coalition | `super_event.27.t/d/a/q` | Federalist No. 8 quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `moldova_soviet_collapse_alliance_not_union` | sourced image wired |
+| `25` | The Baltic League | `super_event.25.t/d/a/q` | Proverbs quote documented with Project Gutenberg source | sourced DDS preserved | slot audio id preserved from Coriolan package | retired; ordinary formation fires news event `chaosx.nr5.30` | sourced image preserved |
+| `26` | The Caucasus League | `super_event.26.t/d/a/q` | Psalm quote documented with Project Gutenberg source | sourced DDS preserved | slot audio id preserved from Coriolan package | retired; ordinary formation fires news event `chaosx.nr5.31` | sourced image preserved |
+| `27` | The Eastern Buffer Coalition | `super_event.27.t/d/a/q` | Federalist No. 8 quote documented with Project Gutenberg source | sourced DDS preserved | slot audio id preserved from Coriolan package | retired; ordinary coalition formation fires news event `chaosx.nr5.35` | sourced image preserved |
 
 ## A Map Larger than the Union
 
@@ -403,9 +403,9 @@ Image package:
 
 - Super-event slot: `25`
 - Localisation keys: `super_event.25.t`, `super_event.25.d`, `super_event.25.a`, `super_event.25.q`
-- Trigger effect: `soviet_collapse_show_baltic_restoration_pact_super_event`
-- Trigger direction: fires once from the Baltic regional focus `baltic_soviet_collapse_baltic_defense_compact`.
-- Role: regional faction formation, not a world-end scenario by default.
+- Trigger effect: retired from active super-event use.
+- Trigger direction: ordinary Baltic League formation fires news event `chaosx.nr5.30`.
+- Role: sourced presentation backlog only; regional faction formation is not a super-event.
 - Button text: `The line is restored.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `Remove not the ancient landmark, which thy fathers have set.`
@@ -439,9 +439,9 @@ Image package:
 
 - Super-event slot: `26`
 - Localisation keys: `super_event.26.t`, `super_event.26.d`, `super_event.26.a`, `super_event.26.q`
-- Trigger effect: `soviet_collapse_show_caucasus_defense_compact_super_event`
-- Trigger direction: fires once from the Caucasus regional focus `caucasus_soviet_collapse_caucasus_defense_compact`.
-- Role: regional faction formation, not a world-end scenario by default.
+- Trigger effect: retired from active super-event use.
+- Trigger direction: ordinary Caucasus League formation fires news event `chaosx.nr5.31`.
+- Role: sourced presentation backlog only; regional faction formation is not a super-event.
 - Button text: `The passes close ranks.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `As the mountains are round about Jerusalem, so the LORD is round about his people.`
@@ -475,9 +475,9 @@ Image package:
 
 - Super-event slot: `27`
 - Localisation keys: `super_event.27.t`, `super_event.27.d`, `super_event.27.a`, `super_event.27.q`
-- Trigger effect: `soviet_collapse_show_eastern_buffer_coalition_super_event`
-- Trigger direction: fires once from the Moldova regional focus `moldova_soviet_collapse_alliance_not_union`.
-- Role: regional faction formation, not a world-end scenario by default.
+- Trigger effect: retired from active super-event use.
+- Trigger direction: ordinary Eastern Buffer Coalition formation fires news event `chaosx.nr5.35`.
+- Role: sourced presentation backlog only; regional coalition formation is not a super-event.
 - Button text: `The line holds if the desks hold.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `Safety from external danger is the most powerful director of national conduct.`
