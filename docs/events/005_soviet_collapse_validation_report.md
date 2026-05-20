@@ -9,11 +9,12 @@ This report records current script/parser validation and deterministic verifier 
 ## Commands Run
 
 ```text
-python3 -m py_compile .tools/verify_event005_completion_gate.py
-python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
+test -f .tools/verify_event005_completion_gate.py
+git diff --check
+rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
 ```
 
-Both commands exited 0.
+The verifier source check failed because `.tools/verify_event005_completion_gate.py` is absent in this checkout. Static checks for the current correction pass passed: no whitespace errors and no forbidden comparison operators in the edited script file.
 
 ## Scenario Matrix
 
@@ -40,17 +41,19 @@ Both commands exited 0.
 
 ## Latest Correction Validated
 
-The verifier now fails if:
+The previous audit recorded a verifier that fails if:
 
 - local league founding triggers do not call explicit quorum triggers, or
 - ordinary local league and normal League-route content calls local super-event helpers.
 
-The latest run reports:
+That verifier cannot currently be rerun because the source file is absent. The latest script correction instead validated by static inspection that:
 
 ```text
-PASS local_league_surface: constants=True triggers=True quorum=True local_super_events_removed=True foundation_pressure=True visibility=True decisions=True effects=True events=True loc=True docs=True
+Union Unmade threat-ceiling calls now route through the guarded maybe-show helper.
+Kazakhstan is included in terminal ordinary release and subject-freeing lists.
+Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet war pass.
 ```
 
 ## Blockers
 
-No parser or deterministic verifier blockers remain in this pass. Live-session behavior remains the final practical check for feel, pacing, and whether shared regional trees feel sufficiently distinct in play.
+`.tools/verify_event005_completion_gate.py` is absent, so deterministic completion-gate claims in older audit text cannot currently be reproduced. Live-session behavior remains the final practical check for feel, pacing, league joining, and whether shared regional trees feel sufficiently distinct in play.
