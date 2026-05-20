@@ -4957,6 +4957,170 @@ focus_tree = {
 			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } } }
 		}
 	}
+
+	focus = {
+		id = baltic_soviet_collapse_tallinn_harbor_customs
+		icon = GFX_baltic_soviet_collapse_port_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 4
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_a_port_without_a_master }
+
+		allow_branch = { tag = EST }
+		completion_reward = {
+			set_country_flag = soviet_collapse_estonian_harbor_customs
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_estonian_forest_coast_guard
+		icon = GFX_baltic_soviet_collapse_forest_belts
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_tallinn_harbor_customs }
+		prerequisite = { focus = baltic_soviet_collapse_forest_and_marsh_lines }
+
+		allow_branch = { tag = EST }
+		completion_reward = {
+			set_country_flag = soviet_collapse_estonian_forest_coast_guard
+			soviet_collapse_apply_focus_military_consolidation = yes
+			capital_scope = {
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				limit = { is_coastal = no }
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_riga_corridor_switchyards
+		icon = GFX_baltic_soviet_collapse_wire_rooms
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 8
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_rail_to_the_ports }
+		prerequisite = { focus = baltic_soviet_collapse_the_baltic_customs_desk }
+
+		allow_branch = { tag = LAT }
+		completion_reward = {
+			set_country_flag = soviet_collapse_latvian_corridor_switchyards
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_latvian_port_guard_boards
+		icon = GFX_baltic_soviet_collapse_home_guard_staff
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 8
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_riga_corridor_switchyards }
+		prerequisite = { focus = baltic_soviet_collapse_coastal_defense_batteries }
+
+		allow_branch = { tag = LAT }
+		completion_reward = {
+			set_country_flag = soviet_collapse_latvian_port_guard_boards
+			soviet_collapse_apply_focus_military_consolidation = yes
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_vilnius_border_statutes
+		icon = GFX_baltic_soviet_collapse_restore_legal_continuity
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_legal_continuity_government }
+		prerequisite = { focus = baltic_soviet_collapse_the_border_front_at_home }
+
+		allow_branch = { tag = LIT }
+		completion_reward = {
+			set_country_flag = soviet_collapse_lithuanian_border_statutes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_war_support = constant:soviet_collapse_republic_focus.war_support_small
+			capital_scope = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = baltic_soviet_collapse_lithuanian_interior_line
+		icon = GFX_baltic_soviet_collapse_sovereign_baltic_front
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = baltic_soviet_collapse_vilnius_border_statutes }
+		prerequisite = { focus = baltic_soviet_collapse_forest_and_marsh_lines }
+
+		allow_branch = { tag = LIT }
+		completion_reward = {
+			set_country_flag = soviet_collapse_lithuanian_interior_line
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+		}
+	}
 }
 
 focus_tree = {

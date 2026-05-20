@@ -49,7 +49,7 @@ The main Soviet Collapse localisation phrase audit also has zero hits for the fo
 | Ukraine focus tree full route review | `focus_integrity`, `focus_reward_variety_surface`, `focus_ai_surface` | 81-focus tree passes parser, reward, AI, localisation, and icon checks |
 | Belarus focus tree full route review | same focus surfaces | 38-focus tree passes parser, reward, AI, localisation, and icon checks |
 | Kazakhstan focus tree full route review | same focus surfaces | 57-focus tree passes parser, reward, AI, localisation, and icon checks |
-| Regional republic focus tree review | same focus surfaces | regional/shared/custom trees pass parser, layout, reward, AI, localisation, and icon checks |
+| Regional republic focus tree review | same focus surfaces | regional/shared/custom trees pass parser, layout, reward, AI, localisation, and icon checks. The Baltic shared tree includes tag-gated Estonia, Latvia, and Lithuania branch pairs. |
 | Internal republic focus tree review | `internal_republic_focus_loader`, `internal_republic_focus_tree`, `internal_republic_focus_localisation` | vanilla-supported internal republic tags route to a 62-focus shared tree with northern, Volga-Ural, expanded Crimea, expanded eastern/inner-Asian, tag-specific regional, high-chaos, and common-front branches |
 
 ## Latest Correction Validated
@@ -81,7 +81,7 @@ Mission outcome, cost, and selected route requirement localisation now describes
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 The generated focus-expansion description layer now uses in-world crisis prose for Ukraine, Belarus, Kazakhstan, regional, and fallback breakaway focus descriptions instead of the former placeholder "focus for the republic crisis path" construction.
-Event 005 focus integrity covers 1013 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus integrity covers 1019 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
 Event 005 focus reward variety covers at least 673 material reward focuses in the conservative direct shell scan, 491 shared focus-helper reward focuses, and no more than 57 focuses in the conservative add-ideas-without-material scan.
 Event 005 focus AI checks cover at least 353 focuses with contextual `ai_will_do` modifiers in the conservative direct shell scan.
 The internal republic tree has 62 focus IDs, 62 completion rewards, 62 AI blocks, no duplicate internal focus IDs, no unresolved internal prerequisites, and current Crimea and eastern/inner-Asian localisation coverage for the newly added settlement, mediation, fortress, compact observer, Yakut, Far Eastern, Buryat, and Tuvan focuses.
