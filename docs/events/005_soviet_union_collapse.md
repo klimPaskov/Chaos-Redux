@@ -109,7 +109,7 @@ The implemented trees are:
 9. `soviet_collapse_breakaway_focus_tree`: 36 focuses for the shared fallback tree for remaining event-created breakaways with emergency governance, legal records, local courts and militia rolls, depot repair, home industry, border militia, foreign liaison, many-patron accounting, League observer access, road-and-rail repair, and survival lanes.
 10. `CFR_soviet_collapse_focus_tree`: 45 focuses for Civilian Factory of Russia construction-board tree with cooperative, planner, contract-board, concrete-committee, and builder-state routes.
 11. `MFR_soviet_collapse_focus_tree`: 37 focuses for Military Factory of Russia arsenal-board tree with officer, worker, merchant, unsafe-output, export, and arsenal-state routes.
-12. `KRS_soviet_collapse_focus_tree`: 20 focuses for Kronstadt Free Soviet sailor-assembly, fortress-store, naval-militia, port-council, and port-sovereignty routes.
+12. `KRS_soviet_collapse_focus_tree`: 27 focuses for Kronstadt Free Soviet sailor-assembly, fortress-store, naval-militia, Gulf battery posts, fortress signal rooms, free-port conference, port-council, and port-sovereignty routes.
 13. `FTH_soviet_collapse_focus_tree`: 21 focuses for Free Territory of Huliaipole commune, depot-raiding, League bargain, Black International, and anti-capital routes.
 14. `BBH_soviet_collapse_focus_tree`: 21 focuses for Black Banner Host mobile-column, commune-war, captured-store, anti-state, and anti-prison routes.
 15. `BSC_soviet_collapse_focus_tree`: 21 focuses for Basmachi Confederation oasis, pass-guard, caravan-store, road-control, and steppe federation routes.

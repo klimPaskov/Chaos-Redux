@@ -2380,6 +2380,88 @@ focus_tree = {
 
 
 	focus = {
+		id = KRS_war_plan
+		icon = GFX_focus_KRS_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_NAVY_XP }
+		x = 0
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = KRS_radical_turn }
+
+		completion_reward = {
+			set_country_flag = krs_focus_war_plan
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
+		id = KRS_industry_plan
+		icon = GFX_focus_KRS_industry_plan
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
+		x = 12
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = KRS_radical_turn focus = KRS_settlement }
+
+		completion_reward = {
+			set_country_flag = krs_focus_industry_plan
+			random_owned_controlled_state = {
+				limit = {
+					is_coastal = yes
+					free_building_slots = {
+						building = dockyard
+						size > 0
+						include_locked = yes
+					}
+				}
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = KRS_diplomatic_plan
+		icon = GFX_focus_KRS_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = KRS_settlement }
+
+		completion_reward = {
+			set_country_flag = krs_focus_diplomatic_plan
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
 		id = KRS_hidden_doctrine
 		icon = GFX_focus_KRS_hidden_doctrine
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
@@ -2393,6 +2475,32 @@ focus_tree = {
 			add_ideas = krs_every_port_a_council
 		}
 		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = KRS_fortress_signal_rooms
+		icon = GFX_focus_KRS_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
+		x = 12
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = KRS_industry_plan }
+
+		completion_reward = {
+			set_country_flag = krs_focus_fortress_signal_rooms
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = radar_station level = 1 instant_build = yes }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
 	}
 
 	focus = {
@@ -2418,6 +2526,56 @@ focus_tree = {
 	}
 
 	focus = {
+		id = KRS_gulf_battery_posts
+		icon = GFX_focus_KRS_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_NAVY_XP }
+		x = 0
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = KRS_war_plan }
+
+		completion_reward = {
+			set_country_flag = krs_focus_gulf_battery_posts
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = KRS_free_port_conference
+		icon = GFX_focus_KRS_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 10
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = KRS_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = krs_focus_free_port_conference
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_soviet_collapse_league_pressure_ready = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = less_than } } }
+		}
+	}
+
+	focus = {
 		id = KRS_extreme_path
 		icon = GFX_focus_KRS_extreme_path
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
@@ -2431,6 +2589,31 @@ focus_tree = {
 			soviet_collapse_complete_port_council_endgame = yes
 		}
 		ai_will_do = { base = 4 }
+	}
+
+	focus = {
+		id = KRS_endgame
+		icon = GFX_focus_KRS_endgame
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY FOCUS_FILTER_NAVY_XP }
+		x = 16
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = KRS_extreme_path }
+		prerequisite = { focus = KRS_fortress_signal_rooms }
+		prerequisite = { focus = KRS_gulf_battery_posts focus = KRS_free_port_conference }
+
+		completion_reward = {
+			set_country_flag = krs_focus_endgame
+			soviet_collapse_complete_port_council_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than } } }
+		}
 	}
 
 }
