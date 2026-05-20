@@ -1559,6 +1559,29 @@ focus_tree = {
 	}
 
 	focus = {
+		id = ALA_diplomatic_plan
+		icon = GFX_focus_ALA_diplomatic_plan
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 32
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ALA_league }
+		prerequisite = { focus = ALA_foreign }
+
+		completion_reward = {
+			set_country_flag = ala_focus_diplomatic_plan
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = soviet_collapse_central_asian_league_member }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } } }
+		}
+	}
+
+	focus = {
 		id = ALA_inner_faction
 		icon = GFX_focus_ALA_inner_faction
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -1590,6 +1613,33 @@ focus_tree = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
 		}
 		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ALA_alash_officer_schools
+		icon = GFX_focus_ALA_doctrine
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_RESEARCH }
+		x = 0
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ALA_special_arm }
+
+		completion_reward = {
+			set_country_flag = ala_focus_alash_officer_schools
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			add_doctrine_cost_reduction = {
+				name = ALA_alash_officer_schools_bonus
+				cost_reduction = 0.5
+				uses = 1
+				category = land_doctrine
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 has_country_flag = ala_focus_radical_turn }
+		}
 	}
 
 	focus = {
@@ -1629,6 +1679,31 @@ focus_tree = {
 	}
 
 	focus = {
+		id = ALA_war_plan
+		icon = GFX_focus_ALA_war_plan
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_INDUSTRY }
+		x = 24
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ALA_enemy_front }
+
+		completion_reward = {
+			set_country_flag = ala_focus_war_plan
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = air_base level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } } }
+		}
+	}
+
+	focus = {
 		id = ALA_civil_rule
 		icon = GFX_focus_ALA_civil_rule
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -1642,6 +1717,50 @@ focus_tree = {
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
 		}
 		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ALA_aksakal_mediation
+		icon = GFX_focus_ALA_civil_rule
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 4
+		y = 6
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = ALA_civil_rule }
+
+		completion_reward = {
+			set_country_flag = ala_focus_aksakal_mediation
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = ALA_minority_steppe_guarantees
+		icon = GFX_focus_ALA_legitimacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ALA_aksakal_mediation }
+		prerequisite = { focus = ALA_diplomatic_plan }
+
+		completion_reward = {
+			set_country_flag = ala_focus_minority_steppe_guarantees
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = ala_focus_settlement }
+			modifier = { factor = 2 has_country_flag = soviet_collapse_central_asian_league_member }
+		}
 	}
 
 	focus = {
@@ -1722,6 +1841,7 @@ focus_tree = {
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALA_radical_turn focus = ALA_settlement }
+		prerequisite = { focus = ALA_war_plan }
 
 		completion_reward = {
 			set_country_flag = ala_focus_industry_plan
@@ -1755,9 +1875,9 @@ focus_tree = {
 		icon = GFX_focus_ALA_extreme_gate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
 		x = 8
-		y = 10
+		y = 11
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = ALA_hidden_doctrine }
+		prerequisite = { focus = ALA_endgame }
 
 		available = {
 			OR = {
@@ -1773,11 +1893,34 @@ focus_tree = {
 	}
 
 	focus = {
+		id = ALA_endgame
+		icon = GFX_focus_ALA_endgame
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ALA_hidden_doctrine }
+		prerequisite = { focus = ALA_minority_steppe_guarantees }
+
+		completion_reward = {
+			set_country_flag = ala_focus_endgame
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = ala_focus_settlement }
+			modifier = { factor = 2 has_country_flag = ala_focus_diplomatic_plan }
+		}
+	}
+
+	focus = {
 		id = ALA_extreme_path
 		icon = GFX_focus_ALA_extreme_path
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
 		x = 8
-		y = 11
+		y = 12
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ALA_extreme_gate }
 
