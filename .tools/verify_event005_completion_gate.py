@@ -64,6 +64,29 @@ REGIONAL_LEAGUE_FUNCTIONS = [
 	"soviet_collapse_form_terminal_regional_leagues",
 ]
 
+INTERNAL_REPUBLIC_FOCUS_IDS = {
+	"internal_soviet_collapse_convene_republic_presidium",
+	"internal_soviet_collapse_secure_autonomous_capital",
+	"internal_soviet_collapse_map_union_property",
+	"internal_soviet_collapse_form_republic_guard",
+	"internal_soviet_collapse_write_the_autonomy_statute",
+	"internal_soviet_collapse_legal_autonomy_congress",
+	"internal_soviet_collapse_security_council",
+	"internal_soviet_collapse_border_and_rail_liaisons",
+	"internal_soviet_collapse_forest_republic_committees",
+	"internal_soviet_collapse_white_sea_rail_watch",
+	"internal_soviet_collapse_volga_oil_and_workshops",
+	"internal_soviet_collapse_ural_cavalry_roads",
+	"internal_soviet_collapse_black_sea_peninsula_guard",
+	"internal_soviet_collapse_crimean_tatar_councils",
+	"internal_soviet_collapse_siberian_rail_authorities",
+	"internal_soviet_collapse_taiga_steppe_self_rule",
+	"internal_soviet_collapse_trade_oaths_with_neighbors",
+	"internal_soviet_collapse_free_republics_wire",
+	"internal_soviet_collapse_terminal_survival_plan",
+	"internal_soviet_collapse_no_return_to_oblast_rule",
+}
+
 
 def read(rel: str) -> str:
 	path = ROOT / rel
@@ -75,6 +98,25 @@ def block_after(text: str, name: str) -> str:
 	if not match:
 		return ""
 	start = match.end()
+	depth = 1
+	i = start
+	while i < len(text) and depth:
+		if text[i] == "{":
+			depth += 1
+		elif text[i] == "}":
+			depth -= 1
+		i += 1
+	return text[start:i - 1] if depth == 0 else ""
+
+
+def focus_tree_block(text: str, tree_id: str) -> str:
+	match = re.search(rf"(?m)^\s*id\s*=\s*{re.escape(tree_id)}\b", text)
+	if not match:
+		return ""
+	tree_start = text.rfind("focus_tree = {", 0, match.start())
+	if tree_start < 0:
+		return ""
+	start = text.find("{", tree_start) + 1
 	depth = 1
 	i = start
 	while i < len(text) and depth:
@@ -113,6 +155,7 @@ def main() -> int:
 	triggers = read("common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	decisions = read("common/decisions/005_soviet_collapse_decisions.txt")
 	focus = read("common/national_focus/005_soviet_collapse_republics.txt")
+	localisation = read("localisation/english/005_soviet_collapse_l_english.yml")
 
 	failed |= not check(
 		"unsupported_operators",
@@ -184,6 +227,32 @@ def main() -> int:
 			"has_soviet_collapse_central_asian_league_quorum",
 		]),
 		"quorum triggers exist",
+	)
+
+	loader = block_after(effects, "soviet_collapse_load_event_created_focus_tree")
+	internal_tree_pos = loader.find("load_focus_tree = { tree = soviet_collapse_internal_republic_focus_tree }")
+	internal_loader_context = loader[max(0, internal_tree_pos - 700):internal_tree_pos] if internal_tree_pos >= 0 else ""
+	failed |= not check(
+		"internal_republic_focus_loader",
+		internal_tree_pos >= 0 and INTERNAL_TERMINAL_TAGS <= tags_in(internal_loader_context),
+		"missing=" + ",".join(sorted(INTERNAL_TERMINAL_TAGS - tags_in(internal_loader_context))),
+	)
+
+	internal_tree = focus_tree_block(focus, "soviet_collapse_internal_republic_focus_tree")
+	internal_focus_ids = set(re.findall(r"(?m)^\s*id\s*=\s*(internal_soviet_collapse_[A-Za-z0-9_]+)", internal_tree))
+	failed |= not check(
+		"internal_republic_focus_tree",
+		INTERNAL_REPUBLIC_FOCUS_IDS <= internal_focus_ids
+		and all(f"tag = {tag}" in internal_tree for tag in INTERNAL_TERMINAL_TAGS)
+		and "soviet_collapse_apply_focus_league_preparation = yes" in internal_tree
+		and "soviet_collapse_apply_focus_high_chaos_identity = yes" in internal_tree,
+		"missing=" + ",".join(sorted(INTERNAL_REPUBLIC_FOCUS_IDS - internal_focus_ids)),
+	)
+	failed |= not check(
+		"internal_republic_focus_localisation",
+		"soviet_collapse_internal_republic_focus_tree:" in localisation
+		and all(f"{focus_id}:" in localisation and f"{focus_id}_desc:" in localisation for focus_id in INTERNAL_REPUBLIC_FOCUS_IDS),
+		"tree and focus keys are localised",
 	)
 
 	mission_blocks = len(re.findall(r"(?m)^\s*soviet_collapse_soviet_mission_\d+_", decisions))

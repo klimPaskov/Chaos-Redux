@@ -15,12 +15,13 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_caucasus_focus_tree` | 20 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | 14 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_moldova_focus_tree` | 17 |
+| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 20 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 27 |
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 19 custom successor trees | 20-21 each |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 45 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 37 |
 
-The verifier counts 755 total focuses across 29 trees.
+The verifier counts 775 total focuses across 30 trees.
 
 ## Route Coverage
 
@@ -30,14 +31,16 @@ Belarus covers Minsk authority, legal restoration, rail sovereignty, forest defe
 
 Kazakhstan covers steppe emergency authority, Alash restoration, socialist steppe republic, military district state, resource/rail economy, southern cascade, foreign mediation, Central Asian League, and high-chaos steppe pressure.
 
-Baltic, Caucasus, Central Asian, Moldova, Karelia/fallback, and custom successor trees are implemented as shared or compact path-level trees with local route identities, focus icons, AI, localisation, and rewards.
+Baltic, Caucasus, Central Asian, Moldova, internal republic, fallback, and custom successor trees are implemented as shared or compact path-level trees with local route identities, focus icons, AI, localisation, and rewards.
+
+The internal republic tree covers the vanilla-supported internal Union Unmade tags `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. It gives them a 20-focus shared route set with legal, security, and liaison choices plus regional branches for northern forest republics, Volga-Ural republics, Crimea, and Siberian/Far Eastern/inner Asian republics.
 
 ## Duplicate And Reward Audit
 
 Verifier evidence:
 
-- `focus_integrity`: 755 focuses, zero duplicate IDs, zero missing references, zero self-references, zero nonreciprocal mutual exclusions, zero repeated mutual blocks, zero missing rewards, zero missing icons, zero missing coordinates.
-- `focus_reward_variety_surface`: zero duplicate reward groups, zero duplicate reward focuses, nine reward categories, 76 add-idea rewards across 755 focuses.
+- `focus_integrity`: 775 focuses, zero duplicate IDs, zero missing references, zero self-references, zero nonreciprocal mutual exclusions, zero repeated mutual blocks, zero missing rewards, zero missing icons, zero missing coordinates.
+- `focus_reward_variety_surface`: zero duplicate reward groups, zero duplicate reward focuses, nine reward categories, 76 add-idea rewards across 775 focuses.
 - `focus_ai_surface`: every focus has `ai_will_do`; mutually exclusive route choices use dynamic AI rather than flat weights.
 - `focus_layout_surface`: no duplicate coordinates, no isolated focuses, no shallow dead-end leaves, no edge crossings, and all continuous focus positions are in right-side panels.
 
@@ -51,6 +54,8 @@ The ordinary local league reward focuses no longer fire super-events:
 - `kaz_soviet_collapse_steppe_federation_charter`
 
 These focuses still apply league preparation rewards and flags, but local/faction formation presentation remains normal event/report/news flow.
+
+The vanilla-supported internal republics no longer use only the generic fallback tree. Event-created internal republic tags route to `soviet_collapse_internal_republic_focus_tree`, with localisation and verifier coverage for the loader, focus IDs, and focus text.
 
 ## Remaining Audit Notes
 

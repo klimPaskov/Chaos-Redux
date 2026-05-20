@@ -54,7 +54,7 @@ Local league logic: Baltic, Caucasus, and Central Asian leagues now require expl
 
 Union Unmade logic: `soviet_collapse_union_unmade_first_month_lock` gates ordinary early collapse, and `soviet_collapse_show_union_unmade_super_event` calls `soviet_collapse_apply_terminal_collapse`.
 
-AI hooks: focus and decision audits report 755 focuses with `ai_will_do`, 189 dynamic focus AI blocks, 78 dynamic mutually exclusive route-choice blocks, and 97 dynamic regular-decision AI blocks.
+AI hooks: focus and decision audits report 775 focuses with `ai_will_do`; route choices and regular decisions keep dynamic AI weighting instead of flat-only behavior.
 
 Localisation: verifier reports no missing focus, idea, or decision name/description localisation and no `:0` localisation entries in Event 005 files.
 
@@ -73,11 +73,12 @@ News/report events: ordinary league formation remains in normal events, while Un
 - Routed terminal threat-ceiling checks through `soviet_collapse_maybe_show_union_unmade_super_event` so recalculation and progressive release cannot bypass the first-month and severe-failure gates.
 - Added Kazakhstan to ordinary Union Unmade terminal release and subject-freeing lists.
 - Wired the existing high-chaos successor spawn effects into the terminal-collapse path and added a terminal anti-Soviet war pass for all breakaway countries that can declare.
-- Added vanilla-supported internal republic tags to Union Unmade terminal release and subject-freeing lists: `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. Event-created versions use the fallback breakaway focus tree unless a bespoke tree is later assigned.
+- Added vanilla-supported internal republic tags to Union Unmade terminal release and subject-freeing lists: `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`.
+- Routed those internal republic tags to `soviet_collapse_internal_republic_focus_tree`, a 20-focus shared tree with legal, security, liaison, northern forest, Volga-Ural, Crimea, and Siberian/Far Eastern/inner Asian branches.
 - Added terminal league formation after releases and high-chaos successor spawning, before the terminal anti-Soviet war pass.
 - Terminal local leagues now auto-form without charging newly released republics when Baltic, Caucasus, or Central Asian quorum exists, then invite valid regional partners.
 - Terminal Free Republics' League formation now invites ordinary republics, vanilla-supported internal republics, and unfactioned Siberian/Far Eastern/Idel-Ural style high-chaos successors.
-- Restored `.tools/verify_event005_completion_gate.py` with deterministic gates for terminal release/freeing tags, terminal sequencing, league formation helpers, mission wiring counts, and duplicate republic focus IDs.
+- Restored `.tools/verify_event005_completion_gate.py` with deterministic gates for terminal release/freeing tags, terminal sequencing, league formation helpers, internal republic focus routing, mission wiring counts, and duplicate republic focus IDs.
 
 ## Verification
 
