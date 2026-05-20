@@ -7424,6 +7424,536 @@ focus_tree = {
 	}
 
 	focus = {
+		id = moldova_soviet_collapse_ministry_seals
+		icon = GFX_moldova_soviet_collapse_chisinau_ledgers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = moldova_soviet_collapse_chisinau_emergency_council }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_ministry_seals
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_raion_food_boards
+		icon = GFX_moldova_soviet_collapse_river_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_ministry_seals }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_raion_food_boards
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_vineyard_and_cannery_committees
+		icon = GFX_moldova_soviet_collapse_river_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_bessarabian_legal_files }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_vineyard_cannery_committees
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_chisinau_radio_watch
+		icon = GFX_moldova_soviet_collapse_chisinau_ledgers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_ministry_seals }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_chisinau_radio_watch
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_constitutional_sfat
+		icon = GFX_moldova_soviet_collapse_chisinau_ledgers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_independent_republic_council }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_constitutional_sfat
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_district_prefect_rolls
+		icon = GFX_moldova_soviet_collapse_chisinau_ledgers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_constitutional_sfat }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_district_prefect_rolls
+			soviet_collapse_apply_focus_legal_recognition = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_neutral_bridge_statute
+		icon = GFX_moldova_soviet_collapse_bridge_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 4
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_constitutional_sfat }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_neutral_bridge_statute
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_in_faction = no }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_republic_without_a_patron
+		icon = GFX_moldova_soviet_collapse_bridge_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = moldova_soviet_collapse_district_prefect_rolls }
+		prerequisite = { focus = moldova_soviet_collapse_neutral_bridge_statute }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_republic_without_patron
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_in_faction = no }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_odessa_contact_posts
+		icon = GFX_moldova_soviet_collapse_ukrainian_corridor
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_ukrainian_grain_road }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_odessa_contact_posts
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 UKR = { exists = yes } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_southern_rail_timetables
+		icon = GFX_moldova_soviet_collapse_ukrainian_corridor
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_ukrainian_grain_road }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_southern_rail_timetables
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_border_customs_shares
+		icon = GFX_moldova_soviet_collapse_river_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_odessa_contact_posts }
+		prerequisite = { focus = moldova_soviet_collapse_southern_rail_timetables }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_border_customs_shares
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_republic_focus.medium_league_gain }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_eastern_buffer_missions
+		icon = GFX_moldova_soviet_collapse_eastern_buffer_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 16
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = moldova_soviet_collapse_border_customs_shares }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_eastern_buffer_missions
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 UKR = { exists = yes } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_prut_relief_depots
+		icon = GFX_moldova_soviet_collapse_romanian_window
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_romanian_aid_without_annexation }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_prut_relief_depots
+			soviet_collapse_apply_focus_foreign_channel = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 ROM = { exists = yes } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_bucharest_observer_mission
+		icon = GFX_moldova_soviet_collapse_romanian_window
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_prut_relief_depots }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_bucharest_observer_mission
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 ROM = { exists = yes } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_western_training_mission
+		icon = GFX_moldova_soviet_collapse_depot_battalions
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 22
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_bucharest_observer_mission }
+		prerequisite = {
+			focus = moldova_soviet_collapse_alliance_not_union
+			focus = moldova_soviet_collapse_conditional_union
+			focus = moldova_soviet_collapse_reject_the_union_question
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_western_training_mission
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 ROM = { exists = yes } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_vote_on_the_prut_statute
+		icon = GFX_moldova_soviet_collapse_romanian_window
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 7
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = moldova_soviet_collapse_bucharest_observer_mission }
+		prerequisite = {
+			focus = moldova_soviet_collapse_alliance_not_union
+			focus = moldova_soviet_collapse_conditional_union
+			focus = moldova_soviet_collapse_reject_the_union_question
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_vote_on_prut_statute
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 ROM = { exists = yes } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_bendery_bridge_works
+		icon = GFX_moldova_soviet_collapse_dniester_line
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_dniester_bridge_sappers }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_bendery_bridge_works
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_tiraspol_depot_belt
+		icon = GFX_moldova_soviet_collapse_depot_battalions
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_bendery_bridge_works }
+		prerequisite = { focus = moldova_soviet_collapse_river_guard_brigades }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_tiraspol_depot_belt
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_anti_air_over_the_crossings
+		icon = GFX_moldova_soviet_collapse_dniester_line
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
+		x = 8
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_dniester_military_bureau }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_anti_air_crossings
+			random_owned_controlled_state = {
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+				add_building_construction = { type = air_base level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_river_command_reserve
+		icon = GFX_moldova_soviet_collapse_depot_battalions
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = moldova_soviet_collapse_tiraspol_depot_belt }
+		prerequisite = { focus = moldova_soviet_collapse_anti_air_over_the_crossings }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_river_command_reserve
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_neutrality_between_three_roads
+		icon = GFX_moldova_soviet_collapse_bridge_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_a_small_state_between_larger_maps }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_neutrality_between_roads
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 is_in_faction = no }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_league_observer_table
+		icon = GFX_moldova_soviet_collapse_eastern_buffer_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_neutrality_between_three_roads }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_league_observer_table
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_republic_focus.small_league_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_black_soil_recovery_boards
+		icon = GFX_moldova_soviet_collapse_river_customs
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_raion_food_boards }
+		prerequisite = { focus = moldova_soviet_collapse_neutrality_between_three_roads }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_black_soil_recovery_boards
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_smugglers_and_border_committees
+		icon = GFX_moldova_soviet_collapse_bridge_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 28
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = moldova_soviet_collapse_a_small_state_between_larger_maps }
+		available = {
+			SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } }
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_smugglers_border_committees
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = moldova_soviet_collapse_republic_of_crossings
+		icon = GFX_moldova_soviet_collapse_bridge_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = {
+			focus = moldova_soviet_collapse_republic_without_a_patron
+			focus = moldova_soviet_collapse_river_command_reserve
+			focus = moldova_soviet_collapse_eastern_buffer_missions
+			focus = moldova_soviet_collapse_vote_on_the_prut_statute
+			focus = moldova_soviet_collapse_league_observer_table
+			focus = moldova_soviet_collapse_black_soil_recovery_boards
+			focus = moldova_soviet_collapse_smugglers_and_border_committees
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_moldova_republic_of_crossings
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = soviet_collapse_moldova_neutral_bridge_statute }
+			modifier = { factor = 2 has_country_flag = soviet_collapse_moldova_eastern_buffer_missions }
+		}
+	}
+
+	focus = {
 		id = moldova_soviet_collapse_the_river_state
 		icon = GFX_moldova_soviet_collapse_bridge_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
@@ -7438,6 +7968,7 @@ focus_tree = {
 			focus = moldova_soviet_collapse_conditional_union
 			focus = moldova_soviet_collapse_reject_the_union_question
 			focus = moldova_soviet_collapse_a_small_state_between_larger_maps
+			focus = moldova_soviet_collapse_republic_of_crossings
 		}
 
 		completion_reward = {
