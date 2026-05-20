@@ -15,13 +15,13 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_caucasus_focus_tree` | 34 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | 34 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_moldova_focus_tree` | 23 |
-| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 20 |
+| `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 32 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 27 |
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 19 custom successor trees | 20-21 each |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 45 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 37 |
 
-The current shell recount counts 830 total focuses across 30 trees.
+The current shell recount counts 842 total focuses across 30 trees.
 
 ## Route Coverage
 
@@ -33,13 +33,13 @@ Kazakhstan covers steppe emergency authority, Alash restoration, socialist stepp
 
 Baltic, Caucasus, Moldova, internal republic, fallback, and custom successor trees are implemented as shared or compact path-level trees with local route identities, focus icons, AI, localisation, and rewards. The Baltic shared tree is a 36-focus path-level tree with legal continuity, archive protection, border government, Baltic League, port/customs sovereignty, coastal and forest defense, foreign-protector, and recognition settlement routes. The Caucasus shared tree is a 34-focus path-level tree with mountain federal, national restoration, oil directorate, pass defense, sponsor-consulate, border treaty, compact, and high-chaos crown routes. The Central Asian shared tree has been expanded from its compact placeholder into a 34-focus path-level tree with local council, military border authority, foreign patronage, Turkestan federation, cotton/water logistics, Basmachi pressure, Khwarazm high-chaos, and southern pact/federation routes. The Moldova tree is a 23-focus path-level tree with Chisinau legitimacy, Dniester defense, Romanian alignment and union-debate routes, Ukrainian grain-road logistics, river-state consolidation, and the Eastern Buffer Coalition news-event hook.
 
-The internal republic tree covers the vanilla-supported internal Union Unmade tags `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. It gives them a 20-focus shared route set with legal, security, and liaison choices plus regional branches for northern forest republics, Volga-Ural republics, Crimea, and Siberian/Far Eastern/inner Asian republics.
+The internal republic tree covers the vanilla-supported internal Union Unmade tags `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. It gives them a 32-focus shared route set with legal, security, and liaison choices plus deeper northern forest, Volga-Ural, Crimea, Siberian/Far Eastern, high-chaos old-name, and common-front branches.
 
 ## Duplicate And Reward Audit
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 830 focuses across the Event 005 focus files after the Moldova expansion.
+- Event 005 focus recount: 842 focuses across the Event 005 focus files after the internal republic expansion.
 - Baltic tree recount: 36 focuses, 36 completion rewards, and 36 `ai_will_do` blocks.
 - Baltic focus references resolve to focus IDs defined inside the same tree.
 - Baltic focus IDs have matching name and description localisation.
@@ -57,6 +57,10 @@ Current non-Python evidence:
 - Moldova focus IDs have matching name and description localisation.
 - Moldova icon assignments resolve through the existing regional icon GFX files.
 - Moldova route gates no longer require mutually exclusive routes at the same time; the river guard and river-state finishers use the existing OR-style prerequisite block pattern.
+- Internal republic tree recount: 32 focuses, 32 completion rewards, and 32 `ai_will_do` blocks.
+- Internal republic focus references resolve to focus IDs defined inside the same tree.
+- Internal republic focus IDs have matching name and description localisation.
+- Internal republic icon assignments resolve through existing Event 005 focus icon GFX files.
 
 ## Changes From This Audit Pass
 
