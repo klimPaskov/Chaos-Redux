@@ -3846,6 +3846,84 @@ focus_tree = {
 		ai_will_do = { base = 10 }
 	}
 
+	focus = {
+		id = caucasus_soviet_collapse_oil_emergency_directorate
+		icon = GFX_caucasus_soviet_collapse_oil_route_offices
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 15
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_protect_the_oil_and_ports }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_oil_emergency_directorate
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_mountain_federal_compact
+		icon = GFX_caucasus_soviet_collapse_mountain_councils
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_caucasus_route_fork }
+		prerequisite = { focus = caucasus_soviet_collapse_hold_the_passes }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_mountain_federal_compact
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_national_restoration_councils
+		icon = GFX_caucasus_soviet_collapse_border_arbitration
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_caucasus_route_fork }
+		prerequisite = { focus = caucasus_soviet_collapse_the_border_faiths_and_nations }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_national_restoration_councils
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_black_sea_or_caspian_routes
+		icon = GFX_caucasus_soviet_collapse_oil_route_offices
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_caspian_watch }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_black_sea_caspian_routes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = { base = 6 }
+	}
+
 
 
 
@@ -3869,6 +3947,26 @@ focus_tree = {
 	}
 
 	focus = {
+		id = caucasus_soviet_collapse_sponsor_consulates
+		icon = GFX_caucasus_soviet_collapse_foreign_missions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_foreign_border_guarantees }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_sponsor_consulates
+			soviet_collapse_apply_focus_foreign_channel = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
 		id = caucasus_soviet_collapse_council_of_passes
 		icon = GFX_caucasus_soviet_collapse_pass_guards
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
@@ -3876,9 +3974,9 @@ focus_tree = {
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = caucasus_soviet_collapse_caucasus_route_fork }
+		prerequisite = { focus = caucasus_soviet_collapse_mountain_federal_compact }
 		prerequisite = { focus = caucasus_soviet_collapse_mountain_artillery_schools }
-		prerequisite = { focus = caucasus_soviet_collapse_caspian_watch }
-		prerequisite = { focus = caucasus_soviet_collapse_ancient_thrones_in_the_mountains }
+		prerequisite = { focus = caucasus_soviet_collapse_black_sea_or_caspian_routes }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_caucasus_council_of_passes
@@ -3886,6 +3984,26 @@ focus_tree = {
 			soviet_collapse_apply_focus_legal_recognition = yes
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_capital_claims_the_valleys
+		icon = GFX_caucasus_soviet_collapse_mountain_councils
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = {
+			focus = caucasus_soviet_collapse_mountain_federal_compact
+			focus = caucasus_soviet_collapse_national_restoration_councils
+		}
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_capital_claims_valleys
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 6 }
 	}
 
 	focus = {
@@ -3905,6 +4023,28 @@ focus_tree = {
 		ai_will_do = { base = 7 }
 	}
 
+	focus = {
+		id = caucasus_soviet_collapse_oilfield_security_compacts
+		icon = GFX_caucasus_soviet_collapse_oil_route_offices
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 15
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_oil_emergency_directorate }
+		prerequisite = { focus = caucasus_soviet_collapse_pipeline_guard_corps }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_oilfield_security_compacts
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
 
 
 	focus = {
@@ -3916,7 +4056,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = caucasus_soviet_collapse_foreign_border_guarantees }
 		prerequisite = { focus = caucasus_soviet_collapse_council_of_passes }
-		prerequisite = { focus = caucasus_soviet_collapse_pipeline_guard_corps }
+		prerequisite = { focus = caucasus_soviet_collapse_oilfield_security_compacts }
 
 		available = { is_soviet_collapse_league_pressure_ready = yes }
 		completion_reward = {
@@ -3944,6 +4084,27 @@ focus_tree = {
 			soviet_collapse_apply_focus_military_consolidation = yes
 		}
 		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_the_border_war_cabinet
+		icon = GFX_caucasus_soviet_collapse_mountain_brigades
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 3
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_mountain_artillery_schools }
+		prerequisite = { focus = caucasus_soviet_collapse_black_sea_or_caspian_routes }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_border_war_cabinet
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+		}
 	}
 
 
@@ -3990,6 +4151,34 @@ focus_tree = {
 	}
 
 	focus = {
+		id = caucasus_soviet_collapse_ancient_caucasus_crowns
+		icon = GFX_caucasus_soviet_collapse_sovereign_mountains
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_ancient_thrones_in_the_mountains }
+		prerequisite = { focus = caucasus_soviet_collapse_national_restoration_councils }
+
+		allow_branch = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_ancient_crowns
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } } }
+		}
+	}
+
+	focus = {
 		id = caucasus_soviet_collapse_the_caucasus_stands
 		icon = GFX_caucasus_soviet_collapse_sovereign_mountains
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
@@ -4006,6 +4195,41 @@ focus_tree = {
 			soviet_collapse_apply_focus_military_consolidation = yes
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_no_one_owns_the_passes_alone
+		icon = GFX_caucasus_soviet_collapse_pass_guards
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 5
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = caucasus_soviet_collapse_capital_claims_the_valleys }
+		prerequisite = { focus = caucasus_soviet_collapse_council_of_passes }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_passes_shared
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_the_passes_vote
+		icon = GFX_caucasus_soviet_collapse_mountain_councils
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_no_one_owns_the_passes_alone }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_passes_vote
+			add_stability = constant:soviet_collapse_republic_focus.stability_medium
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 6 }
 	}
 
 	focus = {
@@ -4048,6 +4272,28 @@ focus_tree = {
 		}
 	}
 
+	focus = {
+		id = caucasus_soviet_collapse_oil_state_command
+		icon = GFX_caucasus_soviet_collapse_oil_route_offices
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 30
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_oil_emergency_directorate }
+		prerequisite = { focus = caucasus_soviet_collapse_civilian_oversight_of_oil }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_oil_state_command
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war_with = SOV }
+		}
+	}
+
 
 	focus = {
 		id = caucasus_soviet_collapse_mountain_autonomy_statutes
@@ -4064,6 +4310,24 @@ focus_tree = {
 			soviet_collapse_apply_focus_legal_recognition = yes
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_border_treaty_with_turkey
+		icon = GFX_caucasus_soviet_collapse_foreign_missions
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 24
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_sponsor_consulates }
+		prerequisite = { focus = caucasus_soviet_collapse_iranian_corridor_talks }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_border_treaty_turkey
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 5 }
 	}
 
 
@@ -4111,7 +4375,13 @@ focus_tree = {
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = caucasus_soviet_collapse_tbilisi_baku_yerevan_talks }
-		prerequisite = { focus = caucasus_soviet_collapse_the_caucasus_stands }
+		prerequisite = {
+			focus = caucasus_soviet_collapse_the_caucasus_stands
+			focus = caucasus_soviet_collapse_the_passes_vote
+			focus = caucasus_soviet_collapse_border_treaty_with_turkey
+			focus = caucasus_soviet_collapse_the_oil_cannot_be_the_government
+			focus = caucasus_soviet_collapse_ancient_caucasus_crowns
+		}
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_caucasus_compact_holds_ridge
@@ -4119,6 +4389,25 @@ focus_tree = {
 			soviet_collapse_apply_focus_military_consolidation = yes
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = caucasus_soviet_collapse_the_oil_cannot_be_the_government
+		icon = GFX_caucasus_soviet_collapse_border_arbitration
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 27
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = caucasus_soviet_collapse_oil_without_masters }
+		prerequisite = { focus = caucasus_soviet_collapse_oil_state_command }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_caucasus_oil_not_government
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 6 }
 	}
 
 	focus = {
