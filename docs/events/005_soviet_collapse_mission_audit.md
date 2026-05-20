@@ -44,10 +44,12 @@ The audit rejects generic text such as `required states` as proof of completion 
 
 Passive stockpile, stability-only, war-support-only, manpower-only, and generic waiting missions are absent from the active mission surface after recursive scripted-trigger expansion. Stockpiles and meters can still appear as costs, scaling values, or supporting conditions, but no mission completes from those alone.
 
-## Verification Command
+## Non-Python Verification Commands
 
 ```text
-python3 .tools/verify_event005_completion_gate.py
+rg -n "required states|border states|dynamic number|dynamic set|relevant border posts|equivalent Pacific port|distant military and rail districts|storehouse and rail states" localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md
+rg -n '<''=|>''=' localisation/english/005_soviet_collapse_l_english.yml docs/events/005_soviet_union_collapse_mission_audit.md
+xxd -p -l 3 localisation/english/005_soviet_collapse_l_english.yml
 ```
 
-Result: exit 0.
+Expected result: the text searches return no vague mission-objective matches or unsupported operators, and the encoding check returns `efbbbf`.
