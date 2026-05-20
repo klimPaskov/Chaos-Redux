@@ -30,6 +30,14 @@ is_soviet_collapse_breakaway_country = {
 	}
 }
 
+has_soviet_collapse_republic_league_coordination = {
+	check_variable = {
+		var = soviet_collapse_league_support_strength
+		value = constant:soviet_collapse_republic_idea.stage_1
+		compare = greater_than_or_equals
+	}
+}
+
 is_soviet_collapse_foreign_patron_candidate = {
 	NOT = { tag = SOV }
 	is_major = yes
@@ -280,7 +288,8 @@ can_pay_soviet_collapse_breakaway_recognition_cost = {
 }
 
 can_pay_soviet_collapse_breakaway_mobilize_cost = {
-	has_stability > constant:soviet_collapse_breakaway_action.mobilize_stability_floor
+	has_political_power > constant:soviet_collapse_breakaway_action.mobilize_political_power
+	command_power > constant:soviet_collapse_breakaway_action.mobilize_command_power
 }
 
 can_pay_soviet_collapse_breakaway_seize_depots_cost = {
@@ -2737,19 +2746,19 @@ can_break_soviet_collapse_shared_defense_calendar = {
 	}
 	OR = {
 		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than }
-		UKR = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		BLR = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		LIT = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		LAT = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		EST = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		GEO = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		ARM = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		AZR = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		UZB = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		KYR = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
-		TMS = { exists = yes has_country_flag = soviet_collapse_breakaway has_idea = soviet_collapse_defensive_coordination }
+		UKR = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		BLR = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		LIT = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		LAT = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		EST = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		GEO = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		ARM = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		AZR = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		UZB = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		KYR = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
+		TMS = { exists = yes has_country_flag = soviet_collapse_breakaway has_soviet_collapse_republic_league_coordination = yes }
 	}
 }
 
@@ -3449,7 +3458,8 @@ can_pay_soviet_collapse_custom_splinter_low_cost = {
 }
 
 can_pay_soviet_collapse_custom_splinter_medium_cost = {
-	has_stability > constant:soviet_collapse_breakaway_action.mobilize_stability_floor
+	has_political_power > constant:soviet_collapse_breakaway_action.mobilize_political_power
+	command_power > constant:soviet_collapse_breakaway_action.mobilize_command_power
 	has_army_experience > constant:soviet_collapse_breakaway_action.seize_army_xp
 }
 
