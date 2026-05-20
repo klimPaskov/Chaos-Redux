@@ -10,7 +10,7 @@ This report records current script/parser validation and deterministic verifier 
 
 ```text
 python3 -m py_compile .tools/verify_event005_completion_gate.py
-python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
+python3 .tools/verify_event005_completion_gate.py
 git diff --check
 rg -n "<=|>=" common/scripted_effects/005_soviet_collapse_effects.txt
 ```
@@ -58,6 +58,7 @@ Vanilla-supported internal republic tags route to `soviet_collapse_internal_repu
 Terminal collapse calls the high-chaos successor spawn helper and anti-Soviet war pass.
 Terminal collapse calls local-league and Free Republics' League formation between release/spawn and war entry.
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
+Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 ```
 
 ## Blockers

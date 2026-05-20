@@ -34,6 +34,7 @@ REQUIRED_INPUTS = [
 	"tmp/soviet_collapse_republic_focus_tree_mandatory_package/soviet_collapse_republic_focus_tree_mandatory_package/research/005_soviet_union_collapse_republic_focus_tree_research_notes.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_1_core_crisis.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_2_objectives_missions_intervention.md",
+	"tmp/005_soviet_union_collapse_final_clean_spec_part_3_republics_focus_trees.md",
 	"tmp/005_soviet_union_collapse_final_clean_spec_part_4_custom_countries_evolutions_assets_achievements.md",
 	"AGENTS.md",
 	".agents/skills/chaos-redux-events/SKILL.md",
@@ -62,6 +63,12 @@ REGIONAL_LEAGUE_FUNCTIONS = [
 	"soviet_collapse_refresh_caucasus_regional_faction",
 	"soviet_collapse_refresh_central_asian_regional_faction",
 	"soviet_collapse_form_terminal_regional_leagues",
+]
+
+FOCUS_FILES = [
+	"common/national_focus/005_soviet_collapse_republics.txt",
+	"common/national_focus/005_soviet_collapse_custom_splinters.txt",
+	"common/national_focus/005_soviet_collapse_factory_successors.txt",
 ]
 
 INTERNAL_REPUBLIC_FOCUS_IDS = {
@@ -170,7 +177,9 @@ def main() -> int:
 	triggers = read("common/scripted_triggers/005_soviet_collapse_triggers.txt")
 	decisions = read("common/decisions/005_soviet_collapse_decisions.txt")
 	focus = read("common/national_focus/005_soviet_collapse_republics.txt")
-	localisation = read("localisation/english/005_soviet_collapse_l_english.yml")
+	all_focus = "\n".join(read(rel) for rel in FOCUS_FILES)
+	loc_paths = sorted((ROOT / "localisation/english").glob("005_soviet_collapse*_l_english.yml"))
+	localisation = "\n".join(path.read_text(encoding="utf-8-sig") for path in loc_paths)
 
 	failed |= not check(
 		"unsupported_operators",
@@ -327,12 +336,28 @@ def main() -> int:
 		"missing=" + ",".join(missing_mission_loc[:10]) + " weak_req=" + ",".join(weak_requirement_loc[:10]),
 	)
 
-	focus_ids = re.findall(r"(?m)^\s*id\s*=\s*([A-Za-z0-9_]+)", focus)
+	focus_ids = re.findall(r"(?m)^\s*id\s*=\s*([A-Za-z0-9_]+)", all_focus)
 	duplicate_focuses = sorted({focus_id for focus_id in focus_ids if focus_ids.count(focus_id) > 1})
 	failed |= not check(
-		"republic_focus_unique_ids",
+		"event005_focus_unique_ids",
 		not duplicate_focuses,
 		"duplicates=" + ",".join(duplicate_focuses[:20]),
+	)
+	missing_focus_loc = sorted(focus_id for focus_id in focus_ids if focus_id not in localisation_keys)
+	missing_focus_desc = sorted(
+		focus_id for focus_id in focus_ids
+		if not focus_id.endswith("_focus_tree") and f"{focus_id}_desc" not in localisation_keys
+	)
+	bad_bom = sorted(str(path.relative_to(ROOT)) for path in loc_paths if not path.read_bytes().startswith(b"\xef\xbb\xbf"))
+	failed |= not check(
+		"event005_focus_localisation",
+		not missing_focus_loc and not missing_focus_desc,
+		"missing=" + ",".join(missing_focus_loc[:10]) + " missing_desc=" + ",".join(missing_focus_desc[:10]),
+	)
+	failed |= not check(
+		"event005_localisation_format",
+		not bad_bom and not re.search(r"(?m)^[A-Za-z0-9_]+:0\s*\"", localisation),
+		"bad_bom=" + ",".join(bad_bom[:10]),
 	)
 
 	if failed:

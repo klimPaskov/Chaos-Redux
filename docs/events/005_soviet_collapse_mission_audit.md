@@ -46,7 +46,7 @@ Passive stockpile, stability-only, war-support-only, manpower-only, and generic 
 ## Verification Command
 
 ```text
-python3 .tools/verify_event005_completion_gate.py --allow-missing-continuation-spec
+python3 .tools/verify_event005_completion_gate.py
 ```
 
 Result: exit 0.
