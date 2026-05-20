@@ -150,6 +150,16 @@ def mission_blocks(text: str) -> dict[str, str]:
 	return blocks
 
 
+def focus_blocks(text: str) -> dict[str, str]:
+	blocks: dict[str, str] = {}
+	for match in re.finditer(r"(?m)^\s*focus\s*=\s*\{", text):
+		block = block_from_match(text, match)
+		id_match = re.search(r"(?m)^\s*id\s*=\s*([A-Za-z0-9_]+)", block)
+		if id_match:
+			blocks[id_match.group(1)] = block
+	return blocks
+
+
 def loc_keys(text: str) -> set[str]:
 	return set(re.findall(r"(?m)^([A-Za-z0-9_]+):\s*\"", text))
 
@@ -342,6 +352,22 @@ def main() -> int:
 		"event005_focus_unique_ids",
 		not duplicate_focuses,
 		"duplicates=" + ",".join(duplicate_focuses[:20]),
+	)
+	focus_map = focus_blocks(all_focus)
+	missing_focus_shape = sorted(
+		focus_id for focus_id, block in focus_map.items()
+		if not all(re.search(rf"(?m)^\s*{field}\s*=", block) for field in ["icon", "x", "y", "completion_reward", "ai_will_do"])
+	)
+	focus_ref_pairs = [
+		(focus_id, ref)
+		for focus_id, block in focus_map.items()
+		for ref in re.findall(r"\bfocus\s*=\s*([A-Za-z0-9_]+)", block)
+	]
+	missing_focus_refs = sorted(f"{focus_id}->{ref}" for focus_id, ref in focus_ref_pairs if ref not in focus_map)
+	failed |= not check(
+		"event005_focus_integrity_surface",
+		len(focus_map) >= 775 and not missing_focus_shape and not missing_focus_refs,
+		f"focuses={len(focus_map)} bad_shape=" + ",".join(missing_focus_shape[:10]) + " missing_refs=" + ",".join(missing_focus_refs[:10]),
 	)
 	missing_focus_loc = sorted(focus_id for focus_id in focus_ids if focus_id not in localisation_keys)
 	missing_focus_desc = sorted(
