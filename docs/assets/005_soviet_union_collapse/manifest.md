@@ -657,14 +657,22 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 ### Old Great Bulgaria Asset Records
 
-`OGB` is wired as an Event 005 high-chaos package with stable sprite names in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Existing final flags remain at `gfx/flags/OGB.tga`, `gfx/flags/medium/OGB.tga`, and `gfx/flags/small/OGB.tga`. The leader portrait sprite `GFX_portrait_OGB_volga_restoration_council` currently reuses `gfx/leaders/005_soviet_collapse/IUL_leader.dds` as placeholder art. Decision and idea sprites now use stable OGB-specific DDS paths copied from themed Event 005 and vanilla DDS sources. Focus sprites use 23 per-focus `gfx/interface/goals/soviet_collapse/ogb_*.dds` files copied from Bulgaria, Volga, trade, defense, diplomacy, and restoration-themed DDS sources.
+`OGB` is wired as an Event 005 high-chaos package with stable sprite names in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Existing final flags remain at `gfx/flags/OGB.tga`, `gfx/flags/medium/OGB.tga`, and `gfx/flags/small/OGB.tga`. The leader portrait sprite `GFX_portrait_OGB_volga_restoration_council` uses stable OGB-specific final art at `gfx/leaders/005_soviet_collapse/OGB_leader.dds`, copied from the vanilla `MEN` restoration-council portrait source. Decision and idea sprites now use stable OGB-specific DDS paths copied from themed Event 005 and vanilla DDS sources. Focus sprites use 23 per-focus `gfx/interface/goals/soviet_collapse/ogb_*.dds` files copied from Bulgaria, Volga, trade, defense, diplomacy, and restoration-themed DDS sources.
 
 | Asset group | Sprite names | Status |
 | --- | --- | --- |
-| OGB leader | `GFX_portrait_OGB_volga_restoration_council` | placeholder reuse |
+| OGB leader | `GFX_portrait_OGB_volga_restoration_council` | wired, OGB-specific final DDS copied from vanilla restoration-council portrait source |
 | OGB decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | wired, decision icons use themed DDS reuse; see mapping below |
 | OGB ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | wired, idea icons use themed DDS reuse; see mapping below |
 | OGB focuses | `GFX_focus_OGB_*` and `_shine` variants | wired, focus icons use themed DDS reuse; see mapping below |
+
+#### Old Great Bulgaria leader portrait mapping
+
+Source mode: existing vanilla leader DDS reuse copied into a stable OGB-specific final path. The source fits the Volga restoration council concept better than the previous Idel-Ural placeholder because it presents a civilian restoration-council figure rather than another Event 005 splinter leader. Sprite definition is in `interface/005_soviet_collapse_factory_ancient_icons.gfx`.
+
+| Sprite | Source DDS | Processed preview | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- | --- |
+| `GFX_portrait_OGB_volga_restoration_council` | `~/projects/Hearts of Iron IV/gfx/leaders/MEN/portrait_MEN_yondonwangchug.dds`; recorded preview `docs/assets/005_soviet_union_collapse/source_png/OGB_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/OGB_leader.png` | `gfx/leaders/005_soviet_collapse/OGB_leader.dds` | 156x210 | wired |
 
 #### Old Great Bulgaria decision and idea icon mapping
 
@@ -746,7 +754,7 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 | `SOG` flags | `gfx/flags/SOG.tga`, `gfx/flags/medium/SOG.tga`, `gfx/flags/small/SOG.tga` copied from `TNC` placeholder flags | placeholder reuse |
 | `KHW` flags | `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` copied from `BSC` placeholder flags | placeholder reuse |
 | `ALN` flags | `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` copied from `MRC` placeholder flags | placeholder reuse |
-| Ancient restoration portraits | `GFX_portrait_OGB_volga_restoration_council`, `GFX_portrait_TNC_turkestan_civic_council`, `GFX_portrait_BSC_oasis_war_council`, `GFX_portrait_MRC_mountain_republic_council` reused by the four history files | placeholder reuse |
+| Ancient restoration portraits | `GFX_portrait_OGB_volga_restoration_council` is now OGB-specific final DDS reuse; `GFX_portrait_TNC_turkestan_civic_council`, `GFX_portrait_BSC_oasis_war_council`, and `GFX_portrait_MRC_mountain_republic_council` remain reused by three history files | partial placeholder reuse |
 | Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`, including the tag-gated `KZR`, `SOG`, `KHW`, and `ALN` branch sprites | unique sprite names with placeholder DDS reuse |
 
 ### Continuation Achievement Placeholder Asset Records
