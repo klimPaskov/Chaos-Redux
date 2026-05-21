@@ -2623,6 +2623,385 @@ focus_tree = {
 }
 
 focus_tree = {
+	id = NRF_soviet_collapse_focus_tree
+	country = { factor = 0 modifier = { add = 10 tag = NRF } }
+	default = no
+	continuous_focus_position = { x = 20 y = 12 }
+
+	focus = {
+		id = NRF_signal_from_lost_convoys
+		icon = GFX_focus_NRF_signal_from_lost_convoys
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 18
+		y = 0
+		cost = @soviet_collapse_focus_short
+
+		completion_reward = {
+			set_country_flag = nrf_focus_signal_from_lost_convoys
+			add_to_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = NRF_murmansk_dead_muster
+		icon = GFX_focus_NRF_murmansk_dead_muster
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_signal_from_lost_convoys }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_murmansk_dead_muster
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = NRF_arkhangelsk_ice_registers
+		icon = GFX_focus_NRF_arkhangelsk_ice_registers
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY }
+		x = 22
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_signal_from_lost_convoys }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_arkhangelsk_ice_registers
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
+			add_to_variable = { nrf_port_muster = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = NRF_count_the_drowned_crews
+		icon = GFX_focus_NRF_count_the_drowned_crews
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_murmansk_dead_muster }
+		prerequisite = { focus = NRF_arkhangelsk_ice_registers }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_count_the_drowned_crews
+			add_ideas = nrf_dead_convoy_registers
+			add_to_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = NRF_living_harbor_committees
+		icon = GFX_focus_NRF_living_harbor_committees
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = NRF_count_the_drowned_crews }
+		mutually_exclusive = { focus = NRF_revenant_admiralty }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_living_harbor_committees
+			custom_effect_tooltip = nrf_living_harbor_committees_settle_drowned_crews_tt
+			hidden_effect = { remove_ideas = nrf_drowned_crew_disputes }
+			add_ideas = nrf_dead_convoy_registers
+			add_to_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = NRF_revenant_admiralty
+		icon = GFX_focus_NRF_revenant_admiralty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 18
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = NRF_count_the_drowned_crews }
+		mutually_exclusive = { focus = NRF_living_harbor_committees }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_revenant_admiralty
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			add_to_variable = { nrf_port_muster = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = NRF_salvage_the_dark_berths
+		icon = GFX_focus_NRF_salvage_the_dark_berths
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY }
+		x = 30
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_arkhangelsk_ice_registers }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_salvage_the_dark_berths
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_to_variable = { nrf_port_muster = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = NRF_icebound_marine_guard
+		icon = GFX_focus_NRF_icebound_marine_guard
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_NAVY }
+		x = 22
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_revenant_admiralty focus = NRF_living_harbor_committees }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_icebound_marine_guard
+			add_ideas = nrf_icebound_marine_guard
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = NRF_dead_convoy_supply_board
+		icon = GFX_focus_NRF_dead_convoy_supply_board
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY }
+		x = 30
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_salvage_the_dark_berths }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_dead_convoy_supply_board
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { nrf_port_muster = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = NRF_ghost_convoy_escorts
+		icon = GFX_focus_NRF_ghost_convoy_escorts
+		search_filters = { FOCUS_FILTER_NAVY FOCUS_FILTER_MANPOWER }
+		x = 26
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_icebound_marine_guard }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_ghost_convoy_escorts
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = NRF_maps_of_sunken_routes
+		icon = GFX_focus_NRF_maps_of_sunken_routes
+		search_filters = { FOCUS_FILTER_NAVY FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_revenant_admiralty focus = NRF_living_harbor_committees }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_maps_of_sunken_routes
+			navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
+			add_to_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = NRF_letters_to_sailor_towns
+		icon = GFX_focus_NRF_letters_to_sailor_towns
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_living_harbor_committees }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_letters_to_sailor_towns
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = NRF_league_of_cold_ports
+		icon = GFX_focus_NRF_league_of_cold_ports
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_letters_to_sailor_towns }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_league_of_cold_ports
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = NRF_claim_the_white_sea_lane
+		icon = GFX_focus_NRF_claim_the_white_sea_lane
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 22
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = NRF_maps_of_sunken_routes }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_claim_the_white_sea_lane
+			215 = { add_claim_by = ROOT }
+			add_to_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = nrf_focus_revenant_admiralty }
+		}
+	}
+
+	focus = {
+		id = NRF_fleet_that_does_not_dock
+		icon = GFX_focus_NRF_fleet_that_does_not_dock
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 26
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = NRF_claim_the_white_sea_lane }
+		prerequisite = { focus = NRF_ghost_convoy_escorts }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_fleet_that_does_not_dock
+			722 = { add_claim_by = ROOT }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = NRF_port_republic_of_the_living
+		icon = GFX_focus_NRF_port_republic_of_the_living
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = NRF_league_of_cold_ports }
+		prerequisite = { focus = NRF_dead_convoy_supply_board }
+		mutually_exclusive = { focus = NRF_northern_revenant_fleet }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_port_republic_of_the_living
+			add_ideas = nrf_dead_convoy_registers
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = NRF_northern_revenant_fleet
+		icon = GFX_focus_NRF_northern_revenant_fleet
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
+		x = 26
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = NRF_fleet_that_does_not_dock }
+		mutually_exclusive = { focus = NRF_port_republic_of_the_living }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_northern_revenant_fleet
+			soviet_collapse_complete_northern_revenant_endgame = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = NRF_memorial_convoy_state
+		icon = GFX_focus_NRF_memorial_convoy_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = NRF_port_republic_of_the_living }
+
+		completion_reward = {
+			set_country_flag = nrf_focus_memorial_convoy_state
+			soviet_collapse_complete_northern_revenant_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = nrf_focus_living_harbor_committees }
+		}
+	}
+}
+
+focus_tree = {
 	id = ICD_soviet_collapse_focus_tree
 	country = { factor = 0 modifier = { add = 10 tag = ICD } }
 	default = no
