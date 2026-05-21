@@ -19,6 +19,8 @@ The latest continuation recheck found `16` sourced report and super-event image 
 
 Latest direct asset recount confirms active news sprites/files at `3/3`, active report sprites/files at `6/6`, sourced-image contact sheets at `4/4`, and active super-event slots `14` through `24` for sprite definitions, DDS files, title/description/button/quote localisation, image selectors, show helpers, script constant IDs, and documented audio slots. Former local-league super-event slots `25` through `27` are preserved as sourced art history only; ordinary league and coalition formation now uses news events.
 
+The 2026-05-21 news/report coverage pass added normal event IDs `chaosx.nr5.45`, `.46`, `.47`, `.48`, `.49`, and `.95`. They intentionally reuse `GFX_report_union_crisis` because they are crisis desk reports or broad text-led news notices, so no additional report/news DDS files are required for that pass.
+
 Optional source/crop choices can be recorded in the art-pass sheet, but empty boxes do not block Event 005 completion. Processed PNG previews, final DDS files, sprite definitions, and contact sheets are implementation and source evidence for the current wired rows.
 
 ## Active Wiring
