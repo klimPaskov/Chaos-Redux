@@ -454,8 +454,33 @@ Portrait contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/cu
 | `ICD` | `gfx/interface/goals/soviet_collapse/005_icd_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_icd_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_icd_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/ICD_leader.dds` | wired, generated reuse |
 | `RMC` | `gfx/interface/goals/soviet_collapse/005_rmc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_rmc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_rmc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/RMC_leader.dds` | wired, generated reuse |
 | `DSC` | `gfx/interface/goals/soviet_collapse/005_dsc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_dsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_dsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/DSC_leader.dds` | wired, generated reuse |
-| `NRF` | `gfx/interface/goals/soviet_collapse/005_nrf_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_nrf_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_nrf_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/NRF_leader.dds` | wired, generated reuse |
+| `NRF` | per-focus `gfx/interface/goals/soviet_collapse/nrf_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_nrf_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_nrf_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/NRF_leader.dds` | wired, focus icons use themed DDS reuse |
 | `NLC` | `gfx/interface/goals/005_nlc_custom_splinter_focus.dds` | `gfx/interface/ideas/005_nlc_custom_splinter_idea.dds` | `gfx/interface/decisions/005_nlc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/NLC_leader.dds` | wired, generated reuse |
+
+### Northern Revenant Fleet focus icon mapping
+
+Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable NRF-specific final paths. Processed PNG preview: not applicable for direct DDS reuse. Target size: source focus-icon DDS dimensions preserved. Sprite definitions are in `interface/005_soviet_collapse_custom_icons.gfx`; every row has both normal and `_shine` sprite variants.
+
+| Focus sprite | Source DDS | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- |
+| `GFX_focus_NRF_signal_from_lost_convoys` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_radio_guided_missiles.dds` | `gfx/interface/goals/soviet_collapse/nrf_signal_from_lost_convoys.dds` | 100x88 | wired |
+| `GFX_focus_NRF_murmansk_dead_muster` | `gfx/interface/goals/soviet_collapse/005_nrf_custom_splinter_focus.dds` | `gfx/interface/goals/soviet_collapse/nrf_murmansk_dead_muster.dds` | 94x86 | wired |
+| `GFX_focus_NRF_arkhangelsk_ice_registers` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_secure_ministry_ledgers.dds` | `gfx/interface/goals/soviet_collapse/nrf_arkhangelsk_ice_registers.dds` | 94x86 | wired |
+| `GFX_focus_NRF_count_the_drowned_crews` | `gfx/interface/goals/soviet_collapse/005_dsc_custom_splinter_focus.dds` | `gfx/interface/goals/soviet_collapse/nrf_count_the_drowned_crews.dds` | 94x86 | wired |
+| `GFX_focus_NRF_living_harbor_committees` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_form_a_regency_council.dds` | `gfx/interface/goals/soviet_collapse/nrf_living_harbor_committees.dds` | 100x88 | wired |
+| `GFX_focus_NRF_revenant_admiralty` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AUS_promote_admirals.dds` | `gfx/interface/goals/soviet_collapse/nrf_revenant_admiralty.dds` | 100x88 | wired |
+| `GFX_focus_NRF_salvage_the_dark_berths` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_FIN_acquire_andros_dockyards.dds` | `gfx/interface/goals/soviet_collapse/nrf_salvage_the_dark_berths.dds` | 100x88 | wired |
+| `GFX_focus_NRF_icebound_marine_guard` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_PHI_marine_corps.dds` | `gfx/interface/goals/soviet_collapse/nrf_icebound_marine_guard.dds` | 100x88 | wired |
+| `GFX_focus_NRF_dead_convoy_supply_board` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CHI_northern_naval_logistics.dds` | `gfx/interface/goals/soviet_collapse/nrf_dead_convoy_supply_board.dds` | 100x88 | wired |
+| `GFX_focus_NRF_ghost_convoy_escorts` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_NOR_nortraship.dds` | `gfx/interface/goals/soviet_collapse/nrf_ghost_convoy_escorts.dds` | 100x88 | wired |
+| `GFX_focus_NRF_maps_of_sunken_routes` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_ICE_securing_the_north_sea_passage.dds` | `gfx/interface/goals/soviet_collapse/nrf_maps_of_sunken_routes.dds` | 100x88 | wired |
+| `GFX_focus_NRF_letters_to_sailor_towns` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_request_external_missions.dds` | `gfx/interface/goals/soviet_collapse/nrf_letters_to_sailor_towns.dds` | 94x86 | wired |
+| `GFX_focus_NRF_league_of_cold_ports` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_convene_league_liaisons.dds` | `gfx/interface/goals/soviet_collapse/nrf_league_of_cold_ports.dds` | 94x86 | wired |
+| `GFX_focus_NRF_claim_the_white_sea_lane` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_bulgaria_on_the_three_seas.dds` | `gfx/interface/goals/soviet_collapse/nrf_claim_the_white_sea_lane.dds` | 100x88 | wired |
+| `GFX_focus_NRF_fleet_that_does_not_dock` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_GER_high_seas_fleet.dds` | `gfx/interface/goals/soviet_collapse/nrf_fleet_that_does_not_dock.dds` | 100x88 | wired |
+| `GFX_focus_NRF_port_republic_of_the_living` | `gfx/interface/goals/soviet_collapse/baltic_soviet_collapse_port_customs.dds` | `gfx/interface/goals/soviet_collapse/nrf_port_republic_of_the_living.dds` | 94x86 | wired |
+| `GFX_focus_NRF_northern_revenant_fleet` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_PRC_naval_capstone.dds` | `gfx/interface/goals/soviet_collapse/nrf_northern_revenant_fleet.dds` | 100x88 | wired |
+| `GFX_focus_NRF_memorial_convoy_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_czechoslovak_legion_export.dds` | `gfx/interface/goals/soviet_collapse/nrf_memorial_convoy_state.dds` | 100x88 | wired |
 
 Custom tag flags and tag-specific focus icons are required only for tags that are actually added. Each implemented tag needs normal, medium, and small flags plus focus icons for any focus tree content.
 
