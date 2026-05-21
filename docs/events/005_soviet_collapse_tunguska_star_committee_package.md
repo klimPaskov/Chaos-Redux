@@ -39,7 +39,7 @@ The decision category adds three actions:
 Required and wired assets:
 
 - Flags: `gfx/flags/TSC.tga`, `gfx/flags/medium/TSC.tga`, `gfx/flags/small/TSC.tga`
-- Focus icon source DDS: `gfx/interface/goals/soviet_collapse/005_tsc_custom_splinter_focus.dds`
+- Focus icon package: 18 per-focus DDS files under `gfx/interface/goals/soviet_collapse/tsc_*.dds`, sprites `GFX_focus_TSC_*` and `GFX_focus_TSC_*_shine`
 - Idea icon source DDS: `gfx/interface/ideas/soviet_collapse/005_tsc_custom_splinter_idea.dds`
 - Decision icon source DDS: `gfx/interface/decisions/soviet_collapse/005_tsc_custom_splinter_decision.dds`
 - Leader portrait: `gfx/leaders/005_soviet_collapse/TSC_leader.dds`
@@ -47,4 +47,4 @@ Required and wired assets:
 
 ## Remaining Work
 
-The gameplay package is wired, but the focus icons currently use the tag-specific generated TSC emblem for every TSC focus. This matches the current custom-splinter emblem workflow, but the final merged objective still calls for distinct focus icons on long-lived playable trees.
+The focus tree no longer uses one generated TSC emblem across every focus. Each TSC focus sprite and shine variant resolves to a stable per-focus DDS copied from thematically matching existing HOI4 or Chaos Redux radio, research, observatory, air, committee, signal, and star-route focus art. A fully bespoke art pass can replace the reused DDS source art later if required.
