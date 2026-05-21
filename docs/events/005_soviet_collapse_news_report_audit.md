@@ -24,6 +24,7 @@ This audit maps the final clean merged package's Part 7 news/report requirements
 | Puppet release aftermath | Terminal subject freeing now fires a report when Soviet republican subjects are cut loose. | `soviet_collapse_terminal_subject_freed_report_pending` is set by terminal `set_autonomy = autonomy_free` branches and consumed by `chaosx.nr5.46`. | source_pass |
 | Dynamic starting unit explanations | First breakaway setup now reports the dynamic military package logic once to the Soviet player. | `soviet_collapse_dynamic_unit_report_seen` gates `chaosx.nr5.47` after emergency guard and field-brigade creation. | source_pass |
 | Balance-relevant crisis shifts | Mission failures, release causes, league goals, war quotas, sponsor recognition, and terminal subject release are visible through report/news events. | `chaosx.nr5.10` through `.16`, `.38` through `.49`, `.95`, `.130` through `.137`. | source_pass |
+| Retired super-event achievement hooks | Achievements no longer depend on retired Free Republics' League or Steppe Federation super-event flags. | `chaosx_ach_former_union_of_everyone_else` now checks `soviet_collapse_free_republics_league_announced`; `chaosx_ach_southern_cascade` now checks `soviet_collapse_steppe_federation_news_fired` plus Basmachi, Turkestan, or Alash endgame flags. | source_pass |
 
 ## Super-Event Boundary
 
