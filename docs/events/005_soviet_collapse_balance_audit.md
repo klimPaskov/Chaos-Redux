@@ -51,6 +51,21 @@ This pass corrected local league balance by replacing one-member readiness check
 
 Ordinary local league formation no longer emits super-events. Formation still uses normal country events and global announcement flags.
 
+## Exploit Checklist
+
+Detailed evidence is recorded in `docs/events/005_soviet_collapse_exploit_audit.md`.
+
+| Exploit surface | Source-level result | Remaining risk |
+| --- | --- | --- |
+| Free-unit farming | Unit creation is limited to setup, terminal, MTTH, and costed decision paths; repeatable mobilisation spends command, political, army, manpower, or equipment resources and uses cooldowns. | Live-session unit-count tuning. |
+| Equipment farming | Equipment aid and mobilisation are behind cost triggers, visible cost text, and cooldowns; foreign aid adds sponsor influence or patronage risk. | Country-size scaling review. |
+| Factory loops | Construction rewards are mostly one-shot focus or setup effects; foreign construction aid spends resources, adds influence, and applies timed patron burden. | Map-state placement review. |
+| Influence farming | Target acceptance, protected-republic checks, dominant-sponsor comparisons, balanced sponsorship, and patronage-risk pressure prevent silent sponsor stacking. | Sponsor-by-sponsor final audit. |
+| Puppet abuse | Client-cabinet and dependency chains require weak targets, high influence, dominant sponsor checks, and fail against protected republics. | Live diplomacy edge cases. |
+| War-goal, claim, and core spam | Source scan finds no `create_wargoal`; war entry is terminal-scripted, claims are one-shot focus rewards, and cores are release/setup effects. | Live diplomatic edge cases. |
+| Mission pressure farming | Active mission cap is 10; success helpers are non-increasing for main threat and failure deltas stay below terminal bypass levels. | In-game category density review. |
+| Release farming | Progressive releases use global cooldown and terminal-state gates; Union Unmade uses first-month lock, severe-condition gates, and terminal cleanup. | Final family-by-family MTTH audit. |
+
 ## Non-Python Validation Commands
 
 ```text
