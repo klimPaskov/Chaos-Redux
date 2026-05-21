@@ -1865,6 +1865,385 @@ focus_tree = {
 }
 
 focus_tree = {
+	id = RMC_soviet_collapse_focus_tree
+	country = { factor = 0 modifier = { add = 10 tag = RMC } }
+	default = no
+	continuous_focus_position = { x = 20 y = 12 }
+
+	focus = {
+		id = RMC_open_the_red_martyrology
+		icon = GFX_focus_RMC_open_the_red_martyrology
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 0
+		cost = @soviet_collapse_focus_short
+
+		completion_reward = {
+			set_country_flag = rmc_focus_open_the_red_martyrology
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = RMC_tambov_witness_cells
+		icon = GFX_focus_RMC_tambov_witness_cells
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_open_the_red_martyrology }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_tambov_witness_cells
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = RMC_lipetsk_reliquary_workshops
+		icon = GFX_focus_RMC_lipetsk_reliquary_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_open_the_red_martyrology }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_lipetsk_reliquary_workshops
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_to_variable = { rmc_resurrection_mobilization = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = RMC_count_the_returning_names
+		icon = GFX_focus_RMC_count_the_returning_names
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_tambov_witness_cells }
+		prerequisite = { focus = RMC_lipetsk_reliquary_workshops }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_count_the_returning_names
+			add_ideas = rmc_martyr_roll_communes
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = RMC_communes_of_witnesses
+		icon = GFX_focus_RMC_communes_of_witnesses
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = RMC_count_the_returning_names }
+		mutually_exclusive = { focus = RMC_cadres_of_resurrection }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_communes_of_witnesses
+			custom_effect_tooltip = rmc_witness_communes_settle_cell_rivalries_tt
+			hidden_effect = { remove_ideas = rmc_credal_cell_rivalries }
+			add_ideas = rmc_martyr_roll_communes
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = RMC_cadres_of_resurrection
+		icon = GFX_focus_RMC_cadres_of_resurrection
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 18
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = RMC_count_the_returning_names }
+		mutually_exclusive = { focus = RMC_communes_of_witnesses }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_cadres_of_resurrection
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			add_to_variable = { rmc_resurrection_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = RMC_blood_oath_requisitions
+		icon = GFX_focus_RMC_blood_oath_requisitions
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 30
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_lipetsk_reliquary_workshops }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_blood_oath_requisitions
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_to_variable = { rmc_resurrection_mobilization = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = RMC_reliquary_guard
+		icon = GFX_focus_RMC_reliquary_guard
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 22
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_cadres_of_resurrection focus = RMC_communes_of_witnesses }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_reliquary_guard
+			add_ideas = rmc_reliquary_guard
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = RMC_shrine_foundries
+		icon = GFX_focus_RMC_shrine_foundries
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_blood_oath_requisitions }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_shrine_foundries
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { rmc_resurrection_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = RMC_dead_volunteer_columns
+		icon = GFX_focus_RMC_dead_volunteer_columns
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 26
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_reliquary_guard }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_dead_volunteer_columns
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = RMC_hagiographers_of_every_front
+		icon = GFX_focus_RMC_hagiographers_of_every_front
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_cadres_of_resurrection focus = RMC_communes_of_witnesses }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_hagiographers_of_every_front
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = RMC_letters_to_mourning_towns
+		icon = GFX_focus_RMC_letters_to_mourning_towns
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_communes_of_witnesses }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_letters_to_mourning_towns
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = RMC_league_of_mourning_communes
+		icon = GFX_focus_RMC_league_of_mourning_communes
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_letters_to_mourning_towns }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_league_of_mourning_communes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = RMC_claim_the_burial_roads
+		icon = GFX_focus_RMC_claim_the_burial_roads
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 22
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = RMC_hagiographers_of_every_front }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_claim_the_burial_roads
+			260 = { add_claim_by = ROOT }
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = rmc_focus_cadres_of_resurrection }
+		}
+	}
+
+	focus = {
+		id = RMC_procession_columns
+		icon = GFX_focus_RMC_procession_columns
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = RMC_claim_the_burial_roads }
+		prerequisite = { focus = RMC_dead_volunteer_columns }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_procession_columns
+			240 = { add_claim_by = ROOT }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = RMC_republic_of_witnesses
+		icon = GFX_focus_RMC_republic_of_witnesses
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = RMC_league_of_mourning_communes }
+		prerequisite = { focus = RMC_shrine_foundries }
+		mutually_exclusive = { focus = RMC_resurrection_without_state }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_republic_of_witnesses
+			add_ideas = rmc_martyr_roll_communes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = RMC_resurrection_without_state
+		icon = GFX_focus_RMC_resurrection_without_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = RMC_procession_columns }
+		mutually_exclusive = { focus = RMC_republic_of_witnesses }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_resurrection_without_state
+			soviet_collapse_complete_red_martyrs_endgame = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = RMC_shrine_state
+		icon = GFX_focus_RMC_shrine_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = RMC_republic_of_witnesses }
+
+		completion_reward = {
+			set_country_flag = rmc_focus_shrine_state
+			soviet_collapse_complete_red_martyrs_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = rmc_focus_communes_of_witnesses }
+		}
+	}
+}
+
+focus_tree = {
 	id = ICD_soviet_collapse_focus_tree
 	country = { factor = 0 modifier = { add = 10 tag = ICD } }
 	default = no
