@@ -87,6 +87,7 @@ MTTH release checks cover release/miss weights, eight cause events, and cooldown
 Mission objective blocks have timed non-selectable shape, hidden scripted requirements, localized requirement/success/failure text, and distinct success/failure effects.
 Mission outcome, cost, and selected route requirement localisation now describes visible pressure, named corridors, named capitals, and named route chains instead of exposing `scales with` tuning language or anonymous route/state wording.
 Terminal mission cleanup removes every Soviet objective mission.
+Decision-category clutter control uses `constant:soviet_collapse_soviet_objective.active_cap = 10`; direct source count finds 118 defined Soviet objective missions, 118 activation-helper mission entries, 118 active-cap checks, 118 active-objective increments, and 118 terminal cleanup `remove_mission` entries.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 The generated focus-expansion description layer now uses in-world crisis prose for Ukraine, Belarus, Kazakhstan, regional, and fallback breakaway focus descriptions instead of the former placeholder "focus for the republic crisis path" construction.
 Event 005 focus integrity covers 1497 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
