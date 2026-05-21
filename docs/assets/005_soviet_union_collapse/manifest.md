@@ -521,9 +521,9 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 
 
-### Returned Names Placeholder Asset Records
+### Returned Names Dynamic Host Asset Records
 
-Returned Names decisions and ideas are wired through existing Event 005 icon reuse in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Final art can replace the referenced sprites later if the museum-cabinet, old-banner, toll-route, Sogdian, Khwarazmian, Alan, and anti-antiquarian concepts need unique DDS files.
+Returned Names decisions and ideas are active gameplay assets wired through existing Event 005 icon reuse in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. The gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Final bespoke art can replace the referenced sprites later for the museum-cabinet, old-banner, toll-route, Sogdian, Khwarazmian, Alan, and anti-antiquarian concepts.
 
 | Asset group | Sprite names | Status |
 | --- | --- | --- |
