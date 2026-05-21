@@ -30,11 +30,11 @@ Current OGB wiring uses stable sprite keys in `interface/005_soviet_collapse_fac
 | Use | Sprite names | Current asset status |
 | --- | --- | --- |
 | Leader portrait | `GFX_portrait_OGB_volga_restoration_council` | Placeholder reuse of `gfx/leaders/005_soviet_collapse/IUL_leader.dds` |
-| Decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | Placeholder reuse of existing Event 005 decision DDS files |
-| Ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | Placeholder reuse of existing returned-name, IUL, CFR, and hybrid-authority idea DDS files |
+| Decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | Stable OGB-specific `gfx/interface/decisions/soviet_collapse/ogb_*.dds` files copied from themed Event 005 decision DDS sources |
+| Ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | Stable OGB-specific `gfx/interface/ideas/soviet_collapse/ogb_*.dds` files copied from themed Event 005 and vanilla idea DDS sources |
 | Focuses | `GFX_focus_OGB_*` and matching `_shine` variants | 23 per-focus `gfx/interface/goals/soviet_collapse/ogb_*.dds` files copied from Bulgaria, Volga, trade, defense, diplomacy, and restoration-themed DDS sources |
 
-Final bespoke OGB leader, idea, and decision art remains an asset follow-up. The focus tree no longer uses repeated placeholder focus DDS reuse; later fully bespoke focus artwork can supersede the stable `ogb_*.dds` files without changing gameplay IDs.
+Final bespoke OGB leader art remains an asset follow-up. The focus tree, decision icons, and idea icons no longer point at shared placeholder DDS paths; later fully bespoke art can supersede the stable `ogb_*.dds` files without changing gameplay IDs.
 
 ## Future Hooks
 
