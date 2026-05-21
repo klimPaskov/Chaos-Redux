@@ -746,7 +746,7 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 
 ### Standalone Ancient Restoration Seed Assets
 
-`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration seed tags. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. The current visual package deliberately uses placeholder reuse so the tags load with stable paths and sprite names while bespoke historical-symbol art remains pending.
+`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration seed tags. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. The current visual package still uses placeholder flag reuse so the tags load with stable flag paths while bespoke historical-symbol flag art remains pending. Leader portraits now use tag-owned sourced vanilla portrait DDS files and tag-specific sprite names.
 
 | Asset surface | Current paths or sprite names | Status |
 | --- | --- | --- |
@@ -754,8 +754,19 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 | `SOG` flags | `gfx/flags/SOG.tga`, `gfx/flags/medium/SOG.tga`, `gfx/flags/small/SOG.tga` copied from `TNC` placeholder flags | placeholder reuse |
 | `KHW` flags | `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` copied from `BSC` placeholder flags | placeholder reuse |
 | `ALN` flags | `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` copied from `MRC` placeholder flags | placeholder reuse |
-| Ancient restoration portraits | `GFX_portrait_OGB_volga_restoration_council` is now OGB-specific final DDS reuse; `GFX_portrait_TNC_turkestan_civic_council`, `GFX_portrait_BSC_oasis_war_council`, and `GFX_portrait_MRC_mountain_republic_council` remain reused by three history files | partial placeholder reuse |
+| Ancient restoration portraits | `GFX_portrait_KZR_itil_toll_council`, `GFX_portrait_SOG_city_registers_council`, `GFX_portrait_KHW_oasis_register_authority`, and `GFX_portrait_ALN_alan_pass_council` in `interface/005_soviet_collapse_factory_ancient_icons.gfx`; final DDS files in `gfx/leaders/005_soviet_collapse/` | wired, tag-specific sourced DDS reuse |
 | Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`, including the tag-gated `KZR`, `SOG`, `KHW`, and `ALN` branch sprites | wired, per-focus themed DDS reuse; see mapping below |
+
+#### Ancient restoration portrait mapping
+
+Source mode: existing vanilla leader portrait DDS reuse copied into stable Event 005 final paths. Each source portrait is already 156x210 and has matching source and processed PNG previews.
+
+| Tag | Sprite name | Source DDS | Source PNG | Processed PNG | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `KZR` | `GFX_portrait_KZR_itil_toll_council` | `~/projects/Hearts of Iron IV/gfx/leaders/MEN/portrait_men_demchugdongrub.dds` | `docs/assets/005_soviet_union_collapse/source_png/KZR_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/KZR_leader.png` | `gfx/leaders/005_soviet_collapse/KZR_leader.dds` | 156x210 | wired |
+| `SOG` | `GFX_portrait_SOG_city_registers_council` | `~/projects/Hearts of Iron IV/gfx/leaders/KAZ/portrait_kaz_ilyas_zhansugurov.dds` | `docs/assets/005_soviet_union_collapse/source_png/SOG_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/SOG_leader.png` | `gfx/leaders/005_soviet_collapse/SOG_leader.dds` | 156x210 | wired |
+| `KHW` | `GFX_portrait_KHW_oasis_register_authority` | `~/projects/Hearts of Iron IV/gfx/leaders/AFG/Portrait_Afghanistan_Mohammed_Zahir_Shah.dds` | `docs/assets/005_soviet_union_collapse/source_png/KHW_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/KHW_leader.png` | `gfx/leaders/005_soviet_collapse/KHW_leader.dds` | 156x210 | wired |
+| `ALN` | `GFX_portrait_ALN_alan_pass_council` | `~/projects/Hearts of Iron IV/gfx/leaders/GEO/portrait_GEO_george_bagration_mukhrani.dds` | `docs/assets/005_soviet_union_collapse/source_png/ALN_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/ALN_leader.png` | `gfx/leaders/005_soviet_collapse/ALN_leader.dds` | 156x210 | wired |
 
 #### Ancient restoration focus icon mapping
 
