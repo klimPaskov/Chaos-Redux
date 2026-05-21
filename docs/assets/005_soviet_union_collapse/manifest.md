@@ -450,7 +450,7 @@ Portrait contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/cu
 | `UDC` | `gfx/interface/goals/soviet_collapse/005_udc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_udc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_udc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/UDC_leader.dds` | wired |
 | `SDZ` | `gfx/interface/goals/soviet_collapse/005_sdz_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_sdz_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_sdz_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/SDZ_leader.dds` | wired |
 | `PRA` | per-focus `gfx/interface/goals/soviet_collapse/pra_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_pra_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_pra_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/PRA_leader.dds` | wired, focus icons use themed DDS reuse |
-| `TSC` | `gfx/interface/goals/soviet_collapse/005_tsc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_tsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_tsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/TSC_leader.dds` | wired, generated reuse |
+| `TSC` | per-focus `gfx/interface/goals/soviet_collapse/tsc_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_tsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_tsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/TSC_leader.dds` | wired, focus icons use themed DDS reuse |
 | `ICD` | `gfx/interface/goals/soviet_collapse/005_icd_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_icd_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_icd_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/ICD_leader.dds` | wired, generated reuse |
 | `RMC` | `gfx/interface/goals/soviet_collapse/005_rmc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_rmc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_rmc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/RMC_leader.dds` | wired, generated reuse |
 | `DSC` | `gfx/interface/goals/soviet_collapse/005_dsc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_dsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_dsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/DSC_leader.dds` | wired, generated reuse |
@@ -485,6 +485,31 @@ Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable PRA
 | `GFX_focus_PRA_rails_over_capitals` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_NOR_complete_the_sourthern_railway_network.dds` | `gfx/interface/goals/soviet_collapse/pra_rails_over_capitals.dds` | 100x88 | wired |
 | `GFX_focus_PRA_flags_on_every_station` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SOV_the_road_of_life.dds` | `gfx/interface/goals/soviet_collapse/pra_flags_on_every_station.dds` | 100x88 | wired |
 | `GFX_focus_PRA_the_pale_line_endures` | `gfx/interface/goals/soviet_collapse/005_pra_custom_splinter_focus.dds` | `gfx/interface/goals/soviet_collapse/pra_the_pale_line_endures.dds` | 94x86 | wired |
+
+### Tunguska Star Committee focus icon mapping
+
+Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable TSC-specific final paths. Processed PNG preview: not applicable for direct DDS reuse. Target size: source focus-icon DDS dimensions preserved. Sprite definitions are in `interface/005_soviet_collapse_custom_icons.gfx`; every row has both normal and `_shine` sprite variants.
+
+| Focus sprite | Source DDS | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- |
+| `GFX_focus_TSC_the_sky_keeps_records` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_radio_communication.dds` | `gfx/interface/goals/soviet_collapse/tsc_the_sky_keeps_records.dds` | 100x88 | wired |
+| `GFX_focus_TSC_tura_observation_presidium` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SWE_king_in_council.dds` | `gfx/interface/goals/soviet_collapse/tsc_tura_observation_presidium.dds` | 100x88 | wired |
+| `GFX_focus_TSC_kirensk_field_stations` | `~/projects/Hearts of Iron IV/gfx/interface/goals/goal_generic_radar.dds` | `gfx/interface/goals/soviet_collapse/tsc_kirensk_field_stations.dds` | 86x82 | wired |
+| `GFX_focus_TSC_recover_the_burned_glass` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_nuclear_development.dds` | `gfx/interface/goals/soviet_collapse/tsc_recover_the_burned_glass.dds` | 100x88 | wired |
+| `GFX_focus_TSC_radio_towers_in_the_taiga` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SWE_radiotjanst.dds` | `gfx/interface/goals/soviet_collapse/tsc_radio_towers_in_the_taiga.dds` | 100x88 | wired |
+| `GFX_focus_TSC_portable_laboratory_trains` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_research2.dds` | `gfx/interface/goals/soviet_collapse/tsc_portable_laboratory_trains.dds` | 100x88 | wired |
+| `GFX_focus_TSC_the_committee_of_instruments` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_cze_military_research_institute.dds` | `gfx/interface/goals/soviet_collapse/tsc_the_committee_of_instruments.dds` | 100x88 | wired |
+| `GFX_focus_TSC_the_committee_of_signs` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_cryptologic_bomb.dds` | `gfx/interface/goals/soviet_collapse/tsc_the_committee_of_signs.dds` | 98x82 | wired |
+| `GFX_focus_TSC_observatory_guard` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_state_defense_guard.dds` | `gfx/interface/goals/soviet_collapse/tsc_observatory_guard.dds` | 94x84 | wired |
+| `GFX_focus_TSC_perimeter_regiments` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BRA_national_guard.dds` | `gfx/interface/goals/soviet_collapse/tsc_perimeter_regiments.dds` | 100x88 | wired |
+| `GFX_focus_TSC_night_survey_columns` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_nighttime_bombing.dds` | `gfx/interface/goals/soviet_collapse/tsc_night_survey_columns.dds` | 100x88 | wired |
+| `GFX_focus_TSC_letters_to_academies` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_university_1.dds` | `gfx/interface/goals/soviet_collapse/tsc_letters_to_academies.dds` | 100x88 | wired |
+| `GFX_focus_TSC_league_of_clear_signals` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_convene_league_liaisons.dds` | `gfx/interface/goals/soviet_collapse/tsc_league_of_clear_signals.dds` | 94x86 | wired |
+| `GFX_focus_TSC_claim_the_impact_zone` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_rocketry.dds` | `gfx/interface/goals/soviet_collapse/tsc_claim_the_impact_zone.dds` | 89x80 | wired |
+| `GFX_focus_TSC_sky_over_siberia` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_the_air_is_our_sea.dds` | `gfx/interface/goals/soviet_collapse/tsc_sky_over_siberia.dds` | 100x88 | wired |
+| `GFX_focus_TSC_starfall_mandate` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_z_bomber_project.dds` | `gfx/interface/goals/soviet_collapse/tsc_starfall_mandate.dds` | 100x88 | wired |
+| `GFX_focus_TSC_observatory_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_research.dds` | `gfx/interface/goals/soviet_collapse/tsc_observatory_state.dds` | 89x80 | wired |
+| `GFX_focus_TSC_the_quiet_sky_settlement` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_FIN_united_under_the_north_star.dds` | `gfx/interface/goals/soviet_collapse/tsc_the_quiet_sky_settlement.dds` | 100x88 | wired |
 
 ### Northern Revenant Fleet focus icon mapping
 
