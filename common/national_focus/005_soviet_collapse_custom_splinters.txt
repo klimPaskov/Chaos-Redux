@@ -1031,6 +1031,461 @@ focus_tree = {
 }
 
 focus_tree = {
+	id = PRA_soviet_collapse_focus_tree
+	country = { factor = 0 modifier = { add = 10 tag = PRA } }
+	default = no
+	continuous_focus_position = { x = 22 y = 12 }
+
+	focus = {
+		id = PRA_the_timetable_declares_authority
+		icon = GFX_focus_PRA_the_timetable_declares_authority
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 0
+		cost = @soviet_collapse_focus_short
+
+		completion_reward = {
+			set_country_flag = pra_focus_the_timetable_declares_authority
+			add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = PRA_novosibirsk_dispatcher_court
+		icon = GFX_focus_PRA_novosibirsk_dispatcher_court
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_the_timetable_declares_authority }
+
+		completion_reward = {
+			set_country_flag = pra_focus_novosibirsk_dispatcher_court
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = PRA_omsk_station_guard
+		icon = GFX_focus_PRA_omsk_station_guard
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 22
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_the_timetable_declares_authority }
+
+		completion_reward = {
+			set_country_flag = pra_focus_omsk_station_guard
+			add_ideas = pra_railway_guard
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = PRA_count_the_locomotives
+		icon = GFX_focus_PRA_count_the_locomotives
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 18
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_novosibirsk_dispatcher_court }
+		prerequisite = { focus = PRA_omsk_station_guard }
+
+		completion_reward = {
+			set_country_flag = pra_focus_count_the_locomotives
+			add_to_variable = { pra_rolling_stock = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = PRA_timetable_law
+		icon = GFX_focus_PRA_timetable_law
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_novosibirsk_dispatcher_court }
+
+		completion_reward = {
+			set_country_flag = pra_focus_timetable_law
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = PRA_ticket_courts_for_every_platform
+		icon = GFX_focus_PRA_ticket_courts_for_every_platform
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_timetable_law }
+
+		completion_reward = {
+			set_country_flag = pra_focus_ticket_courts_for_every_platform
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_medium
+			add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 check_variable = { var = pra_rail_authority value = constant:soviet_collapse_factory_ancient.large_mandate_gain compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = PRA_the_board_overrules_ministers
+		icon = GFX_focus_PRA_the_board_overrules_ministers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 5
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = PRA_timetable_law }
+		mutually_exclusive = { focus = PRA_armored_train_directorate }
+
+		completion_reward = {
+			set_country_flag = pra_focus_the_board_overrules_ministers
+			remove_ideas = pra_dispatcher_court_tensions
+			add_ideas = pra_corridor_toll_authority
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = PRA_armored_train_directorate
+		icon = GFX_focus_PRA_armored_train_directorate
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 5
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = PRA_omsk_station_guard }
+		mutually_exclusive = { focus = PRA_the_board_overrules_ministers }
+
+		completion_reward = {
+			set_country_flag = pra_focus_armored_train_directorate
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 3 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = PRA_repair_crews_without_ministries
+		icon = GFX_focus_PRA_repair_crews_without_ministries
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_count_the_locomotives }
+
+		completion_reward = {
+			set_country_flag = pra_focus_repair_crews_without_ministries
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = PRA_coal_water_and_spare_parts
+		icon = GFX_focus_PRA_coal_water_and_spare_parts
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_repair_crews_without_ministries }
+
+		completion_reward = {
+			set_country_flag = pra_focus_coal_water_and_spare_parts
+			add_to_variable = { pra_rolling_stock = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = PRA_mobile_workshops
+		icon = GFX_focus_PRA_mobile_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_coal_water_and_spare_parts }
+
+		completion_reward = {
+			set_country_flag = pra_focus_mobile_workshops
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = PRA_switchyard_denial_posts
+		icon = GFX_focus_PRA_switchyard_denial_posts
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 22
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_omsk_station_guard }
+
+		completion_reward = {
+			set_country_flag = pra_focus_switchyard_denial_posts
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = PRA_armored_train_schools
+		icon = GFX_focus_PRA_armored_train_schools
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 26
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_switchyard_denial_posts }
+
+		completion_reward = {
+			set_country_flag = pra_focus_armored_train_schools
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = pra_focus_armored_train_directorate }
+		}
+	}
+
+	focus = {
+		id = PRA_passport_of_the_moving_state
+		icon = GFX_focus_PRA_passport_of_the_moving_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_the_board_overrules_ministers focus = PRA_armored_train_directorate }
+
+		completion_reward = {
+			set_country_flag = pra_focus_passport_of_the_moving_state
+			add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = PRA_neutral_corridor_letters
+		icon = GFX_focus_PRA_neutral_corridor_letters
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_passport_of_the_moving_state }
+
+		completion_reward = {
+			set_country_flag = pra_focus_neutral_corridor_letters
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = PRA_charge_for_safe_passage
+		icon = GFX_focus_PRA_charge_for_safe_passage
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_neutral_corridor_letters }
+
+		completion_reward = {
+			set_country_flag = pra_focus_charge_for_safe_passage
+			add_ideas = pra_corridor_toll_authority
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = PRA_league_transit_bargain
+		icon = GFX_focus_PRA_league_transit_bargain
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 9
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_charge_for_safe_passage }
+
+		completion_reward = {
+			set_country_flag = pra_focus_league_transit_bargain
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_foreign_channel = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = PRA_claim_the_branch_lines
+		icon = GFX_focus_PRA_claim_the_branch_lines
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 8
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = PRA_armored_train_schools }
+
+		completion_reward = {
+			set_country_flag = pra_focus_claim_the_branch_lines
+			add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = PRA_seize_the_junction_cities
+		icon = GFX_focus_PRA_seize_the_junction_cities
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 30
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = PRA_claim_the_branch_lines }
+
+		completion_reward = {
+			set_country_flag = pra_focus_seize_the_junction_cities
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			soviet_collapse_apply_focus_military_consolidation = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_country_flag = pra_focus_armored_train_directorate }
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = PRA_rails_over_capitals
+		icon = GFX_focus_PRA_rails_over_capitals
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 30
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = PRA_seize_the_junction_cities }
+
+		completion_reward = {
+			set_country_flag = pra_focus_rails_over_capitals
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_complete_pale_railway_endgame = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = PRA_flags_on_every_station
+		icon = GFX_focus_PRA_flags_on_every_station
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = PRA_league_transit_bargain }
+		prerequisite = { focus = PRA_mobile_workshops }
+
+		completion_reward = {
+			set_country_flag = pra_focus_flags_on_every_station
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_country_flag = pra_focus_neutral_corridor_letters }
+		}
+	}
+
+	focus = {
+		id = PRA_the_pale_line_endures
+		icon = GFX_focus_PRA_the_pale_line_endures
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 11
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = PRA_flags_on_every_station }
+		mutually_exclusive = { focus = PRA_rails_over_capitals }
+
+		completion_reward = {
+			set_country_flag = pra_focus_the_pale_line_endures
+			soviet_collapse_complete_pale_railway_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+}
+
+focus_tree = {
 	id = BSC_soviet_collapse_focus_tree
 
 	country = {
