@@ -3549,6 +3549,249 @@ soviet_collapse_arsenal_state = {
 	}
 }
 
+soviet_collapse_returned_names = {
+	soviet_collapse_open_museum_cabinets = {
+		icon = GFX_decision_soviet_collapse_open_museum_cabinets
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_low_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			has_country_flag = soviet_collapse_returned_names_claim_lines_active
+			NOT = { has_country_flag = soviet_collapse_returned_names_museum_opened }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_low_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_returned_names_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_returned_names_open_museum_cabinets = yes
+			custom_effect_tooltip = soviet_collapse_open_museum_cabinets_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } }
+			}
+		}
+	}
+
+	soviet_collapse_recruit_archivists = {
+		icon = GFX_decision_soviet_collapse_recruit_archivists
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_low_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			has_country_flag = soviet_collapse_returned_names_museum_opened
+			NOT = { has_country_flag = soviet_collapse_returned_names_archivists_recruited }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_low_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_returned_names_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_returned_names_recruit_archivists = yes
+			custom_effect_tooltip = soviet_collapse_recruit_archivists_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } }
+			}
+		}
+	}
+
+	soviet_collapse_commission_old_banner = {
+		icon = GFX_decision_soviet_collapse_commission_old_banner
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_medium_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			has_country_flag = soviet_collapse_returned_names_archivists_recruited
+			NOT = { has_country_flag = soviet_collapse_returned_names_old_banner_commissioned }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_medium_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_returned_names_commission_old_banner = yes
+			custom_effect_tooltip = soviet_collapse_commission_old_banner_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } }
+			}
+		}
+	}
+
+	soviet_collapse_argue_khazar_toll_claim = {
+		icon = GFX_decision_soviet_collapse_argue_khazar_toll_claim
+		available = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		visible = {
+			can_argue_soviet_collapse_khazar_toll_claim = yes
+			has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			NOT = { has_country_flag = soviet_collapse_khazar_toll_claim_asserted }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			set_country_flag = soviet_collapse_khazar_toll_claim_asserted
+			soviet_collapse_apply_returned_names_claim_pressure = yes
+			custom_effect_tooltip = soviet_collapse_argue_khazar_toll_claim_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier tag = OGB }
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier tag = IUL }
+		}
+	}
+
+	soviet_collapse_argue_sogdian_city_claim = {
+		icon = GFX_decision_soviet_collapse_argue_sogdian_city_claim
+		available = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		visible = {
+			can_argue_soviet_collapse_sogdian_city_claim = yes
+			has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			NOT = { has_country_flag = soviet_collapse_sogdian_city_claim_asserted }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			set_country_flag = soviet_collapse_sogdian_city_claim_asserted
+			soviet_collapse_apply_returned_names_claim_pressure = yes
+			custom_effect_tooltip = soviet_collapse_argue_sogdian_city_claim_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier tag = TNC }
+		}
+	}
+
+	soviet_collapse_argue_khwarazmian_oasis_claim = {
+		icon = GFX_decision_soviet_collapse_argue_khwarazmian_oasis_claim
+		available = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		visible = {
+			can_argue_soviet_collapse_khwarazmian_oasis_claim = yes
+			has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			NOT = { has_country_flag = soviet_collapse_khwarazmian_oasis_claim_asserted }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			set_country_flag = soviet_collapse_khwarazmian_oasis_claim_asserted
+			soviet_collapse_apply_returned_names_claim_pressure = yes
+			custom_effect_tooltip = soviet_collapse_argue_khwarazmian_oasis_claim_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier tag = BSC }
+		}
+	}
+
+	soviet_collapse_argue_alan_pass_claim = {
+		icon = GFX_decision_soviet_collapse_argue_alan_pass_claim
+		available = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		visible = {
+			can_argue_soviet_collapse_alan_pass_claim = yes
+			has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			NOT = { has_country_flag = soviet_collapse_alan_pass_claim_asserted }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_soviet_collapse_returned_names_medium_cost = yes
+				has_country_flag = soviet_collapse_returned_names_old_banner_commissioned
+			}
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			set_country_flag = soviet_collapse_alan_pass_claim_asserted
+			soviet_collapse_apply_returned_names_claim_pressure = yes
+			custom_effect_tooltip = soviet_collapse_argue_alan_pass_claim_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier tag = MRC }
+		}
+	}
+
+	soviet_collapse_reject_antiquarians = {
+		icon = GFX_decision_soviet_collapse_reject_antiquarians
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_low_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			has_country_flag = soviet_collapse_returned_names_claim_lines_active
+			NOT = { has_country_flag = soviet_collapse_returned_names_rejected }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_returned_names_low_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_returned_names_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_returned_names_reject_antiquarians = yes
+			custom_effect_tooltip = soviet_collapse_reject_antiquarians_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_stability < constant:soviet_collapse_soviet_objective.good_stability
+			}
+		}
+	}
+}
+
 soviet_collapse_kronstadt_council = {
 	krs_consolidate_claim = {
 		icon = GFX_decision_krs_consolidate_claim
