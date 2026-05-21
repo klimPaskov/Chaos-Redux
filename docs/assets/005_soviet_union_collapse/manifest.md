@@ -541,7 +541,7 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 | `KHW` flags | `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` copied from `BSC` placeholder flags | placeholder reuse |
 | `ALN` flags | `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` copied from `MRC` placeholder flags | placeholder reuse |
 | Ancient restoration portraits | `GFX_portrait_OGB_volga_restoration_council`, `GFX_portrait_TNC_turkestan_civic_council`, `GFX_portrait_BSC_oasis_war_council`, `GFX_portrait_MRC_mountain_republic_council` reused by the four history files | placeholder reuse |
-| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx` | unique sprite names with placeholder DDS reuse |
+| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`, including the tag-gated `KZR`, `SOG`, `KHW`, and `ALN` branch sprites | unique sprite names with placeholder DDS reuse |
 
 ### Continuation Achievement Placeholder Asset Records
 
