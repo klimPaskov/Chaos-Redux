@@ -23,7 +23,7 @@ The implemented opening slices cover the crisis scaffold and the first intervent
 
 ## Foreign Influence Tracking
 
-Foreign patron decisions build permanent pressure on the target republic instead of only granting one-off aid. Each targeted intervention records both a category total and a sponsor total on the republic:
+Foreign patron decisions build permanent pressure on the target republic instead of only granting one-off aid. Patron eligibility is limited to tracked sponsor tags with an active war or negative opinion path toward Moscow, so sponsor totals stay aligned with the countries that the dependency logic compares. Each targeted intervention records both a category total and a sponsor total on the republic:
 
 - category totals: recognition, arms, volunteers, advisers, industry, intelligence, ideology, logistics, and patronage risk
 - sponsor totals: Germany, Britain, Japan, France, the United States, Turkey, Iran, Poland, Romania, Finland, Sweden, and Italy
