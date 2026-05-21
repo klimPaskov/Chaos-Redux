@@ -18,10 +18,10 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 62 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 36 |
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 19 custom successor trees | 27-47 each |
-| `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 45 |
+| `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 58 |
 
-The current shell recount counts 1495 total focuses across 30 trees.
+The current shell recount counts 1497 total focuses across 30 trees.
 
 ## Route Coverage
 
@@ -39,7 +39,7 @@ The internal republic tree covers the vanilla-supported internal Union Unmade ta
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 1495 focuses across the Event 005 focus files after the Union Defense Committee front-dispatch, district-pass, mobile-order, command-seal, League-observer, depot-ledger, signal-yard, hospital-district, and winter-order-route expansion.
+- Event 005 focus recount: 1497 focuses across the Event 005 focus files after the Civilian Factory border-construction and reconstruction-protectorate expansion.
 - Kazakhstan tree recount: 92 focuses, 92 completion rewards, and 92 `ai_will_do` blocks.
 - Kazakhstan focus references resolve to focus IDs defined inside the same tree.
 - Kazakhstan focus IDs have matching name and description localisation.
@@ -65,6 +65,7 @@ Current non-Python evidence:
 - Moldova focus IDs have matching name and description localisation.
 - Moldova icon assignments resolve through the existing regional icon GFX files.
 - Moldova route gates no longer require mutually exclusive routes at the same time; the river guard and river-state finishers use the existing OR-style prerequisite block pattern.
+- Civilian Factory of Russia tree recount: 47 focuses, 47 completion rewards, and 47 `ai_will_do` blocks; the latest expansion adds border-construction and reconstruction-protectorate branches with existing dedicated CFR icon sprites.
 - Internal republic tree recount: 62 focuses, 62 completion rewards, and 62 `ai_will_do` blocks.
 - Internal republic focus references resolve to focus IDs defined inside the same tree.
 - Internal republic focus IDs have matching name and description localisation.
