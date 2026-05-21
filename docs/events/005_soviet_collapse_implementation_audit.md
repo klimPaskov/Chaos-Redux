@@ -66,6 +66,7 @@ News/report events: ordinary league formation uses news events, while Union Unma
 - Added quorum triggers for Baltic, Caucasus, and Central Asian league founding so one free member cannot found a local league alone.
 - Removed ordinary local league and normal League-route super-event calls from regional founding effects and republic focus rewards.
 - Direct source inspection now confirms local league formation effects fire `news_event = { id = chaosx.nr5.30 }`, `.31`, and `.32`, and Moldova's Eastern Buffer Coalition route fires `news_event = { id = chaosx.nr5.35 }`.
+- Corrected Event 005 achievement hooks so no active achievement depends on retired Free Republics' League or Steppe Federation super-event flags; the affected achievements now use active news or route evidence instead.
 - Corrected the remaining Central Asian extreme-route custom-country tooltips so Basmachi, Turkestan, and Alash route pushes announce the Steppe Federation in-world instead of referring to a retired Steppe Federation super-event.
 
 ## 2026-05-20 Continuation Correction
