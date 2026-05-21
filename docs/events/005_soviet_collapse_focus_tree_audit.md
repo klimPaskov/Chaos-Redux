@@ -17,11 +17,11 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_moldova_focus_tree` | 48 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 62 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 36 |
-| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 19 custom successor trees | 27-47 each |
+| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 22 custom successor trees | 18-47 each |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 58 |
 
-The current shell recount counts 1497 total focuses across 30 trees.
+The current shell recount counts 1578 total focuses across 34 trees.
 
 ## Route Coverage
 
@@ -35,11 +35,13 @@ Baltic, Caucasus, Moldova, internal republic, fallback, and custom successor tre
 
 The internal republic tree covers the vanilla-supported internal Union Unmade tags `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. It gives them a 62-focus shared route set with legal, security, and liaison choices plus deeper tag-specific northern forest, Komi, Volga-Ural, Bashkir, Crimea, Siberian/Far Eastern, inner Asian, high-chaos old-name, and common-front branches.
 
+The Iron Commissariat of the Dead custom tree is an 18-focus death-state tree with Ryazan grave-office authority, Penza memorial workshops, dead-roll bureaucracy, black-seal requisitions, funeral guards, memorial battalions, grieving-city diplomacy, last-address league work, unburied-front claims, and settlement/extreme endgame choices.
+
 ## Duplicate And Reward Audit
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 1497 focuses across the Event 005 focus files after the Civilian Factory border-construction and reconstruction-protectorate expansion.
+- Event 005 focus recount: 1578 focuses across the Event 005 focus files after the Iron Commissariat package.
 - Kazakhstan tree recount: 92 focuses, 92 completion rewards, and 92 `ai_will_do` blocks.
 - Kazakhstan focus references resolve to focus IDs defined inside the same tree.
 - Kazakhstan focus IDs have matching name and description localisation.
