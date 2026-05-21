@@ -746,14 +746,14 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 
 ### Standalone Ancient Restoration Seed Assets
 
-`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration seed tags. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. The current visual package still uses placeholder flag reuse so the tags load with stable flag paths while bespoke historical-symbol flag art remains pending. Leader portraits now use tag-owned sourced vanilla portrait DDS files and tag-specific sprite names.
+`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration seed tags. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Their flags use generated fictional ancient-restoration source art from `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`, cropped into processed previews under `docs/assets/005_soviet_union_collapse/processed_png/flags/`, and converted into normal, medium, and small TGA variants. Leader portraits use tag-owned sourced vanilla portrait DDS files and tag-specific sprite names.
 
 | Asset surface | Current paths or sprite names | Status |
 | --- | --- | --- |
-| `KZR` flags | `gfx/flags/KZR.tga`, `gfx/flags/medium/KZR.tga`, `gfx/flags/small/KZR.tga` copied from `OGB` placeholder flags | placeholder reuse |
-| `SOG` flags | `gfx/flags/SOG.tga`, `gfx/flags/medium/SOG.tga`, `gfx/flags/small/SOG.tga` copied from `TNC` placeholder flags | placeholder reuse |
-| `KHW` flags | `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` copied from `BSC` placeholder flags | placeholder reuse |
-| `ALN` flags | `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` copied from `MRC` placeholder flags | placeholder reuse |
+| `KZR` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/KZR.png`; final TGAs `gfx/flags/KZR.tga`, `gfx/flags/medium/KZR.tga`, `gfx/flags/small/KZR.tga` | generated source wired |
+| `SOG` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/SOG.png`; final TGAs `gfx/flags/SOG.tga`, `gfx/flags/medium/SOG.tga`, `gfx/flags/small/SOG.tga` | generated source wired |
+| `KHW` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/KHW.png`; final TGAs `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` | generated source wired |
+| `ALN` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/ALN.png`; final TGAs `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` | generated source wired |
 | Ancient restoration portraits | `GFX_portrait_KZR_itil_toll_council`, `GFX_portrait_SOG_city_registers_council`, `GFX_portrait_KHW_oasis_register_authority`, and `GFX_portrait_ALN_alan_pass_council` in `interface/005_soviet_collapse_factory_ancient_icons.gfx`; final DDS files in `gfx/leaders/005_soviet_collapse/` | wired, tag-specific sourced DDS reuse |
 | Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`, including the tag-gated `KZR`, `SOG`, `KHW`, and `ALN` branch sprites | wired, per-focus themed DDS reuse; see mapping below |
 
