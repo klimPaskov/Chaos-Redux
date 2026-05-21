@@ -50,12 +50,12 @@ Ideas:
 Existing generated assets are wired:
 
 - Flag set: `gfx/flags/RMC.tga`, `gfx/flags/medium/RMC.tga`, `gfx/flags/small/RMC.tga`, plus ideology variants
-- Focus icon: `gfx/interface/goals/soviet_collapse/005_rmc_custom_splinter_focus.dds`
+- Focus icon package: 18 per-focus DDS files under `gfx/interface/goals/soviet_collapse/rmc_*.dds`, sprites `GFX_focus_RMC_*` and `GFX_focus_RMC_*_shine`
 - Idea icon: `gfx/interface/ideas/soviet_collapse/005_rmc_custom_splinter_idea.dds`
 - Decision icon: `gfx/interface/decisions/soviet_collapse/005_rmc_custom_splinter_decision.dds`
 - Portrait: `gfx/leaders/005_soviet_collapse/RMC_leader.dds`
 
-The current focus tree uses stable per-focus sprite names that all reference the tag-specific RMC focus DDS. Distinct final per-focus art remains an asset-completion task if the final pass requires each focus to use separate DDS art rather than stable sprite keys over shared generated art.
+The focus tree no longer uses one generated RMC emblem across every focus. Each RMC focus sprite and shine variant resolves to a stable per-focus DDS copied from thematically matching existing HOI4 or Chaos Redux martyr, witness, commune, guard, foundry, volunteer, road, procession, and revolutionary focus art. A fully bespoke art pass can replace the reused DDS source art later if required.
 
 ## Validation Notes
 

@@ -452,7 +452,7 @@ Portrait contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/cu
 | `PRA` | per-focus `gfx/interface/goals/soviet_collapse/pra_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_pra_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_pra_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/PRA_leader.dds` | wired, focus icons use themed DDS reuse |
 | `TSC` | per-focus `gfx/interface/goals/soviet_collapse/tsc_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_tsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_tsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/TSC_leader.dds` | wired, focus icons use themed DDS reuse |
 | `ICD` | `gfx/interface/goals/soviet_collapse/005_icd_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_icd_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_icd_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/ICD_leader.dds` | wired, generated reuse |
-| `RMC` | `gfx/interface/goals/soviet_collapse/005_rmc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_rmc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_rmc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/RMC_leader.dds` | wired, generated reuse |
+| `RMC` | per-focus `gfx/interface/goals/soviet_collapse/rmc_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_rmc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_rmc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/RMC_leader.dds` | wired, focus icons use themed DDS reuse |
 | `DSC` | `gfx/interface/goals/soviet_collapse/005_dsc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_dsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_dsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/DSC_leader.dds` | wired, generated reuse |
 | `NRF` | per-focus `gfx/interface/goals/soviet_collapse/nrf_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_nrf_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_nrf_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/NRF_leader.dds` | wired, focus icons use themed DDS reuse |
 | `NLC` | `gfx/interface/goals/005_nlc_custom_splinter_focus.dds` | `gfx/interface/ideas/005_nlc_custom_splinter_idea.dds` | `gfx/interface/decisions/005_nlc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/NLC_leader.dds` | wired, generated reuse |
@@ -537,6 +537,31 @@ Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable NRF
 | `GFX_focus_NRF_memorial_convoy_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_czechoslovak_legion_export.dds` | `gfx/interface/goals/soviet_collapse/nrf_memorial_convoy_state.dds` | 100x88 | wired |
 
 Custom tag flags and tag-specific focus icons are required only for tags that are actually added. Each implemented tag needs normal, medium, and small flags plus focus icons for any focus tree content.
+
+### Red Martyrs' Resurrection Cult focus icon mapping
+
+Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable RMC-specific final paths. Processed PNG preview: not applicable for direct DDS reuse. Target size: source focus-icon DDS dimensions preserved. Sprite definitions are in `interface/005_soviet_collapse_custom_icons.gfx`; every row has both normal and `_shine` sprite variants.
+
+| Focus sprite | Source DDS | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- |
+| `GFX_focus_RMC_open_the_red_martyrology` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BRA_socialist_theologians.dds` | `gfx/interface/goals/soviet_collapse/rmc_open_the_red_martyrology.dds` | 100x88 | wired |
+| `GFX_focus_RMC_tambov_witness_cells` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_POL_resistance.dds` | `gfx/interface/goals/soviet_collapse/rmc_tambov_witness_cells.dds` | 100x88 | wired |
+| `GFX_focus_RMC_lipetsk_reliquary_workshops` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_HUN_expand_the_diosgyor_machinery_factory.dds` | `gfx/interface/goals/soviet_collapse/rmc_lipetsk_reliquary_workshops.dds` | 100x88 | wired |
+| `GFX_focus_RMC_count_the_returning_names` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_population_growth.dds` | `gfx/interface/goals/soviet_collapse/rmc_count_the_returning_names.dds` | 100x88 | wired |
+| `GFX_focus_RMC_communes_of_witnesses` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AUS_danubian_socialist_communes.dds` | `gfx/interface/goals/soviet_collapse/rmc_communes_of_witnesses.dds` | 100x88 | wired |
+| `GFX_focus_RMC_cadres_of_resurrection` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SOV_builder_of_the_red_army.dds` | `gfx/interface/goals/soviet_collapse/rmc_cadres_of_resurrection.dds` | 100x88 | wired |
+| `GFX_focus_RMC_blood_oath_requisitions` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_communist_industry.dds` | `gfx/interface/goals/soviet_collapse/rmc_blood_oath_requisitions.dds` | 100x88 | wired |
+| `GFX_focus_RMC_reliquary_guard` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_state_defense_guard.dds` | `gfx/interface/goals/soviet_collapse/rmc_reliquary_guard.dds` | 94x84 | wired |
+| `GFX_focus_RMC_shrine_foundries` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_HUN_establish_the_mavag_army_division.dds` | `gfx/interface/goals/soviet_collapse/rmc_shrine_foundries.dds` | 100x88 | wired |
+| `GFX_focus_RMC_dead_volunteer_columns` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_korean_volunteer_army.dds` | `gfx/interface/goals/soviet_collapse/rmc_dead_volunteer_columns.dds` | 100x88 | wired |
+| `GFX_focus_RMC_hagiographers_of_every_front` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_czechoslovak_legion_export.dds` | `gfx/interface/goals/soviet_collapse/rmc_hagiographers_of_every_front.dds` | 100x88 | wired |
+| `GFX_focus_RMC_letters_to_mourning_towns` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_request_external_missions.dds` | `gfx/interface/goals/soviet_collapse/rmc_letters_to_mourning_towns.dds` | 94x86 | wired |
+| `GFX_focus_RMC_league_of_mourning_communes` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_convene_league_liaisons.dds` | `gfx/interface/goals/soviet_collapse/rmc_league_of_mourning_communes.dds` | 94x86 | wired |
+| `GFX_focus_RMC_claim_the_burial_roads` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_road_investment.dds` | `gfx/interface/goals/soviet_collapse/rmc_claim_the_burial_roads.dds` | 100x88 | wired |
+| `GFX_focus_RMC_procession_columns` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_PRC_revolutionary_war_of_the_masses.dds` | `gfx/interface/goals/soviet_collapse/rmc_procession_columns.dds` | 100x88 | wired |
+| `GFX_focus_RMC_republic_of_witnesses` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_focus_fra_national_resistance_council.dds` | `gfx/interface/goals/soviet_collapse/rmc_republic_of_witnesses.dds` | 100x88 | wired |
+| `GFX_focus_RMC_resurrection_without_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_spr_the_anti_fascist_workers_revolution.dds` | `gfx/interface/goals/soviet_collapse/rmc_resurrection_without_state.dds` | 100x88 | wired |
+| `GFX_focus_RMC_shrine_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_COG_recognize_the_kimbanguist_church.dds` | `gfx/interface/goals/soviet_collapse/rmc_shrine_state.dds` | 100x88 | wired |
 
 ## Blocked Or Incomplete Final Assets
 
