@@ -488,6 +488,17 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 `IUL` currently reuses the generated Ural Workers custom-splinter package as replacement-art candidate material. Stable paths are `gfx/flags/IUL.tga`, `gfx/flags/medium/IUL.tga`, `gfx/flags/small/IUL.tga`, `gfx/interface/goals/soviet_collapse/005_iul_custom_splinter_focus.dds`, `gfx/interface/ideas/soviet_collapse/005_iul_custom_splinter_idea.dds`, `gfx/interface/decisions/soviet_collapse/005_iul_custom_splinter_decision.dds`, and `gfx/leaders/005_soviet_collapse/IUL_leader.dds`. Source and processed PNG records live under `docs/assets/005_soviet_union_collapse/source_png/` and `docs/assets/005_soviet_union_collapse/processed_png/`.
 
+### Old Great Bulgaria Placeholder Asset Records
+
+`OGB` is wired as an Event 005 high-chaos package with stable sprite names in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Existing final flags remain at `gfx/flags/OGB.tga`, `gfx/flags/medium/OGB.tga`, and `gfx/flags/small/OGB.tga`. The leader portrait sprite `GFX_portrait_OGB_volga_restoration_council` currently reuses `gfx/leaders/005_soviet_collapse/IUL_leader.dds` as placeholder art. Decision, idea, and focus sprite keys reuse existing Event 005 DDS files with matching register, Volga, restoration, trade, defense, and diplomacy themes.
+
+| Asset group | Sprite names | Status |
+| --- | --- | --- |
+| OGB leader | `GFX_portrait_OGB_volga_restoration_council` | placeholder reuse |
+| OGB decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | placeholder reuse |
+| OGB ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | placeholder reuse |
+| OGB focuses | `GFX_focus_OGB_*` and `_shine` variants | unique sprite names with placeholder DDS reuse |
+
 ### Factory State Asset Records
 
 
