@@ -80,6 +80,13 @@ News/report events: ordinary league formation uses news events, while Union Unma
 - Terminal Free Republics' League formation now invites ordinary republics, vanilla-supported internal republics, and unfactioned Siberian/Far Eastern/Idel-Ural style high-chaos successors.
 - Current source inspection covers terminal release/freeing tags, terminal sequencing, league formation helpers, internal republic focus routing, mission wiring counts, and duplicate republic focus IDs without relying on a Python completion gate.
 
+## 2026-05-21 Final Clean Ledger Correction
+
+- Re-read the seven final clean merged specification parts, `AGENTS.md`, the Event 005 event/assets/super-event/focus/decision skills, the required offline wiki pages, the National focus modding page, and vanilla script/focus documentation before continuing the audit.
+- Added the missing required ledger file at `docs/events/005_soviet_collapse_full_implementation_ledger.md` using the exact final-package table columns.
+- The new ledger does not claim final completion. It separates source-proven complete surfaces from `partially_complete` surfaces that still need stronger direct audits, per-country package rows, per-splinter package rows, final achievement verification, and the full 28-scenario validation table before the active goal can be closed.
+- Reconfirmed the ordinary local-league super-event replacement surface: Baltic, Caucasus, Central Asian, Eastern Buffer, and Steppe Federation/League route presentation uses news/report events, while retired local-league super-event art remains documented as preserved source history only.
+
 ## Verification
 
 Current checkout commands:
