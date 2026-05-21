@@ -39,7 +39,7 @@ The decision category adds three repeatable/state-defining actions:
 Required and wired assets:
 
 - Flags: `gfx/flags/PRA.tga`, `gfx/flags/medium/PRA.tga`, `gfx/flags/small/PRA.tga`
-- Focus icon source DDS: `gfx/interface/goals/soviet_collapse/005_pra_custom_splinter_focus.dds`
+- Focus icon package: 22 per-focus DDS files under `gfx/interface/goals/soviet_collapse/pra_*.dds`, sprites `GFX_focus_PRA_*` and `GFX_focus_PRA_*_shine`
 - Idea icon source DDS: `gfx/interface/ideas/soviet_collapse/005_pra_custom_splinter_idea.dds`
 - Decision icon source DDS: `gfx/interface/decisions/soviet_collapse/005_pra_custom_splinter_decision.dds`
 - Leader portrait: `gfx/leaders/005_soviet_collapse/PRA_leader.dds`
@@ -47,4 +47,4 @@ Required and wired assets:
 
 ## Remaining Work
 
-The gameplay package is wired, but the focus icons currently use the tag-specific generated PRA emblem for every PRA focus. This matches the current custom-splinter emblem workflow, but the final merged objective still calls for distinct focus icons on long-lived playable trees.
+The focus tree no longer uses one generated PRA emblem across every focus. Each PRA focus sprite and shine variant resolves to a stable per-focus DDS copied from thematically matching existing HOI4 or Chaos Redux rail, station, timetable, guard, workshop, supply, corridor, league, and endgame focus art. A fully bespoke art pass can replace the reused DDS source art later if required.
