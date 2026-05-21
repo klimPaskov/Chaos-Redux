@@ -795,6 +795,27 @@ focus_tree = {
 	}
 
 	focus = {
+		id = CFR_build_the_border_bend_the_border
+		icon = GFX_focus_CFR_map_the_unfinished_cities
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
+		x = 16
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_the_builder_state_marches_east }
+
+		completion_reward = {
+			set_country_flag = cfr_focus_build_border_bend_border
+			soviet_collapse_apply_cfr_focus_public_works = yes
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than } } }
+		}
+	}
+
+	focus = {
 		id = CFR_factories_as_embassies
 		icon = GFX_focus_CFR_civilian_hegemony_project
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
@@ -809,6 +830,27 @@ focus_tree = {
 			soviet_collapse_apply_cfr_focus_civilian_build = yes
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = CFR_reconstruction_protectorates
+		icon = GFX_focus_CFR_union_of_construction_cities
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 40
+		y = 13
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = CFR_factories_as_embassies }
+
+		completion_reward = {
+			set_country_flag = cfr_focus_reconstruction_protectorates
+			soviet_collapse_apply_cfr_focus_foreign_contract = yes
+			add_political_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
+			modifier = { factor = 0.5 has_war = yes }
+		}
 	}
 
 	focus = {
