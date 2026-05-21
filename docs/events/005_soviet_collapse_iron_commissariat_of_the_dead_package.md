@@ -48,7 +48,7 @@ Ideas:
 The package uses existing final generated assets:
 
 - Flags: `gfx/flags/ICD.tga`, `gfx/flags/medium/ICD.tga`, `gfx/flags/small/ICD.tga`
-- Focus icon: `gfx/interface/goals/soviet_collapse/005_icd_custom_splinter_focus.dds`
+- Focus icons: 18 per-focus `gfx/interface/goals/soviet_collapse/icd_*.dds` files, with normal and `_shine` sprites for every `GFX_focus_ICD_*` key.
 - Idea icon: `gfx/interface/ideas/soviet_collapse/005_icd_custom_splinter_idea.dds`
 - Decision icon: `gfx/interface/decisions/soviet_collapse/005_icd_custom_splinter_decision.dds`
 - Portrait: `gfx/leaders/005_soviet_collapse/ICD_leader.dds`
@@ -57,4 +57,4 @@ Sprite wiring is in `interface/005_soviet_collapse_custom_icons.gfx`. The asset 
 
 ## Remaining Work
 
-The gameplay package is wired, but the focus tree currently reuses the tag-specific generated focus emblem across all 18 focuses. A final art pass can replace those sprite definitions with distinct per-focus DDS files without changing focus IDs or gameplay script.
+The gameplay package is wired and no longer reuses one tag-specific generated focus emblem across all 18 focuses. The current per-focus icons use themed existing DDS source art copied into stable ICD-specific paths; a later bespoke art pass can supersede those DDS files without changing focus IDs or gameplay script.
