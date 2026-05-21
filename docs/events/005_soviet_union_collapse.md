@@ -4,7 +4,7 @@
 
 Soviet Union Collapse is a one-per-campaign Liberations cluster event that turns the old stub release into an active union crisis. The entry event remains `chaosx.nr5.1`; it now routes to the visible Soviet event `chaosx.nr5.2`, which initializes the crisis, releases the first breakaway republics, grants them defensive support, and activates the opening Soviet objective board.
 
-The baseline crisis stages are ordinary crisis progression, not evolution logs. Evolutions remain reserved for separate mutation tracks such as old movements, depot states, railway authorities, foreign liaison networks, and high-chaos splinters.
+The baseline crisis stages are ordinary crisis progression, not evolution logs. Evolutions remain reserved for separate mutation tracks such as old movements, depot states, railway authorities, foreign liaison networks, and high-chaos splinters. The source-level separation is tracked in `docs/events/005_soviet_collapse_evolution_track_audit.md`.
 
 The Event Logs event-detail entry for Event 005 now uses scripted localisation to show the live broad crisis state, first-wave status, Free Republics' League status, Moscow Authority condition, Union Crisis Threat severity, foreign intervention level, and old-movement or high-chaos splinter pressure. The text stays in-world and reads the same crisis variables and flags that drive the gameplay board instead of using debug-style implementation notes.
 
@@ -332,5 +332,5 @@ This slice reuses existing wired sprites. No new art was generated.
 - Expand the Soviet objective board beyond the first one hundred twenty-eight missions while preserving the ten-active cap.
 - Expand breakaway missions, foreign intervention missions, regional faction categories, and action-based foreign aid routes beyond the first playable board.
 - Continue deepening longer event chains and route-specific follow-up content for implemented custom countries where the clean specification calls for more than the current foundational country, decision, spawn, and focus package.
-- Extend remaining route-specific super-event triggers, future-only achievement completion flags, and evolution logs only where the clean specification allows them.
-- Audit existing Soviet Collapse evolution localisation so ordinary crisis stages are not presented as evolutions.
+- Extend remaining route-specific super-event triggers and future-only achievement completion flags only where the clean specification allows them.
+- Keep future Soviet Collapse evolution additions behind the same baseline/evolution separation rule recorded in `docs/events/005_soviet_collapse_evolution_track_audit.md`.
