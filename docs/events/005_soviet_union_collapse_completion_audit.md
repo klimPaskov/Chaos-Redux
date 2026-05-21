@@ -265,11 +265,14 @@ Implemented route calls currently exist for:
 - `soviet_collapse_show_black_banner_returns_super_event`
 - `soviet_collapse_show_union_unmade_super_event`
 - `soviet_collapse_show_workshops_choose_councils_super_event`
-- `soviet_collapse_show_map_larger_than_union_super_event`
-- `soviet_collapse_show_steppe_beyond_history_super_event`
-- `soviet_collapse_show_corridors_decide_super_event`
-- `soviet_collapse_show_bread_state_super_event`
 - `soviet_collapse_show_every_port_a_council_super_event`
+
+Ordinary republic-route capstones now use news/report presentation instead of the super-event overlay:
+
+- `soviet_collapse_report_map_larger_than_union_news` fires `chaosx.nr5.140`
+- `soviet_collapse_report_steppe_beyond_history_news` fires `chaosx.nr5.141`
+- `soviet_collapse_report_corridors_decide_news` fires `chaosx.nr5.142`
+- `soviet_collapse_report_bread_state_news` fires `chaosx.nr5.143`
 
 Helpers without implemented route calls:
 
