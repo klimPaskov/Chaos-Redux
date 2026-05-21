@@ -587,6 +587,7 @@ soviet_collapse_release_terminal_ordinary_republics = {
 			NOT = { has_country_flag = soviet_collapse_breakaway }
 		}
 		SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
+		set_global_flag = soviet_collapse_terminal_subject_freed_report_pending
 		set_country_flag = soviet_collapse_event_created_republic
 		soviet_collapse_setup_breakaway_country = yes
 		soviet_collapse_load_event_created_focus_tree = yes
@@ -621,6 +622,7 @@ soviet_collapse_release_terminal_ordinary_republics = {
 				is_subject_of = SOV
 			}
 			SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
+			set_global_flag = soviet_collapse_terminal_subject_freed_report_pending
 		}
 		if = {
 			limit = { exists = yes }
@@ -713,6 +715,11 @@ soviet_collapse_apply_terminal_collapse = {
 		limit = { NOT = { has_global_flag = soviet_collapse_terminal_collapse } }
 		set_global_flag = soviet_collapse_terminal_collapse_in_progress
 		soviet_collapse_release_terminal_ordinary_republics = yes
+		if = {
+			limit = { has_global_flag = soviet_collapse_terminal_subject_freed_report_pending }
+			country_event = { id = chaosx.nr5.46 }
+			clr_global_flag = soviet_collapse_terminal_subject_freed_report_pending
+		}
 		soviet_collapse_spawn_terminal_high_chaos_successors = yes
 		soviet_collapse_form_terminal_leagues = yes
 		soviet_collapse_start_terminal_anti_soviet_war = yes
@@ -1081,6 +1088,32 @@ soviet_collapse_apply_breakaway_setup_package = {
 			}
 			FIELD_UNIT_COUNT = "[?soviet_collapse_breakaway_field_unit_count|.0]"
 		}
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = soviet_collapse_internal_republic_news_reported }
+			OR = {
+				tag = KAR
+				tag = KOM
+				tag = CRI
+				tag = TAT
+				tag = BSK
+				tag = FER
+				tag = YAK
+				tag = BYA
+				tag = TAN
+			}
+		}
+		set_country_flag = soviet_collapse_internal_republic_news_reported
+		news_event = { id = chaosx.nr5.95 }
+	}
+	if = {
+		limit = {
+			SOV = { exists = yes }
+			NOT = { has_global_flag = soviet_collapse_dynamic_unit_report_seen }
+		}
+		set_global_flag = soviet_collapse_dynamic_unit_report_seen
+		SOV = { country_event = { id = chaosx.nr5.47 days = 1 } }
 	}
 }
 
@@ -1704,6 +1737,11 @@ soviet_collapse_apply_foreign_recognition_aid = {
 		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_decision_gain }
 		soviet_collapse_add_republic_decision_recovery_progress = yes
 		soviet_collapse_update_foreign_investment_stage_ideas = yes
+		if = {
+			limit = { NOT = { has_country_flag = soviet_collapse_foreign_recognition_news_reported } }
+			set_country_flag = soviet_collapse_foreign_recognition_news_reported
+			news_event = { id = chaosx.nr5.49 }
+		}
 	}
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -2578,6 +2616,34 @@ soviet_collapse_apply_focus_league_preparation = {
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
+	soviet_collapse_maybe_report_single_republic_liaison_office = yes
+}
+
+soviet_collapse_maybe_report_single_republic_liaison_office = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = soviet_collapse_single_republic_liaison_reported }
+			OR = {
+				AND = {
+					OR = { tag = LIT tag = LAT tag = EST }
+					has_soviet_collapse_baltic_league_member_ready = yes
+					NOT = { has_soviet_collapse_baltic_league_quorum = yes }
+				}
+				AND = {
+					OR = { tag = GEO tag = ARM tag = AZR }
+					has_soviet_collapse_caucasus_league_member_ready = yes
+					NOT = { has_soviet_collapse_caucasus_league_quorum = yes }
+				}
+				AND = {
+					OR = { tag = UZB tag = KYR tag = TAJ tag = TMS tag = KAZ }
+					has_soviet_collapse_central_asian_league_member_ready = yes
+					NOT = { has_soviet_collapse_central_asian_league_quorum = yes }
+				}
+			}
+		}
+		set_country_flag = soviet_collapse_single_republic_liaison_reported
+		country_event = { id = chaosx.nr5.45 }
+	}
 }
 
 soviet_collapse_join_regional_faction_common = {
@@ -2799,6 +2865,7 @@ soviet_collapse_apply_regional_faction_invite = {
 	if = { limit = { has_country_flag = soviet_collapse_central_asian_league_founder } soviet_collapse_invite_central_asian_regional_partners = yes }
 	soviet_collapse_apply_regional_faction_soviet_pressure = yes
 	soviet_collapse_maybe_resolve_regional_faction_goal = yes
+	news_event = { id = chaosx.nr5.48 }
 	country_event = { id = chaosx.nr5.38 }
 }
 
