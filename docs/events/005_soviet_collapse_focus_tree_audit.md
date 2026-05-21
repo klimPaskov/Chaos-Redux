@@ -20,9 +20,12 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 25 custom successor trees | 18-47 each |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 58 |
-| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `soviet_collapse_ancient_restoration_focus_tree` | 32 |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | 15 |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `SOG_soviet_collapse_ancient_focus_tree` | 15 |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | 15 |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `ALN_soviet_collapse_ancient_focus_tree` | 15 |
 
-The current shell recount counts 1664 total focuses across 38 Event 005 trees after the ancient-restoration branch expansion.
+The current shell recount counts 1692 total focuses across 41 Event 005 trees after the ancient-restoration per-tag tree split.
 
 ## Route Coverage
 
@@ -44,15 +47,15 @@ The Dead Soldiers' Congress custom tree is an 18-focus revenant-veteran tree wit
 
 The Northern Revenant Fleet custom tree is an 18-focus Arctic revenant naval tree with Murmansk dead-muster authority, Arkhangelsk ice registers, dead-convoy bureaucracy, harbor committee and revenant admiralty route choices, icebound marines, ghost convoy escorts, sailor-town diplomacy, White Sea lane claims, and settlement/extreme dead-fleet endgame choices. Its focus sprites now point to 18 distinct `nrf_*.dds` texture paths rather than one repeated tag-emblem texture.
 
-The ancient restoration shared tree is now a 32-focus tree. Its common trunk covers emergency restoration council, legitimacy, administration, city registers, market roads, workshops, heritage guard, memory sites, neighbor diplomacy, League bargaining, old border files, old-route guards, and symbolic or expansionist endgames. It now forces each standalone ancient restoration tag through a mandatory tag-gated branch before the common route finishers: `KZR` develops Itil toll houses, Caspian steppe letters, Volga toll guards, and a Khazar charter; `SOG` develops Samarkand-Bukhara registers, oasis merchant roads, scholar-envoy rooms, and a Sogdian city charter; `KHW` develops Khiva-Urgench water boards, oasis canal guards, a caravan well compact, and a Khwarazmian water charter; `ALN` develops Alan pass courts, Darial guard posts, mountain envoy guarantees, and an Alan pass charter. Each new focus has a completion reward, `ai_will_do`, localisation, and a unique focus sprite assignment.
+The ancient restoration package is now four separate 15-focus trees. `KZR_soviet_collapse_ancient_focus_tree` develops Itil council law, ferry registers, Caspian markets, customs workshops, Volga guards, League transit bargaining, Lower Volga-Caspian claims, a symbolic crossing-state route, an expansionist steppe-levy route, and Khazar charter endings. `SOG_soviet_collapse_ancient_focus_tree` develops city registers, Samarkand-Bukhara files, oasis roads, market guards, scholar-envoy rooms, League city bargaining, old city-border files, symbolic city-league settlement, expansionist merchant claims, and Sogdian charter endings. `KHW_soviet_collapse_ancient_focus_tree` develops water law, Khiva-Urgench boards, caravan wells, oasis workshops, canal guards, pump defenses, canal recognition, League irrigation bargaining, old oasis claims, symbolic water authority, expansionist delta claims, and Khwarazmian charter endings. `ALN_soviet_collapse_ancient_focus_tree` develops pass council law, Alan courts, Darial road offices, mountain workshops, Darial guards, pass-line defense, mountain envoys, League pass bargaining, old pass-border files, symbolic pass principality, expansionist mountain claims, and Alan charter endings. Each new focus has a completion reward, `ai_will_do`, localisation, and an icon assignment.
 
 ## Duplicate And Reward Audit
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 1664 focuses across the Event 005 focus files after the ancient-restoration branch expansion.
-- Ancient restoration tree recount: 32 focuses, 32 completion rewards, 32 icon assignments, and 32 `ai_will_do` blocks.
-- Ancient restoration branch gates now require each standalone tag to complete its own four-focus charter branch before entering the shared symbolic or expansionist endgame.
+- Event 005 focus recount: 1692 focuses across the Event 005 focus files after the ancient-restoration per-tag tree split.
+- Ancient restoration recount: four trees, 60 focuses, 60 completion rewards, 60 icon assignments, and 60 `ai_will_do` blocks.
+- Ancient restoration setup effects now load `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, and `ALN_soviet_collapse_ancient_focus_tree` instead of one common tree.
 - Kazakhstan tree recount: 92 focuses, 92 completion rewards, and 92 `ai_will_do` blocks.
 - Kazakhstan focus references resolve to focus IDs defined inside the same tree.
 - Kazakhstan focus IDs have matching name and description localisation.
