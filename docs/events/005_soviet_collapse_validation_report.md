@@ -1,6 +1,6 @@
 # Event 005 Soviet Collapse Validation Report
 
-Audit date: 2026-05-20
+Audit date: 2026-05-20, updated 2026-05-21
 
 ## Validation Type
 
@@ -26,6 +26,10 @@ awk '/focus = \{/ { count++ } END { print "focus_blocks", count }' common/nation
 awk '/id = soviet_collapse_kazakhstan_focus_tree/ { in_tree=1 } /id = soviet_collapse_baltic_focus_tree/ { in_tree=0 } in_tree && /focus = \{/ { focuses++ } in_tree && /completion_reward = \{/ { rewards++ } in_tree && /ai_will_do = \{/ { ai++ } END { print "kazakhstan", focuses, rewards, ai }' common/national_focus/005_soviet_collapse_republics.txt
 awk 'NR==FNR { sub(/:.*/, "", $1); loc[$1]=1; next } /id = soviet_collapse_kazakhstan_focus_tree/ { in_tree=1; next } /id = soviet_collapse_baltic_focus_tree/ { in_tree=0 } in_tree && /^\t\tid = / { id=$3; if (!(id in loc) || !((id "_desc") in loc)) print id }' localisation/english/005_soviet_collapse_kaz_focus_l_english.yml common/national_focus/005_soviet_collapse_republics.txt
 awk 'NR==FNR { if ($0 ~ /name = "GFX_kaz_soviet_collapse_/) { gsub(/.*name = "/, ""); gsub(/".*/, ""); icons[$0]=1 } next } /id = soviet_collapse_kazakhstan_focus_tree/ { in_tree=1; next } /id = soviet_collapse_baltic_focus_tree/ { in_tree=0 } in_tree && /^\t\ticon = / { if (!($3 in icons)) print $3 }' interface/005_soviet_collapse_kaz_icons.gfx common/national_focus/005_soviet_collapse_republics.txt
+awk '/# EVENT 005 - SOVIET UNION COLLAPSE/ {in005=1} /# END EVENT 005 - SOVIET UNION COLLAPSE/ {in005=0} in005 && /^[[:space:]]*chaosx_ach_[a-z0-9_]+ = \\{/ {print $1}' common/achievements/chaos_redux_achievements.txt | sort
+awk -F'|' '/^\\| `chaosx_ach_/ {gsub(/`/,"",$2); gsub(/^ +| +$/,"",$2); print $2}' docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md | sort
+awk '/# EVENT 005 - SOVIET UNION COLLAPSE ACHIEVEMENTS/ {in005=1} /# END EVENT 005 - SOVIET UNION COLLAPSE ACHIEVEMENTS/ {in005=0} in005 && /texturefile = "gfx\\/achievements\\/chaosx_ach_/ {gsub(/.*texturefile = "/,""); gsub(/".*/,""); print}' interface/chaosx_achievements.gfx | sort
+rg -n "placeholder reuse" docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md docs/assets/005_soviet_union_collapse/manifest.md
 ```
 
 Static checks for the current correction pass passed: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, no active local-league super-event helper calls, and no remaining Free Republics' League, Steppe Federation, Baltic League, Caucasus League, or Eastern Buffer Coalition super-event localisation/sprite mappings.
@@ -33,6 +37,12 @@ The custom-country tooltip audit also has zero hits for the retired `Steppe Fede
 The custom-country localisation phrase audit also has zero hits for out-of-world focus text such as `players who want`, `generic republic`, `Taking this focus`, `the tag`, `tag's identity`, implementation-update wording, and visible dynamic-reward wording; the remaining special-arm and radical-route descriptions use in-world institutional language.
 The focus-expansion localisation phrase audit also has zero hits for the former generated placeholder sentence, generic-checklist wording, implementation-update wording, and visible `Dynamic reward: scales...` tooltip phrasing; the file keeps the UTF-8 BOM (`efbbbf`) and has no `:0` keys.
 The main Soviet Collapse localisation phrase audit also has zero hits for the former mission outcome `scales with` wording, cost `Scales with` wording, generic emergency battalion wording, and vague mission-place phrases such as `required states`, `border states`, `nearby states`, `key states`, `some divisions`, `sufficient troops`, `enough equipment`, `capital-adjacent states`, `signal hub states`, `southern capitals`, `southern approach states`, and `border routes`; the file keeps the UTF-8 BOM (`efbbbf`) and has no `:0` keys.
+
+## Event 005 Achievement Audit Addendum
+
+The 2026-05-21 current-path achievement audit found 40 Event 005 achievement definitions in `common/achievements/chaos_redux_achievements.txt`. Each definition has matching `_NAME`, `_DESC`, and `_tooltip` localisation in `localisation/english/chaosx_achievements_l_english.yml`. `interface/chaosx_achievements.gfx` contains the expected completed, grey, and not-eligible sprite entries for all 40 IDs, for 120 Event 005 achievement sprite entries total. Every one of the 120 referenced `gfx/achievements/chaosx_ach_*.dds` files exists.
+
+The dedicated icon manifest now lists all 40 Event 005 achievement IDs. The manifest still records 15 achievement icon rows as placeholder reuse, so the achievement asset package remains incomplete for final acceptance until those rows receive bespoke final art or the user explicitly approves the reuse as final.
 
 ## Scenario Matrix
 
