@@ -30,6 +30,22 @@ awk '/# EVENT 005 - SOVIET UNION COLLAPSE/ {in005=1} /# END EVENT 005 - SOVIET U
 awk -F'|' '/^\\| `chaosx_ach_/ {gsub(/`/,"",$2); gsub(/^ +| +$/,"",$2); print $2}' docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md | sort
 awk '/# EVENT 005 - SOVIET UNION COLLAPSE ACHIEVEMENTS/ {in005=1} /# END EVENT 005 - SOVIET UNION COLLAPSE ACHIEVEMENTS/ {in005=0} in005 && /texturefile = "gfx\\/achievements\\/chaosx_ach_/ {gsub(/.*texturefile = "/,""); gsub(/".*/,""); print}' interface/chaosx_achievements.gfx | sort
 rg -n "placeholder reuse" docs/assets/005_soviet_union_collapse/achievement_icon_manifest.md docs/assets/005_soviet_union_collapse/manifest.md
+python3 - <<'PY'
+from pathlib import Path
+paths = [
+    Path('common/decisions/005_soviet_collapse_decisions.txt'),
+    Path('common/scripted_effects/005_soviet_collapse_effects.txt'),
+    Path('common/national_focus/005_soviet_collapse_republics.txt'),
+    Path('common/national_focus/005_soviet_collapse_custom_splinters.txt'),
+    Path('common/national_focus/005_soviet_collapse_factory_successors.txt'),
+]
+terms = ['add_manpower','create_unit','division_template','add_equipment_to_stockpile','add_building_construction','add_extra_state_shared_building_slots','add_claim_by','add_core_of','create_wargoal','declare_war_on','set_autonomy','release =','days_re_enable','custom_cost_trigger','custom_cost_text']
+for term in terms:
+    total = 0
+    for p in paths:
+        total += p.read_text(errors='ignore').count(term)
+    print(term, total)
+PY
 ```
 
 Static checks for the current correction pass passed: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, no active local-league super-event helper calls, and no remaining Free Republics' League, Steppe Federation, Baltic League, Caucasus League, or Eastern Buffer Coalition super-event localisation/sprite mappings.
@@ -77,7 +93,7 @@ This matrix records source-level observed results from the worktree. It does not
 | 25 | Repeated remove-idea tooltip review | Focus rewards do not expose repeated remove-idea spam. | Direct focus-file audit found focus-reward `remove_ideas` uses only inside `hidden_effect` blocks with visible replacement tooltips for MRC, PRA, TSC, ICD, RMC, and DSC cleanup focuses. | source_pass | None in source audit. |
 | 26 | Focus icon coverage review | Every Event 005 focus has an icon assignment and registered sprite. | Focus integrity covers 1632 focus blocks with icons; per-tree icon checks cover republic, custom, and factory trees, including the 18-focus NRF tree added in this pass. | source_pass | None in source audit. |
 | 27 | Decision category clutter review | Active Soviet objectives are capped and terminal cleanup covers all objective missions. | `active_cap = 10`; 118 defined missions, 118 activation entries, 118 cap checks, 118 increments, and 118 terminal cleanup entries. | source_pass | None in source audit. |
-| 28 | Balance exploit check | Calm, failure, terminal, mission, release, focus, AI, and cleanup surfaces avoid obvious runaway and farming loops at source level. | Balance audit covers calm baseline, monthly guard, failure deltas, Union Unmade gates, local-league quorum, MTTH releases, focus reward variety, mission cleanup, and localisation. | partial_source | Ledger still requires explicit exploit rows for free units, factory loops, equipment farming, influence farming, puppet abuse, and war-goal/claim/core spam. |
+| 28 | Balance exploit check | Calm, failure, terminal, mission, release, focus, AI, and cleanup surfaces avoid obvious runaway and farming loops at source level. | Balance audit covers calm baseline, monthly guard, failure deltas, Union Unmade gates, local-league quorum, MTTH releases, focus reward variety, mission cleanup, and localisation. `docs/events/005_soviet_collapse_exploit_audit.md` adds explicit rows for free units, equipment farming, factory loops, influence farming, puppet abuse, war-goal/claim/core spam, mission pressure, and release farming. | source_pass | None in source audit. |
 
 ## Latest Correction Validated
 
