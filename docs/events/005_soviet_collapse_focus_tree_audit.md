@@ -17,11 +17,11 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_moldova_focus_tree` | 48 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 62 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 36 |
-| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 24 custom successor trees | 18-47 each |
+| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 25 custom successor trees | 18-47 each |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 58 |
 
-The current shell recount counts 1614 total focuses across 36 trees.
+The current shell recount counts 1632 total focuses across 37 trees.
 
 ## Route Coverage
 
@@ -41,11 +41,13 @@ The Red Martyrs' Resurrection Cult custom tree is an 18-focus martyr-cult tree w
 
 The Dead Soldiers' Congress custom tree is an 18-focus revenant-veteran tree with Stalingrad roll-call authority, Voronezh rearguard archives, roll-call bureaucracy, grave-ordnance claims, witness-officer and revenant-staff route choices, dead-regiment columns, veteran-town diplomacy, soldiers-road claims, and settlement/extreme dead-army endgame choices.
 
+The Northern Revenant Fleet custom tree is an 18-focus Arctic revenant naval tree with Murmansk dead-muster authority, Arkhangelsk ice registers, dead-convoy bureaucracy, harbor committee and revenant admiralty route choices, icebound marines, ghost convoy escorts, sailor-town diplomacy, White Sea lane claims, and settlement/extreme dead-fleet endgame choices.
+
 ## Duplicate And Reward Audit
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 1614 focuses across the Event 005 focus files after the Dead Soldiers package.
+- Event 005 focus recount: 1632 focuses across the Event 005 focus files after the Northern Revenant package.
 - Kazakhstan tree recount: 92 focuses, 92 completion rewards, and 92 `ai_will_do` blocks.
 - Kazakhstan focus references resolve to focus IDs defined inside the same tree.
 - Kazakhstan focus IDs have matching name and description localisation.
