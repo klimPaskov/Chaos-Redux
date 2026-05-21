@@ -3467,6 +3467,20 @@ soviet_collapse_complete_northern_lights_endgame = {
 	add_ideas = nlc_world_after_capitals
 }
 
+soviet_collapse_complete_northern_revenant_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_northern_revenant_endgame
+	add_ideas = nrf_fleet_that_does_not_dock
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience }
+			add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
 soviet_collapse_record_high_chaos_successor_evolution = {
 	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
 	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
@@ -3922,6 +3936,24 @@ soviet_collapse_setup_ard_successor = {
 	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.arctic_directorate_stage }
 	soviet_collapse_record_high_chaos_successor_evolution = yes
 	country_event = { id = chaosx.nr5_custom.23 hours = 20 }
+}
+
+soviet_collapse_setup_nrf_successor = {
+	set_country_flag = soviet_collapse_high_chaos_successor
+	set_country_flag = soviet_collapse_northern_revenant_successor
+	set_capital = {
+		state = 213
+		remember_old_capital = no
+	}
+	soviet_collapse_setup_breakaway_country = yes
+	load_focus_tree = { tree = NRF_soviet_collapse_focus_tree keep_completed = no }
+	set_variable = { nrf_revenant_fleet_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+	set_variable = { nrf_port_muster = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	add_ideas = nrf_northern_revenant_fleet
+	add_ideas = nrf_drowned_crew_disputes
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.northern_revenant_stage }
+	soviet_collapse_record_high_chaos_successor_evolution = yes
+	country_event = { id = chaosx.nr5_custom.42 hours = 20 }
 }
 
 soviet_collapse_setup_nlc_successor = {
@@ -4583,6 +4615,29 @@ soviet_collapse_spawn_ard_if_enabled = {
 	}
 }
 
+soviet_collapse_spawn_nrf_if_enabled = {
+	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.northern_revenant_stage }
+	if = {
+		limit = {
+			can_soviet_collapse_spawn_nrf = yes
+			is_current_evolution_enabled = yes
+		}
+		213 = {
+			add_core_of = NRF
+			transfer_state_to = NRF
+		}
+		214 = {
+			add_core_of = NRF
+			transfer_state_to = NRF
+		}
+		NRF = { soviet_collapse_setup_nrf_successor = yes }
+		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience }
+	}
+}
+
 soviet_collapse_spawn_nlc_if_enabled = {
 	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
 	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
@@ -4632,6 +4687,7 @@ soviet_collapse_maybe_spawn_high_chaos_successors = {
 	soviet_collapse_spawn_pra_if_enabled = yes
 	soviet_collapse_spawn_tsc_if_enabled = yes
 	soviet_collapse_spawn_icd_if_enabled = yes
+	soviet_collapse_spawn_nrf_if_enabled = yes
 	soviet_collapse_spawn_ard_if_enabled = yes
 	soviet_collapse_spawn_nlc_if_enabled = yes
 }
