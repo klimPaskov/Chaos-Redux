@@ -30,11 +30,11 @@ Required asset wiring:
 
 - Flags: `gfx/flags/NRF.tga`, ideology variants, `medium/`, and `small/`.
 - Leader portrait: `gfx/leaders/005_soviet_collapse/NRF_leader.dds`, sprite `GFX_portrait_NRF_dead_convoy_admiralty`.
-- Focus icon package: `gfx/interface/goals/soviet_collapse/005_nrf_custom_splinter_focus.dds`, sprites `GFX_focus_NRF_*` and `GFX_focus_NRF_*_shine`.
+- Focus icon package: 18 per-focus DDS files under `gfx/interface/goals/soviet_collapse/nrf_*.dds`, sprites `GFX_focus_NRF_*` and `GFX_focus_NRF_*_shine`.
 - Idea icon package: `gfx/interface/ideas/soviet_collapse/005_nrf_custom_splinter_idea.dds`, sprites `GFX_idea_nrf_*`.
 - Decision icon package: `gfx/interface/decisions/soviet_collapse/005_nrf_custom_splinter_decision.dds`, sprites `GFX_decision_nrf_*`.
 
-The current DDS files are wired and present. The package still uses one generated tag emblem across the NRF focus tree, so distinct final per-focus art remains pending if final acceptance requires unique rendered art rather than unique sprite assignments that share one source texture.
+The focus tree no longer uses one generated tag emblem across all focuses. Each NRF focus sprite and shine variant now resolves to a stable per-focus DDS copied from thematically matching existing HOI4 or Chaos Redux focus art: signal, port, register, drowned-crew, harbor committee, admiralty, dockyard, marine, convoy logistics, escort, sea-route, foreign-channel, league, sea-lane, high-seas fleet, port-republic, naval capstone, and memorial motifs.
 
 ## Validation Notes
 
@@ -42,6 +42,6 @@ Source validation for this package covers tag registration, country/history file
 
 ## Future Plans
 
-- Replace the shared NRF focus-emblem texture with distinct final focus icons for each focus identity.
+- Replace the reused DDS source art with fully bespoke generated/source art only if the final art pass rejects thematic reuse.
 - Add deeper interaction between `NRF`, `KRS`, and `ARD` if the naval-council evolution is expanded.
 - Add postwar White Sea lane settlement events for `215` and `722` if the broader high-chaos route pass expands Arctic border handling.
