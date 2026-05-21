@@ -513,7 +513,7 @@ Returned Names decisions and ideas are wired through existing Event 005 icon reu
 
 ### Continuation Achievement Placeholder Asset Records
 
-The continuation achievements are wired with stable DDS paths and placeholder reuse until bespoke final achievement art is created.
+The continuation achievements are wired with stable DDS paths and placeholder reuse until bespoke final achievement art is created. The dedicated achievement icon manifest records all 40 Event 005 achievement icon rows; the rows below call out the remaining placeholder-reuse achievement assets that block final asset completion.
 
 | Achievement | DDS paths | Interface wiring | Status |
 | --- | --- | --- | --- |
@@ -523,3 +523,12 @@ The continuation achievements are wired with stable DDS paths and placeholder re
 | `chaosx_ach_concrete_does_not_sleep` | `gfx/achievements/chaosx_ach_concrete_does_not_sleep.dds`, `gfx/achievements/chaosx_ach_concrete_does_not_sleep_grey.dds`, `gfx/achievements/chaosx_ach_concrete_does_not_sleep_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
 | `chaosx_ach_every_order_a_rifle` | `gfx/achievements/chaosx_ach_every_order_a_rifle.dds`, `gfx/achievements/chaosx_ach_every_order_a_rifle_grey.dds`, `gfx/achievements/chaosx_ach_every_order_a_rifle_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
 | `chaosx_ach_returned_names` | `gfx/achievements/chaosx_ach_returned_names.dds`, `gfx/achievements/chaosx_ach_returned_names_grey.dds`, `gfx/achievements/chaosx_ach_returned_names_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_deadline_state` | `gfx/achievements/chaosx_ach_deadline_state.dds`, `gfx/achievements/chaosx_ach_deadline_state_grey.dds`, `gfx/achievements/chaosx_ach_deadline_state_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_kronstadt_was_right` | `gfx/achievements/chaosx_ach_kronstadt_was_right.dds`, `gfx/achievements/chaosx_ach_kronstadt_was_right_grey.dds`, `gfx/achievements/chaosx_ach_kronstadt_was_right_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_file_that_became_country` | `gfx/achievements/chaosx_ach_file_that_became_country.dds`, `gfx/achievements/chaosx_ach_file_that_became_country_grey.dds`, `gfx/achievements/chaosx_ach_file_that_became_country_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_world_as_one_factory` | `gfx/achievements/chaosx_ach_world_as_one_factory.dds`, `gfx/achievements/chaosx_ach_world_as_one_factory_grey.dds`, `gfx/achievements/chaosx_ach_world_as_one_factory_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_every_port_a_council` | `gfx/achievements/chaosx_ach_every_port_a_council.dds`, `gfx/achievements/chaosx_ach_every_port_a_council_grey.dds`, `gfx/achievements/chaosx_ach_every_port_a_council_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_eastern_buffer_without_moscow` | `gfx/achievements/chaosx_ach_eastern_buffer_without_moscow.dds`, `gfx/achievements/chaosx_ach_eastern_buffer_without_moscow_grey.dds`, `gfx/achievements/chaosx_ach_eastern_buffer_without_moscow_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_when_archive_opens` | `gfx/achievements/chaosx_ach_when_archive_opens.dds`, `gfx/achievements/chaosx_ach_when_archive_opens_grey.dds`, `gfx/achievements/chaosx_ach_when_archive_opens_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_no_empty_borders` | `gfx/achievements/chaosx_ach_no_empty_borders.dds`, `gfx/achievements/chaosx_ach_no_empty_borders_grey.dds`, `gfx/achievements/chaosx_ach_no_empty_borders_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
+| `chaosx_ach_the_world_read_the_telegram` | `gfx/achievements/chaosx_ach_the_world_read_the_telegram.dds`, `gfx/achievements/chaosx_ach_the_world_read_the_telegram_grey.dds`, `gfx/achievements/chaosx_ach_the_world_read_the_telegram_not_eligible.dds` | `interface/chaosx_achievements.gfx` | placeholder reuse |
