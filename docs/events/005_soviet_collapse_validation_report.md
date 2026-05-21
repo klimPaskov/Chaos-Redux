@@ -78,7 +78,7 @@ The Returned Names restoration audit verifies that the ancient-restoration route
 
 The 2026-05-21 current-path achievement audit found 40 Event 005 achievement definitions in `common/achievements/chaos_redux_achievements.txt`. Each definition has matching `_NAME`, `_DESC`, and `_tooltip` localisation in `localisation/english/chaosx_achievements_l_english.yml`. `interface/chaosx_achievements.gfx` contains the expected completed, grey, and not-eligible sprite entries for all 40 IDs, for 120 Event 005 achievement sprite entries total. Every one of the 120 referenced `gfx/achievements/chaosx_ach_*.dds` files exists.
 
-The dedicated icon manifest now lists all 40 Event 005 achievement IDs. The manifest still records 15 achievement icon rows as placeholder reuse, so the achievement asset package remains incomplete for final acceptance until those rows receive bespoke final art or the user explicitly approves the reuse as final.
+The dedicated icon manifest lists all 40 Event 005 achievement IDs. The 15 continuation rows that previously recorded placeholder achievement reuse now use explicit Event 005 source composites, and the completed, grey, and not-eligible contact sheets have been refreshed from the current 120 DDS files.
 
 ## Scenario Matrix
 
