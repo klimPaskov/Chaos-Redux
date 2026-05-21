@@ -79,7 +79,7 @@ Use `chaos-redux-event-assets` for:
 - image processing
 - PNG previews
 - DDS conversion
-- `.gfx` sprite wiring
+- sprite handoff notes for main-agent `.gfx` wiring
 - asset manifests
 
 Super-event images should use internet source images by default unless the event is fictional, symbolic, supernatural, or fully invented.
@@ -94,6 +94,23 @@ This skill owns:
 - audio research and licensing checks
 - audio documentation
 - super-event package checklist
+
+### Custom research subagent split
+
+For actual research work, use the narrow project subagents instead of making one agent research everything at once.
+
+| Need | Spawn |
+| --- | --- |
+| Main quote candidates, wording verification, attribution, source confidence, and quote recommendation | `chaosx_super_event_quote_researcher` |
+| Button text, cultural remark, short allusion, slogan, title-like reference, and copyright-risk notes | `chaosx_super_event_cultural_remark_researcher` |
+| Audio candidates, license verification, legitimate download, conversion to `.ogg`, and audio research notes | `chaosx_super_event_audio_researcher` |
+| Documentary, historical, archival, or real-world super-event image | `chaosx_asset_source_researcher` |
+| Fictional, symbolic, supernatural, or fully invented generated super-event image | `chaosx_generated_event_art` |
+
+The main agent owns final localisation, scripted localisation, slot wiring, settings-aware playback wiring, audio id wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment.
+
+The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
+
 
 ## 4. Super-event design role
 
@@ -602,7 +619,7 @@ The asset skill handles:
 - image processing
 - PNG preview
 - DDS conversion
-- `.gfx` wiring
+- main-agent `.gfx` wiring
 - manifest
 
 ## 20. Super-event slot wiring

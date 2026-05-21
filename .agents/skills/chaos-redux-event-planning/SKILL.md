@@ -5,7 +5,7 @@ description: Use when turning a rough Chaos Redux event idea into a detailed eve
 
 # Chaos Redux Event Planning
 
-Use this skill to design or expand events for the Hearts of Iron IV mod Chaos Redux.
+Use this skill to design or expand events for the Hearts of Iron IV mod Chaos Redux (https://github.com/klimPaskov/Chaos-Redux).
 
 This skill creates event specifications. It does not implement code. Implementation belongs to `chaos-redux-events`. Visual asset generation and processing belongs to `chaos-redux-event-assets`. Super-event quote, remark, music, and presentation research belongs to `chaos-redux-super-events`.
 
@@ -17,10 +17,11 @@ Before writing the event specification, use the following as the design baseline
 - `chaos-redux-events`
 - `chaos-redux-event-assets` when the event needs visual assets
 - `chaos-redux-super-events` when the event needs a super-event
+- `hoi4-focus-trees` or the current focus-tree skill when the event needs focus trees
+- `hoi4-decisions-missions` when the event needs decisions, missions, timed objectives, influence actions, or decision-driven mechanics
 - provided event spreadsheet rows
 - provided existing event docs
 - provided Chaos Redux mechanics docs
-- existing event files, localisation, assets, scripted effects, scripted triggers, decisions, focus trees, event logs, event clusters, and related systems
 
 Use those sources to understand how Chaos Redux already works, then expand creatively from there.
 
@@ -97,6 +98,7 @@ Do not add filler to reach a size target. Add depth by thinking through the even
 - branch maps
 - AI strategy matrices
 - country package matrices
+- starting armies, unit templates, force-growth decisions, and dynamic military setup for newly appearing countries
 - dynamic country identities, cosmetic names, flags, leaders, and politics
 - AI behavior
 - world reactions
@@ -110,7 +112,7 @@ Do not add filler to reach a size target. Add depth by thinking through the even
 - world-end branches
 - event cluster behavior
 - focus trees
-- full focus-by-focus maps with every individual focus named and described
+- clear focus-tree path maps with major routes, anchor focuses, mutual exclusions, and branch logic
 - custom tags
 - flag, portrait, emblem, and country-identity asset needs
 - historical source needs for real flags, leaders, symbols, and portraits
@@ -135,7 +137,8 @@ Research should help answer:
 - what rare branches can appear only in unusual campaign states
 - what assets and symbols would fit each branch
 - what focus tree paths each new country should have
-- what every individual focus in those trees should do, unlock, represent, and connect to
+- what starting forces and later unit-generation routes each new country should have
+- what each major focus path and anchor focus should do, unlock, represent, and connect to
 - what achievements would reward deep mastery, rare routes, and difficult campaign outcomes
 
 If the topic is niche, current, uncertain, or historically specific, verify with reliable sources. Do not invent source claims. If a source-dependent point is uncertain, mark it as uncertain.
@@ -163,7 +166,8 @@ Instead, define the content. For each meaningful decision or decision group, map
 - what the player is choosing between
 - what short-term consequence follows
 - what long-term consequence it can create
-- what pressures, cooldowns, costs, or risks it changes
+- what pressures, cooldowns, costs, sacrifices, or risks it changes
+- what the decision costs beyond political power or command power, such as army XP, navy XP, air XP, equipment, manpower, stability, war support, fuel, trains, convoys, supply strain, tied-down divisions, local support, faction cohesion, foreign influence debt, legitimacy, or crisis pressure
 - what AI should prefer and why
 - what variants or follow-up events it can unlock
 - what assets, icons, or localisation it needs
@@ -181,106 +185,361 @@ For rare variants, map:
 
 For branch trees or outcome webs, show the structure. Use headings, named routes, tables, or lists. The coding agent should not have to invent the branch map.
 
-## 3.5 Exhaustive focus tree mapping standard
+## 3.5 Focus tree path design standard
 
-Focus trees must be fully designed in the specification. This does not mean giving a theme list, branch overview, sample branch, or note that a tree is needed. It means literally writing out every focus the tree should contain, one by one. A spec that says a tag needs a deep tree but does not list the actual focuses has failed the focus tree requirement.
+Focus trees must be planned clearly, but the event-planning spec should not try to micromanage every final focus node, every coordinate, or every exact connection. The spec writer should define the tree's routes, branch architecture, major choices, mutual exclusions, story logic, mechanics, rewards, and design standards. The implementation agent should then create the final in-game focus tree layout and exact focus connections cleanly.
 
-When an event creates a playable country, long-lived tag, major splinter, major faction, rare high-chaos actor, alternate state, or world-order contender, the spec must map the full focus tree focus by focus. The coding agent should not have to invent the focus names, branch layout, prerequisites, unlocks, internal logic, route purpose, story meaning, or late-game ambitions. The spec should not provide a few examples and imply the rest. The rest must be written too.
+A good focus-tree spec should answer:
 
-For each focus, define the details that make the focus implementable and meaningful. Each focus must include the fields below unless a field is clearly irrelevant to that focus:
+- what major paths the country has
+- what each path means in the story
+- what each path changes mechanically
+- which paths are mutually exclusive
+- which paths can cooperate or converge
+- which paths are hidden, rare, chaos-locked, evolution-locked, foreign-aid-locked, or crisis-locked, etc
+- what kinds of focuses belong in each path
+- what kinds of rewards each path uses
+- what decisions, missions, units, ideas, leaders, flags, claims, buildings, factions, or events each path should unlock
+- what starting weaknesses the tree lets the country solve
+- what late-game ambitions each route can reach
+- how AI should choose between the routes
 
-- focus name or working title
-- branch, sub-branch, and rough tree position
-- prerequisite structure
-- mutual exclusions and route locks
-- unlock conditions, including event, chaos, evolution, ideology, war, faction, tag, decision, hidden flag, or campaign-state conditions
-- narrative purpose and in-world meaning
-- research or inspiration note when the focus depends on history, culture, religion, politics, military practice, or regional context
-- gameplay purpose and effect direction
-- important effects, modifiers, claims, wars, technologies, divisions, ideas, characters, laws, decisions, events, or mechanics it unlocks
-- follow-up focuses, events, decisions, crises, or hidden routes it leads into
-- AI preference and path behavior when relevant
-- focus icon direction and visual motif
-- localisation tone or key phrase direction when useful
-- research basis or historical, regional, ideological, cultural, military, religious, economic, or thematic inspiration when relevant
-- how the focus connects to the country story and the wider event
-- failure, bypass, alternate, or cleanup behavior when relevant
+Do not write only vague branch names. A focus-tree plan must still be detailed enough to prevent generic or boring implementation. The spec should describe the internal logic of each path, the rough order of ideas inside it, its major focus groups, its expected route locks, and its major payoff. It should also name important focuses or focus groups where the story requires them.
 
-A focus tree map should read like a design blueprint. A coding agent should be able to implement the focus tree without filling in creative gaps. The spec may use tables, numbered entries, or structured sections, but every focus needs its own entry. Placeholder names, `TBD`, generic bonus rows, and sample-only focus lists are not acceptable. Do not provide sample focuses and imply the rest. If the tree needs 240 focuses, list and design all 240 focuses.
+Do not require a literal list of every focus unless the user specifically asks for a focus-by-focus blueprint. The default planning style should be path-level and branch-level design. It is acceptable to provide sample focus names or important anchor focuses.
 
-Every focus must earn its place. It should create a real choice, unlock a meaningful effect, reveal lore, change the country direction, support a playstyle, advance an internal faction struggle, alter diplomacy, move the economy, change the military, create a new risk, or connect back into the event chain. Do not use filler focuses to inflate the count.
+### Focus tree architecture map
 
-Major countries, serious custom tags, high-chaos actors, and world-order contenders can require hundreds of focuses each. This is acceptable when the country has enough politics, factions, wars, economy, diplomacy, military development, hidden routes, special mechanics, and late-game ambitions. If an event creates several major playable countries, the spec may need to map hundreds and hundreds of focuses across the event, and sometimes thousands. This is expected for major country-creation events when the scope supports it. Depth, research, and coherence matter more than speed.
+Every major focus tree still needs an architecture map. The architecture map should show the intended path structure, not every final focus.
 
-Do not treat 80 to 120 focuses as a ceiling. That can be a medium tree. A major outcome, custom high-chaos country, or campaign-defining splinter may need 150, 200, 300, or more individually mapped focuses when the design supports that scale. The only unacceptable large tree is one filled with generic or disconnected focuses.
+The map should include:
 
-For major or strange countries, the focus tree should usually have separate, fully mapped sections instead of one small political tree. Each section must then have its individual focuses mapped. Map separate branch groups where they fit the country identity, such as:
+- opening situation and early survival choices
+- main political routes
+- industry and economy branches
+- military branches
+- diplomacy and faction branches
+- expansion or reunification branches
+- internal faction or balance-of-power branches
+- hidden, rare, crisis, evolution, and high-chaos branches where relevant
+- late-game ambition routes
+- mutually exclusive route families
+- paths that can converge later
+- paths that require foreign aid, high threat, chaos, war, a specific evolution, or prior choices
 
-- opening survival and emergency authority branch
-- main political tree
-- internal faction tree or balance-of-power path
-- legitimacy, law, and administration tree
-- separate expansionism, reunification, liberation, or war-goal tree
-- military reform tree
-- army doctrine and special units tree
-- navy tree when relevant
-- air force tree when relevant
-- industry and economy tree
-- infrastructure, resource, logistics, and rail tree
-- diplomacy and faction tree
-- intelligence, underground, propaganda, security, or police tree
-- science, religion, cult, magic, technology, or special-mechanic tree when relevant
-- ideology-specific branches
-- historical or cultural restoration branches
-- rare campaign-state branches
-- evolution-unlocked branches
-- high-chaos branches
-- hidden or secret routes
-- late-game ambition tree
-- world conquest, world revolution, world-end, or world-order tree when the identity supports it
+Use a readable structure such as a table, bullet tree, route diagram, or lane map. The implementation agent should understand the intended tree shape and design, but does not need exact focus coordinates from the spec unless the user asks for them.
 
-A large focus tree must be a branching design, not a long linear list. Do not write focus after focus in a single vertical sequence unless the country is intentionally tiny and temporary. For any major or playable country, the spec must include a focus tree architecture map before the individual focus entries. That map should show the rough visual structure, including opening trunk focuses, fork points, mutually exclusive route gates, optional side branches, convergence focuses, route-locked subtrees, hidden offshoots, crisis branches, and late-game branches. Use headings, diagrams in text, indentation, numbered lanes, tables, or row and column notes. The coding agent should be able to see where the tree branches before reading the individual focus details.
+### Branch and path detail
 
-A strong focus tree should create different playthroughs. It should contain real choices, not only a checklist. Use several types of structure where they fit:
+For each major path, define:
 
-- early survival trunk that quickly fans into politics, economy, army, diplomacy, and special-mechanic branches
-- mutually exclusive ideological or faction routes that change later available focuses
-- optional side branches that solve problems in different ways
-- cross-branch prerequisites where political choices alter industry, military, diplomacy, and expansion options
-- convergence focuses that resolve a route and open a new stage
-- failure or crisis branches that appear after defeats, coups, lost capitals, foreign betrayal, or high chaos
-- evolution-unlocked branches that are not visible in a normal run
-- hidden routes that require specific decisions, achievements, foreign influence, leader choices, or strange campaign states
-- expansionist branches that have their own internal logic and are not just a straight list of claims
-- late-game ambition branches that fork again based on the earlier route
+- path name
+- narrative role
+- mechanical role
+- unlock conditions
+- mutually exclusive paths
+- compatible paths
+- rough focus groups inside the path
+- key anchor focuses when needed
+- major decisions, missions, ideas, units, leaders, advisors, advisor discounts, flags, country names, party changes, claims, cores, war goals, buildings, leagues, or events unlocked
+- reward style and what should be avoided
+- AI behavior
+- late-game outcome or failure state
 
-Linear focus trains are not acceptable for major trees. A branch where every focus only requires the previous focus is usually a sign that the branch is boring. Redesign it unless the linearity has a clear story reason, such as a short emergency sequence, a ritual sequence, a timed evacuation, or a final irreversible march. Even then, it should connect back into a wider branching tree.
+For each important anchor focus or focus group, define:
 
-Every major route should have a different rhythm. A constitutional route might have negotiation gates, coalition concessions, and diplomacy side branches. A military junta route might split between professional army, secret police, and expansion doctrine. A cult route might branch through doctrine, recruitment, ritual economy, forbidden science, and war aims. A railway state might branch through schedules, armored trains, logistics law, foreign transit, and rail conquest. Do not reuse the same generic political, industry, and army ladder for every country.
+- rough purpose
+- what it connects to
+- whether it is a route opener, route lock, side branch, convergence point, hidden branch, crisis branch, or finisher
+- what it unlocks or changes
+- what kind of reward it should use
+- what idea, decision, mission, unit, building, leader, flag, or event it affects
+- what should be mutually exclusive with it, if anything
 
-When mapping each individual focus, include its exact branch role. Mark whether it is a trunk focus, fork focus, route lock, side focus, convergence focus, hidden focus, crisis focus, route finisher, or late-game unlock. The focus list should prove that the tree is non-linear. If the focus entries read like a numbered sequence with no forks, locks, side routes, or cross-links, the spec has failed.
+The coding agent may create more or fewer individual focuses than the spec examples as long as the final tree preserves the path design, story logic, route choices, and gameplay depth.
 
-Each branch must make story sense and connect to the other branches. Political choices should alter which industrial, military, diplomatic, and expansionist options are credible. Internal faction choices should feed purges, compromises, coups, civil wars, coalitions, secret paths, and AI strategy. Expansionism should not be a generic claim list. It should express the country's ideology, trauma, myth, economic need, military doctrine, foreign patrons, or evolved chaos identity.
+### Focus reward diversity standard
 
-Do research before mapping serious focus trees. Use historical, regional, cultural, political, military, religious, ideological, economic, and existing HOI4 context to make the branches specific. Focus names and routes should connect to plausible institutions, movements, leaders, symbols, geography, resources, military traditions, foreign relationships, and the event story. Weird and supernatural paths still need internal logic and thematic grounding. Research should shape the actual focuses, not only the intro paragraph before the tree.
+Focus rewards must be varied. Do not design focus trees where most focuses add a new national spirit, add political power, add stability, add war support, or repeat the same modifier pattern.
 
-When a custom country is strange, historical, extremist, supernatural, or high-chaos, its focus tree must explain how that state survives, what it believes, how it fights, how it treats civilians, how it governs, how it handles dissent, how it funds itself, how it expands, how it interacts with the parent event, and how it can become dangerous later. Extreme paths such as world conquest, dead internationalism, machine-cult rule, railway sovereignty, cult expansion, cosmic politics, resurrection doctrine, or global revolution are valid when the country identity supports them.
+A new national spirit or idea should be used only when the focus creates a persistent institution, doctrine, crisis condition, political identity, military structure, economic system, or long-term route effect. If the branch already has an idea representing that institution, prefer modifying, upgrading, replacing, temporarily strengthening, or adding a timed modifier to the existing idea instead of creating another separate idea.
 
-Smaller temporary tags may receive compact trees or decision-based content only when the spec explains why they are temporary and why a full tree would be wasteful. A compact tree still needs every focus individually mapped. Do not write only branch names for temporary tags unless they are deliberately not playable and not expected to survive.
+Good focus reward types include:
 
-When a large event would require hundreds or thousands of focuses, split the specification into dedicated focus-tree files or appendices. Do not reduce the number of mapped focuses because the file is becoming long. For example:
+- civilian factories
+- military factories
+- dockyards
+- forts
+- coastal forts
+- anti-air buildings
+- radar stations
+- airbases
+- infrastructure
+- railways
+- supply hubs
+- resources
+- building slots
+- production lines
+- equipment stockpiles
+- unit templates
+- route-specific spawned units
+- commanders or advisors
+- decisions
+- timed missions or objective families
+- laws
+- technologies or research bonuses
+- claims or cores
+- leader changes
+- ruling party changes
+- cosmetic names
+- flag changes
+- faction mechanics
+- diplomacy routes
+- foreign aid systems
+- crisis value changes
+- objective completion bonuses
+- events or event chains
 
-- `event_name_spec_part_1.md` for the main event
-- `event_name_spec_part_2_focus_tree_country_a.md`
-- `event_name_spec_part_3_focus_tree_country_b.md`
-- `event_name_spec_part_4_focus_tree_high_chaos_tags.md`
+Every focus path should have a distinct purpose. If two focus groups would grant nearly the same effect, merge them, rewrite one, or make one an upgrade of the other.
 
-A spec can have focus-tree-only parts. A single event spec can exceed 100,000 lines if that is what is needed to map every focus, country path, rare variant, decision, asset, super-event, and cleanup path without shallow summaries. That is acceptable. The limit is usefulness, not length. Do not shorten a full focus tree because the answer is already long. Continue in another spec part.
+Reject focus trees where most focus groups grant new ideas without a clear reason. A tree that uses repeated new ideas as filler has failed even if it has many focuses.
 
-The finished focus tree sections should make it impossible for an implementation agent to create a tiny, generic, or boring tree while claiming to follow the spec.
+### Dynamic idea lifecycle standard
+
+New countries, transformed countries, civil-war splinters, emergency governments, and unstable successor states should not start with a long stack of generic positive ideas. It is usually better for them to start with a small number of deep, readable ideas that define their starting weakness, identity, and strategic problems.
+
+Starting ideas can be negative, mixed, unstable, or conditional. These ideas should represent real problems the country must solve, such as broken administration, improvised command, disputed legitimacy, militia fragmentation, supply confusion, foreign dependence, refugee pressure, factional mistrust, ruined industry, contested railways, disorganized officers, or unclear laws.
+
+Negative starting ideas should not be permanent dead weight unless the story requires that. The spec should map how decisions, missions, focuses, leader choices, foreign aid, victories, reforms, purges, compromises, or crisis outcomes can mitigate, transform, upgrade, or remove them.
+
+Prefer fewer ideas with more depth over many shallow ideas. A good idea can have a lifecycle:
+
+- starting negative or mixed form
+- mitigated form after early stabilization
+- reformed form after a political or institutional branch
+- positive route-specific form after the country commits to a path
+- corrupted, radicalized, or dangerous form after a high-chaos or failure route
+
+When designing focus trees, do not create a new idea in every focus. If an institution already exists as an idea, prefer changing that existing idea through staged upgrades, replacing it with a route-specific version, adding a temporary modifier, unlocking decisions tied to it, or changing how it interacts with missions and crisis values.
+
+For every important idea, define:
+
+- why the country starts with it or unlocks it
+- whether it is negative, mixed, positive, temporary, staged, or route-specific
+- what decisions, focuses, missions, events, or outcomes change it
+- what its upgraded or mitigated forms are called
+- what route can remove it completely
+- whether it can become worse through failure, high chaos, foreign dependence, civil war, or bad decisions
+- what icon direction it needs
+- how AI should prioritize solving or exploiting it
+
+Every major country package should include a starting idea plan and an idea lifecycle table. The table should show which ideas exist at start, which are unlocked later, which are upgraded, which are removed, and which are route-specific.
+
+Example table:
+
+| Idea | Start or unlock | Starting role | Mitigation path | Upgrade path | Failure path | Final forms |
+| --- | --- | --- | --- | --- | --- | --- |
+
+Reject specs where a country starts with too many unrelated ideas, where every focus creates a separate idea, or where negative ideas cannot be meaningfully addressed through play.
 
 
-## 3.6 Achievement design standard
+### Focus, politics, expansion, and decision integration
+
+When planning a major focus tree, define more than politics and industry. A large tree needs a distinct expansion, reunification, liberation, settlement, or regional ambition branch. This branch should be separate from the main political tree and separate from the industry tree.
+
+Expansion branches should define real strategic effects, such as claims, cores, war goals, protectorates, guarantees, declarations, leagues, border settlements, ultimatum decisions, or postwar integration choices. Do not reduce expansion to generic bonuses.
+
+Political branches should change politics directly. Define ideology paths, ruling party shifts, party popularity changes, leader changes, advisor unlocks, advisor discounts, laws, councils, juntas, congresses, committees, faction struggles, cosmetic names, and flag changes where they fit. Leader changes imply portrait needs. Real leaders need sourced portraits. Fictional leaders and symbolic councils can use generated portraits through the asset skill.
+
+Fixed-purpose chaos countries can have narrower politics when their identity demands it. A death-state, plague-state, machine-state, or pure destruction actor may have one ideological purpose. Even then, the tree should still provide meaningful internal choices inside that purpose, such as doctrine, expansion method, recruitment, economy, hierarchy, or endgame ambition.
+
+Focus trees and decision systems must be planned together. Focuses should unlock or change decisions and missions. Industry focuses can unlock construction decisions. Military focuses can unlock unit, depot, border, or offensive missions. Diplomacy focuses can unlock recognition, aid, volunteer, and influence decisions. Expansion focuses can unlock declarations, league votes, protectorate demands, border incidents, claims, cores, war goals, and settlement decisions.
+
+For each major focus path, describe which decision or mission families it unlocks and how those decisions expand the mechanic.
+
+
+### Branch interaction, payoff, and country identity
+
+Political, industry, and expansion are the minimum branch families, not the full design for important countries. Important countries should usually also define military, diplomacy, internal faction, intelligence or security, special mechanic, and late-game branches when their identity supports them.
+
+Branches should not be isolated columns. Political choices should change which expansion, industry, military, diplomacy, and decision paths are available. Industry should support military or expansion. Expansion should create political consequences. Diplomacy should affect foreign aid, war options, faction choices, and sponsor risk.
+
+Every major branch needs a clear payoff. A political branch can end in a new government, leader, ideology, law system, ruling party, or country identity. An industry branch can end in a rebuilt economy, arsenal, resource system, railway authority, construction mechanic, or production network. An expansion branch can end in a league, empire, federation, protectorate network, reunification, liberation order, regional settlement, or external war plan.
+
+A good focus path should unlock new gameplay, not only stats. The plan should describe decisions, missions, units, advisors, leaders, laws, claims, cores, war goals, buildings, events, mechanics, route access, and AI behavior where they fit. Flat modifiers are supporting rewards, not the main design.
+
+Political routes should update the visible country package where relevant: leader, leader portrait, advisor roster, high command, ruling party, party names, ideology drift or swap, cosmetic name, flag, ideas, and AI strategy. Leader changes imply portrait needs.
+
+Expansion branches should create consequences. Claims, cores, and war goals should interact with diplomacy, factions, resistance, foreign guarantees, local leagues, legitimacy, threat, or postwar settlement decisions.
+
+Industry branches should create map or production changes. Define factories, infrastructure, railways, supply hubs, forts, anti-air, airbases, dockyards, resources, production lines, or construction decisions.
+
+Decision categories should evolve with focus progress. Early focuses may unlock basic decisions. Later focuses should add new targets, stronger actions, cheaper costs, new risks, or new mission families. A decision category should feel different after a route develops.
+
+The fixed-purpose exception is narrow. A country is fixed-purpose only when its concept clearly cannot support normal politics, such as a death-state, machine-state, plague-state, or pure destruction actor. It still needs meaningful internal branches around method, hierarchy, economy, recruitment, expansion, and endgame.
+
+
+### Branch depth, AI, localisation, and aftermath
+
+A branch does not count as real unless it changes gameplay. In the spec, each major branch should have several focus groups, a mechanical unlock, a route consequence, and an end-state or payoff.
+
+Major routes need route-specific AI plans. Do not let the implementation use generic focus weights for every route. The spec should say which AI types choose each route and when they avoid it.
+
+Major routes need distinct localisation tone. A socialist route, military route, democratic route, nationalist route, religious route, machine route, death-state route, or foreign client route should not read like the same generic branch with different rewards.
+
+Expansion branches should include postwar handling. War goals alone are not enough. Define claims, cores, puppet options, protectorates, occupation decisions, integration missions, border settlement events, resistance risks, diplomacy reactions, faction consequences, or achievement tracking.
+
+Industry branches should be geographically grounded where possible. Define which states or regions receive factories, resources, ports, railways, supply hubs, forts, anti-air, dockyards, airbases, or infrastructure.
+
+Advisor unlocks should match route identity. Political routes unlock ideological and government figures. Industry routes unlock engineers and economic boards. Military routes unlock commanders and high command. Diplomacy routes unlock envoys and foreign liaisons. High-chaos routes unlock route-specific councils, symbolic leaders, or strange authorities.
+
+Large focus trees should include achievement hooks for difficult route completions, rare branch combinations, expansion outcomes, internal reform, avoiding foreign dependency, league formation, high-chaos survival, or late-game ambitions.
+
+The final implementation prompt should ask for a route coverage table comparing required routes against implemented routes. Missing, renamed, merged, simplified, fallback, or replaced routes must be reported.
+
+
+### Route visibility, pacing, tradeoffs, and failure states
+
+A major route should leave visible evidence in the game. The spec should describe what the player actually sees or gains: map changes, decisions, units, advisors, leaders, flags, cosmetic names, faction behavior, focus availability, diplomacy, or visible mechanics. A route that only changes hidden variables or tiny modifiers is not meaningful.
+
+Large focus trees should have early, middle, and late pacing. Early content solves survival and basic identity. Middle content creates route mechanics and real choices. Late content delivers major payoffs, expansion, faction or League outcomes, high-chaos routes, postwar settlement, or world-order ambitions.
+
+Every major route should have a tradeoff. The spec should define what the route risks or sacrifices. Military routes may reduce freedom or legitimacy. Foreign-aid routes may create dependency. Expansion routes may create backlash. Industry routes may consume civilian capacity or weaken short-term defense. High-chaos routes may gain power while damaging stability, diplomacy, or normal politics.
+
+Do not overuse mutual exclusions. Mutually exclusive paths should represent real identity changes, strategic commitments, or incompatible institutions. Support branches such as industry, army, diplomacy, and logistics should usually coexist unless the route logic says otherwise.
+
+Important routes should define failure states. A failed political reform can empower radicals. Failed expansion can trigger backlash or settlement. Failed industry can create dependency. Failed foreign-aid balancing can create a client state. Failed military centralization can create rogue generals or militias.
+
+Focus and decision localisation should describe the visible baseline effect of the route or action. It should not reveal hidden effects, secret outcomes, hidden variables, or future surprises. The player-facing text should explain the public action and visible direction, not the hidden implementation.
+
+
+### Special mechanics, dynamic values, and faction systems
+
+Large events should usually include at least one special mechanic. A special mechanic can be a pressure meter, influence system, balance of power, faction cohesion system, legitimacy system, corruption system, outbreak tracker, coalition command system, resource race, regional authority map, or similar play layer.
+
+A special mechanic should define its important values clearly. Examples include legitimacy, authority, influence, cohesion, obedience, corruption, foreign penetration, military readiness, industrial capacity, public panic, faction unity, sponsor pressure, religious authority, revolutionary zeal, or regional control.
+
+Mechanic values must be dynamic. They should move through focuses, decisions, missions, events, wars, state control, foreign influence, AI actions, and prior outcomes. Do not design a mechanic where values only drift passively or change through a few flat scripted effects.
+
+Every important mechanic value should have a consistent colour identity in localisation. If several values contribute to a total, each contributing value should use its own colour consistently across tooltips, scripted localisation, decision text, event text, and UI summaries. If a mechanic has a total value made from components, the tooltip should show a readable breakdown with named and coloured components.
+
+If a mechanic has values such as legitimacy, authority, influence, cohesion, obedience, power, or readiness, then focuses, decisions, and missions should interact with those values directly. A focus tree should not sit beside the mechanic without changing it. A decision system should not sit beside the mechanic without changing it.
+
+Mechanic values should unlock or block content: decisions, focuses, events, missions, leaders, advisors, factions, war goals, reforms, crises, achievements, super-events, or endings. A mechanic should change what the player can do.
+
+When a country has two or more internal power centers, consider a balance-of-power or equivalent system. Focuses and decisions should push the balance, unlock branch content, create risks, and change leaders, laws, advisors, events, or crises.
+
+When an event creates a faction, league, bloc, coalition, compact, or alliance, define its goals and internal rules. The faction should have a reason to exist, membership rules, joining conditions, refusal logic, expulsion or removal logic where relevant, war goals, shared decisions, AI behavior, victory conditions, and failure conditions.
+
+Important event-created factions should usually have a mechanic such as cohesion, shared command, war council support, joint reserves, recognition, member confidence, sponsor pressure, or strategic goals. Focuses and decisions should interact with that faction mechanic.
+
+A faction should not form just because one country exists. Define minimum membership, crisis conditions, ideological compatibility, war pressure, diplomatic preparation, and regional logic.
+
+A special mechanic should define success, failure, partial success, and runaway failure states. These states should unlock events, decisions, focus branches, faction changes, wars, reforms, aftermath, achievements, or super-events.
+
+AI must understand mechanic values. It should know when to lower threat, build legitimacy, increase influence, join a faction, avoid dependence, push balance of power, or trigger escalation.
+
+For every special mechanic, the completion report should list mechanic values, what changes them, what they unlock, UI and localisation coverage, AI behavior, focus hooks, decision hooks, event hooks, and balance checks.
+
+
+### Mechanic presentation, faction outcomes, validity, and tuning
+
+Every special mechanic should define where the player sees it: decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, event detail window, focus tooltip, national spirit tooltip, event log, or another clear presentation surface. Important mechanic values should not exist only as hidden variables.
+
+When a special mechanic uses a scripted GUI, consider visual presentation beyond static text. Useful designs can include progress bars, meter fill variants, state icons, status frames, warning frames, selected or locked variants, animated frames, or frame-by-frame visual changes that make the mechanic feel alive. The visual layer should make the mechanic easier to understand.
+
+Special mechanics can hide future surprises, but they should not hide basic cause and effect. The player should understand why a visible value rose or fell, which public action changed it, and what kind of response is available.
+
+Faction, league, bloc, or coalition goals should have rewards and failure states. A successful faction goal can unlock shared decisions, war goals, legitimacy, cohesion, member rewards, or postwar settlements. A failed goal can reduce cohesion, trigger exits, invite foreign pressure, start leadership contests, or weaken shared defenses.
+
+New playable country packages must not be generic. Each needs a specific identity, starting problem, political direction, map role, military style, economy, diplomacy, AI behavior, and at least one mechanic or decision family that makes it play differently.
+
+AI strategy must respect route validity. AI should not pick a branch or action that requires a missing state, dead sponsor, non-existent faction, unavailable ideology, disabled evolution, impossible border, invalid target, or absent enemy. Invalid routes should be hidden, bypassed, or weighted to zero.
+
+When a route changes leader, ideology, faction, cosmetic name, flag, advisor roster, or special mechanic identity, define the needed visible assets and whether they are sourced, generated, reused, or blocked.
+
+Shared trees are allowed, but they must have country-specific localisation, route names, decisions, AI weights, leaders, rewards, icons, and scripted localisation where relevant. A shared tree fails if every country using it reads and plays the same.
+
+Important mechanic thresholds, caps, gains, losses, duration bands, AI weights, and scaling values should be centralized in script constants or a clearly documented tuning file. Do not scatter magic numbers across decisions, events, focuses, scripted effects, and scripted triggers.
+
+
+### Reward dumps and exploit checks
+
+Avoid one-time reward dumps as the main design. A focus, decision, or mission can give factories, units, equipment, resources, buildings, or influence, but important content should often unlock a repeatable decision, timed mission family, production route, advisor, mechanic, route branch, or long-term gameplay system.
+
+One-time rewards are acceptable when they fit the story and balance. They should not become the default design pattern for a major event, large focus tree, or decision system.
+
+Balance planning should include exploit checks. Look for free unit loops, repeated factory rewards, cheap construction loops, equipment farming, influence farming, puppet abuse, war-goal spam, claim or core spam, advisor discount stacking, bypass abuse, mission success farming, and decisions that can be clicked without meaningful cost or risk.
+
+The spec should tell the implementation agent how to prevent abuse with flags, cooldowns, dynamic costs, escalating costs, one-time completion flags, route locks, target limits, AI limits, cleanup effects, or scripted triggers.
+
+
+### Decision category clutter control
+
+Large decision systems should not show every possible decision at once. The spec should define how decision categories stay readable.
+
+Use phases, caps, priorities, regional pools, route locks, mechanic thresholds, or crisis-state filters so the player sees decisions that matter in the current situation.
+
+Good planning patterns include:
+
+- early, middle, and late decision tiers
+- active mission caps
+- region pools that rotate or unlock gradually
+- decisions hidden when their route is invalid
+- obsolete decisions removed after war, peace, settlement, or route change
+- basic decisions replaced by stronger later decisions
+- decisions grouped by target region, sponsor, faction, or mechanic value
+- emergency decisions visible only during emergency states
+- late-game decisions hidden until the route payoff is reached
+
+A decision category should feel curated by the current route and campaign state, not like a debug menu.
+
+### What the implementation agent owns
+
+The implementation agent is responsible for the final exact focus tree shape unless the user asks otherwise.
+
+The implementation agent should:
+
+- choose the exact number of focuses needed for each path
+- write final focus names and descriptions from the path design
+- place focuses cleanly in the in-game grid
+- create visually readable branches
+- avoid ugly, tangled, or overly linear layouts
+- create exact prerequisites and `mutually_exclusive` blocks
+- wire bypasses and availability
+- assign icons and search filters
+- balance focus durations and rewards
+- implement AI path weights
+- report any design gap that prevents clean implementation
+
+The spec should give enough creative and structural direction that the agent cannot make a shallow generic tree, while still allowing the agent to build a clean in-game layout.
+
+
+
+## 3.6 Focus tree visual planning standard
+
+Focus tree visuals should help the user and implementation agent understand the intended branch structure. The spec may include a high-level branch diagram, lane map, or route sketch for major trees, but it should not try to lock every final focus coordinate unless the user explicitly asks for that.
+
+A useful focus tree visual should show:
+
+- major path families
+- route locks
+- mutually exclusive choices
+- hidden or rare paths
+- convergence points
+- late-game route families
+- which paths should be visually separate
+- which paths should be placed near each other because they interact
+
+The visual should be readable, symmetrical where possible, and free of tangled connector lines. It should not contain random crossing lines or misleading geometry.
+
+If the spec creates a graph or diagram, it should be treated as a design guide unless the user says it must match the final in-game tree exactly. The implementation agent may adjust the final layout to make the actual HOI4 tree cleaner.
+
+Do not spend excessive planning effort forcing exact graph coordinates if the result becomes ugly, brittle, or unhelpful. A clear path architecture is more important than a fake exact graph.
+
+
+
+## 3.7 Achievement design standard
 
 Achievements are mandatory for event specifications unless the user explicitly says not to include them or the event is so small that achievements would be dishonest. Major events, custom countries, deep focus trees, rare variants, world-order routes, or super-events always need achievements.
 
@@ -323,7 +582,7 @@ The achievement list should include a spread of routes. Do not put all achieveme
 
 If an event creates many playable tags, design achievements for the most important ones and for the event-wide systems. A large event can justify dozens of achievements. The achievement prompt should still explain which ones are highest priority if implementation must be staged.
 
-## 3.7 Baseline stages versus evolutions
+## 3.8 Baseline stages versus evolutions
 
 Baseline stages and evolutions are different.
 
@@ -358,7 +617,7 @@ Each evolution should define:
 - how it interacts with chaos tier without being only a chaos-tier lock
 - how it can be contained, spread, or escalate
 
-## 3.8 Dynamic mechanics standard
+## 3.9 Dynamic mechanics standard
 
 Everything that acts like pressure, cooldown, progress, chance, support, duration, cost, tempo, AI willingness, spawn strength, aid amount, stage movement, or recognition should be dynamic by default.
 
@@ -370,7 +629,8 @@ Dynamic factors can include:
 - current wars
 - stability and war support
 - ideology and reforms
-- manpower and equipment
+- political power, command power, army XP, navy XP, and air XP
+- manpower, equipment, fuel, trains, convoys, and supply
 - military losses
 - supply and rail control
 - distance and terrain
@@ -389,7 +649,35 @@ Do not say only that a cooldown is 30 days or a pressure increase is 5. Say what
 Dynamic behavior should still be readable. Define cause and effect clearly so the player can learn the pattern through events and decisions.
 
 
-## 3.9 AI strategy and behavior mapping standard
+## 3.10 Cost and sacrifice design standard
+
+Political power and command power are useful, but they are usually the least interesting costs. Do not let major decisions, missions, focuses, or crisis responses become a long list of political power and command power purchases.
+
+A good cost should express what the country is actually spending, risking, or sacrificing in the story. A military crackdown may spend command power, but it should also strain units, consume equipment, lower stability, damage war support, pull divisions away from another front, increase resistance, or worsen a crisis pressure. A foreign intervention may spend political power, but it should also require relations work, liaison access, convoys, fuel, equipment shipments, intelligence exposure, or patronage risk. A mobilization decision may use manpower, infantry equipment, support equipment, training time, army XP, supply, local support, or legitimacy.
+
+When mapping costs, use a varied cost palette where it fits the mechanic:
+
+- army XP, navy XP, and air XP
+- infantry equipment, support equipment, artillery, trucks, trains, convoys, ships, aircraft, tanks, or special equipment
+- manpower, trained reserves, officer quality, or temporary unit locks
+- fuel, supply capacity, rail access, port access, convoy routes, or depot control
+- stability, war support, legitimacy, local support, public trust, or faction cohesion
+- command power and political power only when they match the story
+- construction capacity, civilian factories, military factories, dockyards, repair capacity, or production disruption
+- relations, recognition pressure, foreign influence debt, intelligence exposure, or diplomatic credibility
+- crisis pressure, threat-meter components, condemnation, deaths, pollution, contamination, or other Chaos Redux system values when relevant
+- time, deadlines, objective failure risk, opportunity cost, or visible map requirements such as holding borders, guarding depots, or placing divisions in key states
+
+Political power or command power may still be one part of a cost, but they should not be the default answer. If a section uses mostly political power or command power, redesign it unless the story clearly demands bureaucratic or command attention.
+
+Costs should be dynamic. The amount and type of cost should react to country size, chaos tier, stability, war state, equipment stockpiles, supply state, front pressure, foreign access, local legitimacy, previous choices, AI situation, and current event pressure. A weak country should not pay the same cost as a strong country when the story says the burden is different.
+
+Map blocked localisation for nonstandard costs. The player should understand whether they lack infantry equipment, support equipment, divisions in the right state, local support, army XP, fuel, rail control, relations, foreign route access, or another requirement.
+
+For every major decision family, include at least one cost or requirement that is not political power or command power unless the spec explains why that family is purely bureaucratic.
+
+
+## 3.11 AI strategy and behavior mapping standard
 
 Major event specs must include a real AI section. Do not leave AI behavior as a vague note that the coding agent can decide later.
 
@@ -413,9 +701,9 @@ For foreign influence mechanics, the AI section must explain how major powers de
 
 A good AI section should make the implementation agent unable to create generic AI weights while claiming to follow the spec.
 
-## 3.10 Country package and dynamic identity standard
+## 3.12 Country package and dynamic identity standard
 
-When an event creates, releases, transforms, or significantly modifies a country, the spec must define that country as a full package. This applies to new custom tags and to existing countries that gain event-specific political identities, focus trees, flags, leaders, cosmetic names, ideology names, or mechanics.
+When an event creates, releases, transforms, or significantly modifies a country, the spec must define that country as a full package. This applies to new custom tags and to existing countries that gain event-specific political identities, focus trees, flags, leaders, cosmetic names, ideology names, starting forces, or mechanics.
 
 For every new country, and every existing country that is meaningfully changed, the spec should provide a country package matrix or equivalent structured section. It must cover:
 
@@ -429,29 +717,79 @@ For every new country, and every existing country that is meaningfully changed, 
 - faction names and possible faction cosmetic names
 - ruling party names, sub-ideology labels, and political movement names
 - starting politics and possible ideology shifts
+- starting military package, including initial divisions, template families, manpower, equipment, command structure, supply assumptions, and dynamic scaling factors
+- unit growth routes through decisions, focuses, objectives, volunteers, mobilisation, depots, foreign support, faction reserves, or special mechanics
 - starting leader, leader traits, portraits, and possible leader replacements
 - council, junta, committee, regency, cult, military, monarchist, democratic, communist, fascist, anarchist, or factional leadership variants when relevant
 - flags for the base country, ideology variants, focus-tree variants, cosmetic variants, puppet variants, and major route transformations
-- national spirits, ideas, decisions, events, focus tree, achievements, and mechanics tied to that country
+- national spirits, ideas, decisions, events, focus tree, achievements, mechanics, and unit systems tied to that country
 - AI behavior and route preferences
 - asset needs for every visible identity state
 - localisation tone and naming rules
 - documentation needs
 - compatibility notes if the country already exists in vanilla, Chaos Redux, or common mods
 
-Do not treat a custom country as complete because it has a tag and one flag. A serious country needs identity, politics, names, flags, leaders, mechanics, decisions, AI, localisation, assets, and route changes. If the country is only temporary and does not need a full package, the spec must explain why.
+Do not treat a custom country as complete because it has a tag and one flag. A serious country needs identity, politics, names, flags, leaders, starting forces, force-growth routes, mechanics, decisions, AI, localisation, assets, and route changes. If the country is only temporary and does not need a full package, the spec must explain why.
 
-Political identity should be dynamic when the content supports it. Focus routes, ideology changes, coups, faction victories, foreign puppeting, religious transformations, high-chaos mutations, monarchist restorations, military takeovers, revolutionary councils, or world-order paths should be able to change the country name, flag, ruling party, leader, leader portrait, leader trait, cosmetic tag, national spirits, and available decisions when appropriate.
+Political identity should be dynamic when the content supports it. Focus routes, ideology changes, coups, faction victories, foreign puppeting, religious transformations, high-chaos mutations, monarchist restorations, military takeovers, revolutionary councils, or world-order paths should be able to change the country name, flag, ruling party, leader, leader portrait, leader trait, cosmetic tag, national spirits, available decisions, and available recruitment systems when appropriate.
 
-When planning alternate governments, do not use only generic ideology labels. Design specific in-world names, such as named councils, committees, directorates, juntas, congresses, restoration authorities, cult offices, leagues, syndicates, ministries, synods, communes, or military commands. These names should fit the country's story, region, history, route, and ideological language.
+When planning alternate governments, do not use only generic ideology labels. Design specific in-world names, such as named councils, committees, directorates, juntas, congresses, restoration authorities, cult offices, leagues, syndicates, ministries, synods, communes, or military commands. These names should fit the country story, region, history, route, and ideological language.
 
-## 3.11 Mandatory asset coverage and source-mode standard
+## 3.13 Starting forces and reinforcement pathway standard
 
-Everything visible or meaningful needs an asset plan. A major spec should not only define a few event pictures. It should identify assets for countries, focus trees, decisions, ideas, national spirits, achievements, flags, portraits, faction emblems, super-events, event pictures, UI, and route-specific identity changes.
+When an event creates, releases, transforms, restores, or revives a country that is expected to fight, survive, defend itself, or matter militarily, the spec must define its starting forces. Newly appearing countries should not spawn as empty tags unless they are explicitly non-military administrative placeholders and the spec explains why.
+
+Starting units must be dynamic. Do not define one flat number of divisions for every country. The spec should explain what makes the starting force stronger, weaker, larger, smaller, better equipped, more irregular, more professional, more defensive, more foreign-backed, or stranger.
+
+Useful scaling factors include:
+
+- chaos tier and chaos value
+- event threat, crisis pressure, evolution state, and ordinary stage state
+- local population, industry, terrain, ports, rail hubs, depots, and capital control
+- local legitimacy, public support, militia networks, and command obedience
+- defecting army districts, security units, sailors, railway guards, border guards, police forces, or factory guards
+- captured equipment, depot vulnerability, foreign aid, volunteer corridors, and faction support
+- parent-country weakness, missed deadlines, lost objectives, supply failure, war state, and previous choices
+- whether the tag is an ordinary republic, emergency committee, factory state, ancient restoration, partisan movement, cult, railway state, naval state, or other special actor
+
+For every meaningful new or transformed country, map:
+
+- starting division families or template concepts
+- expected starting strength in weak, normal, severe, and high-chaos openings
+- equipment and manpower source
+- whether units are militia, regular defectors, border guards, mountain detachments, factory guards, railway troops, sailors, cavalry, foreign volunteers, ancient levies, or special high-chaos formations
+- starting commanders, officer shortages, or leader ties when relevant
+- defensive bonuses, training penalties, supply weaknesses, morale problems, or legitimacy risks
+- how the package affects threat meters, foreign attention, depot pressure, old-movement resurgence, or parent-country authority
+- what report, event text, or localisation explains why those troops exist
+
+The spec must also map how newly appearing countries can get more units after spawning. This should include decisions, timed objectives, focus rewards, volunteer systems, depot captures, foreign missions, local mobilization, League or faction training, factory guard mobilization, border guard formation, or special high-chaos recruitment where appropriate.
+
+Do not make reinforcement depend only on political power or command power. Use concrete goals and resources such as holding a capital, guarding a border, controlling a depot, controlling rail lines, spending army XP, consuming equipment, committing manpower, using fuel or trains, securing local support, opening a foreign corridor, finishing a construction quota, proving legitimacy by a deadline, placing divisions in required states, or keeping a volunteer route open.
+
+Unit-creating focuses and decisions must be specific. Avoid repeated generic rewards such as `add two infantry divisions` across many countries. A unit reward should explain the institution and story behind the unit, such as capital defense committees, local garrison defections, railway guards, factory guard shifts, mountain pass detachments, Black Banner columns, sailor battalions, Basmachi cavalry, ancient host militias, medical volunteers, foreign-trained cadres, or high-chaos special units.
+
+Each unit-creating focus or decision should define:
+
+- what unit or template family appears
+- what unlocks it
+- what non-political-power requirements it uses when appropriate
+- whether it is repeatable, timed, risky, route-locked, or one-time
+- what pressure or threat values it changes
+- what downside it creates if repeated or failed
+- what AI should do with it
+- what blocked localisation should say when requirements are missing
+- what icon, spirit, report event, or commander asset it needs when relevant
+
+For focus trees, military growth should be integrated into branches. Some focuses can spawn units directly, but others should unlock decisions, improve templates, recruit commanders, create volunteer corridors, integrate militias, convert irregulars into regulars, expand special units, or change mobilisation rules. A deep tree should offer different ways to build an army depending on politics, foreign influence, economy, terrain, ideology, and chaos state.
+
+## 3.14 Mandatory asset coverage and source-mode standard
+
+Everything visible or meaningful needs an asset plan. A major spec should not only define a few event pictures. It should identify assets for countries, focus trees, decisions, ideas, national spirits, achievements, flags, portraits, faction emblems, super-events, event pictures, UI, unit systems, and route-specific identity changes.
 
 Every focus in a mapped focus tree needs an icon direction. Large trees may use reusable icon packs, but the spec must still state which focuses use which motif or icon category. Do not leave hundreds of focuses with no asset guidance.
 
-Every decision, decision category, idea, national spirit, achievement, faction emblem, UI panel, news image, report image, super-event image, and leader or council portrait that appears in the event needs an asset entry or a clear asset-family entry.
+Every decision, decision category, idea, national spirit, achievement, faction emblem, UI panel, news image, report image, super-event image, leader or council portrait, and important special-unit identity that appears in the event needs an asset entry or a clear asset-family entry.
 
 Every country package must include flags. Required flag coverage includes normal, medium, and small sizes for each implemented flag state. If the country has ideology-specific names, focus-tree transformations, puppet identities, restored historical forms, radical routes, or high-chaos mutations, the spec must identify whether those states need separate flags.
 
@@ -460,6 +798,27 @@ Historical and real-world flags should not be invented with `$imagegen` by defau
 Historical or real leaders should not be generated. The spec should identify likely real portrait needs and instruct the asset agent to source real images, document source and license status, and crop them to HOI4 portrait size. Fictional leaders, council portraits, cult leaders, alternate invented officers, and symbolic committee portraits can use `$imagegen` when generated art is appropriate.
 
 When an asset source is historically sensitive, disputed, or politically loaded, the asset prompt must require source notes, and a clear distinction between sourced historical use and fictional alternate-history invention.
+
+
+## 3.15 Effect strength and impact standard
+
+Do not design important event effects with timid or decorative values. If an idea, decision, focus, mission, national spirit, or crisis response is supposed to matter, its effects should be strong enough for the player to feel and plan around.
+
+Avoid conservative values such as plus 2 percent or minus 3 percent as the main reward or penalty unless the spec explains that they are part of a wider stacking system. A small modifier can support a larger effect package, but it should not be the whole design.
+
+A good effect package should do at least one meaningful thing:
+
+- change player incentives
+- unlock a new decision, mission, focus branch, unit type, mechanic, or route
+- move a crisis, loyalty, legitimacy, recognition, stability, or threat value in a visible way
+- create a real cost, risk, or tradeoff
+- alter army, economy, diplomacy, internal politics, logistics, production, or intelligence behavior
+- change how a country plays for a meaningful period
+- connect to later events, evolutions, achievements, or super-events
+
+Effects should fit the event story. A desperate military measure should not only cost political power. A logistical crisis should interact with trains, fuel, depots, supply, equipment, routes, or tied-down units. A legitimacy crisis should affect stability, war support, recognition, internal factions, local support, or authority. A foreign intervention system should create influence, dependence, access, backlash, or diplomatic consequences.
+
+The spec should explain why a value is strong, weak, temporary, risky, or conditional. Do not make every effect huge, but do not hide a major event behind barely noticeable numbers.
 
 
 ## 4. What the specification should explore
@@ -478,6 +837,7 @@ A strong specification usually explores:
 - what decisions exist and how they interlock
 - whether the event should create focus tree content
 - whether the event should create new tags or transform existing countries
+- what starting units and reinforcement routes new countries receive
 - how each new or transformed country changes names, flags, leaders, ideologies, parties, and politics
 - whether the event should use a super-event
 - what achievements should exist and why they are difficult
@@ -631,7 +991,7 @@ Each part should be complete enough to be useful on its own. Stop at a clean poi
 
 Do not summarize later sections just because the current response is getting long. Continue in the next part instead.
 
-For major events, the final combined specification may be extremely long. That is acceptable. A 10,000 line, 50,000 line, or 100,000+ line specification is valid if the event truly needs that much design detail. Do not compress focus trees, rare variants, or decision webs into summaries just to keep the file short. For required focus trees, keep writing focus-tree parts until every focus has been individually mapped.
+For major events, the final combined specification may be extremely long. That is acceptable. A 10,000 line, 50,000 line, or 100,000+ line specification is valid if the event truly needs that much design detail. Do not compress focus trees, rare variants, or decision webs into summaries just to keep the file short.
 
 Avoid filler. Every section should add useful design, player-facing detail, implementation clarity, asset direction, or system connection.
 
@@ -660,7 +1020,7 @@ Consider whether the event needs:
 - progression-state variants
 - country-selection, event-log, or custom-window graphics when relevant
 
-Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, `.gfx` wiring, and manifests belong to `chaos-redux-event-assets`.
+Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, sprite handoff notes, and manifests belong to `chaos-redux-event-assets`. Final `.gfx` wiring belongs to the main implementation agent.
 
 This skill should define what assets are needed, what they should represent, and what source mode they require.
 
@@ -695,6 +1055,7 @@ Reference mapping:
 - decision and decision category icons: `assets/decisions`
 - flags: `assets/flags`
 - focus icons: `assets/focuses`
+- and others if needed
 
 The event spec does not need to analyze those images itself. It should make the handoff explicit so the asset agent knows which example set to inspect before generation, sourcing, cropping, or wiring.
 
@@ -719,6 +1080,15 @@ The asset prompt should include:
 - reference example folder that must be inspected before asset work
 
 The asset prompt must state the correct source mode where relevant.
+
+For large asset prompts, split the work so the implementation agent can spawn the correct custom subagents:
+
+- sourced report/news/archival/super-event images, real portraits, historical flags, and historical symbols go to `chaosx_asset_source_researcher`
+- generated fictional or symbolic super-event art, fictional portraits, fictional flags, faction emblems, and UI art go to `chaosx_generated_event_art`
+- focus icons, idea icons, decision icons, achievement icons, officer corps icons, and tech icons go to `chaosx_icon_artist`
+
+The asset prompt should make these batches explicit instead of mixing all visual work into one vague list.
+
 
 It must also state the relevant reference folder from the list above when a matching folder exists.
 
@@ -786,6 +1156,15 @@ For each super-event, include:
 - whether it is a normal escalation, defeat moment, aftermath moment, or world-end moment
 - any special constraints from the event spec
 
+
+
+For large super-event packages, write the prompt so the implementation agent can split research across custom subagents:
+
+- quote research goes to `chaosx_super_event_quote_researcher`
+- cultural remark and button text research goes to `chaosx_super_event_cultural_remark_researcher`
+- audio research goes to `chaosx_super_event_audio_researcher`
+- image work goes to `chaosx_asset_source_researcher` or `chaosx_generated_event_art` depending on source mode
+
 The `chaos-redux-super-events` prompt should ask the agent to:
 
 - find a real quote using the repository web research workflow from `AGENTS.md`
@@ -820,6 +1199,43 @@ Continuation files should continue directly from the previous part so they can b
 
 Do not repeat earlier sections unless needed for clarity.
 
+
+## 18.1 Final zip package requirement
+
+The final output should be delivered as one zip file that contains every necessary file for the planning handoff.
+
+The zip should include, when relevant:
+
+- all spec Markdown files
+- focus-tree path spec parts
+- optional focus tree path diagrams or route sketches when useful
+- asset prompt file
+- super-event prompt file
+- achievement prompt file
+- coding-agent prompt file
+- goal prompt file
+- research notes or bibliography files
+- any country package matrices, AI matrices, decision maps, or acceptance criteria files created separately
+
+Do not make the user collect many loose files manually. Individual file links may still be provided for convenience, but the main deliverable should be a single zip package.
+
+Use a clear package name such as:
+
+`event_name_planning_package.zip`
+
+The package should have a clean internal structure, for example:
+
+```text
+specs/
+prompts/
+focus_graphs/
+research/
+matrices/
+```
+
+The goal prompt inside the package must still be under 4000 characters.
+And the extracted zip will be placed in `docs/plans/`.
+
 ## 19. Final prompt files
 
 Only after the full specification is complete, create separate downloadable prompt files outside the spec file.
@@ -829,6 +1245,7 @@ Required prompt files:
 - `event_name_asset_prompt.md`
 - `event_name_super_event_prompt.md` when the event has one or more super-events
 - `event_name_achievement_prompt.md`
+- `event_name_decision_mission_prompt.md` when the event has large decision or mission systems
 - `event_name_coding_prompt.md`
 - `event_name_goal_prompt.md`
 
@@ -862,9 +1279,11 @@ The prompt must tell the coding agent to:
 
 - implement the event according to the spec
 - implement all mapped decisions, variants, evolutions, focus trees, custom tags, country packages, achievements, assets, and super-events included in the spec
-- implement every individually mapped focus in the spec, with coherent non-linear branches, route locks, side paths, convergence nodes, hidden routes, proper icons, localisation, AI behavior, event integration, and no filler shortcuts
-- implement every country package from the spec, including tag, history, names, cosmetic names, ideology names, ruling parties, leaders, leader changes, flags, route-specific identity changes, decisions, ideas, AI behavior, localisation, assets, and docs
-- implement the full AI strategy matrix from the spec, including route preferences, foreign influence behavior, focus choices, decision choices, faction behavior, and high-chaos exceptions
+- implement the mapped cost and sacrifice model, avoiding boring political power or command power only decisions when the spec calls for XP, equipment, manpower, stability, war support, fuel, supply, units, local support, foreign access, or other concrete costs
+- implement focus trees according to the path design, with coherent non-linear branches, route locks, side paths, convergence nodes, hidden routes, focus filter tags or search categories, varied reward types, proper icons, localisation, AI behavior, event integration, and no filler shortcuts
+- create the final exact focus layout and connections cleanly in implementation while preserving the spec's path logic
+- implement every country package from the spec, including tag, history, names, cosmetic names, ideology names, ruling parties, leaders, leader changes, flags, route-specific identity changes, starting divisions, dynamic unit packages, force-growth decisions and focuses, volunteer routes, decisions, ideas, AI behavior, localisation, assets, and docs
+- implement the full AI strategy matrix from the spec, including route preferences, foreign influence behavior, focus choices, unit-raising choices, decision choices, faction behavior, and high-chaos exceptions
 - follow `AGENTS.md`
 - follow `chaos-redux-events`
 - use `chaos-redux-event-assets` if visual assets are required
@@ -881,7 +1300,7 @@ Create a separate `/goal` prompt file.
 
 The goal prompt must be less than 4000 characters.
 
-The goal prompt should not contain the whole spec or all long instructions. It should point to the spec file and the other prompt files, then state the most important pass or fail requirements.
+The goal prompt should not contain the whole spec or all long instructions. It should point to the spec files and the other prompt files, then state the most important pass or fail requirements.
 
 The goal prompt must tell the implementation agent to keep iterating until the goal is accomplished to its fullest extent. It must also say not to claim completion until the implemented files satisfy the spec.
 
@@ -894,7 +1313,7 @@ A good goal prompt should include:
 - the achievement prompt file path
 - the required skills or docs to follow
 - the top design non-negotiables
-- the requirement to create all required assets, tags, fully mapped non-linear focus trees, decisions, evolutions, achievements, and docs
+- the requirement to create all required assets, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
 - the requirement to provide a concrete completion report
 
 If the goal prompt is near 4000 characters, shorten it by pointing to files instead of repeating details.
@@ -916,16 +1335,24 @@ The final response should include:
 - historical flags, real symbols, and real leader portraits marked for sourced asset work when relevant
 - super-event direction defined when needed
 - country package matrices created for new or modified countries when relevant
+- starting force and reinforcement pathway plans created for new or transformed fighting countries, including dynamic scaling, template families, unit sources, and later reinforcement routes
 - AI strategy matrix created for major events or country-creation events
-- focus trees mapped literally focus by focus when the event creates playable or long-lived countries, with every focus individually named and described
-- every major focus tree written with individual focus entries, not only branch summaries
+- focus tree paths mapped clearly when the event creates playable or long-lived countries, with major routes, anchor focuses, mutual exclusions, rewards, and filter categories described
+- every major focus tree written with clear path logic, not vague branch names
 - every major focus tree includes a non-linear architecture map with trunk focuses, fork points, route locks, optional branches, convergence nodes, hidden routes, crisis branches, and late-game branches where relevant
+- every major focus tree includes focus reward diversity and an idea audit when ideas or national spirits are used
+- focus rewards include varied buildings, factories, military, industry, diplomacy, decisions, missions, identities, and mechanics where appropriate, not mostly new ideas
+- final zip package created with all spec files, prompt files, route diagrams if used, research notes, and matrices
 - focus tree files split into separate parts when the tree is too large for one file
 - decisions and rare variants mapped when they exist
+- decision and objective costs use varied resources, sacrifices, requirements, and risks instead of defaulting to political power or command power
 - achievements mapped with difficult conditions, icon directions, and tracking notes
 - ideology-specific names, cosmetic names, leader changes, and flag changes mapped when relevant
+- unit-creating focuses and decisions mapped with requirements, template families, pressure effects, AI behavior, and blocked localisation notes when relevant
 - uncertainties or blockers
-- downloadable links to all created files
+- idea, spirit, decision, mission, and focus effects are strong enough to matter and not only conservative small modifiers
+- downloadable link to the final zip package
+- downloadable links to individual created files when helpful
 - copy-pasteable `/goal` prompt under 4000 characters
 
 ## 21. Cleanup and quality gate
@@ -939,19 +1366,70 @@ Reject the draft if it has any of these problems:
 - vague country paths
 - custom tags without full country identity, assets, politics, leaders, flags, AI, and content expectations
 - new or modified countries without country package matrices when they matter
+- newly appearing crisis countries without dynamic starting unit packages or a clear reason why they start without troops
+- country-created crisis specs without decisions, focuses, objectives, depots, volunteers, or faction systems that let those countries gain more units later
+- new fighting countries without starting force plans, dynamic unit scaling, or reinforcement pathways
+- long-lived new countries without dynamically scaled starting units or credible reinforcement routes
+- newly appearing or transformed countries without mapped starting divisions, unit templates, equipment/manpower assumptions, and dynamic scaling factors
+- countries with no designed way to gain, improve, convert, or coordinate more units through focuses, decisions, objectives, volunteers, depots, or faction mechanics
+- generic repeated unit focuses or unit decisions that hand out identical divisions without story, route identity, or conditional requirements
 - historical countries or movements with invented `$imagegen` flags when sourced historical flags should be used
 - real historical leaders planned as generated portraits instead of sourced portraits
-- playable countries without focus-by-focus mapped trees
-- focus tree sections that list only branch themes instead of every focus
-- focus tree plans that give samples instead of every required focus
+- playable countries without clear focus-tree path maps
+- focus tree sections that list only branch names without explaining path logic, mutual exclusions, rewards, and connections
+- focus tree plans that give only vague samples without enough path detail for implementation
+- focus trees where most focuses grant a new idea or national spirit without a clear reason
+- focus trees with repeated new ideas where modifying or upgrading an existing idea would be better
+- focus trees without an idea audit when many ideas or national spirits are used
+- focus rewards that are mostly political power, stability, war support, or repeated flat modifiers
+- focus trees missing varied reward types such as factories, forts, anti-air, airbases, railways, supply hubs, units, decisions, missions, advisors, leaders, identities, claims, or diplomacy where those rewards would fit
+- major focus paths without focus filter categories or search categories
+- major focus trees without a focus filter taxonomy or path category table
 - major countries without separate political, military, industry, diplomacy, and expansion or special-mechanic sections when those sections fit the country
 - focus trees that are too small, generic, linear, or boring for the country role
+- focus trees missing distinct political, industry, and expansion branches
+- important country trees with isolated branches that do not affect each other
+- major branches without clear payoff
+- political branches that do not change politics, leaders, advisors, parties, laws, names, flags, or country identity where relevant
+- industry branches that do not change the map, production, logistics, construction, or resources
+- expansion branches that do not create claims, cores, war goals, leagues, protectorates, settlement decisions, or external diplomacy
+- expansion routes without postwar handling
+- industry routes without geographic grounding where relevant
+- major routes without route-specific AI behavior or localisation tone
+- large events without a special mechanic or clear reason for not needing one
+- special mechanics without clearly named values
+- mechanic values without dynamic focus, decision, mission, event, war, state-control, foreign-influence, or AI hooks
+- important mechanic values without consistent colour identity or readable breakdowns
+- focus trees or decision systems disconnected from the mechanic values they should affect
+- event-created factions without goals, rules, membership logic, shared decisions, AI behavior, rewards, or success and failure states
+- special mechanics without a defined player-facing presentation surface
+- scripted GUI mechanics that would benefit from progress meters, status frames, variants, or animation but define only static text
+- special mechanics that hide basic visible cause and effect
+- generic playable country packages with no specific identity, map role, military style, economy, diplomacy, AI, or mechanic
+- shared trees with no country-specific localisation, route names, decisions, AI weights, leaders, or rewards
+- AI routes that can choose invalid, impossible, or unavailable branches
+- important mechanic values scattered as magic numbers instead of script constants or documented tuning
+- reward dump design used as the main pattern
+- balance plans without exploit checks for free units, factory loops, equipment farming, influence farming, puppet abuse, war-goal spam, claim or core spam, advisor stacking, bypass abuse, or repeatable decision abuse
+- decision systems that show every possible action at once instead of using phases, caps, priorities, pools, route locks, thresholds, or crisis filters
+- factions that form too easily without minimum membership, crisis pressure, ideological compatibility, war state, or diplomatic preparation
+- routes with no visible game evidence beyond hidden variables or tiny modifiers
+- large trees with no early, middle, and late pacing
+- routes with no tradeoff or failure state
+- overuse of mutual exclusions where support branches should coexist
+- localisation that reveals hidden effects, secret outcomes, or future surprises instead of visible baseline effects
+- route-unlocked advisors that do not match route identity
+- major focus trees without achievement hooks
+- completion prompts missing a route coverage table requirement
+- focus trees where unit rewards are repeated generic division spawns instead of route-specific military institutions, decisions, templates, or mobilization systems
+- unit-granting focuses that exist only as filler or repeated free divisions with no story, route logic, or constraints
 - major focus trees that read like one vertical checklist instead of a branching system
-- focus tree sections without an architecture map showing trunk focuses, forks, route locks, optional branches, convergence points, hidden routes, crisis branches, and late-game branches where relevant
+- focus tree sections without an architecture map or path plan showing route locks, optional branches, convergence points, hidden routes, crisis branches, and late-game branches where relevant
 - branches where every focus simply follows the previous one without a strong story reason
 - expansion trees that are only linear claim ladders instead of ideology, trauma, patron, military, economic, or chaos-driven ambitions
 - evolutions that are really just ordinary stages
 - fixed cooldowns or pressure values without dynamic factors
+- decision, mission, or focus cost plans that rely mostly on political power or command power when concrete costs such as XP, equipment, manpower, fuel, stability, war support, supply, local support, foreign access, or unit commitments would fit better
 - achievements missing from a major event spec
 - achievements that unlock too easily or only reward the obvious route
 - achievements without conditions, disqualifiers, icon directions, or tracking notes
@@ -961,7 +1439,9 @@ Reject the draft if it has any of these problems:
 - missing super-event handoff for required super-events
 - goal prompt over 4000 characters
 - goal prompt that tries to contain the whole spec instead of pointing to files
+- missing final zip package containing all required spec files, prompt files, route diagrams if used, research notes, and matrices
 - admin audit sections inside the spec
+- major event ideas or spirits whose main effect is a tiny modifier with no meaningful strategic role
 - obvious system plumbing repeated as design
 
 The spec should be ambitious, detailed, researched, and usable. Do not stop at a conservative minimum when the idea supports more.

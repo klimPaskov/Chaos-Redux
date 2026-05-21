@@ -7,7 +7,7 @@ description: Use when creating, sourcing, processing, converting, organizing, wi
 
 Use this skill when a Chaos Redux task requires final visual assets.
 
-This includes event assets, UI assets, focus tree assets, country assets, achievement assets, generated icons, sourced event art, generated icon art, and any asset package that must be wired into the mod.
+This includes event assets, UI assets, focus tree assets, country assets, achievement assets, generated icons, sourced event art, generated icon art, and any asset package that must be prepared for final wiring by the main agent.
 
 ## 1. Core purpose
 
@@ -19,12 +19,12 @@ The asset workflow must produce:
 - processed PNG previews
 - final DDS files
 - correct file placement
-- `.gfx` sprite definitions
+- sprite handoff notes for the main agent
 - documentation of what was created
 
 Do not leave assets as loose generated or downloaded images.
 
-If an asset is used by the event, it must be processed, placed, wired, and documented.
+If an asset is used by the event, it must be processed, placed, documented, and handed off so the main agent can wire it cleanly.
 
 ## 2. When to use this skill
 
@@ -48,9 +48,65 @@ Use this skill for:
 - progression-state variants
 - any other static visual asset required by a Chaos Redux event or mechanic
 
-Use this skill when the user asks the agent to create, source, process, or wire final visual assets.
+Use this skill when the user asks the agent to create, source, process, convert, or prepare final visual assets for wiring.
 
 Use this skill when the implementation task includes generated, sourced, or user-provided PNG files that must be turned into HOI4-ready assets.
+
+## 2.1 Custom subagent split
+
+When actual files must be created, source the work through the narrow project subagents instead of using one broad asset worker.
+
+The main agent decides which subagent to spawn, gives it a bounded asset prompt, reviews the output, and then performs final wiring.
+
+| Asset need | Spawn |
+| --- | --- |
+| Report event images, news event images, documentary or archival super-event images, real leader portraits, historical flags, historically attested symbols, and user-provided source photos | `chaosx_asset_source_researcher` |
+| Fictional, symbolic, supernatural, or fully invented super-event images, fictional portraits, fictional flags, faction emblems, UI panels, dossier art, and progression-state base art | `chaosx_generated_event_art` |
+| Focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons | `chaosx_icon_artist` |
+
+Do not send all asset types to one generic asset worker when the package naturally separates into source-image research, generated event art, and icon work.
+
+Each visual asset subagent may produce:
+
+- source files
+- processed PNG previews
+- final DDS files
+- contact sheets
+- manifests
+- `docs/assets/<event_id>_<event_slug>/gfx_handoff.md`
+
+The visual asset subagents must not edit:
+
+- `.gfx` files
+- localisation files
+- GUI files
+- event files
+- focus tree files
+- idea files
+- decision files
+- scripted effects or scripted triggers
+- on_actions
+- history files
+- country files
+- spreadsheets
+
+The main agent owns final `.gfx` sprite definitions, references from gameplay files, docs alignment, spreadsheet alignment, and validation.
+
+A good parent prompt to an asset subagent includes:
+
+- event id and slug
+- exact asset list
+- asset type for each item
+- target size
+- source mode
+- intended final DDS folder
+- proposed sprite name
+- reference folder to inspect
+- visual direction
+- licensing, era-fit, or historical-source constraints
+- existing assets to reuse or avoid
+- what the subagent must mark as blocked instead of substituting
+
 
 ## 3. Asset source rules
 
@@ -90,7 +146,7 @@ For these asset types, find suitable images from the internet, then process them
 
 Follow the repository web research rules from `AGENTS.md` when searching for source images.
 
-For event photo assets that are meant to represent the World War II era, search for period-matching source imagery from roughly 1936 to 1945 unless the event spec gives a narrower date range. Prefer contemporary photographs, war correspondents' photographs, press agency images, propaganda posters, maps, newspapers, official records, government or military archive images, museum scans, library scans, and period illustrations. Do not use modern photographs, reenactment images, film stills, AI-looking reconstructions, postwar uniforms, streets, weapons, vehicles, buildings, colorized tourist photos, reenactments, or modern props when they do not fit the era. If no suitable period source can be found, mark the asset as blocked instead of substituting a modern image.
+For event photo assets that are meant to represent the World War II era, search for period-matching source imagery from roughly 1936 to 1945 unless the event spec gives a narrower date range. Prefer contemporary photographs, war correspondents' photographs, press agency images, propaganda posters, maps, newspapers, official records, government or military archive images, museum scans, library scans, and period illustrations. Do not use modern photographs, reenactment images, film stills, AI-looking reconstructions, postwar uniforms, streets, weapons, vehicles, buildings, colorized tourist photos, reenactments, or modern props when they do not fit the era. If no suitable period source can be found, mark the asset as blocked or `needs_user_review` instead of substituting a modern image.
 
 Record the image source, source link, author or archive if available, license or public domain status if available, estimated date or date range, why the image fits the World War II era, and any uncertainty in the manifest.
 
@@ -109,8 +165,6 @@ Record the source link, author or archive if available, license or public domain
 Fictional leaders, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits may use `$imagegen`.
 
 Generated leader portraits should follow HOI4 leader portrait conventions: 156x210 final DDS unless an existing sprite uses another size, bust or upper-torso framing, strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, transparent or HOI4-compatible portrait background as required by the existing asset pattern, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
-
-When generated portrait sheets use different aspect ratios in the same package, do not reuse one fixed crop for every sheet. Review the final 156x210 contact sheet for horizontal drift, cut-off heads, and inconsistent eye height.
 
 For council or collective leaders, use one clear symbolic council portrait rather than a cluttered crowd. Keep the subject readable at leader portrait size and document that the leader is fictional or collective.
 
@@ -179,9 +233,6 @@ Small gameplay icons must be readable at their final in-game size.
 - Avoid tiny interior detail that disappears at 45x45 or 64x64. Favor one clear subject, strong value contrast, and a centered silhouette.
 - Officer corps spirit icons specifically must be 45x45, transparent, unframed, and visually similar to vanilla officer corps spirit icons rather than national spirit cards.
 - Avoid fake checkerboard pixels, white halos, white outlines, oversized medallion fills, and square opaque backdrops.
-- Decision icons must be processed as their own 32x32 asset type, not as scaled-down 60x68 idea icons. Match the decision references: one centered readable object or emblem, transparent unused canvas, no idea-card framing, and no leftover neighboring sheet art.
-- When generated sheets pack multiple icons, audit the processed alpha bounds before conversion. Reject cells with off-center subjects, clipped subjects, or multiple unrelated neighboring fragments in one output.
-- Validate icon alignment by opacity-weighted visual mass as well as alpha bounding box. A centered bounding box can still read off-center in HOI4 frames when the painted subject is visually heavier on one side or at the bottom. Recenter processed transparent icons before DDS conversion when the visual mass is visibly displaced, while keeping the alpha bounds unclipped.
 
 For every generated icon, follow the `$imagegen` skill's transparent image workflow. This skill must not provide its own transparency cleanup method. Preserve the original generated image, create a processed PNG preview, convert to DDS, and validate the final appearance over a checker background before treating the icon as complete.
 
@@ -207,16 +258,16 @@ For every asset package:
 11. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
 12. For user-provided assets, record that the image was provided by the user.
 13. Save the original generated, sourced, or provided image as a source PNG.
-14. Crop and resize the image to the target size.
-15. Save a processed PNG preview.
+14. Crop and resize the image to the target size. For report event images, normalize the source to `210x176` before placing it into the Photoshop report-event template.
+15. Save a processed PNG preview. For report event images, this preview is the Photoshop-exported `210x176` PNG with the fixed report box and sepia treatment.
 16. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
 17. Move the DDS into the correct mod folder.
-18. Add or update the matching sprite definition in the correct `.gfx` file.
-19. Create or update the asset manifest.
+18. Create or update the asset manifest.
+19. Create or update `gfx_handoff.md` for the main agent.
 20. Update event docs when they list asset expectations.
 21. Report all created files and any blocked assets.
 
-Do not mark assets complete until the DDS files exist, the sprite definitions are wired, and the manifest is written.
+Do not mark assets complete until the DDS files exist, the manifest is written, and `gfx_handoff.md` gives the main agent enough information to wire the sprite without guessing.
 
 ## 7. Asset package structure
 
@@ -287,7 +338,7 @@ Use these sizes unless the event spec or an existing repo pattern gives a better
 - news event images: 397x153, black and white
 - leader portraits: 156x210
 - flags small: 10x7
-- flags medium: 41x26
+- flags medium: 42x26
 - flags normal: 82x52
 - tech icons small: 64x64
 - tech icons medium: 132x52
@@ -385,7 +436,29 @@ Target size:
 210x176
 ```
 
-Use colour unless the event spec asks otherwise.
+### Report event Photoshop template
+
+Report event images must use the fixed Photoshop report-event template. If for some reason you can't use the Photoshop app, report it clearly and leave the final report image status as `Requires user's intervention!`.
+
+Template path:
+
+```text
+.tools/report_event_template.psd
+```
+
+Workflow:
+
+1. Source or receive the report-event image.
+2. Crop or resize the source to exactly `210x176` before opening or placing it in Photoshop.
+3. Place or replace it into `REPORT_SOURCE_IMAGE_REPLACE_ME__210x176_AT_0_0`.
+4. Keep placement at `x = 0`, `y = 0`. Do not move, scale, stretch, or offset the source inside Photoshop.
+5. Keep the fixed slight sepia layer enabled.
+6. Keep the fixed report-event box and frame layers unchanged.
+7. Export the full canvas as a `210x176` PNG.
+8. Convert the exported PNG to final DDS through the repository DDS conversion workflow.
+9. Record the PSD template path, source PNG path, exported PNG path, final DDS path, and any Photoshop/template uncertainty in the manifest.
+
+Do not rebuild the report-event frame from flattened layers. If the Photoshop app or PSD editor cannot preserve the template layers, mark the asset blocked instead of inventing a substitute template.
 
 ## 14. News event images
 
@@ -583,7 +656,7 @@ They must remain readable at HOI4 sizes.
 Required flag sizes:
 
 - small: 10x7
-- medium: 41x26
+- medium: 42x26
 - normal: 82x52
 
 Avoid overly detailed symbols.
@@ -591,14 +664,6 @@ Avoid overly detailed symbols.
 Avoid generated text unless the design absolutely requires it and the final output is manually checked.
 
 Use `$imagegen` for fictional flags and user-provided or internet source images for historical or real-world flags when appropriate.
-
-When exporting HOI4 `.tga` flags with ImageMagick, write 32bpp TGA files and validate orientation against the PNG source. A reliable pattern is to resize, vertically flip the pixel rows before writing, force alpha, and verify the rendered TGA matches the expected PNG with `compare -metric RMSE`:
-
-```bash
-convert source.png -resize 82x52! -flip -alpha set -channel A -evaluate set 100% +channel -depth 8 -type TrueColorAlpha -define tga:bits-per-pixel=32 -compress none gfx/flags/TAG.tga
-```
-
-Repeat for `41x26` and `10x7`. Check the header reports `bpp=32`, descriptor `0x8`, and alpha bits `8`, then render the TGA back to PNG and compare it against an upright resized source.
 
 ## 21. Leader portraits
 
@@ -691,21 +756,39 @@ After conversion, confirm that:
 
 Do not leave only PNG files when the game expects DDS.
 
-## 25. `.gfx` wiring
+## 25. `.gfx` handoff and main-agent wiring
 
-When an asset needs a sprite definition:
+Asset subagents do not edit `.gfx` files.
+
+When an asset needs a sprite definition, the asset package must include a handoff note for the main agent.
+
+Recommended path:
+
+```text
+docs/assets/<event_id>_<event_slug>/gfx_handoff.md
+```
+
+The handoff must include:
+
+1. Final DDS path.
+2. Proposed sprite name.
+3. Suggested target `.gfx` file.
+4. Ready-to-copy sprite definition snippet when useful.
+5. Related localisation key, GUI element, event id, focus id, idea id, decision id, achievement id, or super-event slot when known.
+6. Any uncertainty about sprite naming or target file placement.
+7. Any blocked or needs-review asset.
+
+The main agent must then:
 
 1. Find the correct existing `.gfx` file if one exists.
 2. Follow the existing naming and formatting pattern.
 3. Add the sprite definition.
 4. Point the texture file to the final DDS path.
 5. Keep sprite names stable.
-6. Update any localisation, GUI, event, focus, idea, or decision references that use the sprite.
+6. Update localisation, GUI, event, focus, idea, or decision references that use the sprite.
+7. Update docs and spreadsheet rows when relevant.
 
-Do not create a new `.gfx` file if an existing one is clearly the right place.
-
-If a new `.gfx` file is needed, name it consistently and document why.
-
+Do not create a new `.gfx` file if an existing one is clearly the right place. If a new `.gfx` file is needed, the main agent must name it consistently and document why.
 ## 26. Documentation updates
 
 When generated or sourced assets are part of an event or mechanic, update the relevant docs.
@@ -714,7 +797,7 @@ The docs should mention:
 
 - what assets exist
 - where the DDS files live
-- which `.gfx` file defines them
+- which `.gfx` file the main agent should use or has used
 - which sprite names are used
 - which assets are placeholders, if any
 - what still needs final art, if anything
@@ -762,11 +845,10 @@ Before finishing, confirm:
 6. Every final asset has a DDS output.
 7. DDS files use 32 bit unsigned BGRB 8.8.8.8.
 8. DDS files are moved into the correct mod folders.
-9. Sprite definitions are added or updated.
+9. A `gfx_handoff.md` exists for every asset that needs a sprite definition, and the main agent has enough information to wire it.
 10. The asset manifest exists.
 11. Internet-sourced assets record source links, source date or estimated date range, license or public domain status if available, and era-fit notes for World War II-era assets.
 12. Fictional or non-human portraits generated with `$imagegen` are clearly marked as fictional or generated in the manifest.
 13. Docs are updated where relevant.
-14. Transparent icons have been checked over a contact sheet and by alpha/visual-mass alignment metrics, not only by file dimensions.
-14. The event implementation knows which sprite names to use.
+14. The event implementation or parent handoff knows which sprite names to use.
 15. No final asset remains only in a temporary folder.
