@@ -650,16 +650,46 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 `IUL` currently reuses the generated Ural Workers custom-splinter package as replacement-art candidate material. Stable paths are `gfx/flags/IUL.tga`, `gfx/flags/medium/IUL.tga`, `gfx/flags/small/IUL.tga`, `gfx/interface/goals/soviet_collapse/005_iul_custom_splinter_focus.dds`, `gfx/interface/ideas/soviet_collapse/005_iul_custom_splinter_idea.dds`, `gfx/interface/decisions/soviet_collapse/005_iul_custom_splinter_decision.dds`, and `gfx/leaders/005_soviet_collapse/IUL_leader.dds`. Source and processed PNG records live under `docs/assets/005_soviet_union_collapse/source_png/` and `docs/assets/005_soviet_union_collapse/processed_png/`.
 
-### Old Great Bulgaria Placeholder Asset Records
+### Old Great Bulgaria Asset Records
 
-`OGB` is wired as an Event 005 high-chaos package with stable sprite names in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Existing final flags remain at `gfx/flags/OGB.tga`, `gfx/flags/medium/OGB.tga`, and `gfx/flags/small/OGB.tga`. The leader portrait sprite `GFX_portrait_OGB_volga_restoration_council` currently reuses `gfx/leaders/005_soviet_collapse/IUL_leader.dds` as placeholder art. Decision, idea, and focus sprite keys reuse existing Event 005 DDS files with matching register, Volga, restoration, trade, defense, and diplomacy themes.
+`OGB` is wired as an Event 005 high-chaos package with stable sprite names in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Existing final flags remain at `gfx/flags/OGB.tga`, `gfx/flags/medium/OGB.tga`, and `gfx/flags/small/OGB.tga`. The leader portrait sprite `GFX_portrait_OGB_volga_restoration_council` currently reuses `gfx/leaders/005_soviet_collapse/IUL_leader.dds` as placeholder art. Decision and idea sprite keys reuse existing Event 005 DDS files. Focus sprites now use 23 per-focus `gfx/interface/goals/soviet_collapse/ogb_*.dds` files copied from Bulgaria, Volga, trade, defense, diplomacy, and restoration-themed DDS sources.
 
 | Asset group | Sprite names | Status |
 | --- | --- | --- |
 | OGB leader | `GFX_portrait_OGB_volga_restoration_council` | placeholder reuse |
 | OGB decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | placeholder reuse |
 | OGB ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | placeholder reuse |
-| OGB focuses | `GFX_focus_OGB_*` and `_shine` variants | unique sprite names with placeholder DDS reuse |
+| OGB focuses | `GFX_focus_OGB_*` and `_shine` variants | wired, focus icons use themed DDS reuse; see mapping below |
+
+#### Old Great Bulgaria focus icon mapping
+
+Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable OGB-specific final paths. Processed PNG preview: not applicable for direct DDS reuse. Target size: source focus-icon DDS dimensions preserved. Sprite definitions are in `interface/005_soviet_collapse_factory_ancient_icons.gfx`; every row has both normal and `_shine` sprite variants.
+
+| Focus sprite | Source DDS | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- |
+| `GFX_focus_OGB_volga_registers` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_secure_ministry_ledgers.dds` | `gfx/interface/goals/soviet_collapse/ogb_volga_registers.dds` | 94x86 | wired |
+| `GFX_focus_OGB_bolghar_name` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_the_third_bulgarian_empire.dds` | `gfx/interface/goals/soviet_collapse/ogb_bolghar_name.dds` | 100x88 | wired |
+| `GFX_focus_OGB_restoration_council` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_form_a_regency_council.dds` | `gfx/interface/goals/soviet_collapse/ogb_restoration_council.dds` | 100x88 | wired |
+| `GFX_focus_OGB_scholars_charter` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_university_1.dds` | `gfx/interface/goals/soviet_collapse/ogb_scholars_charter.dds` | 100x88 | wired |
+| `GFX_focus_OGB_clerics_charter` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_restore_the_bulgarian_patriarchate.dds` | `gfx/interface/goals/soviet_collapse/ogb_clerics_charter.dds` | 100x88 | wired |
+| `GFX_focus_OGB_trade_tolls` | `~/projects/Hearts of Iron IV/gfx/interface/goals/goal_generic_trade.dds` | `gfx/interface/goals/soviet_collapse/ogb_trade_tolls.dds` | 87x66 | wired |
+| `GFX_focus_OGB_kazan_ferries` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CHI_river_crossing_studies.dds` | `gfx/interface/goals/soviet_collapse/ogb_kazan_ferries.dds` | 100x88 | wired |
+| `GFX_focus_OGB_caravan_letters` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_RAJ_the_silk_road.dds` | `gfx/interface/goals/soviet_collapse/ogb_caravan_letters.dds` | 100x88 | wired |
+| `GFX_focus_OGB_court_records` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_supreme_council_for_direction_of_war.dds` | `gfx/interface/goals/soviet_collapse/ogb_court_records.dds` | 100x88 | wired |
+| `GFX_focus_OGB_notables_workshops` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_HUN_expand_the_diosgyor_machinery_factory.dds` | `gfx/interface/goals/soviet_collapse/ogb_notables_workshops.dds` | 100x88 | wired |
+| `GFX_focus_OGB_restored_society` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_consolidate_the_third_bulgarian_state.dds` | `gfx/interface/goals/soviet_collapse/ogb_restored_society.dds` | 100x88 | wired |
+| `GFX_focus_OGB_heritage_guard` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_found_the_brannik.dds` | `gfx/interface/goals/soviet_collapse/ogb_heritage_guard.dds` | 100x88 | wired |
+| `GFX_focus_OGB_volga_crossings` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_helmand_river_authority.dds` | `gfx/interface/goals/soviet_collapse/ogb_volga_crossings.dds` | 100x88 | wired |
+| `GFX_focus_OGB_cavalry_registers` | `~/projects/Hearts of Iron IV/gfx/interface/goals/goal_generic_cavalry.dds` | `gfx/interface/goals/soviet_collapse/ogb_cavalry_registers.dds` | 88x78 | wired |
+| `GFX_focus_OGB_treat_idel_ural` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_convene_league_liaisons.dds` | `gfx/interface/goals/soviet_collapse/ogb_treat_idel_ural.dds` | 94x86 | wired |
+| `GFX_focus_OGB_two_seals` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_power_to_the_tsar.dds` | `gfx/interface/goals/soviet_collapse/ogb_two_seals.dds` | 100x88 | wired |
+| `GFX_focus_OGB_kazan_ufa_letters` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_request_external_missions.dds` | `gfx/interface/goals/soviet_collapse/ogb_kazan_ufa_letters.dds` | 94x86 | wired |
+| `GFX_focus_OGB_idel_ural_question` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_the_fate_of_the_balkans.dds` | `gfx/interface/goals/soviet_collapse/ogb_idel_ural_question.dds` | 100x88 | wired |
+| `GFX_focus_OGB_trade_cities` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_bulgaria_on_the_three_seas.dds` | `gfx/interface/goals/soviet_collapse/ogb_trade_cities.dds` | 100x88 | wired |
+| `GFX_focus_OGB_old_capital_guard` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_guardians_of_the_balkans.dds` | `gfx/interface/goals/soviet_collapse/ogb_old_capital_guard.dds` | 100x88 | wired |
+| `GFX_focus_OGB_future_bulgaria_file` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_TUR_reconfigure_turkish_foreign_policy.dds` | `gfx/interface/goals/soviet_collapse/ogb_future_bulgaria_file.dds` | 100x88 | wired |
+| `GFX_focus_OGB_restoration_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BUL_the_return_of_ferdinand.dds` | `gfx/interface/goals/soviet_collapse/ogb_restoration_state.dds` | 100x88 | wired |
+| `GFX_focus_OGB_modern_war` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_total_war.dds` | `gfx/interface/goals/soviet_collapse/ogb_modern_war.dds` | 100x88 | wired |
 
 ### Factory State Asset Records
 
