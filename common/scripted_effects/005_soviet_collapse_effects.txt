@@ -4843,6 +4843,26 @@ soviet_collapse_add_random_threat_breakaway_republic = {
 					tag = KAZ
 					has_soviet_collapse_three_smaller_central_asian_republics_free = yes
 				}
+				AND = {
+					OR = {
+						tag = KAR
+						tag = KOM
+						tag = CRI
+						tag = TAT
+						tag = BSK
+						tag = FER
+						tag = YAK
+						tag = BYA
+						tag = TAN
+					}
+					OR = {
+						check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
+						check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_soviet_objective.one_breakaway_count compare = greater_than }
+						has_global_flag = { flag = chaos_tier value = 3 }
+						has_global_flag = { flag = chaos_tier value = 4 }
+						has_global_flag = { flag = chaos_tier value = 5 }
+					}
+				}
 			}
 			NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }
 			OR = {
