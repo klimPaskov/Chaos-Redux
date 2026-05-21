@@ -755,7 +755,46 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 | `KHW` flags | `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` copied from `BSC` placeholder flags | placeholder reuse |
 | `ALN` flags | `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` copied from `MRC` placeholder flags | placeholder reuse |
 | Ancient restoration portraits | `GFX_portrait_OGB_volga_restoration_council` is now OGB-specific final DDS reuse; `GFX_portrait_TNC_turkestan_civic_council`, `GFX_portrait_BSC_oasis_war_council`, and `GFX_portrait_MRC_mountain_republic_council` remain reused by three history files | partial placeholder reuse |
-| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`, including the tag-gated `KZR`, `SOG`, `KHW`, and `ALN` branch sprites | unique sprite names with placeholder DDS reuse |
+| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`, including the tag-gated `KZR`, `SOG`, `KHW`, and `ALN` branch sprites | wired, per-focus themed DDS reuse; see mapping below |
+
+#### Ancient restoration focus icon mapping
+
+Source mode: existing HOI4 or Chaos Redux DDS reuse copied into stable ancient-restoration final paths. Processed PNG preview: not applicable for direct DDS reuse. Sprite definitions are in `interface/005_soviet_collapse_ancient_icons.gfx`; every row has both normal and `_shine` sprite variants.
+
+| Focus sprite | Source DDS | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- |
+| `GFX_focus_soviet_collapse_ancient_emergency_council` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SOV_the_supreme_soviet.dds` | `gfx/interface/goals/soviet_collapse/ancient_emergency_council.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_legitimacy_debate` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_revive_the_1923_constitution.dds` | `gfx/interface/goals/soviet_collapse/ancient_legitimacy_debate.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_modern_administration` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_improve_the_administration.dds` | `gfx/interface/goals/soviet_collapse/ancient_modern_administration.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_city_registers` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CHI_registry_of_property.dds` | `gfx/interface/goals/soviet_collapse/ancient_city_registers.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_market_roads` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_RAJ_the_silk_road.dds` | `gfx/interface/goals/soviet_collapse/ancient_market_roads.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_workshop_compact` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_worker_administration.dds` | `gfx/interface/goals/soviet_collapse/ancient_workshop_compact.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_heritage_guard` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_royal_guard.dds` | `gfx/interface/goals/soviet_collapse/ancient_heritage_guard.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_memory_site` | `~/projects/Hearts of Iron IV/gfx/interface/goals/goal_generic_fortify_city.dds` | `gfx/interface/goals/soviet_collapse/ancient_memory_site.dds` | 89x79 | wired |
+| `GFX_focus_soviet_collapse_ancient_neighbor_letters` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_TUR_treaty_of_saadabad.dds` | `gfx/interface/goals/soviet_collapse/ancient_neighbor_letters.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_league_bargain` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_league_of_nations.dds` | `gfx/interface/goals/soviet_collapse/ancient_league_bargain.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_old_border_files` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_GER_brest_litovsk_borders.dds` | `gfx/interface/goals/soviet_collapse/ancient_old_border_files.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_guard_old_routes` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_supply_line.dds` | `gfx/interface/goals/soviet_collapse/ancient_guard_old_routes.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_kzr_itil_toll_houses` | `gfx/interface/goals/soviet_collapse/ogb_trade_tolls.dds` | `gfx/interface/goals/soviet_collapse/ancient_kzr_itil_toll_houses.dds` | 87x66 | wired |
+| `GFX_focus_soviet_collapse_ancient_kzr_caspian_steppe_letters` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_defender_of_central_asia.dds` | `gfx/interface/goals/soviet_collapse/ancient_kzr_caspian_steppe_letters.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_kzr_volga_toll_guard` | `gfx/interface/goals/soviet_collapse/ogb_volga_crossings.dds` | `gfx/interface/goals/soviet_collapse/ancient_kzr_volga_toll_guard.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_kzr_khazar_charter` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CHI_a_second_empire_of_china.dds` | `gfx/interface/goals/soviet_collapse/ancient_kzr_khazar_charter.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_sog_samarkand_bukhara_registers` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_education_reform.dds` | `gfx/interface/goals/soviet_collapse/ancient_sog_samarkand_bukhara_registers.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_sog_oasis_merchant_roads` | `gfx/interface/goals/soviet_collapse/central_asia_soviet_collapse_caravan_border_offices.dds` | `gfx/interface/goals/soviet_collapse/ancient_sog_oasis_merchant_roads.dds` | 94x86 | wired |
+| `GFX_focus_soviet_collapse_ancient_sog_scholar_envoy_rooms` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_university_3.dds` | `gfx/interface/goals/soviet_collapse/ancient_sog_scholar_envoy_rooms.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_sog_sogdian_charter` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CHI_meritocratic_principles.dds` | `gfx/interface/goals/soviet_collapse/ancient_sog_sogdian_charter.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_khw_khiva_urgench_water_boards` | `gfx/interface/goals/soviet_collapse/central_asia_soviet_collapse_rail_and_irrigation_boards.dds` | `gfx/interface/goals/soviet_collapse/ancient_khw_khiva_urgench_water_boards.dds` | 94x86 | wired |
+| `GFX_focus_soviet_collapse_ancient_khw_oasis_canal_guards` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_border_guards.dds` | `gfx/interface/goals/soviet_collapse/ancient_khw_oasis_canal_guards.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_khw_caravan_well_compact` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_quami.dds` | `gfx/interface/goals/soviet_collapse/ancient_khw_caravan_well_compact.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_khw_water_charter` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_develop_turkmenistan.dds` | `gfx/interface/goals/soviet_collapse/ancient_khw_water_charter.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_aln_alan_pass_courts` | `gfx/interface/goals/soviet_collapse/caucasus_soviet_collapse_mountain_councils.dds` | `gfx/interface/goals/soviet_collapse/ancient_aln_alan_pass_courts.dds` | 94x86 | wired |
+| `GFX_focus_soviet_collapse_ancient_aln_darial_guard_posts` | `gfx/interface/goals/soviet_collapse/caucasus_soviet_collapse_pass_guards.dds` | `gfx/interface/goals/soviet_collapse/ancient_aln_darial_guard_posts.dds` | 94x86 | wired |
+| `GFX_focus_soviet_collapse_ancient_aln_mountain_envoy_guarantees` | `gfx/interface/goals/soviet_collapse/caucasus_soviet_collapse_border_arbitration.dds` | `gfx/interface/goals/soviet_collapse/ancient_aln_mountain_envoy_guarantees.dds` | 94x86 | wired |
+| `GFX_focus_soviet_collapse_ancient_aln_pass_charter` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SMB_a_land_of_mountains.dds` | `gfx/interface/goals/soviet_collapse/ancient_aln_pass_charter.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_symbolic_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_declare_a_republic.dds` | `gfx/interface/goals/soviet_collapse/ancient_symbolic_state.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_expansionist_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_reclaim_the_lost_territories.dds` | `gfx/interface/goals/soviet_collapse/ancient_expansionist_state.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_restoration_survives` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_from_the_ashes.dds` | `gfx/interface/goals/soviet_collapse/ancient_restoration_survives.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_returned_names_endgame` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_TUR_turanist_ambition.dds` | `gfx/interface/goals/soviet_collapse/ancient_returned_names_endgame.dds` | 100x88 | wired |
 
 ### Continuation Achievement Placeholder Asset Records
 
