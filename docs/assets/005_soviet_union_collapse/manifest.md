@@ -451,7 +451,7 @@ Portrait contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/cu
 | `SDZ` | `gfx/interface/goals/soviet_collapse/005_sdz_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_sdz_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_sdz_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/SDZ_leader.dds` | wired |
 | `PRA` | per-focus `gfx/interface/goals/soviet_collapse/pra_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_pra_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_pra_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/PRA_leader.dds` | wired, focus icons use themed DDS reuse |
 | `TSC` | per-focus `gfx/interface/goals/soviet_collapse/tsc_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_tsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_tsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/TSC_leader.dds` | wired, focus icons use themed DDS reuse |
-| `ICD` | `gfx/interface/goals/soviet_collapse/005_icd_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_icd_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_icd_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/ICD_leader.dds` | wired, generated reuse |
+| `ICD` | per-focus `gfx/interface/goals/soviet_collapse/icd_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_icd_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_icd_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/ICD_leader.dds` | wired, focus icons use themed DDS reuse |
 | `RMC` | per-focus `gfx/interface/goals/soviet_collapse/rmc_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_rmc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_rmc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/RMC_leader.dds` | wired, focus icons use themed DDS reuse |
 | `DSC` | `gfx/interface/goals/soviet_collapse/005_dsc_custom_splinter_focus.dds` | `gfx/interface/ideas/soviet_collapse/005_dsc_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_dsc_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/DSC_leader.dds` | wired, generated reuse |
 | `NRF` | per-focus `gfx/interface/goals/soviet_collapse/nrf_*.dds` files; see mapping below | `gfx/interface/ideas/soviet_collapse/005_nrf_custom_splinter_idea.dds` | `gfx/interface/decisions/soviet_collapse/005_nrf_custom_splinter_decision.dds` | `gfx/leaders/005_soviet_collapse/NRF_leader.dds` | wired, focus icons use themed DDS reuse |
@@ -510,6 +510,31 @@ Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable TSC
 | `GFX_focus_TSC_starfall_mandate` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_z_bomber_project.dds` | `gfx/interface/goals/soviet_collapse/tsc_starfall_mandate.dds` | 100x88 | wired |
 | `GFX_focus_TSC_observatory_state` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_research.dds` | `gfx/interface/goals/soviet_collapse/tsc_observatory_state.dds` | 89x80 | wired |
 | `GFX_focus_TSC_the_quiet_sky_settlement` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_FIN_united_under_the_north_star.dds` | `gfx/interface/goals/soviet_collapse/tsc_the_quiet_sky_settlement.dds` | 100x88 | wired |
+
+### Iron Commissariat of the Dead focus icon mapping
+
+Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable ICD-specific final paths. Processed PNG preview: not applicable for direct DDS reuse. Target size: source focus-icon DDS dimensions preserved. Sprite definitions are in `interface/005_soviet_collapse_custom_icons.gfx`; every row has both normal and `_shine` sprite variants.
+
+| Focus sprite | Source DDS | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- |
+| `GFX_focus_ICD_open_the_dead_rolls` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_graveyard_of_empires.dds` | `gfx/interface/goals/soviet_collapse/icd_open_the_dead_rolls.dds` | 100x88 | wired |
+| `GFX_focus_ICD_ryazan_grave_commissariat` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_supreme_council_for_direction_of_war.dds` | `gfx/interface/goals/soviet_collapse/icd_ryazan_grave_commissariat.dds` | 100x88 | wired |
+| `GFX_focus_ICD_penza_memorial_workshops` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_HUN_establish_the_mavag_army_division.dds` | `gfx/interface/goals/soviet_collapse/icd_penza_memorial_workshops.dds` | 100x88 | wired |
+| `GFX_focus_ICD_census_of_absent_citizens` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_PHI_bill_of_rights_for_veterans.dds` | `gfx/interface/goals/soviet_collapse/icd_census_of_absent_citizens.dds` | 100x88 | wired |
+| `GFX_focus_ICD_commissars_of_last_addresses` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_eng_chiefs_of_staff_committee.dds` | `gfx/interface/goals/soviet_collapse/icd_commissars_of_last_addresses.dds` | 100x88 | wired |
+| `GFX_focus_ICD_commissars_who_do_not_die` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SOV_builder_of_the_red_army.dds` | `gfx/interface/goals/soviet_collapse/icd_commissars_who_do_not_die.dds` | 100x88 | wired |
+| `GFX_focus_ICD_black_seal_requisitions` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_HUN_legacy_of_the_black_legion.dds` | `gfx/interface/goals/soviet_collapse/icd_black_seal_requisitions.dds` | 100x88 | wired |
+| `GFX_focus_ICD_funeral_guard` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_state_defense_guard.dds` | `gfx/interface/goals/soviet_collapse/icd_funeral_guard.dds` | 94x84 | wired |
+| `GFX_focus_ICD_dead_roll_supply_bureau` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_army_attack.dds` | `gfx/interface/goals/soviet_collapse/icd_dead_roll_supply_bureau.dds` | 100x88 | wired |
+| `GFX_focus_ICD_memorial_battalions` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_JAP_korean_volunteer_army.dds` | `gfx/interface/goals/soviet_collapse/icd_memorial_battalions.dds` | 100x88 | wired |
+| `GFX_focus_ICD_archives_of_every_front` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CZE_czechoslovak_legion_export.dds` | `gfx/interface/goals/soviet_collapse/icd_archives_of_every_front.dds` | 100x88 | wired |
+| `GFX_focus_ICD_letters_to_grieving_cities` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_request_external_missions.dds` | `gfx/interface/goals/soviet_collapse/icd_letters_to_grieving_cities.dds` | 94x86 | wired |
+| `GFX_focus_ICD_league_of_last_addresses` | `gfx/interface/goals/soviet_collapse/focus_soviet_collapse_convene_league_liaisons.dds` | `gfx/interface/goals/soviet_collapse/icd_league_of_last_addresses.dds` | 94x86 | wired |
+| `GFX_focus_ICD_claim_the_unburied_front` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SOV_the_road_of_life.dds` | `gfx/interface/goals/soviet_collapse/icd_claim_the_unburied_front.dds` | 100x88 | wired |
+| `GFX_focus_ICD_grave_columns_march` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_GER_all_for_the_front.dds` | `gfx/interface/goals/soviet_collapse/icd_grave_columns_march.dds` | 100x88 | wired |
+| `GFX_focus_ICD_citizens_after_death` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_focus_fra_national_resistance_council.dds` | `gfx/interface/goals/soviet_collapse/icd_citizens_after_death.dds` | 100x88 | wired |
+| `GFX_focus_ICD_commissariat_without_end` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SOV_the_glory_of_the_red_army_communism.dds` | `gfx/interface/goals/soviet_collapse/icd_commissariat_without_end.dds` | 100x88 | wired |
+| `GFX_focus_ICD_state_of_last_addresses` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_BEL_legacy_of_the_soldier_king.dds` | `gfx/interface/goals/soviet_collapse/icd_state_of_last_addresses.dds` | 100x88 | wired |
 
 ### Northern Revenant Fleet focus icon mapping
 
