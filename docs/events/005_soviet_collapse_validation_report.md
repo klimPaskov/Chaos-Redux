@@ -64,10 +64,12 @@ The current audit records source-level checks that fail if:
 
 - local league founding triggers do not call explicit quorum triggers, or
 - ordinary local league and normal League-route content calls local super-event helpers instead of news events.
+- the required final clean merged implementation ledger path is missing.
 
 The current direct source checks cover these surfaces:
 
 ```text
+Required final clean merged ledger exists at docs/events/005_soviet_collapse_full_implementation_ledger.md and uses the required Requirement / Source section / Required implementation / Implemented files / Evidence / Status / Deviation or blocker table.
 Calm World opening threat is 7.25, and the severe scripted opening scenario is 50.25.
 Mission success pressure helpers are net non-increasing; the least stabilizing helper changes threat by -1.50.
 Mission failure pressure helpers are bounded; the largest single failure changes threat by 4.25, and the active-cap first wave remains under the Union Unmade high-threat gate.
