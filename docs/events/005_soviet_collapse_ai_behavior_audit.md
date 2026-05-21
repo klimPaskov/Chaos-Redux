@@ -12,7 +12,7 @@ Event 005 does not use a dedicated `common/ai_strategy/005_*.txt` file. The curr
 
 | Surface | Evidence | Status |
 | --- | --- | --- |
-| Focus AI | Event 005 has 1,632 focus blocks across republic, custom-splinter, and factory-state focus files. All 1,632 have `ai_will_do`; 843 include contextual `modifier = { ... }` blocks. | source_pass |
+| Focus AI | Event 005 has 1,692 focus blocks across republic, custom-splinter, factory-state, and ancient-restoration focus files. All 1,692 have `ai_will_do`; 855 include contextual `modifier = { ... }` blocks. | source_pass |
 | Soviet crisis decisions | The Soviet category has six non-mission decisions: four direct response actions plus two reintegration offers. All have `ai_will_do` blocks reacting to Moscow Authority, Military Obedience, Depot Vulnerability, Foreign Penetration, war state, Union Crisis Threat, target faction state, and reintegration flags. | source_pass |
 | Timed Soviet objectives | The 118 Soviet mission blocks are timed, activated objectives with `allowed = { always = no }`. They are intentionally not ordinary AI-clicked decisions; activation is controlled by scripted objective helpers and the ten-active-objective cap. | source_pass |
 | Breakaway decisions | The four breakaway action decisions all have `ai_will_do` blocks reacting to Soviet weakness, war with Moscow, faction membership, League coordination, chaos tier, and local breakaway state. | source_pass |

@@ -744,9 +744,9 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 | Returned Names category and decisions | `GFX_decision_category_soviet_collapse_returned_names`, `GFX_decision_soviet_collapse_open_museum_cabinets`, `GFX_decision_soviet_collapse_recruit_archivists`, `GFX_decision_soviet_collapse_commission_old_banner`, `GFX_decision_soviet_collapse_argue_khazar_toll_claim`, `GFX_decision_soviet_collapse_argue_sogdian_city_claim`, `GFX_decision_soviet_collapse_argue_khwarazmian_oasis_claim`, `GFX_decision_soviet_collapse_argue_alan_pass_claim`, `GFX_decision_soviet_collapse_reject_antiquarians` | placeholder reuse |
 | Returned Names ideas | `GFX_idea_soviet_collapse_returned_names_pressure`, `GFX_idea_soviet_collapse_archivist_claim_council`, `GFX_idea_soviet_collapse_old_banner_mobilization` | placeholder reuse |
 
-### Standalone Ancient Restoration Seed Assets
+### Standalone Ancient Restoration Assets
 
-`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration seed tags. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Their flags use generated fictional ancient-restoration source art from `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`, cropped into processed previews under `docs/assets/005_soviet_union_collapse/processed_png/flags/`, and converted into normal, medium, and small TGA variants. Leader portraits use tag-owned sourced vanilla portrait DDS files and tag-specific sprite names.
+`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration tags with separate per-tag focus trees. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Their flags use generated fictional ancient-restoration source art from `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`, cropped into processed previews under `docs/assets/005_soviet_union_collapse/processed_png/flags/`, and converted into normal, medium, and small TGA variants. Leader portraits use tag-owned sourced vanilla portrait DDS files and tag-specific sprite names.
 
 | Asset surface | Current paths or sprite names | Status |
 | --- | --- | --- |
@@ -755,7 +755,7 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 | `KHW` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/KHW.png`; final TGAs `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` | generated source wired |
 | `ALN` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/ALN.png`; final TGAs `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` | generated source wired |
 | Ancient restoration portraits | `GFX_portrait_KZR_itil_toll_council`, `GFX_portrait_SOG_city_registers_council`, `GFX_portrait_KHW_oasis_register_authority`, and `GFX_portrait_ALN_alan_pass_council` in `interface/005_soviet_collapse_factory_ancient_icons.gfx`; final DDS files in `gfx/leaders/005_soviet_collapse/` | wired, tag-specific sourced DDS reuse |
-| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`, including the tag-gated `KZR`, `SOG`, `KHW`, and `ALN` branch sprites | wired, per-focus themed DDS reuse; see mapping below |
+| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`; the four 15-focus trees use the mapped icon family with no duplicate icon within a single per-tag tree | wired, themed DDS reuse through stable package paths; see mapping below |
 
 #### Ancient restoration portrait mapping
 
@@ -770,7 +770,7 @@ Source mode: existing vanilla leader portrait DDS reuse copied into stable Event
 
 #### Ancient restoration focus icon mapping
 
-Source mode: existing HOI4 or Chaos Redux DDS reuse copied into stable ancient-restoration final paths. Processed PNG preview: not applicable for direct DDS reuse. Sprite definitions are in `interface/005_soviet_collapse_ancient_icons.gfx`; every row has both normal and `_shine` sprite variants.
+Source mode: existing HOI4 or Chaos Redux DDS reuse copied into stable ancient-restoration final paths. Processed PNG preview: not applicable for direct DDS reuse. Sprite definitions are in `interface/005_soviet_collapse_ancient_icons.gfx`; every row has both normal and `_shine` sprite variants. These 32 sprite rows support 60 focus assignments across the four per-tag trees, with common restoration functions reusing common visual language and each tag tree keeping its in-tree icon sequence distinct.
 
 | Focus sprite | Source DDS | Final DDS | Dimensions | Status |
 | --- | --- | --- | --- | --- |
