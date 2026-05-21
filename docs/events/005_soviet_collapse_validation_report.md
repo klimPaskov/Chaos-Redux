@@ -46,27 +46,38 @@ The dedicated icon manifest now lists all 40 Event 005 achievement IDs. The mani
 
 ## Scenario Matrix
 
-| Scenario | Evidence | Result |
-| --- | --- | --- |
-| Calm World, strong USSR, event fired manually | `crisis_balance_surface` | Authority 62, Threat 7.25 |
-| Calm World, strong USSR, Soviet missions succeed for six months | `mission_success_pressure_surface`, `crisis_monthly_guard_surface` | Success helpers are non-increasing; ordinary months are guarded |
-| Calm World, strong USSR, Soviet missions fail for six months | `mission_failure_pressure_surface`, `union_unmade_first_month_guard_surface` | Largest single failure delta is 4.25; a 10-mission maximum-pressure first wave reaches 49.75 and cannot fire Union Unmade during the 31-day lock |
-| USSR at war with Germany | war-pressure factors in crisis and MTTH surfaces | Higher pressure requires visible war-state causes |
-| USSR at war with Japan | Far Eastern mission and release surfaces | Far Eastern pressure exists without automatic terminal collapse |
-| High chaos opening | `crisis_balance_surface` | Higher pressure than calm baseline, still below terminal |
-| Totalen Chaos opening | `crisis_balance_surface` | Severe case Threat 50.25, still not first-month terminal by itself |
-| One Caucasus republic free | `local_league_surface` plus quorum triggers | League cannot form from one member |
-| Two Caucasus republics free | `has_soviet_collapse_caucasus_league_quorum` | League can form under pressure |
-| One Central Asian republic free | `local_league_surface` plus quorum triggers | League cannot form from one member |
-| Two Central Asian republics free | `has_soviet_collapse_central_asian_league_quorum` | League can form under pressure |
-| Union Unmade terminal collapse | `union_unmade_pacing`, `terminal_ordinary_republic_release_surface`, `terminal_mission_cleanup` | First-month guard, release path, and cleanup pass |
-| Soviet puppet republics at Union Unmade | terminal release subject path | Soviet subjects are freed with `autonomy_free` before setup |
-| New internal republic MTTH release | `mtth_release_surface` | MTTH weights, eight cause events, constants, docs pass |
-| Ukraine focus tree full route review | `focus_integrity`, `focus_reward_variety_surface`, `focus_ai_surface` | 81-focus tree passes parser, reward, AI, localisation, and icon checks |
-| Belarus focus tree full route review | same focus surfaces | 53-focus tree passes parser, reward, AI, localisation, icon, and route-reference checks |
-| Kazakhstan focus tree full route review | same focus surfaces | 92-focus tree passes parser, reward, AI, localisation, icon, and route-reference checks |
-| Regional republic focus tree review | same focus surfaces | regional/shared/custom trees pass parser, layout, reward, AI, localisation, and icon checks. The Baltic shared tree includes tag-gated Estonia, Latvia, and Lithuania branch pairs. |
-| Internal republic focus tree review | `internal_republic_focus_loader`, `internal_republic_focus_tree`, `internal_republic_focus_localisation` | vanilla-supported internal republic tags route to a 62-focus shared tree with northern, Volga-Ural, expanded Crimea, expanded eastern/inner-Asian, tag-specific regional, high-chaos, and common-front branches |
+This matrix records source-level observed results from the worktree. It does not claim a live in-game playthrough.
+
+| # | Scenario | Expected result | Observed result and evidence | Status | Blocker |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Calm World, strong USSR, event fired manually | Crisis starts without immediate terminal collapse. | `crisis_balance_surface` reports Authority 62 and Threat 7.25. | source_pass | None in source audit. |
+| 2 | Calm World, strong USSR, first month | Union Unmade cannot fire during the opening lock. | `union_unmade_first_month_guard_surface` records a 31-day first-month lock and guarded Union Unmade helper calls. | source_pass | None in source audit. |
+| 3 | Calm World, strong USSR, six months of successful Soviet missions | Successful Soviet objectives stabilize or reduce pressure. | `mission_success_pressure_surface` and `crisis_monthly_guard_surface` show success helpers are non-increasing and ordinary months are guarded. | source_pass | None in source audit. |
+| 4 | Calm World, six months of failed Soviet missions | Failures raise pressure but do not bypass terminal gates. | `mission_failure_pressure_surface` shows largest single failure delta 4.25; active-cap first wave reaches 49.75 and stays below the high-threat gate. | source_pass | None in source audit. |
+| 5 | USSR at war with Germany | War pressure increases release and crisis risk through visible war-state causes. | War-pressure factors appear in crisis and MTTH surfaces. | source_pass | None in source audit. |
+| 6 | USSR at war with Japan | Far Eastern pressure exists without automatic terminal collapse. | Far Eastern mission and release surfaces are present and separated from immediate Union Unmade firing. | source_pass | None in source audit. |
+| 7 | High chaos opening | Higher opening pressure than calm baseline, still paced. | `crisis_balance_surface` reports higher pressure than calm baseline while remaining below terminal. | source_pass | None in source audit. |
+| 8 | Totalen Chaos opening | Severe opening pressure without first-month terminal collapse by itself. | Severe scripted opening scenario reports Threat 50.25, below the Union Unmade high-threat gate and still first-month locked. | source_pass | None in source audit. |
+| 9 | One Caucasus republic free | Caucasus league cannot form with one member. | Local league surface and quorum triggers require regional quorum. | source_pass | None in source audit. |
+| 10 | Two Caucasus republics free | Caucasus league can form under pressure when quorum exists. | `has_soviet_collapse_caucasus_league_quorum` is used by local league formation paths. | source_pass | None in source audit. |
+| 11 | One Central Asian republic free | Central Asian league cannot form with one member. | Local league surface and quorum triggers require regional quorum. | source_pass | None in source audit. |
+| 12 | Two Central Asian republics free | Central Asian league can form under pressure when quorum exists. | `has_soviet_collapse_central_asian_league_quorum` is used by local league formation paths. | source_pass | None in source audit. |
+| 13 | Union Unmade | Terminal collapse releases republics, forms valid leagues, expands Free Republics' League, enters anti-Soviet war, and cleans missions. | `union_unmade_pacing`, terminal ordinary release, local-league/Free Republics' League calls, anti-Soviet war pass, and terminal mission cleanup are recorded. | source_pass | None in source audit. |
+| 14 | Soviet puppet republics at Union Unmade | Soviet republican subjects are freed before successor setup. | Terminal subject path frees Soviet subjects with `autonomy_free` before setup. | source_pass | None in source audit. |
+| 15 | MTTH internal republic release | Internal republic release uses MTTH pressure and receives focus setup where supported. | `mtth_release_surface` covers release/miss weights, eight cause events, constants, cooldowns, and internal focus routing. | source_pass | None in source audit. |
+| 16 | High-chaos splinter release | High-chaos successor spawning is wired into terminal and evolution pressure. | Terminal collapse calls the high-chaos successor spawn helper; custom splinter focus audits cover major high-chaos trees. | source_pass | None in source audit. |
+| 17 | Northern Revenant Fleet eligibility path | NRF has a package/asset path and remains a tracked high-chaos requirement. | Ledger and asset manifest include NRF evidence, but the high-chaos row still requires one-row-per-splinter package audit. | partial_source | Final splinter package audit remains open. |
+| 18 | Factory-state eligibility path | CFR and MFR have distinct routes, assets, AI, and validation counts. | CFR has 47 focuses and MFR has 58 focuses, each with rewards, icons, AI blocks, localisation, and resolved references. | source_pass | None in source audit. |
+| 19 | Ukraine focus routes | Ukraine route structure, rewards, AI, localisation, and icons validate at source level. | Ukraine tree has 81 focuses and passes parser, reward, AI, localisation, icon, and route-reference checks. | source_pass | None in source audit. |
+| 20 | Belarus focus routes | Belarus route structure, rewards, AI, localisation, and icons validate at source level. | Belarus tree has 53 focuses, 53 rewards, 53 AI blocks, resolved references, localisation, and icon assignments. | source_pass | None in source audit. |
+| 21 | Kazakhstan focus routes | Kazakhstan route structure, rewards, AI, localisation, and icons validate at source level. | Kazakhstan tree has 92 focuses, 92 rewards, 92 AI blocks, resolved references, localisation, and icon assignments. | source_pass | None in source audit. |
+| 22 | Fallback tree route | Fallback/shared breakaway focus content exists and avoids generated placeholder prose. | Focus-expansion localisation audit reports in-world crisis prose for fallback breakaway focus descriptions. | source_pass | None in source audit. |
+| 23 | Local league war entry | Local leagues use valid quorum and enter the anti-Soviet war through terminal pass. | Local league formation uses quorum triggers; terminal collapse calls local-league formation before war entry. | source_pass | None in source audit. |
+| 24 | Free Republics' League expansion | Existing or newly formed Free Republics' League expands during terminal collapse. | Terminal collapse calls local-league and Free Republics' League formation between release/spawn and war entry. | source_pass | None in source audit. |
+| 25 | Repeated remove-idea tooltip review | Focus rewards do not expose repeated remove-idea spam. | Direct focus-file audit found one focus-reward `remove_ideas` use; it is hidden behind `mrc_village_autonomy_settles_pass_rivalries_tt`. | source_pass | None in source audit. |
+| 26 | Focus icon coverage review | Every Event 005 focus has an icon assignment and registered sprite. | Focus integrity covers 1497 focus blocks with icons; per-tree icon checks cover republic, custom, and factory trees. | source_pass | None in source audit. |
+| 27 | Decision category clutter review | Active Soviet objectives are capped and terminal cleanup covers all objective missions. | `active_cap = 10`; 118 defined missions, 118 activation entries, 118 cap checks, 118 increments, and 118 terminal cleanup entries. | source_pass | None in source audit. |
+| 28 | Balance exploit check | Calm, failure, terminal, mission, release, focus, AI, and cleanup surfaces avoid obvious runaway and farming loops at source level. | Balance audit covers calm baseline, monthly guard, failure deltas, Union Unmade gates, local-league quorum, MTTH releases, focus reward variety, mission cleanup, and localisation. | partial_source | Ledger still requires explicit exploit rows for free units, factory loops, equipment farming, influence farming, puppet abuse, and war-goal/claim/core spam. |
 
 ## Latest Correction Validated
 
