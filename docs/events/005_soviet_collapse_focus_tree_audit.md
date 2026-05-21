@@ -99,7 +99,7 @@ Current non-Python evidence:
 - Siberian Zemstvo Authority focus IDs have matching name and description localisation, using existing SZA focus sprites and previously wired SZA decision/focus asset files. The moderate endgame no longer requires the high-chaos `SZA_extreme_path`; it can converge through the railhead, Baikal, Yenisei, and distant-city capstones.
 - Far Eastern Republic Revival tree recount: 47 focuses, 47 completion rewards, 47 icon assignments, and 47 `ai_will_do` blocks.
 - Far Eastern Republic Revival focus IDs have matching name and description localisation, using existing FEV focus sprites and previously wired FEV focus asset files. The moderate endgame no longer requires the high-chaos `FEV_extreme_path`; it can converge through the harbor, Razdolnoye, Amur, and Pacific compact capstones.
-- Idel-Ural League tree recount: 27 focuses, 27 completion rewards, 27 icon assignments, and 27 `ai_will_do` blocks.
+- Idel-Ural League tree recount: 47 focuses, 47 completion rewards, 47 icon assignments, and 47 `ai_will_do` blocks.
 - Idel-Ural League focus IDs have matching name and description localisation, using existing IUL focus sprites and previously wired IUL focus asset files.
 - Birobidzhan Autonomous Commune tree recount: 47 focuses, 47 completion rewards, 47 icon assignments, and 47 `ai_will_do` blocks.
 - Birobidzhan Autonomous Commune focus IDs have matching name and description localisation, using existing BAC focus sprites and previously wired BAC focus asset files. The moderate endgame can now converge through Amur commune endurance instead of requiring the high-chaos `BAC_extreme_path`.
