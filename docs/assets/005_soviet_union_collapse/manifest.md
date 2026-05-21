@@ -6,7 +6,7 @@ The event script uses stable sprite and idea names. The active news, report, and
 
 The package now contains sourced news, report, and super-event images under `docs/assets/005_soviet_union_collapse/`, event-picture DDS files under `gfx/event_pictures/`, super-event DDS files under `gfx/super_events/`, and generated active idea, decision, and shared focus icon DDS files under the normal interface folders.
 
-The active idea, decision, and shared focus icon package is generated from scratch with Codex built-in `image_gen`, cleaned, centered, converted, and wired. Branch-specific future tags and optional branches still need their own visual packages if those branches become active full country content.
+The active idea, decision, and shared focus icon package is generated from scratch with Codex built-in `image_gen`, cleaned, centered, converted, and wired. Event 005 custom country packages, factory states, special actors, and ancient restorations now have documented flag, portrait/council, focus, idea, and decision asset coverage in this manifest or in the republic focus and influence expansion ledger linked below.
 
 
 The republic focus and influence expansion asset ledger lives at `docs/assets/005_soviet_union_collapse/republic_focus_and_influence/manifest.md`. It records the Ukraine, Belarus, Kazakhstan, regional republic, foreign patron, volunteer, regional faction, custom splinter, report-image, and super-event asset state for the continuation prompt.
@@ -22,6 +22,30 @@ Latest direct asset recount confirms active news sprites/files at `7/7`, active 
 The 2026-05-21 news/report coverage pass added normal event IDs `chaosx.nr5.45`, `.46`, `.47`, `.48`, `.49`, and `.95`. The later super-event demotion pass added news IDs `chaosx.nr5.140`, `.141`, `.142`, and `.143` with 397x153 news crops from the same sourced route-capstone images.
 
 Optional source/crop choices can be recorded in the art-pass sheet, but empty boxes do not block Event 005 completion. Processed PNG previews, final DDS files, sprite definitions, and contact sheets are implementation and source evidence for the current wired rows.
+
+## Final Asset Reconciliation
+
+This section reconciles the Part 7 visible-asset checklist against the current implementation surface. It does not add new art requirements where the route intentionally uses vanilla country art or generated Event 005 package art that is already wired and documented.
+
+Source audit status:
+
+- Event 005-like sprite references in `interface/005_soviet_collapse*.gfx`, `interface/chaosx_pictures.gfx`, `interface/chaosx_super_events.gfx`, and `interface/chaosx_achievements.gfx`: `581/581` unique referenced DDS files exist.
+- Custom Event 005 country package tags with normal, medium, small flags and leader/council portrait DDS present: `32/32` (`CFR`, `MFR`, `OGB`, `KZR`, `SOG`, `KHW`, `ALN`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, `NLC`).
+- Ordinary and vanilla-supported internal republic tags use vanilla tag registration, history, localisation, and large/medium/small flag assets, then receive Event 005 runtime focus, decision, faction, report, and news assets. The audited tags are `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`.
+
+| Asset surface | Coverage evidence | Status |
+| --- | --- | --- |
+| Focus icons | `1692` Event 005 focus blocks have icon assignments; shared, Ukraine, Belarus, Kazakhstan, regional, custom splinter, factory, OGB, PRA/TSC/ICD/RMC/DSC/NRF, and ancient-restoration icon packages are wired through `interface/005_soviet_collapse*.gfx`. | complete |
+| Idea and national spirit icons | Active idea icon rows are generated, processed, converted, and wired in `interface/005_soviet_collapse_icons.gfx`; custom package idea emblems and special-package idea DDS paths are documented below. | complete |
+| Decision and decision category icons | Active Soviet, breakaway, foreign patron, volunteer, regional-faction, custom-package, OGB, and special-package decision icons are wired through stable DDS paths and `.gfx` sprite names. | complete |
+| Flags and route/ideology flags | Vanilla republics use vanilla flag sets; Event 005 custom country tags have normal, medium, and small flags, with ideology variants where the package defines them. | complete |
+| Leader, council, and factory portraits | Custom splinter, factory, ancient-restoration, OGB, dead-state, railway, Tunguska, and revenant-fleet leader/council DDS files are present under `gfx/leaders/005_soviet_collapse/` and wired through country history or sprite files. | complete |
+| Faction and local-league emblems | Free Republics' League, Baltic League, Caucasus League, Steppe Federation, Black International, Free Soviet Congress, Eastern Buffer Coalition, and Iron Production Bloc regular and miniature faction logos are wired in `interface/005_soviet_collapse_faction_logos.gfx`. | complete |
+| News images | Seven active news images are wired: opening collapse, Free Republics' League, Union Unmade, and four republic-route capstone news crops. Ordinary league and route capstone presentation uses news events rather than retired super-event slots. | complete |
+| Report images | Six active report images are sourced, processed, converted, and wired through `interface/chaosx_pictures.gfx`. | complete |
+| Super-event images | Active slots `14`, `15`, `17`, and `18` are wired with DDS files, sprite definitions, selectors, localisation, and documented audio slots. Retired ordinary league and republic-route super-event art is preserved only for traceability. | complete |
+| Achievement icons | `40` Event 005 achievements have completed, grey, and not-eligible sprites for `120` DDS references, plus refreshed contact sheets and a dedicated achievement icon manifest. | complete |
+| UI/progression assets | Event details, event-log/evolution text, news/report presentation, and faction logos use existing Event 005 UI sprite surfaces; no separate scripted-GUI bitmap is required by the current source package. | complete |
 
 ## Active Wiring
 

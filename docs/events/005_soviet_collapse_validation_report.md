@@ -57,6 +57,10 @@ for term in terms:
         total += p.read_text(errors='ignore').count(term)
     print(term, total)
 PY
+python3 custom Event 005 tag flag/portrait asset audit over `common/country_tags/chaosx_countries.txt`, `gfx/flags/`, and `gfx/leaders/005_soviet_collapse/`
+python3 Event 005-like sprite reference audit over `interface/005_soviet_collapse*.gfx`, `interface/chaosx_pictures.gfx`, `interface/chaosx_super_events.gfx`, and `interface/chaosx_achievements.gfx`
+python3 non-Event-005 `interface/chaosx_pictures.gfx` missing-reference separation audit
+git diff --check -- docs/assets/005_soviet_union_collapse/manifest.md docs/events/005_soviet_collapse_full_implementation_ledger.md docs/events/005_soviet_collapse_validation_report.md
 ```
 
 Static checks for the current correction pass passed: no whitespace errors, no forbidden comparison operators in the edited script/trigger files, no local-league formation calls still using `country_event`, no active local-league super-event helper calls, and no remaining Free Republics' League, Steppe Federation, Baltic League, Caucasus League, or Eastern Buffer Coalition super-event localisation/sprite mappings.
@@ -79,6 +83,16 @@ The Returned Names restoration audit verifies that the ancient-restoration route
 The 2026-05-21 current-path achievement audit found 40 Event 005 achievement definitions in `common/achievements/chaos_redux_achievements.txt`. Each definition has matching `_NAME`, `_DESC`, and `_tooltip` localisation in `localisation/english/chaosx_achievements_l_english.yml`. `interface/chaosx_achievements.gfx` contains the expected completed, grey, and not-eligible sprite entries for all 40 IDs, for 120 Event 005 achievement sprite entries total. Every one of the 120 referenced `gfx/achievements/chaosx_ach_*.dds` files exists.
 
 The dedicated icon manifest lists all 40 Event 005 achievement IDs. The 15 continuation rows that previously recorded placeholder achievement reuse now use explicit Event 005 source composites, and the completed, grey, and not-eligible contact sheets have been refreshed from the current 120 DDS files.
+
+## Event 005 Asset Reconciliation Addendum
+
+The 2026-05-21 asset reconciliation audit found 581 unique Event 005-like sprite references across `interface/005_soviet_collapse*.gfx`, `interface/chaosx_pictures.gfx`, `interface/chaosx_super_events.gfx`, and `interface/chaosx_achievements.gfx`; all 581 referenced DDS files exist.
+
+The custom country package audit found all 32 Event 005 custom tags registered in `common/country_tags/chaosx_countries.txt` have normal, medium, and small flag files plus a leader or council portrait DDS under `gfx/leaders/005_soviet_collapse/`: `CFR`, `MFR`, `OGB`, `KZR`, `SOG`, `KHW`, `ALN`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, and `NLC`.
+
+The ordinary and vanilla-supported internal republic package surface continues to use vanilla tag, history, localisation, and flag assets for `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`, while Event 005 supplies runtime focus, decision, faction, report, and news assets.
+
+The broader sprite-reference audit still finds two missing non-Event-005 references in `interface/chaosx_pictures.gfx`: `gfx/event_pictures/army_threat.dds` and `gfx/event_pictures/news_balkans.dds`. They are pre-existing unrelated picture entries and are not part of the Event 005 source package.
 
 ## Scenario Matrix
 
