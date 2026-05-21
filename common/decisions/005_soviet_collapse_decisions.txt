@@ -5147,6 +5147,95 @@ soviet_collapse_idel_ural_league = {
 	}
 }
 
+soviet_collapse_old_great_bulgaria = {
+	ogb_consolidate_volga_registers = {
+		icon = GFX_decision_ogb_consolidate_volga_registers
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		}
+		visible = { tag = OGB is_soviet_collapse_active = yes }
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_low_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
+			add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			custom_effect_tooltip = ogb_consolidate_volga_registers_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_stability < constant:soviet_collapse_soviet_objective.good_stability
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = ogb_volga_legitimacy value = constant:soviet_collapse_factory_ancient.large_mandate_gain compare = less_than }
+			}
+		}
+	}
+
+	ogb_guard_kazan_ferry_line = {
+		icon = GFX_decision_ogb_guard_kazan_ferry_line
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		visible = { tag = OGB is_soviet_collapse_active = yes }
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
+			add_to_variable = { ogb_river_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			custom_effect_tooltip = ogb_guard_kazan_ferry_line_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_super_event.union_unmade_high_threat compare = greater_than } }
+			}
+		}
+	}
+
+	ogb_declare_the_volga_restoration_state = {
+		icon = GFX_decision_ogb_declare_restoration_state
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		visible = { tag = OGB is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_old_great_bulgaria_endgame } }
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
+			soviet_collapse_complete_old_great_bulgaria_endgame = yes
+			custom_effect_tooltip = ogb_declare_the_volga_restoration_state_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = ogb_volga_legitimacy value = constant:soviet_collapse_factory_ancient.large_mandate_gain compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
 soviet_collapse_birobidzhan_autonomous_commune = {
 	bac_consolidate_claim = {
 		icon = GFX_decision_bac_consolidate_claim
