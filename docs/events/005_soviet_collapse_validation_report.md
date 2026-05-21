@@ -89,10 +89,11 @@ Mission outcome, cost, and selected route requirement localisation now describes
 Terminal mission cleanup removes every Soviet objective mission.
 Event 005 focus IDs are unique across republic, custom splinter, and factory successor trees, and all focus IDs have localisation with UTF-8 BOM Event 005 localisation files.
 The generated focus-expansion description layer now uses in-world crisis prose for Ukraine, Belarus, Kazakhstan, regional, and fallback breakaway focus descriptions instead of the former placeholder "focus for the republic crisis path" construction.
-Event 005 focus integrity covers 1495 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
+Event 005 focus integrity covers 1497 focus blocks with icons, coordinates, completion rewards, AI weights, and resolved focus prerequisite/mutual-exclusion references.
 
 The Mountain Republic of the Caucasus custom tree now passes direct source checks for 47 focuses, 47 completion rewards, 47 icon assignments, 47 `ai_will_do` blocks, matching focus name/description localisation, resolved focus references, and unique coordinates.
 The Military Factory of Russia tree now passes direct source checks for 58 focuses, 58 completion rewards, 58 icon assignments, 58 `ai_will_do` blocks, matching focus name/description localisation, resolved focus references, and unique coordinates.
+The Civilian Factory of Russia tree now passes direct source checks for 47 focuses, 47 completion rewards, 47 icon assignments, 47 `ai_will_do` blocks, matching focus name/description localisation, resolved focus references, and unique coordinates.
 The Belarus tree has 53 focus IDs, 53 completion rewards, 53 AI blocks, no unresolved Belarus focus references, no missing Belarus focus localisation, and icon assignments resolved through `interface/005_soviet_collapse_blr_icons.gfx`.
 The Kazakhstan tree has 92 focus IDs, 92 completion rewards, 92 AI blocks, no unresolved Kazakhstan focus references, no missing Kazakhstan focus localisation, and icon assignments resolved through `interface/005_soviet_collapse_kaz_icons.gfx`.
 The Moldova tree has 48 focus IDs, 48 completion rewards, 48 AI blocks, no unresolved Moldova focus references, no missing Moldova focus localisation, no duplicate Moldova coordinates, and icon assignments resolved through `interface/005_soviet_collapse_regional_icons.gfx`.
