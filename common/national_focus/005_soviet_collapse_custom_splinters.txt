@@ -1163,7 +1163,8 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = pra_focus_the_board_overrules_ministers
-			remove_ideas = pra_dispatcher_court_tensions
+			custom_effect_tooltip = pra_board_settles_dispatcher_court_tensions_tt
+			hidden_effect = { remove_ideas = pra_dispatcher_court_tensions }
 			add_ideas = pra_corridor_toll_authority
 			soviet_collapse_apply_focus_legal_recognition = yes
 		}
@@ -1481,6 +1482,384 @@ focus_tree = {
 		ai_will_do = {
 			base = 6
 			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+}
+
+focus_tree = {
+	id = TSC_soviet_collapse_focus_tree
+	country = { factor = 0 modifier = { add = 10 tag = TSC } }
+	default = no
+	continuous_focus_position = { x = 20 y = 12 }
+
+	focus = {
+		id = TSC_the_sky_keeps_records
+		icon = GFX_focus_TSC_the_sky_keeps_records
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 0
+		cost = @soviet_collapse_focus_short
+
+		completion_reward = {
+			set_country_flag = tsc_focus_the_sky_keeps_records
+			add_to_variable = { tsc_signal_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = TSC_tura_observation_presidium
+		icon = GFX_focus_TSC_tura_observation_presidium
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_the_sky_keeps_records }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_tura_observation_presidium
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { tsc_signal_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TSC_kirensk_field_stations
+		icon = GFX_focus_TSC_kirensk_field_stations
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_the_sky_keeps_records }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_kirensk_field_stations
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_to_variable = { tsc_anomaly_research = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TSC_recover_the_burned_glass
+		icon = GFX_focus_TSC_recover_the_burned_glass
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_tura_observation_presidium }
+		prerequisite = { focus = TSC_kirensk_field_stations }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_recover_the_burned_glass
+			add_to_variable = { tsc_anomaly_research = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = TSC_radio_towers_in_the_taiga
+		icon = GFX_focus_TSC_radio_towers_in_the_taiga
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_kirensk_field_stations }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_radio_towers_in_the_taiga
+			random_owned_controlled_state = {
+				add_building_construction = { type = radar_station level = 1 instant_build = yes }
+			}
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TSC_portable_laboratory_trains
+		icon = GFX_focus_TSC_portable_laboratory_trains
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_radio_towers_in_the_taiga }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_portable_laboratory_trains
+			add_ideas = tsc_strange_science_bureau
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			add_to_variable = { tsc_anomaly_research = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = TSC_the_committee_of_instruments
+		icon = GFX_focus_TSC_the_committee_of_instruments
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TSC_recover_the_burned_glass }
+		mutually_exclusive = { focus = TSC_the_committee_of_signs }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_the_committee_of_instruments
+			custom_effect_tooltip = tsc_instrument_committee_settles_field_rivalries_tt
+			hidden_effect = { remove_ideas = tsc_field_station_rivalries }
+			add_ideas = tsc_strange_science_bureau
+			add_to_variable = { tsc_signal_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = TSC_the_committee_of_signs
+		icon = GFX_focus_TSC_the_committee_of_signs
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 18
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TSC_recover_the_burned_glass }
+		mutually_exclusive = { focus = TSC_the_committee_of_instruments }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_the_committee_of_signs
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			add_to_variable = { tsc_signal_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = TSC_observatory_guard
+		icon = GFX_focus_TSC_observatory_guard
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 22
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_the_committee_of_signs focus = TSC_the_committee_of_instruments }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_observatory_guard
+			add_ideas = tsc_observatory_guard
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = TSC_perimeter_regiments
+		icon = GFX_focus_TSC_perimeter_regiments
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 26
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_observatory_guard }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_perimeter_regiments
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = TSC_night_survey_columns
+		icon = GFX_focus_TSC_night_survey_columns
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_the_committee_of_signs focus = TSC_the_committee_of_instruments }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_night_survey_columns
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = TSC_letters_to_academies
+		icon = GFX_focus_TSC_letters_to_academies
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_the_committee_of_instruments }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_letters_to_academies
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = TSC_league_of_clear_signals
+		icon = GFX_focus_TSC_league_of_clear_signals
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_letters_to_academies }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_league_of_clear_signals
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { tsc_signal_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = TSC_claim_the_impact_zone
+		icon = GFX_focus_TSC_claim_the_impact_zone
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 22
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = TSC_night_survey_columns }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_claim_the_impact_zone
+			add_to_variable = { tsc_signal_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = tsc_focus_the_committee_of_signs }
+		}
+	}
+
+	focus = {
+		id = TSC_sky_over_siberia
+		icon = GFX_focus_TSC_sky_over_siberia
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TSC_claim_the_impact_zone }
+		prerequisite = { focus = TSC_perimeter_regiments }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_sky_over_siberia
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = TSC_starfall_mandate
+		icon = GFX_focus_TSC_starfall_mandate
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TSC_sky_over_siberia }
+		mutually_exclusive = { focus = TSC_observatory_state }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_starfall_mandate
+			soviet_collapse_complete_tunguska_star_endgame = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = TSC_observatory_state
+		icon = GFX_focus_TSC_observatory_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TSC_league_of_clear_signals }
+		prerequisite = { focus = TSC_portable_laboratory_trains }
+		mutually_exclusive = { focus = TSC_starfall_mandate }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_observatory_state
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = TSC_the_quiet_sky_settlement
+		icon = GFX_focus_TSC_the_quiet_sky_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = TSC_observatory_state }
+
+		completion_reward = {
+			set_country_flag = tsc_focus_the_quiet_sky_settlement
+			soviet_collapse_complete_tunguska_star_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = tsc_focus_the_committee_of_instruments }
 		}
 	}
 }
