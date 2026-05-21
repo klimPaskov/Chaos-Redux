@@ -652,14 +652,31 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 ### Old Great Bulgaria Asset Records
 
-`OGB` is wired as an Event 005 high-chaos package with stable sprite names in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Existing final flags remain at `gfx/flags/OGB.tga`, `gfx/flags/medium/OGB.tga`, and `gfx/flags/small/OGB.tga`. The leader portrait sprite `GFX_portrait_OGB_volga_restoration_council` currently reuses `gfx/leaders/005_soviet_collapse/IUL_leader.dds` as placeholder art. Decision and idea sprite keys reuse existing Event 005 DDS files. Focus sprites now use 23 per-focus `gfx/interface/goals/soviet_collapse/ogb_*.dds` files copied from Bulgaria, Volga, trade, defense, diplomacy, and restoration-themed DDS sources.
+`OGB` is wired as an Event 005 high-chaos package with stable sprite names in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. Existing final flags remain at `gfx/flags/OGB.tga`, `gfx/flags/medium/OGB.tga`, and `gfx/flags/small/OGB.tga`. The leader portrait sprite `GFX_portrait_OGB_volga_restoration_council` currently reuses `gfx/leaders/005_soviet_collapse/IUL_leader.dds` as placeholder art. Decision and idea sprites now use stable OGB-specific DDS paths copied from themed Event 005 and vanilla DDS sources. Focus sprites use 23 per-focus `gfx/interface/goals/soviet_collapse/ogb_*.dds` files copied from Bulgaria, Volga, trade, defense, diplomacy, and restoration-themed DDS sources.
 
 | Asset group | Sprite names | Status |
 | --- | --- | --- |
 | OGB leader | `GFX_portrait_OGB_volga_restoration_council` | placeholder reuse |
-| OGB decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | placeholder reuse |
-| OGB ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | placeholder reuse |
+| OGB decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | wired, decision icons use themed DDS reuse; see mapping below |
+| OGB ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | wired, idea icons use themed DDS reuse; see mapping below |
 | OGB focuses | `GFX_focus_OGB_*` and `_shine` variants | wired, focus icons use themed DDS reuse; see mapping below |
+
+#### Old Great Bulgaria decision and idea icon mapping
+
+Source mode: existing HOI4 or Chaos Redux DDS reuse copied into stable OGB-specific final paths. Processed PNG preview: not applicable for direct DDS reuse. Sprite definitions are in `interface/005_soviet_collapse_factory_ancient_icons.gfx`.
+
+| Sprite | Source DDS | Final DDS | Dimensions | Status |
+| --- | --- | --- | --- | --- |
+| `GFX_decision_ogb_consolidate_volga_registers` | `gfx/interface/decisions/soviet_collapse/005_iul_custom_splinter_decision.dds` | `gfx/interface/decisions/soviet_collapse/ogb_consolidate_volga_registers.dds` | 32x32 | wired |
+| `GFX_decision_ogb_guard_kazan_ferry_line` | `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_regional_goal_logistics.dds` | `gfx/interface/decisions/soviet_collapse/ogb_guard_kazan_ferry_line.dds` | 32x32 | wired |
+| `GFX_decision_ogb_declare_restoration_state` | `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_regional_goal_recognition.dds` | `gfx/interface/decisions/soviet_collapse/ogb_declare_restoration_state.dds` | 32x32 | wired |
+| `GFX_idea_ogb_disputed_restored_name` | `gfx/interface/ideas/soviet_collapse/idea_flags_return_incorrectly.dds` | `gfx/interface/ideas/soviet_collapse/ogb_disputed_restored_name.dds` | 60x68 | wired |
+| `GFX_idea_ogb_volga_restoration_council` | `~/projects/Hearts of Iron IV/gfx/interface/ideas/idea_MEN_pailingmiao_council.dds` | `gfx/interface/ideas/soviet_collapse/ogb_volga_restoration_council.dds` | 60x68 | wired |
+| `GFX_idea_ogb_volga_trade_road` | `gfx/interface/ideas/soviet_collapse/005_iul_custom_splinter_idea.dds` | `gfx/interface/ideas/soviet_collapse/ogb_volga_trade_road.dds` | 60x68 | wired |
+| `GFX_idea_ogb_notable_workshop_compact` | `gfx/interface/ideas/soviet_collapse/005_cfr_custom_splinter_idea.dds` | `gfx/interface/ideas/soviet_collapse/ogb_notable_workshop_compact.dds` | 60x68 | wired |
+| `GFX_idea_ogb_heritage_guard` | `~/projects/Hearts of Iron IV/gfx/interface/ideas/idea_HABSBURG_cavalry.dds` | `gfx/interface/ideas/soviet_collapse/ogb_heritage_guard.dds` | 60x68 | wired |
+| `GFX_idea_ogb_old_capital_guard` | `~/projects/Hearts of Iron IV/gfx/interface/ideas/idea_bul_bulgarian_irredentism.dds` | `gfx/interface/ideas/soviet_collapse/ogb_old_capital_guard.dds` | 60x68 | wired |
+| `GFX_idea_ogb_restored_volga_empire` | `~/projects/Hearts of Iron IV/gfx/interface/ideas/idea_bul_third_bulgarian_state.dds` | `gfx/interface/ideas/soviet_collapse/ogb_restored_volga_empire.dds` | 63x71 | wired |
 
 #### Old Great Bulgaria focus icon mapping
 
