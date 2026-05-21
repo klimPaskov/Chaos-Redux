@@ -2244,6 +2244,385 @@ focus_tree = {
 }
 
 focus_tree = {
+	id = DSC_soviet_collapse_focus_tree
+	country = { factor = 0 modifier = { add = 10 tag = DSC } }
+	default = no
+	continuous_focus_position = { x = 20 y = 12 }
+
+	focus = {
+		id = DSC_call_the_dead_soldiers_congress
+		icon = GFX_focus_DSC_call_the_dead_soldiers_congress
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 18
+		y = 0
+		cost = @soviet_collapse_focus_short
+
+		completion_reward = {
+			set_country_flag = dsc_focus_call_the_dead_soldiers_congress
+			add_to_variable = { dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = DSC_stalingrad_roll_call
+		icon = GFX_focus_DSC_stalingrad_roll_call
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_call_the_dead_soldiers_congress }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_stalingrad_roll_call
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = DSC_voronezh_rearguard_archives
+		icon = GFX_focus_DSC_voronezh_rearguard_archives
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_call_the_dead_soldiers_congress }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_voronezh_rearguard_archives
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_to_variable = { dsc_revenant_mobilization = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = DSC_vote_by_regimental_dead
+		icon = GFX_focus_DSC_vote_by_regimental_dead
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_stalingrad_roll_call }
+		prerequisite = { focus = DSC_voronezh_rearguard_archives }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_vote_by_regimental_dead
+			add_ideas = dsc_roll_call_bureau
+			add_to_variable = { dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = DSC_witness_officers
+		icon = GFX_focus_DSC_witness_officers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = DSC_vote_by_regimental_dead }
+		mutually_exclusive = { focus = DSC_revenant_staff_line }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_witness_officers
+			custom_effect_tooltip = dsc_witness_officers_settle_grave_regiments_tt
+			hidden_effect = { remove_ideas = dsc_grave_regiment_rivalries }
+			add_ideas = dsc_roll_call_bureau
+			add_to_variable = { dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = DSC_revenant_staff_line
+		icon = GFX_focus_DSC_revenant_staff_line
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 18
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = DSC_vote_by_regimental_dead }
+		mutually_exclusive = { focus = DSC_witness_officers }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_revenant_staff_line
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			add_to_variable = { dsc_revenant_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = DSC_grave_ordnance_claims
+		icon = GFX_focus_DSC_grave_ordnance_claims
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 30
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_voronezh_rearguard_archives }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_grave_ordnance_claims
+			add_equipment_to_stockpile = { type = artillery_equipment amount = constant:soviet_collapse_republic_focus.artillery_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_to_variable = { dsc_revenant_mobilization = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = DSC_field_hospital_memorials
+		icon = GFX_focus_DSC_field_hospital_memorials
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 22
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_revenant_staff_line focus = DSC_witness_officers }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_field_hospital_memorials
+			add_ideas = dsc_revenant_staff
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = DSC_rearguard_supply_bureau
+		icon = GFX_focus_DSC_rearguard_supply_bureau
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_grave_ordnance_claims }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_rearguard_supply_bureau
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { dsc_revenant_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = DSC_dead_regiment_columns
+		icon = GFX_focus_DSC_dead_regiment_columns
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 26
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_field_hospital_memorials }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_dead_regiment_columns
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = DSC_maps_of_lost_armies
+		icon = GFX_focus_DSC_maps_of_lost_armies
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_revenant_staff_line focus = DSC_witness_officers }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_maps_of_lost_armies
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			add_to_variable = { dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = DSC_letters_to_veteran_towns
+		icon = GFX_focus_DSC_letters_to_veteran_towns
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_witness_officers }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_letters_to_veteran_towns
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = DSC_league_of_old_fronts
+		icon = GFX_focus_DSC_league_of_old_fronts
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_letters_to_veteran_towns }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_league_of_old_fronts
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = DSC_claim_the_soldiers_road
+		icon = GFX_focus_DSC_claim_the_soldiers_road
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 22
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = DSC_maps_of_lost_armies }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_claim_the_soldiers_road
+			240 = { add_claim_by = ROOT }
+			add_to_variable = { dsc_roll_call_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = dsc_focus_revenant_staff_line }
+		}
+	}
+
+	focus = {
+		id = DSC_armies_that_do_not_demobilize
+		icon = GFX_focus_DSC_armies_that_do_not_demobilize
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = DSC_claim_the_soldiers_road }
+		prerequisite = { focus = DSC_dead_regiment_columns }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_armies_that_do_not_demobilize
+			228 = { add_claim_by = ROOT }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = DSC_republic_of_roll_calls
+		icon = GFX_focus_DSC_republic_of_roll_calls
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = DSC_league_of_old_fronts }
+		prerequisite = { focus = DSC_rearguard_supply_bureau }
+		mutually_exclusive = { focus = DSC_congress_of_the_dead_army }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_republic_of_roll_calls
+			add_ideas = dsc_roll_call_bureau
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = DSC_congress_of_the_dead_army
+		icon = GFX_focus_DSC_congress_of_the_dead_army
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = DSC_armies_that_do_not_demobilize }
+		mutually_exclusive = { focus = DSC_republic_of_roll_calls }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_congress_of_the_dead_army
+			soviet_collapse_complete_dead_soldiers_endgame = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = DSC_memorial_frontier_state
+		icon = GFX_focus_DSC_memorial_frontier_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = DSC_republic_of_roll_calls }
+
+		completion_reward = {
+			set_country_flag = dsc_focus_memorial_frontier_state
+			soviet_collapse_complete_dead_soldiers_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = dsc_focus_witness_officers }
+		}
+	}
+}
+
+focus_tree = {
 	id = ICD_soviet_collapse_focus_tree
 	country = { factor = 0 modifier = { add = 10 tag = ICD } }
 	default = no
