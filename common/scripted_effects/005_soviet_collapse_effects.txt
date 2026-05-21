@@ -3372,6 +3372,13 @@ soviet_collapse_complete_idel_ural_endgame = {
 	add_ideas = iul_federal_corridor_authority
 }
 
+soviet_collapse_complete_old_great_bulgaria_endgame = {
+	set_country_flag = soviet_collapse_hidden_doctrine_endgame
+	set_country_flag = soviet_collapse_returned_names_claim_lines_active
+	set_country_flag = soviet_collapse_old_great_bulgaria_endgame
+	add_ideas = ogb_restored_volga_empire
+}
+
 soviet_collapse_complete_birobidzhan_endgame = {
 	set_country_flag = soviet_collapse_hidden_doctrine_endgame
 	set_country_flag = soviet_collapse_birobidzhan_endgame
@@ -3706,6 +3713,25 @@ soviet_collapse_setup_iul_successor = {
 	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.idel_ural_stage }
 	soviet_collapse_record_high_chaos_successor_evolution = yes
 	country_event = { id = chaosx.nr5_custom.30 hours = 20 }
+}
+
+soviet_collapse_setup_ogb_successor = {
+	set_country_flag = soviet_collapse_high_chaos_successor
+	set_country_flag = soviet_collapse_old_great_bulgaria_successor
+	set_country_flag = soviet_collapse_returned_names_claim_lines_active
+	set_capital = {
+		state = 249
+		remember_old_capital = no
+	}
+	soviet_collapse_setup_breakaway_country = yes
+	load_focus_tree = { tree = OGB_soviet_collapse_focus_tree keep_completed = no }
+	set_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+	set_variable = { ogb_river_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	add_ideas = ogb_disputed_restored_name
+	add_ideas = ogb_volga_restoration_council
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.old_great_bulgaria_stage }
+	soviet_collapse_record_high_chaos_successor_evolution = yes
+	country_event = { id = chaosx.nr5_custom.36 hours = 20 }
 }
 
 soviet_collapse_setup_bac_successor = {
@@ -4215,6 +4241,29 @@ soviet_collapse_spawn_iul_if_enabled = {
 	}
 }
 
+soviet_collapse_spawn_ogb_if_enabled = {
+	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.old_great_bulgaria_stage }
+	if = {
+		limit = {
+			can_soviet_collapse_spawn_ogb = yes
+			is_current_evolution_enabled = yes
+		}
+		249 = {
+			add_core_of = OGB
+			transfer_state_to = OGB
+		}
+		256 = {
+			add_core_of = OGB
+			transfer_state_to = OGB
+		}
+		OGB = { soviet_collapse_setup_ogb_successor = yes }
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_objective_pressure.old_movement_failure_confidence }
+	}
+}
+
 soviet_collapse_spawn_bac_if_enabled = {
 	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
 	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
@@ -4304,6 +4353,7 @@ soviet_collapse_maybe_spawn_high_chaos_successors = {
 	soviet_collapse_spawn_uwd_if_enabled = yes
 	soviet_collapse_spawn_mrc_if_enabled = yes
 	soviet_collapse_spawn_iul_if_enabled = yes
+	soviet_collapse_spawn_ogb_if_enabled = yes
 	soviet_collapse_spawn_bac_if_enabled = yes
 	soviet_collapse_spawn_ard_if_enabled = yes
 	soviet_collapse_spawn_nlc_if_enabled = yes
