@@ -173,10 +173,10 @@ This matrix maps the implemented Event 005 super-events to their current artifac
 | `15` | The Black Banner Returns | `super_event.15.t/d/a/q` | Proudhon quote note documented; attribution remains reviewable | generated DDS wired | slot audio id wired from Coriolan package | fires from the Ukraine black-banner route and the `FTH` / `BBH` endgame helpers | none for generated image |
 | `17` | The Workshops Choose Their Councils | `super_event.17.t/d/a/q` | local production quote note documented | generated DDS wired | slot audio id wired from the industrial package | `MFR_state_as_one_arms_order` calls `soviet_collapse_show_workshops_choose_councils_super_event` through the Military Factory package | none for generated image |
 | `18` | Every Port a Council | `super_event.18.t/d/a/q` | Kronstadt slogan note documented | generated DDS wired | slot audio id wired from Coriolan package | fires from implemented port-council capstones for `KRS` and `ARD` routes | none for generated image |
-| `19` | A Map Larger than the Union | `super_event.19.t/d/a/q` | Mackinder quote documented against Archive.org scan text of the 1919 Henry Holt edition | sourced DDS wired | slot audio id wired from Coriolan package | fires from `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map` | sourced image wired |
-| `20` | The Steppe Beyond History | `super_event.20.t/d/a/q` | Herodotus quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | `kaz_soviet_collapse_the_southern_republics_do_not_kneel` calls `soviet_collapse_show_steppe_beyond_history_super_event` | sourced image wired |
-| `21` | The Corridors Decide | `super_event.21.t/d/a/q` | Clausewitz quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Coriolan package | fires from `blr_soviet_collapse_the_corridor_state` or `blr_soviet_collapse_the_leagues_spine` | sourced image wired |
-| `22` | The Bread State | `super_event.22.t/d/a/q` | Deuteronomy quote documented with Project Gutenberg source | sourced DDS wired | slot audio id wired from Final Silence package | fires from `ukr_soviet_collapse_last_harvest_plan` | sourced image wired |
+| `19` | A Map Larger than the Union | `super_event.19.t/d/a/q` | Mackinder quote documented against Archive.org scan text of the 1919 Henry Holt edition | sourced DDS preserved | retired from active super-event use | route capstone now reports through `chaosx.nr5.140` | sourced image preserved |
+| `20` | The Steppe Beyond History | `super_event.20.t/d/a/q` | Herodotus quote documented with Project Gutenberg source | sourced DDS preserved | retired from active super-event use | route capstone now reports through `chaosx.nr5.141` | sourced image preserved |
+| `21` | The Corridors Decide | `super_event.21.t/d/a/q` | Clausewitz quote documented with Project Gutenberg source | sourced DDS preserved | retired from active super-event use | route capstone now reports through `chaosx.nr5.142` | sourced image preserved |
+| `22` | The Bread State | `super_event.22.t/d/a/q` | Deuteronomy quote documented with Project Gutenberg source | sourced DDS preserved | retired from active super-event use | route capstone now reports through `chaosx.nr5.143` | sourced image preserved |
 | `23` | The League of Equal Republics | retired keys; no active selector | Articles of Confederation quote documented with National Archives source | sourced DDS preserved | retired audio definitions preserved | retired; League route uses normal news/report presentation | sourced image preserved |
 | `24` | The Steppe Federation | retired keys; no active selector | Federalist No. 5 quote documented with Project Gutenberg source | sourced DDS preserved | retired audio definitions preserved | retired; Steppe Federation endgame reports through `chaosx.nr5.36` | sourced image preserved |
 | `25` | The Baltic League | `super_event.25.t/d/a/q` | Proverbs quote documented with Project Gutenberg source | sourced DDS preserved | slot audio id preserved from Coriolan package | retired; ordinary formation fires news event `chaosx.nr5.30` | sourced image preserved |
@@ -187,9 +187,9 @@ This matrix maps the implemented Event 005 super-events to their current artifac
 
 - Super-event slot: `19`
 - Localisation keys: `super_event.19.t`, `super_event.19.d`, `super_event.19.a`, `super_event.19.q`
-- Trigger effect: `soviet_collapse_show_map_larger_than_union_super_event`
-- Trigger direction: fires once from the Ukraine focus `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map`.
-- Role: great-power transformation, not a world-end scenario by default.
+- Trigger effect: retired from active super-event use; `soviet_collapse_report_map_larger_than_union_news` now fires news event `chaosx.nr5.140`.
+- Trigger direction: reports once from the Ukraine focus `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map`.
+- Role: great-power transformation handled as news/report presentation, not a world-end scenario.
 - Button text: `The borders answer.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `Who rules East Europe commands the Heartland;`
@@ -223,9 +223,9 @@ Image package:
 
 - Super-event slot: `20`
 - Localisation keys: `super_event.20.t`, `super_event.20.d`, `super_event.20.a`, `super_event.20.q`
-- Trigger effect: `soviet_collapse_show_steppe_beyond_history_super_event`
-- Trigger direction: fires once from the Kazakhstan focus `kaz_soviet_collapse_the_southern_republics_do_not_kneel`.
-- Role: high-chaos regional transformation, not a world-end scenario by default.
+- Trigger effect: retired from active super-event use; `soviet_collapse_report_steppe_beyond_history_news` now fires news event `chaosx.nr5.141`.
+- Trigger direction: reports once from the Kazakhstan focus `kaz_soviet_collapse_the_southern_republics_do_not_kneel`.
+- Role: regional transformation handled as news/report presentation, not a world-end scenario.
 - Button text: `The horizon answers.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `These assuredly are invincible and impossible to approach.`
@@ -259,9 +259,9 @@ Image package:
 
 - Super-event slot: `21`
 - Localisation keys: `super_event.21.t`, `super_event.21.d`, `super_event.21.a`, `super_event.21.q`
-- Trigger effect: `soviet_collapse_show_corridors_decide_super_event`
-- Trigger direction: fires once from the Belarus focus `blr_soviet_collapse_the_corridor_state` or `blr_soviet_collapse_the_leagues_spine`.
-- Role: corridor-sovereignty declaration, not a world-end scenario by default.
+- Trigger effect: retired from active super-event use; `soviet_collapse_report_corridors_decide_news` now fires news event `chaosx.nr5.142`.
+- Trigger direction: reports once from the Belarus corridor route if the route helper is used.
+- Role: corridor-sovereignty declaration handled as news/report presentation, not a world-end scenario.
 - Button text: `The timetable is authority.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `War is a mere continuation of policy by other means.`
@@ -295,9 +295,9 @@ Image package:
 
 - Super-event slot: `22`
 - Localisation keys: `super_event.22.t`, `super_event.22.d`, `super_event.22.a`, `super_event.22.q`
-- Trigger effect: `soviet_collapse_show_bread_state_super_event`
-- Trigger direction: fires once from the Ukraine focus `ukr_soviet_collapse_last_harvest_plan`.
-- Role: dark ration-state transformation, not a world-end scenario by default.
+- Trigger effect: retired from active super-event use; `soviet_collapse_report_bread_state_news` now fires news event `chaosx.nr5.143`.
+- Trigger direction: reports once from the Ukraine focus `ukr_soviet_collapse_last_harvest_plan`.
+- Role: dark ration-state transformation handled as news/report presentation, not a world-end scenario.
 - Button text: `The card decides.`
 - Button source: original remark, not a direct cultural quotation.
 - Quote: `Man shall not live by bread alone.`
