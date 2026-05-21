@@ -1865,6 +1865,385 @@ focus_tree = {
 }
 
 focus_tree = {
+	id = ICD_soviet_collapse_focus_tree
+	country = { factor = 0 modifier = { add = 10 tag = ICD } }
+	default = no
+	continuous_focus_position = { x = 20 y = 12 }
+
+	focus = {
+		id = ICD_open_the_dead_rolls
+		icon = GFX_focus_ICD_open_the_dead_rolls
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 0
+		cost = @soviet_collapse_focus_short
+
+		completion_reward = {
+			set_country_flag = icd_focus_open_the_dead_rolls
+			add_to_variable = { icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ICD_ryazan_grave_commissariat
+		icon = GFX_focus_ICD_ryazan_grave_commissariat
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_open_the_dead_rolls }
+
+		completion_reward = {
+			set_country_flag = icd_focus_ryazan_grave_commissariat
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ICD_penza_memorial_workshops
+		icon = GFX_focus_ICD_penza_memorial_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 1
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_open_the_dead_rolls }
+
+		completion_reward = {
+			set_country_flag = icd_focus_penza_memorial_workshops
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_to_variable = { icd_memorial_mobilization = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ICD_census_of_absent_citizens
+		icon = GFX_focus_ICD_census_of_absent_citizens
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 2
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_ryazan_grave_commissariat }
+		prerequisite = { focus = ICD_penza_memorial_workshops }
+
+		completion_reward = {
+			set_country_flag = icd_focus_census_of_absent_citizens
+			add_ideas = icd_dead_roll_bureau
+			add_to_variable = { icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = ICD_commissars_of_last_addresses
+		icon = GFX_focus_ICD_commissars_of_last_addresses
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ICD_census_of_absent_citizens }
+		mutually_exclusive = { focus = ICD_commissars_who_do_not_die }
+
+		completion_reward = {
+			set_country_flag = icd_focus_commissars_of_last_addresses
+			custom_effect_tooltip = icd_last_addresses_settle_grave_commissars_tt
+			hidden_effect = { remove_ideas = icd_grave_commissar_rivalries }
+			add_ideas = icd_dead_roll_bureau
+			add_to_variable = { icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_stability > constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = ICD_commissars_who_do_not_die
+		icon = GFX_focus_ICD_commissars_who_do_not_die
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 18
+		y = 3
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ICD_census_of_absent_citizens }
+		mutually_exclusive = { focus = ICD_commissars_of_last_addresses }
+
+		completion_reward = {
+			set_country_flag = icd_focus_commissars_who_do_not_die
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			add_to_variable = { icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } }
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = ICD_black_seal_requisitions
+		icon = GFX_focus_ICD_black_seal_requisitions
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 30
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_penza_memorial_workshops }
+
+		completion_reward = {
+			set_country_flag = icd_focus_black_seal_requisitions
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_to_variable = { icd_memorial_mobilization = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ICD_funeral_guard
+		icon = GFX_focus_ICD_funeral_guard
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 22
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_commissars_who_do_not_die focus = ICD_commissars_of_last_addresses }
+
+		completion_reward = {
+			set_country_flag = icd_focus_funeral_guard
+			add_ideas = icd_memorial_guard
+			soviet_collapse_apply_focus_military_consolidation = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ICD_dead_roll_supply_bureau
+		icon = GFX_focus_ICD_dead_roll_supply_bureau
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 30
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_black_seal_requisitions }
+
+		completion_reward = {
+			set_country_flag = icd_focus_dead_roll_supply_bureau
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+			add_to_variable = { icd_memorial_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ICD_memorial_battalions
+		icon = GFX_focus_ICD_memorial_battalions
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 26
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_funeral_guard }
+
+		completion_reward = {
+			set_country_flag = icd_focus_memorial_battalions
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ICD_archives_of_every_front
+		icon = GFX_focus_ICD_archives_of_every_front
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_commissars_who_do_not_die focus = ICD_commissars_of_last_addresses }
+
+		completion_reward = {
+			set_country_flag = icd_focus_archives_of_every_front
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			soviet_collapse_apply_focus_depot_and_supply_control = yes
+		}
+		ai_will_do = { base = 6 }
+	}
+
+	focus = {
+		id = ICD_letters_to_grieving_cities
+		icon = GFX_focus_ICD_letters_to_grieving_cities
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_commissars_of_last_addresses }
+
+		completion_reward = {
+			set_country_flag = icd_focus_letters_to_grieving_cities
+			soviet_collapse_apply_focus_foreign_channel = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { is_in_faction = yes } }
+		}
+	}
+
+	focus = {
+		id = ICD_league_of_last_addresses
+		icon = GFX_focus_ICD_league_of_last_addresses
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 6
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_letters_to_grieving_cities }
+
+		completion_reward = {
+			set_country_flag = icd_focus_league_of_last_addresses
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_to_variable = { icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_soviet_objective.deep_collapse_threat compare = greater_than } } }
+		}
+	}
+
+	focus = {
+		id = ICD_claim_the_unburied_front
+		icon = GFX_focus_ICD_claim_the_unburied_front
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 22
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ICD_archives_of_every_front }
+
+		completion_reward = {
+			set_country_flag = icd_focus_claim_the_unburied_front
+			239 = { add_claim_by = ROOT }
+			add_to_variable = { icd_dead_roll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_country_flag = icd_focus_commissars_who_do_not_die }
+		}
+	}
+
+	focus = {
+		id = ICD_grave_columns_march
+		icon = GFX_focus_ICD_grave_columns_march
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 8
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ICD_claim_the_unburied_front }
+		prerequisite = { focus = ICD_memorial_battalions }
+
+		completion_reward = {
+			set_country_flag = icd_focus_grave_columns_march
+			217 = { add_claim_by = ROOT }
+			soviet_collapse_apply_focus_high_chaos_identity = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_objective_pressure.command_failure_obedience } }
+			}
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = ICD_citizens_after_death
+		icon = GFX_focus_ICD_citizens_after_death
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ICD_league_of_last_addresses }
+		prerequisite = { focus = ICD_dead_roll_supply_bureau }
+		mutually_exclusive = { focus = ICD_commissariat_without_end }
+
+		completion_reward = {
+			set_country_flag = icd_focus_citizens_after_death
+			add_ideas = icd_citizens_after_death
+			soviet_collapse_apply_focus_legal_recognition = yes
+			soviet_collapse_apply_focus_league_preparation = yes
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = ICD_commissariat_without_end
+		icon = GFX_focus_ICD_commissariat_without_end
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY }
+		x = 26
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ICD_grave_columns_march }
+		mutually_exclusive = { focus = ICD_citizens_after_death }
+
+		completion_reward = {
+			set_country_flag = icd_focus_commissariat_without_end
+			soviet_collapse_complete_iron_commissariat_endgame = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 3 has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+	}
+
+	focus = {
+		id = ICD_state_of_last_addresses
+		icon = GFX_focus_ICD_state_of_last_addresses
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 10
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ICD_citizens_after_death }
+
+		completion_reward = {
+			set_country_flag = icd_focus_state_of_last_addresses
+			soviet_collapse_complete_iron_commissariat_endgame = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = icd_focus_commissars_of_last_addresses }
+		}
+	}
+}
+
+focus_tree = {
 	id = BSC_soviet_collapse_focus_tree
 
 	country = {
