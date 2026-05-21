@@ -35,7 +35,7 @@ Source audit status:
 
 | Asset surface | Coverage evidence | Status |
 | --- | --- | --- |
-| Focus icons | `1692` Event 005 focus blocks have icon assignments; shared, Ukraine, Belarus, Kazakhstan, regional, custom splinter, factory, OGB, PRA/TSC/ICD/RMC/DSC/NRF, and ancient-restoration icon packages are wired through `interface/005_soviet_collapse*.gfx`. | complete |
+| Focus icons | `1692` Event 005 focus blocks have icon assignments; shared, Ukraine, Belarus, Kazakhstan, regional, custom splinter, factory, OGB, PRA/TSC/ICD/RMC/DSC/NRF, and ancient-restoration icon packages are wired through `interface/005_soviet_collapse*.gfx`. A duplicate-icon audit now finds `1096` unique focus icon sprite names, leaving `596` duplicate assignments to resolve before this satisfies the final unique-assignment requirement. | partially complete |
 | Idea and national spirit icons | Active idea icon rows are generated, processed, converted, and wired in `interface/005_soviet_collapse_icons.gfx`; custom package idea emblems and special-package idea DDS paths are documented below. | complete |
 | Decision and decision category icons | Active Soviet, breakaway, foreign patron, volunteer, regional-faction, custom-package, OGB, and special-package decision icons are wired through stable DDS paths and `.gfx` sprite names. | complete |
 | Flags and route/ideology flags | Vanilla republics use vanilla flag sets; Event 005 custom country tags have normal, medium, and small flags, with ideology variants where the package defines them. | complete |
@@ -59,7 +59,7 @@ Source audit status:
 | Soviet report events | `GFX_report_union_crisis`, `GFX_report_breakaway_mobilization`, `GFX_report_depot_war`, `GFX_report_foreign_liaison`, `GFX_report_old_underground`, `GFX_report_railway_sovereignty` | wired, `sourced` |
 | Idea icons | dedicated `GFX_idea_*` sprites in `interface/005_soviet_collapse_icons.gfx` | complete for active ideas |
 | Decision icons | dedicated `GFX_decision_*` sprites in `interface/005_soviet_collapse_icons.gfx` | complete for active decisions |
-| Shared breakaway focus icons | dedicated `GFX_focus_soviet_collapse_*` sprites in `interface/005_soviet_collapse_icons.gfx` | complete for the active 53-focus shared fallback tree through deliberate icon reuse |
+| Shared breakaway focus icons | dedicated `GFX_focus_soviet_collapse_*` sprites in `interface/005_soviet_collapse_icons.gfx` | wired, but branch-level reuse still counts against the final unique-assignment requirement until unique variants are added or approved as a design exception |
 | Regional republic focus icons | dedicated `GFX_baltic_soviet_collapse_*`, `GFX_caucasus_soviet_collapse_*`, `GFX_central_asia_soviet_collapse_*`, and `GFX_moldova_soviet_collapse_*` sprites in `interface/005_soviet_collapse_regional_icons.gfx` | complete for active regional runtime focus trees |
 | Super-event | `GFX_super_event_union_unmade`, `GFX_super_event_black_banner_returns`, `GFX_super_event_workshops_choose_councils`, `GFX_super_event_every_port_a_council` | wired for active super-event use; retired republic-route and league/federation source packages are preserved below only for traceability |
 
@@ -393,18 +393,20 @@ The replacement `soviet_collapse_belarus_focus_tree` is active gameplay for Even
 
 ## Kazakhstan Runtime Focus Tree Branch Icons
 
-The 92-focus `soviet_collapse_kazakhstan_focus_tree` is active gameplay for Event 005-created Kazakhstan and satisfies the clean-spec Kazakhstan focus-count target. Its branch-level sprites are wired in `interface/005_soviet_collapse_kaz_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art.
+The 92-focus `soviet_collapse_kazakhstan_focus_tree` is active gameplay for Event 005-created Kazakhstan and satisfies the clean-spec Kazakhstan focus-count target. Its branch-level sprites are wired in `interface/005_soviet_collapse_kaz_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art. The first unique-icon pass added 19 Steppe Federation route variants under `docs/assets/005_soviet_union_collapse/kaz_federation_unique_focus_icons/` and rewired those focus assignments to unique sprite names.
 
 | Branch sprite | Final DDS | Usage | Status |
 | --- | --- | --- | --- |
 | `GFX_kaz_soviet_collapse_alash` | `gfx/interface/goals/kaz_soviet_collapse_alash.dds` | Alash restoration focuses | complete |
 | `GFX_kaz_soviet_collapse_steppe_socialist` | `gfx/interface/goals/kaz_soviet_collapse_steppe_socialist.dds` | steppe socialist focuses | complete |
-| `GFX_kaz_soviet_collapse_federation` | `gfx/interface/goals/kaz_soviet_collapse_federation.dds` | Steppe Federation focuses | complete |
+| `GFX_kaz_soviet_collapse_federation` | `gfx/interface/goals/kaz_soviet_collapse_federation.dds` | Alma-Ata emergency congress base federation focus | complete |
 | `GFX_kaz_soviet_collapse_resources` | `gfx/interface/goals/kaz_soviet_collapse_resources.dds` | resource-state focuses | complete |
 | `GFX_kaz_soviet_collapse_foreign` | `gfx/interface/goals/kaz_soviet_collapse_foreign.dds` | foreign influence focuses | complete |
 | `GFX_kaz_soviet_collapse_myth` | `gfx/interface/goals/kaz_soviet_collapse_myth.dds` | high-chaos steppe mythology focuses | complete |
 | `GFX_kaz_soviet_collapse_military` | `gfx/interface/goals/kaz_soviet_collapse_military.dds` | steppe military focuses | complete |
 | `GFX_kaz_soviet_collapse_settlement` | `gfx/interface/goals/kaz_soviet_collapse_settlement.dds` | industry and settlement focuses | complete |
+
+Steppe Federation unique-variant package: `docs/assets/005_soviet_union_collapse/kaz_federation_unique_focus_icons/manifest.md` records 19 generated 94x86 DDS focus icons, processed PNG previews, source PNGs, a contact sheet, and matching `GFX_kaz_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_kaz_icons.gfx`.
 
 News and report backlog:
 
@@ -644,6 +646,8 @@ Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable RMC
 
 ## Blocked Or Incomplete Final Assets
 
+- Focus icon uniqueness: `1692` focus blocks have icon assignments, but the current audit found `1096` unique focus icon sprite names, `203` duplicate groups, and `596` duplicate assignments. The largest remaining duplicate groups are `GFX_kaz_soviet_collapse_military` used 19 times, `GFX_blr_soviet_collapse_corridor` used 14 times, and `GFX_focus_soviet_collapse_common_front_timetables` used 13 times. This remains incomplete against the final clean merged spec unless unique variants are added or the spec is explicitly relaxed.
+
 - Final generated idea icons: `complete` for active ideas. Source sheets, cropped source PNGs, processed previews, and DDS files are recorded above.
 - Final generated decision icons: `complete` for active decisions. Source sheet, cropped source PNGs, processed previews, and DDS files are recorded above.
 - Foreign patron category and decision icons plus volunteer decision and national spirit icons: `complete` for the implemented influence and volunteer mechanics. Processed PNG previews live in `docs/assets/005_soviet_union_collapse/processed_png/foreign_patron_decisions/`, `docs/assets/005_soviet_union_collapse/processed_png/volunteer_decisions/`, and `docs/assets/005_soviet_union_collapse/processed_png/volunteer_ideas/`; final DDS files live in `gfx/interface/decisions/` and `gfx/interface/ideas/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx`. The staged recognition, arms/logistics, reconstruction, volunteer, adviser, and patronage-risk ideas intentionally reuse the existing `legal_restoration_claim`, `captured_soviet_depots`, `foreign_volunteers`, and `military_defense_council` idea pictures, so `soviet_collapse_foreign_arsenal_dependency_network` requires no new DDS file.
@@ -761,12 +765,14 @@ Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable OGB
 
 ### Returned Names Dynamic Host Asset Records
 
-Returned Names decisions and ideas are active gameplay assets wired through existing Event 005 icon reuse in `interface/005_soviet_collapse_factory_ancient_icons.gfx`. The gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Final bespoke art can replace the referenced sprites later for the museum-cabinet, old-banner, toll-route, Sogdian, Khwarazmian, Alan, and anti-antiquarian concepts.
+Returned Names decisions and ideas are active gameplay assets with dedicated generated icon art wired through `interface/005_soviet_collapse_factory_ancient_icons.gfx`. The gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`; the icon package handoff is `docs/assets/005_soviet_union_collapse/returned_names_icons/gfx_handoff.md`.
 
-| Asset group | Sprite names | Status |
-| --- | --- | --- |
-| Returned Names category and decisions | `GFX_decision_category_soviet_collapse_returned_names`, `GFX_decision_soviet_collapse_open_museum_cabinets`, `GFX_decision_soviet_collapse_recruit_archivists`, `GFX_decision_soviet_collapse_commission_old_banner`, `GFX_decision_soviet_collapse_argue_khazar_toll_claim`, `GFX_decision_soviet_collapse_argue_sogdian_city_claim`, `GFX_decision_soviet_collapse_argue_khwarazmian_oasis_claim`, `GFX_decision_soviet_collapse_argue_alan_pass_claim`, `GFX_decision_soviet_collapse_reject_antiquarians` | placeholder reuse |
-| Returned Names ideas | `GFX_idea_soviet_collapse_returned_names_pressure`, `GFX_idea_soviet_collapse_archivist_claim_council`, `GFX_idea_soviet_collapse_old_banner_mobilization` | placeholder reuse |
+Source mode: generated symbolic icon art through Codex image generation, processed from green chroma-key source PNGs into transparent exact-size PNG previews, then converted through `.tools/convert_to_dds.py`. Contact sheet: `docs/assets/005_soviet_union_collapse/returned_names_icons/returned_names_icons_contact_sheet.png`.
+
+| Asset group | Sprite names | Source and processed paths | Final DDS paths | Status |
+| --- | --- | --- | --- | --- |
+| Returned Names category and decisions | `GFX_decision_category_soviet_collapse_returned_names`, `GFX_decision_soviet_collapse_open_museum_cabinets`, `GFX_decision_soviet_collapse_recruit_archivists`, `GFX_decision_soviet_collapse_commission_old_banner`, `GFX_decision_soviet_collapse_argue_khazar_toll_claim`, `GFX_decision_soviet_collapse_argue_sogdian_city_claim`, `GFX_decision_soviet_collapse_argue_khwarazmian_oasis_claim`, `GFX_decision_soviet_collapse_argue_alan_pass_claim`, `GFX_decision_soviet_collapse_reject_antiquarians` | `docs/assets/005_soviet_union_collapse/returned_names_icons/source_png/`; `docs/assets/005_soviet_union_collapse/returned_names_icons/processed_png/` | `gfx/interface/decisions/soviet_collapse/decision_category_soviet_collapse_returned_names.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_open_museum_cabinets.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_recruit_archivists.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_commission_old_banner.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_argue_khazar_toll_claim.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_argue_sogdian_city_claim.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_argue_khwarazmian_oasis_claim.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_argue_alan_pass_claim.dds`; `gfx/interface/decisions/soviet_collapse/decision_soviet_collapse_reject_antiquarians.dds` | complete, dedicated generated icons wired |
+| Returned Names ideas | `GFX_idea_soviet_collapse_returned_names_pressure`, `GFX_idea_soviet_collapse_archivist_claim_council`, `GFX_idea_soviet_collapse_old_banner_mobilization` | `docs/assets/005_soviet_union_collapse/returned_names_icons/source_png/`; `docs/assets/005_soviet_union_collapse/returned_names_icons/processed_png/` | `gfx/interface/ideas/soviet_collapse/idea_returned_names_pressure.dds`; `gfx/interface/ideas/soviet_collapse/idea_archivist_claim_council.dds`; `gfx/interface/ideas/soviet_collapse/idea_old_banner_mobilization.dds` | complete, dedicated generated icons wired |
 
 ### Standalone Ancient Restoration Assets
 

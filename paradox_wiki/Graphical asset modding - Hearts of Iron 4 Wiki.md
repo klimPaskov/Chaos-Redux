@@ -1,6 +1,6 @@
 # Table of contents
 
-  - [spriteType](#spritetype)
+- [spriteType](#spritetype)
 - [frameAnimatedSpriteType](#frameanimatedspritetype)
 - [progressbartype](#progressbartype)
 - [corneredTileSpriteType](#corneredtilespritetype)

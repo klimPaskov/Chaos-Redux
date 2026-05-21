@@ -14,6 +14,8 @@ Use this skill for any Chaos Redux event work, including:
 
 Repository-wide reading, style, and validation rules live in `AGENTS.md`. This skill only adds the Chaos Redux event-specific implementation contract.
 
+When an event implementation creates broad visible text, spawn `chaosx_localisation_auditor` before completion. When an event needs repeated dynamic logic across events, decisions, focuses, evolutions, logs, or GUI, use `chaosx_scripted_system_architect` before duplicating logic.
+
 ## Working model
 
 In Chaos Redux, an event is not just an event block.
@@ -30,43 +32,27 @@ Treat every event as a contract across some or all of these surfaces:
 - decisions, ideas, AI, characters, unit templates, or special-country handling
 - `docs/events/` documentation and spreadsheet
 
-If a task seems to require custom one-off plumbing, first check whether the same behavior should become generic for future events.
+If a task seems to need custom one-off plumbing, first check whether the same behavior should become generic for future events.
+
+### Custom subagent use during event implementation
+
+For large or multi-surface event work, use project subagents to keep the main implementation pass focused.
+
+- Spawn `chaosx_repo_explorer` before editing when the event touches many systems or when file locations are uncertain.
+- Spawn `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist` for actual visual asset packages according to `chaos-redux-event-assets`.
+- Spawn `chaosx_super_event_quote_researcher`, `chaosx_super_event_cultural_remark_researcher`, and `chaosx_super_event_audio_researcher` for actual super-event research packages according to `chaos-redux-super-events`.
+- Spawn `chaosx_focus_tree_auditor` after creating or heavily changing focus trees.
+- Spawn `chaosx_event_completion_auditor` before claiming a large event, event rework, or spec-driven implementation is complete.
+- Spawn `chaosx_spreadsheet_doc_worker` after implementation when docs, catalog rows, manifests, route coverage tables, or spreadsheet-style records need to match the final repo state.
+
+Subagents do not remove the main agent's responsibility to wire, review, validate, and report honestly.
+
 
 Focus-tree work includes AI behavior. Even compact or runtime-only trees should avoid flat `ai_will_do` weights when campaign state matters; use existing constants, flags, and pressure variables so AI choices react to war state, stability, recognition, faction membership, and route eligibility.
 
-HOI4 parser gotcha: `num_divisions_in_states = { count > ... }` only accepts literal-style values after the comparator. Do not put `constant:category.key` there; use a file-local `@` constant or a literal value, and keep the tuning source documented where it is duplicated.
-
-HOI4 parser gotcha: idea modifier blocks do not parse `constant:category.key` values. If a national spirit modifier requires shared tuning, mirror the script constant into a file-local `@` constant in the same idea file, document that it is a modifier-only mirror, and keep the script constant as the source of truth for effects/triggers that support it.
-
-Decision parser gotcha: every category used as a top-level block in `common/decisions/*.txt` must be defined in `common/decisions/categories/*.txt`. Category UI fields such as `icon`, `priority`, and category `visible` belong in the category file, not inside the decision file's top-level category block.
-
-Decision `custom_cost_text` and matching `_blocked` localisation should be bare cost displays: icon plus value groups only, separated by spaces. Do not add prose labels, explanatory verbs, connector words between cost values, or wording such as `need`, `needs`, or `requires`.
-
-When Event 005 decisions call large scripted triggers from `available`, `target_trigger`, or `custom_cost_trigger`, hide the raw trigger call with `hidden_trigger`. For Soviet objective missions, wrap the requirement call in `custom_trigger_tooltip` using that mission's existing `<mission_id>_req_tt` localisation, with the real `can_*`/`has_*` check inside `hidden_trigger`.
-
-For objective boards that must cap visible missions, prefer manual mission activation over daily `activation` triggers. Set capped mission entries to `allowed = { always = no }`, then activate eligible missions with a scoped queue helper using `activate_mission`, `has_active_mission`, active-count variables, and queued-state flags. This avoids whole-world on-actions and gives a hard display cap while preserving goal-style auto-completion through each mission's `available` block.
-
-When extending an existing capped objective queue by numbered slices, update all four surfaces in the same pass: the readable scripted trigger, the decision/mission entry, the active-count helper, and the activation queue helper. Then update the event doc count and mission list. Before committing, run at least whitespace, unsupported-operator, brace-depth, tab-indentation, and mission-wiring checks through the new highest mission number; the wiring check should prove every queued ID has a decision block and name/success/failure localisation.
-
 When focus counts change, update every count-bearing surface in the same pass: focus-tree docs, asset/icon reuse ledgers, prompt-to-artifact or completion audits, and the event spreadsheet row. Recount actual `focus = { ... }` blocks from the focus files and verify each new focus has an icon assignment, localisation name/description, completion reward, and `ai_will_do`; do not rely on stale manifest counts.
 
-When a generated focus tree looks visually poor, reflow it from the prerequisite graph instead of nudging individual coordinates. Assign layers by prerequisite depth, order siblings within each layer to keep related branches near their parents, cap visible focuses per row, spread lanes with enough horizontal spacing, and place `continuous_focus_position` in a side panel outside the branch grid. Validate no duplicate coordinates, no missing focus references, row crowding, minimum x/y span, and continuous-panel placement before updating docs.
-
-For focus-tree isolation checks, connected-component validation is not enough. Also flag shallow dead-end leaves: any side focus that ends several rows above the tree's final row should either feed into a later focus through a visible prerequisite line or be deliberately moved into a terminal branch. This catches one-off side rewards that are technically connected to a parent but still look isolated in-game.
-
-Generated focus trees require a direct self-reference check in addition to missing-reference checks. A focus with `prerequisite = { focus = <same_focus_id> }` can survive brace, count, icon, localisation, and dangling-reference validation while still making the branch impossible to progress. Scan `prerequisite` and `mutually_exclusive` targets for both missing IDs and self-targets before updating docs or reporting completion.
-
-For generated focus-tree mutual exclusions, prefer one `mutually_exclusive = { ... }` block per focus with multiple `focus = ...` entries. Repeated `mutually_exclusive` keys can produce misleading engine reciprocity errors even when a custom audit merges repeated keys correctly. Validate that no focus block has repeated `mutually_exclusive` keys before reporting the tree clean.
-
-For completion audits on large runtime focus systems, make the focus validation parser-oriented enough to prove: unique focus IDs, no missing `prerequisite`/`mutually_exclusive` targets, no self-targets, exactly one `completion_reward` block per focus, required `icon`/`ai_will_do` fields, icon sprite definitions across mod and vanilla `.gfx`, and name/description localisation. GFX sprite names may be inline on `spriteType = { name = ... }` lines, so do not only match line-leading `name =`.
-
-When cleaning up generated focus trees, check reward uniqueness before preserving branches. Repeated focus IDs with the same completion helper should usually collapse into one focus using the shared helper, or into a shared runtime tree if the same chain was cloned per tag. After pruning, run a dangling-reference check for `prerequisite = { focus = ... }` and `mutually_exclusive = { focus = ... }`, because removed focuses can leave invalid layout references even when brace counts and icon counts still pass.
-
 When an event continuation goal cannot be completed because named prompt/spec inputs or source-of-truth classifications are missing, make the blocker reproducible instead of ending with a loose note. Add or update an input-file audit with exact path state, line/byte counts and SHA-256 for present files, and exact filename recovery searches for missing files. Add a blocked completion report that lists the requested final-report categories without claiming completion. If the blocked state is likely to be resumed later, add a blocker resolution checklist and a resume packet that record the exact source decisions required, follow-up implementation paths, and validation gates before the final audit can pass. Do not mark the active goal complete while any named input or source-of-truth classification remains unresolved.
-
-For large event correction passes with many repeated parser and surface checks, preserve a deterministic verifier script under `.tools/` instead of relying only on copied terminal output. The verifier should separate implementation failures from missing-input blockers, return a nonzero blocked status when required source files are absent, and optionally provide an explicit waiver mode for checking implementation gates without claiming final completion. Document the exact verifier commands and expected exit meanings in the event completion audit.
-
-When a completion verifier is added for a blocked event pass, include audit gates for source order, required context files, strict blocker documentation, direct coverage of any missing source file's named surfaces, stale validation snapshots, and resume validation commands. If `AGENTS.md` requires local wiki or vanilla references for the touched systems, record those reference files in the audit and verify they exist. Keep these gates generic and avoid storing event-specific details in the skill.
 
 ## Event anatomy
 
@@ -81,7 +67,7 @@ When a completion verifier is added for a blocked event pass, include audit gate
 
 The implementation must preserve the design split between baseline stages and evolutions.
 
-Baseline progression can use whatever state, flags, variables, decisions, or events the mechanic requires. Do not record every normal stage as an evolution unless the spec deliberately treats it as an evolution track.
+Baseline progression can use whatever state, flags, variables, decisions, or events the mechanic needs. Do not record every normal stage as an evolution unless the spec deliberately treats it as an evolution track.
 
 For actual evolutions, the usual pattern is:
 
@@ -106,7 +92,6 @@ Then:
 - gate the milestone with `is_current_evolution_enabled = yes` only if it should be disableable from the UI
 - call `record_events_log_evolution_entry = yes`
 - If a helper sets a `*_recorded` flag or unlocks follow-up content, set the shared evolution context before its `limit` and include `is_current_evolution_enabled = yes` in that same limit. Disabled evolutions must not set recorded flags that later stages, decisions, reports, or focus branches read.
-- Before reporting evolution logging complete, grep the event surface for `record_events_log_evolution_entry`, `events_log_evolution_event_id`, `events_log_evolution_type`, `events_log_evolution_stage`, and any `*_recorded` flags. Confirm baseline stages do not call the evolution writer unless deliberately specified, and confirm each intended track has an explicit duplicate-prevention flag or other one-entry gate.
 
 Implementation design rules:
 
@@ -114,7 +99,7 @@ Implementation design rules:
 - `type` separates parallel mutation tracks inside the same event.
 - `stage` is the milestone inside one mutation track, not the ordinary event stage.
 - `tier` is display-oriented. Do not use it as a substitute for real logic state.
-- When a track uses stage-specific incidents, wire the stage-specific display text across every event-log view that can show it: list/current view, history/detail view, event-detail view, selected-detail title, selected-detail body, and any stage-number or roman-numeral helpers required by the highest stage.
+- When a track uses stage-specific incidents, wire the stage-specific display text across every event-log view that can show it: list/current view, history/detail view, event-detail view, selected-detail title, selected-detail body, and any stage-number or roman-numeral helpers needed by the highest stage.
 - Use dynamic factor models for evolution chance, pacing, intensity, and aftermath.
 - If an evolution creates a persistent country, make the country playable or meaningful enough for its expected lifetime.
 
@@ -188,7 +173,7 @@ Core files to check:
 - `common/scripted_localisation/chaosx_scripted_localisation_debug.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
-Frequent companion files:
+Frequently-needed companion files:
 
 - `common/on_actions/chaosx_on_actions.txt`
 - `common/scripted_effects/chaosx_settings_effects.txt`
@@ -213,17 +198,11 @@ If the event creates or manages non-standard countries (like special chaos count
 
 When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
 
-For event-created countries that receive a runtime crisis tree immediately after release, use a clean focus state unless there is a deliberate tree-to-tree migration. Set `keep_completed = no` or omit it. `keep_completed = yes` is for preserving known compatible focuses, not for freshly released tags inheriting whatever vanilla or generic tree state the engine assigned during release.
-
 When adding additive crisis integration for an already-existing country, make each branch decision call the same shared systems used by event-created countries where possible: volunteer package helpers for manpower/equipment, patron-rivalry helpers for foreign influence, regional-faction goal helpers for bloc behavior, and League helpers for defensive coordination. Gate each one-shot branch with a clear trigger flag so it cannot duplicate rewards.
-
-When a mechanic claims to transfer, commit, or sacrifice a field formation, validate a real unit-side effect rather than only a manpower/equipment payment and spawned replacement unit. Prefer vanilla-supported `transfer_units_fraction` for clean country-to-country force movement; set unrelated ratios such as stockpile, navy, and air to zero when only army formations should move, and pair the action with a fielded-division trigger so tiny countries cannot create formations from nothing.
 
 When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, history files, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. Count actual `focus = { id = TAG_* }` blocks rather than the focus-tree id to avoid including the focus-tree header as a focus. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag.
 
-When activating a generated Event 005 or custom splinter package from pre-existing localisation and assets, do not register the tag alone. Wire the complete package in one pass: tag, country file, history file, leader portrait, flags/assets, ideas, decisions, focus tree, spawn trigger, spawn/setup effects, player notice event, evolution log stage/title/body, docs, asset manifest, and any super-event or achievement flags claimed by the route. Validate generated prefixes from actual files rather than assuming a prefix matches a spec label. For prebuilt `TAG_*` focus localisation/icons, count only real `focus = { id = TAG_* }` blocks, then validate every focus has an icon, localisation, `completion_reward`, and `ai_will_do`. Use vanilla focus filters (`FOCUS_FILTER_NAVY_XP`, not nonexistent `FOCUS_FILTER_NAVY`). Province buildings such as `coastal_bunker` and `naval_base` require province IDs; for generic runtime state rewards, prefer state buildings or infrastructure unless province targeting is explicitly implemented. If a mission timeout creates a splinter, set a distinct failure flag and key the spawn trigger from that flag, not from a generic mission-done flag shared by success and failure paths.
-
-Country-specific or tag-specific events must have a reusable valid-target trigger before they enter selection or manual firing. If the required country does not exist, the event should show `N/A` in the event list and must not queue a delayed event against the missing tag.
+Country-specific or tag-specific events must have a reusable valid-target trigger before they enter selection or manual firing. If the required country does not exist, the event should show `N/A` in the event list and must not queue a delayed event against the missing tag. For example, the Holy Realm checks for Tibet first, then Bhutan or Nepal only if Tibet is gone.
 
 ### 3. Register the event in the random-event system
 
@@ -240,7 +219,7 @@ Do not add an event script and leave the event system unaware of it.
 
 ### 4. Handle supporting gameplay systems
 
-An event always requires more than its own script file.
+An event always needs more than its own script file.
 
 Touch the relevant systems in the same change:
 
@@ -252,19 +231,11 @@ Touch the relevant systems in the same change:
 
 When a decision, focus, or event option grants a one-time package through a shared helper effect, make the helper idempotent with a country/global flag and keep availability triggers aligned with that flag. Reused helper effects should be safe to call from later follow-up branches without duplicating manpower, equipment, PP, XP, or pressure adjustments.
 
-When a decision fires a follow-up popup whose options require computed state from the decision, do not put those state variables in the decision's generic cleanup helper. Keep only immediate aid/cost variables in the cleanup helper, preserve the popup option state as scoped country variables, and clear that option state from each event option after it is consumed.
-
-For targeted decisions, mirror vanilla country-target patterns: `ROOT` is the acting country and `FROM` is the selected target inside `target_trigger`, `available`, `visible`, `complete_effect`, and `remove_effect`. Put array eligibility in a reusable target trigger, block `FROM = ROOT` when self-targeting is invalid, and document where the target array is populated and cleared.
+When a decision fires a follow-up popup whose options need computed state from the decision, do not put those state variables in the decision's generic cleanup helper. Keep only immediate aid/cost variables in the cleanup helper, preserve the popup option state as scoped country variables, and clear that option state from each event option after it is consumed.
 
 When a contest, rivalry, charter, or settlement event is meant to change later behavior, have each option set a persistent outcome flag and route future decisions/events through a small aftermath helper that reads those flags. Prefer this event-driven persistence over daily/weekly polling, and document which later action consumes the flags.
 
-When a focus reward or decision effect computes variables at completion time, do not expose the raw computed effect directly in the visible reward/payment tooltip. HOI4 can preview the variable before the helper runs and show `0` for equipment, manpower, army XP, PP, or CP. Use a `custom_effect_tooltip` for the player-facing text and put the computed variable setup plus final effect in `hidden_effect`; for decision payments, call a shared helper that refreshes the cost variables immediately before subtracting them.
-
-`create_unit` is fragile with dynamic values. The `count` field is documented as an integer field; do not pass a variable or `constant:` token directly. Compute and round the count first, then use `meta_effect` to inject a literal `[UNIT_COUNT]` into `create_unit`. This avoids runtime crashes after event-created countries spawn their initial divisions.
-
 When a focus capstone should form or enter a system that also has a paid decision path, split the system effect into a no-cost core helper and a paid decision wrapper. Decisions pay costs and call the core helper; focus rewards call the core helper only after checking the same eligibility trigger, so focus integration does not secretly charge political power.
-
-For blocked decision cost localisation, show only the cost values/icons. Do not write prose such as "required" or insert "and" between cost entries; separate entries with spacing so the tooltip remains compact and scannable.
 
 When custom or special tags can qualify for multiple named systems through broad eligibility triggers, route focus hooks by explicit tag groups before calling the shared helper. Do not let a broad first-match order decide which faction/system the tag joins; encode the intended mapping in the hook and let already-joined members use a maintenance/strengthening effect instead of creating a second membership.
 
@@ -290,7 +261,7 @@ Required detail-view plumbing:
 
 - update the event-details text selectors in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - update the actual user-facing text in `localisation/english/chaosx_gui_l_english.yml`
-- if new generic event-log behavior is required, wire it through:
+- if new generic event-log behavior is needed, wire it through:
   - `common/scripted_effects/chaosx_settings_effects.txt`
   - `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
   - `interface/chaosx_events_log_popup.gui`
@@ -320,8 +291,8 @@ To add a new cluster:
 4. Map member events in `event_belongs_to_cluster`, from normal event ID to cluster ID.
 5. Add ordered member rows in `load_event_cluster_members`.
 6. Add or update cluster name/type/description scripted localisation and GUI localisation.
-7. If it requires custom runtime setup, add that branch to `event_cluster_prepare_runtime_context`.
-8. If it requires a custom cooldown or one-time state, update `mark_event_cluster_fired_state` and any availability logic in `can_event_cluster_fire`.
+7. If it needs custom runtime setup, add that branch to `event_cluster_prepare_runtime_context`.
+8. If it needs a custom cooldown or one-time state, update `mark_event_cluster_fired_state` and any availability logic in `can_event_cluster_fire`.
 
 Member attributes are parallel arrays in `load_event_cluster_members`:
 
@@ -342,19 +313,17 @@ Cluster firing rules:
 
 ### 7. Duration fields and constants
 
-Use `script_constants` for shared tuning, but remember that some duration fields reject `constant:` tokens, and some also reject direct file-local `@` constants.
+Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.
 
 Known sensitive fields:
 
 - `set_country_flag = { days = ... }`
 - `set_global_flag = { days = ... }`
-- any other timed field that throws `Malformed token` for `constant:category.key` or `@NAME`
+- any other timed field that throws `Malformed token` for either `constant:category.key` or a variable token
 
-For those fields, assign the file-scoped constant or script constant into a normal or temporary variable first, then pass the variable token to `days =`. Keep the value mirrored with the matching `common/script_constants/` tuning entry when that tuning is shared across files.
+For those fields, use a file-scoped `@NAME = literal` constant in the same script file and pass `days = @NAME`. Keep the value mirrored with the matching `common/script_constants/` tuning entry, and update both in the same change.
 
-If a duration field also rejects variable tokens in game, replace the timed flag with an immediate guard flag plus a hidden delayed cleanup event, then document that shape in the event doc.
-
-For short-lived runtime guard flags that must be readable immediately in the same effect chain, prefer setting the guard flag directly without `days`, then schedule a hidden delayed event to clear it. This is safer than building a timed `set_country_flag` through `meta_effect`, because the next immediate scripted checks must observe the guard before any queued mission/objective refresh runs.
+Do not work around this by setting a temp variable and passing `days = temp_name`; those fields can reject variable tokens too.
 
 ### 8. Super-event integration
 
@@ -469,7 +438,7 @@ Required tools and order:
 1. `pptx`
 2. `theme-factory`
 3. `canvas-design`
-4. LaTeX rendering when formulas or gameplay math must be shown clearly
+4. LaTeX rendering when formulas or gameplay math need to be shown clearly
 
 Visual standard:
 
@@ -529,10 +498,10 @@ Before closing an event task, verify:
 
 1. Event script is updated.
 2. Event classification/registration arrays are updated.
-3. Auto-firing or runtime hooks are updated when required.
-4. Shared effects, triggers, and constants are updated when required.
+3. Auto-firing or runtime hooks are updated if needed.
+4. Shared effects, triggers, and constants are updated if needed.
 5. Event-name and debug-name mappings are updated.
-6. Event log actor mapping is updated when required.
+6. Event log actor mapping is updated if needed.
 7. Event details window content is updated if the event appears there.
 8. Evolution logging and preview wiring are updated if relevant.
 9. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
