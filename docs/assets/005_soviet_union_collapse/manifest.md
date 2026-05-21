@@ -530,6 +530,19 @@ Returned Names decisions and ideas are active gameplay assets wired through exis
 | Returned Names category and decisions | `GFX_decision_category_soviet_collapse_returned_names`, `GFX_decision_soviet_collapse_open_museum_cabinets`, `GFX_decision_soviet_collapse_recruit_archivists`, `GFX_decision_soviet_collapse_commission_old_banner`, `GFX_decision_soviet_collapse_argue_khazar_toll_claim`, `GFX_decision_soviet_collapse_argue_sogdian_city_claim`, `GFX_decision_soviet_collapse_argue_khwarazmian_oasis_claim`, `GFX_decision_soviet_collapse_argue_alan_pass_claim`, `GFX_decision_soviet_collapse_reject_antiquarians` | placeholder reuse |
 | Returned Names ideas | `GFX_idea_soviet_collapse_returned_names_pressure`, `GFX_idea_soviet_collapse_archivist_claim_council`, `GFX_idea_soviet_collapse_old_banner_mobilization` | placeholder reuse |
 
+### Standalone Ancient Restoration Seed Assets
+
+`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration seed tags. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. The current visual package deliberately uses placeholder reuse so the tags load with stable paths and sprite names while bespoke historical-symbol art remains pending.
+
+| Asset surface | Current paths or sprite names | Status |
+| --- | --- | --- |
+| `KZR` flags | `gfx/flags/KZR.tga`, `gfx/flags/medium/KZR.tga`, `gfx/flags/small/KZR.tga` copied from `OGB` placeholder flags | placeholder reuse |
+| `SOG` flags | `gfx/flags/SOG.tga`, `gfx/flags/medium/SOG.tga`, `gfx/flags/small/SOG.tga` copied from `TNC` placeholder flags | placeholder reuse |
+| `KHW` flags | `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` copied from `BSC` placeholder flags | placeholder reuse |
+| `ALN` flags | `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` copied from `MRC` placeholder flags | placeholder reuse |
+| Ancient restoration portraits | `GFX_portrait_OGB_volga_restoration_council`, `GFX_portrait_TNC_turkestan_civic_council`, `GFX_portrait_BSC_oasis_war_council`, `GFX_portrait_MRC_mountain_republic_council` reused by the four history files | placeholder reuse |
+| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx` | unique sprite names with placeholder DDS reuse |
+
 ### Continuation Achievement Placeholder Asset Records
 
 The continuation achievements are wired with stable DDS paths and placeholder reuse until bespoke final achievement art is created. The dedicated achievement icon manifest records all 40 Event 005 achievement icon rows; the rows below call out the remaining placeholder-reuse achievement assets that block final asset completion.

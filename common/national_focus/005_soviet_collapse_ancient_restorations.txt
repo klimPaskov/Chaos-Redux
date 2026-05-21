@@ -1,0 +1,321 @@
+@soviet_collapse_focus_short = 4
+@soviet_collapse_focus_medium = 6
+@soviet_collapse_focus_long = 8
+
+# ============================================================================
+# CHAOS REDUX - EVENT 005 ANCIENT RESTORATION FOCUS TREE
+# ============================================================================
+# Compact shared tree for standalone ancient-restoration tags created by the
+# Soviet Collapse high-chaos Returned Names route.
+# ============================================================================
+
+focus_tree = {
+	id = soviet_collapse_ancient_restoration_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 20
+			has_country_flag = soviet_collapse_ancient_restoration_successor
+			OR = {
+				tag = KZR
+				tag = SOG
+				tag = KHW
+				tag = ALN
+			}
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 2304 y = 140 }
+	initial_show_position = { x = 10 y = 0 }
+
+	focus = {
+		id = ancient_restoration_emergency_council
+		icon = GFX_focus_soviet_collapse_ancient_emergency_council
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 0
+		cost = @soviet_collapse_focus_short
+		completion_reward = {
+			set_country_flag = ancient_restoration_emergency_council
+			add_ideas = soviet_collapse_returned_names_pressure
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	focus = {
+		id = ancient_restoration_legitimacy_debate
+		icon = GFX_focus_soviet_collapse_ancient_legitimacy_debate
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 1
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = ancient_restoration_emergency_council }
+		completion_reward = {
+			set_country_flag = ancient_restoration_legitimacy_debate
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = ancient_restoration_modern_administration
+		icon = GFX_focus_soviet_collapse_ancient_modern_administration
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = ancient_restoration_legitimacy_debate }
+		completion_reward = {
+			set_country_flag = ancient_restoration_modern_administration
+			add_ideas = soviet_collapse_archivist_claim_council
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = ancient_restoration_city_registers
+		icon = GFX_focus_soviet_collapse_ancient_city_registers
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_modern_administration }
+		completion_reward = {
+			set_country_flag = ancient_restoration_city_registers
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ancient_restoration_market_roads
+		icon = GFX_focus_soviet_collapse_ancient_market_roads
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_modern_administration }
+		completion_reward = {
+			set_country_flag = ancient_restoration_market_roads
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ancient_restoration_workshop_compact
+		icon = GFX_focus_soviet_collapse_ancient_workshop_compact
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY }
+		x = 8
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_modern_administration }
+		completion_reward = {
+			set_country_flag = ancient_restoration_workshop_compact
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ancient_restoration_heritage_guard
+		icon = GFX_focus_soviet_collapse_ancient_heritage_guard
+		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
+		x = 16
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = ancient_restoration_legitimacy_debate }
+		completion_reward = {
+			set_country_flag = ancient_restoration_heritage_guard
+			add_ideas = soviet_collapse_old_banner_mobilization
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = ancient_restoration_memory_site
+		icon = GFX_focus_soviet_collapse_ancient_memory_site
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 16
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_heritage_guard }
+		completion_reward = {
+			set_country_flag = ancient_restoration_memory_site
+			random_owned_controlled_state = {
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ancient_restoration_neighbor_letters
+		icon = GFX_focus_soviet_collapse_ancient_neighbor_letters
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 2
+		cost = @soviet_collapse_focus_short
+		prerequisite = { focus = ancient_restoration_legitimacy_debate }
+		completion_reward = {
+			set_country_flag = ancient_restoration_neighbor_letters
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_factory_ancient.soviet_pressure_small } }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ancient_restoration_league_bargain
+		icon = GFX_focus_soviet_collapse_ancient_league_bargain
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 3
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_neighbor_letters }
+		completion_reward = {
+			set_country_flag = ancient_restoration_league_bargain
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
+			soviet_collapse_update_consolidated_republic_ideas = yes
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ancient_restoration_old_border_files
+		icon = GFX_focus_soviet_collapse_ancient_old_border_files
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 4
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_city_registers }
+		prerequisite = { focus = ancient_restoration_memory_site }
+		prerequisite = { focus = ancient_restoration_league_bargain }
+		completion_reward = {
+			set_country_flag = ancient_restoration_old_border_files
+			if = { limit = { tag = KZR } add_state_claim = 256 add_state_claim = 250 }
+			if = { limit = { tag = SOG } add_state_claim = 585 add_state_claim = 732 }
+			if = { limit = { tag = KHW } add_state_claim = 584 add_state_claim = 405 }
+			if = { limit = { tag = ALN } add_state_claim = 821 add_state_claim = 827 }
+		}
+		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ancient_restoration_guard_old_routes
+		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
+		search_filters = { FOCUS_FILTER_ARMY }
+		x = 10
+		y = 5
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_old_border_files }
+		completion_reward = {
+			set_country_flag = ancient_restoration_guard_old_routes
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.large_infantry_equipment }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ancient_restoration_symbolic_state
+		icon = GFX_focus_soviet_collapse_ancient_symbolic_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ancient_restoration_guard_old_routes }
+		mutually_exclusive = { focus = ancient_restoration_expansionist_state }
+		completion_reward = {
+			set_country_flag = ancient_restoration_symbolic_state
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.4 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+		}
+	}
+
+	focus = {
+		id = ancient_restoration_expansionist_state
+		icon = GFX_focus_soviet_collapse_ancient_expansionist_state
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
+		x = 14
+		y = 6
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ancient_restoration_guard_old_routes }
+		mutually_exclusive = { focus = ancient_restoration_symbolic_state }
+		completion_reward = {
+			set_country_flag = ancient_restoration_expansionist_state
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+			}
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = ancient_restoration_restoration_survives
+		icon = GFX_focus_soviet_collapse_ancient_restoration_survives
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_symbolic_state }
+		completion_reward = {
+			set_country_flag = ancient_restoration_restoration_survives
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = ancient_restoration_returned_names_endgame
+		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 7
+		cost = @soviet_collapse_focus_medium
+		prerequisite = { focus = ancient_restoration_expansionist_state }
+		completion_reward = {
+			set_country_flag = ancient_restoration_returned_names_endgame
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			if = {
+				limit = { NOT = { has_country_flag = soviet_collapse_returned_names_claim_lines_active } }
+				set_country_flag = soviet_collapse_returned_names_claim_lines_active
+			}
+		}
+		ai_will_do = { base = 7 }
+	}
+}
