@@ -2,7 +2,7 @@
 
 Audit date: 2026-05-21
 
-This report closes the final clean merged Soviet Collapse package from `tmp/soviet_collapse_final_clean_merged_spec_package/specs/`. It records source-level completion evidence from the current worktree. It does not claim an external live playthrough; the repository workflow leaves live-session verification to the user.
+This report records source-level evidence for the final clean merged Soviet Collapse package from `tmp/soviet_collapse_final_clean_merged_spec_package/specs/`. A current audit found that the package is not yet closed because the final spec requires unique focus icon assignments and the current source still has duplicate icon assignments. It does not claim an external live playthrough; the repository workflow leaves live-session verification to the user.
 
 ## 1. Source files read
 
@@ -14,7 +14,7 @@ Event 005 changes span `events/005_soviet_collapse.txt`, scripted effects/trigge
 
 ## 3. Implementation ledger path
 
-The requirement ledger is `docs/events/005_soviet_collapse_full_implementation_ledger.md`. All implementation rows are marked complete by source evidence, including asset coverage and validation scenarios.
+The requirement ledger is `docs/events/005_soviet_collapse_full_implementation_ledger.md`. The unique focus icon assignment row remains partially complete pending replacement or distinct-variant handling for duplicate focus icon assignments.
 
 ## 4. Country package coverage
 
@@ -30,7 +30,7 @@ High-chaos and evolved packages cover Kronstadt, Green Army, UDC, SDZ, Basmachi,
 
 ## 7. Focus tree rewrite summary
 
-Current source recount finds 1,692 focuses across 41 Event 005 trees. Every counted focus has an icon assignment, completion reward, `ai_will_do`, coordinates, localisation coverage, and resolved references in the current audits.
+Current source recount finds 1,692 focuses across 41 Event 005 trees. Every counted focus has an icon assignment, completion reward, `ai_will_do`, coordinates, localisation coverage, and resolved references in the current audits. A stricter duplicate-icon audit now finds 1,096 unique icon sprite names across those 1,692 focus assignments, leaving 596 duplicate assignments in 203 duplicate groups that still need unique variants or a documented design change from the final spec.
 
 ## 8. Route coverage table for every major focus tree
 
@@ -55,7 +55,7 @@ Current source recount finds 1,692 focuses across 41 Event 005 trees. Every coun
 
 ## 9. Unique focus icon coverage
 
-The validation report records 1,692 focus icon assignments. The asset manifest records 581/581 unique Event 005-like DDS sprite references existing and documents focus icon packages for shared, republic, regional, custom, factory, OGB, special dead-state, revenant, railway, and ancient-restoration trees.
+The validation report records 1,692 focus icon assignments, but the current duplicate-icon audit records only 1,096 unique icon sprite names. The first cleanup pass replaced 19 duplicate Kazakhstan Steppe Federation assignments with unique generated icons. The largest remaining groups include `GFX_kaz_soviet_collapse_military` used 19 times, `GFX_blr_soviet_collapse_corridor` used 14 times, and `GFX_focus_soviet_collapse_common_front_timetables` used 13 times. This fails the literal final-spec requirement that every focus have a unique icon assignment unless the spec is explicitly amended to allow branch-level reuse.
 
 ## 10. Remove-idea tooltip cleanup
 
@@ -107,7 +107,7 @@ The news/report audit maps local leagues, liaison offices, terminal subject rele
 
 ## 22. Asset coverage
 
-The asset manifest records focus, idea, decision, flag, portrait, faction emblem, achievement, news, report, super-event, and UI/progression coverage. Current checks show 581/581 unique Event 005-like DDS references exist and 32/32 custom country packages have flags and portraits.
+The asset manifest records focus, idea, decision, flag, portrait, faction emblem, achievement, news, report, super-event, and UI/progression coverage. Current checks show 581/581 unique Event 005-like DDS references exist and 32/32 custom country packages have flags and portraits. Returned Names decision/category/idea placeholder reuse has been replaced with dedicated generated DDS assets, and 19 Kazakhstan Steppe Federation focus icon duplicates have dedicated generated DDS variants. Focus icon coverage remains incomplete against the final unique-assignment requirement because 596 focus assignments still reuse sprite names.
 
 ## 23. Achievement implementation
 
@@ -119,16 +119,16 @@ The AI audit records 1,692 focus blocks with `ai_will_do`, 855 contextual focus 
 
 ## 25. Validation scenario results
 
-The validation report lists all 28 required scenarios with expected result, observed source evidence, status, and blocker columns. All 28 rows currently record `source_pass`.
+The validation report lists all 28 required scenarios with expected result, observed source evidence, status, and blocker columns. Scenario 26 now records `source_partial` because the focus-icon uniqueness audit found duplicate focus icon assignments.
 
 ## 26. Simplifications and deviations
 
-No source-level simplifications or fallback substitutions remain in the completed package. Ordinary/internal vanilla republics deliberately use vanilla country assets for their base tag surface and receive Event 005 runtime focus, decision, faction, report, and news assets. Optional art-pass checkbox choices remain optional and do not block completion because processed PNGs, final DDS files, sprite definitions, and source rows exist for wired assets.
+The remaining source-level deviation is focus icon uniqueness. Every focus has an icon field, but 596 of the 1,692 focus assignments reuse a sprite name already used by another focus. Returned Names placeholder icon reuse has been resolved with dedicated generated assets, and the Kazakhstan Steppe Federation duplicate group has been reduced to a single base use. Ordinary/internal vanilla republics deliberately use vanilla country assets for their base tag surface and receive Event 005 runtime focus, decision, faction, report, and news assets.
 
 ## 27. Blockers
 
-No source blockers remain for the final clean merged package. Live-session feel, pacing, and UI scanning remain practical user verification surfaces, not unresolved source implementation blockers.
+One source blocker remains for the final clean merged package: unique focus icon assignment coverage. The current source has 1,692 focus icon assignments but only 1,077 unique sprite names. Live-session feel, pacing, and UI scanning remain practical user verification surfaces after source completion.
 
 ## 28. Remaining work
 
-No required source implementation work remains for Event 005 in this pass. Future optional polish can replace sourced or reused art with bespoke art and tune live pacing after play, but that is outside the required final clean merged package.
+Required source implementation work remains for Event 005: replace the 596 duplicate focus icon assignments with unique, appropriate icon variants or get explicit approval to relax the final-spec requirement. Future live pacing and UI feel review remains separate practical validation after source completion.
