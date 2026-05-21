@@ -5602,6 +5602,92 @@ soviet_collapse_iron_commissariat_of_the_dead = {
 }
 
 
+soviet_collapse_red_martyrs_resurrection_cult = {
+	rmc_collect_martyr_testimonies = {
+		icon = GFX_decision_rmc_collect_martyr_testimonies
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		}
+		visible = { tag = RMC is_soviet_collapse_active = yes }
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_low_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_consolidate_claim = yes
+			add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			custom_effect_tooltip = rmc_collect_martyr_testimonies_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = rmc_martyr_legitimacy value = constant:soviet_collapse_factory_ancient.large_mandate_gain compare = less_than }
+			}
+		}
+	}
+
+	rmc_raise_reliquary_guard = {
+		icon = GFX_decision_rmc_raise_reliquary_guard
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		visible = { tag = RMC is_soviet_collapse_active = yes }
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
+			add_to_variable = { rmc_resurrection_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			custom_effect_tooltip = rmc_raise_reliquary_guard_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } }
+			}
+		}
+	}
+
+	rmc_proclaim_resurrection_communes = {
+		icon = GFX_decision_rmc_proclaim_resurrection_communes
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		visible = { tag = RMC is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_red_martyrs_endgame } }
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium_blocked
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
+			soviet_collapse_complete_red_martyrs_endgame = yes
+			custom_effect_tooltip = rmc_proclaim_resurrection_communes_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = rmc_martyr_legitimacy value = constant:soviet_collapse_factory_ancient.large_mandate_gain compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+
 soviet_collapse_arctic_naval_directorate = {
 	ard_consolidate_claim = {
 		icon = GFX_decision_ard_consolidate_claim

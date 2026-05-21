@@ -17,11 +17,11 @@ Current parser count across Event 005 focus files:
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_moldova_focus_tree` | 48 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | 62 |
 | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_breakaway_focus_tree` | 36 |
-| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 22 custom successor trees | 18-47 each |
+| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 23 custom successor trees | 18-47 each |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 58 |
 
-The current shell recount counts 1578 total focuses across 34 trees.
+The current shell recount counts 1596 total focuses across 35 trees.
 
 ## Route Coverage
 
@@ -37,11 +37,13 @@ The internal republic tree covers the vanilla-supported internal Union Unmade ta
 
 The Iron Commissariat of the Dead custom tree is an 18-focus death-state tree with Ryazan grave-office authority, Penza memorial workshops, dead-roll bureaucracy, black-seal requisitions, funeral guards, memorial battalions, grieving-city diplomacy, last-address league work, unburied-front claims, and settlement/extreme endgame choices.
 
+The Red Martyrs' Resurrection Cult custom tree is an 18-focus martyr-cult tree with Tambov witness-cell authority, Lipetsk reliquary workshops, martyr-roll communes, blood-oath requisitions, reliquary guards, dead volunteer columns, mourning-town diplomacy, burial-road claims, procession columns, and settlement/extreme resurrection endgame choices.
+
 ## Duplicate And Reward Audit
 
 Current non-Python evidence:
 
-- Event 005 focus recount: 1578 focuses across the Event 005 focus files after the Iron Commissariat package.
+- Event 005 focus recount: 1596 focuses across the Event 005 focus files after the Red Martyrs package.
 - Kazakhstan tree recount: 92 focuses, 92 completion rewards, and 92 `ai_will_do` blocks.
 - Kazakhstan focus references resolve to focus IDs defined inside the same tree.
 - Kazakhstan focus IDs have matching name and description localisation.
