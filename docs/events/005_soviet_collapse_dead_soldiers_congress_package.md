@@ -30,11 +30,11 @@ Required asset wiring:
 
 - Flags: `gfx/flags/DSC.tga`, ideology variants, `medium/`, and `small/`.
 - Leader portrait: `gfx/leaders/005_soviet_collapse/DSC_leader.dds`, sprite `GFX_portrait_DSC_congress_of_dead_regiments`.
-- Focus icon package: `gfx/interface/goals/soviet_collapse/005_dsc_custom_splinter_focus.dds`, sprites `GFX_focus_DSC_*` and `GFX_focus_DSC_*_shine`.
+- Focus icons: 18 per-focus `gfx/interface/goals/soviet_collapse/dsc_*.dds` files, with normal and `_shine` sprites for every `GFX_focus_DSC_*` key.
 - Idea icon package: `gfx/interface/ideas/soviet_collapse/005_dsc_custom_splinter_idea.dds`, sprites `GFX_idea_dsc_*`.
 - Decision icon package: `gfx/interface/decisions/soviet_collapse/005_dsc_custom_splinter_decision.dds`, sprites `GFX_decision_dsc_*`.
 
-The current DDS files are wired and present. The package still uses one generated tag emblem across the DSC focus tree, so distinct final per-focus art remains pending if final acceptance requires unique rendered art rather than unique sprite assignments that share one source texture.
+The current DDS files are wired and present. The package no longer uses one generated tag emblem across the DSC focus tree. The current per-focus icons use themed existing DDS source art copied into stable DSC-specific paths; a later bespoke art pass can supersede those DDS files without changing focus IDs or gameplay script.
 
 ## Validation Notes
 
@@ -42,6 +42,6 @@ Source validation for this package covers tag registration, country/history file
 
 ## Future Plans
 
-- Replace the shared DSC focus-emblem texture with distinct final focus icons for each focus identity.
+- Replace the themed DDS reuse with fully bespoke DSC focus art if a later art pass requires original rendered icons for every focus identity.
 - Add late-game border settlement events for the soldiers' road claims if the broader Event 005 high-chaos pass expands dead-state diplomacy.
 - Consider a shared dead-state interaction between `ICD`, `RMC`, and `DSC` once all death-state packages have final art and route audits.
