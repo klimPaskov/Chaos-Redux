@@ -2798,6 +2798,7 @@ soviet_collapse_apply_regional_faction_invite = {
 	if = { limit = { has_country_flag = soviet_collapse_caucasus_league_founder } soviet_collapse_invite_caucasus_regional_partners = yes }
 	if = { limit = { has_country_flag = soviet_collapse_central_asian_league_founder } soviet_collapse_invite_central_asian_regional_partners = yes }
 	soviet_collapse_apply_regional_faction_soviet_pressure = yes
+	soviet_collapse_maybe_resolve_regional_faction_goal = yes
 	country_event = { id = chaosx.nr5.38 }
 }
 
@@ -2813,6 +2814,7 @@ soviet_collapse_apply_regional_faction_coordinate = {
 		soviet_collapse_update_consolidated_republic_ideas = yes
 	}
 	soviet_collapse_apply_regional_faction_soviet_pressure = yes
+	soviet_collapse_maybe_resolve_regional_faction_goal = yes
 	country_event = { id = chaosx.nr5.39 }
 }
 
@@ -2849,10 +2851,91 @@ soviet_collapse_set_regional_faction_logistics_goal = {
 	soviet_collapse_apply_regional_faction_soviet_pressure = yes
 }
 
+soviet_collapse_clear_regional_faction_goal = {
+	clr_country_flag = soviet_collapse_regional_faction_defense_goal
+	clr_country_flag = soviet_collapse_regional_faction_recognition_goal
+	clr_country_flag = soviet_collapse_regional_faction_logistics_goal
+	set_temp_variable = { soviet_collapse_regional_goal_cooldown_days = constant:soviet_collapse_regional_faction.goal_resolution_cooldown_days }
+	meta_effect = {
+		text = {
+			set_country_flag = {
+				flag = soviet_collapse_regional_faction_goal_recently_resolved
+				days = [GOAL_COOLDOWN_DAYS]
+			}
+		}
+		GOAL_COOLDOWN_DAYS = "[?soviet_collapse_regional_goal_cooldown_days|.0]"
+	}
+}
+
+soviet_collapse_apply_regional_faction_goal_success = {
+	if = {
+		limit = { has_country_flag = soviet_collapse_regional_faction_defense_goal }
+		add_war_support = constant:soviet_collapse_republic_focus.war_support_small
+		every_other_country = {
+			limit = { is_in_faction_with = ROOT is_soviet_collapse_regional_faction_member = yes }
+			add_manpower = constant:soviet_collapse_regional_faction.war_manpower_reward
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_regional_faction.war_equipment_reward }
+		}
+	}
+	if = {
+		limit = { has_country_flag = soviet_collapse_regional_faction_recognition_goal }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_regional_faction.recognition_goal_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_regional_faction.goal_success_resilience }
+	}
+	if = {
+		limit = { has_country_flag = soviet_collapse_regional_faction_logistics_goal }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_regional_faction.depot_gain }
+		add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+	}
+	set_country_flag = soviet_collapse_regional_faction_goal_success_recorded
+	add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.goal_success_cohesion }
+	add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.goal_success_tension }
+	every_other_country = {
+		limit = { is_in_faction_with = ROOT is_soviet_collapse_regional_faction_member = yes }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_regional_faction.resilience_gain }
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_gain }
+		soviet_collapse_update_consolidated_republic_ideas = yes
+	}
+	soviet_collapse_clear_regional_faction_goal = yes
+	soviet_collapse_apply_regional_faction_soviet_pressure = yes
+	country_event = { id = chaosx.nr5.41 }
+}
+
+soviet_collapse_apply_regional_faction_goal_failure = {
+	set_country_flag = soviet_collapse_regional_faction_goal_failure_recorded
+	add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.goal_failure_cohesion }
+	add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.goal_failure_tension }
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_regional_faction.goal_failure_recognition }
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_regional_faction.goal_failure_depot }
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_regional_faction.soviet_foreign_pressure }
+			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_objective_pressure.league_failure_league }
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+	soviet_collapse_clear_regional_faction_goal = yes
+	country_event = { id = chaosx.nr5.42 }
+}
+
+soviet_collapse_maybe_resolve_regional_faction_goal = {
+	if = {
+		limit = { has_soviet_collapse_regional_faction_goal_success = yes }
+		soviet_collapse_apply_regional_faction_goal_success = yes
+	}
+	else_if = {
+		limit = { has_soviet_collapse_regional_faction_goal_failure = yes }
+		soviet_collapse_apply_regional_faction_goal_failure = yes
+	}
+}
+
 soviet_collapse_reduce_regional_faction_tension = {
 	add_command_power = constant:soviet_collapse_regional_faction.tension_command_power_spend
 	add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
 	add_stability = constant:soviet_collapse_republic_focus.stability_small
+	soviet_collapse_maybe_resolve_regional_faction_goal = yes
 	country_event = { id = chaosx.nr5.40 }
 }
 
@@ -2907,6 +2990,7 @@ soviet_collapse_call_regional_league_defensive_war = {
 			soviet_collapse_maybe_release_threat_breakaway = yes
 		}
 	}
+	soviet_collapse_maybe_resolve_regional_faction_goal = yes
 	country_event = { id = chaosx.nr5.43 }
 }
 

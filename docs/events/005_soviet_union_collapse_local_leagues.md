@@ -9,8 +9,9 @@ Event 005 uses local leagues as the regional layer between isolated breakaway re
 1. A breakaway republic or eligible local successor becomes a regional faction candidate.
 2. The relevant founding decision creates the faction, marks the founder and members, recruits aligned partners, strengthens each member's staged League coordination, and raises Soviet-facing League pressure.
 3. Faction leaders can invite partners, coordinate goals, adopt defense, recognition, or logistics priorities, and settle internal tension.
-4. Under high threat or direct war pressure, regional members can call a defensive war against Moscow. The call arms members, brings faction partners into the war, clears the progressive-release cooldown, and immediately checks the MTTH release scheduler.
-5. Kazakhstan is restricted from Central Asian League membership and release pressure until at least three smaller Central Asian republics are already free.
+4. Active goals can resolve as successes or failures. Defense succeeds through an active anti-Soviet defensive war, recognition succeeds through sufficient recognition progress, and logistics succeeds through depot control. High tension, collapsed cohesion, invalid calm defense policy, patron-dominated recognition failure, or failed depot logistics can break the current program.
+5. Under high threat or direct war pressure, regional members can call a defensive war against Moscow. The call arms members, brings faction partners into the war, clears the progressive-release cooldown, and immediately checks the MTTH release scheduler.
+6. Kazakhstan is restricted from Central Asian League membership and release pressure until at least three smaller Central Asian republics are already free.
 
 ## Interactions
 
@@ -21,6 +22,8 @@ Foundation is gated by pressure through `is_soviet_collapse_regional_league_foun
 The Baltic League, Caucasus League, and Central Asian League keep their existing scripted keys and wired sprites for asset compatibility, but player-facing text uses league names throughout.
 
 League formation is reported through normal news events, not super-events. The Baltic, Caucasus, and Central Asian founding helpers fire `chaosx.nr5.30`, `chaosx.nr5.31`, and `chaosx.nr5.32`; the Steppe Federation endgame report uses `chaosx.nr5.36`. The retired league super-event helpers and sprite/localisation mappings are not active.
+
+Goal resolution is reported through normal report events. Successful common programs fire `chaosx.nr5.41`; failed or patron-disputed programs fire `chaosx.nr5.42`. The supporting source audit is `docs/events/005_soviet_collapse_faction_goal_audit.md`.
 
 ## Icons
 

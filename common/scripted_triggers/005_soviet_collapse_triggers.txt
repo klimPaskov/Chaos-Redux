@@ -853,6 +853,66 @@ is_soviet_collapse_regional_faction_leader = {
 	is_faction_leader = yes
 }
 
+has_active_soviet_collapse_regional_faction_goal = {
+	OR = {
+		has_country_flag = soviet_collapse_regional_faction_defense_goal
+		has_country_flag = soviet_collapse_regional_faction_recognition_goal
+		has_country_flag = soviet_collapse_regional_faction_logistics_goal
+	}
+}
+
+has_soviet_collapse_regional_faction_goal_success = {
+	is_soviet_collapse_regional_faction_leader = yes
+	has_active_soviet_collapse_regional_faction_goal = yes
+	NOT = { has_country_flag = soviet_collapse_regional_faction_goal_recently_resolved }
+	OR = {
+		AND = {
+			has_country_flag = soviet_collapse_regional_faction_defense_goal
+			has_country_flag = soviet_collapse_regional_league_defensive_war_called
+			has_war_with = SOV
+		}
+		AND = {
+			has_country_flag = soviet_collapse_regional_faction_recognition_goal
+			check_variable = { var = soviet_collapse_recognition_progress value = constant:soviet_collapse_regional_faction.goal_success_recognition compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = soviet_collapse_regional_faction_logistics_goal
+			check_variable = { var = soviet_collapse_depot_control value = constant:soviet_collapse_regional_faction.goal_success_depot compare = greater_than_or_equals }
+		}
+	}
+}
+
+has_soviet_collapse_regional_faction_goal_failure = {
+	is_soviet_collapse_regional_faction_leader = yes
+	has_active_soviet_collapse_regional_faction_goal = yes
+	NOT = { has_country_flag = soviet_collapse_regional_faction_goal_recently_resolved }
+	OR = {
+		check_variable = { var = soviet_collapse_regional_faction_tension value = constant:soviet_collapse_regional_faction.goal_failure_tension_threshold compare = greater_than_or_equals }
+		check_variable = { var = soviet_collapse_regional_faction_cohesion value = constant:soviet_collapse_regional_faction.goal_failure_cohesion_floor compare = less_than }
+		AND = {
+			has_country_flag = soviet_collapse_regional_faction_defense_goal
+			SOV = {
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+			}
+			NOT = { has_war_with = SOV }
+		}
+		AND = {
+			has_country_flag = soviet_collapse_regional_faction_recognition_goal
+			SOV = {
+				check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_breakaway_support.high_foreign_appetite_gate compare = greater_than_or_equals }
+			}
+			check_variable = { var = soviet_collapse_recognition_progress value = constant:soviet_collapse_regional_faction.recognition_goal_gain compare = less_than }
+		}
+		AND = {
+			has_country_flag = soviet_collapse_regional_faction_logistics_goal
+			SOV = {
+				check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.league_threat_gate compare = greater_than }
+			}
+			check_variable = { var = soviet_collapse_depot_control value = constant:soviet_collapse_regional_faction.depot_gain compare = less_than }
+		}
+	}
+}
+
 is_soviet_collapse_regional_faction_member = {
 	OR = {
 		has_country_flag = soviet_collapse_regional_faction
