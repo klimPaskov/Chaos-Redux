@@ -4,7 +4,7 @@
 
 The event script uses stable sprite and idea names. The active news, report, and primary super-event image candidates are sourced, processed, converted, and wired. Dedicated idea, decision, and shared focus icon sprite names are wired through stable filenames, with generated source PNGs, processed previews, final DDS files, and `.gfx` entries in place for active gameplay content.
 
-The package now contains sourced news, report, and super-event images under `docs/assets/005_soviet_union_collapse/`, event-picture DDS files under `gfx/event_pictures/`, super-event DDS files under `gfx/super_events/`, and generated active idea, decision, and shared focus icon DDS files under the normal interface folders.
+The package now contains sourced news, report, and super-event images under `docs/assets/005_soviet_union_collapse/`, event-picture DDS files under `gfx/event_pictures/`, super-event DDS files under `gfx/super_events/`, generated active idea, decision, and shared focus icon DDS files under the normal interface folders, and generated ordinary/internal republic flag TGA files under `gfx/flags/`.
 
 The active idea, decision, and shared focus icon package is generated from scratch with Codex built-in `image_gen`, cleaned, centered, converted, and wired. Event 005 custom country packages, factory states, special actors, and ancient restorations now have documented flag, portrait/council, focus, idea, and decision asset coverage in this manifest or in the republic focus and influence expansion ledger linked below.
 
@@ -25,27 +25,138 @@ Optional source/crop choices can be recorded in the art-pass sheet, but empty bo
 
 ## Final Asset Reconciliation
 
-This section reconciles the Part 7 visible-asset checklist against the current implementation surface. It does not add new art requirements where the route intentionally uses vanilla country art or generated Event 005 package art that is already wired and documented.
+This section reconciles the Part 7 visible-asset checklist against the current implementation surface.
+
+Klim follow-up scope, added 2026-05-22: every country created or used by Event 005 must have a unique base flag and unique ideology flags, and every new/Event 005 leader portrait must be unique without reusing vanilla leader portraits. Duplicate or missing ideology flags and reused vanilla portraits are validation blockers before final completion.
 
 Source audit status:
 
-- Event 005-like sprite references in `interface/005_soviet_collapse*.gfx`, `interface/chaosx_pictures.gfx`, `interface/chaosx_super_events.gfx`, and `interface/chaosx_achievements.gfx`: `581/581` unique referenced DDS files exist.
+- Event 005 focus/interface sprite references in `interface/005_soviet_collapse*.gfx`: `860/860` unique referenced DDS files exist in the direct texturefile audit.
 - Custom Event 005 country package tags with normal, medium, small flags and leader/council portrait DDS present: `32/32` (`CFR`, `MFR`, `OGB`, `KZR`, `SOG`, `KHW`, `ALN`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, `NLC`).
-- Ordinary and vanilla-supported internal republic tags use vanilla tag registration, history, localisation, and large/medium/small flag assets, then receive Event 005 runtime focus, decision, faction, report, and news assets. The audited tags are `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`.
+- New stricter flag audit: the previous vanilla-asset acceptance for ordinary/internal republics no longer satisfies the active validation scope. Generated fictional base and ideology flags now exist for ordinary/internal tags `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. The previous custom ancient-restoration ideology gap for `KZR`, `SOG`, `KHW`, and `ALN` is resolved by generated fictional variants documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
+- New portrait reuse audit: `gfx/leaders/005_soviet_collapse/` no longer has vanilla hash matches for `KZR_leader.dds`, `SOG_leader.dds`, `OGB_leader.dds`, `KHW_leader.dds`, or `ALN_leader.dds` after the generated replacement pass documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
 
 | Asset surface | Coverage evidence | Status |
 | --- | --- | --- |
-| Focus icons | `1692` Event 005 focus blocks have icon assignments; shared, Ukraine, Belarus, Kazakhstan, regional, custom splinter, factory, OGB, PRA/TSC/ICD/RMC/DSC/NRF, and ancient-restoration icon packages are wired through `interface/005_soviet_collapse*.gfx`. A duplicate-icon audit now finds `1096` unique focus icon sprite names, leaving `596` duplicate assignments to resolve before this satisfies the final unique-assignment requirement. | partially complete |
+| Focus icons | `1696` Event 005 focus blocks have icon assignments; shared, Ukraine, Belarus, Kazakhstan, regional, custom splinter, factory, OGB, PRA/TSC/ICD/RMC/DSC/NRF, and ancient-restoration icon packages are wired through `interface/005_soviet_collapse*.gfx`. A duplicate-icon audit now finds `1480` unique focus icon sprite names, leaving `216` duplicate extra assignments to resolve before this satisfies the final unique-assignment requirement. | partially complete |
 | Idea and national spirit icons | Active idea icon rows are generated, processed, converted, and wired in `interface/005_soviet_collapse_icons.gfx`; custom package idea emblems and special-package idea DDS paths are documented below. | complete |
 | Decision and decision category icons | Active Soviet, breakaway, foreign patron, volunteer, regional-faction, custom-package, OGB, and special-package decision icons are wired through stable DDS paths and `.gfx` sprite names. | complete |
-| Flags and route/ideology flags | Vanilla republics use vanilla flag sets; Event 005 custom country tags have normal, medium, and small flags, with ideology variants where the package defines them. | complete |
-| Leader, council, and factory portraits | Custom splinter, factory, ancient-restoration, OGB, dead-state, railway, Tunguska, and revenant-fleet leader/council DDS files are present under `gfx/leaders/005_soviet_collapse/` and wired through country history or sprite files. | complete |
+| Flags and route/ideology flags | Active validation requires unique base and ideology flags for every country created or used by Event 005. Generated fictional ideology variants exist for ancient restoration tags `KZR`, `SOG`, `KHW`, and `ALN`; generated fictional base plus ideology variants exist for ordinary/internal tags `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`; and the continuation audit generated distinct ideology variants for custom successor tags `CFR`, `MFR`, `OGB`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, and `NLC`. | complete |
+| Leader, council, and factory portraits | Custom splinter, factory, ancient-restoration, OGB, dead-state, railway, Tunguska, and revenant-fleet portrait files are present. The 2026-05-23 generated pass replaced `KZR`, `SOG`, `OGB`, `KHW`, and `ALN` vanilla-hash portraits with unique fictional council portraits. | complete |
 | Faction and local-league emblems | Free Republics' League, Baltic League, Caucasus League, Steppe Federation, Black International, Free Soviet Congress, Eastern Buffer Coalition, and Iron Production Bloc regular and miniature faction logos are wired in `interface/005_soviet_collapse_faction_logos.gfx`. | complete |
 | News images | Seven active news images are wired: opening collapse, Free Republics' League, Union Unmade, and four republic-route capstone news crops. Ordinary league and route capstone presentation uses news events rather than retired super-event slots. | complete |
 | Report images | Six active report images are sourced, processed, converted, and wired through `interface/chaosx_pictures.gfx`. | complete |
 | Super-event images | Active slots `14`, `15`, `17`, and `18` are wired with DDS files, sprite definitions, selectors, localisation, and documented audio slots. Retired ordinary league and republic-route super-event art is preserved only for traceability. | complete |
 | Achievement icons | `40` Event 005 achievements have completed, grey, and not-eligible sprites for `120` DDS references, plus refreshed contact sheets and a dedicated achievement icon manifest. | complete |
 | UI/progression assets | Event details, event-log/evolution text, news/report presentation, and faction logos use existing Event 005 UI sprite surfaces; no separate scripted-GUI bitmap is required by the current source package. | complete |
+
+## Generated Replacement Pass, 2026-05-23
+
+Bounded scope: generated fictional/council portraits and fictional route/ideology flag variants for the Event 005 assets previously called out by the final completion report. This pass did not edit gameplay, `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files.
+
+Inspected references and source surfaces: `.agents/skills/chaos-redux-event-assets/assets/flags`, existing Event 005 leader/flag contact sheets, existing generated Event 005 base flags, `gfx/leaders/005_soviet_collapse/`, `gfx/flags/`, spec parts 6-7, and the Event 005 final completion report.
+
+Contact sheets:
+
+- `docs/assets/005_soviet_union_collapse/contact_sheets/event005_generated_replacement_leaders.png`
+- `docs/assets/005_soviet_union_collapse/contact_sheets/event005_generated_ancient_ideology_flags.png`
+
+## Generated Custom Successor Ideology Flag Package, 2026-05-23
+
+Bounded scope: generated-asset derivative ideology flag variants for custom Event 005 successor tags whose ideology files were present but byte-identical to their base flag. This pass did not edit gameplay, `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files.
+
+Source mode: generated-asset derivative from existing generated Event 005 base flags. The source flags were generated assets, then each ideology route received a distinct fictional route color treatment and simple invented mark. Generation is appropriate because these are fictional alternate-history successor-state flags.
+
+Inspected reference folder: `.agents/skills/chaos-redux-event-assets/assets/flags`.
+
+Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_generated_custom_ideology_flags.png`.
+
+Path patterns for every listed tag and ideology:
+
+- Source PNG: `docs/assets/005_soviet_union_collapse/source_png/generated_custom_ideology_flags/<TAG>_<ideology>_source.png`
+- Processed PNG previews: `docs/assets/005_soviet_union_collapse/processed_png/generated_custom_ideology_flags/<TAG>_<ideology>_<normal|medium|small>.png`
+- Final normal TGA: `gfx/flags/<TAG>_<ideology>.tga`
+- Final medium TGA: `gfx/flags/medium/<TAG>_<ideology>.tga`
+- Final small TGA: `gfx/flags/small/<TAG>_<ideology>.tga`
+
+Ideology suffixes: `communism`, `democratic`, `fascism`, and `neutrality`. Intended use for every row is Event 005 custom Soviet-collapse successor country ideology flags. Blockers: none for this package.
+
+Tags completed: `CFR`, `MFR`, `OGB`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, and `NLC`.
+
+Validation note: direct audit found `825/825` expected Event 005 scoped flag files present across 32 custom tags and 23 ordinary/internal tags, correct normal `82x52`, medium `41x26`, and small `10x7` dimensions, 32-bit TGA output, zero vanilla flag hash matches, and zero duplicate base-vs-ideology variants per audited tag.
+
+## Generated Ordinary/Internal Republic Flag Package, 2026-05-23
+
+Bounded scope: generated fictional 1930s alternate-history base and ideology flag variants for ordinary/internal Event 005 tags that lacked bespoke flag coverage. This pass did not edit gameplay, `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files.
+
+Source mode: Codex built-in `$imagegen` generated one fictional flag source sheet, then the sheet was cropped into tag-specific generated source PNGs and processed into HOI4 country flag TGA files. Generation is appropriate because these are fictional alternate-history successor-state flags rather than historical flags or documentary assets.
+
+Inspected reference folder: `.agents/skills/chaos-redux-event-assets/assets/flags`. Existing HOI4 flag format was checked against vanilla and Chaos Redux TGA files: normal `82x52`, medium `41x26`, small `10x7`, 8-bit RGBA / TrueColorAlpha TGA.
+
+Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_generated_ordinary_internal_flags.png`.
+
+Path patterns for every listed tag:
+
+- Source PNGs: `docs/assets/005_soviet_union_collapse/source_png/generated_ordinary_flags/<TAG>[_<ideology>]_source.png`
+- Processed PNG previews: `docs/assets/005_soviet_union_collapse/processed_png/generated_ordinary_flags/<TAG>[_<ideology>]_<normal|medium|small>.png`
+- Final normal TGA: `gfx/flags/<TAG>[_<ideology>].tga`
+- Final medium TGA: `gfx/flags/medium/<TAG>[_<ideology>].tga`
+- Final small TGA: `gfx/flags/small/<TAG>[_<ideology>].tga`
+
+Ideology suffixes: `communism`, `democratic`, `fascism`, `neutrality`; the unsuffixed file is the base flag. Intended use for every row is Event 005 ordinary/internal Soviet-collapse successor country flags. Blockers: none for this package.
+
+| Tag | Generated variants | Sizes | Status |
+| --- | --- | --- | --- |
+| `UKR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `BLR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `KAZ` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `MOL` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `LIT` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `LAT` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `EST` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `GEO` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `ARM` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `AZR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `UZB` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `KYR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `TAJ` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `TMS` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `KAR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `KOM` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `CRI` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `TAT` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `BSK` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `FER` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `YAK` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `BYA` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+| `TAN` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
+
+### Generated council portrait replacements
+
+Source mode: Codex built-in `$imagegen`, fictional symbolic council portraits. These are not real leader portraits and do not claim historical likenesses.
+
+| Asset | Prompt summary | Source PNG | Processed PNG | Final DDS | Target size | Sprite / `.gfx` | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `KZR` Khazar Toll Khaganate council portrait | Fictional emergency toll council, Volga/steppe administrative identity, HOI4 painterly bust, no text or real likeness. | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/KZR_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/KZR_leader.png` | `gfx/leaders/005_soviet_collapse/KZR_leader.dds` | 156x210 | `GFX_portrait_KZR_itil_toll_council`, `interface/005_soviet_collapse_factory_ancient_icons.gfx` | complete |
+| `SOG` Sogdian City League council portrait | Fictional civic council speaker with municipal delegates, trade-map identity, HOI4 painterly bust, no text or real likeness. | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/SOG_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/SOG_leader.png` | `gfx/leaders/005_soviet_collapse/SOG_leader.dds` | 156x210 | `GFX_portrait_SOG_city_registers_council`, `interface/005_soviet_collapse_factory_ancient_icons.gfx` | complete |
+| `OGB` Old Great Bulgaria council portrait | Fictional Volga restoration council chair, trade charter and river ledger identity, HOI4 painterly bust, no text or real likeness. | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/OGB_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/OGB_leader.png` | `gfx/leaders/005_soviet_collapse/OGB_leader.dds` | 156x210 | existing `OGB_leader.dds` portrait path; parent should keep current sprite name/path if already wired | complete |
+| `KHW` Khwarazmian Oasis Authority council portrait | Fictional oasis register authority, irrigation ledger and water-rights identity, HOI4 painterly bust, no text or real likeness. | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/KHW_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/KHW_leader.png` | `gfx/leaders/005_soviet_collapse/KHW_leader.dds` | 156x210 | `GFX_portrait_KHW_oasis_register_authority`, `interface/005_soviet_collapse_factory_ancient_icons.gfx` | complete |
+| `ALN` Alan Pass Principality council portrait | Fictional mountain pass council regent, border-pass map and key identity, HOI4 painterly bust, no text or real likeness. | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/ALN_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/ALN_leader.png` | `gfx/leaders/005_soviet_collapse/ALN_leader.dds` | 156x210 | `GFX_portrait_ALN_alan_pass_council`, `interface/005_soviet_collapse_factory_ancient_icons.gfx` | complete |
+
+Validation note: direct SHA-256 comparison against vanilla leader DDS files found no vanilla hash match for `KZR`, `SOG`, `OGB`, `KHW`, or `ALN` after replacement.
+
+### Fictional ancient-restoration ideology flag variants
+
+Source mode: generated-asset derivative. These variants use the existing generated Event 005 base flags as the source artwork, then apply fictional ideology/route color treatments and simple invented marks. They are not historical flags, not historical symbols, and not a substitute for any separately required sourced historical-symbol pass.
+
+| Tag | Ideology variants created | Processed PNG preview pattern | Final normal flag pattern | Final medium flag pattern | Final small flag pattern | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `KZR` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/KZR_<ideology>_<size>.png` | `gfx/flags/KZR_<ideology>.tga` | `gfx/flags/medium/KZR_<ideology>.tga` | `gfx/flags/small/KZR_<ideology>.tga` | complete |
+| `SOG` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/SOG_<ideology>_<size>.png` | `gfx/flags/SOG_<ideology>.tga` | `gfx/flags/medium/SOG_<ideology>.tga` | `gfx/flags/small/SOG_<ideology>.tga` | complete |
+| `KHW` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/KHW_<ideology>_<size>.png` | `gfx/flags/KHW_<ideology>.tga` | `gfx/flags/medium/KHW_<ideology>.tga` | `gfx/flags/small/KHW_<ideology>.tga` | complete |
+| `ALN` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/ALN_<ideology>_<size>.png` | `gfx/flags/ALN_<ideology>.tga` | `gfx/flags/medium/ALN_<ideology>.tga` | `gfx/flags/small/ALN_<ideology>.tga` | complete |
+
+Use note: HOI4 country flags use TGA files in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, so this pass produced final TGA gameplay assets for flags rather than DDS flag files. Portrait outputs remain final DDS files. Parent validation re-exported the `KZR`, `SOG`, `KHW`, and `ALN` ideology variants to vanilla-compatible 32-bit RGBA TGA dimensions: normal `82x52`, medium `41x26`, and small `10x7`.
 
 ## Active Wiring
 
@@ -62,6 +173,8 @@ Source audit status:
 | Shared breakaway focus icons | dedicated `GFX_focus_soviet_collapse_*` sprites in `interface/005_soviet_collapse_icons.gfx` | wired, but branch-level reuse still counts against the final unique-assignment requirement until unique variants are added or approved as a design exception |
 | Regional republic focus icons | dedicated `GFX_baltic_soviet_collapse_*`, `GFX_caucasus_soviet_collapse_*`, `GFX_central_asia_soviet_collapse_*`, and `GFX_moldova_soviet_collapse_*` sprites in `interface/005_soviet_collapse_regional_icons.gfx` | complete for active regional runtime focus trees |
 | Super-event | `GFX_super_event_union_unmade`, `GFX_super_event_black_banner_returns`, `GFX_super_event_workshops_choose_councils`, `GFX_super_event_every_port_a_council` | wired for active super-event use; retired republic-route and league/federation source packages are preserved below only for traceability |
+
+Known existing focus-icon DDS paths from Klim's 2026-05-22 note are present and should be considered during duplicate-icon audits before requesting new art: `kaz_soviet_collapse_tajik_pass_agreements.dds`, `kaz_soviet_collapse_turkmen_rail_desert_talks.dds`, `kaz_soviet_collapse_uzbek_supply_delegates.dds`, `tsc_letters_to_academies.dds`, `kaz_soviet_collapse_call_steppe_congress.dds`, `kaz_soviet_collapse_common_steppe_passports.dds`, `kaz_soviet_collapse_kyrgyz_border_cavalry.dds`, `kaz_soviet_collapse_kyrgyz_mountain_liaisons.dds`, `kaz_soviet_collapse_league_cavalry_school.dds`, `kaz_soviet_collapse_league_resource_pool.dds`, `kaz_soviet_collapse_no_steppe_without_south.dds`, `kaz_soviet_collapse_oasis_steppe_congress.dds`, `kaz_soviet_collapse_southern_deputies_seats.dds`, `kaz_soviet_collapse_southern_republics_do_not_kneel.dds`, `kaz_soviet_collapse_southern_republics_write_together.dds`, `kaz_soviet_collapse_southern_shield.dds`, `kaz_soviet_collapse_southern_wires_cut.dds`, `kaz_soviet_collapse_steppe_arbitration_court.dds`, `kaz_soviet_collapse_steppe_defense_council.dds`, and `kaz_soviet_collapse_steppe_federation_charter.dds`.
 
 ## Required Active News Images
 
@@ -261,6 +374,8 @@ The 53-focus shared breakaway focus tree is active gameplay content in `common/n
 | `soviet_collapse_steppe_supply_congress` | `GFX_focus_soviet_collapse_steppe_supply_congress` | complete |
 | `soviet_collapse_black_sea_dniester_line` | `GFX_focus_soviet_collapse_black_sea_dniester_line` | complete |
 
+Common front timetables unique-variant package: `docs/assets/005_soviet_union_collapse/common_front_timetables_unique_focus_icons/manifest.md` records 12 generated 94x86 DDS focus icons, processed PNG previews, source PNGs, a contact sheet, and matching `GFX_focus_soviet_collapse_*` / `GFX_focus_internal_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_icons.gfx`. The base `GFX_focus_soviet_collapse_common_front_timetables` sprite remains only on `soviet_collapse_league_reserve_table`.
+
 ### Generated Shared Focus Icon Records
 
 These icons were regenerated from scratch with Codex built-in `image_gen` from the Soviet-collapse-specific focus sheet preserved at `docs/assets/005_soviet_union_collapse/source_png/focus_active_soviet_collapse_sheet_01_source.png`. Shared prompt summary: clean HOI4-style focus icons with crisis government, military, League, regional, and Black Banner motifs, transparent unused space requested, no colored matte, no green/chroma background, no generated text, no labels, no watermarks, no white outline, low texture, and no baked shadow. The generated sheet used fake checker transparency, so the processed icons were centered with the generated icon cleanup method documented in `.agents/skills/chaos-redux-event-assets/SKILL.md`: filled subject-support masks, preserved dark interior artwork, matte/checker removal, transparent unused canvas, subtle black outline, and slight black drop shadow.
@@ -364,15 +479,50 @@ The expanded `soviet_collapse_ukraine_focus_tree` is active gameplay and current
 | `GFX_ukr_soviet_collapse_survival` | `gfx/interface/goals/ukr_soviet_collapse_survival.dds` | survival and ministry crisis focuses | complete |
 | `GFX_ukr_soviet_collapse_democratic` | `gfx/interface/goals/ukr_soviet_collapse_democratic.dds` | democratic restoration focuses | complete |
 | `GFX_ukr_soviet_collapse_socialist` | `gfx/interface/goals/ukr_soviet_collapse_socialist.dds` | socialist sovereignty focuses | complete |
+| `GFX_ukr_soviet_collapse_peasant_socialist_congress` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_peasant_socialist_congress.dds` | peasant socialist congress focus | complete |
+| `GFX_ukr_soviet_collapse_workers_congress_in_kharkiv` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_workers_congress_in_kharkiv.dds` | workers' congress in Kharkiv focus | complete |
+| `GFX_ukr_soviet_collapse_purge_moscow_loyalists` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_purge_moscow_loyalists.dds` | purge Moscow loyalists focus | complete |
+| `GFX_ukr_soviet_collapse_re_register_the_party` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_re_register_the_party.dds` | re-register the party focus | complete |
 | `GFX_ukr_soviet_collapse_directory` | `gfx/interface/goals/ukr_soviet_collapse_directory.dds` | military directory focuses | complete |
-| `GFX_ukr_soviet_collapse_foreign` | `gfx/interface/goals/ukr_soviet_collapse_foreign.dds` | foreign liaison and patronage-risk focuses | complete |
+| `GFX_ukr_soviet_collapse_foreign` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_foreign.dds` | open liaison offices base foreign focus | complete |
+| `GFX_ukr_soviet_collapse_foreign_courts_notice_kyiv` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_foreign_courts_notice_kyiv.dds` | foreign courts notice Kyiv focus | complete |
+| `GFX_ukr_soviet_collapse_foreign_advisers_in_plain_coats` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_foreign_advisers_in_plain_coats.dds` | plain-clothes adviser focus | complete |
+| `GFX_ukr_soviet_collapse_german_liaison_question` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_german_liaison_question.dds` | German liaison question focus | complete |
+| `GFX_ukr_soviet_collapse_british_caution` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_british_caution.dds` | British caution focus | complete |
+| `GFX_ukr_soviet_collapse_advisers_without_flags` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_advisers_without_flags.dds` | advisers without flags focus | complete |
+| `GFX_ukr_soviet_collapse_equipment_corridor_authority` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_equipment_corridor_authority.dds` | equipment corridor authority focus | complete |
+| `GFX_ukr_soviet_collapse_protectorate_debate` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_protectorate_debate.dds` | protectorate debate focus | complete |
 | `GFX_ukr_soviet_collapse_bread` | `gfx/interface/goals/ukr_soviet_collapse_bread.dds` | grain, ration, and bread-state focuses | complete |
-| `GFX_ukr_soviet_collapse_league` | `gfx/interface/goals/ukr_soviet_collapse_league.dds` | Free Republics' League leadership focuses | complete |
+| `GFX_ukr_soviet_collapse_league` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_league.dds` | prepare League liaison rooms base focus | complete |
+| `GFX_ukr_soviet_collapse_left_league_delegation` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_left_league_delegation.dds` | left League delegation focus | complete |
+| `GFX_ukr_soviet_collapse_league_training_cadres` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_league_training_cadres.dds` | League training cadres focus | complete |
+| `GFX_ukr_soviet_collapse_arsenal_of_the_league` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_arsenal_of_the_league.dds` | arsenal of the League focus | complete |
+| `GFX_ukr_soviet_collapse_league_founding_charter` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_league_founding_charter.dds` | League founding charter focus | complete |
+| `GFX_ukr_soviet_collapse_league_of_equals` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_league_of_equals.dds` | League of equals focus | complete |
+| `GFX_ukr_soviet_collapse_kyiv_leads_the_front` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_kyiv_leads_the_front.dds` | Kyiv leads the front focus | complete |
+| `GFX_ukr_soviet_collapse_border_states_accept_kyiv` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_border_states_accept_kyiv.dds` | border states accept Kyiv focus | complete |
 | `GFX_ukr_soviet_collapse_expansion` | `gfx/interface/goals/ukr_soviet_collapse_expansion.dds` | Black Sea and beyond-Union expansion focuses | complete |
-| `GFX_ukr_soviet_collapse_armed_forces` | `gfx/interface/goals/ukr_soviet_collapse_armed_forces.dds` | army, air, navy, and irregular-force focuses | complete |
+| `GFX_ukr_soviet_collapse_armed_forces` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_armed_forces.dds` | war without a declaration base military focus | complete |
+| `GFX_ukr_soviet_collapse_general_staff_war_college` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_general_staff_war_college.dds` | general staff war college focus | complete |
+| `GFX_ukr_soviet_collapse_army_of_the_republic` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_army_of_the_republic.dds` | Army of the Republic focus | complete |
+| `GFX_ukr_soviet_collapse_republican_deep_battle` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_republican_deep_battle.dds` | republican deep battle focus | complete |
+| `GFX_ukr_soviet_collapse_ports_need_soldiers` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_ports_need_soldiers.dds` | port guard manpower focus | complete |
+| `GFX_ukr_soviet_collapse_dead_fields_living_columns` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_dead_fields_living_columns.dds` | high-chaos living columns focus | complete |
+| `GFX_ukr_soviet_collapse_no_one_leaves_the_bread_line` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_no_one_leaves_the_bread_line.dds` | militarized bread-line focus | complete |
+| `GFX_ukr_soviet_collapse_the_commune_war` | `gfx/interface/goals/soviet_collapse/ukr_soviet_collapse_the_commune_war.dds` | commune war focus | complete |
 | `GFX_ukr_soviet_collapse_industry` | `gfx/interface/goals/ukr_soviet_collapse_industry.dds` | industry and procurement focuses | complete |
 | `GFX_ukr_soviet_collapse_black_banner` | `gfx/interface/goals/ukr_soviet_collapse_black_banner.dds` | Black Banner interaction focuses | complete |
 | `GFX_ukr_soviet_collapse_identity` | `gfx/interface/goals/ukr_soviet_collapse_identity.dds` | late identity outcome focuses | complete |
+
+Ukraine bread unique-variant package: `docs/assets/005_soviet_union_collapse/ukr_bread_unique_focus_icons/manifest.md` records 13 generated 94x86 DDS focus icons, processed PNG previews, source PNGs, and matching `GFX_ukr_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_ukraine_icons.gfx`. The shared `GFX_ukr_soviet_collapse_bread` sprite remains registered as a branch icon but is no longer assigned to any Event 005 focus in the current audit.
+
+Ukraine expansion unique-variant package: `docs/assets/005_soviet_union_collapse/ukr_expansion_unique_focus_icons/manifest.md` records eight generated 94x86 DDS focus icons, processed PNG previews, source PNGs, contact sheets, and matching `GFX_ukr_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_ukraine_icons.gfx`. The shared `GFX_ukr_soviet_collapse_expansion` sprite remains registered and is now assigned only to `ukr_soviet_collapse_black_sea_defense_staff`.
+
+Ukraine armed-forces unique-variant package: `docs/assets/005_soviet_union_collapse/ukr_armed_forces_unique_focus_icons/manifest.md` records seven generated 94x86 DDS focus icons, processed transparent PNG previews, a source sheet, a contact sheet, and matching `GFX_ukr_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_ukraine_icons.gfx`. The base `GFX_ukr_soviet_collapse_armed_forces` sprite remains only on `ukr_soviet_collapse_war_without_a_declaration`.
+
+Ukraine foreign unique-variant package: `docs/assets/005_soviet_union_collapse/ukr_foreign_unique_focus_icons/manifest.md` records seven generated 94x86 DDS focus icons, processed transparent PNG previews, a source sheet, a contact sheet, and matching `GFX_ukr_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_ukraine_icons.gfx`. The base `GFX_ukr_soviet_collapse_foreign` sprite remains only on `ukr_soviet_collapse_open_the_liaison_offices`.
+
+Ukraine League unique-variant package: `docs/assets/005_soviet_union_collapse/ukr_league_unique_focus_icons/manifest.md` records seven generated 94x86 DDS focus icons, processed transparent PNG previews, a source sheet, a contact sheet, and matching `GFX_ukr_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_ukraine_icons.gfx`. The base `GFX_ukr_soviet_collapse_league` sprite remains only on `ukr_soviet_collapse_prepare_league_liaison_rooms`.
 
 Future bespoke artwork can replace these dedicated generated-reuse DDS files without changing focus IDs or gameplay script.
 
@@ -387,26 +537,90 @@ The replacement `soviet_collapse_belarus_focus_tree` is active gameplay for Even
 | `GFX_blr_soviet_collapse_corridor` | `gfx/interface/goals/blr_soviet_collapse_corridor.dds` | corridor and western-gate focuses | complete |
 | `GFX_blr_soviet_collapse_legal` | `gfx/interface/goals/blr_soviet_collapse_legal.dds` | legal restoration focuses | complete |
 | `GFX_blr_soviet_collapse_socialist` | `gfx/interface/goals/blr_soviet_collapse_socialist.dds` | socialist Belarus focuses | complete |
-| `GFX_blr_soviet_collapse_foreign_transit` | `gfx/interface/goals/blr_soviet_collapse_foreign_transit.dds` | foreign transit and observer focuses | complete |
+| `GFX_blr_soviet_collapse_foreign_transit` | `gfx/interface/goals/blr_soviet_collapse_foreign_transit.dds` | foreign corridor administration route opener | complete |
 | `GFX_blr_soviet_collapse_counterintel` | `gfx/interface/goals/blr_soviet_collapse_counterintel.dds` | counterintelligence and archive focuses | complete |
 | `GFX_blr_soviet_collapse_civic` | `gfx/interface/goals/blr_soviet_collapse_civic.dds` | civic-state outcome focuses | complete |
 
+Belarus corridor unique-variant package: `docs/assets/005_soviet_union_collapse/blr_corridor_unique_focus_icons/manifest.md` records 13 generated 94x86 DDS focus icons, processed PNG previews, a source sheet, a contact sheet, and matching `GFX_blr_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_blr_icons.gfx`. The base `GFX_blr_soviet_collapse_corridor` sprite remains only on `blr_soviet_collapse_first_corridor_guard`.
+
+Belarus rail unique-variant package: `docs/assets/005_soviet_union_collapse/blr_rail_unique_focus_icons/manifest.md` records eight generated 94x86 DDS focus icons, processed PNG previews, source PNGs, contact sheet, and matching `GFX_blr_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_blr_icons.gfx`. The base `GFX_blr_soviet_collapse_rail` sprite remains only on `blr_soviet_collapse_the_rail_map_on_the_wall`.
+
 ## Kazakhstan Runtime Focus Tree Branch Icons
 
-The 92-focus `soviet_collapse_kazakhstan_focus_tree` is active gameplay for Event 005-created Kazakhstan and satisfies the clean-spec Kazakhstan focus-count target. Its branch-level sprites are wired in `interface/005_soviet_collapse_kaz_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art. The first unique-icon pass added 19 Steppe Federation route variants under `docs/assets/005_soviet_union_collapse/kaz_federation_unique_focus_icons/` and rewired those focus assignments to unique sprite names.
+The 92-focus `soviet_collapse_kazakhstan_focus_tree` is active gameplay for Event 005-created Kazakhstan and satisfies the clean-spec Kazakhstan focus-count target. Its branch-level sprites are wired in `interface/005_soviet_collapse_kaz_icons.gfx` and point at dedicated 94x86 DDS files derived from existing generated Event 005 focus art. The first unique-icon passes added 19 Steppe Federation route variants under `docs/assets/005_soviet_union_collapse/kaz_federation_unique_focus_icons/` and 18 military route variants under `docs/assets/005_soviet_union_collapse/kaz_military_unique_focus_icons/`, then rewired those focus assignments to unique sprite names. Later Kazakhstan passes added 12 foreign-route variants, 12 resource-route variants, eight socialist-route variants, and seven Alash-route variants.
 
 | Branch sprite | Final DDS | Usage | Status |
 | --- | --- | --- | --- |
-| `GFX_kaz_soviet_collapse_alash` | `gfx/interface/goals/kaz_soviet_collapse_alash.dds` | Alash restoration focuses | complete |
-| `GFX_kaz_soviet_collapse_steppe_socialist` | `gfx/interface/goals/kaz_soviet_collapse_steppe_socialist.dds` | steppe socialist focuses | complete |
+| `GFX_kaz_soviet_collapse_alash` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_alash.dds` | Congress Chooses a Past base Alash focus | complete |
+| `GFX_kaz_soviet_collapse_alash_memory_restored` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_alash_memory_restored.dds` | Kazakhstan Alash-route focus | complete |
+| `GFX_kaz_soviet_collapse_the_alash_courts` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_the_alash_courts.dds` | Kazakhstan Alash-route focus | complete |
+| `GFX_kaz_soviet_collapse_the_written_alash_program` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_the_written_alash_program.dds` | Kazakhstan Alash-route focus | complete |
+| `GFX_kaz_soviet_collapse_restore_alash_names` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_restore_alash_names.dds` | Kazakhstan Alash-route focus | complete |
+| `GFX_kaz_soviet_collapse_semey_legal_circle` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_semey_legal_circle.dds` | Kazakhstan Alash-route focus | complete |
+| `GFX_kaz_soviet_collapse_steppe_land_statutes` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_steppe_land_statutes.dds` | Kazakhstan Alash-route focus | complete |
+| `GFX_kaz_soviet_collapse_constitutional_kurultai` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_constitutional_kurultai.dds` | Kazakhstan Alash-route focus | complete |
+| `GFX_kaz_soviet_collapse_steppe_socialist` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_steppe_socialist.dds` | base steppe socialist focus | complete |
+| `GFX_kaz_soviet_collapse_aul_councils_and_red_teachers` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_aul_councils_and_red_teachers.dds` | Kazakhstan socialist-route focus | complete |
+| `GFX_kaz_soviet_collapse_teachers_of_the_new_steppe` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_teachers_of_the_new_steppe.dds` | Kazakhstan socialist-route focus | complete |
+| `GFX_kaz_soviet_collapse_soviets_of_the_steppe` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_soviets_of_the_steppe.dds` | Kazakhstan socialist-route focus | complete |
+| `GFX_kaz_soviet_collapse_mining_workers_councils` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_mining_workers_councils.dds` | Kazakhstan socialist-route focus | complete |
+| `GFX_kaz_soviet_collapse_collective_farm_bargains` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_collective_farm_bargains.dds` | Kazakhstan socialist-route focus | complete |
+| `GFX_kaz_soviet_collapse_red_nomad_committees` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_red_nomad_committees.dds` | Kazakhstan socialist-route focus | complete |
+| `GFX_kaz_soviet_collapse_planned_economy_without_center` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_planned_economy_without_center.dds` | Kazakhstan socialist-route focus | complete |
+| `GFX_kaz_soviet_collapse_sovereign_steppe_socialism` | `gfx/interface/goals/soviet_collapse/kaz_soviet_collapse_sovereign_steppe_socialism.dds` | Kazakhstan socialist-route focus | complete |
 | `GFX_kaz_soviet_collapse_federation` | `gfx/interface/goals/kaz_soviet_collapse_federation.dds` | Alma-Ata emergency congress base federation focus | complete |
-| `GFX_kaz_soviet_collapse_resources` | `gfx/interface/goals/kaz_soviet_collapse_resources.dds` | resource-state focuses | complete |
-| `GFX_kaz_soviet_collapse_foreign` | `gfx/interface/goals/kaz_soviet_collapse_foreign.dds` | foreign influence focuses | complete |
+| `GFX_kaz_soviet_collapse_resources` | `gfx/interface/goals/kaz_soviet_collapse_resources.dds` | guard the resource towns base resource focus | complete |
+| `GFX_kaz_soviet_collapse_foreign` | `gfx/interface/goals/kaz_soviet_collapse_foreign.dds` | south asks for guarantees base foreign focus | complete |
 | `GFX_kaz_soviet_collapse_myth` | `gfx/interface/goals/kaz_soviet_collapse_myth.dds` | high-chaos steppe mythology focuses | complete |
-| `GFX_kaz_soviet_collapse_military` | `gfx/interface/goals/kaz_soviet_collapse_military.dds` | steppe military focuses | complete |
+| `GFX_kaz_soviet_collapse_military` | `gfx/interface/goals/kaz_soviet_collapse_military.dds` | steppe district inventories base military focus | complete |
 | `GFX_kaz_soviet_collapse_settlement` | `gfx/interface/goals/kaz_soviet_collapse_settlement.dds` | industry and settlement focuses | complete |
 
 Steppe Federation unique-variant package: `docs/assets/005_soviet_union_collapse/kaz_federation_unique_focus_icons/manifest.md` records 19 generated 94x86 DDS focus icons, processed PNG previews, source PNGs, a contact sheet, and matching `GFX_kaz_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_kaz_icons.gfx`.
+
+Steppe military unique-variant package: `docs/assets/005_soviet_union_collapse/kaz_military_unique_focus_icons/manifest.md` records 18 generated 94x86 DDS focus icons, processed PNG previews, source PNGs, a contact sheet, and matching `GFX_kaz_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_kaz_icons.gfx`.
+
+Kazakhstan foreign unique-variant package: `docs/assets/005_soviet_union_collapse/kaz_foreign_unique_focus_icons/manifest.md` records 12 generated 94x86 DDS focus icons, processed PNG previews, source PNGs, contact sheets, and matching `GFX_kaz_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_kaz_icons.gfx`.
+
+Kazakhstan resource unique-variant package: `docs/assets/005_soviet_union_collapse/kaz_resources_unique_focus_icons/manifest.md` records 12 generated 94x86 DDS focus icons, processed PNG previews, source PNGs, a contact sheet, and matching `GFX_kaz_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_kaz_icons.gfx`.
+
+Kazakhstan Alash unique-variant package: `docs/assets/005_soviet_union_collapse/kaz_alash_unique_focus_icons/manifest.md` records seven generated 94x86 DDS focus icons, processed PNG previews, a source sheet, a contact sheet, and matching `GFX_kaz_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_kaz_icons.gfx`. The base `GFX_kaz_soviet_collapse_alash` sprite remains only on `kaz_soviet_collapse_the_congress_chooses_a_past`.
+
+## Moldova Runtime Focus Tree Branch Icons
+
+The 48-focus `soviet_collapse_moldova_focus_tree` is active gameplay for Event 005-created Moldova. Its branch-level sprites are wired in `interface/005_soviet_collapse_regional_icons.gfx` and point at dedicated 94x86 DDS files under `gfx/interface/goals/soviet_collapse/`.
+
+| Branch sprite | Final DDS | Usage | Status |
+| --- | --- | --- | --- |
+| `GFX_moldova_soviet_collapse_chisinau_ledgers` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_chisinau_ledgers.dds` | Chisinau emergency council base focus | complete |
+| `GFX_moldova_soviet_collapse_bessarabian_legal_files` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_bessarabian_legal_files.dds` | Bessarabian legal files focus | complete |
+| `GFX_moldova_soviet_collapse_independent_republic_council` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_independent_republic_council.dds` | independent republic council focus | complete |
+| `GFX_moldova_soviet_collapse_reject_the_union_question` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_reject_the_union_question.dds` | union-question rejection focus | complete |
+| `GFX_moldova_soviet_collapse_ministry_seals` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_ministry_seals.dds` | ministry seals focus | complete |
+| `GFX_moldova_soviet_collapse_chisinau_radio_watch` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_chisinau_radio_watch.dds` | Chisinau radio watch focus | complete |
+| `GFX_moldova_soviet_collapse_constitutional_sfat` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_constitutional_sfat.dds` | constitutional Sfat focus | complete |
+| `GFX_moldova_soviet_collapse_district_prefect_rolls` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_district_prefect_rolls.dds` | district prefect rolls focus | complete |
+| `GFX_moldova_soviet_collapse_romanian_window` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_romanian_window.dds` | Romanian question base focus | complete |
+| `GFX_moldova_soviet_collapse_romanian_alignment_office` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_romanian_alignment_office.dds` | Romanian alignment focus | complete |
+| `GFX_moldova_soviet_collapse_bessarabian_negotiations` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_bessarabian_negotiations.dds` | Bessarabian negotiations focus | complete |
+| `GFX_moldova_soviet_collapse_romanian_aid_without_annexation` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_romanian_aid_without_annexation.dds` | Romanian aid focus | complete |
+| `GFX_moldova_soviet_collapse_union_with_romania_question` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_union_with_romania_question.dds` | union-question focus | complete |
+| `GFX_moldova_soviet_collapse_conditional_union` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_conditional_union.dds` | conditional union focus | complete |
+| `GFX_moldova_soviet_collapse_prut_relief_depots` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_prut_relief_depots.dds` | Prut relief focus | complete |
+| `GFX_moldova_soviet_collapse_bucharest_observer_mission` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_bucharest_observer_mission.dds` | Bucharest observer focus | complete |
+| `GFX_moldova_soviet_collapse_vote_on_the_prut_statute` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_vote_on_the_prut_statute.dds` | Prut statute focus | complete |
+| `GFX_moldova_soviet_collapse_bridge_state` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_bridge_state.dds` | route-fork base focus | complete |
+| `GFX_moldova_soviet_collapse_neutral_bridge_statute` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_neutral_bridge_statute.dds` | neutral bridge focus | complete |
+| `GFX_moldova_soviet_collapse_republic_without_a_patron` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_republic_without_a_patron.dds` | patronless republic focus | complete |
+| `GFX_moldova_soviet_collapse_neutrality_between_three_roads` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_neutrality_between_three_roads.dds` | neutral road balance focus | complete |
+| `GFX_moldova_soviet_collapse_smugglers_and_border_committees` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_smugglers_and_border_committees.dds` | border committee focus | complete |
+| `GFX_moldova_soviet_collapse_republic_of_crossings` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_republic_of_crossings.dds` | crossings republic focus | complete |
+| `GFX_moldova_soviet_collapse_the_river_state` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_the_river_state.dds` | river-state focus | complete |
+| `GFX_moldova_soviet_collapse_the_small_republic_survives` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_the_small_republic_survives.dds` | small republic survival focus | complete |
+| `GFX_moldova_soviet_collapse_a_small_state_between_larger_maps` | `gfx/interface/goals/soviet_collapse/moldova_soviet_collapse_a_small_state_between_larger_maps.dds` | small-state outcome focus | complete |
+
+Moldova Romanian-window and bridge-state unique-variant package: `docs/assets/005_soviet_union_collapse/moldova_romanian_bridge_unique_focus_icons/manifest.md` records 16 generated 94x86 DDS focus icons, processed transparent PNG previews, source PNGs, contact sheets, and matching `GFX_moldova_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_regional_icons.gfx`. The base `GFX_moldova_soviet_collapse_romanian_window` and `GFX_moldova_soviet_collapse_bridge_state` sprites remain registered and are now each assigned only once.
+
+Moldova Chisinau-ledger unique-variant package: `docs/assets/005_soviet_union_collapse/moldova_chisinau_ledgers_unique_focus_icons/manifest.md` records seven generated 94x86 DDS focus icons, processed transparent PNG previews, a source sheet, a contact sheet, and matching `GFX_moldova_soviet_collapse_*` sprite names wired through `interface/005_soviet_collapse_regional_icons.gfx`. The base `GFX_moldova_soviet_collapse_chisinau_ledgers` sprite remains only on `moldova_soviet_collapse_chisinau_emergency_council`.
 
 News and report backlog:
 
@@ -646,7 +860,113 @@ Source mode: existing HOI4 or Chaos Redux focus DDS reuse copied into stable RMC
 
 ## Blocked Or Incomplete Final Assets
 
-- Focus icon uniqueness: `1692` focus blocks have icon assignments, but the current audit found `1096` unique focus icon sprite names, `203` duplicate groups, and `596` duplicate assignments. The largest remaining duplicate groups are `GFX_kaz_soviet_collapse_military` used 19 times, `GFX_blr_soviet_collapse_corridor` used 14 times, and `GFX_focus_soviet_collapse_common_front_timetables` used 13 times. This remains incomplete against the final clean merged spec unless unique variants are added or the spec is explicitly relaxed.
+- Belarus forest focus icon package: `complete` for six focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/blr_forest_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_blr_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukrainian bread focus icon package: `complete` for the 12 remaining shared-bread assignments plus the earlier village-soviet variant. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_bread_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukrainian expansion focus icon package: `complete` for eight focus-specific variants. Source PNGs, alpha PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_expansion_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Baltic home-guard focus icon package: `complete` for eight focus-specific variants. Source PNGs, alpha PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/baltic_home_guard_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Baltic legal-continuity focus icon package: `complete` for six focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/baltic_legal_continuity_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Belarus rail focus icon package: `complete` for eight focus-specific variants. Source PNGs, alpha PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/blr_rail_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_blr_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Caucasus oil focus icon package: `complete` for eight focus-specific variants. Source PNGs, alpha PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/caucasus_oil_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Central Asia steppe-defense focus icon package: `complete` for eight focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/central_asia_steppe_defense_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Kazakhstan socialist-route focus icon package: `complete` for eight focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/kaz_socialist_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_kaz_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Factory defense/resource focus icon package: `complete` for ten focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/factory_defense_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx` and `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Field emergency focus icon package: `complete` for nine focus-specific variants. Source PNGs, alpha PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/field_emergency_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx` and `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- External missions focus icon package: `complete` for nine focus-specific variants. Source PNGs, alpha PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/external_missions_unique_focus_icons/`; sprite definitions and focus assignments are wired in `interface/005_soviet_collapse_icons.gfx` and `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- League liaisons focus icon package: `complete` for seven focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/league_liaisons_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Moldova Romanian-window and bridge-state focus icon package: `complete` for sixteen focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/moldova_romanian_bridge_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Kazakhstan Alash focus icon package: `complete` for seven focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/kaz_alash_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_kaz_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Moldova Chisinau-ledger focus icon package: `complete` for seven focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/moldova_chisinau_ledgers_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukrainian armed-forces focus icon package: `complete` for seven focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_armed_forces_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukrainian foreign focus icon package: `complete` for seven focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_foreign_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukrainian League focus icon package: `complete` for seven focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_league_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Caucasus foreign-missions focus icon package: `complete` for six focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/caucasus_foreign_missions_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Claim republican-legality focus icon package: `complete` for six focus-specific variants. Source PNGs, processed alpha PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/claim_republican_legality_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Caucasus mountain-councils focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/caucasus_mountain_councils_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Central Asia Basmachi-amnesty focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/central_asia_basmachi_amnesty_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Central Asia foreign-balance focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/central_asia_foreign_balance_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Central Asia supply-congress focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/central_asia_supply_congress_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukrainian Black Banner focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_black_banner_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Shared survival-orders focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/shared_survival_orders_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Baltic sovereign-front focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/baltic_sovereign_front_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Belarus civic focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/blr_civic_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_blr_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Belarus foreign-transit focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, contact sheet, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/blr_foreign_transit_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_blr_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Caucasus pass-guards focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, validation notes, reference previews, and handoff notes live in `docs/assets/005_soviet_union_collapse/caucasus_pass_guards_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- FEV supply focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, validation notes, reference previews, and handoff notes live in `docs/assets/005_soviet_union_collapse/fev_supply_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_custom_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_custom_splinters.txt`.
+
+- FEV war-plan focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, validation notes, reference previews, and handoff notes live in `docs/assets/005_soviet_union_collapse/fev_war_plan_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_custom_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_custom_splinters.txt`.
+
+- MRC enemy-front focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, package manifest, validation notes, reference previews, and handoff notes live in `docs/assets/005_soviet_union_collapse/mrc_enemy_front_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_custom_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_custom_splinters.txt`.
+
+- MRC supply focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, package manifest, validation notes, reference previews, and handoff notes live in `docs/assets/005_soviet_union_collapse/mrc_supply_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_custom_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_custom_splinters.txt`.
+
+- SZA supply focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, package manifest, validation notes, reference previews, and handoff notes live in `docs/assets/005_soviet_union_collapse/sza_supply_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_custom_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_custom_splinters.txt`.
+
+- SZA war-plan focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, package manifest, validation notes, contact sheets, and handoff notes live in `docs/assets/005_soviet_union_collapse/sza_war_plan_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_custom_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_custom_splinters.txt`.
+
+- UWD supply focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, package manifest, validation notes, contact sheets, and handoff notes live in `docs/assets/005_soviet_union_collapse/uwd_supply_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_custom_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_custom_splinters.txt`.
+
+- Emergency-government focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, package manifest, validation notes, contact sheets, and handoff notes live in `docs/assets/005_soviet_union_collapse/emergency_government_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`. The package records that ImageMagick handled alpha cleanup after the local helper environment lacked Pillow; core artwork still came from `$imagegen`, final DDS files validate as `94x86` ARGB8888, and all processed corners are transparent.
+
+- Baltic observer-missions focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/baltic_observer_missions_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Baltic port-customs focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/baltic_port_customs_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Belarus forest focus icon package: `complete` for five focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/blr_forest_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_blr_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Depot audit focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/depot_audit_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Black Sea/Dniester focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/black_sea_dniester_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Kazakhstan myth focus icon package: `complete` for four focus-specific variants. Source PNGs, alpha-cleaned PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/kaz_myth_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_kaz_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Kazakhstan settlement focus icon package: `complete` for four focus-specific variants. Source PNGs, alpha-cleaned PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, and handoff notes live in `docs/assets/005_soviet_union_collapse/kaz_settlement_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_kaz_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Moldova depot-battalions focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/moldova_depot_battalions_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Moldova Dniester-line focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/moldova_dniester_line_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Moldova river-customs focus icon package: `complete` for four focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheets, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/moldova_river_customs_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_regional_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukraine Directory focus icon package: `complete` for four focus-specific variants. Source PNGs, alpha-cleaned PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_directory_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukraine identity focus icon package: `complete` for four focus-specific variants. Source PNGs, alpha-cleaned PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_identity_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ukraine socialist focus icon package: `complete` for four focus-specific variants. Source PNGs, alpha-cleaned PNGs, processed transparent PNG previews, final DDS files, contact sheets, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/ukr_socialist_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ukraine_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_republics.txt`.
+
+- Ancient emergency-council focus icon package: `complete` for three focus-specific variants. Source PNGs, processed transparent PNG previews, final PNGs, final DDS files, contact sheet, package manifest, validation notes, and handoff notes live in `docs/assets/005_soviet_union_collapse/ancient_emergency_council_unique_focus_icons/`; sprite definitions are wired in `interface/005_soviet_collapse_ancient_icons.gfx`; focus assignments are wired in `common/national_focus/005_soviet_collapse_ancient_restorations.txt`.
+
+- Focus icon uniqueness: `1696` focus blocks have icon assignments, but the current audit found `1480` unique focus icon sprite names, `143` duplicate groups, and `216` duplicate extra assignments. The latest icon pass replaced three shared ancient emergency-council assignments with generated focus-specific variants, reducing `GFX_focus_soviet_collapse_ancient_emergency_council` to one use after the earlier Ukraine socialist pass reduced `GFX_ukr_soviet_collapse_socialist` to one use. The largest remaining duplicate groups are 4-use groups. This remains incomplete against the final clean merged spec unless unique variants are added or the spec is explicitly relaxed.
 
 - Final generated idea icons: `complete` for active ideas. Source sheets, cropped source PNGs, processed previews, and DDS files are recorded above.
 - Final generated decision icons: `complete` for active decisions. Source sheet, cropped source PNGs, processed previews, and DDS files are recorded above.
@@ -689,18 +1009,18 @@ NLC generated-reuse asset package: `gfx/flags/NLC.tga`, `gfx/flags/medium/NLC.tg
 
 | Asset group | Sprite names | Status |
 | --- | --- | --- |
-| OGB leader | `GFX_portrait_OGB_volga_restoration_council` | wired, OGB-specific final DDS copied from vanilla restoration-council portrait source |
+| OGB leader | `GFX_portrait_OGB_volga_restoration_council` | wired, generated fictional council portrait |
 | OGB decisions | `GFX_decision_ogb_consolidate_volga_registers`, `GFX_decision_ogb_guard_kazan_ferry_line`, `GFX_decision_ogb_declare_restoration_state` | wired, decision icons use themed DDS reuse; see mapping below |
 | OGB ideas | `GFX_idea_ogb_disputed_restored_name`, `GFX_idea_ogb_volga_restoration_council`, `GFX_idea_ogb_volga_trade_road`, `GFX_idea_ogb_notable_workshop_compact`, `GFX_idea_ogb_heritage_guard`, `GFX_idea_ogb_old_capital_guard`, `GFX_idea_ogb_restored_volga_empire` | wired, idea icons use themed DDS reuse; see mapping below |
 | OGB focuses | `GFX_focus_OGB_*` and `_shine` variants | wired, focus icons use themed DDS reuse; see mapping below |
 
 #### Old Great Bulgaria leader portrait mapping
 
-Source mode: existing vanilla leader DDS reuse copied into a stable OGB-specific final path. The source fits the Volga restoration council concept better than the previous Idel-Ural placeholder because it presents a civilian restoration-council figure rather than another Event 005 splinter leader. Sprite definition is in `interface/005_soviet_collapse_factory_ancient_icons.gfx`.
+Source mode: generated fictional/council portrait. The earlier vanilla portrait reuse was superseded by the generated replacement pass documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`. Sprite definition is in `interface/005_soviet_collapse_factory_ancient_icons.gfx`.
 
 | Sprite | Source DDS | Processed preview | Final DDS | Dimensions | Status |
 | --- | --- | --- | --- | --- | --- |
-| `GFX_portrait_OGB_volga_restoration_council` | `~/projects/Hearts of Iron IV/gfx/leaders/MEN/portrait_MEN_yondonwangchug.dds`; recorded preview `docs/assets/005_soviet_union_collapse/source_png/OGB_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/OGB_leader.png` | `gfx/leaders/005_soviet_collapse/OGB_leader.dds` | 156x210 | wired |
+| `GFX_portrait_OGB_volga_restoration_council` | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/OGB_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/OGB_leader.png` | `gfx/leaders/005_soviet_collapse/OGB_leader.dds` | 156x210 | wired |
 
 #### Old Great Bulgaria decision and idea icon mapping
 
@@ -776,7 +1096,7 @@ Source mode: generated symbolic icon art through Codex image generation, process
 
 ### Standalone Ancient Restoration Assets
 
-`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration tags with separate per-tag focus trees. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Their flags use generated fictional ancient-restoration source art from `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`, cropped into processed previews under `docs/assets/005_soviet_union_collapse/processed_png/flags/`, and converted into normal, medium, and small TGA variants. Leader portraits use tag-owned sourced vanilla portrait DDS files and tag-specific sprite names.
+`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration tags with separate per-tag focus trees. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Their flags use generated fictional ancient-restoration source art from `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`, cropped into processed previews under `docs/assets/005_soviet_union_collapse/processed_png/flags/`, and converted into normal, medium, and small TGA variants. Their leader portraits use generated fictional/council replacements documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
 
 | Asset surface | Current paths or sprite names | Status |
 | --- | --- | --- |
@@ -785,26 +1105,29 @@ Source mode: generated symbolic icon art through Codex image generation, process
 | `KHW` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/KHW.png`; final TGAs `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` | generated source wired |
 | `ALN` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/ALN.png`; final TGAs `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` | generated source wired |
 | Ancient restoration portraits | `GFX_portrait_KZR_itil_toll_council`, `GFX_portrait_SOG_city_registers_council`, `GFX_portrait_KHW_oasis_register_authority`, and `GFX_portrait_ALN_alan_pass_council` in `interface/005_soviet_collapse_factory_ancient_icons.gfx`; final DDS files in `gfx/leaders/005_soviet_collapse/` | wired, tag-specific sourced DDS reuse |
-| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`; the four 15-focus trees use the mapped icon family with no duplicate icon within a single per-tag tree | wired, themed DDS reuse through stable package paths; see mapping below |
+| Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`; the four 16-focus trees use the mapped icon family with no duplicate icon within a single per-tag tree | wired, themed DDS reuse through stable package paths; see mapping below |
 
 #### Ancient restoration portrait mapping
 
-Source mode: existing vanilla leader portrait DDS reuse copied into stable Event 005 final paths. Each source portrait is already 156x210 and has matching source and processed PNG previews.
+Source mode: generated fictional/council portraits. The earlier vanilla portrait reuse was superseded by the generated replacement pass documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
 
 | Tag | Sprite name | Source DDS | Source PNG | Processed PNG | Final DDS | Dimensions | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `KZR` | `GFX_portrait_KZR_itil_toll_council` | `~/projects/Hearts of Iron IV/gfx/leaders/MEN/portrait_men_demchugdongrub.dds` | `docs/assets/005_soviet_union_collapse/source_png/KZR_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/KZR_leader.png` | `gfx/leaders/005_soviet_collapse/KZR_leader.dds` | 156x210 | wired |
-| `SOG` | `GFX_portrait_SOG_city_registers_council` | `~/projects/Hearts of Iron IV/gfx/leaders/KAZ/portrait_kaz_ilyas_zhansugurov.dds` | `docs/assets/005_soviet_union_collapse/source_png/SOG_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/SOG_leader.png` | `gfx/leaders/005_soviet_collapse/SOG_leader.dds` | 156x210 | wired |
-| `KHW` | `GFX_portrait_KHW_oasis_register_authority` | `~/projects/Hearts of Iron IV/gfx/leaders/AFG/Portrait_Afghanistan_Mohammed_Zahir_Shah.dds` | `docs/assets/005_soviet_union_collapse/source_png/KHW_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/KHW_leader.png` | `gfx/leaders/005_soviet_collapse/KHW_leader.dds` | 156x210 | wired |
-| `ALN` | `GFX_portrait_ALN_alan_pass_council` | `~/projects/Hearts of Iron IV/gfx/leaders/GEO/portrait_GEO_george_bagration_mukhrani.dds` | `docs/assets/005_soviet_union_collapse/source_png/ALN_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/ALN_leader.png` | `gfx/leaders/005_soviet_collapse/ALN_leader.dds` | 156x210 | wired |
+| `KZR` | `GFX_portrait_KZR_itil_toll_council` | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/KZR_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/KZR_leader.png` | `gfx/leaders/005_soviet_collapse/KZR_leader.dds` | 156x210 | wired |
+| `SOG` | `GFX_portrait_SOG_city_registers_council` | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/SOG_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/SOG_leader.png` | `gfx/leaders/005_soviet_collapse/SOG_leader.dds` | 156x210 | wired |
+| `KHW` | `GFX_portrait_KHW_oasis_register_authority` | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/KHW_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/KHW_leader.png` | `gfx/leaders/005_soviet_collapse/KHW_leader.dds` | 156x210 | wired |
+| `ALN` | `GFX_portrait_ALN_alan_pass_council` | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/ALN_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/ALN_leader.png` | `gfx/leaders/005_soviet_collapse/ALN_leader.dds` | 156x210 | wired |
 
 #### Ancient restoration focus icon mapping
 
-Source mode: existing HOI4 or Chaos Redux DDS reuse copied into stable ancient-restoration final paths. Processed PNG preview: not applicable for direct DDS reuse. Sprite definitions are in `interface/005_soviet_collapse_ancient_icons.gfx`; every row has both normal and `_shine` sprite variants. These 32 sprite rows support 60 focus assignments across the four per-tag trees, with common restoration functions reusing common visual language and each tag tree keeping its in-tree icon sequence distinct.
+Source mode: existing HOI4 or Chaos Redux DDS reuse copied into stable ancient-restoration final paths, plus three generated emergency-council variants for tag-specific council focuses. Reuse rows do not have processed PNG previews; generated variant rows keep source, processed, final PNG, final DDS, validation, and handoff records in `docs/assets/005_soviet_union_collapse/ancient_emergency_council_unique_focus_icons/`. Sprite definitions are in `interface/005_soviet_collapse_ancient_icons.gfx`; every row has both normal and `_shine` sprite variants. These 35 sprite rows support 60 focus assignments across the four per-tag trees, with common restoration functions reusing common visual language and each tag tree keeping its in-tree icon sequence distinct.
 
 | Focus sprite | Source DDS | Final DDS | Dimensions | Status |
 | --- | --- | --- | --- | --- |
 | `GFX_focus_soviet_collapse_ancient_emergency_council` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_SOV_the_supreme_soviet.dds` | `gfx/interface/goals/soviet_collapse/ancient_emergency_council.dds` | 100x88 | wired |
+| `GFX_focus_soviet_collapse_ancient_sog_city_register_council` | `docs/assets/005_soviet_union_collapse/ancient_emergency_council_unique_focus_icons/source/ancient_sog_city_register_council_source.png` | `gfx/interface/goals/soviet_collapse/ancient_sog_city_register_council.dds` | 100x88 | generated wired |
+| `GFX_focus_soviet_collapse_ancient_khw_oasis_authority_council` | `docs/assets/005_soviet_union_collapse/ancient_emergency_council_unique_focus_icons/source/ancient_khw_oasis_authority_council_source.png` | `gfx/interface/goals/soviet_collapse/ancient_khw_oasis_authority_council.dds` | 100x88 | generated wired |
+| `GFX_focus_soviet_collapse_ancient_aln_pass_council` | `docs/assets/005_soviet_union_collapse/ancient_emergency_council_unique_focus_icons/source/ancient_aln_pass_council_source.png` | `gfx/interface/goals/soviet_collapse/ancient_aln_pass_council.dds` | 100x88 | generated wired |
 | `GFX_focus_soviet_collapse_ancient_legitimacy_debate` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_AFG_revive_the_1923_constitution.dds` | `gfx/interface/goals/soviet_collapse/ancient_legitimacy_debate.dds` | 100x88 | wired |
 | `GFX_focus_soviet_collapse_ancient_modern_administration` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_generic_improve_the_administration.dds` | `gfx/interface/goals/soviet_collapse/ancient_modern_administration.dds` | 100x88 | wired |
 | `GFX_focus_soviet_collapse_ancient_city_registers` | `~/projects/Hearts of Iron IV/gfx/interface/goals/focus_CHI_registry_of_property.dds` | `gfx/interface/goals/soviet_collapse/ancient_city_registers.dds` | 100x88 | wired |
