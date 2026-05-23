@@ -1,8 +1,8 @@
-# Event 005 Soviet Collapse Final Completion Report
+﻿# Event 005 Soviet Collapse Final Completion Report
 
 Audit date: 2026-05-21
 
-This report records source-level evidence for the final clean merged Soviet Collapse package from `tmp/soviet_collapse_final_clean_merged_spec_package/specs/`. A current audit found that the package is not yet closed because the final spec requires unique focus icon assignments and the current source still has duplicate icon assignments. It does not claim an external live playthrough; the repository workflow leaves live-session verification to the user.
+This report records source-level evidence for the final clean merged Soviet Collapse package from `tmp/soviet_collapse_final_clean_merged_spec_package/specs/`. A current audit found that the package is not yet closed because the final spec requires unique focus icon assignments and the current source still has duplicate icon assignments. Klim's 2026-05-22 validation addition also makes unique base flags, unique ideology flags, unique Event 005 portraits, and no vanilla portrait reuse final-completion gates; the 2026-05-23 asset passes resolve those flag and portrait gates. It does not claim an external live playthrough; the repository workflow leaves live-session verification to the user.
 
 ## 1. Source files read
 
@@ -14,15 +14,15 @@ Event 005 changes span `events/005_soviet_collapse.txt`, scripted effects/trigge
 
 ## 3. Implementation ledger path
 
-The requirement ledger is `docs/events/005_soviet_collapse_full_implementation_ledger.md`. The unique focus icon assignment row remains partially complete pending replacement or distinct-variant handling for duplicate focus icon assignments.
+The requirement ledger is `docs/events/005_soviet_collapse_full_implementation_ledger.md`. The unique focus icon assignment row remains partially complete pending replacement or distinct-variant handling for duplicate focus icon assignments. The flag and portrait uniqueness row is source-complete after the 2026-05-23 generated ancient ideology-flag, ordinary/internal flag, and portrait replacement passes.
 
 ## 4. Country package coverage
 
-The country package evidence is split across `docs/events/005_soviet_collapse_republic_package_audit.md`, `docs/events/005_soviet_collapse_high_chaos_package_audit.md`, and `docs/assets/005_soviet_union_collapse/manifest.md`. The current asset audit records 32/32 custom Event 005 tags with normal, medium, and small flags plus leader/council portraits.
+The country package evidence is split across `docs/events/005_soviet_collapse_republic_package_audit.md`, `docs/events/005_soviet_collapse_high_chaos_package_audit.md`, and `docs/assets/005_soviet_union_collapse/manifest.md`. The current asset audit records 32/32 custom Event 005 tags with normal, medium, and small flags plus leader/council portraits. The stricter 2026-05-22 flag/portrait gate is now satisfied for the audited source package: custom ancient ideology variants, ordinary/internal base and ideology variants, and the five vanilla-hash portrait replacements were completed on 2026-05-23.
 
 ## 5. Republic and internal republic coverage
 
-The ordinary and vanilla-supported internal republic audit covers `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. The audit verifies tag/history/localisation/flag surfaces, terminal release and subject-freeing membership, dynamic setup, runtime focus routing, dynamic units, league joining, recognition, and internal-sovereignty news/report integration.
+The ordinary and vanilla-supported internal republic audit covers `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. The audit verifies tag/history/localisation/flag surfaces, terminal release and subject-freeing membership, dynamic setup, runtime focus routing, dynamic units, league joining, recognition, and internal-sovereignty news/report integration. The 2026-05-23 ordinary/internal flag package supplies unique generated base and ideology flag files for all 23 tags in normal, medium, and small sizes.
 
 ## 6. High-chaos splinter coverage
 
@@ -30,7 +30,7 @@ High-chaos and evolved packages cover Kronstadt, Green Army, UDC, SDZ, Basmachi,
 
 ## 7. Focus tree rewrite summary
 
-Current source recount finds 1,692 focuses across 41 Event 005 trees. Every counted focus has an icon assignment, completion reward, `ai_will_do`, coordinates, localisation coverage, and resolved references in the current audits. A stricter duplicate-icon audit now finds 1,096 unique icon sprite names across those 1,692 focus assignments, leaving 596 duplicate assignments in 203 duplicate groups that still need unique variants or a documented design change from the final spec.
+Current source recount finds 1,696 focuses across 41 Event 005 trees. Every counted focus has an icon assignment, completion reward, `ai_will_do`, coordinates, localisation coverage, and resolved references in the current audits. A stricter duplicate-icon audit now finds 1,480 unique icon sprite names across those 1,696 focus assignments, leaving 216 duplicate extra assignments in 143 duplicate groups that still need unique variants or a documented design change from the final spec.
 
 ## 8. Route coverage table for every major focus tree
 
@@ -51,11 +51,11 @@ Current source recount finds 1,692 focuses across 41 Event 005 trees. Every coun
 | `CFR_soviet_collapse_focus_tree` | 47 | civilian factory politics, production society, border construction, reconstruction protectorates, rivalry/endgame |
 | `MFR_soviet_collapse_focus_tree` | 58 | arsenal politics, worker/officer routes, weapons programs, proxy/client production, factory guards, rivalry/endgame |
 | `OGB_soviet_collapse_focus_tree` | 23 | restoration politics, heritage guard, Volga/Idel-Ural claims, trade cities, modern war, state restoration |
-| `KZR`, `SOG`, `KHW`, `ALN` ancient-restoration trees | 15 each | emergency council, administration, industry/roads, guard, diplomacy, claims, symbolic or expansionist charter endings |
+| `KZR`, `SOG`, `KHW`, `ALN` ancient-restoration trees | 16 each | emergency council, administration, industry/roads, guard, diplomacy, broader claims, symbolic or expansionist charter endings, returned-name decision access, high-chaos myth capstones |
 
 ## 9. Unique focus icon coverage
 
-The validation report records 1,692 focus icon assignments, but the current duplicate-icon audit records only 1,096 unique icon sprite names. The first cleanup pass replaced 19 duplicate Kazakhstan Steppe Federation assignments with unique generated icons. The largest remaining groups include `GFX_kaz_soviet_collapse_military` used 19 times, `GFX_blr_soviet_collapse_corridor` used 14 times, and `GFX_focus_soviet_collapse_common_front_timetables` used 13 times. This fails the literal final-spec requirement that every focus have a unique icon assignment unless the spec is explicitly amended to allow branch-level reuse.
+The validation report records 1,696 focus icon assignments, but the current duplicate-icon audit records only 1,480 unique icon sprite names. Earlier cleanup passes replaced the largest duplicate groups with unique generated variants; the latest recount leaves 143 duplicate icon groups and 216 duplicate extra assignments. The largest remaining duplicate groups are 4-use groups. This fails the literal final-spec requirement that every focus have a unique icon assignment unless the spec is explicitly amended to allow branch-level reuse.
 
 ## 10. Remove-idea tooltip cleanup
 
@@ -63,7 +63,7 @@ The focus-file audit found focus-reward `remove_ideas` only inside `hidden_effec
 
 ## 11. Mission cleanup summary
 
-The mission audit records 118 timed Soviet objective missions with activation helpers, active cap checks, active-objective increments, and terminal cleanup. Terminal collapse cleanup removes every Soviet objective mission.
+The mission audit records 118 timed Soviet objective missions with activation helpers, active cap checks, active-objective increments, and terminal cleanup. Terminal collapse cleanup removes every Soviet objective mission. The current activation layer gates mission 011-015 legal-settlement objectives behind a legal-settlement phase check, so they do not consume the active objective cap before a breakaway and a credible central legal response exist.
 
 ## 12. Mission clarity fixes
 
@@ -107,7 +107,7 @@ The news/report audit maps local leagues, liaison offices, terminal subject rele
 
 ## 22. Asset coverage
 
-The asset manifest records focus, idea, decision, flag, portrait, faction emblem, achievement, news, report, super-event, and UI/progression coverage. Current checks show 581/581 unique Event 005-like DDS references exist and 32/32 custom country packages have flags and portraits. Returned Names decision/category/idea placeholder reuse has been replaced with dedicated generated DDS assets, and 19 Kazakhstan Steppe Federation focus icon duplicates have dedicated generated DDS variants. Focus icon coverage remains incomplete against the final unique-assignment requirement because 596 focus assignments still reuse sprite names.
+The asset manifest records focus, idea, decision, flag, portrait, faction emblem, achievement, news, report, super-event, and UI/progression coverage. Current direct texturefile checks show 860 unique Event 005 DDS texture paths referenced from `interface/005_soviet_collapse*.gfx` and zero missing texture references. The 2026-05-23 generated asset passes add missing ancient ideology variants for `KZR`, `SOG`, `KHW`, and `ALN`, replace vanilla-hash portraits for `KZR`, `SOG`, `OGB`, `KHW`, and `ALN`, add ordinary/internal base plus ideology flag variants for 23 Event 005-used tags, and replace byte-identical ideology-flag copies for 28 custom successor tags. The current asset audit reports 32/32 leader/council portraits present at 156x210 with no vanilla leader hash matches and no duplicate Event 005 leader hashes, plus 825/825 expected scoped flag files present at correct sizes and 32-bit TGA format. Returned Names decision/category/idea placeholder reuse has been replaced with dedicated generated DDS assets, and the earlier focus icon duplicate replacement passes remain wired. Focus icon coverage remains incomplete against the final unique-assignment requirement because 216 focus assignments still reuse sprite names.
 
 ## 23. Achievement implementation
 
@@ -115,7 +115,7 @@ The achievement audit records 40 Event 005 achievement definitions, 40 matching 
 
 ## 24. AI behavior
 
-The AI audit records 1,692 focus blocks with `ai_will_do`, 855 contextual focus AI modifiers, 122 non-mission decisions with AI, zero non-mission decisions missing AI, and scripted activation for the 118 timed missions. Audited AI surfaces include Soviet crisis actions, breakaways, sponsors, leagues, factory states, special successors, target gating, and MTTH releases.
+The AI audit records 1,696 focus blocks with `ai_will_do`, 1,068 focus blocks with contextual AI modifiers, 1,555 focus AI modifier entries, 122 non-mission decisions with AI, zero non-mission decisions missing AI, and scripted activation for the 118 timed missions. Audited AI surfaces include Soviet crisis actions, breakaways, sponsors, leagues, factory states, special successors, target gating, and MTTH releases.
 
 ## 25. Validation scenario results
 
@@ -123,12 +123,14 @@ The validation report lists all 28 required scenarios with expected result, obse
 
 ## 26. Simplifications and deviations
 
-The remaining source-level deviation is focus icon uniqueness. Every focus has an icon field, but 596 of the 1,692 focus assignments reuse a sprite name already used by another focus. Returned Names placeholder icon reuse has been resolved with dedicated generated assets, and the Kazakhstan Steppe Federation duplicate group has been reduced to a single base use. Ordinary/internal vanilla republics deliberately use vanilla country assets for their base tag surface and receive Event 005 runtime focus, decision, faction, report, and news assets.
+The remaining source-level deviation is focus icon uniqueness. Every focus has an icon field, but 216 of the 1,696 focus assignments reuse a sprite name already used by another focus. Returned Names placeholder icon reuse, ordinary/internal flag coverage, ancient ideology flags, custom successor ideology flags, and vanilla-hash portrait blockers have been resolved with dedicated generated assets.
 
 ## 27. Blockers
 
-One source blocker remains for the final clean merged package: unique focus icon assignment coverage. The current source has 1,692 focus icon assignments but only 1,077 unique sprite names. Live-session feel, pacing, and UI scanning remain practical user verification surfaces after source completion.
+Source blockers and open risk areas remain for the final clean merged package. Unique focus icon assignment coverage is still unresolved: the current source has 1,696 focus icon assignments but only 1,480 unique sprite names. Event 005 now has dedicated strategic AI plans in `common/ai_strategy/005_soviet_collapse.txt` in addition to action-surface weighting, trigger, decision, and MTTH logic. The compact special-actor settlement/extreme capstones now have route-specific payoffs before their shared final helpers, but several expansion branches and compact shared trees remain source-valid while lighter than the deepest bespoke trees.
+
+The previous ancient ideology-flag gap, ordinary/internal base-and-ideology flag gap, custom successor ideology-flag duplication, and five vanilla-hash Event 005 portrait blockers were resolved by the 2026-05-23 generated asset passes. Live-session feel, pacing, and UI scanning remain practical user verification surfaces after source completion.
 
 ## 28. Remaining work
 
-Required source implementation work remains for Event 005: replace the 596 duplicate focus icon assignments with unique, appropriate icon variants or get explicit approval to relax the final-spec requirement. Future live pacing and UI feel review remains separate practical validation after source completion.
+Required source implementation work remains for Event 005: replace the 216 duplicate extra focus icon assignments with unique, appropriate icon variants or keep the user's relaxed focus-icon standard for this pass; deepen the remaining light expansion/shared-tree branches if they are still expected to match the bespoke route standard; then rerun the focus, AI, and validation audits. Future live pacing and UI feel review remains separate practical validation after source completion.

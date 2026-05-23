@@ -2,9 +2,9 @@
 
 ## Current Depth Status
 
-The custom-splinter focus file is source-valid and already contains stronger bespoke late branches for several tags, but the shared opening and convergence scaffold still repeats the same payoff language across too many 47-focus trees. The worst clusters are `*_first_guard`, `*_special_arm`, `*_settlement`, `*_industry_plan`, and `*_propaganda`.
+The custom-splinter focus file is source-valid and already contains stronger bespoke late branches for several tags. The main 2026-05-23 implementation pass has addressed the worst `*_first_guard`, `*_special_arm`, `*_settlement`, `*_industry_plan`, and `*_propaganda` clusters, plus the adjacent `*_stores`, `*_legitimacy`, `*_rival`, `*_civil_rule`, `*_enemy_front`, `*_league`, and `*_foreign` clusters, with tag-family helper effects hidden behind one concise route-identity tooltip. `KRS_industry_plan` remains bespoke and carries the shared recovery-progress and consolidated-idea refresh tail directly.
 
-This is not a request to rewrite the trees. The next implementation pass should replace the repeated payoff blocks inside existing focuses with tag-family mechanics that match the already-written localisation and later branch identity.
+This is not a request to rewrite the trees. The next implementation pass should focus on bespoke late-branch AI weighting, live tooltip readability, and any remaining tag-specific late-branch gaps rather than reworking the already-patched helper surface.
 
 ## Evidence From Current Source
 
