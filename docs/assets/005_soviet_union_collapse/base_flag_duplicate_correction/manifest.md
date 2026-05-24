@@ -44,14 +44,7 @@ Post-pass audit result:
 - Bad active custom/cosmetic flag dimensions: `0`
 - Bad active custom/cosmetic TGA bpp/origin: `0`
 - Vanilla-supported default mod-side flag overrides: `0`
-- Duplicate no-suffix base flag groups remaining: `4` groups, `14` files across each size.
-
-Remaining duplicate base flag groups not completed in this bounded pass:
-
-- `FTH`, `BBH`, `UKR_BLACK_BANNER`
-- `BSC`, `TNC`, `ALA`, `GAC`
-- `DSC`, `UWD`, `IUL`, `ICD`
-- `NRF`, `ARD`, `NLC`
+- Duplicate no-suffix base flag groups remaining after the follow-up audit: `0`.
 
 Notes:
 
