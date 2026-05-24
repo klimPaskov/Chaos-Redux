@@ -4,7 +4,7 @@
 
 The event script uses stable sprite and idea names. The active news, report, and primary super-event image candidates are sourced, processed, converted, and wired. Dedicated idea, decision, and shared focus icon sprite names are wired through stable filenames, with generated source PNGs, processed previews, final DDS files, and `.gfx` entries in place for active gameplay content.
 
-The package now contains sourced news, report, and super-event images under `docs/assets/005_soviet_union_collapse/`, event-picture DDS files under `gfx/event_pictures/`, super-event DDS files under `gfx/super_events/`, generated active idea, decision, and shared focus icon DDS files under the normal interface folders, and generated ordinary/internal republic flag TGA files under `gfx/flags/`.
+The package now contains sourced news, report, and super-event images under `docs/assets/005_soviet_union_collapse/`, event-picture DDS files under `gfx/event_pictures/`, super-event DDS files under `gfx/super_events/`, generated active idea, decision, and shared focus icon DDS files under the normal interface folders, custom Event 005 country flag TGA files under `gfx/flags/`, and route-specific cosmetic flag TGAs for focus-driven identity changes.
 
 The active idea, decision, and shared focus icon package is generated from scratch with Codex built-in `image_gen`, cleaned, centered, converted, and wired. Event 005 custom country packages, factory states, special actors, and ancient restorations now have documented flag, portrait/council, focus, idea, and decision asset coverage in this manifest or in the republic focus and influence expansion ledger linked below.
 
@@ -27,22 +27,22 @@ Optional source/crop choices can be recorded in the art-pass sheet, but empty bo
 
 This section reconciles the Part 7 visible-asset checklist against the current implementation surface.
 
-Klim follow-up scope, added 2026-05-22: every country created or used by Event 005 must have a unique base flag and unique ideology flags, and every new/Event 005 leader portrait must be unique without reusing vanilla leader portraits. Duplicate or missing ideology flags and reused vanilla portraits are validation blockers before final completion.
+Current flag scope: custom Event 005 country tags need their own base and ideology flags, while existing vanilla-supported country tags keep their game-provided flags unless a route explicitly applies a cosmetic tag. Every new/Event 005 leader portrait must be unique without reusing vanilla leader portraits. Duplicate or missing custom/cosmetic flags and reused vanilla portraits are validation blockers before final completion.
 
 Source audit status:
 
 - Event 005 focus/interface sprite references in `interface/005_soviet_collapse*.gfx`: `860/860` unique referenced DDS files exist in the direct texturefile audit.
 - Custom Event 005 country package tags with normal, medium, small flags and leader/council portrait DDS present: `32/32` (`CFR`, `MFR`, `OGB`, `KZR`, `SOG`, `KHW`, `ALN`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, `NLC`).
-- New stricter flag audit: the previous vanilla-asset acceptance for ordinary/internal republics no longer satisfies the active validation scope. Generated fictional base and ideology flags now exist for ordinary/internal tags `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`. The previous custom ancient-restoration ideology gap for `KZR`, `SOG`, `KHW`, and `ALN` is resolved by generated fictional variants documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
-- New portrait reuse audit: `gfx/leaders/005_soviet_collapse/` no longer has vanilla hash matches for `KZR_leader.dds`, `SOG_leader.dds`, `OGB_leader.dds`, `KHW_leader.dds`, or `ALN_leader.dds` after the generated replacement pass documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
+- Existing-game tag flag rule: vanilla-supported ordinary/internal tags `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN` use the game-provided base and ideology flags by default. Event 005 must not add default `gfx/flags/<TAG>*.tga` overrides for those tags. If an existing tag changes flag, it must happen through an explicit route effect such as a focus-applied cosmetic tag. The previous custom ancient-restoration ideology gap for `KZR`, `SOG`, `KHW`, and `ALN` is resolved by custom variants documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
+- New portrait reuse audit: `gfx/leaders/005_soviet_collapse/` no longer has vanilla hash matches for `KZR_leader.dds`, `SOG_leader.dds`, `OGB_leader.dds`, `KHW_leader.dds`, or `ALN_leader.dds` after the generated replacement pass documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`. The 2026-05-24 follow-up also wires unique generated council portraits for vanilla-supported release tags that lacked active vanilla leaders: `MOL`, `UZB`, `TAJ`, `TMS`, and `FER`.
 
 | Asset surface | Coverage evidence | Status |
 | --- | --- | --- |
 | Focus icons | `1696` Event 005 focus blocks have icon assignments; shared, Ukraine, Belarus, Kazakhstan, regional, custom splinter, factory, OGB, PRA/TSC/ICD/RMC/DSC/NRF, and ancient-restoration icon packages are wired through `interface/005_soviet_collapse*.gfx`. A duplicate-icon audit now finds `1480` unique focus icon sprite names, leaving `216` duplicate extra assignments to resolve before this satisfies the final unique-assignment requirement. | partially complete |
 | Idea and national spirit icons | Active idea icon rows are generated, processed, converted, and wired in `interface/005_soviet_collapse_icons.gfx`; custom package idea emblems and special-package idea DDS paths are documented below. | complete |
 | Decision and decision category icons | Active Soviet, breakaway, foreign patron, volunteer, regional-faction, custom-package, OGB, and special-package decision icons are wired through stable DDS paths and `.gfx` sprite names. | complete |
-| Flags and route/ideology flags | Active validation requires unique base and ideology flags for every country created or used by Event 005. Generated fictional ideology variants exist for ancient restoration tags `KZR`, `SOG`, `KHW`, and `ALN`; generated fictional base plus ideology variants exist for ordinary/internal tags `UKR`, `BLR`, `KAZ`, `MOL`, `LIT`, `LAT`, `EST`, `GEO`, `ARM`, `AZR`, `UZB`, `KYR`, `TAJ`, `TMS`, `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN`; and the continuation audit generated distinct ideology variants for custom successor tags `CFR`, `MFR`, `OGB`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, and `NLC`. | complete |
-| Leader, council, and factory portraits | Custom splinter, factory, ancient-restoration, OGB, dead-state, railway, Tunguska, and revenant-fleet portrait files are present. The 2026-05-23 generated pass replaced `KZR`, `SOG`, `OGB`, `KHW`, and `ALN` vanilla-hash portraits with unique fictional council portraits. | complete |
+| Flags and route/ideology flags | Event 005 custom country tags have normal, medium, and small country flags. Vanilla-supported ordinary/internal tags use vanilla flags by default, with no generated default overrides in this mod. Route-specific existing-tag changes must use cosmetic tags applied by focuses or events; the current Ukraine Black Banner route applies `UKR_BLACK_BANNER` from `ukr_soviet_collapse_black_banner_compact`. Custom successor ideology variants exist for `CFR`, `MFR`, `OGB`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, and `NLC`; ancient restoration variants exist for `KZR`, `SOG`, `KHW`, and `ALN`. | partially complete |
+| Leader, council, and factory portraits | Custom splinter, factory, ancient-restoration, OGB, dead-state, railway, Tunguska, and revenant-fleet portrait files are present. The 2026-05-23 generated pass replaced `KZR`, `SOG`, `OGB`, `KHW`, and `ALN` vanilla-hash portraits with unique fictional council portraits. The 2026-05-24 follow-up adds unique generated council portraits and `.gfx` sprite definitions for vanilla-supported release tags `MOL`, `UZB`, `TAJ`, `TMS`, and `FER`, which otherwise lack active vanilla leaders in this runtime package. | complete |
 | Faction and local-league emblems | Free Republics' League, Baltic League, Caucasus League, Steppe Federation, Black International, Free Soviet Congress, Eastern Buffer Coalition, and Iron Production Bloc regular and miniature faction logos are wired in `interface/005_soviet_collapse_faction_logos.gfx`. | complete |
 | News images | Seven active news images are wired: opening collapse, Free Republics' League, Union Unmade, and four republic-route capstone news crops. Ordinary league and route capstone presentation uses news events rather than retired super-event slots. | complete |
 | Report images | Six active report images are sourced, processed, converted, and wired through `interface/chaosx_pictures.gfx`. | complete |
@@ -83,53 +83,28 @@ Ideology suffixes: `communism`, `democratic`, `fascism`, and `neutrality`. Inten
 
 Tags completed: `CFR`, `MFR`, `OGB`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, and `NLC`.
 
-Validation note: direct audit found `825/825` expected Event 005 scoped flag files present across 32 custom tags and 23 ordinary/internal tags, correct normal `82x52`, medium `41x26`, and small `10x7` dimensions, 32-bit TGA output, zero vanilla flag hash matches, and zero duplicate base-vs-ideology variants per audited tag.
+Validation note: direct audit found no mod-side default flag overrides remaining for the 23 vanilla-supported ordinary/internal tags. Existing-tag flag changes are restricted to explicit cosmetic tags, such as `UKR_BLACK_BANNER`.
 
-## Generated Ordinary/Internal Republic Flag Package, 2026-05-23
+## Historical Restoration Flag Pass, 2026-05-24
 
-Bounded scope: generated fictional 1930s alternate-history base and ideology flag variants for ordinary/internal Event 005 tags that lacked bespoke flag coverage. This pass did not edit gameplay, `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files.
+Bounded scope: replaced the generated/simple historical-restoration flag set for `KZR`, `SOG`, `KHW`, `ALN`, and `OGB` with historically grounded source artwork. These states do not have reliably attested medieval state flags suitable for direct reproduction, so the pass uses sourced historical motifs and regional banner colors rather than invented geometric route marks.
 
-Source mode: Codex built-in `$imagegen` generated one fictional flag source sheet, then the sheet was cropped into tag-specific generated source PNGs and processed into HOI4 country flag TGA files. Generation is appropriate because these are fictional alternate-history successor-state flags rather than historical flags or documentary assets.
+Motif notes:
 
-Inspected reference folder: `.agents/skills/chaos-redux-event-assets/assets/flags`. Existing HOI4 flag format was checked against vanilla and Chaos Redux TGA files: normal `82x52`, medium `41x26`, small `10x7`, 8-bit RGBA / TrueColorAlpha TGA.
+- `SOG`: Sogdian/Samarkand tamga-style mark, river bands, and carnelian/gold palette.
+- `KHW`: Khwarazmian oasis banner language, black field, green crescent, and water band.
+- `ALN`: Alano-Sarmatian tamga-style mark over Caucasus/Alania white-red-gold colors.
+- `KZR`: Khazar dual-field banner using black/white Khazar identity and a steppe tamga-style mark.
+- `OGB`: Old Great Bulgaria field using Bulgar/Dulo-inspired monogram structure and white/green/red field colors.
 
-Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_generated_ordinary_internal_flags.png`.
+Outputs:
 
-Path patterns for every listed tag:
-
-- Source PNGs: `docs/assets/005_soviet_union_collapse/source_png/generated_ordinary_flags/<TAG>[_<ideology>]_source.png`
-- Processed PNG previews: `docs/assets/005_soviet_union_collapse/processed_png/generated_ordinary_flags/<TAG>[_<ideology>]_<normal|medium|small>.png`
+- Source PNGs: `docs/assets/005_soviet_union_collapse/source_png/historical_flags/<TAG>_<variant>_source.png`
+- Processed PNG previews: `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/<TAG>_<variant>_<normal|medium|small>.png`
+- Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_historical_restoration_flags.png`
 - Final normal TGA: `gfx/flags/<TAG>[_<ideology>].tga`
 - Final medium TGA: `gfx/flags/medium/<TAG>[_<ideology>].tga`
 - Final small TGA: `gfx/flags/small/<TAG>[_<ideology>].tga`
-
-Ideology suffixes: `communism`, `democratic`, `fascism`, `neutrality`; the unsuffixed file is the base flag. Intended use for every row is Event 005 ordinary/internal Soviet-collapse successor country flags. Blockers: none for this package.
-
-| Tag | Generated variants | Sizes | Status |
-| --- | --- | --- | --- |
-| `UKR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `BLR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `KAZ` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `MOL` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `LIT` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `LAT` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `EST` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `GEO` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `ARM` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `AZR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `UZB` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `KYR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `TAJ` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `TMS` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `KAR` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `KOM` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `CRI` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `TAT` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `BSK` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `FER` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `YAK` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `BYA` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
-| `TAN` | base, communism, democratic, fascism, neutrality | 82x52, 41x26, 10x7 | complete |
 
 ### Generated council portrait replacements
 
@@ -144,6 +119,18 @@ Source mode: Codex built-in `$imagegen`, fictional symbolic council portraits. T
 | `ALN` Alan Pass Principality council portrait | Fictional mountain pass council regent, border-pass map and key identity, HOI4 painterly bust, no text or real likeness. | `docs/assets/005_soviet_union_collapse/source_png/generated_replacements/ALN_leader_source.png` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/ALN_leader.png` | `gfx/leaders/005_soviet_collapse/ALN_leader.dds` | 156x210 | `GFX_portrait_ALN_alan_pass_council`, `interface/005_soviet_collapse_factory_ancient_icons.gfx` | complete |
 
 Validation note: direct SHA-256 comparison against vanilla leader DDS files found no vanilla hash match for `KZR`, `SOG`, `OGB`, `KHW`, or `ALN` after replacement.
+
+### Vanilla-supported release council portraits
+
+Source mode: unused generated Event 005 council portraits reassigned to vanilla-supported release tags that require active leaders during the Soviet Collapse package. These portraits are fictional council depictions, not real leader likenesses.
+
+| Tag | Leader name | Final DDS | Target size | Sprite / `.gfx` | Status |
+| --- | --- | --- | --- | --- | --- |
+| `MOL` | Sfat Crisis Directorate | `gfx/leaders/005_soviet_collapse/MOL_leader.dds` | 156x210 | `GFX_portrait_MOL_sfat_crisis_directorate`, `interface/005_soviet_collapse_custom_icons.gfx` | wired |
+| `UZB` | Tashkent Emergency Majlis | `gfx/leaders/005_soviet_collapse/UZB_leader.dds` | 156x210 | `GFX_portrait_UZB_tashkent_emergency_majlis`, `interface/005_soviet_collapse_custom_icons.gfx` | wired |
+| `TAJ` | Pamir Republican Council | `gfx/leaders/005_soviet_collapse/TAJ_leader.dds` | 156x210 | `GFX_portrait_TAJ_pamir_republican_council`, `interface/005_soviet_collapse_custom_icons.gfx` | wired |
+| `TMS` | Ashgabat Desert Authority | `gfx/leaders/005_soviet_collapse/TMS_leader.dds` | 156x210 | `GFX_portrait_TMS_ashgabat_desert_authority`, `interface/005_soviet_collapse_custom_icons.gfx` | wired |
+| `FER` | Far Eastern Republic Council | `gfx/leaders/005_soviet_collapse/FER_leader.dds` | 156x210 | `GFX_portrait_FER_far_eastern_republic_council`, `interface/005_soviet_collapse_custom_icons.gfx` | wired |
 
 ### Fictional ancient-restoration ideology flag variants
 
