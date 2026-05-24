@@ -17,7 +17,7 @@ is_soviet_collapse_aftermath_active = {
 	}
 }
 
-is_soviet_collapse_calm_strong_center_window = {
+can_soviet_collapse_enter_calm_strong_center_state = {
 	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
 	has_war = no
 	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_gate compare = greater_than_or_equals }
@@ -26,6 +26,24 @@ is_soviet_collapse_calm_strong_center_window = {
 	NOT = { has_global_flag = { flag = chaos_tier value = 3 } }
 	NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
 	NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+}
+
+must_soviet_collapse_exit_calm_strong_center_state = {
+	OR = {
+		has_global_flag = soviet_collapse_terminal_collapse
+		has_war = yes
+		check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_exit_gate compare = less_than }
+		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_threat_guard.strong_center_obedience_exit_gate compare = less_than }
+		check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.early_component_cap_breakaway_gate compare = greater_than_or_equals }
+		has_global_flag = { flag = chaos_tier value = 3 }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+	}
+}
+
+is_soviet_collapse_calm_strong_center_window = {
+	has_country_flag = soviet_collapse_calm_strong_center_state
+	NOT = { must_soviet_collapse_exit_calm_strong_center_state = yes }
 }
 
 has_soviet_collapse_opening_release_emergency = {
