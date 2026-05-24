@@ -8585,6 +8585,16 @@ soviet_collapse_add_random_threat_breakaway_republic = {
 	}
 }
 
+soviet_collapse_save_random_threat_breakaway_republic_target = {
+	every_possible_country = {
+		limit = {
+			is_soviet_collapse_progressive_release_candidate = yes
+		}
+		random_select_amount = 1
+		save_event_target_as = soviet_collapse_release_target
+	}
+}
+
 soviet_collapse_count_progressive_release_candidates = {
 	set_temp_variable = { soviet_collapse_progressive_release_candidate_count = 0 }
 	every_possible_country = {
@@ -8630,29 +8640,66 @@ soviet_collapse_compute_progressive_release_regional_cascade = {
 	}
 }
 
-soviet_collapse_release_one_threat_breakaway_republic = {
-	clear_array = global.soviet_collapse_progressive_release_selection
-	clr_country_flag = soviet_collapse_progressive_release_candidate_selected
-	soviet_collapse_add_random_threat_breakaway_republic = yes
-	if = {
-		limit = { has_country_flag = soviet_collapse_progressive_release_candidate_selected }
-		soviet_collapse_release_selected_progressive_republics = yes
-		clear_array = global.soviet_collapse_progressive_release_selection
-		clr_country_flag = soviet_collapse_progressive_release_candidate_selected
-		set_variable = { soviet_collapse_progressive_release_pressure = 0 }
-		set_temp_variable = { soviet_collapse_progressive_release_cooldown_days = constant:soviet_collapse_progressive_release.cooldown_days }
-		meta_effect = {
-			text = {
-				set_global_flag = {
-					flag = soviet_collapse_progressive_release_cooldown
-					days = [COOLDOWN_DAYS]
-				}
+soviet_collapse_release_event_target_progressive_republic = {
+	event_target:soviet_collapse_release_target = {
+		if = {
+			limit = { exists = no }
+			SOV = { release = PREV }
+			set_country_flag = soviet_collapse_event_created_republic
+		}
+		if = {
+			limit = {
+				exists = yes
+				is_subject_of = SOV
 			}
-			COOLDOWN_DAYS = "[?soviet_collapse_progressive_release_cooldown_days|.0]"
+			SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
+			set_country_flag = soviet_collapse_event_created_republic
+		}
+		if = {
+			limit = { exists = yes }
+			soviet_collapse_setup_breakaway_country = yes
+			soviet_collapse_load_event_created_focus_tree = yes
 		}
 	}
-	else = {
+}
+
+soviet_collapse_finish_progressive_release = {
+	clear_array = global.soviet_collapse_progressive_release_selection
+	clr_country_flag = soviet_collapse_progressive_release_candidate_selected
+	set_variable = { soviet_collapse_progressive_release_pressure = 0 }
+	set_temp_variable = { soviet_collapse_progressive_release_cooldown_days = constant:soviet_collapse_progressive_release.cooldown_days }
+	meta_effect = {
+		text = {
+			set_global_flag = {
+				flag = soviet_collapse_progressive_release_cooldown
+				days = [COOLDOWN_DAYS]
+			}
+		}
+		COOLDOWN_DAYS = "[?soviet_collapse_progressive_release_cooldown_days|.0]"
+	}
+}
+
+soviet_collapse_release_one_threat_breakaway_republic = {
+	if = {
+		limit = { NOT = { has_event_target = soviet_collapse_release_target } }
 		clear_array = global.soviet_collapse_progressive_release_selection
+		clr_country_flag = soviet_collapse_progressive_release_candidate_selected
+		soviet_collapse_add_random_threat_breakaway_republic = yes
+	}
+	if = {
+		limit = { has_event_target = soviet_collapse_release_target }
+		soviet_collapse_release_event_target_progressive_republic = yes
+		soviet_collapse_finish_progressive_release = yes
+	}
+	else = {
+		if = {
+			limit = { has_country_flag = soviet_collapse_progressive_release_candidate_selected }
+			soviet_collapse_release_selected_progressive_republics = yes
+			soviet_collapse_finish_progressive_release = yes
+		}
+		else = {
+			clear_array = global.soviet_collapse_progressive_release_selection
+		}
 	}
 }
 
@@ -8690,15 +8737,19 @@ soviet_collapse_fire_progressive_release_event = {
 		}
 		set_temp_variable = { soviet_collapse_release_cause_league_weight = 0 }
 	}
-	random_list = {
-		var:soviet_collapse_release_cause_ministry_weight = { country_event = { id = chaosx.nr5.130 } }
-		var:soviet_collapse_release_cause_rail_weight = { country_event = { id = chaosx.nr5.131 } }
-		var:soviet_collapse_release_cause_border_weight = { country_event = { id = chaosx.nr5.132 } }
-		var:soviet_collapse_release_cause_party_weight = { country_event = { id = chaosx.nr5.133 } }
-		var:soviet_collapse_release_cause_foreign_weight = { country_event = { id = chaosx.nr5.134 } }
-		var:soviet_collapse_release_cause_depot_weight = { country_event = { id = chaosx.nr5.135 } }
-		var:soviet_collapse_release_cause_old_movement_weight = { country_event = { id = chaosx.nr5.136 } }
-		var:soviet_collapse_release_cause_league_weight = { country_event = { id = chaosx.nr5.137 } }
+	soviet_collapse_save_random_threat_breakaway_republic_target = yes
+	if = {
+		limit = { has_event_target = soviet_collapse_release_target }
+		random_list = {
+			var:soviet_collapse_release_cause_ministry_weight = { country_event = { id = chaosx.nr5.130 } }
+			var:soviet_collapse_release_cause_rail_weight = { country_event = { id = chaosx.nr5.131 } }
+			var:soviet_collapse_release_cause_border_weight = { country_event = { id = chaosx.nr5.132 } }
+			var:soviet_collapse_release_cause_party_weight = { country_event = { id = chaosx.nr5.133 } }
+			var:soviet_collapse_release_cause_foreign_weight = { country_event = { id = chaosx.nr5.134 } }
+			var:soviet_collapse_release_cause_depot_weight = { country_event = { id = chaosx.nr5.135 } }
+			var:soviet_collapse_release_cause_old_movement_weight = { country_event = { id = chaosx.nr5.136 } }
+			var:soviet_collapse_release_cause_league_weight = { country_event = { id = chaosx.nr5.137 } }
+		}
 	}
 }
 
