@@ -3235,6 +3235,115 @@ soviet_collapse_apply_compact_client_firebreak = {
 	soviet_collapse_update_consolidated_republic_ideas = yes
 }
 
+soviet_collapse_apply_ukr_direct_national_claims = {
+	add_state_claim = 137
+	add_state_claim = 766
+	add_state_claim = 834
+	add_state_claim = 241
+	add_war_support = constant:soviet_collapse_republic_focus.war_support_small
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+soviet_collapse_apply_ukr_western_question_claims = {
+	add_state_claim = 73
+	add_state_claim = 93
+	add_state_claim = 171
+	add_war_support = constant:soviet_collapse_republic_focus.war_support_small
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+soviet_collapse_apply_ukr_black_sea_hegemony = {
+	add_state_claim = 137
+	add_state_claim = 766
+	add_state_claim = 834
+	navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
+	if = {
+		limit = {
+			CRI = {
+				exists = yes
+				NOT = { is_in_faction_with = ROOT }
+			}
+			NOT = { has_war_with = CRI }
+			can_declare_war_on = CRI
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = CRI
+			expire = 0
+		}
+	}
+	if = {
+		limit = {
+			SOV = {
+				exists = yes
+				controls_state = 137
+			}
+			NOT = { has_war_with = SOV }
+			can_declare_war_on = SOV
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = SOV
+			expire = 0
+		}
+	}
+}
+
+soviet_collapse_apply_ukr_great_steppe_and_sea_plan = {
+	add_state_claim = 137
+	add_state_claim = 766
+	add_state_claim = 834
+	add_state_claim = 241
+	if = {
+		limit = {
+			SOV = { exists = yes }
+			NOT = { has_war_with = SOV }
+			can_declare_war_on = SOV
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = SOV
+			expire = 0
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = soviet_collapse_ukraine_league_program_score
+				value = 1
+				compare = greater_than
+			}
+		}
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_ukraine_league.target_resilience_gain }
+		soviet_collapse_update_consolidated_republic_ideas = yes
+	}
+}
+
+soviet_collapse_apply_ukr_outside_old_map_settlement = {
+	if = { limit = { 137 = { is_controlled_by = ROOT is_claimed_by = ROOT NOT = { is_core_of = ROOT } } } 137 = { add_core_of = ROOT } }
+	if = { limit = { 766 = { is_controlled_by = ROOT is_claimed_by = ROOT NOT = { is_core_of = ROOT } } } 766 = { add_core_of = ROOT } }
+	if = { limit = { 834 = { is_controlled_by = ROOT is_claimed_by = ROOT NOT = { is_core_of = ROOT } } } 834 = { add_core_of = ROOT } }
+	if = { limit = { 241 = { is_controlled_by = ROOT is_claimed_by = ROOT NOT = { is_core_of = ROOT } } } 241 = { add_core_of = ROOT } }
+	if = { limit = { 73 = { is_controlled_by = ROOT is_claimed_by = ROOT NOT = { is_core_of = ROOT } } } 73 = { add_core_of = ROOT } }
+	if = { limit = { 93 = { is_controlled_by = ROOT is_claimed_by = ROOT NOT = { is_core_of = ROOT } } } 93 = { add_core_of = ROOT } }
+	if = { limit = { 171 = { is_controlled_by = ROOT is_claimed_by = ROOT NOT = { is_core_of = ROOT } } } 171 = { add_core_of = ROOT } }
+	if = {
+		limit = {
+			check_variable = {
+				var = soviet_collapse_ukraine_league_program_score
+				value = 1
+				compare = greater_than
+			}
+		}
+		add_stability = constant:soviet_collapse_republic_focus.stability_medium
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		soviet_collapse_update_consolidated_republic_ideas = yes
+	}
+}
+
 soviet_collapse_load_event_created_focus_tree = {
 	if = {
 		limit = {
