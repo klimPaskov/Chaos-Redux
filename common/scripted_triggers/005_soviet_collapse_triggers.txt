@@ -50,6 +50,22 @@ is_soviet_collapse_calm_strong_center_window = {
 	NOT = { must_soviet_collapse_exit_calm_strong_center_state = yes }
 }
 
+is_soviet_collapse_opening_strong_center_guard_window = {
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+	has_war = no
+	check_variable = {
+		var = soviet_collapse_months_active
+		value = constant:soviet_collapse_threat_guard.opening_strong_center_guard_months
+		compare = less_than
+	}
+	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_gate compare = greater_than_or_equals }
+	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_threat_guard.strong_center_obedience_gate compare = greater_than_or_equals }
+	check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+	NOT = { has_global_flag = { flag = chaos_tier value = 3 } }
+	NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
+	NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+}
+
 has_soviet_collapse_opening_release_emergency = {
 	OR = {
 		has_soviet_collapse_real_regional_cascade_pressure = yes
