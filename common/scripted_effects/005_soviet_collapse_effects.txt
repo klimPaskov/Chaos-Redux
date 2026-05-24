@@ -260,7 +260,7 @@ soviet_collapse_apply_timeout_burst_pressure_caps = {
 		else_if = {
 			limit = {
 				is_soviet_collapse_calm_strong_center_window = yes
-				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+				check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
 			}
 			set_temp_variable = { soviet_collapse_timeout_burst_threat_cap = constant:soviet_collapse_threat_guard.calm_failed_month_cap }
 		}
@@ -268,7 +268,7 @@ soviet_collapse_apply_timeout_burst_pressure_caps = {
 			limit = {
 				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
 				check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.contested_component_cap_breakaway_gate compare = less_than }
-				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+				check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
 			}
 			set_temp_variable = { soviet_collapse_timeout_burst_threat_cap = constant:soviet_collapse_threat_guard.moderate_failed_month_cap }
 		}
@@ -470,7 +470,7 @@ soviet_collapse_apply_monthly_threat_guard = {
 			check_variable = { var = soviet_collapse_monthly_failed_objectives value = constant:soviet_collapse_threat_guard.failure_floor compare = less_than }
 			check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = less_than_or_equals }
 			check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_baseline.league_cohesion compare = less_than_or_equals }
-			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
 			check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.calm_success_month_cap compare = greater_than }
 		}
 		set_temp_variable = { soviet_collapse_monthly_threat_cap = constant:soviet_collapse_threat_guard.calm_success_month_cap }
@@ -479,7 +479,7 @@ soviet_collapse_apply_monthly_threat_guard = {
 	else_if = {
 		limit = {
 			is_soviet_collapse_calm_strong_center_window = yes
-			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
 			check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.calm_failed_month_cap compare = greater_than }
 		}
 		set_temp_variable = { soviet_collapse_monthly_threat_cap = constant:soviet_collapse_threat_guard.calm_failed_month_cap }
@@ -492,7 +492,7 @@ soviet_collapse_apply_monthly_threat_guard = {
 			check_variable = { var = soviet_collapse_monthly_failed_objectives value = constant:soviet_collapse_threat_guard.failure_floor compare = less_than }
 			check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = less_than_or_equals }
 			check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_baseline.league_cohesion compare = less_than_or_equals }
-			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
 			check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.moderate_success_month_cap compare = greater_than }
 		}
 		set_temp_variable = { soviet_collapse_monthly_threat_cap = constant:soviet_collapse_threat_guard.moderate_success_month_cap }
@@ -503,7 +503,7 @@ soviet_collapse_apply_monthly_threat_guard = {
 			has_war = no
 			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
 			check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.contested_component_cap_breakaway_gate compare = less_than }
-			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
 			check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.moderate_failed_month_cap compare = greater_than }
 			NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
 			NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
@@ -9642,6 +9642,7 @@ soviet_collapse_count_active_soviet_objectives = {
 }
 
 soviet_collapse_activate_opening_objectives = {
+	soviet_collapse_update_center_pressure_state = yes
 	soviet_collapse_prune_invalid_active_soviet_objectives = yes
 	soviet_collapse_count_active_soviet_objectives = yes
 	set_temp_variable = { soviet_collapse_active_objective_cap = constant:soviet_collapse_soviet_objective.active_cap }
