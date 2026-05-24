@@ -139,7 +139,30 @@ has_soviet_collapse_strategic_release_failure = {
 
 has_soviet_collapse_failure_release_pressure = {
 	OR = {
-		has_soviet_collapse_strategic_release_failure = yes
+		AND = {
+			has_soviet_collapse_strategic_release_failure = yes
+			OR = {
+				NOT = { is_soviet_collapse_calm_strong_center_window = yes }
+				check_variable = {
+					var = soviet_collapse_total_collapse_threat
+					value = constant:soviet_collapse_progressive_release.moderate_threat
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = soviet_collapse_last_month_failed_objectives
+					value = constant:soviet_collapse_threat_guard.calm_release_failure_gate
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = soviet_collapse_monthly_failed_objectives
+					value = constant:soviet_collapse_threat_guard.calm_release_failure_gate
+					compare = greater_than_or_equals
+				}
+				has_soviet_collapse_real_regional_cascade_pressure = yes
+				has_war = yes
+				NOT = { capital_scope = { is_controlled_by = ROOT } }
+			}
+		}
 		AND = {
 			is_soviet_collapse_calm_strong_center_window = yes
 			OR = {
