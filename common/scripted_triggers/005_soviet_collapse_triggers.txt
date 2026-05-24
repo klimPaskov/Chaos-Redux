@@ -28,6 +28,26 @@ is_soviet_collapse_calm_strong_center_window = {
 	NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
 }
 
+has_soviet_collapse_opening_release_emergency = {
+	OR = {
+		has_soviet_collapse_real_regional_cascade_pressure = yes
+		has_war = yes
+		NOT = { capital_scope = { is_controlled_by = ROOT } }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+		check_variable = {
+			var = soviet_collapse_moscow_authority
+			value = constant:soviet_collapse_soviet_objective.critical_authority
+			compare = less_than
+		}
+		check_variable = {
+			var = soviet_collapse_military_obedience
+			value = constant:soviet_collapse_soviet_objective.contested_authority
+			compare = less_than
+		}
+	}
+}
+
 has_soviet_collapse_component_release_pressure = {
 	OR = {
 		check_variable = {
@@ -393,21 +413,7 @@ can_soviet_collapse_roll_progressive_release = {
 has_soviet_collapse_progressive_release_pacing_ready = {
 	OR = {
 		NOT = { has_global_flag = soviet_collapse_union_unmade_first_month_lock }
-		has_soviet_collapse_real_regional_cascade_pressure = yes
-		has_war = yes
-		NOT = { capital_scope = { is_controlled_by = ROOT } }
-		has_global_flag = { flag = chaos_tier value = 4 }
-		has_global_flag = { flag = chaos_tier value = 5 }
-		check_variable = {
-			var = soviet_collapse_moscow_authority
-			value = constant:soviet_collapse_soviet_objective.critical_authority
-			compare = less_than
-		}
-		check_variable = {
-			var = soviet_collapse_military_obedience
-			value = constant:soviet_collapse_soviet_objective.contested_authority
-			compare = less_than
-		}
+		has_soviet_collapse_opening_release_emergency = yes
 	}
 }
 
