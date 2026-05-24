@@ -503,13 +503,16 @@ focus_tree = {
 		prerequisite = { focus = ukr_soviet_collapse_british_caution }
 
 		completion_reward = {
-			set_country_flag = soviet_collapse_ukraine_officer_patronage_lists
-			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
-			soviet_collapse_apply_focus_military_consolidation = yes
+			custom_effect_tooltip = ukr_soviet_collapse_officer_patronage_lists_tt
+			hidden_effect = {
+				soviet_collapse_apply_ukr_officer_patronage_lists = yes
+			}
 		}
 		ai_will_do = {
 			base = 6
 			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_officers_above_parties }
+			modifier = { factor = 2 check_variable = { var = soviet_collapse_influence_patronage_risk value = constant:soviet_collapse_republic_idea.stage_1 compare = greater_than } }
+			modifier = { factor = 0.6 has_stability < constant:soviet_collapse_soviet_objective.min_stability }
 		}
 	}
 
@@ -527,11 +530,16 @@ focus_tree = {
 		prerequisite = { focus = ukr_soviet_collapse_army_of_the_republic }
 
 		completion_reward = {
-			set_country_flag = soviet_collapse_ukraine_general_staff_war_college
-			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
-			soviet_collapse_apply_focus_military_consolidation = yes
+			custom_effect_tooltip = ukr_soviet_collapse_general_staff_war_college_tt
+			hidden_effect = {
+				soviet_collapse_apply_ukr_general_staff_war_college = yes
+			}
 		}
-		ai_will_do = { base = 7 }
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0.5 command_power < constant:soviet_collapse_soviet_objective.min_command_power }
+		}
 	}
 
 	# role: fork | filter: military
@@ -747,13 +755,17 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
-			set_country_flag = soviet_collapse_ukraine_rural_deputy_bloc
-			add_stability = constant:soviet_collapse_republic_focus.stability_small
-			soviet_collapse_apply_focus_legal_recognition = yes
+			custom_effect_tooltip = ukr_soviet_collapse_rural_deputy_bloc_tt
+			hidden_effect = {
+				soviet_collapse_apply_ukr_rural_deputy_bloc = yes
+			}
 		}
 		ai_will_do = {
 			base = 5
 			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_peasant_bargain }
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_village_granary_guards }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } } }
+			modifier = { factor = 0.5 has_country_flag = soviet_collapse_ukraine_bread_state_whispers }
 		}
 	}
 
@@ -768,13 +780,16 @@ focus_tree = {
 		prerequisite = { focus = ukr_soviet_collapse_coalition_of_three_ministries }
 
 		completion_reward = {
-			set_country_flag = soviet_collapse_ukraine_minority_autonomy_statutes
-			soviet_collapse_apply_focus_legal_recognition = yes
-			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			custom_effect_tooltip = ukr_soviet_collapse_minority_autonomy_statutes_tt
+			hidden_effect = {
+				soviet_collapse_apply_ukr_minority_autonomy_statutes = yes
+			}
 		}
 		ai_will_do = {
 			base = 5
-			modifier = { factor = 2 has_stability < 0.45 }
+			modifier = { factor = 2 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+			modifier = { factor = 2 check_variable = { var = soviet_collapse_influence_patronage_risk value = constant:soviet_collapse_republic_idea.stage_1 compare = greater_than } }
+			modifier = { factor = 1.5 has_country_flag = soviet_collapse_ukraine_route_democratic_rada }
 		}
 	}
 
@@ -4550,11 +4565,16 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_british_naval_observers }
 
 		completion_reward = {
-			set_country_flag = soviet_collapse_baltic_recognition_dossier
-			soviet_collapse_apply_focus_legal_recognition = yes
-			soviet_collapse_apply_focus_foreign_channel = yes
+			custom_effect_tooltip = baltic_soviet_collapse_baltic_recognition_dossier_tt
+			hidden_effect = {
+				soviet_collapse_apply_baltic_recognition_dossier = yes
+			}
 		}
-		ai_will_do = { base = 7 }
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 1.5 has_country_flag = soviet_collapse_baltic_legal_continuity_government }
+		}
 	}
 
 	focus = {
@@ -4568,11 +4588,16 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_baltic_recognition_dossier }
 
 		completion_reward = {
-			set_country_flag = soviet_collapse_baltic_legal_front_abroad
-			soviet_collapse_apply_focus_legal_recognition = yes
-			soviet_collapse_apply_focus_foreign_channel = yes
+			custom_effect_tooltip = baltic_soviet_collapse_the_legal_front_abroad_tt
+			hidden_effect = {
+				soviet_collapse_apply_baltic_legal_front_abroad = yes
+			}
 		}
-		ai_will_do = { base = 6 }
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_baltic_archive_case_ready }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = greater_than } } }
+		}
 	}
 
 	focus = {
@@ -4615,7 +4640,7 @@ focus_tree = {
 
 	focus = {
 		id = baltic_soviet_collapse_pan_baltic_war_room
-		icon = GFX_baltic_soviet_collapse_restoration_pact
+		icon = GFX_baltic_soviet_collapse_pan_baltic_war_room
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 23
 		y = 5
@@ -4623,11 +4648,16 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_baltic_defense_compact }
 
 		completion_reward = {
-			set_country_flag = soviet_collapse_baltic_pan_baltic_war_room
-			soviet_collapse_apply_focus_league_preparation = yes
-			soviet_collapse_apply_focus_military_consolidation = yes
+			custom_effect_tooltip = baltic_soviet_collapse_pan_baltic_war_room_tt
+			hidden_effect = {
+				soviet_collapse_apply_baltic_pan_baltic_war_room = yes
+			}
 		}
-		ai_will_do = { base = 6 }
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_country_flag = soviet_collapse_baltic_league_member }
+			modifier = { factor = 2 has_war_with = SOV }
+		}
 	}
 
 	focus = {
@@ -4641,11 +4671,16 @@ focus_tree = {
 		prerequisite = { focus = baltic_soviet_collapse_tallinn_riga_vilnius_rotation }
 
 		completion_reward = {
-			set_country_flag = soviet_collapse_baltic_shield_doctrine
-			soviet_collapse_apply_focus_league_preparation = yes
-			soviet_collapse_apply_focus_military_consolidation = yes
+			custom_effect_tooltip = baltic_soviet_collapse_baltic_shield_doctrine_tt
+			hidden_effect = {
+				soviet_collapse_apply_baltic_shield_doctrine = yes
+			}
 		}
-		ai_will_do = { base = 6 }
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_war_with = SOV }
+			modifier = { factor = 1.5 has_country_flag = soviet_collapse_baltic_joint_war_room_active }
+		}
 	}
 
 	focus = {
