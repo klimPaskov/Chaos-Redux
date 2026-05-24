@@ -1,6 +1,6 @@
 # Event 005 MTTH Release Family Audit
 
-Audit date: 2026-05-21
+Audit date: 2026-05-24
 
 ## Scope
 
@@ -10,7 +10,9 @@ This audit checks the Part 4 required progressive release families against the c
 
 - `events/005_soviet_collapse.txt` keeps `chaosx.nr5.129` as the hidden SOV scheduler and `chaosx.nr5.130` through `chaosx.nr5.137` as visible report events.
 - `common/mtth/005_soviet_collapse_mtth.txt` computes release and miss weights from threat, authority, obedience, breakaway cascades, depot pressure, foreign pressure, League pressure, old-movement pressure, mission failures, war pressure, regional cascades, and chaos tier.
-- `soviet_collapse_maybe_release_threat_breakaway` blocks terminal collapse and progressive cooldown, checks the low-threat floor, routes terminal-level pressure through Union Unmade, and otherwise rolls release versus miss weights.
+- `soviet_collapse_maybe_release_threat_breakaway` blocks terminal collapse and progressive cooldown, keeps calm strong-center games out of extra-release rolls, routes terminal-level pressure through Union Unmade, computes a hidden continuous release-urgency score, and otherwise rolls release versus miss weights.
+- `soviet_collapse_compute_progressive_release_urgency` adds continuous release pressure from Republic Momentum, Moscow Authority deficit, total threat, Foreign Penetration, depot vulnerability, League cohesion, old-movement pressure, breakaway count, and the prior month's failed objectives. This score gates sustained-pressure rolls and contributes a scaled, capped release weight after the MTTH band weights are read, so rising pressure makes new republics more likely before every value crosses a hard threshold without letting the opening first-wave state force an immediate extra release.
+- Low-threat and strong-center miss modifiers clamp against `miss_weight_ceiling` rather than `miss_base`, so strong Soviet authority can actually suppress release odds above the default miss weight.
 - `soviet_collapse_release_one_threat_breakaway_republic` selects one eligible candidate, releases or frees it, applies the normal breakaway setup package, loads the runtime focus tree, and applies the progressive cooldown.
 
 ## Family Matrix
