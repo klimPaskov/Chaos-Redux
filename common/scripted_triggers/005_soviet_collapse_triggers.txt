@@ -365,7 +365,6 @@ has_soviet_collapse_real_release_pressure = {
 		has_soviet_collapse_real_regional_cascade_pressure = yes
 		has_war = yes
 		NOT = { capital_scope = { is_controlled_by = ROOT } }
-		has_global_flag = { flag = chaos_tier value = 3 }
 		has_global_flag = { flag = chaos_tier value = 4 }
 		has_global_flag = { flag = chaos_tier value = 5 }
 	}
@@ -458,7 +457,6 @@ can_soviet_collapse_roll_progressive_release = {
 		has_country_flag = soviet_collapse_ural_factory_gates_failed
 		has_country_flag = soviet_collapse_basmachi_supply_chain_failed
 		has_soviet_collapse_real_regional_cascade_pressure = yes
-		has_global_flag = { flag = chaos_tier value = 3 }
 		has_global_flag = { flag = chaos_tier value = 4 }
 		has_global_flag = { flag = chaos_tier value = 5 }
 	}
@@ -503,7 +501,6 @@ can_soviet_collapse_roll_progressive_release = {
 		has_country_flag = soviet_collapse_ural_factory_gates_failed
 		has_country_flag = soviet_collapse_basmachi_supply_chain_failed
 		has_soviet_collapse_real_regional_cascade_pressure = yes
-		has_global_flag = { flag = chaos_tier value = 3 }
 		has_global_flag = { flag = chaos_tier value = 4 }
 		has_global_flag = { flag = chaos_tier value = 5 }
 	}
@@ -520,6 +517,11 @@ has_soviet_collapse_terminal_pacing_matured = {
 	OR = {
 		AND = {
 			has_global_flag = { flag = chaos_tier value = 5 }
+			check_variable = {
+				var = soviet_collapse_months_active
+				value = constant:soviet_collapse_super_event.union_unmade_catastrophic_active_months
+				compare = greater_than_or_equals
+			}
 			check_variable = {
 				var = soviet_collapse_total_collapse_threat
 				value = constant:soviet_collapse_soviet_objective.deep_collapse_threat
