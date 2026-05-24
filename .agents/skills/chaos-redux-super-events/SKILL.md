@@ -75,14 +75,14 @@ Use `chaos-redux-events` for the full implementation contract:
 
 Use `chaos-redux-event-assets` for:
 
-- super-event image sourcing
+- super-event image sourcing or generation
 - image processing
 - PNG previews
 - DDS conversion
 - sprite handoff notes for main-agent `.gfx` wiring
 - asset manifests
 
-Super-event images should use internet source images by default unless the event is fictional, symbolic, supernatural, or fully invented.
+Super-event images may be sourced or generated. Prefer generated images for fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific moments; use sourced images when the visual must depict real historical material.
 
 ### This skill
 
@@ -104,8 +104,8 @@ For actual research work, use the narrow project subagents instead of making one
 | Main quote candidates, wording verification, attribution, source confidence, and quote recommendation | `chaosx_super_event_quote_researcher` |
 | Button text, cultural remark, short allusion, slogan, title-like reference, and copyright-risk notes | `chaosx_super_event_cultural_remark_researcher` |
 | Audio candidates, license verification, legitimate download, conversion to `.ogg`, and audio research notes | `chaosx_super_event_audio_researcher` |
-| Documentary, historical, archival, or real-world super-event image | `chaosx_asset_source_researcher` |
-| Fictional, symbolic, supernatural, or fully invented generated super-event image | `chaosx_generated_event_art` |
+| Real historical, archival, or real-world super-event image that must depict real material | `chaosx_asset_source_researcher` |
+| Fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific generated super-event image | `chaosx_generated_event_art` |
 
 The main agent owns final localisation, scripted localisation, slot wiring, settings-aware playback wiring, audio id wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment.
 
@@ -599,8 +599,9 @@ Super-event images are handled through `chaos-redux-event-assets`.
 
 Default rule:
 
-- use internet source images for super-event images
-- do not generate them with `$imagegen` unless the user explicitly asks for fictional, symbolic, supernatural, or fully invented super-event art, and then follow `chaos-redux-event-assets` and the official `$imagegen` workflow
+- use generated super-event images when the moment is fictional, alternate-history, symbolic, supernatural, high-chaos, or needs a unique emotional composition
+- use internet-sourced images when the super-event must depict a real historical person, real photographed event, or real archival artifact
+- follow `chaos-redux-event-assets` and the official `$imagegen` workflow for generated images
 
 The super-event skill should define the image direction:
 
@@ -608,7 +609,8 @@ The super-event skill should define the image direction:
 - tone
 - composition need
 - symbolism
-- source-image search direction
+- source mode: generated, sourced, or user-provided
+- source-image search direction or image-generation prompt direction
 - what to avoid
 - why the image fits the super-event
 

@@ -620,9 +620,9 @@ Avoid generated text unless the design absolutely requires it and the final outp
 
 Use `$imagegen` for fictional flags and user-provided or internet source images for historical or real-world flags when appropriate.
 
-For existing countries that already have game-provided or repository-approved base flags, do not replace the no-suffix base flag as part of an ideology pass. Keep the base flag unchanged unless the user explicitly asks for that base flag to be redone or the country receives a deliberate focus/event/cosmetic-tag transformation. Ideology variants should be separate assets for `_communism`, `_democratic`, `_fascism`, and `_neutrality`, not mutations of the base flag with one small shape or color filter.
+For existing countries that already have game-provided or repository-approved base flags, do not replace the no-suffix base flag as part of an ideology pass. Keep the base flag unchanged, or restore it from the approved prior asset if an asset pass damaged it, unless the user explicitly asks for that base flag to be redone or the country receives a deliberate focus/event/cosmetic-tag transformation. Ideology variants should be separate assets for `_communism`, `_democratic`, `_fascism`, and `_neutrality`, not mutations of the base flag with one small shape, a palette swap, a color filter, a vertical flip, or a copied emblem.
 
-For focus-tree or event route flag changes, use explicit cosmetic tags or route-specific flag files and document the trigger/focus that changes the flag. Do not create default flag overrides for vanilla-supported countries just because they participate in an event.
+For focus-tree or event route flag changes, use explicit cosmetic tags or route-specific flag files and document the trigger/focus that changes the flag. Do not create default flag overrides or new base flags for vanilla-supported or already-existing countries just because they participate in an event.
 
 Historical or historically grounded flags must use sourced motifs, documented heraldry, period symbols, or clearly explained alternate-history synthesis. If no directly attested flag exists, state that in the manifest and produce a historically grounded design from relevant motifs instead of inventing unrelated symbols.
 
@@ -637,6 +637,7 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 - TGA origin/header convention consistent with the working HOI4 flag set
 - no byte-identical ideology variants unless the design is intentionally shared and documented
 - no upside-down copies
+- no accidental no-suffix base-flag replacement for countries that were only meant to receive ideology variants
 
 ## 21. Leader portraits
 
