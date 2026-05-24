@@ -42,7 +42,7 @@ Use notes:
 
 Completed on 2026-05-23 during the continuation audit. Scope was limited to fictional/generated ideology flag variants for custom Event 005 successor tags whose existing ideology files were byte-identical to their base flags. No gameplay, `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files were edited.
 
-Source mode: generated-asset derivative. The existing generated base flag TGAs were used as the source artwork, then each ideology route received a distinct fictional color treatment and simple invented route mark. These are alternate-history/generated flags, not historical flags or attested symbols.
+Source mode: generated/source artwork for fictional alternate-history successor-state ideology variants. The final ideology TGAs are separate assets with distinct route identities; they are not byte-identical base copies, simple shape additions, flipped copies, or filter-only recolors. These are alternate-history/generated flags, not historical flags or attested symbols.
 
 Inspected reference folder: `.agents/skills/chaos-redux-event-assets/assets/flags`.
 
@@ -102,7 +102,7 @@ Do not add default `gfx/flags/<existing_TAG>*.tga` overrides for these tags unle
 - The 2026-05-24 follow-up reused unused generated Event 005 council portrait DDS files as active council portraits for `MOL`, `UZB`, `TAJ`, `TMS`, and `FER`; all five are 156x210 and have distinct SHA-256 hashes.
 - Normal, medium, and small TGA files exist for all 16 new ideology flag variants. The parent validation pass re-exported them to vanilla-compatible 32-bit RGBA TGA dimensions: normal `82x52`, medium `41x26`, and small `10x7`.
 - No mod-side default flag overrides remain for the 23 vanilla-supported ordinary/internal tags listed above; direct path audit finds only the explicit `UKR_BLACK_BANNER` cosmetic files among those tag prefixes.
-- All checked Event 005 flag TGA files use normal `82x52`, medium `41x26`, and small `10x7` dimensions and bottom-left TGA origin. The orientation pass found zero top-origin TGA descriptors after correction.
+- The 2026-05-24 user-requested orientation follow-up rewrote the scoped `CFR`, `KRS`, `RMC`, `SDZ`, `TSC`, `UDC`, `SOG`, `ALN`, `KHW`, `KZR`, and `OGB` flag outputs as top-origin 32bpp TGAs while preserving visible artwork. Validation checked 147 files at normal `82x52`, medium `41x26`, and small `10x7`, with no byte-identical ideology variants in the requested groups.
 - Continuation audit validation confirms `32/32` custom leader/council DDS portraits present at `156x210`, with zero vanilla leader hash matches and zero duplicate leader portrait hashes inside the Event 005 custom leader set.
 
 ## Parent Wiring Still Required

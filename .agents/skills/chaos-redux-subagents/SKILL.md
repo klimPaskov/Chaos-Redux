@@ -7,7 +7,11 @@ description: Use when coordinating custom Codex subagents for Chaos Redux implem
 
 Use this skill when a Chaos Redux task should be split across project custom Codex subagents.
 
-This skill does not replace `AGENTS.md`. It gives the routing rules for specialized helper agents.
+This skill is the detailed source of truth for specialized helper-agent routing.
+
+`AGENTS.md` should stay short enough to remain easy to read. Keep detailed subagent routing, ownership boundaries, recursive expansion rules, and handoff expectations in this skill instead of duplicating them in the root file.
+
+This skill does not replace repository-wide rules in `AGENTS.md`. It expands the subagent section of `AGENTS.md`.
 
 ## 1. Core rule
 
@@ -21,9 +25,9 @@ Do not use subagents to hide uncertainty or pass off responsibility. If a subage
 
 Use `chaosx_repo_explorer` for read-only repo exploration, touched-file mapping, pattern search, vanilla reference mapping, and edit-order planning.
 
-Use `chaosx_asset_source_researcher` for real or archival image sourcing, report images, news images, documentary super-event images, real leader portraits, historical flags, historical symbols, and source-image processing.
+Use `chaosx_asset_source_researcher` for real or archival image sourcing, real leader portraits, historical flags, historical symbols, user-provided source photos, source-image processing, and report/news/super-event images that must depict real historical material.
 
-Use `chaosx_generated_event_art` for generated non-icon art, fictional or symbolic super-event images, fictional portraits, fictional flags, faction emblems, UI panels, dossier art, and progression-state base art.
+Use `chaosx_generated_event_art` for generated non-icon art, including fictional or alternate-history report images, news images, super-event images, fictional portraits, fictional flags, faction emblems, UI panels, dossier art, and progression-state base art.
 
 Use `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, officer corps icons, decision icons, decision category icons, achievement icons, and tech icons.
 
@@ -43,6 +47,8 @@ Use `chaosx_scripted_system_architect` for reusable scripted system design or im
 
 Use `chaosx_event_completion_auditor` for read-only spec-versus-implementation audits covering events, mechanics, assets, docs, super-events, focus trees, decisions, and validation.
 
+Use `chaosx_mechanic_expander` for active recursive depth expansion during implementation. It reads the planning skill and relevant system skills, inspects shallow or duplicated mechanics, and writes concrete expansion spec addenda for the main agent. Use it when a feature needs new design material, not just an audit finding.
+
 Use `chaosx_spreadsheet_doc_worker` for documentation, event catalog rows, manifests, completion reports, and player-facing summaries based on implemented repo state. For event details, evolution details, and cluster details, it must use the same wording as the in-game localisation in the relevant spreadsheet fields.
 
 
@@ -52,11 +58,15 @@ Do not use one broad asset worker for mixed visual packages.
 
 Use:
 
-- `chaosx_asset_source_researcher` for real, archival, historical, documentary, or public-source images
-- `chaosx_generated_event_art` for generated non-icon fictional or symbolic art
+- `chaosx_asset_source_researcher` for real, archival, historical, documentary, or public-source images when the asset must show real historical material
+- `chaosx_generated_event_art` for generated non-icon fictional, alternate-history, symbolic, high-chaos, or unique event art, including report/news/super-event images that should look like period documentary material
 - `chaosx_icon_artist` for generated gameplay icons
 
 The parent agent must give each asset subagent a bounded prompt with exact asset names, target sizes, source mode, final folders, sprite names when already registered, reference folders, and constraints.
+
+For flag work, the parent prompt must state whether each flag is a base flag, ideology variant, focus/event route variant, cosmetic-tag flag, historical flag, or fictional/generated flag. Base flags for existing countries must be preserved unless explicitly in scope. Ideology variants must be genuinely distinct generated or sourced designs, not recolors, filters, flipped copies, or simple added shapes. Historical flags and historically attested symbols belong with `chaosx_asset_source_researcher`; fictional or alternate-history variants belong with `chaosx_generated_event_art`. Every flag handoff must include normal/medium/small output paths, a contact sheet, orientation confirmation, and any historical uncertainty.
+
+For generated report/news/super-event work, the parent prompt must specify the intended era, documentary or news-photo style, whether final output must be black and white, required post-processing, and any real people or real historical scenes that must not be fabricated. For report-event images, require Photoshop post-processing when Photoshop is available and make any approved non-Photoshop fallback explicit.
 
 Asset subagents must read `chaos-redux-event-assets` and inspect the matching reference folder under `.agents/skills/chaos-redux-event-assets/assets/` before creating, sourcing, processing, or converting assets.
 
@@ -72,7 +82,7 @@ Use `chaosx_super_event_text_researcher` for the main quote, exact wording check
 
 Use `chaosx_super_event_audio_researcher` for audio research, license verification, download, `.ogg` conversion, and audio handoff notes.
 
-Use `chaosx_asset_source_researcher` or `chaosx_generated_event_art` for image work according to the source mode required by `chaos-redux-event-assets`.
+Use `chaosx_asset_source_researcher` or `chaosx_generated_event_art` for image work according to the source mode required by `chaos-redux-event-assets`. Generated super-event images are preferred for fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific moments; sourced images remain required for real historical people, real photographed events, and real archival artifacts.
 
 The parent agent owns final super-event slot wiring, localisation, scripted localisation, audio id, settings-aware playback, `.gfx` image wiring, event trigger wiring, docs, and spreadsheet alignment.
 
@@ -185,6 +195,33 @@ Good triggers include:
 The architect may be read-only for design or write-capable for implementation depending on the parent prompt.
 
 When implementing, it may edit only the approved helper files, constants, narrow call sites, and helper documentation. The parent agent still owns the wider event, focus, decision, localisation, GUI, docs, spreadsheet, and validation alignment.
+
+
+## 8.5 Recursive expansion routing
+
+Use `chaosx_mechanic_expander` when the parent agent needs new design material during implementation.
+
+Good triggers include:
+
+- a mechanic works but does not change gameplay enough
+- a focus tree has branches but the branches do not matter
+- focus rewards repeat factories, equipment, PP, stability, war support, or generic ideas
+- a decision system is mostly passive buttons
+- a country package has a tag, flag, and leader but no playable identity
+- events have text but no follow-up, reactions, evolutions, clusters, or detail depth
+- visual assets do not evolve with stages or route identity
+- lore is present but unclear, generic, or disconnected from effects
+- an audit subagent finds major shallow content and tells the parent to spawn the expander
+
+The expander should use `chaos-redux-event-planning` as the design baseline and write an expansion addendum, usually under:
+
+```text
+docs/planning/expansion_specs/<feature_slug>_expansion_addendum.md
+```
+
+The parent agent must decide which parts to implement immediately, which parts to queue, and which parts to reject.
+
+Audit subagents that inspect actual systems should read `chaos-redux-improvement-loop` and include an improvement handoff. For major depth gaps, the handoff should recommend spawning `chaosx_mechanic_expander`.
 
 ## 9. Handoff quality
 
