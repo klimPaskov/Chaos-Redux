@@ -20,19 +20,22 @@ Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_ge
 
 ## Flag variants
 
-HOI4 country flags are final TGA gameplay assets, not `.gfx` sprites. This pass created missing fictional ideology variants for the ancient-restoration tags:
+HOI4 country flags are final TGA gameplay assets, not `.gfx` sprites. The 2026-05-23 generated ideology pass created missing variants for the ancient-restoration tags:
 
 - `gfx/flags/{KZR,SOG,KHW,ALN}_{communism,democratic,fascism,neutrality}.tga`
 - `gfx/flags/medium/{KZR,SOG,KHW,ALN}_{communism,democratic,fascism,neutrality}.tga`
 - `gfx/flags/small/{KZR,SOG,KHW,ALN}_{communism,democratic,fascism,neutrality}.tga`
 
-Processed previews live under `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/`.
-Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_generated_ancient_ideology_flags.png`.
+That pass is superseded for `KZR`, `SOG`, `KHW`, and `ALN` by the 2026-05-24 historical-restoration correction:
+
+- Source PNGs: `docs/assets/005_soviet_union_collapse/source_png/historical_flags/<TAG>[_<ideology>]_source.png`
+- Processed previews: `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/<TAG>[_<ideology>]_<normal|medium|small>.png`
+- Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_historical_restoration_flags.png`
 
 Use notes:
 
-- The ideology variants are fictional generated-asset derivatives from existing generated Event 005 base flags.
-- They are not historical flags and do not substitute for a sourced historical-symbol pass if one is later required.
+- The ancient/restoration states do not have reliably attested medieval state flags suitable for direct reproduction, so the current assets use historically grounded motifs and textile/banner language rather than invented route marks.
+- `OGB` uses the previously preferred repository flag set restored from the earlier asset state; the correction records PNG previews for it but does not replace the gameplay TGAs with a new design.
 - No `.gfx` edits are needed for country flags.
 
 ## Custom successor ideology flag package

@@ -87,15 +87,15 @@ Validation note: direct audit found no mod-side default flag overrides remaining
 
 ## Historical Restoration Flag Pass, 2026-05-24
 
-Bounded scope: replaced the generated/simple historical-restoration flag set for `KZR`, `SOG`, `KHW`, `ALN`, and `OGB` with historically grounded source artwork. These states do not have reliably attested medieval state flags suitable for direct reproduction, so the pass uses sourced historical motifs and regional banner colors rather than invented geometric route marks.
+Bounded scope: replaced the generated/simple historical-restoration flag set for `KZR`, `SOG`, `KHW`, and `ALN` with historically grounded source artwork, and restored the previously preferred `OGB` repository flag set. These states do not have reliably attested medieval state flags suitable for direct reproduction, so the pass uses sourced historical motifs and regional banner colors rather than invented geometric route marks.
 
 Motif notes:
 
-- `SOG`: Sogdian/Samarkand tamga-style mark, river bands, and carnelian/gold palette.
-- `KHW`: Khwarazmian oasis banner language, black field, green crescent, and water band.
-- `ALN`: Alano-Sarmatian tamga-style mark over Caucasus/Alania white-red-gold colors.
-- `KZR`: Khazar dual-field banner using black/white Khazar identity and a steppe tamga-style mark.
-- `OGB`: Old Great Bulgaria field using Bulgar/Dulo-inspired monogram structure and white/green/red field colors.
+- `KZR`: Khazar dual-field banner using a steppe tamga-style mark, informed by Khazar coin evidence for tamga seals and by broader tamga use on coins as clan/ruler emblems. Source references: Encyclopaedia Iranica, `Khazars`; Unicode tamga proposal N5092.
+- `SOG`: Sogdian textile/banner language using pearl-roundel structure, carnelian/gold palette, and paired bird/merchant-city motifs. Source references: Britannica, `Sogdian art`; Smithsonian, `Sogdian Fashion`.
+- `KHW`: Khwarazmian oasis banner language with black field, green crescent, water bands, and coin/seal-style roundel. Source reference: Unicode tamga proposal N5092 for coin/tamga caution and variable symbol orientation.
+- `ALN`: Alano-Sarmatian/Ossetian continuity language using Caucasus mountain forms and white-red-gold Alania/Ossetian colors. Source reference: `Flag of Ossetia` historical design record and symbolism note.
+- `OGB`: Restored from the earlier repository-preferred Old Great Bulgaria flag set. No new OGB design was generated in this correction pass.
 
 Outputs:
 
@@ -132,16 +132,16 @@ Source mode: unused generated Event 005 council portraits reassigned to vanilla-
 | `TMS` | Ashgabat Desert Authority | `gfx/leaders/005_soviet_collapse/TMS_leader.dds` | 156x210 | `GFX_portrait_TMS_ashgabat_desert_authority`, `interface/005_soviet_collapse_custom_icons.gfx` | wired |
 | `FER` | Far Eastern Republic Council | `gfx/leaders/005_soviet_collapse/FER_leader.dds` | 156x210 | `GFX_portrait_FER_far_eastern_republic_council`, `interface/005_soviet_collapse_custom_icons.gfx` | wired |
 
-### Fictional ancient-restoration ideology flag variants
+### Ancient-restoration ideology flag variants
 
-Source mode: generated-asset derivative. These variants use the existing generated Event 005 base flags as the source artwork, then apply fictional ideology/route color treatments and simple invented marks. They are not historical flags, not historical symbols, and not a substitute for any separately required sourced historical-symbol pass.
+Source mode: historical-restoration correction. The earlier generated-asset derivative variants for `KZR`, `SOG`, `KHW`, and `ALN` are superseded. Current final TGAs use the historical flag source and preview paths recorded above.
 
 | Tag | Ideology variants created | Processed PNG preview pattern | Final normal flag pattern | Final medium flag pattern | Final small flag pattern | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| `KZR` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/KZR_<ideology>_<size>.png` | `gfx/flags/KZR_<ideology>.tga` | `gfx/flags/medium/KZR_<ideology>.tga` | `gfx/flags/small/KZR_<ideology>.tga` | complete |
-| `SOG` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/SOG_<ideology>_<size>.png` | `gfx/flags/SOG_<ideology>.tga` | `gfx/flags/medium/SOG_<ideology>.tga` | `gfx/flags/small/SOG_<ideology>.tga` | complete |
-| `KHW` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/KHW_<ideology>_<size>.png` | `gfx/flags/KHW_<ideology>.tga` | `gfx/flags/medium/KHW_<ideology>.tga` | `gfx/flags/small/KHW_<ideology>.tga` | complete |
-| `ALN` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/generated_replacements/flags/ALN_<ideology>_<size>.png` | `gfx/flags/ALN_<ideology>.tga` | `gfx/flags/medium/ALN_<ideology>.tga` | `gfx/flags/small/ALN_<ideology>.tga` | complete |
+| `KZR` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/KZR_<ideology>_<size>.png` | `gfx/flags/KZR_<ideology>.tga` | `gfx/flags/medium/KZR_<ideology>.tga` | `gfx/flags/small/KZR_<ideology>.tga` | historical restoration wired |
+| `SOG` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/SOG_<ideology>_<size>.png` | `gfx/flags/SOG_<ideology>.tga` | `gfx/flags/medium/SOG_<ideology>.tga` | `gfx/flags/small/SOG_<ideology>.tga` | historical restoration wired |
+| `KHW` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/KHW_<ideology>_<size>.png` | `gfx/flags/KHW_<ideology>.tga` | `gfx/flags/medium/KHW_<ideology>.tga` | `gfx/flags/small/KHW_<ideology>.tga` | historical restoration wired |
+| `ALN` | `communism`, `democratic`, `fascism`, `neutrality` | `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/ALN_<ideology>_<size>.png` | `gfx/flags/ALN_<ideology>.tga` | `gfx/flags/medium/ALN_<ideology>.tga` | `gfx/flags/small/ALN_<ideology>.tga` | historical restoration wired |
 
 Use note: HOI4 country flags use TGA files in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, so this pass produced final TGA gameplay assets for flags rather than DDS flag files. Portrait outputs remain final DDS files. Parent validation re-exported the `KZR`, `SOG`, `KHW`, and `ALN` ideology variants to vanilla-compatible 32-bit RGBA TGA dimensions: normal `82x52`, medium `41x26`, and small `10x7`.
 
@@ -1083,14 +1083,14 @@ Source mode: generated symbolic icon art through Codex image generation, process
 
 ### Standalone Ancient Restoration Assets
 
-`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration tags with separate per-tag focus trees. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Their flags use generated fictional ancient-restoration source art from `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`, cropped into processed previews under `docs/assets/005_soviet_union_collapse/processed_png/flags/`, and converted into normal, medium, and small TGA variants. Their leader portraits use generated fictional/council replacements documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
+`KZR`, `SOG`, `KHW`, and `ALN` are wired as standalone Event 005 ancient-restoration tags with separate per-tag focus trees. Their gameplay package is documented in `docs/events/005_soviet_collapse_returned_names_audit.md`. Their flags use historically grounded restoration artwork under `docs/assets/005_soviet_union_collapse/source_png/historical_flags/`, with processed previews under `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/`, and normal, medium, and small TGA gameplay outputs. Their leader portraits use generated fictional/council replacements documented in `docs/assets/005_soviet_union_collapse/gfx_handoff.md`.
 
 | Asset surface | Current paths or sprite names | Status |
 | --- | --- | --- |
-| `KZR` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/KZR.png`; final TGAs `gfx/flags/KZR.tga`, `gfx/flags/medium/KZR.tga`, `gfx/flags/small/KZR.tga` | generated source wired |
-| `SOG` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/SOG.png`; final TGAs `gfx/flags/SOG.tga`, `gfx/flags/medium/SOG.tga`, `gfx/flags/small/SOG.tga` | generated source wired |
-| `KHW` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/KHW.png`; final TGAs `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga` | generated source wired |
-| `ALN` flags | source sheet `docs/assets/005_soviet_union_collapse/source_png/ancient_restoration_flag_sheet_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/flags/ALN.png`; final TGAs `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga` | generated source wired |
+| `KZR` flags | source preview `docs/assets/005_soviet_union_collapse/source_png/historical_flags/KZR_base_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/KZR_base_normal.png`; final TGAs `gfx/flags/KZR.tga`, `gfx/flags/medium/KZR.tga`, `gfx/flags/small/KZR.tga`; ideology variants use the same historical flag path pattern with suffixes. | historical restoration wired |
+| `SOG` flags | source preview `docs/assets/005_soviet_union_collapse/source_png/historical_flags/SOG_base_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/SOG_base_normal.png`; final TGAs `gfx/flags/SOG.tga`, `gfx/flags/medium/SOG.tga`, `gfx/flags/small/SOG.tga`; ideology variants use the same historical flag path pattern with suffixes. | historical restoration wired |
+| `KHW` flags | source preview `docs/assets/005_soviet_union_collapse/source_png/historical_flags/KHW_base_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/KHW_base_normal.png`; final TGAs `gfx/flags/KHW.tga`, `gfx/flags/medium/KHW.tga`, `gfx/flags/small/KHW.tga`; ideology variants use the same historical flag path pattern with suffixes. | historical restoration wired |
+| `ALN` flags | source preview `docs/assets/005_soviet_union_collapse/source_png/historical_flags/ALN_base_source.png`; processed preview `docs/assets/005_soviet_union_collapse/processed_png/historical_flags/ALN_base_normal.png`; final TGAs `gfx/flags/ALN.tga`, `gfx/flags/medium/ALN.tga`, `gfx/flags/small/ALN.tga`; ideology variants use the same historical flag path pattern with suffixes. | historical restoration wired |
 | Ancient restoration portraits | `GFX_portrait_KZR_itil_toll_council`, `GFX_portrait_SOG_city_registers_council`, `GFX_portrait_KHW_oasis_register_authority`, and `GFX_portrait_ALN_alan_pass_council` in `interface/005_soviet_collapse_factory_ancient_icons.gfx`; final DDS files in `gfx/leaders/005_soviet_collapse/` | wired, tag-specific sourced DDS reuse |
 | Ancient restoration focus icons | `GFX_focus_soviet_collapse_ancient_*` and `_shine` variants in `interface/005_soviet_collapse_ancient_icons.gfx`; the four 16-focus trees use the mapped icon family with no duplicate icon within a single per-tag tree | wired, themed DDS reuse through stable package paths; see mapping below |
 
