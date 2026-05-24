@@ -41,7 +41,7 @@ Source audit status:
 | Focus icons | `1696` Event 005 focus blocks have icon assignments; shared, Ukraine, Belarus, Kazakhstan, regional, custom splinter, factory, OGB, PRA/TSC/ICD/RMC/DSC/NRF, and ancient-restoration icon packages are wired through `interface/005_soviet_collapse*.gfx`. A duplicate-icon audit now finds `1480` unique focus icon sprite names, leaving `216` duplicate extra assignments to resolve before this satisfies the final unique-assignment requirement. | partially complete |
 | Idea and national spirit icons | Active idea icon rows are generated, processed, converted, and wired in `interface/005_soviet_collapse_icons.gfx`; custom package idea emblems and special-package idea DDS paths are documented below. | complete |
 | Decision and decision category icons | Active Soviet, breakaway, foreign patron, volunteer, regional-faction, custom-package, OGB, and special-package decision icons are wired through stable DDS paths and `.gfx` sprite names. | complete |
-| Flags and route/ideology flags | Event 005 custom country tags have normal, medium, and small country flags. Vanilla-supported ordinary/internal tags use vanilla flags by default, with no generated default overrides in this mod. Route-specific existing-tag changes must use cosmetic tags applied by focuses or events; the current Ukraine Black Banner route applies `UKR_BLACK_BANNER` from `ukr_soviet_collapse_black_banner_compact`. Custom successor ideology variants exist for `CFR`, `MFR`, `OGB`, `KRS`, `FTH`, `BBH`, `BSC`, `RMC`, `DSC`, `NRF`, `TNC`, `ALA`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `PRA`, `TSC`, `ICD`, `ARD`, and `NLC`; ancient restoration variants exist for `KZR`, `SOG`, `KHW`, and `ALN`. | partially complete |
+| Flags and route/ideology flags | Event 005 custom country tags have normal, medium, and small country flags. Vanilla-supported ordinary/internal tags use vanilla flags by default, with no generated default overrides in this mod. Route-specific existing-tag changes must use cosmetic tags applied by focuses or events; the current Ukraine Black Banner route applies `UKR_BLACK_BANNER` from `ukr_soviet_collapse_black_banner_compact`. The no-ideology base flags for active custom/cosmetic tags remain the existing checked-in flags; the 2026-05-24 correction regenerates only `_communism`, `_democratic`, `_fascism`, and `_neutrality` files for `FTH`, `BBH`, `UKR_BLACK_BANNER`, `BSC`, `TNC`, `ALA`, `GAC`, `DSC`, `UWD`, `IUL`, `ICD`, `NRF`, `ARD`, `NLC`, `DHC`, `KHC`, `FEV`, `SZA`, `MRC`, and `BAC` from image-generated source art. Other custom successor ideology variants exist for `CFR`, `MFR`, `OGB`, `KRS`, `RMC`, `UDC`, `SDZ`, `PRA`, and `TSC`; ancient restoration variants exist for `KZR`, `SOG`, `KHW`, and `ALN`. | partially complete |
 | Leader, council, and factory portraits | Custom splinter, factory, ancient-restoration, OGB, dead-state, railway, Tunguska, and revenant-fleet portrait files are present. The 2026-05-23 generated pass replaced `KZR`, `SOG`, `OGB`, `KHW`, and `ALN` vanilla-hash portraits with unique fictional council portraits. The 2026-05-24 follow-up adds unique generated council portraits and `.gfx` sprite definitions for vanilla-supported release tags `MOL`, `UZB`, `TAJ`, `TMS`, and `FER`, which otherwise lack active vanilla leaders in this runtime package. | complete |
 | Faction and local-league emblems | Free Republics' League, Baltic League, Caucasus League, Steppe Federation, Black International, Free Soviet Congress, Eastern Buffer Coalition, and Iron Production Bloc regular and miniature faction logos are wired in `interface/005_soviet_collapse_faction_logos.gfx`. | complete |
 | News images | Seven active news images are wired: opening collapse, Free Republics' League, Union Unmade, and four republic-route capstone news crops. Ordinary league and route capstone presentation uses news events rather than retired super-event slots. | complete |
@@ -65,11 +65,23 @@ Contact sheets:
 
 Bounded scope: generated-asset derivative ideology flag variants for custom Event 005 successor tags whose ideology files were present but byte-identical to their base flag. This pass did not edit gameplay, `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files.
 
-Source mode: generated-asset derivative from existing generated Event 005 base flags. The source flags were generated assets, then each ideology route received a distinct fictional route color treatment and simple invented mark. Generation is appropriate because these are fictional alternate-history successor-state flags.
+Source mode: generated-asset derivative from existing generated Event 005 base flags. The source flags were generated assets, then each ideology route received a distinct fictional route color treatment and invented route mark. Generation is appropriate because these are fictional alternate-history successor-state flags.
 
 Inspected reference folder: `.agents/skills/chaos-redux-event-assets/assets/flags`.
 
 Contact sheet: `docs/assets/005_soviet_union_collapse/contact_sheets/event005_generated_custom_ideology_flags.png`.
+
+## Generated Active Custom Ideology Flag Correction, 2026-05-24
+
+Bounded scope: replacement of active custom/cosmetic ideology flag files only. The no-suffix base flags for `FTH`, `BBH`, `UKR_BLACK_BANNER`, `BSC`, `TNC`, `ALA`, `GAC`, `DSC`, `UWD`, `IUL`, `ICD`, `NRF`, `ARD`, `NLC`, `DHC`, `KHC`, `FEV`, `SZA`, `MRC`, and `BAC` were restored to the existing repository versions and left unchanged. The `_communism`, `_democratic`, `_fascism`, and `_neutrality` variants were regenerated from Codex built-in `image_gen` source strips, cropped, resized to normal/medium/small HOI4 flag sizes, and converted to 32bpp bottom-left TGA files.
+
+Source strips and review contact sheet:
+
+- `docs/assets/005_soviet_union_collapse/generated_ideology_flags/source_generated/`
+- `docs/assets/005_soviet_union_collapse/generated_ideology_flags/processed_png/`
+- `docs/assets/005_soviet_union_collapse/generated_ideology_flags/contact_sheets/generated_ideology_flags_contact_sheet.png`
+
+Validation notes: no mod-side default overrides exist for the vanilla-supported ordinary/internal tags; the active custom/cosmetic ideology variants have zero duplicate hashes across normal, medium, and small sizes; every generated ideology TGA has the expected HOI4 dimensions and bottom-left origin.
 
 Path patterns for every listed tag and ideology:
 
