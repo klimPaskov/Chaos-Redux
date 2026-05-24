@@ -1020,11 +1020,11 @@ Consider whether the event needs:
 - progression-state variants
 - country-selection, event-log, or custom-window graphics when relevant
 
-Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, sprite handoff notes, and manifests belong to `chaos-redux-event-assets`. Final `.gfx` wiring belongs to the main implementation agent.
+Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, sprite handoff notes, and manifests belong to `chaos-redux-event-assets`. Final `.gfx` wiring belongs to the main implementation agent unless a parent prompt explicitly grants that scope.
 
 This skill should define what assets are needed, what they should represent, and what source mode they require.
 
-Historical or real-world assets need special care. Historical flags, historical symbols, and real leader portraits should be sourced from reliable references and converted to HOI4 style rather than generated. Generated art is appropriate for fictional flags, fictional leaders, symbolic council portraits, invented high-chaos identities, idea icons, focus icons, decision icons, achievements, faction emblems, and UI art unless the user says otherwise.
+Historical or real-world assets need special care. Historical flags, historical symbols, and real leader portraits should be sourced from reliable references and converted to HOI4 style rather than generated. Generated art is appropriate for fictional flags, fictional leaders, symbolic council portraits, invented high-chaos identities, idea icons, focus icons, decision icons, achievements, faction emblems, UI art, and fictional or alternate-history report/news/super-event images unless the user says otherwise.
 
 ### Reference examples for asset planning
 
@@ -1081,18 +1081,9 @@ The asset prompt should include:
 
 The asset prompt must state the correct source mode where relevant.
 
-For large asset prompts, split the work so the implementation agent can spawn the correct custom subagents:
-
-- sourced report/news/archival/super-event images, real portraits, historical flags, and historical symbols go to `chaosx_asset_source_researcher`
-- generated fictional or symbolic super-event art, fictional portraits, fictional flags, faction emblems, and UI art go to `chaosx_generated_event_art`
-- focus icons, idea icons, decision icons, achievement icons, officer corps icons, and tech icons go to `chaosx_icon_artist`
-
-The asset prompt should make these batches explicit instead of mixing all visual work into one vague list.
-
-
 It must also state the relevant reference folder from the list above when a matching folder exists.
 
-Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, super-event images, and real leader portraits use sourced images unless the user explicitly asks otherwise. Historical flags and historically attested symbols should be sourced and documented, then converted to HOI4 flag sizes. Fictional, supernatural, invented, or alternate-history flags can use `$imagegen` through `chaos-redux-event-assets` when appropriate.
+Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated; prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for real historical people, real photographed events, and real archival artifacts. Historical flags and historically attested symbols should be sourced and documented, then converted to HOI4 flag sizes. Fictional, supernatural, invented, or alternate-history flags can use `$imagegen` through `chaos-redux-event-assets` when appropriate.
 
 Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state.
 
@@ -1104,7 +1095,7 @@ Use these sizes when planning assets:
 - news event images: 397x153, black and white
 - leader portraits: 156x210
 - flags small: 10x7
-- flags medium: 42x26
+- flags medium: 41x26
 - flags normal: 82x52
 - tech icons small: 64x64
 - tech icons medium: 132x52
@@ -1120,7 +1111,7 @@ Use other sizes when the event UI or asset type requires it.
 
 When planning visuals, use these style expectations.
 
-Report and news event images should look like documentary photographs. News event images should be black and white.
+Report and news event images should look like documentary photographs, whether sourced or generated. News event images should be black and white.
 
 Super-event images should have a strong central composition, clear dramatic theme, readable subject, and enough contrast for HOI4 UI.
 
@@ -1134,7 +1125,7 @@ Flags should use clean symbols that remain readable at HOI4 flag sizes.
 
 Progression-state variants may include selected, dim, active, locked, completed, rejected, damaged, corrupted, urgent, meter-fill, and bar-fill states.
 
-Photoshop may be mentioned only for progression-state variants.
+Report-event image prompts should ask for Photoshop post-processing when Photoshop is available. Photoshop may also be mentioned for progression-state variants.
 
 ## 17. Super-event research handoff
 
@@ -1155,15 +1146,6 @@ For each super-event, include:
 - image direction
 - whether it is a normal escalation, defeat moment, aftermath moment, or world-end moment
 - any special constraints from the event spec
-
-
-
-For large super-event packages, write the prompt so the implementation agent can split research across custom subagents:
-
-- quote research goes to `chaosx_super_event_quote_researcher`
-- cultural remark and button text research goes to `chaosx_super_event_cultural_remark_researcher`
-- audio research goes to `chaosx_super_event_audio_researcher`
-- image work goes to `chaosx_asset_source_researcher` or `chaosx_generated_event_art` depending on source mode
 
 The `chaos-redux-super-events` prompt should ask the agent to:
 
