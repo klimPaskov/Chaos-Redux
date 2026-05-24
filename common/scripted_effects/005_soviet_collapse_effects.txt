@@ -9641,6 +9641,18 @@ soviet_collapse_count_active_soviet_objectives = {
 	if = { limit = { has_active_mission = soviet_collapse_soviet_mission_128_disband_the_crisis_desk } add_to_temp_variable = { soviet_collapse_active_objectives = 1 } }
 }
 
+soviet_collapse_queue_objective_refill = {
+	if = {
+		limit = {
+			is_soviet_collapse_active = yes
+			NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+			NOT = { has_country_flag = soviet_collapse_objective_refill_queued }
+		}
+		set_country_flag = soviet_collapse_objective_refill_queued
+		country_event = { id = chaosx.nr5.128 days = constant:soviet_collapse_soviet_objective.objective_refill_delay_days }
+	}
+}
+
 soviet_collapse_activate_opening_objectives = {
 	soviet_collapse_update_center_pressure_state = yes
 	soviet_collapse_prune_invalid_active_soviet_objectives = yes
