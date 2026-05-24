@@ -233,6 +233,21 @@ soviet_collapse_register_monthly_threat_failure = {
 	add_to_variable = { soviet_collapse_monthly_failed_objectives = 1 }
 }
 
+soviet_collapse_decay_progressive_release_pressure = {
+	if = {
+		limit = {
+			is_soviet_collapse_calm_release_recovery_window = yes
+			check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_baseline.component_min compare = greater_than }
+		}
+		subtract_from_variable = { soviet_collapse_progressive_release_pressure = constant:soviet_collapse_threat_guard.calm_release_pressure_decay }
+		clamp_variable = {
+			var = soviet_collapse_progressive_release_pressure
+			min = constant:soviet_collapse_baseline.component_min
+			max = constant:soviet_collapse_release_mtth.sustained_pressure_cap
+		}
+	}
+}
+
 soviet_collapse_apply_foreign_pressure_delta = {
 	if = {
 		limit = {
@@ -8740,6 +8755,7 @@ soviet_collapse_maybe_release_threat_breakaway = {
 		set_variable = { soviet_collapse_release_urgency_score = 0 }
 		set_temp_variable = { soviet_collapse_regional_cascade_score = 0 }
 	}
+	soviet_collapse_decay_progressive_release_pressure = yes
 	if = {
 		limit = {
 			OR = {

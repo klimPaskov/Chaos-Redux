@@ -108,6 +108,75 @@ has_soviet_collapse_release_level_component_pressure = {
 	}
 }
 
+has_soviet_collapse_strategic_release_failure = {
+	OR = {
+		has_country_flag = soviet_collapse_union_archives_failed
+		has_country_flag = soviet_collapse_loyal_military_districts_failed
+		has_country_flag = soviet_collapse_tashkent_anchor_failed
+		has_country_flag = soviet_collapse_caucasus_mountain_administration_failed
+		has_country_flag = soviet_collapse_ural_factory_gates_failed
+		has_country_flag = soviet_collapse_basmachi_supply_chain_failed
+	}
+}
+
+has_soviet_collapse_failure_release_pressure = {
+	OR = {
+		has_soviet_collapse_strategic_release_failure = yes
+		AND = {
+			is_soviet_collapse_calm_strong_center_window = yes
+			OR = {
+				check_variable = {
+					var = soviet_collapse_last_month_failed_objectives
+					value = constant:soviet_collapse_threat_guard.calm_release_failure_gate
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = soviet_collapse_monthly_failed_objectives
+					value = constant:soviet_collapse_threat_guard.calm_release_failure_gate
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		AND = {
+			NOT = { is_soviet_collapse_calm_strong_center_window = yes }
+			OR = {
+				check_variable = {
+					var = soviet_collapse_last_month_failed_objectives
+					value = constant:soviet_collapse_threat_guard.failure_floor
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = soviet_collapse_monthly_failed_objectives
+					value = constant:soviet_collapse_threat_guard.failure_floor
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+}
+
+is_soviet_collapse_calm_release_recovery_window = {
+	is_soviet_collapse_calm_strong_center_window = yes
+	check_variable = {
+		var = soviet_collapse_total_collapse_threat
+		value = constant:soviet_collapse_progressive_release.moderate_threat
+		compare = less_than
+	}
+	check_variable = {
+		var = soviet_collapse_last_month_failed_objectives
+		value = constant:soviet_collapse_threat_guard.calm_release_failure_gate
+		compare = less_than
+	}
+	check_variable = {
+		var = soviet_collapse_monthly_failed_objectives
+		value = constant:soviet_collapse_threat_guard.calm_release_failure_gate
+		compare = less_than
+	}
+	NOT = { has_soviet_collapse_strategic_release_failure = yes }
+	NOT = { has_soviet_collapse_release_level_component_pressure = yes }
+	NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+}
+
 has_soviet_collapse_two_western_republics_free = {
 	OR = {
 		AND = {
@@ -247,22 +316,7 @@ has_soviet_collapse_real_release_pressure = {
 			compare = less_than
 		}
 		has_soviet_collapse_release_level_component_pressure = yes
-		check_variable = {
-			var = soviet_collapse_last_month_failed_objectives
-			value = constant:soviet_collapse_threat_guard.failure_floor
-			compare = greater_than_or_equals
-		}
-		check_variable = {
-			var = soviet_collapse_monthly_failed_objectives
-			value = constant:soviet_collapse_threat_guard.failure_floor
-			compare = greater_than_or_equals
-		}
-		has_country_flag = soviet_collapse_union_archives_failed
-		has_country_flag = soviet_collapse_loyal_military_districts_failed
-		has_country_flag = soviet_collapse_tashkent_anchor_failed
-		has_country_flag = soviet_collapse_caucasus_mountain_administration_failed
-		has_country_flag = soviet_collapse_ural_factory_gates_failed
-		has_country_flag = soviet_collapse_basmachi_supply_chain_failed
+		has_soviet_collapse_failure_release_pressure = yes
 		has_soviet_collapse_real_regional_cascade_pressure = yes
 		has_war = yes
 		NOT = { capital_scope = { is_controlled_by = ROOT } }
