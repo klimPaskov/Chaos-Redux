@@ -238,9 +238,9 @@ Recommended path:
 docs/plans/<event_id>_<event_slug>_plans/<feature_slug>_expansion_addendum.md
 ```
 
-Do not write new planning output under `docs/planning/`. Use `docs/plans/` for plans and addenda.
+Do not write new planning output under `docs/planning/`, `planning/`, or any other planning folder. Use `docs/plans/` for plans and addenda. If a prompt says "planning folder", treat that as `docs/plans/` unless the parent explicitly provides another path.
 
-Keep plan addenda readable and implementation-oriented, but not overloaded with low-level script details. Prefer player-facing behavior, route purpose, balance intent, asset direction, and audit needs. Put exact constants, full scripted-effect names, long file lists, and parser-level implementation notes in implementation docs, code comments, or the main-agent working notes unless the parent explicitly asks for a technical blueprint.
+Keep plan addenda readable as concise design handoffs. Prefer player-facing behavior, route purpose, balance intent, asset direction, and audit needs. Put exact constants, full scripted-effect names, long file lists, parser-level implementation notes, and detailed code wiring in implementation docs, code comments, or the main-agent working notes unless the parent explicitly asks for a technical blueprint.
 
 Use this format:
 
