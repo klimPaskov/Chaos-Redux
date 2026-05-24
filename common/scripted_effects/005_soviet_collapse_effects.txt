@@ -378,6 +378,12 @@ soviet_collapse_apply_foreign_pressure_delta = {
 			check_variable = { var = soviet_collapse_foreign_pressure_delta value = 0 compare = less_than }
 		}
 		add_to_variable = { soviet_collapse_foreign_appetite = soviet_collapse_foreign_pressure_delta }
+		add_to_variable = { soviet_collapse_monthly_foreign_pressure = soviet_collapse_foreign_pressure_delta }
+		clamp_variable = {
+			var = soviet_collapse_monthly_foreign_pressure
+			min = constant:soviet_collapse_baseline.component_min
+			max = constant:soviet_collapse_baseline.component_max
+		}
 		clamp_variable = { var = soviet_collapse_foreign_appetite min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 		soviet_collapse_recalculate_total_threat = yes
 	}
