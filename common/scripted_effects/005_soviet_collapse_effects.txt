@@ -9686,13 +9686,17 @@ soviet_collapse_activate_opening_objectives = {
 	set_temp_variable = { soviet_collapse_active_objective_cap = constant:soviet_collapse_soviet_objective.active_cap }
 	if = {
 		limit = {
-			is_soviet_collapse_calm_strong_center_window = yes
+			OR = {
+				is_soviet_collapse_calm_strong_center_window = yes
+				is_soviet_collapse_opening_strong_center_guard_window = yes
+			}
 		}
 		set_temp_variable = { soviet_collapse_active_objective_cap = constant:soviet_collapse_soviet_objective.calm_active_cap }
 	}
 	if = {
 		limit = {
 			NOT = { is_soviet_collapse_calm_strong_center_window = yes }
+			NOT = { is_soviet_collapse_opening_strong_center_guard_window = yes }
 			is_soviet_collapse_calm_release_recovery_window = yes
 		}
 		set_temp_variable = { soviet_collapse_active_objective_cap = constant:soviet_collapse_soviet_objective.recovery_active_cap }
@@ -9700,6 +9704,7 @@ soviet_collapse_activate_opening_objectives = {
 	if = {
 		limit = {
 			NOT = { is_soviet_collapse_calm_strong_center_window = yes }
+			NOT = { is_soviet_collapse_opening_strong_center_guard_window = yes }
 			NOT = { is_soviet_collapse_calm_release_recovery_window = yes }
 			has_war = no
 			NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
