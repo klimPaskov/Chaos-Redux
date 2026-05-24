@@ -9655,6 +9655,11 @@ soviet_collapse_queue_objective_refill = {
 
 soviet_collapse_activate_opening_objectives = {
 	soviet_collapse_update_center_pressure_state = yes
+	if = {
+		limit = { NOT = { has_country_flag = soviet_collapse_objective_activation_grace } }
+		set_country_flag = soviet_collapse_objective_activation_grace
+		country_event = { id = chaosx.nr5.127 days = constant:soviet_collapse_soviet_objective.objective_activation_grace_days }
+	}
 	soviet_collapse_prune_invalid_active_soviet_objectives = yes
 	soviet_collapse_count_active_soviet_objectives = yes
 	set_temp_variable = { soviet_collapse_active_objective_cap = constant:soviet_collapse_soviet_objective.active_cap }
