@@ -288,6 +288,7 @@ can_soviet_collapse_grant_timeout_aid = {
 can_soviet_collapse_roll_progressive_release = {
 	is_soviet_collapse_active = yes
 	NOT = { has_global_flag = soviet_collapse_progressive_release_cooldown }
+	has_soviet_collapse_progressive_release_pacing_ready = yes
 	OR = {
 		check_variable = {
 			var = soviet_collapse_total_collapse_threat
@@ -389,6 +390,27 @@ can_soviet_collapse_roll_progressive_release = {
 	}
 }
 
+has_soviet_collapse_progressive_release_pacing_ready = {
+	OR = {
+		NOT = { has_global_flag = soviet_collapse_union_unmade_first_month_lock }
+		has_soviet_collapse_real_regional_cascade_pressure = yes
+		has_war = yes
+		NOT = { capital_scope = { is_controlled_by = ROOT } }
+		has_global_flag = { flag = chaos_tier value = 4 }
+		has_global_flag = { flag = chaos_tier value = 5 }
+		check_variable = {
+			var = soviet_collapse_moscow_authority
+			value = constant:soviet_collapse_soviet_objective.critical_authority
+			compare = less_than
+		}
+		check_variable = {
+			var = soviet_collapse_military_obedience
+			value = constant:soviet_collapse_soviet_objective.contested_authority
+			compare = less_than
+		}
+	}
+}
+
 has_soviet_collapse_terminal_pacing_matured = {
 	OR = {
 		AND = {
@@ -458,6 +480,7 @@ has_soviet_collapse_terminal_pacing_matured = {
 has_soviet_collapse_accumulated_release_pressure = {
 	is_soviet_collapse_active = yes
 	NOT = { has_global_flag = soviet_collapse_progressive_release_cooldown }
+	has_soviet_collapse_progressive_release_pacing_ready = yes
 	has_soviet_collapse_real_release_pressure = yes
 	check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
 	check_variable = {
