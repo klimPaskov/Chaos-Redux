@@ -12970,7 +12970,7 @@ focus_tree = {
 
 	focus = {
 		id = DHC_stanitsa_mediation
-		icon = GFX_focus_DHC_civil_rule
+		icon = GFX_focus_DHC_stanitsa_mediation
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 4
 		y = 6
@@ -12978,14 +12978,16 @@ focus_tree = {
 		prerequisite = { focus = DHC_civil_rule }
 
 		completion_reward = {
-			set_country_flag = dhc_focus_stanitsa_mediation
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
-			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			custom_effect_tooltip = DHC_stanitsa_mediation_tt
+			hidden_effect = {
+				soviet_collapse_apply_dhc_stanitsa_mediation = yes
+			}
 		}
 		ai_will_do = {
 			base = 7
 			modifier = { factor = 2 has_stability < constant:soviet_collapse_soviet_objective.good_stability }
+			modifier = { factor = 2 has_war = no }
+			modifier = { factor = 0.6 has_country_flag = dhc_focus_radical_turn }
 		}
 	}
 
@@ -12999,14 +13001,16 @@ focus_tree = {
 		prerequisite = { focus = DHC_host_court_registers }
 
 		completion_reward = {
-			set_country_flag = dhc_focus_stanitsa_oath_boards
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
-			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			custom_effect_tooltip = DHC_stanitsa_oath_boards_tt
+			hidden_effect = {
+				soviet_collapse_apply_dhc_stanitsa_oath_boards = yes
+			}
 		}
 		ai_will_do = {
 			base = 7
 			modifier = { factor = 2 has_country_flag = dhc_focus_settlement }
+			modifier = { factor = 2 has_war_with = SOV }
+			modifier = { factor = 1.5 has_manpower < constant:soviet_collapse_soviet_objective.low_manpower_req }
 		}
 	}
 

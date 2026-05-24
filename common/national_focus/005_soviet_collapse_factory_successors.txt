@@ -2200,11 +2200,17 @@ focus_tree = {
 		prerequisite = { focus = MFR_factory_war_cabinet }
 
 		completion_reward = {
-			set_country_flag = mfr_focus_builders_waste_steel
-			soviet_collapse_apply_mfr_focus_unsafe_output = yes
-			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			custom_effect_tooltip = MFR_builders_waste_steel_tt
+			hidden_effect = {
+				soviet_collapse_apply_mfr_focus_builders_waste_steel = yes
+			}
 		}
-		ai_will_do = { base = 5 }
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 check_variable = { var = mfr_arsenal_quotas value = constant:soviet_collapse_factory_ancient.medium_mandate_gain compare = less_than } }
+			modifier = { factor = 0.5 has_stability < constant:soviet_collapse_soviet_objective.min_stability }
+		}
 	}
 
 	focus = {
@@ -2218,13 +2224,16 @@ focus_tree = {
 
 		available = { CFR = { exists = yes } }
 		completion_reward = {
-			set_country_flag = mfr_focus_civilian_factory_rivalry
-			soviet_collapse_apply_mfr_focus_unsafe_output = yes
-			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			custom_effect_tooltip = MFR_civilian_factory_rivalry_tt
+			hidden_effect = {
+				soviet_collapse_apply_mfr_focus_civilian_factory_rivalry = yes
+			}
 		}
 		ai_will_do = {
 			base = 5
 			modifier = { factor = 2 CFR = { exists = yes } }
+			modifier = { factor = 2 check_variable = { var = mfr_arsenal_quotas value = constant:soviet_collapse_factory_ancient.medium_mandate_gain compare = less_than } }
+			modifier = { factor = 0.5 has_stability < constant:soviet_collapse_soviet_objective.min_stability }
 		}
 	}
 
