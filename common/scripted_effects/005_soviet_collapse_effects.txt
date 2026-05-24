@@ -159,18 +159,18 @@ soviet_collapse_apply_timeout_burst_pressure_caps = {
 		}
 		else_if = {
 			limit = {
+				is_soviet_collapse_calm_strong_center_window = yes
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+			}
+			set_temp_variable = { soviet_collapse_timeout_burst_threat_cap = constant:soviet_collapse_threat_guard.calm_failed_month_cap }
+		}
+		else_if = {
+			limit = {
 				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
 				check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.contested_component_cap_breakaway_gate compare = less_than }
 				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
 			}
 			set_temp_variable = { soviet_collapse_timeout_burst_threat_cap = constant:soviet_collapse_threat_guard.moderate_failed_month_cap }
-		}
-		else_if = {
-			limit = {
-				is_soviet_collapse_calm_strong_center_window = yes
-				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
-			}
-			set_temp_variable = { soviet_collapse_timeout_burst_threat_cap = constant:soviet_collapse_threat_guard.calm_failed_month_cap }
 		}
 	}
 	if = {
@@ -366,12 +366,12 @@ soviet_collapse_apply_monthly_threat_guard = {
 		set_temp_variable = { soviet_collapse_monthly_threat_cap = constant:soviet_collapse_threat_guard.calm_success_month_cap }
 		soviet_collapse_set_monthly_threat_guard_cap = yes
 	}
-		else_if = {
-			limit = {
-				is_soviet_collapse_calm_strong_center_window = yes
-				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
-				check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.calm_failed_month_cap compare = greater_than }
-			}
+	else_if = {
+		limit = {
+			is_soviet_collapse_calm_strong_center_window = yes
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+			check_variable = { var = soviet_collapse_monthly_threat_delta value = constant:soviet_collapse_threat_guard.calm_failed_month_cap compare = greater_than }
+		}
 		set_temp_variable = { soviet_collapse_monthly_threat_cap = constant:soviet_collapse_threat_guard.calm_failed_month_cap }
 		soviet_collapse_set_monthly_threat_guard_cap = yes
 	}
