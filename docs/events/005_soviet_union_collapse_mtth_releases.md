@@ -6,17 +6,17 @@ The progressive release system turns the old flat threat-band roll into an MTTH-
 
 The release weight rises from Union Collapse Threat, weak Moscow Authority, weak Command Obedience, gated breakaway cascades, gated regional cascades, depot vulnerability, foreign penetration, League cohesion, old-movement pressure, failed Soviet mission flags, Soviet war pressure, and chaos tier. The miss weight moves in the opposite direction: a strong center and low threat make another release less likely, while severe threat, cascades, and failed objectives shorten the gap between declarations.
 
-The 2026-05-23 balance pass keeps the 0-100 scale but makes the release curve sharper and safer. Calm strong-center games now get `release_base = 0`, `miss_base = 240`, stronger high-authority/high-obedience suppression, a `can_soviet_collapse_roll_progressive_release` gate, and a candidate-count guard before the scheduler rolls. Breakaway and regional cascade weights require moderate threat, at least five breakaways, weak center signals, war pressure, or capital-loss pressure before they contribute. Release-level component pressure uses dedicated `constant:soviet_collapse_release_gate` thresholds rather than the lower focus-AI pressure gates, while strong-center suppression tapers at severe threat so the center cannot indefinitely suppress real collapse conditions.
+The balance pass keeps the 0-100 scale but makes the release curve sharper and safer. Calm strong-center games now get `release_base = 0`, `miss_base = 250`, stronger high-authority/high-obedience suppression, a `can_soviet_collapse_roll_progressive_release` gate, and a candidate-count guard before the scheduler rolls. Breakaway and regional cascade weights require moderate threat, at least five breakaways, weak center signals, war pressure, or capital-loss pressure before they contribute. Release-level component pressure uses dedicated `constant:soviet_collapse_release_gate` thresholds rather than the lower focus-AI pressure gates, while strong-center suppression tapers at severe threat so the center cannot indefinitely suppress real collapse conditions.
 
 ## Event Flow
 
 1. `chaosx.nr5.129` fires only for `SOV` while the collapse is active and terminal collapse has not started.
 2. `soviet_collapse_maybe_release_threat_breakaway` checks `can_soviet_collapse_roll_progressive_release`, which includes cooldown, terminal-state block, and a real collapse signal beyond the opening wave.
-3. At 100 threat, `soviet_collapse_show_union_unmade_super_event` resolves terminal collapse immediately.
+3. At 100 threat, `soviet_collapse_show_union_unmade_super_event` resolves terminal collapse only after the terminal pacing gates are mature.
 4. Below terminal collapse, the effect counts eligible candidates before rolling. If the pool is empty, it clears the sustained-pressure accumulator and does not start the cooldown.
 5. If candidates exist, sustained unresolved pressure adds to the release weight up to the configured cap and slightly reduces the miss path after the first pressure month. The accumulator is intentionally modest so repeated pressure matters over months without dominating the first eligible roll. Progressive selection uses `global.soviet_collapse_progressive_release_selection` as a scratch array, leaving first-wave memory intact for later candidate exclusion.
-6. A successful roll calls `soviet_collapse_fire_progressive_release_event`, which selects one visible cause event.
-7. The cause event releases one eligible republic through `soviet_collapse_release_one_threat_breakaway_republic`, applies the normal dynamic support package, loads the runtime focus tree for an event-created republic, and starts the cooldown only after a candidate was actually selected.
+6. A successful roll calls `soviet_collapse_fire_progressive_release_event`, which saves one release target as `event_target:soviet_collapse_release_target` before selecting a visible cause event.
+7. The cause event releases that selected republic through `soviet_collapse_release_one_threat_breakaway_republic`, applies the normal dynamic support package, loads the runtime focus tree for an event-created republic, and starts the cooldown only after a candidate was actually selected.
 8. Progressive candidates now cover western and eastern European republics, Baltic republics, Caucasus republics, Central Asian republics, Kazakhstan after southern cascade pressure, and vanilla-supported internal republics. Internal republics enter the progressive selector only after moderate threat, at least five breakaways, or higher chaos.
 
 ## Cause Events
@@ -34,7 +34,7 @@ The visible release events describe the authority failure that pushed the republ
 
 ## Tuning
 
-Tuning lives in `constant:soviet_collapse_release_mtth` inside `common/script_constants/005_soviet_collapse_constants.txt`. Progressive threat thresholds live in `constant:soviet_collapse_progressive_release` at 30/45/60/75/90 for low, moderate, high, severe, and critical pressure. Release and miss chances are produced by MTTH entries instead of flat `if`/`else_if` bands.
+Tuning lives in `constant:soviet_collapse_release_mtth` inside `common/script_constants/005_soviet_collapse_constants.txt`. Progressive threat thresholds live in `constant:soviet_collapse_progressive_release` at 35/50/65/80/92 for low, moderate, high, severe, and critical pressure. Release and miss chances are produced by MTTH entries instead of flat `if`/`else_if` bands.
 
 The current tuning anchors are:
 
@@ -73,4 +73,4 @@ No new icons or images are required for this mechanic. The release events reuse 
 
 ## Future Plans
 
-The next deeper pass can persist the selected republic as an event target before showing the visible cause event, allowing the event text to name the exact republic that declared. Another useful extension would split MTTH entries by region so Baltic, Caucasus, Central Asian, western, and Moldovan cascades can each report their own pressure clocks in the Soviet crisis UI.
+A useful extension would split MTTH entries by region so Baltic, Caucasus, Central Asian, western, and Moldovan cascades can each report their own pressure clocks in the Soviet crisis UI.
