@@ -216,8 +216,10 @@ Good triggers include:
 The expander should use `chaos-redux-event-planning` as the design baseline and write an expansion addendum, usually under:
 
 ```text
-docs/planning/expansion_specs/<feature_slug>_expansion_addendum.md
+docs/plans/<event_id>_<event_slug>_plans/<feature_slug>_expansion_addendum.md
 ```
+
+Do not ask the expander to write new plans under `docs/planning/`. Expansion addenda should be concise design handoffs, not code blueprints: enough concrete behavior to implement, but no long tables of constants, full scripted-effect recipes, or exhaustive touched-file inventories unless the parent specifically needs that level of detail.
 
 The parent agent must decide which parts to implement immediately, which parts to queue, and which parts to reject.
 
