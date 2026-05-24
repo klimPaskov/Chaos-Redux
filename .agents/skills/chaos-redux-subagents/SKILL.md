@@ -219,7 +219,7 @@ The expander should use `chaos-redux-event-planning` as the design baseline and 
 docs/plans/<event_id>_<event_slug>_plans/<feature_slug>_expansion_addendum.md
 ```
 
-Do not ask the expander to write new plans under `docs/planning/`. Expansion addenda should be concise design handoffs, not code blueprints: enough concrete behavior to implement, but no long tables of constants, full scripted-effect recipes, or exhaustive touched-file inventories unless the parent specifically needs that level of detail.
+Do not ask the expander to write new plans under `docs/planning/`, `planning/`, or any other planning folder. Use `docs/plans/` for expansion addenda. If a prompt says "planning folder", treat that as `docs/plans/` unless the parent explicitly provides another path. Expansion addenda should be concise design handoffs, not code blueprints: enough concrete behavior to implement, but no long tables of constants, full scripted-effect recipes, parser-level notes, detailed code wiring, or exhaustive touched-file inventories unless the parent specifically needs that level of detail.
 
 The parent agent must decide which parts to implement immediately, which parts to queue, and which parts to reject.
 

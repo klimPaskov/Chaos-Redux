@@ -1165,13 +1165,13 @@ If a license or attribution is unclear, mark it as uncertain.
 
 The event specification itself should be created as one or more downloadable Markdown files.
 
-All planning output belongs under `docs/plans/`. Do not create new event specs, addenda, prompt packages, or extracted planning handoffs under `docs/planning/` or a `planning/` folder.
+All planning output belongs under `docs/plans/`. Do not create new event specs, addenda, prompt packages, or extracted planning handoffs under `docs/planning/`, `planning/`, or any other planning folder. If a prompt says "planning folder", interpret that as `docs/plans/` unless the user explicitly provides a different path.
 
 The spec file should contain only the event specification.
 
 Do not put the asset prompt, super-event prompt, coding-agent prompt, or goal prompt inside the spec file.
 
-Keep planning files readable as design handoffs. Prefer route purpose, player-facing behavior, balance intent, asset direction, AI intent, and acceptance criteria. Avoid long technical tables, exact constant lists, full scripted-effect recipes, exhaustive file inventories, or parser-level implementation notes unless the user explicitly asks for a technical blueprint.
+Keep planning files readable as design handoffs, not implementation blueprints. Prefer route purpose, player-facing behavior, balance intent, asset direction, AI intent, and acceptance criteria. Avoid long technical tables, exact constant lists, full scripted-effect recipes, exhaustive file inventories, parser-level implementation notes, and detailed code wiring unless the user explicitly asks for a technical blueprint.
 
 For multi-part specs, create sequential files:
 
