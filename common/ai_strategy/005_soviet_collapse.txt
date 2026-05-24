@@ -1,0 +1,155 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 SOVIET COLLAPSE AI STRATEGIES
+# ============================================================================
+# Strategic AI overlays for the Soviet Collapse crisis. Focus and decision
+# weights still choose exact routes; these plans steer broad production,
+# restraint, defense, and foreign sponsorship while the crisis is active.
+# ============================================================================
+
+@SOV_COLLAPSE_AI_SOV_DEFENSE = 120
+@SOV_COLLAPSE_AI_SOV_SUPPLY = 40
+@SOV_COLLAPSE_AI_SOV_LOW_THREAT_RESTRAINT = 160
+@SOV_COLLAPSE_AI_SOV_HIGH_THREAT_ARMY = 90
+@SOV_COLLAPSE_AI_BREAKAWAY_DEFENSE = 80
+@SOV_COLLAPSE_AI_BREAKAWAY_SUPPLY = 35
+@SOV_COLLAPSE_AI_LEAGUE_SUPPORT = 80
+@SOV_COLLAPSE_AI_FOREIGN_CONTAIN = 80
+
+soviet_collapse_soviet_crisis_containment = {
+	allowed = { original_tag = SOV }
+	enable = { is_soviet_collapse_active = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_SOV_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_SOV_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = artillery
+		value = @SOV_COLLAPSE_AI_SOV_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_SOV_SUPPLY
+	}
+}
+
+soviet_collapse_soviet_low_threat_restraint = {
+	allowed = { original_tag = SOV }
+	enable = {
+		is_soviet_collapse_active = yes
+		check_variable = {
+			var = soviet_collapse_total_collapse_threat
+			value = constant:soviet_collapse_progressive_release.moderate_threat
+			compare = less_than
+		}
+		check_variable = {
+			var = soviet_collapse_moscow_authority
+			value = constant:soviet_collapse_soviet_objective.contested_authority
+			compare = greater_than
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_SOV_LOW_THREAT_RESTRAINT
+	}
+}
+
+soviet_collapse_soviet_high_threat_recovery = {
+	allowed = { original_tag = SOV }
+	enable = {
+		is_soviet_collapse_active = yes
+		OR = {
+			check_variable = {
+				var = soviet_collapse_total_collapse_threat
+				value = constant:soviet_collapse_progressive_release.high_threat
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = soviet_collapse_breakaway_count
+				value = constant:soviet_collapse_threat_guard.early_breakaway_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = soviet_collapse_military_obedience
+				value = constant:soviet_collapse_soviet_objective.contested_authority
+				compare = less_than
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_SOV_HIGH_THREAT_ARMY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_SOV_DEFENSE
+	}
+}
+
+soviet_collapse_breakaway_survival = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = soviet_collapse_breakaway
+		NOT = { tag = SOV }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_BREAKAWAY_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_BREAKAWAY_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_BREAKAWAY_SUPPLY
+	}
+}
+
+soviet_collapse_league_member_support = {
+	allowed = { always = yes }
+	enable = {
+		has_soviet_collapse_republic_league_coordination = yes
+		has_war_with = SOV
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = force_defend_ally_borders
+		target = europe
+		value = @SOV_COLLAPSE_AI_LEAGUE_SUPPORT
+	}
+}
+
+soviet_collapse_foreign_patron_response = {
+	allowed = { always = yes }
+	enable = {
+		is_soviet_collapse_foreign_patron_candidate = yes
+		SOV = {
+			exists = yes
+			is_soviet_collapse_active = yes
+			check_variable = {
+				var = soviet_collapse_foreign_appetite
+				value = constant:soviet_collapse_republic_focus.ai_pressure_high
+				compare = greater_than
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = contain
+		id = SOV
+		value = @SOV_COLLAPSE_AI_FOREIGN_CONTAIN
+	}
+}
