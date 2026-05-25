@@ -99,6 +99,28 @@ soviet_collapse_apply_dynamic_pressure_caps = {
 soviet_collapse_apply_monthly_component_growth_caps = {
 	if = {
 		limit = {
+			has_global_flag = soviet_collapse_union_unmade_first_month_lock
+			has_global_flag = soviet_collapse_opening_pressure_initialized
+			NOT = { has_soviet_collapse_opening_release_emergency = yes }
+		}
+		set_temp_variable = { soviet_collapse_component_growth_cap = soviet_collapse_last_month_republic_confidence }
+		add_to_temp_variable = { soviet_collapse_component_growth_cap = constant:soviet_collapse_threat_guard.opening_lock_republic_component_month_cap }
+		if = { limit = { check_variable = { var = soviet_collapse_republic_confidence value = soviet_collapse_component_growth_cap compare = greater_than } } set_variable = { soviet_collapse_republic_confidence = soviet_collapse_component_growth_cap } }
+		set_temp_variable = { soviet_collapse_component_growth_cap = soviet_collapse_last_month_depot_vulnerability }
+		add_to_temp_variable = { soviet_collapse_component_growth_cap = constant:soviet_collapse_threat_guard.opening_lock_depot_component_month_cap }
+		if = { limit = { check_variable = { var = soviet_collapse_depot_vulnerability value = soviet_collapse_component_growth_cap compare = greater_than } } set_variable = { soviet_collapse_depot_vulnerability = soviet_collapse_component_growth_cap } }
+		set_temp_variable = { soviet_collapse_component_growth_cap = soviet_collapse_last_month_foreign_appetite }
+		add_to_temp_variable = { soviet_collapse_component_growth_cap = constant:soviet_collapse_threat_guard.opening_lock_foreign_component_month_cap }
+		if = { limit = { check_variable = { var = soviet_collapse_foreign_appetite value = soviet_collapse_component_growth_cap compare = greater_than } } set_variable = { soviet_collapse_foreign_appetite = soviet_collapse_component_growth_cap } }
+		set_temp_variable = { soviet_collapse_component_growth_cap = soviet_collapse_last_month_league_cohesion }
+		add_to_temp_variable = { soviet_collapse_component_growth_cap = constant:soviet_collapse_threat_guard.opening_lock_league_component_month_cap }
+		if = { limit = { check_variable = { var = soviet_collapse_league_cohesion value = soviet_collapse_component_growth_cap compare = greater_than } } set_variable = { soviet_collapse_league_cohesion = soviet_collapse_component_growth_cap } }
+		set_temp_variable = { soviet_collapse_component_growth_cap = soviet_collapse_last_month_old_movement_pressure }
+		add_to_temp_variable = { soviet_collapse_component_growth_cap = constant:soviet_collapse_threat_guard.opening_lock_old_movement_component_month_cap }
+		if = { limit = { check_variable = { var = soviet_collapse_old_movement_pressure value = soviet_collapse_component_growth_cap compare = greater_than } } set_variable = { soviet_collapse_old_movement_pressure = soviet_collapse_component_growth_cap } }
+	}
+	else_if = {
+		limit = {
 			OR = {
 				is_soviet_collapse_calm_strong_center_window = yes
 				is_soviet_collapse_opening_strong_center_guard_window = yes
@@ -171,6 +193,19 @@ soviet_collapse_apply_monthly_component_growth_caps = {
 
 soviet_collapse_apply_monthly_center_erosion_caps = {
 	if = {
+		limit = {
+			has_global_flag = soviet_collapse_union_unmade_first_month_lock
+			has_global_flag = soviet_collapse_opening_pressure_initialized
+			NOT = { has_soviet_collapse_opening_release_emergency = yes }
+		}
+		set_temp_variable = { soviet_collapse_center_erosion_floor = soviet_collapse_last_month_moscow_authority }
+		subtract_from_temp_variable = { soviet_collapse_center_erosion_floor = constant:soviet_collapse_threat_guard.opening_lock_authority_erosion_month_cap }
+		if = { limit = { check_variable = { var = soviet_collapse_moscow_authority value = soviet_collapse_center_erosion_floor compare = less_than } } set_variable = { soviet_collapse_moscow_authority = soviet_collapse_center_erosion_floor } }
+		set_temp_variable = { soviet_collapse_center_erosion_floor = soviet_collapse_last_month_military_obedience }
+		subtract_from_temp_variable = { soviet_collapse_center_erosion_floor = constant:soviet_collapse_threat_guard.opening_lock_obedience_erosion_month_cap }
+		if = { limit = { check_variable = { var = soviet_collapse_military_obedience value = soviet_collapse_center_erosion_floor compare = less_than } } set_variable = { soviet_collapse_military_obedience = soviet_collapse_center_erosion_floor } }
+	}
+	else_if = {
 		limit = {
 			OR = {
 				has_country_flag = soviet_collapse_calm_strong_center_state
@@ -481,6 +516,18 @@ soviet_collapse_apply_foreign_pressure_delta = {
 		add_to_variable = { soviet_collapse_monthly_foreign_pressure = soviet_collapse_foreign_pressure_delta }
 		if = {
 			limit = {
+				has_global_flag = soviet_collapse_union_unmade_first_month_lock
+				has_global_flag = soviet_collapse_opening_pressure_initialized
+				NOT = { has_soviet_collapse_opening_release_emergency = yes }
+				check_variable = { var = soviet_collapse_monthly_foreign_pressure value = constant:soviet_collapse_threat_guard.opening_lock_foreign_month_cap compare = greater_than }
+			}
+			set_temp_variable = { soviet_collapse_foreign_pressure_over_cap = soviet_collapse_monthly_foreign_pressure }
+			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_over_cap = constant:soviet_collapse_threat_guard.opening_lock_foreign_month_cap }
+			subtract_from_variable = { soviet_collapse_foreign_appetite = soviet_collapse_foreign_pressure_over_cap }
+			set_variable = { soviet_collapse_monthly_foreign_pressure = constant:soviet_collapse_threat_guard.opening_lock_foreign_month_cap }
+		}
+		else_if = {
+			limit = {
 				OR = {
 					is_soviet_collapse_calm_strong_center_window = yes
 					is_soviet_collapse_opening_strong_center_guard_window = yes
@@ -554,6 +601,19 @@ soviet_collapse_apply_foreign_patron_pressure_delta = {
 		add_to_variable = { soviet_collapse_monthly_foreign_patron_pressure = soviet_collapse_foreign_pressure_delta }
 		if = {
 			limit = {
+				has_global_flag = soviet_collapse_union_unmade_first_month_lock
+				has_global_flag = soviet_collapse_opening_pressure_initialized
+				NOT = { has_soviet_collapse_opening_release_emergency = yes }
+				check_variable = { var = soviet_collapse_monthly_foreign_patron_pressure value = constant:soviet_collapse_threat_guard.opening_lock_foreign_patron_month_cap compare = greater_than }
+			}
+			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
+			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.opening_lock_foreign_patron_month_cap }
+			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.opening_lock_foreign_patron_month_cap }
+		}
+		else_if = {
+			limit = {
 				OR = {
 					is_soviet_collapse_calm_strong_center_window = yes
 					is_soviet_collapse_opening_strong_center_guard_window = yes
@@ -564,7 +624,7 @@ soviet_collapse_apply_foreign_patron_pressure_delta = {
 			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
 			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.calm_foreign_patron_month_cap }
 			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
-			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.calm_foreign_patron_month_cap }
 		}
 		else_if = {
@@ -580,7 +640,7 @@ soviet_collapse_apply_foreign_patron_pressure_delta = {
 			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
 			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.moderate_foreign_patron_month_cap }
 			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
-			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.moderate_foreign_patron_month_cap }
 		}
 		else_if = {
@@ -592,7 +652,7 @@ soviet_collapse_apply_foreign_patron_pressure_delta = {
 			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
 			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.severe_foreign_patron_month_cap }
 			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
-			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.severe_foreign_patron_month_cap }
 		}
 		else_if = {
@@ -605,7 +665,7 @@ soviet_collapse_apply_foreign_patron_pressure_delta = {
 			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
 			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.preterminal_foreign_patron_month_cap }
 			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
-			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.preterminal_foreign_patron_month_cap }
 		}
 	}
@@ -862,6 +922,7 @@ soviet_collapse_initialize_mission_requirements = {
 soviet_collapse_initialize_crisis_values = {
 	set_global_flag = soviet_collapse_active
 	set_global_flag = soviet_collapse_opening_wave_active
+	clr_global_flag = soviet_collapse_opening_pressure_initialized
 	set_temp_variable = { soviet_collapse_first_month_lock_days = constant:soviet_collapse_threat_guard.first_month_lock_days }
 	meta_effect = {
 		text = {
@@ -1002,6 +1063,7 @@ soviet_collapse_initialize_crisis_values = {
 	set_variable = { soviet_collapse_release_urgency_score = 0 }
 	set_variable = { soviet_collapse_months_active = 0 }
 	set_variable = { soviet_collapse_terminal_pressure_months = 0 }
+	set_global_flag = soviet_collapse_opening_pressure_initialized
 	country_event = { id = chaosx.nr5.129 days = 30 }
 }
 
@@ -1356,7 +1418,8 @@ soviet_collapse_release_terminal_ordinary_republics = {
 				is_controlled_by = SOV
 			}
 		}
-		SOV = { release = PREV }
+		save_event_target_as = soviet_collapse_terminal_release_target
+		SOV = { release = event_target:soviet_collapse_terminal_release_target }
 		if = {
 			limit = {
 				exists = yes
@@ -1426,7 +1489,8 @@ soviet_collapse_release_terminal_ordinary_republics = {
 		}
 		if = {
 			limit = { exists = no }
-			SOV = { release = PREV }
+			save_event_target_as = soviet_collapse_terminal_release_target
+			SOV = { release = event_target:soviet_collapse_terminal_release_target }
 		}
 		if = {
 			limit = {
@@ -10977,7 +11041,7 @@ soviet_collapse_release_event_target_progressive_republic = {
 					}
 				}
 			}
-			SOV = { release = PREV }
+			SOV = { release = event_target:soviet_collapse_release_target }
 			set_country_flag = soviet_collapse_event_created_republic
 		}
 		if = {
@@ -11376,9 +11440,10 @@ soviet_collapse_maybe_release_threat_breakaway = {
 soviet_collapse_release_selected_first_wave_republics = {
 	for_each_scope_loop = {
 		array = global.soviet_collapse_first_wave_republics
+		save_event_target_as = soviet_collapse_first_wave_release_target
 		if = {
 			limit = { exists = no }
-			SOV = { release = PREV }
+			SOV = { release = event_target:soviet_collapse_first_wave_release_target }
 			set_country_flag = soviet_collapse_event_created_republic
 		}
 		if = {
@@ -11400,9 +11465,10 @@ soviet_collapse_release_selected_first_wave_republics = {
 soviet_collapse_release_selected_progressive_republics = {
 	for_each_scope_loop = {
 		array = global.soviet_collapse_progressive_release_selection
+		save_event_target_as = soviet_collapse_progressive_loop_release_target
 		if = {
 			limit = { exists = no }
-			SOV = { release = PREV }
+			SOV = { release = event_target:soviet_collapse_progressive_loop_release_target }
 			set_country_flag = soviet_collapse_event_created_republic
 		}
 		if = {
