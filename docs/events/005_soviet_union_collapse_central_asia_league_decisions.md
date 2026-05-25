@@ -4,6 +4,8 @@
 
 The Central Asia endgame route has a live decision surface once a southern runtime republic reaches the Southern Shield, pact choice, loose pact, federation, or final survival focus flags. The decisions sit in the breakaway category and use the existing focus flags rather than changing the focus tree layout.
 
+The Central Asian League focus branch also feeds the same mechanics through `central_asia_soviet_collapse_apply_focus_league_preparation_payload`. The payload is one-shot per route step: the federation road primes the water council, delegates and coordination prime member-vote legitimacy, the Southern Shield primes caravan security, the pact choice primes liaison protocol, loose pact primes mediation, federation state primes settlement institutions, and the final survival focus pushes the settlement score over the ratification line.
+
 ## Player Surface
 
 - Register a Water-Sharing Council: converts water and canal administration into institutions, League support, stability, and infrastructure.
@@ -22,6 +24,8 @@ Reusable gates live in `common/scripted_triggers/005_soviet_collapse_triggers.tx
 Costs and tuning live under `soviet_collapse_central_asia_league` in `common/script_constants/005_soviet_collapse_constants.txt`.
 
 Effects live in `common/scripted_effects/005_soviet_collapse_effects.txt`. They update republic variables, consolidated republic spirits, and Moscow-facing League, depot, and foreign pressure.
+
+The focus payload is called from `soviet_collapse_apply_focus_league_preparation`, so existing Central Asian focuses that already use the shared League-preparation helper gain route-specific water, pass, vote, mediation, and settlement progress without requiring layout changes.
 
 Localisation lives in `localisation/english/005_soviet_collapse_l_english.yml`.
 
