@@ -9123,11 +9123,73 @@ soviet_collapse_apply_custom_splinter_push_extreme_route = {
 	}
 }
 
+soviet_collapse_advance_udc_command_network_depth = {
+	add_to_variable = { soviet_collapse_udc_command_network_depth = constant:soviet_collapse_republic_focus.udc_command_network_depth_gain }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_udc_command_network_depth value = constant:soviet_collapse_republic_focus.focus_depth_first_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_udc_command_network_first_milestone }
+		}
+		set_country_flag = soviet_collapse_udc_command_network_first_milestone
+		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.military_focus_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_udc_command_network_depth value = constant:soviet_collapse_republic_focus.focus_depth_second_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_udc_command_network_second_milestone }
+		}
+		set_country_flag = soviet_collapse_udc_command_network_second_milestone
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+	}
+}
+
+soviet_collapse_advance_sdz_archive_control_depth = {
+	add_to_variable = { soviet_collapse_sdz_archive_control_depth = constant:soviet_collapse_republic_focus.sdz_archive_control_depth_gain }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_sdz_archive_control_depth value = constant:soviet_collapse_republic_focus.focus_depth_first_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_sdz_archive_control_first_milestone }
+		}
+		set_country_flag = soviet_collapse_sdz_archive_control_first_milestone
+		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_sdz_archive_control_depth value = constant:soviet_collapse_republic_focus.focus_depth_second_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_sdz_archive_control_second_milestone }
+		}
+		set_country_flag = soviet_collapse_sdz_archive_control_second_milestone
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		add_decryption = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+	}
+}
+
 soviet_collapse_apply_udc_command_network_focus = {
 	add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 	army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.military_focus_gain }
 	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+	soviet_collapse_advance_military_focus_depth = yes
+	soviet_collapse_advance_udc_command_network_depth = yes
+	if = {
+		limit = { has_country_flag = udc_focus_emergency_staff_college }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+	}
+	if = {
+		limit = { has_country_flag = udc_focus_counter_secession_cells }
+		add_stability = constant:soviet_collapse_republic_focus.stability_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
+	if = {
+		limit = { has_country_flag = udc_focus_radio_command_posts SOV = { exists = yes } }
+		add_decryption = {
+			target = SOV
+			amount = constant:soviet_collapse_republic_focus.baltic_dossier_decryption_gain
+		}
+	}
 	soviet_collapse_add_republic_focus_recovery_progress = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
@@ -9135,6 +9197,10 @@ soviet_collapse_apply_udc_command_network_focus = {
 		SOV = {
 			add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_republic_focus.military_obedience_focus_pressure }
 			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+			if = {
+				limit = { UDC = { has_country_flag = udc_focus_counter_secession_cells } }
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+			}
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -9145,6 +9211,25 @@ soviet_collapse_apply_sdz_archive_control_focus = {
 	add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
 	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
+	soviet_collapse_advance_military_focus_depth = yes
+	soviet_collapse_advance_sdz_archive_control_depth = yes
+	if = {
+		limit = { has_country_flag = sdz_focus_internal_troop_school }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+	}
+	if = {
+		limit = { has_country_flag = sdz_focus_black_site_transfer_logs }
+		add_stability = constant:soviet_collapse_republic_focus.stability_small
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+	}
+	if = {
+		limit = { has_country_flag = sdz_focus_radio_intercept_rooms SOV = { exists = yes } }
+		add_decryption = {
+			target = SOV
+			amount = constant:soviet_collapse_republic_focus.baltic_dossier_decryption_gain
+		}
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
 	soviet_collapse_add_republic_focus_recovery_progress = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
@@ -9152,6 +9237,10 @@ soviet_collapse_apply_sdz_archive_control_focus = {
 		SOV = {
 			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_republic_focus.soviet_pressure_small }
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+			if = {
+				limit = { SDZ = { has_country_flag = sdz_focus_radio_intercept_rooms } }
+				add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_republic_focus.military_obedience_focus_pressure }
+			}
 			soviet_collapse_apply_foreign_pressure_delta = yes
 		}
 	}
