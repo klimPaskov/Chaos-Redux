@@ -11,6 +11,8 @@
 @soviet_collapse_ukr_bread_state_fort_level = 1
 @soviet_collapse_moldova_route_building_level = 1
 @soviet_collapse_moldova_route_fort_level = 1
+@soviet_collapse_central_asia_league_building_level = 1
+@soviet_collapse_central_asia_league_fort_level = 1
 
 soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_moscow_authority min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -3841,6 +3843,191 @@ mol_soviet_collapse_apply_patronage_limits = {
 	add_stability = constant:soviet_collapse_moldova_route.stability_gain
 	set_temp_variable = { mol_soviet_collapse_route_relief_days = constant:soviet_collapse_moldova_route.relief_recent_days }
 	set_country_flag = { flag = soviet_collapse_moldova_patronage_limits_recent days = mol_soviet_collapse_route_relief_days }
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+central_asia_soviet_collapse_pay_water_council_cost = {
+	add_political_power = constant:soviet_collapse_central_asia_league.water_council_political_power_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_central_asia_league.water_council_trains_spend }
+}
+
+central_asia_soviet_collapse_pay_cotton_rail_cost = {
+	add_political_power = constant:soviet_collapse_central_asia_league.cotton_rail_political_power_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_central_asia_league.cotton_rail_trains_spend }
+	add_fuel = constant:soviet_collapse_central_asia_league.cotton_rail_fuel_spend
+}
+
+central_asia_soviet_collapse_pay_caravan_board_cost = {
+	add_command_power = constant:soviet_collapse_central_asia_league.caravan_board_command_power_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_central_asia_league.caravan_board_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_central_asia_league.caravan_board_support_equipment_spend }
+	add_fuel = constant:soviet_collapse_central_asia_league.caravan_board_fuel_spend
+}
+
+central_asia_soviet_collapse_pay_member_vote_cost = {
+	add_political_power = constant:soviet_collapse_central_asia_league.member_vote_political_power_spend
+	add_command_power = constant:soviet_collapse_central_asia_league.member_vote_command_power_spend
+}
+
+central_asia_soviet_collapse_pay_mediation_cost = {
+	add_political_power = constant:soviet_collapse_central_asia_league.mediation_political_power_spend
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_central_asia_league.mediation_convoys_spend }
+	add_fuel = constant:soviet_collapse_central_asia_league.mediation_fuel_spend
+}
+
+central_asia_soviet_collapse_pay_settlement_cost = {
+	add_political_power = constant:soviet_collapse_central_asia_league.settlement_political_power_spend
+	add_command_power = constant:soviet_collapse_central_asia_league.settlement_command_power_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_central_asia_league.settlement_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_central_asia_league.settlement_support_equipment_spend }
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_central_asia_league.settlement_trains_spend }
+}
+
+central_asia_soviet_collapse_add_league_score = {
+	add_to_variable = { soviet_collapse_central_asia_league_score = central_asia_soviet_collapse_league_score_delta }
+	clamp_variable = {
+		var = soviet_collapse_central_asia_league_score
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_central_asia_league.league_score_cap
+	}
+	set_temp_variable = { central_asia_soviet_collapse_league_score_delta = 0 }
+}
+
+central_asia_soviet_collapse_apply_soviet_pressure = {
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_league_cohesion = central_asia_soviet_collapse_soviet_league_pressure }
+			add_to_variable = { soviet_collapse_depot_vulnerability = central_asia_soviet_collapse_soviet_depot_pressure }
+			set_temp_variable = { soviet_collapse_foreign_pressure_delta = central_asia_soviet_collapse_soviet_foreign_pressure }
+			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+	set_temp_variable = { central_asia_soviet_collapse_soviet_league_pressure = 0 }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_depot_pressure = 0 }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_foreign_pressure = 0 }
+}
+
+central_asia_soviet_collapse_apply_water_council = {
+	central_asia_soviet_collapse_pay_water_council_cost = yes
+	set_country_flag = soviet_collapse_central_asia_water_council_registered
+	add_to_variable = { soviet_collapse_central_asia_water_settlement = constant:soviet_collapse_central_asia_league.water_support_gain }
+	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_central_asia_league.institution_gain }
+	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_central_asia_league.league_support_gain }
+	add_stability = constant:soviet_collapse_central_asia_league.stability_gain
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = infrastructure level = @soviet_collapse_central_asia_league_building_level instant_build = yes }
+	}
+	set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+	central_asia_soviet_collapse_add_league_score = yes
+	set_temp_variable = { central_asia_soviet_collapse_recent_days = constant:soviet_collapse_central_asia_league.recent_days }
+	set_country_flag = { flag = soviet_collapse_central_asia_water_council_recent days = central_asia_soviet_collapse_recent_days }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_league_pressure = constant:soviet_collapse_central_asia_league.soviet_league_pressure_small }
+	central_asia_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+central_asia_soviet_collapse_apply_cotton_rail_quota = {
+	central_asia_soviet_collapse_pay_cotton_rail_cost = yes
+	set_country_flag = soviet_collapse_central_asia_cotton_rail_board
+	add_to_variable = { soviet_collapse_central_asia_cotton_rail_account = constant:soviet_collapse_central_asia_league.cotton_rail_gain }
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_central_asia_league.depot_gain }
+	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_central_asia_league.league_support_gain }
+	add_war_support = constant:soviet_collapse_central_asia_league.war_support_gain
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_central_asia_league.infantry_reward }
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = supply_node level = @soviet_collapse_central_asia_league_building_level instant_build = yes }
+	}
+	set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+	central_asia_soviet_collapse_add_league_score = yes
+	set_temp_variable = { central_asia_soviet_collapse_recent_days = constant:soviet_collapse_central_asia_league.recent_days }
+	set_country_flag = { flag = soviet_collapse_central_asia_cotton_rail_recent days = central_asia_soviet_collapse_recent_days }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_depot_pressure = constant:soviet_collapse_central_asia_league.soviet_depot_pressure }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_league_pressure = constant:soviet_collapse_central_asia_league.soviet_league_pressure_small }
+	central_asia_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+central_asia_soviet_collapse_apply_caravan_board = {
+	central_asia_soviet_collapse_pay_caravan_board_cost = yes
+	set_country_flag = soviet_collapse_central_asia_caravan_board
+	add_to_variable = { soviet_collapse_central_asia_pass_security = constant:soviet_collapse_central_asia_league.pass_security_gain }
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_central_asia_league.depot_gain }
+	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_central_asia_league.resilience_gain }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_central_asia_league.support_reward }
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = bunker level = @soviet_collapse_central_asia_league_fort_level instant_build = yes }
+	}
+	set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+	central_asia_soviet_collapse_add_league_score = yes
+	set_temp_variable = { central_asia_soviet_collapse_recent_days = constant:soviet_collapse_central_asia_league.recent_days }
+	set_country_flag = { flag = soviet_collapse_central_asia_caravan_board_recent days = central_asia_soviet_collapse_recent_days }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_depot_pressure = constant:soviet_collapse_central_asia_league.soviet_depot_pressure }
+	central_asia_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+central_asia_soviet_collapse_apply_member_vote_protocol = {
+	central_asia_soviet_collapse_pay_member_vote_cost = yes
+	set_country_flag = soviet_collapse_central_asia_member_vote_protocol
+	add_to_variable = { soviet_collapse_central_asia_member_vote_legitimacy = constant:soviet_collapse_central_asia_league.member_vote_gain }
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_central_asia_league.recognition_gain }
+	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_central_asia_league.resilience_gain }
+	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_central_asia_league.league_support_large_gain }
+	add_stability = constant:soviet_collapse_central_asia_league.stability_gain
+	set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_large }
+	central_asia_soviet_collapse_add_league_score = yes
+	set_temp_variable = { central_asia_soviet_collapse_recent_days = constant:soviet_collapse_central_asia_league.recent_days }
+	set_country_flag = { flag = soviet_collapse_central_asia_member_vote_recent days = central_asia_soviet_collapse_recent_days }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_league_pressure = constant:soviet_collapse_central_asia_league.soviet_league_pressure_medium }
+	central_asia_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+central_asia_soviet_collapse_apply_mediation_desk = {
+	central_asia_soviet_collapse_pay_mediation_cost = yes
+	set_country_flag = soviet_collapse_central_asia_foreign_mediation_desk
+	add_to_variable = { soviet_collapse_central_asia_foreign_mediation_balance = constant:soviet_collapse_central_asia_league.mediation_balance_gain }
+	add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_central_asia_league.liaison_gain }
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_central_asia_league.recognition_gain }
+	add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_central_asia_league.patronage_risk_relief }
+	add_stability = constant:soviet_collapse_central_asia_league.stability_gain
+	set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+	central_asia_soviet_collapse_add_league_score = yes
+	set_temp_variable = { central_asia_soviet_collapse_recent_days = constant:soviet_collapse_central_asia_league.recent_days }
+	set_country_flag = { flag = soviet_collapse_central_asia_mediation_recent days = central_asia_soviet_collapse_recent_days }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_foreign_pressure = constant:soviet_collapse_central_asia_league.soviet_foreign_pressure_medium }
+	central_asia_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+central_asia_soviet_collapse_apply_survival_settlement = {
+	central_asia_soviet_collapse_pay_settlement_cost = yes
+	set_country_flag = soviet_collapse_central_asia_survival_settlement
+	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_central_asia_league.institution_gain }
+	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_central_asia_league.resilience_large_gain }
+	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_central_asia_league.league_support_large_gain }
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_central_asia_league.recognition_gain }
+	add_stability = constant:soviet_collapse_central_asia_league.stability_large_gain
+	add_war_support = constant:soviet_collapse_central_asia_league.war_support_gain
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = arms_factory level = @soviet_collapse_central_asia_league_building_level instant_build = yes }
+		add_building_construction = { type = infrastructure level = @soviet_collapse_central_asia_league_building_level instant_build = yes }
+	}
+	if = {
+		limit = { has_country_flag = soviet_collapse_central_asian_league_founder }
+		soviet_collapse_invite_central_asian_regional_partners = yes
+	}
+	set_temp_variable = { central_asia_soviet_collapse_settlement_recent_days = constant:soviet_collapse_central_asia_league.settlement_recent_days }
+	set_country_flag = { flag = soviet_collapse_central_asia_survival_settlement_recent days = central_asia_soviet_collapse_settlement_recent_days }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_league_pressure = constant:soviet_collapse_central_asia_league.soviet_league_pressure_medium }
+	set_temp_variable = { central_asia_soviet_collapse_soviet_foreign_pressure = constant:soviet_collapse_central_asia_league.soviet_foreign_pressure_small }
+	central_asia_soviet_collapse_apply_soviet_pressure = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 }
 
