@@ -10929,6 +10929,23 @@ soviet_collapse_maybe_release_threat_breakaway = {
 				add_to_temp_variable = { soviet_collapse_progressive_release_weight = soviet_collapse_progressive_release_pressure }
 				add_to_temp_variable = { soviet_collapse_progressive_release_weight = soviet_collapse_release_urgency_weight }
 				soviet_collapse_apply_progressive_release_final_weight_dampening = yes
+				if = {
+					limit = {
+						check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_mature_gate compare = greater_than_or_equals }
+					}
+					multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.sustained_pressure_mature_release_factor }
+				}
+				if = {
+					limit = {
+						check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_severe_gate compare = greater_than_or_equals }
+					}
+					multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.sustained_pressure_severe_release_factor }
+				}
+				clamp_temp_variable = {
+					var = soviet_collapse_progressive_release_weight
+					min = constant:soviet_collapse_baseline.component_min
+					max = constant:soviet_collapse_release_mtth.miss_weight_ceiling
+				}
 				set_temp_variable = { soviet_collapse_progressive_release_miss_reduction = soviet_collapse_regional_cascade_score }
 				multiply_temp_variable = { soviet_collapse_progressive_release_miss_reduction = constant:soviet_collapse_release_mtth.regional_cascade_miss_reduction_per_score }
 				clamp_temp_variable = {
@@ -10955,6 +10972,18 @@ soviet_collapse_maybe_release_threat_breakaway = {
 						check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_miss_gate compare = greater_than_or_equals }
 					}
 					multiply_temp_variable = { soviet_collapse_progressive_release_miss_weight = constant:soviet_collapse_release_mtth.sustained_pressure_miss_factor }
+				}
+				if = {
+					limit = {
+						check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_mature_gate compare = greater_than_or_equals }
+					}
+					multiply_temp_variable = { soviet_collapse_progressive_release_miss_weight = constant:soviet_collapse_release_mtth.sustained_pressure_mature_miss_factor }
+				}
+				if = {
+					limit = {
+						check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_severe_gate compare = greater_than_or_equals }
+					}
+					multiply_temp_variable = { soviet_collapse_progressive_release_miss_weight = constant:soviet_collapse_release_mtth.sustained_pressure_severe_miss_factor }
 				}
 				clamp_temp_variable = {
 					var = soviet_collapse_progressive_release_miss_weight
