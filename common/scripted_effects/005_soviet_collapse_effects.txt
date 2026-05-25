@@ -9732,6 +9732,87 @@ soviet_collapse_compute_progressive_release_regional_cascade = {
 	}
 }
 
+soviet_collapse_compute_progressive_release_pressure_gain = {
+	set_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add }
+
+	set_temp_variable = { soviet_collapse_progressive_release_pressure_component = soviet_collapse_release_urgency_score }
+	multiply_temp_variable = { soviet_collapse_progressive_release_pressure_component = constant:soviet_collapse_release_mtth.urgency_pressure_per_score }
+	clamp_temp_variable = {
+		var = soviet_collapse_progressive_release_pressure_component
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.urgency_pressure_monthly_cap
+	}
+	add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = soviet_collapse_progressive_release_pressure_component }
+
+	set_temp_variable = { soviet_collapse_progressive_release_pressure_component = soviet_collapse_regional_cascade_score }
+	multiply_temp_variable = { soviet_collapse_progressive_release_pressure_component = constant:soviet_collapse_release_mtth.regional_cascade_pressure_per_score }
+	clamp_temp_variable = {
+		var = soviet_collapse_progressive_release_pressure_component
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.regional_cascade_pressure_monthly_cap
+	}
+	add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = soviet_collapse_progressive_release_pressure_component }
+
+	set_temp_variable = { soviet_collapse_progressive_release_pressure_component = soviet_collapse_progressive_release_candidate_count }
+	multiply_temp_variable = { soviet_collapse_progressive_release_pressure_component = constant:soviet_collapse_release_mtth.candidate_pressure_per_candidate }
+	clamp_temp_variable = {
+		var = soviet_collapse_progressive_release_pressure_component
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.candidate_pressure_monthly_cap
+	}
+	add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = soviet_collapse_progressive_release_pressure_component }
+
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
+			NOT = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = greater_than_or_equals } }
+		}
+		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.moderate_pressure_monthly_add }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = greater_than_or_equals }
+			NOT = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = greater_than_or_equals } }
+		}
+		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.high_pressure_monthly_add }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = greater_than_or_equals }
+			NOT = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.critical_threat compare = greater_than_or_equals } }
+		}
+		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.severe_pressure_monthly_add }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.critical_threat compare = greater_than_or_equals }
+		}
+		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.critical_pressure_monthly_add }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+		}
+		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.weak_authority_pressure_monthly_add }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+		}
+		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.weak_obedience_pressure_monthly_add }
+	}
+	if = {
+		limit = { has_soviet_collapse_failure_release_pressure = yes }
+		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.failure_pressure_monthly_add }
+	}
+	clamp_temp_variable = {
+		var = soviet_collapse_progressive_release_pressure_gain
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.sustained_pressure_monthly_gain_cap
+	}
+	set_temp_variable = { soviet_collapse_progressive_release_pressure_component = 0 }
+}
+
 soviet_collapse_compute_progressive_candidate_release_weight = {
 	set_temp_variable = { soviet_collapse_progressive_candidate_weight = soviet_collapse_progressive_release_candidate_count }
 	multiply_temp_variable = { soviet_collapse_progressive_candidate_weight = constant:soviet_collapse_release_mtth.candidate_count_weight_add }
@@ -9789,6 +9870,14 @@ soviet_collapse_apply_progressive_release_final_weight_dampening = {
 		}
 		multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.high_authority_factor }
 		multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.high_obedience_factor }
+	}
+	if = {
+		limit = {
+			is_soviet_collapse_opening_strong_center_guard_window = yes
+			NOT = { has_soviet_collapse_opening_release_emergency = yes }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+		}
+		multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.opening_strong_center_release_factor }
 	}
 	clamp_temp_variable = {
 		var = soviet_collapse_progressive_release_weight
@@ -10023,12 +10112,14 @@ soviet_collapse_accumulate_progressive_release_pressure = {
 			has_soviet_collapse_compound_release_pressure = yes
 			check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
 		}
-		add_to_variable = { soviet_collapse_progressive_release_pressure = constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add }
+		soviet_collapse_compute_progressive_release_pressure_gain = yes
+		add_to_variable = { soviet_collapse_progressive_release_pressure = soviet_collapse_progressive_release_pressure_gain }
 		clamp_variable = {
 			var = soviet_collapse_progressive_release_pressure
 			min = constant:soviet_collapse_baseline.component_min
 			max = constant:soviet_collapse_release_mtth.sustained_pressure_cap
 		}
+		set_temp_variable = { soviet_collapse_progressive_release_pressure_gain = 0 }
 	}
 	else_if = {
 		limit = {
