@@ -12,6 +12,9 @@
 @SOV_COLLAPSE_AI_SOV_HIGH_THREAT_ARMY = 90
 @SOV_COLLAPSE_AI_BREAKAWAY_DEFENSE = 80
 @SOV_COLLAPSE_AI_BREAKAWAY_SUPPLY = 35
+@SOV_COLLAPSE_AI_SIGNATURE_FORCE_ARMY = 70
+@SOV_COLLAPSE_AI_SIGNATURE_FORCE_SUPPLY = 30
+@SOV_COLLAPSE_AI_RAIL_GUARD_SUPPLY = 55
 @SOV_COLLAPSE_AI_LEAGUE_SUPPORT = 80
 @SOV_COLLAPSE_AI_FOREIGN_CONTAIN = 80
 
@@ -129,6 +132,117 @@ soviet_collapse_league_member_support = {
 		type = force_defend_ally_borders
 		target = europe
 		value = @SOV_COLLAPSE_AI_LEAGUE_SUPPORT
+	}
+}
+
+soviet_collapse_custom_splinter_signature_force_route = {
+	allowed = {
+		OR = {
+			tag = FTH
+			tag = BBH
+			tag = BSC
+			tag = TNC
+			tag = ALA
+			tag = KRS
+			tag = UDC
+			tag = SDZ
+			tag = GAC
+			tag = DHC
+			tag = KHC
+			tag = FEV
+			tag = SZA
+			tag = UWD
+			tag = MRC
+			tag = IUL
+			tag = BAC
+			tag = ARD
+			tag = NLC
+		}
+	}
+	enable = {
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = fth_focus_special_arm
+			has_country_flag = bbh_focus_special_arm
+			has_country_flag = bsc_focus_special_arm
+			has_country_flag = tnc_focus_special_arm
+			has_country_flag = ala_focus_special_arm
+			has_country_flag = krs_focus_special_arm
+			has_country_flag = udc_focus_special_arm
+			has_country_flag = sdz_focus_special_arm
+			has_country_flag = gac_focus_special_arm
+			has_country_flag = dhc_focus_special_arm
+			has_country_flag = khc_focus_special_arm
+			has_country_flag = fev_focus_special_arm
+			has_country_flag = sza_focus_special_arm
+			has_country_flag = uwd_focus_special_arm
+			has_country_flag = mrc_focus_special_arm
+			has_country_flag = iul_focus_special_arm
+			has_country_flag = bac_focus_special_arm
+			has_country_flag = ard_focus_special_arm
+			has_country_flag = nlc_focus_special_arm
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_SIGNATURE_FORCE_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_SIGNATURE_FORCE_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_SIGNATURE_FORCE_SUPPLY
+	}
+}
+
+soviet_collapse_high_chaos_signature_force_route = {
+	allowed = {
+		OR = {
+			tag = OGB
+			tag = PRA
+			tag = TSC
+			tag = RMC
+			tag = ICD
+			tag = DSC
+			tag = NRF
+		}
+	}
+	enable = {
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = ogb_focus_raise_the_heritage_guard
+			has_country_flag = pra_focus_omsk_station_guard
+			has_country_flag = tsc_focus_observatory_guard
+			has_country_flag = rmc_focus_reliquary_guard
+			has_country_flag = icd_focus_memorial_battalions
+			has_country_flag = dsc_focus_dead_regiment_columns
+			has_country_flag = nrf_focus_icebound_marine_guard
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_SIGNATURE_FORCE_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_SIGNATURE_FORCE_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_SIGNATURE_FORCE_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_RAIL_GUARD_SUPPLY
 	}
 }
 
