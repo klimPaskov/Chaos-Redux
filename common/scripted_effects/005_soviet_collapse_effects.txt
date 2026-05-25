@@ -4711,11 +4711,158 @@ soviet_collapse_add_republic_fort_focus_reward = {
 	}
 }
 
+soviet_collapse_apply_legal_focus_route_payload = {
+	if = {
+		limit = { NOT = { has_country_flag = soviet_collapse_legal_focus_route_payload_granted } }
+		set_country_flag = soviet_collapse_legal_focus_route_payload_granted
+		if = {
+			limit = { OR = { tag = LIT tag = LAT tag = EST } }
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			if = {
+				limit = { SOV = { exists = yes } }
+				add_decryption = {
+					target = SOV
+					amount = constant:soviet_collapse_republic_focus.baltic_dossier_decryption_gain
+				}
+			}
+		}
+		else_if = {
+			limit = { OR = { tag = UKR tag = BLR tag = MOL } }
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
+		}
+		else_if = {
+			limit = { OR = { tag = GEO tag = ARM tag = AZR } }
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		else_if = {
+			limit = { OR = { tag = UZB tag = KYR tag = TAJ tag = TMS tag = KAZ } }
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		else_if = {
+			limit = { has_country_flag = soviet_collapse_high_chaos_successor }
+			add_to_variable = { soviet_collapse_local_authority_pressure = constant:soviet_collapse_republic_idea.local_pressure_gain }
+			add_war_support = constant:soviet_collapse_republic_focus.war_support_small
+		}
+		else = {
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+		}
+		clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+		clamp_variable = { var = soviet_collapse_republic_institution_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	}
+}
+
+soviet_collapse_apply_military_focus_route_payload = {
+	if = {
+		limit = { NOT = { has_country_flag = soviet_collapse_military_focus_route_payload_granted } }
+		set_country_flag = soviet_collapse_military_focus_route_payload_granted
+		if = {
+			limit = { OR = { tag = UKR tag = BLR tag = KAZ } }
+			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:soviet_collapse_republic_focus.artillery_equipment }
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
+		}
+		else_if = {
+			limit = { OR = { tag = LIT tag = LAT tag = EST tag = MOL tag = GEO tag = ARM tag = AZR } }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		}
+		else_if = {
+			limit = { OR = { tag = UZB tag = KYR tag = TAJ tag = TMS } }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+		else_if = {
+			limit = { has_country_flag = soviet_collapse_high_chaos_successor }
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		}
+		else = {
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		}
+	}
+}
+
+soviet_collapse_apply_depot_focus_route_payload = {
+	if = {
+		limit = { NOT = { has_country_flag = soviet_collapse_depot_focus_route_payload_granted } }
+		set_country_flag = soviet_collapse_depot_focus_route_payload_granted
+		if = {
+			limit = { OR = { tag = UKR tag = BLR tag = MOL tag = LIT tag = LAT tag = EST } }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		else_if = {
+			limit = { OR = { tag = UZB tag = KYR tag = TAJ tag = TMS tag = KAZ } }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+			random_owned_controlled_state = {
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+		}
+		else_if = {
+			limit = { OR = { tag = GEO tag = ARM tag = AZR } }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = soviet_collapse_high_chaos_successor }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_to_variable = { soviet_collapse_local_authority_pressure = constant:soviet_collapse_republic_idea.local_pressure_gain }
+		}
+		else = {
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		}
+	}
+}
+
+soviet_collapse_apply_league_focus_route_payload = {
+	if = {
+		limit = { NOT = { has_country_flag = soviet_collapse_league_focus_route_payload_granted } }
+		set_country_flag = soviet_collapse_league_focus_route_payload_granted
+		if = {
+			limit = { OR = { tag = UKR tag = BLR tag = MOL } }
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+		}
+		else_if = {
+			limit = { OR = { tag = LIT tag = LAT tag = EST } }
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		}
+		else_if = {
+			limit = { OR = { tag = GEO tag = ARM tag = AZR } }
+			add_stability = constant:soviet_collapse_republic_focus.stability_small
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+		}
+		else_if = {
+			limit = { OR = { tag = UZB tag = KYR tag = TAJ tag = TMS tag = KAZ } }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+		}
+		else_if = {
+			limit = { has_country_flag = soviet_collapse_high_chaos_successor }
+			add_war_support = constant:soviet_collapse_republic_focus.war_support_small
+			add_to_variable = { soviet_collapse_local_authority_pressure = constant:soviet_collapse_republic_idea.local_pressure_gain }
+		}
+		else = {
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+		}
+		clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+		clamp_variable = { var = soviet_collapse_league_support_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	}
+}
+
 soviet_collapse_apply_focus_legal_recognition = {
 	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
 	soviet_collapse_add_republic_focus_recovery_progress = yes
 	soviet_collapse_add_republic_civilian_focus_reward = yes
+	soviet_collapse_apply_legal_focus_route_payload = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -4747,6 +4894,7 @@ soviet_collapse_apply_focus_military_consolidation = {
 	army_experience = constant:soviet_collapse_republic_focus.army_xp_small
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.military_focus_gain }
 	soviet_collapse_add_republic_focus_recovery_progress = yes
+	soviet_collapse_apply_military_focus_route_payload = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -4764,6 +4912,7 @@ soviet_collapse_apply_focus_depot_and_supply_control = {
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.depot_focus_gain }
 	soviet_collapse_add_republic_focus_recovery_progress = yes
 	soviet_collapse_add_republic_factory_focus_reward = yes
+	soviet_collapse_apply_depot_focus_route_payload = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -4779,6 +4928,7 @@ soviet_collapse_apply_focus_league_preparation = {
 	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_gain }
 	soviet_collapse_add_republic_focus_recovery_progress = yes
 	soviet_collapse_add_republic_fort_focus_reward = yes
+	soviet_collapse_apply_league_focus_route_payload = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
