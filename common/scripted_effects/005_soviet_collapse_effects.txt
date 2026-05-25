@@ -415,12 +415,6 @@ soviet_collapse_apply_foreign_pressure_delta = {
 			check_variable = { var = soviet_collapse_foreign_pressure_delta value = 0 compare = less_than }
 		}
 		add_to_variable = { soviet_collapse_foreign_appetite = soviet_collapse_foreign_pressure_delta }
-		add_to_variable = { soviet_collapse_monthly_foreign_pressure = soviet_collapse_foreign_pressure_delta }
-		clamp_variable = {
-			var = soviet_collapse_monthly_foreign_pressure
-			min = constant:soviet_collapse_baseline.component_min
-			max = constant:soviet_collapse_baseline.component_max
-		}
 		clamp_variable = { var = soviet_collapse_foreign_appetite min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 		soviet_collapse_recalculate_total_threat = yes
 	}
@@ -9440,6 +9434,7 @@ soviet_collapse_accumulate_progressive_release_pressure = {
 		limit = {
 			has_soviet_collapse_progressive_release_pacing_ready = yes
 			has_soviet_collapse_real_release_pressure = yes
+			has_soviet_collapse_compound_release_pressure = yes
 			check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
 		}
 		add_to_variable = { soviet_collapse_progressive_release_pressure = constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add }
@@ -9453,6 +9448,7 @@ soviet_collapse_accumulate_progressive_release_pressure = {
 		limit = {
 			OR = {
 				NOT = { has_soviet_collapse_real_release_pressure = yes }
+				NOT = { has_soviet_collapse_compound_release_pressure = yes }
 				check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = less_than_or_equals }
 			}
 		}
