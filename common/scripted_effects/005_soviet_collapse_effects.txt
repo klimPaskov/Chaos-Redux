@@ -392,6 +392,23 @@ soviet_collapse_apply_immediate_total_threat_pacing = {
 	set_temp_variable = { soviet_collapse_immediate_total_threat_cap = constant:soviet_collapse_baseline.total_threat_floor }
 }
 
+soviet_collapse_store_current_total_threat_over_cap = {
+	set_temp_variable = { soviet_collapse_current_total_threat_over_cap = soviet_collapse_total_collapse_threat }
+	subtract_from_temp_variable = { soviet_collapse_current_total_threat_over_cap = soviet_collapse_current_total_threat_cap }
+	clamp_temp_variable = {
+		var = soviet_collapse_current_total_threat_over_cap
+		min = constant:soviet_collapse_baseline.total_threat_floor
+		max = constant:soviet_collapse_baseline.total_threat_ceiling
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_monthly_threat_dampening value = soviet_collapse_current_total_threat_over_cap compare = less_than }
+		}
+		set_variable = { soviet_collapse_monthly_threat_dampening = soviet_collapse_current_total_threat_over_cap }
+	}
+	set_temp_variable = { soviet_collapse_current_total_threat_over_cap = 0 }
+}
+
 soviet_collapse_recalculate_total_threat = {
 	soviet_collapse_clamp_crisis_components = yes
 	soviet_collapse_apply_monthly_center_erosion_caps = yes
@@ -399,6 +416,7 @@ soviet_collapse_recalculate_total_threat = {
 	soviet_collapse_apply_dynamic_pressure_caps = yes
 	soviet_collapse_apply_monthly_component_growth_caps = yes
 	soviet_collapse_apply_foreign_source_pressure_caps = yes
+	set_variable = { soviet_collapse_monthly_threat_dampening = 0 }
 	set_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_republic_confidence }
 	add_to_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_depot_vulnerability }
 	add_to_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_foreign_appetite }
@@ -408,12 +426,6 @@ soviet_collapse_recalculate_total_threat = {
 	subtract_from_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_moscow_authority }
 	subtract_from_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_military_obedience }
 	multiply_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_baseline.total_threat_multiplier }
-	if = {
-		limit = {
-			check_variable = { var = soviet_collapse_monthly_threat_dampening value = 0 compare = greater_than }
-		}
-		subtract_from_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_monthly_threat_dampening }
-	}
 	clamp_variable = { var = soviet_collapse_total_collapse_threat min = constant:soviet_collapse_baseline.total_threat_floor max = constant:soviet_collapse_baseline.total_threat_ceiling }
 	if = {
 		limit = {
@@ -425,6 +437,8 @@ soviet_collapse_recalculate_total_threat = {
 				compare = greater_than
 			}
 		}
+		set_temp_variable = { soviet_collapse_current_total_threat_cap = constant:soviet_collapse_threat_guard.calm_first_month_total_ceiling }
+		soviet_collapse_store_current_total_threat_over_cap = yes
 		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.calm_first_month_total_ceiling }
 	}
 	else_if = {
@@ -437,6 +451,8 @@ soviet_collapse_recalculate_total_threat = {
 				compare = greater_than
 			}
 		}
+		set_temp_variable = { soviet_collapse_current_total_threat_cap = constant:soviet_collapse_threat_guard.opening_lock_total_ceiling }
+		soviet_collapse_store_current_total_threat_over_cap = yes
 		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.opening_lock_total_ceiling }
 	}
 	else_if = {
@@ -450,8 +466,11 @@ soviet_collapse_recalculate_total_threat = {
 				compare = greater_than
 			}
 		}
+		set_temp_variable = { soviet_collapse_current_total_threat_cap = constant:soviet_collapse_threat_guard.preterminal_total_threat_ceiling }
+		soviet_collapse_store_current_total_threat_over_cap = yes
 		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.preterminal_total_threat_ceiling }
 	}
+	set_temp_variable = { soviet_collapse_current_total_threat_cap = 0 }
 	soviet_collapse_apply_immediate_total_threat_pacing = yes
 	soviet_collapse_apply_timeout_burst_pressure_caps = yes
 	if = {
