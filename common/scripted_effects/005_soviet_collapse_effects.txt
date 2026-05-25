@@ -11732,7 +11732,36 @@ soviet_collapse_release_event_target_progressive_republic = {
 soviet_collapse_finish_progressive_release = {
 	clear_array = global.soviet_collapse_progressive_release_selection
 	clr_country_flag = soviet_collapse_progressive_release_candidate_selected
-	set_variable = { soviet_collapse_progressive_release_pressure = 0 }
+	set_temp_variable = { soviet_collapse_progressive_release_retained_pressure = constant:soviet_collapse_baseline.component_min }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_mature_gate compare = greater_than_or_equals }
+		}
+		set_temp_variable = { soviet_collapse_progressive_release_retained_pressure = constant:soviet_collapse_release_mtth.sustained_pressure_mature_retained_after_release }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_severe_gate compare = greater_than_or_equals }
+		}
+		set_temp_variable = { soviet_collapse_progressive_release_retained_pressure = constant:soviet_collapse_release_mtth.sustained_pressure_severe_retained_after_release }
+	}
+	if = {
+		limit = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+		add_to_temp_variable = { soviet_collapse_progressive_release_retained_pressure = constant:soviet_collapse_release_mtth.cascade_pressure_retained_after_release }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_release_urgency_score value = constant:soviet_collapse_threat_guard.real_release_pressure_urgency_gate compare = greater_than_or_equals }
+		}
+		add_to_temp_variable = { soviet_collapse_progressive_release_retained_pressure = constant:soviet_collapse_release_mtth.critical_urgency_retained_after_release }
+	}
+	clamp_temp_variable = {
+		var = soviet_collapse_progressive_release_retained_pressure
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.sustained_pressure_severe_gate
+	}
+	set_variable = { soviet_collapse_progressive_release_pressure = soviet_collapse_progressive_release_retained_pressure }
+	set_temp_variable = { soviet_collapse_progressive_release_retained_pressure = constant:soviet_collapse_baseline.component_min }
 	set_temp_variable = { soviet_collapse_progressive_release_cooldown_days = constant:soviet_collapse_progressive_release.cooldown_days }
 	meta_effect = {
 		text = {
