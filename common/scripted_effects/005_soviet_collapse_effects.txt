@@ -569,6 +569,8 @@ soviet_collapse_set_monthly_threat_guard_cap = {
 }
 
 soviet_collapse_apply_monthly_success_recovery = {
+	set_temp_variable = { soviet_collapse_monthly_success_margin = soviet_collapse_monthly_successful_objectives }
+	subtract_from_temp_variable = { soviet_collapse_monthly_success_margin = soviet_collapse_monthly_failed_objectives }
 	if = {
 		limit = {
 			is_soviet_collapse_calm_release_recovery_window = yes
@@ -609,6 +611,47 @@ soviet_collapse_apply_monthly_success_recovery = {
 		soviet_collapse_clamp_crisis_components = yes
 		soviet_collapse_recalculate_total_threat = yes
 	}
+	else_if = {
+		limit = {
+			is_soviet_collapse_calm_release_recovery_window = yes
+			check_variable = { var = soviet_collapse_monthly_failed_objectives value = constant:soviet_collapse_threat_guard.failure_floor compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_monthly_success_margin value = 0 compare = greater_than }
+		}
+		add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_threat_guard.calm_mixed_authority_recovery }
+		add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_threat_guard.calm_mixed_obedience_recovery }
+		subtract_from_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_threat_guard.calm_mixed_republic_relief }
+		subtract_from_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_threat_guard.calm_mixed_depot_relief }
+		subtract_from_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_threat_guard.calm_mixed_foreign_relief }
+		subtract_from_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_threat_guard.calm_mixed_league_relief }
+		subtract_from_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_threat_guard.calm_mixed_old_movement_relief }
+		soviet_collapse_clamp_crisis_components = yes
+		soviet_collapse_recalculate_total_threat = yes
+	}
+	else_if = {
+		limit = {
+			NOT = { has_soviet_collapse_war_release_pressure = yes }
+			NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+			check_variable = { var = soviet_collapse_monthly_failed_objectives value = constant:soviet_collapse_threat_guard.failure_floor compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_monthly_success_margin value = 0 compare = greater_than }
+			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.contested_component_cap_breakaway_gate compare = less_than }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+			NOT = { has_soviet_collapse_release_level_component_pressure = yes }
+			NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+			NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
+			NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+		add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_threat_guard.moderate_mixed_authority_recovery }
+		add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_threat_guard.moderate_mixed_obedience_recovery }
+		subtract_from_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_threat_guard.moderate_mixed_republic_relief }
+		subtract_from_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_threat_guard.moderate_mixed_depot_relief }
+		subtract_from_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_threat_guard.moderate_mixed_foreign_relief }
+		subtract_from_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_threat_guard.moderate_mixed_league_relief }
+		subtract_from_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_threat_guard.moderate_mixed_old_movement_relief }
+		soviet_collapse_clamp_crisis_components = yes
+		soviet_collapse_recalculate_total_threat = yes
+	}
+	set_temp_variable = { soviet_collapse_monthly_success_margin = 0 }
 }
 
 soviet_collapse_update_terminal_pacing = {
