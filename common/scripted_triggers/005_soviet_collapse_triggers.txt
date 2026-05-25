@@ -18,16 +18,20 @@ is_soviet_collapse_aftermath_active = {
 }
 
 can_soviet_collapse_enter_calm_strong_center_state = {
-	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-	NOT = { has_soviet_collapse_war_release_pressure = yes }
-	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_gate compare = greater_than_or_equals }
-	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_threat_guard.strong_center_obedience_gate compare = greater_than_or_equals }
-	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.early_component_cap_breakaway_gate compare = less_than }
+	has_soviet_collapse_strong_center_facts = yes
 	check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_threat_guard.early_republic_confidence_cap compare = less_than_or_equals }
 	check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_threat_guard.early_depot_vulnerability_cap compare = less_than_or_equals }
 	check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_threat_guard.early_foreign_appetite_cap compare = less_than_or_equals }
 	check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_threat_guard.early_league_cohesion_cap compare = less_than_or_equals }
 	check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_threat_guard.early_old_movement_cap compare = less_than_or_equals }
+}
+
+has_soviet_collapse_strong_center_facts = {
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+	NOT = { has_soviet_collapse_war_release_pressure = yes }
+	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_gate compare = greater_than_or_equals }
+	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_threat_guard.strong_center_obedience_gate compare = greater_than_or_equals }
+	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.early_component_cap_breakaway_gate compare = less_than }
 	NOT = { has_global_flag = { flag = chaos_tier value = 3 } }
 	NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
 	NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
@@ -56,19 +60,13 @@ is_soviet_collapse_calm_strong_center_window = {
 }
 
 is_soviet_collapse_opening_strong_center_guard_window = {
-	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-	NOT = { has_soviet_collapse_war_release_pressure = yes }
+	has_soviet_collapse_strong_center_facts = yes
 	check_variable = {
 		var = soviet_collapse_months_active
 		value = constant:soviet_collapse_threat_guard.opening_strong_center_guard_months
 		compare = less_than
 	}
-	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_gate compare = greater_than_or_equals }
-	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_threat_guard.strong_center_obedience_gate compare = greater_than_or_equals }
 	check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
-	NOT = { has_global_flag = { flag = chaos_tier value = 3 } }
-	NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
-	NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
 }
 
 has_soviet_collapse_baltic_breakaway = {
@@ -783,6 +781,7 @@ has_soviet_collapse_calm_mtth_release_block = {
 	OR = {
 		is_soviet_collapse_calm_strong_center_window = yes
 		is_soviet_collapse_opening_strong_center_guard_window = yes
+		has_soviet_collapse_strong_center_facts = yes
 	}
 	check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = less_than }
 	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_gate compare = greater_than_or_equals }
@@ -959,6 +958,7 @@ has_soviet_collapse_progressive_release_pacing_ready = {
 		AND = {
 			NOT = { has_global_flag = soviet_collapse_union_unmade_first_month_lock }
 			NOT = { is_soviet_collapse_opening_strong_center_guard_window = yes }
+			NOT = { has_soviet_collapse_calm_mtth_release_block = yes }
 		}
 		has_soviet_collapse_opening_release_emergency = yes
 	}
