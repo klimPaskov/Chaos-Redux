@@ -9435,6 +9435,31 @@ soviet_collapse_compute_progressive_release_urgency = {
 	set_temp_variable = { soviet_collapse_release_urgency_component = 0 }
 }
 
+soviet_collapse_accumulate_progressive_release_pressure = {
+	if = {
+		limit = {
+			has_soviet_collapse_progressive_release_pacing_ready = yes
+			has_soviet_collapse_real_release_pressure = yes
+			check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
+		}
+		add_to_variable = { soviet_collapse_progressive_release_pressure = constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add }
+		clamp_variable = {
+			var = soviet_collapse_progressive_release_pressure
+			min = constant:soviet_collapse_baseline.component_min
+			max = constant:soviet_collapse_release_mtth.sustained_pressure_cap
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_soviet_collapse_real_release_pressure = yes }
+				check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = less_than_or_equals }
+			}
+		}
+		set_variable = { soviet_collapse_progressive_release_pressure = 0 }
+	}
+}
+
 soviet_collapse_maybe_release_threat_breakaway = {
 	soviet_collapse_count_progressive_release_candidates = yes
 	if = {
@@ -9449,6 +9474,7 @@ soviet_collapse_maybe_release_threat_breakaway = {
 		set_temp_variable = { soviet_collapse_regional_cascade_score = 0 }
 	}
 	soviet_collapse_decay_progressive_release_pressure = yes
+	soviet_collapse_accumulate_progressive_release_pressure = yes
 	if = {
 		limit = {
 			OR = {
@@ -9471,8 +9497,6 @@ soviet_collapse_maybe_release_threat_breakaway = {
 				limit = {
 					check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
 				}
-				add_to_variable = { soviet_collapse_progressive_release_pressure = constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add }
-				clamp_variable = { var = soviet_collapse_progressive_release_pressure min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_mtth.sustained_pressure_cap }
 				set_temp_variable = { soviet_collapse_progressive_release_weight = mtth:soviet_collapse_progressive_release_weight }
 				set_temp_variable = { soviet_collapse_progressive_release_miss_weight = mtth:soviet_collapse_progressive_release_miss_weight }
 				set_temp_variable = { soviet_collapse_progressive_candidate_weight = soviet_collapse_progressive_release_candidate_count }
@@ -9536,9 +9560,6 @@ soviet_collapse_maybe_release_threat_breakaway = {
 				set_variable = { soviet_collapse_progressive_release_pressure = 0 }
 			}
 		}
-	}
-	else = {
-		set_variable = { soviet_collapse_progressive_release_pressure = 0 }
 	}
 }
 
