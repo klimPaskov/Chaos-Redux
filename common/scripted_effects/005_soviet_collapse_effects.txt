@@ -635,9 +635,15 @@ soviet_collapse_initialize_mission_requirements = {
 soviet_collapse_initialize_crisis_values = {
 	set_global_flag = soviet_collapse_active
 	set_global_flag = soviet_collapse_opening_wave_active
-	set_global_flag = {
-		flag = soviet_collapse_union_unmade_first_month_lock
-		days = 31
+	set_temp_variable = { soviet_collapse_first_month_lock_days = constant:soviet_collapse_threat_guard.first_month_lock_days }
+	meta_effect = {
+		text = {
+			set_global_flag = {
+				flag = soviet_collapse_union_unmade_first_month_lock
+				days = [FIRST_MONTH_LOCK_DAYS]
+			}
+		}
+		FIRST_MONTH_LOCK_DAYS = "[?soviet_collapse_first_month_lock_days|.0]"
 	}
 	set_country_flag = soviet_collapse_center
 	add_ideas = soviet_collapse_union_crisis
@@ -10395,7 +10401,7 @@ soviet_collapse_maybe_release_threat_breakaway = {
 				}
 				if = {
 					limit = {
-						check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add compare = greater_than }
+						check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_miss_gate compare = greater_than_or_equals }
 					}
 					multiply_temp_variable = { soviet_collapse_progressive_release_miss_weight = constant:soviet_collapse_release_mtth.sustained_pressure_miss_factor }
 				}
