@@ -820,10 +820,10 @@ is_soviet_collapse_progressive_release_candidate = {
 				tag = KAR
 				tag = KOM
 				tag = CRI
-					tag = TAT
-					tag = BSK
-					tag = FER
-					tag = YAK
+				tag = TAT
+				tag = BSK
+				tag = FER
+				tag = YAK
 				tag = BYA
 				tag = TAN
 			}
@@ -858,41 +858,80 @@ is_soviet_collapse_progressive_release_candidate = {
 	}
 }
 
+is_soviet_collapse_western_progressive_release_candidate = {
+	is_soviet_collapse_progressive_release_candidate = yes
+	OR = {
+		tag = UKR
+		tag = BLR
+		tag = MOL
+	}
+}
+
+is_soviet_collapse_baltic_progressive_release_candidate = {
+	is_soviet_collapse_progressive_release_candidate = yes
+	OR = {
+		tag = LIT
+		tag = LAT
+		tag = EST
+	}
+}
+
+is_soviet_collapse_caucasus_progressive_release_candidate = {
+	is_soviet_collapse_progressive_release_candidate = yes
+	OR = {
+		tag = GEO
+		tag = ARM
+		tag = AZR
+	}
+}
+
+is_soviet_collapse_central_asian_progressive_release_candidate = {
+	is_soviet_collapse_progressive_release_candidate = yes
+	OR = {
+		tag = UZB
+		tag = KYR
+		tag = TAJ
+		tag = TMS
+	}
+}
+
+is_soviet_collapse_kazakhstan_progressive_release_candidate = {
+	is_soviet_collapse_progressive_release_candidate = yes
+	tag = KAZ
+}
+
+is_soviet_collapse_internal_progressive_release_candidate = {
+	is_soviet_collapse_progressive_release_candidate = yes
+	OR = {
+		tag = KAR
+		tag = KOM
+		tag = CRI
+		tag = TAT
+		tag = BSK
+		tag = FER
+		tag = YAK
+		tag = BYA
+		tag = TAN
+	}
+}
+
 is_soviet_collapse_cascade_priority_progressive_release_candidate = {
 	is_soviet_collapse_progressive_release_candidate = yes
 	OR = {
 		AND = {
-			OR = {
-				tag = UKR
-				tag = BLR
-				tag = MOL
-				tag = LIT
-				tag = LAT
-				tag = EST
-			}
-			SOV = {
-				OR = {
-					has_soviet_collapse_two_western_republics_free = yes
-					has_soviet_collapse_baltic_league_quorum = yes
-				}
-			}
+			is_soviet_collapse_western_progressive_release_candidate = yes
+			SOV = { has_soviet_collapse_two_western_republics_free = yes }
 		}
 		AND = {
-			OR = {
-				tag = GEO
-				tag = ARM
-				tag = AZR
-			}
+			is_soviet_collapse_baltic_progressive_release_candidate = yes
+			SOV = { has_soviet_collapse_baltic_league_quorum = yes }
+		}
+		AND = {
+			is_soviet_collapse_caucasus_progressive_release_candidate = yes
 			SOV = { has_soviet_collapse_caucasus_league_quorum = yes }
 		}
 		AND = {
-			OR = {
-				tag = UZB
-				tag = KYR
-				tag = TAJ
-				tag = TMS
-				tag = KAZ
-			}
+			is_soviet_collapse_central_asian_progressive_release_candidate = yes
 			SOV = {
 				OR = {
 					has_soviet_collapse_two_smaller_central_asian_republics_free = yes
@@ -901,17 +940,16 @@ is_soviet_collapse_cascade_priority_progressive_release_candidate = {
 			}
 		}
 		AND = {
-			OR = {
-				tag = KAR
-				tag = KOM
-				tag = CRI
-				tag = TAT
-				tag = BSK
-				tag = FER
-				tag = YAK
-				tag = BYA
-				tag = TAN
+			is_soviet_collapse_kazakhstan_progressive_release_candidate = yes
+			SOV = {
+				OR = {
+					has_soviet_collapse_two_smaller_central_asian_republics_free = yes
+					has_soviet_collapse_central_asian_league_quorum = yes
+				}
 			}
+		}
+		AND = {
+			is_soviet_collapse_internal_progressive_release_candidate = yes
 			SOV = { has_soviet_collapse_internal_release_cascade_pressure = yes }
 		}
 	}
