@@ -609,10 +609,17 @@ has_soviet_collapse_accumulated_release_pressure = {
 	has_soviet_collapse_progressive_release_pacing_ready = yes
 	has_soviet_collapse_real_release_pressure = yes
 	check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
-	check_variable = {
-		var = soviet_collapse_release_urgency_score
-		value = constant:soviet_collapse_threat_guard.real_release_pressure_urgency_gate
-		compare = greater_than_or_equals
+	OR = {
+		check_variable = {
+			var = soviet_collapse_release_urgency_score
+			value = constant:soviet_collapse_threat_guard.real_release_pressure_urgency_gate
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = soviet_collapse_progressive_release_pressure
+			value = constant:soviet_collapse_release_mtth.urgency_roll_gate
+			compare = greater_than_or_equals
+		}
 	}
 }
 
