@@ -297,7 +297,7 @@ soviet_collapse_apply_timeout_burst_pressure_caps = {
 			set_temp_variable = { soviet_collapse_timeout_burst_threat_cap = constant:soviet_collapse_threat_guard.chaos_tier_4_failed_month_cap }
 		}
 		else_if = {
-			limit = { has_war = yes }
+			limit = { has_soviet_collapse_war_release_pressure = yes }
 			set_temp_variable = { soviet_collapse_timeout_burst_threat_cap = constant:soviet_collapse_threat_guard.war_failed_month_cap }
 		}
 		else_if = {
@@ -521,8 +521,7 @@ soviet_collapse_update_terminal_pacing = {
 						compare = greater_than_or_equals
 					}
 					has_global_flag = soviet_collapse_free_republics_league_announced
-					has_war = yes
-					NOT = { capital_scope = { is_controlled_by = ROOT } }
+					has_soviet_collapse_war_release_pressure = yes
 					has_global_flag = { flag = chaos_tier value = 4 }
 					has_global_flag = { flag = chaos_tier value = 5 }
 				}
@@ -745,7 +744,7 @@ soviet_collapse_initialize_crisis_values = {
 		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_pressure.low_war_support }
 	}
 	if = {
-		limit = { has_war = yes }
+		limit = { has_soviet_collapse_war_release_pressure = yes }
 		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_opening_pressure.active_war }
 		add_to_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_opening_pressure.active_war }
 	}
@@ -10095,8 +10094,20 @@ soviet_collapse_add_random_extra_first_wave_republic = {
 }
 
 soviet_collapse_add_random_threat_breakaway_republic = {
+	if = {
+		limit = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+		every_possible_country = {
+			limit = {
+				is_soviet_collapse_cascade_priority_progressive_release_candidate = yes
+			}
+			random_select_amount = 1
+			SOV = { set_country_flag = soviet_collapse_progressive_release_candidate_selected }
+			add_to_array = { array = global.soviet_collapse_progressive_release_selection value = THIS }
+		}
+	}
 	every_possible_country = {
 		limit = {
+			SOV = { NOT = { has_country_flag = soviet_collapse_progressive_release_candidate_selected } }
 			is_soviet_collapse_progressive_release_candidate = yes
 		}
 		random_select_amount = 1
@@ -10106,8 +10117,19 @@ soviet_collapse_add_random_threat_breakaway_republic = {
 }
 
 soviet_collapse_save_random_threat_breakaway_republic_target = {
+	if = {
+		limit = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+		every_possible_country = {
+			limit = {
+				is_soviet_collapse_cascade_priority_progressive_release_candidate = yes
+			}
+			random_select_amount = 1
+			save_event_target_as = soviet_collapse_release_target
+		}
+	}
 	every_possible_country = {
 		limit = {
+			NOT = { has_event_target = soviet_collapse_release_target }
 			is_soviet_collapse_progressive_release_candidate = yes
 		}
 		random_select_amount = 1
@@ -10742,7 +10764,7 @@ soviet_collapse_release_initial_republics = {
 				has_global_flag = { flag = chaos_tier value = 4 }
 				has_global_flag = { flag = chaos_tier value = 5 }
 				AND = {
-					has_war = yes
+					has_soviet_collapse_war_release_pressure = yes
 					OR = {
 						has_stability < constant:soviet_collapse_soviet_objective.good_stability
 						has_war_support < constant:soviet_collapse_soviet_objective.good_war_support
@@ -10759,7 +10781,7 @@ soviet_collapse_release_initial_republics = {
 				has_global_flag = { flag = chaos_tier value = 4 }
 				has_global_flag = { flag = chaos_tier value = 5 }
 				AND = {
-					has_war = yes
+					has_soviet_collapse_war_release_pressure = yes
 					has_stability < constant:soviet_collapse_soviet_objective.min_stability
 				}
 			}
