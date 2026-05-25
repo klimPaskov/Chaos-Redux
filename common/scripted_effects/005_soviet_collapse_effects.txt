@@ -245,6 +245,19 @@ soviet_collapse_recalculate_total_threat = {
 		}
 		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.opening_lock_total_ceiling }
 	}
+	else_if = {
+		limit = {
+			NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+			NOT = { has_soviet_collapse_terminal_pacing_matured = yes }
+			NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+			check_variable = {
+				var = soviet_collapse_total_collapse_threat
+				value = constant:soviet_collapse_threat_guard.preterminal_total_threat_ceiling
+				compare = greater_than
+			}
+		}
+		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.preterminal_total_threat_ceiling }
+	}
 	soviet_collapse_apply_timeout_burst_pressure_caps = yes
 	if = {
 		limit = {
