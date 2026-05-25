@@ -8,6 +8,8 @@ The release weight rises from Union Collapse Threat, weak Moscow Authority, weak
 
 The balance pass keeps the 0-100 scale but makes the release curve sharper and safer. Calm strong-center games get `release_base = 0`, a high miss path, tighter opening-lock component caps, stronger high-authority/high-obedience suppression, a `can_soviet_collapse_roll_progressive_release` gate, and a candidate-count guard before the scheduler rolls. Breakaway and regional cascade weights require moderate threat, at least five breakaways, weak center signals, war pressure, or capital-loss pressure before they contribute. Release-level component pressure uses dedicated `constant:soviet_collapse_release_gate` thresholds rather than the lower focus-AI pressure gates, while strong-center suppression tapers at severe threat so the center cannot indefinitely suppress real collapse conditions. Distributed pressure can still roll when high total threat combines with critical Moscow Authority or critical Command Obedience.
 
+War pressure is not a standalone collapse shortcut. A lost capital counts immediately, but major-war pressure and anti-Soviet breakaway wars require visible collapse evidence such as low authority, weak obedience, failed objectives, release-level component pressure, regional cascade pressure, or enough existing breakaways before they unlock release pacing.
+
 ## Event Flow
 
 1. `chaosx.nr5.129` fires only for `SOV` while the collapse is active and terminal collapse has not started.
@@ -46,6 +48,8 @@ The current tuning anchors are:
 | Severe or critical threat with cascades, failed missions, or war pressure | Release chance should dominate unless the candidate pool is exhausted or terminal collapse has already started. |
 
 Release-level component gates are separate from focus AI thresholds: Republic Momentum 50, severe Republic Momentum 65, depot vulnerability 50, Foreign Penetration 45, League Cohesion 45, and old-movement pressure 35.
+
+The accelerated Union Unmade path requires both elapsed collapse pressure and `has_soviet_collapse_accelerated_terminal_severity`. Its catalysts, such as war pressure, the Free Republics League announcement, a failed Kazakhstan first wave, or high chaos, do not mature the terminal super-event unless at least one severe collapse signal is also present.
 
 Kazakhstan remains gated by southern cascade pressure inside the candidate selector. When a southern cascade exists, the selector tries remaining smaller Central Asian republics before Kazakhstan, then allows Kazakhstan if the smaller southern pool is already empty or unavailable. High chaos can still make Kazakhstan eligible through the generic pool, but not as a calm first southern release.
 
