@@ -4424,6 +4424,7 @@ central_asia_soviet_collapse_apply_soviet_pressure = {
 
 central_asia_soviet_collapse_apply_water_council = {
 	central_asia_soviet_collapse_pay_water_council_cost = yes
+	central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = yes
 	set_country_flag = soviet_collapse_central_asia_water_council_registered
 	add_to_variable = { soviet_collapse_central_asia_water_settlement = constant:soviet_collapse_central_asia_league.water_support_gain }
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_central_asia_league.institution_gain }
@@ -4444,6 +4445,7 @@ central_asia_soviet_collapse_apply_water_council = {
 
 central_asia_soviet_collapse_apply_cotton_rail_quota = {
 	central_asia_soviet_collapse_pay_cotton_rail_cost = yes
+	central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = yes
 	set_country_flag = soviet_collapse_central_asia_cotton_rail_board
 	add_to_variable = { soviet_collapse_central_asia_cotton_rail_account = constant:soviet_collapse_central_asia_league.cotton_rail_gain }
 	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_central_asia_league.depot_gain }
@@ -4466,6 +4468,7 @@ central_asia_soviet_collapse_apply_cotton_rail_quota = {
 
 central_asia_soviet_collapse_apply_caravan_board = {
 	central_asia_soviet_collapse_pay_caravan_board_cost = yes
+	central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = yes
 	set_country_flag = soviet_collapse_central_asia_caravan_board
 	add_to_variable = { soviet_collapse_central_asia_pass_security = constant:soviet_collapse_central_asia_league.pass_security_gain }
 	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_central_asia_league.depot_gain }
@@ -4486,6 +4489,7 @@ central_asia_soviet_collapse_apply_caravan_board = {
 
 central_asia_soviet_collapse_apply_member_vote_protocol = {
 	central_asia_soviet_collapse_pay_member_vote_cost = yes
+	central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = yes
 	set_country_flag = soviet_collapse_central_asia_member_vote_protocol
 	add_to_variable = { soviet_collapse_central_asia_member_vote_legitimacy = constant:soviet_collapse_central_asia_league.member_vote_gain }
 	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_central_asia_league.recognition_gain }
@@ -4503,6 +4507,7 @@ central_asia_soviet_collapse_apply_member_vote_protocol = {
 
 central_asia_soviet_collapse_apply_mediation_desk = {
 	central_asia_soviet_collapse_pay_mediation_cost = yes
+	central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = yes
 	set_country_flag = soviet_collapse_central_asia_foreign_mediation_desk
 	add_to_variable = { soviet_collapse_central_asia_foreign_mediation_balance = constant:soviet_collapse_central_asia_league.mediation_balance_gain }
 	add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_central_asia_league.liaison_gain }
@@ -4520,6 +4525,7 @@ central_asia_soviet_collapse_apply_mediation_desk = {
 
 central_asia_soviet_collapse_apply_survival_settlement = {
 	central_asia_soviet_collapse_pay_settlement_cost = yes
+	central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = yes
 	set_country_flag = soviet_collapse_central_asia_survival_settlement
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_central_asia_league.institution_gain }
 	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_central_asia_league.resilience_large_gain }
@@ -4542,6 +4548,116 @@ central_asia_soviet_collapse_apply_survival_settlement = {
 	set_temp_variable = { central_asia_soviet_collapse_soviet_foreign_pressure = constant:soviet_collapse_central_asia_league.soviet_foreign_pressure_small }
 	central_asia_soviet_collapse_apply_soviet_pressure = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = {
+	if = {
+		limit = {
+			OR = {
+				tag = BSC
+				tag = TNC
+				tag = ALA
+			}
+			OR = {
+				has_country_flag = bsc_focus_caravan_water_guarantees
+				has_country_flag = tnc_focus_irrigation_boards
+				has_country_flag = ala_focus_southern_republics_council
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_splinter_water_bonus_registered }
+		}
+		set_country_flag = soviet_collapse_central_asia_splinter_water_bonus_registered
+		add_to_variable = { soviet_collapse_central_asia_water_settlement = constant:soviet_collapse_central_asia_league.water_support_gain }
+		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_central_asia_league.institution_gain }
+		set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+		central_asia_soviet_collapse_add_league_score = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				tag = BSC
+				tag = TNC
+				tag = ALA
+			}
+			OR = {
+				has_country_flag = bsc_focus_road_and_well_ledger
+				has_country_flag = tnc_focus_cotton_rail_republic
+				has_country_flag = ala_focus_resource_town_councils
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_splinter_cotton_bonus_registered }
+		}
+		set_country_flag = soviet_collapse_central_asia_splinter_cotton_bonus_registered
+		add_to_variable = { soviet_collapse_central_asia_cotton_rail_account = constant:soviet_collapse_central_asia_league.cotton_rail_gain }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_central_asia_league.depot_gain }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_central_asia_league.splinter_focus_infantry_reward }
+		set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+		central_asia_soviet_collapse_add_league_score = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				tag = BSC
+				tag = TNC
+				tag = ALA
+			}
+			OR = {
+				has_country_flag = bsc_focus_caravan_supply_hubs
+				has_country_flag = bsc_focus_central_asian_defense_council
+				has_country_flag = tnc_focus_southern_pass_offices
+				has_country_flag = tnc_focus_central_asian_defense_council
+				has_country_flag = ala_focus_kyrgyz_pass_guards
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_splinter_pass_bonus_registered }
+		}
+		set_country_flag = soviet_collapse_central_asia_splinter_pass_bonus_registered
+		add_to_variable = { soviet_collapse_central_asia_pass_security = constant:soviet_collapse_central_asia_league.pass_security_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_central_asia_league.resilience_gain }
+		add_manpower = constant:soviet_collapse_central_asia_league.splinter_focus_manpower_reward
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_central_asia_league.splinter_focus_support_reward }
+		set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+		central_asia_soviet_collapse_add_league_score = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				tag = BSC
+				tag = TNC
+				tag = ALA
+			}
+			OR = {
+				has_country_flag = bsc_focus_central_asian_defense_council
+				has_country_flag = tnc_focus_central_asian_defense_council
+				has_country_flag = ala_focus_central_asian_league_draft
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_splinter_vote_bonus_registered }
+		}
+		set_country_flag = soviet_collapse_central_asia_splinter_vote_bonus_registered
+		add_to_variable = { soviet_collapse_central_asia_member_vote_legitimacy = constant:soviet_collapse_central_asia_league.member_vote_gain }
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_central_asia_league.league_support_gain }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_central_asia_league.recognition_gain }
+		set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+		central_asia_soviet_collapse_add_league_score = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				tag = BSC
+				tag = TNC
+				tag = ALA
+			}
+			OR = {
+				has_country_flag = bsc_focus_foreign_route_mediation
+				has_country_flag = tnc_focus_tajik_relief_corridors
+				has_country_flag = ala_focus_tajik_mountain_envoys
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_splinter_mediation_bonus_registered }
+		}
+		set_country_flag = soviet_collapse_central_asia_splinter_mediation_bonus_registered
+		add_to_variable = { soviet_collapse_central_asia_foreign_mediation_balance = constant:soviet_collapse_central_asia_league.mediation_balance_gain }
+		add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_central_asia_league.liaison_gain }
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_central_asia_league.patronage_risk_relief }
+		set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_small }
+		central_asia_soviet_collapse_add_league_score = yes
+	}
 }
 
 kaz_soviet_collapse_pay_alash_court_cost = {
@@ -5450,7 +5566,7 @@ soviet_collapse_apply_focus_league_preparation = {
 central_asia_soviet_collapse_apply_focus_league_preparation_payload = {
 	if = {
 		limit = {
-			OR = { tag = UZB tag = KYR tag = TAJ tag = TMS tag = KAZ }
+			OR = { tag = UZB tag = KYR tag = TAJ tag = TMS tag = KAZ tag = BSC tag = TNC tag = ALA }
 			has_country_flag = soviet_collapse_breakaway
 		}
 		if = {
@@ -5485,7 +5601,14 @@ central_asia_soviet_collapse_apply_focus_league_preparation_payload = {
 		}
 		if = {
 			limit = {
-				has_country_flag = soviet_collapse_central_asia_southern_shield
+				OR = {
+					has_country_flag = soviet_collapse_central_asia_southern_shield
+					has_country_flag = bsc_focus_caravan_supply_hubs
+					has_country_flag = bsc_focus_central_asian_defense_council
+					has_country_flag = tnc_focus_southern_pass_offices
+					has_country_flag = tnc_focus_central_asian_defense_council
+					has_country_flag = ala_focus_kyrgyz_pass_guards
+				}
 				NOT = { has_country_flag = soviet_collapse_central_asia_focus_caravan_board_primed }
 			}
 			set_country_flag = soviet_collapse_central_asia_focus_caravan_board_primed
@@ -5510,7 +5633,12 @@ central_asia_soviet_collapse_apply_focus_league_preparation_payload = {
 		}
 		if = {
 			limit = {
-				has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+				OR = {
+					has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+					has_country_flag = bsc_focus_foreign_route_mediation
+					has_country_flag = tnc_focus_tajik_relief_corridors
+					has_country_flag = ala_focus_tajik_mountain_envoys
+				}
 				NOT = { has_country_flag = soviet_collapse_central_asia_focus_mediation_primed }
 			}
 			set_country_flag = soviet_collapse_central_asia_focus_mediation_primed
@@ -5538,7 +5666,12 @@ central_asia_soviet_collapse_apply_focus_league_preparation_payload = {
 		}
 		if = {
 			limit = {
-				has_country_flag = soviet_collapse_central_asia_south_survives_together
+				OR = {
+					has_country_flag = soviet_collapse_central_asia_south_survives_together
+					has_country_flag = bsc_focus_central_asian_defense_council
+					has_country_flag = tnc_focus_central_asian_defense_council
+					has_country_flag = ala_focus_central_asian_league_draft
+				}
 				NOT = { has_country_flag = soviet_collapse_central_asia_focus_survival_settlement_primed }
 			}
 			set_country_flag = soviet_collapse_central_asia_focus_survival_settlement_primed
@@ -5548,6 +5681,7 @@ central_asia_soviet_collapse_apply_focus_league_preparation_payload = {
 			set_temp_variable = { central_asia_soviet_collapse_league_score_delta = constant:soviet_collapse_central_asia_league.league_score_large }
 			central_asia_soviet_collapse_add_league_score = yes
 		}
+		central_asia_soviet_collapse_apply_splinter_focus_unlock_bonus = yes
 		soviet_collapse_update_consolidated_republic_ideas = yes
 	}
 }
