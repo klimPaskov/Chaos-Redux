@@ -17,6 +17,14 @@
 @SOV_COLLAPSE_AI_RAIL_GUARD_SUPPLY = 55
 @SOV_COLLAPSE_AI_LEAGUE_SUPPORT = 80
 @SOV_COLLAPSE_AI_FOREIGN_CONTAIN = 80
+@SOV_COLLAPSE_AI_UKR_DEMOCRATIC_DEFENSE = 55
+@SOV_COLLAPSE_AI_UKR_DEMOCRATIC_RESTRAINT = 95
+@SOV_COLLAPSE_AI_UKR_SOCIALIST_MILITIA = 60
+@SOV_COLLAPSE_AI_UKR_DIRECTORY_ARMY = 90
+@SOV_COLLAPSE_AI_UKR_LEAGUE_SUPPORT = 85
+@SOV_COLLAPSE_AI_UKR_EXPANSION_ARMY = 105
+@SOV_COLLAPSE_AI_UKR_BLACK_BANNER_ARMY = 120
+@SOV_COLLAPSE_AI_UKR_SUPPLY = 40
 
 soviet_collapse_soviet_crisis_containment = {
 	allowed = { original_tag = SOV }
@@ -243,6 +251,176 @@ soviet_collapse_high_chaos_signature_force_route = {
 		type = equipment_production_factor
 		id = train
 		value = @SOV_COLLAPSE_AI_RAIL_GUARD_SUPPLY
+	}
+}
+
+soviet_collapse_ukraine_democratic_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = UKR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_ukraine_route_democratic_rada
+			has_country_flag = soviet_collapse_ukraine_republic_of_laws
+			has_country_flag = soviet_collapse_ukraine_civilian_command_over_army
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UKR_DEMOCRATIC_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_UKR_DEMOCRATIC_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+}
+
+soviet_collapse_ukraine_socialist_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = UKR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_ukraine_route_socialist_sovereignty
+			has_country_flag = soviet_collapse_ukraine_commune_debate_open
+			has_country_flag = soviet_collapse_ukraine_left_league_delegation
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UKR_SOCIALIST_MILITIA
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+}
+
+soviet_collapse_ukraine_directory_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = UKR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_ukraine_route_military_directory
+			has_country_flag = soviet_collapse_ukraine_army_supremacy
+			has_country_flag = soviet_collapse_ukraine_directory_state
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UKR_DIRECTORY_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = artillery
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+}
+
+soviet_collapse_ukraine_league_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = UKR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_ukraine_league_founding_charter
+			has_country_flag = soviet_collapse_ukraine_league_of_equals
+			has_country_flag = soviet_collapse_ukraine_kyiv_leads_the_front
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = force_defend_ally_borders
+		target = europe
+		value = @SOV_COLLAPSE_AI_UKR_LEAGUE_SUPPORT
+	}
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UKR_DEMOCRATIC_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+}
+
+soviet_collapse_ukraine_expansion_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = UKR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_ukraine_route_foreign_authority
+			has_country_flag = soviet_collapse_ukraine_direct_national_claims
+			has_country_flag = soviet_collapse_ukraine_black_sea_hegemony
+			has_country_flag = soviet_collapse_ukraine_breadbasket_empire
+			has_country_flag = soviet_collapse_ukraine_great_steppe_and_sea_plan
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UKR_EXPANSION_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = artillery
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+}
+
+soviet_collapse_ukraine_black_banner_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = UKR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_ukraine_route_black_banner
+			has_country_flag = soviet_collapse_ukraine_bread_state_whispers
+			has_country_flag = soviet_collapse_ukraine_black_soil_oath
+			has_country_flag = soviet_collapse_ukraine_last_harvest_plan
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UKR_BLACK_BANNER_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
 	}
 }
 
