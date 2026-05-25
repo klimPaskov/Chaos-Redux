@@ -51,6 +51,8 @@ Kazakhstan remains gated by southern cascade pressure inside the candidate selec
 
 The sustained-pressure accumulator is `soviet_collapse_progressive_release_pressure`. It adds `constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add` plus dynamic pressure from `urgency_pressure_per_score`, `candidate_pressure_per_candidate`, `regional_cascade_pressure_per_score`, threat-band adders, weak-center adders, and failed-objective adders. The gain is capped by `sustained_pressure_monthly_gain_cap`, the total accumulator is capped by `sustained_pressure_cap`, and the value resets after a real release or an empty candidate pool. Current tuning starts at 4 per eligible monthly pass, caps monthly gain at 32, caps stored pressure at 72, opens the accumulated-pressure roll gate at 16, and applies the 0.85 miss-weight factor once stored pressure reaches 12. This prevents empty-pool cooldowns while still making repeated unresolved pressure visible.
 
+The Soviet crisis category includes a non-clickable Republic Release Risk Ledger in `common/decisions/005_soviet_collapse_release_visibility_decisions.txt`. It exposes `soviet_collapse_release_urgency_score`, `soviet_collapse_progressive_release_candidate_count`, and `soviet_collapse_progressive_release_pressure` before a release event fires. Candidate count is stored as a normal variable so the ledger can show the latest monthly candidate pool instead of losing the value after the scheduler chain ends.
+
 Resolved Moscow-federated subjects are excluded from the progressive candidate trigger through `soviet_collapse_moscow_federated_subject`, so republics settled through the Moscow federal compact do not consume later MTTH releases.
 
 ## Family Audit
