@@ -1,0 +1,211 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 CENTRAL ASIA LEAGUE DECISIONS
+# ============================================================================
+# Route-gated decisions for the Central Asian southern shield and settlement
+# path. These use focus-set flags from the runtime regional tree and turn the
+# endgame into water, cotton-rail, caravan, vote, and mediation work.
+# ============================================================================
+
+@central_asia_soviet_collapse_league_days_reenable = 60
+@central_asia_soviet_collapse_settlement_days_reenable = 120
+@central_asia_soviet_collapse_ai_medium = 2
+@central_asia_soviet_collapse_ai_high = 3
+@central_asia_soviet_collapse_ai_pressure_multiplier = 2
+@central_asia_soviet_collapse_ai_urgent_multiplier = 3
+
+soviet_collapse_breakaway_category = {
+	central_asia_soviet_collapse_register_water_sharing_council = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_water_council_cost = yes }
+		}
+		visible = {
+			has_central_asia_soviet_collapse_league_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_central_asia_southern_shield
+				has_country_flag = soviet_collapse_central_asia_pact_choice_open
+				has_country_flag = soviet_collapse_central_asia_south_survives_together
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_water_council_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_water_council_cost = yes }
+		}
+		custom_cost_text = central_asia_soviet_collapse_water_council_cost_text
+		days_re_enable = @central_asia_soviet_collapse_league_days_reenable
+		complete_effect = {
+			central_asia_soviet_collapse_apply_water_council = yes
+			custom_effect_tooltip = central_asia_soviet_collapse_register_water_sharing_council_tt
+		}
+		ai_will_do = {
+			base = @central_asia_soviet_collapse_ai_medium
+			modifier = {
+				factor = @central_asia_soviet_collapse_ai_pressure_multiplier
+				has_country_flag = soviet_collapse_central_asia_federation_state
+			}
+		}
+	}
+
+	central_asia_soviet_collapse_levy_cotton_rail_quota = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		available = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_cotton_rail_cost = yes }
+		}
+		visible = {
+			has_central_asia_soviet_collapse_league_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+				has_country_flag = soviet_collapse_central_asia_federation_state
+				has_country_flag = soviet_collapse_central_asia_south_survives_together
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_cotton_rail_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_cotton_rail_cost = yes }
+		}
+		custom_cost_text = central_asia_soviet_collapse_cotton_rail_cost_text
+		days_re_enable = @central_asia_soviet_collapse_league_days_reenable
+		complete_effect = {
+			central_asia_soviet_collapse_apply_cotton_rail_quota = yes
+			custom_effect_tooltip = central_asia_soviet_collapse_levy_cotton_rail_quota_tt
+		}
+		ai_will_do = {
+			base = @central_asia_soviet_collapse_ai_medium
+			modifier = {
+				factor = @central_asia_soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+		}
+	}
+
+	central_asia_soviet_collapse_convene_pass_and_caravan_board = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		available = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_caravan_board_cost = yes }
+		}
+		visible = {
+			has_central_asia_soviet_collapse_league_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_central_asia_southern_shield
+				has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+				has_country_flag = soviet_collapse_central_asia_federation_state
+				has_country_flag = soviet_collapse_central_asia_south_survives_together
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_caravan_board_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_caravan_board_cost = yes }
+		}
+		custom_cost_text = central_asia_soviet_collapse_caravan_board_cost_text
+		days_re_enable = @central_asia_soviet_collapse_league_days_reenable
+		complete_effect = {
+			central_asia_soviet_collapse_apply_caravan_board = yes
+			custom_effect_tooltip = central_asia_soviet_collapse_convene_pass_and_caravan_board_tt
+		}
+		ai_will_do = {
+			base = @central_asia_soviet_collapse_ai_high
+			modifier = {
+				factor = @central_asia_soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+		}
+	}
+
+	central_asia_soviet_collapse_submit_member_vote_protocol = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_member_vote_cost = yes }
+		}
+		visible = {
+			has_central_asia_soviet_collapse_league_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_central_asia_pact_choice_open
+				has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+				has_country_flag = soviet_collapse_central_asia_federation_state
+				has_country_flag = soviet_collapse_central_asia_south_survives_together
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_member_vote_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_member_vote_cost = yes }
+		}
+		custom_cost_text = central_asia_soviet_collapse_member_vote_cost_text
+		days_re_enable = @central_asia_soviet_collapse_league_days_reenable
+		complete_effect = {
+			central_asia_soviet_collapse_apply_member_vote_protocol = yes
+			custom_effect_tooltip = central_asia_soviet_collapse_submit_member_vote_protocol_tt
+		}
+		ai_will_do = {
+			base = @central_asia_soviet_collapse_ai_high
+			modifier = {
+				factor = @central_asia_soviet_collapse_ai_pressure_multiplier
+				is_in_faction = no
+			}
+		}
+	}
+
+	central_asia_soviet_collapse_request_foreign_mediation_desk = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		available = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_mediation_cost = yes }
+		}
+		visible = {
+			has_central_asia_soviet_collapse_league_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_central_asia_loose_southern_pact
+				has_country_flag = soviet_collapse_central_asia_federation_state
+				has_country_flag = soviet_collapse_central_asia_south_survives_together
+			}
+			NOT = { has_country_flag = soviet_collapse_central_asia_mediation_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_central_asia_soviet_collapse_mediation_cost = yes }
+		}
+		custom_cost_text = central_asia_soviet_collapse_mediation_cost_text
+		days_re_enable = @central_asia_soviet_collapse_league_days_reenable
+		complete_effect = {
+			central_asia_soviet_collapse_apply_mediation_desk = yes
+			custom_effect_tooltip = central_asia_soviet_collapse_request_foreign_mediation_desk_tt
+		}
+		ai_will_do = {
+			base = @central_asia_soviet_collapse_ai_medium
+			modifier = {
+				factor = @central_asia_soviet_collapse_ai_pressure_multiplier
+				NOT = { is_soviet_collapse_republic_protected_from_external_dependency = yes }
+			}
+		}
+	}
+
+	central_asia_soviet_collapse_ratify_southern_survival_settlement = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = {
+				can_pay_central_asia_soviet_collapse_settlement_cost = yes
+				can_central_asia_soviet_collapse_ratify_survival_settlement = yes
+			}
+		}
+		visible = {
+			has_central_asia_soviet_collapse_league_decision_surface = yes
+			can_central_asia_soviet_collapse_ratify_survival_settlement = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_central_asia_soviet_collapse_settlement_cost = yes
+				can_central_asia_soviet_collapse_ratify_survival_settlement = yes
+			}
+		}
+		custom_cost_text = central_asia_soviet_collapse_settlement_cost_text
+		days_re_enable = @central_asia_soviet_collapse_settlement_days_reenable
+		complete_effect = {
+			central_asia_soviet_collapse_apply_survival_settlement = yes
+			custom_effect_tooltip = central_asia_soviet_collapse_ratify_southern_survival_settlement_tt
+		}
+		ai_will_do = {
+			base = @central_asia_soviet_collapse_ai_high
+			modifier = {
+				factor = @central_asia_soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+		}
+	}
+}
