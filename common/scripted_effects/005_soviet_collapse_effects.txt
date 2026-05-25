@@ -11267,7 +11267,52 @@ soviet_collapse_save_pressure_successor_progressive_target = {
 	}
 }
 
+soviet_collapse_count_progressive_release_family_candidates = {
+	set_temp_variable = { soviet_collapse_release_family_western_candidates = 0 }
+	set_temp_variable = { soviet_collapse_release_family_baltic_candidates = 0 }
+	set_temp_variable = { soviet_collapse_release_family_caucasus_candidates = 0 }
+	set_temp_variable = { soviet_collapse_release_family_central_asia_candidates = 0 }
+	set_temp_variable = { soviet_collapse_release_family_kazakhstan_candidates = 0 }
+	set_temp_variable = { soviet_collapse_release_family_internal_candidates = 0 }
+	set_temp_variable = { soviet_collapse_release_family_pressure_successor_candidates = 0 }
+	set_temp_variable = { soviet_collapse_release_family_general_candidates = 0 }
+	every_possible_country = {
+		limit = { is_soviet_collapse_western_progressive_release_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_western_candidates = 1 } }
+	}
+	every_possible_country = {
+		limit = { is_soviet_collapse_baltic_progressive_release_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_baltic_candidates = 1 } }
+	}
+	every_possible_country = {
+		limit = { is_soviet_collapse_caucasus_progressive_release_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_caucasus_candidates = 1 } }
+	}
+	every_possible_country = {
+		limit = { is_soviet_collapse_central_asian_progressive_release_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_central_asia_candidates = 1 } }
+	}
+	every_possible_country = {
+		limit = { is_soviet_collapse_kazakhstan_progressive_release_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_kazakhstan_candidates = 1 } }
+	}
+	every_possible_country = {
+		limit = { is_soviet_collapse_internal_progressive_release_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_internal_candidates = 1 } }
+	}
+	every_possible_country = {
+		limit = { is_soviet_collapse_pressure_successor_progressive_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_pressure_successor_candidates = 1 } }
+	}
+	every_possible_country = {
+		limit = { is_soviet_collapse_progressive_release_candidate = yes }
+		SOV = { add_to_temp_variable = { soviet_collapse_release_family_general_candidates = 1 } }
+	}
+}
+
 soviet_collapse_compute_progressive_release_family_weights = {
+	soviet_collapse_count_progressive_release_family_candidates = yes
+	soviet_collapse_compute_progressive_release_regional_cascade = yes
 	set_temp_variable = { soviet_collapse_release_family_western_weight = constant:soviet_collapse_release_family_weight.base_western }
 	set_temp_variable = { soviet_collapse_release_family_baltic_weight = constant:soviet_collapse_release_family_weight.base_baltic }
 	set_temp_variable = { soviet_collapse_release_family_caucasus_weight = constant:soviet_collapse_release_family_weight.base_caucasus }
@@ -11276,6 +11321,58 @@ soviet_collapse_compute_progressive_release_family_weights = {
 	set_temp_variable = { soviet_collapse_release_family_internal_weight = constant:soviet_collapse_release_family_weight.base_internal }
 	set_temp_variable = { soviet_collapse_release_family_pressure_successor_weight = constant:soviet_collapse_release_family_weight.base_pressure_successor }
 	set_temp_variable = { soviet_collapse_release_family_general_weight = constant:soviet_collapse_release_family_weight.base_general }
+	set_temp_variable = { soviet_collapse_release_family_momentum_component = soviet_collapse_republic_confidence }
+	subtract_from_temp_variable = { soviet_collapse_release_family_momentum_component = constant:soviet_collapse_baseline.republic_confidence }
+	multiply_temp_variable = { soviet_collapse_release_family_momentum_component = constant:soviet_collapse_release_family_weight.momentum_per_point_add }
+	clamp_temp_variable = { var = soviet_collapse_release_family_momentum_component min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.momentum_cap }
+	add_to_temp_variable = { soviet_collapse_release_family_western_weight = soviet_collapse_release_family_momentum_component }
+	add_to_temp_variable = { soviet_collapse_release_family_baltic_weight = soviet_collapse_release_family_momentum_component }
+	add_to_temp_variable = { soviet_collapse_release_family_caucasus_weight = soviet_collapse_release_family_momentum_component }
+	add_to_temp_variable = { soviet_collapse_release_family_central_asia_weight = soviet_collapse_release_family_momentum_component }
+	add_to_temp_variable = { soviet_collapse_release_family_kazakhstan_weight = soviet_collapse_release_family_momentum_component }
+	add_to_temp_variable = { soviet_collapse_release_family_internal_weight = soviet_collapse_release_family_momentum_component }
+	set_temp_variable = { soviet_collapse_release_family_authority_component = constant:soviet_collapse_baseline.moscow_authority }
+	subtract_from_temp_variable = { soviet_collapse_release_family_authority_component = soviet_collapse_moscow_authority }
+	multiply_temp_variable = { soviet_collapse_release_family_authority_component = constant:soviet_collapse_release_family_weight.authority_deficit_per_point_add }
+	clamp_temp_variable = { var = soviet_collapse_release_family_authority_component min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.authority_deficit_cap }
+	set_temp_variable = { soviet_collapse_release_family_secondary_component = soviet_collapse_release_family_authority_component }
+	multiply_temp_variable = { soviet_collapse_release_family_secondary_component = constant:soviet_collapse_release_family_weight.secondary_component_factor }
+	add_to_temp_variable = { soviet_collapse_release_family_western_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_baltic_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_caucasus_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_central_asia_weight = soviet_collapse_release_family_authority_component }
+	add_to_temp_variable = { soviet_collapse_release_family_kazakhstan_weight = soviet_collapse_release_family_authority_component }
+	add_to_temp_variable = { soviet_collapse_release_family_internal_weight = soviet_collapse_release_family_authority_component }
+	set_temp_variable = { soviet_collapse_release_family_secondary_component = soviet_collapse_release_family_authority_component }
+	multiply_temp_variable = { soviet_collapse_release_family_secondary_component = constant:soviet_collapse_release_family_weight.pressure_successor_component_factor }
+	add_to_temp_variable = { soviet_collapse_release_family_pressure_successor_weight = soviet_collapse_release_family_secondary_component }
+	set_temp_variable = { soviet_collapse_release_family_threat_component = soviet_collapse_total_collapse_threat }
+	subtract_from_temp_variable = { soviet_collapse_release_family_threat_component = constant:soviet_collapse_progressive_release.low_threat }
+	multiply_temp_variable = { soviet_collapse_release_family_threat_component = constant:soviet_collapse_release_family_weight.threat_per_point_add }
+	clamp_temp_variable = { var = soviet_collapse_release_family_threat_component min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.threat_cap }
+	set_temp_variable = { soviet_collapse_release_family_secondary_component = soviet_collapse_release_family_threat_component }
+	multiply_temp_variable = { soviet_collapse_release_family_secondary_component = constant:soviet_collapse_release_family_weight.secondary_component_factor }
+	add_to_temp_variable = { soviet_collapse_release_family_western_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_baltic_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_caucasus_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_central_asia_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_kazakhstan_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_internal_weight = soviet_collapse_release_family_threat_component }
+	add_to_temp_variable = { soviet_collapse_release_family_pressure_successor_weight = soviet_collapse_release_family_threat_component }
+	set_temp_variable = { soviet_collapse_release_family_foreign_component = soviet_collapse_foreign_appetite }
+	subtract_from_temp_variable = { soviet_collapse_release_family_foreign_component = constant:soviet_collapse_baseline.foreign_appetite }
+	multiply_temp_variable = { soviet_collapse_release_family_foreign_component = constant:soviet_collapse_release_family_weight.foreign_per_point_add }
+	clamp_temp_variable = { var = soviet_collapse_release_family_foreign_component min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.foreign_cap }
+	add_to_temp_variable = { soviet_collapse_release_family_western_weight = soviet_collapse_release_family_foreign_component }
+	add_to_temp_variable = { soviet_collapse_release_family_baltic_weight = soviet_collapse_release_family_foreign_component }
+	set_temp_variable = { soviet_collapse_release_family_secondary_component = soviet_collapse_release_family_foreign_component }
+	multiply_temp_variable = { soviet_collapse_release_family_secondary_component = constant:soviet_collapse_release_family_weight.foreign_regional_component_factor }
+	add_to_temp_variable = { soviet_collapse_release_family_caucasus_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_central_asia_weight = soviet_collapse_release_family_secondary_component }
+	add_to_temp_variable = { soviet_collapse_release_family_kazakhstan_weight = soviet_collapse_release_family_secondary_component }
+	set_temp_variable = { soviet_collapse_release_family_cascade_component = soviet_collapse_regional_cascade_score }
+	multiply_temp_variable = { soviet_collapse_release_family_cascade_component = constant:soviet_collapse_release_family_weight.cascade_per_score_add }
+	clamp_temp_variable = { var = soviet_collapse_release_family_cascade_component min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.cascade_cap }
 	if = {
 		limit = {
 			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
@@ -11342,14 +11439,17 @@ soviet_collapse_compute_progressive_release_family_weights = {
 	}
 	if = {
 		limit = { has_soviet_collapse_two_western_republics_free = yes }
+		add_to_temp_variable = { soviet_collapse_release_family_western_weight = soviet_collapse_release_family_cascade_component }
 		add_to_temp_variable = { soviet_collapse_release_family_western_weight = constant:soviet_collapse_release_family_weight.cascade_add }
 	}
 	if = {
 		limit = { has_soviet_collapse_baltic_league_quorum = yes }
+		add_to_temp_variable = { soviet_collapse_release_family_baltic_weight = soviet_collapse_release_family_cascade_component }
 		add_to_temp_variable = { soviet_collapse_release_family_baltic_weight = constant:soviet_collapse_release_family_weight.cascade_add }
 	}
 	if = {
 		limit = { has_soviet_collapse_caucasus_league_quorum = yes }
+		add_to_temp_variable = { soviet_collapse_release_family_caucasus_weight = soviet_collapse_release_family_cascade_component }
 		add_to_temp_variable = { soviet_collapse_release_family_caucasus_weight = constant:soviet_collapse_release_family_weight.cascade_add }
 	}
 	if = {
@@ -11359,11 +11459,15 @@ soviet_collapse_compute_progressive_release_family_weights = {
 				has_soviet_collapse_central_asian_league_quorum = yes
 			}
 		}
+		add_to_temp_variable = { soviet_collapse_release_family_central_asia_weight = soviet_collapse_release_family_cascade_component }
+		add_to_temp_variable = { soviet_collapse_release_family_kazakhstan_weight = soviet_collapse_release_family_cascade_component }
 		add_to_temp_variable = { soviet_collapse_release_family_central_asia_weight = constant:soviet_collapse_release_family_weight.cascade_add }
 		add_to_temp_variable = { soviet_collapse_release_family_kazakhstan_weight = constant:soviet_collapse_release_family_weight.kazakhstan_southern_cascade_add }
 	}
 	if = {
 		limit = { has_soviet_collapse_internal_release_cascade_pressure = yes }
+		add_to_temp_variable = { soviet_collapse_release_family_internal_weight = soviet_collapse_release_family_cascade_component }
+		add_to_temp_variable = { soviet_collapse_release_family_pressure_successor_weight = soviet_collapse_release_family_cascade_component }
 		add_to_temp_variable = { soviet_collapse_release_family_internal_weight = constant:soviet_collapse_release_family_weight.internal_cascade_add }
 		add_to_temp_variable = { soviet_collapse_release_family_pressure_successor_weight = constant:soviet_collapse_release_family_weight.internal_cascade_add }
 	}
@@ -11390,6 +11494,14 @@ soviet_collapse_compute_progressive_release_family_weights = {
 	clamp_temp_variable = { var = soviet_collapse_release_family_internal_weight min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.family_weight_cap }
 	clamp_temp_variable = { var = soviet_collapse_release_family_pressure_successor_weight min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.family_weight_cap }
 	clamp_temp_variable = { var = soviet_collapse_release_family_general_weight min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_release_family_weight.family_weight_cap }
+	if = { limit = { check_variable = { soviet_collapse_release_family_western_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_western_weight = 0 } }
+	if = { limit = { check_variable = { soviet_collapse_release_family_baltic_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_baltic_weight = 0 } }
+	if = { limit = { check_variable = { soviet_collapse_release_family_caucasus_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_caucasus_weight = 0 } }
+	if = { limit = { check_variable = { soviet_collapse_release_family_central_asia_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_central_asia_weight = 0 } }
+	if = { limit = { check_variable = { soviet_collapse_release_family_kazakhstan_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_kazakhstan_weight = 0 } }
+	if = { limit = { check_variable = { soviet_collapse_release_family_internal_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_internal_weight = 0 } }
+	if = { limit = { check_variable = { soviet_collapse_release_family_pressure_successor_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_pressure_successor_weight = 0 } }
+	if = { limit = { check_variable = { soviet_collapse_release_family_general_candidates = 0 } } set_temp_variable = { soviet_collapse_release_family_general_weight = 0 } }
 	set_variable = { soviet_collapse_last_progressive_release_family_western_weight = soviet_collapse_release_family_western_weight }
 	set_variable = { soviet_collapse_last_progressive_release_family_baltic_weight = soviet_collapse_release_family_baltic_weight }
 	set_variable = { soviet_collapse_last_progressive_release_family_caucasus_weight = soviet_collapse_release_family_caucasus_weight }
@@ -11398,6 +11510,19 @@ soviet_collapse_compute_progressive_release_family_weights = {
 	set_variable = { soviet_collapse_last_progressive_release_family_internal_weight = soviet_collapse_release_family_internal_weight }
 	set_variable = { soviet_collapse_last_progressive_release_family_pressure_successor_weight = soviet_collapse_release_family_pressure_successor_weight }
 	set_variable = { soviet_collapse_last_progressive_release_family_general_weight = soviet_collapse_release_family_general_weight }
+	set_variable = { soviet_collapse_last_progressive_release_family_western_candidates = soviet_collapse_release_family_western_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_baltic_candidates = soviet_collapse_release_family_baltic_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_caucasus_candidates = soviet_collapse_release_family_caucasus_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_central_asia_candidates = soviet_collapse_release_family_central_asia_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_kazakhstan_candidates = soviet_collapse_release_family_kazakhstan_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_internal_candidates = soviet_collapse_release_family_internal_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_pressure_successor_candidates = soviet_collapse_release_family_pressure_successor_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_general_candidates = soviet_collapse_release_family_general_candidates }
+	set_variable = { soviet_collapse_last_progressive_release_family_momentum_component = soviet_collapse_release_family_momentum_component }
+	set_variable = { soviet_collapse_last_progressive_release_family_authority_component = soviet_collapse_release_family_authority_component }
+	set_variable = { soviet_collapse_last_progressive_release_family_threat_component = soviet_collapse_release_family_threat_component }
+	set_variable = { soviet_collapse_last_progressive_release_family_foreign_component = soviet_collapse_release_family_foreign_component }
+	set_variable = { soviet_collapse_last_progressive_release_family_cascade_component = soviet_collapse_release_family_cascade_component }
 }
 
 soviet_collapse_save_weighted_progressive_release_target = {
@@ -11515,23 +11640,9 @@ soviet_collapse_save_random_threat_breakaway_republic_target = {
 }
 
 soviet_collapse_count_progressive_release_candidates = {
-	set_variable = { soviet_collapse_progressive_release_candidate_count = 0 }
-	every_possible_country = {
-		limit = {
-			is_soviet_collapse_progressive_release_candidate = yes
-		}
-		SOV = {
-			add_to_variable = { soviet_collapse_progressive_release_candidate_count = 1 }
-		}
-	}
-	every_possible_country = {
-		limit = {
-			is_soviet_collapse_pressure_successor_progressive_candidate = yes
-		}
-		SOV = {
-			add_to_variable = { soviet_collapse_progressive_release_candidate_count = 1 }
-		}
-	}
+	soviet_collapse_count_progressive_release_family_candidates = yes
+	set_variable = { soviet_collapse_progressive_release_candidate_count = soviet_collapse_release_family_general_candidates }
+	add_to_variable = { soviet_collapse_progressive_release_candidate_count = soviet_collapse_release_family_pressure_successor_candidates }
 }
 
 soviet_collapse_compute_progressive_release_regional_cascade = {
@@ -11836,6 +11947,19 @@ soviet_collapse_clear_progressive_release_roll_snapshot = {
 	set_variable = { soviet_collapse_last_progressive_release_family_internal_weight = constant:soviet_collapse_baseline.component_min }
 	set_variable = { soviet_collapse_last_progressive_release_family_pressure_successor_weight = constant:soviet_collapse_baseline.component_min }
 	set_variable = { soviet_collapse_last_progressive_release_family_general_weight = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_western_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_baltic_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_caucasus_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_central_asia_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_kazakhstan_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_internal_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_pressure_successor_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_general_candidates = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_momentum_component = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_authority_component = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_threat_component = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_foreign_component = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_last_progressive_release_family_cascade_component = constant:soviet_collapse_baseline.component_min }
 }
 
 soviet_collapse_release_event_target_progressive_republic = {
