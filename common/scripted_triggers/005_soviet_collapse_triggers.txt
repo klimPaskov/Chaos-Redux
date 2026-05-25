@@ -314,12 +314,26 @@ has_soviet_collapse_strategic_release_failure = {
 	}
 }
 
+is_soviet_collapse_protected_strong_center_release_window = {
+	OR = {
+		is_soviet_collapse_calm_strong_center_window = yes
+		is_soviet_collapse_opening_strong_center_guard_window = yes
+		has_soviet_collapse_strong_center_facts = yes
+	}
+	check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = less_than }
+	NOT = { has_soviet_collapse_release_level_component_pressure = yes }
+	NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+	NOT = { has_soviet_collapse_war_release_pressure = yes }
+	NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
+	NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+}
+
 has_soviet_collapse_failure_release_pressure = {
 	OR = {
 		AND = {
 			has_soviet_collapse_strategic_release_failure = yes
 			OR = {
-				NOT = { is_soviet_collapse_calm_strong_center_window = yes }
+				NOT = { is_soviet_collapse_protected_strong_center_release_window = yes }
 				check_variable = {
 					var = soviet_collapse_total_collapse_threat
 					value = constant:soviet_collapse_progressive_release.moderate_threat
@@ -340,7 +354,7 @@ has_soviet_collapse_failure_release_pressure = {
 			}
 		}
 		AND = {
-			is_soviet_collapse_calm_strong_center_window = yes
+			is_soviet_collapse_protected_strong_center_release_window = yes
 			OR = {
 				check_variable = {
 					var = soviet_collapse_last_month_failed_objectives
@@ -355,7 +369,7 @@ has_soviet_collapse_failure_release_pressure = {
 			}
 		}
 		AND = {
-			NOT = { is_soviet_collapse_calm_strong_center_window = yes }
+			NOT = { is_soviet_collapse_protected_strong_center_release_window = yes }
 			OR = {
 				check_variable = {
 					var = soviet_collapse_last_month_failed_objectives
