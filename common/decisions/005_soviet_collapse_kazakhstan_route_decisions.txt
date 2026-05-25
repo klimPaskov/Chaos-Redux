@@ -1,0 +1,136 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 KAZAKHSTAN ROUTE DECISIONS
+# ============================================================================
+# Route-gated decisions for Kazakhstan's Alash, socialist steppe, resource
+# directorate, and concession-audit paths. Existing focus flags unlock the
+# surface; this file turns those route choices into active state work.
+# ============================================================================
+
+@kaz_soviet_collapse_route_days_reenable = 75
+@kaz_soviet_collapse_ai_medium = 2
+@kaz_soviet_collapse_ai_high = 3
+@kaz_soviet_collapse_ai_pressure_multiplier = 2
+@kaz_soviet_collapse_ai_urgent_multiplier = 3
+
+soviet_collapse_breakaway_category = {
+	kaz_soviet_collapse_convene_alash_court_commissions = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_alash_court_cost = yes }
+		}
+		visible = {
+			has_kaz_soviet_collapse_route_decision_surface = yes
+			has_country_flag = soviet_collapse_kazakhstan_route_alash
+			NOT = { has_country_flag = soviet_collapse_kazakhstan_alash_court_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_alash_court_cost = yes }
+		}
+		custom_cost_text = kaz_soviet_collapse_alash_court_cost_text
+		days_re_enable = @kaz_soviet_collapse_route_days_reenable
+		complete_effect = {
+			kaz_soviet_collapse_apply_alash_court_commissions = yes
+			custom_effect_tooltip = kaz_soviet_collapse_convene_alash_court_commissions_tt
+		}
+		ai_will_do = {
+			base = @kaz_soviet_collapse_ai_medium
+			modifier = {
+				factor = @kaz_soviet_collapse_ai_pressure_multiplier
+				has_stability > constant:soviet_collapse_soviet_objective.good_stability
+			}
+		}
+	}
+
+	kaz_soviet_collapse_issue_steppe_soviet_supply_plan = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		available = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_socialist_plan_cost = yes }
+		}
+		visible = {
+			has_kaz_soviet_collapse_route_decision_surface = yes
+			has_country_flag = soviet_collapse_kazakhstan_route_socialist
+			NOT = { has_country_flag = soviet_collapse_kazakhstan_socialist_plan_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_socialist_plan_cost = yes }
+		}
+		custom_cost_text = kaz_soviet_collapse_socialist_plan_cost_text
+		days_re_enable = @kaz_soviet_collapse_route_days_reenable
+		complete_effect = {
+			kaz_soviet_collapse_apply_steppe_soviet_supply_plan = yes
+			custom_effect_tooltip = kaz_soviet_collapse_issue_steppe_soviet_supply_plan_tt
+		}
+		ai_will_do = {
+			base = @kaz_soviet_collapse_ai_medium
+			modifier = {
+				factor = @kaz_soviet_collapse_ai_pressure_multiplier
+				has_government = communism
+			}
+		}
+	}
+
+	kaz_soviet_collapse_secure_minehead_guard_contracts = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		available = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_mine_guard_cost = yes }
+		}
+		visible = {
+			has_kaz_soviet_collapse_route_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_kazakhstan_route_resource_directorate
+				has_country_flag = soviet_collapse_kazakhstan_karaganda_board
+				has_country_flag = soviet_collapse_kazakhstan_oil_fields_guarded
+			}
+			NOT = { has_country_flag = soviet_collapse_kazakhstan_mine_guard_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_mine_guard_cost = yes }
+		}
+		custom_cost_text = kaz_soviet_collapse_mine_guard_cost_text
+		days_re_enable = @kaz_soviet_collapse_route_days_reenable
+		complete_effect = {
+			kaz_soviet_collapse_apply_minehead_guard_contracts = yes
+			custom_effect_tooltip = kaz_soviet_collapse_secure_minehead_guard_contracts_tt
+		}
+		ai_will_do = {
+			base = @kaz_soviet_collapse_ai_high
+			modifier = {
+				factor = @kaz_soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+		}
+	}
+
+	kaz_soviet_collapse_audit_foreign_concession_ledgers = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		available = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_concession_audit_cost = yes }
+		}
+		visible = {
+			has_kaz_soviet_collapse_route_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_kazakhstan_concessions_debate
+				has_country_flag = soviet_collapse_kazakhstan_no_concession_without_republic
+				has_country_flag = soviet_collapse_kazakhstan_foreign_technical_missions
+				has_country_flag = soviet_collapse_kazakhstan_anglo_american_engineers
+			}
+			NOT = { has_country_flag = soviet_collapse_kazakhstan_concession_audit_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_kaz_soviet_collapse_concession_audit_cost = yes }
+		}
+		custom_cost_text = kaz_soviet_collapse_concession_audit_cost_text
+		days_re_enable = @kaz_soviet_collapse_route_days_reenable
+		complete_effect = {
+			kaz_soviet_collapse_apply_concession_ledger_audit = yes
+			custom_effect_tooltip = kaz_soviet_collapse_audit_foreign_concession_ledgers_tt
+		}
+		ai_will_do = {
+			base = @kaz_soviet_collapse_ai_medium
+			modifier = {
+				factor = @kaz_soviet_collapse_ai_pressure_multiplier
+				NOT = { is_soviet_collapse_republic_protected_from_external_dependency = yes }
+			}
+		}
+	}
+}
