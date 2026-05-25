@@ -1758,6 +1758,41 @@ soviet_collapse_cleanup_resolved_breakaway_target = {
 	if = { limit = { SOV = { exists = yes } } SOV = { soviet_collapse_prune_invalid_active_soviet_objectives = yes } }
 }
 
+soviet_collapse_apply_follow_on_breakaway_pressure = {
+	if = {
+		limit = {
+			SOV = {
+				exists = yes
+				is_soviet_collapse_active = yes
+				NOT = { has_global_flag = soviet_collapse_opening_wave_active }
+				NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+			}
+		}
+		SOV = {
+			add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_follow_on_release.republic_confidence }
+			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_follow_on_release.depot_vulnerability }
+			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_follow_on_release.foreign_appetite }
+			soviet_collapse_apply_foreign_pressure_delta = yes
+			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_follow_on_release.league_cohesion }
+			if = {
+				limit = { PREV = { is_soviet_collapse_foreign_aid_major_target = yes } }
+				add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_follow_on_release.major_republic_confidence }
+			}
+			if = {
+				limit = { PREV = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+				add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_follow_on_release.regional_republic_confidence }
+			}
+			if = {
+				limit = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+				add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_follow_on_release.cascade_league_cohesion }
+				set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_follow_on_release.cascade_foreign_appetite }
+				soviet_collapse_apply_foreign_pressure_delta = yes
+			}
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
 soviet_collapse_setup_breakaway_country = {
 	if = {
 		limit = { NOT = { has_country_flag = soviet_collapse_breakaway } }
@@ -1802,6 +1837,7 @@ soviet_collapse_apply_breakaway_setup_package = {
 				limit = { has_global_flag = soviet_collapse_opening_wave_active }
 				soviet_collapse_recalculate_total_threat = yes
 			}
+			PREV = { soviet_collapse_apply_follow_on_breakaway_pressure = yes }
 			soviet_collapse_maybe_show_union_unmade_super_event = yes
 		}
 	}
