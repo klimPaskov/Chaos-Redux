@@ -6321,6 +6321,41 @@ soviet_collapse_apply_custom_splinter_mobilize_signature_forces = {
 	add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+	if = {
+		limit = {
+			tag = SZA
+			has_country_flag = sza_city_militia_charter_active
+		}
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+		random_owned_controlled_state = {
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+		}
+	}
+	if = {
+		limit = {
+			tag = UWD
+			has_country_flag = uwd_arsenal_stock_control_active
+		}
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
+		random_owned_controlled_state = {
+			add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		}
+	}
+	if = {
+		limit = {
+			tag = MRC
+			has_country_flag = mrc_pack_train_storehouses_active
+		}
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.local_pressure_gain }
+		random_owned_controlled_state = {
+			add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			add_building_construction = { type = supply_node level = 1 instant_build = yes }
+		}
+	}
 }
 
 soviet_collapse_apply_dhc_stanitsa_mediation = {
