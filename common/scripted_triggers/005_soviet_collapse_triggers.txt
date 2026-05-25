@@ -1886,6 +1886,61 @@ can_pay_ukr_soviet_collapse_anti_client_charter_cost = {
 	command_power > constant:soviet_collapse_ukraine_league.anti_client_charter_command_power
 }
 
+has_ukr_soviet_collapse_bread_state_decision_surface = {
+	tag = UKR
+	is_soviet_collapse_active = yes
+	has_country_flag = soviet_collapse_breakaway
+	OR = {
+		has_country_flag = soviet_collapse_ukraine_bread_state_whispers
+		has_country_flag = soviet_collapse_ukraine_black_soil_oath
+		has_country_flag = soviet_collapse_ukraine_grain_census_of_everyone
+		has_country_flag = soviet_collapse_ukraine_no_one_leaves_bread_line
+		has_country_flag = soviet_collapse_ukraine_last_harvest_plan
+	}
+}
+
+can_pay_ukr_soviet_collapse_black_soil_committees_cost = {
+	has_political_power > constant:soviet_collapse_ukraine_bread_state.granary_political_power
+	command_power > constant:soviet_collapse_ukraine_bread_state.granary_command_power
+	has_equipment = { infantry_equipment > constant:soviet_collapse_ukraine_bread_state.granary_infantry_equipment }
+	has_equipment = { support_equipment_1 > constant:soviet_collapse_ukraine_bread_state.granary_support_equipment }
+}
+
+can_pay_ukr_soviet_collapse_grain_census_cost = {
+	has_political_power > constant:soviet_collapse_ukraine_bread_state.census_political_power
+	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_bread_state.census_trains }
+	has_fuel > constant:soviet_collapse_ukraine_bread_state.census_fuel
+}
+
+can_pay_ukr_soviet_collapse_bread_line_cost = {
+	has_political_power > constant:soviet_collapse_ukraine_bread_state.bread_line_political_power
+	command_power > constant:soviet_collapse_ukraine_bread_state.bread_line_command_power
+	has_equipment = { infantry_equipment > constant:soviet_collapse_ukraine_bread_state.bread_line_infantry_equipment }
+}
+
+can_pay_ukr_soviet_collapse_village_ration_relief_cost = {
+	has_political_power > constant:soviet_collapse_ukraine_bread_state.relief_political_power
+	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_bread_state.relief_trains }
+}
+
+can_pay_ukr_soviet_collapse_last_harvest_plan_cost = {
+	has_political_power > constant:soviet_collapse_ukraine_bread_state.last_harvest_political_power
+	has_equipment = { train_equipment > constant:soviet_collapse_ukraine_bread_state.last_harvest_trains }
+	has_equipment = { convoy_1 > constant:soviet_collapse_ukraine_bread_state.last_harvest_convoys }
+	has_fuel > constant:soviet_collapse_ukraine_bread_state.last_harvest_fuel
+}
+
+can_ukr_soviet_collapse_release_village_rations = {
+	check_variable = { var = soviet_collapse_ukraine_bread_state_coercion value = constant:soviet_collapse_ukraine_bread_state.coercion_gate compare = greater_than_or_equals }
+	NOT = { has_country_flag = soviet_collapse_ukraine_village_ration_relief_recent }
+}
+
+can_ukr_soviet_collapse_execute_last_harvest_plan = {
+	has_country_flag = soviet_collapse_ukraine_last_harvest_plan
+	check_variable = { var = soviet_collapse_ukraine_grain_authority value = constant:soviet_collapse_ukraine_bread_state.last_harvest_authority_gate compare = greater_than_or_equals }
+	NOT = { has_country_flag = soviet_collapse_ukraine_last_harvest_plan_recent }
+}
+
 is_soviet_collapse_republic_protected_from_external_dependency = {
 	OR = {
 		is_in_faction = yes

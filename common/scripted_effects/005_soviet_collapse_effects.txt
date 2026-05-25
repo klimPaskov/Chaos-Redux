@@ -7,6 +7,9 @@
 # separate mutation tracks and are not represented here as stage logs.
 # ============================================================================
 
+@soviet_collapse_ukr_bread_state_building_level = 1
+@soviet_collapse_ukr_bread_state_fort_level = 1
+
 soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_moscow_authority min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_republic_confidence min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -3509,6 +3512,154 @@ ukr_soviet_collapse_pay_black_sea_mission_cost = {
 ukr_soviet_collapse_pay_anti_client_charter_cost = {
 	add_political_power = constant:soviet_collapse_ukraine_league.anti_client_charter_political_power_spend
 	add_command_power = constant:soviet_collapse_ukraine_league.anti_client_charter_command_power_spend
+}
+
+ukr_soviet_collapse_pay_black_soil_committees_cost = {
+	add_political_power = constant:soviet_collapse_ukraine_bread_state.granary_political_power_spend
+	add_command_power = constant:soviet_collapse_ukraine_bread_state.granary_command_power_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_ukraine_bread_state.granary_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_ukraine_bread_state.granary_support_equipment_spend }
+}
+
+ukr_soviet_collapse_pay_grain_census_cost = {
+	add_political_power = constant:soviet_collapse_ukraine_bread_state.census_political_power_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_ukraine_bread_state.census_trains_spend }
+	add_fuel = constant:soviet_collapse_ukraine_bread_state.census_fuel_spend
+}
+
+ukr_soviet_collapse_pay_bread_line_cost = {
+	add_political_power = constant:soviet_collapse_ukraine_bread_state.bread_line_political_power_spend
+	add_command_power = constant:soviet_collapse_ukraine_bread_state.bread_line_command_power_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_ukraine_bread_state.bread_line_infantry_equipment_spend }
+}
+
+ukr_soviet_collapse_pay_village_ration_relief_cost = {
+	add_political_power = constant:soviet_collapse_ukraine_bread_state.relief_political_power_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_ukraine_bread_state.relief_trains_spend }
+}
+
+ukr_soviet_collapse_pay_last_harvest_plan_cost = {
+	add_political_power = constant:soviet_collapse_ukraine_bread_state.last_harvest_political_power_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_ukraine_bread_state.last_harvest_trains_spend }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_ukraine_bread_state.last_harvest_convoys_spend }
+	add_fuel = constant:soviet_collapse_ukraine_bread_state.last_harvest_fuel_spend
+}
+
+ukr_soviet_collapse_apply_bread_state_soviet_pressure = {
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_old_movement_pressure = ukr_soviet_collapse_bread_state_old_movement_pressure }
+			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_ukraine_bread_state.soviet_depot_pressure }
+			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_ukraine_bread_state.soviet_foreign_pressure }
+			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+	set_temp_variable = { ukr_soviet_collapse_bread_state_old_movement_pressure = 0 }
+}
+
+ukr_soviet_collapse_add_grain_authority = {
+	add_to_variable = { soviet_collapse_ukraine_grain_authority = ukr_soviet_collapse_grain_authority_delta }
+	clamp_variable = {
+		var = soviet_collapse_ukraine_grain_authority
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_ukraine_bread_state.grain_authority_cap
+	}
+	set_temp_variable = { ukr_soviet_collapse_grain_authority_delta = 0 }
+}
+
+ukr_soviet_collapse_add_bread_state_coercion = {
+	add_to_variable = { soviet_collapse_ukraine_bread_state_coercion = ukr_soviet_collapse_bread_state_coercion_delta }
+	clamp_variable = {
+		var = soviet_collapse_ukraine_bread_state_coercion
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_ukraine_bread_state.coercion_cap
+	}
+	set_temp_variable = { ukr_soviet_collapse_bread_state_coercion_delta = 0 }
+}
+
+ukr_soviet_collapse_apply_black_soil_committees = {
+	ukr_soviet_collapse_pay_black_soil_committees_cost = yes
+	set_temp_variable = { ukr_soviet_collapse_grain_authority_delta = constant:soviet_collapse_ukraine_bread_state.grain_authority_medium }
+	ukr_soviet_collapse_add_grain_authority = yes
+	set_temp_variable = { ukr_soviet_collapse_bread_state_coercion_delta = constant:soviet_collapse_ukraine_bread_state.coercion_small }
+	ukr_soviet_collapse_add_bread_state_coercion = yes
+	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_ukraine_bread_state.resilience_gain }
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_ukraine_bread_state.depot_gain }
+	add_stability = constant:soviet_collapse_ukraine_bread_state.coercion_stability
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = infrastructure level = @soviet_collapse_ukr_bread_state_building_level instant_build = yes }
+		add_building_construction = { type = bunker level = @soviet_collapse_ukr_bread_state_fort_level instant_build = yes }
+	}
+	set_temp_variable = { ukr_soviet_collapse_bread_state_old_movement_pressure = constant:soviet_collapse_ukraine_bread_state.soviet_old_movement_small }
+	ukr_soviet_collapse_apply_bread_state_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+ukr_soviet_collapse_apply_total_grain_census = {
+	ukr_soviet_collapse_pay_grain_census_cost = yes
+	set_temp_variable = { ukr_soviet_collapse_grain_authority_delta = constant:soviet_collapse_ukraine_bread_state.grain_authority_medium }
+	ukr_soviet_collapse_add_grain_authority = yes
+	set_temp_variable = { ukr_soviet_collapse_bread_state_coercion_delta = constant:soviet_collapse_ukraine_bread_state.coercion_medium }
+	ukr_soviet_collapse_add_bread_state_coercion = yes
+	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_ukraine_bread_state.league_gain }
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = supply_node level = @soviet_collapse_ukr_bread_state_building_level instant_build = yes }
+		add_building_construction = { type = infrastructure level = @soviet_collapse_ukr_bread_state_building_level instant_build = yes }
+	}
+	set_temp_variable = { ukr_soviet_collapse_bread_state_old_movement_pressure = constant:soviet_collapse_ukraine_bread_state.soviet_old_movement_medium }
+	ukr_soviet_collapse_apply_bread_state_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+ukr_soviet_collapse_apply_bread_line_lockdown = {
+	ukr_soviet_collapse_pay_bread_line_cost = yes
+	set_temp_variable = { ukr_soviet_collapse_grain_authority_delta = constant:soviet_collapse_ukraine_bread_state.grain_authority_small }
+	ukr_soviet_collapse_add_grain_authority = yes
+	set_temp_variable = { ukr_soviet_collapse_bread_state_coercion_delta = constant:soviet_collapse_ukraine_bread_state.coercion_large }
+	ukr_soviet_collapse_add_bread_state_coercion = yes
+	add_manpower = constant:soviet_collapse_ukraine_bread_state.manpower_gain
+	add_war_support = constant:soviet_collapse_ukraine_bread_state.war_support_gain
+	add_stability = constant:soviet_collapse_ukraine_bread_state.coercion_stability
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = bunker level = @soviet_collapse_ukr_bread_state_fort_level instant_build = yes }
+		add_building_construction = { type = anti_air_building level = @soviet_collapse_ukr_bread_state_fort_level instant_build = yes }
+	}
+	set_temp_variable = { ukr_soviet_collapse_bread_state_old_movement_pressure = constant:soviet_collapse_ukraine_bread_state.soviet_old_movement_large }
+	ukr_soviet_collapse_apply_bread_state_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+ukr_soviet_collapse_apply_village_ration_relief = {
+	ukr_soviet_collapse_pay_village_ration_relief_cost = yes
+	set_temp_variable = { ukr_soviet_collapse_bread_state_coercion_delta = constant:soviet_collapse_ukraine_bread_state.coercion_relief }
+	ukr_soviet_collapse_add_bread_state_coercion = yes
+	add_stability = constant:soviet_collapse_ukraine_bread_state.relief_stability
+	set_temp_variable = { ukr_soviet_collapse_relief_recent_days = constant:soviet_collapse_ukraine_bread_state.relief_recent_days }
+	set_country_flag = { flag = soviet_collapse_ukraine_village_ration_relief_recent days = ukr_soviet_collapse_relief_recent_days }
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+ukr_soviet_collapse_apply_last_harvest_plan = {
+	ukr_soviet_collapse_pay_last_harvest_plan_cost = yes
+	set_temp_variable = { ukr_soviet_collapse_grain_authority_delta = constant:soviet_collapse_ukraine_bread_state.grain_authority_large }
+	ukr_soviet_collapse_add_grain_authority = yes
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_ukraine_bread_state.harvest_infantry_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_ukraine_bread_state.harvest_support_equipment }
+	add_war_support = constant:soviet_collapse_ukraine_bread_state.war_support_gain
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = arms_factory level = @soviet_collapse_ukr_bread_state_building_level instant_build = yes }
+	}
+	set_temp_variable = { ukr_soviet_collapse_harvest_recent_days = constant:soviet_collapse_ukraine_bread_state.last_harvest_recent_days }
+	set_country_flag = { flag = soviet_collapse_ukraine_last_harvest_plan_recent days = ukr_soviet_collapse_harvest_recent_days }
+	set_temp_variable = { ukr_soviet_collapse_bread_state_old_movement_pressure = constant:soviet_collapse_ukraine_bread_state.soviet_old_movement_large }
+	ukr_soviet_collapse_apply_bread_state_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
 }
 
 ukr_soviet_collapse_apply_league_program_credit = {
