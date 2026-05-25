@@ -6378,9 +6378,43 @@ soviet_collapse_apply_cfr_reconstruction_contracts = {
 	add_to_variable = { cfr_construction_mandates = constant:soviet_collapse_factory_ancient.small_mandate_spend }
 	add_ideas = cfr_housing_ration_boards
 	soviet_collapse_advance_cfr_contract_network_depth = yes
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = cfr_strategy_cities_first
+				has_country_flag = cfr_strategy_rails_first
+				has_country_flag = cfr_strategy_factories_first
+				has_country_flag = cfr_strategy_contracts_first
+			}
+		}
+		soviet_collapse_advance_cfr_contract_network_depth = yes
+	}
 	random_owned_controlled_state = {
 		add_extra_state_shared_building_slots = @soviet_collapse_cfr_contract_building_slots
 		add_building_construction = { type = industrial_complex level = @soviet_collapse_cfr_contract_factory_level instant_build = yes }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = cfr_strategy_cities_first
+				has_country_flag = cfr_focus_apartment_blocks_loyalty
+				has_country_flag = cfr_focus_buy_peace_with_concrete
+			}
+		}
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = cfr_strategy_rails_first
+				has_country_flag = cfr_strategy_factories_first
+				has_country_flag = cfr_focus_pour_final_foundation
+			}
+		}
+		random_owned_controlled_state = {
+			add_extra_state_shared_building_slots = @soviet_collapse_cfr_contract_building_slots
+			add_building_construction = { type = infrastructure level = @soviet_collapse_cfr_site_infrastructure_level instant_build = yes }
+		}
 	}
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -6788,6 +6822,26 @@ soviet_collapse_apply_mfr_convert_depots_to_arms_lines = {
 	add_ideas = mfr_factory_guard_state
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = mfr_focus_who_owns_the_rifle
+				has_country_flag = mfr_focus_factory_war_cabinet
+			}
+		}
+		add_to_variable = { mfr_client_arms_ledger = constant:soviet_collapse_factory_ancient.mfr_client_arms_ledger_gain }
+		army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = mfr_focus_the_arsenal_state
+				has_country_flag = mfr_focus_eternal_arsenal_marches
+			}
+		}
+		add_to_variable = { mfr_foreign_contract_backlog = constant:soviet_collapse_factory_ancient.mfr_contract_backlog_gain }
+		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+	}
 	random_owned_controlled_state = {
 		add_extra_state_shared_building_slots = 1
 		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
