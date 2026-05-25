@@ -2953,6 +2953,42 @@ soviet_collapse_clear_republic_staged_ideas = {
 	remove_ideas = soviet_collapse_republic_local_authority_pressure_4
 }
 
+soviet_collapse_apply_republic_progress_pacing_caps = {
+	if = {
+		limit = {
+			SOV = {
+				exists = yes
+				is_soviet_collapse_active = yes
+				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+				NOT = { has_soviet_collapse_war_release_pressure = yes }
+				NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
+				NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+				check_variable = { var = soviet_collapse_months_active value = constant:soviet_collapse_republic_progress_guard.opening_months compare = less_than }
+			}
+		}
+		clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.opening_recognition_cap }
+		clamp_variable = { var = soviet_collapse_influence_total min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.opening_influence_cap }
+		clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.opening_patronage_cap }
+		clamp_variable = { var = soviet_collapse_liaison_reach min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.opening_liaison_cap }
+	}
+	else_if = {
+		limit = {
+			SOV = {
+				exists = yes
+				is_soviet_collapse_active = yes
+				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+				NOT = { has_soviet_collapse_war_release_pressure = yes }
+				NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+				check_variable = { var = soviet_collapse_months_active value = constant:soviet_collapse_republic_progress_guard.early_months compare = less_than }
+			}
+		}
+		clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.early_recognition_cap }
+		clamp_variable = { var = soviet_collapse_influence_total min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.early_influence_cap }
+		clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.early_patronage_cap }
+		clamp_variable = { var = soviet_collapse_liaison_reach min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_republic_progress_guard.early_liaison_cap }
+	}
+}
+
 soviet_collapse_clamp_republic_country_components = {
 	clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_republic_institution_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -2962,6 +2998,7 @@ soviet_collapse_clamp_republic_country_components = {
 	clamp_variable = { var = soviet_collapse_influence_patronage_risk min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_local_authority_pressure min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_liaison_reach min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+	soviet_collapse_apply_republic_progress_pacing_caps = yes
 }
 
 soviet_collapse_update_consolidated_republic_ideas = {
@@ -11468,6 +11505,13 @@ soviet_collapse_compute_progressive_release_pressure_gain = {
 		limit = { has_soviet_collapse_failure_release_pressure = yes }
 		add_to_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.failure_pressure_monthly_add }
 	}
+	if = {
+		limit = {
+			has_soviet_collapse_calm_mtth_release_block = yes
+			check_variable = { var = soviet_collapse_progressive_release_pressure_gain value = constant:soviet_collapse_release_mtth.calm_sustained_pressure_monthly_add compare = greater_than }
+		}
+		set_temp_variable = { soviet_collapse_progressive_release_pressure_gain = constant:soviet_collapse_release_mtth.calm_sustained_pressure_monthly_add }
+	}
 	clamp_temp_variable = {
 		var = soviet_collapse_progressive_release_pressure_gain
 		min = constant:soviet_collapse_baseline.component_min
@@ -12071,9 +12115,15 @@ soviet_collapse_maybe_release_threat_breakaway = {
 				limit = {
 					check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
 				}
-				random_list = {
-					var:soviet_collapse_progressive_release_weight = { soviet_collapse_fire_progressive_release_event = yes }
-					var:soviet_collapse_progressive_release_miss_weight = { soviet_collapse_register_progressive_release_miss = yes }
+				if = {
+					limit = { has_soviet_collapse_forced_progressive_release_pressure = yes }
+					soviet_collapse_fire_progressive_release_event = yes
+				}
+				else = {
+					random_list = {
+						var:soviet_collapse_progressive_release_weight = { soviet_collapse_fire_progressive_release_event = yes }
+						var:soviet_collapse_progressive_release_miss_weight = { soviet_collapse_register_progressive_release_miss = yes }
+					}
 				}
 				set_temp_variable = { soviet_collapse_progressive_candidate_weight = constant:soviet_collapse_baseline.component_min }
 				set_temp_variable = { soviet_collapse_progressive_candidate_weight_cap = constant:soviet_collapse_baseline.component_min }
