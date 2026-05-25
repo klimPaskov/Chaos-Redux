@@ -9,6 +9,8 @@
 
 @soviet_collapse_ukr_bread_state_building_level = 1
 @soviet_collapse_ukr_bread_state_fort_level = 1
+@soviet_collapse_moldova_route_building_level = 1
+@soviet_collapse_moldova_route_fort_level = 1
 
 soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_moscow_authority min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -3659,6 +3661,186 @@ ukr_soviet_collapse_apply_last_harvest_plan = {
 	set_country_flag = { flag = soviet_collapse_ukraine_last_harvest_plan_recent days = ukr_soviet_collapse_harvest_recent_days }
 	set_temp_variable = { ukr_soviet_collapse_bread_state_old_movement_pressure = constant:soviet_collapse_ukraine_bread_state.soviet_old_movement_large }
 	ukr_soviet_collapse_apply_bread_state_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+mol_soviet_collapse_pay_prut_statute_cost = {
+	add_political_power = constant:soviet_collapse_moldova_route.prut_statute_political_power_spend
+	add_command_power = constant:soviet_collapse_moldova_route.prut_statute_command_power_spend
+}
+
+mol_soviet_collapse_pay_romanian_mission_cost = {
+	add_political_power = constant:soviet_collapse_moldova_route.romanian_mission_political_power_spend
+	add_command_power = constant:soviet_collapse_moldova_route.romanian_mission_command_power_spend
+	add_fuel = constant:soviet_collapse_moldova_route.romanian_mission_fuel_spend
+}
+
+mol_soviet_collapse_pay_sfat_veto_cost = {
+	add_political_power = constant:soviet_collapse_moldova_route.sfat_veto_political_power_spend
+}
+
+mol_soviet_collapse_pay_dniester_line_cost = {
+	add_command_power = constant:soviet_collapse_moldova_route.dniester_line_command_power_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_moldova_route.dniester_line_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_moldova_route.dniester_line_support_equipment_spend }
+}
+
+mol_soviet_collapse_pay_customs_board_cost = {
+	add_political_power = constant:soviet_collapse_moldova_route.customs_board_political_power_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_moldova_route.customs_board_trains_spend }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_moldova_route.customs_board_convoys_spend }
+}
+
+mol_soviet_collapse_pay_patronage_limits_cost = {
+	add_political_power = constant:soviet_collapse_moldova_route.patronage_limits_political_power_spend
+}
+
+mol_soviet_collapse_add_prut_statute_support = {
+	add_to_variable = { soviet_collapse_moldova_prut_statute_support = mol_soviet_collapse_prut_statute_support_delta }
+	clamp_variable = {
+		var = soviet_collapse_moldova_prut_statute_support
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_moldova_route.prut_support_cap
+	}
+	set_temp_variable = { mol_soviet_collapse_prut_statute_support_delta = 0 }
+}
+
+mol_soviet_collapse_add_dniester_line_integrity = {
+	add_to_variable = { soviet_collapse_moldova_dniester_line_integrity = mol_soviet_collapse_dniester_line_integrity_delta }
+	clamp_variable = {
+		var = soviet_collapse_moldova_dniester_line_integrity
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_moldova_route.dniester_integrity_cap
+	}
+	set_temp_variable = { mol_soviet_collapse_dniester_line_integrity_delta = 0 }
+}
+
+mol_soviet_collapse_add_patronage_strain = {
+	add_to_variable = { soviet_collapse_moldova_patronage_strain = mol_soviet_collapse_patronage_strain_delta }
+	clamp_variable = {
+		var = soviet_collapse_moldova_patronage_strain
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_moldova_route.patronage_strain_cap
+	}
+	set_temp_variable = { mol_soviet_collapse_patronage_strain_delta = 0 }
+}
+
+mol_soviet_collapse_apply_route_soviet_pressure = {
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_depot_vulnerability = mol_soviet_collapse_route_soviet_depot_pressure }
+			add_to_variable = { soviet_collapse_league_cohesion = mol_soviet_collapse_route_soviet_league_pressure }
+			add_to_variable = { soviet_collapse_old_movement_pressure = mol_soviet_collapse_route_soviet_old_movement_pressure }
+			set_temp_variable = { soviet_collapse_foreign_pressure_delta = mol_soviet_collapse_route_soviet_foreign_pressure }
+			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+	set_temp_variable = { mol_soviet_collapse_route_soviet_depot_pressure = 0 }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_league_pressure = 0 }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_old_movement_pressure = 0 }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_foreign_pressure = 0 }
+}
+
+mol_soviet_collapse_apply_prut_statute_negotiation = {
+	mol_soviet_collapse_pay_prut_statute_cost = yes
+	set_country_flag = soviet_collapse_moldova_prut_statute_draft
+	set_temp_variable = { mol_soviet_collapse_prut_statute_support_delta = constant:soviet_collapse_moldova_route.prut_support_medium }
+	mol_soviet_collapse_add_prut_statute_support = yes
+	set_temp_variable = { mol_soviet_collapse_patronage_strain_delta = constant:soviet_collapse_moldova_route.patronage_strain_small }
+	mol_soviet_collapse_add_patronage_strain = yes
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_moldova_route.recognition_gain }
+	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_moldova_route.resilience_gain }
+	add_stability = constant:soviet_collapse_moldova_route.stability_gain
+	set_temp_variable = { mol_soviet_collapse_route_recent_days = constant:soviet_collapse_moldova_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_moldova_prut_statute_recent days = mol_soviet_collapse_route_recent_days }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_foreign_pressure = constant:soviet_collapse_moldova_route.soviet_foreign_pressure_small }
+	mol_soviet_collapse_apply_route_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+mol_soviet_collapse_apply_romanian_military_mission = {
+	mol_soviet_collapse_pay_romanian_mission_cost = yes
+	set_country_flag = soviet_collapse_moldova_romanian_mission_present
+	set_temp_variable = { mol_soviet_collapse_prut_statute_support_delta = constant:soviet_collapse_moldova_route.prut_support_small }
+	mol_soviet_collapse_add_prut_statute_support = yes
+	set_temp_variable = { mol_soviet_collapse_dniester_line_integrity_delta = constant:soviet_collapse_moldova_route.dniester_integrity_medium }
+	mol_soviet_collapse_add_dniester_line_integrity = yes
+	set_temp_variable = { mol_soviet_collapse_patronage_strain_delta = constant:soviet_collapse_moldova_route.patronage_strain_medium }
+	mol_soviet_collapse_add_patronage_strain = yes
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_moldova_route.infantry_reward }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_moldova_route.support_reward }
+	add_war_support = constant:soviet_collapse_moldova_route.war_support_gain
+	add_stability = constant:soviet_collapse_moldova_route.patronage_stability_penalty
+	set_temp_variable = { mol_soviet_collapse_route_recent_days = constant:soviet_collapse_moldova_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_moldova_romanian_mission_recent days = mol_soviet_collapse_route_recent_days }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_foreign_pressure = constant:soviet_collapse_moldova_route.soviet_foreign_pressure_medium }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_old_movement_pressure = constant:soviet_collapse_moldova_route.soviet_old_movement_pressure }
+	mol_soviet_collapse_apply_route_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+mol_soviet_collapse_apply_sfat_veto_clause = {
+	mol_soviet_collapse_pay_sfat_veto_cost = yes
+	set_country_flag = soviet_collapse_moldova_sfat_veto_clause
+	set_temp_variable = { mol_soviet_collapse_patronage_strain_delta = constant:soviet_collapse_moldova_route.patronage_strain_relief }
+	mol_soviet_collapse_add_patronage_strain = yes
+	set_temp_variable = { mol_soviet_collapse_prut_statute_support_delta = constant:soviet_collapse_moldova_route.prut_support_small }
+	mol_soviet_collapse_add_prut_statute_support = yes
+	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_moldova_route.resilience_large_gain }
+	add_stability = constant:soviet_collapse_moldova_route.stability_large_gain
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+mol_soviet_collapse_apply_dniester_line_fortification = {
+	mol_soviet_collapse_pay_dniester_line_cost = yes
+	set_country_flag = soviet_collapse_moldova_dniester_fortified_line
+	set_temp_variable = { mol_soviet_collapse_dniester_line_integrity_delta = constant:soviet_collapse_moldova_route.dniester_integrity_large }
+	mol_soviet_collapse_add_dniester_line_integrity = yes
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_moldova_route.depot_gain }
+	add_war_support = constant:soviet_collapse_moldova_route.war_support_gain
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = bunker level = @soviet_collapse_moldova_route_fort_level instant_build = yes }
+		add_building_construction = { type = anti_air_building level = @soviet_collapse_moldova_route_fort_level instant_build = yes }
+	}
+	set_temp_variable = { mol_soviet_collapse_route_recent_days = constant:soviet_collapse_moldova_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_moldova_dniester_line_recent days = mol_soviet_collapse_route_recent_days }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_depot_pressure = constant:soviet_collapse_moldova_route.soviet_depot_pressure }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_old_movement_pressure = constant:soviet_collapse_moldova_route.soviet_old_movement_pressure }
+	mol_soviet_collapse_apply_route_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+mol_soviet_collapse_apply_odessa_chisinau_customs_board = {
+	mol_soviet_collapse_pay_customs_board_cost = yes
+	set_country_flag = soviet_collapse_moldova_odessa_chisinau_customs_board
+	set_temp_variable = { mol_soviet_collapse_dniester_line_integrity_delta = constant:soviet_collapse_moldova_route.dniester_integrity_small }
+	mol_soviet_collapse_add_dniester_line_integrity = yes
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_moldova_route.depot_gain }
+	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_moldova_route.league_gain }
+	add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_moldova_route.liaison_gain }
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_moldova_route.trains_reward }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_moldova_route.convoys_reward }
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = infrastructure level = @soviet_collapse_moldova_route_building_level instant_build = yes }
+	}
+	set_temp_variable = { mol_soviet_collapse_route_recent_days = constant:soviet_collapse_moldova_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_moldova_customs_board_recent days = mol_soviet_collapse_route_recent_days }
+	set_temp_variable = { mol_soviet_collapse_route_soviet_league_pressure = constant:soviet_collapse_moldova_route.soviet_league_pressure }
+	mol_soviet_collapse_apply_route_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+mol_soviet_collapse_apply_patronage_limits = {
+	mol_soviet_collapse_pay_patronage_limits_cost = yes
+	set_temp_variable = { mol_soviet_collapse_patronage_strain_delta = constant:soviet_collapse_moldova_route.patronage_strain_relief }
+	mol_soviet_collapse_add_patronage_strain = yes
+	add_stability = constant:soviet_collapse_moldova_route.stability_gain
+	set_temp_variable = { mol_soviet_collapse_route_relief_days = constant:soviet_collapse_moldova_route.relief_recent_days }
+	set_country_flag = { flag = soviet_collapse_moldova_patronage_limits_recent days = mol_soviet_collapse_route_relief_days }
 	soviet_collapse_update_consolidated_republic_ideas = yes
 }
 

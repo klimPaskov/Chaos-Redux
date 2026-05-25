@@ -1,0 +1,219 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 MOLDOVA ROUTE DECISIONS
+# ============================================================================
+# Route-gated decisions for Moldova's Romanian, Prut, Dniester, and Odessa
+# crossing paths. These use focus-set flags from the Moldova tree and turn the
+# route into a live patronage, river-line, and customs-board loop.
+# ============================================================================
+
+@mol_soviet_collapse_route_days_reenable = 60
+@mol_soviet_collapse_route_relief_days_reenable = 75
+
+soviet_collapse_breakaway_category = {
+	mol_soviet_collapse_negotiate_prut_statute = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_prut_statute_cost = yes }
+		}
+		visible = {
+			has_mol_soviet_collapse_route_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_moldova_union_with_romania_question
+				has_country_flag = soviet_collapse_moldova_conditional_union
+				has_country_flag = soviet_collapse_moldova_vote_on_prut_statute
+			}
+			NOT = { has_country_flag = soviet_collapse_moldova_prut_statute_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_prut_statute_cost = yes }
+		}
+		custom_cost_text = mol_soviet_collapse_prut_statute_cost_text
+		days_re_enable = @mol_soviet_collapse_route_days_reenable
+		complete_effect = {
+			mol_soviet_collapse_apply_prut_statute_negotiation = yes
+			custom_effect_tooltip = mol_soviet_collapse_negotiate_prut_statute_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_country_flag = soviet_collapse_moldova_conditional_union
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+		}
+	}
+
+	mol_soviet_collapse_accept_romanian_military_mission = {
+		icon = GFX_decision_soviet_collapse_foreign_goal
+		available = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_romanian_mission_cost = yes }
+		}
+		visible = {
+			has_mol_soviet_collapse_route_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_moldova_romanian_alignment_office
+				has_country_flag = soviet_collapse_moldova_romanian_aid_without_annexation
+				has_country_flag = soviet_collapse_moldova_bucharest_observer_mission
+				has_country_flag = soviet_collapse_moldova_western_training_mission
+			}
+			NOT = { has_country_flag = soviet_collapse_moldova_romanian_mission_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_romanian_mission_cost = yes }
+		}
+		custom_cost_text = mol_soviet_collapse_romanian_mission_cost_text
+		days_re_enable = @mol_soviet_collapse_route_days_reenable
+		complete_effect = {
+			mol_soviet_collapse_apply_romanian_military_mission = yes
+			custom_effect_tooltip = mol_soviet_collapse_accept_romanian_military_mission_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				has_country_flag = soviet_collapse_moldova_reject_union_question
+			}
+		}
+	}
+
+	mol_soviet_collapse_assert_no_union_without_sfat = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_sfat_veto_cost = yes }
+		}
+		visible = {
+			has_mol_soviet_collapse_route_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_moldova_alliance_not_union
+				has_country_flag = soviet_collapse_moldova_conditional_union
+				has_country_flag = soviet_collapse_moldova_reject_union_question
+				has_country_flag = soviet_collapse_moldova_republic_without_patron
+			}
+			NOT = { has_country_flag = soviet_collapse_moldova_sfat_veto_clause }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_sfat_veto_cost = yes }
+		}
+		custom_cost_text = mol_soviet_collapse_sfat_veto_cost_text
+		days_re_enable = @mol_soviet_collapse_route_days_reenable
+		complete_effect = {
+			mol_soviet_collapse_apply_sfat_veto_clause = yes
+			custom_effect_tooltip = mol_soviet_collapse_assert_no_union_without_sfat_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_moldova_patronage_strain value = constant:soviet_collapse_moldova_route.patronage_strain_gate compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	mol_soviet_collapse_fortify_bendery_tiraspol_line = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		available = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_dniester_line_cost = yes }
+		}
+		visible = {
+			has_mol_soviet_collapse_route_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_moldova_dniester_defense_directorate
+				has_country_flag = soviet_collapse_moldova_dniester_military_bureau
+				has_country_flag = soviet_collapse_moldova_bendery_bridge_works
+				has_country_flag = soviet_collapse_moldova_tiraspol_depot_belt
+				has_country_flag = soviet_collapse_moldova_river_command_reserve
+			}
+			NOT = { has_country_flag = soviet_collapse_moldova_dniester_line_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_dniester_line_cost = yes }
+		}
+		custom_cost_text = mol_soviet_collapse_dniester_line_cost_text
+		days_re_enable = @mol_soviet_collapse_route_days_reenable
+		complete_effect = {
+			mol_soviet_collapse_apply_dniester_line_fortification = yes
+			custom_effect_tooltip = mol_soviet_collapse_fortify_bendery_tiraspol_line_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+		}
+	}
+
+	mol_soviet_collapse_open_odessa_chisinau_customs_board = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		available = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_customs_board_cost = yes }
+		}
+		visible = {
+			has_mol_soviet_collapse_route_decision_surface = yes
+			OR = {
+				has_country_flag = soviet_collapse_moldova_ukrainian_grain_road
+				has_country_flag = soviet_collapse_moldova_odessa_contact_posts
+				has_country_flag = soviet_collapse_moldova_border_customs_shares
+				has_country_flag = soviet_collapse_moldova_eastern_buffer_missions
+				has_country_flag = soviet_collapse_moldova_league_observer_table
+			}
+			NOT = { has_country_flag = soviet_collapse_moldova_customs_board_recent }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_mol_soviet_collapse_customs_board_cost = yes }
+		}
+		custom_cost_text = mol_soviet_collapse_customs_board_cost_text
+		days_re_enable = @mol_soviet_collapse_route_days_reenable
+		complete_effect = {
+			mol_soviet_collapse_apply_odessa_chisinau_customs_board = yes
+			custom_effect_tooltip = mol_soviet_collapse_open_odessa_chisinau_customs_board_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_country_flag = soviet_collapse_moldova_eastern_buffer_missions
+			}
+		}
+	}
+
+	mol_soviet_collapse_publish_sfat_limits_on_patronage = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = {
+				can_pay_mol_soviet_collapse_patronage_limits_cost = yes
+				can_mol_soviet_collapse_publish_sfat_limits = yes
+			}
+		}
+		visible = {
+			has_mol_soviet_collapse_route_decision_surface = yes
+			can_mol_soviet_collapse_publish_sfat_limits = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_mol_soviet_collapse_patronage_limits_cost = yes
+				can_mol_soviet_collapse_publish_sfat_limits = yes
+			}
+		}
+		custom_cost_text = mol_soviet_collapse_patronage_limits_cost_text
+		days_re_enable = @mol_soviet_collapse_route_relief_days_reenable
+		complete_effect = {
+			mol_soviet_collapse_apply_patronage_limits = yes
+			custom_effect_tooltip = mol_soviet_collapse_publish_sfat_limits_on_patronage_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				check_variable = { var = soviet_collapse_moldova_patronage_strain value = constant:soviet_collapse_moldova_route.patronage_strain_cap compare = greater_than }
+			}
+		}
+	}
+}
