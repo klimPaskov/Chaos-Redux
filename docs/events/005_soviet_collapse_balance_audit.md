@@ -30,7 +30,7 @@ Verifier evidence from `crisis_balance_surface`, `crisis_monthly_guard_surface`,
 
 ## Guards And Dampening
 
-- Union Unmade first-month lock: `soviet_collapse_union_unmade_first_month_lock`.
+- Union Unmade first-month lock: `soviet_collapse_union_unmade_first_month_lock`, with duration controlled by `constant:soviet_collapse_threat_guard.first_month_lock_days` and emitted through `meta_effect` because timed flag `days =` expects a literal value.
 - Union Unmade regular trigger ingredients: minimum breakaway count 5, high threat 60, critical authority 25, and sustained severe pressure alternatives. The breakaway ingredient no longer doubles as the calm/contested component-cap cutoff.
 - Union Unmade terminal pacing tracks `soviet_collapse_months_active` and `soviet_collapse_terminal_pressure_months`. Standard terminal collapse now needs eight active months and six terminal-pressure months; war, Free Republics League formation, high chaos, or Kazakhstan failure can accelerate that to four active months and three terminal-pressure months; catastrophic authority loss, war/capital loss, or Chaos V can mature after two active months.
 - Threat-ceiling recalculation, progressive-release checks, and UDC's Union Defense endgame route through `soviet_collapse_maybe_show_union_unmade_super_event`, so they use the same first-month, terminal-pacing, and severe-failure gates instead of calling Union Unmade directly.
