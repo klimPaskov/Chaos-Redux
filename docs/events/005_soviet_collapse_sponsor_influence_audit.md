@@ -8,7 +8,7 @@ This audit checks the Part 3 influence-war and sponsor-dependency requirements a
 
 ## Sponsor Coverage
 
-Foreign patron eligibility is explicit in `is_soviet_collapse_foreign_patron_candidate`. The trigger accepts only the tracked sponsor tags below, while still requiring an active war with Moscow or negative opinion of Moscow. This prevents untracked majors from adding only generic total influence.
+Foreign patron eligibility is explicit in `is_soviet_collapse_foreign_patron_candidate`. The trigger accepts only the tracked sponsor tags below, while requiring either active war with Moscow, negative opinion of Moscow, or high Soviet Foreign Penetration. This prevents untracked majors from adding only generic total influence while letting the intervention channel open when the collapse system itself has drawn foreign attention.
 
 | Sponsor | Tag | Sponsor-specific variable | Coverage |
 | --- | --- | --- | --- |
