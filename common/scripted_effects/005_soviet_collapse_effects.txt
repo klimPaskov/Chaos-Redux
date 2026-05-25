@@ -10441,10 +10441,33 @@ soviet_collapse_save_regional_priority_progressive_republic_target = {
 	}
 }
 
+soviet_collapse_save_pressure_successor_progressive_target = {
+	every_possible_country = {
+		limit = {
+			NOT = { has_event_target = soviet_collapse_release_target }
+			is_soviet_collapse_pressure_successor_progressive_candidate = yes
+		}
+		random_select_amount = 1
+		save_event_target_as = soviet_collapse_release_target
+	}
+}
+
 soviet_collapse_save_random_threat_breakaway_republic_target = {
 	if = {
 		limit = { has_soviet_collapse_real_regional_cascade_pressure = yes }
 		soviet_collapse_save_regional_priority_progressive_republic_target = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_event_target = soviet_collapse_release_target }
+			OR = {
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = greater_than_or_equals }
+				check_variable = { var = soviet_collapse_progressive_release_pressure value = constant:soviet_collapse_release_mtth.sustained_pressure_severe_gate compare = greater_than_or_equals }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		soviet_collapse_save_pressure_successor_progressive_target = yes
 	}
 	every_possible_country = {
 		limit = {
@@ -10461,6 +10484,14 @@ soviet_collapse_count_progressive_release_candidates = {
 	every_possible_country = {
 		limit = {
 			is_soviet_collapse_progressive_release_candidate = yes
+		}
+		SOV = {
+			add_to_variable = { soviet_collapse_progressive_release_candidate_count = 1 }
+		}
+	}
+	every_possible_country = {
+		limit = {
+			is_soviet_collapse_pressure_successor_progressive_candidate = yes
 		}
 		SOV = {
 			add_to_variable = { soviet_collapse_progressive_release_candidate_count = 1 }
@@ -10662,7 +10693,45 @@ soviet_collapse_apply_progressive_release_final_weight_dampening = {
 soviet_collapse_release_event_target_progressive_republic = {
 	event_target:soviet_collapse_release_target = {
 		if = {
-			limit = { exists = no }
+			limit = {
+				tag = FEV
+				SOV = { can_soviet_collapse_spawn_fev = yes }
+			}
+			SOV = { soviet_collapse_spawn_fev_if_enabled = yes }
+		}
+		if = {
+			limit = {
+				tag = SZA
+				SOV = { can_soviet_collapse_spawn_sza = yes }
+			}
+			SOV = { soviet_collapse_spawn_sza_if_enabled = yes }
+		}
+		if = {
+			limit = {
+				tag = UWD
+				SOV = { can_soviet_collapse_spawn_uwd = yes }
+			}
+			SOV = { soviet_collapse_spawn_uwd_if_enabled = yes }
+		}
+		if = {
+			limit = {
+				tag = MRC
+				SOV = { can_soviet_collapse_spawn_mrc = yes }
+			}
+			SOV = { soviet_collapse_spawn_mrc_if_enabled = yes }
+		}
+		if = {
+			limit = {
+				exists = no
+				NOT = {
+					OR = {
+						tag = FEV
+						tag = SZA
+						tag = UWD
+						tag = MRC
+					}
+				}
+			}
 			SOV = { release = PREV }
 			set_country_flag = soviet_collapse_event_created_republic
 		}
@@ -10670,12 +10739,23 @@ soviet_collapse_release_event_target_progressive_republic = {
 			limit = {
 				exists = yes
 				is_subject_of = SOV
+				NOT = {
+					OR = {
+						tag = FEV
+						tag = SZA
+						tag = UWD
+						tag = MRC
+					}
+				}
 			}
 			SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
 			set_country_flag = soviet_collapse_event_created_republic
 		}
 		if = {
-			limit = { exists = yes }
+			limit = {
+				exists = yes
+				NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
+			}
 			soviet_collapse_setup_breakaway_country = yes
 			soviet_collapse_load_event_created_focus_tree = yes
 		}
