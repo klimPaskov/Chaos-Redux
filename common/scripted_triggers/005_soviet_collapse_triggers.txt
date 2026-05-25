@@ -66,6 +66,14 @@ is_soviet_collapse_opening_strong_center_guard_window = {
 	NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
 }
 
+has_soviet_collapse_baltic_breakaway = {
+	OR = {
+		LIT = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		LAT = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		EST = { exists = yes has_country_flag = soviet_collapse_breakaway }
+	}
+}
+
 has_soviet_collapse_anti_soviet_breakaway_war = {
 	OR = {
 		UKR = { exists = yes has_country_flag = soviet_collapse_breakaway has_war_with = SOV }
@@ -4490,9 +4498,7 @@ can_issue_soviet_collapse_baltic_legal_counterclaim = {
 		13 = { is_owned_by = ROOT is_controlled_by = ROOT }
 	}
 	OR = {
-		LIT = { exists = yes has_country_flag = soviet_collapse_breakaway }
-		LAT = { exists = yes has_country_flag = soviet_collapse_breakaway }
-		EST = { exists = yes has_country_flag = soviet_collapse_breakaway }
+		has_soviet_collapse_baltic_breakaway = yes
 		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_baseline.foreign_appetite compare = greater_than }
 		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than }
 	}
