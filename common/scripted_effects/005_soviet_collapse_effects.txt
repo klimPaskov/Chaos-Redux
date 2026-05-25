@@ -9399,6 +9399,71 @@ soviet_collapse_compute_progressive_release_regional_cascade = {
 	}
 }
 
+soviet_collapse_compute_progressive_candidate_release_weight = {
+	set_temp_variable = { soviet_collapse_progressive_candidate_weight = soviet_collapse_progressive_release_candidate_count }
+	multiply_temp_variable = { soviet_collapse_progressive_candidate_weight = constant:soviet_collapse_release_mtth.candidate_count_weight_add }
+	if = {
+		limit = {
+			OR = {
+				is_soviet_collapse_calm_strong_center_window = yes
+				is_soviet_collapse_opening_strong_center_guard_window = yes
+			}
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = less_than }
+			NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+		}
+		set_temp_variable = { soviet_collapse_progressive_candidate_weight_cap = constant:soviet_collapse_release_mtth.candidate_count_calm_cap }
+	}
+	else_if = {
+		limit = {
+			has_war = no
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = less_than }
+			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
+			NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
+			NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+		set_temp_variable = { soviet_collapse_progressive_candidate_weight_cap = constant:soviet_collapse_release_mtth.candidate_count_moderate_cap }
+	}
+	else_if = {
+		limit = {
+			NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+			NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+		set_temp_variable = { soviet_collapse_progressive_candidate_weight_cap = constant:soviet_collapse_release_mtth.candidate_count_high_cap }
+	}
+	else = {
+		set_temp_variable = { soviet_collapse_progressive_candidate_weight_cap = constant:soviet_collapse_release_mtth.candidate_count_terminal_cap }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_progressive_candidate_weight value = soviet_collapse_progressive_candidate_weight_cap compare = greater_than }
+		}
+		set_temp_variable = { soviet_collapse_progressive_candidate_weight = soviet_collapse_progressive_candidate_weight_cap }
+	}
+	clamp_temp_variable = {
+		var = soviet_collapse_progressive_candidate_weight
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.candidate_count_weight_cap
+	}
+}
+
+soviet_collapse_apply_progressive_release_final_weight_dampening = {
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+		}
+		multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.high_authority_factor }
+		multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.high_obedience_factor }
+	}
+	clamp_temp_variable = {
+		var = soviet_collapse_progressive_release_weight
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.miss_weight_ceiling
+	}
+}
+
 soviet_collapse_release_event_target_progressive_republic = {
 	event_target:soviet_collapse_release_target = {
 		if = {
@@ -9683,13 +9748,7 @@ soviet_collapse_maybe_release_threat_breakaway = {
 				}
 				set_temp_variable = { soviet_collapse_progressive_release_weight = mtth:soviet_collapse_progressive_release_weight }
 				set_temp_variable = { soviet_collapse_progressive_release_miss_weight = mtth:soviet_collapse_progressive_release_miss_weight }
-				set_temp_variable = { soviet_collapse_progressive_candidate_weight = soviet_collapse_progressive_release_candidate_count }
-				multiply_temp_variable = { soviet_collapse_progressive_candidate_weight = constant:soviet_collapse_release_mtth.candidate_count_weight_add }
-				clamp_temp_variable = {
-					var = soviet_collapse_progressive_candidate_weight
-					min = constant:soviet_collapse_baseline.component_min
-					max = constant:soviet_collapse_release_mtth.candidate_count_weight_cap
-				}
+				soviet_collapse_compute_progressive_candidate_release_weight = yes
 				set_temp_variable = { soviet_collapse_release_urgency_weight = soviet_collapse_release_urgency_score }
 				multiply_temp_variable = { soviet_collapse_release_urgency_weight = constant:soviet_collapse_release_mtth.release_urgency_weight_factor }
 				clamp_temp_variable = {
@@ -9701,6 +9760,7 @@ soviet_collapse_maybe_release_threat_breakaway = {
 				add_to_temp_variable = { soviet_collapse_progressive_release_weight = soviet_collapse_regional_cascade_score }
 				add_to_temp_variable = { soviet_collapse_progressive_release_weight = soviet_collapse_progressive_release_pressure }
 				add_to_temp_variable = { soviet_collapse_progressive_release_weight = soviet_collapse_release_urgency_weight }
+				soviet_collapse_apply_progressive_release_final_weight_dampening = yes
 				set_temp_variable = { soviet_collapse_progressive_release_miss_reduction = soviet_collapse_regional_cascade_score }
 				multiply_temp_variable = { soviet_collapse_progressive_release_miss_reduction = constant:soviet_collapse_release_mtth.regional_cascade_miss_reduction_per_score }
 				clamp_temp_variable = {
@@ -9738,6 +9798,7 @@ soviet_collapse_maybe_release_threat_breakaway = {
 					var:soviet_collapse_progressive_release_miss_weight = { }
 				}
 				set_temp_variable = { soviet_collapse_progressive_candidate_weight = 0 }
+				set_temp_variable = { soviet_collapse_progressive_candidate_weight_cap = 0 }
 				set_temp_variable = { soviet_collapse_progressive_release_miss_reduction = 0 }
 			}
 			else = {
