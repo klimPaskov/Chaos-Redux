@@ -11332,7 +11332,10 @@ soviet_collapse_accumulate_progressive_release_pressure = {
 	if = {
 		limit = {
 			has_soviet_collapse_progressive_release_pacing_ready = yes
-			has_soviet_collapse_real_release_pressure = yes
+			OR = {
+				has_soviet_collapse_real_release_pressure = yes
+				has_soviet_collapse_latent_mtth_release_pressure = yes
+			}
 			has_soviet_collapse_sustained_mtth_release_pressure = yes
 			check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = greater_than }
 		}
@@ -11348,7 +11351,12 @@ soviet_collapse_accumulate_progressive_release_pressure = {
 	else_if = {
 		limit = {
 			OR = {
-				NOT = { has_soviet_collapse_real_release_pressure = yes }
+				NOT = {
+					OR = {
+						has_soviet_collapse_real_release_pressure = yes
+						has_soviet_collapse_latent_mtth_release_pressure = yes
+					}
+				}
 				NOT = { has_soviet_collapse_sustained_mtth_release_pressure = yes }
 				check_variable = { var = soviet_collapse_progressive_release_candidate_count value = 0 compare = less_than_or_equals }
 			}
