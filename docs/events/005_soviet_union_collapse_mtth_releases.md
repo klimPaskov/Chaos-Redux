@@ -15,7 +15,7 @@ The balance pass keeps the 0-100 scale but makes the release curve sharper and s
 3. At 100 threat, `soviet_collapse_show_union_unmade_super_event` resolves terminal collapse only after the terminal pacing gates are mature.
 4. Below terminal collapse, the effect counts eligible candidates before rolling. If the pool is empty, it clears the sustained-pressure accumulator and does not start the cooldown.
 5. If candidates exist, sustained unresolved pressure adds to the release weight up to the configured cap and slightly reduces the miss path after the first pressure month. The accumulator grows from a small base plus urgency score, candidate count, regional cascade score, threat band, weak center signals, and failed strategic objectives. Progressive selection uses `global.soviet_collapse_progressive_release_selection` as a scratch array, leaving first-wave memory intact for later candidate exclusion.
-6. A successful roll calls `soviet_collapse_fire_progressive_release_event`, which saves one release target as `event_target:soviet_collapse_release_target` before selecting a visible cause event.
+6. A successful roll calls `soviet_collapse_fire_progressive_release_event`, which saves one release target as `event_target:soviet_collapse_release_target` before selecting a visible cause event. If a regional cascade is active, target selection first checks the matching family: western, Baltic, Caucasus, Central Asian, Kazakhstan after the southern gate, then internal republics. If that active-family pool is empty, the generic candidate pool is still used.
 7. The cause event releases that selected republic through `soviet_collapse_release_one_threat_breakaway_republic`, applies the normal dynamic support package, loads the runtime focus tree for an event-created republic, and starts the cooldown only after a candidate was actually selected.
 8. Progressive candidates now cover western and eastern European republics, Baltic republics, Caucasus republics, Central Asian republics, Kazakhstan after southern cascade pressure, and vanilla-supported internal republics. Internal republics enter the progressive selector only after moderate threat, at least five breakaways, or higher chaos.
 
@@ -47,7 +47,7 @@ The current tuning anchors are:
 
 Release-level component gates are separate from focus AI thresholds: Republic Momentum 50, severe Republic Momentum 65, depot vulnerability 50, Foreign Penetration 45, League Cohesion 45, and old-movement pressure 35.
 
-Kazakhstan remains gated by southern cascade pressure inside the candidate selector, so progressive releases cannot make Kazakhstan the first Central Asian breakaway in calm conditions.
+Kazakhstan remains gated by southern cascade pressure inside the candidate selector. When a southern cascade exists, the selector tries remaining smaller Central Asian republics before Kazakhstan, then allows Kazakhstan if the smaller southern pool is already empty or unavailable. High chaos can still make Kazakhstan eligible through the generic pool, but not as a calm first southern release.
 
 The sustained-pressure accumulator is `soviet_collapse_progressive_release_pressure`. It adds `constant:soviet_collapse_release_mtth.sustained_pressure_monthly_add` plus dynamic pressure from `urgency_pressure_per_score`, `candidate_pressure_per_candidate`, `regional_cascade_pressure_per_score`, threat-band adders, weak-center adders, and failed-objective adders. The gain is capped by `sustained_pressure_monthly_gain_cap`, the total accumulator is capped by `sustained_pressure_cap`, and the value resets after a real release or an empty candidate pool. Current tuning starts at 4 per eligible monthly pass, caps monthly gain at 32, caps stored pressure at 72, opens the accumulated-pressure roll gate at 16, and applies the 0.85 miss-weight factor once stored pressure reaches 12. This prevents empty-pool cooldowns while still making repeated unresolved pressure visible.
 
@@ -65,7 +65,7 @@ The detailed family-by-family audit is in `docs/events/005_soviet_collapse_mtth_
 | Baltic republics | `LIT`, `LAT`, and `EST` are progressive MTTH candidates and can later form or join the Baltic local league where quorum exists. |
 | Caucasus republics | `GEO`, `ARM`, and `AZR` are progressive MTTH candidates and can later form or join the Caucasus local league where quorum exists. |
 | Central Asian republics | `UZB`, `KYR`, `TAJ`, and `TMS` are progressive MTTH candidates and use the Central Asian runtime focus tree. |
-| Kazakhstan | `KAZ` is a progressive MTTH candidate only after the southern cascade gate. |
+| Kazakhstan | `KAZ` is a progressive MTTH candidate after the southern cascade gate, with smaller Central Asian candidates checked first during active southern cascades. |
 | Internal republics | `KAR`, `KOM`, `CRI`, `TAT`, `BSK`, `FER`, `YAK`, `BYA`, and `TAN` are progressive MTTH candidates after moderate threat, existing breakaway pressure, or higher chaos, and they load the internal republic tree. |
 | North Caucasus or Mountain Republic | `MRC` is covered by the implementation-defined Mountain Republic high-chaos spawn path rather than a normal vanilla release. |
 
