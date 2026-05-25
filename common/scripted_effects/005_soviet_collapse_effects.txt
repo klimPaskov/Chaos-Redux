@@ -346,6 +346,52 @@ soviet_collapse_apply_foreign_source_pressure_caps = {
 	set_temp_variable = { soviet_collapse_foreign_source_floor = 0 }
 }
 
+soviet_collapse_apply_immediate_total_threat_pacing = {
+	if = {
+		limit = {
+			has_global_flag = soviet_collapse_opening_pressure_initialized
+			NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+			NOT = { has_soviet_collapse_war_release_pressure = yes }
+			NOT = { has_soviet_collapse_opening_release_emergency = yes }
+			OR = {
+				is_soviet_collapse_calm_strong_center_window = yes
+				is_soviet_collapse_opening_strong_center_guard_window = yes
+				check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+			}
+		}
+		set_temp_variable = { soviet_collapse_immediate_total_threat_cap = soviet_collapse_last_month_total_threat }
+		add_to_temp_variable = { soviet_collapse_immediate_total_threat_cap = constant:soviet_collapse_threat_guard.calm_failed_month_cap }
+		if = {
+			limit = {
+				check_variable = { var = soviet_collapse_total_collapse_threat value = soviet_collapse_immediate_total_threat_cap compare = greater_than }
+			}
+			set_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_immediate_total_threat_cap }
+		}
+	}
+	else_if = {
+		limit = {
+			has_global_flag = soviet_collapse_opening_pressure_initialized
+			NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+			NOT = { has_soviet_collapse_war_release_pressure = yes }
+			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
+			check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.contested_component_cap_breakaway_gate compare = less_than }
+			check_variable = { var = soviet_collapse_last_month_total_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+			NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
+			NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
+			NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+		}
+		set_temp_variable = { soviet_collapse_immediate_total_threat_cap = soviet_collapse_last_month_total_threat }
+		add_to_temp_variable = { soviet_collapse_immediate_total_threat_cap = constant:soviet_collapse_threat_guard.moderate_failed_month_cap }
+		if = {
+			limit = {
+				check_variable = { var = soviet_collapse_total_collapse_threat value = soviet_collapse_immediate_total_threat_cap compare = greater_than }
+			}
+			set_variable = { soviet_collapse_total_collapse_threat = soviet_collapse_immediate_total_threat_cap }
+		}
+	}
+	set_temp_variable = { soviet_collapse_immediate_total_threat_cap = constant:soviet_collapse_baseline.total_threat_floor }
+}
+
 soviet_collapse_recalculate_total_threat = {
 	soviet_collapse_clamp_crisis_components = yes
 	soviet_collapse_apply_monthly_center_erosion_caps = yes
@@ -406,6 +452,7 @@ soviet_collapse_recalculate_total_threat = {
 		}
 		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_threat_guard.preterminal_total_threat_ceiling }
 	}
+	soviet_collapse_apply_immediate_total_threat_pacing = yes
 	soviet_collapse_apply_timeout_burst_pressure_caps = yes
 	if = {
 		limit = {
