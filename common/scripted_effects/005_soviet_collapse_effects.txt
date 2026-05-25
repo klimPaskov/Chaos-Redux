@@ -11501,7 +11501,16 @@ soviet_collapse_queue_objective_refill = {
 			NOT = { has_country_flag = soviet_collapse_objective_refill_queued }
 		}
 		set_country_flag = soviet_collapse_objective_refill_queued
-		country_event = { id = chaosx.nr5.128 days = constant:soviet_collapse_soviet_objective.objective_refill_delay_days }
+		set_temp_variable = { soviet_collapse_objective_refill_delay_days = constant:soviet_collapse_soviet_objective.objective_refill_delay_days }
+		meta_effect = {
+			text = {
+				country_event = {
+					id = chaosx.nr5.128
+					days = [OBJECTIVE_REFILL_DAYS]
+				}
+			}
+			OBJECTIVE_REFILL_DAYS = "[?soviet_collapse_objective_refill_delay_days|.0]"
+		}
 	}
 }
 
@@ -11510,7 +11519,16 @@ soviet_collapse_activate_opening_objectives = {
 	if = {
 		limit = { NOT = { has_country_flag = soviet_collapse_objective_activation_grace } }
 		set_country_flag = soviet_collapse_objective_activation_grace
-		country_event = { id = chaosx.nr5.127 days = constant:soviet_collapse_soviet_objective.objective_activation_grace_days }
+		set_temp_variable = { soviet_collapse_objective_activation_grace_days = constant:soviet_collapse_soviet_objective.objective_activation_grace_days }
+		meta_effect = {
+			text = {
+				country_event = {
+					id = chaosx.nr5.127
+					days = [OBJECTIVE_GRACE_DAYS]
+				}
+			}
+			OBJECTIVE_GRACE_DAYS = "[?soviet_collapse_objective_activation_grace_days|.0]"
+		}
 	}
 	soviet_collapse_prune_invalid_active_soviet_objectives = yes
 	soviet_collapse_count_active_soviet_objectives = yes
