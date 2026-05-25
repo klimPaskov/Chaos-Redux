@@ -487,6 +487,72 @@ soviet_collapse_apply_foreign_pressure_delta = {
 	set_temp_variable = { soviet_collapse_foreign_pressure_delta = 0 }
 }
 
+soviet_collapse_apply_foreign_patron_pressure_delta = {
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_foreign_pressure_delta value = 0 compare = greater_than }
+		}
+		add_to_variable = { soviet_collapse_monthly_foreign_patron_pressure = soviet_collapse_foreign_pressure_delta }
+		if = {
+			limit = {
+				OR = {
+					is_soviet_collapse_calm_strong_center_window = yes
+					is_soviet_collapse_opening_strong_center_guard_window = yes
+				}
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.calm_threat_ceiling compare = less_than }
+				check_variable = { var = soviet_collapse_monthly_foreign_patron_pressure value = constant:soviet_collapse_threat_guard.calm_foreign_patron_month_cap compare = greater_than }
+			}
+			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
+			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.calm_foreign_patron_month_cap }
+			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.calm_foreign_patron_month_cap }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_soviet_collapse_war_release_pressure = yes }
+				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = greater_than_or_equals }
+				check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.contested_component_cap_breakaway_gate compare = less_than }
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_threat_guard.moderate_threat_ceiling compare = less_than }
+				check_variable = { var = soviet_collapse_monthly_foreign_patron_pressure value = constant:soviet_collapse_threat_guard.moderate_foreign_patron_month_cap compare = greater_than }
+				NOT = { has_global_flag = { flag = chaos_tier value = 4 } }
+				NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+			}
+			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
+			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.moderate_foreign_patron_month_cap }
+			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.moderate_foreign_patron_month_cap }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+				check_variable = { var = soviet_collapse_monthly_foreign_patron_pressure value = constant:soviet_collapse_threat_guard.severe_foreign_patron_month_cap compare = greater_than }
+				NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+			}
+			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
+			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.severe_foreign_patron_month_cap }
+			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.severe_foreign_patron_month_cap }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+				NOT = { has_soviet_collapse_terminal_pacing_matured = yes }
+				check_variable = { var = soviet_collapse_monthly_foreign_patron_pressure value = constant:soviet_collapse_threat_guard.preterminal_foreign_patron_month_cap compare = greater_than }
+				NOT = { has_global_flag = { flag = chaos_tier value = 5 } }
+			}
+			set_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = soviet_collapse_monthly_foreign_patron_pressure }
+			subtract_from_temp_variable = { soviet_collapse_foreign_patron_pressure_over_cap = constant:soviet_collapse_threat_guard.preterminal_foreign_patron_month_cap }
+			subtract_from_temp_variable = { soviet_collapse_foreign_pressure_delta = soviet_collapse_foreign_patron_pressure_over_cap }
+			clamp_temp_variable = { var = soviet_collapse_foreign_pressure_delta min = 0 max = constant:soviet_collapse_baseline.component_max }
+			set_variable = { soviet_collapse_monthly_foreign_patron_pressure = constant:soviet_collapse_threat_guard.preterminal_foreign_patron_month_cap }
+		}
+	}
+	soviet_collapse_apply_foreign_pressure_delta = yes
+}
+
 soviet_collapse_set_monthly_threat_guard_cap = {
 	set_temp_variable = { soviet_collapse_monthly_threat_over_cap = soviet_collapse_total_collapse_threat }
 	subtract_from_temp_variable = { soviet_collapse_monthly_threat_over_cap = soviet_collapse_last_month_total_threat }
@@ -679,6 +745,7 @@ soviet_collapse_apply_monthly_threat_guard = {
 	set_variable = { soviet_collapse_monthly_failed_objectives = 0 }
 	set_variable = { soviet_collapse_monthly_timeout_aid_grants = 0 }
 	set_variable = { soviet_collapse_monthly_foreign_pressure = 0 }
+	set_variable = { soviet_collapse_monthly_foreign_patron_pressure = 0 }
 	set_temp_variable = { soviet_collapse_monthly_threat_cap = 0 }
 }
 
@@ -826,6 +893,7 @@ soviet_collapse_initialize_crisis_values = {
 	set_variable = { soviet_collapse_last_month_successful_objectives = 0 }
 	set_variable = { soviet_collapse_last_month_failed_objectives = 0 }
 	set_variable = { soviet_collapse_monthly_foreign_pressure = 0 }
+	set_variable = { soviet_collapse_monthly_foreign_patron_pressure = 0 }
 	set_variable = { soviet_collapse_monthly_threat_dampening = 0 }
 	set_variable = { soviet_collapse_progressive_release_pressure = 0 }
 	set_variable = { soviet_collapse_progressive_release_candidate_count = 0 }
@@ -2858,7 +2926,7 @@ soviet_collapse_apply_foreign_recognition_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.recognition_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_foreign_intervention.recognition_soviet_republic_pressure }
 			soviet_collapse_recalculate_total_threat = yes
 		}
@@ -2896,7 +2964,7 @@ soviet_collapse_apply_foreign_liaison_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.liaison_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -2935,7 +3003,7 @@ soviet_collapse_apply_foreign_armaments_aid = {
 		SOV = {
 			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_foreign_intervention.armaments_soviet_depot_pressure }
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.armaments_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -2974,7 +3042,7 @@ soviet_collapse_apply_foreign_adviser_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.advisers_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_foreign_intervention.advisers_soviet_obedience_pressure }
 			soviet_collapse_recalculate_total_threat = yes
 		}
@@ -3013,7 +3081,7 @@ soviet_collapse_apply_foreign_intelligence_aid = {
 		SOV = {
 			add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_foreign_intervention.intelligence_soviet_authority_pressure }
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.intelligence_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -3078,7 +3146,7 @@ soviet_collapse_apply_foreign_volunteer_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.volunteers_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_foreign_intervention.volunteers_soviet_republic_pressure }
 			soviet_collapse_recalculate_total_threat = yes
 		}
@@ -3117,7 +3185,7 @@ soviet_collapse_apply_foreign_trade_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.trade_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_foreign_intervention.trade_league_pressure }
 			soviet_collapse_recalculate_total_threat = yes
 		}
@@ -3165,7 +3233,7 @@ soviet_collapse_apply_foreign_civilian_construction_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.civilian_construction_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -3214,7 +3282,7 @@ soviet_collapse_apply_foreign_military_construction_aid = {
 		SOV = {
 			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_foreign_intervention.military_construction_soviet_depot_pressure }
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.military_construction_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -3252,7 +3320,7 @@ soviet_collapse_apply_foreign_press_network_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.press_network_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -3292,7 +3360,7 @@ soviet_collapse_apply_foreign_aid_corridor = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.aid_corridor_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_foreign_intervention.aid_corridor_soviet_depot_pressure }
 			soviet_collapse_recalculate_total_threat = yes
 		}
@@ -3327,7 +3395,7 @@ soviet_collapse_apply_foreign_league_conference = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.conference_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_foreign_intervention.conference_league_pressure }
 			soviet_collapse_recalculate_total_threat = yes
 		}
@@ -3374,7 +3442,7 @@ soviet_collapse_apply_foreign_league_logistics_aid = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.league_logistics_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_foreign_intervention.league_logistics_soviet_league_pressure }
 			soviet_collapse_recalculate_total_threat = yes
 		}
@@ -3405,7 +3473,7 @@ soviet_collapse_apply_anti_puppet_clause = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.anti_puppet_clause_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
@@ -3547,7 +3615,7 @@ soviet_collapse_apply_foreign_client_cabinet = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_foreign_intervention.client_cabinet_soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_apply_foreign_patron_pressure_delta = yes
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
