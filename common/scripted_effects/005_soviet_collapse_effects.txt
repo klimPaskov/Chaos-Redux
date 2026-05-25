@@ -7537,6 +7537,7 @@ soviet_collapse_apply_custom_splinter_consolidate_claim = {
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_action.coordinate_support_equipment_spend }
 	add_stability = constant:soviet_collapse_factory_ancient.stability_small
 	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	soviet_collapse_apply_custom_splinter_diplomatic_plan_bonus = yes
 }
 
 soviet_collapse_apply_custom_splinter_mobilize_signature_forces = {
@@ -7546,6 +7547,7 @@ soviet_collapse_apply_custom_splinter_mobilize_signature_forces = {
 	add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+	soviet_collapse_apply_custom_splinter_war_plan_bonus = yes
 	if = {
 		limit = {
 			tag = SZA
@@ -7593,6 +7595,56 @@ soviet_collapse_apply_custom_splinter_mobilize_signature_forces = {
 		random_owned_controlled_state = {
 			limit = { is_coastal = yes }
 			add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+		}
+	}
+}
+
+soviet_collapse_apply_custom_splinter_diplomatic_plan_bonus = {
+	if = {
+		limit = {
+			has_soviet_collapse_custom_splinter_diplomatic_payoff = yes
+			NOT = { has_country_flag = soviet_collapse_custom_splinter_diplomatic_bonus_used }
+		}
+		set_country_flag = soviet_collapse_custom_splinter_diplomatic_bonus_used
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_custom_splinter_payoff.diplomatic_recognition_gain }
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_custom_splinter_payoff.diplomatic_league_gain }
+		add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_custom_splinter_payoff.diplomatic_liaison_gain }
+		add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_custom_splinter_payoff.diplomatic_patronage_relief }
+		add_stability = constant:soviet_collapse_custom_splinter_payoff.diplomatic_stability_gain
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_custom_splinter_payoff.diplomatic_soviet_foreign_pressure }
+				soviet_collapse_apply_foreign_pressure_delta = yes
+				add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_custom_splinter_payoff.diplomatic_soviet_republic_pressure }
+				soviet_collapse_recalculate_total_threat = yes
+			}
+		}
+	}
+}
+
+soviet_collapse_apply_custom_splinter_war_plan_bonus = {
+	if = {
+		limit = {
+			has_soviet_collapse_custom_splinter_war_payoff = yes
+			NOT = { has_country_flag = soviet_collapse_custom_splinter_war_bonus_used }
+		}
+		set_country_flag = soviet_collapse_custom_splinter_war_bonus_used
+		add_command_power = constant:soviet_collapse_custom_splinter_payoff.war_command_power_gain
+		add_manpower = constant:soviet_collapse_custom_splinter_payoff.war_manpower_gain
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_custom_splinter_payoff.war_infantry_equipment_gain }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_custom_splinter_payoff.war_support_equipment_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_custom_splinter_payoff.war_resilience_gain }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_custom_splinter_payoff.war_depot_gain }
+		add_war_support = constant:soviet_collapse_custom_splinter_payoff.war_support_gain
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_custom_splinter_payoff.war_soviet_depot_pressure }
+				add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_custom_splinter_payoff.war_soviet_obedience_pressure }
+				add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_custom_splinter_payoff.enemy_front_soviet_republic_pressure }
+				soviet_collapse_recalculate_total_threat = yes
+			}
 		}
 	}
 }
