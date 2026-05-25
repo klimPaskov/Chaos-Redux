@@ -5225,18 +5225,28 @@ soviet_collapse_apply_dhc_stanitsa_oath_boards = {
 
 soviet_collapse_apply_custom_splinter_economy_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 		random_owned_controlled_state = {
 			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+	}
+	if = {
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		random_owned_controlled_state = {
+			add_building_construction = { type = bunker level = 1 instant_build = yes }
 		}
 	}
 	if = {
@@ -5336,19 +5346,28 @@ soviet_collapse_apply_custom_splinter_economy_identity = {
 
 soviet_collapse_apply_custom_splinter_supply_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
-		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		limit = { tag = FTH }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
 		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
 		random_owned_controlled_state = {
 			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+	}
+	if = {
+		limit = { tag = GAC }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
 	}
 	if = {
 		limit = { tag = BSC }
@@ -5450,12 +5469,19 @@ soviet_collapse_apply_custom_splinter_supply_identity = {
 
 soviet_collapse_apply_custom_splinter_extreme_gate_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
+		limit = { tag = FTH }
+		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_recalculate_total_threat = yes
 			}
 		}
+	}
+	if = {
+		limit = { tag = BBH }
 		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
 		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 		if = {
@@ -5524,13 +5550,13 @@ soviet_collapse_apply_custom_splinter_extreme_gate_identity = {
 		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
 	}
 	if = {
-		limit = {
-			OR = {
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = GAC }
 		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 		random_owned_controlled_state = {
 			add_building_construction = { type = bunker level = 1 instant_build = yes }
 		}
@@ -5586,14 +5612,21 @@ soviet_collapse_apply_custom_splinter_extreme_gate_identity = {
 
 soviet_collapse_apply_custom_splinter_inner_faction_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
+		limit = { tag = FTH }
+		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_recalculate_total_threat = yes
 			}
 		}
+	}
+	if = {
+		limit = { tag = BBH }
 		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
-		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 			SOV = {
@@ -5640,12 +5673,12 @@ soviet_collapse_apply_custom_splinter_inner_faction_identity = {
 		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
 	}
 	if = {
-		limit = {
-			OR = {
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
+	if = {
+		limit = { tag = MRC }
 		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 		random_owned_controlled_state = {
 			add_building_construction = { type = bunker level = 1 instant_build = yes }
@@ -5684,15 +5717,8 @@ soviet_collapse_apply_custom_splinter_inner_faction_identity = {
 
 soviet_collapse_apply_custom_splinter_first_guard_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
-		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		limit = { tag = FTH }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -5700,6 +5726,30 @@ soviet_collapse_apply_custom_splinter_first_guard_identity = {
 				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
 				soviet_collapse_recalculate_total_threat = yes
 			}
+		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_recalculate_total_threat = yes
+			}
+		}
+	}
+	if = {
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		random_owned_controlled_state = {
+			add_building_construction = { type = bunker level = 1 instant_build = yes }
 		}
 	}
 	if = {
@@ -5794,14 +5844,19 @@ soviet_collapse_apply_custom_splinter_first_guard_identity = {
 
 soviet_collapse_apply_custom_splinter_special_arm_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
+		limit = { tag = FTH }
+		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_recalculate_total_threat = yes
 			}
 		}
+	}
+	if = {
+		limit = { tag = BBH }
 		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
 		add_equipment_to_stockpile = { type = artillery_equipment amount = constant:soviet_collapse_republic_focus.artillery_equipment }
 		if = {
@@ -5811,6 +5866,16 @@ soviet_collapse_apply_custom_splinter_special_arm_identity = {
 				soviet_collapse_recalculate_total_threat = yes
 			}
 		}
+	}
+	if = {
+		limit = { tag = GAC }
+		army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+	}
+	if = {
+		limit = { tag = MRC }
+		army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
 	}
 	if = {
 		limit = { tag = BSC }
@@ -5937,16 +6002,13 @@ soviet_collapse_apply_custom_splinter_special_arm_identity = {
 
 soviet_collapse_apply_custom_splinter_propaganda_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
-		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		limit = { tag = FTH }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
+	if = {
+		limit = { tag = BBH }
+		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 			SOV = {
@@ -5954,6 +6016,16 @@ soviet_collapse_apply_custom_splinter_propaganda_identity = {
 				soviet_collapse_recalculate_total_threat = yes
 			}
 		}
+	}
+	if = {
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 	}
 	if = {
 		limit = { tag = BSC }
@@ -6024,15 +6096,25 @@ soviet_collapse_apply_custom_splinter_propaganda_identity = {
 
 soviet_collapse_apply_custom_splinter_settlement_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		random_owned_controlled_state = {
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+	}
+	if = {
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 		random_owned_controlled_state = {
 			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 		}
@@ -6133,15 +6215,29 @@ soviet_collapse_apply_custom_splinter_settlement_identity = {
 
 soviet_collapse_apply_custom_splinter_industry_plan_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		random_owned_controlled_state = {
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		random_owned_controlled_state = {
+			add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		}
+	}
+	if = {
+		limit = { tag = GAC }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+		random_owned_controlled_state = {
+			add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+		}
+	}
+	if = {
+		limit = { tag = MRC }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
 		random_owned_controlled_state = {
 			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 		}
@@ -6262,14 +6358,22 @@ soviet_collapse_apply_custom_splinter_industry_plan_identity = {
 
 soviet_collapse_apply_custom_splinter_stores_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+	}
+	if = {
+		limit = { tag = BBH }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
+	}
+	if = {
+		limit = { tag = GAC }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+	}
+	if = {
+		limit = { tag = MRC }
 		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
 	}
@@ -6347,14 +6451,7 @@ soviet_collapse_apply_custom_splinter_stores_identity = {
 
 soviet_collapse_apply_custom_splinter_legitimacy_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 		if = {
@@ -6364,6 +6461,28 @@ soviet_collapse_apply_custom_splinter_legitimacy_identity = {
 				soviet_collapse_recalculate_total_threat = yes
 			}
 		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_recalculate_total_threat = yes
+			}
+		}
+	}
+	if = {
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 	}
 	if = {
 		limit = { tag = BSC }
@@ -6434,14 +6553,7 @@ soviet_collapse_apply_custom_splinter_legitimacy_identity = {
 
 soviet_collapse_apply_custom_splinter_rival_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		army_experience = constant:soviet_collapse_republic_focus.army_xp_medium
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -6449,6 +6561,30 @@ soviet_collapse_apply_custom_splinter_rival_identity = {
 				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_medium }
 				soviet_collapse_recalculate_total_threat = yes
 			}
+		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_equipment_to_stockpile = { type = artillery_equipment amount = constant:soviet_collapse_republic_focus.artillery_equipment }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_medium }
+				soviet_collapse_recalculate_total_threat = yes
+			}
+		}
+	}
+	if = {
+		limit = { tag = GAC }
+		army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		random_owned_controlled_state = {
+			add_building_construction = { type = bunker level = 1 instant_build = yes }
 		}
 	}
 	if = {
@@ -6528,15 +6664,23 @@ soviet_collapse_apply_custom_splinter_rival_identity = {
 
 soviet_collapse_apply_custom_splinter_civil_rule_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+	}
+	if = {
+		limit = { tag = BBH }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+	}
+	if = {
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+	}
+	if = {
+		limit = { tag = MRC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
 		random_owned_controlled_state = {
 			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 		}
@@ -6617,14 +6761,19 @@ soviet_collapse_apply_custom_splinter_civil_rule_identity = {
 
 soviet_collapse_apply_custom_splinter_enemy_front_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
+		limit = { tag = FTH }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_recalculate_total_threat = yes
 			}
 		}
+	}
+	if = {
+		limit = { tag = BBH }
 		add_equipment_to_stockpile = { type = artillery_equipment amount = constant:soviet_collapse_republic_focus.artillery_equipment }
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -6632,6 +6781,18 @@ soviet_collapse_apply_custom_splinter_enemy_front_identity = {
 				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
 				soviet_collapse_recalculate_total_threat = yes
 			}
+		}
+	}
+	if = {
+		limit = { tag = GAC }
+		army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
+		random_owned_controlled_state = {
+			add_building_construction = { type = bunker level = 1 instant_build = yes }
 		}
 	}
 	if = {
@@ -6715,14 +6876,7 @@ soviet_collapse_apply_custom_splinter_enemy_front_identity = {
 
 soviet_collapse_apply_custom_splinter_league_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -6730,6 +6884,30 @@ soviet_collapse_apply_custom_splinter_league_identity = {
 				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
 				soviet_collapse_recalculate_total_threat = yes
 			}
+		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_recalculate_total_threat = yes
+			}
+		}
+	}
+	if = {
+		limit = { tag = GAC }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		random_owned_controlled_state = {
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 		}
 	}
 	if = {
@@ -6804,19 +6982,41 @@ soviet_collapse_apply_custom_splinter_league_identity = {
 
 soviet_collapse_apply_custom_splinter_foreign_identity = {
 	if = {
-		limit = {
-			OR = {
-				tag = FTH
-				tag = BBH
-				tag = GAC
-				tag = MRC
-			}
-		}
+		limit = { tag = FTH }
 		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment }
 		if = {
 			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 			SOV = {
 				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_apply_foreign_pressure_delta = yes
+			}
+		}
+	}
+	if = {
+		limit = { tag = BBH }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_republic_focus.soviet_pressure_small }
+				soviet_collapse_apply_foreign_pressure_delta = yes
+			}
+		}
+	}
+	if = {
+		limit = { tag = GAC }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+	}
+	if = {
+		limit = { tag = MRC }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
 				set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_republic_focus.soviet_pressure_small }
 				soviet_collapse_apply_foreign_pressure_delta = yes
 			}
