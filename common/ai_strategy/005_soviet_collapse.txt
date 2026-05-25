@@ -25,6 +25,17 @@
 @SOV_COLLAPSE_AI_UKR_EXPANSION_ARMY = 105
 @SOV_COLLAPSE_AI_UKR_BLACK_BANNER_ARMY = 120
 @SOV_COLLAPSE_AI_UKR_SUPPLY = 40
+@SOV_COLLAPSE_AI_BLR_COUNCIL_DEFENSE = 55
+@SOV_COLLAPSE_AI_BLR_RAIL_ARMY = 75
+@SOV_COLLAPSE_AI_BLR_FOREST_ARMY = 85
+@SOV_COLLAPSE_AI_BLR_CORRIDOR_RESTRAINT = 110
+@SOV_COLLAPSE_AI_BLR_SUPPLY = 45
+@SOV_COLLAPSE_AI_KAZ_ALASH_DEFENSE = 65
+@SOV_COLLAPSE_AI_KAZ_SOCIALIST_MILITIA = 60
+@SOV_COLLAPSE_AI_KAZ_RESOURCE_ARMY = 85
+@SOV_COLLAPSE_AI_KAZ_STEPPE_ARMY = 95
+@SOV_COLLAPSE_AI_KAZ_FOREIGN_CONTAIN = 60
+@SOV_COLLAPSE_AI_KAZ_SUPPLY = 40
 
 soviet_collapse_soviet_crisis_containment = {
 	allowed = { original_tag = SOV }
@@ -421,6 +432,288 @@ soviet_collapse_ukraine_black_banner_route = {
 		type = equipment_production_factor
 		id = support_equipment
 		value = @SOV_COLLAPSE_AI_UKR_SUPPLY
+	}
+}
+
+soviet_collapse_belarus_national_council_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = BLR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_belarus_route_national_council
+			has_country_flag = soviet_collapse_belarus_question_answered
+			has_country_flag = soviet_collapse_belarus_quiet_recognition_letters
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_BLR_COUNCIL_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_BLR_CORRIDOR_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+}
+
+soviet_collapse_belarus_socialist_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = BLR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_belarus_route_socialist_autonomy
+			has_country_flag = soviet_collapse_belarus_red_without_center
+			has_country_flag = soviet_collapse_belarus_nationalized_rail_schedules
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_BLR_RAIL_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+}
+
+soviet_collapse_belarus_rail_transit_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = BLR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_belarus_route_military_transit
+			has_country_flag = soviet_collapse_belarus_timetable_state
+			has_country_flag = soviet_collapse_belarus_minsk_central_dispatch
+			has_country_flag = soviet_collapse_belarus_every_track_through_minsk
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_BLR_RAIL_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+}
+
+soviet_collapse_belarus_foreign_corridor_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = BLR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_belarus_route_foreign_corridor
+			has_country_flag = soviet_collapse_belarus_liaison_hotels
+			has_country_flag = soviet_collapse_belarus_foreign_aid_through_brest
+			has_country_flag = soviet_collapse_belarus_corridor_everyone_wants
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_BLR_CORRIDOR_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+}
+
+soviet_collapse_belarus_forest_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = BLR
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_belarus_forest_defense_staff
+			has_country_flag = soviet_collapse_belarus_forest_can_govern
+			has_country_flag = soviet_collapse_belarus_forest_state_rumor
+			has_country_flag = soviet_collapse_belarus_green_border
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_BLR_FOREST_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_BLR_SUPPLY
+	}
+}
+
+soviet_collapse_kazakhstan_alash_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = KAZ
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_kazakhstan_route_alash
+			has_country_flag = soviet_collapse_kazakhstan_written_alash_program
+			has_country_flag = soviet_collapse_kazakhstan_restore_alash_names
+			has_country_flag = soviet_collapse_kazakhstan_constitutional_kurultai
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_KAZ_ALASH_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_BLR_CORRIDOR_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+}
+
+soviet_collapse_kazakhstan_socialist_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = KAZ
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_kazakhstan_route_socialist
+			has_country_flag = soviet_collapse_kazakhstan_soviets_of_the_steppe
+			has_country_flag = soviet_collapse_kazakhstan_planned_economy_without_center
+			has_country_flag = soviet_collapse_kazakhstan_sovereign_steppe_socialism
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_KAZ_SOCIALIST_MILITIA
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+}
+
+soviet_collapse_kazakhstan_resource_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = KAZ
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_kazakhstan_route_resource_directorate
+			has_country_flag = soviet_collapse_kazakhstan_oil_fields_guarded
+			has_country_flag = soviet_collapse_kazakhstan_domestic_resource_state
+			has_country_flag = soviet_collapse_kazakhstan_steppe_arsenal
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_KAZ_RESOURCE_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = artillery
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+}
+
+soviet_collapse_kazakhstan_steppe_pivot_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = KAZ
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_kazakhstan_steppe_federation_charter
+			has_country_flag = soviet_collapse_kazakhstan_southern_shield
+			has_country_flag = soviet_collapse_kazakhstan_basmachi_roads_reopen
+			has_country_flag = soviet_collapse_kazakhstan_army_crosses_distance
+			has_country_flag = soviet_collapse_kazakhstan_thousand_kilometers_defense
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_KAZ_STEPPE_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+}
+
+soviet_collapse_kazakhstan_foreign_technical_route = {
+	allowed = { always = yes }
+	enable = {
+		tag = KAZ
+		is_soviet_collapse_active = yes
+		OR = {
+			has_country_flag = soviet_collapse_kazakhstan_foreign_technical_missions
+			has_country_flag = soviet_collapse_kazakhstan_anglo_american_engineers
+			has_country_flag = soviet_collapse_kazakhstan_foreign_trucks_local_drivers
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = contain
+		id = SOV
+		value = @SOV_COLLAPSE_AI_KAZ_FOREIGN_CONTAIN
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support_equipment
+		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
 	}
 }
 
