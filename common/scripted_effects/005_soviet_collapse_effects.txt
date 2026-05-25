@@ -1868,6 +1868,150 @@ soviet_collapse_apply_timeout_intelligence_recognition_to_random_breakaway = {
 	}
 }
 
+soviet_collapse_apply_timeout_baltic_intelligence_aid_to_random_breakaway = {
+	if = {
+		limit = { can_soviet_collapse_grant_timeout_aid = yes }
+		random_scope_in_array = {
+			array = global.soviet_collapse_breakaway_countries
+			limit = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				NOT = { has_country_flag = soviet_collapse_timeout_aid_recent }
+				OR = {
+					tag = LIT
+					tag = LAT
+					tag = EST
+				}
+			}
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.extra_infantry_equipment_per_chaos_band }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.intelligence_recognition_progress }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			soviet_collapse_mark_timeout_aid_recipient = yes
+			SOV = { soviet_collapse_register_timeout_aid_grant = yes }
+		}
+	}
+}
+
+soviet_collapse_apply_timeout_black_sea_liaison_aid_to_random_breakaway = {
+	if = {
+		limit = { can_soviet_collapse_grant_timeout_aid = yes }
+		random_scope_in_array = {
+			array = global.soviet_collapse_breakaway_countries
+			limit = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				NOT = { has_country_flag = soviet_collapse_timeout_aid_recent }
+				OR = {
+					tag = GEO
+					tag = ARM
+					tag = AZR
+					tag = UZB
+					tag = KYR
+					tag = TAJ
+					tag = TMS
+				}
+			}
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			soviet_collapse_mark_timeout_aid_recipient = yes
+			SOV = { soviet_collapse_register_timeout_aid_grant = yes }
+		}
+	}
+}
+
+soviet_collapse_apply_timeout_caspian_border_aid_to_random_breakaway = {
+	if = {
+		limit = { can_soviet_collapse_grant_timeout_aid = yes }
+		random_scope_in_array = {
+			array = global.soviet_collapse_breakaway_countries
+			limit = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				NOT = { has_country_flag = soviet_collapse_timeout_aid_recent }
+				OR = {
+					tag = TMS
+					tag = TAJ
+					tag = AZR
+				}
+			}
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.extra_infantry_equipment_per_chaos_band }
+			soviet_collapse_mark_timeout_aid_recipient = yes
+			SOV = { soviet_collapse_register_timeout_aid_grant = yes }
+		}
+	}
+}
+
+soviet_collapse_apply_timeout_mountain_signal_aid_to_random_breakaway = {
+	if = {
+		limit = { can_soviet_collapse_grant_timeout_aid = yes }
+		random_scope_in_array = {
+			array = global.soviet_collapse_breakaway_countries
+			limit = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				NOT = { has_country_flag = soviet_collapse_timeout_aid_recent }
+				OR = {
+					tag = KYR
+					tag = TAJ
+					tag = KAZ
+				}
+			}
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_gain }
+			soviet_collapse_update_consolidated_republic_ideas = yes
+			soviet_collapse_mark_timeout_aid_recipient = yes
+			SOV = { soviet_collapse_register_timeout_aid_grant = yes }
+		}
+	}
+}
+
+soviet_collapse_apply_timeout_kazakh_first_wave_aid = {
+	if = {
+		limit = { can_soviet_collapse_grant_timeout_aid = yes }
+		random_scope_in_array = {
+			array = global.soviet_collapse_breakaway_countries
+			limit = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				NOT = { has_country_flag = soviet_collapse_timeout_aid_recent }
+				tag = KAZ
+			}
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_gain }
+			soviet_collapse_update_consolidated_republic_ideas = yes
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_support.extra_infantry_equipment_per_chaos_band }
+			soviet_collapse_mark_timeout_aid_recipient = yes
+			SOV = { soviet_collapse_register_timeout_aid_grant = yes }
+		}
+	}
+}
+
+soviet_collapse_apply_timeout_far_east_liaison_aid_to_random_breakaway = {
+	if = {
+		limit = { can_soviet_collapse_grant_timeout_aid = yes }
+		random_scope_in_array = {
+			array = global.soviet_collapse_breakaway_countries
+			limit = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				NOT = { has_country_flag = soviet_collapse_timeout_aid_recent }
+				OR = {
+					tag = VLA
+					tag = FER
+				}
+			}
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_gain }
+			soviet_collapse_update_consolidated_republic_ideas = yes
+			soviet_collapse_mark_timeout_aid_recipient = yes
+			SOV = { soviet_collapse_register_timeout_aid_grant = yes }
+		}
+	}
+}
+
 soviet_collapse_apply_timeout_trade_arms_to_random_breakaway = {
 	if = {
 		limit = { can_soviet_collapse_grant_timeout_aid = yes }
