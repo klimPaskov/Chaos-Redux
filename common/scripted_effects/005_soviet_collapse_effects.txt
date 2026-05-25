@@ -2654,6 +2654,7 @@ soviet_collapse_apply_breakaway_recognition_request = {
 	add_stability = constant:soviet_collapse_breakaway_action.recognition_stability_spend
 	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_breakaway_action.recognition_progress }
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_decision_gain }
+	soviet_collapse_apply_internal_compact_recognition_bonus = yes
 	soviet_collapse_add_republic_decision_recovery_progress = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
@@ -2673,6 +2674,7 @@ soviet_collapse_apply_breakaway_mobilization = {
 	add_manpower = constant:soviet_collapse_breakaway_action.mobilize_manpower
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_breakaway_action.mobilize_infantry_equipment }
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.military_focus_gain }
+	soviet_collapse_apply_internal_compact_mobilization_bonus = yes
 	soviet_collapse_add_republic_decision_recovery_progress = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	set_temp_variable = { soviet_collapse_mobilize_unit_count = constant:soviet_collapse_breakaway_action.mobilize_unit_count }
@@ -2696,6 +2698,7 @@ soviet_collapse_apply_breakaway_depot_seizure = {
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_action.seize_support_equipment }
 	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_breakaway_action.seize_depot_control }
 	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.depot_focus_gain }
+	soviet_collapse_apply_internal_compact_depot_bonus = yes
 	soviet_collapse_add_republic_decision_recovery_progress = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 	if = {
@@ -2710,6 +2713,7 @@ soviet_collapse_apply_breakaway_depot_seizure = {
 soviet_collapse_apply_breakaway_front_coordination = {
 	add_fuel = constant:soviet_collapse_breakaway_action.coordinate_fuel_spend
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_action.coordinate_support_equipment_spend }
+	soviet_collapse_apply_internal_compact_front_bonus = yes
 	for_each_scope_loop = {
 		array = global.soviet_collapse_breakaway_countries
 		if = {
@@ -2728,6 +2732,111 @@ soviet_collapse_apply_breakaway_front_coordination = {
 		SOV = {
 			add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_breakaway_action.coordinate_league_pressure }
 			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+}
+
+soviet_collapse_apply_internal_compact_recognition_bonus = {
+	if = {
+		limit = {
+			has_soviet_collapse_internal_compact_payoff_surface = yes
+			NOT = { has_country_flag = soviet_collapse_internal_compact_recognition_bonus_used }
+		}
+		set_country_flag = soviet_collapse_internal_compact_recognition_bonus_used
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_internal_compact.recognition_gain }
+		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_internal_compact.institution_gain }
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_internal_compact.league_gain }
+		add_stability = constant:soviet_collapse_internal_compact.stability_gain
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = soviet_collapse_internal_black_sea_compact_observers
+					has_country_flag = soviet_collapse_internal_neighbor_oaths
+					has_country_flag = soviet_collapse_internal_free_republics_wire
+				}
+			}
+			add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_internal_compact.liaison_gain }
+		}
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_internal_compact.soviet_foreign_pressure }
+				soviet_collapse_apply_foreign_pressure_delta = yes
+				add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_internal_compact.soviet_league_pressure }
+				soviet_collapse_recalculate_total_threat = yes
+			}
+		}
+	}
+}
+
+soviet_collapse_apply_internal_compact_mobilization_bonus = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = soviet_collapse_internal_tuvan_steppe_compact
+				has_country_flag = soviet_collapse_internal_republic_volunteer_standards
+				has_country_flag = soviet_collapse_internal_many_republics_common_front
+				has_country_flag = soviet_collapse_internal_volga_ural_compact
+			}
+			NOT = { has_country_flag = soviet_collapse_internal_compact_mobilization_bonus_used }
+		}
+		set_country_flag = soviet_collapse_internal_compact_mobilization_bonus_used
+		add_manpower = constant:soviet_collapse_internal_compact.manpower_gain
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_internal_compact.infantry_equipment_gain }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_internal_compact.support_equipment_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_internal_compact.resilience_gain }
+		add_war_support = constant:soviet_collapse_internal_compact.war_support_gain
+	}
+}
+
+soviet_collapse_apply_internal_compact_depot_bonus = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = soviet_collapse_internal_northern_republic_accord
+				has_country_flag = soviet_collapse_internal_volga_ural_compact
+				has_country_flag = soviet_collapse_internal_yakut_arctic_resource_compacts
+				has_country_flag = soviet_collapse_internal_depot_mutual_defense_clauses
+			}
+			NOT = { has_country_flag = soviet_collapse_internal_compact_depot_bonus_used }
+		}
+		set_country_flag = soviet_collapse_internal_compact_depot_bonus_used
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_internal_compact.depot_gain }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_internal_compact.train_gain }
+		random_owned_controlled_state = {
+			limit = { is_core_of = ROOT }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_internal_compact.soviet_depot_pressure }
+				soviet_collapse_recalculate_total_threat = yes
+			}
+		}
+	}
+}
+
+soviet_collapse_apply_internal_compact_front_bonus = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = soviet_collapse_internal_free_republics_wire
+				has_country_flag = soviet_collapse_internal_neighbor_oaths
+				has_country_flag = soviet_collapse_internal_many_republics_common_front
+			}
+			NOT = { has_country_flag = soviet_collapse_internal_compact_front_bonus_used }
+		}
+		set_country_flag = soviet_collapse_internal_compact_front_bonus_used
+		add_fuel = constant:soviet_collapse_internal_compact.fuel_spend_relief
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_internal_compact.league_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_internal_compact.resilience_gain }
+		if = {
+			limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+			SOV = {
+				add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_internal_compact.soviet_league_pressure }
+				soviet_collapse_recalculate_total_threat = yes
+			}
 		}
 	}
 }
