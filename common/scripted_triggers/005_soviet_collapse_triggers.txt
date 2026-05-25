@@ -19,7 +19,7 @@ is_soviet_collapse_aftermath_active = {
 
 can_soviet_collapse_enter_calm_strong_center_state = {
 	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-	has_war = no
+	NOT = { has_soviet_collapse_war_release_pressure = yes }
 	check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_gate compare = greater_than_or_equals }
 	check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_threat_guard.strong_center_obedience_gate compare = greater_than_or_equals }
 	check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.early_component_cap_breakaway_gate compare = less_than }
@@ -31,7 +31,7 @@ can_soviet_collapse_enter_calm_strong_center_state = {
 must_soviet_collapse_exit_calm_strong_center_state = {
 	OR = {
 		has_global_flag = soviet_collapse_terminal_collapse
-		has_war = yes
+		has_soviet_collapse_war_release_pressure = yes
 		check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_threat_guard.strong_center_authority_exit_gate compare = less_than }
 		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_threat_guard.strong_center_obedience_exit_gate compare = less_than }
 		check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.early_component_cap_breakaway_gate compare = greater_than_or_equals }
@@ -52,7 +52,7 @@ is_soviet_collapse_calm_strong_center_window = {
 
 is_soviet_collapse_opening_strong_center_guard_window = {
 	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-	has_war = no
+	NOT = { has_soviet_collapse_war_release_pressure = yes }
 	check_variable = {
 		var = soviet_collapse_months_active
 		value = constant:soviet_collapse_threat_guard.opening_strong_center_guard_months
@@ -5020,7 +5020,7 @@ can_soviet_collapse_open_kazakhstan_first_wave = {
 		AND = {
 			is_soviet_collapse_southern_breakaway_active = yes
 			OR = {
-				has_war = yes
+				has_soviet_collapse_war_release_pressure = yes
 				has_global_flag = { flag = chaos_tier value = 4 }
 				has_global_flag = { flag = chaos_tier value = 5 }
 				check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than }
@@ -5032,7 +5032,7 @@ can_soviet_collapse_open_kazakhstan_first_wave = {
 		AND = {
 			has_global_flag = { flag = chaos_tier value = 3 }
 			OR = {
-				has_war = yes
+				has_soviet_collapse_war_release_pressure = yes
 				has_stability < constant:soviet_collapse_soviet_objective.min_stability
 				has_war_support < constant:soviet_collapse_soviet_objective.min_war_support
 			}
