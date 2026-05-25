@@ -13,6 +13,8 @@
 @soviet_collapse_moldova_route_fort_level = 1
 @soviet_collapse_central_asia_league_building_level = 1
 @soviet_collapse_central_asia_league_fort_level = 1
+@soviet_collapse_kazakhstan_route_building_level = 1
+@soviet_collapse_kazakhstan_route_resource_gain = 4
 
 soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_moscow_authority min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -4034,6 +4036,132 @@ central_asia_soviet_collapse_apply_survival_settlement = {
 	set_temp_variable = { central_asia_soviet_collapse_soviet_league_pressure = constant:soviet_collapse_central_asia_league.soviet_league_pressure_medium }
 	set_temp_variable = { central_asia_soviet_collapse_soviet_foreign_pressure = constant:soviet_collapse_central_asia_league.soviet_foreign_pressure_small }
 	central_asia_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+kaz_soviet_collapse_pay_alash_court_cost = {
+	add_political_power = constant:soviet_collapse_kazakhstan_route.alash_court_political_power_spend
+	add_command_power = constant:soviet_collapse_kazakhstan_route.alash_court_command_power_spend
+}
+
+kaz_soviet_collapse_pay_socialist_plan_cost = {
+	add_political_power = constant:soviet_collapse_kazakhstan_route.socialist_plan_political_power_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_kazakhstan_route.socialist_plan_trains_spend }
+	add_fuel = constant:soviet_collapse_kazakhstan_route.socialist_plan_fuel_spend
+}
+
+kaz_soviet_collapse_pay_mine_guard_cost = {
+	add_command_power = constant:soviet_collapse_kazakhstan_route.mine_guard_command_power_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_kazakhstan_route.mine_guard_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_kazakhstan_route.mine_guard_support_equipment_spend }
+}
+
+kaz_soviet_collapse_pay_concession_audit_cost = {
+	add_political_power = constant:soviet_collapse_kazakhstan_route.concession_audit_political_power_spend
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_kazakhstan_route.concession_audit_convoys_spend }
+	add_fuel = constant:soviet_collapse_kazakhstan_route.concession_audit_fuel_spend
+}
+
+kaz_soviet_collapse_add_route_score = {
+	add_to_variable = { soviet_collapse_kazakhstan_route_score = kaz_soviet_collapse_route_score_delta }
+	clamp_variable = {
+		var = soviet_collapse_kazakhstan_route_score
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_kazakhstan_route.route_score_cap
+	}
+	set_temp_variable = { kaz_soviet_collapse_route_score_delta = 0 }
+}
+
+kaz_soviet_collapse_apply_soviet_pressure = {
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			add_to_variable = { soviet_collapse_republic_confidence = kaz_soviet_collapse_soviet_republic_pressure }
+			add_to_variable = { soviet_collapse_depot_vulnerability = kaz_soviet_collapse_soviet_depot_pressure }
+			set_temp_variable = { soviet_collapse_foreign_pressure_delta = kaz_soviet_collapse_soviet_foreign_pressure }
+			soviet_collapse_apply_foreign_pressure_delta = yes
+			soviet_collapse_recalculate_total_threat = yes
+		}
+	}
+	set_temp_variable = { kaz_soviet_collapse_soviet_republic_pressure = 0 }
+	set_temp_variable = { kaz_soviet_collapse_soviet_depot_pressure = 0 }
+	set_temp_variable = { kaz_soviet_collapse_soviet_foreign_pressure = 0 }
+}
+
+kaz_soviet_collapse_apply_alash_court_commissions = {
+	kaz_soviet_collapse_pay_alash_court_cost = yes
+	set_country_flag = soviet_collapse_kazakhstan_alash_court_commissions
+	add_to_variable = { soviet_collapse_kazakhstan_alash_law = constant:soviet_collapse_kazakhstan_route.alash_law_gain }
+	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_kazakhstan_route.institution_gain }
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_kazakhstan_route.recognition_gain }
+	add_popularity = { ideology = democratic popularity = constant:soviet_collapse_kazakhstan_route.democratic_popularity_gain }
+	add_stability = constant:soviet_collapse_kazakhstan_route.stability_gain
+	set_temp_variable = { kaz_soviet_collapse_route_score_delta = constant:soviet_collapse_kazakhstan_route.route_score_gain }
+	kaz_soviet_collapse_add_route_score = yes
+	set_temp_variable = { kaz_soviet_collapse_recent_days = constant:soviet_collapse_kazakhstan_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_kazakhstan_alash_court_recent days = kaz_soviet_collapse_recent_days }
+	set_temp_variable = { kaz_soviet_collapse_soviet_republic_pressure = constant:soviet_collapse_kazakhstan_route.soviet_republic_pressure }
+	kaz_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+kaz_soviet_collapse_apply_steppe_soviet_supply_plan = {
+	kaz_soviet_collapse_pay_socialist_plan_cost = yes
+	set_country_flag = soviet_collapse_kazakhstan_steppe_soviet_supply_plan
+	add_to_variable = { soviet_collapse_kazakhstan_socialist_planning = constant:soviet_collapse_kazakhstan_route.socialist_planning_gain }
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_kazakhstan_route.depot_gain }
+	add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_kazakhstan_route.institution_gain }
+	add_popularity = { ideology = communism popularity = constant:soviet_collapse_kazakhstan_route.communism_popularity_gain }
+	add_war_support = constant:soviet_collapse_kazakhstan_route.war_support_gain
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = infrastructure level = @soviet_collapse_kazakhstan_route_building_level instant_build = yes }
+	}
+	set_temp_variable = { kaz_soviet_collapse_route_score_delta = constant:soviet_collapse_kazakhstan_route.route_score_gain }
+	kaz_soviet_collapse_add_route_score = yes
+	set_temp_variable = { kaz_soviet_collapse_recent_days = constant:soviet_collapse_kazakhstan_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_kazakhstan_socialist_plan_recent days = kaz_soviet_collapse_recent_days }
+	set_temp_variable = { kaz_soviet_collapse_soviet_depot_pressure = constant:soviet_collapse_kazakhstan_route.soviet_depot_pressure }
+	kaz_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+kaz_soviet_collapse_apply_minehead_guard_contracts = {
+	kaz_soviet_collapse_pay_mine_guard_cost = yes
+	set_country_flag = soviet_collapse_kazakhstan_minehead_guard_contracts
+	add_to_variable = { soviet_collapse_kazakhstan_resource_security = constant:soviet_collapse_kazakhstan_route.resource_security_gain }
+	add_to_variable = { soviet_collapse_resource_authority = constant:soviet_collapse_kazakhstan_route.resource_security_gain }
+	add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_kazakhstan_route.depot_gain }
+	add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_kazakhstan_route.resilience_gain }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_kazakhstan_route.infantry_reward }
+	random_owned_controlled_state = {
+		limit = { is_core_of = ROOT }
+		add_building_construction = { type = arms_factory level = @soviet_collapse_kazakhstan_route_building_level instant_build = yes }
+		add_resource = { type = steel amount = @soviet_collapse_kazakhstan_route_resource_gain }
+	}
+	set_temp_variable = { kaz_soviet_collapse_route_score_delta = constant:soviet_collapse_kazakhstan_route.route_score_gain }
+	kaz_soviet_collapse_add_route_score = yes
+	set_temp_variable = { kaz_soviet_collapse_recent_days = constant:soviet_collapse_kazakhstan_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_kazakhstan_mine_guard_recent days = kaz_soviet_collapse_recent_days }
+	set_temp_variable = { kaz_soviet_collapse_soviet_depot_pressure = constant:soviet_collapse_kazakhstan_route.soviet_depot_pressure }
+	kaz_soviet_collapse_apply_soviet_pressure = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
+}
+
+kaz_soviet_collapse_apply_concession_ledger_audit = {
+	kaz_soviet_collapse_pay_concession_audit_cost = yes
+	set_country_flag = soviet_collapse_kazakhstan_concession_ledger_audit
+	add_to_variable = { soviet_collapse_kazakhstan_concession_control = constant:soviet_collapse_kazakhstan_route.concession_control_gain }
+	add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_kazakhstan_route.liaison_gain }
+	add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_kazakhstan_route.recognition_gain }
+	add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_kazakhstan_route.patronage_risk_relief }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_kazakhstan_route.support_reward }
+	set_temp_variable = { kaz_soviet_collapse_route_score_delta = constant:soviet_collapse_kazakhstan_route.route_score_large_gain }
+	kaz_soviet_collapse_add_route_score = yes
+	set_temp_variable = { kaz_soviet_collapse_recent_days = constant:soviet_collapse_kazakhstan_route.recent_days }
+	set_country_flag = { flag = soviet_collapse_kazakhstan_concession_audit_recent days = kaz_soviet_collapse_recent_days }
+	set_temp_variable = { kaz_soviet_collapse_soviet_foreign_pressure = constant:soviet_collapse_kazakhstan_route.soviet_foreign_pressure }
+	kaz_soviet_collapse_apply_soviet_pressure = yes
 	soviet_collapse_update_consolidated_republic_ideas = yes
 }
 
