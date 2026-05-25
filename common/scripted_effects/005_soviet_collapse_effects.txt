@@ -15,6 +15,10 @@
 @soviet_collapse_central_asia_league_fort_level = 1
 @soviet_collapse_kazakhstan_route_building_level = 1
 @soviet_collapse_kazakhstan_route_resource_gain = 4
+@soviet_collapse_tsc_radar_station_level = 1
+@soviet_collapse_tsc_airbase_level = 1
+@soviet_collapse_tsc_anti_air_level = 1
+@soviet_collapse_tsc_anomaly_tech_uses = 1
 
 soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_moscow_authority min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -9215,6 +9219,114 @@ soviet_collapse_advance_krs_port_council_depth = {
 		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
 		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+	}
+}
+
+soviet_collapse_advance_tsc_observatory_network_depth = {
+	add_to_variable = { soviet_collapse_tsc_observatory_network_depth = constant:soviet_collapse_factory_ancient.tsc_observatory_network_depth_gain }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_tsc_observatory_network_depth value = constant:soviet_collapse_republic_focus.focus_depth_first_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_tsc_observatory_network_first_milestone }
+		}
+		set_country_flag = soviet_collapse_tsc_observatory_network_first_milestone
+		add_to_variable = { tsc_signal_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		add_decryption = constant:soviet_collapse_factory_ancient.tsc_decryption_gain
+		random_owned_controlled_state = {
+			add_building_construction = { type = radar_station level = @soviet_collapse_tsc_radar_station_level instant_build = yes }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_tsc_observatory_network_depth value = constant:soviet_collapse_republic_focus.focus_depth_second_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_tsc_observatory_network_second_milestone }
+		}
+		set_country_flag = soviet_collapse_tsc_observatory_network_second_milestone
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		random_owned_controlled_state = {
+			add_building_construction = { type = anti_air_building level = @soviet_collapse_tsc_anti_air_level instant_build = yes }
+		}
+	}
+}
+
+soviet_collapse_advance_tsc_field_station_depth = {
+	add_to_variable = { soviet_collapse_tsc_field_station_depth = constant:soviet_collapse_factory_ancient.tsc_field_station_depth_gain }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_tsc_field_station_depth value = constant:soviet_collapse_republic_focus.focus_depth_first_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_tsc_field_station_first_milestone }
+		}
+		set_country_flag = soviet_collapse_tsc_field_station_first_milestone
+		add_to_variable = { tsc_anomaly_research = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+		air_experience = constant:soviet_collapse_factory_ancient.tsc_air_xp_gain
+		random_owned_controlled_state = {
+			add_building_construction = { type = air_base level = @soviet_collapse_tsc_airbase_level instant_build = yes }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_tsc_field_station_depth value = constant:soviet_collapse_republic_focus.focus_depth_second_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_tsc_field_station_second_milestone }
+		}
+		set_country_flag = soviet_collapse_tsc_field_station_second_milestone
+		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		add_tech_bonus = {
+			name = TSC_anomaly_field_notes
+			bonus = constant:soviet_collapse_factory_ancient.tsc_anomaly_tech_bonus
+			uses = @soviet_collapse_tsc_anomaly_tech_uses
+			category = electronics
+		}
+	}
+}
+
+soviet_collapse_advance_rmc_martyrology_depth = {
+	add_to_variable = { soviet_collapse_rmc_martyrology_depth = constant:soviet_collapse_factory_ancient.rmc_martyrology_depth_gain }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_rmc_martyrology_depth value = constant:soviet_collapse_republic_focus.focus_depth_first_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_rmc_martyrology_first_milestone }
+		}
+		set_country_flag = soviet_collapse_rmc_martyrology_first_milestone
+		add_to_variable = { rmc_martyr_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		add_manpower = constant:soviet_collapse_factory_ancient.rmc_testimony_manpower_gain
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_rmc_martyrology_depth value = constant:soviet_collapse_republic_focus.focus_depth_second_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_rmc_martyrology_second_milestone }
+		}
+		set_country_flag = soviet_collapse_rmc_martyrology_second_milestone
+		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.local_pressure_gain }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		add_stability = constant:soviet_collapse_factory_ancient.stability_small
+	}
+}
+
+soviet_collapse_advance_rmc_reliquary_guard_depth = {
+	add_to_variable = { soviet_collapse_rmc_reliquary_guard_depth = constant:soviet_collapse_factory_ancient.rmc_reliquary_guard_depth_gain }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_rmc_reliquary_guard_depth value = constant:soviet_collapse_republic_focus.focus_depth_first_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_rmc_reliquary_guard_first_milestone }
+		}
+		set_country_flag = soviet_collapse_rmc_reliquary_guard_first_milestone
+		add_to_variable = { rmc_resurrection_mobilization = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+		add_manpower = constant:soviet_collapse_factory_ancient.rmc_guard_manpower_gain
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.rmc_guard_support_equipment_gain }
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_rmc_reliquary_guard_depth value = constant:soviet_collapse_republic_focus.focus_depth_second_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_rmc_reliquary_guard_second_milestone }
+		}
+		set_country_flag = soviet_collapse_rmc_reliquary_guard_second_milestone
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+		add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
 	}
 }
 
