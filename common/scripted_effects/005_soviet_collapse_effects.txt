@@ -7166,6 +7166,20 @@ soviet_collapse_apply_custom_splinter_mobilize_signature_forces = {
 			add_building_construction = { type = supply_node level = 1 instant_build = yes }
 		}
 	}
+	if = {
+		limit = {
+			tag = KRS
+			has_country_flag = krs_focus_special_arm
+		}
+		soviet_collapse_advance_krs_port_council_depth = yes
+		navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+		random_owned_controlled_state = {
+			limit = { is_coastal = yes }
+			add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+		}
+	}
 }
 
 soviet_collapse_apply_dhc_stanitsa_mediation = {
@@ -7489,6 +7503,7 @@ soviet_collapse_apply_custom_splinter_extreme_gate_identity = {
 	}
 	if = {
 		limit = { tag = KRS }
+		soviet_collapse_advance_krs_port_council_depth = yes
 		navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
 		add_tech_bonus = {
@@ -7879,6 +7894,7 @@ soviet_collapse_apply_custom_splinter_special_arm_identity = {
 	}
 	if = {
 		limit = { tag = KRS }
+		soviet_collapse_advance_krs_port_council_depth = yes
 		navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
 		army_experience = constant:soviet_collapse_republic_focus.army_xp_small
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
@@ -8118,6 +8134,7 @@ soviet_collapse_apply_custom_splinter_settlement_identity = {
 	}
 	if = {
 		limit = { tag = KRS }
+		soviet_collapse_advance_krs_port_council_depth = yes
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
 		add_tech_bonus = {
 			name = KRS_radio_room_workshops
@@ -8245,6 +8262,7 @@ soviet_collapse_apply_custom_splinter_industry_plan_identity = {
 	}
 	if = {
 		limit = { tag = KRS }
+		soviet_collapse_advance_krs_port_council_depth = yes
 		navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
 		add_tech_bonus = {
@@ -9115,12 +9133,21 @@ soviet_collapse_apply_custom_splinter_push_extreme_route = {
 	army_experience = constant:soviet_collapse_breakaway_action.seize_army_xp_spend
 	add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
 	if = {
+		limit = { tag = KRS }
+		soviet_collapse_advance_krs_port_council_depth = yes
+		navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+	}
+	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 		SOV = {
 			add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
 			soviet_collapse_recalculate_total_threat = yes
 		}
 	}
+	soviet_collapse_update_consolidated_republic_ideas = yes
 }
 
 soviet_collapse_advance_udc_command_network_depth = {
@@ -9164,6 +9191,30 @@ soviet_collapse_advance_sdz_archive_control_depth = {
 		set_country_flag = soviet_collapse_sdz_archive_control_second_milestone
 		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
 		add_decryption = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+	}
+}
+
+soviet_collapse_advance_krs_port_council_depth = {
+	add_to_variable = { soviet_collapse_krs_port_council_depth = constant:soviet_collapse_republic_focus.krs_port_council_depth_gain }
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_krs_port_council_depth value = constant:soviet_collapse_republic_focus.focus_depth_first_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_krs_port_council_first_milestone }
+		}
+		set_country_flag = soviet_collapse_krs_port_council_first_milestone
+		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		navy_experience = constant:soviet_collapse_republic_focus.navy_xp_small
+	}
+	if = {
+		limit = {
+			check_variable = { var = soviet_collapse_krs_port_council_depth value = constant:soviet_collapse_republic_focus.focus_depth_second_gate compare = greater_than_or_equals }
+			NOT = { has_country_flag = soviet_collapse_krs_port_council_second_milestone }
+		}
+		set_country_flag = soviet_collapse_krs_port_council_second_milestone
+		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
 	}
 }
 
