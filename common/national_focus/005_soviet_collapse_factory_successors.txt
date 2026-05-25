@@ -436,8 +436,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = cfr_focus_machine_tools_empty_ministries
-			soviet_collapse_apply_cfr_focus_civilian_build = yes
-			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+			soviet_collapse_apply_cfr_focus_machine_tools_from_ministries = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -555,8 +554,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = cfr_focus_fortify_worksite_gates
-			soviet_collapse_apply_cfr_focus_defense_build = yes
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_small }
+			soviet_collapse_apply_cfr_focus_worksite_gate_fortification = yes
 		}
 		ai_will_do = {
 			base = 7
@@ -593,9 +591,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = cfr_focus_sappers_builder_state
-			add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
-			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
-			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+			soviet_collapse_apply_cfr_focus_sapper_fieldworks = yes
 		}
 		ai_will_do = {
 			base = 8
@@ -1150,9 +1146,7 @@ focus_tree = {
 		prerequisite = { focus = OGB_scholars_guard_the_charter focus = OGB_clerics_guard_the_charter }
 		completion_reward = {
 			set_country_flag = ogb_focus_raise_the_heritage_guard
-			add_ideas = ogb_heritage_guard
-			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_small }
+			soviet_collapse_apply_ogb_focus_heritage_guard_muster = yes
 		}
 		ai_will_do = {
 			base = 10
@@ -1193,9 +1187,7 @@ focus_tree = {
 		prerequisite = { focus = OGB_fortify_the_volga_crossings }
 		completion_reward = {
 			set_country_flag = ogb_focus_steppe_cavalry_registers
-			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
-			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
+			soviet_collapse_apply_ogb_focus_steppe_cavalry_registers = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -1716,10 +1708,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = mfr_focus_artillery_broken_foundries
-			add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_spend }
-			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:soviet_collapse_breakaway_support.extra_artillery_equipment_per_chaos_band }
-			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
-			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+			soviet_collapse_apply_mfr_focus_foundry_artillery_batches = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -1795,14 +1784,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = mfr_focus_standardize_rifle_line
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
-			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
-			add_tech_bonus = {
-				name = MFR_standardize_the_rifle_line
-				bonus = 0.5
-				uses = 1
-				category = infantry_weapons
-			}
+			soviet_collapse_apply_mfr_focus_standardize_rifle_line = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -1819,7 +1801,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = mfr_focus_shells_without_sleep
 			soviet_collapse_apply_mfr_focus_unsafe_output = yes
-			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+			add_stability = constant:soviet_collapse_factory_ancient.mfr_steel_seizure_stability_cost
 		}
 		ai_will_do = {
 			base = 6
@@ -1871,9 +1853,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = mfr_focus_engines_from_evacuation_stores
-			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
-			soviet_collapse_apply_mfr_foreign_pressure_small = yes
-			add_political_power = constant:soviet_collapse_factory_ancient.political_power_low_gain
+			soviet_collapse_apply_mfr_focus_evacuated_engine_stores = yes
 		}
 		ai_will_do = { base = 7 }
 	}
@@ -1965,9 +1945,7 @@ focus_tree = {
 
 		completion_reward = {
 			set_country_flag = mfr_focus_rifles_against_league
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
-			soviet_collapse_apply_mfr_foreign_pressure_small = yes
-			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			soviet_collapse_apply_mfr_focus_counter_league_rifle_orders = yes
 		}
 		ai_will_do = {
 			base = 5
@@ -2292,11 +2270,12 @@ focus_tree = {
 		x = 28
 		y = 11
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = MFR_engines_from_evacuation_stores }
-		prerequisite = { focus = MFR_battery_cities }
-		prerequisite = { focus = MFR_plate_steel_rationing }
-		prerequisite = { focus = MFR_armored_train_workshops }
-		prerequisite = { focus = MFR_no_serial_numbers }
+		prerequisite = {
+			focus = MFR_arm_the_new_russia
+			focus = MFR_production_war_room
+			focus = MFR_arsenal_protectorate_offer
+			focus = MFR_no_serial_numbers
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_the_arsenal_state

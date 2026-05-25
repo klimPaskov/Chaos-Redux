@@ -6355,8 +6355,54 @@ soviet_collapse_apply_cfr_focus_civilian_build = {
 	}
 }
 
+soviet_collapse_apply_cfr_focus_machine_tools_from_ministries = {
+	set_country_flag = cfr_ministry_machine_tool_pool
+	add_to_variable = { cfr_machine_tool_pool = constant:soviet_collapse_factory_ancient.cfr_machine_tool_pool_gain }
+	add_to_variable = { cfr_construction_mandates = constant:soviet_collapse_factory_ancient.small_mandate_spend }
+	add_tech_bonus = {
+		name = CFR_machine_tools_from_empty_ministries
+		bonus = constant:soviet_collapse_republic_focus.signature_tech_bonus
+		uses = 1
+		category = industry
+	}
+	random_owned_controlled_state = {
+		add_extra_state_shared_building_slots = 1
+		add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+	}
+}
+
 soviet_collapse_apply_cfr_focus_defense_build = {
 	add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+	random_owned_controlled_state = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+}
+
+soviet_collapse_apply_cfr_focus_worksite_gate_fortification = {
+	set_country_flag = cfr_worksite_gate_guard_depth
+	add_to_variable = { cfr_worksite_guard_depth = constant:soviet_collapse_factory_ancient.cfr_worksite_guard_depth_gain }
+	add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+	add_command_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+	capital_scope = {
+		add_building_construction = { type = bunker level = 1 instant_build = yes }
+	}
+	random_owned_controlled_state = {
+		add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+	}
+}
+
+soviet_collapse_apply_cfr_focus_sapper_fieldworks = {
+	set_country_flag = cfr_sapper_fieldworks_school
+	add_to_variable = { cfr_sapper_fieldwork_depth = constant:soviet_collapse_factory_ancient.cfr_sapper_fieldwork_gain }
+	add_manpower = constant:soviet_collapse_republic_focus.emergency_manpower
+	add_command_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+	army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+	add_tech_bonus = {
+		name = CFR_sappers_of_the_builder_state
+		bonus = constant:soviet_collapse_republic_focus.signature_tech_bonus
+		uses = 1
+		category = land_doctrine
+	}
 	random_owned_controlled_state = {
 		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 	}
@@ -6633,6 +6679,24 @@ soviet_collapse_apply_mfr_focus_security_state = {
 	army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
 }
 
+soviet_collapse_apply_mfr_focus_foundry_artillery_batches = {
+	set_country_flag = mfr_foundry_artillery_batches
+	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_spend }
+	add_to_variable = { mfr_foundry_batch_depth = constant:soviet_collapse_factory_ancient.mfr_foundry_batch_gain }
+	add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:soviet_collapse_republic_focus.artillery_equipment }
+	army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+	add_tech_bonus = {
+		name = MFR_artillery_from_broken_foundries
+		bonus = constant:soviet_collapse_republic_focus.signature_tech_bonus
+		uses = 1
+		category = artillery
+	}
+	random_owned_controlled_state = {
+		add_extra_state_shared_building_slots = 1
+		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+	}
+}
+
 soviet_collapse_apply_mfr_focus_no_shell_obedience = {
 	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
 	add_ideas = mfr_factory_guard_state
@@ -6741,6 +6805,26 @@ soviet_collapse_apply_mfr_focus_client_arms_network = {
 	soviet_collapse_apply_mfr_foreign_pressure_small = yes
 }
 
+soviet_collapse_apply_mfr_focus_evacuated_engine_stores = {
+	set_country_flag = mfr_evacuated_engine_store_ledger
+	add_to_variable = { mfr_engine_store_depth = constant:soviet_collapse_factory_ancient.mfr_engine_store_gain }
+	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+	air_experience = constant:soviet_collapse_republic_focus.air_xp_small
+	add_political_power = constant:soviet_collapse_factory_ancient.political_power_low_gain
+	soviet_collapse_apply_mfr_foreign_pressure_small = yes
+}
+
+soviet_collapse_apply_mfr_focus_counter_league_rifle_orders = {
+	set_country_flag = mfr_counter_league_rifle_contracts
+	add_to_variable = { mfr_client_arms_ledger = constant:soviet_collapse_factory_ancient.mfr_counter_league_contract_gain }
+	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
+	add_command_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+	add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+	soviet_collapse_apply_mfr_foreign_pressure_small = yes
+}
+
 soviet_collapse_apply_mfr_focus_builders_waste_steel = {
 	set_country_flag = mfr_focus_builders_waste_steel
 	set_country_flag = mfr_confiscated_civil_steel
@@ -6783,6 +6867,7 @@ soviet_collapse_apply_mfr_focus_civilian_factory_rivalry = {
 
 soviet_collapse_apply_mfr_focus_unsafe_output = {
 	add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	add_to_variable = { mfr_unsafe_shift_depth = constant:soviet_collapse_factory_ancient.mfr_unsafe_shift_gain }
 	add_ideas = mfr_factory_guard_state
 	if = {
 		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
@@ -6858,6 +6943,13 @@ soviet_collapse_apply_mfr_focus_rifle_priority = {
 		uses = 1
 		category = infantry_weapons
 	}
+}
+
+soviet_collapse_apply_mfr_focus_standardize_rifle_line = {
+	set_country_flag = mfr_standardized_rifle_line_depot_school
+	soviet_collapse_apply_mfr_focus_rifle_priority = yes
+	add_command_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+	add_to_variable = { mfr_standardized_rifle_output = constant:soviet_collapse_factory_ancient.mfr_rifle_standardization_gain }
 }
 
 soviet_collapse_apply_mfr_focus_plate_steel_rationing = {
@@ -6967,6 +7059,32 @@ soviet_collapse_apply_mfr_focus_every_order_rifle = {
 		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
 	}
 	soviet_collapse_apply_mfr_foreign_pressure_small = yes
+}
+
+soviet_collapse_apply_ogb_focus_heritage_guard_muster = {
+	add_ideas = ogb_heritage_guard
+	add_to_variable = { ogb_heritage_guard_muster = constant:soviet_collapse_factory_ancient.ogb_heritage_guard_muster_gain }
+	add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+	add_command_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+	capital_scope = {
+		add_building_construction = { type = bunker level = 1 instant_build = yes }
+	}
+}
+
+soviet_collapse_apply_ogb_focus_steppe_cavalry_registers = {
+	set_country_flag = ogb_steppe_patrol_register_opened
+	add_to_variable = { ogb_steppe_patrol_depth = constant:soviet_collapse_factory_ancient.ogb_steppe_patrol_gain }
+	add_to_variable = { ogb_river_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+	army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+	add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+	add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+	add_tech_bonus = {
+		name = OGB_steppe_cavalry_registers
+		bonus = constant:soviet_collapse_republic_focus.signature_tech_bonus
+		uses = 1
+		category = land_doctrine
+	}
 }
 
 soviet_collapse_apply_custom_splinter_consolidate_claim = {
