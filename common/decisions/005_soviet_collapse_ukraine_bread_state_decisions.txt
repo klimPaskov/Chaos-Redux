@@ -1,0 +1,178 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 UKRAINE BREAD STATE DECISIONS
+# ============================================================================
+# Route-gated decisions for Ukraine's high-chaos Bread State path. These use
+# focus-set flags from the Ukraine tree and give the route a real authority,
+# coercion, logistics, and relief loop.
+# ============================================================================
+
+@ukr_soviet_collapse_bread_state_days_reenable = 45
+@ukr_soviet_collapse_bread_state_relief_days_reenable = 60
+
+soviet_collapse_breakaway_category = {
+	ukr_soviet_collapse_register_black_soil_committees = {
+		icon = GFX_decision_soviet_collapse_old_movement_goal
+		available = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_black_soil_committees_cost = yes }
+		}
+		visible = {
+			has_ukr_soviet_collapse_bread_state_decision_surface = yes
+			has_country_flag = soviet_collapse_ukraine_black_soil_oath
+			NOT = { has_country_flag = soviet_collapse_ukraine_bread_state_granary_network }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_black_soil_committees_cost = yes }
+		}
+		custom_cost_text = ukr_soviet_collapse_black_soil_committees_cost_text
+		days_re_enable = @ukr_soviet_collapse_bread_state_days_reenable
+		complete_effect = {
+			set_country_flag = soviet_collapse_ukraine_bread_state_granary_network
+			ukr_soviet_collapse_apply_black_soil_committees = yes
+			custom_effect_tooltip = ukr_soviet_collapse_register_black_soil_committees_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_country_flag = soviet_collapse_ukraine_route_black_banner
+			}
+		}
+	}
+
+	ukr_soviet_collapse_conduct_total_grain_census = {
+		icon = GFX_decision_soviet_collapse_rail_goal
+		available = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_grain_census_cost = yes }
+		}
+		visible = {
+			has_ukr_soviet_collapse_bread_state_decision_surface = yes
+			has_country_flag = soviet_collapse_ukraine_grain_census_of_everyone
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_grain_census_cost = yes }
+		}
+		custom_cost_text = ukr_soviet_collapse_grain_census_cost_text
+		days_re_enable = @ukr_soviet_collapse_bread_state_days_reenable
+		complete_effect = {
+			ukr_soviet_collapse_apply_total_grain_census = yes
+			custom_effect_tooltip = ukr_soviet_collapse_conduct_total_grain_census_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_republic_focus.ai_old_movement_pressure_high compare = greater_than } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				check_variable = { var = soviet_collapse_ukraine_bread_state_coercion value = constant:soviet_collapse_ukraine_bread_state.coercion_gate compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	ukr_soviet_collapse_lock_the_bread_line = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		available = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_bread_line_cost = yes }
+		}
+		visible = {
+			has_ukr_soviet_collapse_bread_state_decision_surface = yes
+			has_country_flag = soviet_collapse_ukraine_no_one_leaves_bread_line
+			has_war_with = SOV
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_bread_line_cost = yes }
+		}
+		custom_cost_text = ukr_soviet_collapse_bread_line_cost_text
+		days_re_enable = @ukr_soviet_collapse_bread_state_days_reenable
+		complete_effect = {
+			ukr_soviet_collapse_apply_bread_line_lockdown = yes
+			custom_effect_tooltip = ukr_soviet_collapse_lock_the_bread_line_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				SOV = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = greater_than_or_equals } }
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_calm_multiplier
+				check_variable = { var = soviet_collapse_ukraine_bread_state_coercion value = constant:soviet_collapse_ukraine_bread_state.coercion_gate compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	ukr_soviet_collapse_release_village_rations = {
+		icon = GFX_decision_soviet_collapse_authority_goal
+		available = {
+			hidden_trigger = {
+				can_pay_ukr_soviet_collapse_village_ration_relief_cost = yes
+				can_ukr_soviet_collapse_release_village_rations = yes
+			}
+		}
+		visible = {
+			has_ukr_soviet_collapse_bread_state_decision_surface = yes
+			can_ukr_soviet_collapse_release_village_rations = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_ukr_soviet_collapse_village_ration_relief_cost = yes
+				can_ukr_soviet_collapse_release_village_rations = yes
+			}
+		}
+		custom_cost_text = ukr_soviet_collapse_village_ration_relief_cost_text
+		days_re_enable = @ukr_soviet_collapse_bread_state_relief_days_reenable
+		complete_effect = {
+			ukr_soviet_collapse_apply_village_ration_relief = yes
+			custom_effect_tooltip = ukr_soviet_collapse_release_village_rations_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				check_variable = { var = soviet_collapse_ukraine_bread_state_coercion value = constant:soviet_collapse_ukraine_bread_state.coercion_gate compare = greater_than }
+			}
+		}
+	}
+
+	ukr_soviet_collapse_execute_last_harvest_plan = {
+		icon = GFX_decision_soviet_collapse_depot_goal
+		available = {
+			hidden_trigger = {
+				can_pay_ukr_soviet_collapse_last_harvest_plan_cost = yes
+				can_ukr_soviet_collapse_execute_last_harvest_plan = yes
+			}
+		}
+		visible = {
+			has_ukr_soviet_collapse_bread_state_decision_surface = yes
+			can_ukr_soviet_collapse_execute_last_harvest_plan = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				can_pay_ukr_soviet_collapse_last_harvest_plan_cost = yes
+				can_ukr_soviet_collapse_execute_last_harvest_plan = yes
+			}
+		}
+		custom_cost_text = ukr_soviet_collapse_last_harvest_plan_cost_text
+		days_re_enable = @ukr_soviet_collapse_bread_state_relief_days_reenable
+		complete_effect = {
+			ukr_soviet_collapse_apply_last_harvest_plan = yes
+			custom_effect_tooltip = ukr_soviet_collapse_execute_last_harvest_plan_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = soviet_collapse_ukraine_grain_authority value = constant:soviet_collapse_ukraine_bread_state.grain_authority_cap compare = greater_than }
+			}
+		}
+	}
+}
