@@ -10121,7 +10121,9 @@ soviet_collapse_count_progressive_release_candidates = {
 		limit = {
 			is_soviet_collapse_progressive_release_candidate = yes
 		}
-		add_to_variable = { soviet_collapse_progressive_release_candidate_count = 1 }
+		SOV = {
+			add_to_variable = { soviet_collapse_progressive_release_candidate_count = 1 }
+		}
 	}
 }
 
@@ -10294,7 +10296,9 @@ soviet_collapse_apply_progressive_release_final_weight_dampening = {
 		limit = {
 			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
 			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = greater_than_or_equals }
-			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = less_than }
+			NOT = { has_soviet_collapse_release_level_component_pressure = yes }
+			NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
 		}
 		multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.high_authority_factor }
 		multiply_temp_variable = { soviet_collapse_progressive_release_weight = constant:soviet_collapse_release_mtth.high_obedience_factor }
@@ -10452,6 +10456,21 @@ soviet_collapse_compute_progressive_release_urgency = {
 		var = soviet_collapse_release_urgency_component
 		min = constant:soviet_collapse_baseline.component_min
 		max = constant:soviet_collapse_release_mtth.authority_deficit_cap
+	}
+	add_to_variable = { soviet_collapse_release_urgency_score = soviet_collapse_release_urgency_component }
+
+	set_temp_variable = { soviet_collapse_release_urgency_component = constant:soviet_collapse_baseline.military_obedience }
+	subtract_from_temp_variable = { soviet_collapse_release_urgency_component = soviet_collapse_military_obedience }
+	clamp_temp_variable = {
+		var = soviet_collapse_release_urgency_component
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_baseline.component_max
+	}
+	multiply_temp_variable = { soviet_collapse_release_urgency_component = constant:soviet_collapse_release_mtth.obedience_deficit_per_point_add }
+	clamp_temp_variable = {
+		var = soviet_collapse_release_urgency_component
+		min = constant:soviet_collapse_baseline.component_min
+		max = constant:soviet_collapse_release_mtth.obedience_deficit_cap
 	}
 	add_to_variable = { soviet_collapse_release_urgency_score = soviet_collapse_release_urgency_component }
 
