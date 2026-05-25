@@ -2,6 +2,16 @@
 
 Bounded pass completed on 2026-05-23. Scope was limited to generated fictional/council portrait replacements and fictional ideology flag variants. No gameplay, `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files were edited.
 
+## 2026-05-25 Leader Recovery And Flag QA Addendum
+
+Sidecar package: `docs/assets/005_soviet_union_collapse/leader_portrait_recovery_2026_05_25/`.
+
+The missing tracked final portrait DDS files for `BEC`, `BLT`, `COU`, `ILU`, and `IRA` were restored at their stable paths under `gfx/leaders/005_soviet_collapse/`. Matching generated source PNGs and processed 156x210 previews are copied into the sidecar package, and the package contact sheet is `docs/assets/005_soviet_union_collapse/leader_portrait_recovery_2026_05_25/contact_sheets/recovered_leader_portraits.png`.
+
+The standard DDS converter is still blocked for new conversion: direct executable use fails on a CRLF shebang (`/usr/bin/env: 'python3\r': No such file or directory`), and `python3 .tools/convert_to_dds.py` fails in the fallback writer with `struct.error: pack expected 34 items for packing (got 32)`. No unapproved converter was used.
+
+The same sidecar QA checked 33 Event 005 generated/custom flag families, including `UKR_BLACK_BANNER`, across base plus four ideology variants and normal/medium/small folders. All 495 expected TGA files exist, dimensions are normal `82x52`, medium `41x26`, and small `10x7`, every checked TGA is bottom-left origin, and no byte-identical base/ideology variant groups were found. The audit also found no default flag overrides for vanilla-supported ordinary/internal tags.
+
 ## Portrait DDS replacements
 
 These paths keep the existing wired DDS filenames, so parent wiring should not need texture path changes unless the parent wants to rename sprites.
