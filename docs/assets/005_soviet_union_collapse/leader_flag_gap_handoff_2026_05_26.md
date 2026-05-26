@@ -8,6 +8,18 @@ Scope: read-only inventory plus handoff for Event 005 Soviet Collapse new-leader
 
 No source PNG, processed PNG, DDS, or TGA assets were created. The active portrait and flag surface is already covered, and several live flag/interface files are dirty from prior work.
 
+## Current dirty asset state
+
+Scoped worktree inspection found existing dirty files in the Event 005 asset surface before this handoff update:
+
+- Modified docs: `docs/assets/005_soviet_union_collapse/gfx_handoff.md`, `docs/assets/005_soviet_union_collapse/manifest.md`.
+- Modified normal flag files for `ALN`, `CFR`, `KHW`, `KRS`, `KZR`, `RMC`, `SDZ`, `SOG`, `TSC`, and `UDC`, with ideology variants dirty for `ALN`, `KHW`, `KZR`, and `SOG`.
+- Modified medium flag files for the same normal-flag group, with ideology variants dirty for `ALN`, `KHW`, `KZR`, and `SOG`.
+- Modified small flag files for `ALN`, `CFR`, `KHW`, `KRS`, `KZR`, `RMC`, `SDZ`, `SOG`, `TSC`, and `UDC`, with `_communism`, `_democratic`, `_fascism`, and `_neutrality` dirty for every listed tag.
+- No dirty files were found under `gfx/leaders/005_soviet_collapse/` during the scoped status check.
+
+This sidecar does not restore, overwrite, or promote any of those dirty flag assets. Preserve existing no-suffix base flags unless the parent explicitly scopes a new Event 005 country base flag or an existing-country cosmetic tag.
+
 ## References inspected
 
 - `AGENTS.md`
@@ -24,6 +36,8 @@ Active Event 005 custom tags from `common/country_tags/chaosx_countries.txt`: `C
 Portrait audit result: all 32 active tags have a `create_country_leader` picture in `history/countries/`, a matching sprite in Event 005 `.gfx`, a final `gfx/leaders/005_soviet_collapse/<TAG>_leader.dds`, a source PNG, and a processed PNG. No active council portrait gap was found.
 
 Flag audit result: all 32 active tags have normal, medium, and small TGA files for base plus `_communism`, `_democratic`, `_fascism`, and `_neutrality`. Dimensions are correct: normal `82x52`, medium `41x26`, small `10x7`. All checked TGA files are 32-bit with descriptor byte `0x08`. Exact duplicate audit found zero duplicate groups and zero same-tag exact duplicate variants.
+
+Orientation confirmation: the active custom-country flag audit checks the vanilla-compatible bottom-origin convention by descriptor byte. Normal, medium, and small outputs are all 32-bit TGA files with descriptor `0x08`; the expected dimensions are normal `82x52`, medium `41x26`, and small `10x7`.
 
 ## Existing-country and route/cosmetic notes
 
@@ -60,6 +74,12 @@ For existing-country route flags, use explicit cosmetic-tag filenames only. Do n
 - No active Event 005 custom-country portrait or flag file is blocked by missing art.
 - `KYR` council portrait and any `KYR` route flag are blocked pending main-agent decision because the inspected docs/manifests do not define an exact target asset, sprite name, or source mode.
 - Inactive/stale asset families such as `BEC`, `BLT`, `COU`, `ILU`, `IRA`, `LID`, `RCD`, `RLD`, `SEP`, and `TRS` should not receive new generated portraits or flags unless the main agent restores those tags to active country-package use.
+
+Exact remaining generated-fictional asset gaps from this audit:
+
+- Active Event 005 custom country tags: none.
+- Active `UKR_BLACK_BANNER` cosmetic route flag package: none; base plus four ideology variants exist in normal, medium, and small sizes with correct TGA header convention and no exact same-tag duplicate variants.
+- Existing/vanilla country tags: no default base-flag work should be generated from this sidecar. Any future `KYR`, `MOL`, `UZB`, `TAJ`, `TMS`, `FER`, or similar route flag needs an explicit cosmetic tag and parent wiring scope first.
 
 ## Main-agent wiring later
 
