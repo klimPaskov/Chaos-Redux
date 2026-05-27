@@ -40,7 +40,7 @@ No small proven gender/name mismatch was found in the active wired surface.
 
 ## Files Changed
 
-- `docs/plans/005_soviet_union_collapse_plans/subagent_handoffs/2026_05_27_event005_leader_portrait_name_gender_recheck.md`
+- `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_05_27_event005_leader_portrait_name_gender_recheck.md`
 
 Changed tags, state ids, leaders, parties, focus tree ids, localisation keys, or formable ids: none.
 
