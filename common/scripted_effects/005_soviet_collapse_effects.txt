@@ -2631,8 +2631,10 @@ soviet_collapse_check_republic_recovery = {
 				compare = greater_than_or_equals
 			}
 		}
-		if = { limit = { has_idea = soviet_collapse_republican_startup_disorder } remove_ideas = soviet_collapse_republican_startup_disorder }
-		if = { limit = { has_idea = soviet_collapse_republican_startup_disorder_mitigated } remove_ideas = soviet_collapse_republican_startup_disorder_mitigated }
+		hidden_effect = {
+			if = { limit = { has_idea = soviet_collapse_republican_startup_disorder } remove_ideas = soviet_collapse_republican_startup_disorder }
+			if = { limit = { has_idea = soviet_collapse_republican_startup_disorder_mitigated } remove_ideas = soviet_collapse_republican_startup_disorder_mitigated }
+		}
 		add_ideas = soviet_collapse_emergency_administration_stabilized
 		add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_decision_gain }
 		soviet_collapse_update_consolidated_republic_ideas = yes
@@ -3234,7 +3236,9 @@ soviet_collapse_clamp_republic_country_components = {
 
 soviet_collapse_update_consolidated_republic_ideas = {
 	soviet_collapse_clamp_republic_country_components = yes
-	soviet_collapse_clear_republic_staged_ideas = yes
+	hidden_effect = {
+		soviet_collapse_clear_republic_staged_ideas = yes
+	}
 	set_temp_variable = { soviet_collapse_foreign_support_strength = soviet_collapse_influence_total }
 	set_temp_variable = { soviet_collapse_foreign_sponsor_strength_bonus = soviet_collapse_active_foreign_sponsor_count }
 	multiply_temp_variable = { var = soviet_collapse_foreign_sponsor_strength_bonus value = constant:soviet_collapse_republic_idea.foreign_sponsor_stage_bonus }
