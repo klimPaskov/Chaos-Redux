@@ -1,0 +1,41 @@
+# ============================================================================
+# CHAOS REDUX - CRISIS PRESSURE EFFECTS
+# ============================================================================
+# Reusable helpers for crisis systems that should push harder when a human
+# player is actively fighting them.
+#
+# Country scope. Callers should initialize the temp variables they need, then
+# call the intensity helper that matches the current crisis state.
+# ============================================================================
+
+chaosx_apply_non_ai_crisis_pressure_mild_factor = {
+	if = {
+		limit = { chaosx_is_non_ai_crisis_pressure_active = yes }
+		add_to_temp_variable = { non_ai_crisis_pressure_chance_bonus = constant:non_ai_crisis_pressure.mild_chance_bonus }
+		add_to_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = constant:non_ai_crisis_pressure.mild_cooldown_reduction }
+	}
+}
+
+chaosx_apply_non_ai_crisis_pressure_factor = {
+	if = {
+		limit = { chaosx_is_non_ai_crisis_pressure_active = yes }
+		add_to_temp_variable = { non_ai_crisis_pressure_chance_bonus = constant:non_ai_crisis_pressure.standard_chance_bonus }
+		add_to_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = constant:non_ai_crisis_pressure.standard_cooldown_reduction }
+	}
+}
+
+chaosx_apply_non_ai_crisis_pressure_severe_factor = {
+	if = {
+		limit = { chaosx_is_non_ai_crisis_pressure_active = yes }
+		add_to_temp_variable = { non_ai_crisis_pressure_chance_bonus = constant:non_ai_crisis_pressure.severe_chance_bonus }
+		add_to_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = constant:non_ai_crisis_pressure.severe_cooldown_reduction }
+	}
+}
+
+chaosx_apply_non_ai_crisis_pressure_extreme_factor = {
+	if = {
+		limit = { chaosx_is_non_ai_crisis_pressure_active = yes }
+		add_to_temp_variable = { non_ai_crisis_pressure_chance_bonus = constant:non_ai_crisis_pressure.extreme_chance_bonus }
+		add_to_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = constant:non_ai_crisis_pressure.extreme_cooldown_reduction }
+	}
+}

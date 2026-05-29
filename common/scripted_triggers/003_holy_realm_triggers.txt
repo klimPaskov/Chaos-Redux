@@ -417,6 +417,12 @@ holy_realm_final_doctrine_balance_leans_vow = {
 	}
 }
 
+holy_realm_can_fund_mandala_peacekeeping = {
+	has_manpower > constant:holy_realm_decision.mandala_peacekeeping_manpower
+	has_equipment = { infantry_equipment > constant:holy_realm_decision.mandala_peacekeeping_infantry_equipment }
+	has_equipment = { support_equipment > constant:holy_realm_decision.mandala_peacekeeping_support_equipment }
+}
+
 holy_realm_has_final_silence_nuke_stockpile = {
 	num_of_nukes > constant:holy_realm_final_silence.normal_nuke_stockpile_gate
 }
@@ -469,6 +475,43 @@ holy_realm_uses_thermonuclear_final_silence = {
 	OR = {
 		has_tech = thermonuclear_bombs
 		has_country_flag = holy_realm_thermonuclear_doctrine
+	}
+}
+
+holy_realm_final_silence_valid_target_state = {
+	impassable = no
+	OWNER = { NOT = { is_holy_realm_country = yes } }
+	CONTROLLER = { NOT = { is_holy_realm_country = yes } }
+}
+
+holy_realm_final_silence_current_wave_state = {
+	holy_realm_final_silence_valid_target_state = yes
+	NOT = { has_state_flag = holy_realm_final_silence_struck }
+	OR = {
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_asia compare = equals }
+			OR = {
+				is_on_continent = asia
+				is_on_continent = middle_east
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_europe_africa compare = equals }
+			OR = {
+				is_on_continent = europe
+				is_on_continent = africa
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_americas compare = equals }
+			OR = {
+				is_on_continent = north_america
+				is_on_continent = south_america
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_oceania_cleanup compare = equals }
+		}
 	}
 }
 
