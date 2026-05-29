@@ -1614,6 +1614,7 @@ holy_realm_apply_final_silence_wave_to_state = {
 		set_state_flag = holy_realm_final_silence_struck
 		set_state_flag = holy_realm_final_silence_burning
 		set_state_flag = holy_realm_final_silence_visual_pending
+		set_state_flag = holy_realm_final_silence_visual_queued
 		if = {
 			limit = { has_global_flag = world_end_final_silence_thermonuclear }
 			set_temp_variable = { chaos_state_deaths_percent = constant:holy_realm_final_silence.thermonuclear_state_deaths_percent }
@@ -1631,6 +1632,7 @@ holy_realm_apply_final_silence_wave_to_state = {
 		}
 		set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.nuclear_random_min }
 		set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.nuclear_random_span }
+		set_temp_variable = { chaos_state_deaths_exact_percent = 1 }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.final_silence }
 		chaos_meter_register_state_civilian_deaths_percent = yes
 		chaos_meter_apply_nuclear_fallout_to_state = yes
@@ -1672,6 +1674,11 @@ holy_realm_apply_final_silence_wave = {
 	every_state = {
 		limit = { holy_realm_final_silence_current_wave_state = yes }
 		holy_realm_apply_final_silence_wave_to_state = yes
+	}
+	every_state = {
+		limit = { holy_realm_final_silence_current_visual_wave_state = yes }
+		set_state_flag = holy_realm_final_silence_visual_pending
+		set_state_flag = holy_realm_final_silence_visual_queued
 	}
 	every_state = {
 		limit = {
