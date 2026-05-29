@@ -1668,9 +1668,34 @@ triggerable_scenario_clone_army_declare_neighbor_wars = {
 	}
 }
 
+suppress_soviet_collapse_fire_once_for_triggerable_scenario = {
+	set_global_flag = soviet_collapse_triggerable_scenario_suppressed_fire_once
+	set_temp_variable = { event_id = 5 }
+	if = {
+		limit = { NOT = { is_in_array = { global.disabled_events = event_id } } }
+		add_to_array = { global.disabled_events = event_id }
+	}
+	if = {
+		limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+		add_to_array = { global.fired_events = event_id }
+	}
+	if = {
+		limit = { is_in_array = { global.fire_once_events = event_id } }
+		remove_from_array = { global.fire_once_events = event_id }
+	}
+	set_temp_variable = { new_weight = 0 }
+	set_event_weight = yes
+	update_unfired_events_counts = yes
+}
+
 trigger_soviet_collapse_scenario = {
+	suppress_soviet_collapse_fire_once_for_triggerable_scenario = yes
 	set_global_flag = soviet_collapse_triggerable_scenario_launch_active
 	set_variable = { global.soviet_collapse_triggerable_scenario_intensity = triggerable_scenarios_intensity }
+	clr_global_flag = soviet_collapse_resolved_by_reconquest
+	clr_global_flag = soviet_collapse_terminal_collapse
+	clr_global_flag = soviet_collapse_terminal_collapse_in_progress
+	clr_global_flag = soviet_collapse_super_event_union_unmade_fired
 	if = {
 		limit = {
 			check_variable = {
@@ -1680,15 +1705,15 @@ trigger_soviet_collapse_scenario = {
 			}
 		}
 		set_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+		set_global_flag = soviet_collapse_force_all_chaos_successors
 	}
 	else = {
 		clr_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+		clr_global_flag = soviet_collapse_force_all_chaos_successors
 	}
 	SOV = {
-		if = {
-			limit = { NOT = { has_global_flag = soviet_collapse_active } }
-			soviet_collapse_initialize_crisis_values = yes
-		}
+		if = { limit = { is_soviet_collapse_active = yes } soviet_collapse_cleanup_terminal_collapse_missions = yes }
+		soviet_collapse_initialize_crisis_values = yes
 		set_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_baseline.component_min }
 		set_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_baseline.component_max }
 		set_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_baseline.component_min }
@@ -1697,11 +1722,14 @@ trigger_soviet_collapse_scenario = {
 		set_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_baseline.component_max }
 		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_baseline.component_max }
 		soviet_collapse_show_union_unmade_super_event = yes
+		soviet_collapse_apply_terminal_collapse = yes
 		soviet_collapse_apply_triggerable_scenario_initial_forces = yes
+		soviet_collapse_cleanup_terminal_collapse_missions = yes
 	}
 	country_event = { id = chaosx.triggerable_scenarios.4 days = 1 }
 	clr_global_flag = soviet_collapse_triggerable_scenario_launch_active
 	clr_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+	clr_global_flag = soviet_collapse_force_all_chaos_successors
 	clear_variable = global.soviet_collapse_triggerable_scenario_intensity
 }
 

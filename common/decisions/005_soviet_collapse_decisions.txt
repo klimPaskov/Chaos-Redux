@@ -3023,8 +3023,9 @@ soviet_collapse_foreign_patron_category = {
 	soviet_collapse_open_republic_aid_menu = {
 		icon = GFX_decision_soviet_collapse_foreign_recognition
 		available = { always = yes }
-		visible = {
-			is_soviet_collapse_active = yes
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
 			is_soviet_collapse_foreign_patron_candidate = yes
 			is_ai = no
 		}
@@ -3032,6 +3033,7 @@ soviet_collapse_foreign_patron_category = {
 		target_trigger = {
 			hidden_trigger = {
 				can_select_soviet_collapse_foreign_patron_target = yes
+				NOT = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
 				FROM = { NOT = { has_country_flag = soviet_collapse_foreign_patron_selected_target } }
 			}
 		}
@@ -3046,17 +3048,21 @@ soviet_collapse_foreign_patron_category = {
 	soviet_collapse_close_republic_aid_menu = {
 		icon = GFX_decision_soviet_collapse_foreign_recognition
 		available = { always = yes }
-		visible = {
-			is_soviet_collapse_active = yes
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
 			is_soviet_collapse_foreign_patron_candidate = yes
 			is_ai = no
 		}
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				FROM = {
-					exists = yes
+				OR = {
 					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = {
+						exists = yes
+						has_country_flag = soviet_collapse_foreign_patron_selected_target
+					}
 				}
 			}
 		}
@@ -3073,7 +3079,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_recognition_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_recognition_cost = yes }
 		}
@@ -3081,8 +3094,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3122,7 +3141,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_liaison_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_liaison_cost = yes }
 		}
@@ -3130,8 +3156,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3167,7 +3199,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_armaments_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_armaments_cost = yes }
 		}
@@ -3175,8 +3214,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_major_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_major_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3212,7 +3257,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_advisers_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes is_soviet_collapse_client_patron_style = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_advisers_cost = yes }
 		}
@@ -3220,8 +3272,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_major_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_major_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3258,7 +3316,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_intelligence_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes is_soviet_collapse_client_patron_style = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_intelligence_cost = yes }
 		}
@@ -3266,8 +3331,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_major_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_major_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3303,7 +3374,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_volunteers_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes is_soviet_collapse_client_patron_style = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_volunteers_cost = yes }
 		}
@@ -3311,8 +3389,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_volunteer_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_volunteer_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3348,7 +3432,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_trade_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_trade_cost = yes }
 		}
@@ -3356,8 +3447,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3393,7 +3490,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_civilian_construction_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_civilian_construction_cost = yes }
 		}
@@ -3401,8 +3505,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_construction_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_construction_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3438,7 +3548,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_military_construction_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_military_construction_cost = yes }
 		}
@@ -3446,8 +3563,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_construction_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_construction_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3483,7 +3606,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_press_network_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_press_network_cost = yes }
 		}
@@ -3491,8 +3621,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3528,7 +3664,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_aid_corridor_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_aid_corridor_cost = yes }
 		}
@@ -3536,8 +3679,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_aid_corridor = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_aid_corridor = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3578,7 +3727,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_conference_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_conference_cost = yes }
 		}
@@ -3586,8 +3742,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3619,7 +3781,12 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_league_logistics_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes has_global_flag = soviet_collapse_free_republics_league_announced }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			is_soviet_collapse_foreign_patron_candidate = yes
+			has_global_flag = soviet_collapse_free_republics_league_announced
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_league_logistics_cost = yes }
 		}
@@ -3627,8 +3794,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_league_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_league_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3672,7 +3845,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_anti_puppet_clause_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_anti_puppet_clause_cost = yes }
 		}
@@ -3680,8 +3860,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_aid = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_aid = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3717,7 +3903,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_protection_treaty_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_protection_treaty_cost = yes }
 		}
@@ -3725,8 +3918,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_foreign_protection_treaty = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_foreign_protection_treaty = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3758,7 +3957,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_adviser_privileges_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_adviser_privileges_cost = yes }
 		}
@@ -3766,8 +3972,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_foreign_adviser_privileges = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_foreign_adviser_privileges = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -3799,7 +4011,14 @@ soviet_collapse_foreign_patron_category = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_client_cabinet_cost = yes }
 		}
-		visible = { is_soviet_collapse_active = yes is_soviet_collapse_foreign_patron_candidate = yes }
+		visible = { always = yes }
+		target_root_trigger = {
+			has_soviet_collapse_foreign_patron_decision_surface = yes
+			OR = {
+				is_soviet_collapse_foreign_patron_candidate = yes
+				has_country_flag = soviet_collapse_foreign_patron_menu_open
+			}
+		}
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_foreign_client_cabinet_cost = yes }
 		}
@@ -3807,8 +4026,14 @@ soviet_collapse_foreign_patron_category = {
 		target_array = global.soviet_collapse_breakaway_countries
 		target_trigger = {
 			hidden_trigger = {
-				can_show_soviet_collapse_foreign_patron_target_decisions = yes
-				can_target_soviet_collapse_breakaway_for_foreign_client_cabinet = yes
+				OR = {
+					has_country_flag = soviet_collapse_foreign_patron_selected_target
+					FROM = { has_country_flag = soviet_collapse_foreign_patron_selected_target }
+					AND = {
+						can_show_soviet_collapse_foreign_patron_target_decisions = yes
+						can_target_soviet_collapse_breakaway_for_foreign_client_cabinet = yes
+					}
+				}
 			}
 		}
 		days_re_enable = @soviet_collapse_foreign_intervention_days_reenable
@@ -4517,6 +4742,18 @@ soviet_collapse_reconstruction_state = {
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
 			soviet_collapse_apply_cfr_survey_unfinished_sites = yes
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = cfr_strategy_rails_first
+						has_country_flag = cfr_focus_count_the_cranes
+					}
+				}
+				random_owned_controlled_state = {
+					add_building_construction = { type = rail_way level = 2 instant_build = yes }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
+			}
 			custom_effect_tooltip = cfr_survey_unfinished_sites_tt
 		}
 		ai_will_do = {
@@ -4566,6 +4803,19 @@ soviet_collapse_reconstruction_state = {
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
 			soviet_collapse_apply_cfr_reconstruction_contracts = yes
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = cfr_strategy_contracts_first
+						has_country_flag = cfr_focus_state_that_builds
+						has_country_flag = cfr_focus_pour_final_foundation
+					}
+				}
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+				}
+			}
 			custom_effect_tooltip = cfr_issue_reconstruction_contracts_tt
 		}
 		ai_will_do = {
@@ -4619,6 +4869,19 @@ soviet_collapse_arsenal_state = {
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
 			soviet_collapse_apply_mfr_audit_arsenal_orders = yes
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = mfr_focus_arsenal_board_meets
+						has_country_flag = mfr_order_ledger_opened
+					}
+				}
+				add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+				}
+			}
 			custom_effect_tooltip = mfr_audit_arsenal_orders_tt
 		}
 		ai_will_do = {
@@ -4671,6 +4934,22 @@ soviet_collapse_arsenal_state = {
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
 			soviet_collapse_apply_mfr_convert_depots_to_arms_lines = yes
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+			}
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = mfr_focus_factory_war_cabinet
+						has_country_flag = mfr_focus_every_order_a_rifle
+						has_country_flag = mfr_focus_eternal_arsenal_marches
+					}
+				}
+				add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
+				add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+			}
 			custom_effect_tooltip = mfr_convert_depots_to_arms_lines_tt
 		}
 		ai_will_do = {
@@ -4951,7 +5230,7 @@ soviet_collapse_kronstadt_council = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = KRS is_soviet_collapse_active = yes }
+		visible = { tag = KRS has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -4985,7 +5264,7 @@ soviet_collapse_kronstadt_council = {
 		}
 		visible = {
 			tag = KRS
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = krs_focus_special_arm
 		}
 		custom_cost_trigger = {
@@ -5021,7 +5300,7 @@ soviet_collapse_kronstadt_council = {
 		}
 		visible = {
 			tag = KRS
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = krs_focus_extreme_gate
 			NOT = { has_country_flag = soviet_collapse_port_council_endgame }
 		}
@@ -5063,7 +5342,7 @@ soviet_collapse_free_territory = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = FTH is_soviet_collapse_active = yes }
+		visible = { tag = FTH has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -5095,7 +5374,7 @@ soviet_collapse_free_territory = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = FTH is_soviet_collapse_active = yes has_country_flag = fth_focus_special_arm }
+		visible = { tag = FTH has_soviet_collapse_successor_decision_surface = yes has_country_flag = fth_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5127,7 +5406,7 @@ soviet_collapse_free_territory = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = FTH is_soviet_collapse_active = yes has_country_flag = fth_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_black_banner_endgame } }
+		visible = { tag = FTH has_soviet_collapse_successor_decision_surface = yes has_country_flag = fth_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_black_banner_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5166,7 +5445,7 @@ soviet_collapse_black_banner_host = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = BBH is_soviet_collapse_active = yes }
+		visible = { tag = BBH has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -5198,7 +5477,7 @@ soviet_collapse_black_banner_host = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = BBH is_soviet_collapse_active = yes has_country_flag = bbh_focus_special_arm }
+		visible = { tag = BBH has_soviet_collapse_successor_decision_surface = yes has_country_flag = bbh_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5230,7 +5509,7 @@ soviet_collapse_black_banner_host = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = BBH is_soviet_collapse_active = yes has_country_flag = bbh_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_black_banner_endgame } }
+		visible = { tag = BBH has_soviet_collapse_successor_decision_surface = yes has_country_flag = bbh_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_black_banner_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5269,7 +5548,7 @@ soviet_collapse_basmachi_confederation = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = BSC is_soviet_collapse_active = yes }
+		visible = { tag = BSC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -5301,7 +5580,7 @@ soviet_collapse_basmachi_confederation = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = BSC is_soviet_collapse_active = yes has_country_flag = bsc_focus_special_arm }
+		visible = { tag = BSC has_soviet_collapse_successor_decision_surface = yes has_country_flag = bsc_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5333,7 +5612,7 @@ soviet_collapse_basmachi_confederation = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = BSC is_soviet_collapse_active = yes has_country_flag = bsc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_basmachi_endgame } }
+		visible = { tag = BSC has_soviet_collapse_successor_decision_surface = yes has_country_flag = bsc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_basmachi_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5372,7 +5651,7 @@ soviet_collapse_turkestan_national_council = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = TNC is_soviet_collapse_active = yes }
+		visible = { tag = TNC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -5404,7 +5683,7 @@ soviet_collapse_turkestan_national_council = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = TNC is_soviet_collapse_active = yes has_country_flag = tnc_focus_special_arm }
+		visible = { tag = TNC has_soviet_collapse_successor_decision_surface = yes has_country_flag = tnc_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5436,7 +5715,7 @@ soviet_collapse_turkestan_national_council = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = TNC is_soviet_collapse_active = yes has_country_flag = tnc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_turkestan_endgame } }
+		visible = { tag = TNC has_soviet_collapse_successor_decision_surface = yes has_country_flag = tnc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_turkestan_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5475,7 +5754,7 @@ soviet_collapse_alash_restoration_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = ALA is_soviet_collapse_active = yes }
+		visible = { tag = ALA has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -5507,7 +5786,7 @@ soviet_collapse_alash_restoration_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = ALA is_soviet_collapse_active = yes has_country_flag = ala_focus_special_arm }
+		visible = { tag = ALA has_soviet_collapse_successor_decision_surface = yes has_country_flag = ala_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5539,7 +5818,7 @@ soviet_collapse_alash_restoration_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = ALA is_soviet_collapse_active = yes has_country_flag = ala_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_alash_endgame } }
+		visible = { tag = ALA has_soviet_collapse_successor_decision_surface = yes has_country_flag = ala_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_alash_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5580,7 +5859,7 @@ soviet_collapse_union_defense_committee = {
 		}
 		visible = {
 			tag = UDC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			OR = {
 				has_country_flag = udc_focus_military_district_passes
 				has_country_flag = udc_focus_command_seal_registers
@@ -5617,7 +5896,7 @@ soviet_collapse_union_defense_committee = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = UDC is_soviet_collapse_active = yes has_country_flag = udc_focus_special_arm }
+		visible = { tag = UDC has_soviet_collapse_successor_decision_surface = yes has_country_flag = udc_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5651,7 +5930,7 @@ soviet_collapse_union_defense_committee = {
 		}
 		visible = {
 			tag = UDC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = udc_focus_extreme_gate
 			NOT = { has_country_flag = soviet_collapse_union_defense_extreme_claimed }
 		}
@@ -5696,7 +5975,7 @@ soviet_collapse_security_directorate_zone = {
 		}
 		visible = {
 			tag = SDZ
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			OR = {
 				has_country_flag = sdz_focus_archive_custody_registers
 				has_country_flag = sdz_focus_chain_of_custody_statutes
@@ -5733,7 +6012,7 @@ soviet_collapse_security_directorate_zone = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = SDZ is_soviet_collapse_active = yes has_country_flag = sdz_focus_special_arm }
+		visible = { tag = SDZ has_soviet_collapse_successor_decision_surface = yes has_country_flag = sdz_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5767,7 +6046,7 @@ soviet_collapse_security_directorate_zone = {
 		}
 		visible = {
 			tag = SDZ
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = sdz_focus_extreme_gate
 			NOT = { has_country_flag = soviet_collapse_security_directorate_extreme_claimed }
 		}
@@ -5810,7 +6089,7 @@ soviet_collapse_green_army_congress = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = GAC is_soviet_collapse_active = yes }
+		visible = { tag = GAC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -5842,7 +6121,7 @@ soviet_collapse_green_army_congress = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = GAC is_soviet_collapse_active = yes has_country_flag = gac_focus_special_arm }
+		visible = { tag = GAC has_soviet_collapse_successor_decision_surface = yes has_country_flag = gac_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5874,7 +6153,7 @@ soviet_collapse_green_army_congress = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = GAC is_soviet_collapse_active = yes has_country_flag = gac_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_green_army_endgame } }
+		visible = { tag = GAC has_soviet_collapse_successor_decision_surface = yes has_country_flag = gac_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_green_army_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5913,7 +6192,7 @@ soviet_collapse_don_host_emergency_circle = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = DHC is_soviet_collapse_active = yes }
+		visible = { tag = DHC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -5945,7 +6224,7 @@ soviet_collapse_don_host_emergency_circle = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = DHC is_soviet_collapse_active = yes has_country_flag = dhc_focus_special_arm }
+		visible = { tag = DHC has_soviet_collapse_successor_decision_surface = yes has_country_flag = dhc_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -5977,7 +6256,7 @@ soviet_collapse_don_host_emergency_circle = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = DHC is_soviet_collapse_active = yes has_country_flag = dhc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_don_host_endgame } }
+		visible = { tag = DHC has_soviet_collapse_successor_decision_surface = yes has_country_flag = dhc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_don_host_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6016,7 +6295,7 @@ soviet_collapse_kuban_host_provisional_council = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = KHC is_soviet_collapse_active = yes }
+		visible = { tag = KHC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6048,7 +6327,7 @@ soviet_collapse_kuban_host_provisional_council = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = KHC is_soviet_collapse_active = yes has_country_flag = khc_focus_special_arm }
+		visible = { tag = KHC has_soviet_collapse_successor_decision_surface = yes has_country_flag = khc_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6080,7 +6359,7 @@ soviet_collapse_kuban_host_provisional_council = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = KHC is_soviet_collapse_active = yes has_country_flag = khc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_kuban_host_endgame } }
+		visible = { tag = KHC has_soviet_collapse_successor_decision_surface = yes has_country_flag = khc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_kuban_host_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6119,7 +6398,7 @@ soviet_collapse_far_eastern_republic_revival = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = FEV is_soviet_collapse_active = yes }
+		visible = { tag = FEV has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6151,7 +6430,7 @@ soviet_collapse_far_eastern_republic_revival = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = FEV is_soviet_collapse_active = yes has_country_flag = fev_focus_special_arm }
+		visible = { tag = FEV has_soviet_collapse_successor_decision_surface = yes has_country_flag = fev_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6183,7 +6462,7 @@ soviet_collapse_far_eastern_republic_revival = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = FEV is_soviet_collapse_active = yes has_country_flag = fev_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_far_eastern_endgame } }
+		visible = { tag = FEV has_soviet_collapse_successor_decision_surface = yes has_country_flag = fev_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_far_eastern_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6222,7 +6501,7 @@ soviet_collapse_siberian_zemstvo_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = SZA is_soviet_collapse_active = yes }
+		visible = { tag = SZA has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6254,7 +6533,7 @@ soviet_collapse_siberian_zemstvo_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = SZA is_soviet_collapse_active = yes has_country_flag = sza_focus_special_arm }
+		visible = { tag = SZA has_soviet_collapse_successor_decision_surface = yes has_country_flag = sza_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6286,7 +6565,7 @@ soviet_collapse_siberian_zemstvo_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = SZA is_soviet_collapse_active = yes has_country_flag = sza_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_siberian_zemstvo_endgame } }
+		visible = { tag = SZA has_soviet_collapse_successor_decision_surface = yes has_country_flag = sza_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_siberian_zemstvo_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6325,7 +6604,7 @@ soviet_collapse_ural_workers_directorate = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = UWD is_soviet_collapse_active = yes }
+		visible = { tag = UWD has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6357,7 +6636,7 @@ soviet_collapse_ural_workers_directorate = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = UWD is_soviet_collapse_active = yes has_country_flag = uwd_focus_special_arm }
+		visible = { tag = UWD has_soviet_collapse_successor_decision_surface = yes has_country_flag = uwd_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6389,7 +6668,7 @@ soviet_collapse_ural_workers_directorate = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = UWD is_soviet_collapse_active = yes has_country_flag = uwd_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_ural_workers_endgame } }
+		visible = { tag = UWD has_soviet_collapse_successor_decision_surface = yes has_country_flag = uwd_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_ural_workers_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6428,7 +6707,7 @@ soviet_collapse_mountain_republic_of_the_caucasus = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = MRC is_soviet_collapse_active = yes }
+		visible = { tag = MRC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6460,7 +6739,7 @@ soviet_collapse_mountain_republic_of_the_caucasus = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = MRC is_soviet_collapse_active = yes has_country_flag = mrc_focus_special_arm }
+		visible = { tag = MRC has_soviet_collapse_successor_decision_surface = yes has_country_flag = mrc_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6492,7 +6771,7 @@ soviet_collapse_mountain_republic_of_the_caucasus = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = MRC is_soviet_collapse_active = yes has_country_flag = mrc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_mountain_republic_endgame } }
+		visible = { tag = MRC has_soviet_collapse_successor_decision_surface = yes has_country_flag = mrc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_mountain_republic_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6531,7 +6810,7 @@ soviet_collapse_idel_ural_league = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = IUL is_soviet_collapse_active = yes }
+		visible = { tag = IUL has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6563,7 +6842,7 @@ soviet_collapse_idel_ural_league = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = IUL is_soviet_collapse_active = yes has_country_flag = iul_focus_special_arm }
+		visible = { tag = IUL has_soviet_collapse_successor_decision_surface = yes has_country_flag = iul_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6595,7 +6874,7 @@ soviet_collapse_idel_ural_league = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = IUL is_soviet_collapse_active = yes has_country_flag = iul_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_idel_ural_endgame } }
+		visible = { tag = IUL has_soviet_collapse_successor_decision_surface = yes has_country_flag = iul_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_idel_ural_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6634,7 +6913,7 @@ soviet_collapse_old_great_bulgaria = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = OGB is_soviet_collapse_active = yes }
+		visible = { tag = OGB has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6663,7 +6942,7 @@ soviet_collapse_old_great_bulgaria = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = OGB is_soviet_collapse_active = yes has_country_flag = ogb_focus_raise_the_heritage_guard }
+		visible = { tag = OGB has_soviet_collapse_successor_decision_surface = yes has_country_flag = ogb_focus_raise_the_heritage_guard }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6692,7 +6971,7 @@ soviet_collapse_old_great_bulgaria = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = OGB is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_old_great_bulgaria_endgame } }
+		visible = { tag = OGB has_soviet_collapse_successor_decision_surface = yes NOT = { has_country_flag = soviet_collapse_old_great_bulgaria_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6723,7 +7002,7 @@ soviet_collapse_birobidzhan_autonomous_commune = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = BAC is_soviet_collapse_active = yes }
+		visible = { tag = BAC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6755,7 +7034,7 @@ soviet_collapse_birobidzhan_autonomous_commune = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = BAC is_soviet_collapse_active = yes has_country_flag = bac_focus_special_arm }
+		visible = { tag = BAC has_soviet_collapse_successor_decision_surface = yes has_country_flag = bac_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6787,7 +7066,7 @@ soviet_collapse_birobidzhan_autonomous_commune = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = BAC is_soviet_collapse_active = yes has_country_flag = bac_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_birobidzhan_endgame } }
+		visible = { tag = BAC has_soviet_collapse_successor_decision_surface = yes has_country_flag = bac_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_birobidzhan_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6827,7 +7106,7 @@ soviet_collapse_pale_railway_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = PRA is_soviet_collapse_active = yes }
+		visible = { tag = PRA has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -6856,18 +7135,28 @@ soviet_collapse_pale_railway_authority = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = PRA is_soviet_collapse_active = yes has_country_flag = pra_focus_omsk_station_guard }
+		visible = { tag = PRA has_soviet_collapse_successor_decision_surface = yes has_country_flag = pra_focus_omsk_station_guard }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
 		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium
 		fire_only_once = yes
-		complete_effect = {
-			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
-			add_to_variable = { pra_rolling_stock = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
-			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
-			custom_effect_tooltip = pra_mobilize_station_guard_tt
-		}
+			complete_effect = {
+				soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
+				add_to_variable = { pra_rolling_stock = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+				add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+				add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+				if = {
+					limit = { NOT = { has_idea = pra_railway_guard } }
+					add_ideas = pra_railway_guard
+				}
+				random_owned_controlled_state = {
+					add_building_construction = { type = supply_node level = 1 instant_build = yes }
+					add_building_construction = { type = rail_way level = 3 instant_build = yes }
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+				}
+				custom_effect_tooltip = pra_mobilize_station_guard_tt
+			}
 		ai_will_do = {
 			base = @soviet_collapse_ai_high
 			modifier = {
@@ -6881,12 +7170,145 @@ soviet_collapse_pale_railway_authority = {
 		}
 	}
 
+	pra_repair_the_branch_lines = {
+		icon = GFX_decision_pra_consolidate_timetable_courts
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		}
+		visible = {
+			tag = PRA
+			has_soviet_collapse_successor_decision_surface = yes
+			OR = {
+				has_country_flag = pra_focus_count_the_locomotives
+				has_country_flag = pra_focus_repair_crews_without_ministries
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_low
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+			complete_effect = {
+				add_to_variable = { pra_rolling_stock = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+				random_owned_controlled_state = {
+					add_building_construction = { type = rail_way level = 4 instant_build = yes }
+				}
+				random_owned_controlled_state = {
+					add_building_construction = { type = rail_way level = 2 instant_build = yes }
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+				}
+				custom_effect_tooltip = pra_repair_the_branch_lines_tt
+			}
+		ai_will_do = {
+			base = @soviet_collapse_ai_high
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_war = yes
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				check_variable = { var = pra_rolling_stock value = constant:soviet_collapse_factory_ancient.large_mandate_gain compare = less_than }
+			}
+		}
+	}
+
+	pra_raise_mobile_supply_yards = {
+		icon = GFX_decision_pra_mobilize_station_guard
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		visible = {
+			tag = PRA
+			has_soviet_collapse_successor_decision_surface = yes
+			OR = {
+				has_country_flag = pra_focus_coal_water_and_spare_parts
+				has_country_flag = pra_focus_mobile_workshops
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+			complete_effect = {
+				add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+				random_owned_controlled_state = {
+					add_building_construction = { type = supply_node level = 1 instant_build = yes }
+					add_building_construction = { type = rail_way level = 2 instant_build = yes }
+				}
+				random_owned_controlled_state = {
+					add_building_construction = { type = supply_node level = 1 instant_build = yes }
+					add_building_construction = { type = rail_way level = 3 instant_build = yes }
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+				}
+				custom_effect_tooltip = pra_raise_mobile_supply_yards_tt
+			}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war = yes
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.depot_pressure compare = greater_than } }
+			}
+		}
+	}
+
+	pra_drive_the_junction_columns = {
+		icon = GFX_decision_pra_declare_moving_state
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		visible = {
+			tag = PRA
+			has_soviet_collapse_successor_decision_surface = yes
+			has_country_flag = pra_focus_claim_the_branch_lines
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
+		}
+		custom_cost_text = chaosx_sovcollapse_decision_blocked_custom_splinter_medium
+		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
+			complete_effect = {
+				add_to_variable = { pra_rail_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+				random_owned_controlled_state = {
+					add_building_construction = { type = supply_node level = 1 instant_build = yes }
+					add_building_construction = { type = rail_way level = 5 instant_build = yes }
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					add_building_construction = { type = bunker level = 2 instant_build = yes }
+				}
+				if = {
+					limit = {
+					SOV = { exists = yes is_soviet_collapse_active = yes }
+				}
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_depot_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
+			}
+			custom_effect_tooltip = pra_drive_the_junction_columns_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_medium
+			modifier = {
+				factor = @soviet_collapse_ai_urgent_multiplier
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = @soviet_collapse_ai_pressure_multiplier
+				has_country_flag = pra_focus_armored_train_directorate
+			}
+		}
+	}
+
 	pra_declare_the_moving_state = {
 		icon = GFX_decision_pra_declare_moving_state
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = PRA is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_pale_railway_endgame } }
+		visible = { tag = PRA has_soviet_collapse_successor_decision_surface = yes NOT = { has_country_flag = soviet_collapse_pale_railway_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -6920,7 +7342,7 @@ soviet_collapse_tunguska_star_committee = {
 		}
 		visible = {
 			tag = TSC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			OR = {
 				has_country_flag = tsc_focus_the_sky_keeps_records
 				has_country_flag = tsc_focus_tura_observation_presidium
@@ -6953,7 +7375,7 @@ soviet_collapse_tunguska_star_committee = {
 		}
 		visible = {
 			tag = TSC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = tsc_focus_observatory_guard
 		}
 		custom_cost_trigger = {
@@ -6987,7 +7409,7 @@ soviet_collapse_tunguska_star_committee = {
 		}
 		visible = {
 			tag = TSC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			OR = {
 				has_country_flag = tsc_focus_claim_the_impact_zone
 				has_country_flag = tsc_focus_sky_over_siberia
@@ -7027,7 +7449,7 @@ soviet_collapse_iron_commissariat_of_the_dead = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = ICD is_soviet_collapse_active = yes }
+		visible = { tag = ICD has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -7052,7 +7474,7 @@ soviet_collapse_iron_commissariat_of_the_dead = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = ICD is_soviet_collapse_active = yes has_country_flag = icd_focus_memorial_battalions }
+		visible = { tag = ICD has_soviet_collapse_successor_decision_surface = yes has_country_flag = icd_focus_memorial_battalions }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7081,7 +7503,7 @@ soviet_collapse_iron_commissariat_of_the_dead = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = ICD is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_iron_commissariat_endgame } }
+		visible = { tag = ICD has_soviet_collapse_successor_decision_surface = yes NOT = { has_country_flag = soviet_collapse_iron_commissariat_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7115,7 +7537,7 @@ soviet_collapse_red_martyrs_resurrection_cult = {
 		}
 		visible = {
 			tag = RMC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = rmc_focus_open_the_red_martyrology
 		}
 		custom_cost_trigger = {
@@ -7145,7 +7567,7 @@ soviet_collapse_red_martyrs_resurrection_cult = {
 		}
 		visible = {
 			tag = RMC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			has_country_flag = rmc_focus_reliquary_guard
 		}
 		custom_cost_trigger = {
@@ -7179,7 +7601,7 @@ soviet_collapse_red_martyrs_resurrection_cult = {
 		}
 		visible = {
 			tag = RMC
-			is_soviet_collapse_active = yes
+			has_soviet_collapse_successor_decision_surface = yes
 			OR = {
 				has_country_flag = rmc_focus_resurrection_without_state
 				has_country_flag = rmc_focus_procession_columns
@@ -7219,7 +7641,7 @@ soviet_collapse_dead_soldiers_congress = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = DSC is_soviet_collapse_active = yes }
+		visible = { tag = DSC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -7244,7 +7666,7 @@ soviet_collapse_dead_soldiers_congress = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = DSC is_soviet_collapse_active = yes has_country_flag = dsc_focus_dead_regiment_columns }
+		visible = { tag = DSC has_soviet_collapse_successor_decision_surface = yes has_country_flag = dsc_focus_dead_regiment_columns }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7253,6 +7675,11 @@ soviet_collapse_dead_soldiers_congress = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			add_to_variable = { dsc_revenant_mobilization = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:soviet_collapse_republic_focus.artillery_equipment }
+			random_owned_controlled_state = {
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
 			custom_effect_tooltip = dsc_raise_dead_regiment_columns_tt
 		}
 		ai_will_do = {
@@ -7273,7 +7700,7 @@ soviet_collapse_dead_soldiers_congress = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = DSC is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_dead_soldiers_endgame } }
+		visible = { tag = DSC has_soviet_collapse_successor_decision_surface = yes NOT = { has_country_flag = soviet_collapse_dead_soldiers_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7304,7 +7731,7 @@ soviet_collapse_northern_revenant_fleet = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = NRF is_soviet_collapse_active = yes }
+		visible = { tag = NRF has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -7329,7 +7756,7 @@ soviet_collapse_northern_revenant_fleet = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = NRF is_soviet_collapse_active = yes has_country_flag = nrf_focus_icebound_marine_guard }
+		visible = { tag = NRF has_soviet_collapse_successor_decision_surface = yes has_country_flag = nrf_focus_icebound_marine_guard }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7338,6 +7765,13 @@ soviet_collapse_northern_revenant_fleet = {
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
 			add_to_variable = { nrf_port_muster = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			navy_experience = constant:soviet_collapse_republic_focus.navy_xp_small
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 2 instant_build = yes }
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
 			custom_effect_tooltip = nrf_raise_icebound_marines_tt
 		}
 		ai_will_do = {
@@ -7358,7 +7792,7 @@ soviet_collapse_northern_revenant_fleet = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = NRF is_soviet_collapse_active = yes NOT = { has_country_flag = soviet_collapse_northern_revenant_endgame } }
+		visible = { tag = NRF has_soviet_collapse_successor_decision_surface = yes NOT = { has_country_flag = soviet_collapse_northern_revenant_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7390,7 +7824,7 @@ soviet_collapse_arctic_naval_directorate = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = ARD is_soviet_collapse_active = yes }
+		visible = { tag = ARD has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -7422,7 +7856,7 @@ soviet_collapse_arctic_naval_directorate = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = ARD is_soviet_collapse_active = yes has_country_flag = ard_focus_special_arm }
+		visible = { tag = ARD has_soviet_collapse_successor_decision_surface = yes has_country_flag = ard_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7430,6 +7864,12 @@ soviet_collapse_arctic_naval_directorate = {
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_mobilize_signature_forces = yes
+			navy_experience = constant:soviet_collapse_republic_focus.navy_xp_small
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+			}
 			custom_effect_tooltip = ard_mobilize_signature_forces_tt
 		}
 		ai_will_do = {
@@ -7454,7 +7894,7 @@ soviet_collapse_arctic_naval_directorate = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = ARD is_soviet_collapse_active = yes has_country_flag = ard_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_arctic_directorate_endgame } }
+		visible = { tag = ARD has_soviet_collapse_successor_decision_surface = yes has_country_flag = ard_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_arctic_directorate_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7462,6 +7902,14 @@ soviet_collapse_arctic_naval_directorate = {
 		days_re_enable = @soviet_collapse_factory_ancient_days_reenable
 		complete_effect = {
 			soviet_collapse_apply_custom_splinter_push_extreme_route = yes
+			navy_experience = constant:soviet_collapse_republic_focus.navy_xp_medium
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			random_owned_controlled_state = {
+				limit = { is_coastal = yes }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = dockyard level = 2 instant_build = yes }
+				add_building_construction = { type = coastal_bunker level = 1 instant_build = yes }
+			}
 			soviet_collapse_complete_arctic_directorate_endgame = yes
 			custom_effect_tooltip = ard_push_extreme_route_tt
 		}
@@ -7493,7 +7941,7 @@ soviet_collapse_northern_lights_commune = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
-		visible = { tag = NLC is_soviet_collapse_active = yes }
+		visible = { tag = NLC has_soviet_collapse_successor_decision_surface = yes }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_low_cost = yes }
 		}
@@ -7525,7 +7973,7 @@ soviet_collapse_northern_lights_commune = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = NLC is_soviet_collapse_active = yes has_country_flag = nlc_focus_special_arm }
+		visible = { tag = NLC has_soviet_collapse_successor_decision_surface = yes has_country_flag = nlc_focus_special_arm }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
@@ -7557,7 +8005,7 @@ soviet_collapse_northern_lights_commune = {
 		available = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
-		visible = { tag = NLC is_soviet_collapse_active = yes has_country_flag = nlc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_northern_lights_endgame } }
+		visible = { tag = NLC has_soviet_collapse_successor_decision_surface = yes has_country_flag = nlc_focus_extreme_gate NOT = { has_country_flag = soviet_collapse_northern_lights_endgame } }
 		custom_cost_trigger = {
 			hidden_trigger = { can_pay_soviet_collapse_custom_splinter_medium_cost = yes }
 		}
