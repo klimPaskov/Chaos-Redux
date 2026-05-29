@@ -23,6 +23,10 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.standard }
 	}
 	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_soviet_collapse_type } }
+		set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.normal_republics }
+	}
+	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -49,6 +53,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.mengele_clones_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.soviet_collapse
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.soviet_collapse_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -70,6 +82,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.soviet_collapse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.soviet_collapse_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.zombie_apocalypse
 		}
 		add_to_array = {
@@ -79,8 +99,46 @@ triggerable_scenarios_rebuild_view = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.name }
+			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.zombie_apocalypse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.zombie_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.soviet_collapse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.soviet_collapse_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.mengele_clones
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.mengele_clones_name
+		}
+	}
+	else_if = {
+		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.soviet_collapse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.soviet_collapse_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -115,6 +173,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.mengele_clones_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.soviet_collapse
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.soviet_collapse_name
 		}
 	}
 }
@@ -174,6 +240,11 @@ select_triggerable_scenario_zombie = {
 select_triggerable_scenario_clones = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.mengele_clones }
+}
+
+select_triggerable_scenario_soviet_collapse = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.soviet_collapse }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -236,11 +307,19 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_zombie_type = constant:triggerable_scenario_zombie_type.connected }
 		}
 	}
-	else = {
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.mengele_clones } }
 		subtract_from_variable = { triggerable_scenarios_clone_type = 1 }
 		if = {
 			limit = { check_variable = { triggerable_scenarios_clone_type < constant:triggerable_scenario_clone_type.standard } }
 			set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.aryan }
+		}
+	}
+	else = {
+		subtract_from_variable = { triggerable_scenarios_soviet_collapse_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_soviet_collapse_type < constant:triggerable_scenario_soviet_collapse_type.normal_republics } }
+			set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.chaos_republics }
 		}
 	}
 }
@@ -255,11 +334,19 @@ triggerable_scenario_type_next = {
 			set_variable = { triggerable_scenarios_zombie_type = constant:triggerable_scenario_zombie_type.diverse }
 		}
 	}
-	else = {
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.mengele_clones } }
 		add_to_variable = { triggerable_scenarios_clone_type = 1 }
 		if = {
 			limit = { check_variable = { triggerable_scenarios_clone_type > constant:triggerable_scenario_clone_type.aryan } }
 			set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.standard }
+		}
+	}
+	else = {
+		add_to_variable = { triggerable_scenarios_soviet_collapse_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_soviet_collapse_type > constant:triggerable_scenario_soviet_collapse_type.chaos_republics } }
+			set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.normal_republics }
 		}
 	}
 }
@@ -291,6 +378,16 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		trigger_mengele_clone_army_scenario = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.soviet_collapse
+				compare = equals
+			}
+		}
+		trigger_soviet_collapse_scenario = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
@@ -1493,6 +1590,43 @@ triggerable_scenario_clone_army_declare_neighbor_wars = {
 			}
 		}
 	}
+}
+
+trigger_soviet_collapse_scenario = {
+	set_global_flag = soviet_collapse_triggerable_scenario_launch_active
+	set_variable = { global.soviet_collapse_triggerable_scenario_intensity = triggerable_scenarios_intensity }
+	if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenarios_soviet_collapse_type
+				value = constant:triggerable_scenario_soviet_collapse_type.chaos_republics
+				compare = equals
+			}
+		}
+		set_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+	}
+	else = {
+		clr_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+	}
+	SOV = {
+		if = {
+			limit = { NOT = { has_global_flag = soviet_collapse_active } }
+			soviet_collapse_initialize_crisis_values = yes
+		}
+		set_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_baseline.component_min }
+		set_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_baseline.component_max }
+		set_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_baseline.component_min }
+		set_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_baseline.component_max }
+		set_variable = { soviet_collapse_foreign_appetite = constant:soviet_collapse_baseline.component_max }
+		set_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_baseline.component_max }
+		set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_baseline.component_max }
+		soviet_collapse_show_union_unmade_super_event = yes
+		soviet_collapse_apply_triggerable_scenario_initial_forces = yes
+	}
+	country_event = { id = chaosx.triggerable_scenarios.4 days = 1 }
+	clr_global_flag = soviet_collapse_triggerable_scenario_launch_active
+	clr_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+	clear_variable = global.soviet_collapse_triggerable_scenario_intensity
 }
 
 trigger_mengele_clone_army_scenario = {

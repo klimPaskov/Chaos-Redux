@@ -1,248 +1,275 @@
 ---
 name: chaos-redux-subagents
-description: Use when coordinating custom Codex subagents for Chaos Redux implementation, asset production, super-event research, audits, or documentation work.
+description: Use when coordinating custom Codex subagents for Chaos Redux implementation, asset production, super-event research, audits, active small patches, planning handoffs, or documentation work.
 ---
 
 # Chaos Redux Subagents
 
 Use this skill when a Chaos Redux task should be split across project custom Codex subagents.
 
-This skill is the detailed source of truth for specialized helper-agent routing.
+The parent Codex agent remains responsible for final integration, validation, and completion claims. Subagents can inspect, patch, create assets, write addenda, or produce reports. The parent must review their outputs, wire final cross-surface behavior, and carry blockers into the final report.
 
-`AGENTS.md` should stay short enough to remain easy to read. Keep detailed subagent routing, ownership boundaries, recursive expansion rules, and handoff expectations in this skill instead of duplicating them in the root file.
+Do not use subagents to hide uncertainty or pass off responsibility. A subagent handoff is evidence for the parent, not a replacement for parent review.
 
-This skill does not replace repository-wide rules in `AGENTS.md`. It expands the subagent section of `AGENTS.md`.
+## Fork context rule
 
-## 1. Core rule
+All project custom Codex subagents must be spawned with `fork_context=false`.
 
-The parent Codex agent remains responsible for final implementation.
+Do not spawn any project subagent with inherited parent-thread context. The parent prompt must include every path, user correction, task constraint, scope boundary, previous handoff status, accepted plan, queued plan, and design rule the subagent needs.
 
-Subagents can research, create files, audit, or document. The parent must review their outputs, perform final wiring, update dependent files, run validation, and report blockers honestly.
+If the needed context only exists in conversation, summarize it into the subagent prompt or write it to the relevant spec, plan, handoff, or repo file before spawning. Then spawn the subagent with `fork_context=false`.
 
-Do not use subagents to hide uncertainty or pass off responsibility. If a subagent reports blocked or uncertain work, the parent must carry that status into the final report.
+This rule applies to every subagent type:
 
-## 2. Available project subagents
+- read-only agents
+- plan-only agents
+- asset-production agents
+- super-event research agents
+- active small-patch agents
+- scripted-system agents
+- documentation agents
+- skill-maintenance agents
 
-Use `chaosx_repo_explorer` for read-only repo exploration, touched-file mapping, pattern search, vanilla reference mapping, and edit-order planning.
+The goal is to keep subagents narrow, reproducible, and grounded in explicit inputs instead of inherited conversation state.
 
-Use `chaosx_asset_source_researcher` for real or archival image sourcing, real leader portraits, historical flags, historical symbols, user-provided source photos, source-image processing, and report/news/super-event images that must depict real historical material.
 
-Use `chaosx_generated_event_art` for generated non-icon art, including fictional or alternate-history report images, news images, super-event images, fictional portraits, fictional flags, faction emblems, UI panels, dossier art, and progression-state base art.
+## Available project subagents
 
-Use `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, officer corps icons, decision icons, decision category icons, achievement icons, and tech icons.
+Use `chaosx_repo_explorer` only for read-only repo exploration when touched-file mapping, pattern search, vanilla reference mapping, missing-file recovery, dependency mapping, or edit-order planning is actually unclear. It is not a default preflight agent.
+
+Use `chaosx_improvement_loop_planner` for event improvement loop planning, detailed expansion specs, historical and regional research notes, and implementation-ready improvement handoffs. This replaces the old mechanic-expander role. It writes plans and addenda. It does not patch gameplay files.
+
+Use `chaosx_asset_source_researcher` for real or archival image sourcing, real leader portraits, historical flags, historical symbols, user-provided source photos, source-image processing, animated portrait bases, and report, news, or super-event images that must depict real historical material.
+
+Use `chaosx_generated_event_art` for generated non-icon art, including fictional or alternate-history report images, news images, super-event images, fictional portraits, fictional flags, faction emblems, UI panels, dossier art, progression-state base art, and animated non-icon presentation pieces.
+
+Use `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, officer corps icons, decision icons, decision category icons, achievement icons, tech icons, formable seals, scripted GUI icons, and small animated icon or button sprites.
 
 Use `chaosx_super_event_text_researcher` for super-event main quotes, exact wording checks, attribution confidence, source comparison, button text, cultural remarks, slogans, allusions, and short references.
 
 Use `chaosx_super_event_audio_researcher` for licensed or public domain audio research, source verification, download, `.ogg` conversion, and audio handoff notes.
 
-Use `chaosx_focus_tree_auditor` for read-only focus tree audits covering branch depth, route coverage, icons, localisation, rewards, prerequisites, AI, and simplification.
+Use `chaosx_focus_tree_auditor` for focus tree audits and active small patches covering branch depth, route coverage, icons, localisation, rewards, prerequisites, mutual exclusions, AI, focus-formable links, and simplification.
 
-Use `chaosx_decision_mission_auditor` for read-only decision and mission audits covering decision category lifecycle, objective quality, costs, tooltips, AI behavior, cleanup, balance, and exploit risk.
+Use `chaosx_decision_mission_auditor` for decision and mission audits and active small patches covering category lifecycle, objective quality, costs, tooltips, scripted GUI decision hooks, AI behavior, cleanup, balance, and exploit risk.
 
-Use `chaosx_country_package_auditor` for read-only country package audits covering tags, history, states, leaders, portraits, flags, parties, focus loading, ideas, advisors, units, technologies, claims, cores, localisation, AI, and playable setup.
+Use `chaosx_country_package_auditor` for country package audits and active small patches covering tags, history, states, leaders, portraits, flags, parties, focus loading, ideas, advisors, units, technologies, claims, cores, localisation, AI, formables, and playable setup.
 
-Use `chaosx_localisation_auditor` for read-only localisation and scripted localisation audits covering missing keys, duplicate keys, encoding, tooltip quality, broken dynamic text, and cross-surface text mismatch.
+Use `chaosx_localisation_auditor` for localisation and scripted localisation audits and active small patches covering missing keys, duplicate keys, encoding, tooltip quality, broken dynamic text, namespace consistency, dynamic cost text, and cross-surface text mismatch.
 
-Use `chaosx_scripted_system_architect` for reusable scripted system design or implementation covering scripted effects, scripted triggers, script constants, event targets, meta effects, variables, and tuning values.
+Use `chaosx_scripted_system_architect` for reusable scripted system design and active narrow implementation covering scripted effects, scripted triggers, script constants, event targets, meta effects, variables, tuning values, formable helpers, scripted GUI button helpers, and dynamic helper logic.
 
-Use `chaosx_event_completion_auditor` for read-only spec-versus-implementation audits covering events, mechanics, assets, docs, super-events, focus trees, decisions, and validation.
+Use `chaosx_event_completion_auditor` for read-only spec-versus-implementation audits covering events, mechanics, assets, docs, super-events, focus trees, decisions, validation, and accepted plan addenda.
 
-Use `chaosx_mechanic_expander` for active recursive depth expansion during implementation. It reads the planning skill and relevant system skills, inspects shallow or duplicated mechanics, and writes concrete expansion spec addenda for the main agent. Use it when a feature needs new design material, not just an audit finding.
+Use `chaosx_spreadsheet_doc_worker` only for the event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. It uses the xlsx/spreadsheet skill, keeps the workbook player-facing, and matches event log, event detail, evolution detail, and cluster detail fields to the in-game wording.
 
-Use `chaosx_spreadsheet_doc_worker` for documentation, event catalog rows, manifests, completion reports, and player-facing summaries based on implemented repo state. For event details, evolution details, and cluster details, it must use the same wording as the in-game localisation in the relevant spreadsheet fields.
+Do not route new work to `chaosx_mechanic_expander`. Its role is merged into `chaosx_improvement_loop_planner` and the `chaos-redux-improvement-loop` skill.
 
+## Repo explorer use gate
 
-## 3. Asset routing
+`chaosx_repo_explorer` is an optional scout for uncertain or broad work. It should save time by finding files, patterns, precedents, and edit order before the parent starts a complex implementation.
+
+Use `chaosx_repo_explorer` when at least one of these is true:
+
+- the parent does not know the likely touched files
+- the task spans several systems and the edit order is uncertain
+- the correct Chaos Redux pattern or vanilla precedent is unclear
+- a named spec, prompt, source file, classification, sprite, tag, localisation key, or helper appears missing and needs recovery evidence
+- the feature has enough cross-surface risk that a file map and validation plan will prevent missed work
+
+Do not spawn `chaosx_repo_explorer` for small or already bounded work, including:
+
+- known-file edits
+- user-provided file updates
+- direct skill, prompt, or TOML updates
+- small bug fixes where the relevant files are already named
+- localisation-only cleanup with known keys
+- asset-only production that belongs to an asset subagent
+- spreadsheet-only catalog updates that belong to `chaosx_spreadsheet_doc_worker`
+- simple report, docs, or markdown edits where the parent can inspect the provided files directly
+
+When the task is small, the parent should read the known files directly and proceed. Do not use repo exploration as a ritual step or as a replacement for parent review.
+
+## Authority model
+
+Subagents should act at the level their role requires. Do not make every subagent read-only by default.
+
+### Read-only agents
+
+These agents do not patch gameplay files:
+
+- `chaosx_repo_explorer`
+- `chaosx_event_completion_auditor`
+
+They may write reports only when a report path is provided or obvious from the task.
+
+### Plan-only agents
+
+`chaosx_improvement_loop_planner` writes event expansion specs, improvement addenda, deep research notes, historical connection notes, and implementation handoffs. It does not edit gameplay, localisation, GUI, scripted effects, focus trees, decisions, assets, spreadsheets, or country files.
+
+When an event mechanic needs more depth, new branches, new countries, a new formable suite, a new scripted GUI system, deeper regional logic, historical anchors, or a larger route redesign, the planner writes a plan under `docs/plans/<event_id>_<event_slug>_plans/`. The main agent decides what to implement.
+
+The parent should use this planner after a meaningful implementation tranche, not after every small patch. Do not spawn it again for the same event until its previous addendum has been implemented, folded into specs, queued with a reason, or rejected with a reason.
+
+### Asset-production agents
+
+Asset subagents create source files, processed previews, final DDS outputs, contact sheets, manifests, and asset handoffs. They do not wire gameplay, localisation, GFX, GUI, events, focuses, decisions, or spreadsheets unless the parent gives a narrow exception.
+
+### Active small-patch agents
+
+These agents are patch-capable by default inside the current task scope:
+
+- `chaosx_scripted_system_architect`
+- `chaosx_decision_mission_auditor`
+- `chaosx_focus_tree_auditor`
+- `chaosx_country_package_auditor`
+- `chaosx_localisation_auditor`
+
+They do not need a separate permission prompt to fix small, local issues that are clearly connected to the current event, mechanic, country, focus tree, decision category, GUI surface, or localisation surface.
+
+They should inspect first, then patch only when the fix is narrow, reversible, and supported by the relevant skill. They may edit files they own for the current task surface and directly related dependency files. They must not search for unrelated cleanup outside the feature they were spawned for.
+
+Active small patches include:
+
+- varying decision costs inside an existing category
+- making cost and requirement text clearer
+- adding dynamic localisation for existing variables, targets, state names, route names, or cost values
+- replacing raw trigger exposure with custom trigger tooltips
+- adjusting safe AI weights or target checks
+- fixing obvious availability, visibility, cooldown, bypass, and cleanup gaps
+- fixing focus prerequisites, route locks, mutual exclusions, focus filters, icon references, and small reward variety
+- adding a narrow scripted helper plus a few direct call sites when repeated logic is already present
+- fixing an existing formable decision check, reveal condition, or state-control requirement
+- correcting country package references such as focus loading, party names, leader ids, tag setup, localisation, and simple starting setup
+
+Active small patches do not include:
+
+- creating or expanding a whole mechanic
+- adding a full event chain
+- replacing a focus route family
+- designing a new formable suite
+- building a new scripted GUI system
+- creating a new country package from scratch
+- changing broad balance philosophy
+- rewriting large localisation sets for tone only
+- changing asset source rules
+- claiming final completion of the parent feature
+
+When a patch-capable subagent sees a broad design gap, it writes a plan handoff and stops. The main agent decides whether to implement it.
+
+## Mandatory handoff after any patch
+
+Every subagent that edits files must write a handoff back to the parent. If the event id and slug are known, place it under:
+
+```text
+docs/plans/<event_id>_<event_slug>_plans/subagent_handoffs/
+```
+
+The handoff should include:
+
+- files changed
+- exact gameplay surface changed
+- changed ids, keys, tags, helper names, or state groups
+- before and after behavior
+- why the change is safe and bounded
+- validation run
+- skipped validation and why
+- remaining issues or design gaps
+- any follow-up the parent must implement
+
+If a patch touches localisation, list the keys changed. If it touches decisions or focuses, list affected ids. If it touches scripted helpers, list helper names and call sites. If it touches country setup, list tags and state ids or state groups.
+
+## Plan and spec paths
+
+Full accepted event specs belong under:
+
+```text
+docs/specs/<event_id>_<event_slug>_specs/
+```
+
+Subagent plans, expansion addenda, audit follow-up notes, blocked reports, implementation handoffs, and patch handoffs belong under:
+
+```text
+docs/plans/<event_id>_<event_slug>_plans/
+```
+
+The plans folder is the working area. The specs folder is the source-of-truth design area. If a plan is accepted as source design, the main agent should fold it into the relevant spec file or clearly report that it remains queued.
+
+Do not create new planning folder names such as `docs/planning/` unless the user explicitly asks.
+
+## Asset routing
 
 Do not use one broad asset worker for mixed visual packages.
 
 Use:
 
 - `chaosx_asset_source_researcher` for real, archival, historical, documentary, or public-source images when the asset must show real historical material
-- `chaosx_generated_event_art` for generated non-icon fictional, alternate-history, symbolic, high-chaos, or unique event art, including report/news/super-event images that should look like period documentary material
-- `chaosx_icon_artist` for generated gameplay icons
+- `chaosx_generated_event_art` for generated non-icon fictional, alternate-history, symbolic, high-chaos, or unique event art
+- `chaosx_icon_artist` for generated gameplay icons, formable seals, decision category icons, and small animated icon or button sprites
 
 The parent agent must give each asset subagent a bounded prompt with exact asset names, target sizes, source mode, final folders, sprite names when already registered, reference folders, and constraints.
 
-For flag work, the parent prompt must state whether each flag is a base flag, ideology variant, focus/event route variant, cosmetic-tag flag, historical flag, or fictional/generated flag. Base flags for existing countries must be preserved or restored from the approved prior asset unless explicitly in scope. Do not ask an asset subagent to create new no-suffix base flags for vanilla-supported or already-existing countries merely because ideology variants are needed. Ideology variants must be genuinely distinct generated or sourced designs, not recolors, filters, flipped copies, copied emblems, or simple added shapes. Historical flags and historically attested symbols belong with `chaosx_asset_source_researcher`; fictional or alternate-history variants belong with `chaosx_generated_event_art`. Every flag handoff must include normal/medium/small output paths, a contact sheet, orientation confirmation, and any historical uncertainty.
-
-For generated report/news/super-event work, the parent prompt must specify the intended era, documentary or news-photo style, whether final output must be black and white, required post-processing, and any real people or real historical scenes that must not be fabricated. For report-event images, require Photoshop post-processing when Photoshop is available and make any approved non-Photoshop fallback explicit.
-
-Asset subagents must read `chaos-redux-event-assets` and inspect the matching reference folder under `.agents/skills/chaos-redux-event-assets/assets/` before creating, sourcing, processing, or converting assets.
-
-If the main agent already registered `.gfx` sprites or texture paths before requesting art, the asset subagent must follow those filenames, sprite names, target DDS paths, and target sizes. It should only propose names or paths when they were not provided.
+For flags, the parent prompt must state whether each flag is a base flag, ideology variant, route variant, cosmetic-tag flag, historical flag, or fictional flag. Base flags for existing countries must be preserved unless explicitly in scope. Ideology variants must be distinct designs, not recolors or copied emblems. Historical flags and attested symbols belong with `chaosx_asset_source_researcher`. Fictional or alternate-history variants belong with `chaosx_generated_event_art`.
 
 Asset subagents may create source files, PNG previews, DDS files, contact sheets, manifests, and `gfx_handoff.md`. They must not edit `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files unless the parent explicitly expands scope.
 
-## 4. Super-event routing
+## Super-event routing
 
 Use separate research agents when the super-event package has enough work to justify it.
 
-Use `chaosx_super_event_text_researcher` for the main quote, exact wording checks, attribution confidence, source comparison, button text, cultural remarks, slogans, allusions, and short references.
+Use `chaosx_super_event_text_researcher` for quotes, exact wording, attribution confidence, button text, cultural remarks, slogans, allusions, and short references.
 
 Use `chaosx_super_event_audio_researcher` for audio research, license verification, download, `.ogg` conversion, and audio handoff notes.
 
-Use `chaosx_asset_source_researcher` or `chaosx_generated_event_art` for image work according to the source mode required by `chaos-redux-event-assets`. Generated super-event images are preferred for fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific moments; sourced images remain required for real historical people, real photographed events, and real archival artifacts.
+Use `chaosx_asset_source_researcher` or `chaosx_generated_event_art` for image work according to the source mode required by `chaos-redux-event-assets`.
 
-The parent agent owns final super-event slot wiring, localisation, scripted localisation, audio id, settings-aware playback, `.gfx` image wiring, event trigger wiring, docs, and spreadsheet alignment.
+The main agent owns final wiring, localisation, settings-aware playback, docs, and spreadsheet alignment.
 
-## 5. Audit routing
+## Improvement routing
 
-Use `chaosx_focus_tree_auditor` after creating or heavily changing any focus tree.
+Use `chaosx_improvement_loop_planner` when an event or event-adjacent mechanic needs new design material, not just an audit finding.
 
-Use `chaosx_decision_mission_auditor` after creating or heavily changing decision categories, timed missions, objective pools, influence systems, aid or intervention decisions, and focus-unlocked decision families.
+The planner should read `chaos-redux-improvement-loop`, `chaos-redux-event-planning`, and relevant system skills. It should inspect actual implementation, specs, plans, docs, localisation, and asset notes when available. It should then write concrete design material that expands the event through playable mechanics, historical or regional connections, AI behavior, and visual needs. It should not patch gameplay files.
 
-Use `chaosx_country_package_auditor` after creating, releasing, transforming, splitting, puppeting, or substantially changing countries. Use it when tags, country history, state ownership, leaders, portraits, flags, parties, focus loading, ideas, starting forces, technologies, claims, cores, localisation, or country AI are touched.
+The main agent should deploy the planner often enough to keep major events from becoming shallow after new mechanics are added, but not so often that plans pile up. For the same event, do not deploy another planner pass until the previous addendum is implemented, promoted to specs, queued with a reason, or rejected.
 
-Use `chaosx_localisation_auditor` after broad visible-content changes across events, focuses, ideas, decisions, GUI, scripted localisation, event logs, or super-events.
+Audit subagents may include compact improvement handoffs inside their reports. If a gap requires a new route family, new GUI system, new formable suite, new country package, or new event chain, they should recommend a plan-mode pass rather than trying to patch it.
 
-Use `chaosx_scripted_system_architect` before adding repeated cross-file logic, new dynamic helper patterns, shared constants, event-target flows, or meta-effect based systems. Use it again when implementation becomes copy-pasted or hardcoded.
+## Spreadsheet catalog routing
 
-Use `chaosx_event_completion_auditor` before calling any large event implementation complete, especially when the user is worried about simplification or fallback implementation.
+`chaosx_spreadsheet_doc_worker` is a context-light spreadsheet worker, not a general documentation agent.
 
-Use `chaosx_repo_explorer` before editing when file locations or existing patterns are unclear.
-
-Use `chaosx_spreadsheet_doc_worker` after implementation facts exist, not before.
-
-
-## 6. Decision and mission audit routing
-
-Use `chaosx_decision_mission_auditor` when a task touches decisions, missions, timed objectives, decision categories, cost localisation, objective pools, AI decision behavior, focus-unlocked decisions, or balance around decision-driven systems.
-
-The auditor should normally be read-only. It should return:
-
-- decision category lifecycle issues
-- mission quality issues
-- duplicate or passive objective risks
-- cost and requirement clarity issues
-- AI validity problems
-- cleanup and stale-state risks
-- exploit risks
-- missing localisation and tooltip surfaces
-- file paths and identifiers for every finding
-
-The parent agent owns the fixes unless it explicitly grants patching scope.
-
-## 6.5 Country package audit routing
-
-Use `chaosx_country_package_auditor` when a task creates, releases, transforms, splits, puppets, or substantially changes a country.
-
-This includes work touching:
-
-- country tags and country definition files
-- country history and state history
-- ownership, controller, cores, claims, and capitals
-- leaders, portraits, characters, advisors, commanders, and parties
-- flags and cosmetic names
-- focus tree loading and route availability
-- starting ideas, laws, technologies, production, units, and templates
-- country decisions, missions, and route-specific actions
-- AI strategy, diplomacy behavior, and survival behavior
-- localisation, asset manifests, docs, and spreadsheet rows
-
-The auditor should normally be read-only. It should return:
-
-- country package coverage checklist
-- file surface checklist
-- missing or stale country package surfaces
-- map and state setup issues
-- politics, leader, portrait, flag, advisor, and party issues
-- focus, decision, idea, and asset issues
-- starting military, technology, industry, supply, and production issues
-- AI and playability issues
-- concrete file paths and identifiers for every finding
-
-The parent agent owns the fixes unless it explicitly grants patching scope.
-
-## 7. Localisation audit routing
-
-Use `chaosx_localisation_auditor` when a task adds, renames, rewires, or audits visible text.
-
-This includes:
-
-- event titles and descriptions
-- event log names and detail text
-- evolution text
-- focus names and descriptions
-- decision and mission text
-- idea, advisor, trait, and country text
-- GUI and scripted GUI text
-- scripted localisation
-- super-event `.t`, `.d`, `.a`, and `.q` keys
-- tooltip and blocked-cost text
-
-The localisation auditor must cross-check script references against localisation files. Searching only localisation files is not enough.
-
-The parent agent owns final text edits unless patching scope is explicitly granted.
-
-## 8. Scripted system architecture routing
-
-Use `chaosx_scripted_system_architect` when a mechanic needs reusable scripted logic.
-
-Good triggers include:
-
-- repeated event option effects
-- repeated decision effects or triggers
-- repeated focus reward logic
-- repeated event-log or evolution logic
-- shared tuning thresholds
-- dynamic target or value calculations
-- meta effects or meta triggers
-- event-target flows
-- cross-file constants
-- duplicated cleanup logic
-
-The architect may be read-only for design or write-capable for implementation depending on the parent prompt.
-
-When implementing, it may edit only the approved helper files, constants, narrow call sites, and helper documentation. The parent agent still owns the wider event, focus, decision, localisation, GUI, docs, spreadsheet, and validation alignment.
-
-
-## 8.5 Recursive expansion routing
-
-Use `chaosx_mechanic_expander` when the parent agent needs new design material during implementation.
-
-Good triggers include:
-
-- a mechanic works but does not change gameplay enough
-- a focus tree has branches but the branches do not matter
-- focus rewards repeat factories, equipment, PP, stability, war support, or generic ideas
-- a decision system is mostly passive buttons
-- a country package has a tag, flag, and leader but no playable identity
-- events have text but no follow-up, reactions, evolutions, clusters, or detail depth
-- visual assets do not evolve with stages or route identity
-- lore is present but unclear, generic, or disconnected from effects
-- an audit subagent finds major shallow content and tells the parent to spawn the expander
-
-The expander should use `chaos-redux-event-planning` as the design baseline and write an expansion addendum, usually under:
+Use it when the only required output is an update to:
 
 ```text
-docs/plans/<event_id>_<event_slug>_plans/<feature_slug>_expansion_addendum.md
+docs/spreadsheets/chaos_redux_events_catalog.xlsx
 ```
 
-Do not ask the expander to write new plans under `docs/planning/`, `planning/`, or any other planning folder. Use `docs/plans/` for expansion addenda. If a prompt says "planning folder", treat that as `docs/plans/` unless the parent explicitly provides another path. Expansion addenda should be concise design handoffs, not code blueprints: enough concrete behavior to implement, but no long tables of constants, full scripted-effect recipes, parser-level notes, detailed code wiring, or exhaustive touched-file inventories unless the parent specifically needs that level of detail.
+The parent prompt should provide event ids, row targets, source localisation keys, or the exact fields to update when possible.
 
-The parent agent must decide which parts to implement immediately, which parts to queue, and which parts to reject.
+The worker should read only:
 
-Audit subagents that inspect actual systems should read `chaos-redux-improvement-loop` and include an improvement handoff. For major depth gaps, the handoff should recommend spawning `chaosx_mechanic_expander`.
+- the parent prompt
+- the xlsx/spreadsheet skill
+- the event catalog workbook
+- the localisation or scripted localisation needed to mirror player-facing event log, event detail, evolution detail, or cluster wording
+- named source files explicitly provided by the parent
 
-## 9. Handoff quality
+It should not read HOI4 wiki pages, vanilla documentation, vanilla files, broad implementation guides, or unrelated repo systems. It should not edit docs, specs, plans, manifests, gameplay files, localisation files, assets, GFX, GUI, events, focuses, decisions, ideas, history, scripted effects, scripted triggers, or other spreadsheets unless the parent explicitly expands scope.
 
-Every subagent prompt should include:
+The worker must preserve workbook structure, formatting, formulas, filters, and validation unless the parent explicitly asks for structural changes.
 
-- task goal
-- exact inputs to read
-- exact outputs to produce
-- files or folders allowed to edit
-- files or folders forbidden to edit
-- source-of-truth documents
-- blocked-work reporting format
-- final handoff path
+## Parent review
 
-Every subagent output should include:
+The parent agent must review every subagent output before relying on it.
 
-- completed items
-- blocked items
-- uncertain items
-- files created or changed
-- evidence used
-- recommended parent-agent next steps
+Before final completion, the parent should check:
+
+- subagent changes are inside approved scope
+- patch handoffs identify changed files and ids
+- plan handoffs are either implemented, queued, or rejected with a reason
+- assets are wired or reported as pending
+- validation reflects the final repo state
+- docs, specs, plans, and spreadsheet surfaces agree
+
+A subagent patch can reduce workload. It never owns the final completion claim.

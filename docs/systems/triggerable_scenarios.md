@@ -37,6 +37,7 @@ Type controls cycle scenario-specific type variables:
 
 - Zombie Apocalypse: diverse outbreaks, random outbreaks, standard everywhere, special-profile everywhere, or connected outbreak.
 - Army of Clones: standard clone army or Aryan variant.
+- Soviet Collapse: ordinary republics or chaos republics.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time.
 
@@ -55,6 +56,14 @@ Intensity changes outbreak count, initial affected states, spawned divisions, an
 The Army of Clones scenario creates a hostile artificial army in Eastern Europe and the western Soviet borderlands. The standard version creates the baseline army; the Aryan variant adds stronger formations, more equipment, higher experience, and more aggressive pressure.
 
 Intensity changes starting territory, division count, army experience, equipment stockpiles, and pressure on neighboring countries. The manual scenario uses the shared clone division spawn helper so the scenario army and later clone-wave decisions use the same protected `Clone Shock Division` template.
+
+### SCN-003: Soviet Collapse
+
+The Soviet Collapse scenario forces the Event 005 `Union Unmade` terminal collapse immediately. If the Soviet crisis is not already active, the launcher initializes it first, then the scenario flag forces the terminal collapse path regardless of the current chaos tier, evolution toggle state, or prior Union Unmade super-event flag. It releases the available ordinary Soviet republics, forms the local defensive leagues and Free Republics' League, and starts the anti-Soviet wars.
+
+The ordinary type uses the terminal-collapse ordinary republic release path. The chaos type also permits the high-chaos splinter spawners during the launch. This bypass is scoped to the explicit scenario launch flag and is cleared after the scenario finishes, so normal automatic Soviet Collapse behavior remains governed by the live event state.
+
+Intensity adds an extra one-time army package after all breakaways exist. Each breakaway receives additional field brigades, manpower, infantry equipment, support equipment, artillery, and motorized equipment. The number of extra brigades scales from the selected intensity, controlled-state count, and factory count, so stronger republics naturally receive larger starting forces without tag-specific scenario tables.
 
 ## Assets
 

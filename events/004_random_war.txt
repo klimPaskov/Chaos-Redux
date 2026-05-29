@@ -4,75 +4,86 @@ add_namespace = chaosx.nr4
 @RANDOM_WAR_HOLD_LINE_DAYS = 45
 @RANDOM_WAR_RESERVE_MOBILIZATION_DAYS = 45
 
-# ============================================================================
-# CHAOS REDUX - EVENT 4: RANDOM WAR
-# ============================================================================
-# The shared random_war_fire_current_context effect declares the baseline or
-# War Contagion set of wars and delivers involved country report popups. The
-# hidden root event delegates to that same effect for direct event calls.
-# ============================================================================
+###############################################################################################################
+#    ##    ## ########     ##
+#    ###   ## ##     ##    ##    ##
+#    ####  ## ##     ##    ##    ##
+#    ## ## ## ########     ##    ##
+#    ##  #### ##   ##      #########
+#    ##   ### ##    ##           ##
+#    ##    ## ##     ##          ##
+###############################################################################################################
+#    ########     ###    ##    ## ########   #######  ##     ##    ##      ##    ###    ########
+#    ##     ##   ## ##   ###   ## ##     ## ##     ## ###   ###    ##  ##  ##   ## ##   ##     ##
+#    ##     ##  ##   ##  ####  ## ##     ## ##     ## #### ####    ##  ##  ##  ##   ##  ##     ##
+#    ########  ##     ## ## ## ## ##     ## ##     ## ## ### ##    ##  ##  ## ##     ## ########
+#    ##   ##   ######### ##  #### ##     ## ##     ## ##     ##    ##  ##  ## ######### ##   ##
+#    ##    ##  ##     ## ##   ### ##     ## ##     ## ##     ##    ##  ##  ## ##     ## ##    ##
+#    ##     ## ##     ## ##    ## ########   #######  ##     ##     ###  ###  ##     ## ##     ##
+###############################################################################################################
+
 
 country_event = {
-	id = chaosx.nr4.1
-	title = chaosx.nr4.1.t
-	hidden = yes
-	is_triggered_only = yes
+    id = chaosx.nr4.1
+    title = chaosx.nr4.1.t
+    hidden = yes
+    is_triggered_only = yes
 
-	immediate = {
-		random_war_fire_current_context = yes
-	}
+    immediate = {
+        random_war_fire_current_context = yes
+    }
 }
 
 country_event = {
-	id = chaosx.nr4.2
-	title = chaosx.nr4.2.t
-	desc = chaosx.nr4.2.d
-	picture = GFX_report_event_war_or_peace
-	is_triggered_only = yes
+    id = chaosx.nr4.2
+    title = chaosx.nr4.2.t
+    desc = chaosx.nr4.2.d
+    picture = GFX_report_event_war_or_peace
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr4.2.a
-		add_war_support = constant:random_war_option_effect.aggressor_war_support
-		add_command_power = constant:random_war_option_effect.aggressor_command_power_cost
-		ai_chance = { base = 80 }
-	}
+    option = {
+        name = chaosx.nr4.2.a
+        add_war_support = constant:random_war_option_effect.aggressor_war_support
+        add_command_power = constant:random_war_option_effect.aggressor_command_power_cost
+        ai_chance = { base = 80 }
+    }
 
-	option = {
-		name = chaosx.nr4.2.b
-		add_stability = constant:random_war_option_effect.aggressor_staff_stability_cost
-		set_country_flag = {
-			flag = random_war_staff_blamed
-			days = @RANDOM_WAR_STAFF_BLAMED_DAYS
-		}
-		ai_chance = { base = 20 }
-	}
+    option = {
+        name = chaosx.nr4.2.b
+        add_stability = constant:random_war_option_effect.aggressor_staff_stability_cost
+        set_country_flag = {
+            flag = random_war_staff_blamed
+            days = @RANDOM_WAR_STAFF_BLAMED_DAYS
+        }
+        ai_chance = { base = 20 }
+    }
 }
 
 country_event = {
-	id = chaosx.nr4.3
-	title = chaosx.nr4.3.t
-	desc = chaosx.nr4.3.d
-	picture = GFX_report_event_war_or_peace
-	is_triggered_only = yes
+    id = chaosx.nr4.3
+    title = chaosx.nr4.3.t
+    desc = chaosx.nr4.3.d
+    picture = GFX_report_event_war_or_peace
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr4.3.a
-		add_war_support = constant:random_war_option_effect.target_war_support
-		add_timed_idea = {
-			idea = random_war_hold_the_line
-			days = @RANDOM_WAR_HOLD_LINE_DAYS
-		}
-		ai_chance = { base = 70 }
-	}
+    option = {
+        name = chaosx.nr4.3.a
+        add_war_support = constant:random_war_option_effect.target_war_support
+        add_timed_idea = {
+            idea = random_war_hold_the_line
+            days = @RANDOM_WAR_HOLD_LINE_DAYS
+        }
+        ai_chance = { base = 70 }
+    }
 
-	option = {
-		name = chaosx.nr4.3.b
-		add_manpower = constant:random_war_option_effect.target_manpower
-		add_stability = constant:random_war_option_effect.target_mobilization_stability_cost
-		add_timed_idea = {
-			idea = random_war_reserve_mobilization
-			days = @RANDOM_WAR_RESERVE_MOBILIZATION_DAYS
-		}
-		ai_chance = { base = 30 }
-	}
+    option = {
+        name = chaosx.nr4.3.b
+        add_manpower = constant:random_war_option_effect.target_manpower
+        add_stability = constant:random_war_option_effect.target_mobilization_stability_cost
+        add_timed_idea = {
+            idea = random_war_reserve_mobilization
+            days = @RANDOM_WAR_RESERVE_MOBILIZATION_DAYS
+        }
+        ai_chance = { base = 30 }
+    }
 }
