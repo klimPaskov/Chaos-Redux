@@ -3404,6 +3404,35 @@ can_pay_soviet_collapse_league_motor_columns_cost = {
 	has_manpower > constant:soviet_collapse_regional_faction.league_motor_columns_manpower
 }
 
+can_pay_soviet_collapse_regional_faction_external_mandate_cost = {
+	has_political_power > constant:soviet_collapse_regional_faction.external_mandate_political_power
+	command_power > constant:soviet_collapse_regional_faction.external_mandate_command_power
+	has_fuel > constant:soviet_collapse_regional_faction.external_mandate_fuel
+}
+
+can_target_soviet_collapse_regional_security_zone_mandate = {
+	is_soviet_collapse_active = yes
+	is_soviet_collapse_regional_faction_leader = yes
+	has_country_flag = soviet_collapse_league_external_mandates_unlocked
+	FROM = {
+		exists = yes
+		is_neighbor_of = ROOT
+		NOT = { tag = ROOT }
+		NOT = { tag = SOV }
+		NOT = { has_war_with = ROOT }
+		NOT = { is_in_faction_with = ROOT }
+		NOT = { has_country_flag = soviet_collapse_breakaway }
+		NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
+		OR = {
+			is_major = yes
+			any_controlled_state = { is_coastal = yes }
+			num_of_civilian_factories > constant:soviet_collapse_foreign_intervention.regional_target_civilian_factories
+		}
+	}
+	can_declare_war_on = FROM
+	NOT = { has_wargoal_against = FROM }
+}
+
 is_soviet_collapse_regional_faction_candidate = {
 	is_soviet_collapse_active = yes
 	OR = {
