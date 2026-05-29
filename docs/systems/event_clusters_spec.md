@@ -64,11 +64,11 @@ Rules:
 
 Use existing Chaos Redux chaos tier logic where appropriate. Values can be tuned, but the distinction between cluster roll chance and member participation chance must remain clear.
 
-## 3. Event weight behavior when a cluster fires
+## 3. Event weight and pacing behavior when a cluster fires
 
-When a cluster fires, every event inside the cluster should have its weight updated as though that event had fired normally.
+When a cluster fires, every member event inside the cluster should update its own fired state and post-fire availability as though that event had fired normally.
 
-This is important so clusters do not bypass the balancing rules of the random event system.
+The cluster itself, not each child member, should update global pacing. A fired cluster counts as one event for timer compression and major-event weight growth/reset behavior, no matter how many member events fire inside it.
 
 Required behavior:
 
@@ -80,7 +80,7 @@ It should not be able to fire again later.
 
 ### Repeatable events
 
-If a repeatable event is inside a fired cluster, it should apply the normal repeatable-event fired behavior.
+If a repeatable event is inside a fired cluster, it should apply its own repeatable-event fired behavior.
 
 It should still be able to recover weight later, but only up to the reduced cap that would normally apply after firing.
 
@@ -91,9 +91,9 @@ If major events are allowed inside clusters, define the rules clearly.
 Preferred behavior:
 
 - major events should only be placed in clusters intentionally
-- major-event cluster behavior must respect existing major event reset rules
+- major-event cluster behavior must respect existing major event reset rules once at the cluster level
 
-Do not let clusters accidentally bypass major-event pacing.
+Do not let clusters bypass major-event pacing or multiply major-event pacing by member count.
 
 ## 4. Repeatable clusters
 
@@ -351,10 +351,10 @@ Before finishing, verify that:
 - more dangerous events usually fire later in the cluster order
 - eligible optional members normally have at least 50% participation chance
 - fire-once member events are permanently removed after cluster firing
-- repeatable member events apply normal repeatable weight reduction and recovery rules
+- repeatable member events apply their own repeatable weight reduction and recovery rules
 - repeatable clusters can fire more than once when valid
 - invalid or exhausted clusters do not fire
-- cluster firing does not bypass major-event pacing
+- cluster firing counts once for major-event pacing
 - event logs have a cluster view
 - cluster log entries are clickable
 - cluster details window shows member events
