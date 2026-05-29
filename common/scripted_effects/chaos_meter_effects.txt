@@ -109,12 +109,13 @@ initialize_chaos_meter_system = {
 
     clr_global_flag = air_contamination_threshold_25
     clr_global_flag = air_contamination_threshold_50
-    clr_global_flag = air_contamination_threshold_75
-    clr_global_flag = air_contamination_threshold_100
-    clr_global_flag = air_contamination_irreversible
-    clr_global_flag = air_contamination_winter
-    clr_global_flag = air_contamination_news_25_fired
-    clr_global_flag = air_contamination_news_50_fired
+	clr_global_flag = air_contamination_threshold_75
+	clr_global_flag = air_contamination_threshold_100
+	clr_global_flag = air_contamination_irreversible
+	clr_global_flag = air_contamination_final_silence_locked
+	clr_global_flag = air_contamination_winter
+	clr_global_flag = air_contamination_news_25_fired
+	clr_global_flag = air_contamination_news_50_fired
     clr_global_flag = air_contamination_news_75_fired
     clr_global_flag = air_contamination_news_100_fired
     clr_global_flag = air_cleanliness_treaty_active
@@ -3943,13 +3944,35 @@ air_contamination_update_threshold_flags = {
         }
         set_global_flag = air_contamination_irreversible
         log = "AIR CONTAMINATION: Irreversible contamination threshold reached"
-    }
+	}
+}
+
+air_contamination_lock_final_silence = {
+	set_global_flag = air_contamination_final_silence_locked
+
+	if = {
+		limit = { NOT = { has_variable = global.air_contamination_bp } }
+		set_variable = { global.air_contamination_bp = 0 }
+	}
+
+	set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_threshold_bp.irreversible_100 }
+	subtract_from_temp_variable = { air_contamination_delta_bp = global.air_contamination_bp }
+	set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+	set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+	air_contamination_apply_delta_bp = yes
+
+	set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
+	set_variable = { global.air_contamination_last_delta_bp = air_contamination_delta_bp }
+	set_variable = { global.air_contamination_decay_bp = 0 }
+	air_contamination_refresh_values = yes
+	air_contamination_update_threshold_flags = yes
+	air_contamination_apply_state_modifier = yes
 }
 
 air_contamination_sync_chaos_from_delta = {
-    if = {
-        limit = {
-            OR = {
+	if = {
+		limit = {
+			OR = {
                 check_variable = { air_contamination_delta_bp > 0 }
                 check_variable = { air_contamination_delta_bp < 0 }
             }
@@ -4022,15 +4045,20 @@ air_contamination_apply_delta_bp = {
     set_temp_variable = { air_contamination_previous_bp = global.air_contamination_bp }
     add_to_variable = { global.air_contamination_bp = air_contamination_delta_bp }
 
-    clamp_variable = {
-        var = global.air_contamination_bp
-        min = 0
-    }
+	clamp_variable = {
+		var = global.air_contamination_bp
+		min = 0
+	}
 
-    if = {
-        limit = {
-            has_global_flag = air_contamination_irreversible
-            check_variable = {
+	if = {
+		limit = { has_global_flag = air_contamination_final_silence_locked }
+		set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
+	}
+
+	if = {
+		limit = {
+			has_global_flag = air_contamination_irreversible
+			check_variable = {
                 var = global.air_contamination_bp
                 value = constant:air_contamination_threshold_bp.irreversible_100
                 compare = less_than
@@ -4076,7 +4104,10 @@ air_contamination_clear_country_pressure_ideas = {
 
 air_contamination_apply_state_modifier = {
 	if = {
-		limit = { has_global_flag = settings_air_cleanliness_disabled }
+		limit = {
+			has_global_flag = settings_air_cleanliness_disabled
+			NOT = { has_global_flag = air_contamination_final_silence_locked }
+		}
 		air_contamination_clear_country_pressure_ideas = yes
 		every_state = {
 			limit = { has_dynamic_modifier = air_contamination_global_state }
@@ -4663,11 +4694,10 @@ air_contamination_monthly_update = {
         limit = { NOT = { has_variable = global.air_contamination_bp } }
         set_variable = { global.air_contamination_bp = 0 }
     }
-    if = {
-        limit = { NOT = { has_variable = global.air_contamination_chaos_buffer_bp } }
-        set_variable = { global.air_contamination_chaos_buffer_bp = 0 }
-    }
-
+	if = {
+		limit = { NOT = { has_variable = global.air_contamination_chaos_buffer_bp } }
+		set_variable = { global.air_contamination_chaos_buffer_bp = 0 }
+	}
     set_variable = { global.air_contamination_chem_states = 0 }
     set_variable = { global.air_contamination_fallout_states = 0 }
     set_variable = { global.air_contamination_chem_bp = 0 }
@@ -4677,12 +4707,16 @@ air_contamination_monthly_update = {
     set_temp_variable = { air_monthly_chem_bp = 0 }
     set_temp_variable = { air_monthly_fallout_bp = 0 }
     set_temp_variable = { air_cleanliness_system_enabled = 1 }
-    if = {
-        limit = { has_global_flag = settings_air_cleanliness_disabled }
-        set_temp_variable = { air_cleanliness_system_enabled = 0 }
-    }
+	if = {
+		limit = { has_global_flag = settings_air_cleanliness_disabled }
+		set_temp_variable = { air_cleanliness_system_enabled = 0 }
+	}
+	if = {
+		limit = { has_global_flag = air_contamination_final_silence_locked }
+		set_temp_variable = { air_cleanliness_system_enabled = 1 }
+	}
 
-    every_state = {
+	every_state = {
         if = {
             limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
             if = {

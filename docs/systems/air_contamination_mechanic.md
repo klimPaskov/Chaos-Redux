@@ -72,9 +72,10 @@ At `75%` contamination (`constant:air_contamination_threshold_bp.winter_75`), th
 - `50%` (`5000 bp`): mild nuclear winter periods can start.
 - `75%` (`7500 bp`): severe nuclear winter periods can start.
 - `100%` (`10000 bp`): irreversible mode starts:
-  - contamination cannot drop below 100%,
-  - fallout modifiers are applied globally,
-  - state categories degrade over time toward wasteland.
+	- contamination cannot drop below 100%,
+	- fallout modifiers are applied globally,
+	- state categories degrade over time toward wasteland.
+- Final Silence forces contamination to exactly `100%` and locks future contamination changes at that value for the terminal branch.
 - `1000%` (`100000 bp`): triggers world-end scenario event `chaosx.nr2.9` (`Fallout`).
 
 One-time global threshold news events are fired from `events/chemical_warfare_events.txt` (`chaosx_contamination.1` to `.6`) for:

@@ -1512,7 +1512,6 @@ holy_realm_prepare_final_silence = {
 		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_thermonuclear }
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_thermonuclear_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
-		set_temp_variable = { holy_realm_final_air_delta = constant:holy_realm_final_silence.thermonuclear_air_bp }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_thermonuclear }
 	}
 	else = {
@@ -1520,7 +1519,6 @@ holy_realm_prepare_final_silence = {
 		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence }
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
-		set_temp_variable = { holy_realm_final_air_delta = constant:holy_realm_final_silence.normal_air_bp }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_normal }
 	}
 	holy_realm_add_chaos = yes
@@ -1532,11 +1530,7 @@ holy_realm_prepare_final_silence = {
 	add_to_variable = { chem_warfare_condemnation = holy_realm_final_condemnation }
 	chem_apply_condemnation_diplomatic_consequences = yes
 	refresh_chaos_meter_condemnation_view_if_open = yes
-	if = {
-		limit = { NOT = { has_global_flag = settings_air_cleanliness_disabled } }
-		set_temp_variable = { air_contamination_delta_bp = holy_realm_final_air_delta }
-		air_contamination_apply_delta_bp = yes
-	}
+	air_contamination_lock_final_silence = yes
 	set_country_flag = used_unconventional_weapon
 	air_cleanliness_treaty_on_unconventional_use = yes
 	set_temp_variable = { holy_realm_evolution_stage = 6 }
