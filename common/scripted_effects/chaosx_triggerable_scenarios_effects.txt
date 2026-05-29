@@ -2,7 +2,8 @@
 # CHAOS REDUX - TRIGGERABLE SCENARIO EFFECTS
 # ============================================================================
 # Manual sandbox/challenge scenario framework for the Chaos Redux scenario
-# window. Triggerable scenarios do not depend on world-end conditions.
+# window. Scenario launches bypass ordinary event pacing, while explicit
+# world-end scenarios still set the same terminal flags as their live branches.
 # ============================================================================
 
 initialize_triggerable_scenarios_settings = {
@@ -25,6 +26,10 @@ initialize_triggerable_scenarios_settings = {
 	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_soviet_collapse_type } }
 		set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.normal_republics }
+	}
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_final_silence_type } }
+		set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.nuclear }
 	}
 	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
@@ -61,6 +66,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.soviet_collapse_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.final_silence
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.final_silence_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -82,6 +95,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.final_silence
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.final_silence_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.soviet_collapse
 		}
 		add_to_array = {
@@ -120,6 +141,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.final_silence
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.final_silence_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.mengele_clones
 		}
 		add_to_array = {
@@ -131,6 +160,14 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.final_silence
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.final_silence_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -181,6 +218,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.soviet_collapse_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.final_silence
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.final_silence_name
 		}
 	}
 }
@@ -245,6 +290,11 @@ select_triggerable_scenario_clones = {
 select_triggerable_scenario_soviet_collapse = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.soviet_collapse }
+}
+
+select_triggerable_scenario_final_silence = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -315,11 +365,19 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.aryan }
 		}
 	}
-	else = {
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.soviet_collapse } }
 		subtract_from_variable = { triggerable_scenarios_soviet_collapse_type = 1 }
 		if = {
 			limit = { check_variable = { triggerable_scenarios_soviet_collapse_type < constant:triggerable_scenario_soviet_collapse_type.normal_republics } }
 			set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.chaos_republics }
+		}
+	}
+	else = {
+		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_final_silence_type < constant:triggerable_scenario_final_silence_type.nuclear } }
+			set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.thermonuclear }
 		}
 	}
 }
@@ -342,11 +400,19 @@ triggerable_scenario_type_next = {
 			set_variable = { triggerable_scenarios_clone_type = constant:triggerable_scenario_clone_type.standard }
 		}
 	}
-	else = {
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.soviet_collapse } }
 		add_to_variable = { triggerable_scenarios_soviet_collapse_type = 1 }
 		if = {
 			limit = { check_variable = { triggerable_scenarios_soviet_collapse_type > constant:triggerable_scenario_soviet_collapse_type.chaos_republics } }
 			set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.normal_republics }
+		}
+	}
+	else = {
+		add_to_variable = { triggerable_scenarios_final_silence_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_final_silence_type > constant:triggerable_scenario_final_silence_type.thermonuclear } }
+			set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.nuclear }
 		}
 	}
 }
@@ -388,6 +454,16 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		trigger_soviet_collapse_scenario = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.final_silence
+				compare = equals
+			}
+		}
+		trigger_final_silence_scenario = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
@@ -1627,6 +1703,48 @@ trigger_soviet_collapse_scenario = {
 	clr_global_flag = soviet_collapse_triggerable_scenario_launch_active
 	clr_global_flag = soviet_collapse_triggerable_scenario_include_chaos
 	clear_variable = global.soviet_collapse_triggerable_scenario_intensity
+}
+
+trigger_final_silence_scenario = {
+	holy_realm_ensure_counters = yes
+	set_country_flag = holy_realm_active
+	set_country_flag = holy_realm_triggerable_final_silence_source
+	set_country_flag = holy_realm_final_doctrine_armed
+	set_country_flag = holy_realm_memory_ministry_of_release
+	set_country_flag = holy_realm_warning_world_marked_as_wound
+	set_variable = { final_silence_pressure = constant:triggerable_scenario_final_silence.launch_final_silence_pressure }
+	set_variable = { mandala_reach = constant:triggerable_scenario_final_silence.launch_mandala_reach }
+	if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenarios_final_silence_type
+				value = constant:triggerable_scenario_final_silence_type.thermonuclear
+				compare = equals
+			}
+		}
+		set_country_flag = holy_realm_triggerable_final_silence_thermonuclear
+	}
+	else = {
+		clr_country_flag = holy_realm_triggerable_final_silence_thermonuclear
+	}
+	holy_realm_prepare_final_silence = yes
+	every_other_country = {
+		limit = {
+			exists = yes
+			NOT = { is_holy_realm_country = yes }
+		}
+		country_event = { id = chaosx.nr3.73 days = 1 }
+	}
+	holy_realm_apply_final_silence_wave = yes
+	if = {
+		limit = { NOT = { has_global_flag = world_end_final_silence_completed } }
+		country_event = { id = chaosx.nr3.82 days = constant:holy_realm_final_silence.wave_days }
+	}
+	else = {
+		country_event = { id = chaosx.nr3.90 days = 1 }
+	}
+	country_event = { id = chaosx.triggerable_scenarios.5 days = 1 }
+	clr_country_flag = holy_realm_triggerable_final_silence_thermonuclear
 }
 
 trigger_mengele_clone_army_scenario = {
