@@ -968,6 +968,7 @@ Controls:
 Mapped in `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`:
 
 - slot `1`: zombie outbreak
+- slot `2`: Anti-Zombie League formation
 - slot `3`: zombie apocalypse world-end
 - slot `4`: fallout air-contamination collapse
 - slot `5`: final zombie defeat
@@ -986,8 +987,32 @@ Required zombie final-defeat asset:
 Existing outbreak-related assets already used by the system:
 
 - `gfx/super_events/super_event_zombies.dds`
+- `gfx/super_events/super_event_azl.dds`
 - `gfx/super_events/super_event_zombie_apocalypse.dds`
 - `gfx/super_events/super_event_fallout.dds`
+
+Audio assets:
+
+- slot `1`, initial outbreak:
+  - music file: `music/zombies.ogg`
+  - sound definition: `chaosx_super_event_zombies_track`
+- slot `2`, Anti-Zombie League:
+  - music file: `music/super_event_alliance_of_man.ogg`
+  - sound definition: `chaosx_super_event_alliance_of_man_track`
+- slot `3`, zombie apocalypse:
+  - music file: `music/super_event_zombie_apocalypse.ogg`
+  - sound definition: `chaosx_super_event_zombie_apocalypse_track`
+- slot `4`, fallout:
+  - music file: `music/super_event_fallout.ogg`
+  - sound definition: `chaosx_super_event_fallout_track`
+- slot `5`, final zombie defeat:
+  - music file: `music/zombies_defeat.ogg`
+  - sound definition: `chaosx_super_event_zombies_defeat_track`
+- slot `6`, Wendigo:
+  - music file: `music/wendigo.ogg`
+  - sound definition: `chaosx_super_event_wendigo_track`
+
+Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 - `GFX_news_zombie_outbreak`
 - `GFX_report_event_generic_research_lab`
 - `GFX_report_event_generic_sign_treaty2`

@@ -616,26 +616,6 @@ country_event = {
         }
     }
 
-    option = {
-        name = chaosx.nr3.40.b
-        ai_chance = {
-            base = 10
-            modifier = {
-                factor = 0
-                holy_realm_final_doctrine_balance_leans_final = yes
-            }
-            modifier = {
-                factor = 0
-                check_variable = { final_silence_pressure > 59 }
-            }
-        }
-        custom_effect_tooltip = chaosx_nr3_40_b_tt
-        hidden_effect = {
-            set_country_flag = holy_realm_doctrine_restraint
-            set_country_flag = holy_realm_doctrine_chosen
-            holy_realm_renounce_final_silence = yes
-        }
-    }
 }
 
 country_event = {
@@ -673,6 +653,7 @@ country_event = {
         }
         custom_effect_tooltip = chaosx_nr3_70_b_tt
         hidden_effect = {
+            holy_realm_open_vow_against_annihilation_branch = yes
             holy_realm_renounce_final_silence = yes
         }
     }
@@ -1428,6 +1409,154 @@ country_event = {
                 holy_realm_add_compassion_drift = yes
             }
         }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.125
+    title = chaosx.nr3.125.t
+    desc = chaosx.nr3.125.d
+    picture = GFX_report_event_generic_sign_treaty2
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.125.a
+        ai_chance = {
+            base = 8
+            modifier = {
+                factor = 3
+                surrender_progress > 0.35
+            }
+            modifier = {
+                factor = 2
+                has_stability < 0.35
+            }
+            modifier = {
+                factor = 2
+                has_government = democratic
+            }
+            modifier = {
+                factor = 0.2
+                is_major = yes
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_125_a_tt
+        hidden_effect = {
+            save_event_target_as = holy_realm_arbitration_first_side
+            FROM = { save_event_target_as = holy_realm_arbitration_mediator }
+            set_country_flag = holy_realm_mandala_arbitration_first_accept
+            random_enemy_country = {
+                limit = {
+                    exists = yes
+                    uses_normal_civilian_systems = yes
+                    has_war_with = event_target:holy_realm_arbitration_first_side
+                }
+                save_event_target_as = holy_realm_arbitration_second_side
+                country_event = { id = chaosx.nr3.126 days = 1 }
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.125.b
+        ai_chance = { base = 92 }
+        custom_effect_tooltip = chaosx_nr3_125_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_mandala_arbitration_refused
+            FROM = {
+                set_country_flag = holy_realm_memory_mandala_arbitration_refused
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_mandala_reach = yes
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.126
+    title = chaosx.nr3.126.t
+    desc = chaosx.nr3.126.d
+    picture = GFX_report_event_generic_sign_treaty2
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.126.a
+        ai_chance = {
+            base = 6
+            modifier = {
+                factor = 3
+                surrender_progress > 0.35
+            }
+            modifier = {
+                factor = 2
+                has_stability < 0.35
+            }
+            modifier = {
+                factor = 0.2
+                is_major = yes
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_126_a_tt
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_event_target = holy_realm_arbitration_mediator
+                    has_event_target = holy_realm_arbitration_first_side
+                    event_target:holy_realm_arbitration_first_side = {
+                        exists = yes
+                        has_war_with = ROOT
+                    }
+                }
+                event_target:holy_realm_arbitration_first_side = {
+                    white_peace = ROOT
+                }
+                set_country_flag = holy_realm_mandala_arbitration_second_accept
+                event_target:holy_realm_arbitration_first_side = {
+                    set_country_flag = holy_realm_mandala_arbitration_peace_signed
+                }
+                event_target:holy_realm_arbitration_mediator = {
+                    country_event = { id = chaosx.nr3.127 days = 1 }
+                    set_country_flag = holy_realm_memory_mandala_arbitration_success
+                    set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+                    holy_realm_add_mandala_reach = yes
+                    set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                    holy_realm_add_spiritual_legitimacy = yes
+                    set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.medium_peace_loss }
+                    set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+                    holy_realm_add_chaos = yes
+                }
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.126.b
+        ai_chance = { base = 94 }
+        custom_effect_tooltip = chaosx_nr3_126_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_mandala_arbitration_refused
+            if = {
+                limit = { has_event_target = holy_realm_arbitration_mediator }
+                event_target:holy_realm_arbitration_mediator = {
+                    set_country_flag = holy_realm_memory_mandala_arbitration_refused
+                    set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                    holy_realm_add_mandala_reach = yes
+                }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.127
+    title = chaosx.nr3.127.t
+    desc = chaosx.nr3.127.d
+    picture = GFX_report_event_generic_sign_treaty2
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr3.127.a
+        custom_effect_tooltip = chaosx_nr3_127_a_tt
     }
 }
 

@@ -147,6 +147,7 @@ Dead necrotic and demonic zombie outcomes also no longer resolve into obedient c
 - The raid UI keeps the strike under the normal `Biological Raids` category, alongside the anti-zombie bomb, but now uses a dedicated weaponized-zombie strike icon so it still reads as its own weapon.
 - The raid UI still exposes only a single visible weaponized zombie strike instead of separate low, medium, and high entries.
 - The strike uses the same province-targeted air-raid model as the other bioweapons.
+- The strike explicitly sets `days_re_enable = 0` on every hostile and human-friendly raid variant, so it has no target re-enable cooldown beyond payload, preparation, war, and target-validity requirements.
 - The strike now declares its zombie-payload cost through raid `essential_equipment`, so preparing the raid requires and collects `125` `zombie_disease_bomb_equipment`.
 - Hostile deployments now register strategic bioweapon condemnation in the shared `chem_warfare_condemnation` tracker, with the existing biological integrated-operations condemnation reductions applied.
 - Targeting is now obedience-aware instead of hardcoded:

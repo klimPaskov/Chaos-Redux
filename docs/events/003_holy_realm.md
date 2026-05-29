@@ -39,14 +39,14 @@ The Holy Realm extends existing Chaos Redux systems rather than creating paralle
 - Evolutions: milestones record to the shared event-log evolution pipeline as evolution type `3` and act as focus-path gates. If a Holy Realm evolution is disabled from the event-details UI, the matching focus path is treated as unlocked without requiring that stage log.
 - Focus tags: every Holy Realm focus has a `# THR FOCUS TAGS:` comment with area, tone, chaos requirement, system, and path-role metadata for audits. The focus tree also exposes custom sorting filters for Holy Realm Peace, Final Silence Pressure, and Mandala Integration.
 - Event logs: event ID 3 has a dedicated event-detail description and six Holy Realm evolution preview entries covering Mountain Refuge, Bodhisattva, Arhat Administration, Buddha Mandate, Divine Sovereignty, and Final Doctrine path gates. The evolution list row shows the short evolution name and chaos tier; the detailed panes keep the evolution stage.
-- Super events: values `7`, `8`, `9`, `10`, and `11` display Buddha Mandate, Final Silence, thermonuclear Final Silence, Mandala Breaks, and Divine Sovereignty.
+- Super events: values `7`, `8`, `9`, `10`, `11`, and `51` display Buddha Mandate, Final Silence, thermonuclear Final Silence, Mandala Breaks, Divine Sovereignty, and Mandala of Nations.
 - World-end scenarios: Final Silence sets `world_end` and `world_end_final_silence`; interruption sets `world_end_final_silence_interrupted` and clears the active world-end flag.
 - Settings: Final Silence is blocked by `world_end_disabled`.
 - Multiplayer behavior: human countries receive ambiguous observation events around the Buddha Mandate and direct warnings only when the final doctrine is armed.
 - Condemnation: Final Silence adds unconventional-warfare condemnation and applies existing diplomatic consequences.
-- Deaths: Final Silence uses the shared `chaos_meter_register_state_civilian_deaths_percent` pipeline. The normal launch kills `90%` of every non-Realm state's current population with a high billion-scale cap; the thermonuclear variant kills `97%`.
+- Deaths: Final Silence uses the shared `chaos_meter_register_state_civilian_deaths_percent` pipeline with the dedicated `chaos_meter_deaths_reason.final_silence` cause. The normal launch kills `90%` of each struck non-Realm state's current population with a high billion-scale cap; the thermonuclear variant kills `97%`.
 - Air cleanliness: Final Silence applies air contamination unless the air cleanliness setting is disabled.
-- Nuclear and wasteland logic: Final Silence uses `launch_nuke` with `use_nuke = no` for every non-Realm state so the visual nuclear effect appears, applies fallout, removes state buildings, sets the state category to `wasteland`, and marks struck/burning/wasteland/silent state flags. Holy Realm states are not struck, but they receive fallout from the global launch sequence.
+- Nuclear and wasteland logic: Final Silence resolves in regional strike waves: Asia and the Middle East, Europe and Africa, the Americas, then Oceania plus any remaining valid states. Each wave uses `launch_nuke` with `use_nuke = no` for the struck states so the visual nuclear effect appears, applies fallout, removes state buildings, sets the state category to `wasteland`, and marks struck/burning/wasteland/silent state flags. State flags prevent duplicate population/death processing. Holy Realm states are not struck, but they receive fallout from the global launch sequence.
 - World threats: Divine Sovereignty, final warnings, and armed doctrine can set `world_threat_source_holy_realm`; the early refuge and Buddha Mandate are not treated as existential threats by themselves.
 - AI: peaceful Holy Realm strategies prioritize defense, infrastructure, legitimacy, and low-chaos paths. Expansionist AI sends letters and pressures weak neighbors only after the separate expansion tree is opened, with forced integration weighted toward strong, prepared, high-chaos states. Final Silence AI remains locked behind late high-chaos, industry, doctrine, year, and warning gates.
 - Mandala of Nations: `THR_mandala_of_nations` creates the `faction_template_holy_realm_mandala_of_nations` faction, sets peaceful faction rules, adds goals, applies the Mandala Peace Vow to members, and reduces chaos when countries join. Members receive a `can_not_declare_war` rule while inside the faction, so the peaceful coalition cannot declare offensive wars.
@@ -59,7 +59,7 @@ The Holy Mandala category uses a compact scripted GUI instead of a separate dash
 
 - `THR_status_spiritual_legitimacy` explains how Spiritual Legitimacy affects stage text, peaceful AI, Arhat legitimacy, and non-final authority.
 - `THR_status_compassion_drift` explains mercy versus coercive drift, event text changes, dangerous AI willingness, and final pressure interactions.
-- `THR_status_mandala_reach` explains diplomacy, peace letters, regional integration, Chinese registers, and Ministry of Release reach gates.
+- `THR_status_mandala_reach` explains diplomacy, peace letters, regional integration, Chinese registers, and Ministry of Silence reach gates.
 - `THR_status_sealed_ledger` displays Final Silence Pressure, the `45/55/65/75` preparation thresholds, and the hard launch gates.
 
 These rows are intentionally unavailable decisions so players can hover them without accidentally firing effects.
@@ -70,7 +70,7 @@ Routine value growth has diminishing returns. Positive Spiritual Legitimacy, Man
 
 Early identity and refuge focuses use short costs so the Realm becomes active quickly. Mountain Refuge, Bodhisattva government, refugee shelter, guarded passes, and the Seal of Refuge now provide large stability, political organization, protected manpower, infrastructure, supply, bunkers, and legitimacy without early villain framing. Peaceful Himalayan unity adds `holy_realm_himalayan_unity`; forced cleanup through `THR_complete_himalayan_mandala` instead adds Mandala Reach and Compassion Drift memory.
 
-Arhat Administration and Buddha Mandate are mid-game power spikes. They unlock stronger administration, compliance and construction tools, Arhat oversight, Mandala diplomacy, military organization, doctrine branches, faster industry, stronger vow-keeper forces, and accelerated nuclear preparation if the player later enters the final doctrine route. The expansion route adds strong regional tools but carries Compassion Drift, foreign suspicion, refusal records, and high-chaos locks rather than free world conquest. Acceptance of letters is intentionally rare; major powers and faction members cannot accept.
+Arhat Administration and Buddha Mandate are mid-game power spikes. They unlock stronger administration, compliance and construction tools, Arhat oversight, Mandala diplomacy, the Mandala Bureau intelligence agency, military organization, doctrine branches, faster industry, stronger vow-keeper forces, and accelerated nuclear preparation if the player later enters the final doctrine route. The expansion route adds strong regional tools but carries Compassion Drift, foreign suspicion, refusal records, and high-chaos locks rather than free world conquest. Acceptance of letters is intentionally rare; major powers and faction members cannot accept.
 
 The Mandala of Nations is the peaceful faction route. Its goals are completed through decision-based acts of kindness:
 
@@ -79,6 +79,13 @@ The Mandala of Nations is the peaceful faction route. Its goals are completed th
 - `THR_mandala_open_granaries`
 
 Each act reduces chaos modestly and completes a visible faction goal that adds faction initiative and power projection. Additional countries joining the Mandala of Nations reduce chaos once per country.
+
+After formation, the same decision category opens active Mandala work:
+
+- `THR_mandala_arbitration_letters` targets a country at war and starts `chaosx.nr3.125`; one enemy receives `chaosx.nr3.126` only if the first side accepts. White peace fires only when both sides accept while still at war.
+- `THR_mandala_observer_mission` targets a country at war, sets a target cooldown, improves relations, and records Mandala observer work.
+- `THR_mandala_development_mission` targets poor, rural, underdeveloped, or war-affected African, South American, and Asian countries and repairs one eligible controlled state with infrastructure, possible civilian industry, and resistance/compliance recovery.
+- `THR_stand_between_armies` sends one limited Mandala Peacekeeping Brigade to eligible minor democratic defenders, with yearly target cooldowns and manpower/equipment costs. After `Shelter the Exiles`, faction members can also receive this support.
 
 The Vow and Final Silence balance of power adds a second late-game management surface. It includes Political Power decisions for public vows, mercy councils, Bodhisattva council missions, lamp processions, lotus audits, outer-monastery reconciliation, sealed-name releases, sealed ledger readings, launch ledger sealing, silence-cell expansion, black ledger drills, silent transit codes, the Nuclear Sutra Committee, Last-Pass Watch, the White Mandala Oath, and the Empty Mandala Session. These decisions move the doctrine balance, alter Final Silence Pressure, alter Compassion Drift or Spiritual Legitimacy, and in some cases reduce or increase Chaos. The daily pulse is intentionally small so the balance creates pressure over time without replacing focus and decision choices.
 
@@ -95,6 +102,7 @@ Expansion decisions live in `holy_realm_expansion_category` after `THR_letters_b
 - `THR_prepare_forced_integration` grants a war goal only after refusal.
 - `THR_administer_submitted_territory` raises compliance and lowers resistance in submitted or registered states.
 - `THR_integrate_himalayan_mandala_state`, `THR_integrate_northern_indian_register_state`, and `THR_integrate_eastern_mandala_state` add state-by-state cores only after ownership, control, Mandala Reach, Arhat administration, and region unlock conditions are met.
+- `THR_mandate_kneeling_province` is unlocked by `THR_world_is_a_border` and cores claimed, controlled, non-core states one province at a time after the Realm has forced the world into its register.
 
 ## Final Silence Conditions
 
@@ -103,7 +111,7 @@ Final Silence uses strict standard conditions:
 - the Holy Realm exists and is the acting country
 - the Holy Realm is sovereign
 - the Final Silence stage has been reached through the locked focus path
-- the Ministry of Release has armed the final infrastructure; preparation focuses can be completed once the `800` chaos final-doctrine threshold is met
+- the Ministry of Silence has armed the final infrastructure; preparation focuses can be completed once the `800` chaos final-doctrine threshold is met
 - the final doctrine is armed and not renounced
 - the final warning chain has reached `The World Is Marked as a Wound`
 - the date is later than 1944.12.31
@@ -114,9 +122,9 @@ Final Silence uses strict standard conditions:
 - `world_end` is not already active
 - `world_end_disabled` is not set
 
-If the date is later than 1946.12.31, thermonuclear technology or doctrine exists, the shared nuclear stockpile is at `999`, and `holy_realm_thermonuclear_payloads_prepared` is above `99`, the thermonuclear variant is used. The focus path grants `990` normal nukes and `100` thermonuclear payloads when the technology exists, forcing the Holy Realm to produce at least `9` normal nukes itself. The variant applies larger air damage, higher death percentages, stronger fallout, a separate global flag, super-event image ID `9`, and the shared Final Silence audio track through audio ID `9`.
+If the date is later than 1946.12.31, thermonuclear technology or doctrine exists, the shared nuclear stockpile is at `999`, and `holy_realm_thermonuclear_payloads_prepared` is above `99`, the thermonuclear variant is used. The focus path grants `990` normal nukes and `100` thermonuclear payloads when the technology exists, forcing the Holy Realm to produce at least `9` normal nukes itself. The variant applies larger air damage, higher death percentages, stronger fallout, a separate global flag, super-event image ID `9`, and a distinct thermonuclear Final Silence audio track through audio ID `9`.
 
-Before launch, the armed doctrine runs a warning chain. This chain can be completed before Chaos Meter reaches `1000`; it is a launch prerequisite, not the launch trigger itself:
+The three preparation focuses before the Ministry of Silence use short costs. They unlock foreign target audits, global final warning letters, and internal non-return shelters before the final ministry can be completed. Before launch, the armed doctrine runs a warning chain. This chain can be completed before Chaos Meter reaches `1000`; it is a launch prerequisite, not the launch trigger itself:
 
 1. `chaosx.nr3.74` - The Ledgers Are Sealed.
 2. `chaosx.nr3.75` - No More Peace Delegations.
@@ -125,7 +133,7 @@ Before launch, the armed doctrine runs a warning chain. This chain can be comple
 5. `chaosx.nr3.78` - The Last Debate Is Cancelled.
 6. `chaosx.nr3.79` - The World Is Marked as a Wound.
 
-Foreign responders can disrupt the final network before or during the world-end branch. During the active branch this fires the Mandala Break super event, records the interruption, clears the active Final Silence flag, and leaves the wider danger as campaign memory.
+Foreign responders can disrupt the final network before or during the world-end branch. During the active branch this fires the Mandala Break super event, records the interruption, clears the active Final Silence flag, and leaves the wider danger as campaign memory. Once Divine Sovereignty is embraced, the player stays on that doctrine path; the former refusal option is not presented in the sovereignty event.
 
 ## Reserved Hooks
 
@@ -190,7 +198,7 @@ The remaining Holy Realm focuses intentionally use unique vanilla/generic icons 
 - `goal_holy_realm_eastern_china.dds`: eastern Chinese register with dense city seals.
 - `goal_holy_realm_mandala_of_nations.dds`: peaceful faction seal with white flags and lamps.
 - `goal_holy_realm_reactors.dds`: reactor cooling tower wrapped by a prayer wheel, for nuclear preparation.
-- `goal_holy_realm_ministry_release.dds`: sealed ministry stamp over black ledger, for late Final Silence preparation.
+- `goal_holy_realm_ministry_release.dds`: sealed ministry stamp over black ledger, for late Final Silence preparation. The asset filename keeps the stable internal focus ID while the player-facing name is Ministry of Silence.
 
 Decision category icons:
 
@@ -275,6 +283,9 @@ Super-event art:
 - `gfx/super_events/super_event_divine_sovereignty.dds`
   - referenced as `GFX_super_event_divine_sovereignty`
   - registered in `interface/chaosx_super_events.gfx`; fires when Divine Sovereignty is accepted under high crisis, high Final Silence Pressure, or prior coercive doctrine
+- `gfx/super_events/super_event_mandala_of_nations.dds`
+  - referenced as `GFX_super_event_mandala_of_nations`
+  - registered in `interface/chaosx_super_events.gfx`; fires when the Mandala of Nations is formed
 
 Super-event audio:
 
@@ -285,20 +296,22 @@ Super-event audio:
   - music file: `music/super_event_final_silence.ogg`
   - sound definition: `chaosx_super_event_final_silence_track`
 - Thermonuclear Final Silence, audio ID `9`:
-  - music file: `music/super_event_final_silence.ogg`
-  - sound definition: `chaosx_super_event_final_silence_track`
-  - intentionally shares the normal Final Silence track
+  - music file: `music/super_event_final_silence_thermonuclear.ogg`
+  - sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
 - The Mandala Breaks, audio ID `10`:
   - music file: `music/super_event_mandala_breaks.ogg`
   - sound definition: `chaosx_super_event_mandala_breaks_track`
 - Divine Sovereignty, audio ID `11`:
   - music file: `music/super_event_divine_sovereignty.ogg`
   - sound definition: `chaosx_super_event_divine_sovereignty_track`
+- Mandala of Nations, audio ID `51`:
+  - music file: `music/super_event_mandala_of_nations.ogg`
+  - sound definition: `chaosx_super_event_mandala_of_nations_track`
 - Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The scripted GUI surface is disabled for now, so the player sees the Holy Realm through focus tree, decisions, events, super events, national spirits, achievements, and event log entries until the replacement UI is implemented.
 
-The Holy Mandala decision category includes routine actions for high-pass storehouses, relief caravans, civil-register scribes, snow-line signal posts, second refuge registration, Arhat road audits, and Mandala border courts. These decisions unlock from the existing focus and stage flags, and they move Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, local infrastructure, manpower, command resources, or foreign opinion instead of acting as simple flavour buttons.
+The Holy Mandala decision category includes routine actions for high-pass storehouses, relief caravans, civil-register scribes, snow-line signal posts, second refuge registration, Arhat road audits, Mandala border courts, foreign target audits, global final warnings, and internal non-return shelters. These decisions unlock from the existing focus and stage flags, and they move Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, local infrastructure, manpower, command resources, or foreign opinion instead of acting as simple flavour buttons.
 
 The Vow and Final Silence Balance of Power includes both Vow-leaning and Final-Silence-leaning choices before the final path is fully open. Guarded Silence Clause and Last-Resort Register provide small early pressure toward Final Silence without arming the final path. Peace decisions move the balance more slowly than before, so repeated doctrine work is needed to dominate the balance instead of one or two routine decisions ending the struggle.
 

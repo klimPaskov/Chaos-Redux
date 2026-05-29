@@ -12,8 +12,8 @@ has_active_communism_spread_country_state = {
 }
 
 has_communism_spread_minimum_country_size = {
-	check_variable = { num_owned_states > 1 }
-	any_owned_state = {
+	num_of_controlled_states > 1
+	any_controlled_state = {
 		impassable = no
 		NOT = { is_capital = yes }
 	}
@@ -145,6 +145,28 @@ has_communism_local_intervention_pressure = {
 	OR = {
 		has_communism_local_intervention_available = yes
 		check_variable = { communism_revolutionary_threat > constant:communism_spread_dashboard.local_intervention_pressure_threshold }
+	}
+}
+
+is_non_ai_fighting_communism_spread_crisis = {
+	chaosx_is_non_ai_crisis_pressure_active = yes
+	has_active_communism_spread_country_state = yes
+	OR = {
+		has_regular_communist_intervention_target = yes
+		has_communism_emergency_pressure = yes
+		has_country_flag = fighting_communist_rebels
+	}
+}
+
+is_non_ai_fighting_severe_communism_spread_crisis = {
+	is_non_ai_fighting_communism_spread_crisis = yes
+	OR = {
+		has_country_flag = fighting_communist_rebels
+		has_communism_emergency_pressure = yes
+		AND = {
+			has_war = yes
+			has_communist_controlled_state = yes
+		}
 	}
 }
 

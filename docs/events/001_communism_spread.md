@@ -40,7 +40,9 @@ The root event remains fire-once event `1` in the Chaos Redux event system. When
 
 Countries matching `is_special_chaos_country = yes` are excluded from the root event spread, maintenance, decisions, and World Revolution state handoff. This keeps the insurgency focused on regular countries instead of special Chaos actors.
 
-The system does not rely on the old monthly on-action updater anymore. Each affected country self-schedules hidden maintenance every `40-70` days. Maintenance:
+The system does not rely on the old monthly on-action updater anymore. Each affected country self-schedules hidden maintenance every `40-70` days. State-control runtime now follows current state controllers rather than only legal owners, so occupation and civil-war splits keep the crisis attached to the side that actually controls the infected front. When a country takes control of an already communist-controlled state, the state-control-changed hook gives that country the crisis runtime, queues maintenance, and applies the active global evolution flags. Player-controlled countries with `Harder Crises for Players` enabled receive Non-AI Crisis Pressure while they have active intervention targets, emergency pressure, or a communist rebel war; that pressure raises spread, escalation, and sabotage chances and shortens their cooldowns through the shared crisis-pressure helpers.
+
+Maintenance:
 
 1. refreshes controlled state counts
 2. recalculates dynamic national communist drift from controlled states
@@ -107,6 +109,8 @@ The rebel country receives a pool of templates covering worker militias, red gua
 ## Supporting Systems Touched
 
 - `common/script_constants/001_communism_spread_constants.txt`: all timing, drift, intervention, emergency, rebel, and evolution values
+- `common/script_constants/crisis_pressure_constants.txt`: shared Non-AI Crisis Pressure chance and cooldown tuning
+- `common/scripted_effects/chaosx_crisis_pressure_effects.txt`: shared Non-AI Crisis Pressure helper effects
 - `common/scripted_effects/001_communism_spread_effects.txt`: state control, spread, escalation, sabotage, emergency, uprising, evolution, and World Revolution handoff effects
 - `common/scripted_triggers/001_communism_spread_triggers.txt`: reusable state-control availability triggers
 - `common/dynamic_modifiers/chaosx_dynamic_modifiers.txt`: national pressure, three state control levels, crackdown scars, worker ritual fear, and emergency disruption

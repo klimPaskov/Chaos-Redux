@@ -87,6 +87,7 @@ holy_realm_mandala_category = {
 		available = {
 			is_holy_realm_country = yes
 			holy_realm_bodhisattva_path_unlocked = yes
+			NOT = { has_country_flag = holy_realm_refuge_relief_stage_cooldown }
 			OR = {
 				has_war = yes
 				check_variable = { global.chaos_meter_value > 200 }
@@ -97,6 +98,24 @@ holy_realm_mandala_category = {
 			holy_realm_bodhisattva_path_unlocked = yes
 		}
 		complete_effect = {
+			set_temp_variable = { holy_realm_refuge_relief_cooldown_days = constant:holy_realm_decision.refuge_relief_cooldown_days }
+			set_country_flag = {
+				flag = holy_realm_refuge_relief_stage_cooldown
+				days = holy_realm_refuge_relief_cooldown_days
+			}
+			random_controlled_state = {
+				limit = {
+					OR = {
+						infrastructure < 5
+						NOT = { is_core_of = ROOT }
+					}
+				}
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				if = {
+					limit = { NOT = { is_core_of = ROOT } }
+					set_resistance = 5
+				}
+			}
 			add_manpower = 45000
 			add_stability = 0.01
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
@@ -348,6 +367,44 @@ holy_realm_mandala_category = {
 					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
 					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 				}
+				set_temp_variable = { holy_realm_mandala_member_relief_cooldown_days = constant:holy_realm_decision.mandala_member_relief_cooldown_days }
+				every_faction_member = {
+					limit = {
+						exists = yes
+						NOT = { is_holy_realm_country = yes }
+					}
+					random_controlled_state = {
+						limit = {
+							NOT = { has_state_flag = holy_realm_mandala_development_recent }
+							OR = {
+								is_on_continent = africa
+								is_on_continent = south_america
+								is_on_continent = asia
+							}
+							OR = {
+								infrastructure < 5
+								PREV = { has_war = yes }
+								has_state_category = pastoral
+								has_state_category = rural
+							}
+						}
+						set_state_flag = {
+							flag = holy_realm_mandala_development_recent
+							days = holy_realm_mandala_member_relief_cooldown_days
+						}
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+						if = {
+							limit = { infrastructure > 2 }
+							add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+						}
+						if = {
+							limit = { NOT = { is_core_of = PREV } }
+							set_resistance = 5
+							set_compliance = 35
+						}
+					}
+					add_stability = 0.01
+				}
 				add_faction_power_projection = 50
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 				holy_realm_add_mandala_reach = yes
@@ -356,6 +413,190 @@ holy_realm_mandala_category = {
 				holy_realm_add_chaos = yes
 			}
 			ai_will_do = { factor = 3 }
+		}
+
+		THR_mandala_arbitration_letters = {
+			icon = generic_political_discourse
+			cost = constant:holy_realm_decision.mandala_arbitration_cost
+			days_remove = constant:holy_realm_decision.diplomacy_days
+			target_array = global.enabled_countries_list
+			target_root_trigger = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+				has_country_flag = holy_realm_mandala_of_nations_leader
+			}
+			target_trigger = {
+				FROM = {
+					exists = yes
+					uses_normal_civilian_systems = yes
+					has_war = yes
+					NOT = { is_holy_realm_country = yes }
+					NOT = { has_country_flag = holy_realm_mandala_arbitration_recent }
+				}
+			}
+			available = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+				has_country_flag = holy_realm_mandala_of_nations_leader
+			}
+			visible = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+			}
+			complete_effect = {
+				set_country_flag = holy_realm_memory_mandala_arbitration_sent
+				set_temp_variable = { holy_realm_mandala_arbitration_cooldown_days = constant:holy_realm_decision.mandala_arbitration_cooldown_days }
+				FROM = {
+					set_country_flag = {
+						flag = holy_realm_mandala_arbitration_recent
+						days = holy_realm_mandala_arbitration_cooldown_days
+					}
+					country_event = { id = chaosx.nr3.125 days = 1 }
+				}
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_mandala_reach = yes
+			}
+			ai_will_do = { factor = 1.5 }
+		}
+
+		THR_mandala_observer_mission = {
+			icon = generic_political_address
+			cost = constant:holy_realm_decision.mandala_observer_cost
+			days_remove = constant:holy_realm_decision.diplomacy_days
+			target_array = global.enabled_countries_list
+			target_root_trigger = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+				OR = {
+					has_country_flag = holy_realm_doctrine_peacekeeping
+					has_country_flag = holy_realm_memory_mediation_offered
+				}
+			}
+			target_trigger = {
+				FROM = {
+					exists = yes
+					uses_normal_civilian_systems = yes
+					has_war = yes
+					NOT = { is_holy_realm_country = yes }
+					NOT = { has_country_flag = holy_realm_mandala_observer_recent }
+				}
+			}
+			available = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+			}
+			visible = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+			}
+			complete_effect = {
+				set_country_flag = holy_realm_memory_mandala_observers_sent
+				set_temp_variable = { holy_realm_mandala_observer_cooldown_days = constant:holy_realm_decision.mandala_observer_cooldown_days }
+				FROM = {
+					set_country_flag = {
+						flag = holy_realm_mandala_observer_recent
+						days = holy_realm_mandala_observer_cooldown_days
+					}
+					add_opinion_modifier = {
+						target = ROOT
+						modifier = holy_realm_quiet_envoys_opinion
+					}
+				}
+				add_command_power = 15
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_mandala_reach = yes
+			}
+			ai_will_do = { factor = 2 }
+		}
+
+		THR_mandala_development_mission = {
+			icon = generic_construction
+			cost = constant:holy_realm_decision.mandala_development_cost
+			days_remove = constant:holy_realm_decision.refuge_days
+			target_array = global.enabled_countries_list
+			target_root_trigger = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+			}
+			target_trigger = {
+				FROM = {
+					exists = yes
+					uses_normal_civilian_systems = yes
+					NOT = { is_holy_realm_country = yes }
+					NOT = { has_country_flag = holy_realm_mandala_development_recent_country }
+					any_controlled_state = {
+						NOT = { has_state_flag = holy_realm_mandala_development_recent }
+						OR = {
+							is_on_continent = africa
+							is_on_continent = south_america
+							is_on_continent = asia
+						}
+						OR = {
+							infrastructure < 5
+							has_state_category = pastoral
+							has_state_category = rural
+							CONTROLLER = { has_war = yes }
+						}
+					}
+				}
+			}
+			available = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+			}
+			visible = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+			}
+			complete_effect = {
+				set_country_flag = holy_realm_memory_mandala_development_mission
+				set_temp_variable = { holy_realm_mandala_development_cooldown_days = constant:holy_realm_decision.mandala_development_cooldown_days }
+				FROM = {
+					set_country_flag = {
+						flag = holy_realm_mandala_development_recent_country
+						days = holy_realm_mandala_development_cooldown_days
+					}
+					random_controlled_state = {
+						limit = {
+							NOT = { has_state_flag = holy_realm_mandala_development_recent }
+							OR = {
+								is_on_continent = africa
+								is_on_continent = south_america
+								is_on_continent = asia
+							}
+							OR = {
+								infrastructure < 5
+								has_state_category = pastoral
+								has_state_category = rural
+								CONTROLLER = { has_war = yes }
+							}
+						}
+						set_state_flag = {
+							flag = holy_realm_mandala_development_recent
+							days = holy_realm_mandala_development_cooldown_days
+						}
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+						if = {
+							limit = { infrastructure > 2 }
+							add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+						}
+						if = {
+							limit = { NOT = { is_core_of = PREV } }
+							set_resistance = 5
+							set_compliance = 35
+						}
+					}
+					add_stability = 0.01
+				}
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_spiritual_legitimacy = yes
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_mandala_reach = yes
+				set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+				set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+				holy_realm_add_chaos = yes
+			}
+			ai_will_do = { factor = 2 }
 		}
 
 		THR_hold_dharma_teaching = {
@@ -761,10 +1002,33 @@ holy_realm_mandala_category = {
 		icon = generic_political_discourse
 		cost = 75
 		days_remove = constant:holy_realm_decision.diplomacy_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = {
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+			has_country_flag = holy_realm_doctrine_peacekeeping
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				uses_normal_civilian_systems = yes
+				is_major = no
+				has_government = democratic
+				has_defensive_war = yes
+				NOT = { is_holy_realm_country = yes }
+				NOT = { is_subject_of = ROOT }
+				NOT = { has_country_flag = holy_realm_mandala_peacekeeping_recent }
+				OR = {
+					NOT = { is_in_faction_with = ROOT }
+					ROOT = { has_country_flag = holy_realm_focus_shelter_exiles }
+				}
+			}
+		}
 		available = {
 			is_holy_realm_country = yes
 			holy_realm_buddha_path_unlocked = yes
 			has_country_flag = holy_realm_doctrine_peacekeeping
+			holy_realm_can_fund_mandala_peacekeeping = yes
 		}
 		visible = {
 			is_holy_realm_country = yes
@@ -775,6 +1039,24 @@ holy_realm_mandala_category = {
 		}
 		complete_effect = {
 			set_country_flag = holy_realm_memory_white_flags_foreign_roads
+			set_temp_variable = { holy_realm_peacekeeping_manpower_cost = constant:holy_realm_decision.mandala_peacekeeping_manpower }
+			set_temp_variable = { holy_realm_peacekeeping_infantry_cost = constant:holy_realm_decision.mandala_peacekeeping_infantry_equipment }
+			set_temp_variable = { holy_realm_peacekeeping_support_cost = constant:holy_realm_decision.mandala_peacekeeping_support_equipment }
+			multiply_temp_variable = { holy_realm_peacekeeping_manpower_cost = -1 }
+			multiply_temp_variable = { holy_realm_peacekeeping_infantry_cost = -1 }
+			multiply_temp_variable = { holy_realm_peacekeeping_support_cost = -1 }
+			add_manpower = holy_realm_peacekeeping_manpower_cost
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = holy_realm_peacekeeping_infantry_cost
+			}
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = holy_realm_peacekeeping_support_cost
+			}
+			FROM = {
+				holy_realm_spawn_mandala_peacekeeping_brigade = yes
+			}
 			add_command_power = 25
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_mandala_reach = yes
@@ -826,6 +1108,117 @@ holy_realm_mandala_category = {
 				check_variable = { compassion_drift > 50 }
 			}
 		}
+	}
+
+	THR_audit_foreign_target_ledgers = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.final_target_audit_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_final_target_audits_unlocked
+			NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_final_target_audits_unlocked
+		}
+		complete_effect = {
+			set_country_flag = holy_realm_memory_foreign_target_ledgers_audited
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_final_silence_pressure = yes
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.03
+				tooltip_side = holy_realm_final_silence_side
+			}
+			add_political_power = 30
+		}
+		ai_will_do = { factor = 0.8 }
+	}
+
+	THR_prepare_realm_shelters_for_nonreturn = {
+		icon = generic_welfare
+		cost = constant:holy_realm_decision.final_shelter_cost
+		days_remove = constant:holy_realm_decision.refuge_days
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_internal_final_shelters_unlocked
+			any_owned_state = {
+				is_controlled_by = ROOT
+				has_state_flag = holy_realm_final_shelter_prepared
+				NOT = { has_state_flag = holy_realm_protected_state }
+			}
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_internal_final_shelters_unlocked
+		}
+		complete_effect = {
+			random_owned_state = {
+				limit = {
+					is_controlled_by = ROOT
+					has_state_flag = holy_realm_final_shelter_prepared
+					NOT = { has_state_flag = holy_realm_protected_state }
+				}
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+				set_state_flag = holy_realm_protected_state
+			}
+			set_country_flag = holy_realm_memory_nonreturn_shelters_prepared
+			add_stability = 0.01
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	THR_send_global_final_warning = {
+		icon = generic_political_address
+		cost = constant:holy_realm_decision.final_warning_letter_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_global_final_warning_actions_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { is_holy_realm_country = yes }
+				NOT = { is_subject_of = ROOT }
+				NOT = { is_in_faction_with = ROOT }
+				NOT = { has_country_flag = holy_realm_mandala_protectorate }
+				NOT = { has_country_flag = holy_realm_final_warning_received_from_realm }
+			}
+		}
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_global_final_warning_actions_unlocked
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_global_final_warning_actions_unlocked
+		}
+		complete_effect = {
+			holy_realm_cleanup_final_warning_target_memory = yes
+			FROM = {
+				set_country_flag = holy_realm_final_warning_received_from_realm
+				add_opinion_modifier = {
+					target = ROOT
+					modifier = holy_realm_condemned_opinion
+				}
+			}
+			set_country_flag = holy_realm_memory_global_final_warning_sent
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_final_silence_pressure = yes
+			add_power_balance_value = {
+				id = holy_realm_final_doctrine_balance
+				value = 0.02
+				tooltip_side = holy_realm_final_silence_side
+			}
+		}
+		ai_will_do = { factor = 0.5 }
 	}
 
 	THR_secure_outer_pass_roads = {
@@ -2391,13 +2784,13 @@ holy_realm_expansion_category = {
 		target_trigger = {
 			FROM = {
 				is_owned_by = ROOT
-					is_controlled_by = ROOT
-					NOT = { is_core_of = ROOT }
-					OR = {
-						holy_realm_himalayan_core_state = yes
-						has_state_flag = holy_realm_peacefully_submitted_state
-					}
+				is_controlled_by = ROOT
+				NOT = { is_core_of = ROOT }
+				OR = {
+					holy_realm_himalayan_core_state = yes
+					has_state_flag = holy_realm_peacefully_submitted_state
 				}
+			}
 			ROOT = {
 				NOT = { has_global_flag = world_end_final_silence_interrupted }
 			}
@@ -2425,11 +2818,56 @@ holy_realm_expansion_category = {
 		ai_will_do = { factor = 2 }
 	}
 
+	THR_mandate_kneeling_province = {
+		icon = generic_form_nation
+		cost = constant:holy_realm_decision.kneeling_province_core_cost
+		state_target = any_owned_state
+		days_remove = constant:holy_realm_decision.arhat_days
+		target_root_trigger = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_world_asked_to_kneel_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				has_state_flag = holy_realm_kneeling_province_claim
+				NOT = { is_core_of = ROOT }
+			}
+		}
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_world_asked_to_kneel_unlocked
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_world_asked_to_kneel_unlocked
+		}
+		complete_effect = {
+			FROM = {
+				add_core_of = ROOT
+				set_resistance = 10
+				set_compliance = 35
+				set_state_flag = holy_realm_kneeling_province_mandated
+			}
+			set_country_flag = holy_realm_memory_kneeling_province_mandated
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_compassion_drift = yes
+		}
+		ai_will_do = {
+			factor = 0.3
+			modifier = {
+				factor = 2
+				has_country_flag = holy_realm_expansion_path_hardened
+			}
+		}
+	}
+
 	THR_integrate_northern_indian_register_state = {
 		icon = generic_colonial_administration
 		cost = constant:holy_realm_decision.northern_core_cost
 		state_target = any_owned_state
-		days_remove = constant:holy_realm_decision.arhat_days
+			days_remove = constant:holy_realm_decision.arhat_days
 			target_root_trigger = {
 				is_holy_realm_country = yes
 				OR = {
@@ -2446,14 +2884,14 @@ holy_realm_expansion_category = {
 					OR = {
 						has_state_flag = holy_realm_peacefully_submitted_state
 						has_state_flag = holy_realm_arhat_registered_state
-					compliance > 50
+						compliance > 50
+					}
+				}
+				ROOT = {
+					check_variable = { mandala_reach > 60 }
+					holy_realm_arhat_path_unlocked = yes
 				}
 			}
-			ROOT = {
-				check_variable = { mandala_reach > 60 }
-				holy_realm_arhat_path_unlocked = yes
-			}
-		}
 			available = {
 				is_holy_realm_country = yes
 				OR = {

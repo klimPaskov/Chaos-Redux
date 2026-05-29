@@ -7,6 +7,7 @@ The update covers:
 - A new `Miscellaneous` menu entry below `Advanced Settings`.
 - Super-event playback channel selection between music and sound.
 - Super-event audio volume selection with a stepped slider covering the explicit multiplier tiers.
+- A `Harder Crises for Players` checkbox for reusable Non-AI Crisis Pressure.
 - Direct keyboard entry for event IDs after clicking the event ID box.
 - A reset confirmation popup for `Reset All Settings`.
 - Random-event button behavior changed from immediate fire to random ID selection.
@@ -29,8 +30,18 @@ The update covers:
 4. Default values are:
 - Audio mode: `Sound`
 - Audio volume: `1.5x`
+- Harder Crises for Players: enabled
 
 These defaults are applied in both `initialize_miscellaneous_settings` and `reset_miscellaneous_to_defaults`.
+
+## Non-AI Crisis Pressure
+`Harder Crises for Players` sets `chaosx_setting_non_ai_crisis_pressure_enabled` on the player country. The reusable trigger `chaosx_is_non_ai_crisis_pressure_active` is true only for non-AI countries with that flag.
+
+The shared pressure helpers live in:
+- `common/script_constants/crisis_pressure_constants.txt`
+- `common/scripted_effects/chaosx_crisis_pressure_effects.txt`
+
+Communist spread now uses the setting when a player-controlled country has active communist state control, intervention targets, emergency pressure, or a communist rebel war. While active, spread, escalation, and sabotage receive higher chance weights and shorter cooldowns; AI-only crisis fronts continue to use normal tuning.
 
 ## Super-event audio behavior
 Super-event playback is now routed through `play_current_super_event_audio` in:
@@ -46,16 +57,20 @@ Behavior:
 Current song routing:
 - The script now builds `chaosx_super_event_<id>_<volume_suffix>` dynamically through `meta_effect`.
 - Sound-channel playback builds `chaosx_super_event_<id>_sound_<volume_suffix>` the same way.
-- Current live super-event IDs `1`, `2`, and `3` use the zombie outbreak track definitions.
+- Current live super-event ID `1` uses the initial outbreak track definitions.
+- Current live super-event ID `2` uses the Alliance of Man track definitions.
+- Current live super-event ID `3` uses the zombie apocalypse track definitions.
 - Current live super-event ID `4` uses the fallout track definitions.
 - Current live super-event ID `5` uses the zombie-threat-defeated track definitions.
 - Current live super-event ID `6` uses the Wendigo track definitions.
 - Current live super-event ID `7` uses the Buddha Mandate track definitions.
-- Current live super-event IDs `8` and `9` use the shared Final Silence track definitions.
+- Current live super-event ID `8` uses the normal Final Silence track definitions.
+- Current live super-event ID `9` uses the thermonuclear Final Silence track definitions.
 - Current live super-event ID `10` uses the Mandala Breaks track definitions.
 - Current live super-event ID `11` uses the Divine Sovereignty track definitions.
 - Current live super-event ID `12` uses the Angel Directorate track definitions.
 - Current live super-event ID `13` uses the Angelic World Order track definitions.
+- Current live super-event ID `51` uses the Mandala of Nations track definitions.
 
 The variant song IDs are defined in:
 - `music/chaosx_super_event_music.asset`
@@ -156,7 +171,6 @@ This change also includes:
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `common/scripted_effects/chaosx_settings_effects.txt`
 - `common/scripted_effects/chaosx_random_event_selection_effects.txt`
-- `common/scripted_effects/chaosx_super_event_audio_effects.txt`
 - `common/scripted_effects/chaosx_effects.txt`
 - `common/scripted_guis/chaosx_scripted_gui_settings.txt`
 - `common/on_actions/chaosx_on_actions_system.txt`
@@ -196,25 +210,33 @@ Audio assets used:
 - Music-channel sources:
   - `music/default.ogg`
   - `music/zombies.ogg`
+  - `music/super_event_alliance_of_man.ogg`
+  - `music/super_event_zombie_apocalypse.ogg`
   - `music/zombies_defeat.ogg`
   - `music/wendigo.ogg`
   - `music/super_event_fallout.ogg`
   - `music/super_event_buddha_mandate.ogg`
   - `music/super_event_final_silence.ogg`
+  - `music/super_event_final_silence_thermonuclear.ogg`
   - `music/super_event_mandala_breaks.ogg`
   - `music/super_event_divine_sovereignty.ogg`
+  - `music/super_event_mandala_of_nations.ogg`
   - `music/super_event_angel_directorate.ogg`
   - `music/super_event_angelic_world_order.ogg`
 - Sound-channel sources:
   - `sound/chaosx_super_event_default.wav`
   - `sound/chaosx_super_event_zombies.wav`
+  - `sound/chaosx_super_event_alliance_of_man.wav`
+  - `sound/chaosx_super_event_zombie_apocalypse.wav`
   - `sound/chaosx_super_event_zombies_defeat.wav`
   - `sound/chaosx_super_event_wendigo.wav`
   - `sound/chaosx_super_event_fallout.wav`
   - `sound/chaosx_super_event_buddha_mandate.wav`
   - `sound/chaosx_super_event_final_silence.wav`
+  - `sound/chaosx_super_event_final_silence_thermonuclear.wav`
   - `sound/chaosx_super_event_mandala_breaks.wav`
   - `sound/chaosx_super_event_divine_sovereignty.wav`
+  - `sound/chaosx_super_event_mandala_of_nations.wav`
   - `sound/chaosx_super_event_angel_directorate.wav`
   - `sound/chaosx_super_event_angelic_world_order.wav`
 - Audio source and license documentation:
