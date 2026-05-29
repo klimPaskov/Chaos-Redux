@@ -3967,6 +3967,42 @@ soviet_collapse_regional_faction_category = {
 		}
 	}
 
+	soviet_collapse_issue_regional_security_zone_mandate = {
+		icon = GFX_decision_soviet_collapse_regional_goal_defense
+		available = {
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_external_mandate_cost = yes }
+		}
+		visible = {
+			is_soviet_collapse_active = yes
+			is_soviet_collapse_regional_faction_leader = yes
+			has_country_flag = soviet_collapse_league_external_mandates_unlocked
+		}
+		custom_cost_trigger = {
+			set_temp_variable = { soviet_collapse_regional_external_mandate_pp_cost_display = constant:soviet_collapse_regional_faction.external_mandate_political_power }
+			set_temp_variable = { soviet_collapse_regional_external_mandate_cp_cost_display = constant:soviet_collapse_regional_faction.external_mandate_command_power }
+			set_temp_variable = { soviet_collapse_regional_external_mandate_fuel_cost_display = constant:soviet_collapse_regional_faction.external_mandate_fuel }
+			hidden_trigger = { can_pay_soviet_collapse_regional_faction_external_mandate_cost = yes }
+		}
+		custom_cost_text = soviet_collapse_regional_external_mandate_cost_text
+		target_array = neighbors
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = soviet_collapse_regional_security_zone_target_tt
+				hidden_trigger = { can_target_soviet_collapse_regional_security_zone_mandate = yes }
+			}
+		}
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			soviet_collapse_apply_regional_security_zone_mandate = yes
+			custom_effect_tooltip = soviet_collapse_issue_regional_security_zone_mandate_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_war_with = SOV }
+			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_country_flag = soviet_collapse_regional_faction_defense_goal }
+		}
+	}
+
 	soviet_collapse_set_regional_defense_goal = {
 		icon = GFX_decision_soviet_collapse_regional_goal_defense
 		available = {
