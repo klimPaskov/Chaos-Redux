@@ -412,7 +412,7 @@ Representative event names:
 
 - Divine Sovereignty
 - The Throne Without a Body
-- The Ministry of Release
+- The Ministry of Silence
 - No One Leaves the Mandala
 - The Peace That Requires No Witnesses
 - The Last Debate Is Cancelled
@@ -1659,7 +1659,7 @@ Possible choices:
 
 This choice should strongly shape the late tree.
 
-#### 19.6 The Ministry of Release
+#### 19.6 The Ministry of Silence
 
 Role:
 
@@ -2016,7 +2016,7 @@ Key branches:
 - Compassionate Force coercive route
 - Arhat Administration
 - Buddha Mandate
-- Ministry of Release
+- Ministry of Silence
 
 Gameplay feel:
 
@@ -6667,7 +6667,7 @@ Mandala Bureau AI should prioritize:
 It may take:
 
 1. The Arhats Take Office.
-2. Ministry of Release.
+2. Ministry of Silence.
 3. Peacekeeper route if Mandala Reach rises.
 4. Reactors as Prayer Wheels if the late game has started.
 
@@ -6853,7 +6853,7 @@ Holy Pacification AI should prioritize:
 1. The Pacification Mandate.
 2. No Victory Parades.
 3. Release through Administration if it wants puppets.
-4. Ministry of Release.
+4. Ministry of Silence.
 5. Arhat Administration.
 6. Buddha Mandate.
 7. Last Border Is a Wound if the campaign has become severe.
@@ -7082,7 +7082,7 @@ Final Doctrine AI should choose options that:
 1. Define peace as non-return.
 2. Treat refusal by foreign states as moral exhaustion.
 3. Close borders.
-4. Empower the Ministry of Release.
+4. Empower the Ministry of Silence.
 5. Use nuclear weapons as doctrine, not panic.
 6. Ignore last appeals unless an interruption event succeeds.
 
@@ -9168,7 +9168,7 @@ Required icons:
 5. **The Compassion of Non-Return**
    - Closed circle with single opening.
 
-6. **The Ministry of Release**
+6. **The Ministry of Silence**
    - Key, ledger, and seal.
 
 7. **Refuse the Final Debate**
@@ -9639,7 +9639,7 @@ Buddha and doctrine titles:
 3. The Last Human Signature.
 4. A Sermon without Translation.
 5. The Compassion of Non-Return.
-6. The Ministry of Release.
+6. The Ministry of Silence.
 7. The Throne without a Body.
 8. Divine Sovereignty.
 9. The Doctrine of the Last War.
@@ -9691,7 +9691,7 @@ Administrative spirits:
 3. The Silent Offices.
 4. The Civil Register.
 5. The Mandala Bureau.
-6. The Ministry of Release.
+6. The Ministry of Silence.
 7. The Ledger State.
 8. Recorded as Truth.
 
@@ -9767,7 +9767,7 @@ Decision category names:
 5. Pilgrims beyond the Passes.
 6. The Mandala of Nations.
 7. Compassionate Force.
-8. The Ministry of Release.
+8. The Ministry of Silence.
 9. Renunciation and Mercy.
 10. Final Silence Ledger.
 11. World-End Response.

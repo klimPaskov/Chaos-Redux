@@ -122,6 +122,66 @@ holy_realm_add_final_silence_pressure = {
 	clamp_variable = { var = final_silence_pressure min = 0 max = 100 }
 }
 
+holy_realm_grant_mandala_bureau_agency = {
+	if = {
+		limit = { has_intelligence_agency = no }
+		create_intelligence_agency = {
+			name = "Mandala Bureau"
+		}
+	}
+	if = {
+		limit = { NOT = { has_done_agency_upgrade = upgrade_form_department } }
+		upgrade_intelligence_agency = upgrade_form_department
+	}
+	if = {
+		limit = { NOT = { has_done_agency_upgrade = upgrade_passive_defense } }
+		upgrade_intelligence_agency = upgrade_passive_defense
+	}
+	if = {
+		limit = { NOT = { has_done_agency_upgrade = upgrade_invisible_ink } }
+		upgrade_intelligence_agency = upgrade_invisible_ink
+	}
+	if = {
+		limit = { NOT = { has_done_agency_upgrade = upgrade_diplo_training } }
+		upgrade_intelligence_agency = upgrade_diplo_training
+	}
+	if = {
+		limit = {
+			has_tech = radio
+			NOT = { has_done_agency_upgrade = upgrade_portable_radios }
+		}
+		upgrade_intelligence_agency = upgrade_portable_radios
+	}
+}
+
+holy_realm_ask_world_to_kneel = {
+	every_state = {
+		limit = {
+			impassable = no
+			NOT = { is_owned_by = ROOT }
+		}
+		add_claim_by = ROOT
+		set_state_flag = holy_realm_kneeling_province_claim
+	}
+	every_other_country = {
+		limit = {
+			exists = yes
+			NOT = { is_holy_realm_country = yes }
+			NOT = { is_subject_of = ROOT }
+		}
+		ROOT = {
+			if = {
+				limit = { can_declare_war_on = PREV }
+				create_wargoal = {
+					type = annex_everything
+					target = PREV
+					expire = 0
+				}
+			}
+		}
+	}
+}
+
 holy_realm_refresh_bodhisattva_leader_trait = {
 	if = {
 		limit = { check_variable = { bodhisattva_bhumi > 9 } }
@@ -358,6 +418,22 @@ holy_realm_add_chaos = {
 	}
 }
 
+holy_realm_cleanup_final_warning_target_memory = {
+	every_possible_country = {
+		limit = {
+			has_country_flag = holy_realm_final_warning_received_from_realm
+			OR = {
+				NOT = { exists = yes }
+				is_holy_realm_country = yes
+				is_subject_of = PREV
+				is_in_faction_with = PREV
+				has_country_flag = holy_realm_mandala_protectorate
+			}
+		}
+		clr_country_flag = holy_realm_final_warning_received_from_realm
+	}
+}
+
 holy_realm_advance_bodhisattva_bhumi = {
 	holy_realm_ensure_counters = yes
 	if = {
@@ -402,6 +478,54 @@ holy_realm_advance_bodhisattva_bhumi = {
 		add_stability = 0.02
 	}
 	holy_realm_refresh_bodhisattva_leader_trait = yes
+}
+
+holy_realm_create_mandala_peacekeeping_template = {
+	if = {
+		limit = { NOT = { has_country_flag = holy_realm_mandala_peacekeeping_template_created } }
+		set_country_flag = holy_realm_mandala_peacekeeping_template_created
+		division_template = {
+			name = "Mandala Peacekeeping Brigade"
+			is_locked = yes
+			force_allow_recruiting = yes
+			division_cap = 6
+			priority = 1
+			template_counter = 9
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 0 y = 2 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				infantry = { x = 1 y = 2 }
+			}
+		}
+	}
+}
+
+holy_realm_spawn_mandala_peacekeeping_brigade = {
+	holy_realm_create_mandala_peacekeeping_template = yes
+	set_temp_variable = { holy_realm_mandala_peacekeeping_cooldown_days = constant:holy_realm_decision.mandala_peacekeeping_cooldown_days }
+	set_country_flag = {
+		flag = holy_realm_mandala_peacekeeping_recent
+		days = holy_realm_mandala_peacekeeping_cooldown_days
+	}
+	add_manpower = constant:holy_realm_decision.mandala_peacekeeping_manpower
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:holy_realm_decision.mandala_peacekeeping_infantry_equipment
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:holy_realm_decision.mandala_peacekeeping_support_equipment
+	}
+	capital_scope = {
+		create_unit = {
+			division = "name = \"Mandala Peacekeeping Brigade\" division_template = \"Mandala Peacekeeping Brigade\" start_experience_factor = 0.35 start_equipment_factor = 1 start_manpower_factor = 1"
+			owner = PREV
+			count = 1
+		}
+	}
 }
 
 holy_realm_create_vow_keeper_template = {
@@ -861,6 +985,15 @@ holy_realm_show_super_event = {
 		}
 		set_variable = { global.current_super_event_audio_id = 11 }
 	}
+	else_if = {
+		limit = { check_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.mandala_of_nations } }
+		set_global_flag = {
+			flag = super_event_visible
+			days = 30
+			value = 51
+		}
+		set_variable = { global.current_super_event_audio_id = 51 }
+	}
 	every_country = {
 		limit = { is_ai = no }
 		play_current_super_event_audio = yes
@@ -1150,6 +1283,7 @@ holy_realm_receive_peaceful_submission_from_event_target = {
 		holy_realm_add_mandala_reach = yes
 		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 		holy_realm_add_spiritual_legitimacy = yes
+		holy_realm_cleanup_final_warning_target_memory = yes
 	}
 }
 
@@ -1242,6 +1376,7 @@ holy_realm_on_country_capitulation = {
 			holy_realm_add_mandala_reach = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_compassion_drift = yes
+			holy_realm_cleanup_final_warning_target_memory = yes
 		}
 	}
 }
@@ -1330,6 +1465,7 @@ holy_realm_renounce_final_silence = {
 	set_country_flag = holy_realm_final_doctrine_renounced
 	clr_country_flag = holy_realm_final_doctrine_armed
 	clr_country_flag = holy_realm_final_warning_sent
+	holy_realm_cleanup_final_warning_target_memory = yes
 	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_loss }
 	holy_realm_add_final_silence_pressure = yes
 	add_power_balance_value = {
@@ -1346,6 +1482,16 @@ holy_realm_renounce_final_silence = {
 	}
 	holy_realm_refresh_world_threat_source = yes
 	holy_realm_late_vow_against_annihilation_crusade = yes
+}
+
+holy_realm_open_vow_against_annihilation_branch = {
+	set_country_flag = holy_realm_peace_route_opened
+	set_country_flag = holy_realm_doctrine_restraint
+	set_country_flag = holy_realm_doctrine_chosen
+	if = {
+		limit = { NOT = { has_completed_focus = THR_lamps_remain_lit } }
+		complete_national_focus = THR_lamps_remain_lit
+	}
 }
 
 holy_realm_prepare_final_silence = {
@@ -1416,6 +1562,7 @@ holy_realm_interrupt_final_silence = {
 	set_country_flag = holy_realm_memory_mandala_broken
 	clr_country_flag = holy_realm_final_doctrine_armed
 	clr_country_flag = holy_realm_final_warning_sent
+	holy_realm_cleanup_final_warning_target_memory = yes
 	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_loss }
 	holy_realm_add_final_silence_pressure = yes
 	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mandala_break_gain }
@@ -1463,10 +1610,7 @@ holy_realm_apply_final_silence_fallout_to_realm_state = {
 
 holy_realm_apply_final_silence_wave_to_state = {
 	if = {
-		limit = {
-			OWNER = { NOT = { is_holy_realm_country = yes } }
-			CONTROLLER = { NOT = { is_holy_realm_country = yes } }
-		}
+		limit = { holy_realm_final_silence_current_wave_state = yes }
 		set_state_flag = holy_realm_final_silence_struck
 		set_state_flag = holy_realm_final_silence_burning
 		set_state_flag = holy_realm_final_silence_visual_pending
@@ -1487,7 +1631,7 @@ holy_realm_apply_final_silence_wave_to_state = {
 		}
 		set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.nuclear_random_min }
 		set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.nuclear_random_span }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.nuclear_strike }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.final_silence }
 		chaos_meter_register_state_civilian_deaths_percent = yes
 		chaos_meter_apply_nuclear_fallout_to_state = yes
 		holy_realm_delete_final_silence_state_buildings = yes
@@ -1526,10 +1670,7 @@ holy_realm_launch_final_silence_visual_strike_on_state = {
 holy_realm_apply_final_silence_wave = {
 	add_to_variable = { global.holy_realm_final_silence_wave = 1 }
 	every_state = {
-		limit = {
-			OWNER = { NOT = { is_holy_realm_country = yes } }
-			CONTROLLER = { NOT = { is_holy_realm_country = yes } }
-		}
+		limit = { holy_realm_final_silence_current_wave_state = yes }
 		holy_realm_apply_final_silence_wave_to_state = yes
 	}
 	every_state = {
@@ -1551,17 +1692,15 @@ holy_realm_apply_final_silence_wave = {
 		limit = {
 			NOT = {
 				any_state = {
-					OWNER = { NOT = { is_holy_realm_country = yes } }
-					CONTROLLER = { NOT = { is_holy_realm_country = yes } }
-					NOT = { has_state_category = wasteland }
+					holy_realm_final_silence_valid_target_state = yes
+					NOT = { has_state_flag = holy_realm_final_silence_struck }
 				}
 			}
 		}
 		set_global_flag = world_end_final_silence_completed
 		every_state = {
 			limit = {
-				OWNER = { NOT = { is_holy_realm_country = yes } }
-				CONTROLLER = { NOT = { is_holy_realm_country = yes } }
+				holy_realm_final_silence_valid_target_state = yes
 			}
 			set_state_flag = holy_realm_final_silence_silent
 		}

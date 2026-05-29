@@ -2191,8 +2191,8 @@ defined_text = {
 	}
 }
 
-defined_text = {
-	name = GetChaosMeterDeathsViewTooltipNuclearStrikeLine
+	defined_text = {
+		name = GetChaosMeterDeathsViewTooltipNuclearStrikeLine
 	text = {
 		trigger = {
 			check_variable = {
@@ -2205,11 +2205,28 @@ defined_text = {
 	}
 	text = {
 		localization_key = chaos_meter.window.deaths.entry.tooltip.line.none
+		}
 	}
-}
 
-defined_text = {
-	name = GetChaosMeterDeathsViewTooltipCivilianCombatLine
+	defined_text = {
+		name = GetChaosMeterDeathsViewTooltipFinalSilenceLine
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.chaos_meter_deaths_view_cause_final_silence_entries^chaos_deaths_index
+					value = 0
+					compare = greater_than
+				}
+			}
+			localization_key = chaos_meter.window.deaths.entry.tooltip.line.final_silence
+		}
+		text = {
+			localization_key = chaos_meter.window.deaths.entry.tooltip.line.none
+		}
+	}
+
+	defined_text = {
+		name = GetChaosMeterDeathsViewTooltipCivilianCombatLine
 	text = {
 		trigger = {
 			check_variable = {
@@ -2813,19 +2830,29 @@ defined_text = {
 		}
 		localization_key = chaos_meter.deaths.cause.biowarfare_outbreak
 	}
-	text = {
-		trigger = {
-			check_variable = {
-				var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
-				value = constant:chaos_meter_deaths_reason.nuclear_strike
-				compare = equals
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
+					value = constant:chaos_meter_deaths_reason.nuclear_strike
+					compare = equals
+				}
 			}
+			localization_key = chaos_meter.deaths.cause.nuclear_strike
 		}
-		localization_key = chaos_meter.deaths.cause.nuclear_strike
-	}
-	text = {
-		trigger = {
-			check_variable = {
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
+					value = constant:chaos_meter_deaths_reason.final_silence
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.final_silence
+		}
+		text = {
+			trigger = {
+				check_variable = {
 				var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
 				value = constant:chaos_meter_deaths_reason.civilian_combat
 				compare = equals

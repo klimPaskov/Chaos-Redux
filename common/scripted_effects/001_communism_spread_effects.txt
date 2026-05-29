@@ -53,6 +53,37 @@ queue_communism_spread_defeat_grace_timeout = {
 	}
 }
 
+adopt_communism_spread_controlled_state_front = {
+	# COUNTRY SCOPE from on_state_control_changed. FROM.FROM is the state that changed controller.
+	if = {
+		limit = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			FROM.FROM = {
+				impassable = no
+				is_controlled_by = ROOT
+				has_state_flag = communist_controlled_state
+			}
+		}
+		if = {
+			limit = { NOT = { has_idea = communism_spread_idea } }
+			add_ideas = communism_spread_idea
+			queue_communism_spread_defeat_grace_timeout = yes
+		}
+		if = {
+			limit = { communism < constant:communism_spread_state_control.min_support_for_state_spread }
+			add_popularity = {
+				ideology = communism
+				popularity = constant:communism_spread_state_control.min_support_for_state_spread
+			}
+		}
+		apply_global_communism_evolution_flags_to_country = yes
+		refresh_communism_spread_pressure = yes
+		queue_communism_spread_maintenance = yes
+	}
+}
+
 set_communism_spread_initial_support_value = {
 	get_current_chaos_tier_value = yes
 	set_variable = { communism_spread_initial_support_effect = constant:communism_spread_initial_support.calm_world }
@@ -351,12 +382,12 @@ refresh_communism_spread_counts = {
 	set_variable = { communism_control_level_1_states = 0 }
 	set_variable = { communism_control_level_2_states = 0 }
 	set_variable = { communism_control_level_3_states = 0 }
-	set_variable = { communism_emergency_control_threshold = num_owned_states }
+	set_variable = { communism_emergency_control_threshold = num_of_controlled_states }
 	multiply_variable = { communism_emergency_control_threshold = 0.5 }
 	# Trigger syntax has no inclusive greater-than check, so 50% must pass a > comparison.
 	subtract_from_variable = { communism_emergency_control_threshold = 0.1 }
 
-	every_owned_state = {
+	every_controlled_state = {
 		limit = { has_state_flag = communist_controlled_state }
 		ROOT = { add_to_variable = { communism_controlled_states = 1 } }
 		if = {
@@ -448,7 +479,7 @@ prepare_communism_national_action_costs = {
 
 reduce_communism_support_per_controlled_state = {
 	# COUNTRY SCOPE
-	every_owned_state = {
+	every_controlled_state = {
 		limit = { has_state_flag = communist_controlled_state }
 		ROOT = {
 			add_popularity = {
@@ -461,7 +492,7 @@ reduce_communism_support_per_controlled_state = {
 
 reduce_communism_support_after_emergency = {
 	# COUNTRY SCOPE
-	every_owned_state = {
+	every_controlled_state = {
 		limit = { has_state_flag = communist_controlled_state }
 		ROOT = {
 			add_popularity = {
@@ -658,7 +689,7 @@ try_finish_communism_level_2_intervention = {
 
 refresh_communism_spread_pressure = {
 	refresh_communism_spread_counts = yes
-	every_owned_state = {
+	every_controlled_state = {
 		limit = { has_state_flag = communist_controlled_state }
 		refresh_communism_state_control_modifier = yes
 	}
@@ -778,7 +809,7 @@ can_communism_spread_take_new_state = {
 			has_communism_spread_minimum_country_size = yes
 			communism > constant:communism_spread_state_control.min_support_for_state_spread
 			NOT = { has_country_flag = communism_state_spread_cooldown }
-			any_owned_state = {
+			any_controlled_state = {
 				impassable = no
 				NOT = { is_capital = yes }
 				NOT = { has_state_flag = communist_controlled_state }
@@ -787,7 +818,7 @@ can_communism_spread_take_new_state = {
 		refresh_communism_spread_counts = yes
 		set_temp_variable = { communism_spread_soft_ceiling = party_popularity@communism }
 		multiply_temp_variable = { communism_spread_soft_ceiling = constant:communism_spread_state_control.soft_ceiling_ratio }
-		multiply_temp_variable = { communism_spread_soft_ceiling = num_owned_states }
+		multiply_temp_variable = { communism_spread_soft_ceiling = num_of_controlled_states }
 		round_temp_variable = communism_spread_soft_ceiling
 		if = {
 			limit = { check_variable = { communism_spread_soft_ceiling < 1 } }
@@ -813,10 +844,12 @@ calculate_communism_state_spread_cooldown_days = {
 	refresh_communism_spread_counts = yes
 	set_variable = { communism_state_spread_cooldown_days = constant:communism_spread_timing.state_spread_cooldown_days }
 	set_temp_variable = { communism_state_spread_cooldown_reduction = 0 }
+	set_temp_variable = { non_ai_crisis_pressure_chance_bonus = 0 }
+	set_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = 0 }
 	if = {
-		limit = { check_variable = { num_owned_states > 0 } }
+		limit = { num_of_controlled_states > 0 }
 		set_temp_variable = { communism_state_spread_ratio_cooldown_reduction = communism_controlled_states }
-		divide_temp_variable = { communism_state_spread_ratio_cooldown_reduction = num_owned_states }
+		divide_temp_variable = { communism_state_spread_ratio_cooldown_reduction = num_of_controlled_states }
 		multiply_temp_variable = { communism_state_spread_ratio_cooldown_reduction = constant:communism_spread_state_control.controlled_state_ratio_cooldown_reduction }
 		add_to_temp_variable = { communism_state_spread_cooldown_reduction = communism_state_spread_ratio_cooldown_reduction }
 	}
@@ -849,17 +882,26 @@ calculate_communism_state_spread_cooldown_days = {
 		add_to_temp_variable = { communism_state_spread_cooldown_reduction = constant:communism_spread_state_control.at_war_cooldown_reduction }
 	}
 	if = {
-		limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.medium_country_min_states_check } }
+		limit = { num_of_controlled_states > constant:communism_spread_state_control.medium_country_min_states_check }
 		add_to_temp_variable = { communism_state_spread_cooldown_reduction = constant:communism_spread_state_control.medium_country_cooldown_reduction }
 	}
 	if = {
-		limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.large_country_min_states_check } }
+		limit = { num_of_controlled_states > constant:communism_spread_state_control.large_country_min_states_check }
 		add_to_temp_variable = { communism_state_spread_cooldown_reduction = constant:communism_spread_state_control.large_country_cooldown_reduction }
 	}
 	if = {
-		limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.huge_country_min_states_check } }
+		limit = { num_of_controlled_states > constant:communism_spread_state_control.huge_country_min_states_check }
 		add_to_temp_variable = { communism_state_spread_cooldown_reduction = constant:communism_spread_state_control.huge_country_cooldown_reduction }
 	}
+	if = {
+		limit = { is_non_ai_fighting_severe_communism_spread_crisis = yes }
+		chaosx_apply_non_ai_crisis_pressure_severe_factor = yes
+	}
+	else_if = {
+		limit = { is_non_ai_fighting_communism_spread_crisis = yes }
+		chaosx_apply_non_ai_crisis_pressure_factor = yes
+	}
+	add_to_temp_variable = { communism_state_spread_cooldown_reduction = non_ai_crisis_pressure_cooldown_reduction }
 	subtract_from_variable = { communism_state_spread_cooldown_days = communism_state_spread_cooldown_reduction }
 	if = {
 		limit = { check_variable = { communism_state_spread_cooldown_days < constant:communism_spread_timing.state_spread_min_cooldown_days } }
@@ -869,11 +911,32 @@ calculate_communism_state_spread_cooldown_days = {
 }
 
 queue_communism_state_escalation_cooldown = {
+	calculate_communism_state_escalation_cooldown_days = yes
 	set_country_flag = communism_state_escalation_cooldown
 	country_event = {
 		id = chaosx.nr1.22
-		days = constant:communism_spread_timing.state_escalation_cooldown_days
+		days = communism_state_escalation_cooldown_days
 	}
+}
+
+calculate_communism_state_escalation_cooldown_days = {
+	set_variable = { communism_state_escalation_cooldown_days = constant:communism_spread_timing.state_escalation_cooldown_days }
+	set_temp_variable = { non_ai_crisis_pressure_chance_bonus = 0 }
+	set_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = 0 }
+	if = {
+		limit = { is_non_ai_fighting_severe_communism_spread_crisis = yes }
+		chaosx_apply_non_ai_crisis_pressure_severe_factor = yes
+	}
+	else_if = {
+		limit = { is_non_ai_fighting_communism_spread_crisis = yes }
+		chaosx_apply_non_ai_crisis_pressure_factor = yes
+	}
+	subtract_from_variable = { communism_state_escalation_cooldown_days = non_ai_crisis_pressure_cooldown_reduction }
+	if = {
+		limit = { check_variable = { communism_state_escalation_cooldown_days < constant:communism_spread_timing.state_spread_min_cooldown_days } }
+		set_variable = { communism_state_escalation_cooldown_days = constant:communism_spread_timing.state_spread_min_cooldown_days }
+	}
+	round_variable = communism_state_escalation_cooldown_days
 }
 
 queue_communism_sabotage_cooldown = {
@@ -889,10 +952,12 @@ calculate_communism_sabotage_cooldown_days = {
 	refresh_communism_spread_counts = yes
 	set_variable = { communism_sabotage_cooldown_days = constant:communism_spread_timing.sabotage_cooldown_days }
 	set_temp_variable = { communism_sabotage_cooldown_reduction = 0 }
+	set_temp_variable = { non_ai_crisis_pressure_chance_bonus = 0 }
+	set_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = 0 }
 	if = {
-		limit = { check_variable = { num_owned_states > 0 } }
+		limit = { num_of_controlled_states > 0 }
 		set_temp_variable = { communism_sabotage_ratio_cooldown_reduction = communism_controlled_states }
-		divide_temp_variable = { communism_sabotage_ratio_cooldown_reduction = num_owned_states }
+		divide_temp_variable = { communism_sabotage_ratio_cooldown_reduction = num_of_controlled_states }
 		multiply_temp_variable = { communism_sabotage_ratio_cooldown_reduction = constant:communism_spread_strikes.controlled_state_ratio_cooldown_reduction }
 		add_to_temp_variable = { communism_sabotage_cooldown_reduction = communism_sabotage_ratio_cooldown_reduction }
 	}
@@ -916,6 +981,15 @@ calculate_communism_sabotage_cooldown_days = {
 		limit = { has_war = yes }
 		add_to_temp_variable = { communism_sabotage_cooldown_reduction = constant:communism_spread_strikes.at_war_cooldown_reduction }
 	}
+	if = {
+		limit = { is_non_ai_fighting_severe_communism_spread_crisis = yes }
+		chaosx_apply_non_ai_crisis_pressure_severe_factor = yes
+	}
+	else_if = {
+		limit = { is_non_ai_fighting_communism_spread_crisis = yes }
+		chaosx_apply_non_ai_crisis_pressure_factor = yes
+	}
+	add_to_temp_variable = { communism_sabotage_cooldown_reduction = non_ai_crisis_pressure_cooldown_reduction }
 	subtract_from_variable = { communism_sabotage_cooldown_days = communism_sabotage_cooldown_reduction }
 	if = {
 		limit = { check_variable = { communism_sabotage_cooldown_days < constant:communism_spread_strikes.min_cooldown_days } }
@@ -1063,7 +1137,7 @@ select_new_communist_control_state = {
 	# Priority tiers keep spread strategic while preserving a valid target pool for small countries.
 	if = {
 		limit = {
-			any_owned_state = {
+			any_controlled_state = {
 				impassable = no
 				NOT = { is_capital = yes }
 				NOT = { has_state_flag = communist_controlled_state }
@@ -1071,7 +1145,7 @@ select_new_communist_control_state = {
 				is_communist_spread_priority_state = yes
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				impassable = no
 				NOT = { is_capital = yes }
@@ -1085,14 +1159,14 @@ select_new_communist_control_state = {
 	}
 	else_if = {
 		limit = {
-			any_owned_state = {
+			any_controlled_state = {
 				impassable = no
 				NOT = { is_capital = yes }
 				NOT = { has_state_flag = communist_controlled_state }
 				any_neighbor_state = { has_state_flag = communist_controlled_state }
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				impassable = no
 				NOT = { is_capital = yes }
@@ -1105,14 +1179,14 @@ select_new_communist_control_state = {
 	}
 	else_if = {
 		limit = {
-			any_owned_state = {
+			any_controlled_state = {
 				impassable = no
 				NOT = { is_capital = yes }
 				NOT = { has_state_flag = communist_controlled_state }
 				is_communist_spread_priority_state = yes
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				impassable = no
 				NOT = { is_capital = yes }
@@ -1124,7 +1198,7 @@ select_new_communist_control_state = {
 		}
 	}
 	else = {
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				impassable = no
 				NOT = { is_capital = yes }
@@ -1142,7 +1216,7 @@ select_remote_communist_control_state = {
 	# COUNTRY SCOPE. Occasional underground-cell jumps let insurgency spread beyond its current border.
 	if = {
 		limit = {
-			any_owned_state = {
+			any_controlled_state = {
 				impassable = no
 				NOT = { is_capital = yes }
 				NOT = { has_state_flag = communist_controlled_state }
@@ -1150,7 +1224,7 @@ select_remote_communist_control_state = {
 				is_communist_spread_priority_state = yes
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				impassable = no
 				NOT = { is_capital = yes }
@@ -1164,14 +1238,14 @@ select_remote_communist_control_state = {
 	}
 	else_if = {
 		limit = {
-			any_owned_state = {
+			any_controlled_state = {
 				impassable = no
 				NOT = { is_capital = yes }
 				NOT = { has_state_flag = communist_controlled_state }
 				NOT = { any_neighbor_state = { has_state_flag = communist_controlled_state } }
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				impassable = no
 				NOT = { is_capital = yes }
@@ -1192,7 +1266,7 @@ seed_initial_communist_control_state = {
 	if = {
 		limit = {
 			check_variable = { communism_controlled_states = 0 }
-			any_owned_state = {
+			any_controlled_state = {
 				impassable = no
 				NOT = { is_capital = yes }
 				NOT = { has_state_flag = communist_controlled_state }
@@ -1208,19 +1282,21 @@ try_communism_state_spread = {
 	if = {
 		limit = { check_variable = { communism_spread_can_take_state = 1 } }
 		set_temp_variable = { communism_state_spread_chance = constant:communism_spread_state_control.base_spread_chance }
+		set_temp_variable = { non_ai_crisis_pressure_chance_bonus = 0 }
+		set_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = 0 }
 		set_temp_variable = { communism_state_spread_control_pressure = communism_controlled_states }
 		multiply_temp_variable = { communism_state_spread_control_pressure = constant:communism_spread_state_control.controlled_state_spread_chance }
 		set_temp_variable = { communism_state_spread_control_pressure_cap = constant:communism_spread_state_control.max_controlled_state_spread_chance }
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.medium_country_min_states_check } }
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.medium_country_min_states_check }
 			add_to_temp_variable = { communism_state_spread_control_pressure_cap = constant:communism_spread_state_control.medium_country_controlled_state_pressure_cap_bonus }
 		}
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.large_country_min_states_check } }
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.large_country_min_states_check }
 			add_to_temp_variable = { communism_state_spread_control_pressure_cap = constant:communism_spread_state_control.large_country_controlled_state_pressure_cap_bonus }
 		}
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.huge_country_min_states_check } }
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.huge_country_min_states_check }
 			add_to_temp_variable = { communism_state_spread_control_pressure_cap = constant:communism_spread_state_control.huge_country_controlled_state_pressure_cap_bonus }
 		}
 		clamp_temp_variable = {
@@ -1229,9 +1305,9 @@ try_communism_state_spread = {
 		}
 		add_to_temp_variable = { communism_state_spread_chance = communism_state_spread_control_pressure }
 		if = {
-			limit = { check_variable = { num_owned_states > 0 } }
+			limit = { num_of_controlled_states > 0 }
 			set_temp_variable = { communism_state_spread_control_ratio_pressure = communism_controlled_states }
-			divide_temp_variable = { communism_state_spread_control_ratio_pressure = num_owned_states }
+			divide_temp_variable = { communism_state_spread_control_ratio_pressure = num_of_controlled_states }
 			multiply_temp_variable = { communism_state_spread_control_ratio_pressure = constant:communism_spread_state_control.controlled_state_ratio_spread_scale }
 			clamp_temp_variable = {
 				var = communism_state_spread_control_ratio_pressure
@@ -1240,15 +1316,15 @@ try_communism_state_spread = {
 			add_to_temp_variable = { communism_state_spread_chance = communism_state_spread_control_ratio_pressure }
 		}
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.medium_country_min_states_check } }
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.medium_country_min_states_check }
 			add_to_temp_variable = { communism_state_spread_chance = constant:communism_spread_state_control.medium_country_spread_chance }
 		}
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.large_country_min_states_check } }
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.large_country_min_states_check }
 			add_to_temp_variable = { communism_state_spread_chance = constant:communism_spread_state_control.large_country_spread_chance }
 		}
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.huge_country_min_states_check } }
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.huge_country_min_states_check }
 			add_to_temp_variable = { communism_state_spread_chance = constant:communism_spread_state_control.huge_country_spread_chance }
 		}
 		if = {
@@ -1279,6 +1355,15 @@ try_communism_state_spread = {
 			limit = { has_war = yes }
 			add_to_temp_variable = { communism_state_spread_chance = constant:communism_spread_state_control.at_war_spread_chance }
 		}
+		if = {
+			limit = { is_non_ai_fighting_severe_communism_spread_crisis = yes }
+			chaosx_apply_non_ai_crisis_pressure_severe_factor = yes
+		}
+		else_if = {
+			limit = { is_non_ai_fighting_communism_spread_crisis = yes }
+			chaosx_apply_non_ai_crisis_pressure_factor = yes
+		}
+		add_to_temp_variable = { communism_state_spread_chance = non_ai_crisis_pressure_chance_bonus }
 		clamp_temp_variable = {
 			var = communism_state_spread_chance
 			max = constant:communism_spread_state_control.max_state_spread_chance
@@ -1289,7 +1374,7 @@ try_communism_state_spread = {
 			var:communism_state_spread_chance = {
 				if = {
 					limit = {
-						any_owned_state = {
+						any_controlled_state = {
 							impassable = no
 							NOT = { is_capital = yes }
 							NOT = { has_state_flag = communist_controlled_state }
@@ -1298,15 +1383,15 @@ try_communism_state_spread = {
 					}
 					set_temp_variable = { communism_state_remote_spread_chance = constant:communism_spread_state_control.remote_spread_chance }
 					if = {
-						limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.medium_country_min_states_check } }
+						limit = { num_of_controlled_states > constant:communism_spread_state_control.medium_country_min_states_check }
 						add_to_temp_variable = { communism_state_remote_spread_chance = constant:communism_spread_state_control.medium_country_remote_spread_bonus }
 					}
 					if = {
-						limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.large_country_min_states_check } }
+						limit = { num_of_controlled_states > constant:communism_spread_state_control.large_country_min_states_check }
 						add_to_temp_variable = { communism_state_remote_spread_chance = constant:communism_spread_state_control.large_country_remote_spread_bonus }
 					}
 					if = {
-						limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.huge_country_min_states_check } }
+						limit = { num_of_controlled_states > constant:communism_spread_state_control.huge_country_min_states_check }
 						add_to_temp_variable = { communism_state_remote_spread_chance = constant:communism_spread_state_control.huge_country_remote_spread_bonus }
 					}
 					if = {
@@ -1320,6 +1405,13 @@ try_communism_state_spread = {
 					if = {
 						limit = { has_war = yes }
 						add_to_temp_variable = { communism_state_remote_spread_chance = constant:communism_spread_state_control.remote_spread_at_war_bonus }
+					}
+					if = {
+						limit = { is_non_ai_fighting_communism_spread_crisis = yes }
+						set_temp_variable = { non_ai_crisis_pressure_chance_bonus = 0 }
+						set_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = 0 }
+						chaosx_apply_non_ai_crisis_pressure_mild_factor = yes
+						add_to_temp_variable = { communism_state_remote_spread_chance = non_ai_crisis_pressure_chance_bonus }
 					}
 					clamp_temp_variable = {
 						var = communism_state_remote_spread_chance
@@ -1346,7 +1438,7 @@ try_communism_state_escalation = {
 	if = {
 		limit = {
 			NOT = { has_country_flag = communism_state_escalation_cooldown }
-			any_owned_state = {
+			any_controlled_state = {
 				has_state_flag = communist_controlled_state
 				NOT = { has_state_flag = communist_control_level_3 }
 			}
@@ -1360,7 +1452,7 @@ try_communism_state_escalation = {
 		}
 		add_to_temp_variable = { communism_state_escalation_chance = communism_state_escalation_control_pressure }
 		if = {
-			limit = { check_variable = { num_owned_states < constant:communism_spread_state_control.small_country_max_states_check } }
+			limit = { num_of_controlled_states < constant:communism_spread_state_control.small_country_max_states_check }
 			add_to_temp_variable = { communism_state_escalation_chance = constant:communism_spread_state_control.small_country_escalation_chance }
 		}
 		if = {
@@ -1383,12 +1475,23 @@ try_communism_state_escalation = {
 			limit = { has_war = yes }
 			add_to_temp_variable = { communism_state_escalation_chance = constant:communism_spread_state_control.at_war_escalation_chance }
 		}
+		set_temp_variable = { non_ai_crisis_pressure_chance_bonus = 0 }
+		set_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = 0 }
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.large_country_min_states_check } }
+			limit = { is_non_ai_fighting_severe_communism_spread_crisis = yes }
+			chaosx_apply_non_ai_crisis_pressure_severe_factor = yes
+		}
+		else_if = {
+			limit = { is_non_ai_fighting_communism_spread_crisis = yes }
+			chaosx_apply_non_ai_crisis_pressure_factor = yes
+		}
+		add_to_temp_variable = { communism_state_escalation_chance = non_ai_crisis_pressure_chance_bonus }
+		if = {
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.large_country_min_states_check }
 			subtract_from_temp_variable = { communism_state_escalation_chance = constant:communism_spread_state_control.large_country_escalation_penalty }
 		}
 		if = {
-			limit = { check_variable = { num_owned_states > constant:communism_spread_state_control.huge_country_min_states_check } }
+			limit = { num_of_controlled_states > constant:communism_spread_state_control.huge_country_min_states_check }
 			subtract_from_temp_variable = { communism_state_escalation_chance = constant:communism_spread_state_control.huge_country_escalation_penalty }
 		}
 		if = {
@@ -1405,18 +1508,18 @@ try_communism_state_escalation = {
 			var:communism_state_escalation_chance = {
 				if = {
 					limit = {
-						any_owned_state = {
+						any_controlled_state = {
 							has_state_flag = communist_control_level_2
 						}
 					}
-					random_owned_state = {
+					random_controlled_state = {
 						limit = { has_state_flag = communist_control_level_2 }
 						set_communism_state_control_level_3 = yes
 						save_event_target_as = communist_target_state
 					}
 				}
 				else = {
-					random_owned_state = {
+					random_controlled_state = {
 						limit = { has_state_flag = communist_control_level_1 }
 						set_communism_state_control_level_2 = yes
 						save_event_target_as = communist_target_state
@@ -1434,7 +1537,7 @@ try_communism_state_escalation = {
 select_communist_sabotage_state = {
 	if = {
 		limit = {
-			any_owned_state = {
+			any_controlled_state = {
 				has_state_flag = communist_controlled_state
 				OR = {
 					arms_factory > 0
@@ -1443,7 +1546,7 @@ select_communist_sabotage_state = {
 				}
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				has_state_flag = communist_controlled_state
 				OR = {
@@ -1456,7 +1559,7 @@ select_communist_sabotage_state = {
 		}
 	}
 	else = {
-		random_owned_state = {
+		random_controlled_state = {
 			limit = { has_state_flag = communist_controlled_state }
 			save_event_target_as = communist_sabotage_state
 		}
@@ -1467,10 +1570,12 @@ try_communism_sabotage_event = {
 	if = {
 		limit = {
 			NOT = { has_country_flag = communism_sabotage_cooldown }
-			any_owned_state = { has_state_flag = communist_controlled_state }
+			any_controlled_state = { has_state_flag = communist_controlled_state }
 		}
 		refresh_communism_spread_counts = yes
 		set_temp_variable = { communism_sabotage_chance = constant:communism_spread_strikes.base_chance }
+		set_temp_variable = { non_ai_crisis_pressure_chance_bonus = 0 }
+		set_temp_variable = { non_ai_crisis_pressure_cooldown_reduction = 0 }
 		set_temp_variable = { communism_sabotage_control_pressure = communism_controlled_states }
 		multiply_temp_variable = { communism_sabotage_control_pressure = constant:communism_spread_strikes.controlled_state_chance }
 		clamp_temp_variable = {
@@ -1479,9 +1584,9 @@ try_communism_sabotage_event = {
 		}
 		add_to_temp_variable = { communism_sabotage_chance = communism_sabotage_control_pressure }
 		if = {
-			limit = { check_variable = { num_owned_states > 0 } }
+			limit = { num_of_controlled_states > 0 }
 			set_temp_variable = { communism_sabotage_ratio_pressure = communism_controlled_states }
-			divide_temp_variable = { communism_sabotage_ratio_pressure = num_owned_states }
+			divide_temp_variable = { communism_sabotage_ratio_pressure = num_of_controlled_states }
 			multiply_temp_variable = { communism_sabotage_ratio_pressure = constant:communism_spread_strikes.controlled_state_ratio_chance_scale }
 			clamp_temp_variable = {
 				var = communism_sabotage_ratio_pressure
@@ -1517,6 +1622,15 @@ try_communism_sabotage_event = {
 			limit = { has_war = yes }
 			add_to_temp_variable = { communism_sabotage_chance = constant:communism_spread_strikes.at_war_chance }
 		}
+		if = {
+			limit = { is_non_ai_fighting_severe_communism_spread_crisis = yes }
+			chaosx_apply_non_ai_crisis_pressure_severe_factor = yes
+		}
+		else_if = {
+			limit = { is_non_ai_fighting_communism_spread_crisis = yes }
+			chaosx_apply_non_ai_crisis_pressure_factor = yes
+		}
+		add_to_temp_variable = { communism_sabotage_chance = non_ai_crisis_pressure_chance_bonus }
 		clamp_temp_variable = {
 			var = communism_sabotage_chance
 			max = constant:communism_spread_strikes.max_chance
@@ -1565,7 +1679,7 @@ prepare_communist_emergency_uprising_roll = {
 mark_communist_uprising_conversion_states = {
 	clear_communist_uprising_conversion_flags = yes
 	refresh_communism_spread_counts = yes
-	set_temp_variable = { communist_uprising_max_convert_states = num_owned_states }
+	set_temp_variable = { communist_uprising_max_convert_states = num_of_controlled_states }
 	subtract_from_temp_variable = { communist_uprising_max_convert_states = 1 }
 	set_temp_variable = { communist_uprising_convert_budget = constant:communism_spread_emergency.uprising_base_convert_states }
 	if = {
@@ -1607,13 +1721,13 @@ mark_communist_uprising_conversion_states = {
 	while_loop_effect = {
 		limit = {
 			check_variable = { communist_uprising_convert_budget > 0 }
-			any_owned_state = {
+			any_controlled_state = {
 				NOT = { is_capital = yes }
 				has_state_flag = communist_control_level_3
 				NOT = { has_state_flag = communist_uprising_convert }
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				NOT = { is_capital = yes }
 				has_state_flag = communist_control_level_3
@@ -1626,13 +1740,13 @@ mark_communist_uprising_conversion_states = {
 	while_loop_effect = {
 		limit = {
 			check_variable = { communist_uprising_convert_budget > 0 }
-			any_owned_state = {
+			any_controlled_state = {
 				NOT = { is_capital = yes }
 				has_state_flag = communist_control_level_2
 				NOT = { has_state_flag = communist_uprising_convert }
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				NOT = { is_capital = yes }
 				has_state_flag = communist_control_level_2
@@ -1645,7 +1759,7 @@ mark_communist_uprising_conversion_states = {
 	while_loop_effect = {
 		limit = {
 			check_variable = { communist_uprising_convert_budget > 0 }
-			any_owned_state = {
+			any_controlled_state = {
 				NOT = { is_capital = yes }
 				OR = {
 					has_state_flag = communist_control_level_1
@@ -1658,7 +1772,7 @@ mark_communist_uprising_conversion_states = {
 				NOT = { has_state_flag = communist_uprising_convert }
 			}
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = {
 				NOT = { is_capital = yes }
 				OR = {
@@ -2143,7 +2257,7 @@ spawn_communist_rebel_units_in_state = {
 
 resolve_communist_emergency_without_uprising = {
 	reduce_communism_support_after_emergency = yes
-	every_owned_state = {
+	every_controlled_state = {
 		limit = { has_state_flag = communist_control_level_1 }
 		clear_communism_state_control = yes
 		add_dynamic_modifier = {
@@ -2151,7 +2265,7 @@ resolve_communist_emergency_without_uprising = {
 			days = 120
 		}
 	}
-	every_owned_state = {
+	every_controlled_state = {
 		limit = { has_state_flag = communist_control_level_2 }
 		random_list = {
 			65 = {
@@ -2164,7 +2278,7 @@ resolve_communist_emergency_without_uprising = {
 			35 = { set_communism_state_control_level_1 = yes }
 		}
 	}
-	every_owned_state = {
+	every_controlled_state = {
 		limit = { has_state_flag = communist_control_level_3 }
 		random_list = {
 			35 = {
@@ -2191,7 +2305,7 @@ create_communist_emergency_uprising = {
 	if = {
 		limit = {
 			has_communism_spread_minimum_country_size = yes
-			any_owned_state = { has_state_flag = communist_uprising_convert }
+			any_controlled_state = { has_state_flag = communist_uprising_convert }
 		}
 		reduce_communism_support_after_emergency = yes
 		create_dynamic_country = {
@@ -2227,7 +2341,7 @@ create_communist_emergency_uprising = {
 			round_temp_variable = communist_rebel_manpower_gain
 			add_manpower = communist_rebel_manpower_gain
 			ROOT = {
-				every_owned_state = {
+				every_controlled_state = {
 					limit = { has_state_flag = communist_uprising_convert }
 					transfer_state_to = PREV.PREV
 					spawn_communist_rebel_units_in_state = yes
@@ -2385,7 +2499,7 @@ maybe_fire_revolutionary_war_warning = {
 			}
 		}
 		set_temp_variable = { communist_control_ratio_check = communism_controlled_states }
-		divide_temp_variable = { communist_control_ratio_check = num_owned_states }
+		divide_temp_variable = { communist_control_ratio_check = num_of_controlled_states }
 		if = {
 			limit = {
 				OR = {
@@ -2556,9 +2670,9 @@ select_communist_evolution_state = {
 	if = {
 		limit = {
 			has_country_flag = communism_evolution_world_revolution_whispers
-			any_owned_state = { has_state_flag = communist_control_level_3 }
+			any_controlled_state = { has_state_flag = communist_control_level_3 }
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = { has_state_flag = communist_control_level_3 }
 			save_event_target_as = communist_evolution_state
 		}
@@ -2566,15 +2680,15 @@ select_communist_evolution_state = {
 	else_if = {
 		limit = {
 			has_country_flag = communism_evolution_dark_worker_rituals
-			any_owned_state = { has_state_flag = communist_control_level_2 }
+			any_controlled_state = { has_state_flag = communist_control_level_2 }
 		}
-		random_owned_state = {
+		random_controlled_state = {
 			limit = { has_state_flag = communist_control_level_2 }
 			save_event_target_as = communist_evolution_state
 		}
 	}
 	else = {
-		random_owned_state = {
+		random_controlled_state = {
 			limit = { has_state_flag = communist_controlled_state }
 			save_event_target_as = communist_evolution_state
 		}
@@ -2619,7 +2733,7 @@ try_communism_evolution_incident = {
 			NOT = { has_country_flag = communism_evolution_incident_cooldown }
 			has_communism_evolution_tier_1_unlocked = yes
 			has_country_flag = communism_evolution_unstable_activity
-			any_owned_state = { has_state_flag = communist_controlled_state }
+			any_controlled_state = { has_state_flag = communist_controlled_state }
 		}
 		set_temp_variable = { communism_surprise_revolt_chance = constant:communism_spread_evolution.surprise_revolt_chance }
 		set_temp_variable = { communism_worker_ritual_chance = 0 }
