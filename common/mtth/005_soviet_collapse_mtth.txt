@@ -15,6 +15,31 @@ soviet_collapse_progressive_release_weight = {
 		add = constant:soviet_collapse_release_mtth.low_threat_add
 	}
 	modifier = {
+		has_soviet_collapse_low_threat_follow_on_release_lane = yes
+		add = constant:soviet_collapse_release_mtth.low_threat_follow_on_release_add
+	}
+	modifier = {
+		has_soviet_collapse_contained_low_threat_follow_on_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.low_threat_follow_on_contained_mtth_release_factor
+	}
+	modifier = {
+		has_soviet_collapse_roll_gate_follow_on_mtth_pressure = yes
+		add = constant:soviet_collapse_release_mtth.regional_neighbor_roll_release_add
+	}
+	modifier = {
+		has_soviet_collapse_roll_gate_real_mtth_pressure = yes
+		add = constant:soviet_collapse_release_mtth.sustained_pressure_active_release_add
+	}
+	modifier = {
+		has_soviet_collapse_mature_real_mtth_pressure = yes
+		add = constant:soviet_collapse_release_mtth.sustained_pressure_mature_release_add
+	}
+	modifier = {
+		NOT = { has_soviet_collapse_calm_mtth_release_block = yes }
+		check_variable = { var = soviet_collapse_release_urgency_score value = constant:soviet_collapse_threat_guard.real_release_pressure_urgency_gate compare = greater_than_or_equals }
+		add = constant:soviet_collapse_release_mtth.critical_urgency_roll_release_add
+	}
+	modifier = {
 		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
 		NOT = { check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = greater_than_or_equals } }
 		add = constant:soviet_collapse_release_mtth.moderate_threat_add
@@ -38,12 +63,12 @@ soviet_collapse_progressive_release_weight = {
 		add = constant:soviet_collapse_release_mtth.weak_authority_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than }
 		add = constant:soviet_collapse_release_mtth.weak_obedience_add
 	}
 	modifier = {
 		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = less_than }
-		NOT = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than } }
+		NOT = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than } }
 		add = constant:soviet_collapse_release_mtth.obedience_erosion_add
 	}
 	modifier = {
@@ -55,15 +80,15 @@ soviet_collapse_progressive_release_weight = {
 		add = constant:soviet_collapse_release_mtth.latent_obedience_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_mtth.latent_republic_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_mtth.latent_republic_pressure_gate compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.latent_republic_momentum_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.republic_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.republic_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.republic_momentum_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.severe_republic_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.severe_republic_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.severe_republic_momentum_add
 	}
 	modifier = {
@@ -71,45 +96,45 @@ soviet_collapse_progressive_release_weight = {
 			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
 			check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.early_breakaway_gate compare = greater_than_or_equals }
 			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
-			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than }
 			has_soviet_collapse_war_release_pressure = yes
 		}
 		add = constant:soviet_collapse_release_mtth.breakaway_cascade_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.depot_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.depot_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.depot_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_mtth.latent_depot_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_mtth.latent_depot_pressure_gate compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.latent_depot_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.severe_depot_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.severe_depot_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.severe_depot_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_mtth.latent_foreign_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_mtth.latent_foreign_pressure_gate compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.latent_foreign_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.foreign_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.foreign_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.foreign_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.severe_foreign_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.severe_foreign_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.severe_foreign_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.league_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.league_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.league_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_mtth.latent_league_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_mtth.latent_league_pressure_gate compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.latent_league_pressure_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.severe_league_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.severe_league_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.severe_league_pressure_add
 	}
 	modifier = {
@@ -117,15 +142,19 @@ soviet_collapse_progressive_release_weight = {
 		add = constant:soviet_collapse_release_mtth.league_announcement_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.old_movement_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.old_movement_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.old_movement_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_mtth.latent_old_movement_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_mtth.latent_old_movement_pressure_gate compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.latent_old_movement_add
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.severe_old_movement_pressure compare = greater_than }
+		has_soviet_collapse_compound_latent_mtth_release_pressure = yes
+		add = constant:soviet_collapse_release_mtth.compound_latent_release_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.severe_old_movement_pressure compare = greater_than_or_equals }
 		add = constant:soviet_collapse_release_mtth.severe_old_movement_add
 	}
 	modifier = {
@@ -144,17 +173,24 @@ soviet_collapse_progressive_release_weight = {
 		add = constant:soviet_collapse_release_mtth.war_pressure_add
 	}
 	modifier = {
-		AND = {
-			OR = {
-				check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
-				check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_threat_guard.early_breakaway_gate compare = greater_than_or_equals }
-				check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
-				check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
-				has_soviet_collapse_war_release_pressure = yes
-			}
-			has_soviet_collapse_real_regional_cascade_pressure = yes
-		}
+		has_soviet_collapse_real_regional_cascade_pressure = yes
 		add = constant:soviet_collapse_release_mtth.regional_cascade_add
+	}
+	modifier = {
+		has_soviet_collapse_neighbor_mtth_release_pressure = yes
+		add = constant:soviet_collapse_release_mtth.regional_neighbor_roll_release_add
+	}
+	modifier = {
+		has_soviet_collapse_post_opening_breakaway_mtth_pressure = yes
+		add = constant:soviet_collapse_release_mtth.post_opening_breakaway_roll_release_add
+	}
+	modifier = {
+		has_soviet_collapse_failure_release_pressure = yes
+		add = constant:soviet_collapse_release_mtth.failed_mission_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_progressive_release_failed_months value = constant:soviet_collapse_release_mtth.failed_month_roll_gate compare = greater_than_or_equals }
+		add = constant:soviet_collapse_release_mtth.failed_month_roll_release_add
 	}
 	modifier = {
 		has_global_flag = { flag = chaos_tier value = 2 }
@@ -174,7 +210,8 @@ soviet_collapse_progressive_release_weight = {
 	}
 	modifier = {
 		check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
-		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = less_than }
+		NOT = { has_soviet_collapse_low_threat_follow_on_release_lane = yes }
 		NOT = { has_soviet_collapse_release_level_component_pressure = yes }
 		NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
 		NOT = { has_soviet_collapse_war_release_pressure = yes }
@@ -182,7 +219,8 @@ soviet_collapse_progressive_release_weight = {
 	}
 	modifier = {
 		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = greater_than_or_equals }
-		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = less_than }
+		NOT = { has_soviet_collapse_low_threat_follow_on_release_lane = yes }
 		NOT = { has_soviet_collapse_release_level_component_pressure = yes }
 		NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
 		NOT = { has_soviet_collapse_war_release_pressure = yes }
@@ -195,7 +233,33 @@ soviet_collapse_progressive_release_miss_weight = {
 
 	modifier = {
 		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = less_than }
+		NOT = { has_soviet_collapse_low_threat_follow_on_release_lane = yes }
 		factor = constant:soviet_collapse_release_mtth.low_threat_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_low_threat_follow_on_release_lane = yes
+		factor = constant:soviet_collapse_release_mtth.low_threat_follow_on_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_contained_low_threat_follow_on_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.low_threat_follow_on_contained_mtth_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_roll_gate_follow_on_mtth_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.post_opening_breakaway_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_roll_gate_real_mtth_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.sustained_pressure_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_mature_real_mtth_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.sustained_pressure_mature_miss_factor
+	}
+	modifier = {
+		NOT = { has_soviet_collapse_calm_mtth_release_block = yes }
+		check_variable = { var = soviet_collapse_release_urgency_score value = constant:soviet_collapse_threat_guard.real_release_pressure_urgency_gate compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.sustained_pressure_miss_factor
 	}
 	modifier = {
 		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.moderate_threat compare = greater_than_or_equals }
@@ -220,7 +284,8 @@ soviet_collapse_progressive_release_miss_weight = {
 		AND = {
 			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_baseline.moscow_authority compare = greater_than_or_equals }
 			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = greater_than_or_equals }
-			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = less_than }
+			check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.high_threat compare = less_than }
+			NOT = { has_soviet_collapse_low_threat_follow_on_release_lane = yes }
 			NOT = { has_soviet_collapse_release_level_component_pressure = yes }
 			NOT = { has_soviet_collapse_real_regional_cascade_pressure = yes }
 			NOT = { has_soviet_collapse_war_release_pressure = yes }
@@ -228,20 +293,20 @@ soviet_collapse_progressive_release_miss_weight = {
 		factor = constant:soviet_collapse_release_mtth.strong_center_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.republic_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.republic_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.republic_momentum_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_mtth.latent_republic_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_mtth.latent_republic_pressure_gate compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.latent_republic_momentum_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.severe_republic_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_republic_confidence value = constant:soviet_collapse_release_gate.severe_republic_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.severe_republic_momentum_miss_factor
 	}
 	modifier = {
 		check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_baseline.military_obedience compare = less_than }
-		NOT = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than } }
+		NOT = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than } }
 		factor = constant:soviet_collapse_release_mtth.obedience_erosion_miss_factor
 	}
 	modifier = {
@@ -253,39 +318,39 @@ soviet_collapse_progressive_release_miss_weight = {
 		factor = constant:soviet_collapse_release_mtth.latent_obedience_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_mtth.latent_depot_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_mtth.latent_depot_pressure_gate compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.latent_depot_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.depot_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.depot_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.depot_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.severe_depot_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_release_gate.severe_depot_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.severe_depot_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.foreign_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.foreign_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.foreign_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_mtth.latent_foreign_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_mtth.latent_foreign_pressure_gate compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.latent_foreign_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.severe_foreign_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_foreign_appetite value = constant:soviet_collapse_release_gate.severe_foreign_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.severe_foreign_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_mtth.latent_league_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_mtth.latent_league_pressure_gate compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.latent_league_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.league_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.league_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.league_pressure_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.severe_league_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_league_cohesion value = constant:soviet_collapse_release_gate.severe_league_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.severe_league_pressure_miss_factor
 	}
 	modifier = {
@@ -293,27 +358,47 @@ soviet_collapse_progressive_release_miss_weight = {
 		factor = constant:soviet_collapse_release_mtth.league_announcement_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.old_movement_pressure compare = greater_than }
+		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.old_movement_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.old_movement_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_mtth.latent_old_movement_pressure_gate compare = greater_than }
+		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_mtth.latent_old_movement_pressure_gate compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.latent_old_movement_miss_factor
 	}
 	modifier = {
-		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.severe_old_movement_pressure compare = greater_than }
+		has_soviet_collapse_compound_latent_mtth_release_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.compound_latent_miss_factor
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_old_movement_pressure value = constant:soviet_collapse_release_gate.severe_old_movement_pressure compare = greater_than_or_equals }
 		factor = constant:soviet_collapse_release_mtth.severe_old_movement_miss_factor
 	}
 	modifier = {
 		OR = {
 			check_variable = { var = soviet_collapse_moscow_authority value = constant:soviet_collapse_soviet_objective.critical_authority compare = less_than }
-			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_authority compare = less_than }
+			check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.critical_obedience compare = less_than }
 		}
 		factor = constant:soviet_collapse_release_mtth.weak_center_miss_factor
 	}
 	modifier = {
 		has_soviet_collapse_real_regional_cascade_pressure = yes
 		factor = constant:soviet_collapse_release_mtth.cascade_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_neighbor_mtth_release_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.regional_neighbor_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_post_opening_breakaway_mtth_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.post_opening_breakaway_miss_factor
+	}
+	modifier = {
+		has_soviet_collapse_failure_release_pressure = yes
+		factor = constant:soviet_collapse_release_mtth.failed_mission_miss_factor
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_progressive_release_failed_months value = constant:soviet_collapse_release_mtth.failed_month_roll_gate compare = greater_than_or_equals }
+		factor = constant:soviet_collapse_release_mtth.failed_month_miss_factor
 	}
 	modifier = {
 		OR = {

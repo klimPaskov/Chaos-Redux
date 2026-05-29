@@ -1,773 +1,1420 @@
 add_namespace = chaosx.nr5
 
+###############################################################################################################
+#    ##    ## ########     ########
+#    ###   ## ##     ##    ##
+#    ####  ## ##     ##    ##
+#    ## ## ## ########     #######
+#    ##  #### ##   ##            ##
+#    ##   ### ##    ##     ##    ##
+#    ##    ## ##     ##     ######
+###############################################################################################################
+#      #####                                   #####
+#     #     #  ####  #    # # ###### #####    #     #  ####  #      #        ##   #####   ####  ######
+#     #       #    # #    # # #        #      #       #    # #      #       #  #  #    # #      #
+#      #####  #    # #    # # #####    #      #       #    # #      #      #    # #    #  ####  #####
+#           # #    # #    # # #        #      #       #    # #      #      ###### #####       # #
+#     #     # #    #  #  #  # #        #      #     # #    # #      #      #    # #      #    # #
+#      #####   ####    ##   # ######   #       #####   ####  ###### ###### #    # #       ####  ######
+
+###############################################################################################################
+
+
+country_event = {
+    id = chaosx.nr5.1
+    title = chaosx.nr5.1.t
+
+    hidden = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                SOV = { exists = yes }
+                NOT = { has_global_flag = soviet_collapse_active }
+            }
+            SOV = { country_event = { id = chaosx.nr5.2 } }
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.2
+    title = chaosx.nr5.2.t
+    desc = chaosx.nr5.2.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = { NOT = { has_global_flag = soviet_collapse_active } }
+            soviet_collapse_initialize_crisis_values = yes
+            soviet_collapse_release_initial_republics = yes
+            soviet_collapse_activate_opening_objectives = yes
+            news_event = { id = chaosx.news.5 days = 2 }
+        }
+    }
+
+    option = {
+        name = chaosx.nr5.2.a
+        set_country_flag = soviet_collapse_posture_indivisible_union
+        add_ideas = soviet_collapse_emergency_union_authority
+        set_temp_variable = { soviet_collapse_opening_posture_authority_delta = constant:soviet_collapse_opening_posture.indivisible_authority }
+        set_temp_variable = { soviet_collapse_opening_posture_obedience_delta = constant:soviet_collapse_opening_posture.indivisible_obedience }
+        set_temp_variable = { soviet_collapse_opening_posture_republic_delta = constant:soviet_collapse_opening_posture.indivisible_republic_pressure }
+        set_temp_variable = { soviet_collapse_opening_posture_depot_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_foreign_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_league_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = constant:soviet_collapse_opening_posture.indivisible_old_movement_pressure }
+        soviet_collapse_apply_opening_posture_delta = yes
+        custom_effect_tooltip = soviet_collapse_declare_union_indivisible_tt
+    }
+
+    option = {
+        name = chaosx.nr5.2.b
+        set_country_flag = soviet_collapse_posture_autonomy_settlement
+        add_ideas = soviet_collapse_new_union_negotiations
+        set_temp_variable = { soviet_collapse_opening_posture_authority_delta = constant:soviet_collapse_opening_posture.autonomy_authority }
+        set_temp_variable = { soviet_collapse_opening_posture_obedience_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_republic_delta = constant:soviet_collapse_opening_posture.autonomy_republic_relief }
+        set_temp_variable = { soviet_collapse_opening_posture_depot_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_foreign_delta = constant:soviet_collapse_objective_pressure.foreign_relief_small }
+        set_temp_variable = { soviet_collapse_opening_posture_league_delta = constant:soviet_collapse_opening_posture.autonomy_league_pressure }
+        set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = 0 }
+        soviet_collapse_apply_opening_posture_delta = yes
+        custom_effect_tooltip = soviet_collapse_offer_autonomy_tt
+    }
+
+    option = {
+        name = chaosx.nr5.2.c
+        set_country_flag = soviet_collapse_posture_isolate_separatists
+        set_temp_variable = { soviet_collapse_opening_posture_authority_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_obedience_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_republic_delta = constant:soviet_collapse_opening_posture.isolate_republic_pressure }
+        set_temp_variable = { soviet_collapse_opening_posture_depot_delta = constant:soviet_collapse_opening_posture.isolate_depot_relief }
+        set_temp_variable = { soviet_collapse_opening_posture_foreign_delta = constant:soviet_collapse_objective_pressure.foreign_relief_small }
+        set_temp_variable = { soviet_collapse_opening_posture_league_delta = constant:soviet_collapse_opening_posture.isolate_league_relief }
+        set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = 0 }
+        soviet_collapse_apply_opening_posture_delta = yes
+        custom_effect_tooltip = soviet_collapse_isolate_separatists_tt
+    }
+
+    option = {
+        name = chaosx.nr5.2.e
+        trigger = {
+            OR = {
+                has_government = communism
+                has_government = democratic
+                has_stability > constant:soviet_collapse_soviet_objective.good_stability
+            }
+        }
+        set_country_flag = soviet_collapse_posture_restore_discipline_quietly
+        set_temp_variable = { soviet_collapse_opening_posture_authority_delta = constant:soviet_collapse_opening_posture.discipline_authority }
+        set_temp_variable = { soviet_collapse_opening_posture_obedience_delta = constant:soviet_collapse_opening_posture.discipline_obedience }
+        set_temp_variable = { soviet_collapse_opening_posture_republic_delta = constant:soviet_collapse_opening_posture.discipline_republic_relief }
+        set_temp_variable = { soviet_collapse_opening_posture_depot_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_foreign_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_league_delta = 0 }
+        set_temp_variable = { soviet_collapse_opening_posture_old_movement_delta = constant:soviet_collapse_opening_posture.discipline_old_movement_relief }
+        soviet_collapse_apply_opening_posture_delta = yes
+        custom_effect_tooltip = soviet_collapse_restore_party_discipline_tt
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.127
+    hidden = yes
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        has_country_flag = soviet_collapse_objective_activation_grace
+    }
+
+    immediate = {
+        clr_country_flag = soviet_collapse_objective_activation_grace
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.128
+    hidden = yes
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        has_country_flag = soviet_collapse_objective_refill_queued
+    }
+
+    immediate = {
+        clr_country_flag = soviet_collapse_objective_refill_queued
+        if = {
+            limit = {
+                is_soviet_collapse_active = yes
+                NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+            }
+            soviet_collapse_process_objective_refill = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.129
+    hidden = yes
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+    }
+
+    immediate = {
+        soviet_collapse_apply_monthly_threat_guard = yes
+        soviet_collapse_maybe_release_threat_breakaway = yes
+        if = {
+            limit = {
+                is_soviet_collapse_active = yes
+                NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+            }
+            soviet_collapse_schedule_next_progressive_release_check = yes
+        }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.130
+    title = chaosx.nr5.130.t
+    desc = chaosx.nr5.130.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.130.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.131
+    title = chaosx.nr5.131.t
+    desc = chaosx.nr5.131.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.131.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.132
+    title = chaosx.nr5.132.t
+    desc = chaosx.nr5.132.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.132.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.133
+    title = chaosx.nr5.133.t
+    desc = chaosx.nr5.133.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.133.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.134
+    title = chaosx.nr5.134.t
+    desc = chaosx.nr5.134.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.134.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.135
+    title = chaosx.nr5.135.t
+    desc = chaosx.nr5.135.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.135.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.136
+    title = chaosx.nr5.136.t
+    desc = chaosx.nr5.136.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.136.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.137
+    title = chaosx.nr5.137.t
+    desc = chaosx.nr5.137.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    trigger = {
+        tag = SOV
+        is_soviet_collapse_active = yes
+        NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+        can_soviet_collapse_fire_progressive_release_report = yes
+    }
+
+    immediate = {
+        soviet_collapse_release_one_threat_breakaway_republic = yes
+    }
+
+    option = {
+        name = chaosx.nr5.137.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.10
+    title = chaosx.nr5.10.t
+    desc = chaosx.nr5.10.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.10.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.11
+    title = chaosx.nr5.11.t
+    desc = chaosx.nr5.11.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.11.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.12
+    title = chaosx.nr5.12.t
+    desc = chaosx.nr5.12.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.12.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.13
+    title = chaosx.nr5.13.t
+    desc = chaosx.nr5.13.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.13.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.14
+    title = chaosx.nr5.14.t
+    desc = chaosx.nr5.14.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.14.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.15
+    title = chaosx.nr5.15.t
+    desc = chaosx.nr5.15.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.15.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.16
+    title = chaosx.nr5.16.t
+    desc = chaosx.nr5.16.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.16.a
+    }
+}
+
+news_event = {
+    id = chaosx.nr5.30
+    title = chaosx.nr5.30.t
+    desc = chaosx.nr5.30.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = soviet_collapse_regional_charter_joint_staff
+        add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
+        custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_local_autonomy
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
+        add_stability = constant:soviet_collapse_republic_focus.stability_small
+        custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_patron_channels
+        soviet_collapse_apply_regional_charter_patron_channels = yes
+        custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+    }
+}
+
+news_event = {
+    id = chaosx.nr5.31
+    title = chaosx.nr5.31.t
+    desc = chaosx.nr5.31.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = soviet_collapse_regional_charter_joint_staff
+        add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
+        custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_local_autonomy
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
+        add_stability = constant:soviet_collapse_republic_focus.stability_small
+        custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_patron_channels
+        soviet_collapse_apply_regional_charter_patron_channels = yes
+        custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+    }
+}
+
+news_event = {
+    id = chaosx.nr5.32
+    title = chaosx.nr5.32.t
+    desc = chaosx.nr5.32.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = soviet_collapse_regional_charter_joint_staff
+        add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
+        custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_local_autonomy
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
+        add_stability = constant:soviet_collapse_republic_focus.stability_small
+        custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_patron_channels
+        soviet_collapse_apply_regional_charter_patron_channels = yes
+        custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+    }
+}
+
+news_event = {
+    id = chaosx.nr5.35
+    title = chaosx.nr5.35.t
+    desc = chaosx.nr5.35.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = soviet_collapse_regional_charter_joint_staff
+        add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
+        custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_local_autonomy
+        add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
+        add_stability = constant:soviet_collapse_republic_focus.stability_small
+        custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
+    }
+    option = {
+        name = soviet_collapse_regional_charter_patron_channels
+        soviet_collapse_apply_regional_charter_patron_channels = yes
+        custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
+    }
+}
+
+news_event = {
+    id = chaosx.nr5.36
+    title = chaosx.nr5.36.t
+    desc = chaosx.nr5.36.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5.36.a
+    }
+}
+
+country_event = {
+    id = chaosx.nr5.38
+    title = chaosx.nr5.38.t
+    desc = chaosx.nr5.38.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.38.a }
+}
+
+country_event = {
+    id = chaosx.nr5.39
+    title = chaosx.nr5.39.t
+    desc = chaosx.nr5.39.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.39.a }
+}
+
+country_event = {
+    id = chaosx.nr5.40
+    title = chaosx.nr5.40.t
+    desc = chaosx.nr5.40.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.40.a }
+}
+
+country_event = {
+    id = chaosx.nr5.41
+    title = chaosx.nr5.41.t
+    desc = chaosx.nr5.41.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.41.a }
+}
+
+country_event = {
+    id = chaosx.nr5.42
+    title = chaosx.nr5.42.t
+    desc = chaosx.nr5.42.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.42.a }
+}
+
+country_event = {
+    id = chaosx.nr5.43
+    title = chaosx.nr5.43.t
+    desc = chaosx.nr5.43.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.43.a }
+}
+
+country_event = {
+    id = chaosx.nr5.44
+    title = chaosx.nr5.44.t
+    desc = chaosx.nr5.44.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.44.a }
+}
+
+country_event = {
+    id = chaosx.nr5.45
+    title = chaosx.nr5.45.t
+    desc = chaosx.nr5.45.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.45.a }
+}
+
+country_event = {
+    id = chaosx.nr5.46
+    title = chaosx.nr5.46.t
+    desc = chaosx.nr5.46.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.46.a }
+}
+
+country_event = {
+    id = chaosx.nr5.47
+    title = chaosx.nr5.47.t
+    desc = chaosx.nr5.47.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.47.a }
+}
+
+news_event = {
+    id = chaosx.nr5.48
+    title = chaosx.nr5.48.t
+    desc = chaosx.nr5.48.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.48.a }
+}
+
+news_event = {
+    id = chaosx.nr5.49
+    title = chaosx.nr5.49.t
+    desc = chaosx.nr5.49.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.49.a }
+}
+
+news_event = {
+    id = chaosx.nr5.140
+    title = chaosx.nr5.140.t
+    desc = chaosx.nr5.140.d
+    picture = GFX_news_map_larger_than_union
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.140.a }
+}
+
+news_event = {
+    id = chaosx.nr5.141
+    title = chaosx.nr5.141.t
+    desc = chaosx.nr5.141.d
+    picture = GFX_news_steppe_beyond_history
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.141.a }
+}
+
+news_event = {
+    id = chaosx.nr5.142
+    title = chaosx.nr5.142.t
+    desc = chaosx.nr5.142.d
+    picture = GFX_news_corridors_decide
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.142.a }
+}
+
+news_event = {
+    id = chaosx.nr5.143
+    title = chaosx.nr5.143.t
+    desc = chaosx.nr5.143.d
+    picture = GFX_news_bread_state
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.143.a }
+}
+
+news_event = {
+    id = chaosx.nr5.95
+    title = chaosx.nr5.95.t
+    desc = chaosx.nr5.95.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = { name = chaosx.nr5.95.a }
+}
+
+add_namespace = chaosx.nr5_factory_ancient
+
 ##############################################################################################################
-# CHAOS REDUX - EVENT 005: SOVIET UNION COLLAPSE
+# CHAOS REDUX - EVENT 005 HIGH-CHAOS SUCCESSORS
 ##############################################################################################################
-# Entry event remains chaosx.nr5.1 for compatibility with the random-event
-# system. The visible opening event initializes the crisis meter, releases the
-# first breakaways, grants defenders, and activates the first Soviet objectives.
+# These triggered events are the player-facing notices for high-chaos successor
+# countries created by the Soviet Collapse opening hook. The country creation
+# and evolution-log recording live in common/scripted_effects/005_soviet_collapse_effects.txt.
 ##############################################################################################################
 
 country_event = {
-	id = chaosx.nr5.1
-	title = chaosx.nr5.1.t
+    id = chaosx.nr5_factory_ancient.1
+    title = chaosx.nr5_factory_ancient.1.t
+    desc = chaosx.nr5_factory_ancient.1.d
+    picture = GFX_report_union_crisis
 
-	hidden = yes
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	immediate = {
-		if = {
-			limit = {
-				SOV = { exists = yes }
-				NOT = { has_global_flag = soviet_collapse_active }
-			}
-			SOV = { country_event = { id = chaosx.nr5.2 } }
-		}
-	}
+    option = {
+        name = chaosx.nr5_factory_ancient.1.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.2
-	title = chaosx.nr5.2.t
-	desc = chaosx.nr5.2.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_factory_ancient.2
+    title = chaosx.nr5_factory_ancient.2.t
+    desc = chaosx.nr5_factory_ancient.2.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	immediate = {
-		if = {
-			limit = { NOT = { has_global_flag = soviet_collapse_active } }
-			soviet_collapse_initialize_crisis_values = yes
-			soviet_collapse_release_initial_republics = yes
-			soviet_collapse_activate_opening_objectives = yes
-			news_event = { id = chaosx.news.5 days = 2 }
-		}
-	}
-
-	option = {
-		name = chaosx.nr5.2.a
-		set_country_flag = soviet_collapse_posture_indivisible_union
-		add_ideas = soviet_collapse_emergency_union_authority
-		add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_opening_posture.indivisible_obedience }
-		add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_opening_posture.indivisible_authority }
-		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_posture.indivisible_republic_pressure }
-		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_opening_posture.indivisible_old_movement_pressure }
-		soviet_collapse_recalculate_total_threat = yes
-		custom_effect_tooltip = soviet_collapse_declare_union_indivisible_tt
-	}
-
-	option = {
-		name = chaosx.nr5.2.b
-		set_country_flag = soviet_collapse_posture_autonomy_settlement
-		add_ideas = soviet_collapse_new_union_negotiations
-		add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_opening_posture.autonomy_authority }
-		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_posture.autonomy_republic_relief }
-		set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_objective_pressure.foreign_relief_small }
-		soviet_collapse_apply_foreign_pressure_delta = yes
-		add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_opening_posture.autonomy_league_pressure }
-		soviet_collapse_recalculate_total_threat = yes
-		custom_effect_tooltip = soviet_collapse_offer_autonomy_tt
-	}
-
-	option = {
-		name = chaosx.nr5.2.c
-		set_country_flag = soviet_collapse_posture_isolate_separatists
-		add_to_variable = { soviet_collapse_depot_vulnerability = constant:soviet_collapse_opening_posture.isolate_depot_relief }
-		set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_objective_pressure.foreign_relief_small }
-		soviet_collapse_apply_foreign_pressure_delta = yes
-		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_posture.isolate_republic_pressure }
-		add_to_variable = { soviet_collapse_league_cohesion = constant:soviet_collapse_opening_posture.isolate_league_relief }
-		soviet_collapse_recalculate_total_threat = yes
-		custom_effect_tooltip = soviet_collapse_isolate_separatists_tt
-	}
-
-	option = {
-		name = chaosx.nr5.2.e
-		trigger = {
-			OR = {
-				has_government = communism
-				has_government = democratic
-				has_stability > constant:soviet_collapse_soviet_objective.good_stability
-			}
-		}
-		set_country_flag = soviet_collapse_posture_restore_discipline_quietly
-		add_to_variable = { soviet_collapse_moscow_authority = constant:soviet_collapse_opening_posture.discipline_authority }
-		add_to_variable = { soviet_collapse_military_obedience = constant:soviet_collapse_opening_posture.discipline_obedience }
-		add_to_variable = { soviet_collapse_republic_confidence = constant:soviet_collapse_opening_posture.discipline_republic_relief }
-		add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_opening_posture.discipline_old_movement_relief }
-		soviet_collapse_recalculate_total_threat = yes
-		custom_effect_tooltip = soviet_collapse_restore_party_discipline_tt
-	}
+    option = {
+        name = chaosx.nr5_factory_ancient.2.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.127
-	hidden = yes
-	is_triggered_only = yes
+    id = chaosx.nr5_factory_ancient.3
+    title = chaosx.nr5_factory_ancient.3.t
+    desc = chaosx.nr5_factory_ancient.3.d
+    picture = GFX_report_union_crisis
 
-	trigger = {
-		tag = SOV
-		has_country_flag = soviet_collapse_objective_activation_grace
-	}
+    is_triggered_only = yes
 
-	immediate = {
-		clr_country_flag = soviet_collapse_objective_activation_grace
-	}
+    option = {
+        name = chaosx.nr5_factory_ancient.3.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.128
-	hidden = yes
-	is_triggered_only = yes
+    id = chaosx.nr5_factory_ancient.4
+    title = chaosx.nr5_factory_ancient.4.t
+    desc = chaosx.nr5_factory_ancient.4.d
+    picture = GFX_report_union_crisis
 
-	trigger = {
-		tag = SOV
-		has_country_flag = soviet_collapse_objective_refill_queued
-	}
+    is_triggered_only = yes
 
-	immediate = {
-		clr_country_flag = soviet_collapse_objective_refill_queued
-		if = {
-			limit = {
-				is_soviet_collapse_active = yes
-				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-			}
-			soviet_collapse_activate_opening_objectives = yes
-		}
-	}
+    option = {
+        name = chaosx.nr5_factory_ancient.4.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.129
-	hidden = yes
-	is_triggered_only = yes
+    id = chaosx.nr5_factory_ancient.5
+    title = chaosx.nr5_factory_ancient.5.t
+    desc = chaosx.nr5_factory_ancient.5.d
+    picture = GFX_report_union_crisis
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-	}
+    is_triggered_only = yes
 
-	immediate = {
-		soviet_collapse_apply_monthly_threat_guard = yes
-		soviet_collapse_maybe_release_threat_breakaway = yes
-		if = {
-			limit = {
-				is_soviet_collapse_active = yes
-				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-			}
-			country_event = { id = chaosx.nr5.129 days = 30 }
-		}
-	}
+    option = {
+        name = chaosx.nr5_factory_ancient.5.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.130
-	title = chaosx.nr5.130.t
-	desc = chaosx.nr5.130.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_factory_ancient.6
+    title = chaosx.nr5_factory_ancient.6.t
+    desc = chaosx.nr5_factory_ancient.6.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
+    option = {
+        name = chaosx.nr5_factory_ancient.6.a
+    }
+}
 
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
+add_namespace = chaosx.nr5_custom
 
-	option = {
-		name = chaosx.nr5.130.a
-	}
+##############################################################################################################
+# CHAOS REDUX - EVENT 005 CUSTOM HIGH-CHAOS SUCCESSORS
+##############################################################################################################
+# Player-facing notices for custom Soviet Collapse splinters. Country creation,
+# focus loading, starting divisions, and evolution-log recording live in
+# common/scripted_effects/005_soviet_collapse_effects.txt.
+##############################################################################################################
+
+country_event = {
+    id = chaosx.nr5_custom.1
+    title = chaosx.nr5_custom.1.t
+    desc = chaosx.nr5_custom.1.d
+    picture = GFX_report_union_crisis
+
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.1.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.131
-	title = chaosx.nr5.131.t
-	desc = chaosx.nr5.131.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.2
+    title = chaosx.nr5_custom.2.t
+    desc = chaosx.nr5_custom.2.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
-
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
-
-	option = {
-		name = chaosx.nr5.131.a
-	}
+    option = {
+        name = chaosx.nr5_custom.2.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.132
-	title = chaosx.nr5.132.t
-	desc = chaosx.nr5.132.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.3
+    title = chaosx.nr5_custom.3.t
+    desc = chaosx.nr5_custom.3.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
-
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
-
-	option = {
-		name = chaosx.nr5.132.a
-	}
+    option = {
+        name = chaosx.nr5_custom.3.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.133
-	title = chaosx.nr5.133.t
-	desc = chaosx.nr5.133.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.4
+    title = chaosx.nr5_custom.4.t
+    desc = chaosx.nr5_custom.4.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
-
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
-
-	option = {
-		name = chaosx.nr5.133.a
-	}
+    option = {
+        name = chaosx.nr5_custom.4.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.134
-	title = chaosx.nr5.134.t
-	desc = chaosx.nr5.134.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.5
+    title = chaosx.nr5_custom.5.t
+    desc = chaosx.nr5_custom.5.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
-
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
-
-	option = {
-		name = chaosx.nr5.134.a
-	}
+    option = {
+        name = chaosx.nr5_custom.5.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.135
-	title = chaosx.nr5.135.t
-	desc = chaosx.nr5.135.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.6
+    title = chaosx.nr5_custom.6.t
+    desc = chaosx.nr5_custom.6.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
-
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
-
-	option = {
-		name = chaosx.nr5.135.a
-	}
+    option = {
+        name = chaosx.nr5_custom.6.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.136
-	title = chaosx.nr5.136.t
-	desc = chaosx.nr5.136.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.7
+    title = chaosx.nr5_custom.7.t
+    desc = chaosx.nr5_custom.7.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
-
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
-
-	option = {
-		name = chaosx.nr5.136.a
-	}
+    option = {
+        name = chaosx.nr5_custom.7.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.137
-	title = chaosx.nr5.137.t
-	desc = chaosx.nr5.137.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.8
+    title = chaosx.nr5_custom.8.t
+    desc = chaosx.nr5_custom.8.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	trigger = {
-		tag = SOV
-		is_soviet_collapse_active = yes
-		NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-		can_soviet_collapse_fire_progressive_release_report = yes
-	}
-
-	immediate = {
-		soviet_collapse_release_one_threat_breakaway_republic = yes
-	}
-
-	option = {
-		name = chaosx.nr5.137.a
-	}
+    option = {
+        name = chaosx.nr5_custom.8.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.10
-	title = chaosx.nr5.10.t
-	desc = chaosx.nr5.10.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.9
+    title = chaosx.nr5_custom.9.t
+    desc = chaosx.nr5_custom.9.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr5.10.a
-	}
+    option = {
+        name = chaosx.nr5_custom.9.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.11
-	title = chaosx.nr5.11.t
-	desc = chaosx.nr5.11.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.10
+    title = chaosx.nr5_custom.10.t
+    desc = chaosx.nr5_custom.10.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr5.11.a
-	}
+    option = {
+        name = chaosx.nr5_custom.10.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.12
-	title = chaosx.nr5.12.t
-	desc = chaosx.nr5.12.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.11
+    title = chaosx.nr5_custom.11.t
+    desc = chaosx.nr5_custom.11.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr5.12.a
-	}
+    option = {
+        name = chaosx.nr5_custom.11.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.13
-	title = chaosx.nr5.13.t
-	desc = chaosx.nr5.13.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.12
+    title = chaosx.nr5_custom.12.t
+    desc = chaosx.nr5_custom.12.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr5.13.a
-	}
+    option = {
+        name = chaosx.nr5_custom.12.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.14
-	title = chaosx.nr5.14.t
-	desc = chaosx.nr5.14.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.13
+    title = chaosx.nr5_custom.13.t
+    desc = chaosx.nr5_custom.13.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr5.14.a
-	}
+    option = {
+        name = chaosx.nr5_custom.13.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.15
-	title = chaosx.nr5.15.t
-	desc = chaosx.nr5.15.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.14
+    title = chaosx.nr5_custom.14.t
+    desc = chaosx.nr5_custom.14.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr5.15.a
-	}
+    option = {
+        name = chaosx.nr5_custom.14.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.16
-	title = chaosx.nr5.16.t
-	desc = chaosx.nr5.16.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.15
+    title = chaosx.nr5_custom.15.t
+    desc = chaosx.nr5_custom.15.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = {
-		name = chaosx.nr5.16.a
-	}
-}
-
-news_event = {
-	id = chaosx.nr5.30
-	title = chaosx.nr5.30.t
-	desc = chaosx.nr5.30.d
-	picture = GFX_report_union_crisis
-
-	is_triggered_only = yes
-
-	option = {
-		name = soviet_collapse_regional_charter_joint_staff
-		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
-		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_local_autonomy
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
-		add_stability = constant:soviet_collapse_republic_focus.stability_small
-		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_patron_channels
-		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_regional_faction.recognition_goal_gain }
-		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_regional_faction.depot_gain }
-		SOV = {
-			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_regional_faction.soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
-		}
-		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
-	}
-}
-
-news_event = {
-	id = chaosx.nr5.31
-	title = chaosx.nr5.31.t
-	desc = chaosx.nr5.31.d
-	picture = GFX_report_union_crisis
-
-	is_triggered_only = yes
-
-	option = {
-		name = soviet_collapse_regional_charter_joint_staff
-		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
-		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_local_autonomy
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
-		add_stability = constant:soviet_collapse_republic_focus.stability_small
-		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_patron_channels
-		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_regional_faction.recognition_goal_gain }
-		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_regional_faction.depot_gain }
-		SOV = {
-			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_regional_faction.soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
-		}
-		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
-	}
-}
-
-news_event = {
-	id = chaosx.nr5.32
-	title = chaosx.nr5.32.t
-	desc = chaosx.nr5.32.d
-	picture = GFX_report_union_crisis
-
-	is_triggered_only = yes
-
-	option = {
-		name = soviet_collapse_regional_charter_joint_staff
-		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
-		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_local_autonomy
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
-		add_stability = constant:soviet_collapse_republic_focus.stability_small
-		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_patron_channels
-		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_regional_faction.recognition_goal_gain }
-		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_regional_faction.depot_gain }
-		SOV = {
-			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_regional_faction.soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
-		}
-		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
-	}
-}
-
-news_event = {
-	id = chaosx.nr5.35
-	title = chaosx.nr5.35.t
-	desc = chaosx.nr5.35.d
-	picture = GFX_report_union_crisis
-
-	is_triggered_only = yes
-
-	option = {
-		name = soviet_collapse_regional_charter_joint_staff
-		add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.coordinate_cohesion }
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.invite_tension }
-		custom_effect_tooltip = soviet_collapse_regional_charter_joint_staff_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_local_autonomy
-		add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.tension_reduction }
-		add_stability = constant:soviet_collapse_republic_focus.stability_small
-		custom_effect_tooltip = soviet_collapse_regional_charter_local_autonomy_tt
-	}
-	option = {
-		name = soviet_collapse_regional_charter_patron_channels
-		add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_regional_faction.recognition_goal_gain }
-		add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_regional_faction.depot_gain }
-		SOV = {
-			set_temp_variable = { soviet_collapse_foreign_pressure_delta = constant:soviet_collapse_regional_faction.soviet_foreign_pressure }
-			soviet_collapse_apply_foreign_pressure_delta = yes
-		}
-		custom_effect_tooltip = soviet_collapse_regional_charter_patron_channels_tt
-	}
-}
-
-news_event = {
-	id = chaosx.nr5.36
-	title = chaosx.nr5.36.t
-	desc = chaosx.nr5.36.d
-	picture = GFX_report_union_crisis
-
-	is_triggered_only = yes
-
-	option = {
-		name = chaosx.nr5.36.a
-	}
+    option = {
+        name = chaosx.nr5_custom.15.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.38
-	title = chaosx.nr5.38.t
-	desc = chaosx.nr5.38.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.16
+    title = chaosx.nr5_custom.16.t
+    desc = chaosx.nr5_custom.16.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.38.a }
+    option = {
+        name = chaosx.nr5_custom.16.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.39
-	title = chaosx.nr5.39.t
-	desc = chaosx.nr5.39.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.17
+    title = chaosx.nr5_custom.17.t
+    desc = chaosx.nr5_custom.17.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.39.a }
+    option = {
+        name = chaosx.nr5_custom.17.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.40
-	title = chaosx.nr5.40.t
-	desc = chaosx.nr5.40.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.18
+    title = chaosx.nr5_custom.18.t
+    desc = chaosx.nr5_custom.18.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.40.a }
+    option = {
+        name = chaosx.nr5_custom.18.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.41
-	title = chaosx.nr5.41.t
-	desc = chaosx.nr5.41.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.19
+    title = chaosx.nr5_custom.19.t
+    desc = chaosx.nr5_custom.19.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.41.a }
+    option = {
+        name = chaosx.nr5_custom.19.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.42
-	title = chaosx.nr5.42.t
-	desc = chaosx.nr5.42.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.20
+    title = chaosx.nr5_custom.20.t
+    desc = chaosx.nr5_custom.20.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.42.a }
+    option = {
+        name = chaosx.nr5_custom.20.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.43
-	title = chaosx.nr5.43.t
-	desc = chaosx.nr5.43.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.21
+    title = chaosx.nr5_custom.21.t
+    desc = chaosx.nr5_custom.21.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.43.a }
+    option = {
+        name = chaosx.nr5_custom.21.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.44
-	title = chaosx.nr5.44.t
-	desc = chaosx.nr5.44.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.22
+    title = chaosx.nr5_custom.22.t
+    desc = chaosx.nr5_custom.22.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.44.a }
+    option = {
+        name = chaosx.nr5_custom.22.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.45
-	title = chaosx.nr5.45.t
-	desc = chaosx.nr5.45.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.24
+    title = chaosx.nr5_custom.24.t
+    desc = chaosx.nr5_custom.24.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.45.a }
+    option = {
+        name = chaosx.nr5_custom.24.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.46
-	title = chaosx.nr5.46.t
-	desc = chaosx.nr5.46.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.26
+    title = chaosx.nr5_custom.26.t
+    desc = chaosx.nr5_custom.26.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.46.a }
+    option = {
+        name = chaosx.nr5_custom.26.a
+    }
 }
 
 country_event = {
-	id = chaosx.nr5.47
-	title = chaosx.nr5.47.t
-	desc = chaosx.nr5.47.d
-	picture = GFX_report_union_crisis
+    id = chaosx.nr5_custom.30
+    title = chaosx.nr5_custom.30.t
+    desc = chaosx.nr5_custom.30.d
+    picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.47.a }
+    option = {
+        name = chaosx.nr5_custom.30.a
+    }
 }
 
-news_event = {
-	id = chaosx.nr5.48
-	title = chaosx.nr5.48.t
-	desc = chaosx.nr5.48.d
-	picture = GFX_report_union_crisis
 
-	is_triggered_only = yes
+country_event = {
+    id = chaosx.nr5_custom.23
+    title = chaosx.nr5_custom.23.t
+    desc = chaosx.nr5_custom.23.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
 
-	option = { name = chaosx.nr5.48.a }
+    option = {
+        name = chaosx.nr5_custom.23.a
+        ai_chance = { base = 1 }
+    }
 }
 
-news_event = {
-	id = chaosx.nr5.49
-	title = chaosx.nr5.49.t
-	desc = chaosx.nr5.49.d
-	picture = GFX_report_union_crisis
+country_event = {
+    id = chaosx.nr5_custom.25
+    title = chaosx.nr5_custom.25.t
+    desc = chaosx.nr5_custom.25.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
 
-	is_triggered_only = yes
-
-	option = { name = chaosx.nr5.49.a }
+    option = {
+        name = chaosx.nr5_custom.25.a
+        ai_chance = { base = 1 }
+    }
 }
 
-news_event = {
-	id = chaosx.nr5.140
-	title = chaosx.nr5.140.t
-	desc = chaosx.nr5.140.d
-	picture = GFX_news_map_larger_than_union
+country_event = {
+    id = chaosx.nr5_custom.27
+    title = chaosx.nr5_custom.27.t
+    desc = chaosx.nr5_custom.27.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
 
-	is_triggered_only = yes
-
-	option = { name = chaosx.nr5.140.a }
+    option = {
+        name = chaosx.nr5_custom.27.a
+        ai_chance = { base = 1 }
+    }
 }
 
-news_event = {
-	id = chaosx.nr5.141
-	title = chaosx.nr5.141.t
-	desc = chaosx.nr5.141.d
-	picture = GFX_news_steppe_beyond_history
+country_event = {
+    id = chaosx.nr5_custom.28
+    title = chaosx.nr5_custom.28.t
+    desc = chaosx.nr5_custom.28.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
 
-	is_triggered_only = yes
-
-	option = { name = chaosx.nr5.141.a }
+    option = {
+        name = chaosx.nr5_custom.28.a
+        ai_chance = { base = 1 }
+    }
 }
 
-news_event = {
-	id = chaosx.nr5.142
-	title = chaosx.nr5.142.t
-	desc = chaosx.nr5.142.d
-	picture = GFX_news_corridors_decide
+country_event = {
+    id = chaosx.nr5_custom.29
+    title = chaosx.nr5_custom.29.t
+    desc = chaosx.nr5_custom.29.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
 
-	is_triggered_only = yes
-
-	option = { name = chaosx.nr5.142.a }
+    option = {
+        name = chaosx.nr5_custom.29.a
+        ai_chance = { base = 1 }
+    }
 }
 
-news_event = {
-	id = chaosx.nr5.143
-	title = chaosx.nr5.143.t
-	desc = chaosx.nr5.143.d
-	picture = GFX_news_bread_state
+country_event = {
+    id = chaosx.nr5_custom.31
+    title = chaosx.nr5_custom.31.t
+    desc = chaosx.nr5_custom.31.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
 
-	is_triggered_only = yes
-
-	option = { name = chaosx.nr5.143.a }
+    option = {
+        name = chaosx.nr5_custom.31.a
+        ai_chance = { base = 1 }
+    }
 }
 
-news_event = {
-	id = chaosx.nr5.95
-	title = chaosx.nr5.95.t
-	desc = chaosx.nr5.95.d
-	picture = GFX_report_union_crisis
+country_event = {
+    id = chaosx.nr5_custom.32
+    title = chaosx.nr5_custom.32.t
+    desc = chaosx.nr5_custom.32.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
 
-	is_triggered_only = yes
+    option = {
+        name = chaosx.nr5_custom.32.a
+        ai_chance = { base = 1 }
+    }
+}
 
-	option = { name = chaosx.nr5.95.a }
+country_event = {
+    id = chaosx.nr5_custom.33
+    title = chaosx.nr5_custom.33.t
+    desc = chaosx.nr5_custom.33.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.33.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.34
+    title = chaosx.nr5_custom.34.t
+    desc = chaosx.nr5_custom.34.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.34.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.35
+    title = chaosx.nr5_custom.35.t
+    desc = chaosx.nr5_custom.35.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.35.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.36
+    title = chaosx.nr5_custom.36.t
+    desc = chaosx.nr5_custom.36.d
+    picture = GFX_report_event_old_great_bulgaria
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.36.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.37
+    title = chaosx.nr5_custom.37.t
+    desc = chaosx.nr5_custom.37.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.37.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.38
+    title = chaosx.nr5_custom.38.t
+    desc = chaosx.nr5_custom.38.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.38.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.39
+    title = chaosx.nr5_custom.39.t
+    desc = chaosx.nr5_custom.39.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.39.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.40
+    title = chaosx.nr5_custom.40.t
+    desc = chaosx.nr5_custom.40.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.40.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.41
+    title = chaosx.nr5_custom.41.t
+    desc = chaosx.nr5_custom.41.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.41.a
+        ai_chance = { base = 1 }
+    }
+}
+
+country_event = {
+    id = chaosx.nr5_custom.42
+    title = chaosx.nr5_custom.42.t
+    desc = chaosx.nr5_custom.42.d
+    picture = GFX_report_event_soviet_collapse_custom_splinter
+    is_triggered_only = yes
+
+    option = {
+        name = chaosx.nr5_custom.42.a
+        ai_chance = { base = 1 }
+    }
 }
