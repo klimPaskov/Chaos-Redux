@@ -37,6 +37,8 @@ Focus rewards avoid direct idea stacking as a normal payoff. New focus rewards s
 
 High-chaos/custom splinter military routes are deliberately more dangerous than ordinary republic routes. Their war-plan and hidden-doctrine payoffs create assault and raider templates, spawn equipped formations, core controlled ground, and issue dynamic war goals against the Soviet remnant and non-allied neighbors. This keeps chaos actors expansion-driven instead of defensive focus trees that only collect small stockpile or building rewards.
 
+The Ukrainian League branch is wired into the decision system instead of ending as a flat reward row. League focuses open the League Council, arms quotas, grain relief, anti-client protection, and two external expansion decisions. `External Border Arbitration` lets Ukraine spend League arbitration capacity to create a war goal against eligible neighboring non-collapse countries. `League Security Zone Mandates` spends the Black Sea security mission package to create a stronger League-backed war goal against eligible external neighbors that are coastal, major, or regionally industrial. These decisions reuse existing regional decision icons and do not require new sprites.
+
 ## Event Log Evolutions
 
 Event 005 registers two event-log evolution families:

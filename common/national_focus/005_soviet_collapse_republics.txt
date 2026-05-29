@@ -28,7 +28,7 @@ focus_tree = {
 	}
 
 	default = no
-	continuous_focus_position = { x = 5376 y = 180 }
+	continuous_focus_position = { x = 8736 y = 240 }
 	initial_show_position = { x = 10 y = 0 }
 
 	# Layout: dependency-layered emergency trunk with political, military,
@@ -399,7 +399,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_purge_moscow_loyalists
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 46
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_workers_congress_in_kharkiv }
 		prerequisite = { focus = ukr_soviet_collapse_foreign_advisers_in_plain_coats }
@@ -483,7 +483,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_the_ukrainian_commune_debate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 40
-		y = 10
+		y = 11
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_village_soviets_without_requisition }
 		prerequisite = { focus = ukr_soviet_collapse_left_league_delegation }
@@ -874,7 +874,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_provincial_governors_or_elected_radas
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 30
-		y = 8
+		y = 11
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_rural_deputy_bloc }
 		prerequisite = { focus = ukr_soviet_collapse_kyiv_leads_the_front }
@@ -903,8 +903,8 @@ focus_tree = {
 		id = ukr_soviet_collapse_appointed_governors
 		icon = GFX_ukr_soviet_collapse_appointed_governors
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 30
-		y = 9
+		x = 34
+		y = 12
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_provincial_governors_or_elected_radas }
 		prerequisite = { focus = ukr_soviet_collapse_the_ukrainian_commune_debate }
@@ -1769,6 +1769,55 @@ focus_tree = {
 	}
 
 	# role: expansion_route | filter: diplomacy
+	focus = {
+		id = ukr_soviet_collapse_external_border_arbitration
+		icon = GFX_ukr_soviet_collapse_border_states_accept_kyiv
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 11
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_border_states_accept_kyiv }
+		prerequisite = { focus = ukr_soviet_collapse_league_of_equals }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_external_border_arbitration
+			set_country_flag = soviet_collapse_ukraine_league_diplomatic_lead
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_legal_recognition = yes
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			custom_effect_tooltip = ukr_soviet_collapse_external_border_arbitration_tt
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_league_of_equals }
+		}
+	}
+
+	# role: expansion_route | filter: expansion
+	focus = {
+		id = ukr_soviet_collapse_league_security_zone_mandates
+		icon = GFX_ukr_soviet_collapse_black_sea_hegemony
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 20
+		y = 12
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ukr_soviet_collapse_external_border_arbitration }
+		prerequisite = { focus = ukr_soviet_collapse_kyiv_leads_the_front }
+
+		completion_reward = {
+			set_country_flag = soviet_collapse_ukraine_league_security_zone_mandates
+			set_country_flag = soviet_collapse_ukraine_black_sea_security_mission
+			soviet_collapse_apply_focus_league_preparation = yes
+			soviet_collapse_apply_focus_military_consolidation = yes
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			custom_effect_tooltip = ukr_soviet_collapse_league_security_zone_mandates_tt
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_war_with = SOV }
+			modifier = { factor = 2 has_country_flag = soviet_collapse_ukraine_kyiv_leads_the_front }
+		}
+	}
 
 	# role: expansion_capstone | filter: expansion
 	focus = {
@@ -1856,7 +1905,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_the_western_question_cannot_wait
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 76
-		y = 6
+		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_army_of_the_republic }
 		prerequisite = { focus = ukr_soviet_collapse_arsenal_cities }
@@ -2030,7 +2079,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_grain_census_of_everyone
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 50
-		y = 12
+		y = 13
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_black_soil_oath }
 		prerequisite = { focus = ukr_soviet_collapse_appointed_governors }
@@ -2053,7 +2102,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_no_one_leaves_the_bread_line
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 50
-		y = 13
+		y = 14
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_grain_census_of_everyone }
 
@@ -6121,7 +6170,7 @@ focus_tree = {
 		icon = GFX_caucasus_soviet_collapse_no_one_owns_the_passes_alone
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 6
-		y = 5
+		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = caucasus_soviet_collapse_capital_claims_the_valleys }
 		available = { has_completed_focus = caucasus_soviet_collapse_council_of_passes }
@@ -6139,7 +6188,7 @@ focus_tree = {
 		icon = GFX_caucasus_soviet_collapse_the_passes_vote
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 10
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = caucasus_soviet_collapse_no_one_owns_the_passes_alone }
 
@@ -6396,7 +6445,7 @@ focus_tree = {
 	}
 
 	default = no
-	continuous_focus_position = { x = 2304 y = 180 }
+	continuous_focus_position = { x = 3456 y = 240 }
 	initial_show_position = { x = 20 y = 0 }
 
 	focus = {
@@ -6954,7 +7003,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_steppe_federation
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
-		y = 4
+		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = central_asia_soviet_collapse_turkestan_federation_road }
 
@@ -6978,7 +7027,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_southern_republics_coordinate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
-		y = 5
+		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = central_asia_soviet_collapse_turkestan_federation_road }
 		prerequisite = { focus = central_asia_soviet_collapse_federation_delegates }
@@ -7138,7 +7187,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_the_southern_shield
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 15
-		y = 7
+		y = 8
 		cost = @soviet_collapse_focus_long
 		prerequisite = {
 			focus = central_asia_soviet_collapse_no_more_distant_capitals
@@ -7170,7 +7219,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_federation_or_neighbor_pact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
-		y = 8
+		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = central_asia_soviet_collapse_the_southern_shield }
 
@@ -7187,7 +7236,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_loose_southern_pact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 13
-		y = 9
+		y = 10
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = central_asia_soviet_collapse_federation_or_neighbor_pact }
 		mutually_exclusive = { focus = central_asia_soviet_collapse_federation_state }
@@ -7208,7 +7257,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_steppe_federation
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 17
-		y = 9
+		y = 10
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = central_asia_soviet_collapse_federation_or_neighbor_pact }
 		mutually_exclusive = { focus = central_asia_soviet_collapse_loose_southern_pact }
@@ -7232,7 +7281,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_the_south_survives_together
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 15
-		y = 10
+		y = 11
 		cost = @soviet_collapse_focus_long
 		prerequisite = {
 			focus = central_asia_soviet_collapse_loose_southern_pact
@@ -7281,8 +7330,8 @@ focus_tree = {
 		id = central_asia_soviet_collapse_the_basmachi_amnesty_ledger
 		icon = GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 6
-		y = 4
+		x = 7
+		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = {
 			focus = central_asia_soviet_collapse_negotiate_with_the_mountain_bands
@@ -7302,7 +7351,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_khwarazm_and_older_names
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
-		y = 5
+		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = central_asia_soviet_collapse_the_basmachi_amnesty_ledger }
 		allow_branch = {
@@ -7331,7 +7380,7 @@ focus_tree = {
 		icon = GFX_central_asia_soviet_collapse_khwarazm_restoration_debate
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 9
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = central_asia_soviet_collapse_khwarazm_and_older_names }
 		allow_branch = {
@@ -7523,7 +7572,7 @@ focus_tree = {
 	}
 
 	default = no
-	continuous_focus_position = { x = 2880 y = 180 }
+	continuous_focus_position = { x = 3840 y = 240 }
 	initial_show_position = { x = 20 y = 0 }
 
 	focus = {
@@ -7863,7 +7912,7 @@ focus_tree = {
 		icon = GFX_moldova_soviet_collapse_dniester_bridge_sappers
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 9
-		y = 4
+		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = moldova_soviet_collapse_dniester_defense_directorate }
 
@@ -7978,7 +8027,7 @@ focus_tree = {
 		icon = GFX_moldova_soviet_collapse_dniester_military_bureau
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 8
-		y = 5
+		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = moldova_soviet_collapse_dniester_bridge_sappers }
 
@@ -8368,7 +8417,7 @@ focus_tree = {
 		icon = GFX_moldova_soviet_collapse_bendery_bridge_works
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 12
-		y = 5
+		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = moldova_soviet_collapse_dniester_bridge_sappers }
 
@@ -8388,7 +8437,7 @@ focus_tree = {
 		icon = GFX_moldova_soviet_collapse_tiraspol_depot_belt
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
 		x = 10
-		y = 6
+		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = moldova_soviet_collapse_bendery_bridge_works }
 		available = { has_completed_focus = moldova_soviet_collapse_river_guard_brigades }
@@ -8692,7 +8741,7 @@ focus_tree = {
 	}
 
 	default = no
-	continuous_focus_position = { x = 3552 y = 180 }
+	continuous_focus_position = { x = 4608 y = 240 }
 	initial_show_position = { x = 10 y = 0 }
 
 	# Layout: dependency-layered Minsk trunk with rail, forest, corridor,
@@ -8859,11 +8908,10 @@ focus_tree = {
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_which_road_is_belarus }
-		mutually_exclusive = { focus = blr_soviet_collapse_socialist_autonomy_without_moscow }
-
 		available = {
 			hidden_trigger = {
 				NOT = {
+					has_completed_focus = blr_soviet_collapse_socialist_autonomy_without_moscow
 					has_completed_focus = blr_soviet_collapse_military_transit_directorate
 					has_completed_focus = blr_soviet_collapse_foreign_corridor_administration
 				}
@@ -8888,10 +8936,14 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_which_road_is_belarus }
 
-		mutually_exclusive = {
-			focus = blr_soviet_collapse_national_council_of_minsk
-			focus = blr_soviet_collapse_military_transit_directorate
-			focus = blr_soviet_collapse_foreign_corridor_administration
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = blr_soviet_collapse_national_council_of_minsk
+					has_completed_focus = blr_soviet_collapse_military_transit_directorate
+					has_completed_focus = blr_soviet_collapse_foreign_corridor_administration
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = soviet_collapse_belarus_route_socialist_autonomy
@@ -8913,12 +8965,11 @@ focus_tree = {
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_which_road_is_belarus }
-		mutually_exclusive = { focus = blr_soviet_collapse_socialist_autonomy_without_moscow }
-
 		available = {
 			hidden_trigger = {
 				NOT = {
 					has_completed_focus = blr_soviet_collapse_national_council_of_minsk
+					has_completed_focus = blr_soviet_collapse_socialist_autonomy_without_moscow
 					has_completed_focus = blr_soviet_collapse_foreign_corridor_administration
 				}
 			}
@@ -8944,13 +8995,12 @@ focus_tree = {
 		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_which_road_is_belarus }
-		mutually_exclusive = { focus = blr_soviet_collapse_socialist_autonomy_without_moscow }
-
 		available = {
 
 			hidden_trigger = {
 				NOT = {
 					has_completed_focus = blr_soviet_collapse_national_council_of_minsk
+					has_completed_focus = blr_soviet_collapse_socialist_autonomy_without_moscow
 					has_completed_focus = blr_soviet_collapse_military_transit_directorate
 				}
 			}

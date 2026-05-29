@@ -4056,6 +4056,8 @@ has_ukr_soviet_collapse_league_decision_surface = {
 		has_country_flag = soviet_collapse_ukraine_grain_relief_compact
 		has_country_flag = soviet_collapse_ukraine_black_sea_security_mission
 		has_country_flag = soviet_collapse_ukraine_anti_client_charter
+		has_country_flag = soviet_collapse_ukraine_external_border_arbitration
+		has_country_flag = soviet_collapse_ukraine_league_security_zone_mandates
 	}
 }
 
@@ -4129,6 +4131,45 @@ can_target_ukr_soviet_collapse_anti_client_charter = {
 		}
 	}
 	has_country_flag = soviet_collapse_ukraine_anti_client_charter
+}
+
+can_target_ukr_soviet_collapse_external_border_arbitration = {
+	tag = UKR
+	has_country_flag = soviet_collapse_ukraine_external_border_arbitration
+	FROM = {
+		exists = yes
+		is_neighbor_of = ROOT
+		NOT = { tag = ROOT }
+		NOT = { tag = SOV }
+		NOT = { has_war_with = ROOT }
+		NOT = { is_in_faction_with = ROOT }
+		NOT = { has_country_flag = soviet_collapse_breakaway }
+		NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
+	}
+	can_declare_war_on = FROM
+	NOT = { has_wargoal_against = FROM }
+}
+
+can_target_ukr_soviet_collapse_league_security_zone_mandate = {
+	tag = UKR
+	has_country_flag = soviet_collapse_ukraine_league_security_zone_mandates
+	FROM = {
+		exists = yes
+		is_neighbor_of = ROOT
+		NOT = { tag = ROOT }
+		NOT = { tag = SOV }
+		NOT = { has_war_with = ROOT }
+		NOT = { is_in_faction_with = ROOT }
+		OR = {
+			is_major = yes
+			any_controlled_state = { is_coastal = yes }
+			num_of_civilian_factories > constant:soviet_collapse_foreign_intervention.regional_target_civilian_factories
+		}
+		NOT = { has_country_flag = soviet_collapse_breakaway }
+		NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
+	}
+	can_declare_war_on = FROM
+	NOT = { has_wargoal_against = FROM }
 }
 
 is_soviet_collapse_republic_weak_for_external_pressure = {
