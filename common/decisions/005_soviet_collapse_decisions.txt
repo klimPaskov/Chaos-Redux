@@ -4246,6 +4246,40 @@ soviet_collapse_ukrainian_league_category = {
 		}
 	}
 
+	ukr_soviet_collapse_open_external_border_arbitration = {
+		icon = GFX_decision_soviet_collapse_regional_coordinate
+		available = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_league_arbitration_cost = yes }
+		}
+		visible = {
+			has_ukr_soviet_collapse_league_decision_surface = yes
+			has_country_flag = soviet_collapse_ukraine_external_border_arbitration
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_league_arbitration_cost = yes }
+		}
+		custom_cost_text = ukr_soviet_collapse_league_arbitration_cost_text
+		target_array = neighbors
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = ukr_soviet_collapse_external_border_target_tt
+				hidden_trigger = { can_target_ukr_soviet_collapse_external_border_arbitration = yes }
+			}
+		}
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			hidden_effect = { ukr_soviet_collapse_pay_league_arbitration_cost = yes }
+			create_wargoal = { type = annex_everything target = FROM expire = 0 }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			ukr_soviet_collapse_apply_league_program_credit = yes
+			custom_effect_tooltip = ukr_soviet_collapse_open_external_border_arbitration_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_war_with = SOV }
+		}
+	}
+
 	ukr_soviet_collapse_assign_league_arms_quota = {
 		icon = GFX_decision_soviet_collapse_regional_goal_defense
 		available = {
@@ -4352,6 +4386,42 @@ soviet_collapse_ukrainian_league_category = {
 		ai_will_do = {
 			base = @soviet_collapse_ai_medium
 			modifier = { factor = @soviet_collapse_ai_urgent_multiplier has_war_with = SOV }
+		}
+	}
+
+	ukr_soviet_collapse_issue_league_security_zone_mandate = {
+		icon = GFX_decision_soviet_collapse_regional_goal_defense
+		available = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_black_sea_mission_cost = yes }
+		}
+		visible = {
+			has_ukr_soviet_collapse_league_decision_surface = yes
+			has_country_flag = soviet_collapse_ukraine_league_security_zone_mandates
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_ukr_soviet_collapse_black_sea_mission_cost = yes }
+		}
+		custom_cost_text = ukr_soviet_collapse_black_sea_mission_cost_text
+		target_array = neighbors
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = ukr_soviet_collapse_security_zone_target_tt
+				hidden_trigger = { can_target_ukr_soviet_collapse_league_security_zone_mandate = yes }
+			}
+		}
+		days_re_enable = @soviet_collapse_breakaway_action_days_reenable
+		complete_effect = {
+			hidden_effect = { ukr_soviet_collapse_pay_black_sea_mission_cost = yes }
+			create_wargoal = { type = annex_everything target = FROM expire = 0 }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			ukr_soviet_collapse_apply_league_program_credit = yes
+			custom_effect_tooltip = ukr_soviet_collapse_issue_league_security_zone_mandate_tt
+		}
+		ai_will_do = {
+			base = @soviet_collapse_ai_low
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_war_with = SOV }
+			modifier = { factor = @soviet_collapse_ai_pressure_multiplier has_country_flag = soviet_collapse_ukraine_black_sea_hegemony }
 		}
 	}
 
