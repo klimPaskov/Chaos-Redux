@@ -2,6 +2,12 @@
 # - Holy Realm decision categories for refuge management, Arhat oversight,
 #   diplomacy, doctrine memory, final warning behavior, and foreign containment.
 
+@HOLY_REALM_REFUGE_RELIEF_COOLDOWN_DAYS = 180
+@HOLY_REALM_MANDALA_MEMBER_RELIEF_COOLDOWN_DAYS = 180
+@HOLY_REALM_MANDALA_ARBITRATION_COOLDOWN_DAYS = 240
+@HOLY_REALM_MANDALA_OBSERVER_COOLDOWN_DAYS = 180
+@HOLY_REALM_MANDALA_DEVELOPMENT_COOLDOWN_DAYS = 220
+
 holy_realm_mandala_category = {
 	THR_status_spiritual_legitimacy = {
 		icon = generic_political_discourse
@@ -98,10 +104,9 @@ holy_realm_mandala_category = {
 			holy_realm_bodhisattva_path_unlocked = yes
 		}
 		complete_effect = {
-			set_temp_variable = { holy_realm_refuge_relief_cooldown_days = constant:holy_realm_decision.refuge_relief_cooldown_days }
 			set_country_flag = {
 				flag = holy_realm_refuge_relief_stage_cooldown
-				days = holy_realm_refuge_relief_cooldown_days
+				days = @HOLY_REALM_REFUGE_RELIEF_COOLDOWN_DAYS
 			}
 			random_controlled_state = {
 				limit = {
@@ -367,7 +372,6 @@ holy_realm_mandala_category = {
 					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
 					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 				}
-				set_temp_variable = { holy_realm_mandala_member_relief_cooldown_days = constant:holy_realm_decision.mandala_member_relief_cooldown_days }
 				every_faction_member = {
 					limit = {
 						exists = yes
@@ -390,7 +394,7 @@ holy_realm_mandala_category = {
 						}
 						set_state_flag = {
 							flag = holy_realm_mandala_development_recent
-							days = holy_realm_mandala_member_relief_cooldown_days
+							days = @HOLY_REALM_MANDALA_MEMBER_RELIEF_COOLDOWN_DAYS
 						}
 						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 						if = {
@@ -445,11 +449,10 @@ holy_realm_mandala_category = {
 			}
 			complete_effect = {
 				set_country_flag = holy_realm_memory_mandala_arbitration_sent
-				set_temp_variable = { holy_realm_mandala_arbitration_cooldown_days = constant:holy_realm_decision.mandala_arbitration_cooldown_days }
 				FROM = {
 					set_country_flag = {
 						flag = holy_realm_mandala_arbitration_recent
-						days = holy_realm_mandala_arbitration_cooldown_days
+						days = @HOLY_REALM_MANDALA_ARBITRATION_COOLDOWN_DAYS
 					}
 					country_event = { id = chaosx.nr3.125 days = 1 }
 				}
@@ -491,11 +494,10 @@ holy_realm_mandala_category = {
 			}
 			complete_effect = {
 				set_country_flag = holy_realm_memory_mandala_observers_sent
-				set_temp_variable = { holy_realm_mandala_observer_cooldown_days = constant:holy_realm_decision.mandala_observer_cooldown_days }
 				FROM = {
 					set_country_flag = {
 						flag = holy_realm_mandala_observer_recent
-						days = holy_realm_mandala_observer_cooldown_days
+						days = @HOLY_REALM_MANDALA_OBSERVER_COOLDOWN_DAYS
 					}
 					add_opinion_modifier = {
 						target = ROOT
@@ -550,11 +552,10 @@ holy_realm_mandala_category = {
 			}
 			complete_effect = {
 				set_country_flag = holy_realm_memory_mandala_development_mission
-				set_temp_variable = { holy_realm_mandala_development_cooldown_days = constant:holy_realm_decision.mandala_development_cooldown_days }
 				FROM = {
 					set_country_flag = {
 						flag = holy_realm_mandala_development_recent_country
-						days = holy_realm_mandala_development_cooldown_days
+						days = @HOLY_REALM_MANDALA_DEVELOPMENT_COOLDOWN_DAYS
 					}
 					random_controlled_state = {
 						limit = {
@@ -573,7 +574,7 @@ holy_realm_mandala_category = {
 						}
 						set_state_flag = {
 							flag = holy_realm_mandala_development_recent
-							days = holy_realm_mandala_development_cooldown_days
+							days = @HOLY_REALM_MANDALA_DEVELOPMENT_COOLDOWN_DAYS
 						}
 						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 						if = {
