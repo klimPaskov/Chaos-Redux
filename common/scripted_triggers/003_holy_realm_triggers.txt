@@ -520,6 +520,36 @@ holy_realm_final_silence_current_wave_state = {
 	}
 }
 
+holy_realm_final_silence_current_visual_wave_state = {
+	NOT = { has_state_flag = holy_realm_final_silence_visual_queued }
+	OR = {
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_asia compare = equals }
+			OR = {
+				is_on_continent = asia
+				is_on_continent = middle_east
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_europe_africa compare = equals }
+			OR = {
+				is_on_continent = europe
+				is_on_continent = africa
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_americas compare = equals }
+			OR = {
+				is_on_continent = north_america
+				is_on_continent = south_america
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_oceania_cleanup compare = equals }
+		}
+	}
+}
+
 is_holy_realm_foreign_responder = {
 	exists = yes
 	NOT = { is_holy_realm_country = yes }
