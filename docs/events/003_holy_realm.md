@@ -42,6 +42,7 @@ The Holy Realm extends existing Chaos Redux systems rather than creating paralle
 - Super events: values `7`, `8`, `9`, `10`, `11`, and `51` display Buddha Mandate, Final Silence, thermonuclear Final Silence, Mandala Breaks, Divine Sovereignty, and Mandala of Nations.
 - World-end scenarios: Final Silence sets `world_end` and `world_end_final_silence`; interruption sets `world_end_final_silence_interrupted` and clears the active world-end flag.
 - Settings: Final Silence is blocked by `world_end_disabled`.
+- Triggerable scenarios: the scenario window can start Final Silence directly from the current player country as either the normal nuclear payload or the thermonuclear payload. This bypasses the standard Holy Realm launch gates but uses the same `holy_realm_prepare_final_silence`, strike-wave, fallout, deaths, wasteland, super-event, and follow-up wave logic.
 - Multiplayer behavior: human countries receive ambiguous observation events around the Buddha Mandate and direct warnings only when the final doctrine is armed.
 - Condemnation: Final Silence adds unconventional-warfare condemnation and applies existing diplomatic consequences.
 - Deaths: Final Silence uses the shared `chaos_meter_register_state_civilian_deaths_percent` pipeline with the dedicated `chaos_meter_deaths_reason.final_silence` cause. The normal launch kills `90%` of each struck non-Realm state's current population with a high billion-scale cap; the thermonuclear variant kills `97%`.

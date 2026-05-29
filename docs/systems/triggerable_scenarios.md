@@ -38,6 +38,7 @@ Type controls cycle scenario-specific type variables:
 - Zombie Apocalypse: diverse outbreaks, random outbreaks, standard everywhere, special-profile everywhere, or connected outbreak.
 - Army of Clones: standard clone army or Aryan variant.
 - Soviet Collapse: ordinary republics or chaos republics.
+- Final Silence: nuclear or thermonuclear payload.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time.
 
@@ -65,6 +66,12 @@ The ordinary type uses the terminal-collapse ordinary republic release path. The
 
 Intensity adds an extra one-time army package after all breakaways exist. Each breakaway receives additional field brigades, manpower, infantry equipment, support equipment, artillery, and motorized equipment. The number of extra brigades scales from the selected intensity, controlled-state count, and factory count, so stronger republics naturally receive larger starting forces without tag-specific scenario tables.
 
+### SCN-004: Final Silence
+
+The Final Silence scenario starts the Event 003 terminal world-end branch immediately from the current player country. The launcher becomes the surviving Realm-side authority for the strike sequence, sets `world_end` and `world_end_final_silence`, displays the matching Final Silence super event, sends witness popups to other countries, applies the first strike wave, and schedules the existing follow-up wave event until the world-end branch completes.
+
+The nuclear type uses the normal Final Silence payload. The thermonuclear type sets `world_end_final_silence_thermonuclear`, uses the thermonuclear super-event/audio ID, launches thermonuclear visual strikes, and applies the stronger thermonuclear deaths and fallout values already defined by the Holy Realm system. Intensity does not change this scenario; it keeps the canonical four-wave Final Silence sequence intact.
+
 ## Assets
 
 The scenario UI reuses existing Chaos Redux and vanilla UI assets:
@@ -76,6 +83,9 @@ The scenario UI reuses existing Chaos Redux and vanilla UI assets:
 - `GFX_scroll_drager`
 - `yearslider_leftbutton`
 - `yearslider_rightbutton`
+- `GFX_report_event_holy_realm_final_silence`
+- `GFX_super_event_final_silence`
+- `GFX_super_event_final_silence_thermonuclear`
 
 No dedicated scenario art is required for this pass. Future custom entry icons can be added as stable scenario-specific sprites in `interface/chaosx.gfx`.
 

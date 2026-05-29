@@ -470,11 +470,16 @@ holy_realm_can_start_final_silence = {
 }
 
 holy_realm_uses_thermonuclear_final_silence = {
-	date > 1946.12.31
-	holy_realm_has_final_silence_thermonuclear_stockpile = yes
 	OR = {
-		has_tech = thermonuclear_bombs
-		has_country_flag = holy_realm_thermonuclear_doctrine
+		has_country_flag = holy_realm_triggerable_final_silence_thermonuclear
+		AND = {
+			date > 1946.12.31
+			holy_realm_has_final_silence_thermonuclear_stockpile = yes
+			OR = {
+				has_tech = thermonuclear_bombs
+				has_country_flag = holy_realm_thermonuclear_doctrine
+			}
+		}
 	}
 }
 
