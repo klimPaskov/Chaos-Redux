@@ -40,7 +40,7 @@ Type controls cycle scenario-specific type variables:
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
 
-The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing a second world-end branch while `world_end` is already active.
+The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing a second world-end branch while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
 ## Current Scenarios
 
