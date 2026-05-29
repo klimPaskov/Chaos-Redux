@@ -75,7 +75,7 @@ focus_tree = {
 		id = ukr_soviet_collapse_seal_the_grain_ledgers
 		icon = GFX_ukr_soviet_collapse_seal_the_grain_ledgers
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 24
+		x = 22
 		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = ukr_soviet_collapse_emergency_rada }
@@ -206,13 +206,14 @@ focus_tree = {
 		id = ukr_soviet_collapse_open_the_liaison_offices
 		icon = GFX_ukr_soviet_collapse_foreign
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 64
+		x = 62
 		y = 5
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = ukr_soviet_collapse_question_of_statehood }
+		prerequisite = { focus = ukr_soviet_collapse_foreign_courts_notice_kyiv }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_foreign_liaison_open
+			set_country_flag = soviet_collapse_ukraine_league_council_visible
 			soviet_collapse_apply_focus_foreign_channel = yes
 		}
 		ai_will_do = {
@@ -1033,6 +1034,7 @@ focus_tree = {
 		available = { is_soviet_collapse_league_pressure_ready = yes }
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_league_training_cadres
+			soviet_collapse_unlock_league_unit_deployment_decisions = yes
 			soviet_collapse_apply_focus_league_preparation = yes
 			soviet_collapse_apply_focus_military_consolidation = yes
 		}
@@ -1218,7 +1220,7 @@ focus_tree = {
 		id = ukr_soviet_collapse_grain_loan
 		icon = GFX_ukr_soviet_collapse_grain_loan
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 24
+		x = 22
 		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_arms_before_exports }
@@ -1308,6 +1310,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_arsenal_of_the_league
 			set_country_flag = soviet_collapse_ukraine_league_arms_board
+			soviet_collapse_unlock_league_unit_deployment_decisions = yes
 			soviet_collapse_apply_focus_league_preparation = yes
 			soviet_collapse_apply_focus_depot_and_supply_control = yes
 		}
@@ -1475,7 +1478,10 @@ focus_tree = {
 		x = 14
 		y = 11
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = ukr_soviet_collapse_prepare_league_liaison_rooms }
+		prerequisite = {
+			focus = ukr_soviet_collapse_arsenal_of_the_league
+			focus = ukr_soviet_collapse_league_training_cadres
+		}
 
 		available = {
 			is_in_faction = no
@@ -1517,6 +1523,8 @@ focus_tree = {
 		}
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_league_of_equals
+			set_country_flag = soviet_collapse_ukraine_league_arbitration_board
+			set_country_flag = soviet_collapse_ukraine_anti_client_charter
 			soviet_collapse_apply_focus_league_preparation = yes
 			add_stability = constant:soviet_collapse_republic_focus.stability_small
 		}
@@ -1531,7 +1539,7 @@ focus_tree = {
 		id = ukr_soviet_collapse_kyiv_leads_the_front
 		icon = GFX_ukr_soviet_collapse_kyiv_leads_the_front
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 10
+		x = 8
 		y = 13
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_league_founding_charter }
@@ -1546,6 +1554,8 @@ focus_tree = {
 		}
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_kyiv_leads_the_front
+			set_country_flag = soviet_collapse_ukraine_league_arms_board
+			soviet_collapse_unlock_league_unit_deployment_decisions = yes
 			soviet_collapse_apply_focus_league_preparation = yes
 			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
 		}
@@ -1601,8 +1611,8 @@ focus_tree = {
 				has_completed_focus = ukr_soviet_collapse_army_supremacy
 				has_completed_focus = ukr_soviet_collapse_civilian_command_over_the_army
 			}
+			TUR = { exists = yes }
 		}
-		available = { TUR = { exists = yes } }
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_anatolian_grain_mission
 			set_country_flag = soviet_collapse_ukraine_grain_relief_compact
@@ -1759,14 +1769,15 @@ focus_tree = {
 		id = ukr_soviet_collapse_border_states_accept_kyiv
 		icon = GFX_ukr_soviet_collapse_border_states_accept_kyiv
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 26
-		y = 13
+		x = 20
+		y = 14
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = ukr_soviet_collapse_league_founding_charter }
+		prerequisite = { focus = ukr_soviet_collapse_league_of_equals }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_border_states_accept_kyiv
 			set_country_flag = soviet_collapse_ukraine_league_diplomatic_lead
+			set_country_flag = soviet_collapse_ukraine_external_border_arbitration
 			soviet_collapse_apply_focus_league_preparation = yes
 			soviet_collapse_apply_focus_legal_recognition = yes
 		}
@@ -1781,11 +1792,10 @@ focus_tree = {
 		id = ukr_soviet_collapse_external_border_arbitration
 		icon = GFX_ukr_soviet_collapse_border_states_accept_kyiv
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 22
-		y = 15
+		x = 20
+		y = 16
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ukr_soviet_collapse_border_states_accept_kyiv }
-		available = { has_completed_focus = ukr_soviet_collapse_league_of_equals }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_external_border_arbitration
@@ -1807,10 +1817,10 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_black_sea_hegemony
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 14
-		y = 17
+		y = 18
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ukr_soviet_collapse_external_border_arbitration }
-		available = { has_completed_focus = ukr_soviet_collapse_kyiv_leads_the_front }
+		prerequisite = { focus = ukr_soviet_collapse_kyiv_leads_the_front }
 
 		completion_reward = {
 			set_country_flag = soviet_collapse_ukraine_league_security_zone_mandates
@@ -1884,7 +1894,7 @@ focus_tree = {
 		id = ukr_soviet_collapse_ports_need_soldiers
 		icon = GFX_ukr_soviet_collapse_ports_need_soldiers
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 72
+		x = 74
 		y = 10
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_open_the_liaison_offices }
@@ -2134,8 +2144,8 @@ focus_tree = {
 		id = ukr_soviet_collapse_last_harvest_plan
 		icon = GFX_ukr_soviet_collapse_last_harvest_plan
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 58
-		y = 17
+		x = 60
+		y = 18
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ukr_soviet_collapse_no_one_leaves_the_bread_line focus = ukr_soviet_collapse_the_commune_war focus = ukr_soviet_collapse_the_double_republic }
 
@@ -2188,8 +2198,8 @@ focus_tree = {
 		id = ukr_soviet_collapse_the_double_republic
 		icon = GFX_ukr_soviet_collapse_the_double_republic
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 64
-		y = 15
+		x = 66
+		y = 16
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_black_banner_takes_the_villages }
 		prerequisite = { focus = ukr_soviet_collapse_when_the_fields_refuse_the_state }
@@ -2217,7 +2227,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_the_commune_war
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
 		x = 54
-		y = 15
+		y = 16
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ukr_soviet_collapse_black_banner_takes_the_villages }
 
@@ -2244,7 +2254,7 @@ focus_tree = {
 		icon = GFX_ukr_soviet_collapse_when_the_fields_refuse_the_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 62
-		y = 14
+		y = 13
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ukr_soviet_collapse_the_bread_line_becomes_a_border }
 		prerequisite = { focus = ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map }
@@ -3762,7 +3772,7 @@ focus_tree = {
 		id = internal_soviet_collapse_black_sea_peninsula_guard
 		icon = GFX_focus_soviet_collapse_black_sea_dniester_line
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 16
+		x = 18
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = internal_soviet_collapse_write_the_autonomy_statute }
@@ -3787,7 +3797,7 @@ focus_tree = {
 		id = internal_soviet_collapse_crimean_tatar_councils
 		icon = GFX_focus_soviet_collapse_speaker_recognition_desk
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 16
+		x = 18
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = internal_soviet_collapse_black_sea_peninsula_guard }
@@ -4040,7 +4050,7 @@ focus_tree = {
 		id = internal_soviet_collapse_far_eastern_rail_contracts
 		icon = GFX_focus_internal_soviet_collapse_far_eastern_rail_contracts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 24
+		x = 25
 		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = internal_soviet_collapse_taiga_steppe_self_rule }
@@ -4153,7 +4163,7 @@ focus_tree = {
 		id = internal_soviet_collapse_far_eastern_port_authority
 		icon = GFX_focus_internal_soviet_collapse_far_eastern_port_authority
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 24
+		x = 27
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = internal_soviet_collapse_far_eastern_rail_contracts }
@@ -4837,7 +4847,7 @@ focus_tree = {
 		id = baltic_soviet_collapse_sponsor_fleet_rights
 		icon = GFX_baltic_soviet_collapse_sponsor_fleet_rights
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 29
+		x = 32
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = baltic_soviet_collapse_british_naval_observers }
@@ -4919,7 +4929,7 @@ focus_tree = {
 		id = baltic_soviet_collapse_the_legal_front_abroad
 		icon = GFX_baltic_soviet_collapse_the_legal_front_abroad
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 15
+		x = 14
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = baltic_soviet_collapse_legal_continuity_government }
@@ -5004,7 +5014,7 @@ focus_tree = {
 		id = baltic_soviet_collapse_baltic_shield_doctrine
 		icon = GFX_baltic_soviet_collapse_baltic_shield_doctrine
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 21
+		x = 20
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = baltic_soviet_collapse_pan_baltic_war_room }
@@ -5027,7 +5037,7 @@ focus_tree = {
 		id = baltic_soviet_collapse_ports_before_patronage
 		icon = GFX_baltic_soviet_collapse_ports_before_patronage
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 6
+		x = 10
 		y = 2
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = baltic_soviet_collapse_rail_to_the_ports }
@@ -5831,7 +5841,7 @@ focus_tree = {
 		id = caucasus_soviet_collapse_capital_claims_the_valleys
 		icon = GFX_caucasus_soviet_collapse_capital_claims_the_valleys
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 5
+		x = 6
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = {
@@ -6218,8 +6228,8 @@ focus_tree = {
 		id = caucasus_soviet_collapse_tbilisi_baku_yerevan_talks
 		icon = GFX_caucasus_soviet_collapse_defense_compact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-			x = 10
-				y = 7
+		x = 14
+		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = caucasus_soviet_collapse_caucasus_defense_compact }
 
@@ -6236,7 +6246,7 @@ focus_tree = {
 		id = caucasus_soviet_collapse_civilian_oversight_of_oil
 		icon = GFX_caucasus_soviet_collapse_civilian_oil_oversight
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 20
+		x = 21
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = caucasus_soviet_collapse_caucasus_route_fork }
@@ -6626,7 +6636,7 @@ focus_tree = {
 		id = central_asia_soviet_collapse_no_more_distant_capitals
 		icon = GFX_central_asia_soviet_collapse_no_more_distant_capitals
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 4
+		x = -2
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = central_asia_soviet_collapse_samarkand_letters }
@@ -6853,7 +6863,7 @@ focus_tree = {
 		id = central_asia_soviet_collapse_dushanbe_mountain_sovereignty
 		icon = GFX_central_asia_soviet_collapse_dushanbe_mountain_sovereignty
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 5
+		x = 11
 		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = central_asia_soviet_collapse_southern_pass_reserve }
@@ -7294,7 +7304,7 @@ focus_tree = {
 		id = central_asia_soviet_collapse_the_south_survives_together
 		icon = GFX_central_asia_soviet_collapse_the_south_survives_together
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 15
+		x = 19
 		y = 11
 		cost = @soviet_collapse_focus_long
 		prerequisite = {
@@ -7344,7 +7354,7 @@ focus_tree = {
 		id = central_asia_soviet_collapse_the_basmachi_amnesty_ledger
 		icon = GFX_central_asia_soviet_collapse_basmachi_amnesty_rolls
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 7
+		x = 11
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = {
@@ -7731,7 +7741,7 @@ focus_tree = {
 		id = moldova_soviet_collapse_dniester_defense_directorate
 		icon = GFX_moldova_soviet_collapse_dniester_defense_directorate
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 8
+		x = 10
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = moldova_soviet_collapse_moldova_route_fork }
@@ -8450,7 +8460,7 @@ focus_tree = {
 		id = moldova_soviet_collapse_tiraspol_depot_belt
 		icon = GFX_moldova_soviet_collapse_tiraspol_depot_belt
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 10
+		x = 14
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = moldova_soviet_collapse_bendery_bridge_works }
@@ -8570,7 +8580,7 @@ focus_tree = {
 		id = moldova_soviet_collapse_black_soil_recovery_boards
 		icon = GFX_moldova_soviet_collapse_black_soil_recovery_boards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 20
+		x = 18
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = {
@@ -8627,7 +8637,7 @@ focus_tree = {
 		id = moldova_soviet_collapse_republic_of_crossings
 		icon = GFX_moldova_soviet_collapse_republic_of_crossings
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 18
+		x = 21
 		y = 9
 		cost = @soviet_collapse_focus_long
 		prerequisite = {
@@ -9272,7 +9282,7 @@ focus_tree = {
 		id = blr_soviet_collapse_league_supply_timetables
 		icon = GFX_blr_soviet_collapse_league_supply_timetables
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 10
+		x = 19
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_timetable_state }
@@ -9347,7 +9357,7 @@ focus_tree = {
 		id = blr_soviet_collapse_railway_neutrality
 		icon = GFX_blr_soviet_collapse_railway_neutrality
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 12
+		x = 14
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_timetable_state }
@@ -9369,7 +9379,7 @@ focus_tree = {
 		id = blr_soviet_collapse_rail_war_state
 		icon = GFX_blr_soviet_collapse_rail_war_state
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 8
+		x = 6
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_timetable_state }
@@ -9465,8 +9475,8 @@ focus_tree = {
 		id = blr_soviet_collapse_village_warning_bells
 		icon = GFX_blr_soviet_collapse_village_warning_bells
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 30
-		y = 5
+		x = 34
+		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_forest_defense_staff }
 
@@ -9510,7 +9520,7 @@ focus_tree = {
 		icon = GFX_blr_soviet_collapse_partisans_or_army
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
 		x = 32
-		y = 10
+		y = 9
 		prerequisite = { focus = blr_soviet_collapse_the_green_rail_pact }
 		prerequisite = { focus = blr_soviet_collapse_the_green_border }
 		cost = @soviet_collapse_focus_medium
@@ -9543,7 +9553,7 @@ focus_tree = {
 		id = blr_soviet_collapse_decentralized_detachments
 		icon = GFX_blr_soviet_collapse_decentralized_detachments
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 36
+		x = 38
 		y = 11
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_partisans_or_army }
@@ -9569,7 +9579,7 @@ focus_tree = {
 		id = blr_soviet_collapse_regular_forest_brigades
 		icon = GFX_blr_soviet_collapse_regular_forest_brigades
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 28
+		x = 26
 		y = 11
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_partisans_or_army }
@@ -9590,8 +9600,8 @@ focus_tree = {
 		id = blr_soviet_collapse_the_forest_general_staff
 		icon = GFX_blr_soviet_collapse_the_forest_general_staff
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
-		x = 28
-		y = 13
+		x = 26
+		y = 15
 		cost = @soviet_collapse_focus_medium
 		prerequisite = {
 			focus = blr_soviet_collapse_regular_forest_brigades
@@ -9620,7 +9630,7 @@ focus_tree = {
 		id = blr_soviet_collapse_minsk_does_not_own_every_tree
 		icon = GFX_blr_soviet_collapse_minsk_does_not_own_every_tree
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 36
+		x = 38
 		y = 13
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_decentralized_detachments }
@@ -9640,8 +9650,8 @@ focus_tree = {
 		id = blr_soviet_collapse_a_forest_that_can_govern
 		icon = GFX_blr_soviet_collapse_forest_can_govern
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 30
-		y = 14
+		x = 28
+		y = 16
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = blr_soviet_collapse_the_forest_general_staff }
 		available = { has_completed_focus = blr_soviet_collapse_council_bargains_with_forests }
@@ -9838,8 +9848,8 @@ focus_tree = {
 		id = blr_soviet_collapse_the_forest_state_rumor
 		icon = GFX_blr_soviet_collapse_the_forest_state_rumor
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 32
-		y = 14
+		x = 34
+		y = 15
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_the_league_depot_at_minsk }
 
@@ -9963,7 +9973,7 @@ focus_tree = {
 		icon = GFX_blr_soviet_collapse_forest_ammunition_hides
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
 		x = 32
-		y = 12
+		y = 13
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_partisans_or_army }
 		completion_reward = {
@@ -10006,7 +10016,7 @@ focus_tree = {
 		id = blr_soviet_collapse_baltic_wire_rooms
 		icon = GFX_blr_soviet_collapse_baltic_wire_rooms
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 34
+		x = 42
 		y = 10
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = blr_soviet_collapse_state_between_armies }
@@ -10478,8 +10488,8 @@ focus_tree = {
 		id = kaz_soviet_collapse_league_resource_pool
 		icon = GFX_kaz_soviet_collapse_league_resource_pool
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 25
-		y = 5
+		x = 30
+		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = kaz_soviet_collapse_resource_concessions_debate }
 
@@ -10506,7 +10516,7 @@ focus_tree = {
 		id = kaz_soviet_collapse_foreign_technical_missions
 		icon = GFX_kaz_soviet_collapse_foreign_technical_missions
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 20
+		x = 16
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = kaz_soviet_collapse_resource_concessions_debate }
@@ -10797,7 +10807,7 @@ focus_tree = {
 		id = kaz_soviet_collapse_lone_steppe_state
 		icon = GFX_kaz_soviet_collapse_lone_steppe_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 32
+		x = 38
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = kaz_soviet_collapse_the_congress_chooses_a_past }
@@ -11024,7 +11034,7 @@ focus_tree = {
 		id = kaz_soviet_collapse_the_written_alash_program
 		icon = GFX_kaz_soviet_collapse_the_written_alash_program
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 30
+		x = 31
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = kaz_soviet_collapse_alash_memory_restored }
@@ -11042,7 +11052,7 @@ focus_tree = {
 		id = kaz_soviet_collapse_teachers_of_the_new_steppe
 		icon = GFX_kaz_soviet_collapse_teachers_of_the_new_steppe
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 32
+		x = 34
 		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = kaz_soviet_collapse_aul_councils_and_red_teachers }
@@ -11227,7 +11237,7 @@ focus_tree = {
 		id = kaz_soviet_collapse_tajik_mountain_guarantees
 		icon = GFX_kaz_soviet_collapse_tajik_mountain_guarantees
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 6
+		x = 8
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = kaz_soviet_collapse_the_south_asks_for_guarantees }
@@ -11661,7 +11671,7 @@ focus_tree = {
 		id = kaz_soviet_collapse_industrial_settlement_compacts
 		icon = GFX_kaz_soviet_collapse_industrial_settlement_compacts
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 24
+		x = 26
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = {
@@ -11991,7 +12001,7 @@ focus_tree = {
 		id = kaz_soviet_collapse_iranian_caspian_notes
 		icon = GFX_kaz_soviet_collapse_iranian_caspian_notes
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 18
+		x = 15
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = kaz_soviet_collapse_open_eastern_liaison_yurts }
