@@ -4,7 +4,8 @@
 # Event clusters sit above the individual random-event selection layer. When an
 # automatically selected event belongs to a cluster, the cluster can fire first,
 # record a cluster log row, and then queue valid member events through the same
-# weight/accounting handlers used by single events.
+# event handlers used by single events. Member events run with a cluster context
+# guard so the cluster updates timer and major-event pacing once for the group.
 #
 # To add a future cluster, register it in initialize_event_cluster_definitions,
 # map member events in event_belongs_to_cluster, and add ordered member rows in
@@ -56,6 +57,7 @@ initialize_event_cluster_system = {
     set_variable = { global.last_fired_cluster_id = 0 }
     set_variable = { event_cluster_pending_member_index = 0 }
     clr_country_flag = event_cluster_pending_members_active
+    clr_country_flag = event_cluster_member_fire_context
 
     initialize_event_cluster_definitions = yes
 }
@@ -815,6 +817,13 @@ event_cluster_clear_pending_member_queue = {
     clear_array = event_cluster_pending_member_event_id_entries
     set_variable = { event_cluster_pending_member_index = 0 }
     clr_country_flag = event_cluster_pending_members_active
+    clr_country_flag = event_cluster_member_fire_context
+}
+
+fire_event_cluster_member_by_temp_id = {
+    set_country_flag = event_cluster_member_fire_context
+    fire_event_by_temp_id_no_cluster = yes
+    clr_country_flag = event_cluster_member_fire_context
 }
 
 event_cluster_fire_next_pending_member = {
@@ -836,7 +845,7 @@ event_cluster_fire_next_pending_member = {
         add_to_variable = { event_cluster_pending_member_index = 1 }
         if = {
             limit = { check_variable = { event_id > 0 } }
-            fire_event_by_temp_id_no_cluster = yes
+            fire_event_cluster_member_by_temp_id = yes
         }
 
         if = {
@@ -1074,6 +1083,7 @@ fire_event_cluster_by_temp_id = {
                 }
                 record_events_log_cluster_entry = yes
                 mark_event_cluster_fired_state = yes
+                on_event_cluster_global_pacing_update = yes
 
                 event_cluster_queue_ordered_fired_members = yes
 

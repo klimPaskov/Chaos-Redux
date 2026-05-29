@@ -368,7 +368,7 @@ Any row in **History**, **Evolutions**, **Events**, or **Clusters** can be click
 
 Event clusters are linked groups of normal events. The random-event picker still selects one event first; if that event belongs to a cluster, the cluster can roll to fire the wider incident instead of only the selected event.
 
-Cluster firing still runs member events through normal accounting, so repeatable caps, fire-once removal, major-event pacing, fired history, and event details stay aligned with the base event system.
+Cluster firing counts as one global pacing event. Member events still apply their effects, log entries, repeatable cap changes, fire-once removal, fired history, and event details, but they do not each advance the event timer or major-event weights.
 
 Current cluster:
 
