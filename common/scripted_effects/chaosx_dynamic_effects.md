@@ -71,6 +71,8 @@ damage_buildings_in_random_states = yes
 
 ## modify_state_population_by_percent
 
+TODO: needs integration with the deaths system
+
 This is a focused state-scope utility for population-to-manpower delta. It converts `state_population_percent` into per-thousand scale, applies fallback behavior when value is too low, computes `pop_loss` from `state_population_k`, then applies it with `add_manpower`. It also logs the computed value for debugging.
 
 Use this when you already have a state scope and only need the population math, without the building-damage pipeline from `damage_buildings_in_random_states`.
