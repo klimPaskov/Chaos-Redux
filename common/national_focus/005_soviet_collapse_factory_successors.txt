@@ -33,8 +33,7 @@ focus_tree = {
 		id = CFR_count_the_cranes
 		icon = GFX_focus_CFR_sites_become_government
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 24
-		y = 0
+		x = 18		y = 0
 		cost = @soviet_collapse_focus_short
 		completion_reward = {
 			set_country_flag = cfr_focus_count_the_cranes
@@ -52,8 +51,7 @@ focus_tree = {
 		id = CFR_the_trust_office_takes_the_seal
 		icon = GFX_focus_CFR_cement_allocation_boards
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 24
-		y = 1
+		x = 18		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_count_the_cranes }
 
@@ -72,8 +70,7 @@ focus_tree = {
 		id = CFR_ration_cards_for_workers
 		icon = GFX_focus_CFR_housing_ration_cards
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
-		x = 24
-		y = 2
+		x = 18		y = 2
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_the_trust_office_takes_the_seal }
 
@@ -92,8 +89,7 @@ focus_tree = {
 		id = CFR_emergency_cement_accounts
 		icon = GFX_focus_CFR_emergency_cement_imports
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 24
-		y = 3
+		x = 18		y = 3
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_ration_cards_for_workers }
 
@@ -115,8 +111,7 @@ focus_tree = {
 		id = CFR_the_unfinished_city_speaks
 		icon = GFX_focus_CFR_reconstruction_contract_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 24
-		y = 4
+		x = 18		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_emergency_cement_accounts }
 
@@ -139,20 +134,22 @@ focus_tree = {
 		id = CFR_elect_the_site_committees
 		icon = GFX_focus_CFR_municipal_board_elections
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 0
-		y = 5
+		x = 0		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_unfinished_city_speaks }
 
-		mutually_exclusive = {
-			focus = CFR_publish_the_planners_charter
-			focus = CFR_invite_the_foreign_contract_board
-			focus = CFR_the_concrete_committee
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_publish_the_planners_charter
+					has_completed_focus = CFR_invite_the_foreign_contract_board
+					has_completed_focus = CFR_the_concrete_committee
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = cfr_governance_site_committees
-			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
-			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_medium }
+			soviet_collapse_apply_cfr_focus_site_committee_elections = yes
 		}
 		ai_will_do = {
 			base = 7
@@ -164,20 +161,22 @@ focus_tree = {
 		id = CFR_publish_the_planners_charter
 		icon = GFX_focus_CFR_concrete_republic
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 10
-		y = 5
+		x = 6		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_unfinished_city_speaks }
 
-		mutually_exclusive = {
-			focus = CFR_elect_the_site_committees
-			focus = CFR_invite_the_foreign_contract_board
-			focus = CFR_the_concrete_committee
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_elect_the_site_committees
+					has_completed_focus = CFR_invite_the_foreign_contract_board
+					has_completed_focus = CFR_the_concrete_committee
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = cfr_governance_planner_directorate
-			add_political_power = constant:soviet_collapse_factory_ancient.political_power_medium_gain
-			add_popularity = { ideology = communism popularity = constant:soviet_collapse_factory_ancient.popularity_medium }
+			soviet_collapse_apply_cfr_focus_planners_charter = yes
 		}
 		ai_will_do = {
 			base = 7
@@ -191,15 +190,18 @@ focus_tree = {
 		id = CFR_invite_the_foreign_contract_board
 		icon = GFX_focus_CFR_foreign_engineer_desks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 28
-		y = 5
+		x = 20		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_unfinished_city_speaks }
 
-		mutually_exclusive = {
-			focus = CFR_elect_the_site_committees
-			focus = CFR_publish_the_planners_charter
-			focus = CFR_the_concrete_committee
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_elect_the_site_committees
+					has_completed_focus = CFR_publish_the_planners_charter
+					has_completed_focus = CFR_the_concrete_committee
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = cfr_governance_foreign_contract_board
@@ -216,15 +218,18 @@ focus_tree = {
 		id = CFR_the_concrete_committee
 		icon = GFX_focus_CFR_concrete_committee
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 40
-		y = 5
+		x = 30		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_unfinished_city_speaks }
 
-		mutually_exclusive = {
-			focus = CFR_elect_the_site_committees
-			focus = CFR_publish_the_planners_charter
-			focus = CFR_invite_the_foreign_contract_board
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_elect_the_site_committees
+					has_completed_focus = CFR_publish_the_planners_charter
+					has_completed_focus = CFR_invite_the_foreign_contract_board
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = cfr_governance_concrete_committee
@@ -241,8 +246,7 @@ focus_tree = {
 		id = CFR_minutes_from_every_workshop
 		icon = GFX_focus_CFR_municipal_board_elections
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 0
-		y = 6
+		x = 0		y = 6
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_elect_the_site_committees }
 
@@ -262,8 +266,7 @@ focus_tree = {
 		id = CFR_the_engineers_overrule_the_party
 		icon = GFX_focus_CFR_engineers_without_flags
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 10
-		y = 6
+		x = 6		y = 6
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_publish_the_planners_charter }
 
@@ -283,8 +286,7 @@ focus_tree = {
 		id = CFR_contracts_before_ideology
 		icon = GFX_focus_CFR_contract_dependency_web
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 20
-		y = 6
+		x = 16		y = 6
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_invite_the_foreign_contract_board }
 
@@ -304,8 +306,7 @@ focus_tree = {
 		id = CFR_housing_as_discipline
 		icon = GFX_focus_CFR_housing_courts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 40
-		y = 6
+		x = 30		y = 6
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_the_concrete_committee }
 
@@ -325,15 +326,13 @@ focus_tree = {
 		id = CFR_the_board_becomes_the_cabinet
 		icon = GFX_focus_CFR_the_builder_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 20
-		y = 7
+		x = 16		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_contracts_before_ideology }
 
 		completion_reward = {
 			set_country_flag = cfr_focus_board_becomes_cabinet
-			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
-			soviet_collapse_apply_cfr_focus_mandate_gain = yes
+			soviet_collapse_apply_cfr_focus_builder_cabinet = yes
 		}
 		ai_will_do = {
 			base = 10
@@ -346,18 +345,22 @@ focus_tree = {
 		id = CFR_cities_first
 		icon = GFX_focus_CFR_housing_before_flags
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 4
+		x = 2
 		y = 8
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
 		prerequisite = { focus = CFR_minutes_from_every_workshop }
-		prerequisite = { focus = CFR_the_engineers_overrule_the_party }
-
-		mutually_exclusive = {
-			focus = CFR_rails_first
-			focus = CFR_factories_first
-			focus = CFR_contracts_first
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_rails_first
+					has_completed_focus = CFR_factories_first
+					has_completed_focus = CFR_contracts_first
+				}
+			}
+			has_completed_focus = CFR_the_board_becomes_the_cabinet
+			has_completed_focus = CFR_the_engineers_overrule_the_party
 		}
+
 		completion_reward = {
 			set_country_flag = cfr_strategy_cities_first
 			soviet_collapse_apply_cfr_focus_housing_state = yes
@@ -373,15 +376,18 @@ focus_tree = {
 		id = CFR_rails_first
 		icon = GFX_focus_CFR_bridge_permit_ministries
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 12
-		y = 8
+		x = 8		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
 
-		mutually_exclusive = {
-			focus = CFR_cities_first
-			focus = CFR_factories_first
-			focus = CFR_contracts_first
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_cities_first
+					has_completed_focus = CFR_factories_first
+					has_completed_focus = CFR_contracts_first
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = cfr_strategy_rails_first
@@ -392,7 +398,7 @@ focus_tree = {
 			base = 7
 			modifier = { factor = 2 has_war = yes }
 			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_depot_vulnerability value = constant:soviet_collapse_republic_focus.ai_pressure_high compare = greater_than } } }
-			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } } }
+			modifier = { factor = 2 SOV = { check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than } } }
 		}
 	}
 
@@ -400,15 +406,18 @@ focus_tree = {
 		id = CFR_factories_first
 		icon = GFX_focus_CFR_civilian_hegemony_project
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 24
-		y = 8
+		x = 18		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
 
-		mutually_exclusive = {
-			focus = CFR_cities_first
-			focus = CFR_rails_first
-			focus = CFR_contracts_first
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_cities_first
+					has_completed_focus = CFR_rails_first
+					has_completed_focus = CFR_contracts_first
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = cfr_strategy_factories_first
@@ -426,15 +435,18 @@ focus_tree = {
 		id = CFR_contracts_first
 		icon = GFX_focus_CFR_client_factory_permits
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 36
-		y = 8
+		x = 26		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_board_becomes_the_cabinet }
 
-		mutually_exclusive = {
-			focus = CFR_cities_first
-			focus = CFR_rails_first
-			focus = CFR_factories_first
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = CFR_cities_first
+					has_completed_focus = CFR_rails_first
+					has_completed_focus = CFR_factories_first
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = cfr_strategy_contracts_first
@@ -452,8 +464,7 @@ focus_tree = {
 		id = CFR_apartment_blocks_for_loyalty
 		icon = GFX_focus_CFR_housing_before_flags
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
-		x = 8
-		y = 9
+		x = 4		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_cities_first focus = CFR_rails_first }
 
@@ -473,8 +484,7 @@ focus_tree = {
 		id = CFR_machine_tools_from_empty_ministries
 		icon = GFX_focus_CFR_cement_allocation_boards
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 24
-		y = 9
+		x = 18		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_factories_first }
 
@@ -496,8 +506,7 @@ focus_tree = {
 		id = CFR_no_ruins_without_receipts
 		icon = GFX_focus_CFR_no_ruins_without_receipts
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 24
-		y = 10
+		x = 18		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_machine_tools_from_empty_ministries }
 
@@ -517,8 +526,7 @@ focus_tree = {
 		id = CFR_client_city_charters
 		icon = GFX_focus_CFR_client_city_charters
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 32
-		y = 9
+		x = 22		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_contracts_first focus = CFR_contracts_with_the_league }
 
@@ -538,8 +546,7 @@ focus_tree = {
 		id = CFR_the_first_new_district
 		icon = GFX_focus_CFR_the_permit_state
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 8
-		y = 10
+		x = 4		y = 10
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_apartment_blocks_for_loyalty }
 
@@ -559,14 +566,19 @@ focus_tree = {
 		id = CFR_a_civilian_factory_in_every_capital
 		icon = GFX_focus_CFR_civilian_hegemony_project
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 20
-		y = 11
+		x = 16		y = 11
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_no_ruins_without_receipts focus = CFR_the_debt_map }
 
 		completion_reward = {
 			set_country_flag = cfr_focus_civilian_factory_every_capital
 			soviet_collapse_apply_cfr_focus_foreign_factory_network = yes
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_factory_ancient.cfr_contract_league_gain }
+			clamp_variable = { var = soviet_collapse_league_support_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			if = {
+				limit = { has_global_flag = soviet_collapse_free_republics_league_announced }
+				soviet_collapse_refresh_free_republics_league = yes
+			}
 		}
 		ai_will_do = {
 			base = 9
@@ -580,8 +592,7 @@ focus_tree = {
 		id = CFR_the_debt_map
 		icon = GFX_focus_CFR_contract_dependency_web
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 32
-		y = 10
+		x = 22		y = 10
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_client_city_charters focus = CFR_the_concrete_republic }
 
@@ -600,8 +611,7 @@ focus_tree = {
 		id = CFR_construction_battalions
 		icon = GFX_focus_CFR_forced_labor_barracks
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 48
-		y = 5
+		x = 34		y = 5
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_the_unfinished_city_speaks }
 
@@ -613,7 +623,7 @@ focus_tree = {
 		ai_will_do = {
 			base = 7
 			modifier = { factor = 1.75 has_war = yes }
-			modifier = { factor = 1.5 SOV = { exists = yes check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } } }
+			modifier = { factor = 1.5 SOV = { exists = yes check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than } } }
 		}
 	}
 
@@ -621,8 +631,7 @@ focus_tree = {
 		id = CFR_fortify_the_worksite_gates
 		icon = GFX_focus_CFR_silent_site_guards
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 48
-		y = 6
+		x = 34		y = 6
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_construction_battalions }
 
@@ -641,8 +650,7 @@ focus_tree = {
 		id = CFR_the_crane_as_watchtower
 		icon = GFX_focus_CFR_silent_site_guards
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 48
-		y = 7
+		x = 34		y = 7
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_fortify_the_worksite_gates }
 
@@ -662,8 +670,7 @@ focus_tree = {
 		id = CFR_sappers_of_the_builder_state
 		icon = GFX_focus_CFR_forced_labor_barracks
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 48
-		y = 8
+		x = 34		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_crane_as_watchtower }
 
@@ -681,8 +688,7 @@ focus_tree = {
 		id = CFR_german_concrete_offers
 		icon = GFX_focus_CFR_foreign_engineer_desks
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 36
-		y = 6
+		x = 26		y = 6
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_invite_the_foreign_contract_board }
 
@@ -702,8 +708,7 @@ focus_tree = {
 		id = CFR_british_reconstruction_credit
 		icon = GFX_focus_CFR_reconstruction_credit_unions
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 36
-		y = 7
+		x = 26		y = 7
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_german_concrete_offers focus = CFR_housing_as_discipline }
 
@@ -724,8 +729,7 @@ focus_tree = {
 		id = CFR_contracts_with_the_league
 		icon = GFX_focus_CFR_rebuild_for_the_league
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 40
-		y = 8
+		x = 30		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_british_reconstruction_credit }
 
@@ -745,8 +749,7 @@ focus_tree = {
 		id = CFR_the_city_without_citizens
 		icon = GFX_focus_CFR_city_without_citizens
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 44
-		y = 6
+		x = 32		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_concrete_committee }
 
@@ -772,8 +775,7 @@ focus_tree = {
 		id = CFR_seal_the_dormitories
 		icon = GFX_focus_CFR_labor_passport_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
-		x = 44
-		y = 7
+		x = 32		y = 7
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_the_city_without_citizens }
 
@@ -792,8 +794,7 @@ focus_tree = {
 		id = CFR_no_empty_lots_no_empty_lives
 		icon = GFX_focus_CFR_the_city_without_citizens_deepens
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 44
-		y = 8
+		x = 32		y = 8
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_seal_the_dormitories }
 
@@ -812,8 +813,7 @@ focus_tree = {
 		id = CFR_the_concrete_republic
 		icon = GFX_focus_CFR_concrete_republic
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 44
-		y = 9
+		x = 32		y = 9
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_no_empty_lots_no_empty_lives focus = CFR_sappers_of_the_builder_state }
 
@@ -832,8 +832,7 @@ focus_tree = {
 		id = CFR_the_state_that_builds
 		icon = GFX_focus_CFR_the_builder_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 28
-		y = 11
+		x = 20		y = 12
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_a_civilian_factory_in_every_capital }
 
@@ -854,15 +853,13 @@ focus_tree = {
 		id = CFR_buy_peace_with_concrete
 		icon = GFX_focus_CFR_reconstruction_contract_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 8
-		y = 12
+		x = 17		y = 13
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_state_that_builds focus = CFR_the_first_new_district }
 
 		completion_reward = {
 			set_country_flag = cfr_focus_buy_peace_with_concrete
-			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
-			soviet_collapse_apply_cfr_focus_housing_state = yes
+			soviet_collapse_apply_cfr_focus_concrete_peace_purchase = yes
 		}
 		ai_will_do = {
 			base = 8
@@ -874,8 +871,7 @@ focus_tree = {
 		id = CFR_the_builder_state_marches_east
 		icon = GFX_focus_CFR_every_region_a_worksite
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
-		x = 18
-		y = 12
+		x = 14		y = 13
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_state_that_builds }
 
@@ -895,8 +891,7 @@ focus_tree = {
 		id = CFR_build_the_border_bend_the_border
 		icon = GFX_focus_CFR_map_the_unfinished_cities
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ANNEXATION }
-		x = 16
-		y = 13
+		x = 12		y = 14
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_builder_state_marches_east }
 
@@ -915,14 +910,16 @@ focus_tree = {
 		id = CFR_factories_as_embassies
 		icon = GFX_focus_CFR_civilian_hegemony_project
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 38
-		y = 12
+		x = 28		y = 13
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_the_state_that_builds }
 
 		completion_reward = {
 			set_country_flag = cfr_focus_factories_as_embassies
 			soviet_collapse_apply_cfr_focus_foreign_factory_network = yes
+			soviet_collapse_advance_cfr_contract_network_depth = yes
+			add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_custom_splinter_payoff.diplomatic_liaison_gain }
+			clamp_variable = { var = soviet_collapse_liaison_reach min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 		}
 		ai_will_do = {
 			base = 7
@@ -936,8 +933,7 @@ focus_tree = {
 		id = CFR_reconstruction_protectorates
 		icon = GFX_focus_CFR_union_of_construction_cities
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 40
-		y = 13
+		x = 30		y = 14
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = CFR_factories_as_embassies }
 
@@ -956,16 +952,14 @@ focus_tree = {
 		id = CFR_the_workers_keep_the_keys
 		icon = GFX_focus_CFR_municipal_board_elections
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 28
-		y = 12
+		x = 20		y = 13
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_the_state_that_builds }
 
 		available = { has_country_flag = cfr_governance_site_committees }
 		completion_reward = {
 			set_country_flag = cfr_focus_workers_keep_keys
-			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
-			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_small }
+			soviet_collapse_apply_cfr_focus_workers_keep_keys = yes
 		}
 		ai_will_do = {
 			base = 6
@@ -978,8 +972,7 @@ focus_tree = {
 		id = CFR_the_plan_is_the_law
 		icon = GFX_focus_CFR_concrete_republic
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 24
-		y = 13
+		x = 18		y = 14
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = CFR_buy_peace_with_concrete }
 		prerequisite = { focus = CFR_the_builder_state_marches_east }
@@ -1005,8 +998,7 @@ focus_tree = {
 		id = CFR_pour_the_final_foundation
 		icon = GFX_focus_CFR_the_builder_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 14
-		y = 14
+		x = 10		y = 15
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = CFR_the_plan_is_the_law }
 
@@ -1026,15 +1018,13 @@ focus_tree = {
 		id = CFR_nothing_but_foundations
 		icon = GFX_focus_CFR_city_as_machine
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 24
-		y = 14
+		x = 18		y = 16
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = CFR_pour_the_final_foundation }
 
 		completion_reward = {
 			set_country_flag = cfr_focus_nothing_but_foundations
-			soviet_collapse_apply_cfr_focus_coercive_build = yes
-			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			soviet_collapse_apply_cfr_focus_foundations_only_state = yes
 		}
 		ai_will_do = {
 			base = 7
@@ -1046,8 +1036,7 @@ focus_tree = {
 		id = CFR_rebuild_russia_without_moscow
 		icon = GFX_focus_CFR_rebuild_russia_without_moscow
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 34
-		y = 14
+		x = 24		y = 17
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = CFR_nothing_but_foundations }
 
@@ -1084,8 +1073,7 @@ focus_tree = {
 		id = OGB_open_the_volga_registers
 		icon = GFX_focus_OGB_volga_registers
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 18
-		y = 0
+		x = 6		y = 0
 		cost = @soviet_collapse_focus_short
 		completion_reward = {
 			set_country_flag = ogb_focus_open_the_volga_registers
@@ -1103,13 +1091,13 @@ focus_tree = {
 		id = OGB_restore_the_bolghar_name
 		icon = GFX_focus_OGB_bolghar_name
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 18
-		y = 1
+		x = 6		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = OGB_open_the_volga_registers }
 		completion_reward = {
 			set_country_flag = ogb_focus_restore_the_bolghar_name
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_political_power = constant:soviet_collapse_factory_ancient.political_power_low_gain
 			add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
 		}
 		ai_will_do = {
@@ -1123,14 +1111,16 @@ focus_tree = {
 		id = OGB_the_council_takes_the_seal
 		icon = GFX_focus_OGB_restoration_council
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 18
-		y = 2
+		x = 6		y = 2
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = OGB_restore_the_bolghar_name }
 		completion_reward = {
 			set_country_flag = ogb_focus_council_takes_the_seal
 			hidden_effect = { remove_ideas = ogb_disputed_restored_name }
-			add_ideas = ogb_volga_restoration_council
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 			add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
 			custom_effect_tooltip = OGB_council_takes_the_seal_tt
 		}
@@ -1145,8 +1135,7 @@ focus_tree = {
 		id = OGB_scholars_guard_the_charter
 		icon = GFX_focus_OGB_scholars_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 6
-		y = 3
+		x = 2		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_the_council_takes_the_seal }
 		mutually_exclusive = { focus = OGB_clerics_guard_the_charter }
@@ -1166,8 +1155,7 @@ focus_tree = {
 		id = OGB_clerics_guard_the_charter
 		icon = GFX_focus_OGB_clerics_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 30
-		y = 3
+		x = 10		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_the_council_takes_the_seal }
 		mutually_exclusive = { focus = OGB_scholars_guard_the_charter }
@@ -1187,13 +1175,25 @@ focus_tree = {
 		id = OGB_reopen_volga_trade_tolls
 		icon = GFX_focus_OGB_trade_tolls
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 0
-		y = 4
+		x = 0		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = OGB_scholars_guard_the_charter focus = OGB_clerics_guard_the_charter }
+		prerequisite = {
+			focus = OGB_scholars_guard_the_charter
+			focus = OGB_clerics_guard_the_charter
+		}
+		available = {
+			OR = {
+				has_completed_focus = OGB_scholars_guard_the_charter
+				has_completed_focus = OGB_clerics_guard_the_charter
+			}
+		}
 		completion_reward = {
 			set_country_flag = ogb_focus_reopen_volga_trade_tolls
-			add_ideas = ogb_volga_trade_road
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.small_infantry_equipment }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
+			add_to_variable = { soviet_collapse_liaison_reach = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 			add_to_variable = { ogb_river_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
 			random_owned_controlled_state = {
 				limit = { is_core_of = OGB }
@@ -1211,8 +1211,7 @@ focus_tree = {
 		id = OGB_kazan_ferry_offices
 		icon = GFX_focus_OGB_kazan_ferries
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		x = 0
-		y = 5
+		x = 0		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_reopen_volga_trade_tolls }
 		completion_reward = {
@@ -1234,8 +1233,7 @@ focus_tree = {
 		id = OGB_steppe_caravan_letters
 		icon = GFX_focus_OGB_caravan_letters
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 0
-		y = 6
+		x = 0		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_kazan_ferry_offices }
 		completion_reward = {
@@ -1254,13 +1252,22 @@ focus_tree = {
 		id = OGB_friday_schools_and_court_records
 		icon = GFX_focus_OGB_court_records
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
-		x = 12
-		y = 4
+		x = 4		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = OGB_scholars_guard_the_charter focus = OGB_clerics_guard_the_charter }
+		prerequisite = {
+			focus = OGB_scholars_guard_the_charter
+			focus = OGB_clerics_guard_the_charter
+		}
+		available = {
+			OR = {
+				has_completed_focus = OGB_scholars_guard_the_charter
+				has_completed_focus = OGB_clerics_guard_the_charter
+			}
+		}
 		completion_reward = {
 			set_country_flag = ogb_focus_friday_schools_and_court_records
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_popularity = { ideology = neutrality popularity = constant:soviet_collapse_factory_ancient.popularity_small }
 			add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
 		}
 		ai_will_do = {
@@ -1274,13 +1281,17 @@ focus_tree = {
 		id = OGB_notables_and_workshops
 		icon = GFX_focus_OGB_notables_workshops
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 12
-		y = 5
+		x = 4		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_friday_schools_and_court_records }
 		completion_reward = {
 			set_country_flag = ogb_focus_notables_and_workshops
-			add_ideas = ogb_notable_workshop_compact
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment_small }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 			add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
 		}
 		ai_will_do = {
@@ -1294,8 +1305,7 @@ focus_tree = {
 		id = OGB_society_of_the_restored_name
 		icon = GFX_focus_OGB_restored_society
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 12
-		y = 6
+		x = 4		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_notables_and_workshops }
 		completion_reward = {
@@ -1314,10 +1324,18 @@ focus_tree = {
 		id = OGB_raise_the_heritage_guard
 		icon = GFX_focus_OGB_heritage_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP }
-		x = 24
-		y = 4
+		x = 8		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = OGB_scholars_guard_the_charter focus = OGB_clerics_guard_the_charter }
+		prerequisite = {
+			focus = OGB_scholars_guard_the_charter
+			focus = OGB_clerics_guard_the_charter
+		}
+		available = {
+			OR = {
+				has_completed_focus = OGB_scholars_guard_the_charter
+				has_completed_focus = OGB_clerics_guard_the_charter
+			}
+		}
 		completion_reward = {
 			set_country_flag = ogb_focus_raise_the_heritage_guard
 			soviet_collapse_apply_ogb_focus_heritage_guard_muster = yes
@@ -1332,8 +1350,7 @@ focus_tree = {
 		id = OGB_fortify_the_volga_crossings
 		icon = GFX_focus_OGB_volga_crossings
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
-		x = 24
-		y = 5
+		x = 8		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_raise_the_heritage_guard }
 		completion_reward = {
@@ -1355,8 +1372,7 @@ focus_tree = {
 		id = OGB_steppe_cavalry_registers
 		icon = GFX_focus_OGB_cavalry_registers
 		search_filters = { FOCUS_FILTER_ARMY_XP }
-		x = 24
-		y = 6
+		x = 8		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_fortify_the_volga_crossings }
 		completion_reward = {
@@ -1374,10 +1390,18 @@ focus_tree = {
 		id = OGB_treat_with_idel_ural
 		icon = GFX_focus_OGB_treat_idel_ural
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 36
-		y = 4
+		x = 12		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = OGB_scholars_guard_the_charter focus = OGB_clerics_guard_the_charter }
+		prerequisite = {
+			focus = OGB_scholars_guard_the_charter
+			focus = OGB_clerics_guard_the_charter
+		}
+		available = {
+			OR = {
+				has_completed_focus = OGB_scholars_guard_the_charter
+				has_completed_focus = OGB_clerics_guard_the_charter
+			}
+		}
 		mutually_exclusive = { focus = OGB_the_volga_cannot_have_two_seals }
 		completion_reward = {
 			set_country_flag = ogb_route_idel_ural_compact
@@ -1397,10 +1421,18 @@ focus_tree = {
 		id = OGB_the_volga_cannot_have_two_seals
 		icon = GFX_focus_OGB_two_seals
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 48
-		y = 4
+		x = 14		y = 4
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = OGB_scholars_guard_the_charter focus = OGB_clerics_guard_the_charter }
+		prerequisite = {
+			focus = OGB_scholars_guard_the_charter
+			focus = OGB_clerics_guard_the_charter
+		}
+		available = {
+			OR = {
+				has_completed_focus = OGB_scholars_guard_the_charter
+				has_completed_focus = OGB_clerics_guard_the_charter
+			}
+		}
 		mutually_exclusive = { focus = OGB_treat_with_idel_ural }
 		completion_reward = {
 			set_country_flag = ogb_route_rival_volga_seal
@@ -1421,13 +1453,16 @@ focus_tree = {
 		id = OGB_letters_to_kazan_and_ufa
 		icon = GFX_focus_OGB_kazan_ufa_letters
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 36
-		y = 5
+		x = 12		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_treat_with_idel_ural }
 		completion_reward = {
 			set_country_flag = ogb_focus_letters_to_kazan_and_ufa
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			if = {
+				limit = { IUL = { exists = yes } }
+				add_opinion_modifier = { target = IUL modifier = soviet_collapse_volga_compact }
+			}
 			add_to_variable = { ogb_volga_legitimacy = constant:soviet_collapse_factory_ancient.small_mandate_gain }
 		}
 		ai_will_do = {
@@ -1441,8 +1476,7 @@ focus_tree = {
 		id = OGB_answer_the_idel_ural_question
 		icon = GFX_focus_OGB_idel_ural_question
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 48
-		y = 5
+		x = 14		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = OGB_the_volga_cannot_have_two_seals }
 		completion_reward = {
@@ -1462,8 +1496,7 @@ focus_tree = {
 		id = OGB_claim_the_old_trade_cities
 		icon = GFX_focus_OGB_trade_cities
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 18
-		y = 7
+		x = 6		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = OGB_steppe_caravan_letters focus = OGB_society_of_the_restored_name }
 		completion_reward = {
@@ -1473,8 +1506,8 @@ focus_tree = {
 			if = {
 				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 				SOV = {
-					add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
-					soviet_collapse_recalculate_total_threat = yes
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_small }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
 				}
 			}
 		}
@@ -1489,13 +1522,15 @@ focus_tree = {
 		id = OGB_guard_the_old_capital
 		icon = GFX_focus_OGB_old_capital_guard
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 24
-		y = 7
+		x = 8		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = OGB_steppe_cavalry_registers }
 		completion_reward = {
 			set_country_flag = ogb_focus_guard_the_old_capital
-			add_ideas = ogb_old_capital_guard
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+			soviet_collapse_apply_focus_legal_recognition = yes
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 			add_stability = constant:soviet_collapse_factory_ancient.stability_small
 		}
 		ai_will_do = {
@@ -1509,8 +1544,7 @@ focus_tree = {
 		id = OGB_future_bulgaria_file
 		icon = GFX_focus_OGB_future_bulgaria_file
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 36
-		y = 7
+		x = 12		y = 7
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = OGB_letters_to_kazan_and_ufa focus = OGB_answer_the_idel_ural_question }
 		completion_reward = {
@@ -1530,8 +1564,7 @@ focus_tree = {
 		id = OGB_volga_restoration_state
 		icon = GFX_focus_OGB_restoration_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 24
-		y = 8
+		x = 8		y = 8
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = OGB_claim_the_old_trade_cities focus = OGB_guard_the_old_capital }
 		completion_reward = {
@@ -1552,8 +1585,7 @@ focus_tree = {
 		id = OGB_the_old_name_survives_modern_war
 		icon = GFX_focus_OGB_modern_war
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 24
-		y = 9
+		x = 8		y = 9
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = OGB_volga_restoration_state focus = OGB_future_bulgaria_file }
 		completion_reward = {
@@ -1562,8 +1594,8 @@ focus_tree = {
 			if = {
 				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
 				SOV = {
-					add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
-					soviet_collapse_recalculate_total_threat = yes
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
 				}
 			}
 		}
@@ -1595,12 +1627,12 @@ focus_tree = {
 		id = MFR_orders_outlive_ministries
 		icon = GFX_focus_MFR_orders_outlive_ministries
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 28
-		y = 0
+		x = 14		y = 0
 		cost = @soviet_collapse_focus_short
 		completion_reward = {
 			set_country_flag = mfr_focus_orders_outlive_ministries
-			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			soviet_collapse_apply_mfr_focus_order_ledger = yes
+			custom_effect_tooltip = MFR_orders_outlive_ministries_unlock_tt
 		}
 		ai_will_do = {
 			base = 12
@@ -1613,8 +1645,7 @@ focus_tree = {
 		id = MFR_arsenal_board_meets
 		icon = GFX_focus_MFR_arsenal_board_meets
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 28
-		y = 1
+		x = 14		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_orders_outlive_ministries }
 
@@ -1626,7 +1657,7 @@ focus_tree = {
 		ai_will_do = {
 			base = 11
 			modifier = { factor = 1.5 has_war = yes }
-			modifier = { factor = 1.5 SOV = { exists = yes check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } } }
+			modifier = { factor = 1.5 SOV = { exists = yes check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than } } }
 		}
 	}
 
@@ -1634,8 +1665,7 @@ focus_tree = {
 		id = MFR_machine_tool_seizures
 		icon = GFX_focus_MFR_machine_tool_seizures
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 28
-		y = 2
+		x = 14		y = 2
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_arsenal_board_meets }
 
@@ -1654,15 +1684,13 @@ focus_tree = {
 		id = MFR_factory_guard_oaths
 		icon = GFX_focus_MFR_factory_guard_oaths
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 28
-		y = 3
+		x = 14		y = 3
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_machine_tool_seizures }
 
 		completion_reward = {
 			set_country_flag = mfr_focus_factory_guard_oaths
-			soviet_collapse_apply_mfr_focus_security_state = yes
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_mfr_focus_guard_oath_network = yes
 		}
 		ai_will_do = {
 			base = 10
@@ -1675,15 +1703,14 @@ focus_tree = {
 		id = MFR_arsenal_ration_law
 		icon = GFX_focus_MFR_arsenal_ration_law
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 28
-		y = 4
+		x = 14		y = 4
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_guard_oaths }
 
 		completion_reward = {
 			set_country_flag = mfr_focus_arsenal_ration_law
-			soviet_collapse_apply_mfr_focus_quota_gain = yes
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			soviet_collapse_apply_mfr_focus_arsenal_ration_regime = yes
+			custom_effect_tooltip = MFR_arsenal_ration_law_unlock_tt
 		}
 		ai_will_do = {
 			base = 10
@@ -1695,15 +1722,13 @@ focus_tree = {
 		id = MFR_who_owns_the_rifle
 		icon = GFX_focus_MFR_who_owns_the_rifle
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 28
-		y = 5
+		x = 14		y = 5
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_arsenal_ration_law }
 
 		completion_reward = {
 			set_country_flag = mfr_focus_who_owns_the_rifle
-			add_political_power = constant:soviet_collapse_factory_ancient.political_power_medium_gain
-			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			soviet_collapse_apply_mfr_focus_rifle_ownership_board = yes
 		}
 		ai_will_do = {
 			base = 10
@@ -1717,15 +1742,18 @@ focus_tree = {
 		id = MFR_officers_chair_the_board
 		icon = GFX_focus_MFR_officers_chair_the_board
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 0
-		y = 6
+		x = 0		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_who_owns_the_rifle }
 
-		mutually_exclusive = {
-			focus = MFR_armorers_elect_delegates
-			focus = MFR_merchants_of_ammunition
-			focus = MFR_eternal_arsenal
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = MFR_armorers_elect_delegates
+					has_completed_focus = MFR_merchants_of_ammunition
+					has_completed_focus = MFR_eternal_arsenal
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = mfr_route_officer_board
@@ -1742,20 +1770,22 @@ focus_tree = {
 		id = MFR_armorers_elect_delegates
 		icon = GFX_focus_MFR_armorers_elect_delegates
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 20
-		y = 6
+		x = 10		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_who_owns_the_rifle }
 
-		mutually_exclusive = {
-			focus = MFR_officers_chair_the_board
-			focus = MFR_merchants_of_ammunition
-			focus = MFR_eternal_arsenal
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = MFR_officers_chair_the_board
+					has_completed_focus = MFR_merchants_of_ammunition
+					has_completed_focus = MFR_eternal_arsenal
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = mfr_route_worker_delegates
-			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
-			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_small }
+			soviet_collapse_apply_mfr_focus_worker_delegate_route = yes
 		}
 		ai_will_do = {
 			base = 7
@@ -1767,15 +1797,18 @@ focus_tree = {
 		id = MFR_merchants_of_ammunition
 		icon = GFX_focus_MFR_merchants_of_ammunition
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 48
-		y = 6
+		x = 24		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_who_owns_the_rifle }
 
-		mutually_exclusive = {
-			focus = MFR_officers_chair_the_board
-			focus = MFR_armorers_elect_delegates
-			focus = MFR_eternal_arsenal
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = MFR_armorers_elect_delegates
+					has_completed_focus = MFR_eternal_arsenal
+					has_completed_focus = MFR_officers_chair_the_board
+				}
+			}
 		}
 		completion_reward = {
 			set_country_flag = mfr_route_ammunition_merchants
@@ -1794,20 +1827,23 @@ focus_tree = {
 		id = MFR_eternal_arsenal
 		icon = GFX_focus_MFR_eternal_arsenal
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 40
-		y = 6
+		x = 20		y = 6
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_who_owns_the_rifle }
 
-		mutually_exclusive = {
-			focus = MFR_officers_chair_the_board
-			focus = MFR_armorers_elect_delegates
-			focus = MFR_merchants_of_ammunition
-		}
 		allow_branch = {
 			OR = {
 				has_global_flag = { flag = chaos_tier value = 4 }
 				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		available = {
+			hidden_trigger = {
+				NOT = {
+					has_completed_focus = MFR_armorers_elect_delegates
+					has_completed_focus = MFR_merchants_of_ammunition
+					has_completed_focus = MFR_officers_chair_the_board
+				}
 			}
 		}
 		completion_reward = {
@@ -1825,8 +1861,7 @@ focus_tree = {
 		id = MFR_military_accounting_courts
 		icon = GFX_focus_MFR_military_accounting_courts
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 0
-		y = 7
+		x = 0		y = 7
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_officers_chair_the_board }
 
@@ -1845,8 +1880,7 @@ focus_tree = {
 		id = MFR_arm_the_new_russia
 		icon = GFX_focus_MFR_arm_the_new_russia
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 0
-		y = 8
+		x = 0		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_military_accounting_courts }
 
@@ -1864,15 +1898,13 @@ focus_tree = {
 		id = MFR_shop_floor_committees
 		icon = GFX_focus_MFR_shop_floor_committees
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 20
-		y = 7
+		x = 10		y = 7
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_armorers_elect_delegates }
 
 		completion_reward = {
 			set_country_flag = mfr_focus_shop_floor_committees
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
-			soviet_collapse_apply_mfr_focus_quota_gain = yes
+			soviet_collapse_apply_mfr_focus_shop_floor_committee_control = yes
 		}
 		ai_will_do = {
 			base = 8
@@ -1885,8 +1917,7 @@ focus_tree = {
 		id = MFR_every_buyer_has_a_flag
 		icon = GFX_focus_MFR_every_buyer_has_a_flag
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 48
-		y = 7
+		x = 24		y = 7
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_merchants_of_ammunition }
 
@@ -1905,8 +1936,7 @@ focus_tree = {
 		id = MFR_quota_above_life
 		icon = GFX_focus_MFR_quota_above_life
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 40
-		y = 7
+		x = 20		y = 7
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_eternal_arsenal }
 
@@ -1925,15 +1955,13 @@ focus_tree = {
 		id = MFR_factory_war_cabinet
 		icon = GFX_focus_MFR_factory_war_cabinet
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 20
-		y = 8
+		x = 12		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_shop_floor_committees }
 
 		completion_reward = {
 			set_country_flag = mfr_focus_factory_war_cabinet
-			soviet_collapse_apply_mfr_focus_quota_gain = yes
-			add_war_support = constant:soviet_collapse_factory_ancient.war_support_small
+			soviet_collapse_apply_mfr_focus_factory_war_cabinet = yes
 		}
 		ai_will_do = {
 			base = 10
@@ -1947,10 +1975,18 @@ focus_tree = {
 		id = MFR_artillery_from_broken_foundries
 		icon = GFX_focus_MFR_artillery_from_broken_foundries
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 4
-		y = 9
+		x = 2		y = 9
 		cost = @soviet_collapse_focus_short
-		prerequisite = { focus = MFR_factory_war_cabinet focus = MFR_military_accounting_courts }
+		prerequisite = {
+			focus = MFR_factory_war_cabinet
+			focus = MFR_military_accounting_courts
+		}
+		available = {
+			OR = {
+				has_completed_focus = MFR_factory_war_cabinet
+				has_completed_focus = MFR_military_accounting_courts
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_artillery_broken_foundries
@@ -1967,8 +2003,7 @@ focus_tree = {
 		id = MFR_rifles_before_speeches
 		icon = GFX_focus_MFR_rifles_before_speeches
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 16
-		y = 8
+		x = 8		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
 
@@ -1987,8 +2022,7 @@ focus_tree = {
 		id = MFR_repair_the_tank_lines
 		icon = GFX_focus_MFR_repair_the_tank_lines
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 24
-		y = 9
+		x = 12		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
 
@@ -2014,8 +2048,7 @@ focus_tree = {
 		id = MFR_aircraft_parts_in_secret_workshops
 		icon = GFX_focus_MFR_aircraft_parts_in_secret_workshops
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 28
-		y = 9
+		x = 14		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
 
@@ -2039,8 +2072,7 @@ focus_tree = {
 		id = MFR_standardize_the_rifle_line
 		icon = GFX_focus_MFR_standardize_the_rifle_line
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 16
-		y = 9
+		x = 8		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_rifles_before_speeches }
 
@@ -2059,8 +2091,7 @@ focus_tree = {
 		id = MFR_shells_without_sleep
 		icon = GFX_focus_MFR_shells_without_sleep
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 24
-		y = 8
+		x = 10		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
 
@@ -2079,10 +2110,20 @@ focus_tree = {
 		id = MFR_battery_cities
 		icon = GFX_focus_MFR_battery_cities
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 4
-		y = 10
+		x = 2		y = 10
 		cost = @soviet_collapse_focus_short
-		prerequisite = { focus = MFR_artillery_from_broken_foundries focus = MFR_workers_must_not_flee focus = MFR_builders_waste_steel }
+		prerequisite = {
+			focus = MFR_artillery_from_broken_foundries
+			focus = MFR_workers_must_not_flee
+			focus = MFR_builders_waste_steel
+		}
+		available = {
+			OR = {
+				has_completed_focus = MFR_artillery_from_broken_foundries
+				has_completed_focus = MFR_workers_must_not_flee
+				has_completed_focus = MFR_builders_waste_steel
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_battery_cities
@@ -2100,10 +2141,20 @@ focus_tree = {
 		id = MFR_plate_steel_rationing
 		icon = GFX_focus_MFR_plate_steel_rationing
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 24
-		y = 10
+		x = 12		y = 11
 		cost = @soviet_collapse_focus_short
-		prerequisite = { focus = MFR_repair_the_tank_lines focus = MFR_standardize_the_rifle_line focus = MFR_unsafe_production_surge }
+		prerequisite = {
+			focus = MFR_repair_the_tank_lines
+			focus = MFR_standardize_the_rifle_line
+			focus = MFR_unsafe_production_surge
+		}
+		available = {
+			OR = {
+				has_completed_focus = MFR_repair_the_tank_lines
+				has_completed_focus = MFR_standardize_the_rifle_line
+				has_completed_focus = MFR_unsafe_production_surge
+			}
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_plate_steel_rationing
@@ -2120,8 +2171,7 @@ focus_tree = {
 		id = MFR_engines_from_evacuation_stores
 		icon = GFX_focus_MFR_engines_from_evacuation_stores
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 28
-		y = 10
+		x = 14		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_aircraft_parts_in_secret_workshops }
 
@@ -2140,13 +2190,13 @@ focus_tree = {
 		id = MFR_red_warning_lamps
 		icon = GFX_focus_MFR_red_warning_lamps
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 20
-		y = 10
+		x = 10		y = 11
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_unsafe_production_surge }
 
 		completion_reward = {
 			set_country_flag = mfr_focus_red_warning_lamps
+			add_stability = constant:soviet_collapse_factory_ancient.stability_small
 			soviet_collapse_apply_mfr_focus_warning_lamp_protocol = yes
 		}
 		ai_will_do = {
@@ -2159,13 +2209,14 @@ focus_tree = {
 		id = MFR_production_war_room
 		icon = GFX_focus_MFR_production_war_room
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 24
-		y = 11
+		x = 12		y = 12
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_plate_steel_rationing }
-		prerequisite = { focus = MFR_engines_from_evacuation_stores }
-		prerequisite = { focus = MFR_battery_cities }
-		prerequisite = { focus = MFR_red_warning_lamps }
+		available = {
+			has_completed_focus = MFR_engines_from_evacuation_stores
+			has_completed_focus = MFR_battery_cities
+			has_completed_focus = MFR_red_warning_lamps
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_production_war_room
@@ -2184,8 +2235,7 @@ focus_tree = {
 		id = MFR_rifles_for_the_league
 		icon = GFX_focus_MFR_rifles_for_the_league
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 44
-		y = 8
+		x = 24		y = 8
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_every_buyer_has_a_flag focus = MFR_quota_above_life }
 
@@ -2205,8 +2255,7 @@ focus_tree = {
 		id = MFR_arms_for_recognition
 		icon = GFX_focus_MFR_arms_for_recognition
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 44
-		y = 7
+		x = 22		y = 8
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_every_buyer_has_a_flag }
 
@@ -2224,8 +2273,7 @@ focus_tree = {
 		id = MFR_rifles_against_the_league
 		icon = GFX_focus_MFR_rifles_against_the_league
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 48
-		y = 8
+		x = 26		y = 8
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_every_buyer_has_a_flag }
 
@@ -2243,8 +2291,7 @@ focus_tree = {
 		id = MFR_german_orders
 		icon = GFX_focus_MFR_german_orders
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 48
-		y = 9
+		x = 24		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_rifles_against_the_league focus = MFR_rifles_for_the_league }
 
@@ -2264,8 +2311,7 @@ focus_tree = {
 		id = MFR_british_inspection_team
 		icon = GFX_focus_MFR_british_inspection_team
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 44
-		y = 9
+		x = 22		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_arms_for_recognition }
 
@@ -2284,8 +2330,7 @@ focus_tree = {
 		id = MFR_japanese_purchase_mission
 		icon = GFX_focus_MFR_japanese_purchase_mission
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 52
-		y = 9
+		x = 26		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_german_orders }
 
@@ -2304,8 +2349,7 @@ focus_tree = {
 		id = MFR_no_serial_numbers
 		icon = GFX_focus_MFR_no_serial_numbers
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 48
-		y = 10
+		x = 24		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_german_orders }
 
@@ -2324,8 +2368,7 @@ focus_tree = {
 		id = MFR_arsenal_protectorate_offer
 		icon = GFX_focus_MFR_arsenal_protectorate_offer
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 52
-		y = 10
+		x = 26		y = 11
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_no_serial_numbers focus = MFR_japanese_purchase_mission focus = MFR_british_inspection_team }
 
@@ -2344,8 +2387,7 @@ focus_tree = {
 		id = MFR_no_shell_without_obedience
 		icon = GFX_focus_MFR_no_shell_without_obedience
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 36
-		y = 9
+		x = 18		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
 
@@ -2356,7 +2398,7 @@ focus_tree = {
 		ai_will_do = {
 			base = 7
 			modifier = { factor = 2 has_war = yes }
-			modifier = { factor = 1.5 SOV = { exists = yes check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_super_event.union_unmade_contested_authority compare = less_than } } }
+			modifier = { factor = 1.5 SOV = { exists = yes check_variable = { var = soviet_collapse_military_obedience value = constant:soviet_collapse_soviet_objective.contested_obedience compare = less_than } } }
 		}
 	}
 
@@ -2364,8 +2406,7 @@ focus_tree = {
 		id = MFR_unsafe_production_surge
 		icon = GFX_focus_MFR_unsafe_production_surge
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-		x = 20
-		y = 9
+		x = 10		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_shells_without_sleep }
 
@@ -2384,8 +2425,7 @@ focus_tree = {
 		id = MFR_factory_guard_columns
 		icon = GFX_focus_MFR_factory_guard_columns
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
-		x = 32
-		y = 9
+		x = 16		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
 
@@ -2403,8 +2443,7 @@ focus_tree = {
 		id = MFR_armored_train_workshops
 		icon = GFX_focus_MFR_armored_train_workshops
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 32
-		y = 10
+		x = 16		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_guard_columns focus = MFR_no_shell_without_obedience }
 
@@ -2423,8 +2462,7 @@ focus_tree = {
 		id = MFR_gates_sirens_rifles
 		icon = GFX_focus_MFR_gates_sirens_rifles
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
-		x = 36
-		y = 10
+		x = 19		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_guard_columns focus = MFR_no_shell_without_obedience }
 
@@ -2442,8 +2480,7 @@ focus_tree = {
 		id = MFR_foundry_line_holds
 		icon = GFX_focus_MFR_foundry_line_holds
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
-		x = 36
-		y = 11
+		x = 14		y = 11
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_armored_train_workshops focus = MFR_gates_sirens_rifles }
 
@@ -2462,10 +2499,12 @@ focus_tree = {
 		id = MFR_workers_must_not_flee
 		icon = GFX_focus_MFR_workers_must_not_flee
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 8
-		y = 9
+		x = 4		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
+		available = {
+			has_completed_focus = MFR_factory_war_cabinet
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_workers_must_not_flee
@@ -2484,10 +2523,12 @@ focus_tree = {
 		id = MFR_builders_waste_steel
 		icon = GFX_focus_MFR_builders_waste_steel
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 12
-		y = 9
+		x = 6		y = 9
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_factory_war_cabinet }
+		available = {
+			has_completed_focus = MFR_factory_war_cabinet
+		}
 
 		completion_reward = {
 			custom_effect_tooltip = MFR_builders_waste_steel_tt
@@ -2507,8 +2548,7 @@ focus_tree = {
 		id = MFR_civilian_factory_rivalry
 		icon = GFX_focus_MFR_civilian_factory_rivalry
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 12
-		y = 10
+		x = 6		y = 10
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_builders_waste_steel }
 
@@ -2531,8 +2571,7 @@ focus_tree = {
 		id = MFR_contracts_with_builders
 		icon = GFX_focus_MFR_contracts_with_builders
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 8
-		y = 11
+		x = 4		y = 11
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_civilian_factory_rivalry }
 
@@ -2555,8 +2594,7 @@ focus_tree = {
 		id = MFR_iron_liturgy_watches
 		icon = GFX_focus_MFR_iron_liturgy_watches
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 16
-		y = 11
+		x = 8		y = 11
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = MFR_builders_waste_steel }
 
@@ -2580,12 +2618,13 @@ focus_tree = {
 		id = MFR_unite_russian_factories
 		icon = GFX_focus_MFR_unite_russian_factories
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		x = 16
-		y = 12
+		x = 8		y = 13
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = MFR_contracts_with_builders }
-		prerequisite = { focus = MFR_iron_liturgy_watches }
 		prerequisite = { focus = MFR_production_war_room }
+		available = {
+			has_completed_focus = MFR_contracts_with_builders
+			has_completed_focus = MFR_iron_liturgy_watches
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_unite_russian_factories
@@ -2602,19 +2641,18 @@ focus_tree = {
 		id = MFR_the_arsenal_state
 		icon = GFX_focus_MFR_the_arsenal_state
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 28
-		y = 11
+		x = 18		y = 13
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = MFR_arm_the_new_russia }
 		prerequisite = { focus = MFR_production_war_room }
-		prerequisite = { focus = MFR_arsenal_protectorate_offer }
-		prerequisite = { focus = MFR_no_serial_numbers }
+		available = {
+			has_completed_focus = MFR_arm_the_new_russia
+			has_completed_focus = MFR_arsenal_protectorate_offer
+			has_completed_focus = MFR_no_serial_numbers
+		}
 
 		completion_reward = {
 			set_country_flag = mfr_focus_the_arsenal_state
-			soviet_collapse_apply_mfr_focus_quota_gain = yes
-			soviet_collapse_apply_mfr_focus_security_state = yes
-			soviet_collapse_apply_mfr_focus_arms_line_expansion = yes
+			soviet_collapse_apply_mfr_focus_arsenal_state_board = yes
 		}
 		ai_will_do = {
 			base = 10
@@ -2628,8 +2666,7 @@ focus_tree = {
 		id = MFR_a_rifle_in_every_treaty
 		icon = GFX_focus_MFR_a_rifle_in_every_treaty
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 32
-		y = 12
+		x = 16		y = 14
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_the_arsenal_state }
 
@@ -2650,8 +2687,7 @@ focus_tree = {
 		id = MFR_every_border_needs_guns
 		icon = GFX_focus_MFR_every_border_needs_guns
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
-		x = 36
-		y = 12
+		x = 18		y = 14
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_the_arsenal_state }
 
@@ -2669,8 +2705,7 @@ focus_tree = {
 		id = MFR_war_market_never_sleeps
 		icon = GFX_focus_MFR_war_market_never_sleeps
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 48
-		y = 11
+		x = 24		y = 12
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_arsenal_protectorate_offer }
 
@@ -2692,16 +2727,24 @@ focus_tree = {
 		id = MFR_workers_own_the_arsenal
 		icon = GFX_focus_MFR_workers_own_the_arsenal
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 28
-		y = 12
+		x = 14		y = 14
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_the_arsenal_state }
 
 		available = { has_country_flag = mfr_route_worker_delegates }
 		completion_reward = {
 			set_country_flag = mfr_focus_workers_own_arsenal
-			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
-			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_medium }
+			add_to_variable = { mfr_worker_delegate_depth = constant:soviet_collapse_factory_ancient.mfr_output_doctrine_gain }
+			add_to_variable = { mfr_arsenal_quotas = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			army_experience = constant:soviet_collapse_republic_focus.army_xp_small
+			add_manpower = constant:soviet_collapse_republic_focus.militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_republic_focus.medium_infantry_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_republic_focus.support_equipment_small }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
+			add_command_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+			add_popularity = { ideology = democratic popularity = constant:soviet_collapse_factory_ancient.popularity_small }
 		}
 		ai_will_do = {
 			base = 6
@@ -2714,8 +2757,7 @@ focus_tree = {
 		id = MFR_state_as_one_arms_order
 		icon = GFX_focus_MFR_state_as_one_arms_order
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 28
-		y = 13
+		x = 14		y = 15
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = MFR_workers_own_the_arsenal }
 
@@ -2736,8 +2778,7 @@ focus_tree = {
 		id = MFR_output_is_victory
 		icon = GFX_focus_MFR_output_is_victory
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 40
-		y = 12
+		x = 20		y = 14
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_the_arsenal_state }
 
@@ -2756,8 +2797,7 @@ focus_tree = {
 		id = MFR_arm_all_clients
 		icon = GFX_focus_MFR_arm_all_clients
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 36
-		y = 13
+		x = 18		y = 16
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = MFR_state_as_one_arms_order }
 
@@ -2776,12 +2816,20 @@ focus_tree = {
 		id = MFR_no_peace_without_orders
 		icon = GFX_focus_MFR_no_peace_without_orders
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 40
-		y = 14
+		x = 20		y = 17
 		cost = @soviet_collapse_focus_long
-		prerequisite = { focus = MFR_output_is_victory focus = MFR_arm_all_clients }
+		prerequisite = {
+			focus = MFR_output_is_victory
+			focus = MFR_arm_all_clients
+		}
 
-		available = { has_country_flag = mfr_route_eternal_arsenal }
+		available = {
+			has_country_flag = mfr_route_eternal_arsenal
+			OR = {
+				has_completed_focus = MFR_output_is_victory
+				has_completed_focus = MFR_arm_all_clients
+			}
+		}
 		completion_reward = {
 			set_country_flag = mfr_focus_no_peace_without_orders
 			soviet_collapse_apply_mfr_focus_unsafe_output = yes
@@ -2798,8 +2846,7 @@ focus_tree = {
 		id = MFR_every_order_a_rifle
 		icon = GFX_focus_MFR_every_order_a_rifle
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
-		x = 44
-		y = 13
+		x = 22		y = 17
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = MFR_arm_all_clients }
 
@@ -2819,17 +2866,14 @@ focus_tree = {
 		id = MFR_eternal_arsenal_marches
 		icon = GFX_focus_MFR_eternal_arsenal_marches
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
-		x = 44
-		y = 14
+		x = 22		y = 18
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = MFR_no_peace_without_orders }
 		prerequisite = { focus = MFR_every_order_a_rifle }
 
 		completion_reward = {
 			set_country_flag = mfr_focus_eternal_arsenal_marches
-			soviet_collapse_apply_mfr_focus_quota_gain = yes
-			soviet_collapse_apply_mfr_focus_war_market_contracts = yes
-			soviet_collapse_apply_mfr_focus_unsafe_output = yes
+			soviet_collapse_apply_mfr_focus_eternal_arsenal_mandate = yes
 		}
 		ai_will_do = {
 			base = 8

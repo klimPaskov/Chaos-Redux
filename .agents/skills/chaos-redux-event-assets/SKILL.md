@@ -7,7 +7,7 @@ description: Use when creating, sourcing, processing, converting, organizing, wi
 
 Use this skill when a Chaos Redux task requires final visual assets.
 
-This includes event assets, UI assets, focus tree assets, country assets, achievement assets, generated icons, sourced event art, generated icon art, and any asset package that must be wired into the mod.
+This includes event assets, UI assets, focus tree assets, country assets, achievement assets, generated icons, sourced event art, generated icon art, animated sprites, animated portraits, sprite sheets, GIF previews, and any asset package that must be wired into the mod.
 
 ## 1. Core purpose
 
@@ -46,11 +46,17 @@ Use this skill for:
 - faction emblems
 - UI panels
 - progression-state variants
-- any other static visual asset required by a Chaos Redux event or mechanic
+- animated sprites
+- animated UI pieces
+- animated leader portraits
+- sprite sheets and GIF previews for review
+- any other static or animated visual asset required by a Chaos Redux event or mechanic
 
 Use this skill when the user asks the agent to create, source, process, or wire final visual assets.
 
 Use this skill when the implementation task includes generated, sourced, or user-provided PNG files that must be turned into HOI4-ready assets.
+
+Use `chaos-redux-frame-animation` together with this skill when an asset needs animation. Animated final assets must come from planned source frames, not from moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image.
 
 
 ## 2.1 Custom subagent split
@@ -64,6 +70,8 @@ Use:
 - `chaosx_asset_source_researcher` for real or archival image sourcing, real leader portraits, historical flags, historically attested symbols, user-provided source photos, and report/news/super-event images that must depict a real photographed person, place, object, or historical document
 - `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, fictional portraits, fictional flags, faction emblems, UI panels, dossier art, and progression-state base art
 - `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons
+
+For animated work, route by asset type first. Then require the chosen asset subagent to follow `chaos-redux-frame-animation` for frame plans, per-frame source art, normalization, contact sheets, preview GIFs, frame sheets, static fallbacks, and animation handoffs.
 
 Asset subagents may create:
 
@@ -107,6 +115,8 @@ For transparent icons, ask `$imagegen` for the required transparent output and f
 
 If `$imagegen` is unavailable, report that clearly and stop before using an alternate route.
 
+For generated animated assets, use `$imagegen` through `chaos-redux-frame-animation`. Each animation frame must be generated or edited as its own source frame according to a frame plan. Do not use local filters, transforms, glow pulses, or offsets as the source of final motion.
+
 ### Choose source mode for event photo assets
 
 Report images, news images, and super-event images may be either internet-sourced or generated.
@@ -139,11 +149,16 @@ Real leader portraits should be processed toward the HOI4 portrait style rather 
 
 Record the source link, author or archive if available, license or public domain status if available, source image path, processed PNG path, final DDS path, and sprite name
 
+For generated or sourced one-person leader portraits, the asset handoff must identify the portrait's gender presentation and any matching leader-name pool requirement. Female-presenting portraits must not be paired with male names and should require `female = yes` where a country leader is created directly. Male-presenting portraits must not be paired with female names or `female = yes`. Council, board, office, crowd, and symbolic-institution portraits should keep institutional leader names instead of personal random-name pools.
+
+
 ### Fictional leader portraits
 
 Fictional leaders, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits may use `$imagegen`.
 
 Generated leader portraits should follow HOI4 leader portrait conventions: 156x210 final DDS unless an existing sprite uses another size, bust or upper-torso framing, strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, transparent or HOI4-compatible portrait background as required by the existing asset pattern, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
+
+For generated one-person leader portraits, record the portrait's apparent gender presentation in the manifest and handoff. Female-presenting portraits require female leader-name pools and female leader metadata where the implementation surface supports it. Male-presenting portraits require male leader-name pools and must not be paired with female metadata. Never hand off a portrait in a way that lets implementation randomly assign names from the opposite gender pool. Council, committee, junta, crowd, office, or symbolic-body portraits should be marked as institutional leaders and use institutional names instead of personal random-name pools.
 
 For council or collective leaders, use one clear symbolic council portrait rather than a cluttered crowd. Keep the subject readable at leader portrait size and document that the leader is fictional or collective.
 
@@ -233,18 +248,19 @@ For every asset package:
    - `$imagegen`
    - internet source image
    - user-provided source image
-10. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
-11. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
-12. For user-provided assets, record that the image was provided by the user.
-13. Save the original generated, sourced, or provided image as a source PNG.
-14. Crop and resize the image to the target size.
-15. Save a processed PNG preview.
-16. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
-17. Move the DDS into the correct mod folder.
-18. Create or update the asset manifest.
-19. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
-20. Update event docs or asset docs when the parent prompt grants that documentation scope.
-21. Report all created files, proposed sprite names, final paths, blocked assets, and any handoff uncertainty.
+10. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
+11. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
+12. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
+13. For user-provided assets, record that the image was provided by the user.
+14. Save the original generated, sourced, or provided image as a source PNG.
+15. Crop and resize the image to the target size.
+16. Save a processed PNG preview.
+17. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
+18. Move the DDS into the correct mod folder.
+19. Create or update the asset manifest.
+20. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
+21. Update event docs or asset docs when the parent prompt grants that documentation scope.
+22. Report all created files, proposed sprite names, final paths, blocked assets, and any handoff uncertainty.
 
 Do not mark assets complete until the DDS files exist, the manifest is written, and the main agent has enough handoff information to wire every sprite without guessing.
 
@@ -304,6 +320,9 @@ Each asset entry should include:
 - related focus, idea, event, decision, UI element, or super-event if relevant
 - notes
 - asset status
+- frame count, frame timing, loop behavior, and anchor point for animated assets
+- static fallback path and animated sheet or frame-sequence path for animated assets
+- source mode and source note for every animation frame when animated
 
 Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `handed_off`, `wired`, `complete`, `needs_user_review`, or `blocked` as asset statuses.
 
@@ -417,7 +436,7 @@ Use colour unless the event spec asks otherwise.
 
 Generated report images must still be post-processed into the report-event house style. Use Photoshop when available for crop, tonal control, texture, contrast, dust/grain, edge treatment, and final review.
 
-If Photoshop is unavailable, record that explicitly in the manifest and handoff. Do not hide the substitution; only use local image-processing tools when the parent prompt allows a non-Photoshop fallback.
+If Photoshop is unavailable, record that explicitly in the manifest and handoff. Do not hide the substitution. only use local image-processing tools when the parent prompt allows a non-Photoshop fallback.
 
 ## 14. News event images
 
@@ -810,12 +829,90 @@ Record:
 
 Do not invent a substitute asset unless the user explicitly approves it.
 
+## Asset depth from improvement addenda
+
+When an improvement addendum asks for richer presentation, the asset handoff should name the visual states instead of asking for generic polish. A good asset request says what the player sees before activation, while active, when locked, when dangerous, when complete, and when the route has failed.
+
+For scripted GUI, plan asset families. A panel usually needs a background, header, button states, value icons, warning indicators, progress frames, locked overlays, selected overlays, hover states, and any animated glow, particle, float, or pulse layers. The main agent owns `.gui` and `.gfx` wiring, but the asset package must provide clear sprite names, sizes, frame counts, static fallbacks, and contact sheets.
+
+## Animated sprites, scripted GUI assets, and animated portraits
+
+Use `chaos-redux-frame-animation` for every final animated visual asset. Some Chaos Redux mechanics should have animated visual layers when motion improves readability, atmosphere, or feedback. Examples include floating seals, glowing route emblems, particle drift, meter pulses, warning frames, active-button glows, occult pressure effects, sponsor influence networks, and final formable proclamations.
+
+Animated leader portraits should be handled as major identity assets. Real people require sourced base images. Fictional or impossible leaders can be generated. The asset handoff must say whether the animation is subtle, such as breathing light or smoke, or symbolic, such as eye glow, map shadow, glitch, or spectral overlay. The portrait should still read clearly at in-game size.
+
+Final animated assets must be built from planned source frames. Do not create final animation by taking one still image and shifting, scaling, rotating, warping, blurring, recoloring, brightening, or pulsing it with a script. Local scripts may normalize, align, crop, resize, assemble sheets, create previews, and convert frames after the real frames exist.
+
+## Decision category and scripted GUI visual packs
+
+For a decision category with a scripted GUI or mechanic window, the asset handoff should cover the full interface state set.
+
+Useful assets include:
+
+- category icon
+- category header plate
+- background panel
+- tab buttons
+- normal, hover, selected, locked, disabled, and warning button states
+- progress bars and fill variants
+- meter frames
+- target cards
+- status seals
+- warning overlays
+- animated glow overlays
+- animated particle overlays
+- animated float emblems
+- static fallback for every animated element
+- tooltip icon set
+- close and open buttons
+- mechanic-specific leader, council, or envoy portrait
+
+The asset prompt should state which sprites are decorative and which represent mechanic state. State-driven sprites need clear names that match the mechanic value or route state.
+
+## Animated leader portraits
+
+Leader portraits can be animated for special routes, high-chaos leaders, supernatural leaders, rare formables, major transformations, or dramatic council reveals. They should not be required for ordinary advisors or every normal country leader.
+
+Animated leader portrait packages must include:
+
+- static fallback portrait
+- animated sheet or frame source
+- final DDS files
+- final sprite names
+- character or leader key that will use the portrait
+- source mode and source documentation
+- whether the leader is real, fictional, symbolic, collective, supernatural, or alternate-history
+- note on motion type, such as glow, smoke, flicker, eye-light, flag shadow, slow breathing, office light, map projection, or particle drift
+
+For real historical people, use sourced historical imagery. Animation should be subtle and should not create fake speech, modern deepfake behavior, or misleading modern footage. For fictional or symbolic leaders, generated animation assets are allowed when they match HOI4 style and the route tone.
+
+## Formable nation asset coverage
+
+Every formable nation needs visible identity assets unless it intentionally reuses an existing identity.
+
+Asset planning should cover:
+
+- formable flag in normal, medium, and small sizes
+- ideology variants where relevant
+- cosmetic-tag flags where relevant
+- leader portrait or council portrait
+- animated leader portrait when the formable is a rare dramatic route
+- focus icons for the formation route
+- decision icon for the formation decision
+- decision category or scripted GUI assets if formation progress is managed visually
+- news, report, or super-event image if the formation is globally important
+- faction emblem if the formable creates a league, empire, federation, bloc, mandate, compact, or coalition
+- achievement icon if the formable has achievement hooks
+
+Historical or culturally attested formable symbols need source review. Fictional, alternate-history, supernatural, and high-chaos variants may use generated art with clear manifest notes.
+
+
 ## 29. Final checklist
 
 Before finishing, confirm:
 
 1. Every required asset from the event spec is accounted for.
-2. Every asset uses the correct source mode: `$imagegen` for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets; internet or user-provided source images for real historical materials; and real source images for real leader portraits.
+2. Every asset uses the correct source mode: `$imagegen` for generated symbolic, fictional, alternate-history, or unique report/news/super-event assets. internet or user-provided source images for real historical materials. and real source images for real leader portraits.
 3. The matching reference folder from section 4 was inspected before generation, sourcing, processing, or wiring.
 4. Every generated, sourced, or provided asset has a source PNG.
 5. Every final asset has a processed PNG preview.
@@ -829,3 +926,4 @@ Before finishing, confirm:
 13. Docs are updated where relevant.
 14. The event implementation or parent handoff knows which sprite names to use.
 15. No final asset remains only in a temporary folder.
+16. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, and has no transform-only final motion.

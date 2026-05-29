@@ -1,6 +1,7 @@
 @soviet_collapse_focus_short = 4
 @soviet_collapse_focus_medium = 6
 @soviet_collapse_focus_long = 8
+@soviet_collapse_republic_signature_tech_bonus = 0.5
 
 # ============================================================================
 # CHAOS REDUX - EVENT 005 ANCIENT RESTORATION FOCUS TREES
@@ -29,7 +30,7 @@ focus_tree = {
 		id = KZR_restore_itil_council
 		icon = GFX_focus_soviet_collapse_ancient_emergency_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 8
+		x = 6
 		y = 0
 		cost = @soviet_collapse_focus_short
 		completion_reward = {
@@ -42,7 +43,7 @@ focus_tree = {
 		id = KZR_toll_law_debate
 		icon = GFX_focus_soviet_collapse_ancient_legitimacy_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = KZR_restore_itil_council }
@@ -75,11 +76,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_ferry_house_registers }
 		completion_reward = {
-			set_country_flag = KZR_caspian_road_markets
-			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
-			random_owned_controlled_state = {
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_kzr_focus_caspian_road_markets = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -93,11 +90,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_ferry_house_registers }
 		completion_reward = {
-			set_country_flag = KZR_customs_workshop_compact
-			random_owned_controlled_state = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_kzr_focus_customs_workshop_compact = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -106,7 +99,7 @@ focus_tree = {
 		id = KZR_volga_toll_guard
 		icon = GFX_focus_soviet_collapse_ancient_kzr_volga_toll_guard
 		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
-		x = 14
+		x = 10
 		y = 2
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_toll_law_debate }
@@ -123,16 +116,12 @@ focus_tree = {
 		id = KZR_guard_the_crossings
 		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
 		search_filters = { FOCUS_FILTER_ARMY }
-		x = 12
+		x = 8
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_volga_toll_guard }
 		completion_reward = {
-			set_country_flag = KZR_guard_the_crossings
-			random_owned_controlled_state = {
-				add_building_construction = { type = bunker level = 1 instant_build = yes }
-				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_kzr_focus_guard_the_crossings = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -141,14 +130,25 @@ focus_tree = {
 		id = KZR_caspian_patrol_letters
 		icon = GFX_focus_soviet_collapse_ancient_kzr_caspian_steppe_letters
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 16
+		x = 12
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_volga_toll_guard }
 		completion_reward = {
 			set_country_flag = KZR_caspian_patrol_letters
+			set_country_flag = kzr_caspian_patrol_letters_registered
+			add_to_variable = { kzr_toll_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
 			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			navy_experience = constant:soviet_collapse_republic_focus.navy_xp_small
+			add_decryption = {
+				target = SOV
+				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+			}
+			clamp_variable = { var = soviet_collapse_league_support_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -157,15 +157,13 @@ focus_tree = {
 		id = KZR_league_transit_bargain
 		icon = GFX_focus_soviet_collapse_ancient_league_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_caspian_road_markets }
 		prerequisite = { focus = KZR_caspian_patrol_letters }
 		completion_reward = {
-			set_country_flag = KZR_league_transit_bargain
-			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
-			soviet_collapse_update_consolidated_republic_ideas = yes
+			soviet_collapse_apply_kzr_focus_league_transit_bargain = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -174,16 +172,30 @@ focus_tree = {
 		id = KZR_old_border_files
 		icon = GFX_focus_soviet_collapse_ancient_old_border_files
 		search_filters = { FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 5
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = KZR_customs_workshop_compact }
-		prerequisite = { focus = KZR_guard_the_crossings }
 		prerequisite = { focus = KZR_league_transit_bargain }
+		available = {
+			has_completed_focus = KZR_customs_workshop_compact
+			has_completed_focus = KZR_guard_the_crossings
+		}
 		completion_reward = {
 			set_country_flag = KZR_old_border_files
 			add_state_claim = 256
 			add_state_claim = 250
+			add_state_claim = 249
+			add_state_claim = 405
+			add_decryption = {
+				target = SOV
+				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+			}
+			add_to_variable = { kzr_toll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
 		}
 		ai_will_do = { base = 7 }
 	}
@@ -199,8 +211,12 @@ focus_tree = {
 		mutually_exclusive = { focus = KZR_expansionist_steppe_levy }
 		completion_reward = {
 			set_country_flag = KZR_symbolic_crossing_state
+			set_country_flag = KZR_transit_compact_guaranteed
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			add_to_variable = { kzr_toll_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 		}
 		ai_will_do = {
 			base = 8
@@ -210,20 +226,27 @@ focus_tree = {
 
 	focus = {
 		id = KZR_expansionist_steppe_levy
-		icon = GFX_focus_soviet_collapse_ancient_expansionist_state
+		icon = GFX_focus_soviet_collapse_ancient_kzr_steppe_levy
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
-		x = 12
+		x = 8
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = KZR_old_border_files }
 		mutually_exclusive = { focus = KZR_symbolic_crossing_state }
 		completion_reward = {
 			set_country_flag = KZR_expansionist_steppe_levy
+			set_country_flag = KZR_steppe_claim_mobilized
+			add_state_claim = 249
+			add_state_claim = 405
 			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
 			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:soviet_collapse_factory_ancient.infantry_equipment_medium }
 			if = {
 				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
-				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
 			}
 		}
 		ai_will_do = {
@@ -236,14 +259,26 @@ focus_tree = {
 		id = KZR_khazar_charter
 		icon = GFX_focus_soviet_collapse_ancient_kzr_khazar_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_symbolic_crossing_state focus = KZR_expansionist_steppe_levy }
 		completion_reward = {
 			set_country_flag = KZR_khazar_charter
+			set_country_flag = kzr_toll_transit_law_codified
 			add_to_variable = { kzr_toll_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_league_support_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_depot_control min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			if = {
+				limit = { has_global_flag = soviet_collapse_free_republics_league_announced }
+				soviet_collapse_refresh_free_republics_league = yes
+			}
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -259,8 +294,14 @@ focus_tree = {
 		available = { has_country_flag = KZR_symbolic_crossing_state }
 		completion_reward = {
 			set_country_flag = KZR_restoration_survives_modern_war
+			set_country_flag = KZR_transit_toll_compact
+			add_to_variable = { kzr_toll_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -269,17 +310,60 @@ focus_tree = {
 		id = KZR_returned_names_endgame
 		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
-		x = 12
+		x = 8
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KZR_khazar_charter }
 		available = { has_country_flag = KZR_expansionist_steppe_levy }
 		completion_reward = {
 			set_country_flag = KZR_returned_names_endgame
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			set_country_flag = KZR_returned_names_toll_route
 			set_country_flag = soviet_collapse_returned_names_claim_lines_active
+			add_to_variable = { kzr_toll_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			if = {
+				limit = { NOT = { has_idea = soviet_collapse_returned_names_pressure } }
+				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+				add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+				soviet_collapse_apply_focus_legal_recognition = yes
+				hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
+			}
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = KZR_road_beyond_the_caspian
+		icon = GFX_focus_soviet_collapse_ancient_kzr_road_beyond_caspian
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
+		x = 8
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = KZR_returned_names_endgame }
+		available = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = KZR_road_beyond_the_caspian
+			add_state_claim = 249
+			add_state_claim = 402
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_large }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 1.5 has_war = yes }
+		}
 	}
 }
 
@@ -301,9 +385,9 @@ focus_tree = {
 
 	focus = {
 		id = SOG_city_register_council
-		icon = GFX_focus_soviet_collapse_ancient_emergency_council
+		icon = GFX_focus_soviet_collapse_ancient_sog_city_register_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 8
+		x = 6
 		y = 0
 		cost = @soviet_collapse_focus_short
 		completion_reward = {
@@ -314,9 +398,9 @@ focus_tree = {
 
 	focus = {
 		id = SOG_city_law_debate
-		icon = GFX_focus_soviet_collapse_ancient_legitimacy_debate
+		icon = GFX_focus_soviet_collapse_ancient_sog_city_law_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = SOG_city_register_council }
@@ -349,11 +433,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_samarkand_bukhara_registers }
 		completion_reward = {
-			set_country_flag = SOG_oasis_merchant_roads
-			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
-			random_owned_controlled_state = {
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_sog_focus_oasis_merchant_roads = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -367,11 +447,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_samarkand_bukhara_registers }
 		completion_reward = {
-			set_country_flag = SOG_bazaar_workshop_compact
-			random_owned_controlled_state = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_sog_focus_bazaar_workshop_compact = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -380,7 +456,7 @@ focus_tree = {
 		id = SOG_market_guard
 		icon = GFX_focus_soviet_collapse_ancient_heritage_guard
 		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
-		x = 14
+		x = 10
 		y = 2
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_city_law_debate }
@@ -397,14 +473,30 @@ focus_tree = {
 		id = SOG_scholar_envoy_rooms
 		icon = GFX_focus_soviet_collapse_ancient_sog_scholar_envoy_rooms
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 12
+		x = 8
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_market_guard }
 		completion_reward = {
 			set_country_flag = SOG_scholar_envoy_rooms
+			set_country_flag = sog_city_court_scholar_registers
 			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			add_decryption = {
+				target = SOV
+				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+			}
+			add_tech_bonus = {
+				name = SOG_scholar_envoy_rooms
+				bonus = @soviet_collapse_republic_signature_tech_bonus
+				uses = 1
+				category = industry
+			}
+			clamp_variable = { var = soviet_collapse_republic_institution_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -413,16 +505,12 @@ focus_tree = {
 		id = SOG_oasis_checkpoint_guard
 		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
 		search_filters = { FOCUS_FILTER_ARMY }
-		x = 16
+		x = 12
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_market_guard }
 		completion_reward = {
-			set_country_flag = SOG_oasis_checkpoint_guard
-			random_owned_controlled_state = {
-				add_building_construction = { type = bunker level = 1 instant_build = yes }
-				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_sog_focus_oasis_checkpoint_guard = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -431,15 +519,13 @@ focus_tree = {
 		id = SOG_league_city_bargain
 		icon = GFX_focus_soviet_collapse_ancient_league_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_oasis_merchant_roads }
 		prerequisite = { focus = SOG_scholar_envoy_rooms }
 		completion_reward = {
-			set_country_flag = SOG_league_city_bargain
-			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
-			soviet_collapse_update_consolidated_republic_ideas = yes
+			soviet_collapse_apply_sog_focus_league_city_bargain = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -448,16 +534,30 @@ focus_tree = {
 		id = SOG_old_city_border_files
 		icon = GFX_focus_soviet_collapse_ancient_old_border_files
 		search_filters = { FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 5
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = SOG_bazaar_workshop_compact }
-		prerequisite = { focus = SOG_oasis_checkpoint_guard }
 		prerequisite = { focus = SOG_league_city_bargain }
+		available = {
+			has_completed_focus = SOG_bazaar_workshop_compact
+			has_completed_focus = SOG_oasis_checkpoint_guard
+		}
 		completion_reward = {
 			set_country_flag = SOG_old_city_border_files
 			add_state_claim = 585
 			add_state_claim = 732
+			add_state_claim = 742
+			add_state_claim = 584
+			add_decryption = {
+				target = SOV
+				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+			}
+			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+			}
 		}
 		ai_will_do = { base = 7 }
 	}
@@ -473,8 +573,11 @@ focus_tree = {
 		mutually_exclusive = { focus = SOG_expansionist_merchant_claims }
 		completion_reward = {
 			set_country_flag = SOG_symbolic_city_league
+			set_country_flag = SOG_city_charter_guaranteed
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 		}
 		ai_will_do = {
 			base = 8
@@ -484,20 +587,27 @@ focus_tree = {
 
 	focus = {
 		id = SOG_expansionist_merchant_claims
-		icon = GFX_focus_soviet_collapse_ancient_expansionist_state
+		icon = GFX_focus_soviet_collapse_ancient_sog_merchant_claims
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
-		x = 12
+		x = 8
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = SOG_old_city_border_files }
 		mutually_exclusive = { focus = SOG_symbolic_city_league }
 		completion_reward = {
 			set_country_flag = SOG_expansionist_merchant_claims
+			set_country_flag = SOG_silk_road_claim_mobilized
+			add_state_claim = 742
+			add_state_claim = 584
 			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
 			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
 			if = {
 				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
-				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
 			}
 		}
 		ai_will_do = {
@@ -510,14 +620,25 @@ focus_tree = {
 		id = SOG_sogdian_city_charter
 		icon = GFX_focus_soviet_collapse_ancient_sog_sogdian_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_symbolic_city_league focus = SOG_expansionist_merchant_claims }
 		completion_reward = {
 			set_country_flag = SOG_sogdian_city_charter
+			set_country_flag = sog_merchant_city_court_codified
 			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_focus_gain }
+			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
+			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			capital_scope = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_republic_institution_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_league_support_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -533,8 +654,14 @@ focus_tree = {
 		available = { has_country_flag = SOG_symbolic_city_league }
 		completion_reward = {
 			set_country_flag = SOG_restoration_survives_modern_war
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			set_country_flag = SOG_market_law_compact
+			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -543,17 +670,60 @@ focus_tree = {
 		id = SOG_returned_names_endgame
 		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
-		x = 12
+		x = 8
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = SOG_sogdian_city_charter }
 		available = { has_country_flag = SOG_expansionist_merchant_claims }
 		completion_reward = {
 			set_country_flag = SOG_returned_names_endgame
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			set_country_flag = SOG_returned_names_city_route
 			set_country_flag = soviet_collapse_returned_names_claim_lines_active
+			add_to_variable = { sog_city_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			if = {
+				limit = { NOT = { has_idea = soviet_collapse_returned_names_pressure } }
+				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+				add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+				soviet_collapse_apply_focus_legal_recognition = yes
+				hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
+			}
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = SOG_cities_beyond_the_desert
+		icon = GFX_focus_soviet_collapse_ancient_sog_cities_beyond_desert
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
+		x = 8
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = SOG_returned_names_endgame }
+		available = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = SOG_cities_beyond_the_desert
+			add_state_claim = 405
+			add_state_claim = 742
+			add_command_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_large }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 1.5 has_war = yes }
+		}
 	}
 }
 
@@ -575,9 +745,9 @@ focus_tree = {
 
 	focus = {
 		id = KHW_oasis_authority_council
-		icon = GFX_focus_soviet_collapse_ancient_emergency_council
+		icon = GFX_focus_soviet_collapse_ancient_khw_oasis_authority_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 8
+		x = 6
 		y = 0
 		cost = @soviet_collapse_focus_short
 		completion_reward = {
@@ -588,9 +758,9 @@ focus_tree = {
 
 	focus = {
 		id = KHW_water_law_debate
-		icon = GFX_focus_soviet_collapse_ancient_legitimacy_debate
+		icon = GFX_focus_soviet_collapse_ancient_khw_water_law_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = KHW_oasis_authority_council }
@@ -623,11 +793,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_khiva_urgench_water_boards }
 		completion_reward = {
-			set_country_flag = KHW_caravan_well_compact
-			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
-			random_owned_controlled_state = {
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_khw_focus_caravan_well_compact = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -641,11 +807,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_khiva_urgench_water_boards }
 		completion_reward = {
-			set_country_flag = KHW_oasis_workshop_compact
-			random_owned_controlled_state = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_khw_focus_oasis_workshop_compact = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -654,7 +816,7 @@ focus_tree = {
 		id = KHW_oasis_canal_guards
 		icon = GFX_focus_soviet_collapse_ancient_khw_oasis_canal_guards
 		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
-		x = 14
+		x = 10
 		y = 2
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_water_law_debate }
@@ -671,16 +833,12 @@ focus_tree = {
 		id = KHW_guard_the_pumps
 		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
 		search_filters = { FOCUS_FILTER_ARMY }
-		x = 12
+		x = 8
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_oasis_canal_guards }
 		completion_reward = {
-			set_country_flag = KHW_guard_the_pumps
-			random_owned_controlled_state = {
-				add_building_construction = { type = bunker level = 1 instant_build = yes }
-				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_khw_focus_guard_the_pumps = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -689,14 +847,25 @@ focus_tree = {
 		id = KHW_canal_recognition_letters
 		icon = GFX_focus_soviet_collapse_ancient_neighbor_letters
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 16
+		x = 12
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_oasis_canal_guards }
 		completion_reward = {
 			set_country_flag = KHW_canal_recognition_letters
+			set_country_flag = khw_irrigation_recognition_letters_registered
+			add_to_variable = { khw_water_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
 			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.small_depot_gain }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			clamp_variable = { var = soviet_collapse_league_support_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_depot_control min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -705,15 +874,13 @@ focus_tree = {
 		id = KHW_league_irrigation_bargain
 		icon = GFX_focus_soviet_collapse_ancient_league_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_caravan_well_compact }
 		prerequisite = { focus = KHW_canal_recognition_letters }
 		completion_reward = {
-			set_country_flag = KHW_league_irrigation_bargain
-			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
-			soviet_collapse_update_consolidated_republic_ideas = yes
+			soviet_collapse_apply_khw_focus_league_irrigation_bargain = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -722,16 +889,30 @@ focus_tree = {
 		id = KHW_old_oasis_border_files
 		icon = GFX_focus_soviet_collapse_ancient_old_border_files
 		search_filters = { FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 5
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = KHW_oasis_workshop_compact }
-		prerequisite = { focus = KHW_guard_the_pumps }
 		prerequisite = { focus = KHW_league_irrigation_bargain }
+		available = {
+			has_completed_focus = KHW_oasis_workshop_compact
+			has_completed_focus = KHW_guard_the_pumps
+		}
 		completion_reward = {
 			set_country_flag = KHW_old_oasis_border_files
 			add_state_claim = 584
 			add_state_claim = 405
+			add_state_claim = 585
+			add_state_claim = 732
+			add_decryption = {
+				target = SOV
+				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+			}
+			add_to_variable = { khw_water_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.depot_focus_gain }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
 		}
 		ai_will_do = { base = 7 }
 	}
@@ -747,7 +928,12 @@ focus_tree = {
 		mutually_exclusive = { focus = KHW_expansionist_water_claims }
 		completion_reward = {
 			set_country_flag = KHW_symbolic_oasis_authority
+			set_country_flag = KHW_water_access_guaranteed
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
 		}
 		ai_will_do = {
@@ -758,20 +944,27 @@ focus_tree = {
 
 	focus = {
 		id = KHW_expansionist_water_claims
-		icon = GFX_focus_soviet_collapse_ancient_expansionist_state
+		icon = GFX_focus_soviet_collapse_ancient_khw_water_claims
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
-		x = 12
+		x = 8
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = KHW_old_oasis_border_files }
 		mutually_exclusive = { focus = KHW_symbolic_oasis_authority }
 		completion_reward = {
 			set_country_flag = KHW_expansionist_water_claims
+			set_country_flag = KHW_delta_claim_mobilized
+			add_state_claim = 585
+			add_state_claim = 732
 			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
 			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
 			if = {
 				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
-				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
 			}
 		}
 		ai_will_do = {
@@ -784,14 +977,34 @@ focus_tree = {
 		id = KHW_khwarazmian_water_charter
 		icon = GFX_focus_soviet_collapse_ancient_khw_water_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_symbolic_oasis_authority focus = KHW_expansionist_water_claims }
 		completion_reward = {
 			set_country_flag = KHW_khwarazmian_water_charter
+			set_country_flag = khw_irrigation_rights_codified
 			add_to_variable = { khw_water_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_republic_focus.medium_depot_gain }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
+			capital_scope = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				limit = {
+					OR = {
+						state = 584
+						state = 585
+						state = 732
+						state = 405
+					}
+				}
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_depot_control min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -807,8 +1020,15 @@ focus_tree = {
 		available = { has_country_flag = KHW_symbolic_oasis_authority }
 		completion_reward = {
 			set_country_flag = KHW_restoration_survives_modern_war
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			set_country_flag = KHW_oasis_water_compact
+			add_to_variable = { khw_water_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
 			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			capital_scope = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -817,17 +1037,60 @@ focus_tree = {
 		id = KHW_returned_names_endgame
 		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
-		x = 12
+		x = 8
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = KHW_khwarazmian_water_charter }
 		available = { has_country_flag = KHW_expansionist_water_claims }
 		completion_reward = {
 			set_country_flag = KHW_returned_names_endgame
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			set_country_flag = KHW_returned_names_oasis_route
 			set_country_flag = soviet_collapse_returned_names_claim_lines_active
+			add_to_variable = { khw_water_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.depot_focus_gain }
+			if = {
+				limit = { NOT = { has_idea = soviet_collapse_returned_names_pressure } }
+				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+				add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+				soviet_collapse_apply_focus_legal_recognition = yes
+				hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
+			}
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = KHW_delta_without_a_center
+		icon = GFX_focus_soviet_collapse_ancient_khw_delta_without_center
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
+		x = 8
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = KHW_returned_names_endgame }
+		available = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = KHW_delta_without_a_center
+			add_state_claim = 584
+			add_state_claim = 585
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_factory_ancient.support_equipment_small }
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_large }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 1.5 has_war = yes }
+		}
 	}
 }
 
@@ -849,9 +1112,9 @@ focus_tree = {
 
 	focus = {
 		id = ALN_pass_council
-		icon = GFX_focus_soviet_collapse_ancient_emergency_council
+		icon = GFX_focus_soviet_collapse_ancient_aln_pass_council
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-		x = 8
+		x = 6
 		y = 0
 		cost = @soviet_collapse_focus_short
 		completion_reward = {
@@ -862,9 +1125,9 @@ focus_tree = {
 
 	focus = {
 		id = ALN_pass_law_debate
-		icon = GFX_focus_soviet_collapse_ancient_legitimacy_debate
+		icon = GFX_focus_soviet_collapse_ancient_aln_pass_law_debate
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 1
 		cost = @soviet_collapse_focus_short
 		prerequisite = { focus = ALN_pass_council }
@@ -897,11 +1160,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_alan_pass_courts }
 		completion_reward = {
-			set_country_flag = ALN_darial_road_offices
-			add_equipment_to_stockpile = { type = train_equipment amount = constant:soviet_collapse_republic_focus.rail_train_reward }
-			random_owned_controlled_state = {
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_aln_focus_darial_road_offices = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -915,11 +1174,7 @@ focus_tree = {
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_alan_pass_courts }
 		completion_reward = {
-			set_country_flag = ALN_mountain_workshop_compact
-			random_owned_controlled_state = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_aln_focus_mountain_workshop_compact = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -928,7 +1183,7 @@ focus_tree = {
 		id = ALN_darial_guard_posts
 		icon = GFX_focus_soviet_collapse_ancient_aln_darial_guard_posts
 		search_filters = { FOCUS_FILTER_ARMY FOCUS_FILTER_MANPOWER }
-		x = 14
+		x = 10
 		y = 2
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_pass_law_debate }
@@ -945,16 +1200,12 @@ focus_tree = {
 		id = ALN_guard_the_pass_line
 		icon = GFX_focus_soviet_collapse_ancient_guard_old_routes
 		search_filters = { FOCUS_FILTER_ARMY }
-		x = 12
+		x = 8
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_darial_guard_posts }
 		completion_reward = {
-			set_country_flag = ALN_guard_the_pass_line
-			random_owned_controlled_state = {
-				add_building_construction = { type = bunker level = 1 instant_build = yes }
-				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
-			}
+			soviet_collapse_apply_aln_focus_guard_the_pass_line = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -963,14 +1214,25 @@ focus_tree = {
 		id = ALN_mountain_envoy_guarantees
 		icon = GFX_focus_soviet_collapse_ancient_aln_mountain_envoy_guarantees
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 16
+		x = 12
 		y = 3
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_darial_guard_posts }
 		completion_reward = {
 			set_country_flag = ALN_mountain_envoy_guarantees
+			set_country_flag = aln_pass_envoy_guarantee_registers
+			add_to_variable = { aln_pass_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
 			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.small_league_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.small_recognition_gain }
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+			clamp_variable = { var = soviet_collapse_league_support_strength min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_independence_resilience min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -979,15 +1241,13 @@ focus_tree = {
 		id = ALN_league_pass_bargain
 		icon = GFX_focus_soviet_collapse_ancient_league_bargain
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		x = 8
+		x = 6
 		y = 4
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_darial_road_offices }
 		prerequisite = { focus = ALN_mountain_envoy_guarantees }
 		completion_reward = {
-			set_country_flag = ALN_league_pass_bargain
-			add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.medium_league_gain }
-			soviet_collapse_update_consolidated_republic_ideas = yes
+			soviet_collapse_apply_aln_focus_league_pass_bargain = yes
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -996,16 +1256,31 @@ focus_tree = {
 		id = ALN_old_pass_border_files
 		icon = GFX_focus_soviet_collapse_ancient_old_border_files
 		search_filters = { FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 5
 		cost = @soviet_collapse_focus_medium
-		prerequisite = { focus = ALN_mountain_workshop_compact }
-		prerequisite = { focus = ALN_guard_the_pass_line }
 		prerequisite = { focus = ALN_league_pass_bargain }
+		available = {
+			has_completed_focus = ALN_mountain_workshop_compact
+			has_completed_focus = ALN_guard_the_pass_line
+		}
 		completion_reward = {
 			set_country_flag = ALN_old_pass_border_files
-			add_state_claim = 821
-			add_state_claim = 827
+			add_state_claim = 229
+			add_state_claim = 230
+			add_state_claim = 231
+			add_state_claim = 232
+			add_state_claim = 233
+			add_decryption = {
+				target = SOV
+				amount = constant:soviet_collapse_factory_ancient.archive_decryption_gain
+			}
+			add_to_variable = { aln_pass_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
 		}
 		ai_will_do = { base = 7 }
 	}
@@ -1021,7 +1296,9 @@ focus_tree = {
 		mutually_exclusive = { focus = ALN_expansionist_mountain_claims }
 		completion_reward = {
 			set_country_flag = ALN_symbolic_pass_principality
+			set_country_flag = ALN_pass_guarantees_registered
 			add_stability = constant:soviet_collapse_factory_ancient.stability_medium
+			add_equipment_to_stockpile = { type = motorized_equipment amount = constant:soviet_collapse_republic_focus.motorized_equipment_small }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.large_recognition_gain }
 		}
 		ai_will_do = {
@@ -1032,20 +1309,29 @@ focus_tree = {
 
 	focus = {
 		id = ALN_expansionist_mountain_claims
-		icon = GFX_focus_soviet_collapse_ancient_expansionist_state
+		icon = GFX_focus_soviet_collapse_ancient_aln_mountain_claims
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
-		x = 12
+		x = 8
 		y = 6
 		cost = @soviet_collapse_focus_long
 		prerequisite = { focus = ALN_old_pass_border_files }
 		mutually_exclusive = { focus = ALN_symbolic_pass_principality }
 		completion_reward = {
 			set_country_flag = ALN_expansionist_mountain_claims
+			set_country_flag = ALN_highland_claim_mobilized
+			add_state_claim = 229
+			add_state_claim = 230
+			add_state_claim = 231
+			add_state_claim = 233
 			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
 			add_manpower = constant:soviet_collapse_republic_focus.front_manpower
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
 			if = {
 				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
-				SOV = { add_to_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_factory_ancient.soviet_pressure_medium } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_medium }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
 			}
 		}
 		ai_will_do = {
@@ -1058,14 +1344,24 @@ focus_tree = {
 		id = ALN_alan_pass_charter
 		icon = GFX_focus_soviet_collapse_ancient_aln_pass_charter
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
-		x = 8
+		x = 6
 		y = 7
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_symbolic_pass_principality focus = ALN_expansionist_mountain_claims }
 		completion_reward = {
 			set_country_flag = ALN_alan_pass_charter
+			set_country_flag = aln_pass_court_authority_codified
 			add_to_variable = { aln_pass_authority = constant:soviet_collapse_factory_ancient.large_mandate_gain }
 			add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+			add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+			add_command_power = constant:soviet_collapse_factory_ancient.command_power_low_cost
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+			capital_scope = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			clamp_variable = { var = soviet_collapse_recognition_progress min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+			clamp_variable = { var = soviet_collapse_independence_resilience min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -1081,8 +1377,15 @@ focus_tree = {
 		available = { has_country_flag = ALN_symbolic_pass_principality }
 		completion_reward = {
 			set_country_flag = ALN_restoration_survives_modern_war
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
-			add_stability = constant:soviet_collapse_factory_ancient.stability_small
+			set_country_flag = ALN_pass_neutrality_compact
+			add_to_variable = { aln_pass_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			army_experience = constant:soviet_collapse_factory_ancient.army_xp_low_gain
+			random_owned_controlled_state = {
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
 		}
 		ai_will_do = { base = 8 }
 	}
@@ -1091,16 +1394,64 @@ focus_tree = {
 		id = ALN_returned_names_endgame
 		icon = GFX_focus_soviet_collapse_ancient_returned_names_endgame
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
-		x = 12
+		x = 8
 		y = 8
 		cost = @soviet_collapse_focus_medium
 		prerequisite = { focus = ALN_alan_pass_charter }
 		available = { has_country_flag = ALN_expansionist_mountain_claims }
 		completion_reward = {
 			set_country_flag = ALN_returned_names_endgame
-			add_political_power = constant:soviet_collapse_republic_focus.political_power_small
+			set_country_flag = ALN_returned_names_pass_route
 			set_country_flag = soviet_collapse_returned_names_claim_lines_active
+			add_to_variable = { aln_pass_authority = constant:soviet_collapse_factory_ancient.small_mandate_gain }
+			add_command_power = constant:soviet_collapse_republic_focus.command_power_small
+			if = {
+				limit = { NOT = { has_idea = soviet_collapse_returned_names_pressure } }
+				add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_republic_focus.medium_recognition_gain }
+				add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
+				soviet_collapse_apply_focus_legal_recognition = yes
+				hidden_effect = { soviet_collapse_update_consolidated_republic_ideas = yes }
+			}
 		}
 		ai_will_do = { base = 7 }
+	}
+
+	focus = {
+		id = ALN_every_pass_a_border
+		icon = GFX_focus_soviet_collapse_ancient_aln_every_pass_border
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY }
+		x = 8
+		y = 9
+		cost = @soviet_collapse_focus_long
+		prerequisite = { focus = ALN_returned_names_endgame }
+		available = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = ALN_every_pass_a_border
+			add_state_claim = 232
+			add_state_claim = 234
+			add_command_power = constant:soviet_collapse_factory_ancient.command_power_medium_cost
+			add_war_support = constant:soviet_collapse_factory_ancient.war_support_medium
+			add_to_variable = { aln_pass_authority = constant:soviet_collapse_factory_ancient.medium_mandate_gain }
+			random_owned_controlled_state = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				add_building_construction = { type = land_fort level = 1 instant_build = yes }
+			}
+			if = {
+				limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+				SOV = {
+					set_temp_variable = { soviet_collapse_objective_old_movement_delta = constant:soviet_collapse_factory_ancient.soviet_pressure_large }
+					soviet_collapse_apply_objective_source_pressure_delta = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 1.5 has_war = yes }
+		}
 	}
 }
