@@ -7543,8 +7543,9 @@ soviet_collapse_advance_league_focus_depth = {
 			NOT = { has_country_flag = soviet_collapse_league_focus_first_milestone }
 		}
 		set_country_flag = soviet_collapse_league_focus_first_milestone
+		set_country_flag = soviet_collapse_league_unit_deployment_unlocked
+		soviet_collapse_create_league_unit_templates = yes
 		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
-		add_political_power = constant:soviet_collapse_republic_focus.political_power_small
 	}
 	if = {
 		limit = {
@@ -7552,8 +7553,8 @@ soviet_collapse_advance_league_focus_depth = {
 			NOT = { has_country_flag = soviet_collapse_league_focus_second_milestone }
 		}
 		set_country_flag = soviet_collapse_league_focus_second_milestone
+		set_country_flag = soviet_collapse_league_external_mandates_unlocked
 		add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_focus.focus_depth_milestone_gain }
-		add_equipment_to_stockpile = { type = convoy_1 amount = constant:soviet_collapse_republic_focus.small_convoy_reward }
 	}
 }
 
@@ -8352,6 +8353,30 @@ soviet_collapse_apply_regional_faction_coordinate = {
 	soviet_collapse_apply_regional_faction_soviet_pressure = yes
 	soviet_collapse_maybe_resolve_regional_faction_goal = yes
 	country_event = { id = chaosx.nr5.39 }
+}
+
+soviet_collapse_pay_regional_faction_external_mandate_cost = {
+	add_political_power = constant:soviet_collapse_regional_faction.external_mandate_political_power_spend
+	add_command_power = constant:soviet_collapse_regional_faction.external_mandate_command_power_spend
+	add_fuel = constant:soviet_collapse_regional_faction.external_mandate_fuel_spend
+}
+
+soviet_collapse_apply_regional_security_zone_mandate = {
+	soviet_collapse_pay_regional_faction_external_mandate_cost = yes
+	create_wargoal = { type = annex_everything target = FROM expire = 0 }
+	add_to_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.external_mandate_cohesion }
+	add_to_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.external_mandate_tension }
+	add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_regional_faction.external_mandate_support }
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
+			set_temp_variable = { soviet_collapse_breakaway_source_league_delta = constant:soviet_collapse_regional_faction.external_mandate_soviet_pressure }
+			set_temp_variable = { soviet_collapse_breakaway_source_republic_delta = constant:soviet_collapse_regional_faction.external_mandate_soviet_pressure }
+			soviet_collapse_apply_breakaway_source_pressure_delta = yes
+		}
+	}
+	soviet_collapse_maybe_resolve_regional_faction_goal = yes
+	soviet_collapse_update_consolidated_republic_ideas = yes
 }
 
 soviet_collapse_set_regional_faction_defense_goal = {
