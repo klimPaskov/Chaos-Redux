@@ -15,9 +15,10 @@ The registered clusters are:
 2. `fire_event_by_temp_id` checks whether the selected event belongs to a cluster.
 3. If the selected event has a cluster, the system checks cluster type, unlock tier, cooldown, member availability, and the chaos-scaled cluster roll.
 4. If the cluster fires, valid members are ordered by danger and placed into a country-scoped pending queue.
-5. The first queued member fires immediately through `fire_event_by_temp_id_no_cluster`, so normal event accounting, history logging, weight reduction, and cooldown behavior still apply.
-6. Later queued members fire from `chaosx.event_clusters.2` after tier-scaled random cooldowns.
-7. If the cluster does not fire, the selected event fires normally.
+5. The cluster applies global pacing once: repeatable and one-time clusters count as one minor event for timer compression and major-event weight growth, while major clusters count as one major event for timer and major-weight reset behavior.
+6. The first queued member fires immediately through the shared cluster-member context, so its effects, history logging, fired state, fire-once removal, and own post-fire weight changes still apply without adding another timer or major-weight update.
+7. Later queued members fire from `chaosx.event_clusters.2` after tier-scaled random cooldowns with the same cluster-member context.
+8. If the cluster does not fire, the selected event fires normally.
 
 Manual event triggering uses `fire_event_by_temp_id_no_cluster` directly. Cluster triggering has its own settings UI path through `trigger_selected_event_cluster`, which force-fires a known cluster instead of using automatic availability checks.
 
@@ -31,6 +32,7 @@ Important constants:
 
 - `event_cluster_id.wars = 1`
 - `event_cluster_id.liberations = 2`
+- `event_cluster_type.one_time`, `event_cluster_type.repeatable`, and `event_cluster_type.major` define how the cluster applies global pacing.
 - `event_cluster_wars.unlock_tier = 1`
 - `event_cluster_wars.cooldown_days = 120`
 - `event_cluster_liberations.unlock_tier = 0`
@@ -87,7 +89,7 @@ Cluster history is stored separately from normal event history:
 - The cluster details window sorts member rows by danger level from lower danger to higher danger.
 - Cluster rows and details include a checkbox that enables or disables automatic cluster firing. The trigger button in cluster details force-fires the selected cluster.
 
-The cluster log records the cluster even though member events still appear in normal history. This lets the player see both the broad incident and each event's normal accounting.
+The cluster log records the cluster even though member events still appear in normal history. This lets the player see both the broad incident and each event's own fired/log state, while pacing remains attached to the cluster firing.
 
 ## Settings Integration
 

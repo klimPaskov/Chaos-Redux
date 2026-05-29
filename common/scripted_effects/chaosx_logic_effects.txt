@@ -531,14 +531,46 @@ update_repeatable_event_weights = {
 # SECTION 4: EVENT FIRING HANDLERS
 # ============================================================================
 
+on_minor_event_global_pacing_update = {
+	add_to_variable = { global.total_events_fired = 1 }
+	add_to_variable = { global.minor_events_since_major = 1 }
+	update_repeatable_event_weights = yes
+	update_major_event_weights = yes
+	on_minor_event_timer_update = yes
+}
+
+on_major_event_global_pacing_update = {
+	add_to_variable = { global.total_events_fired = 1 }
+	set_variable = { global.minor_events_since_major = 0 }
+	update_repeatable_event_weights = yes
+	reset_unfired_major_event_weights = yes
+	on_major_event_timer_update = yes
+	set_variable = { global.current_major_event_weight = 0 }
+}
+
+on_event_cluster_global_pacing_update = {
+	get_event_cluster_type = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_type_value
+				value = constant:event_cluster_type.major
+				compare = equals
+			}
+		}
+		on_major_event_global_pacing_update = yes
+	}
+	else = {
+		on_minor_event_global_pacing_update = yes
+	}
+}
+
 # Handler for fire-once events
 on_fire_once_event_fired = {
     # Input: temp variable event_id
 
     # Update tracking variables
     set_variable = { global.last_fired_event_id = event_id }
-    add_to_variable = { global.total_events_fired = 1 }
-    add_to_variable = { global.minor_events_since_major = 1 }
 
     # Add to fired events array (first time only)
     if = {
@@ -550,9 +582,10 @@ on_fire_once_event_fired = {
     set_event_weight = yes
 
     # Update system state
-    update_repeatable_event_weights = yes
-    update_major_event_weights = yes
-    on_minor_event_timer_update = yes
+	if = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		on_minor_event_global_pacing_update = yes
+	}
 
     # Update unfired events counts for GUI button logic
     update_unfired_events_counts = yes
@@ -566,8 +599,6 @@ on_repeatable_event_fired = {
 
     # Update tracking variables
     set_variable = { global.last_fired_event_id = event_id }
-    add_to_variable = { global.total_events_fired = 1 }
-    add_to_variable = { global.minor_events_since_major = 1 }
 
     # Add to fired events array (first time only)
     if = {
@@ -588,9 +619,14 @@ on_repeatable_event_fired = {
     set_event_weight = yes
 
     # Update system state
-    update_repeatable_event_weights = yes
-    update_major_event_weights = yes
-    on_minor_event_timer_update = yes
+	if = {
+		limit = { has_country_flag = event_cluster_member_fire_context }
+		set_temp_variable = { new_weight = 1 }
+		set_event_weight = yes
+	}
+	else = {
+		on_minor_event_global_pacing_update = yes
+	}
 
     # Update unfired events counts for GUI button logic
     update_unfired_events_counts = yes
@@ -604,8 +640,6 @@ on_major_event_fired = {
 
     # Update tracking variables
     set_variable = { global.last_fired_event_id = event_id }
-    add_to_variable = { global.total_events_fired = 1 }
-    set_variable = { global.minor_events_since_major = 0 }
 
     # Add to fired events array (first time only)
     if = {
@@ -618,10 +652,10 @@ on_major_event_fired = {
     set_event_weight = yes
 
     # Reset system state
-    update_repeatable_event_weights = yes
-    reset_unfired_major_event_weights = yes
-    on_major_event_timer_update = yes
-    set_variable = { global.current_major_event_weight = 0 }
+	if = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		on_major_event_global_pacing_update = yes
+	}
 
     # Update unfired events counts for GUI button logic
     update_unfired_events_counts = yes
