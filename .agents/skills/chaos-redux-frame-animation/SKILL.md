@@ -9,6 +9,8 @@ A final Chaos Redux animation is a HOI4 frame-sheet asset package.
 
 Every meaningful visual state in the loop must have its own source frame or source layer. A local script may assemble, align, crop, resize, pad, preview, sheet, and convert those frames, but it must not create the main animation by translating, scaling, rotating, warping, blurring, recoloring, adding glow pulses, or offsetting one still image.
 
+Do not use primitive shape animation as final art. Circles, rectangles, lines, gradients, simple icons, oscilloscope-style waves, bars, and other geometry-only frames are acceptable only as explicitly labeled planning diagrams or temporary debug previews, never as final Chaos Redux artwork.
+
 A GIF is only a review preview. Never treat a GIF as the final HOI4 asset. Do not convert a GIF directly and call the result complete.
 
 The normal HOI4 deliverable is:
@@ -101,6 +103,7 @@ A valid source frame is not:
 - the same image shifted up or down
 - the same image scaled or rotated
 - the same image with only blur, brightness, glow, opacity, hue, saturation, or contrast changes
+- frames made from only primitive shapes, waveform lines, bars, gradients, or other geometry-only placeholders
 - a contact sheet sliced into frames when the sheet itself was not generated as an animation source
 - a script-made particle layer placed over one still image unless the parent explicitly requested a mockup
 - a GIF split into frames when the GIF itself was created from one transformed still
