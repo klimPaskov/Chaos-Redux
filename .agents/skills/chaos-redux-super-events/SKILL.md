@@ -418,9 +418,11 @@ Core rule: a super-event task is not complete unless its audio is selected, veri
 
 Every super-event implementation must include complete audio wiring. Do not leave a completed super-event on default, placeholder, mismatched, wrong-format, or undocumented audio.
 
-Each super-event should have a unique audio id unless reuse is intentional, tone-appropriate, and documented. Variants of the same crisis may share one track when they are meant to feel connected.
+Every super-event must have its own unique final track, unique audio id, and unique sound wrapper unless the user explicitly approves a specific reuse before implementation. Do not reuse another super-event's track just because the moments are related.
 
 The final audio should be actual music by default: a musical recording, chant, hymn, orchestral excerpt, song, march, or other track with musical structure. Do not use pure sound effects, drones, pulses, room tone, one-shot stingers, abstract ambience, or texture beds for a super-event unless the user explicitly asks for non-musical audio and the exception is documented.
+
+Never create or accept a super-event track from generated test tones, primitive waveforms, signal-generator output, metronome clicks, generated beeps, simple oscillator layers, noise beds, or quick local synthesis. This includes sine, square, triangle, sawtooth, and similar waveforms, even when mixed with noise or effects. If no real licensed track is available, stop and report the blocker instead of manufacturing a cue.
 
 The final music should be chosen intentionally.
 
@@ -453,6 +455,7 @@ Prefer:
 
 Reject:
 
+- generated test-tone or oscillator music, including sine, square, triangle, sawtooth, beep, pulse, and noise-bed cues
 - tracks that are primarily sound effects, drones, stingers, loops, abstract ambience, or texture beds when the request is for music
 - tracks with unclear licensing
 - YouTube uploads with no license information
@@ -501,7 +504,7 @@ For every super-event audio package:
 8. Add or update `music/chaosx_super_event_music.txt` so the station includes a representative entry for every final super-event track.
 9. Add or update `sound/chaosx_sound.asset` sound and soundeffect definitions for sound-channel playback.
 10. Wire the super-event to the correct audio id through `global.current_super_event_audio_id` and the settings-aware playback helper.
-11. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`. every super-event track must have a row in the HTML music table, and that row must list the super-event id or ids using the track.
+11. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`. every super-event track must have a row in the HTML music table, and that row must list the super-event id using the track. If a user-approved reuse exists, document every id in the row and explain the approval in the audio docs.
 12. Verify the final file paths, definitions, ids, and docs before calling the super-event complete.
 
 Use the existing Chaos Redux settings-aware playback helper. Do not bypass it.
@@ -543,7 +546,7 @@ The implementation should keep these aligned:
 - localisation
 - documentation
 
-Every super-event must have a specific audio id. Shared audio ids are allowed only when the reuse is intentional, tone-appropriate, and documented.
+Every super-event must have a specific audio id and a unique final track. Shared audio ids or shared tracks are allowed only when the user explicitly approved the exact reuse.
 
 Use the settings-aware playback helper rather than bypassing it.
 
@@ -551,7 +554,7 @@ Fallbacks are not allowed without discussing them with the user. If final audio 
 
 ## 17. Audio documentation
 
-Always update `music/chaosx_music_track_list.html` for every super-event track. Every final super-event track must have a row in that table, and the row must show the super-event ID or IDs that use the track.
+Always update `music/chaosx_music_track_list.html` for every super-event track. Every final super-event track must have a row in that table, and the row must show the super-event ID using the track. User-approved reuse must list every affected ID and the audio docs must explain why reuse was approved.
 
 Update any additional music or audio documentation used by the repo.
 
@@ -591,6 +594,8 @@ Before finishing any super-event task, confirm:
 - `music/chaosx_music_track_list.html` documents every super-event track and shows the super-event ID or IDs using it
 - documentation records the source, license, and duration
 - documentation records the downloaded source path, final `.ogg` path, sound definition id, and super-event use
+- no generated test-tone, oscillator, beep, primitive waveform, or noise-bed music remains in any completed super-event track
+- every completed super-event has a unique final track unless exact reuse was explicitly approved by the user and documented
 - no placeholder, default, mismatched, or wrong-format audio remains for completed super-events
 
 ## 19. Super-event image handoff

@@ -211,7 +211,7 @@ If the needed asset type has no matching reference folder, inspect the closest r
 
 ## 5. Generated artwork rules
 
-Do not create core artwork from simple shapes, placeholders, contact sheets, layout-only mockups, empty UI boxes, or generated charts.
+Do not create core artwork from simple shapes, placeholders, contact sheets, layout-only mockups, empty UI boxes, or generated charts. Final art must be real generated, sourced, or user-provided artwork, not circles, rectangles, lines, gradients, geometric diagrams, or other primitive-shape stand-ins.
 
 Use `$imagegen` for generated artwork and follow the `$imagegen` skill workflow for the source image.
 
@@ -488,7 +488,7 @@ Target size:
 457x328
 ```
 
-If a super-event needs music, research suitable public domain or clearly licensed music.
+If a super-event needs music, use `chaos-redux-super-events` and research suitable public domain or clearly licensed music. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output; that includes sine, square, triangle, and sawtooth waveforms.
 
 For each track, document:
 
