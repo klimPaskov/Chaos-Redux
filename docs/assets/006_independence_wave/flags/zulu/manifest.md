@@ -113,6 +113,7 @@
 
 ## Validation
 
+- 2026-06-04 parent correction: after user review reported the generated flags were upside down in game, all final in-game ZUL TGA outputs under `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/` were vertically flipped and revalidated. Source and processed PNG review files were left unchanged; only the final game-facing TGAs were corrected.
 - `file gfx/flags/ZUL*.tga gfx/flags/medium/ZUL*.tga gfx/flags/small/ZUL*.tga`
   - All files report `Targa image data - RGBA`.
   - Normal files report `82 x 52 x 32`.
