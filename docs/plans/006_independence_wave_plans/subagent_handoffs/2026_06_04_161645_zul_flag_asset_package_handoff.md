@@ -61,6 +61,12 @@ The variants use distinct layouts and emblem families, not only recolors of the 
 
 ## Validation
 
+Parent correction after handoff:
+
+- 2026-06-04: user review reported the generated ZUL flags were upside down in game.
+- Parent agent vertically flipped the final game-facing ZUL TGA files in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`.
+- Revalidation kept all 15 files at the expected HOI4 sizes, 32-bit RGBA TGA format, no compression, and `TopLeft` orientation.
+
 Commands run:
 
 ```bash
