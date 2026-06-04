@@ -635,6 +635,10 @@ Required flag sizes:
 - medium: 41x26
 - normal: 82x52
 
+HOI4 flag TGAs must use the same origin/header convention as vanilla flags. Validate with `file`; completed flag TGAs should read as Targa image data at the correct size and must not end with `- top`. If a flag displays upside down in-game while the artwork looks correct in an image viewer, fix the TGA encoding/origin on the flag files themselves. Do not add custom UI sprites, scripted-localisation routing, DDS display copies, or other workarounds for flag orientation.
+
+When converting a top-origin TGA to the vanilla-style bottom-origin convention, preserve the visible artwork: flip the stored rows, clear the TGA top-origin bit, and compare the decoded result against the original. For example, on a temporary output: `convert input.tga -flip output.tga`, clear byte 17 bit `0x20`, then verify `compare -metric AE input.tga output.tga null:` returns `0`. After replacement, rerun `file output.tga` and confirm the `- top` marker is gone.
+
 Avoid overly detailed symbols.
 
 Avoid generated text unless the design absolutely requires it and the final output is manually checked.
@@ -655,7 +659,7 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 - medium: 41x26
 - small: 10x7
 - correct visual orientation in a contact sheet
-- TGA origin/header convention consistent with the working HOI4 flag set
+- TGA origin/header convention consistent with vanilla HOI4 flags; `file` output must not show `- top`
 - no byte-identical ideology variants unless the design is intentionally shared and documented
 - no upside-down copies
 - no accidental no-suffix base-flag replacement for countries that were only meant to receive ideology variants
