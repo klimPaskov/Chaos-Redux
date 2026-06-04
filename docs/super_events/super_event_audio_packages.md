@@ -108,17 +108,17 @@ This file records restored, sourced, and converted super-event audio assets used
 
 ### Final Silence
 
-- Super-event ID: `8`
-- Music file: `music/super_event_final_silence.ogg`
-- Sound-channel file: `sound/chaosx_super_event_final_silence.wav`
-- Sound definition: `chaosx_super_event_final_silence_track`
+- Super-event IDs: `8`, `9`
+- Music files: `music/super_event_final_silence.ogg`; `music/super_event_final_silence_thermonuclear.ogg`
+- Sound-channel files: `sound/chaosx_super_event_final_silence.wav`; `sound/chaosx_super_event_final_silence_thermonuclear.wav`
+- Sound definitions: `chaosx_super_event_final_silence_track`; `chaosx_super_event_final_silence_thermonuclear_track`
 - Source title: `Requiem Mass in D minor, K. 626: VII. Lacrimosa`
 - Composer / creator: Wolfgang Amadeus Mozart.
 - Performer / recording: IMSLP source recording hosted on Wikimedia Commons.
 - Source URL: <https://commons.wikimedia.org/wiki/File:PMLP02751-S002-07-Mozart_Requiem_Mass.ogg>
 - License: Creative Commons Attribution-ShareAlike 3.0.
 - Duration: 1:59.501 restored cue.
-- Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
+- Conversion notes: restored the pre-placeholder track while retaining the stable file paths. `music/super_event_final_silence_thermonuclear.ogg` and `sound/chaosx_super_event_final_silence_thermonuclear.wav` are path-stable duplicates of the normal Final Silence cue by explicit user request.
 
 ### Thermonuclear Final Silence
 
@@ -126,14 +126,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_final_silence_thermonuclear.ogg`
 - Sound-channel file: `sound/chaosx_super_event_final_silence_thermonuclear.wav`
 - Sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
-- Source title: `Taps`
-- Composer / creator: traditional U.S. bugle call.
-- Performer / recording: United States Army Band.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Taps_on_bugle.ogg>
-- Source file: `docs/super_events/source_audio/taps_on_bugle_us_army_band.ogg`
-- License: public domain U.S. federal government recording.
-- Duration: 58.7 seconds.
-- Notes: sourced replacement for the prior generated cue, used so thermonuclear Final Silence remains distinct from normal Final Silence.
+- Source title: `Requiem Mass in D minor, K. 626: VII. Lacrimosa`
+- Composer / creator: Wolfgang Amadeus Mozart.
+- Performer / recording: IMSLP source recording hosted on Wikimedia Commons.
+- Source URL: <https://commons.wikimedia.org/wiki/File:PMLP02751-S002-07-Mozart_Requiem_Mass.ogg>
+- License: Creative Commons Attribution-ShareAlike 3.0.
+- Duration: 1:59.501 restored cue.
+- Notes: exact reuse of the normal Final Silence recording, approved by the user for this super-event pair.
 
 ### The Mandala Breaks
 
