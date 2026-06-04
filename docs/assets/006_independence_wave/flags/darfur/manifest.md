@@ -1,0 +1,47 @@
+# Event 006 Darfur Flag Asset Manifest
+
+## DFR country flag
+
+- Related event id: 006
+- Related event slug: independence_wave
+- Asset type: country flag
+- Intended in-game use: fallback country flag for planned custom Darfur package, likely tag `DFR`
+- Source mode: sourced reconstruction from published textual flag description
+- Historical source links:
+  - https://www.flag-encyclopedia.com/fdarfur_me.htm
+  - https://www.fotw.info/flags/sd_sdarf.html
+  - https://en.wikipedia.org/wiki/Sultanate_of_Darfur
+  - https://www.britannica.com/topic/Sudan-flag-of-The
+- Source author, archive, or collection:
+  - Flag Encyclopedia credits World Statesmen / Volker Preuss for the Darfur flag description.
+  - FOTW page edited by contributors Esteban Rivera, Jean-Marc Merklin, and Brendan Hennessy.
+- Source date or estimated date range:
+  - Flag claim refers to Sultanate of Darfur, 1603-1874 and 1898-1916.
+  - The planned route is 1936-1945-compatible as a restoration/council symbol, not a claim of active sovereignty in vanilla 1936.
+- License or public-domain status:
+  - Final image files are original simple geometric reconstructions made for Chaos Redux from textual flag descriptions.
+  - The historical attribution is uncertain; no copyrighted modern insignia or movement symbol was copied.
+- Era-fit note:
+  - Sober Islamic/Sudanese historical palette and crescent motif fit a Darfur sultanate restoration route better than modern-conflict symbols.
+  - The small flag omits the crescent because it becomes illegible at 10x7 pixels.
+- Source PNG path: `docs/assets/006_independence_wave/flags/darfur/source_png/DFR_source_reconstruction.png`
+- Processed PNG paths:
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_medium.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_small.png`
+- Contact sheet: `docs/assets/006_independence_wave/flags/darfur/DFR_contact_sheet.png`
+- Final TGA paths:
+  - `gfx/flags/DFR.tga`
+  - `gfx/flags/medium/DFR.tga`
+  - `gfx/flags/small/DFR.tga`
+- Target sizes:
+  - Normal: 82x52
+  - Medium: 41x26
+  - Small: 10x7
+- Sprite name: not applicable for country flags
+- `.gfx` file: not applicable for country flags
+- Localisation key: not applicable for this asset task
+- Notes:
+  - No ideology-specific variants were produced. The non-specific fallback flag is valid by HOI4 country-creation rules and avoids inventing ideological Darfur variants without design approval.
+  - Historical certainty is medium-low. The published flag description is sourceable, but no primary archival flag image was found in this bounded pass.
+- Asset status: complete for fallback `DFR` flag package; needs parent review before country-tag use
