@@ -213,6 +213,8 @@ If the needed asset type has no matching reference folder, inspect the closest r
 
 Do not create core artwork from simple shapes, placeholders, contact sheets, layout-only mockups, empty UI boxes, or generated charts. Final art must be real generated, sourced, or user-provided artwork, not circles, rectangles, lines, gradients, geometric diagrams, or other primitive-shape stand-ins.
 
+For super-event images, this rule is strict: final art must be a real scene, archival image, painted illustration, or generated documentary-style image. Do not use symbolic diagrams, mandala/circle constructions, flat icons, abstract geometry, title cards, or UI-like compositions as the final super-event image unless the user explicitly requests that exact visual approach and the exception is documented.
+
 Use `$imagegen` for generated artwork and follow the `$imagegen` skill workflow for the source image.
 
 Generated artwork must be real source art that can be processed into the final game asset. Do not use contact sheets, review boards, or layout drafts as final source art.
