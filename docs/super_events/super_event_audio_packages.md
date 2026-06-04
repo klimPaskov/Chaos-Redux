@@ -10,11 +10,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/zombies.ogg`
 - Sound-channel file: `sound/chaosx_super_event_zombies.wav`
 - Sound definition: `chaosx_super_event_zombies_track`
-- Source title: restored legacy Chaos Redux initial-outbreak cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Requiem: Dies irae`
+- Composer / creator: Giuseppe Verdi.
+- Performer / recording: 1997 recording from `VERDI, G.: Messa da Requiem / Quattro Pezzi Sacri` with the Hungarian State Opera Chorus and Orchestra, Morandi.
+- Source URL: <https://www.naxos.com/CatalogueDetail/?id=8.550944-45>
+- License: attribution verified; current package docs do not include a separate open-license source file for this restored cue.
 - Duration: 2:00 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -54,11 +54,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_fallout.ogg`
 - Sound-channel file: `sound/chaosx_super_event_fallout.wav`
 - Sound definition: `chaosx_super_event_fallout_track`
-- Source title: restored legacy Chaos Redux Fallout cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Overture in C minor, Op. 62, "Coriolan"`
+- Composer / creator: Ludwig van Beethoven.
+- Performer / recording: Fulda Symphonic Orchestra, conducted by Simon Schindler.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Ludwig_van_Beethoven_-_Overt%C3%BCre_c-moll,_op._62.ogg>
+- License: EFF Open Audio License v1.
 - Duration: 1:59.5 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -68,13 +68,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/zombies_defeat.ogg`
 - Sound-channel file: `sound/chaosx_super_event_zombies_defeat.wav`
 - Sound definition: `chaosx_super_event_zombies_defeat_track`
-- Source title: restored legacy Chaos Redux recovery cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Unknown / uncredited source track`
+- Composer / creator: Unknown / uncredited.
+- Performer / recording: Unknown / uncredited.
+- Source URL: not available; no trustworthy attribution was present in the restored file, embedded metadata, or pre-placeholder catalog entry.
+- License: unverified legacy file; source replacement or external identification is required before verified attribution can be claimed.
 - Duration: 1:38.717 restored cue.
-- Conversion notes: restored the pre-placeholder track while keeping the stable file paths used by existing super-event ID `5` definitions.
+- Conversion notes: restored the pre-placeholder track while keeping the stable file paths used by existing super-event ID `5` definitions. The restored file's embedded metadata explicitly records that no trustworthy source attribution was present.
 
 ### Wendigo
 
@@ -82,11 +82,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/wendigo.ogg`
 - Sound-channel file: `sound/chaosx_super_event_wendigo.wav`
 - Sound definition: `chaosx_super_event_wendigo_track`
-- Source title: restored legacy Chaos Redux Wendigo cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Tapiola, Op. 112`
+- Composer / creator: Jean Sibelius.
+- Performer / recording: Sir Colin Davis conducting the Boston Symphony Orchestra, recorded 1977.
+- Source URL: <https://www.offidocs.com/index.php/main-templates/photos-images-examples/289262-tapiola>
+- License: attribution verified; current package docs do not include a separate open-license source file for this restored cue.
 - Duration: 1:31.542 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -98,11 +98,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_buddha_mandate.ogg`
 - Sound-channel file: `sound/chaosx_super_event_buddha_mandate.wav`
 - Sound definition: `chaosx_super_event_buddha_mandate_track`
-- Source title: restored legacy Chaos Redux Buddha Mandate cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Buddham Saranam Gacchami - Male Voice, with Female Chorus`
+- Composer / creator: Hariharan.
+- Performer / recording: Hariharan; Wikimedia Commons source file credited to the Internet Archive item `BuddhamSaranamGacchami`.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Buddham_Saranam_Gacchami_-_Male_Voice,_with_Female_Chorus.oga>
+- License: CC0 1.0 Universal Public Domain Dedication.
 - Duration: 1:59.5 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -112,11 +112,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_final_silence.ogg`
 - Sound-channel file: `sound/chaosx_super_event_final_silence.wav`
 - Sound definition: `chaosx_super_event_final_silence_track`
-- Source title: restored legacy Chaos Redux Final Silence cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Requiem Mass in D minor, K. 626: VII. Lacrimosa`
+- Composer / creator: Wolfgang Amadeus Mozart.
+- Performer / recording: IMSLP source recording hosted on Wikimedia Commons.
+- Source URL: <https://commons.wikimedia.org/wiki/File:PMLP02751-S002-07-Mozart_Requiem_Mass.ogg>
+- License: Creative Commons Attribution-ShareAlike 3.0.
 - Duration: 1:59.501 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -141,11 +141,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_mandala_breaks.ogg`
 - Sound-channel file: `sound/chaosx_super_event_mandala_breaks.wav`
 - Sound definition: `chaosx_super_event_mandala_breaks_track`
-- Source title: restored legacy Chaos Redux Mandala Break cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Symphony No. 5 in C minor, Op. 67: I. Allegro con brio`
+- Composer / creator: Ludwig van Beethoven.
+- Performer / recording: Fulda Symphonic Orchestra, conducted by Simon Schindler.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Ludwig_van_Beethoven_-_Symphonie_5_c-moll_-_1._Allegro_con_brio.ogg>
+- License: public domain.
 - Duration: 1:59.5 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -155,11 +155,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_divine_sovereignty.ogg`
 - Sound-channel file: `sound/chaosx_super_event_divine_sovereignty.wav`
 - Sound definition: `chaosx_super_event_divine_sovereignty_track`
-- Source title: restored legacy Chaos Redux Divine Sovereignty cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Ave Maria from Gregorian Vespers`
+- Composer / creator: Traditional Gregorian chant.
+- Performer / recording: Schola Gregoriana from the Pallottine Seminary in Oltarzew, conducted by Dariusz Smolarek.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Schola_Gregoriana-Ave_Maria.ogg>
+- License: Creative Commons Attribution-ShareAlike 3.0.
 - Duration: 1:10.627 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -261,11 +261,11 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_angel_directorate.ogg`
 - Sound-channel file: `sound/chaosx_super_event_angel_directorate.wav`
 - Sound definition: `chaosx_super_event_angel_directorate_track`
-- Source title: restored legacy Chaos Redux Angel Directorate cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `A Night on the Bare Mountain`
+- Composer / creator: Modest Mussorgsky.
+- Performer / recording: Musopen source recording hosted on Wikimedia Commons.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Modest_Mussorgsky_-_night_on_bald_mountain.ogg>
+- License: public domain.
 - Duration: 1:59.5 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
 
@@ -275,10 +275,10 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_angelic_world_order.ogg`
 - Sound-channel file: `sound/chaosx_super_event_angelic_world_order.wav`
 - Sound definition: `chaosx_super_event_angelic_world_order_track`
-- Source title: restored legacy Chaos Redux Angelic World Order cue.
-- Composer / creator: legacy Chaos Redux audio package.
-- Performer / recording: legacy Chaos Redux audio package.
-- Source URL: repository history, restored from the pre-placeholder audio blob.
-- License: legacy Chaos Redux audio package.
+- Source title: `Toccata and Fugue in D minor, BWV 565`
+- Composer / creator: Johann Sebastian Bach.
+- Performer / recording: Ashtar Moira, Tamburini organ recording.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Toccata_et_Fugue_BWV565.ogg>
+- License: public domain.
 - Duration: 1:59.5 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
