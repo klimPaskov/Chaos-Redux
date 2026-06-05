@@ -42,6 +42,59 @@
 - `.gfx` file: not applicable for country flags
 - Localisation key: not applicable for this asset task
 - Notes:
-  - No ideology-specific variants were produced. The non-specific fallback flag is valid by HOI4 country-creation rules and avoids inventing ideological Darfur variants without design approval.
+  - The non-specific fallback flag remains preserved as the base Darfur/Sultanate-style reconstruction.
   - Historical certainty is medium-low. The published flag description is sourceable, but no primary archival flag image was found in this bounded pass.
 - Asset status: complete for fallback `DFR` flag package; needs parent review before country-tag use
+
+## DFR ideology flag variants
+
+- Related event id: 006
+- Related event slug: independence_wave
+- Asset type: country ideology flags
+- Intended in-game use: ideology-specific variants for custom Darfur package, tag `DFR`
+- Source mode: mechanical/vector derivation from the existing DFR base flag style
+- Design notes:
+  - `DFR_democratic`: council tricolor with a red hoist triangle, crescent, and small council beads.
+  - `DFR_neutrality`: authority/sultanate standard with the base green-red-black language, a gold hoist, and central crescent-star.
+  - `DFR_communism`: red popular-council banner using local crescent-star symbols and no hammer-and-sickle.
+  - `DFR_fascism`: dark emergency-authority standard with green hoist, red bar, and a fictional spearhead/fortress emblem; no real extremist insignia.
+- Source PNG paths:
+  - `docs/assets/006_independence_wave/flags/darfur/source_png/DFR_democratic_vector_source.png`
+  - `docs/assets/006_independence_wave/flags/darfur/source_png/DFR_neutrality_vector_source.png`
+  - `docs/assets/006_independence_wave/flags/darfur/source_png/DFR_communism_vector_source.png`
+  - `docs/assets/006_independence_wave/flags/darfur/source_png/DFR_fascism_vector_source.png`
+- Processed PNG paths:
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_democratic.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_democratic_medium.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_democratic_small.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_neutrality.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_neutrality_medium.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_neutrality_small.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_communism.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_communism_medium.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_communism_small.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_fascism.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_fascism_medium.png`
+  - `docs/assets/006_independence_wave/flags/darfur/processed_png/DFR_fascism_small.png`
+- Contact sheet: `docs/assets/006_independence_wave/flags/DFR_ideology_flags_contact.png`
+- Final TGA paths:
+  - `gfx/flags/DFR_democratic.tga`
+  - `gfx/flags/DFR_neutrality.tga`
+  - `gfx/flags/DFR_communism.tga`
+  - `gfx/flags/DFR_fascism.tga`
+  - `gfx/flags/medium/DFR_democratic.tga`
+  - `gfx/flags/medium/DFR_neutrality.tga`
+  - `gfx/flags/medium/DFR_communism.tga`
+  - `gfx/flags/medium/DFR_fascism.tga`
+  - `gfx/flags/small/DFR_democratic.tga`
+  - `gfx/flags/small/DFR_neutrality.tga`
+  - `gfx/flags/small/DFR_communism.tga`
+  - `gfx/flags/small/DFR_fascism.tga`
+- Target sizes:
+  - Normal: 82x52
+  - Medium: 41x26
+  - Small: 10x7
+- Sprite name: not applicable for country flags
+- `.gfx` file: not applicable for country flags
+- Localisation key: not applicable for this asset task
+- Asset status: complete for ideology variant package
