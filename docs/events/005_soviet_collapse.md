@@ -28,7 +28,7 @@ The main active systems are:
 - foreign patron decisions and dependency pressure
 - local league and Free Republics' League logic
 - Union Unmade terminal collapse
-- triggerable scenario launch: the Scenarios window can force Union Unmade immediately, release ordinary republics or ordinary plus high-chaos splinters by type, form local factions, start the anti-Soviet wars, and grant extra opening forces scaled by intensity, controlled states, civilian factories, and military factories; large and industrial republics receive stronger opening armies through state and factory multipliers
+- triggerable scenario launch: the Scenarios window can force standalone Soviet Collapse starts without inheriting unrelated live-crisis settings, release ordinary republics or ordinary plus high-chaos splinters by type, form local factions, start the anti-Soviet wars, and grant extra opening forces scaled by intensity, controlled states, civilian factories, and military factories; large and industrial republics receive stronger opening armies through state and factory multipliers
 - reconquest resolution: Moscow marks the crisis resolved after regaining control of every state held when the crisis began, which clears the crisis/terminal flags, removes active Soviet missions, hides breakaway and foreign intervention boards, and resets the crisis meters
 - runtime focus trees for ordinary republics and fixed focus trees for custom/high-chaos actors
 - super-event and report/news presentation surfaces
@@ -58,7 +58,7 @@ Event 005 registers two event-log evolution families:
 - Republic Secession Progression, type `constant:soviet_collapse_event_log.secession_evolution_type`: records first republic declarations, regional cascade, Union Unmade, and terminal republic/splinter rupture milestones.
 - High-Chaos Successor Mutation, type `constant:soviet_collapse_high_chaos_event_log.evolution_type`: records the first qualifying high-chaos or extreme successor authority while keeping later high-chaos reports out of the evolution log.
 
-The event-details preview list for event ID `5` is registered in `events_log_rebuild_open_event_details_view`. Player-facing evolution body text mirrors the Event 005 row in `docs/spreadsheets/chaos_redux_events_catalog.xlsx`: the secession progression stages use the spreadsheet's Gathering Storm, Rising Chaos, Chaos Tier, and Terminal Rupture wording, and the high-chaos successor entry uses the spreadsheet's high-chaos and extreme successor wording.
+The event-details preview list for event ID `5` is registered in `events_log_rebuild_open_event_details_view`. Player-facing evolution body text must match the Event 005 row in `docs/spreadsheets/chaos_redux_events_catalog.xlsx` exactly after implementation facts are finalized. The current documentation should not be treated as proof that event-detail and spreadsheet wording are already aligned.
 
 ## Legacy Doc Routing
 
@@ -76,8 +76,9 @@ Generated/source/final binary assets and text prompt files remain in place. The 
 
 Implementation should continue in this order:
 
-1. Balance: prove and fix calm strong-USSR threat, Republic Momentum, Foreign Penetration, and Union Unmade pacing.
-2. MTTH releases: make later republics appear through dynamic pressure without a fixed trio or permanent stalling.
-3. Focus quality: remove duplicate reward clusters and clean layouts without overlapping focuses or crossing lines.
-4. Countries and leaders: ensure generated portraits, leader names, gender flags, history setup, focus loading, and country localisation match.
-5. Assets: finish unique flags, ideology flags, route flags, portraits, and super-event assets after gameplay is stable.
+1. Release pacing: preserve gradual active-crisis releases. Calm worlds release only the base Soviet republics; higher release pressure and chaos tiers unlock vanilla regional republics; chaos tier and above can unlock custom chaos/special splinters; terminal and maximum-intensity paths can run all-possible release passes.
+2. Dynamic release gates: keep extra non-base releases tied to live Union Collapse Threat, release pressure, failed objectives, cascade pressure, war pressure, severe component pressure, urgency, or chaos-tier pressure. Do not reintroduce static one-shot release behavior.
+3. Focus quality: continue cleanup around political, industry, and expansion branches; compact layouts; no overlapping lines; fewer pointless mutexes; no idea spam; and visible mechanics such as decisions, war goals, cores, units, templates, factions, and regional interaction rewards.
+4. Scenario and decision visibility: keep triggerable scenarios standalone, and fix selected-breakaway intervention visibility dynamically so tags such as Tajikistan do not expose an empty intervention panel. Do not solve this with hardcoded tag lists.
+5. Evolution details: update event-detail and evolution-detail wording only after implementation facts are finalized, then mirror the spreadsheet descriptions exactly.
+6. Flags and flag assets: no active work. Do not edit flags, route flags, ideology flags, `gfx/flags`, flag GFX, or flag assets unless the parent explicitly reopens that scope.
