@@ -8,25 +8,40 @@ This file is a resumability aid, not an Event005 completion claim. Event005 rema
 
 ## Current Resume State
 
-- Latest reliable event overview: `docs/events/005_soviet_collapse.md`, with the caveat that its Union Unmade terminal-release wording conflicts with one later parent handoff listed below.
+- Latest reliable event overview: `docs/events/005_soviet_collapse.md`, after the June 5 documentation-curator update that records gradual active-crisis releases, terminal/max exhaustive-release boundaries, standalone triggerable scenarios, pending evolution-detail parity, and the no-flag boundary.
 - Source design remains the seven files under `docs/specs/005_soviet_collapse_specs/`.
 - Working implementation evidence remains in `docs/plans/005_soviet_collapse_plans/` and `docs/plans/005_soviet_collapse_plans/subagent_handoffs/`.
 - Flags and flag assets are out of scope for the active parent task. Do not edit `gfx/flags`, flag GFX, route flags, ideology flags, or other assets until the parent explicitly reopens asset work.
 - The latest completed CFR evidence found by this curator is `subagent_handoffs/2026_06_05_parent_cfr_construction_focus_depth_tranche.md`; it records validation and no flag edits. Treat CFR depth as a completed tranche, not as Event005 completion.
-- The latest focus audit evidence found by this curator is mixed: `subagent_handoffs/20260605T145855Z_event005_focus_tree_auditor_current_state_handoff.md` gives a mechanical baseline, but later parent handoffs supersede its Ukraine/Belarus route-lock finding and some pathline findings.
+- The latest focus audit evidence found by this curator is `subagent_handoffs/2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md`. It keeps the 41-tree/1698-focus mechanical baseline, reports 0 duplicate IDs and 0 coordinate duplicates after one CFR coordinate patch, and still reports 520 pathline risks plus 1,127 helper-only or nearly helper-only reward findings.
+
+## Accepted Current Constraints
+
+- Event005 is not complete.
+- Active Soviet Collapse releases must be gradual. Calm worlds release only the base Soviet republics. Higher dynamic release pressure and chaos tiers unlock vanilla regional republics. Chaos tier and above can unlock custom chaos/special splinters. Terminal or maximum-intensity paths can release all possible former-Union candidates.
+- Extra releases beyond base republics must depend on live dynamic state such as Union Collapse Threat, progressive release pressure, failed-objective pressure, regional cascade pressure, war pressure, severe component pressure, urgency, or chaos-tier pressure. Do not describe or implement them as a static one-shot release.
+- Triggerable Soviet Collapse scenarios are standalone starts. They must not inherit unrelated live-crisis settings.
+- Stronger republics should spawn with more initial divisions through dynamic scaling from controlled states, civilian factories, military factories, existing divisions, chaos, war pressure, depot access, foreign access, and terminal/scenario intensity.
+- Focus trees remain under cleanup. Required direction: clear political, industry, and expansion branches; compact layouts; no overlapping lines; fewer pointless mutual exclusions; no idea spam; and meaningful decisions, war goals, cores, units, templates, factions, or regional-interaction rewards.
+- Evolution-detail and event-detail wording remains pending. It must match the spreadsheet descriptions exactly after implementation facts are finalized.
+- The selected-breakaway intervention visibility bug remains a dynamic-system priority. Showing breakaway decisions must not expose an empty intervention panel for dynamic tags such as Tajikistan, and the fix must not use hardcoded tag lists.
+- Flag and flag-asset work is closed for the current task. If older docs require flag work, treat that requirement as future/no-touch scope until the parent explicitly reopens it.
 
 ## Current Implementation Facts From Recent Handoffs
 
 | Area | Current evidence | State |
 | --- | --- | --- |
-| Focus-tree mechanical baseline | `20260605T145855Z_event005_focus_tree_auditor_current_state_handoff.md` parsed 41 trees, 1698 focuses, 0 duplicate focus IDs, 0 coordinate overlaps, 0 missing basics, 0 parent-at/below-child issues, and 0 continuous-panel risks. | Use as latest full mechanical count baseline, except findings superseded by later parent patches. |
+| Focus-tree mechanical baseline | `2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md` parsed 41 trees, 1698 focuses, 0 duplicate focus IDs, 0 coordinate duplicates, 0 missing/recursive relative positions, 0 parent-at/below-child issues, 0 continuous-panel risks, 0 direct focus idea effects, and 0 unsupported `<=`/`>=` operators. | Latest post-CFR audit baseline. It made one bounded CFR coordinate patch before recording the final numbers. |
+| Focus-tree remaining risks | `2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md` reports 520 pathline-through-focus heuristic risks and 1,127 helper-only or nearly helper-only reward findings, led by custom splinters, republics, and MFR. | Queued/in progress. No focus-tree completion claim is supported. |
 | Ukraine and Belarus route locks | `2026_06_05_parent_ukraine_belarus_route_lock_tranche.md` added route-completed triggers and adjacent visible mutual-exclusion links. | Implemented tranche. Broader Ukraine/Belarus depth remains queued. |
 | BLR/KAZ/GAC pathline cleanup and DSC aggression | `2026_06_05_parent_focus_cleanup_layout_dsc_aggression_tranche.md` fixed named pathline clutter and made broad starting-tension cleanup tag-specific. | Implemented tranche. Broader helper-heavy reward design remains queued. |
-| Dynamic non-base release gating | `2026_06_05_parent_dynamic_nonbase_release_gate_handoff.md` tightened preterminal non-base and pressure-successor release gates around live crisis pressure. | Implemented tranche for active crisis gates; terminal Union Unmade behavior still needs doc reconciliation. |
+| Dynamic non-base release gating | `2026_06_05_parent_dynamic_nonbase_release_gate_handoff.md` tightened preterminal non-base and pressure-successor release gates around live crisis pressure. | Implemented tranche for active crisis gates. Terminal, maximum-intensity, and standalone chaos-scenario paths remain the exhaustive rupture paths. |
 | Dynamic release pressure budgets and focus helper visibility | `2026_06_05_parent_dynamic_release_pressure_and_focus_cleanup_visibility.md` raised high-chaos pressure-successor budgets while preserving pressure gates and hid internal helper calls in focus rewards. | Implemented tranche. |
 | CFR construction depth | `2026_06_05_parent_cfr_construction_focus_depth_tranche.md` adds early CFR map-visible construction payloads, new scripted effects, decision visibility fixes, and localisation. | Implemented tranche. Event005 still incomplete. |
-| Evolution detail parity | `docs/events/005_soviet_collapse.md` says event-detail/evolution body text mirrors the spreadsheet wording; parent context still says evolution detail parity is part of the active goal. | In progress unless a later spreadsheet/event-detail completion handoff is produced. |
-| Dynamic decision expansion | Recent handoffs cover foreign selected-target robustness and CFR/DSC/PRA decision hooks, but no final all-decision expansion audit was found. | In progress. |
+| Focus helper spam cleanup | `2026_06_05_parent_focus_helper_spam_cleanup_tranche.md` removed one PRA duplicate helper call and hid noisy shared helper payloads behind bespoke Ukraine League tooltips. | Implemented narrow tranche. The broad helper-only reward problem remains queued. |
+| Evolution detail parity | `docs/events/005_soviet_collapse.md` now records that event-detail/evolution body text must match the spreadsheet after implementation facts are finalized, but that parity is not yet proven. | In progress unless a later spreadsheet/event-detail completion handoff is produced. |
+| Triggerable scenarios | `2026_05_31_parent_focus_release_analysis.md`, `2026_06_04_parent_release_pacing_tranche.md`, and later release handoffs describe standalone scenario suppression, exhaustive scenario release passes, and scaled opening forces. | In progress; docs must keep scenario starts separate from unrelated live-crisis settings. |
+| Dynamic decision expansion and visibility | Recent handoffs cover foreign selected-target robustness and CFR/DSC/PRA decision hooks, but no final all-decision expansion audit was found. The known Tajikistan-style empty-panel bug remains a dynamic visibility priority. | In progress. Do not solve with hardcoded tag lists. |
 | Focus depth and cleanup | Many tranches are implemented, but audits still cite generic helper rewards, cloned splinter scaffolds, shallow compact/ancient trees, and route-depth gaps. | Queued/in progress. |
 
 ## Recent Plan And Handoff Disposition
@@ -38,7 +53,7 @@ This file is a resumability aid, not an Event005 completion claim. Event005 rema
 | `2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md` | Partially implemented, mostly queued | Ukraine/Belarus route locks and CFR depth have later implemented tranches. Custom splinter identity, ancient restoration depth, OGB depth, and broad reward cleanup remain queued. |
 | `2026_05_31_parent_focus_release_analysis.md` | Partially implemented and partly superseded | Later handoffs implement several release/focus fixes. Remaining work section still matches current queued focus-depth work, but counts/layout specifics are superseded by June 5 audits. |
 | `2026_06_04_focus_tree_auditor_all_soviet_collapse_audit.md` | Superseded as current audit baseline | Later June 5 audits and parent patches replace its coordinate/route-lock findings. Keep as historical evidence of earlier broad focus-quality concerns. |
-| `2026_06_05_parent_dynamic_release_pacing_and_idea_cleanup_followup.md` | Implemented with contradiction requiring parent decision | It says normal Union Unmade no longer calls the exhaustive all-possible release helper. This conflicts with the current overview/spec terminal-release wording. |
+| `2026_06_05_parent_dynamic_release_pacing_and_idea_cleanup_followup.md` | Implemented and clarified by current accepted constraints | Use it as evidence that active non-base releases are pressure-gated and that standalone triggerable scenarios keep exhaustive all-possible behavior. Do not read it as permission for static or instant live-crisis release sweeps. |
 | `2026_06_05_141828_parent_focus_release_layout_depth_tranche.md` | Implemented and partly superseded | Later focus audit was collected, then later parent handoffs addressed route locks and CFR depth. |
 | `2026_06_05_parent_dynamic_release_focus_layout_followup.md` | Implemented, release-gate note partly superseded | Its focus layout changes stand. Its "no release-script change" note is superseded by the later dynamic non-base release gate handoff. |
 | `2026_06_05_parent_dynamic_nonbase_release_gate_handoff.md` | Implemented | Current evidence for active preterminal non-base and pressure-successor gates. |
@@ -49,21 +64,25 @@ This file is a resumability aid, not an Event005 completion claim. Event005 rema
 | `2026_06_05_parent_focus_cleanup_layout_dsc_aggression_tranche.md` | Implemented | Current evidence for tag-specific starting-tension cleanup, BLR/KAZ/GAC pathline fixes, and two DSC aggression payoffs. |
 | `2026_06_05_parent_ukraine_belarus_route_lock_tranche.md` | Implemented | Current evidence for Ukraine/Belarus route lock behavior. |
 | `2026_06_05_parent_cfr_construction_focus_depth_tranche.md` | Implemented | Current evidence for latest CFR construction-directorate depth pass. |
+| `2026_06_05_parent_focus_helper_spam_cleanup_tranche.md` | Implemented | Narrow evidence for PRA duplicate-helper cleanup and Ukraine League tooltip cleanup. Broad helper-only reward cleanup remains queued. |
+| `2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md` | Current audit baseline | Latest focus-tree count/risk baseline after the CFR tranche and one bounded CFR coordinate patch. |
 
 ## Contradictions And Stale Documentation To Resolve
 
 | Subject | Evidence | Required parent decision |
 | --- | --- | --- |
-| Normal Union Unmade release scope | `docs/events/005_soviet_collapse.md` and spec part 4 describe exhaustive terminal release sweeps. `2026_06_05_parent_dynamic_release_pacing_and_idea_cleanup_followup.md` says normal Union Unmade no longer calls the exhaustive all-possible helper directly. | Decide whether the accepted design is exhaustive terminal release or pressure-batched normal Union Unmade, then update `docs/events/005_soviet_collapse.md` and spec part 4 if needed. |
-| "All republics release instantly" risk | Current overview and recent gate handoffs say ordinary progression is staged and pressure-gated; older release-floor wording in `2026_05_28_decision_release_focus_reward_fix.md` is no longer the active release model. | Use staged, pressure-gated language for active crisis releases. Terminal/triggerable forced-release behavior needs the Union Unmade decision above. |
+| Active release pacing versus terminal release | Older handoffs can sound like broad release is either fully removed or always exhaustive. The accepted current boundary is narrower: live crisis releases are staged and pressure-gated; terminal, maximum-intensity, and standalone chaos scenario paths can run all-possible release passes. | Keep this distinction in every future doc/spec/spreadsheet edit. |
+| "All republics release instantly" risk | Current overview and recent gate handoffs say ordinary progression is staged and pressure-gated; older release-floor wording in `2026_05_28_decision_release_focus_reward_fix.md` is no longer the active release model. | Use staged, pressure-gated language for active crisis releases. Exhaustive release language belongs only to terminal, maximum-intensity, and standalone scenario rupture paths. |
 | Flags and assets | Spec part 7 requires flag and route-flag asset coverage, but the active parent task explicitly forbids flag edits. | Treat asset/flag requirements as future scope only. Do not route active focus/release cleanup into flags. |
 | Focus-tree completion | Spec part 5 defines focus completion proof, but recent audits and parent handoffs repeatedly say broad focus-depth work remains incomplete. | Do not claim focus-tree completion until a final full-tree audit clears route depth, reward depth, AI behavior, localisation, icons, and layout. |
-| Evolution detail parity | Current overview says event-detail/evolution text mirrors the spreadsheet, but parent context still lists evolution detail parity as active work. | Require a later spreadsheet/event-detail handoff before marking this complete. |
+| Evolution detail parity | Current overview and parent context both treat event-detail/evolution text parity as active work. | Require a later spreadsheet/event-detail handoff before marking this complete. |
+| Triggerable scenario inheritance | Scenario docs can blur live-crisis and forced-scenario paths. | Record triggerable Soviet Collapse scenarios as standalone; they should not inherit unrelated crisis settings. |
+| Selected-breakaway decision visibility | Prior handoffs improved selected-target visibility, but the current known bug says some tags such as Tajikistan can reveal no intervention decisions. | Keep the fix dynamic through selected-target/breakaway classification and targeted-decision scope handling. Do not hardcode tag lists. |
 
 ## Next Resume Priorities
 
-1. Reconcile Union Unmade terminal release wording across `docs/events/005_soviet_collapse.md`, spec part 4, and the June 5 release handoffs.
-2. Continue focus-depth tranches with the queued high-impact gaps: custom splinter bespoke openings, ancient restoration depth, OGB depth, compact high-chaos aggression, and helper-generic rewards.
-3. Produce a fresh post-CFR, post-route-lock focus audit before any focus-tree completion claim.
+1. Continue release-pacing validation around gradual live releases, dynamic pressure gates, stronger-republic force scaling, and exhaustive terminal/max/scenario rupture paths.
+2. Continue focus-depth tranches with the queued high-impact gaps: custom splinter bespoke openings, ancient restoration depth, OGB depth, compact high-chaos aggression, pathline cleanup, and helper-generic rewards.
+3. Fix selected-breakaway intervention visibility dynamically, with the Tajikistan-style empty-panel case as a regression target and no hardcoded tag lists.
 4. Produce a decision/evolution detail parity handoff before claiming the dynamic decision expansion or spreadsheet-aligned evolution detail work is complete.
 5. Keep flag and asset work closed unless the parent explicitly reopens it.
