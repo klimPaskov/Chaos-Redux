@@ -12,15 +12,16 @@ The registered clusters are:
 ## Runtime Flow
 
 1. The daily event timer selects a normal event through existing weighted selection.
-2. `fire_event_by_temp_id` checks whether the selected event belongs to a cluster.
-3. If the selected event has a cluster, the system checks cluster type, unlock tier, cooldown, member availability, and the chaos-scaled cluster roll.
-4. If the cluster fires, valid members are ordered by danger and placed into a country-scoped pending queue.
-5. The cluster applies global pacing once: repeatable and one-time clusters count as one minor event for timer compression and major-event weight growth, while major clusters count as one major event for timer and major-weight reset behavior.
-6. The first queued member fires immediately through the shared cluster-member context, so its effects, history logging, fired state, fire-once removal, and own post-fire weight changes still apply without adding another timer or major-weight update.
-7. Later queued members fire from `chaosx.event_clusters.2` after tier-scaled random cooldowns with the same cluster-member context.
-8. If the cluster does not fire, the selected event fires normally.
+2. The timer marks `automatic_event_firing_context` and calls `fire_event_by_temp_id`.
+3. `fire_event_by_temp_id` checks whether the selected event belongs to a cluster. The cluster roll only runs while `automatic_event_firing_context` is present.
+4. If the selected event has a cluster, the system checks cluster type, unlock tier, cooldown, member availability, and the chaos-scaled cluster roll.
+5. If the cluster fires, valid members are ordered by danger and placed into a country-scoped pending queue.
+6. The cluster applies global pacing once: repeatable and one-time clusters count as one minor event for timer compression and major-event weight growth, while major clusters count as one major event for timer and major-weight reset behavior.
+7. The first queued member fires immediately through the shared cluster-member context, so its effects, history logging, fired state, fire-once removal, and own post-fire weight changes still apply without adding another timer or major-weight update.
+8. Later queued members fire from `chaosx.event_clusters.2` after tier-scaled random cooldowns with the same cluster-member context.
+9. If the cluster does not fire, the selected event fires normally.
 
-Manual event triggering uses `fire_event_by_temp_id_no_cluster` directly. Cluster triggering has its own settings UI path through `trigger_selected_event_cluster`, which force-fires a known cluster instead of using automatic availability checks.
+Manual event triggering uses `fire_event_by_temp_id_no_cluster` directly. If a future manual call site reaches `fire_event_by_temp_id`, the missing `automatic_event_firing_context` prevents the cluster roll. Cluster triggering has its own settings UI path through `trigger_selected_event_cluster`, which force-fires a known cluster instead of rolling from a manually triggered event.
 
 ## Tuning
 
