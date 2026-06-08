@@ -498,7 +498,11 @@ focus_tree = {
 			holy_realm_add_chaos = yes
 		}
 		ai_will_do = {
-			factor = 4
+			factor = constant:holy_realm_ai.peace_branch_factor
+			modifier = {
+				factor = constant:holy_realm_ai.high_chaos_peace_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
+			}
 		}
 	}
 
@@ -660,8 +664,8 @@ focus_tree = {
 		prerequisite = { focus = THR_buddha_mandate }
 		available = {
 			custom_trigger_tooltip = {
-				tooltip = THR_extreme_chaos_focus_tt
-				holy_realm_chaos_above_divine_floor = yes
+				tooltip = THR_chaos_tier_focus_tt
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 
 			holy_realm_buddha_path_unlocked = yes
@@ -672,14 +676,18 @@ focus_tree = {
 			country_event = { id = chaosx.nr3.40 }
 		}
 		ai_will_do = {
-			factor = 0.45
+			factor = constant:holy_realm_ai.final_entry_factor
 			modifier = {
-				factor = 2
-				check_variable = { global.chaos_meter_value > 750 }
+				factor = constant:holy_realm_ai.chaos_tier_final_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 			modifier = {
-				factor = 1.5
-				check_variable = { global.chaos_meter_value > 900 }
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
 			}
 			modifier = {
 				factor = 2
@@ -708,8 +716,8 @@ focus_tree = {
 		prerequisite = { focus = THR_throne_without_body }
 		available = {
 			custom_trigger_tooltip = {
-				tooltip = THR_extreme_chaos_focus_tt
-				holy_realm_chaos_above_divine_floor = yes
+				tooltip = THR_chaos_tier_focus_tt
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 
 			holy_realm_divine_path_unlocked = yes
@@ -723,14 +731,18 @@ focus_tree = {
 			holy_realm_add_chaos = yes
 		}
 		ai_will_do = {
-			factor = 0.35
+			factor = constant:holy_realm_ai.final_preparation_factor
 			modifier = {
-				factor = 3
-				check_variable = { global.chaos_meter_value > 900 }
+				factor = constant:holy_realm_ai.chaos_tier_final_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 			modifier = {
-				factor = 2
-				check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
 			}
 			modifier = {
 				factor = 2
@@ -784,6 +796,17 @@ focus_tree = {
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
 			holy_realm_add_chaos = yes
 		}
+		ai_will_do = {
+			factor = constant:holy_realm_ai.final_preparation_factor
+			modifier = {
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
+			}
+		}
 	}
 
 	# THR FOCUS TAGS:
@@ -817,11 +840,15 @@ focus_tree = {
 			holy_realm_add_chaos = yes
 		}
 		ai_will_do = {
-			factor = 0.2
+			factor = constant:holy_realm_ai.final_late_preparation_factor
 			modifier = {
-				factor = 3
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
 				date > 1943.12.31
-				check_variable = { global.chaos_meter_value > 900 }
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
 			}
 		}
 	}
@@ -888,6 +915,17 @@ focus_tree = {
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
 			holy_realm_add_chaos = yes
 		}
+		ai_will_do = {
+			factor = constant:holy_realm_ai.final_late_preparation_factor
+			modifier = {
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
+			}
+		}
 	}
 
 	# THR FOCUS TAGS:
@@ -926,6 +964,9 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = holy_realm_focus_final_silence
 			country_event = { id = chaosx.nr3.80 hours = 6 }
+		}
+		ai_will_do = {
+			factor = constant:holy_realm_ai.final_launch_factor
 		}
 	}
 
@@ -1530,6 +1571,17 @@ focus_tree = {
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
 			holy_realm_add_chaos = yes
 		}
+		ai_will_do = {
+			factor = constant:holy_realm_ai.final_late_preparation_factor
+			modifier = {
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
+			}
+		}
 	}
 
 	# THR FOCUS TAGS:
@@ -1576,6 +1628,17 @@ focus_tree = {
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.serious_control_gain }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
 			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = constant:holy_realm_ai.final_late_preparation_factor
+			modifier = {
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
+			}
 		}
 	}
 
@@ -1629,6 +1692,17 @@ focus_tree = {
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_warning }
 			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = constant:holy_realm_ai.final_late_preparation_factor
+			modifier = {
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
+			}
 		}
 	}
 
@@ -1693,19 +1767,17 @@ focus_tree = {
 			country_event = { id = chaosx.nr3.70 days = 1 }
 		}
 		ai_will_do = {
-			factor = 0
+			factor = constant:holy_realm_ai.final_ministry_factor
 			modifier = {
-				add = 1.3
-				date > 1944.12.31
-				check_variable = { global.chaos_meter_value > 900 }
-				check_variable = { final_silence_pressure > 70 }
-				holy_realm_has_most_factories_in_world = yes
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
 			}
 			modifier = {
-				add = 1
-				date > 1944.12.31
-				check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
-				check_variable = { final_silence_pressure > 80 }
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
+			}
+			modifier = {
+				factor = 2
 				holy_realm_has_most_factories_in_world = yes
 			}
 		}
@@ -2461,6 +2533,10 @@ focus_tree = {
 				factor = 2
 				num_divisions > 16
 				check_variable = { mandala_reach > 60 }
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.high_chaos_peace_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 		}
 	}
