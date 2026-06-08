@@ -4752,8 +4752,35 @@ soviet_collapse_reconstruction_state = {
 					}
 				}
 				random_owned_controlled_state = {
-					add_building_construction = { type = rail_way level = 2 instant_build = yes }
+					set_variable = { ROOT.soviet_collapse_temp_reconstruction_target_state = THIS.id }
 					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					if = {
+						limit = {
+							NOT = { is_capital = yes }
+							ROOT = {
+								any_owned_state = {
+									is_capital = yes
+									is_controlled_by = ROOT
+								}
+							}
+						}
+						ROOT = {
+							capital_scope = {
+								set_variable = { ROOT.soviet_collapse_temp_reconstruction_start_state = THIS.id }
+							}
+							build_railway = {
+								level = 2
+								build_only_on_allied = yes
+								fallback = yes
+								start_state = var:ROOT.soviet_collapse_temp_reconstruction_start_state
+								target_state = var:ROOT.soviet_collapse_temp_reconstruction_target_state
+							}
+						}
+					}
+					ROOT = {
+						clear_variable = soviet_collapse_temp_reconstruction_start_state
+						clear_variable = soviet_collapse_temp_reconstruction_target_state
+					}
 				}
 			}
 			custom_effect_tooltip = cfr_survey_unfinished_sites_tt
