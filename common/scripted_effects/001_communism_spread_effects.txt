@@ -2344,6 +2344,19 @@ create_communist_emergency_uprising = {
 				every_controlled_state = {
 					limit = { has_state_flag = communist_uprising_convert }
 					transfer_state_to = PREV.PREV
+					PREV.PREV = {
+						if = {
+							limit = {
+								NOT = {
+									any_owned_state = { is_capital = yes }
+								}
+							}
+							set_capital = {
+								state = PREV
+								remember_old_capital = no
+							}
+						}
+					}
 					spawn_communist_rebel_units_in_state = yes
 					clear_communism_state_control = yes
 				}
@@ -2408,6 +2421,19 @@ create_communist_local_breakaway = {
 			ROOT = {
 				event_target:communist_evolution_state = {
 					transfer_state_to = PREV.PREV
+					PREV.PREV = {
+						if = {
+							limit = {
+								NOT = {
+									any_owned_state = { is_capital = yes }
+								}
+							}
+							set_capital = {
+								state = PREV
+								remember_old_capital = no
+							}
+						}
+					}
 					spawn_communist_rebel_units_in_state = yes
 					clear_communism_state_control = yes
 				}
