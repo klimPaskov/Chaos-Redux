@@ -126,6 +126,33 @@ holy_realm_chaos_above_final_gate = {
 	check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
 }
 
+holy_realm_chaos_at_least_chaos_tier = {
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_3.min
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_chaos_at_least_totalen_chaos = {
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_4.min
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_chaos_at_least_world_collapse = {
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 5 }
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_final.min
+			compare = greater_than_or_equals
+		}
+	}
+}
+
 holy_realm_bhutan_conquest_target_valid = {
 	BHU = {
 		exists = yes

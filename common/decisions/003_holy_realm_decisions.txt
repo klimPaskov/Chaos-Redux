@@ -1358,10 +1358,14 @@ holy_realm_mandala_category = {
 			holy_realm_add_chaos = yes
 		}
 		ai_will_do = {
-			factor = 4
+			factor = constant:holy_realm_ai.peace_branch_factor
 			modifier = {
 				factor = 2
 				check_variable = { compassion_drift > 40 }
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.high_chaos_peace_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 		}
 	}
@@ -1389,7 +1393,13 @@ holy_realm_mandala_category = {
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
 			holy_realm_add_chaos = yes
 		}
-		ai_will_do = { factor = 3 }
+		ai_will_do = {
+			factor = 3
+			modifier = {
+				factor = constant:holy_realm_ai.high_chaos_peace_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
+			}
+		}
 	}
 
 	THR_choose_coercive_pacification = {
@@ -1417,7 +1427,7 @@ holy_realm_mandala_category = {
 			set_country_flag = holy_realm_memory_coercive_force
 		}
 		ai_will_do = {
-			factor = 1
+			factor = constant:holy_realm_ai.coercive_doctrine_factor
 			modifier = {
 				factor = 2
 				has_war = yes
@@ -1425,6 +1435,14 @@ holy_realm_mandala_category = {
 			modifier = {
 				factor = 0.25
 				check_variable = { global.chaos_meter_value < 500 }
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.chaos_tier_final_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
 			}
 		}
 	}
@@ -1464,6 +1482,10 @@ holy_realm_mandala_category = {
 		}
 		ai_will_do = {
 			factor = 2
+			modifier = {
+				factor = constant:holy_realm_ai.high_chaos_peace_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
+			}
 			modifier = {
 				factor = 0
 				holy_realm_final_doctrine_balance_leans_final = yes
@@ -1506,24 +1528,21 @@ holy_realm_mandala_category = {
 			set_country_flag = holy_realm_memory_final_armed
 		}
 		ai_will_do = {
-			factor = 0
+			factor = constant:holy_realm_ai.final_ministry_factor
 			modifier = {
-				add = 1.2
-				date > 1944.12.31
+				factor = constant:holy_realm_ai.world_collapse_final_factor
 				holy_realm_final_path_unlocked = yes
 				has_country_flag = holy_realm_memory_ministry_of_release
 				has_country_flag = holy_realm_doctrine_coercive_pacification
 				check_variable = { final_silence_pressure > 85 }
-				check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
-				holy_realm_has_most_factories_in_world = yes
+				holy_realm_chaos_at_least_world_collapse = yes
 			}
 			modifier = {
-				add = 1
-				date > 1944.12.31
+				factor = constant:holy_realm_ai.totalen_chaos_final_factor
 				holy_realm_final_path_unlocked = yes
 				has_country_flag = holy_realm_memory_ministry_of_release
 				check_variable = { final_silence_pressure > 90 }
-				check_variable = { global.chaos_meter_value > 1200 }
+				holy_realm_chaos_at_least_totalen_chaos = yes
 				holy_realm_has_most_factories_in_world = yes
 			}
 		}
@@ -1544,26 +1563,10 @@ holy_realm_mandala_category = {
 			country_event = { id = chaosx.nr3.80 hours = 6 }
 		}
 		ai_will_do = {
-			factor = 0
+			factor = constant:holy_realm_ai.final_launch_factor
 			modifier = {
-				add = 1.15
-				is_ai = yes
-				date > 1944.12.31
-				holy_realm_final_path_unlocked = yes
-				has_country_flag = holy_realm_warning_world_marked_as_wound
-				check_variable = { final_silence_pressure > 95 }
-				check_variable = { compassion_drift > 70 }
-				check_variable = { global.chaos_meter_value > 1200 }
-				holy_realm_has_most_factories_in_world = yes
-			}
-			modifier = {
-				add = 1
-				is_ai = yes
-				date > 1945.12.31
-				check_variable = { global.chaos_meter_value > 1400 }
-				check_variable = { final_silence_pressure > 98 }
-				check_variable = { compassion_drift > 80 }
-				holy_realm_has_most_factories_in_world = yes
+				factor = constant:holy_realm_ai.world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
 			}
 		}
 	}
@@ -2633,7 +2636,7 @@ holy_realm_expansion_category = {
 			}
 		}
 		ai_will_do = {
-			factor = 0.8
+			factor = constant:holy_realm_ai.peace_letter_factor
 			modifier = {
 				factor = 2
 				has_country_flag = holy_realm_peace_by_submission_unlocked
@@ -2642,6 +2645,10 @@ holy_realm_expansion_category = {
 			modifier = {
 				factor = 0.25
 				has_war = yes
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.high_chaos_peace_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 		}
 	}
@@ -2678,11 +2685,15 @@ holy_realm_expansion_category = {
 			}
 		}
 		ai_will_do = {
-			factor = 0.4
+			factor = constant:holy_realm_ai.regional_peace_letter_factor
 			modifier = {
 				factor = 2
 				check_variable = { spiritual_legitimacy > 70 }
 				check_variable = { mandala_reach > 60 }
+			}
+			modifier = {
+				factor = constant:holy_realm_ai.high_chaos_peace_factor
+				holy_realm_chaos_at_least_chaos_tier = yes
 			}
 		}
 	}
