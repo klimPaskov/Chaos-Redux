@@ -41,7 +41,7 @@ Evolutions are mutation tracks that make the crisis behave differently or create
 - The Dead Are Citizens
 - The Former Union Becomes Many Worlds
 
-Do not create more than one Soviet Collapse evolution log per chaos tier unless this package explicitly allows it. If several mutation incidents occur in one tier, log the highest priority one as the evolution and handle the rest through news, reports, decisions, or event details.
+Do not create more than one Soviet Collapse evolution log per chaos tier unless this package explicitly allows it. If several mutation incidents occur in one tier, log the highest priority one as the evolution and handle the rest through news, reports, decisions, or event details. Stage numbers are player-facing progression numbers, not branch identifiers. Non-republic successor branch IDs can still choose actor-specific text, but their visible stage must come from the logged tier: Stage 4 for Totalen Chaos and Stage 5 for World Collapse.
 
 Evolution logs must extend beyond early chaos. They should not stop at Gathering Storm.
 
@@ -176,7 +176,7 @@ Valid ingredients include several of:
 - major republics holding capitals
 - high-chaos actors holding territory
 
-In ordinary calm or moderate games, Union Unmade should usually require sustained mismanagement, often near a year or more. High chaos or a collapsing wartime USSR can make it faster, but only through visible severe factors.
+In ordinary calm or Gathering Storm games, Union Unmade should usually require a long chain of inaction, failed missions, and accumulating release pressure. A strong center should not reach 100 threat in the first year unless the player allows repeated visible failures and additional severe pressure to stack. High chaos or a collapsing wartime USSR can make it faster, but only through visible severe factors.
 
 ## Super-event scope
 

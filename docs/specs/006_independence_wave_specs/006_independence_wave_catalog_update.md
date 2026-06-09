@@ -11,7 +11,7 @@ Use this when updating `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 | Type | Minor Repeatable |
 | Cluster | Liberations |
 | Cluster threat | Lowest threat, usually first |
-| Details | Several inactive countries begin coordinated independence crises inside weak, unstable, overstretched, colonial, occupied, or wartime hosts. The host receives dossiers and decisions before any release. If the crisis succeeds, a wave of countries becomes independent with armies scaled by industry, manpower, depots, foreign aid, host weakness, previous waves, and chaos tier. Event 6 is independent from Event 5. Shared tags can appear in both systems, but mechanics follow release origin. Every host keeps at least one state, preferably its capital. Early waves use ordinary HOI4 or modded releasables. Higher chaos releases more countries and can unlock dormant tags, game-rule tags, protectorates, city states, historical-return countries, local polities, indigenous authorities, and strange high-chaos states. |
+| Details | Several inactive countries become independent immediately in weak, unstable, overstretched, colonial, occupied, or wartime hosts. The hidden resolver protects the host survival state, reduces or skips invalid candidates, then releases the successful wave at once. Release dossiers and post-release decisions explain and manage the aftermath. Armies scale by industry, manpower, depots, foreign aid, host weakness, previous waves, and chaos tier. Event 6 is independent from Event 5. Shared tags can appear in both systems, but mechanics follow release origin. Every host keeps at least one state, preferably its capital. Early waves use ordinary HOI4 or modded releasables. Higher chaos releases more countries and can unlock dormant tags, game-rule tags, protectorates, city states, historical-return countries, local polities, indigenous authorities, and strange high-chaos states. |
 | Evo I | Committees Learn the Pattern. Batch size rises to 4 to 6, non-democratic releases become possible, starting armies are stronger, startup decisions deepen, and released countries can coordinate with earlier breakaways through recognition, guarantees, aid, and volunteers. |
 | Evo II | The Small States Congress. Batch size rises to 5 to 7. Multiple breakaways can coordinate, guarantee each other, share equipment, send volunteers, arbitrate disputes, and prepare a formal league. Dormant or game-rule tags become more likely if valid. |
 | Evo III | Claims Follow the Flag and The Protectorate Game. Batch size rises to 6 to 9. Released states can demand territory, ask majors to back transfers, issue ultimatums, accept foreign advisers, resist puppeting, or become patron clients. City, free port, rail, and protectorate packages become more common. |
@@ -25,7 +25,7 @@ Use this when updating `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 
 ## Short spreadsheet text
 
-Several inactive countries enter coordinated independence crises inside weak or overstretched hosts. Hosts receive dossiers and decisions before any release. Early waves release ordinary HOI4-style countries. Higher chaos releases more countries and can unlock dormant tags, city states, protectorates, historical-return packages, local polities, indigenous authorities, and strange high-chaos states. Event 6 is separate from Event 5. Shared tags use origin-gated mechanics. Every host survives with at least one state.
+Several inactive countries become independent immediately inside weak or overstretched hosts. Release dossiers and post-release response decisions appear as the wave fires. Early waves release ordinary HOI4-style countries. Higher chaos releases more countries and can unlock dormant tags, city states, protectorates, historical-return packages, local polities, indigenous authorities, and strange high-chaos states. Event 6 is separate from Event 5. Shared tags use origin-gated mechanics. Every host survives with at least one state.
 
 ## Event details view
 
@@ -33,7 +33,7 @@ The event details page should explain the mechanic through four sections.
 
 ### What starts the wave
 
-Weak, unstable, wartime, colonial, occupied, or overextended hosts can receive independence dossiers. Dossiers create candidates, pressure, legitimacy, radicalization, foreign attention, and host strategy.
+Weak, unstable, wartime, colonial, occupied, or overextended hosts can trigger an instant release wave. Release dossiers describe the countries that just appeared and create pressure, legitimacy, radicalization, foreign attention, and host response strategy.
 
 ### How hosts respond
 
@@ -51,7 +51,7 @@ Released states get the Independence Wave tree or an origin-gated package overla
 
 | Log key | Meaning |
 | --- | --- |
-| `chaosx_event_006_log_dossiers_opened` | first dossiers appear |
+| `chaosx_event_006_log_dossiers_opened` | first release dossiers appear |
 | `chaosx_event_006_log_host_negotiates` | host opens negotiations |
 | `chaosx_event_006_log_host_suppresses` | host starts crackdown |
 | `chaosx_event_006_log_observers_invited` | foreign observers enter crisis |

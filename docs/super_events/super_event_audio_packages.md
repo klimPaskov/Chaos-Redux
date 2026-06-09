@@ -252,6 +252,35 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: 2:54.567 final cue.
 - Notes: full track with trailing silence removed and a short fade-out. The cue is procedural and restrained for the high-chaos map-room partition reveal.
 
+### The First Impossible State
+
+- Super-event ID: `57`
+- Music file: `music/super_event_independence_wave_first_impossible_state.ogg`
+- Sound-channel file: `sound/chaosx_super_event_independence_wave_first_impossible_state.wav`
+- Sound definition: `chaosx_super_event_57_track`
+- Compatibility soundeffect: `chaosx_super_event_independence_wave_first_impossible_state_track`
+- Source title: `Gymnopédie No. 1`
+- Composer / creator: Erik Satie
+- Performer / recording: Robin Alciatore via Musopen / Wikimedia Commons
+- Source URL: <https://commons.wikimedia.org/wiki/File:Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg>
+- License: composition public domain; recording released into the public domain worldwide on the Wikimedia source page.
+- Duration: 3:03.589 final cue.
+- Notes: full cue with slight volume reduction and short fades for the first Event 006 impossible-state reveal.
+
+### The Rump That Endures
+
+- Super-event ID: `58`
+- Music file: `music/super_event_independence_wave_rump_that_endures.ogg`
+- Sound-channel file: `sound/chaosx_super_event_independence_wave_rump_that_endures.wav`
+- Sound definition: `chaosx_super_event_independence_wave_rump_that_endures_track`
+- Source title: `Prelude in E Minor, Op. 28 No. 4`
+- Composer / creator: Frédéric Chopin
+- Performer / recording: Porticodoro / SmartCGArt Media Productions
+- Source URL: <https://commons.wikimedia.org/wiki/File:FChopinPreludeOp28n4.OGG>
+- License: composition public domain; recording licensed `CC BY 3.0 Unported` on the Wikimedia source page.
+- Duration: 2:03.860 final cue.
+- Notes: front and tail silence trimmed with short fades for the one-state or near-rump host-survival reveal.
+
 ## Mengele
 
 ### The Angel of Death Leaves the Camp

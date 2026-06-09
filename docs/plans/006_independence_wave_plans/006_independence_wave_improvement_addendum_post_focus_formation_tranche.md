@@ -1,10 +1,43 @@
 # Event 006 Improvement Addendum: Post Focus and Formation Tranche
 
-Status: open implementation plan.
+Status: disposition recorded on 2026-05-31. This addendum is closed as a broad implementation plan, with implemented work preserved and remaining items queued below.
 
-Closure recommendation: do not close Event 006 yet. The first focus and formation tranche establishes the release origin, provisional tree, route locks, congress scaffolding, and a first Formation Ledger path. It does not yet satisfy the source-spec promise for package depth, route-specific formations, aftermath management, GUI value, visual state, catalog alignment, achievements, or final audit gates.
+Closure recommendation: do not close Event 006 yet. Later implementation tranches now satisfy much of this addendum, and the report/news image blocker is closed. Event 006 still has queued work for final package depth where explicitly wanted, package-specific non-flag presentation assets and animation manifests, catalog/spreadsheet/event-detail alignment, and final audit gates.
 
 Prior addendum check: no earlier `006_independence_wave_improvement_addendum_*` file is present in `docs/plans/006_independence_wave_plans/`. The existing gate, foundation handoff, and audit handoffs remain active context rather than unresolved competing addenda.
+
+## 2026-05-31 Disposition
+
+This addendum is no longer the active open implementation plan. The accepted design work has been either implemented, preserved in the current Event 006 docs, or queued as follow-up. Do not spawn another broad improvement-loop planner for Event 006 until the queued follow-up list below is either implemented, intentionally carried forward after an audit, or narrowed by a new parent instruction.
+
+Implemented or mostly implemented:
+
+- Instant release resolver, candidate package scoring, current-wave release count storage, reduced-territory starts, package-specific anchor selection, host survival reservation, and Event 005 origin separation.
+- Decision-category surfaces for the Independence Dossier Board, Committee Survival, New States Congress, Patron Ledger, Formation Ledger, Border Commission, Patronage Recognition, and Sealed Dossier.
+- Regional Compact member proof, anti-puppet charter clause, proclamation, integration mission, compact achievements, and First League super-event gate.
+- Border Commission decisions with surveys, arbitration, protected transfer petitions, ultimatum pressure, dispute cooldowns, peaceful-resolution tracking, and protected host-state exclusion.
+- Starter package and formation overlays for Event 006 Old Great Bulgaria/Volga, Assyria, Danzig, Buganda, Sokoto, Guarani, Charrua, and the first railway Timetable Authority path.
+- Liberation Provisional focus tree route locks, revolutionary route, package mini-overlays, railway manifest and bridge-guard proof, and the first strange follow-through module.
+- Patron Ledger and outside Patronage Recognition loops with route-sensitive costs, target effects, AI weights, and achievement tracking.
+- Event 006 achievement tracking for origin safety, patron-free independence, broker exposure, peaceful border resolution, first old-name formation, local land congress, railway country, impossible recognition, Event 005 separation, compact statehood, anti-puppet charter statehood, ledger recovery, capital survival, and mass host survival.
+- Event log/detail registration, package milestone rows for implemented starters, catalog alignment for the primary Event 006 row, AI strategy overlays, and the First League super-event image/audio/wiring package.
+- Scripted GUI value panels for the Dossier Board, New States Congress, Patron Ledger, Formation Ledger, and Border Commission, with current variable display keys wired and localisation-audited.
+- Report-event images and one-shot report call sites for the release report, host recognition, observers, suppression, committee consolidation, congress negotiation, league minutes, Border Commission, patron brokers, old-name formation, local-polity formation, host-rump survival, failed formation or containment proof, and impossible-state recognition.
+
+Queued follow-up with reasons:
+
+- Non-flag presentation assets and manifests: Event 006 has reusable category, decision, idea, and focus icon families wired with manifests, but package-specific portraits, seals, bespoke route art, and many final package surfaces still need the event asset workflow. Animated pieces need real source frames, frame sheets, DDS output, static fallbacks, manifests, and `.gfx` handoffs.
+- Scripted GUI/value display: the first value panels are wired and audited. Remaining GUI work should be limited to richer route-state displays, animated seals, or category art after the relevant route mechanics and asset handoffs exist.
+- Remaining package depth: dormant tags, additional city-state/protectorate/historical-return/local-polity packages, deeper railway packages, hidden formables, and strange packages still require verified tags, state groups, leaders, package proof, AI behavior, localisation, non-flag assets, and validation.
+- Mapuche and PRA package work: Mapuche remains blocked until a real tag and state package are accepted. PRA remains queued until Event 005 railway baggage is separated. Neither should be handled by touching Event 005 systems or country flag wiring.
+- Strange/Evo V fulfillment: the Sealed Dossier, strange focus module, Human Renunciation doctrine finisher, strange cooperation link, First Impossible State super-event, Human Renunciation super-event, and `cr_human_renunciation` achievement are implemented as bounded surfaces. Deeper strange package identities still need package design, package-specific non-flag assets, and final route validation.
+- Super-event follow-up: The Rump That Endures now has host-rump proof and a slot-58 package, Great Partition Week has high-chaos mass-wave proof and a slot-56 package, First Old Name has gameplay proof and a slot-55 package, First Impossible State has strange-package proof and a slot-57 package, and League War has gameplay proof and a slot-54 package. Remaining work is catalog, spreadsheet, and final audit alignment after implementation facts stabilize.
+- Achievement and catalog rows: the implemented Event 006 achievement definitions include the league-war cluster as `cr_league_war_victory`; final spreadsheet/catalog/event-detail alignment remains follow-up work after implementation facts exist.
+
+Rejected for the current pass:
+
+- A new broad improvement-loop planner pass. The immediate need is closing queued implementation and presentation gaps, not expanding Event 006 with another large design addendum.
+- Any country flag asset, country flag wiring, country file, history file, or Event 005 integration work as part of this disposition.
 
 ## Accepted Closure Criteria Already Met
 
@@ -13,24 +46,21 @@ These points should be preserved and treated as accepted foundations, not redesi
 - Event 006 has a distinct runtime origin through `chaosx_release_origin_independence_wave` and should remain separate from Event 005 Soviet Collapse systems.
 - The release wave fires immediately from `events/006_independence_wave.txt`; dossiers, decisions, ledger work, and GUI surfaces manage aftermath rather than delaying release.
 - The current resolver avoids releasing a candidate whose core covers the host capital and checks a host-state floor before each release. The next pass should harden this into a capital-preferred reserved-state solver, not replace the instant-release model.
-- Released countries load `common/national_focus/006_independence_wave_focus.txt` through `independence_wave_load_liberation_focus_tree`, giving Event 006 a provisional focus surface.
+- Released countries load `common/national_focus/006_independence_wave_focus.txt` through `independence_wave_load_provisional_focus_tree`, giving Event 006 a provisional focus surface.
 - The provisional focus tree already has four route locks: observer charter, officer mandate, national directory, and sponsored cabinet. New route content should attach to these identities instead of creating a second opening tree.
 - `common/decisions/006_independence_wave_decisions.txt` includes initial aftermath, committee survival, New States Congress, and Formation Ledger categories.
 - Regional compact formation exists as a first Formation Ledger path, with `independence_wave_prepare_regional_compact`, `independence_wave_proclaim_regional_compact`, and `independence_wave_integrate_compact_ministries`.
 - Basic constants, ideas, scripted triggers, localisation, and docs exist for the current tranche.
 
-## Unresolved Expansion Items
+## Current Queued Expansion Items
 
-The first tranche is intentionally incomplete. The next implementation should focus on these concrete depth additions before any closure handoff:
+The first tranche was intentionally incomplete, and later implementation tranches resolved several of its original blockers. As of the 2026-06-04 parent audit, the remaining completion blockers are:
 
 - The package ladder is still ordinary-dominated. Higher chaos release pools for dormant tags, city states, protectorates, historical-return tags, local-polity packages, strange packages, and hidden formables remain unwired.
-- Regional compact formation is still a light proof of concept. It needs real member proof, route-gated political checks, post-formation risk, and event log integration before it can carry the "First League" super-event or related achievements.
-- The national directory/border branch currently prepares claim ambition but does not have a playable Border Commission decision family.
-- Historical-return and local-polity route content is mostly represented by reveal clues rather than country packages, bespoke focuses, decisions, flags, assets, and AI behavior.
-- Dossier Board, Patron Ledger, and Formation Ledger remain decision-category scaffolds. Full scripted GUI should wait until stable variables and target lists exist, but the next pass should register the data model and animated asset needs.
-- No package-specific formation decisions exist for Volga Bulgaria/Old Great Bulgaria, Assyria, Mapuche, Buganda/Asante, free ports, railway polities, or strange packages.
-- Super-events, audio, achievements, catalog rows, event details, and asset manifests are not implementation-ready for completion claims.
-- The current focus tree lacks revolutionary, dedicated anti-patron, crisis, free city/free port, railway sovereignty, and strange-state modules identified by the source specs and focus audit.
+- Future package work needs verified tags, state groups, leaders or councils, package proof, AI behavior, localisation, package-specific non-flag assets, and validation. Mapuche remains blocked until a real tag exists, and PRA remains queued until Event 005 railway baggage is separated.
+- Regional compact, Border Commission, Patron Ledger, Patronage Recognition, Sealed Dossier, railway Timetable Authority, and starter-package formation routes are implemented as first playable layers. They still need final balance scenarios and completion audits before Event 006 closure.
+- The focus tree has 60 audited focuses with current localisation and icon registration, including revolutionary, patron, congress, border, package, railway, formation-ledger, and strange follow-through modules. Future focus work should add depth only for packages that receive complete data.
+- Super-events, report events, achievement definitions, event log/detail rows, reusable icons, and first scripted GUI value panels are wired. Current report/news image GFX and DDS references resolve. Final spreadsheet/catalog alignment, package-specific presentation manifests, optional route-specific visual variants, and completion audits remain follow-up work.
 
 ## Addendum Scope
 
@@ -82,11 +112,11 @@ Required helper design:
 - `can_independence_wave_candidate_enter_historical_pool`: checks historical-return reveal flags and package-specific state groups.
 - `can_independence_wave_candidate_enter_local_polity_pool`: checks local-polity reveal flags and package-specific state groups.
 - `can_independence_wave_candidate_enter_strange_pool`: locks impossible states to high chaos and explicit strange-route unlocks.
-- `independence_wave_reserve_host_survival_state`: records the host state that must never be released in the current wave, preferring the capital and falling back only to a controlled non-capital if the capital cannot be protected by the candidate scan.
-- `independence_wave_apply_candidate_shrink_or_skip`: removes protected states from a candidate release if the engine surface supports it; otherwise skips that candidate. Do not use a silent fallback. If shrink behavior cannot be implemented cleanly, the parent should stop and decide between skip-only release selection or a more detailed state-transfer solver.
+- `independence_wave_reserve_host_survival_state`: records the host state that must never be released in the current wave, preferring the capital and falling back to a host-owned non-candidate-cored state by factory, dockyard, supply, city, infrastructure, host-core, then any-state proxy. Successful release attempts mark that state with `independence_wave_host_survival_reserved` so later Event 006 releases and border-commission claims cannot consume it.
+- `independence_wave_apply_candidate_shrink_or_skip`: resolved for the generic resolver as of the reduced-release tranche. The implementation picks one candidate-cored anchor state, temporarily masks the candidate's other host-owned cores before `release = TAG`, restores those cores afterward, marks the release with `independence_wave_reduced_territory_start`, and still skips candidates when host survival cannot be proven. The follow-up anchor pass now tries verified package identity states before generic anchors: OGB Kazan/Cheboksary, ASY Mosul, DNZ Danzig, UGA Uganda, and SOK Sokoto.
 - `independence_wave_clear_pending_candidate_state`: clears temporary variables, event targets, and candidate flags after each scan.
 
-Event targets are acceptable when the effect chain needs stable host or candidate scopes. Use regular event targets for short chains. Use global event targets only when persistence beyond the chain is required, and clear them in the same system.
+Event targets are acceptable when the effect chain needs stable host or candidate scopes. Use regular event targets for short chains. Use global event targets only when persistence beyond the chain or explicit per-iteration cleanup is required, and clear them in the same system.
 
 Do not add `on_daily`, `on_weekly`, or other whole-world polling for this package registry. The resolver should run from the Event 006 event/effect chain and explicit decisions.
 
@@ -469,7 +499,7 @@ Super-events:
 - No base Independence Wave super-event.
 - `independence_wave_first_league`: unlock only after a strengthened regional compact has at least three independent Event 006 members, an event log entry, sourced art, sourced audio, and a completed super-event handoff.
 - `independence_wave_first_old_name`: unlock only after the first real historical-return or local-polity formation succeeds with package-specific state proof and sourced visual/audio material.
-- `independence_wave_the_rump_that_endures`: unlock only after the reserved-state solver can prove a host survived at one state or capital-rump scale without being erased.
+- `independence_wave_the_rump_that_endures`: implemented as slot `58` through host pre-wave state tracking plus post-release one- or two-state survival proof after a high-chaos wave.
 
 Audio:
 

@@ -1,0 +1,44 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE MTTH VARIABLES
+# ============================================================================
+# Computes paced release-scale evolution weights for the Independence Wave.
+# The event resolver determines how severe the wave is before releases happen;
+# this MTTH entry controls when that severity becomes visible in the event log.
+# ============================================================================
+
+independence_wave_release_scale_evolution_weight = {
+	base = constant:independence_wave_evolution_mtth.base
+
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:independence_wave_event_log.gathering_storm_stage compare = equals }
+		add = constant:independence_wave_evolution_mtth.stage_1_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:independence_wave_event_log.rising_cascade_stage compare = equals }
+		add = constant:independence_wave_evolution_mtth.stage_2_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:independence_wave_event_log.old_names_stage compare = equals }
+		add = constant:independence_wave_evolution_mtth.stage_3_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:independence_wave_event_log.impossible_statehood_stage compare = equals }
+		add = constant:independence_wave_evolution_mtth.stage_4_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:independence_wave_event_log.world_collapse_stage compare = equals }
+		add = constant:independence_wave_evolution_mtth.stage_5_add
+	}
+	modifier = {
+		check_variable = { var = global.independence_wave_actual_release_count value = constant:independence_wave_achievement.mass_wave_release_count_required compare = greater_than_or_equals }
+		add = constant:independence_wave_evolution_mtth.mass_wave_add
+	}
+	modifier = {
+		has_global_flag = independence_wave_current_wave_major_host_partitioned
+		add = constant:independence_wave_evolution_mtth.major_host_partition_add
+	}
+	modifier = {
+		has_global_flag = independence_wave_current_wave_special_package
+		add = constant:independence_wave_evolution_mtth.special_package_add
+	}
+}

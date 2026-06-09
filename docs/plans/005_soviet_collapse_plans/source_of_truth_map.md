@@ -31,8 +31,48 @@ This map tells the next parent agent which documents to trust first. It does not
 | --- | --- | --- |
 | `docs/plans/005_soviet_collapse_plans/documentation_state.md` | Current resumability ledger, accepted constraints, recent dispositions, contradictions, and next resume priorities. | Updated by documentation curator. |
 | `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` | This source map. | Updated by documentation curator. |
-| `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md` | Latest documentation-curator handoff for release/focus resume constraints, no-flag boundary, and validation commands. | Current curator handoff. |
+| `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_documentation_curator_full_event005_cleanup.md` | Full-event documentation cleanup handoff, validation, spreadsheet inspection notes, and remaining risks. | Latest documentation-curator handoff for this broad cleanup pass. |
+| `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md` | Documentation-curator handoff for release/focus resume constraints, no-flag boundary, and validation commands. | Superseded as latest curator handoff by the full-event cleanup handoff, but still valid for its scoped release/focus notes. |
 | `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_documentation_curator_current_state_handoff.md` | Documentation-curator validation and remaining parent decisions. | Created by documentation curator. |
+
+## Doc Disposition Summary
+
+### Accepted Current Docs
+
+| Source | Why accepted |
+| --- | --- |
+| `docs/events/005_soviet_collapse.md` | Current compact overview and urgent playability routing. It is a summary, not a completion report and not a blanket deletion of older evidence. |
+| `docs/plans/005_soviet_collapse_plans/documentation_state.md` | Current resume/status packet, accepted constraints, known contradictions, queued work, and no-flag boundary. |
+| `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` | Current documentation routing map. |
+| Seven files under `docs/specs/005_soviet_collapse_specs/` | Source design and final completion standards, read through the current no-flag-touching boundary for urgent playability work. |
+
+### Queued Docs And Evidence
+
+| Source | Queued use |
+| --- | --- |
+| `2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md` | Focus-depth backlog. Some route-lock and CFR items are implemented; custom splinter identity, ancient restoration depth, OGB depth, helper-generic reward cleanup, and layout cleanup remain queued. |
+| `2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md` | Current focus-risk baseline: 520 pathline risks and 1,127 helper-only or nearly helper-only reward findings remain queued for parent work. |
+| Event-detail, evolution-detail, and spreadsheet parity notes | Queued until implementation facts are stable and wording can be mirrored exactly. XML inspection of `docs/spreadsheets/chaos_redux_events_catalog.xlsx` found Event005 row strings, but no safe workbook edit was made in this documentation pass. |
+| Asset and flag requirements in spec part 7 | Final-validation scope only under the current correction. Do not route urgent playability work into flags or assets. |
+
+### Superseded Current-State Findings
+
+| Source | Superseded finding |
+| --- | --- |
+| `2026_05_28_decision_release_focus_reward_fix.md` | Early low-threat release-floor wording is superseded by June 5 live-pressure release gating. |
+| `2026_06_04_focus_tree_auditor_all_soviet_collapse_audit.md` | Coordinate and route-lock specifics are superseded by June 5 patches and the post-CFR audit. |
+| `20260605T145855Z_event005_focus_tree_auditor_current_state_handoff.md` | Ukraine/Belarus route-lock finding is superseded by `2026_06_05_parent_ukraine_belarus_route_lock_tranche.md`; use the newer post-CFR audit for the current focus baseline. |
+| `2026_06_05_145453_focus_tree_audit.md` | Its exact BLR coordinate, BLR/KAZ/GAC pathline, and broad starting-tension cleanup findings are superseded by later parent patches. Helper-generic reward and shallow-tree findings remain queued. |
+
+### Known Contradictions To Preserve Or Resolve
+
+| Subject | Current resolution |
+| --- | --- |
+| Active releases versus terminal release | Live crisis releases are gradual and pressure-gated. Terminal, maximum-intensity, and standalone chaos scenario rupture paths can run exhaustive release passes. |
+| Completion claims | Event005 is not complete. Completed tranches, including CFR depth and route-lock cleanup, are not Event005 completion. |
+| Flag requirements versus active no-touch scope | Final specs still require asset/flag validation, but the active user correction forbids touching flags and assets. Treat those requirements as future/final-validation scope. |
+| Existing-country focus-tree eligibility | Event-created focus-tree loading appears gated by `soviet_collapse_event_created_republic`, but existing-country eligibility remains an urgent validation target before completion claims. |
+| Intervention visibility | Prior target-normalization work exists, but Tajikistan-style empty panels remain a current dynamic bug target and must not be solved with hardcoded tag lists. |
 
 ## Recent Handoffs To Trust For Current State
 
@@ -79,4 +119,6 @@ Future asset work can return to spec part 7 only after the parent explicitly reo
 - Stronger republic initial divisions must remain dynamically scaled and need validation against large and small release candidates.
 - Focus trees still need broad cleanup: political, industry, expansion branches; compact layouts; no overlapping lines; fewer pointless mutexes; no idea spam; and meaningful mechanics or regional payoffs.
 - Evolution details remain pending and must match spreadsheet descriptions exactly after implementation facts are finalized.
+- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` still contains Event005 wording that should be reviewed by the spreadsheet doc worker after gameplay facts settle. The row includes `To Be Reworked` status text and evolution wording that may need to mirror the current two-family event-log design exactly.
 - Selected-breakaway intervention visibility remains a dynamic bug target, especially Tajikistan-style empty intervention panels. Do not fix it with hardcoded tag lists.
+- Existing-country focus-tree eligibility remains an urgent validation target. Runtime focus-tree replacement must stay limited to Event005-created republics unless an explicit additive integration is designed.

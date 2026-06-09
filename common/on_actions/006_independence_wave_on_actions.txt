@@ -1,0 +1,66 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE ON ACTIONS
+# ============================================================================
+# Runtime hooks for League War proof. These hooks react to war start, defeat,
+# peace, puppeting, and annexation events without adding whole-world polling.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			ROOT = {
+				independence_wave_mark_league_war_against_from = yes
+			}
+			FROM = {
+				independence_wave_mark_league_war_against_root = yes
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			ROOT = {
+				if = {
+					limit = { has_country_flag = chaosx_iw_league_war_enemy_target }
+					independence_wave_resolve_league_war_enemy_defeat = yes
+				}
+				if = {
+					limit = {
+						OR = {
+							has_country_flag = chaosx_iw_league_war_active_founder
+							has_country_flag = chaosx_iw_league_war_member_at_start
+						}
+					}
+					independence_wave_fail_active_league_war_from_loss = yes
+				}
+			}
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			FROM = {
+				if = {
+					limit = { has_country_flag = chaosx_iw_league_war_enemy_target }
+					independence_wave_resolve_league_war_enemy_defeat = yes
+				}
+			}
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			ROOT = {
+				independence_wave_fail_active_league_war_from_puppet = yes
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			FROM = {
+				independence_wave_fail_active_league_war_from_loss = yes
+			}
+		}
+	}
+}

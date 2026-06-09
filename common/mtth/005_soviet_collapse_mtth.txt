@@ -6,6 +6,43 @@
 # convert current crisis pressure into release and miss weights.
 # ============================================================================
 
+soviet_collapse_secession_evolution_weight = {
+	base = constant:soviet_collapse_secession_evolution_mtth.base
+
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:soviet_collapse_event_log.first_wave_stage compare = equals }
+		add = constant:soviet_collapse_secession_evolution_mtth.first_wave_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:soviet_collapse_event_log.regional_cascade_stage compare = equals }
+		add = constant:soviet_collapse_secession_evolution_mtth.regional_cascade_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:soviet_collapse_event_log.union_unmade_stage compare = equals }
+		add = constant:soviet_collapse_secession_evolution_mtth.union_unmade_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:soviet_collapse_event_log.maximum_rupture_stage compare = equals }
+		add = constant:soviet_collapse_secession_evolution_mtth.maximum_rupture_add
+	}
+	modifier = {
+		check_variable = { var = events_log_evolution_stage value = constant:soviet_collapse_event_log.world_collapse_stage compare = equals }
+		add = constant:soviet_collapse_secession_evolution_mtth.world_collapse_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_total_collapse_threat value = constant:soviet_collapse_progressive_release.severe_threat compare = greater_than_or_equals }
+		add = constant:soviet_collapse_secession_evolution_mtth.severe_threat_add
+	}
+	modifier = {
+		has_global_flag = soviet_collapse_terminal_collapse
+		add = constant:soviet_collapse_secession_evolution_mtth.terminal_add
+	}
+	modifier = {
+		check_variable = { var = soviet_collapse_breakaway_count value = constant:soviet_collapse_event_log.regional_cascade_breakaway_floor compare = greater_than_or_equals }
+		add = constant:soviet_collapse_secession_evolution_mtth.breakaway_over_floor_add
+	}
+}
+
 soviet_collapse_progressive_release_weight = {
 	base = constant:soviet_collapse_release_mtth.release_base
 

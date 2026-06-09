@@ -1,5 +1,7 @@
 add_namespace = chaosx.nr6
 
+@INDEPENDENCE_WAVE_RELEASE_TRUCE_DAYS = 180
+
 ##############################################################################################################
 #    ##    ## ########      #######
 #    ###   ## ##     ##    ##     ##
@@ -20,38 +22,309 @@ add_namespace = chaosx.nr6
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr6.1
-    title = chaosx.nr6.1.t
+	id = chaosx.nr6.1
+	title = chaosx.nr6.1.t
 
-    hidden = yes
-    is_triggered_only = yes
+	hidden = yes
+	is_triggered_only = yes
 
-    immediate = {
-        clear_array = global.indp_countries
-        every_possible_country = {
-            limit = { exists = no any_state = { is_core_of = PREV } NOT = { tag = UKR tag = BEL } }
-            random_select_amount = 3
-            add_to_array = { global.indp_countries = THIS }
-        }
-        for_each_scope_loop = {
-            array = global.indp_countries
-            random_country = {
-                limit = { any_controlled_state = { is_core_of = PREV.PREV } }
-                release = PREV
-                set_truce = {
-                    target = PREV
-                    days = 180
-                }
-                PREV = { # So that the country doesn't lose cores
-                    every_owned_state = {
-                        add_core_of = PREV.PREV
-                    }
-                }
-            }
-        }
-        set_variable = { global.indp_country_1 = global.indp_countries^0 }
-        set_variable = { global.indp_country_2 = global.indp_countries^1 }
-        set_variable = { global.indp_country_3 = global.indp_countries^2 }
-        news_event = { id = chaosx.news.6 days = 2 }
-    }
+	immediate = {
+		independence_wave_prepare_release_count = yes
+		every_possible_country = {
+			limit = {
+				can_independence_wave_candidate_enter_base_pool = yes
+			}
+			add_to_array = { array = global.independence_wave_candidate_pool value = THIS }
+		}
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = global.independence_wave_actual_release_count value = global.independence_wave_release_count_target compare = less_than }
+				check_variable = { var = global.independence_wave_candidate_pool^num value = 0 compare = greater_than }
+			}
+			random_scope_in_array = {
+				array = global.independence_wave_candidate_pool
+				save_event_target_as = independence_wave_current_candidate
+				remove_from_array = { array = global.independence_wave_candidate_pool value = THIS }
+				random_country = {
+					limit = {
+						check_variable = { var = global.independence_wave_actual_release_count value = global.independence_wave_release_count_target compare = less_than }
+						can_independence_wave_host_release_current_candidate_safely = yes
+					}
+					save_global_event_target_as = independence_wave_current_host
+					independence_wave_prepare_host_wave_tracking = yes
+					independence_wave_reserve_host_survival_state = yes
+					if = {
+						limit = { has_event_target = independence_wave_protected_host_state }
+						event_target:independence_wave_protected_host_state = {
+							set_state_flag = independence_wave_host_survival_reserved
+						}
+						PREV = {
+							independence_wave_prepare_reduced_release_footprint = yes
+						}
+						release = event_target:independence_wave_current_candidate
+						if = {
+							limit = {
+								event_target:independence_wave_current_candidate = {
+									exists = yes
+								}
+							}
+							set_autonomy = {
+								target = event_target:independence_wave_current_candidate
+								autonomy_state = autonomy_free
+								end_wars = no
+								end_civil_wars = no
+							}
+							set_truce = {
+								target = event_target:independence_wave_current_candidate
+								days = @INDEPENDENCE_WAVE_RELEASE_TRUCE_DAYS
+							}
+							independence_wave_mark_host_aftermath = yes
+							event_target:independence_wave_current_candidate = {
+								independence_wave_setup_released_country = yes
+								independence_wave_restore_reduced_release_cores = yes
+								independence_wave_register_successful_release = yes
+								independence_wave_open_congress_if_ready = yes
+								every_owned_state = {
+									add_core_of = PREV
+								}
+							}
+						}
+						if = {
+							limit = {
+								event_target:independence_wave_current_candidate = {
+									exists = no
+								}
+							}
+							event_target:independence_wave_current_candidate = {
+								independence_wave_restore_reduced_release_cores = yes
+							}
+						}
+					}
+					independence_wave_clear_pending_candidate_state = yes
+				}
+			}
+		}
+		independence_wave_restore_temporary_package_cores = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = global.independence_wave_actual_release_count
+					value = constant:independence_wave_achievement.mass_wave_release_count_required
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = global.chaosx_iw_current_wave_host_count
+					value = constant:independence_wave_achievement.mass_wave_host_count_required
+					compare = greater_than_or_equals
+				}
+				NOT = { has_global_flag = chaosx_iw_world_end_bypass_used }
+			}
+			set_global_flag = chaosx_iw_mass_wave_hosts_survived
+		}
+		independence_wave_show_great_partition_week_super_event = yes
+		if = {
+			limit = {
+				check_variable = { var = global.independence_wave_actual_release_count value = 0 compare = greater_than }
+			}
+			independence_wave_record_tier_evolution_log_entry = yes
+			country_event = { id = chaosx.nr6.2 days = 1 }
+			news_event = { id = chaosx.news.6 days = 2 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.2
+	title = chaosx.nr6.2.t
+	desc = chaosx.nr6.2.d
+	picture = GFX_report_event_independence_wave_release
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.2.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.3
+	title = chaosx.nr6.3.t
+	desc = chaosx.nr6.3.d
+	picture = GFX_report_event_independence_wave_petitions
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.3.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.4
+	title = chaosx.nr6.4.t
+	desc = chaosx.nr6.4.d
+	picture = GFX_report_event_independence_wave_observers
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.4.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.5
+	title = chaosx.nr6.5.t
+	desc = chaosx.nr6.5.d
+	picture = GFX_report_event_independence_wave_suppression
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.5.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.6
+	title = chaosx.nr6.6.t
+	desc = chaosx.nr6.6.d
+	picture = GFX_report_event_independence_wave_committee
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.6.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.7
+	title = chaosx.nr6.7.t
+	desc = chaosx.nr6.7.d
+	picture = GFX_report_event_independence_wave_negotiation
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.7.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.8
+	title = chaosx.nr6.8.t
+	desc = chaosx.nr6.8.d
+	picture = GFX_report_event_independence_wave_league
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.8.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.9
+	title = chaosx.nr6.9.t
+	desc = chaosx.nr6.9.d
+	picture = GFX_report_event_independence_wave_border_commission
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.9.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.10
+	title = chaosx.nr6.10.t
+	desc = chaosx.nr6.10.d
+	picture = GFX_report_event_independence_wave_patron_brokers
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.10.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.11
+	title = chaosx.nr6.11.t
+	desc = chaosx.nr6.11.d
+	picture = GFX_report_event_independence_wave_old_name
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.11.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.12
+	title = chaosx.nr6.12.t
+	desc = chaosx.nr6.12.d
+	picture = GFX_report_event_independence_wave_local_polity
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.12.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.13
+	title = chaosx.nr6.13.t
+	desc = chaosx.nr6.13.d
+	picture = GFX_report_event_independence_wave_host_rump
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.13.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.14
+	title = chaosx.nr6.14.t
+	desc = chaosx.nr6.14.d
+	picture = GFX_report_event_independence_wave_failed_wave
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.14.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.15
+	title = chaosx.nr6.15.t
+	desc = chaosx.nr6.15.d
+	picture = GFX_report_event_independence_wave_impossible_state
+
+	minor_flavor = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr6.15.a
+	}
 }

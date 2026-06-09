@@ -21,6 +21,10 @@ Use `chaos-redux-event-assets`. Create, source, process, convert, wire, and docu
 - Fictional councils, strange leaders, invented high-chaos flags, focus icons, decision icons, ideas, achievements, faction emblems, and UI panels can use `$imagegen`.
 - Transparent icons must have real transparency and no white halo.
 
+## Current implementation status
+
+The current report/news asset blocker is closed. `interface/006_independence_wave_report_event_images.gfx` and `interface/006_independence_wave_news_event_images.gfx` exist, and the current report/news DDS texture references resolve. Future report/news work should be treated as optional presentation depth for later route variants, not as a blocker for playable wrap-up.
+
 ## Event 005 separation
 
 Assets for Event 006 must be documented as Independence Wave assets. If the same tag appears in Event 005 and Event 006, do not blindly reuse Event 005 art. Reuse only if the symbol is generic or historically sourced and does not imply the Soviet Collapse route. Otherwise create a distinct Event 006 cosmetic variant, especially for focus icons, idea icons, route emblems, formable seals, package flags, and animated route assets. Soviet republic style tags released by Event 006 need Event 006 presentation, not Event 005 collapse presentation.
@@ -33,8 +37,8 @@ Assets for Event 006 must be documented as Independence Wave assets. If the same
 4. `GFX_report_event_independence_wave_release`: flags raised, provisional council, town hall, or border post. 210x176.
 5. `GFX_news_event_independence_wave_league`: diplomatic congress of small states. 397x153.
 6. `GFX_news_event_independence_wave_partition_week`: many new borders, maps, telegraph office, or newspaper montage. 397x153.
-7. `GFX_report_event_independence_wave_old_state`: archive, old map, seal, palace, treaty, or archaeological motif. 210x176.
-8. `GFX_report_event_independence_wave_land_congress`: land council, local assembly, elders, chiefs, or community defense. 210x176.
+7. `GFX_report_event_independence_wave_old_name`: archive, old map, seal, palace, treaty, or archaeological motif. 210x176.
+8. `GFX_report_event_independence_wave_local_polity`: land council, local assembly, elders, chiefs, or community defense. 210x176.
 9. `GFX_report_event_independence_wave_impossible_state`: symbolic high-chaos state office, grave ledger, sealed ministry, or abnormal border guard. 210x176.
 
 ## Package asset families
