@@ -2,6 +2,8 @@
 
 Package scope: bounded sourced news image package for Event 006 Independence Wave only.
 
+Current status: wired. `interface/006_independence_wave_news_event_images.gfx` exists and the current Event 006 news-event DDS texture references resolve. This package is not a current playable-wrap-up blocker; later severe-patron, border-war, or high-chaos news variants are optional future polish.
+
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/news_event_images/news_event_001.png`
 - `.agents/skills/chaos-redux-event-assets/assets/news_event_images/news_event_002.png`

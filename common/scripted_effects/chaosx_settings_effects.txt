@@ -1400,6 +1400,7 @@ events_log_rebuild_history_details_view = {
 }
 
 events_log_open_selected_history_related_evolution_detail = {
+    set_variable = { events_log_selected_evolution_sequence = global.events_log_history_detail_evolution_sequence_entries^events_log_history_detail_evolution_index }
     set_variable = { events_log_selected_evolution_type = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index }
     set_variable = { events_log_selected_evolution_tier = global.events_log_history_detail_evolution_tier_entries^events_log_history_detail_evolution_index }
     set_variable = { events_log_selected_evolution_stage = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index }
@@ -1408,6 +1409,7 @@ events_log_open_selected_history_related_evolution_detail = {
     set_variable = { events_log_selected_evolution_date = global.events_log_history_detail_evolution_date_entries^events_log_history_detail_evolution_index }
     set_variable = { events_log_selected_evolution_event_id = events_log_history_selected_event_id }
     set_variable = { events_log_selected_evolution_event_type = events_log_history_selected_event_type }
+    set_variable = { event_id = events_log_selected_evolution_event_id }
     events_log_set_selected_evolution_display_values = yes
     set_country_flag = events_log_evolution_details_open
 }
@@ -1741,25 +1743,59 @@ events_log_rebuild_open_event_details_view = {
                     compare = equals
                 }
             }
-            set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.first_wave_tier }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.first_wave_stage }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.first_wave_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.first_wave_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.regional_cascade_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.regional_cascade_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.union_unmade_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.union_unmade_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.maximum_rupture_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.maximum_rupture_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.world_collapse_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.world_collapse_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_high_chaos_event_log.world_collapse_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_high_chaos_event_log.world_collapse_successor_stage }
+			events_log_add_event_detail_evolution_preview = yes
+	        }
+
+        if = {
+            limit = {
+                check_variable = {
+                    var = event_id
+                    value = constant:independence_wave_event_log.event_id
+                    compare = equals
+                }
+            }
+            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_1 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.gathering_storm_stage }
             events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.regional_cascade_tier }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.regional_cascade_stage }
+            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_2 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.rising_cascade_stage }
             events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.union_unmade_tier }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.union_unmade_stage }
+            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.old_names_stage }
             events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_event_log.secession_evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_event_log.world_collapse_tier }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_event_log.world_collapse_stage }
+            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.impossible_statehood_stage }
             events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:soviet_collapse_high_chaos_event_log.totalen_tier }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_high_chaos_event_log.totalen_successor_stage }
+            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_4 }
+            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.world_collapse_stage }
             events_log_add_event_detail_evolution_preview = yes
         }
 	    }
@@ -1787,6 +1823,7 @@ events_log_add_event_details_entry = {
 }
 
 events_log_open_selected_evolution_detail = {
+    set_variable = { events_log_selected_evolution_sequence = 0 }
     set_variable = { events_log_selected_evolution_type = global.events_log_evolution_view_type_entries^events_log_evolution_index }
     set_variable = { events_log_selected_evolution_tier = global.events_log_evolution_view_tier_entries^events_log_evolution_index }
     set_variable = { events_log_selected_evolution_stage = global.events_log_evolution_view_stage_entries^events_log_evolution_index }
@@ -1795,11 +1832,13 @@ events_log_open_selected_evolution_detail = {
     set_variable = { events_log_selected_evolution_actor = global.events_log_evolution_view_actor_entries^events_log_evolution_index }
     set_variable = { events_log_selected_evolution_has_actor = global.events_log_evolution_view_has_actor_entries^events_log_evolution_index }
     set_variable = { events_log_selected_evolution_date = global.events_log_evolution_view_date_entries^events_log_evolution_index }
+    set_variable = { event_id = events_log_selected_evolution_event_id }
     events_log_set_selected_evolution_display_values = yes
     set_country_flag = events_log_evolution_details_open
 }
 
 events_log_open_selected_event_detail_evolution = {
+    set_variable = { events_log_selected_evolution_sequence = 0 }
     set_variable = { events_log_selected_evolution_type = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index }
     set_variable = { events_log_selected_evolution_tier = global.events_log_event_detail_evolution_tier_entries^events_log_event_detail_evolution_index }
     set_variable = { events_log_selected_evolution_stage = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index }
@@ -1808,6 +1847,7 @@ events_log_open_selected_event_detail_evolution = {
     set_variable = { events_log_selected_evolution_actor = 0 }
     set_variable = { events_log_selected_evolution_has_actor = 0 }
     set_variable = { events_log_selected_evolution_date = 0 }
+    set_variable = { event_id = events_log_selected_evolution_event_id }
     events_log_set_selected_evolution_display_values = yes
     set_country_flag = events_log_evolution_details_open
 }
@@ -5738,6 +5778,7 @@ initialize_events_log_settings = {
     clr_country_flag = chaosx_help_tab_warfare
     clr_country_flag = chaosx_help_tab_controls
     set_variable = { events_log_selected_event_id = 0 }
+    set_variable = { events_log_selected_evolution_sequence = 0 }
     set_variable = { events_log_selected_evolution_type = 0 }
     set_variable = { events_log_selected_evolution_tier = 0 }
     set_variable = { events_log_selected_evolution_stage = 0 }

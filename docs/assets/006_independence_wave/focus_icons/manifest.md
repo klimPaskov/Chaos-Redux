@@ -51,7 +51,7 @@ The regenerated sheets were created after inspecting the repository focus and id
 
 ## Validation
 
-- Focus references in `common/national_focus/006_independence_wave_focus.txt`: 123.
+- Focus references in `common/national_focus/006_independence_wave_focus.txt`: 125.
 - Event006 focus sprites registered in `interface/006_independence_wave_icons.gfx`: 25.
 - Final DDS files present: 25, all 94x86 with alpha.
 - Processed PNG previews present: 25, all 94x86 with transparent unused canvas.

@@ -45,10 +45,12 @@ First-wave scale should be dynamic.
 - Gathering Storm: three or four republics, plus assertive dynamic follow-on release bursts for niche releasables
 - Rising Chaos: four or five republics, with larger follow-on bursts that can quickly expose northern, internal, and Siberian releasables
 - Chaos Tier: five or more and possible special actor pressure, with each higher tier releasing more dynamic candidates
-- Totalen Chaos: broad first wave with stronger special actor pressure
-- World Collapse: near-general rupture can occur through structured pools
+- Totalen Chaos: Maximum Rupture becomes the single Stage 4 secession milestone, with broad release pressure and stronger special actor pressure.
+- World Collapse: World Collapse Rupture becomes Stage 5, with near-general rupture through structured pools.
 
 Soviet condition also matters. A peaceful stable USSR faces a smaller opening than an unstable USSR at war with broken rail control.
+
+Gathering Storm and chaos-tier follow-on releases open the internal and niche releasable pool, but they do not release that pool by tier alone. Internal and niche tags such as Karelia, Sapmi, Tatarstan, Nenets, Yamalia, Taymyria, and similar tags require live Union Collapse Threat, accumulated progressive release pressure, failed-objective pressure, regional cascade pressure, war pressure, severe component pressure, or high urgency before a follow-on pulse can select them. Higher chaos increases burst size only after those pressure gates are met.
 
 ## Starting forces
 
@@ -75,7 +77,9 @@ Starting force scale depends on:
 - country strength
 - ordinary republic versus internal republic versus high-chaos actor
 
-Large republics receive many more divisions than smaller fallback actors through controlled-state, civilian-factory, and military-factory scaling. Strong and industrial republics should be visibly harder to crush on the opening front, especially during terminal collapse or a high-intensity triggerable scenario.
+Large republics receive many more divisions than smaller fallback actors through controlled-state, civilian-factory, and military-factory scaling. Strong and industrial republics should be visibly harder to crush on the opening front, especially during terminal collapse or a high-intensity triggerable scenario. Terminal release finalization must retry starting-force setup after the release passes and must not leave a breakaway at zero divisions when it has a usable owned or controlled state; the minimum fielded force is one unit. Stronger republics should also receive stronger starting templates, not only more copies of the weakest emergency template.
+
+The release risk ledger should remain player-facing. Its purpose is to explain whether another republic is likely to appear, which release families are exposed, and what Soviet action can still affect the outcome. It should support actionable choices rather than only display internal roll math. Moscow-facing republic tools should therefore stay connected to the same release-pressure, foreign-dependency, influence, obedience, and war-pressure variables. These tools belong in a separate Soviet Republic Negotiations decision category with a selected-target Show Decisions / Hide Decisions flow so the main Soviet crisis category does not become bloated. Negotiation tables are pressure relief and influence channels, loyal administrators represent practical control inside a contacted republic, ultimatums are coercive warnings against dangerous or foreign-backed republics, and punitive operations are direct attacks gated behind clear defiance or dependency pressure.
 
 Starting units can include emergency guards, defecting rifle divisions, depot militia, railway guards, capital guards, mountain detachments, steppe patrols, foreign-trained cadres, League reserves, coastal guards, naval militia, factory guards, or high-chaos special units.
 
@@ -156,6 +160,8 @@ Minimum formation:
 - Caucasus League: at least two of Georgia, Armenia, Azerbaijan
 - Central Asian League: at least two of Uzbekistan, Turkmenistan, Tajikistan, Kyrgyzstan, Kazakhstan
 - Free Republics' League: at least three ordinary Soviet Collapse republics, or two major republics plus Soviet forceful reclamation
+
+Northern internal republics above Kazakhstan are not Central Asian League members. Altai, Ostyak-Vogulia, and similar northern/internal releasables use internal-republic logic unless they have a separate custom successor package.
 
 One free regional republic unlocks preparation content only:
 
@@ -241,12 +247,12 @@ Free Republics' League:
 
 When Union Unmade fires, the implementation must do all of the following:
 
-1. Release all ordinary Soviet republics still under Moscow control or inside the collapse actor ecosystem, including overlapping-core and niche releasable tags found through the dynamic possible-country pool.
-2. Release all internal republics required by this package.
-3. Release or activate all eligible high-chaos special actors at the relevant chaos level.
+1. Release ordinary base Soviet republics still under Moscow control or inside the collapse actor ecosystem.
+2. Run current-tier internal and niche release passes for pools opened by the active evolution tier and live pressure model.
+3. Release or activate high-chaos special actors when the relevant chaos level and pressure gates allow them, then use the terminal all-possible sweep to catch remaining releasable former-Union core countries.
 4. Free all Soviet republican puppets and subject republics.
 5. Give every released republic dynamically scaled starting units.
-6. Assign local league membership where a local league exists.
+6. Assign local league membership where a local league exists, including a terminal pass that attaches newly released eligible Central Asian republics to an existing Central Asian League.
 7. Form local leagues where minimum member counts are met.
 8. Form or expand the Free Republics' League.
 9. Make every released republic declare war on the Soviet Union or join the existing anti-Soviet war.
@@ -258,7 +264,9 @@ When Union Unmade fires, the implementation must do all of the following:
 
 No released republic remains neutral after Union Unmade unless a later settlement event removes it from the war.
 
-Terminal ordinary release should run enough passes to catch layered releasables whose cores move from Moscow to another breakaway during the same terminal rupture.
+Union Unmade, World Collapse, and the standalone chaos triggerable scenario should run enough exhaustive passes to catch layered releasables whose cores move from Moscow to another breakaway during the same terminal rupture. Pre-terminal monthly releases should not use tier, elapsed time, or terminal preparation alone as release pressure for internal and niche republics; they must still depend on Union Collapse Threat, progressive release pressure, failed-objective pressure, regional cascade pressure, war pressure, severe component pressure, or high urgency.
+
+High-chaos successor actors should not wait passively for terminal collapse. When the active crisis reaches high chaos, hostile special successors should press local neighbor wars against non-allied breakaways so the live crisis becomes a multi-front civil war before Union Unmade.
 
 ## Aftermath cleanup
 

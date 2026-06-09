@@ -76,7 +76,7 @@ Track:
 ## cr_land_congress_recognized
 
 - Title: The Land Congress Speaks
-- Player-facing description direction: As a local-polity or indigenous authority released by Independence Wave, gain full recognition while keeping patron leverage low.
+- Player-facing description direction: As a local-polity or indigenous authority released by Independence Wave, gain full recognition with patron leverage kept low.
 - Difficulty: Hard
 - Visibility: Hidden until local-polity packages are implemented.
 - Disqualifiers: puppet route, wrong release origin, debug spawn.
@@ -85,7 +85,7 @@ Track:
 ## cr_partition_week_survived
 
 - Title: Week of a Hundred Petitions
-- Player-facing description direction: Survive a high-chaos Independence Wave that releases at least eight countries while keeping your original capital and avoiding puppet status.
+- Player-facing description direction: Survive a high-chaos Independence Wave that releases at least eight countries with your original capital retained and puppet status avoided.
 - Difficulty: Very hard
 - Visibility: Hidden until Evo IV or higher.
 - Disqualifiers: debug firing, tag switched by console, world-end cleanup bypass.
@@ -110,7 +110,7 @@ All achievements should fail or remain locked when:
 
 - the event was debug-fired through a testing bypass
 - the target country lacks the Independence Wave origin when the condition requires it
-- the player uses a scripted shortcut that skips the dossier, crisis, or release process
+- the player uses a scripted shortcut that skips the release wave, origin checks, or aftermath process
 - a cleanup event grants the result without the intended route
 - an achievement path depends on a disabled evolution
 - the country was created by Event 005 or another event and only later received an Event 006 idea by mistake
@@ -133,7 +133,6 @@ All achievements should fail or remain locked when:
 | `chaosx_iw_historical_return_package` | country | old-name achievement path |
 | `chaosx_iw_local_polity_package` | country | local-polity achievement path |
 | `chaosx_iw_strange_package` | country | impossible-state path |
-| `chaosx_iw_event005_collision_checked` | country | shared-tag origin guard |
 
 ### Achievement catalog
 
@@ -145,7 +144,6 @@ All achievements should fail or remain locked when:
 | `cr_suppression_failed` | The Cost of Silence | host | medium | suppress first, lose later waves |
 | `cr_old_name_modern_state` | Old Name, Modern State | historical-return | hard | modern compromise route without puppet or border war |
 | `cr_capital_still_answers` | The Capital Still Answers | host | medium | survive a severe wave with capital retained |
-| `cr_no_country_erased` | Every Seal Survives | host or observer | hard | resolve a high-chaos mass wave where every host survives |
 | `cr_brokers_exposed` | The Broker Leaves by Night | breakaway | medium | escape patron leverage after nearly becoming a client |
 | `cr_partition_without_war` | Lines Without Guns | host or breakaway | hard | settle three border disputes peacefully |
 | `cr_first_old_name` | Wake the Archive | historical-return | medium | create first old-name state through Event 006 |
@@ -178,23 +176,6 @@ This rewards the absolute host-survival rule as active gameplay. It tells the pl
 **Icon direction:**
 
 Capital building behind a torn map.
-
-#### `cr_no_country_erased`
-
-**Description direction:** During a high-chaos Independence Wave that releases at least eight countries, ensure that every affected host survives the wave.
-
-**Conditions:**
-
-- Evo IV or Evo V active
-- actual release count at least eight
-- at least two hosts affected
-- every host that lost land keeps at least one state
-- no candidate was allowed to bypass the survival floor
-- player controls a host, a league leader, or an observer country with decisions that helped settlements
-
-**Icon direction:**
-
-Many small flags around several surviving capital stars.
 
 #### `cr_brokers_exposed`
 
@@ -236,7 +217,7 @@ Survey chain over map with white flags.
 
 - country has historical-return package type
 - origin is Event 006
-- first global old-name flag not yet set before release
+- first global old-name flag not yet set during the instant release resolver
 - player controls the package or its host at release
 - no Event 005 origin
 

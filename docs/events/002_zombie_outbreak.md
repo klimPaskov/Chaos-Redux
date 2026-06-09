@@ -231,7 +231,7 @@ Weekly selection flow:
 
 1. `ZZZ` runs a single dynamic-outbreak selection pass in weekly zombie logic.
 2. The system first checks the 7 day global cooldown and whether any country can roll at all.
-3. The weekly outbreak roll is now dynamic rather than a fixed phase table. It uses the best eligible country MTTH and turns that into a weekly chance, so faster-risk countries really do make the world more dangerous while safer countries no longer get treated as if they had the same outbreak pressure.
+3. The weekly outbreak roll is now dynamic rather than a fixed phase table. It uses the best eligible country MTTH and turns that into a weekly chance. Faster-risk countries raise the global danger; safer countries no longer get treated as if they had the same outbreak pressure.
 4. If the outbreak system rolls successfully that week, it builds a weighted country pool from the live `zombie_outbreak_days` values and picks from that pool.
 5. Countries with lower MTTH get more entries in the pool, but very-safe countries can still stay in it with only a tiny number of entries instead of being hard-cut out by a bucket threshold.
 6. Population, research capacity, factory count, and rear-state quality now separate countries more aggressively. A populous, underdeveloped giant such as China should sit much higher on the danger ladder than an advanced country like Germany unless Germany is far more exposed locally.

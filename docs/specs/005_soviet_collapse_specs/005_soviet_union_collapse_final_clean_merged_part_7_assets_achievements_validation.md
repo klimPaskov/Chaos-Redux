@@ -3,6 +3,8 @@
 
 ## Asset policy
 
+Active June 5 urgent playability constraint: do not edit `gfx/flags`, flag sprites, flag files, flag interface entries, route flags, ideology flag assets, or other asset files unless the user explicitly reopens that scope. The asset and flag requirements below remain final-validation requirements, not permission to touch flags during the current no-flag cleanup.
+
 Reuse existing assets only when they are valid, correctly placed, correctly sized, wired, documented, and suitable for the route identity.
 
 Create or source new assets when existing assets are missing, broken, generic, duplicated, wrongly oriented, wrong size, unwired, undocumented, or unsuitable.

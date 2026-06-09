@@ -1,5 +1,9 @@
 # Event 006 Darfur Flag Asset Manifest
 
+## Current Status
+
+Superseded by the 2026-06-08 imagegen regeneration pass. Current DFR source, processed, and final flag paths are recorded in `docs/assets/006_independence_wave/flags/manifest.md`. The historical reconstruction notes below are retained only as previous-tranche provenance and are not the current game-facing DFR flag source.
+
 ## DFR country flag
 
 - Related event id: 006

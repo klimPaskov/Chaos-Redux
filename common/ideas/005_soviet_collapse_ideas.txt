@@ -27,6 +27,11 @@
 @soviet_collapse_restored_war_support = 0.08
 @soviet_collapse_restored_drift = 0.18
 @soviet_collapse_restored_org = 0.06
+@soviet_collapse_league_victory_stability = 0.06
+@soviet_collapse_league_victory_war_support = 0.1
+@soviet_collapse_league_victory_morale = 0.12
+@soviet_collapse_league_victory_reinforce = 0.03
+@soviet_collapse_league_victory_political_power = 0.08
 @soviet_collapse_loyalist_org = 0.1
 @soviet_collapse_loyalist_org_regain = 0.1
 @soviet_collapse_loyalist_planning = 0.12
@@ -240,11 +245,24 @@
 @soviet_collapse_factory_ancient_pra_infrastructure_construction = 2.00
 @soviet_collapse_factory_ancient_pra_supply_node_construction = 1.75
 @soviet_collapse_factory_ancient_pra_supply_node_range = 0.35
-@soviet_collapse_factory_ancient_dsc_recruitable_population = 35.00
+@soviet_collapse_factory_ancient_dsc_recruitable_population = 1.00
 @soviet_collapse_factory_ancient_dsc_flat_recruitable_population = 0.25
 @soviet_collapse_factory_ancient_dsc_weekly_manpower = 50000
 @soviet_collapse_factory_ancient_dsc_recovery_rate = 0.04
 @soviet_collapse_factory_ancient_dsc_org_loss_moving = -0.08
+@soviet_collapse_factory_ancient_uwr_bio_facility_construction = 3.00
+@soviet_collapse_factory_ancient_uwr_cw_facility_construction = 3.00
+@soviet_collapse_factory_ancient_uwr_special_attack = 0.55
+@soviet_collapse_factory_ancient_uwr_special_defense = 0.35
+@soviet_collapse_factory_ancient_uwr_army_org = 0.15
+@soviet_collapse_factory_ancient_uwr_training_time = -0.35
+@soviet_collapse_factory_ancient_uwr_research_speed = 0.18
+@soviet_collapse_factory_ancient_kmb_resources = 2.50
+@soviet_collapse_factory_ancient_kmb_trade = 1.00
+@soviet_collapse_factory_ancient_kmb_industry = 0.35
+@soviet_collapse_factory_ancient_kmb_infrastructure = 2.50
+@soviet_collapse_factory_ancient_kmb_factory_construction = 0.70
+@soviet_collapse_factory_ancient_kmb_army_attack = 0.18
 @soviet_collapse_factory_ancient_krs_navy_org_small = 0.1
 @soviet_collapse_factory_ancient_krs_navy_org_large = 0.16
 @soviet_collapse_factory_ancient_krs_amphibious_invasion = 0.1
@@ -300,6 +318,18 @@ ideas = {
 				war_support_factor = @soviet_collapse_restored_war_support
 				drift_defence_factor = @soviet_collapse_restored_drift
 				army_org_factor = @soviet_collapse_restored_org
+			}
+		}
+
+		soviet_collapse_league_victory_confidence = {
+			picture = union_restored
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @soviet_collapse_league_victory_stability
+				war_support_factor = @soviet_collapse_league_victory_war_support
+				army_morale_factor = @soviet_collapse_league_victory_morale
+				land_reinforce_rate = @soviet_collapse_league_victory_reinforce
+				political_power_factor = @soviet_collapse_league_victory_political_power
 			}
 		}
 
@@ -1473,6 +1503,10 @@ ideas = {
 			modifier = {
 				stability_factor = @soviet_collapse_factory_ancient_stability_medium
 				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				production_speed_infrastructure_factor = @soviet_collapse_factory_ancient_pra_infrastructure_construction
+				production_speed_rail_way_factor = @soviet_collapse_factory_ancient_pra_railway_construction
+				production_speed_supply_node_factor = @soviet_collapse_factory_ancient_pra_supply_node_construction
+				supply_node_range = @soviet_collapse_factory_ancient_pra_supply_node_range
 				supply_consumption_factor = @soviet_collapse_factory_ancient_route_supply_consumption
 			}
 		}
@@ -1674,8 +1708,41 @@ ideas = {
 			allowed_civil_war = { always = yes }
 			modifier = {
 				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				conscription = @soviet_collapse_factory_ancient_icd_conscription_high
+				recruitable_population = @soviet_collapse_factory_ancient_dsc_flat_recruitable_population
+				recruitable_population_factor = @soviet_collapse_factory_ancient_dsc_recruitable_population
+				weekly_manpower = @soviet_collapse_factory_ancient_dsc_weekly_manpower
 				army_morale_factor = @soviet_collapse_factory_ancient_dsc_recovery_rate
 				org_loss_when_moving = @soviet_collapse_factory_ancient_dsc_org_loss_moving
+			}
+		}
+
+		uwr_experimental_warfare_republic = {
+			picture = uwr_experimental_warfare_republic
+			allowed_civil_war = { always = yes }
+			modifier = {
+				war_support_factor = @soviet_collapse_factory_ancient_war_support_medium
+				production_speed_biowarfare_facility_factor = @soviet_collapse_factory_ancient_uwr_bio_facility_construction
+				production_speed_cw_facility_factor = @soviet_collapse_factory_ancient_uwr_cw_facility_construction
+				special_forces_attack_factor = @soviet_collapse_factory_ancient_uwr_special_attack
+				special_forces_defence_factor = @soviet_collapse_factory_ancient_uwr_special_defense
+				army_org_factor = @soviet_collapse_factory_ancient_uwr_army_org
+				training_time_army_factor = @soviet_collapse_factory_ancient_uwr_training_time
+				research_speed_factor = @soviet_collapse_factory_ancient_uwr_research_speed
+			}
+		}
+
+		kmb_subsoil_quota_state = {
+			picture = kmb_subsoil_quota_state
+			allowed_civil_war = { always = yes }
+			modifier = {
+				local_resources_factor = @soviet_collapse_factory_ancient_kmb_resources
+				trade_opinion_factor = @soviet_collapse_factory_ancient_kmb_trade
+				industrial_capacity_factory = @soviet_collapse_factory_ancient_kmb_industry
+				production_speed_infrastructure_factor = @soviet_collapse_factory_ancient_kmb_infrastructure
+				production_speed_industrial_complex_factor = @soviet_collapse_factory_ancient_kmb_factory_construction
+				production_speed_arms_factory_factor = @soviet_collapse_factory_ancient_kmb_factory_construction
+				army_attack_factor = @soviet_collapse_factory_ancient_kmb_army_attack
 			}
 		}
 

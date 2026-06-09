@@ -1,16 +1,39 @@
 # Event 6: Independence Wave
 
+## Current source-of-truth correction
+
+Current source-of-truth map: `docs/plans/006_independence_wave_plans/source_of_truth_map.md`.
+
+The 2026-06-05 user correction supersedes earlier Event 006 Kuban (`KUB`) and Altai (`ALT`) package-expansion framing. They are not current requested Event 006 expansions, package carriers, focus overlays, or asset requests unless explicitly reopened later. Because they are vanilla releasable tags, they may still appear as ordinary Independence Wave countries when they pass the same eligibility and host-safety checks as other vanilla non-existing countries.
+
+The active release-pool direction is the generic possible-country base pass. Niche generic, custom, and chaos-only countries belong in a later separate pool when their cores, flags, localisation, and playability package are intentionally wired.
+
+Current wrap-up scope is playable technical completion. Urgent requirements are the release resolver, host survival, origin separation, basic playable tree access, decision usability, current report/news image wiring, and honest docs/audit alignment. Future polish includes additional bespoke package overlays, optional route-specific report/news variants, portraits, animated seals, richer scripted GUI states, and full spreadsheet/catalog polish when implementation facts stop moving.
+
+Base Independence Wave history and release-scale evolution entries must not use a country actor. The event recipient, manual trigger country, and first host that lost land are scopes used by gameplay where needed, not the responsible actor of the wave.
+
 ## Core identity
 
 Independence Wave is a minor repeatable event in the Liberations cluster. It is not an Event 005 derivative, not a successor-state event, and not a dependency of any collapse chain. It is a separate random-release system that can happen anywhere in the world when a host state is weak, distracted, overextended, low legitimacy, occupied, colonial, or losing control of peripheral regions.
 
-The base fantasy is simple. A state that looked stable yesterday receives several petitions, local committees, foreign reporter notes, religious appeals, exile letters, mutiny rumors, or municipal declarations. The host gets a short crisis phase. If the host fails to contain, negotiate, co-opt, or delay the crisis, several inactive countries can become independent in the same wave.
+The base fantasy is simple. A state that looked stable yesterday receives several petitions, local committees, foreign reporter notes, religious appeals, exile letters, mutiny rumors, or municipal declarations. The wave releases several inactive countries immediately after the hidden candidate and host-survival resolver finishes. The petitions, dossiers, and crisis tools are not a delay before independence. They are the explanation and aftermath layer that lets the host, breakaways, majors, and earlier breakaways react to the new facts on the map.
 
-The first wave should usually release ordinary HOI4-style countries that already exist as tags, releasables, dead tags, game-rule tags, or formables that are practical to activate. These releases should feel plausible. A low-chaos campaign should mostly create democratic, defensive, modest states that have a reason to exist in the current map.
+The first wave should release from the generic `every_possible_country` pass: any inactive possible country can enter the base pool. The host-safety resolver then decides whether that candidate has a valid host-owned, controlled, non-protected core state that can be released without erasing the host. These releases should feel plausible. A low-chaos campaign should mostly create defensive, modest states that have a reason to exist in the current map.
 
-Higher chaos changes the pool and the scale. Later waves release more countries at once, give them stronger starting armies, allow non-democratic ideologies, create border demands, produce patron conflicts, and eventually open niche historical-return packages or local polities that would not normally appear in HOI4. At those tiers, the event can create Assyria, Mesopotamia, Mapuche Araucania, Charrua, Guarani, Aymara, Palmares, Buganda, Asante, Sokoto, Kanem-Bornu, Darfur, Barotseland, Zulu restorations, Herero or Nama authorities, Volga Bulgaria, Caucasian mountain republics, or similar researched packages if the region and chaos state justify them.
+Higher chaos changes the scale first. Later work can add custom and chaos-only countries through a separate pool, but the base resolver should not hardcode every releasable tag. At higher tiers, additional researched custom packages can be layered in if the region and chaos state justify them.
 
-The event should never act like a generic release-country button. The important gameplay is the process. A host can mishandle petitions. A major power can turn a committee into a client. Earlier breakaways can help the next wave. A new state can seek recognition, build a militia, accept a patron, resist a patron, join a small-state league, demand border districts, or become a strange high-chaos regime.
+The event should never act like a generic release-country button. The important gameplay is the process. The map change comes first. The interesting gameplay is what follows from that sudden shock. A host can mishandle the aftermath. A major power can turn a new state into a client. Earlier breakaways can help the next wave. A new state can seek recognition, build a militia, accept a patron, resist a patron, join a small-state league, demand border districts, or become a strange high-chaos regime.
+
+
+## Instant release rule
+
+Event 006 is an instant-release event. When the event fires, it chooses one or more valid hosts, scores the release candidates, protects the host survival state, reduces or skips invalid candidates, and then releases the successful countries immediately in the same wave.
+
+Dossiers do not delay independence. A dossier is the release file shown to the host and the world after the map changes. It explains who broke away, why the host was vulnerable, what territory the new country received, what territory was withheld to keep the host alive, who is claiming authority, and what post-release responses are now available.
+
+Host decisions, breakaway decisions, foreign patron actions, recognition missions, loyalist conflicts, scripted GUI boards, and formation routes are aftermath systems. They shape what the new states become. They do not decide whether the visible wave happened, except for hidden resolver validation that runs immediately before the release effect to prevent invalid tags, invalid state transfers, or host deletion.
+
+The player-facing feeling should be sudden. The first report should read as a wave that has already happened: new flags exist, borders changed overnight, ministries are locked out of their former districts, and foreign governments are deciding whether to recognize the new facts.
 
 ## Separation from Event 005
 
@@ -68,11 +91,11 @@ The best outcome is not always more countries. A host that negotiates well can p
 | Type | Minor Repeatable |
 | Cluster | Liberations |
 | Cluster threat | Lowest threat, usually first |
-| Details | Several inactive countries begin coordinated independence crises inside weak, unstable, overstretched, colonial, occupied, or wartime hosts. The host receives dossiers and decisions before any country is released. If the crisis succeeds, a wave of countries becomes independent with strength scaled by industry, manpower, depots, foreign aid, previous waves, and chaos tier. Every host keeps at least one state, preferably its capital. Early waves use ordinary HOI4-style releasables. Later waves release more countries and can unlock historical-return, indigenous, local-polity, patron-client, and strange-state packages. |
+| Details | Several inactive countries begin coordinated independence crises inside weak, unstable, overstretched, colonial, occupied, or wartime hosts. The host receives release dossiers and post-release response decisions as the wave fires. If the crisis succeeds, a wave of countries becomes independent with strength scaled by industry, manpower, depots, foreign aid, previous waves, and chaos tier. Every host keeps at least one state, preferably its capital. Early waves use ordinary HOI4-style releasables. Later waves release more countries and can unlock historical-return, indigenous, local-polity, patron-client, and strange-state packages. |
 | Evo I | Committees Learn the Pattern. Batch size rises, non-democratic releases become possible, starting armies become stronger, and earlier breakaways can offer recognition, aid, guarantees, and volunteers. |
 | Evo II | The Small States Congress. Released states can coordinate, arbitrate borders, share equipment, send volunteers, form defensive networks, and prepare a formal league. |
 | Evo III | Claims Follow the Flag. Released states can demand nearby territory, ask majors to back transfers, issue ultimatums, accept advisers, resist puppeting, or become patron clients. |
-| Evo IV | The Old and the Local Return. The release pool expands to researched historical-return countries, indigenous authorities, city leagues, tribal confederacies, and custom tags that need special assets and route overlays. |
+| Evo IV | The Old and the Local Return. The release scale expands; later custom-pool work can add researched historical-return countries, indigenous authorities, city leagues, tribal confederacies, and custom tags that need special assets and route overlays. |
 | Evo V | The Impossible State. Strange high-chaos releases can appear, including necromantic custodianships, anti-mankind directorates, impossible bureaucracies, and coalitions with other chaos countries. |
 | World-End Scenario | No direct world-end branch by default. High-chaos splinter states can feed existing world-threat or strange-state systems only if one becomes strong enough to matter. |
 
@@ -80,25 +103,30 @@ The best outcome is not always more countries. A host that negotiates well can p
 
 | Layer | Player-facing meaning | Main actors | Main outputs |
 | --- | --- | --- | --- |
-| Dossier formation | Committees, petitions, local officials, exile networks, reporters, churches, councils, tribal authorities, or old-state societies start acting together | Host, candidates, observers | Candidate list, candidate tier, pressure, legitimacy, host strategy |
-| Crisis management | Host chooses negotiation, autonomy, arrests, army deployment, observers, guarantees, loyalists, or evacuation | Host, committees, majors, loyalists | Pressure shifts, radicalization shifts, foreign attention, future grievances |
-| Resolution | Each candidate fails, settles, breaks away, becomes a client, enters civil conflict, or waits for the next wave | Candidate and host | New countries, autonomy settlements, wars, puppet links, suppressed committees |
-| Aftercare | New states build institutions, seek recognition, cooperate, radicalize, or become a patron project | Breakaways, earlier breakaways, majors | Focus access, decisions, coalition state, event log entries |
+| Hidden resolver | The event chooses valid hosts and candidates before the player sees the wave | Event system, with no responsible country actor | Host score, candidate score, protected host state, release count, skipped candidates |
+| Immediate release wave | Several new countries appear on the map at once | Host, new breakaways | State transfers, origin flags, startup armies, startup ideas, package type, release dossiers |
+| Release dossiers | The world receives files explaining what just happened | Host, breakaways, observers, majors | Dossier cards, grievances, committee types, foreign attention, host anger |
+| Aftershock management | Host, breakaways, majors, loyalists, and earlier breakaways react | Host, breakaways, majors, loyalists | Negotiation, suppression, recognition, patron pressure, loyalist crises, border disputes |
+| State-building | New states try to survive as actual countries | Breakaways | Focus access, decisions, formation routes, coalition state, event log entries |
+| Memory pass | The campaign learns from the wave | Global systems and AI | Future wave weighting, evolution pressure, League cohesion, host precedent |
 
-The dossier phase is mandatory. Even if the host is AI-controlled, the crisis state must exist so the result has context.
+The hidden resolver is not a playable crisis phase. It is safety logic. The visible event should immediately change the map, then give the player tools to manage the consequences.
+
 
 ## Evolution release scale
 
 The number of released countries must grow with chaos. This is a visible part of the event identity.
 
+Actual Event 006 evolution rows are release-scale tier milestones, not per-country release progressions. Baseline/calm waves can fire and release countries, but they should not record an evolution row. The first evolution row starts no earlier than Dossier Surge, followed by Rising Chaos Release Pattern, Chaos Tier Release Pattern, Great Partition Week, and Open Season. Great Partition Week displays at Chaos Tier, while Open Season is the World Collapse-stage entry displayed at Totalen Chaos.
+
 | State | Typical successful releases | Candidate pool | Army strength | Political risk |
 | --- | ---: | --- | --- | --- |
-| Baseline | 3 to 5 | Existing releasables, dead tags, practical vanilla tags, ordinary colonial releases | Weak militia, few templates, low equipment | Mostly democratic or neutral |
-| Evo I | 4 to 6 | Same as baseline plus less common dormant tags and compatible game-rule tags | Better militia, limited depots, more trained cadres | Non-democratic chance opens |
-| Evo II | 5 to 7 | Regional clusters, previous-wave sponsors, city states, protectorates, underused vanilla tags | Defensive armies, volunteers, mutual aid | League politics and border arbitration |
+| Baseline | 3 to 5 | Generic `every_possible_country` base pool: inactive possible countries, filtered at release time by host safety and valid releasable core state | Weak militia, few templates, low equipment | Mostly defensive |
+| Evo I | 4 to 6 | Same base pool, larger release count | Better militia, limited depots, more trained cadres | Non-democratic chance opens |
+| Evo II | 5 to 7 | Same base pool, larger release count | Defensive armies, volunteers, mutual aid | League politics and border arbitration |
 | Evo III | 6 to 9 | Claims-based breakaways, patron-backed releases, border protectorates, revived regional identities | Stronger armies, advisers, foreign support | Puppet struggle and limited wars |
-| Evo IV | 8 to 12 | Historical-return, indigenous authority, local polity, tribal confederacy, and old-state packages | Mixed. Some fragile, some fanatical or patron-backed | Aggressive claims, legitimacy crises, rare wars |
-| Evo V | 10 to 16 | Impossible-state packages, strange coalitions, high-chaos custom tags, dead administrations | Strong or unstable forces with dangerous modifiers | Strange diplomacy, world-threat hooks, containment crises |
+| Evo IV | 8 to 12 | Same base pool, larger release count; later custom-pool work can add historical-return and local-polity packages | Mixed. Some fragile, some fanatical or patron-backed | Aggressive claims, legitimacy crises, rare wars |
+| Evo V | 10 to 16 | Same base pool, maximum release count; later custom-pool work can add impossible-state and chaos-only packages | Strong or unstable forces with dangerous modifiers | Strange diplomacy, world-threat hooks, containment crises |
 
 The exact count should be weighted by host weakness, number of valid candidates, previous suppressions, foreign attention, chaos tier, and performance constraints. If the valid pool is too small, or if reaching the target would take every state from a host, the event must release fewer countries rather than creating nonsensical tags or deleting an existing country.
 
@@ -106,7 +134,7 @@ The exact count should be weighted by host weakness, number of valid candidates,
 
 ## Candidate territory validation
 
-Every candidate must pass a territory validation pass before release.
+Every candidate must pass a territory validation pass during hidden release validation.
 
 Validation requirements:
 
@@ -118,6 +146,8 @@ Validation requirements:
 - the candidate is skipped when no reduced version is valid
 
 Territorial ambition belongs after release through claims, decisions, border commissions, patron pressure, or later wars. Initial release territory must be conservative enough to preserve the host. Even at Evo V, the event can create a hostile or impossible neighbor, but it cannot remove the original country from the map.
+
+Border Commission expansion normally stays inside a released country's cores. Adjacent non-core expansion is a high-chaos league-backed exception, not an ordinary growth path. When a release uses that exception, its original host must receive visible response tools: threaten the overreach, negotiate restraint, and prepare a direct reclamation war goal if the release keeps pressing the claim.
 
 Event 006 uses a ladder, not one flat list.
 
@@ -245,21 +275,23 @@ Low desirability:
 
 ## Host response paths
 
-### Accept the petitions
+Host response paths begin after the instant release wave. The host is reacting to lost states, new borders, foreign reporters, loyalist pressure, and the fact that other countries now see the breakaways on the map.
 
-The host lets the committees go. This reduces short-term violence and foreign condemnation, but creates precedent pressure. Low-chaos democratic hosts may prefer this if the candidate region is low industry and low manpower.
+### Recognize the loss
 
-### Negotiate a federal settlement
+The host accepts that the released country exists and tries to reduce short-term violence. This lowers immediate crisis pressure and foreign condemnation, but creates precedent pressure for later waves. Low-chaos democratic hosts may prefer this if the lost region is low industry and low manpower.
 
-The host offers autonomy, language rights, local elections, revenue sharing, or demilitarized status. Success can prevent release. Failure can increase legitimacy for the committee because the host publicly admitted a problem exists.
+### Negotiate a federal after-settlement
 
-### Delay and investigate
+The host offers autonomy-style treaties, trade rights, language rights, demilitarized zones, revenue sharing, or recognition terms after the country has already appeared. Success can prevent war, reduce claims, or create a friendly neighbor. Failure can increase legitimacy for the breakaway because the host publicly admitted the grievance exists.
 
-The host creates commissions, court cases, census disputes, or loyalty checks. This buys time but raises pressure if repeated.
+### Delay recognition and investigate
 
-### Suppress the movement
+The host creates commissions, court cases, census disputes, or loyalty checks after the breakaway appears. This buys time and may preserve claims, but raises pressure if repeated.
 
-The host arrests leaders, censors newspapers, deploys troops, or closes assemblies. This can stop weak candidates, but raises radicalization, foreign attention, and later wave strength.
+### Suppress the breakaway aftermath
+
+The host arrests supporters, censors newspapers, deploys troops near the new border, or closes remaining local assemblies. This can weaken a fragile released country, but raises radicalization, foreign attention, and later wave strength.
 
 ### Invite loyalist militias
 
@@ -279,7 +311,7 @@ Observers reduce suppression credibility and protect elections. They also increa
 
 ### Prepare a loyal evacuation
 
-The host moves officials, equipment, trains, gold, archives, or loyal divisions out before release. This weakens the new country but can create bitterness and claims.
+The host moves officials, equipment, trains, gold, archives, or loyal divisions out during hidden release validation. This weakens the new country but can create bitterness and claims.
 
 ## Breakaway resolution outcomes
 
@@ -318,7 +350,7 @@ Early states should not spawn with absurd armies. High-chaos states can be stron
 
 ### Ordinary releasable breakaway
 
-Uses existing or practical HOI4 tags. This is the default pool for baseline and Evo I. It receives the Liberation Provisional Tree, adjusted by ideology and host relationship.
+Uses the generic `every_possible_country` base pool. This is the default pool for current baseline and evolution waves. It receives the Liberation Provisional Tree, adjusted by ideology and host relationship.
 
 ### Game-rule or formable-compatible breakaway
 
@@ -365,7 +397,7 @@ The implementation agent should not treat this table as a mandatory spawn list. 
 | East and Central African kingdoms | Buganda, Bunyoro, Rwanda or Burundi variants, Barotseland, Luba or Lunda references when researched | Uganda, Great Lakes, upper Zambezi, Congo interior | Evo IV or higher | Kabaka or council legitimacy, protectorate treaty dispute, local army and royal guard |
 | Southern African local authorities | Zulu restoration, Xhosa council, Basotho mountain state if not already present, Herero authority, Nama authority | Natal, Cape borderlands, Lesotho area, Namibia | Evo IV or higher | Land recovery, mounted or local defense, colonial grievance, prestige and survival |
 | South American local and indigenous polities | Mapuche Araucania, Aymara congress, Guarani republic, Charrua revival, Palmares, Muisca cultural state | Southern Chile and Argentina, Andes, Paraguay and adjacent areas, Uruguay, Brazil, Colombia | Evo IV or higher | Land congress, old treaty claims, militia survival, cultural legitimacy |
-| Steppe and Caucasus historical packages | Volga Bulgaria, Idel-Ural, Circassia, Mountain Republic, Don and Kuban if not claimed by another event, Bukhara, Khiva, Kokand | Volga-Kama, North Caucasus, Cossack regions, Central Asia | Evo IV or higher | Old-state restoration, cavalry myth, council of elders, sponsor struggle |
+| Steppe and Caucasus historical packages | Volga Bulgaria, Idel-Ural, Circassia, Mountain Republic, Don, Bukhara, Khiva, Kokand; Kuban only as a superseded historical candidate unless explicitly requested later | Volga-Kama, North Caucasus, Cossack regions, Central Asia | Evo IV or higher | Old-state restoration, cavalry myth, council of elders, sponsor struggle |
 | City and infrastructure states | Free Danzig-type city, Shanghai-style municipal emergency, railway republic, canal protectorate, oil port authority | Ports, canals, trade cities, rail hubs, oil zones | Evo II or higher | Commerce, diplomacy, intelligence, foreign guarantees |
 | Impossible states | Archive-state, grave census authority, anti-mankind directorate, necromantic custodianship, sealed city | High-death zones, abandoned administrations, contaminated regions | Evo V | Strange mechanics, containment, super-event candidate |
 
@@ -467,7 +499,7 @@ Unlocks:
 
 ### Host decision category: Petitions Against the State
 
-Host decisions should let the host shape each candidate before release.
+Host decisions should let the host respond to each released country and shape the immediate aftermath.
 
 Decision groups:
 
@@ -485,7 +517,7 @@ Decision groups:
 
 ### Breakaway decision category: Build the New State
 
-Breakaway decisions should begin after release or during the late crisis if the player is controlling the candidate.
+Breakaway decisions begin after the instant release. There is no playable candidate waiting room before independence.
 
 Decision groups:
 
@@ -671,7 +703,7 @@ The strange-state player can exploit high-chaos release logic, but should face c
 
 Required popup families:
 
-- first dossier appears
+- first release dossier appears
 - host response chosen
 - foreign observers arrive
 - suppression succeeds or fails
@@ -770,22 +802,24 @@ The coding agent should not implement every historical package at once if tag an
 
 ## Expanded wave lifecycle
 
-The wave should play as a short crisis with a visible beginning, a tense middle, and a messy settlement. The same structure applies to a tiny colonial breakaway, a city-state, or a high-chaos old-name return. Only the scale and the candidate pool change.
+The wave should play as a sudden map shock followed by a living aftermath. The same structure applies to a tiny colonial breakaway, a city-state, or a high-chaos old-name return. Only the scale and the candidate pool change.
 
 | Phase | Player-facing event | Hidden work | Main failure case | Result if successful |
 | --- | --- | --- | --- | --- |
-| Rumor intake | Host receives scattered petitions, letters, reporter requests, and local complaints | Build candidate pool, reserve host survival state, score host weakness | No valid host or no valid candidate | Event quietly delays and tries later |
-| Dossier formation | Host sees named dossiers, not instant releases | Assign candidate tier, package type, pressure, legitimacy, radicalization, foreign attention | All candidates fail host survival validation | Release count is reduced or wave cancels |
-| Crisis management | Host chooses how to respond through decisions and missions | Apply pressure changes, track costs, mark foreign interest, mark suppression memory | Host spends resources but ignores pressure | Radicalization and legitimacy rise for committees |
-| Resolution week | Each dossier resolves into settlement, release, civil conflict, patron dependency, or failure | Batch release order, protected state enforcement, origin flag assignment | Candidate would delete host | Candidate shrinks or is skipped |
-| Aftercare | New states build governments and ask for recognition | Assign tree, package overlay, startup ideas, army, stockpiles, claims, decisions | New country has no supported content | It receives emergency subset and generic provisional tree |
-| Memory pass | Other countries learn the pattern | Update previous wave values, event log, AI memory, future candidate weights | Too many active breakaways | Future releases get throttled until map stabilizes |
+| Candidate pulse | No popup yet | Build candidate pool, reserve host survival state, score host weakness | No valid host or candidate | Event quietly delays and tries later |
+| Host survival validation | No popup yet | Remove or shrink candidates that would delete the host | All candidates fail validation | Wave cancels or releases fewer countries |
+| Immediate release | New countries appear on the map at once | Set origin flags, transfer valid states, assign startup packages | Invalid tag or missing package support | Candidate skipped before the visible release effect |
+| Release dossier report | Player sees why the wave happened | Write dossier cards, event log entry, package type, host anger, foreign attention | Too many dossiers for one popup | Grouped report and details UI |
+| Aftershock management | Host and breakaways respond through decisions, missions, and GUI | Apply recognition, suppression, patronage, loyalist, and coalition mechanics | Host ignores the new map reality | Radicalization, border anger, and patron leverage rise |
+| State-building | New states build governments and ask for recognition | Assign focus tree, overlay, startup ideas, army, stockpiles, claims, decisions | New country has limited supported content | Emergency subset and generic provisional tree |
+| Memory pass | Other countries learn the pattern | Update future wave values, AI memory, event log, candidate weights | Too many active breakaways | Future releases throttle until the map stabilizes |
 
-A wave should never feel like the game clicked several release buttons at once. The player should see why the host is vulnerable, what the committees claim, why foreign powers care or ignore the crisis, and what each release inherits from the crisis.
+A wave is allowed to release fewer countries than its target if host survival, tag validity, state overlap, or performance limits require it. That reduction happens in hidden validation before the visible release effect. The visible event still presents the successful wave as immediate.
+
 
 ## Dossier content standard
 
-Every candidate dossier needs enough identity to make the later release feel earned. A dossier can be short, but it must contain these elements.
+Every release dossier needs enough identity to make the instant release feel understandable. A dossier can be short, but it must contain these elements.
 
 | Dossier field | Required design answer | Example content direction |
 | --- | --- | --- |
@@ -796,7 +830,7 @@ Every candidate dossier needs enough identity to make the later release feel ear
 | Risk sign | Why this may escalate | mutinous depot, armed loyalists, foreign reporters, patron promise, old-state documents |
 | Host choice hook | Which host decisions matter most | negotiate, suppress, trade, invite observers, arm loyalists, evacuate archives |
 
-The first player-facing event should mention only a few dossiers by name when the batch is large. Use a report event or follow-up detail panel for the full list. A high-chaos wave with twelve candidates should not create twelve separate popups unless the player opens details.
+The first player-facing event should mention only a few newly released countries by name when the batch is large. Use a report event or follow-up detail panel for the full list. A high-chaos wave with twelve candidates should not create twelve separate popups unless the player opens details.
 
 ## Candidate scoring model
 
@@ -1012,7 +1046,7 @@ Every significant wave should create event log data.
 
 | Log item | Required content |
 | --- | --- |
-| Wave opened | host, candidate count, main pressure reason, chaos tier |
+| Wave opened | no country actor, candidate count, main pressure reason, chaos tier |
 | Host response | main path chosen, cost paid, suppression or settlement memory |
 | Release week | actual release count, skipped candidates, survival state preserved |
 | First patron | patron country, target country, leverage type |
@@ -1185,7 +1219,7 @@ Independence Wave should use decision categories and scripted GUI only where the
 
 ### Independence Dossier Board
 
-Purpose: shows active host crisis dossiers before releases happen.
+Purpose: shows active host crisis dossiers after the instant release.
 
 It should show:
 
