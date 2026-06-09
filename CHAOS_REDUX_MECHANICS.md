@@ -433,6 +433,8 @@ Current entries:
 
 - **Zombie Apocalypse**: type controls outbreak structure, while intensity controls outbreak count, starting states, spawned divisions, and early pressure.
 - **Army of Clones**: type switches between the standard clone army and the stronger Aryan variant, while intensity controls starting territory, divisions, equipment, army strength, and pressure on neighboring countries.
+- **Soviet Collapse**: type switches between ordinary republics and chaos republics, while intensity adds scaled starting armies, manpower, and equipment for the breakaways.
+- **Final Silence**: type switches between nuclear and thermonuclear payloads. Intensity is fixed so the scenario keeps the canonical four-wave Final Silence sequence.
 
 Detailed implementation notes live in `docs/systems/triggerable_scenarios.md`.
 
