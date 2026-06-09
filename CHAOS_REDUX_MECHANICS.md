@@ -455,7 +455,47 @@ Detailed implementation notes live in `docs/systems/triggerable_scenarios.md`.
 
 ## Debug and Monitoring
 
-TODO
+Debug and monitoring are split between live UI inspection and optional log output.
+
+### Live Inspection
+
+- **Event Logs window**: opened with the settings log button or keyboard shortcuts, and organized into **Status**, **History**, **Evolutions**, **Events**, and **Clusters** tabs.
+- **Status tab**: shows current event-system counters and live tuning values, including current major weight, recovery rate, cap reduction, weight per minor event, default event weight, and timer modifier.
+- **History tab**: records fired automatic events with event ID, type, date, actor context when available, and a clickable detail window.
+- **Evolutions tab**: records evolution milestones separately from normal event history, including tier, stage, type, and actor where the evolution belongs to a country.
+- **Events tab**: shows the current event catalogue with live weight, fired count, event type, unique/repeatable state, and enable/disable controls.
+- **Clusters tab**: shows cluster availability, roll chance, enabled state, fired count, and member status/danger. Cluster details can open member event details without closing the cluster window.
+- **Chaos Meter window**: exposes current chaos value, chaos tier, history, air cleanliness, condemnation, and deaths tracking.
+- **Timer window**: optionally shows the current event countdown.
+
+### Manual Controls
+
+The settings UI is also the main manual testing surface:
+
+1. Select an event ID directly or use the random-event selector to pick a valid ID.
+2. Use category filters to narrow event selection by event type.
+3. Enable **Force Trigger Mode** when a manual test needs to bypass normal trigger restrictions.
+4. Enable or disable individual events from the event list.
+5. Enable or disable whole event clusters from the cluster list or cluster detail window.
+6. Open triggerable scenarios for sandbox or challenge setups that are separate from the automatic event timer.
+
+### Log Output
+
+Event-fire log output is opt-in.
+
+- The small log button in the settings window runs one manual event-system snapshot.
+- The Trigger Events page has a checkbox for automatic logic log lines.
+- Automatic logging is disabled by default.
+- When enabled, event-fire summaries include the fired event ID, name, type, unique events left, minor events since the last major, total fired count, and remaining counts per category.
+- Daily full debug dumps are gated behind the same setting so normal saves do not spam logs.
+
+Supporting documentation:
+
+- `docs/systems/events_log_window.md`
+- `docs/systems/events_log_evolutions_and_clusters.md`
+- `docs/systems/chaosx_event_logging_controls.md`
+- `docs/systems/settings_miscellaneous_menu.md`
+- `docs/systems/settings_numeric_manual_inputs.md`
 
 ---
 
@@ -741,56 +781,200 @@ AI weights make fascist Germany, imperial Japan, and communist Soviet Union the 
 
 ## Chaos Warfare
 
-Chaos Warfare focuses on the most extreme battlefield doctrine paths.
+Chaos Warfare is a land grand doctrine for countries that want to turn chemical, biological, and contamination tools into a full military system instead of a set of isolated weapons.
 
-These options increase short-term military pressure, but they also raise long-term costs such as condemnation, civilian harm, and contamination. TODO
+Selecting the grand doctrine:
+
+- costs army XP like the other land doctrines,
+- grants baseline bonuses to chemical support companies,
+- unlocks the stronger `tactic_chemical_barrage` combat tactic,
+- improves chemical cylinder ability output through doctrine multipliers,
+- improves chemical air-bomb contamination dose and duration,
+- opens four visible subdoctrine tracks that are only selectable while `chaos_warfare` is active.
+
+These options increase short-term military pressure, but they also raise long-term costs through condemnation, civilian harm, state contamination, and possible outbreak escalation.
 
 <!-- IMAGE PLACEHOLDER: Chaos Warfare doctrine path and key effects -->
 
-### Subdoctrine 1
+### Infantry Track: Extermination Columns
 
-#### Mastery 1
+`extermination_columns` turns infantry into contamination-heavy assault formations.
 
-#### Mastery 2
+Activation effects:
 
-#### Mastery 3
+- improves infantry soft attack, breakthrough, defense, and recovery,
+- improves light-infantry organization and reliability,
+- improves special-forces attack and breakthrough.
 
-#### Mastery 4
+#### Mastery 1: Contagion Assault Drills
 
-#### Mastery 5
+- Adds stronger infantry attack, breakthrough, and defense.
+- Improves night attack and army organization.
+- Makes ordinary infantry more useful in aggressive contaminated fighting.
 
-### Subdoctrine 2
+#### Mastery 2: Sacrificial March Columns
 
-#### Mastery 1
+- Reduces infantry supply use.
+- Improves infantry recovery and reinforcement.
+- Improves light-infantry organization and reliability.
 
-#### Mastery 2
+#### Mastery 3: Chaos Battalion
 
-#### Mastery 3
+- Unlocks the `chaos_battalion` special sub-unit through `chaos_battalion_tech`.
+- Sets the `chaos_battalion_unlocked` country flag.
+- Chaos battalions are high-lethality shock formations with severe equipment demands and survivability drawbacks.
+- Their combat behavior hooks into the chemical contamination pipeline and can add strong state contamination while actively fighting.
 
-#### Mastery 4
+#### Mastery 4: Ruinwave Battlecells
 
-#### Mastery 5
+- Adds more infantry and special-forces assault power.
+- Increases enemy attrition.
+- Adds a general army attack factor bonus.
 
-### Subdoctrine 3
+#### Mastery 5: Terminal Contagion Offensive
 
-#### Mastery 1
+- Further increases infantry combat power and organization.
+- Directly improves chaos battalion soft attack and breakthrough.
+- Improves planning speed and coordination.
+- Sets `chaos_battalion_terminal_contagion_unlocked`, escalating chaos battalion contamination, casualty, and condemnation pressure.
 
-#### Mastery 2
+### Armor Track: Chemical Suppression
 
-#### Mastery 3
+`chemical_suppression` turns armored forces and chemical tank support into occupation and breakthrough tools.
 
-#### Mastery 4
+Activation effects:
 
-#### Mastery 5
+- improves tank breakthrough and suppression,
+- improves infantry suppression and defense.
 
-### Subdoctrine 4
+#### Mastery 1: Adamsite Emission Cells
 
-#### Mastery 1
+- Increases tank and chemical-tank support suppression.
+- Improves infantry suppression and defense.
+- Reduces resistance damage to garrisons.
+- Sets `chaos_adamsite_emission_unlocked`.
 
-#### Mastery 2
+#### Mastery 2: Armored Chemical Liaison Teams
 
-#### Mastery 3
+- Improves chemical tank support organization and recovery.
+- Adds coordination.
+- Improves infantry organization and soft attack.
 
-#### Mastery 4
+#### Mastery 3: Zyklon B Saturation Drills
 
-#### Mastery 5
+- Sharply increases chemical tank support suppression.
+- Increases infantry suppression.
+- Sets `concentration_occupation_law_unlocked`, enabling the **Concentration** occupation law.
+
+#### Mastery 4: Sealed Pressure Logistics
+
+- Reduces armor supply consumption and improves armor breakthrough.
+- Reduces chemical tank support supply consumption and improves reliability.
+- Reduces infantry supply consumption and improves infantry defense.
+
+#### Mastery 5: Catastrophic Shock Breakthrough
+
+- Improves planning speed, coordination, initiative, and army recovery.
+- Improves tank breakthrough, soft attack, and hard attack.
+- Improves chemical tank support initiative and reliability.
+
+### Combat Support Track: Contaminant Firebases
+
+`contaminant_firebases` focuses on artillery, Livens/projector-style chemical support, chemical raid damage, and longer-lasting contamination.
+
+Activation effects:
+
+- improves chemical support company attack, breakthrough, and defense,
+- improves line artillery soft attack,
+- improves support artillery soft attack and breakthrough.
+
+#### Mastery 1: Livens Fire Control Cells
+
+- Improves chemical support soft attack and organization.
+- Improves support artillery soft attack.
+
+#### Mastery 2: Counterbattery Gas Synchronization
+
+- Improves line artillery soft attack and breakthrough.
+- Improves support artillery soft attack.
+- Improves chemical support defense.
+
+#### Mastery 3: Raid Targeting Teams
+
+- Adds coordination.
+- Sets `contaminant_firebases_raid_targeting_teams_unlocked`.
+- Increases chemical nerve raid unit damage.
+
+#### Mastery 4: Persistent Agent Distribution
+
+- Improves line artillery soft attack.
+- Sets `contaminant_firebases_persistent_agent_distribution_unlocked`.
+- Increases chemical attack contamination strength and duration.
+
+#### Mastery 5: Deep Contamination Fireplans
+
+- Adds more chemical support and support artillery combat power.
+- Keeps the prior raid-targeting and persistent-agent flags aligned.
+- Sets `contaminant_firebases_deep_contamination_fireplans_unlocked`.
+- Further increases chemical nerve raid damage and state contamination potency.
+
+### Operations Track: Integrated Chemical Operations
+
+`integrated_chemical_operations` makes chemical warfare more deliberate: better recon, better planning, stronger raid/air/biological integration, and lower condemnation growth.
+
+Activation effects:
+
+- improves planning speed, reinforce rate, recon, and coordination,
+- improves chemical support defense and breakthrough.
+
+#### Mastery 1: Operational Recon Grids
+
+- Improves recon and planning speed.
+- Sets `integrated_chemical_operations_operational_recon_grids_unlocked`.
+- Reduces chemical attack condemnation gain and biological strike condemnation impact.
+
+#### Mastery 2: Signal Intelligence Fusion
+
+- Improves chemical support defense and breakthrough.
+- Improves chemical tank support reliability.
+- Adds army intel and combat-intel gains.
+- Sets `integrated_chemical_operations_signal_intelligence_fusion_unlocked`.
+- Improves chemical raid impact, chemical contamination delivery, biological outbreak strike potency, outbreak contamination duration, and outbreak strike command-power efficiency.
+
+#### Mastery 3: Counter-Contamination Routing
+
+- Reduces chemical support supply consumption.
+- Reduces chemical tank support supply consumption and improves chemical tank support reliability.
+- Reduces attrition during sustained contaminated operations.
+
+#### Mastery 4: Air-Surface Chemical Link
+
+- Improves chemical support soft attack.
+- Sets `integrated_chemical_operations_air_surface_chemical_link_unlocked`.
+- Improves chemical raid and contamination scaling.
+- Improves chemical air-bomb dose and duration.
+- Further reduces biological strike condemnation and improves outbreak strike potency and efficiency.
+
+#### Mastery 5: Theater Intelligence Overmatch
+
+- Improves army organization, reinforce rate, and recon.
+- Improves chemical support and chemical tank support soft attack, breakthrough, and defense.
+- Keeps previous integrated-operations flags aligned.
+- Sets `integrated_chemical_operations_theater_intelligence_overmatch_unlocked`.
+- Applies the final integrated-operations scaling: lower condemnation growth, stronger chemical raid impact, stronger contamination, stronger air-bomb contamination, stronger biological outbreak strikes, and the largest outbreak strike command-power refund.
+
+### Doctrine Visibility and AI
+
+- All four Chaos Warfare subdoctrines remain visible in the doctrine interface.
+- They are only selectable when the country has the `chaos_warfare` grand doctrine.
+- AI weight is forced to `0` for countries without `chaos_warfare`.
+- Once Chaos Warfare is active, the AI can evaluate the branches normally, with existing major-country preference modifiers.
+
+Supporting documentation:
+
+- `docs/chemical_warfare/chaos_warfare_grand_doctrine_update.md`
+- `docs/chemical_warfare/chaos_warfare_extermination_columns.md`
+- `docs/chemical_warfare/chaos_warfare_chemical_suppression.md`
+- `docs/chemical_warfare/chaos_warfare_combat_support.md`
+- `docs/chemical_warfare/chaos_warfare_integrated_chemical_operations.md`
+- `docs/chemical_warfare/chaos_warfare_subdoctrine_visibility_and_ai.md`
