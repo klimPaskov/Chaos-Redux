@@ -56,7 +56,7 @@ Actor sort behavior:
 - Rows with an actor are grouped by actor with deterministic actor-id ordering.
 - Rows without an actor are always pushed to the bottom, regardless of ascending/descending mode.
 
-War declaration entries are merged into one row per day/reason/actor bucket to reduce spam when one country declares multiple wars at once.
+War declaration entries are merged into one row per day/reason/actor bucket to reduce spam when one country declares multiple wars at once. Faction follow-up relations for a defender already at war with another member of the attacker's faction do not add chaos, and minor war declarations are capped by the same-day minor-war cap documented in `docs/systems/chaos_meter_war_declaration_counting.md`.
 
 History rows now include per-cause reason mapping for the full chaos meter change surface (war/peace/annexation/puppets/liberation/faction and diplomacy shifts/subtle events/settings updates/global trend updates).
 

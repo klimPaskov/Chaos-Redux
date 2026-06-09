@@ -153,6 +153,8 @@ initialize_chaos_meter_system = {
 		set_variable = { chaos_meter_deaths_country_last_date = 0 }
 		set_variable = { chaos_meter_deaths_country_last_change = 0 }
 		set_variable = { chaos_meter_deaths_country_last_reason = 0 }
+		set_variable = { chaos_meter_minor_war_declaration_day = 0 }
+		set_variable = { chaos_meter_minor_war_chaos_today = 0 }
 		add_to_variable = { global.last_total_divisions = num_armies }
 		add_to_variable = { global.last_average_stability = stability }
 		add_to_variable = { global.total_countries_for_stability = 1 }
@@ -4961,42 +4963,98 @@ world_end_scenario_triggered = {
 # ============================================================================
 
 chaos_meter_on_war_relation_added = {
-    # on_war_relation_added: ROOT = attacker, FROM = defender
-    if = {
-        limit = {
-            NOT = {
-                ROOT = {
-                    OR = {
-                        original_tag = ZZZ
-                        has_country_flag = zombie_outbreak_dynamic_country
-                    }
-                }
-            }
+	# on_war_relation_added: ROOT = attacker, FROM = defender
+	set_temp_variable = { chaos_meter_skip_war_relation_for_faction = 0 }
+	if = {
+		limit = {
+			ROOT = {
+				is_in_faction = yes
+				any_allied_country = {
+					is_in_faction_with = ROOT
+					has_war_with = FROM
+				}
+			}
+		}
+		set_temp_variable = { chaos_meter_skip_war_relation_for_faction = 1 }
+	}
 
-        }
-        if = {
-            limit = { ROOT = { is_major = yes } FROM = { is_major = yes } }
-            ROOT = { save_event_target_as = chaos_history_actor }
-            set_temp_variable = { chaos_change = constant:chaos_meter_delta.war.major }
-            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.major }
-            set_temp_variable = { chaos_history_reason_custom = 1 }
-            log = "CHAOS METER: Major [ROOT.GetName] declared war on Major [FROM.GetName] ([?chaos_change|=] chaos)"
-            add_chaos_meter_value = yes
-        }
-        else_if = {
-            limit = { ROOT = { OR = { is_subject = no is_in_faction = no } } FROM = { is_subject = no } }
-            ROOT = { save_event_target_as = chaos_history_actor }
-            set_temp_variable = { chaos_change = constant:chaos_meter_delta.war.minor }
-            set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.minor }
-            set_temp_variable = { chaos_history_reason_custom = 1 }
-            log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
-            add_chaos_meter_value = yes
-        }
-
-    }
-    else = {
-        log = "CHAOS METER: Zombie [ROOT.GetName] declared war on [FROM.GetName] - no chaos increase from zombie wars"
-    }
+	if = {
+		limit = {
+			check_variable = { chaos_meter_skip_war_relation_for_faction < 1 }
+			NOT = {
+				ROOT = {
+					OR = {
+						original_tag = ZZZ
+						has_country_flag = zombie_outbreak_dynamic_country
+					}
+				}
+			}
+		}
+		if = {
+			limit = { ROOT = { is_major = yes } FROM = { is_major = yes } }
+			ROOT = { save_event_target_as = chaos_history_actor }
+			set_temp_variable = { chaos_change = constant:chaos_meter_delta.war.major }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.major }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			log = "CHAOS METER: Major [ROOT.GetName] declared war on Major [FROM.GetName] ([?chaos_change|=] chaos)"
+			add_chaos_meter_value = yes
+		}
+		else_if = {
+			limit = { ROOT = { OR = { is_subject = no is_in_faction = no } } FROM = { is_subject = no } }
+			set_temp_variable = { chaos_change = constant:chaos_meter_delta.war.minor }
+			ROOT = {
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = chaos_meter_minor_war_declaration_day }
+							NOT = {
+								check_variable = {
+									var = chaos_meter_minor_war_declaration_day
+									value = global.num_days
+									compare = equals
+								}
+							}
+						}
+					}
+					set_variable = { chaos_meter_minor_war_declaration_day = global.num_days }
+					set_variable = { chaos_meter_minor_war_chaos_today = 0 }
+				}
+			}
+			set_temp_variable = { chaos_meter_minor_war_remaining_cap = constant:chaos_meter_war_cap.minor_same_day }
+			subtract_from_temp_variable = { chaos_meter_minor_war_remaining_cap = ROOT.chaos_meter_minor_war_chaos_today }
+			if = {
+				limit = { check_variable = { chaos_meter_minor_war_remaining_cap > 0 } }
+				if = {
+					limit = {
+						check_variable = {
+							var = chaos_change
+							value = chaos_meter_minor_war_remaining_cap
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { chaos_change = chaos_meter_minor_war_remaining_cap }
+				}
+				ROOT = {
+					add_to_variable = { chaos_meter_minor_war_chaos_today = chaos_change }
+					save_event_target_as = chaos_history_actor
+				}
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.war.minor }
+				set_temp_variable = { chaos_history_reason_custom = 1 }
+				log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] ([?chaos_change|=] chaos)"
+				add_chaos_meter_value = yes
+			}
+			else = {
+				log = "CHAOS METER: [ROOT.GetName] declared war on [FROM.GetName] - minor same-day war chaos cap reached"
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { chaos_meter_skip_war_relation_for_faction > 0 } }
+		log = "CHAOS METER: [ROOT.GetName] entered war with [FROM.GetName] through an already-counted faction war relation - no chaos increase"
+	}
+	else = {
+		log = "CHAOS METER: Zombie [ROOT.GetName] declared war on [FROM.GetName] - no chaos increase from zombie wars"
+	}
 }
 
 chaos_meter_on_peace = {
