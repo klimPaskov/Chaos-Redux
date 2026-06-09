@@ -10,7 +10,7 @@ Use this skill for any Chaos Redux event work, including:
 - adding or updating `chaosx.nr<ID>.*` event chains
 - wiring event log, event details, evolutions, and world-end branches
 - maintaining `docs/events/` event documentation
-- updating the gameplay-facing event spreadsheet
+- updating the gameplay-facing event spreadsheet, including the `Manual_Scenarios` table for triggerable scenarios
 
 Repository-wide reading, style, and validation rules live in `AGENTS.md`. This skill only adds the Chaos Redux event-specific implementation contract.
 
