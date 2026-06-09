@@ -592,6 +592,20 @@ Do not log ordinary stages as evolutions.
 
 Do not use chaos tiers as simple walls that lock ordinary stage progression. Ordinary stages should flow from the event state. Chaos should affect intensity, probability, severity, weirdness, and opening strength.
 
+### Evolution entry paths
+
+When an event has evolutions, the spec must say how each evolution enters play. Do not write evolutions only as future modifiers or only as post-fire upgrades unless that is truly the design.
+
+Use two separate entry-path concepts when the event supports both.
+
+**Active-event evolution** means the event has already fired and an evolution unlocks while one or more actors from that event still exist or the event system is still active. The spec must define what changes immediately for the active actors: focus paths, decision families, national spirits, unit growth, targeting rules, AI strategy, faction behavior, event log entries, super-event eligibility, and cleanup. The event should not need to fire again for the active actor to receive the evolution content.
+
+**Pre-fire evolved opening** means the event has not fired yet, but the world state, chaos tier, previous evolution memory, or other allowed event trigger lets the first firing start in a more evolved form. The spec must define the changed opening package: number of actors, target selection, starting ideas, initial units, first decisions, opening events, AI plan, and what is recorded in the event log.
+
+If both entry paths exist, write both explicitly. If only one entry path exists, say so and explain why. For example, an event may have an active evolution that unlocks a focus path for an already spawned country, while a later first firing may start with multiple spawned countries because the campaign is already unstable enough for an evolved opening.
+
+Triggerable scenarios are separate from normal random-event firing, evolutions, and Chaos Meter progression. A triggerable scenario must be fireable directly from its setup control. Do not give it prerequisites such as required chaos tier, required chaos value, prior event firing, evolution unlock, date gate, global flag, or campaign state unless the user explicitly asks for a scenario to be locked. Triggerable scenarios exist to create instant chaos from setup controls, intensity sliders, or scenario options.
+
 Good evolutions can include:
 
 - the same kind of crisis becoming easier to recognize and harder to stop
@@ -794,8 +808,6 @@ Every country package must include flags. Required flag coverage includes normal
 Historical and real-world flags should not be invented with `$imagegen` by default. If a country, movement, party, military authority, or restoration path has a real historical flag or a well-attested symbolic design, the asset prompt should instruct the asset agent to source that flag or symbol from a reliable source, document it, and convert it into HOI4 flag sizes. Use `$imagegen` only for fictional, alternate, supernatural, or deliberately invented flag identities when generated art is appropriate.
 
 Historical or real leaders should not be generated. The spec should identify likely real portrait needs and instruct the asset agent to source real images, document source and license status, and crop them to HOI4 portrait size. Fictional leaders, council portraits, cult leaders, alternate invented officers, and symbolic committee portraits can use `$imagegen` when generated art is appropriate.
-
-When a generated or sourced leader portrait clearly depicts one person, the planned leader-name pool and leader metadata must match the portrait's apparent gender presentation. Female-presenting portraits require female names and female leader metadata where supported; male-presenting portraits require male names and must not receive female metadata. If the visual is a council, committee, junta, crowd, office, or symbolic body, plan an institutional leader name instead of a random personal-name pool.
 
 When an asset source is historically sensitive, disputed, or politically loaded, the asset prompt must require source notes, and a clear distinction between sourced historical use and fictional alternate-history invention.
 
@@ -1174,7 +1186,7 @@ When an improvement addendum proposes formables, scripted GUI, animated sprites,
 
 ## Specification folder convention
 
-Event source specifications should live in event-specific subfolders under `docs/specs/`.
+From now on, event source specifications should live in event-specific subfolders under `docs/specs/`.
 
 Use this shape:
 
@@ -1366,6 +1378,7 @@ The final response should include:
 - final zip package created with all spec files, prompt files, route diagrams if used, research notes, and matrices
 - focus tree files split into separate parts when the tree is too large for one file
 - decisions and rare variants mapped when they exist
+- evolution entry paths mapped when evolutions exist, including active-event evolution, pre-fire evolved opening, or a clear reason only one path applies
 - decision and objective costs use varied resources, sacrifices, requirements, and risks instead of defaulting to political power or command power
 - achievements mapped with difficult conditions, icon directions, and tracking notes
 - ideology-specific names, cosmetic names, leader changes, and flag changes mapped when relevant
@@ -1449,6 +1462,11 @@ Reject the draft if it has any of these problems:
 - branches where every focus simply follows the previous one without a strong story reason
 - expansion trees that are only linear claim ladders instead of ideology, trauma, patron, military, economic, or chaos-driven ambitions
 - evolutions that are really just ordinary stages
+- evolution specs that do not define whether each evolution enters through active-event evolution, pre-fire evolved opening, or both
+- active-event evolutions that do not state what changes immediately for existing active actors
+- pre-fire evolved openings that do not state how the first firing changes before the ordinary baseline starts
+- triggerable scenarios with prerequisites, such as Chaos Meter state, event progression, evolution unlocks, date gates, global flags, or prior campaign state, unless the user explicitly requested a locked scenario
+- triggerable scenarios that do not create instant chaos directly from setup controls, intensity sliders, or scenario options
 - fixed cooldowns or pressure values without dynamic factors
 - decision, mission, or focus cost plans that rely mostly on political power or command power when concrete costs such as XP, equipment, manpower, fuel, stability, war support, supply, local support, foreign access, or unit commitments would fit better
 - achievements missing from a major event spec

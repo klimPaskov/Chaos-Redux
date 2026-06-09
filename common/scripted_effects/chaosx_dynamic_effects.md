@@ -9,10 +9,12 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 ## Table of contents
 
 - [modify_value_based_on_chaos_tier](#modify_value_based_on_chaos_tier)
+- [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
 - [modify_state_population_by_percent](#modify_state_population_by_percent)
 - [get_random_sea_region](#get_random_sea_region)
 - [refresh_world_threat_state](#refresh_world_threat_state)
+- [grant_random_chaos_special_project_available_tech](#grant_random_chaos_special_project_available_tech)
 - [apply_crisis_rescue_event_weight_adjustments](#apply_crisis_rescue_event_weight_adjustments)
 
 ## modify_value_based_on_chaos_tier
@@ -33,6 +35,44 @@ set_temp_variable = { base_value = 0.10 }
 set_temp_variable = { add_value = 0.02 }
 modify_value_based_on_chaos_tier = yes
 # result in var:modified_value
+```
+
+## calculate_economy_scaled_factory_grant
+
+This country-scope effect converts the current country's civilian and military factory count into a capped grant count for foreign investment, reconstruction, sponsor-aid, or similar systems. It does not create buildings by itself. It only writes the temp variable `economy_scaled_factory_grant_count`, so the caller can decide which building type to place and in which target scope.
+
+Inputs:
+
+- `economy_scaled_factory_grant_step`: factories per granted building.
+- `economy_scaled_factory_grant_min`: minimum grant count.
+- `economy_scaled_factory_grant_cap`: maximum grant count.
+
+Output:
+
+- `economy_scaled_factory_grant_count`
+
+Side effects:
+
+- uses `economy_scaled_factory_grant_pool` as a temp helper.
+- reads `num_of_civilian_factories` and `num_of_military_factories` from the current country.
+
+Example:
+
+```txt
+set_temp_variable = { economy_scaled_factory_grant_step = constant:my_system.factory_step }
+set_temp_variable = { economy_scaled_factory_grant_min = constant:my_system.factory_min }
+set_temp_variable = { economy_scaled_factory_grant_cap = constant:my_system.factory_cap }
+calculate_economy_scaled_factory_grant = yes
+FROM = {
+	while_loop_effect = {
+		limit = { check_variable = { economy_scaled_factory_grant_count > 0 } }
+		random_owned_controlled_state = {
+			add_extra_state_shared_building_slots = 1
+			add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+		}
+		subtract_from_temp_variable = { economy_scaled_factory_grant_count = 1 }
+	}
+}
 ```
 
 ## damage_buildings_in_random_states
@@ -181,4 +221,32 @@ TIB = {
 	register_crisis_rescue_target = yes
 }
 apply_crisis_rescue_event_weight_adjustments = yes
+```
+
+## grant_random_chaos_special_project_available_tech
+
+This country-scope effect grants one not-yet-owned chaos bio/chemical/zombie special-project unlock. It is a central registry for project families that should be available to experimental high-chaos countries and future bio/chemical event actors.
+
+Inputs: none.
+Output: may complete one special project and set the matching delivery technology.
+Side effects: clears and may set `chaos_random_special_project_granted`.
+
+Current registry entries:
+
+- `anthrax_bomb` -> `anthrax_bomb_delivery_systems`
+- `plague_bomb` -> `plague_bomb_delivery_systems`
+- `tularemia_bomb` -> `tularemia_bomb_delivery_systems`
+- `smallpox_bomb` -> `smallpox_bomb_delivery_systems`
+- `weaponize_the_zombies` -> `zombie_disease_bomb_delivery_systems`
+- `sp_cw_sarin_program` -> `sarin`
+- `sp_cw_soman_program` -> `soman`
+
+When new chaos biological or chemical special projects are added, add their project and delivery tech to this effect so old focus and decision rewards keep rolling from the expanded project pool.
+
+Example:
+
+```txt
+completion_reward = {
+	grant_random_chaos_special_project_available_tech = yes
+}
 ```

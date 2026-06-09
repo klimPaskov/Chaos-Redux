@@ -1,48 +1,43 @@
-# Event 006 Niche Country Flag Manifest
+# Event 006 Flag Manifest
 
-Status: generated, processed, converted, and handed off.
+Status: regenerated with imagegen, processed, converted, and wired.
 
-This package adds bounded flag assets for Event 006 Independence Wave generic niche countries. It does not wire tags, localisation, country history, gameplay, focus, decision, scripted, or spreadsheet files.
+This manifest records the 2026-06-08 Independence Wave flag regeneration pass. The pass uses imagegen-created raster flag art for the current custom Event 006 tags, then converts each tag into the HOI4 country-flag size set.
+
+## Current Scope
+
+The regenerated tags are:
+
+- `ASN` - Asante Council
+- `KBN` - Kanem-Bornu Authority
+- `DFR` - Darfur Council
+- `ZUL` - Zulu Council
+- `PLM` - Palmares Council
+- `AYM` - Aymara Highland Congress
+- `MAP` - Mapuche Land Congress
+
+Each tag has a unique generated flag identity. Ideology variants intentionally share that tag's generated country flag instead of inventing separate ideology banners in this tranche; the variants exist so vanilla HOI4 flag lookups resolve cleanly for democratic, communist, fascist, and neutrality governments.
 
 ## Processing Notes
 
-- Source mode: locally generated original raster flag artwork from deterministic SVG construction, created for this asset tranche.
-- Visual policy: historically inspired symbolic designs; no text; no copied modern copyrighted flag designs; variants are distinct layouts, not recolors.
-- Target sizes: large 82x52, medium 41x26, small 10x7.
-- Final game folders: `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`.
-- Final formats: DDS requested by parent prompt, plus TGA siblings matching the existing Chaos Redux/vanilla country-flag pattern.
-- DDS conversion: ImageMagick `convert`, `dds:compression=none`.
-- Orientation: all source SVGs were generated with top at y=0 and converted directly; contact sheets confirm upright symbols.
-- Contact sheet: `docs/assets/006_independence_wave/flags/event006_niche_country_flags_contact_sheet.png`
-
-## Tag Contact Sheets
-
-- `ASN`: `docs/assets/006_independence_wave/flags/asn/contact_sheets/asn_flags_contact_sheet.png`
-- `KBN`: `docs/assets/006_independence_wave/flags/kbn/contact_sheets/kbn_flags_contact_sheet.png`
-- `PLM`: `docs/assets/006_independence_wave/flags/plm/contact_sheets/plm_flags_contact_sheet.png`
-- `AYM`: `docs/assets/006_independence_wave/flags/aym/contact_sheets/aym_flags_contact_sheet.png`
+- Source mode: imagegen raster artwork created for this pass.
+- Visual policy: fictional, period-compatible symbolic flags; no readable text; no copied modern state flags.
+- Target sizes: large `82x52`, medium `41x26`, small `10x7`.
+- Final folders: `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`.
+- Final formats: TGA and uncompressed DDS siblings for every base and ideology variant.
+- Orientation: final TGAs were verified visually and checked so the TGA origin marker does not carry the `- top` flag. Processed PNGs and final TGAs compare as identical after decode.
+- Contact sheet: `docs/assets/006_independence_wave/flags/regenerated_2026_06_08/contact_sheets/event006_regenerated_flags_large_contact.png`
 
 ## Asset Rows
 
-| tag | country | variant | source_mode | source_png | processed_png | final_dds | final_tga | notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `ASN` | Asante Council / Asante | base | local-generated-original | `docs/assets/006_independence_wave/flags/asn/source_png/ASN_source.png` | `docs/assets/006_independence_wave/flags/asn/processed_png/large/ASN.png` | `gfx/flags/ASN.dds` | `gfx/flags/ASN.tga` | Asante stool and gold-weight visual language; original layouts, no copied modern flag. |
-| `ASN` | Asante Council / Asante | democratic | local-generated-original | `docs/assets/006_independence_wave/flags/asn/source_png/ASN_democratic_source.png` | `docs/assets/006_independence_wave/flags/asn/processed_png/large/ASN_democratic.png` | `gfx/flags/ASN_democratic.dds` | `gfx/flags/ASN_democratic.tga` | Asante stool and gold-weight visual language; original layouts, no copied modern flag. |
-| `ASN` | Asante Council / Asante | communism | local-generated-original | `docs/assets/006_independence_wave/flags/asn/source_png/ASN_communism_source.png` | `docs/assets/006_independence_wave/flags/asn/processed_png/large/ASN_communism.png` | `gfx/flags/ASN_communism.dds` | `gfx/flags/ASN_communism.tga` | Asante stool and gold-weight visual language; original layouts, no copied modern flag. |
-| `ASN` | Asante Council / Asante | fascism | local-generated-original | `docs/assets/006_independence_wave/flags/asn/source_png/ASN_fascism_source.png` | `docs/assets/006_independence_wave/flags/asn/processed_png/large/ASN_fascism.png` | `gfx/flags/ASN_fascism.dds` | `gfx/flags/ASN_fascism.tga` | Asante stool and gold-weight visual language; original layouts, no copied modern flag. |
-| `ASN` | Asante Council / Asante | neutrality | local-generated-original | `docs/assets/006_independence_wave/flags/asn/source_png/ASN_neutrality_source.png` | `docs/assets/006_independence_wave/flags/asn/processed_png/large/ASN_neutrality.png` | `gfx/flags/ASN_neutrality.dds` | `gfx/flags/ASN_neutrality.tga` | Asante stool and gold-weight visual language; original layouts, no copied modern flag. |
-| `KBN` | Kanem-Bornu Authority / Kanem-Bornu | base | local-generated-original | `docs/assets/006_independence_wave/flags/kbn/source_png/KBN_source.png` | `docs/assets/006_independence_wave/flags/kbn/processed_png/large/KBN.png` | `gfx/flags/KBN.dds` | `gfx/flags/KBN.tga` | Lake Chad, Sahel crescent, and authority-standard motifs; original layouts. |
-| `KBN` | Kanem-Bornu Authority / Kanem-Bornu | democratic | local-generated-original | `docs/assets/006_independence_wave/flags/kbn/source_png/KBN_democratic_source.png` | `docs/assets/006_independence_wave/flags/kbn/processed_png/large/KBN_democratic.png` | `gfx/flags/KBN_democratic.dds` | `gfx/flags/KBN_democratic.tga` | Lake Chad, Sahel crescent, and authority-standard motifs; original layouts. |
-| `KBN` | Kanem-Bornu Authority / Kanem-Bornu | communism | local-generated-original | `docs/assets/006_independence_wave/flags/kbn/source_png/KBN_communism_source.png` | `docs/assets/006_independence_wave/flags/kbn/processed_png/large/KBN_communism.png` | `gfx/flags/KBN_communism.dds` | `gfx/flags/KBN_communism.tga` | Lake Chad, Sahel crescent, and authority-standard motifs; original layouts. |
-| `KBN` | Kanem-Bornu Authority / Kanem-Bornu | fascism | local-generated-original | `docs/assets/006_independence_wave/flags/kbn/source_png/KBN_fascism_source.png` | `docs/assets/006_independence_wave/flags/kbn/processed_png/large/KBN_fascism.png` | `gfx/flags/KBN_fascism.dds` | `gfx/flags/KBN_fascism.tga` | Lake Chad, Sahel crescent, and authority-standard motifs; original layouts. |
-| `KBN` | Kanem-Bornu Authority / Kanem-Bornu | neutrality | local-generated-original | `docs/assets/006_independence_wave/flags/kbn/source_png/KBN_neutrality_source.png` | `docs/assets/006_independence_wave/flags/kbn/processed_png/large/KBN_neutrality.png` | `gfx/flags/KBN_neutrality.dds` | `gfx/flags/KBN_neutrality.tga` | Lake Chad, Sahel crescent, and authority-standard motifs; original layouts. |
-| `PLM` | Palmares Council / Palmares | base | local-generated-original | `docs/assets/006_independence_wave/flags/plm/source_png/PLM_source.png` | `docs/assets/006_independence_wave/flags/plm/processed_png/large/PLM.png` | `gfx/flags/PLM.dds` | `gfx/flags/PLM.tga` | Palm, palisade, and quilombo-fortification motifs; original layouts. |
-| `PLM` | Palmares Council / Palmares | democratic | local-generated-original | `docs/assets/006_independence_wave/flags/plm/source_png/PLM_democratic_source.png` | `docs/assets/006_independence_wave/flags/plm/processed_png/large/PLM_democratic.png` | `gfx/flags/PLM_democratic.dds` | `gfx/flags/PLM_democratic.tga` | Palm, palisade, and quilombo-fortification motifs; original layouts. |
-| `PLM` | Palmares Council / Palmares | communism | local-generated-original | `docs/assets/006_independence_wave/flags/plm/source_png/PLM_communism_source.png` | `docs/assets/006_independence_wave/flags/plm/processed_png/large/PLM_communism.png` | `gfx/flags/PLM_communism.dds` | `gfx/flags/PLM_communism.tga` | Palm, palisade, and quilombo-fortification motifs; original layouts. |
-| `PLM` | Palmares Council / Palmares | fascism | local-generated-original | `docs/assets/006_independence_wave/flags/plm/source_png/PLM_fascism_source.png` | `docs/assets/006_independence_wave/flags/plm/processed_png/large/PLM_fascism.png` | `gfx/flags/PLM_fascism.dds` | `gfx/flags/PLM_fascism.tga` | Palm, palisade, and quilombo-fortification motifs; original layouts. |
-| `PLM` | Palmares Council / Palmares | neutrality | local-generated-original | `docs/assets/006_independence_wave/flags/plm/source_png/PLM_neutrality_source.png` | `docs/assets/006_independence_wave/flags/plm/processed_png/large/PLM_neutrality.png` | `gfx/flags/PLM_neutrality.dds` | `gfx/flags/PLM_neutrality.tga` | Palm, palisade, and quilombo-fortification motifs; original layouts. |
-| `AYM` | Aymara Highland Congress / Aymara | base | local-generated-original | `docs/assets/006_independence_wave/flags/aym/source_png/AYM_source.png` | `docs/assets/006_independence_wave/flags/aym/processed_png/large/AYM.png` | `gfx/flags/AYM.dds` | `gfx/flags/AYM.tga` | Highland terraces, sun, mountains, and stepped diamond motifs; avoids exact Wiphala reproduction. |
-| `AYM` | Aymara Highland Congress / Aymara | democratic | local-generated-original | `docs/assets/006_independence_wave/flags/aym/source_png/AYM_democratic_source.png` | `docs/assets/006_independence_wave/flags/aym/processed_png/large/AYM_democratic.png` | `gfx/flags/AYM_democratic.dds` | `gfx/flags/AYM_democratic.tga` | Highland terraces, sun, mountains, and stepped diamond motifs; avoids exact Wiphala reproduction. |
-| `AYM` | Aymara Highland Congress / Aymara | communism | local-generated-original | `docs/assets/006_independence_wave/flags/aym/source_png/AYM_communism_source.png` | `docs/assets/006_independence_wave/flags/aym/processed_png/large/AYM_communism.png` | `gfx/flags/AYM_communism.dds` | `gfx/flags/AYM_communism.tga` | Highland terraces, sun, mountains, and stepped diamond motifs; avoids exact Wiphala reproduction. |
-| `AYM` | Aymara Highland Congress / Aymara | fascism | local-generated-original | `docs/assets/006_independence_wave/flags/aym/source_png/AYM_fascism_source.png` | `docs/assets/006_independence_wave/flags/aym/processed_png/large/AYM_fascism.png` | `gfx/flags/AYM_fascism.dds` | `gfx/flags/AYM_fascism.tga` | Highland terraces, sun, mountains, and stepped diamond motifs; avoids exact Wiphala reproduction. |
-| `AYM` | Aymara Highland Congress / Aymara | neutrality | local-generated-original | `docs/assets/006_independence_wave/flags/aym/source_png/AYM_neutrality_source.png` | `docs/assets/006_independence_wave/flags/aym/processed_png/large/AYM_neutrality.png` | `gfx/flags/AYM_neutrality.dds` | `gfx/flags/AYM_neutrality.tga` | Highland terraces, sun, mountains, and stepped diamond motifs; avoids exact Wiphala reproduction. |
+| tag | source_png | processed_large | final_large | final_medium | final_small | notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ASN` | `docs/assets/006_independence_wave/flags/asn/source_png/ASN_generated_2026_06_08_source.png` | `docs/assets/006_independence_wave/flags/asn/processed_png/large/ASN.png` | `gfx/flags/ASN.tga` / `gfx/flags/ASN.dds` | `gfx/flags/medium/ASN.tga` / `gfx/flags/medium/ASN.dds` | `gfx/flags/small/ASN.tga` / `gfx/flags/small/ASN.dds` | Golden stool, sun, and court-symbol language for the Asante story lane. |
+| `KBN` | `docs/assets/006_independence_wave/flags/kbn/source_png/KBN_generated_2026_06_08_source.png` | `docs/assets/006_independence_wave/flags/kbn/processed_png/large/KBN.png` | `gfx/flags/KBN.tga` / `gfx/flags/KBN.dds` | `gfx/flags/medium/KBN.tga` / `gfx/flags/medium/KBN.dds` | `gfx/flags/small/KBN.tga` / `gfx/flags/small/KBN.dds` | Lake Chad, caravan, and Sahel authority motifs for Kanem-Bornu. |
+| `DFR` | `docs/assets/006_independence_wave/flags/dfr/source_png/DFR_generated_2026_06_08_source.png` | `docs/assets/006_independence_wave/flags/dfr/processed_png/large/DFR.png` | `gfx/flags/DFR.tga` / `gfx/flags/DFR.dds` | `gfx/flags/medium/DFR.tga` / `gfx/flags/medium/DFR.dds` | `gfx/flags/small/DFR.tga` / `gfx/flags/small/DFR.dds` | Acacia, sun, and spear frontier motifs for Darfur. |
+| `ZUL` | `docs/assets/006_independence_wave/flags/zul/source_png/ZUL_generated_2026_06_08_source.png` | `docs/assets/006_independence_wave/flags/zul/processed_png/large/ZUL.png` | `gfx/flags/ZUL.tga` / `gfx/flags/ZUL.dds` | `gfx/flags/medium/ZUL.tga` / `gfx/flags/medium/ZUL.dds` | `gfx/flags/small/ZUL.tga` / `gfx/flags/small/ZUL.dds` | Lion-mask, shield, and royal-house motifs for the Zulu story lane. |
+| `PLM` | `docs/assets/006_independence_wave/flags/plm/source_png/PLM_generated_2026_06_08_source.png` | `docs/assets/006_independence_wave/flags/plm/processed_png/large/PLM.png` | `gfx/flags/PLM.tga` / `gfx/flags/PLM.dds` | `gfx/flags/medium/PLM.tga` / `gfx/flags/medium/PLM.dds` | `gfx/flags/small/PLM.tga` / `gfx/flags/small/PLM.dds` | Palm, palisade, and broken-chain motifs for Palmares. |
+| `AYM` | `docs/assets/006_independence_wave/flags/aym/source_png/AYM_generated_2026_06_08_source.png` | `docs/assets/006_independence_wave/flags/aym/processed_png/large/AYM.png` | `gfx/flags/AYM.tga` / `gfx/flags/AYM.dds` | `gfx/flags/medium/AYM.tga` / `gfx/flags/medium/AYM.dds` | `gfx/flags/small/AYM.tga` / `gfx/flags/small/AYM.dds` | Condor, mountain, sun, and stepped highland motifs for Aymara. |
+| `MAP` | `docs/assets/006_independence_wave/flags/map/source_png/MAP_generated_2026_06_08_source.png` | `docs/assets/006_independence_wave/flags/map/processed_png/large/MAP.png` | `gfx/flags/MAP.tga` / `gfx/flags/MAP.dds` | `gfx/flags/medium/MAP.tga` / `gfx/flags/medium/MAP.dds` | `gfx/flags/small/MAP.tga` / `gfx/flags/small/MAP.dds` | Drum, mountain, and river motifs for Mapuche. |
+
+For every tag above, the same source identity is copied through the `_democratic`, `_communism`, `_fascism`, and `_neutrality` variants in all three HOI4 flag sizes.

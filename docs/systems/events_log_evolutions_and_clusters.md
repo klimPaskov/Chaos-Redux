@@ -115,11 +115,6 @@ Generic evolution-disable contract:
 - Gameplay scripts can reuse the same three variables and then check `is_current_evolution_enabled = yes`.
 - Disabled stages are stored as dynamic global flags, so new evolution chains do not need new constants or bespoke toggle infrastructure.
 
-## Future plans
-1. Extend authored event-detail text to other major event chains besides zombies.
-2. Add non-zombie evolution detail content once those evolution families are implemented.
-3. If the layout gets crowded later, split the evolution popup into a portrait column and a richer modifier panel with icons.
-
 ## UI assets and wiring
 GUI files touched:
 - `interface/chaosx_events_log_popup.gui`

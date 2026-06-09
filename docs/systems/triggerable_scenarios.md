@@ -60,11 +60,11 @@ Intensity changes starting territory, division count, army experience, equipment
 
 ### SCN-003: Soviet Collapse
 
-The Soviet Collapse scenario forces the Event 005 `Union Unmade` terminal collapse immediately. If the Soviet crisis is not already active, the launcher initializes it first, then the scenario flag forces the terminal collapse path regardless of the current chaos tier, evolution toggle state, or prior Union Unmade super-event flag. It releases the available ordinary Soviet republics, forms the local defensive leagues and Free Republics' League, and starts the anti-Soviet wars.
+The Soviet Collapse scenario forces the Event 005 `Union Unmade` terminal collapse immediately. If the Soviet crisis is not already active, the launcher initializes it first, then the scenario flag forces the terminal collapse path regardless of the current chaos tier, evolution toggle state, or prior Union Unmade super-event flag. It releases ordinary Soviet republics and every possible core-country successor through repeated all-possible core-country passes, forms the local defensive leagues and Free Republics' League, and starts the anti-Soviet wars.
 
 The ordinary type uses the terminal-collapse ordinary republic release path. The chaos type also permits the high-chaos splinter spawners during the launch. This bypass is scoped to the explicit scenario launch flag and is cleared after the scenario finishes, so normal automatic Soviet Collapse behavior remains governed by the live event state.
 
-Intensity adds an extra one-time army package after all breakaways exist. Each breakaway receives additional field brigades, manpower, infantry equipment, support equipment, artillery, and motorized equipment. The number of extra brigades scales from the selected intensity, controlled-state count, and factory count, so stronger republics naturally receive larger starting forces without tag-specific scenario tables.
+Intensity adds an extra one-time army package after all breakaways exist. Each breakaway receives additional field brigades, manpower, infantry equipment, support equipment, artillery, and motorized equipment. The number of extra brigades scales from the selected intensity, controlled-state count, civilian factories, military factories, and existing divisions, so stronger republics naturally receive much larger starting forces without tag-specific scenario tables.
 
 ### SCN-004: Final Silence
 

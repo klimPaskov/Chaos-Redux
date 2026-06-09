@@ -21,7 +21,7 @@ Read and follow:
 - Mark every release with Event 6 origin. Shared tags can exist in both systems, but mechanics must follow release origin.
 - If Event 6 releases a Soviet republic style tag, it does not become part of the Soviet Collapse system. It uses Event 6 focus, decision, package, GUI, formable, achievement, and event-log logic.
 - Volga Bulgaria or Old Great Bulgaria from Event 6 uses the Independence Wave tree and Volga overlay, not Event 5 content. Its Event 6 routes and formables must differ from the Soviet Collapse version.
-- Countries do not become independent instantly. The event starts a dossier and decision phase.
+- Countries become independent immediately when the wave fires, after hidden candidate scoring and host-survival validation. Dossiers, decisions, and missions manage the release aftermath.
 - The first successful wave releases 3 to 5 inactive countries, mostly ordinary HOI4 or modded releasables.
 - Higher chaos tiers release more countries per successful wave. Use baseline 3 to 5, Evo I 4 to 6, Evo II 5 to 7, Evo III 6 to 9, Evo IV 8 to 12, Evo V 10 to 16, capped by valid candidates and performance.
 - Event 6 must never delete an existing host country. Before release, reserve at least one host state, preferably the current capital. Shrink or skip candidates until the host keeps at least one state. This has no exceptions inside Event 6.
@@ -64,24 +64,35 @@ Create shared constants, scripted triggers, scripted effects, and variables for:
 - local-polity cohesion
 - occult pressure
 
-### Phase 2: Dossier and host crisis
+### Phase 2: Instant release wave and release dossiers
 
-Implement dossier creation before any release.
+Implement the release as an immediate wave. The event must not wait for a playable delay crisis before independence.
 
-Required host decision groups:
+Required order:
 
-- open negotiations
-- offer local autonomy
-- suppress committee offices
-- deploy garrisons
+1. score hosts
+2. select candidates by chaos tier and package ladder
+3. reserve each host's protected state
+4. reduce or skip candidates that would delete a host
+5. release the validated countries immediately
+6. set Event 6 origin before any focus tree, decision, startup idea, GUI, achievement, or package check runs
+7. assign startup armies, startup ideas, package type, focus tree or overlay, and first event log entries
+8. create release dossiers explaining each new country after it exists
+
+Required host aftermath decision groups:
+
+- recognize the loss
+- negotiate after-settlement terms
+- delay recognition and investigate
+- suppress the breakaway aftermath
+- deploy garrisons near the new border
 - invite observers
 - arm loyalists
 - request guarantees
-- evacuate archives
-- trade territory
+- evacuate archives from remaining threatened districts
+- trade territory after the release
 - reserve capital administration
-- delay the crisis
-- accept controlled release
+- accept controlled separation terms
 
 Timed missions should include:
 

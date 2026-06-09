@@ -2,7 +2,7 @@
 
 ## Scope
 
-The Event006 focus tree uses 115 focus icon references mapped to 25 Event006 branch-level sprites. This ledger is based on `common/national_focus/006_independence_wave_focus.txt`.
+The Event006 focus tree uses 50 focus icon references mapped to 23 Event006 branch-level sprites. This ledger is based on `common/national_focus/006_independence_wave_focus.txt`.
 
 Branch-level reuse is intentional for route families that share the same institution or gameplay surface, such as the Dossier Board, New States Congress, Patron Ledger, Formation Ledger, border commission, local-polity councils, and strange-route bureaus.
 
@@ -28,10 +28,6 @@ Branch-level reuse is intentional for route families that share the same institu
 | `independence_wave_revolutionary_volunteer_office` | `GFX_focus_independence_wave_revolutionary_committee` |
 | `independence_wave_armed_independence_committee` | `GFX_focus_independence_wave_revolutionary_committee` |
 | `independence_wave_repair_the_rail_yard` | `GFX_focus_independence_wave_railway_yard` |
-| `independence_wave_junction_committee_manifest` | `GFX_focus_independence_wave_railway_yard` |
-| `independence_wave_bridge_guard_mandate` | `GFX_focus_independence_wave_military_supply` |
-| `independence_wave_railway_dispatch_ministry` | `GFX_focus_independence_wave_railway_yard` |
-| `independence_wave_railway_league` | `GFX_focus_independence_wave_railway_yard` |
 | `independence_wave_convert_municipal_workshops` | `GFX_focus_independence_wave_municipal_workshops` |
 | `independence_wave_depot_audit` | `GFX_focus_independence_wave_military_supply` |
 | `independence_wave_reopen_the_port_ledger` | `GFX_focus_independence_wave_port_ledger` |
@@ -54,68 +50,7 @@ Branch-level reuse is intentional for route families that share the same institu
 | `independence_wave_mutual_aid_tables` | `GFX_focus_independence_wave_congress_delegation` |
 | `independence_wave_league_charter_draft` | `GFX_focus_independence_wave_league_charter` |
 | `independence_wave_archive_identity_clue` | `GFX_focus_independence_wave_archive_identity` |
-| `independence_wave_volga_archive_opened` | `GFX_focus_independence_wave_archive_identity` |
-| `independence_wave_council_of_the_old_name` | `GFX_focus_independence_wave_old_name_council` |
-| `independence_wave_assyrian_recognition_congress` | `GFX_focus_independence_wave_old_name_council` |
-| `independence_wave_sokoto_scholar_council` | `GFX_focus_independence_wave_old_name_council` |
-| `independence_wave_northern_emirate_registers` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_bukhara_oasis_council` | `GFX_focus_independence_wave_old_name_council` |
-| `independence_wave_bukhara_oasis_charter` | `GFX_focus_independence_wave_archive_identity` |
-| `independence_wave_khiva_canal_council` | `GFX_focus_independence_wave_old_name_council` |
-| `independence_wave_khiva_water_charter` | `GFX_focus_independence_wave_archive_identity` |
-| `independence_wave_mesopotamian_river_records` | `GFX_focus_independence_wave_old_name_council` |
-| `independence_wave_mesopotamian_river_charter` | `GFX_focus_independence_wave_archive_identity` |
-| `independence_wave_dahomey_palace_council` | `GFX_focus_independence_wave_old_name_council` |
-| `independence_wave_bight_customs_charter` | `GFX_focus_independence_wave_archive_identity` |
 | `independence_wave_land_congress_clue` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_nahua_san_salvador_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_nahua_charter_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_inuit_arctic_register` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_inuit_arctic_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_namibia_land_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_namibia_land_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_bechuanaland_kgotla_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_bechuanaland_land_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_ghana_gold_coast_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_ghana_council_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_eritrea_red_sea_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_eritrea_coastal_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_guarani_land_council` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_guarani_communal_lands` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_buganda_lukiko_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_protectorate_treaty_review` | `GFX_focus_independence_wave_observer_charter` |
-| `independence_wave_barotse_litunga_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_barotse_floodplain_treaties` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_charrua_memory_council` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_charrua_assembly_lands` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_miskito_shore_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_miskito_coastal_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_itza_peten_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_itza_yucatan_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_maya_council_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_maya_peninsula_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_kurdish_mountain_registry` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_kurdish_pass_districts` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_circassian_mountain_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_circassian_pass_petitions` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_andean_highland_records` | `GFX_focus_independence_wave_local_land_council` |
-| `independence_wave_andean_petition_map` | `GFX_focus_independence_wave_border_commission` |
-| `independence_wave_danzig_free_city_board` | `GFX_focus_independence_wave_free_city_board` |
-| `independence_wave_free_port_manifest` | `GFX_focus_independence_wave_free_city_board` |
-| `independence_wave_free_port_harbor_courts` | `GFX_focus_independence_wave_free_city_board` |
-| `independence_wave_free_port_neutrality_statute` | `GFX_focus_independence_wave_free_city_board` |
-| `independence_wave_municipal_charter_file` | `GFX_focus_independence_wave_municipal_workshops` |
-| `independence_wave_municipal_service_patrols` | `GFX_focus_independence_wave_municipal_workshops` |
-| `independence_wave_municipal_home_rule_charter` | `GFX_focus_independence_wave_municipal_workshops` |
-| `independence_wave_protectorate_treaty_audit` | `GFX_focus_independence_wave_sponsored_cabinet` |
-| `independence_wave_protectorate_observer_ministry` | `GFX_focus_independence_wave_sponsored_cabinet` |
-| `independence_wave_protectorate_public_guarantees` | `GFX_focus_independence_wave_sponsored_cabinet` |
-| `independence_wave_oil_concession_audit` | `GFX_focus_independence_wave_sponsored_cabinet` |
-| `independence_wave_oil_field_guard_offices` | `GFX_focus_independence_wave_sponsored_cabinet` |
-| `independence_wave_oil_public_concession_statute` | `GFX_focus_independence_wave_sponsored_cabinet` |
-| `independence_wave_canal_register` | `GFX_focus_independence_wave_free_city_board` |
-| `independence_wave_canal_pilot_offices` | `GFX_focus_independence_wave_free_city_board` |
-| `independence_wave_canal_transit_statute` | `GFX_focus_independence_wave_free_city_board` |
 | `independence_wave_sealed_bureau_charter` | `GFX_focus_independence_wave_sealed_bureau` |
 | `independence_wave_moral_tribunal` | `GFX_focus_independence_wave_sealed_bureau` |
 | `independence_wave_quarantine_bureau` | `GFX_focus_independence_wave_officer_mandate` |

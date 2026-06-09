@@ -2,6 +2,15 @@
 
 The event creates dynamic countries, so this file defines country packages instead of pretending every possible released state receives a bespoke tree. A country package is a complete identity rule set: tag selection, territory, ideology, names, leaders, assets, focus access, decisions, AI behavior, and release-origin handling.
 
+## Current source-of-truth correction
+
+Current source-of-truth map: `docs/plans/006_independence_wave_plans/source_of_truth_map.md`.
+
+As of the 2026-06-08 correction, the active Event 006 base release pass uses a generic `every_possible_country` scan. Kuban (`KUB`) and Altai (`ALT`) are not package-expansion targets, but they may appear as ordinary vanilla releases if they pass the same inactive possible-country and host-safety checks as every other vanilla tag.
+
+Niche generic, custom, and chaos-only countries are deferred to a later explicit pool. They should not be added by hardcoding every releasable tag into the base pass.
+
+Playable wrap-up does not require every candidate in this package matrix to become a bespoke package. A country is acceptable for the current niche lane when it has a valid tag/country setup, unique flag support, safe release anchors, Event 006 origin, and access to the shared Liberation Provisional Tree. Package identity should be expressed through decisions, missions, ideas, route state, event details, localisation, claims, and leader/asset hooks while the shared tree stays generic. Package-specific focus stacks, full formables, animated route art, and package-specific report variants are future polish unless the user explicitly promotes a country into a bespoke route.
 
 ## Absolute host survival rule
 
@@ -13,7 +22,7 @@ Package territory rules:
 - starting territory may be reduced to one valid state if needed
 - packages that need several states must be skipped when those states would remove the host from the map
 - a package may receive claims on protected territory later, but not through the initial wave release
-- the batch resolver must check the combined effect of all packages before release
+- the batch resolver must check the combined effect of all packages during hidden release validation
 - if two packages together would consume a host, the lower-score package is removed or reduced first
 
 This applies to ordinary releasables, dormant tags, protectorates, city packages, historical-return packages, local-polity packages, and strange packages.
@@ -74,6 +83,7 @@ Typical ordinary categories:
 
 - European regional releasables such as Catalonia, Galicia, Basque Country, Scotland, Wales, Brittany, Occitania if present, and similar tags.
 - Colonial or mandate releasables such as Algeria, Morocco, Tunisia, Egypt if not independent, Syria, Lebanon, Iraq if not independent, Indonesia, Vietnam, Burma, and African colonial tags if valid.
+- Niche generic releasables using existing vanilla tags, cores, and flags, such as Katanga, Biafra, Cabo Verde, Rif, Rapa Nui, Rio Grande, Welsh Argentina, and inactive Horn of Africa tags. High-chaos generic releases can also use custom tags with verified anchor states and unique flag assets, including Asante, Kanem-Bornu, Palmares, and the Aymara Highland Congress. Asante and Kanem-Bornu have African story decisions and spirits while still sharing the Liberation Provisional Tree. Palmares and Aymara remain shared-tree niche tags until a later package pass promotes them.
 - Borderland or minority states such as Kurdistan, Armenia, Azerbaijan, Georgia, Ukraine, Belarus, and other dormant tags if inactive and valid.
 - Existing Americas deimperialized tags if the mod or game rule supports them, such as Charrua, Guarani, Itza, Maya, Miskito, Nahua, Inuit, Inca, and Isthmo-American identities.
 
@@ -81,14 +91,16 @@ The implementation agent must verify actual tag names from the repository. This 
 
 ## Batch size by evolution
 
+These are release-scale tiers. They should not create per-country evolution rows, package-specific evolution rows, or per-route progression entries. Baseline waves are ordinary release-scale behavior; the first actual evolution log milestone begins at Gathering Storm or the equivalent non-calm chaos condition.
+
 | Evolution state | Release count target | Pool behavior |
 | --- | ---: | --- |
 | Baseline | 3 to 5 | ordinary tags only, mostly democratic |
-| Evo I | 4 to 6 | ordinary tags plus rare dormant tags |
-| Evo II | 5 to 7 | ordinary tags, regional clusters, city and protectorate packages |
-| Evo III | 6 to 9 | claims, patron-backed releases, stronger countries |
-| Evo IV | 8 to 12 | historical-return and local-polity packages unlock |
-| Evo V | 10 to 16 | strange packages and impossible-state releases unlock if performance allows |
+| Dossier Surge | 4 to 6 | ordinary tags plus rare dormant tags |
+| Rising Chaos Release Pattern | 5 to 7 | ordinary tags, regional clusters, city and protectorate packages |
+| Chaos Tier Release Pattern | 6 to 9 | claims, patron-backed releases, stronger countries |
+| Great Partition Week | 8 to 12 | historical-return, local-polity, strange, and impossible-state packages unlock if performance allows |
+| Open Season | 10 to 16 | world-collapse release pressure lets the league-backed border crisis and hardest package claims spread at maximum scale |
 
 If valid candidates are insufficient, release fewer countries. Do not spawn nonsense.
 
@@ -101,13 +113,14 @@ This matrix is an expansion pool. Do not implement every package blindly. Each r
 | Assyria | Mesopotamian historical-return | Northern Mesopotamia, Nineveh, Mosul, Khabur, or nearby state cluster if valid | Evo IV | Assyria overlay |
 | Mesopotamia | River-state or mandate-era revival | Tigris and Euphrates valley, Baghdad, Basra, Mosul if valid | Evo IV | Mesopotamia overlay |
 | Marsh Arab river authority | Local-polity river package | Southern Iraq marshes and river districts | Evo IV | River and marsh local-polity overlay |
-| Kurdistan | Existing or dormant tag | Kurdish-majority mountain regions if tag and states exist | Baseline to Evo II depending on setup | ordinary tree or mountain overlay |
+| Kurdistan | Existing or dormant tag | Kurdish-majority mountain regions if tag and states exist | Baseline to Evo II depending on setup | implemented mountain-registry overlay |
 | Volga Bulgaria | Steppe historical-return | Volga and Kama region if valid | Evo IV | Volga overlay, not Event 005 tree |
 | Idel-Ural | Steppe federation | Volga-Ural region if valid | Evo IV | federation overlay |
 | Circassia | Caucasus historical-return | Northwest Caucasus if valid | Evo IV | mountain confederacy overlay |
 | Mountain Republic | Caucasus confederation | North Caucasus mountain regions if valid | Evo IV | confederal council overlay |
-| Don Host | Cossack or dormant tag | Don region if valid and not claimed by another event | Evo II to Evo IV | military frontier overlay |
-| Kuban Host | Cossack or dormant tag | Kuban region if valid and not claimed by another event | Evo II to Evo IV | military frontier overlay |
+| Don Host | Cossack or dormant tag | Don region if valid and not claimed by another event | Evo IV | implemented Don river records overlay |
+| Kuban Host | Cossack or dormant tag | Kuban region if valid and not claimed by another event | Evo II to Evo IV | historical candidate only; superseded as current requested package scope |
+| Altai-Oyrot Kurultai | Steppe/mountain historical-return | Altai Krai and Oyrot Region if valid | Evo IV | historical candidate only; superseded as current requested package scope |
 | Bukhara | Central Asian emirate | Bukhara and surrounding Central Asian states | Evo IV | emirate restoration overlay |
 | Khiva | Central Asian khanate | Khwarazm region if valid | Evo IV | khanate restoration overlay |
 | Kokand | Central Asian khanate | Fergana region if valid | Evo IV | khanate restoration overlay |
@@ -124,6 +137,9 @@ This matrix is an expansion pool. Do not implement every package blindly. Each r
 | Basotho mountain state | Existing or local-polity | Lesotho or mountain region if valid | Baseline to Evo IV | mountain defense overlay |
 | Herero authority | Local-polity | Central Namibia if valid | Evo IV | land recovery and mounted defense overlay |
 | Nama authority | Local-polity | Southern Namibia if valid | Evo IV | land recovery and treaty memory overlay |
+| Namibia Land Council | Existing local-polity carrier | Khomas if Namibia is inactive and the host is weakened | Evo IV | implemented land-records overlay |
+| Bechuanaland Kgotla Council | Existing local-polity carrier | Bechuanaland if Botswana is inactive and the host is weakened | Evo IV | implemented kgotla-records overlay |
+| Gold Coast Legislative Council | Existing local-polity carrier | Ghana if GHA is inactive and the host is weakened | Evo IV | implemented Gold Coast records overlay |
 | Mapuche Araucania | Indigenous local-polity | Southern Chile and Argentina if valid | Evo IV | land congress and mountain defense overlay |
 | Aymara congress | Indigenous local-polity | Altiplano in Bolivia, Peru, Chile, Argentina if valid | Evo IV | Altiplano community overlay |
 | Guarani republic | Indigenous or game-rule tag | Paraguay, southern Brazil, northern Argentina, Uruguay if valid | Evo II to Evo IV | forest and language overlay |
@@ -131,7 +147,7 @@ This matrix is an expansion pool. Do not implement every package blindly. Each r
 | Palmares | Quilombo historical-return | Brazilian interior or northeast if state mapping supports it | Evo IV | forest defense and hidden settlement overlay |
 | Muisca cultural state | Indigenous local-polity | Colombian highlands if valid | Evo IV | council and mountain overlay |
 | Maya | Game-rule or indigenous package | Yucatan and adjacent Maya regions if valid | Evo II to Evo IV | land congress overlay |
-| Itza | Game-rule or indigenous package | Peten and Yucatan region if valid | Evo II to Evo IV | land congress overlay |
+| Itza | Game-rule or indigenous package | Peten and Yucatan region if valid | Evo II to Evo IV | implemented lake-council overlay |
 | Nahua | Game-rule or indigenous package | Central Mexico if valid | Evo II to Evo IV | old name and modern charter overlay |
 | Miskito | Game-rule or local-polity | Mosquito Coast if valid | Evo II to Evo IV | protectorate coast overlay |
 | Inuit union | Game-rule or local-polity | Arctic regions if valid | Evo II to Evo IV | survival and recognition overlay |
@@ -140,6 +156,18 @@ This matrix is an expansion pool. Do not implement every package blindly. Each r
 | Archive-State | Strange package | collapsed capital or dead bureaucracy | Evo V | archive-state module |
 | Necromantic Custodianship | Strange package | grave, battlefield, camp, mass-death, plague zone | Evo V | necromancy module |
 | Anti-Mankind Directorate | Strange package | explicit anti-human doctrine pressure | Evo V | anti-mankind module |
+
+## Current African Story Mechanics
+
+The first African story pass keeps the shared Liberation Provisional Tree generic and places distinct country flavor in decisions, ideas, claims, leaders, and route flags:
+
+- `ASN` can convene the Asante Stool Court, gaining legitimacy, local-polity strength, a stool-court spirit, and public claims on nearby West African proof territory.
+- `KBN` can open the Kanem-Bornu Caravan Court, gaining legitimacy, claim ambition, a caravan-authority spirit, and claims around the Lake Chad/Sahel route.
+- `DFR` can sign the Acacia Frontier Pact, gaining militia strength, a frontier pact spirit, and Darfur proof claims.
+- `ZUL` can raise the Lion Crown, gaining militia strength, claims, and a lion-crown spirit, and can seat the Gorilla Chair as a strange high-chaos leader route using a generated portrait.
+- African story releases can call an African Dossier Congress to turn local stories into shared Congress proof and foreign attention.
+
+Further African continent passes should extend this same pattern to additional African releases without adding country-specific stacked focuses to the shared tree.
 
 ## Package implementation fields
 
@@ -310,15 +338,97 @@ Historical-return packages are not ordinary nostalgia. They should use old names
 | Package key | Name direction | Region gate | Minimum start | Main claim logic | Modern route | Escalation route | Asset notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `iw_pkg_asante` | Asante Council, Asante Union, Kumasi Authority | southern Ghana or Ashanti region | one Kumasi-adjacent state if supported | Asante state memory and Kumasi center | constitutional council | royal restoration and regional claims | real symbols need source checks |
+| `iw_pkg_dahomey` | Dahomey Palace Council, Bight Customs Authority | Bight of Benin | one coastal state | Dahomey old-state memory and coastal customs | palace council under public law | customs-backed old-name pressure | vanilla DAH has flags and advisors, but no bespoke country leader role |
 | `iw_pkg_sokoto` | Sokoto Council, Northern Emirates League | northern Nigeria or nearby Sahel | one state | emirate network and caliphate memory | emirate federation under modern law | militant emirate directorate | avoid flattening Fulani and Hausa identities |
 | `iw_pkg_kanem_bornu` | Kanem-Bornu Authority, Lake Chad State | Lake Chad region | one lake-adjacent state | lake trade empire and mai memory | lake customs union | old empire border push | source symbols and leaders carefully |
-| `iw_pkg_darfur` | Darfur Council, Sultanate of Darfur | western Sudan if state support exists | one Darfur state | sultanate memory and peripheral autonomy | protected regional state | armed sultanate | avoid modern conflict simplification |
+| `iw_pkg_darfur` | Darfur Council, Sultanate of Darfur | western Sudan if state support exists | South Darfur `887` | South Darfur records and North Darfur petitions | protected regional council | armed sultanate or regional council | implemented as custom `DFR`; avoid modern conflict simplification |
 | `iw_pkg_buganda` | Buganda Kingdom, Buganda Provisional Council | Uganda, Lake Victoria north shore | one Buganda state | kabaka and kingdom institutions | constitutional kingdom or civic council | protectorate renegotiation | real royal references need care |
 | `iw_pkg_barotseland` | Barotseland Council, Lozi Floodplain Authority | western Zambia | one floodplain or western state | Lozi institutions and Barotseland memory | autonomy settlement | river kingdom restoration | floodplain and treaty imagery |
 | `iw_pkg_zulu` | Zulu Council, Zululand Authority | Zululand or Natal region | one Zululand state | Zulu kingdom memory | constitutional royal council | regiment memory and border pressure | avoid turning route into only militarism |
 | `iw_pkg_herero` | Herero Land Council, Ovaherero Authority | central Namibia | one state | land, cattle, colonial violence memory | land restitution state | grave memory and anti-colonial militancy | real traumatic history needs sober tone |
 | `iw_pkg_nama` | Nama Council, Namaqua Authority | southern Namibia or Namaqualand | one state | Nama pastoral and land memory | land congress | grave memory and desert defense | source visual symbols carefully |
 | `iw_pkg_palmares` | Palmares Republic, Quilombo Council | northeastern Brazil | one state | maroon settlement memory and anti-slavery resistance | defended republic | fortified maroon expansion | use sourced or symbolic assets carefully |
+
+## Implemented starter packages
+
+The current implementation enables verified high-chaos starter packages without adding new tags or unsourced leader content.
+
+| Package key | Carrier tag | Initial release | Proof route | Release constraint |
+| --- | --- | --- | --- | --- |
+| `iw_pkg_buganda` | vanilla `UGA` | state `548` Uganda | Lukiko records, protectorate treaty review, Buganda Lukiko Charter | enabled at chaos tier IV/V when UGA is inactive and state `548` has a weakened host |
+| `iw_pkg_sokoto` | vanilla `SOK` | state `902` Sokoto | scholar council, northern emirate registers, Sokoto Emirate Federation | enabled at chaos tier IV/V; Event 006 masks SOK cores on `901` and `781` during release, then restores them as later claim/proof targets |
+| `iw_pkg_bukhara` | vanilla `BUK` | state `830` Bukhara | oasis council, oasis charter, Bukhara Oasis Assembly | enabled at chaos tier IV/V when BUK is inactive and state `830` has a weakened host; state `742` remains later proof/claim territory |
+| `iw_pkg_khiva` | vanilla `KHI` | state `831` Khiva | canal council, water charter, Khiva Khanate Assembly | enabled at chaos tier IV/V when KHI is inactive and state `831` has a weakened host; state `832` remains later proof/claim territory |
+| `iw_pkg_mesopotamia` | vanilla `IRQ` | state `291` Iraq/Baghdad | river records, river-petition map, Mesopotamian River Compact | enabled at chaos tier IV/V when IRQ is inactive and state `291` has a weakened host; Mosul `676`, Basrah `1011`, Anbar `1010`, and Al Hajara `675` remain later proof/claim territory |
+| `iw_pkg_don_cossack_krug` | vanilla `DON` | state `218` Rostov | Don river records, Don petition map, Don Cossack Krug | enabled at chaos tier IV/V when DON is inactive and state `218` has a weakened host; Millerovo `245` and Volgodonsk `238` remain later proof/claim territory |
+| `iw_pkg_barotseland` | vanilla `BAR` | state `981` Barotseland | Litunga records, floodplain treaty map, Barotse Floodplain Council | enabled at chaos tier IV/V when BAR is inactive and state `981` has a weakened host; vanilla BAR history, leader, localisation, portraits, and flags are reused |
+| `iw_pkg_dahomey` | vanilla `DAH` | state `776` Dahomey | palace council, Bight customs charter, Dahomey Palace Council | enabled at chaos tier IV/V when DAH is inactive and state `776` has a weakened host; vanilla DAH history, localisation, advisors, and flags are reused |
+| `iw_pkg_miskito` | vanilla `MIS` | state `317` Nicaragua | shore records, coastal petition map, Miskito Shore Council | enabled at chaos tier IV/V when MIS is inactive and state `317` has a weakened host; Event 006 dynamically adds cores on states `312` and `317`, starts from `317`, keeps `312` as later proof/claim territory, and reuses vanilla MIS history, council leader, localisation, portraits, and flags |
+| `iw_pkg_itza` | vanilla `ITZ` | state `311` Belize | Peten records, Yucatan petition map, Itza Lake Council | enabled at chaos tier IV/V when ITZ is inactive and state `311` has a weakened host; Event 006 dynamically adds the vanilla-commented core on state `311`, starts from `311`, keeps state `313` as later proof/claim territory, and reuses vanilla ITZ history, council leader, localisation, portraits, and flags |
+| `iw_pkg_maya` | vanilla `MAY` | state `475` Chiapas | Maya council records, peninsula petition map, Maya Yucatan Assembly | enabled at chaos tier IV/V when MAY is inactive and state `475` has a weakened host; Event 006 dynamically adds the vanilla-commented core set on `313`, `474`, `475`, and `476`, starts from `475`, keeps `313`, `474`, and `476` as later proof/claim territory, and reuses vanilla MAY history, council leader, localisation, portraits, and flags |
+| `iw_pkg_circassia` | vanilla `KBK` | state `827` Kabardino-Balkaria/Nalchik | mountain records, Caucasus pass petitions, Circassian Mountain Council | enabled at chaos tier IV/V when KBK is inactive and state `827` has a weakened host; vanilla KBK history, localisation, portraits, and flags are reused, while states `821` and `826` remain later petition/claim targets |
+| `iw_pkg_andes_communes` | vanilla `INC` | state `947` Tacna-Moquegua, state `494` Ucayali, or state `951` Arica y Tarapaca | highland records, Andean petition map, Andean Community League | enabled at chaos tier IV/V when INC is inactive and one of the release seats has a weakened host; Event 006 dynamically adds release cores only on `947`, `494`, and `951`, keeps Lima `303`, Piura `492`, and Antofagasta `506` as later proof/claim territory, and reuses vanilla INC history, council, localisation, portraits, and flags |
+| `iw_pkg_nahua` | vanilla `NAH` | state `314` San Salvador | San Salvador records, charter petition map, Nahua Charter Assembly | enabled at chaos tier IV/V when NAH is inactive and state `314` has a weakened host; Event 006 dynamically adds the vanilla-precedent core on `314`, starts from `314`, keeps wider claims out of the first tranche, and reuses vanilla NAH history, council, localisation, portraits, and flags |
+| `iw_pkg_inuit` | vanilla `INU` | state `463` Alaska | Arctic register, Arctic petition map, Inuit Arctic Council | enabled at chaos tier IV/V when INU is inactive and state `463` has a weakened host; Event 006 dynamically adds the vanilla Inuit core set on `463`, `864`, `472`, `683`, `466`, `332`, `101`, and `861`, starts from `463`, keeps the wider Arctic map as later proof/claim territory, and reuses vanilla INU history, council, localisation, portraits, and flags |
+| `iw_pkg_namibia` | vanilla `NMB` | state `541` Khomas | Khomas land records, land petition map, Namibia Land Council | enabled at chaos tier IV/V when NMB is inactive and state `541` has a weakened host; Event 006 starts from vanilla NMB's Khomas core, records land petitions as proof territory, and reuses vanilla NMB history, characters, localisation, portraits, and flags |
+| `iw_pkg_bechuanaland` | vanilla `BOT` | state `542` Bechuanaland | kgotla records, district petition map, Bechuanaland Kgotla Council | enabled at chaos tier IV/V when BOT is inactive and state `542` has a weakened host; Event 006 starts from vanilla BOT's Bechuanaland core, records district petitions as proof territory, and reuses vanilla BOT history, characters, localisation, portraits, and flags |
+| `iw_pkg_palestine_mandate` | vanilla `PAL` | state `454` Palestine | treaty audit, guarantee review, Palestine Mandate Council | enabled at chaos tier III or higher when PAL is inactive and state `454` has a weakened non-capital host; Event 006 starts from vanilla PAL's Palestine core, uses the shared Protected Mandate route under a Palestine-specific package label, and reuses vanilla PAL history, mandate cosmetic tag, characters, localisation, portraits, and flags |
+| `iw_pkg_ghana` | vanilla `GHA` | state `274` Ghana | Gold Coast records, council petition map, Gold Coast Legislative Council | enabled at chaos tier IV/V when GHA is inactive and state `274` has a weakened host; Event 006 starts from vanilla GHA's Ghana core, records Gold Coast petitions as proof territory, and reuses vanilla GHA history, characters, localisation, portraits, and flags |
+| `iw_pkg_eritrea_red_sea` | vanilla `ERI` | state `550` Eritrea | Red Sea records, coastal petition map, Eritrea Red Sea Council | enabled at chaos tier IV/V when ERI is inactive and state `550` has a weakened host; Event 006 starts from vanilla ERI's Eritrea core, records coastal petitions as proof territory, and reuses vanilla ERI history, characters, localisation, portraits, and flags |
+| `iw_pkg_darfur` | custom `DFR` | state `887` South Darfur, with North Darfur `767` as petition proof | Darfur records, North Darfur petition map, Darfur Council, Acacia Frontier Pact | enabled at chaos tier IV/V when DFR is inactive and South Darfur has a weakened host; Event 006 seeds DFR cores at runtime, starts from South Darfur because North Darfur is impassable and force-linked in vanilla, uses a vanilla generic African leader portrait, and uses imagegen-regenerated DFR flag assets |
+| `iw_pkg_zulu` | custom `ZUL` | state `719` Natal | Natal records, royal-house petitions, regimental rolls, Zulu Council, Lion Crown, Gorilla Chair | enabled at chaos tier IV/V when ZUL is inactive and Natal has a weakened host; Event 006 seeds a ZUL core at runtime, starts from Natal only, uses custom country/history/localisation files, imagegen-regenerated ZUL flag assets, and the generated Gorilla Chair portrait for the strange-story decision route |
+| `iw_pkg_mapuche` | custom `MAP` | state `950` Araucania, with Aysen `949` and Rio Negro `512` as later survey/recovery territory | Araucania land records, Mapuche land-petition map, Mapuche Land Congress | enabled at chaos tier IV/V when MAP is inactive and Araucania has a weakened host; Event 006 seeds MAP cores at runtime, starts from Araucania, uses custom country/history/localisation files, a vanilla generic South American leader portrait, and uses imagegen-regenerated MAP flag assets |
+
+Implementation notes:
+
+- `UGA` is accepted as the Buganda carrier because vanilla country localisation already supports `UGA_neutrality = "Kingdom of Buganda"` and state `548` is a clean one-state start.
+- `SOK` uses vanilla tag, history, localisation, and flags, but the initial Event 006 release is constrained to `902` so Borno `901` and Niger `781` remain later proof targets rather than free cross-colonial territory.
+- `BUK` uses vanilla tag, history, localisation, and flags. Vanilla BUK has capital `830`, state `830` core, and Stalinabad `742` core; Event 006 starts the package from Bukhara and records Stalinabad as a later proof target instead of granting it for free.
+- `KHI` uses vanilla tag, history, localisation, and flags. Vanilla KHI has capital `831`, cores on Khiva `831` and Dashhowuz `832`, and existing flag assets; Event 006 starts the package from Khiva and records Dashhowuz as a later proof target instead of granting it for free.
+- `IRQ` is accepted as the Mesopotamian River Compact carrier because vanilla country history sets capital `291`, vanilla Iraq states already carry IRQ cores, and vanilla provides country history, characters, localisation, portraits, and ideology flag assets. Event 006 starts from Baghdad, treats Mosul, Basrah, Anbar, and Al Hajara as later river-petition proof territory, and does not create or replace flags.
+- `DON` is accepted as the Don Cossack Krug carrier because vanilla country history sets capital `218`, vanilla provides country history, character data, localisation, parties, and complete ideology flag assets. Event 006 starts from Rostov, temporarily masks any broader Don cores on Millerovo and Volgodonsk during release selection, treats those states as later Don-petition proof territory, and does not create or replace flags.
+- Superseded KUB/ALT note: earlier Kuban Cossack Rada and Altai-Oyrot Kurultai package handoffs framed `KUB` and `ALT` as implemented Event 006 package carriers. The 2026-06-05 user correction supersedes that framing for current scope. Do not treat KUB/ALT as accepted Event 006 package additions, package-overlay targets, or asset requests unless a later user request explicitly reopens them.
+- `BAR` uses vanilla tag, history, localisation, leader data, portrait registration, and all ideology flag assets. Vanilla BAR has capital/core state `981`; Event 006 starts and proves the package from that single floodplain state.
+- `DAH` uses vanilla tag, history, localisation, advisors, and all ideology flag assets. Vanilla DAH has capital/core state `776`; Event 006 starts and proves the package from that single coastal state. Vanilla DAH does not provide a clear country-leader role, so this tranche avoids bespoke leader or portrait creation and keeps authority represented through the Event 006 palace council spirit, decisions, focuses, and log entries.
+- `MIS` uses vanilla tag, history, council character, localisation, portraits, and all ideology flag assets. Vanilla history comments list cores on `312` and `317`, and vanilla Chile liberation precedent dynamically adds those cores before transfer; Event 006 owns the same dynamic core seeding without editing state history.
+- `ITZ` uses vanilla tag, history, council character, localisation, portraits, and all ideology flag assets. Vanilla history comments list core `311`, and vanilla Chile liberation precedent dynamically adds that core before transfer; Event 006 owns the same dynamic core seeding without editing state history and records `313` as later Yucatan petition proof instead of direct expansion.
+- `MAY` uses vanilla tag, history, council character, localisation, portraits, and all ideology flag assets. Vanilla history comments list cores on `313`, `474`, `475`, and `476`, and vanilla Chile liberation precedent dynamically adds those cores before transfer; Event 006 owns the same dynamic core seeding without editing state history, starts from Chiapas `475`, and records `313`, `474`, and `476` as later peninsula petition proof instead of direct expansion.
+- `KBK` is accepted as the Circassian package carrier because vanilla country localisation includes Circassian and Kabardino-Balkarian identity variants, state `827` is a clean mountain start, and vanilla flag/history/portrait support exists. Event 006 starts the package from Nalchik and records nearby Caucasus pass petitions as proof targets instead of granting them during release.
+- `INC` is accepted as an Andean Community League carrier because vanilla provides a real Neo-Inca/Inca tag, country history, council character, localisation, portraits, and flags. Event 006 does not treat this as a Mapuche or Aymara fallback. It starts only from supported non-capital seats and records Lima, Piura, and Antofagasta as petition targets rather than free expansion.
+- `NAH` is accepted as a Nahua Charter Assembly carrier only through vanilla's San Salvador support: vanilla NAH history sets capital `314`, vanilla Trial of Allegiance scripting dynamically adds a `NAH` core to state `314`, and vanilla provides the council character, localisation, portraits, and flags. Event 006 does not treat this as a central-Mexico, Mapuche, Aymara, or generic Yucatan fallback.
+- `INU` is accepted as an Inuit Arctic Council carrier only through vanilla Arctic support: vanilla INU history sets capital `463`, vanilla history comments list cores on `463`, `864`, `472`, `683`, `466`, `332`, `101`, and `861`, and vanilla Chile liberation scripting dynamically adds those cores before transfer. Event 006 starts from Alaska `463`, records the other Arctic states as proof and petition targets, does not include optional vanilla `875` or `650` in this first package, and does not use Event 005 content.
+- `NMB` is accepted as a Namibia Land Council carrier through vanilla South West Africa support: vanilla NMB history sets capital `541`, vanilla state `541` Khomas has an NMB core, and vanilla provides country history, characters, localisation, portraits, and ideology flag assets. Event 006 starts from Khomas, treats broader Namibian land petitions as proof rather than free expansion, and does not require new flags.
+- `BOT` is accepted as a Bechuanaland Kgotla Council carrier through vanilla Botswana support: vanilla BOT history sets capital `542`, vanilla state `542` Bechuanaland has a BOT core, and vanilla provides country history, characters, localisation, portraits, and ideology flag assets. Event 006 starts from Bechuanaland, treats district petitions as proof rather than free expansion, and does not require new flags.
+- `PAL` is accepted as a Palestine Mandate Council carrier through vanilla Palestine support: vanilla PAL history sets capital `454`, vanilla state `454` Palestine has a PAL core, vanilla history applies the `PAL_mandate` cosmetic tag, and vanilla provides country history, characters, localisation, portraits, and ideology plus mandate flag assets. Event 006 starts from Palestine, uses the shared Protected Mandate treaty route under a distinct package label, and does not require new flags.
+- `GHA` is accepted as a Gold Coast Legislative Council carrier through vanilla Ghana support: vanilla GHA history sets capital `274`, vanilla state `274` Ghana has a GHA core, and vanilla provides country history, characters, localisation, portraits, and ideology flag assets. Event 006 starts from Ghana, treats Gold Coast petitions as proof rather than free expansion, and does not require new flags.
+- `DFR` is accepted as a custom Darfur Council carrier through Event 006 runtime core seeding. Vanilla South Darfur `887` is a controlled, releasable starting anchor; vanilla North Darfur `767` is impassable and force-linked, so Event 006 treats it as a petition/proof target instead of a starting state. DFR uses custom country/history/localisation files, a vanilla generic African portrait, Acacia Frontier Pact story mechanics, and imagegen-regenerated flag assets documented under `docs/assets/006_independence_wave/flags/manifest.md`.
+- `ZUL` is accepted as a custom Zulu Council carrier through Event 006 runtime core seeding. Natal `719` is the controlled starting anchor and proof state; broader royal-house and regimental petitions remain represented through route variables, decisions, and focus rewards rather than free starting expansion. ZUL uses custom country/history/localisation files, Lion Crown story mechanics, the Gorilla Chair strange-story leader hook, imagegen-regenerated flag assets, and the generated Gorilla Chair portrait documented under `docs/assets/006_independence_wave/leader_portraits/manifest.md`.
+- `MAP` is accepted as a custom Mapuche Land Congress carrier through Event 006 runtime core seeding. Araucania `950` is the controlled starting anchor and proof state; Aysen `949` and Rio Negro `512` become surveyed cores through Mapuche land-petition work so the generic Border Commission recovery path can transfer more territory without erasing a host. MAP uses custom country/history/localisation files, a vanilla generic South American portrait, and imagegen-regenerated flag assets documented under `docs/assets/006_independence_wave/flags/manifest.md`.
+- Event 005 references `KHI` in progressive-release candidate logic only. Event 006 keeps Khiva separated through high-chaos package gating, Event 006 origin flags, and `independence_wave_package_khiva`; no Event 005 focus tree, decision, event-log, or helper file is touched for the Khiva package.
+- These packages use Event 006 origin flags, the shared provisional focus tree, package-specific startup spirits, Formation Ledger decisions, and Event 006 route state. Evolution logging remains tier-scoped rather than package-scoped.
+- No Event 005 focus tree, decision, event-log, or helper state is used by these packages.
+- Generic non-Danzig city/port releases now receive the `free_port_authority` package label, `independence_wave_package_free_port_authority`, Free Port Manifest and Harbor Courts focuses, manifest/customs/proclamation decisions, and a post-proclamation integration mission. This package uses the existing Event 006 free-city board idea/icon family, does not create or replace flags, and does not write per-route evolution rows.
+- Canal-state city/port releases now receive the `canal_authority` package label, `independence_wave_package_canal_authority`, Canal Register and Pilot Offices focuses, register/transit-charter/proclamation decisions, a post-proclamation integration mission, and a canal authority spirit. This package uses the existing Event 006 free-city board idea/icon family, does not create or replace flags, and does not write per-route evolution rows.
+- Inland city-state releases without harbor or canal control now receive the `municipal_authority` package label, `independence_wave_package_municipal_authority`, Municipal Charter File and Service Patrols focuses, charter/service-board/proclamation decisions, a post-proclamation integration mission, and a municipal authority spirit. This package uses existing Event 006 municipal/free-city board icon families, does not create or replace flags, and does not write per-route evolution rows.
+- Generic non-oil protectorate releases now receive the `protectorate_mandate` package label, `independence_wave_package_protectorate_mandate`, Protectorate Treaty Audit and Observer Ministry focuses, treaty audit/guarantee review/proclamation decisions, a post-proclamation integration mission, and a protectorate mandate spirit. This package uses the existing Event 006 sponsored-cabinet idea/icon family, does not create or replace flags, and does not write per-route evolution rows.
+- Palestine Mandate releases now receive the `palestine_mandate` package label, `independence_wave_package_palestine_mandate`, and the shared Protected Mandate focus, treaty audit, guarantee review, proclamation, post-proclamation integration mission, and protectorate mandate spirit. This package uses vanilla PAL assets and existing Event 006 sponsored-cabinet idea/icon families, does not create or replace flags, and does not write per-route evolution rows.
+- Ghana releases now receive the `ghana` package label, `independence_wave_package_ghana`, Gold Coast records and petition focuses, record/petition/proclamation decisions, a post-proclamation integration mission, and a Gold Coast Legislative Council spirit. This package uses vanilla GHA assets and existing Event 006 local-polity idea/icon families, does not create or replace flags, and does not write per-route evolution rows.
+- Eritrea releases now receive the `eritrea` package label, `independence_wave_package_eritrea`, Red Sea records and coastal-petition focuses, record/petition/proclamation decisions, a post-proclamation integration mission, and an Eritrea Red Sea Council spirit. This package uses vanilla ERI assets and existing Event 006 local-polity idea/icon families, does not create or replace flags, and does not write per-route evolution rows.
+- Darfur releases now receive the `darfur` package label, `independence_wave_package_darfur`, Darfur records and petition focuses, record/petition/proclamation decisions, a post-proclamation integration mission, and a Darfur Council spirit. This package uses custom DFR tag/history/country/localisation files, a vanilla generic African portrait, subagent-created reconstructed DFR flags, and existing Event 006 local-polity idea/icon families, and does not write per-route evolution rows.
+- Mapuche releases now receive the `mapuche` package label, `independence_wave_package_mapuche`, Araucania land records and petition decisions, a proclamation decision, a post-proclamation integration mission, and a Mapuche Land Congress spirit. This package uses custom MAP tag/history/country/localisation files, a vanilla generic South American portrait, subagent-created upright MAP flags, existing Event 006 local-polity idea/icon families, the shared provisional focus tree, and does not write per-route evolution rows.
+- Mesopotamian releases now receive the `mesopotamia` package label, `independence_wave_package_mesopotamia`, Mesopotamian river records and petition focuses, record/petition/proclamation decisions, a post-proclamation integration mission, and a Mesopotamian River Compact spirit. This package uses vanilla IRQ assets and existing Event 006 old-name idea/icon families, does not create or replace flags, and does not write per-route evolution rows.
+- Don releases now receive the `don_cossack_host` package label, `independence_wave_package_don`, Don river records and petition focuses, record/petition/proclamation decisions, a post-proclamation integration mission, and a Don Cossack Krug spirit. This package uses vanilla DON assets and existing Event 006 old-name idea/icon families, does not create or replace flags, and does not write per-route evolution rows.
+- KUB/ALT package implementation claims in older handoffs are superseded for source-of-truth purposes. They are not current Event 006 package scope, they should not drive package-specific evolution rows, and they should not displace the generic niche release lane.
+- Oil-state protectorate releases now receive the `oil_protectorate` package label, `independence_wave_package_oil_protectorate`, Oil Concession Audit and Oil-Field Guard Offices focuses, concession audit/fuel board/proclamation decisions, a post-proclamation integration mission, and an oil protectorate spirit. This package uses the existing Event 006 sponsored-cabinet idea/icon family, does not create or replace flags, and does not write per-route evolution rows.
+- Package-specific portraits, seals, animated route art, and any future flag work remain asset work. Current gameplay wiring uses Event 006 category, decision, idea, and focus icon families while vanilla tag assets remain untouched.
+
+## Central American local-polity package matrix
+
+| Package key | Name direction | Region gate | Minimum start | Main claim logic | Modern route | Escalation route | Asset notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `iw_pkg_miskito` | Miskito Shore Council, Mosquito Coast Authority | Caribbean coast of Central America | state `317` | shore records and coastal petitions | shore council under public law | coastal petition pressure | implemented with vanilla MIS flags and council portrait |
+| `iw_pkg_maya` | Maya Council, Yucatan Assembly | Yucatan and nearby Maya states | state `475` | council records and Maya municipal petitions | council federation | peninsula proof claims | implemented with vanilla MAY flags and council portrait |
+| `iw_pkg_itza` | Itza Lake Council, Peten Authority | Peten and Yucatan support | state `311` | Peten records and Yucatan petitions | lake council under public law | Yucatan petition pressure | implemented with vanilla ITZ flags and council portrait |
 
 ## South American local-polity package matrix
 
@@ -339,10 +449,20 @@ City and infrastructure packages exist because an independence wave can be about
 | --- | --- | --- | --- | --- |
 | Free port | major port in weak host | one port state | customs revenue, convoys, recognition, naval access | cannot take last port if it is protected state |
 | Canal authority | canal or chokepoint state | one strategic state | guarantees, naval transit, patron pressure | skipped if host has one state |
-| Industrial city | high factory state and low host legitimacy | one city state | strikes, factories, foreign investors | protected capital blocks release |
+| Municipal authority | inland city state without harbor or canal control | one city state | service boards, workshops, courts, public order | protected capital blocks release |
 | Railway sovereignty | rail hub or supply node crisis | one rail state | supply, trains, military access, rail league | can start as enclave only if supported |
 | Oil protectorate | oil state with foreign attention | one resource state | fuel, foreign guarantees, puppet pressure | high patron leverage by default |
 | Border buffer | disputed border and major sponsor | one border state | guarantee, demilitarized zone, claims | cannot chain with another candidate that deletes host |
+
+Implemented support:
+
+- Free port authority gameplay is implemented for non-Danzig Event 006 city/port releases that control a coastal owned state with a naval base. The route opens a manifest, negotiates a customs charter, proclaims a Free Port Authority, and runs an integration mission that fails if the authority becomes a subject or loses harbor control.
+- Canal authority gameplay is implemented for non-Danzig Event 006 city/port releases that control a canal state. The route opens a canal register, negotiates a transit charter, proclaims a Canal Authority, and runs an integration mission that fails if the authority becomes a subject, loses canal control, or patron leverage reaches the dangerous threshold.
+- Municipal authority gameplay is implemented for non-Danzig Event 006 city-package releases that control an inland city state but no harbor or canal state. The route opens a municipal charter file, organizes a service board, proclaims a Municipal Authority, and runs an integration mission that fails if the authority becomes a subject or loses inland city control.
+- Protected mandate gameplay is implemented for generic non-oil Event 006 protectorate-package releases. The route audits treaty files, reviews guarantees to reduce leverage, proclaims a Protected Mandate, and runs an integration mission that fails if the mandate becomes a subject or patron leverage reaches the dangerous threshold.
+- Oil protectorate gameplay is implemented for Event 006 protectorate-package releases that control an oil-producing state. The route audits oil concessions, seats a fuel board, proclaims an Oil Protectorate, and runs an integration mission that fails if the protectorate becomes a subject, loses oil-field control, or lets patron leverage reach the dangerous threshold.
+- Danzig keeps its bespoke Free City Board and Danzig Free City charter path instead of using the generic free-port authority label.
+- The generic routes currently reuse Event 006 free-city board, municipal workshop, and sponsored-cabinet art, decision icons, and existing idea icon families. Bespoke free-port seals, canal seals, municipal seals, protectorate mandate seals, oil-concession seals, merchant-council or treaty-broker portraits, animated route art, and unique future flag work remain asset follow-up items.
 
 ## Strange package rules
 
@@ -356,6 +476,22 @@ Strange packages should be rare and mechanically distinct.
 | Railway Cult | Evo V, rail hub collapse, supply disasters | rail routes become the body of the state | trains, supply, military access | civic rail authority | rail sovereignty and logistics cult |
 
 Strange packages can use generated leaders and flags unless a real historical symbol is involved. They should not borrow real traumatic identity symbols for supernatural content.
+
+## Implemented strange package identities
+
+The current implementation enables two first-pass Evo V strange package identities without adding new tags, country files, history files, or flag assets.
+
+| Package key | Carrier | Package proof | Release constraint |
+| --- | --- | --- | --- |
+| `iw_pkg_archive_state` | any valid Event 006 strange release | Sealed Archive Audit, archive-state route state, containment or unmarked congress follow-through | enabled at chaos tier V when the release receives the strange package marker; city, port, railway, and administrative packages default to archive-state behavior |
+| `iw_pkg_necromantic_custodianship` | any valid Event 006 strange release with rural, pastoral, or wasteland authority and no city/railway override | Quiet Dead Census, necromantic route state, containment or unmarked congress follow-through | enabled at chaos tier V when the release receives the strange package marker and its initial state profile fits the grave-register heuristic |
+
+Implementation notes:
+
+- These identities use Event 006 origin flags, `independence_wave_package_archive_state` or `independence_wave_package_necromantic_custodianship`, package IDs, Formation Ledger labels, Sealed Dossier decisions, and AI strategy overlays.
+- The shared containment path remains the first implemented resolution path for both identities. Archive-State actors are nudged toward audits and registry containment; Necromantic Custodianships are nudged toward the quiet census and stronger militia posture.
+- These package identities do not load Event 005 content and do not create new tag files or flag assets.
+- Final strange package portraits, route seals, animated dossier states, and bespoke strange flags remain asset work before strange packages can be treated as fully finished visual packages.
 
 ## Package-specific AI profiles
 
@@ -428,7 +564,7 @@ Recommended high-chaos first set:
 
 A package should not be enabled above its asset tier.
 
-## Formation and package evolution rules
+## Formation and package history rules
 
 Country packages should define both release identity and possible later formation identity. A package does not need a formable route if it is a minor temporary actor, but any long-lived package should be checked for formation potential.
 

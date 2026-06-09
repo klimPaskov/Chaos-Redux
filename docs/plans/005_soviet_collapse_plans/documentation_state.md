@@ -15,6 +15,18 @@ This file is a resumability aid, not an Event005 completion claim. Event005 rema
 - The latest completed CFR evidence found by this curator is `subagent_handoffs/2026_06_05_parent_cfr_construction_focus_depth_tranche.md`; it records validation and no flag edits. Treat CFR depth as a completed tranche, not as Event005 completion.
 - The latest focus audit evidence found by this curator is `subagent_handoffs/2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md`. It keeps the 41-tree/1698-focus mechanical baseline, reports 0 duplicate IDs and 0 coordinate duplicates after one CFR coordinate patch, and still reports 520 pathline risks plus 1,127 helper-only or nearly helper-only reward findings.
 
+## Urgent Playability Resume Packet
+
+The active parent priority is urgent playability, not final Event005 completion. Resume in this order unless the user redirects:
+
+1. Release pacing and scenario sanity: preserve gradual live-crisis releases, keep non-base releases tied to live pressure, and keep standalone triggerable scenarios separate from unrelated live-crisis settings.
+2. Union Unmade sanity: keep terminal and maximum-intensity paths exhaustive enough to rupture the former Union, while ordinary monthly progression stays pressure-gated.
+3. Focus-tree layout cleanup: prioritize visible line/path clutter, compact branch organization, route-row clarity, and the remaining 520 pathline-risk baseline from the post-CFR audit.
+4. Focus reward quality: reduce helper-only or nearly helper-only rewards with mechanics, decisions, war goals, cores, units, templates, factions, state work, or regional interactions; do not claim broad focus completion while the 1,127 shallow-reward baseline remains unresolved.
+5. Intervention visibility: fix selected-breakaway intervention panels dynamically so Tajikistan-style targets do not reveal an empty panel. Do not use hardcoded tag lists.
+6. Existing-country focus-tree eligibility: preserve the `soviet_collapse_event_created_republic` gating pattern for runtime focus-tree loading. Existing countries with meaningful trees should receive crisis integration or additive hooks, not blind focus-tree replacement.
+7. No flag touching: do not edit `gfx/flags`, flag sprites, flag files, flag interface entries, route flags, ideology flag assets, or other asset files unless the user explicitly reopens that scope.
+
 ## Accepted Current Constraints
 
 - Event005 is not complete.
@@ -25,6 +37,7 @@ This file is a resumability aid, not an Event005 completion claim. Event005 rema
 - Focus trees remain under cleanup. Required direction: clear political, industry, and expansion branches; compact layouts; no overlapping lines; fewer pointless mutual exclusions; no idea spam; and meaningful decisions, war goals, cores, units, templates, factions, or regional-interaction rewards.
 - Evolution-detail and event-detail wording remains pending. It must match the spreadsheet descriptions exactly after implementation facts are finalized.
 - The selected-breakaway intervention visibility bug remains a dynamic-system priority. Showing breakaway decisions must not expose an empty intervention panel for dynamic tags such as Tajikistan, and the fix must not use hardcoded tag lists.
+- Runtime focus-tree replacement must stay event-created-gated. Current script evidence uses `soviet_collapse_event_created_republic` in Event005 focus-tree country blocks and loader paths, but existing-country eligibility still needs playability validation before this can be treated as done.
 - Flag and flag-asset work is closed for the current task. If older docs require flag work, treat that requirement as future/no-touch scope until the parent explicitly reopens it.
 
 ## Current Implementation Facts From Recent Handoffs
@@ -39,8 +52,9 @@ This file is a resumability aid, not an Event005 completion claim. Event005 rema
 | Dynamic release pressure budgets and focus helper visibility | `2026_06_05_parent_dynamic_release_pressure_and_focus_cleanup_visibility.md` raised high-chaos pressure-successor budgets while preserving pressure gates and hid internal helper calls in focus rewards. | Implemented tranche. |
 | CFR construction depth | `2026_06_05_parent_cfr_construction_focus_depth_tranche.md` adds early CFR map-visible construction payloads, new scripted effects, decision visibility fixes, and localisation. | Implemented tranche. Event005 still incomplete. |
 | Focus helper spam cleanup | `2026_06_05_parent_focus_helper_spam_cleanup_tranche.md` removed one PRA duplicate helper call and hid noisy shared helper payloads behind bespoke Ukraine League tooltips. | Implemented narrow tranche. The broad helper-only reward problem remains queued. |
-| Evolution detail parity | `docs/events/005_soviet_collapse.md` now records that event-detail/evolution body text must match the spreadsheet after implementation facts are finalized, but that parity is not yet proven. | In progress unless a later spreadsheet/event-detail completion handoff is produced. |
+| Evolution detail parity | `docs/events/005_soviet_collapse.md` records that event-detail/evolution body text must match the spreadsheet after implementation facts are finalized, but that parity is not yet proven. XML inspection of `docs/spreadsheets/chaos_redux_events_catalog.xlsx` found Event005 row strings, including `To Be Reworked` status text. | In progress unless a later spreadsheet/event-detail completion handoff is produced. |
 | Triggerable scenarios | `2026_05_31_parent_focus_release_analysis.md`, `2026_06_04_parent_release_pacing_tranche.md`, and later release handoffs describe standalone scenario suppression, exhaustive scenario release passes, and scaled opening forces. | In progress; docs must keep scenario starts separate from unrelated live-crisis settings. |
+| Existing-country focus-tree eligibility | Current script evidence shows Event005 runtime focus-tree country blocks and loader paths using `soviet_collapse_event_created_republic`; see `common/national_focus/005_soviet_collapse_republics.txt` and `common/scripted_effects/005_soviet_collapse_effects.txt` read-only inspection. | In progress. Validate that existing republic tags are not overwritten unless Event005 actually created them. |
 | Dynamic decision expansion and visibility | Recent handoffs cover foreign selected-target robustness and CFR/DSC/PRA decision hooks, but no final all-decision expansion audit was found. The known Tajikistan-style empty-panel bug remains a dynamic visibility priority. | In progress. Do not solve with hardcoded tag lists. |
 | Focus depth and cleanup | Many tranches are implemented, but audits still cite generic helper rewards, cloned splinter scaffolds, shallow compact/ancient trees, and route-depth gaps. | Queued/in progress. |
 
@@ -78,11 +92,13 @@ This file is a resumability aid, not an Event005 completion claim. Event005 rema
 | Evolution detail parity | Current overview and parent context both treat event-detail/evolution text parity as active work. | Require a later spreadsheet/event-detail handoff before marking this complete. |
 | Triggerable scenario inheritance | Scenario docs can blur live-crisis and forced-scenario paths. | Record triggerable Soviet Collapse scenarios as standalone; they should not inherit unrelated crisis settings. |
 | Selected-breakaway decision visibility | Prior handoffs improved selected-target visibility, but the current known bug says some tags such as Tajikistan can reveal no intervention decisions. | Keep the fix dynamic through selected-target/breakaway classification and targeted-decision scope handling. Do not hardcode tag lists. |
+| Existing-country focus-tree replacement | The event skill warns against blind runtime focus-tree replacement for already-existing countries with meaningful trees. Current scripts appear to gate event-created trees through `soviet_collapse_event_created_republic`, but this is not yet a completed validation scenario. | Treat existing-country focus-tree eligibility as an urgent playability check before completion claims. |
 
 ## Next Resume Priorities
 
 1. Continue release-pacing validation around gradual live releases, dynamic pressure gates, stronger-republic force scaling, and exhaustive terminal/max/scenario rupture paths.
 2. Continue focus-depth tranches with the queued high-impact gaps: custom splinter bespoke openings, ancient restoration depth, OGB depth, compact high-chaos aggression, pathline cleanup, and helper-generic rewards.
 3. Fix selected-breakaway intervention visibility dynamically, with the Tajikistan-style empty-panel case as a regression target and no hardcoded tag lists.
-4. Produce a decision/evolution detail parity handoff before claiming the dynamic decision expansion or spreadsheet-aligned evolution detail work is complete.
-5. Keep flag and asset work closed unless the parent explicitly reopens it.
+4. Validate existing-country focus-tree eligibility and ensure runtime focus-tree loads only apply to Event005-created republics unless a deliberate additive integration exists.
+5. Produce a decision/evolution detail parity handoff before claiming the dynamic decision expansion or spreadsheet-aligned evolution detail work is complete.
+6. Keep flag and asset work closed unless the parent explicitly reopens it.

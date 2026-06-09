@@ -2,6 +2,14 @@
 
 This file defines focus-tree architecture for countries released by Event 6. It must not become a focus-by-focus blueprint, a coordinate map, or a numbered list of final focuses. The implementation agent should create the exact in-game focus count, names, layout, prerequisites, rewards, and AI weights from the route architecture below.
 
+## Current source-of-truth correction
+
+Current source-of-truth map: `docs/plans/006_independence_wave_plans/source_of_truth_map.md`.
+
+The 2026-06-05 user correction supersedes earlier Event 006 Kuban (`KUB`) and Altai (`ALT`) package-expansion framing. KUB and ALT should not be treated as current requested focus-overlay work, current package routes, or current asset work unless explicitly reopened later.
+
+The currently accepted new-country lane is niche generic releases such as `ASN`, `KBN`, `PLM`, and `AYM`. These countries should load and share `independence_wave_liberation_provisional_tree` as ordinary/generic Event 006 releases with unique flags, not bespoke package or formable overlays.
+
 ## Core rule
 
 Event 006 and Event 005 are separate standalone systems. The same tag can appear through more than one event, but its mechanics must follow its release origin. Event 006 must never turn a release into part of the Soviet Collapse system.
@@ -405,7 +413,7 @@ Do not import Event 005 focus routes, branch names, startup ideas, decisions, re
 
 ### Steppe and Caucasus overlays
 
-Candidates include Idel-Ural, Circassia, Mountain Republic, Don, Kuban, Bukhara, Khiva, and Kokand if valid.
+Candidates include Idel-Ural, Circassia, Mountain Republic, Don, Bukhara, Khiva, and Kokand if valid. Kuban and Altai are historical design candidates only; earlier Event 006 overlay framing for them is superseded by the 2026-06-05 correction and is not current requested scope.
 
 Themes:
 
@@ -436,6 +444,7 @@ Package flavor:
 - Asante should use Kumasi, Golden Stool symbolism with care, trade routes, and British pressure.
 - Sokoto should use emirate federation, scholarly legitimacy, Sahel trade, and northern Nigerian geography.
 - Kanem-Bornu should use Lake Chad trade routes, old dynasty memory, and frontier defense.
+- Darfur should use South Darfur records, North Darfur petitions, sultanate memory, and a modern council route. North Darfur remains proof territory because its vanilla state is impassable and force-linked.
 - Barotseland should use Lozi institutions, Zambezi floodplain logic, and treaty autonomy.
 - Zulu should use regimental memory, Natal pressure, and military prestige.
 - Herero and Nama packages should use land recovery, colonial violence memory, and mounted or community defense.
@@ -493,6 +502,7 @@ Path groups:
 - merchant council
 - dock police
 - customs ledger
+- harbor courts
 - port neutrality
 - foreign consular quarter
 - harbor militia
@@ -508,6 +518,8 @@ Rewards:
 - intelligence
 - high patron risk
 
+Implementation note: the current generic infrastructure-authority layer includes Free Port Manifest, Harbor Courts, and Port Neutrality Statute; Canal Register, Pilot Offices, and Transit Statute; Municipal Charter File, Service Patrols, and Home-Rule Charter; Protectorate Treaty Audit, Observer Ministry, and Public Guarantees; and Oil Concession Audit, Oil-Field Guard Offices, and Public Concession Statute. These are generic route-family finishers, not substitutes for later bespoke package-specific visual identities.
+
 ## Railway Sovereignty overlay
 
 Railway states are born from logistics collapse.
@@ -516,11 +528,12 @@ Path groups:
 
 - junction committee
 - timetable authority
+- dispatch ministry
 - armored train depot
 - bridge guard
 - ration corridor
 - customs at the sidings
-- railway league
+- railway league; implemented as `independence_wave_railway_league` after Dispatch Ministry and Timetable Authority proclamation, using rail-league cohesion, legitimacy, train stock, and rail construction rewards
 - high-chaos iron schedule route
 
 Rewards:
@@ -931,12 +944,16 @@ Package-specific notes:
 | Assyria | minority protection, language, churches, diaspora, Nineveh plain defense | treating ancient empire claim as simple conquest |
 | Mesopotamia | river administration, Iraqi mandate memory, royal or republican compromise | giving all river land at release |
 | Volga Bulgaria | Volga trade, Bulgar memory, Islam, archive legitimacy, Event 006 origin | copying Soviet Collapse republic tree |
+| Don | Rostov anchor, river records, stanitsa petitions, modern Krug authority | giving all Don-region cores at release or importing Event 005 release logic |
+| Kuban | Superseded historical candidate note only after the 2026-06-05 correction | treating Kuban as current Event 006 requested overlay work without explicit user approval |
+| Altai-Oyrot | Superseded historical candidate note only after the 2026-06-05 correction | treating ALT as current Event 006 requested overlay work or as an Idel-Ural substitute without explicit user approval |
 | Circassia | mountain and diaspora memory, Black Sea diplomacy | generic Cossack or Russian route framing |
 | Bukhara | oasis administration, reformist court, religious schools, trade | making it only a monarchist restoration |
 | Asante | Kumasi center, council authority, royal symbolism, federation option | flattening Asante into generic Ghana split |
 | Sokoto | emirate network, scholars, Hausa and Fulani complexity | portraying the route as only conquest |
 | Kanem-Bornu | Lake Chad trade, mai memory, caravan guard | ignoring cross-border lake geography |
 | Buganda | kabaka question, local parliament, protectorate memory | using modern monarchy politics without care |
+| Darfur | South Darfur anchor, North Darfur petitions, council authority, sultanate memory | using modern conflict framing or giving impassable North Darfur at release |
 | Barotseland | Zambezi floodplain, Lozi institutions, treaty memory | treating it as random separatism |
 | Palmares | maroon republic, anti-slavery memory, fortified communities | using supernatural content on real trauma by default |
 | Zulu | royal council and regiment memory, constitutional route | making all content Shaka nostalgia |

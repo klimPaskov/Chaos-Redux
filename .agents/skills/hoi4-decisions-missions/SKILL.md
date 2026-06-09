@@ -620,6 +620,20 @@ Good clutter-control patterns:
 - emergency decisions visible only during emergency states
 - late-game decisions hidden until the route payoff is reached
 
+For large targeted decision families, prefer a separate target-management category over dumping every target row into the main mechanic category. Use a compact `Show Decisions for [FROM.GetName]` / `Hide Decisions for [FROM.GetName]` flow when the human player only needs to inspect or act on one target at a time.
+
+The reusable selected-target pattern is:
+
+- a category dedicated to the target family
+- one visible selector decision over the target array
+- one visible hide/close decision for the selected target
+- a root variable that stores the selected target id
+- a target flag on the selected country
+- helper triggers for selecting, showing selected-target decisions, and recognizing the selected target from `FROM`
+- helper effects that activate and remove only the selected target decisions
+- cleanup that clears the target flag, stored id, event target if global, and active target decisions when the target becomes invalid
+- AI bypass or separate AI visibility so AI can still evaluate useful targets without needing a player-facing selector
+
 Do not leave stale, invalid, or irrelevant decisions visible simply because their scripted trigger is easy to write.
 
 ## 16. AI behavior

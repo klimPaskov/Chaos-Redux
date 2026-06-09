@@ -1,0 +1,1240 @@
+@independence_wave_focus_short = 4
+@independence_wave_focus_medium = 6
+@independence_wave_focus_long = 8
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE PROVISIONAL FOCUS TREE
+# ============================================================================
+# Runtime tree for countries created by Event 006. It is loaded only after the
+# Event 006 origin flag is set and deliberately avoids Event 005 route flags,
+# Soviet Collapse helper effects, and Soviet Collapse formable logic.
+# ============================================================================
+
+focus_tree = {
+	id = independence_wave_liberation_provisional_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 20
+			is_independence_wave_release = yes
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 3100 y = 180 }
+	initial_show_position = { x = 16 y = 0 }
+
+	focus = {
+		id = independence_wave_count_the_dossiers
+		icon = GFX_focus_independence_wave_dossier_count
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 0
+		cost = @independence_wave_focus_short
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_open_dossier_office = yes
+		}
+		ai_will_do = {
+			base = 14
+			modifier = { factor = 1.4 has_stability < 0.45 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_provisional_council
+		icon = GFX_focus_independence_wave_provisional_council
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 1
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_count_the_dossiers }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_provisional_council = yes
+		}
+		ai_will_do = {
+			base = 13
+			modifier = { factor = 1.25 has_government = democratic }
+			modifier = { factor = 1.25 has_stability < 0.4 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_barracks_count
+		icon = GFX_focus_independence_wave_barracks
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 14
+		y = 2
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_provisional_council }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_barracks_count = yes
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 1.5 has_war = yes }
+			modifier = { factor = 1.25 check_variable = { var = independence_wave_militia_strength value = 25 compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_emergency_budget
+		icon = GFX_focus_independence_wave_emergency_budget
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 2
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_provisional_council }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_emergency_budget = yes
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.25 num_of_civilian_factories < 4 }
+			modifier = { factor = 1.25 has_stability > 0.35 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_recognition_desk
+		icon = GFX_focus_independence_wave_recognition_desk
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 3
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_barracks_count }
+		prerequisite = { focus = independence_wave_emergency_budget }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_recognition_desk = yes
+			unlock_decision_tooltip = independence_wave_request_recognition
+		}
+		ai_will_do = {
+			base = 13
+			modifier = { factor = 1.5 has_government = democratic }
+			modifier = { factor = 1.25 check_variable = { var = independence_wave_legitimacy value = 45 compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_observer_charter
+		icon = GFX_focus_independence_wave_observer_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 5
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_recognition_desk }
+		mutually_exclusive = { focus = independence_wave_officer_mandate }
+		mutually_exclusive = { focus = independence_wave_national_directory }
+		mutually_exclusive = { focus = independence_wave_revolutionary_committee }
+		mutually_exclusive = { focus = independence_wave_sponsored_cabinet }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_select_civic_mandate = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 has_government = democratic }
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_legitimacy value = 45 compare = greater_than } }
+			modifier = { factor = 0.4 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_officer_mandate
+		icon = GFX_focus_independence_wave_officer_mandate
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 5
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_recognition_desk }
+		mutually_exclusive = { focus = independence_wave_observer_charter }
+		mutually_exclusive = { focus = independence_wave_national_directory }
+		mutually_exclusive = { focus = independence_wave_revolutionary_committee }
+		mutually_exclusive = { focus = independence_wave_sponsored_cabinet }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_select_officer_mandate = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 1.5 has_stability < 0.35 }
+			modifier = { factor = 0.5 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_national_directory
+		icon = GFX_focus_independence_wave_national_directory
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 18
+		y = 5
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_recognition_desk }
+		mutually_exclusive = { focus = independence_wave_observer_charter }
+		mutually_exclusive = { focus = independence_wave_officer_mandate }
+		mutually_exclusive = { focus = independence_wave_revolutionary_committee }
+		mutually_exclusive = { focus = independence_wave_sponsored_cabinet }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_select_national_directorate = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 check_variable = { var = independence_wave_claim_ambition value = 12 compare = greater_than } }
+			modifier = { factor = 1.5 has_government = fascism }
+			modifier = { factor = 0.5 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_sponsored_cabinet
+		icon = GFX_focus_independence_wave_sponsored_cabinet
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 5
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_recognition_desk }
+		mutually_exclusive = { focus = independence_wave_observer_charter }
+		mutually_exclusive = { focus = independence_wave_officer_mandate }
+		mutually_exclusive = { focus = independence_wave_national_directory }
+		mutually_exclusive = { focus = independence_wave_revolutionary_committee }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_select_patron_cabinet = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_patron_leverage value = 0 compare = greater_than } }
+			modifier = { factor = 0.6 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_revolutionary_committee
+		icon = GFX_focus_independence_wave_revolutionary_committee
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 5
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_recognition_desk }
+		mutually_exclusive = { focus = independence_wave_observer_charter }
+		mutually_exclusive = { focus = independence_wave_officer_mandate }
+		mutually_exclusive = { focus = independence_wave_national_directory }
+		mutually_exclusive = { focus = independence_wave_sponsored_cabinet }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_select_revolutionary_committee = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 2 has_government = communism }
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_radicalization value = 15 compare = greater_than } }
+			modifier = { factor = 1.25 has_stability < 0.35 }
+			modifier = { factor = 0.5 has_country_flag = independence_wave_route_patron_cabinet }
+		}
+	}
+
+	focus = {
+		id = independence_wave_summon_emergency_session
+		icon = GFX_focus_independence_wave_provisional_council
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 5
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_recognition_desk }
+		available = {
+			OR = {
+				has_war = yes
+				has_stability < constant:independence_wave_focus.crisis_stability_gate
+				has_country_flag = independence_wave_compact_charter_failed
+				has_country_flag = independence_wave_regional_compact_integration_failed
+				has_country_flag = independence_wave_major_cabinet_seats_demanded
+				has_independence_wave_dangerous_patron_leverage = yes
+			}
+		}
+		bypass = {
+			has_country_flag = independence_wave_focus_emergency_session
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_emergency_session
+			set_country_flag = independence_wave_route_crisis_recovery
+			add_stability = constant:independence_wave_focus.stability_medium
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.crisis_legitimacy_gain }
+			add_to_variable = { independence_wave_pressure = constant:independence_wave_focus.pressure_relief_medium }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 1.8 has_war = yes }
+			modifier = { factor = 1.6 has_stability < constant:independence_wave_focus.crisis_stability_gate }
+			modifier = { factor = 1.4 has_independence_wave_dangerous_patron_leverage = yes }
+			modifier = { factor = 1.3 has_country_flag = independence_wave_compact_charter_failed }
+		}
+	}
+
+	focus = {
+		id = independence_wave_form_street_defense_committees
+		icon = GFX_focus_independence_wave_barracks
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 26
+		y = 6
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_summon_emergency_session }
+		bypass = {
+			has_country_flag = independence_wave_focus_street_defense_committees
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_street_defense_committees
+			add_war_support = constant:independence_wave_focus.war_support_small
+			add_to_variable = { independence_wave_militia_strength = constant:independence_wave_focus.militia_medium }
+			independence_wave_ensure_emergency_equipment_variants = yes
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:independence_wave_focus.infantry_equipment_small
+			}
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.6 has_war = yes }
+			modifier = { factor = 1.4 check_variable = { var = independence_wave_militia_strength value = constant:independence_wave_focus.crisis_militia_gate compare = less_than } }
+			modifier = { factor = 1.25 has_country_flag = independence_wave_focus_emergency_session }
+		}
+	}
+
+	focus = {
+		id = independence_wave_reopen_cabinet_authority
+		icon = GFX_focus_independence_wave_recognition_desk
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 26
+		y = 7
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_form_street_defense_committees }
+		bypass = {
+			has_country_flag = independence_wave_focus_cabinet_authority_reopened
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_cabinet_authority_reopened
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.legitimacy_medium }
+			add_to_variable = { independence_wave_coalition_cohesion = constant:independence_wave_focus.crisis_cohesion_gain }
+			if = {
+				limit = { has_independence_wave_dangerous_patron_leverage = yes }
+				add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.crisis_patron_relief }
+				independence_wave_clamp_patron_leverage = yes
+			}
+			unlock_decision_tooltip = independence_wave_send_delegates_to_congress
+			unlock_decision_tooltip = independence_wave_request_recognition
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 1.5 has_country_flag = independence_wave_focus_street_defense_committees }
+			modifier = { factor = 1.3 has_country_flag = independence_wave_route_civic_mandate }
+			modifier = { factor = 1.3 has_country_flag = independence_wave_route_officer_mandate }
+			modifier = { factor = 0.6 has_country_flag = independence_wave_route_patron_cabinet }
+		}
+	}
+
+	focus = {
+		id = independence_wave_worker_militia_register
+		icon = GFX_focus_independence_wave_barracks
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 6
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_revolutionary_committee }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_worker_militia_register = yes
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 1.5 has_war = yes }
+			modifier = { factor = 1.25 check_variable = { var = independence_wave_militia_strength value = 30 compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_commune_supply_cells
+		icon = GFX_focus_independence_wave_military_supply
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 6
+		y = 7
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_worker_militia_register }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_commune_supply_cells = yes
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.4 has_government = communism }
+			modifier = { factor = 1.25 num_of_military_factories < 3 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_revolutionary_volunteer_office
+		icon = GFX_focus_independence_wave_revolutionary_committee
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 6
+		y = 8
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_commune_supply_cells }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_revolutionary_volunteer_office = yes
+			unlock_decision_tooltip = independence_wave_send_delegates_to_congress
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_coalition_cohesion value = 8 compare = greater_than } }
+			modifier = { factor = 1.25 has_government = communism }
+		}
+	}
+
+	focus = {
+		id = independence_wave_armed_independence_committee
+		icon = GFX_focus_independence_wave_revolutionary_committee
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 6
+		y = 9
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_revolutionary_volunteer_office }
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_armed_independence_committee = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.5 has_war = yes }
+			modifier = { factor = 1.5 has_government = communism }
+			modifier = { factor = 0.6 check_variable = { var = independence_wave_legitimacy value = 25 compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_repair_the_rail_yard
+		icon = GFX_focus_independence_wave_railway_yard
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 4
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_recognition_desk }
+		available = {
+			has_independence_wave_provisional_route_selected = yes
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_repaired_rail_yard
+			independence_wave_focus_industry_support = yes
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.3 num_of_civilian_factories < 4 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_convert_municipal_workshops
+		icon = GFX_focus_independence_wave_municipal_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 16
+		y = 4
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_recognition_desk }
+		available = {
+			has_independence_wave_provisional_route_selected = yes
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_converted_workshops
+			random_owned_controlled_state = {
+				limit = { is_core_of = ROOT }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.4 has_war = yes }
+			modifier = { factor = 1.25 num_of_military_factories < 3 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_depot_audit
+		icon = GFX_focus_independence_wave_military_supply
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 20
+		y = 4
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_recognition_desk }
+		available = {
+			has_independence_wave_provisional_route_selected = yes
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_depot_audit
+			independence_wave_focus_military_support = yes
+			unlock_decision_tooltip = independence_wave_seize_depot_inventory
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 1.5 has_war = yes }
+			modifier = { factor = 1.3 check_variable = { var = independence_wave_militia_strength value = 35 compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_reopen_the_port_ledger
+		icon = GFX_focus_independence_wave_port_ledger
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 6
+		cost = @independence_wave_focus_short
+		prerequisite = { focus = independence_wave_sponsored_cabinet }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_port_ledger
+			add_to_variable = { independence_wave_foreign_attention = constant:independence_wave_focus.foreign_attention_small }
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_small }
+			add_political_power = constant:independence_wave_focus.political_power_small
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.5 has_country_flag = independence_wave_route_patron_cabinet }
+			modifier = { factor = 1.25 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_observer_protected_elections
+		icon = GFX_focus_independence_wave_observer_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 6
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_observer_charter }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_observer_elections
+			set_politics = {
+				ruling_party = democratic
+				elections_allowed = yes
+			}
+			add_stability = constant:independence_wave_focus.stability_medium
+			add_to_variable = { independence_wave_radicalization = constant:independence_wave_focus.radicalization_relief }
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 1.4 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_file_for_arbitration
+		icon = GFX_focus_independence_wave_recognition_desk
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 7
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_observer_protected_elections }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_arbitration_files
+			add_to_variable = { independence_wave_claim_ambition = constant:independence_wave_focus.claim_ambition_relief_small }
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.legitimacy_medium }
+			unlock_decision_tooltip = independence_wave_request_league_arbitration
+			unlock_decision_tooltip = independence_wave_freeze_claim_under_observers
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.5 has_stability > 0.45 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_civic_republic
+		icon = GFX_focus_independence_wave_provisional_council
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 10
+		y = 8
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_file_for_arbitration }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_civic_republic
+			add_stability = constant:independence_wave_focus.stability_medium
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.legitimacy_large }
+			add_to_variable = { independence_wave_coalition_cohesion = constant:independence_wave_focus.coalition_small }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.5 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_secure_the_capital_guard
+		icon = GFX_focus_independence_wave_officer_mandate
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		x = 14
+		y = 6
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_officer_mandate }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_capital_guard
+			add_war_support = constant:independence_wave_focus.war_support_medium
+			add_to_variable = { independence_wave_militia_strength = constant:independence_wave_focus.militia_medium }
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 1.6 has_war = yes }
+			modifier = { factor = 1.25 has_stability < 0.35 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_military_supply_board
+		icon = GFX_focus_independence_wave_military_supply
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 14
+		y = 7
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_secure_the_capital_guard }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_supply_board
+			independence_wave_ensure_emergency_equipment_variants = yes
+			add_equipment_to_stockpile = {
+				type = support_equipment_1
+				amount = constant:independence_wave_focus.support_equipment_small
+			}
+			add_command_power = constant:independence_wave_focus.command_power_small
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_emergency_state
+		icon = GFX_focus_independence_wave_officer_mandate
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 8
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_military_supply_board }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_emergency_state
+			add_war_support = constant:independence_wave_focus.war_support_medium
+			add_to_variable = { independence_wave_pressure = constant:independence_wave_focus.pressure_relief_medium }
+			add_to_variable = { independence_wave_radicalization = constant:independence_wave_focus.radicalization_gain }
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.8 has_war = yes }
+			modifier = { factor = 1.5 has_stability < 0.3 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_border_office
+		icon = GFX_focus_independence_wave_border_commission
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 6
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_national_directory }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_border_office
+			add_to_variable = { independence_wave_claim_ambition = constant:independence_wave_focus.claim_ambition_medium }
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.legitimacy_small }
+			unlock_decision_tooltip = independence_wave_file_border_survey
+			unlock_decision_tooltip = independence_wave_recover_surveyed_core
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.5 has_government = fascism }
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_claim_ambition value = 15 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_dossier_war_plans
+		icon = GFX_focus_independence_wave_national_directory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
+		x = 18
+		y = 7
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_border_office }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_dossier_war_plans
+			add_to_variable = { independence_wave_claim_ambition = constant:independence_wave_focus.claim_ambition_medium }
+			add_war_support = constant:independence_wave_focus.war_support_small
+			army_experience = constant:independence_wave_focus.army_xp_small
+			unlock_decision_tooltip = independence_wave_issue_dossier_ultimatum
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.5 has_war = no }
+			modifier = { factor = 0.4 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_claimant_state
+		icon = GFX_focus_independence_wave_border_commission
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 8
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_dossier_war_plans }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_claimant_state
+			add_to_variable = { independence_wave_claim_ambition = constant:independence_wave_focus.claim_ambition_medium }
+			add_to_variable = { independence_wave_radicalization = constant:independence_wave_focus.radicalization_gain }
+			unlock_decision_tooltip = independence_wave_petition_border_parish
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 1.5 has_government = fascism }
+			modifier = { factor = 0.5 has_stability < 0.25 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_invite_military_mission
+		icon = GFX_focus_independence_wave_sponsored_cabinet
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 7
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_sponsored_cabinet }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_military_mission
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_medium }
+			independence_wave_focus_military_support = yes
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.6 has_war = yes }
+			modifier = { factor = 1.25 num_of_military_factories < 3 }
+		}
+	}
+
+	focus = {
+		id = independence_wave_balance_the_sponsors
+		icon = GFX_focus_independence_wave_patron_balance
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 8
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_invite_military_mission }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_balanced_sponsors
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_relief }
+			add_to_variable = { independence_wave_foreign_attention = constant:independence_wave_focus.foreign_attention_medium }
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_patron_leverage value = constant:independence_wave_focus.patron_balance_ai_patron_gate compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_write_the_cabinet_contract
+		icon = GFX_focus_independence_wave_sponsored_cabinet
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 22
+		y = 9
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_balance_the_sponsors }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_cabinet_contract
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_medium }
+			add_political_power = constant:independence_wave_focus.political_power_medium
+			random_owned_controlled_state = {
+				limit = { is_core_of = ROOT }
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 1.5 has_war = yes }
+			modifier = { factor = 0.5 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_expose_broker_files
+		icon = GFX_focus_independence_wave_patron_balance
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 10
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_balance_the_sponsors }
+		available_if_capitulated = yes
+		available = {
+			check_variable = { var = independence_wave_patron_leverage value = constant:independence_wave_focus.anti_patron_patron_gate compare = greater_than }
+		}
+		bypass = {
+			has_country_flag = independence_wave_focus_broker_files_exposed
+		}
+		completion_reward = {
+			set_country_flag = independence_wave_focus_broker_files_exposed
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_relief }
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.anti_patron_legitimacy_gain }
+			add_to_variable = { independence_wave_foreign_attention = constant:independence_wave_focus.anti_patron_foreign_attention_gain }
+			unlock_decision_tooltip = independence_wave_expose_foreign_broker
+			independence_wave_clamp_patron_leverage = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 1.6 check_variable = { var = independence_wave_patron_leverage value = constant:independence_wave_decision.patron_ledger_danger_gate compare = greater_than } }
+			modifier = { factor = 1.4 has_country_flag = independence_wave_compact_anti_puppet_clause }
+			modifier = { factor = 0.6 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_audit_dependency_clauses
+		icon = GFX_focus_independence_wave_patron_balance
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 11
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_expose_broker_files }
+		available_if_capitulated = yes
+		bypass = {
+			has_country_flag = independence_wave_focus_dependency_clauses_audited
+		}
+		completion_reward = {
+			set_country_flag = independence_wave_focus_dependency_clauses_audited
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_relief }
+			add_to_variable = { independence_wave_coalition_cohesion = constant:independence_wave_focus.anti_patron_cohesion_gain }
+			add_to_variable = { independence_wave_pressure = constant:independence_wave_focus.pressure_relief_small }
+			unlock_decision_tooltip = independence_wave_reject_dependency_clauses
+			unlock_decision_tooltip = independence_wave_convert_loans_to_treaty_debt
+			independence_wave_clamp_patron_leverage = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_patron_leverage value = constant:independence_wave_focus.anti_patron_patron_gate compare = greater_than } }
+			modifier = { factor = 1.25 has_country_flag = independence_wave_foreign_broker_exposed }
+			modifier = { factor = 0.75 has_country_flag = independence_wave_route_patron_cabinet }
+		}
+	}
+
+	focus = {
+		id = independence_wave_charter_without_masters
+		icon = GFX_focus_independence_wave_patron_balance
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 22
+		y = 12
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_audit_dependency_clauses }
+		available_if_capitulated = yes
+		bypass = {
+			has_country_flag = independence_wave_focus_charter_without_masters
+		}
+		completion_reward = {
+			set_country_flag = independence_wave_focus_charter_without_masters
+			set_country_flag = independence_wave_route_anti_patron_recovery
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_strong_relief }
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.legitimacy_medium }
+			add_to_variable = { independence_wave_coalition_cohesion = constant:independence_wave_focus.coalition_small }
+			independence_wave_clamp_patron_leverage = yes
+			independence_wave_update_achievement_tracking = yes
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.5 has_country_flag = independence_wave_compact_anti_puppet_clause }
+			modifier = { factor = 1.4 has_country_flag = independence_wave_route_civic_mandate }
+			modifier = { factor = 1.3 has_country_flag = independence_wave_route_revolutionary_committee }
+			modifier = { factor = 0.5 check_variable = { var = independence_wave_patron_leverage value = constant:independence_wave_decision.patron_ledger_open_gate compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_send_permanent_delegation
+		icon = GFX_focus_independence_wave_congress_delegation
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 10
+		cost = @independence_wave_focus_medium
+		prerequisite = {
+			focus = independence_wave_civic_republic
+			focus = independence_wave_emergency_state
+			focus = independence_wave_armed_independence_committee
+			focus = independence_wave_write_the_cabinet_contract
+			focus = independence_wave_charter_without_masters
+			focus = independence_wave_reopen_cabinet_authority
+		}
+		available = {
+			OR = {
+				has_country_flag = independence_wave_focus_civic_republic
+				has_country_flag = independence_wave_focus_emergency_state
+				has_country_flag = independence_wave_focus_armed_independence_committee
+				has_country_flag = independence_wave_focus_cabinet_contract
+				has_country_flag = independence_wave_focus_charter_without_masters
+				has_country_flag = independence_wave_focus_cabinet_authority_reopened
+			}
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_congress_support = yes
+			unlock_decision_tooltip = independence_wave_send_delegates_to_congress
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 1.5 has_country_flag = independence_wave_route_civic_mandate }
+			modifier = { factor = 0.6 has_country_flag = independence_wave_route_patron_cabinet }
+		}
+	}
+
+	focus = {
+		id = independence_wave_mutual_aid_tables
+		icon = GFX_focus_independence_wave_congress_delegation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 10
+		y = 11
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_send_permanent_delegation }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_mutual_aid_tables
+			add_to_variable = { independence_wave_coalition_cohesion = constant:independence_wave_focus.coalition_medium }
+			add_manpower = constant:independence_wave_focus.manpower_medium
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.5 has_country_flag = independence_wave_sent_congress_delegates }
+		}
+	}
+
+	focus = {
+		id = independence_wave_league_charter_draft
+		icon = GFX_focus_independence_wave_league_charter
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 12
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_mutual_aid_tables }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_league_charter_draft
+			add_to_variable = { independence_wave_coalition_cohesion = constant:independence_wave_focus.coalition_medium }
+			add_to_variable = { independence_wave_patron_leverage = constant:independence_wave_focus.patron_leverage_relief }
+			unlock_decision_tooltip = independence_wave_invite_compact_delegate
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_coalition_cohesion value = 20 compare = greater_than } }
+			modifier = { factor = 0.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_archive_identity_clue
+		icon = GFX_focus_independence_wave_archive_identity
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 16
+		y = 10
+		cost = @independence_wave_focus_medium
+		prerequisite = {
+			focus = independence_wave_claimant_state
+			focus = independence_wave_civic_republic
+		}
+		available = {
+			OR = {
+				has_country_flag = independence_wave_focus_claimant_state
+				has_country_flag = independence_wave_focus_civic_republic
+			}
+			OR = {
+				check_variable = { var = independence_wave_package_type value = constant:independence_wave_startup.historical_return_package compare = greater_than_or_equals }
+				check_variable = { var = independence_wave_old_state_memory value = 1 compare = greater_than }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_archive_identity_clue
+			add_to_variable = { independence_wave_old_state_memory = constant:independence_wave_focus.old_state_memory_gain }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 check_variable = { var = independence_wave_old_state_memory value = 8 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_land_congress_clue
+		icon = GFX_focus_independence_wave_local_land_council
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 10
+		cost = @independence_wave_focus_medium
+		prerequisite = {
+			focus = independence_wave_civic_republic
+			focus = independence_wave_emergency_state
+		}
+		available = {
+			OR = {
+				has_country_flag = independence_wave_focus_civic_republic
+				has_country_flag = independence_wave_focus_emergency_state
+			}
+			OR = {
+				check_variable = { var = independence_wave_local_polity_cohesion value = 1 compare = greater_than }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = independence_wave_focus_land_congress_clue
+			add_to_variable = { independence_wave_local_polity_cohesion = constant:independence_wave_focus.local_polity_gain }
+			add_to_variable = { independence_wave_legitimacy = constant:independence_wave_focus.legitimacy_small }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 check_variable = { var = independence_wave_local_polity_cohesion value = 8 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_sealed_bureau_charter
+		icon = GFX_focus_independence_wave_sealed_bureau
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30
+		y = 6
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_recognition_desk }
+		allow_branch = {
+			OR = {
+				has_country_flag = independence_wave_sealed_archive_audited
+				has_country_flag = independence_wave_strange_contained
+				has_country_flag = chaosx_iw_strange_revealed
+			}
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_sealed_bureau_charter = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 1.5 has_country_flag = independence_wave_sealed_archive_audited }
+			modifier = { factor = 0.7 has_country_flag = chaosx_iw_strange_revealed }
+		}
+	}
+
+	focus = {
+		id = independence_wave_moral_tribunal
+		icon = GFX_focus_independence_wave_sealed_bureau
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 7
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_sealed_bureau_charter }
+		mutually_exclusive = { focus = independence_wave_unmarked_ministry }
+		allow_branch = {
+			has_country_flag = independence_wave_strange_contained
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_moral_tribunal = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_radicalization value = constant:independence_wave_focus.strange_recovery_radicalization_gate compare = greater_than } }
+			modifier = { factor = 0.6 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_quarantine_bureau
+		icon = GFX_focus_independence_wave_officer_mandate
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 8
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_moral_tribunal }
+		available = {
+			has_country_flag = independence_wave_strange_contained
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_quarantine_bureau = yes
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_occult_pressure value = constant:independence_wave_decision.sealed_occult_pressure_gate compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_restore_public_registry
+		icon = GFX_focus_independence_wave_recognition_desk
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 9
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_quarantine_bureau }
+		available = {
+			has_country_flag = independence_wave_strange_contained
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_restore_public_registry = yes
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 1.4 check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_focus.strange_registry_legitimacy_gate compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_unmarked_ministry
+		icon = GFX_focus_independence_wave_registry_absence
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 32
+		y = 7
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_sealed_bureau_charter }
+		mutually_exclusive = { focus = independence_wave_moral_tribunal }
+		allow_branch = {
+			has_country_flag = chaosx_iw_strange_revealed
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_unmarked_ministry = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 1.6 has_country_flag = chaosx_iw_strange_revealed }
+			modifier = { factor = 0.5 has_government = democratic }
+		}
+	}
+
+	focus = {
+		id = independence_wave_census_without_names
+		icon = GFX_focus_independence_wave_registry_absence
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 32
+		y = 8
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_unmarked_ministry }
+		available = {
+			has_country_flag = chaosx_iw_strange_revealed
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_census_without_names = yes
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 1.5 has_war = yes }
+			modifier = { factor = 1.25 check_variable = { var = independence_wave_militia_strength value = constant:independence_wave_focus.strange_census_militia_gate compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = independence_wave_border_office_of_absence
+		icon = GFX_focus_independence_wave_registry_absence
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 32
+		y = 9
+		cost = @independence_wave_focus_medium
+		prerequisite = { focus = independence_wave_census_without_names }
+		available = {
+			has_country_flag = chaosx_iw_strange_revealed
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_border_office_of_absence = yes
+			unlock_decision_tooltip = independence_wave_issue_dossier_ultimatum
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_claim_ambition value = constant:independence_wave_focus.strange_border_claim_gate compare = greater_than } }
+			modifier = { factor = 0.6 has_country_flag = independence_wave_focus_arbitration_files }
+		}
+	}
+
+	focus = {
+		id = independence_wave_no_appeal_to_mankind
+		icon = GFX_focus_independence_wave_registry_absence
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 32
+		y = 10
+		cost = @independence_wave_focus_long
+		prerequisite = { focus = independence_wave_border_office_of_absence }
+		available = {
+			has_country_flag = chaosx_iw_strange_revealed
+			has_independence_wave_human_renunciation_power_base = yes
+			NOT = { has_country_flag = independence_wave_focus_restore_public_registry }
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_no_appeal_to_mankind = yes
+			unlock_decision_tooltip = independence_wave_bind_strange_cooperation
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 1.5 has_country_flag = chaosx_iw_strange_revealed }
+			modifier = { factor = 1.4 check_variable = { var = independence_wave_radicalization value = constant:independence_wave_focus.strange_recovery_radicalization_gate compare = greater_than } }
+			modifier = { factor = 0.4 has_government = democratic }
+			modifier = { factor = 0.5 has_country_flag = independence_wave_compact_anti_puppet_clause }
+		}
+	}
+
+	focus = {
+		id = independence_wave_reveal_the_formation_ledger
+		icon = GFX_focus_independence_wave_formation_ledger
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 16
+		y = 13
+		cost = @independence_wave_focus_medium
+		prerequisite = {
+			focus = independence_wave_archive_identity_clue
+			focus = independence_wave_land_congress_clue
+			focus = independence_wave_league_charter_draft
+		}
+		available = {
+			OR = {
+				has_country_flag = independence_wave_focus_archive_identity_clue
+				has_country_flag = independence_wave_focus_land_congress_clue
+				has_country_flag = independence_wave_focus_league_charter_draft
+			}
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			independence_wave_focus_reveal_formation_ledger = yes
+			custom_effect_tooltip = independence_wave_reveal_the_formation_ledger_effect_tt
+			unlock_decision_tooltip = independence_wave_prepare_regional_compact
+		}
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 1.5 check_variable = { var = independence_wave_coalition_cohesion value = 15 compare = greater_than } }
+			modifier = { factor = 0.6 has_country_flag = independence_wave_route_patron_cabinet }
+		}
+	}
+}

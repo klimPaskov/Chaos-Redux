@@ -3,6 +3,8 @@
 
 ## Country package rule
 
+Active June 5 urgent playability constraint: country package flag requirements remain final-validation requirements, but current cleanup must not edit `gfx/flags`, flag sprites, flag files, flag interface entries, route flags, ideology flag assets, or other asset files unless the user explicitly reopens that scope.
+
 Every republic, internal republic, high-chaos splinter, factory state, ancient restoration, and special actor must be a real package.
 
 Required package checklist:

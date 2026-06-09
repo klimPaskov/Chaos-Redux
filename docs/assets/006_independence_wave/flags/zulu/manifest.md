@@ -1,5 +1,9 @@
 # Event 006 Zulu Flag Asset Manifest
 
+## Current Status
+
+Superseded by the 2026-06-08 imagegen regeneration pass. Current ZUL source, processed, and final flag paths are recorded in `docs/assets/006_independence_wave/flags/manifest.md`. The previous concept-sheet notes below are retained only as previous-tranche provenance and are not the current game-facing ZUL flag source.
+
 ## Package Summary
 
 - Related event id: 006

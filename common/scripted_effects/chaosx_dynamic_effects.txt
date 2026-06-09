@@ -47,6 +47,42 @@ modify_value_based_on_chaos_tier = {
 
 ###############################################################################################################
 
+calculate_economy_scaled_factory_grant = {
+	# Input: economy_scaled_factory_grant_step, economy_scaled_factory_grant_min, economy_scaled_factory_grant_cap
+	# Output: economy_scaled_factory_grant_count
+	set_temp_variable = { economy_scaled_factory_grant_pool = num_of_civilian_factories }
+	add_to_temp_variable = { economy_scaled_factory_grant_pool = num_of_military_factories }
+	set_temp_variable = { economy_scaled_factory_grant_count = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = economy_scaled_factory_grant_pool
+				value = economy_scaled_factory_grant_step
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = economy_scaled_factory_grant_count
+				value = economy_scaled_factory_grant_cap
+				compare = less_than
+			}
+		}
+		add_to_temp_variable = { economy_scaled_factory_grant_count = 1 }
+		subtract_from_temp_variable = { economy_scaled_factory_grant_pool = economy_scaled_factory_grant_step }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = economy_scaled_factory_grant_count
+				value = economy_scaled_factory_grant_min
+				compare = less_than
+			}
+		}
+		set_temp_variable = { economy_scaled_factory_grant_count = economy_scaled_factory_grant_min }
+	}
+}
+
+###############################################################################################################
+
 # Can define variables 'buildings_to_damage_per_state', 'percent_of_states_to_target', and 'damage_modifier' to control how many buildings are damaged per state, how many buildings to damage, and how much damage is applied. Also 'state_population_percent' to control how much of population % is killed in the selected random state(s).
 damage_buildings_in_random_states = {
     # Input: buildings_to_damage_per_state, percent_of_states_to_target, damage_modifier, state_population_percent
@@ -446,6 +482,70 @@ refresh_world_threat_state = {
     else = {
         clr_global_flag = world_in_threat
     }
+}
+
+###############################################################################################################
+
+grant_random_chaos_special_project_available_tech = {
+	clr_country_flag = chaos_random_special_project_granted
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_tech = anthrax_bomb_delivery_systems }
+				NOT = { has_tech = plague_bomb_delivery_systems }
+				NOT = { has_tech = tularemia_bomb_delivery_systems }
+				NOT = { has_tech = smallpox_bomb_delivery_systems }
+				NOT = { has_tech = zombie_disease_bomb_delivery_systems }
+				NOT = { has_tech = sarin }
+				NOT = { has_tech = soman }
+			}
+		}
+		random_list = {
+			10 = {
+				modifier = { factor = 0 has_tech = anthrax_bomb_delivery_systems }
+				complete_special_project = { project = sp:anthrax_bomb show_modifiers = no }
+				set_technology = { anthrax_bomb_delivery_systems = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+			10 = {
+				modifier = { factor = 0 has_tech = plague_bomb_delivery_systems }
+				complete_special_project = { project = sp:plague_bomb show_modifiers = no }
+				set_technology = { anthrax_bomb_delivery_systems = 1 plague_bomb_delivery_systems = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+			8 = {
+				modifier = { factor = 0 has_tech = tularemia_bomb_delivery_systems }
+				complete_special_project = { project = sp:tularemia_bomb show_modifiers = no }
+				set_technology = { tularemia_bomb_delivery_systems = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+			6 = {
+				modifier = { factor = 0 has_tech = smallpox_bomb_delivery_systems }
+				complete_special_project = { project = sp:smallpox_bomb show_modifiers = no }
+				set_technology = { smallpox_bomb_delivery_systems = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+			8 = {
+				modifier = { factor = 0 has_tech = zombie_disease_bomb_delivery_systems }
+				randomize_and_complete_weaponized_zombie_project = yes
+				set_technology = { zombie_disease_bomb_delivery_systems = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+			8 = {
+				modifier = { factor = 0 has_tech = sarin }
+				complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
+				set_technology = { sarin = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+			6 = {
+				modifier = { factor = 0 has_tech = soman }
+				complete_special_project = { project = sp:sp_cw_sarin_program show_modifiers = no }
+				complete_special_project = { project = sp:sp_cw_soman_program show_modifiers = no }
+				set_technology = { sarin = 1 soman = 1 }
+				set_country_flag = chaos_random_special_project_granted
+			}
+		}
+	}
 }
 
 ###############################################################################################################

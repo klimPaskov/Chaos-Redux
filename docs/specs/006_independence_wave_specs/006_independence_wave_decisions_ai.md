@@ -72,7 +72,7 @@ The target count is only a target. Host survival is mandatory. A failed validati
 
 ### Compile Ordinary Candidate List
 
-- Available internally during dossier formation.
+- Available internally during the immediate release resolver.
 - Adds existing releasable, dead, or modded tags that pass state checks.
 - Baseline and Evo I draw primarily from this list.
 - AI has no visible choice here.
@@ -99,7 +99,7 @@ The target count is only a target. Host survival is mandatory. A failed validati
 
 ### Open Negotiations
 
-- Available to hosts with active dossiers.
+- Available to hosts after an instant release wave creates active release dossiers.
 - Best when host stability is medium or high and pressure is not near the break point.
 - Lowers pressure and radicalization.
 - Raises committee legitimacy if talks drag on.
@@ -190,8 +190,9 @@ The target count is only a target. Host survival is mandatory. A failed validati
 
 ### Demand the Border Parish
 
-- Opens a limited border claim.
-- Civic route prefers arbitration. Nationalist route prefers ultimatum.
+- Opens a limited border claim against an unowned core. Adjacent non-core border claims require high chaos and league backing.
+- Civic route prefers arbitration. Patron and anti-puppet routes prefer negotiated transfer. Nationalist and officer routes prefer ultimatum.
+- Claimed border states remain contested targets so the next Border Commission action can transfer, freeze, or escalate them instead of trapping the claim as dead state. Non-core overreach opens host warning, negotiation, and reclamation-war responses.
 
 ### Accept Foreign Advisers
 
@@ -303,8 +304,8 @@ The event needs several living categories, not one store-like menu.
 
 | Category | Owner | Opens when | Closes when | Main work |
 | --- | --- | --- | --- | --- |
-| Petitions Against the State | host | dossiers exist | all dossiers resolve or host loses crisis control | negotiation, suppression, observers, loyalists, foreign guarantee, archive evacuation |
-| Committee Survival | candidate or new breakaway | candidate dossier active or country released | recognized, annexed, civil conflict resolved, or package fails | legitimacy, depot control, brigades, elections, diaspora, recognition |
+| Petitions Against the State | host | release dossiers exist after the instant wave | all aftermath crises settle or host loses crisis control | recognition, suppression, observers, loyalists, foreign guarantee, archive evacuation |
+| Committee Survival | new breakaway | country released by the instant wave | recognized, annexed, civil conflict resolved, or package fails | legitimacy, depot control, brigades, elections, diaspora, recognition |
 | Patronage and Recognition | majors and regional powers | foreign attention crosses threshold | crisis resolves or relations collapse | recognition, supplies, advisers, cabinet demands, rival sabotage |
 | Small States Congress | released Event 006 countries | at least two Event 006 countries survive | league formed, congress collapses, or members become puppets | guarantees, volunteers, arbitration, faction formation |
 | Border Commission | host, breakaway, patron | claim ambition or settlement path exists | claim settled, war starts, or commission expires | surveys, plebiscites, arbitration, ultimatums, protected transfers |
@@ -326,7 +327,7 @@ Use clickable decisions for choices and timed missions for proof of control.
 | Recognition | request or grant recognition | survive a recognition probation period without becoming puppet |
 | Depot seizure | seize or surrender depot stockpiles | hold depot state and keep supply route open |
 | Congress | call delegates or refuse attendance | keep enough members independent until charter vote |
-| Border revision | file claim or issue ultimatum | hold claimed district or complete arbitration timer |
+| Border revision | file claim, request arbitration, negotiate transfer, freeze observers, or issue ultimatum | hold claimed district or complete arbitration timer |
 | Strange containment | open audit or seal bureau | keep occult pressure below threshold until review ends |
 
 Goal-style missions should auto-complete when the player has already done the work. Do not require a second paid click for holding a state or placing divisions.
@@ -464,7 +465,7 @@ Implementation can tune exact values, but the direction should match these weigh
 
 | Problem | Required cleanup |
 | --- | --- |
-| Candidate fails to release | remove dossier flags, pressure targets, temporary decisions, and event targets |
+| Candidate skipped by hidden resolver | remove pending score flags, pressure targets, temporary decisions, and event targets |
 | Host no longer exists for reasons outside Event 006 | cancel active host decisions and mark crisis unresolved by external collapse |
 | New country is annexed | close its categories, keep global memory, preserve achievement disqualifiers |
 | Patron target becomes puppet of someone else | close rival patron decisions and update leverage |

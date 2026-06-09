@@ -48,13 +48,6 @@ For large or multi-surface event work, use project subagents to keep the main im
 
 Subagents do not remove the main agent's responsibility to wire, review, validate, and report honestly.
 
-
-Focus-tree work includes AI behavior. Even compact or runtime-only trees should avoid flat `ai_will_do` weights when campaign state matters. Use existing constants, flags, and pressure variables so AI choices react to war state, stability, recognition, faction membership, and route eligibility.
-
-When focus counts change, update every count-bearing surface in the same pass: focus-tree docs, asset/icon reuse ledgers, prompt-to-artifact or completion audits, and the event spreadsheet row. Recount actual `focus = { ... }` blocks from the focus files and verify each new focus has an icon assignment, localisation name/description, completion reward, and `ai_will_do`. Do not rely on stale manifest counts.
-
-When an event continuation goal cannot be completed because named prompt/spec inputs or source-of-truth classifications are missing, make the blocker reproducible instead of ending with a loose note. Add or update an input-file audit with exact path state, line/byte counts and SHA-256 for present files, and exact filename recovery searches for missing files. Add a blocked completion report that lists the requested final-report categories without claiming completion. If the blocked state is likely to be resumed later, add a blocker resolution checklist and a resume packet that record the exact source decisions required, follow-up implementation paths, and validation gates before the final audit can pass. Do not mark the active goal complete while any named input or source-of-truth classification remains unresolved.
-
 ## Spec and plan locations
 
 Source event specs now live under `docs/specs/<event_id>_<event_slug>_specs/`. Implementation should read those files as the main design source when they exist.
@@ -78,6 +71,7 @@ Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_s
 - follow-up/news events: broadcast or consequence popups
 - evolutions: mutation tracks inside the same event identity, distinct from baseline stage progression
 - world-end scenarios and super-events
+- triggerable scenario launch variants when the event has a manual sandbox or challenge setup
 - connection with other events (meaning that events are not standalone and actually interact with each other)
 
 ### Evolution implementation
@@ -102,11 +96,11 @@ The shared context is:
 - `events_log_evolution_type`
 - `events_log_evolution_stage`
 - `events_log_evolution_tier`
-- `events_log_evolution_actor` when the milestone belongs to a country
+- `events_log_evolution_actor` when the milestone belongs to a specific country
 
 Then:
 
-- gate the milestone with `is_current_evolution_enabled = yes` only if it should be disableable from the UI
+- gate the milestone with `is_current_evolution_enabled = yes`
 - call `record_events_log_evolution_entry = yes`
 - If a helper sets a `*_recorded` flag or unlocks follow-up content, set the shared evolution context before its `limit` and include `is_current_evolution_enabled = yes` in that same limit. Disabled evolutions must not set recorded flags that later stages, decisions, reports, or focus branches read.
 
@@ -119,6 +113,16 @@ Implementation design rules:
 - When a track uses stage-specific incidents, wire the stage-specific display text across every event-log view that can show it: list/current view, history/detail view, event-detail view, selected-detail title, selected-detail body, and any stage-number or roman-numeral helpers needed by the highest stage.
 - Use dynamic factor models for evolution chance, pacing, intensity, and aftermath.
 - If an evolution creates a persistent country, make the country playable or meaningful enough for its expected lifetime.
+
+### Event-log UI surfaces
+
+Before changing evolution log display, identify the exact surface and keep the change scoped to that surface. Patch the actual GUI/localisation/scripted data path; do not record a process note as a substitute for fixing the visible row.
+
+- **Main Evolutions tab** uses `global.events_log_evolution_view_*`, `events_log_evolution_index`, and `events_log_evolution_entry_*` templates. This is a global logged-evolution history surface. Rows should visibly show the log index, date, source event, evolution name, tier, and stage.
+- **History details related evolutions** uses `global.events_log_history_detail_evolution_*`, `events_log_history_detail_evolution_index`, and `events_log_history_detail_evolution_entry`. This is the selected-event filtered logged-evolution history surface. Rows should use the same visible metadata as the main Evolutions tab.
+- **Event details evolution catalog** uses `global.events_log_event_detail_evolution_*`, `events_log_event_detail_evolution_index`, and `events_log_event_detail_evolution_entry`. This is a catalog/preview surface, not a history log. Do not add fake log indexes, fake dates, or history-only metadata here.
+
+When adding evolution row metadata, reuse the arrays for that row surface: main rows read the `global.events_log_evolution_view_*` arrays rebuilt by `rebuild_events_log_evolution_view`, while selected-history rows read the `global.events_log_history_detail_evolution_*` arrays rebuilt by `events_log_rebuild_history_details_view`. The required row metadata is sequence, date, source event, type/name, tier, stage, actor, and enabled state. If the user reports row alignment, patch `interface/chaosx_events_log_popup.gui` row sizes, button bounds, and text widths for the affected surface in the same change.
 
 ## World-end scenarios
 
@@ -135,6 +139,59 @@ The normal contract is:
 5. update the matching super-event text, image, and audio wiring
 6. stop or gate incompatible future systems and branches
 7. document the end-state in the event doc, and spreadsheet
+
+
+## Triggerable scenarios
+
+Triggerable scenarios are manual sandbox or challenge setups launched from the Chaos Redux settings UI. They are separate from the normal random-event timer, chaos-tier eligibility, evolution pacing, and automatic source-event prerequisites.
+
+Core rule: a triggerable scenario is always directly fireable from the scenario UI unless the launch would be impossible or conflict with an active terminal state. It creates instant chaos from setup controls, not from live Chaos Meter progression.
+
+Use this contract when adding a scenario for an event:
+
+1. Register a stable scenario ID and sort value in `triggerable_scenarios_initialize_registry`.
+2. Add tuning constants in `common/script_constants/chaosx_triggerable_scenarios_constants.txt` for scenario IDs, sort values, intensity stops, scenario type IDs, and scale values.
+3. Add or update launch, registry, sorting, intensity, and type effects in `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`.
+4. Add launch eligibility in `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt`.
+5. Add scripted GUI click handling, dynamic list support, slider stops, and visibility checks in `common/scripted_guis/chaosx_scripted_gui_settings.txt`.
+6. Add scenario name, sort text, detail text, type labels, and intensity impact text in `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`.
+7. Add or update player-facing labels, tooltips, confirmation text, and scenario event text in `localisation/english/chaosx_gui_l_english.yml`.
+8. Update `interface/chaosx.gui` only when the existing scenario window cannot present the new controls cleanly.
+9. Document the scenario in the relevant event doc or scenario doc.
+
+The scenario window is data-driven. It should use `global.triggerable_scenario_view_ids` for the sortable list, log-style entries for scenario rows, and a detail panel that updates from the selected entry. Do not hardcode one button per scenario when the registry and dynamic list can handle it.
+
+The scenario button should open a confirmation window. Confirming must read the selected scenario, type, and intensity at launch time. Do not bake these values into the first click.
+
+Intensity uses the existing four-stop scenario slider:
+
+- Low
+- Medium
+- High
+- Maximum
+
+The selected intensity should be stored in `triggerable_scenarios_intensity`. The knob position, impact text, and launch effects must all read the same stored value. If a scenario deliberately ignores intensity, state that in its detail text and keep the slider harmless.
+
+Scenario type controls are scenario-specific. If a scenario has types, define type constants, cycle buttons, labels, detail text, and launch branches. If it has no meaningful types, hide or disable type controls for that scenario instead of showing empty choices.
+
+Launch gates are not normal event prerequisites. They should only block impossible or conflicting launches, such as a required source country not existing, a required target scope being impossible to build, or another terminal world-end already being active. Do not block a triggerable scenario because chaos value, chaos tier, prior event state, evolution unlocks, date gates, route prerequisites, or super-event history flags are missing.
+
+When a triggerable scenario needs to force a path that is normally gated, use an explicit scenario launch flag or variable. Scope the bypass tightly to the launch effect and clear it when the scenario setup is finished so automatic event behavior remains governed by normal event state.
+
+Triggerable scenarios may call source-event helpers, unit-spawn helpers, release helpers, super-event helpers, or world-end helpers, but the scenario wrapper owns manual setup choices, intensity scaling, scenario type routing, confirmation flow, and bypass cleanup. Shared helpers must stay idempotent when the scenario and normal event chain can both call them.
+
+The scenario UI normally reuses existing Chaos Redux and vanilla UI assets. Do not request dedicated scenario art, report images, icons, or animated UI unless the user asks for them or the existing scenario window cannot communicate the mechanic. If the UI requires a sprite entry for technical reasons, register a stable placeholder path and report that it is a placeholder.
+
+Completion for a scenario-backed event requires:
+
+- scenario ID and sort registration
+- launch effect and confirmation flow
+- launch eligibility using the same gate for click enablement and button state
+- intensity and type controls wired or deliberately hidden
+- scripted localisation and GUI localisation
+- bypass flags scoped and cleaned up
+- no normal chaos, evolution, date, route, or super-event-history prerequisite blocking manual launch
+- documentation updated without listing stale or implementation-only debug details
 
 ## Major-event defeat aftermath
 
@@ -156,6 +213,10 @@ Typical aftermath content:
 Do not add a treaty/new world order after every contained or short-lived disaster. Those only make sense when the event genuinely reshaped the campaign.
 
 ## Event implementation workflow
+
+### Unit spawn helpers
+
+When an event needs dynamic unit counts, do not wrap `create_unit` inside `meta_effect` only to inject `count`. The escaped quotes inside the `division = "..."` history string can be emitted into the memfile incorrectly and produce malformed division-template tokens at runtime. Keep `create_unit` direct, with an ordinary quoted division string, and use a `while_loop_effect` batch that decrements a tuned variable when the count must be dynamic.
 
 ### 1. Classify the event first
 
@@ -521,12 +582,13 @@ Before closing an event task, verify:
 6. Event log actor mapping is updated if needed.
 7. Event details window content is updated if the event appears there.
 8. Evolution logging and preview wiring are updated if relevant.
-9. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
-10. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
-11. `docs/events/` is updated.
-12. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
-13. If assets are required, `chaos-redux-event-assets` has been used.
-14. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
+9. Triggerable scenario registry, launch gates, type controls, intensity controls, localisation, documentation, and bypass cleanup are updated if relevant.
+10. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
+11. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
+12. `docs/events/` is updated.
+13. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
+14. If assets are required, `chaos-redux-event-assets` has been used.
+15. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
 
 
 ## Formable nations as event surfaces
