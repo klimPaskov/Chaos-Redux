@@ -183,56 +183,84 @@ holy_realm_ask_world_to_kneel = {
 	}
 }
 
+holy_realm_remove_pramudita_bodhisattva_trait_if_present = {
+	if = {
+		limit = { has_country_leader_with_trait = holy_realm_bodhisattva_pramudita }
+		remove_country_leader_trait = holy_realm_bodhisattva_pramudita
+	}
+}
+
+holy_realm_remove_vimala_bodhisattva_trait_if_present = {
+	if = {
+		limit = { has_country_leader_with_trait = holy_realm_bodhisattva_vimala }
+		remove_country_leader_trait = holy_realm_bodhisattva_vimala
+	}
+}
+
+holy_realm_remove_acala_bodhisattva_trait_if_present = {
+	if = {
+		limit = { has_country_leader_with_trait = holy_realm_bodhisattva_acala }
+		remove_country_leader_trait = holy_realm_bodhisattva_acala
+	}
+}
+
+holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = {
+	if = {
+		limit = { has_country_leader_with_trait = holy_realm_bodhisattva_dharmamegha }
+		remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+	}
+}
+
 holy_realm_refresh_bodhisattva_leader_trait = {
 	if = {
 		limit = { check_variable = { bodhisattva_bhumi > 9 } }
 		hidden_effect = {
-			remove_country_leader_trait = holy_realm_bodhisattva_pramudita
-			remove_country_leader_trait = holy_realm_bodhisattva_vimala
-			remove_country_leader_trait = holy_realm_bodhisattva_acala
+			holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes
+			holy_realm_remove_vimala_bodhisattva_trait_if_present = yes
+			holy_realm_remove_acala_bodhisattva_trait_if_present = yes
 		}
 		if = {
 			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_dharmamegha } }
-			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha }
+			hidden_effect = { holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes }
 			add_country_leader_trait = holy_realm_bodhisattva_dharmamegha
 		}
 	}
 	else_if = {
 		limit = { check_variable = { bodhisattva_bhumi > 7 } }
 		hidden_effect = {
-			remove_country_leader_trait = holy_realm_bodhisattva_pramudita
-			remove_country_leader_trait = holy_realm_bodhisattva_vimala
-			remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+			holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes
+			holy_realm_remove_vimala_bodhisattva_trait_if_present = yes
+			holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes
 		}
 		if = {
 			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_acala } }
-			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_acala }
+			hidden_effect = { holy_realm_remove_acala_bodhisattva_trait_if_present = yes }
 			add_country_leader_trait = holy_realm_bodhisattva_acala
 		}
 	}
 	else_if = {
 		limit = { check_variable = { bodhisattva_bhumi > 3 } }
 		hidden_effect = {
-			remove_country_leader_trait = holy_realm_bodhisattva_pramudita
-			remove_country_leader_trait = holy_realm_bodhisattva_acala
-			remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+			holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes
+			holy_realm_remove_acala_bodhisattva_trait_if_present = yes
+			holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes
 		}
 		if = {
 			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_vimala } }
-			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_vimala }
+			hidden_effect = { holy_realm_remove_vimala_bodhisattva_trait_if_present = yes }
 			add_country_leader_trait = holy_realm_bodhisattva_vimala
 		}
 	}
 	else_if = {
 		limit = { check_variable = { bodhisattva_bhumi > 0 } }
 		hidden_effect = {
-			remove_country_leader_trait = holy_realm_bodhisattva_vimala
-			remove_country_leader_trait = holy_realm_bodhisattva_acala
-			remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+			holy_realm_remove_vimala_bodhisattva_trait_if_present = yes
+			holy_realm_remove_acala_bodhisattva_trait_if_present = yes
+			holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes
 		}
 		if = {
 			limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_pramudita } }
-			hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_pramudita }
+			hidden_effect = { holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes }
 			add_country_leader_trait = holy_realm_bodhisattva_pramudita
 		}
 	}
@@ -247,13 +275,13 @@ holy_realm_sync_bodhisattva_protectorate_leaders = {
 			limit = { OVERLORD = { check_variable = { bodhisattva_bhumi > 9 } } }
 			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_dharmamegha" }
 			hidden_effect = {
-				remove_country_leader_trait = holy_realm_bodhisattva_pramudita
-				remove_country_leader_trait = holy_realm_bodhisattva_vimala
-				remove_country_leader_trait = holy_realm_bodhisattva_acala
+				holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes
+				holy_realm_remove_vimala_bodhisattva_trait_if_present = yes
+				holy_realm_remove_acala_bodhisattva_trait_if_present = yes
 			}
 			if = {
 				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_dharmamegha } }
-				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha }
+				hidden_effect = { holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes }
 				add_country_leader_trait = holy_realm_bodhisattva_dharmamegha
 			}
 		}
@@ -261,13 +289,13 @@ holy_realm_sync_bodhisattva_protectorate_leaders = {
 			limit = { OVERLORD = { check_variable = { bodhisattva_bhumi > 7 } } }
 			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_acala" }
 			hidden_effect = {
-				remove_country_leader_trait = holy_realm_bodhisattva_pramudita
-				remove_country_leader_trait = holy_realm_bodhisattva_vimala
-				remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+				holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes
+				holy_realm_remove_vimala_bodhisattva_trait_if_present = yes
+				holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes
 			}
 			if = {
 				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_acala } }
-				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_acala }
+				hidden_effect = { holy_realm_remove_acala_bodhisattva_trait_if_present = yes }
 				add_country_leader_trait = holy_realm_bodhisattva_acala
 			}
 		}
@@ -275,26 +303,26 @@ holy_realm_sync_bodhisattva_protectorate_leaders = {
 			limit = { OVERLORD = { check_variable = { bodhisattva_bhumi > 3 } } }
 			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_pramudita" }
 			hidden_effect = {
-				remove_country_leader_trait = holy_realm_bodhisattva_pramudita
-				remove_country_leader_trait = holy_realm_bodhisattva_acala
-				remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+				holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes
+				holy_realm_remove_acala_bodhisattva_trait_if_present = yes
+				holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes
 			}
 			if = {
 				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_vimala } }
-				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_vimala }
+				hidden_effect = { holy_realm_remove_vimala_bodhisattva_trait_if_present = yes }
 				add_country_leader_trait = holy_realm_bodhisattva_vimala
 			}
 		}
 		else = {
 			set_country_leader_portrait = { portrait = "GFX_portrait_THR_bodhisattva_pramudita" }
 			hidden_effect = {
-				remove_country_leader_trait = holy_realm_bodhisattva_vimala
-				remove_country_leader_trait = holy_realm_bodhisattva_acala
-				remove_country_leader_trait = holy_realm_bodhisattva_dharmamegha
+				holy_realm_remove_vimala_bodhisattva_trait_if_present = yes
+				holy_realm_remove_acala_bodhisattva_trait_if_present = yes
+				holy_realm_remove_dharmamegha_bodhisattva_trait_if_present = yes
 			}
 			if = {
 				limit = { NOT = { has_country_leader_with_trait = holy_realm_bodhisattva_pramudita } }
-				hidden_effect = { remove_country_leader_trait = holy_realm_bodhisattva_pramudita }
+				hidden_effect = { holy_realm_remove_pramudita_bodhisattva_trait_if_present = yes }
 				add_country_leader_trait = holy_realm_bodhisattva_pramudita
 			}
 		}
@@ -512,11 +540,11 @@ holy_realm_spawn_mandala_peacekeeping_brigade = {
 	}
 	add_manpower = constant:holy_realm_decision.mandala_peacekeeping_manpower
 	add_equipment_to_stockpile = {
-		type = infantry_equipment
+		type = infantry_equipment_1
 		amount = constant:holy_realm_decision.mandala_peacekeeping_infantry_equipment
 	}
 	add_equipment_to_stockpile = {
-		type = support_equipment
+		type = support_equipment_1
 		amount = constant:holy_realm_decision.mandala_peacekeeping_support_equipment
 	}
 	capital_scope = {
@@ -563,24 +591,28 @@ holy_realm_create_vow_keeper_template = {
 
 holy_realm_spawn_vow_keeper_mountaineers = {
 	holy_realm_create_vow_keeper_template = yes
-	add_manpower = 120000
+	add_manpower = constant:holy_realm_decision.vow_keeper_manpower
 	add_equipment_to_stockpile = {
-		type = infantry_equipment
-		amount = 12000
+		type = infantry_equipment_1
+		amount = constant:holy_realm_decision.vow_keeper_infantry_equipment
 	}
 	add_equipment_to_stockpile = {
-		type = artillery_equipment
-		amount = 720
+		type = artillery_equipment_1
+		amount = constant:holy_realm_decision.vow_keeper_artillery_equipment
 	}
 	add_equipment_to_stockpile = {
-		type = support_equipment
-		amount = 1800
+		type = support_equipment_1
+		amount = constant:holy_realm_decision.vow_keeper_support_equipment
+	}
+	add_equipment_to_stockpile = {
+		type = motorized_equipment_1
+		amount = constant:holy_realm_decision.vow_keeper_motorized_equipment
 	}
 	capital_scope = {
 		create_unit = {
 			division = "name = \"Vow-Keeper Mountaineers\" division_template = \"Vow-Keeper Mountaineers\" start_experience_factor = 0.75 start_equipment_factor = 1 start_manpower_factor = 1"
 			owner = ROOT
-			count = 6
+			count = constant:holy_realm_decision.vow_keeper_count
 		}
 	}
 }
@@ -1187,12 +1219,16 @@ holy_realm_apply_crisis_rescue_if_needed = {
 		}
 		add_manpower = constant:holy_realm_crisis_rescue.emergency_manpower
 		add_equipment_to_stockpile = {
-			type = infantry_equipment
+			type = infantry_equipment_1
 			amount = constant:holy_realm_crisis_rescue.emergency_infantry_equipment
 		}
 		add_equipment_to_stockpile = {
-			type = support_equipment
+			type = support_equipment_1
 			amount = constant:holy_realm_crisis_rescue.emergency_support_equipment
+		}
+		add_equipment_to_stockpile = {
+			type = motorized_equipment_1
+			amount = constant:holy_realm_crisis_rescue.emergency_motorized_equipment
 		}
 		holy_realm_create_vow_keeper_template = yes
 		set_temp_variable = { holy_realm_rescue_unit_count = constant:holy_realm_crisis_rescue.emergency_mountaineers }
