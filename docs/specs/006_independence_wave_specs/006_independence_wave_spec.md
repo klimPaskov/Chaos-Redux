@@ -117,7 +117,7 @@ The hidden resolver is not a playable crisis phase. It is safety logic. The visi
 
 The number of released countries must grow with chaos. This is a visible part of the event identity.
 
-Actual Event 006 evolution rows are release-scale tier milestones, not per-country release progressions. Baseline/calm waves can fire and release countries, but they should not record an evolution row. The first evolution row starts no earlier than Dossier Surge, followed by Rising Chaos Release Pattern, Chaos Tier Release Pattern, Great Partition Week, and Open Season. Great Partition Week displays at Chaos Tier, while Open Season is the World Collapse-stage entry displayed at Totalen Chaos.
+Actual Event 006 evolution rows are release-scale tier milestones, not per-country release progressions. Baseline/calm waves can fire and release countries, but they should not record an evolution row. The first evolution row starts no earlier than Dossier Surge, followed by Rising Chaos Release Pattern, Chaos Tier Release Pattern, Great Partition Week, and Open Season. Great Partition Week displays at Totalen Chaos, and Open Season displays at World Collapse.
 
 | State | Typical successful releases | Candidate pool | Army strength | Political risk |
 | --- | ---: | --- | --- | --- |
