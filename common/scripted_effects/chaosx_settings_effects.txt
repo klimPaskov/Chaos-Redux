@@ -1293,6 +1293,7 @@ events_log_open_history_event_details_entry = {
 }
 
 events_log_rebuild_history_details_view = {
+    events_log_repair_independence_wave_evolution_tiers = yes
     sanitize_events_log_evolution_actor_entries = yes
     clear_array = global.events_log_history_detail_evolution_sequence_entries
     clear_array = global.events_log_history_detail_evolution_date_entries
@@ -1415,6 +1416,7 @@ events_log_open_selected_history_related_evolution_detail = {
 }
 
 events_log_rebuild_open_event_details_view = {
+    events_log_repair_independence_wave_evolution_tiers = yes
     sanitize_events_log_history_actor_entries = yes
     clear_array = global.events_log_open_event_detail_type_entries
     clear_array = global.events_log_open_event_detail_fired_entries
@@ -1790,11 +1792,11 @@ events_log_rebuild_open_event_details_view = {
             set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.old_names_stage }
             events_log_add_event_detail_evolution_preview = yes
             set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_4 }
             set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.impossible_statehood_stage }
             events_log_add_event_detail_evolution_preview = yes
             set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_4 }
+            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_final }
             set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.world_collapse_stage }
             events_log_add_event_detail_evolution_preview = yes
         }
@@ -1905,6 +1907,84 @@ events_log_add_event_detail_evolution_preview = {
     add_to_array = {
         array = global.events_log_event_detail_evolution_enabled_entries
         value = events_log_event_detail_preview_enabled
+    }
+}
+
+events_log_repair_independence_wave_evolution_tiers = {
+    set_temp_variable = { events_log_iw_repair_index = 0 }
+    while_loop_effect = {
+        limit = {
+            check_variable = {
+                var = events_log_iw_repair_index
+                value = global.events_log_evolution_stage_entries^num
+                compare = less_than
+            }
+        }
+        if = {
+            limit = {
+                check_variable = {
+                    var = global.events_log_evolution_event_id_entries^events_log_iw_repair_index
+                    value = constant:independence_wave_event_log.event_id
+                    compare = equals
+                }
+                check_variable = {
+                    var = global.events_log_evolution_type_entries^events_log_iw_repair_index
+                    value = constant:independence_wave_event_log.evolution_type
+                    compare = equals
+                }
+            }
+            if = {
+                limit = {
+                    check_variable = {
+                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
+                        value = constant:independence_wave_event_log.gathering_storm_stage
+                        compare = equals
+                    }
+                }
+                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_1 }
+            }
+            if = {
+                limit = {
+                    check_variable = {
+                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
+                        value = constant:independence_wave_event_log.rising_cascade_stage
+                        compare = equals
+                    }
+                }
+                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_2 }
+            }
+            if = {
+                limit = {
+                    check_variable = {
+                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
+                        value = constant:independence_wave_event_log.old_names_stage
+                        compare = equals
+                    }
+                }
+                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_3 }
+            }
+            if = {
+                limit = {
+                    check_variable = {
+                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
+                        value = constant:independence_wave_event_log.impossible_statehood_stage
+                        compare = equals
+                    }
+                }
+                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_4 }
+            }
+            if = {
+                limit = {
+                    check_variable = {
+                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
+                        value = constant:independence_wave_event_log.world_collapse_stage
+                        compare = equals
+                    }
+                }
+                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_final }
+            }
+        }
+        add_to_temp_variable = { events_log_iw_repair_index = 1 }
     }
 }
 
@@ -2828,6 +2908,7 @@ events_log_evolution_append_rows_by_actor_sort = {
 }
 
 rebuild_events_log_evolution_view = {
+    events_log_repair_independence_wave_evolution_tiers = yes
     sanitize_events_log_evolution_actor_entries = yes
 
     if = {
