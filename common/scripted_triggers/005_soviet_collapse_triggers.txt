@@ -12,6 +12,13 @@ is_soviet_collapse_active = {
 	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
 }
 
+can_soviet_collapse_run_crisis_evolution = {
+	is_soviet_collapse_active = yes
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+	NOT = { has_global_flag = soviet_collapse_super_event_union_unmade_fired }
+	NOT = { has_global_flag = soviet_collapse_resolved_by_reconquest }
+}
+
 is_soviet_collapse_aftermath_active = {
 	NOT = { has_global_flag = soviet_collapse_triggerable_scenario_systems_disabled }
 	NOT = { has_global_flag = soviet_collapse_resolved_by_reconquest }
@@ -1980,7 +1987,7 @@ has_soviet_collapse_calm_mtth_release_block = {
 }
 
 has_soviet_collapse_forced_progressive_release_pressure = {
-	is_soviet_collapse_active = yes
+	can_soviet_collapse_run_crisis_evolution = yes
 	NOT = { has_global_flag = soviet_collapse_progressive_release_cooldown }
 	OR = {
 		NOT = { has_soviet_collapse_calm_mtth_release_block = yes }
@@ -2217,7 +2224,7 @@ can_soviet_collapse_grant_timeout_aid = {
 }
 
 can_soviet_collapse_roll_progressive_release = {
-	is_soviet_collapse_active = yes
+	can_soviet_collapse_run_crisis_evolution = yes
 	NOT = { has_global_flag = soviet_collapse_progressive_release_cooldown }
 	OR = {
 		NOT = { has_soviet_collapse_calm_mtth_release_block = yes }
@@ -2395,7 +2402,7 @@ can_soviet_collapse_roll_progressive_release = {
 }
 
 can_soviet_collapse_fire_progressive_release_report = {
-	is_soviet_collapse_active = yes
+	can_soviet_collapse_run_crisis_evolution = yes
 	has_country_flag = soviet_collapse_progressive_release_roll_confirmed
 	has_event_target = soviet_collapse_release_target
 }
@@ -2538,7 +2545,7 @@ has_soviet_collapse_terminal_pacing_matured = {
 }
 
 has_soviet_collapse_accumulated_release_pressure = {
-	is_soviet_collapse_active = yes
+	can_soviet_collapse_run_crisis_evolution = yes
 	NOT = { has_global_flag = soviet_collapse_progressive_release_cooldown }
 	OR = {
 		NOT = { has_soviet_collapse_calm_mtth_release_block = yes }
@@ -7762,11 +7769,15 @@ is_soviet_collapse_high_chaos_successor_spawn_ready = {
 	OR = {
 		has_global_flag = soviet_collapse_triggerable_scenario_include_chaos
 		AND = {
-			is_soviet_collapse_active = yes
+			has_global_flag = soviet_collapse_terminal_collapse_in_progress
+			has_global_flag = soviet_collapse_force_all_chaos_successors
+		}
+		AND = {
+			can_soviet_collapse_run_crisis_evolution = yes
 			has_global_flag = { flag = chaos_tier value = 5 }
 		}
 		AND = {
-			is_soviet_collapse_active = yes
+			can_soviet_collapse_run_crisis_evolution = yes
 			has_soviet_collapse_dynamic_follow_on_release_pressure = yes
 			OR = {
 				has_global_flag = { flag = chaos_tier value = 3 }
@@ -7780,6 +7791,7 @@ can_soviet_collapse_record_high_chaos_evolution_this_tier = {
 	OR = {
 		has_global_flag = soviet_collapse_triggerable_scenario_include_chaos
 		AND = {
+			can_soviet_collapse_run_crisis_evolution = yes
 			is_current_evolution_enabled = yes
 			OR = {
 				AND = {

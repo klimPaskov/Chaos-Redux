@@ -1701,17 +1701,23 @@ soviet_collapse_compute_next_progressive_release_check_days = {
 }
 
 soviet_collapse_schedule_next_progressive_release_check = {
-    if = {
-        limit = { NOT = { has_country_flag = soviet_collapse_progressive_release_interval_locked } }
-        soviet_collapse_compute_next_progressive_release_check_days = yes
-    }
-    meta_effect = {
-        text = {
-            country_event = { id = chaosx.nr5.129 days = [NEXT_RELEASE_CHECK_DAYS] }
-        }
-        NEXT_RELEASE_CHECK_DAYS = "[?soviet_collapse_next_progressive_release_check_days|.0]"
-    }
-    clr_country_flag = soviet_collapse_progressive_release_interval_locked
+	if = {
+		limit = {
+			can_soviet_collapse_run_crisis_evolution = yes
+			NOT = { has_country_flag = soviet_collapse_progressive_release_interval_locked }
+		}
+		soviet_collapse_compute_next_progressive_release_check_days = yes
+	}
+	if = {
+		limit = { can_soviet_collapse_run_crisis_evolution = yes }
+		meta_effect = {
+			text = {
+				country_event = { id = chaosx.nr5.129 days = [NEXT_RELEASE_CHECK_DAYS] }
+			}
+			NEXT_RELEASE_CHECK_DAYS = "[?soviet_collapse_next_progressive_release_check_days|.0]"
+		}
+		clr_country_flag = soviet_collapse_progressive_release_interval_locked
+	}
 }
 
 soviet_collapse_set_objective_source_pressure_caps = {
@@ -3381,13 +3387,12 @@ soviet_collapse_spawn_terminal_high_chaos_successors = {
 }
 
 soviet_collapse_spawn_active_high_chaos_successors = {
-    if = {
-        limit = {
-            is_soviet_collapse_active = yes
-            NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-            OR = {
-                has_global_flag = { flag = chaos_tier value = 3 }
-                has_global_flag = { flag = chaos_tier value = 4 }
+	if = {
+		limit = {
+			can_soviet_collapse_run_crisis_evolution = yes
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
                 has_global_flag = { flag = chaos_tier value = 5 }
             }
         }
@@ -4361,12 +4366,23 @@ soviet_collapse_apply_follow_on_breakaway_pressure = {
 }
 
 soviet_collapse_record_secession_evolution_entry = {
-    set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_event_log.event_id }
-    set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_event_log.secession_evolution_type }
-    if = {
-        limit = { OR = { is_current_evolution_enabled = yes has_global_flag = soviet_collapse_triggerable_scenario_include_chaos has_global_flag = soviet_collapse_force_all_chaos_successors } }
-        record_events_log_evolution_entry = yes
-    }
+	set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_event_log.secession_evolution_type }
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+				AND = {
+					can_soviet_collapse_run_crisis_evolution = yes
+					OR = {
+						is_current_evolution_enabled = yes
+						has_global_flag = soviet_collapse_force_all_chaos_successors
+					}
+				}
+			}
+		}
+		record_events_log_evolution_entry = yes
+	}
 }
 
 soviet_collapse_set_secession_evolution_check_cooldown = {
@@ -4383,10 +4399,21 @@ soviet_collapse_set_secession_evolution_check_cooldown = {
 }
 
 soviet_collapse_roll_secession_evolution_entry = {
-    clr_country_flag = soviet_collapse_secession_evolution_roll_succeeded
-    if = {
-        limit = { OR = { is_current_evolution_enabled = yes has_global_flag = soviet_collapse_triggerable_scenario_include_chaos has_global_flag = soviet_collapse_force_all_chaos_successors } }
-        set_temp_variable = { soviet_collapse_secession_evolution_weight = mtth:soviet_collapse_secession_evolution_weight }
+	clr_country_flag = soviet_collapse_secession_evolution_roll_succeeded
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = soviet_collapse_triggerable_scenario_include_chaos
+				AND = {
+					can_soviet_collapse_run_crisis_evolution = yes
+					OR = {
+						is_current_evolution_enabled = yes
+						has_global_flag = soviet_collapse_force_all_chaos_successors
+					}
+				}
+			}
+		}
+		set_temp_variable = { soviet_collapse_secession_evolution_weight = mtth:soviet_collapse_secession_evolution_weight }
         set_temp_variable = { soviet_collapse_secession_evolution_miss_weight = constant:soviet_collapse_secession_evolution_mtth.miss_base }
         soviet_collapse_set_secession_evolution_check_cooldown = yes
         random_list = {
@@ -24624,11 +24651,10 @@ soviet_collapse_release_dynamic_follow_on_republics = {
 }
 
 soviet_collapse_release_active_dynamic_follow_on_backlog = {
-    if = {
-        limit = {
-            is_soviet_collapse_active = yes
-            NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-            NOT = { has_global_flag = soviet_collapse_dynamic_follow_on_backlog_cooldown }
+	if = {
+		limit = {
+			can_soviet_collapse_run_crisis_evolution = yes
+			NOT = { has_global_flag = soviet_collapse_dynamic_follow_on_backlog_cooldown }
             OR = {
                 has_soviet_collapse_dynamic_follow_on_release_pressure = yes
                 has_soviet_collapse_pressure_successor_follow_on_release_pressure = yes
@@ -24781,11 +24807,15 @@ soviet_collapse_mark_union_crisis_resolved_by_reconquest = {
     set_global_flag = soviet_collapse_resolved_by_reconquest
     clr_global_flag = soviet_collapse_active
     clr_global_flag = soviet_collapse_opening_wave_active
-    clr_global_flag = soviet_collapse_opening_pressure_initialized
-    clr_global_flag = soviet_collapse_terminal_collapse
-    clr_global_flag = soviet_collapse_terminal_collapse_in_progress
-    clr_global_flag = soviet_collapse_union_unmade_first_month_lock
-    remove_ideas = soviet_collapse_union_crisis
+	clr_global_flag = soviet_collapse_opening_pressure_initialized
+	clr_global_flag = soviet_collapse_terminal_collapse
+	clr_global_flag = soviet_collapse_terminal_collapse_in_progress
+	clr_global_flag = soviet_collapse_union_unmade_first_month_lock
+	clr_global_flag = soviet_collapse_progressive_release_cooldown
+	clr_global_flag = soviet_collapse_dynamic_follow_on_backlog_cooldown
+	clr_global_flag = soviet_collapse_secession_evolution_check_cooldown
+	clr_global_flag = soviet_collapse_force_all_chaos_successors
+	remove_ideas = soviet_collapse_union_crisis
     remove_ideas = soviet_collapse_emergency_union_authority
     remove_ideas = soviet_collapse_loyalist_officer_corps
     set_country_flag = soviet_collapse_crisis_resolved_by_reconquest
@@ -24798,11 +24828,18 @@ soviet_collapse_mark_union_crisis_resolved_by_reconquest = {
     set_variable = { soviet_collapse_old_movement_pressure = constant:soviet_collapse_baseline.component_min }
     set_variable = { soviet_collapse_total_collapse_threat = constant:soviet_collapse_baseline.component_min }
     set_variable = { soviet_collapse_months_active = constant:soviet_collapse_baseline.component_min }
-    set_variable = { soviet_collapse_breakaway_count = constant:soviet_collapse_baseline.component_min }
-    set_variable = { global.soviet_collapse_breakaway_count = constant:soviet_collapse_baseline.component_min }
-    set_variable = { soviet_collapse_progressive_release_failed_months = constant:soviet_collapse_baseline.component_min }
-    set_variable = { soviet_collapse_opening_release_failed_months = constant:soviet_collapse_baseline.component_min }
-    clear_array = global.soviet_collapse_first_wave_republics
+	set_variable = { soviet_collapse_breakaway_count = constant:soviet_collapse_baseline.component_min }
+	set_variable = { global.soviet_collapse_breakaway_count = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_progressive_release_pressure = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_release_urgency_score = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_progressive_release_failed_months = constant:soviet_collapse_baseline.component_min }
+	set_variable = { soviet_collapse_opening_release_failed_months = constant:soviet_collapse_baseline.component_min }
+	clear_array = global.soviet_collapse_progressive_release_selection
+	clear_array = global.soviet_collapse_first_wave_republics
+	clr_country_flag = soviet_collapse_progressive_release_candidate_selected
+	clr_country_flag = soviet_collapse_progressive_release_roll_confirmed
+	clr_country_flag = soviet_collapse_progressive_release_interval_locked
+	clr_country_flag = soviet_collapse_secession_evolution_roll_succeeded
     for_each_scope_loop = {
         array = global.soviet_collapse_breakaway_countries
         if = {
@@ -24819,14 +24856,23 @@ soviet_collapse_mark_union_crisis_resolved_by_reconquest = {
 }
 
 soviet_collapse_cleanup_terminal_collapse_missions = {
-    clr_global_flag = soviet_collapse_active
-    clr_global_flag = soviet_collapse_opening_wave_active
-    clr_global_flag = soviet_collapse_union_unmade_first_month_lock
-    clr_country_flag = soviet_collapse_next_declaration_unarmed
-    clr_country_flag = soviet_collapse_next_declaration_armed
-    clr_country_flag = soviet_collapse_loyal_units_moved
-    clr_country_flag = soviet_collapse_district_war_rooms_reopened
-    set_temp_variable = { soviet_collapse_active_objectives = 0 }
+	clr_global_flag = soviet_collapse_active
+	clr_global_flag = soviet_collapse_opening_wave_active
+	clr_global_flag = soviet_collapse_union_unmade_first_month_lock
+	clr_global_flag = soviet_collapse_progressive_release_cooldown
+	clr_global_flag = soviet_collapse_dynamic_follow_on_backlog_cooldown
+	clr_global_flag = soviet_collapse_secession_evolution_check_cooldown
+	clr_global_flag = soviet_collapse_force_all_chaos_successors
+	clr_country_flag = soviet_collapse_next_declaration_unarmed
+	clr_country_flag = soviet_collapse_next_declaration_armed
+	clr_country_flag = soviet_collapse_loyal_units_moved
+	clr_country_flag = soviet_collapse_district_war_rooms_reopened
+	clr_country_flag = soviet_collapse_progressive_release_candidate_selected
+	clr_country_flag = soviet_collapse_progressive_release_roll_confirmed
+	clr_country_flag = soviet_collapse_progressive_release_interval_locked
+	clr_country_flag = soviet_collapse_secession_evolution_roll_succeeded
+	clear_array = global.soviet_collapse_progressive_release_selection
+	set_temp_variable = { soviet_collapse_active_objectives = 0 }
     if = { limit = { has_active_mission = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command } set_country_flag = soviet_collapse_mission_001_done remove_mission = soviet_collapse_soviet_mission_001_confirm_the_emergency_chain_of_command }
     if = { limit = { has_active_mission = soviet_collapse_soviet_mission_002_seal_the_first_circular } set_country_flag = soviet_collapse_mission_002_done remove_mission = soviet_collapse_soviet_mission_002_seal_the_first_circular }
     if = { limit = { has_active_mission = soviet_collapse_soviet_mission_003_guard_the_peoples_commissariats } set_country_flag = soviet_collapse_mission_003_done remove_mission = soviet_collapse_soviet_mission_003_guard_the_peoples_commissariats }
