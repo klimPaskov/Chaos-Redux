@@ -98,7 +98,7 @@ Use these high-level routing rules:
 - Use `chaosx_skill_maintainer` for non-trivial skill creation, cleanup, routing updates, or multi-skill consistency work.
 - Use `chaosx_improvement_loop_planner` during large event implementation when a mechanic, focus tree, country package, decision system, super-event, visual progression, lore package, or audit finding needs deeper design. It creates concrete event expansion addenda with research, historical connections, playable mechanics, and implementation surfaces for the main agent. It does not patch gameplay files. Do not spawn it again for the same event until the previous addendum has been implemented, folded into specs, queued with a reason, or rejected.
 
-Patch-capable subagents are allowed to make small, local improvements by default when the change is inside the current task surface and directly improves the feature. They may vary costs, add clearer dynamic localisation, improve tooltips, adjust safe AI weights, add narrow helper calls, fix route locks, add cleanup hooks, or correct existing formable checks. They must not expand a whole mechanic, redesign a route family, add a new country package, create a new scripted GUI system, or change the requested design on their own. Broad gaps become a plan under `docs/plans/<event_id>_<event_slug>_plans/`. Every subagent edit needs a handoff that lists changed files, identifiers, validation, and remaining risks. Documentation cleanup work should also record which specs, plans, handoffs, manifests, or reports were promoted, queued, rejected, superseded, or left unresolved.
+Patch-capable subagents are allowed to make small, local improvements by default when the change is inside the current task surface and directly improves the feature. They may vary costs, add clearer dynamic localisation, improve tooltips, adjust safe AI weights, add narrow helper calls, fix route locks, add cleanup hooks, or correct existing formable checks. They must not expand a whole mechanic, redesign a route family, add a new country package, create a new scripted GUI system, or change the requested design on their own. Broad gaps become a plan under `docs/plans/<event_id>_<event_slug>_plans/`. Every subagent edit needs a handoff that lists changed files, identifiers, meaningful validation when it affects confidence, and remaining risks. Documentation cleanup work should also record which specs, plans, handoffs, manifests, or reports were promoted, queued, rejected, superseded, or left unresolved.
 
 For major event work, the main agent should use the improvement loop after meaningful implementation tranches when several new mechanics have been added and now need deeper connections. The planner should expand ideas using the event-planning skill and relevant research. It should not be used repeatedly while a previous plan for the same event is still unresolved.
 
@@ -276,6 +276,8 @@ A goal can never be marked complete unless it is actually complete.
 
 For every goal, especially large event, mechanic, focus-tree, country-package, balance, UI, or asset goals, completion requires evidence. The agent must finish the requested implementation, update all related files, run or document the required checks, and report any blocker or simplification.
 
+Validation reporting must be useful. Run basic syntax hygiene internally when helpful, but do not spend the final report listing checks that only restate mandatory AGENTS.md rules, such as unsupported operator checks or brackets balance or BOM encoding checks, etc. Mention validation only when it is task-specific, could realistically fail, found a problem, changed the implementation, or gives the user useful evidence. Leave passing boilerplate checks out of the user-facing report.
+
 Do not claim completion when:
 
 - only the most visible part was implemented
@@ -295,11 +297,11 @@ Do not replace real implementation work with tooling work. Do not spend the goal
 
 Do not bulk-generate large focus trees, country packages, decisions, localisation, or validation reports and call them complete. Generated or scripted drafts are acceptable only when every result is manually reviewed, customized to the country or route, wired into the mod, localized, given AI behavior, documented, and checked against the spec.
 
-If any requested item is not implemented to the fullest extent, report it under a clear section such as `Simplifications, omissions, and blockers`. Even small deviations must be listed. If no simplifications were made, the final report must explicitly say so and provide evidence through files changed, audits, validation notes, and completed checklists.
+If any requested item is not implemented to the fullest extent, report it under a clear section such as `Simplifications, omissions, and blockers`. Even small deviations must be listed. If no simplifications were made, the final report must explicitly say so and provide evidence through files changed, audits, meaningful validation notes, and completed checklists.
 
 Do not claim a goal is complete just because the game loads or because the most visible part works.
 
-For large events, mechanics, focus-tree rewrites, country packages, balance passes, or multi-system goals, produce a concrete completion report. The report should list files changed, systems touched, balance checks, tests or validation scenarios, assets reused or created, documentation updated, and remaining blockers.
+For large events, mechanics, focus-tree rewrites, country packages, balance passes, or multi-system goals, produce a concrete completion report. The report should list files changed, systems touched, balance checks, tests or meaningful validation scenarios, assets reused or created, documentation updated, and remaining blockers.
 
 Every simplification must be reported. This includes skipped routes, fallback trees used in place of bespoke trees, missing assets, missing localisation, missing AI behavior, missing event-log entries, missing focus paths, missing dynamic scaling, hardcoded values where dynamic logic was requested, placeholder content, or weaker substitutes.
 
@@ -340,7 +342,7 @@ Use `chaos-redux-subagents` for detailed asset subagent routing. Asset subagents
 
 Use skills actively. Skills are not only for cleanup at the end of a task. They are the agent's memory for repeated workflows, project-specific patterns, hard-won fixes, and instructions that should not be rediscovered every time.
 
-When a task reveals a repeated workflow, repeated mistake, reusable process, repo-specific convention, validation pattern, asset workflow, prompt pattern, or useful implementation rule, use `chaosx_skill_maintainer` or OpenAI’s official `skill-creator` skill to capture it cleanly.
+When a task reveals a repeated workflow, repeated mistake, reusable process, repo-specific convention, asset workflow, prompt pattern, or useful implementation rule, use `chaosx_skill_maintainer` or OpenAI’s official `skill-creator` skill to capture it cleanly.
 
 Create or update skills more often during long tasks, especially when working through many events, mechanics, assets, localisation passes, or UI patterns. If the same reasoning would likely be needed again later in the run, spawn `chaosx_skill_maintainer` or update the relevant skill before moving on.
 

@@ -12,7 +12,7 @@ Use this skill for any Chaos Redux event work, including:
 - maintaining `docs/events/` event documentation
 - updating the gameplay-facing event spreadsheet, including the `Manual_Scenarios` table for triggerable scenarios
 
-Repository-wide reading, style, and validation rules live in `AGENTS.md`. This skill only adds the Chaos Redux event-specific implementation contract.
+Repository-wide reading and style rules live in `AGENTS.md`. This skill only adds the Chaos Redux event-specific implementation contract.
 
 When an event implementation creates broad visible text, spawn `chaosx_localisation_auditor` before completion. When an event needs repeated dynamic logic across events, decisions, focuses, evolutions, logs, or GUI, use `chaosx_scripted_system_architect` before duplicating logic.
 
@@ -62,7 +62,7 @@ Small subagent patches are allowed when they improve a specific surface without 
 
 The parent still owns final integration, docs, spreadsheets, event chain direction, completion claims, and any broad mechanic expansion. If a subagent sees a needed route family, new country package, new formable suite, new scripted GUI system, new event chain, or major balance redesign, it writes a plan under `docs/plans/<event_id>_<event_slug>_plans/` and stops.
 
-Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_slug>_plans/subagent_handoffs/` when the event id and slug are known. The handoff lists changed files, identifiers, behavior before and after, validation, skipped validation, remaining gaps, and follow-up work for the parent.
+Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_slug>_plans/subagent_handoffs/` when the event id and slug are known. The handoff lists changed files, identifiers, behavior before and after, meaningful validation, skipped task-specific validation, remaining gaps, and follow-up work for the parent.
 
 ## Event anatomy
 
@@ -158,7 +158,7 @@ Use this contract when adding a scenario for an event:
 6. Add scenario name, sort text, detail text, type labels, and intensity impact text in `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`.
 7. Add or update player-facing labels, tooltips, confirmation text, and scenario event text in `localisation/english/chaosx_gui_l_english.yml`.
 8. Update `interface/chaosx.gui` only when the existing scenario window cannot present the new controls cleanly.
-9. Document the scenario in the relevant event doc or scenario doc.
+9. Document the scenario in the relevant event doc or scenario doc, for example in `~\projects\chaos_redux\docs\systems\triggerable_scenarios.md`.
 
 The scenario window is data-driven. It should use `global.triggerable_scenario_view_ids` for the sortable list, log-style entries for scenario rows, and a detail panel that updates from the selected entry. Do not hardcode one button per scenario when the registry and dynamic list can handle it.
 
@@ -173,9 +173,9 @@ Intensity uses the existing four-stop scenario slider:
 
 The selected intensity should be stored in `triggerable_scenarios_intensity`. The knob position, impact text, and launch effects must all read the same stored value. If a scenario deliberately ignores intensity, state that in its detail text and keep the slider harmless.
 
-Scenario type controls are scenario-specific. If a scenario has types, define type constants, cycle buttons, labels, detail text, and launch branches. If it has no meaningful types, hide or disable type controls for that scenario instead of showing empty choices.
+Scenario type controls are scenario-specific. If a scenario has types, define type constants, cycle buttons, labels, detail text, and launch branches.
 
-Launch gates are not normal event prerequisites. They should only block impossible or conflicting launches, such as a required source country not existing, a required target scope being impossible to build, or another terminal world-end already being active. Do not block a triggerable scenario because chaos value, chaos tier, prior event state, evolution unlocks, date gates, route prerequisites, or super-event history flags are missing.
+Launch gates are not normal event prerequisites. They should only block impossible or conflicting launches, such as a required source country not existing, a required target scope being impossible to build. Do not block a triggerable scenario because chaos value, chaos tier, prior event state, evolution unlocks, date gates, route prerequisites, or super-event history flags are missing.
 
 When a triggerable scenario needs to force a path that is normally gated, use an explicit scenario launch flag or variable. Scope the bypass tightly to the launch effect and clear it when the scenario setup is finished so automatic event behavior remains governed by normal event state.
 
@@ -188,7 +188,7 @@ Completion for a scenario-backed event requires:
 - scenario ID and sort registration
 - launch effect and confirmation flow
 - launch eligibility using the same gate for click enablement and button state
-- intensity and type controls wired or deliberately hidden
+- intensity and type controls wired
 - scripted localisation and GUI localisation
 - bypass flags scoped and cleaned up
 - no normal chaos, evolution, date, route, or super-event-history prerequisite blocking manual launch
@@ -215,10 +215,6 @@ Do not add a treaty/new world order after every contained or short-lived disaste
 
 ## Event implementation workflow
 
-### Unit spawn helpers
-
-When an event needs dynamic unit counts, do not wrap `create_unit` inside `meta_effect` only to inject `count`. The escaped quotes inside the `division = "..."` history string can be emitted into the memfile incorrectly and produce malformed division-template tokens at runtime. Keep `create_unit` direct, with an ordinary quoted division string, and use a `while_loop_effect` batch that decrements a tuned variable when the count must be dynamic.
-
 ### 1. Classify the event first
 
 - Entry events keep the format `chaosx.nr<ID>.1`.
@@ -235,6 +231,7 @@ When an event needs dynamic unit counts, do not wrap `create_unit` inside `meta_
   - evolution tracks
   - escalation events
   - world-end or super-event branches
+  - aftermath content
 
 Keep IDs stable when updating existing chains.
 
@@ -244,7 +241,7 @@ Always start from the event and walk outward through the systems it touches.
 
 Core files to check:
 
-- `events/XXX_my_event.txt`
+- `events/<ID>_my_event.txt`
 - `common/on_actions/chaosx_on_actions_system.txt`
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `localisation/english/chaosx_event_names_l_english.yml`
@@ -541,6 +538,51 @@ Preferred deck path:
 
 - `docs/presentations/chaos_redux_events.pptx`
 
+## Formable nations as event surfaces
+
+When an event can create or empower countries, consider whether it should create formable nation routes. A formable can be a major event payoff, a late-game ambition, a hidden branch, a rare evolution reward, a country package route, or a post-crisis consolidation goal.
+
+Event implementation must keep formables aligned across:
+
+- event flags and route flags
+- decision category visibility
+- focus unlocks
+- scripted triggers for state control
+- scripted effects for formation
+- cosmetic tags and country names
+- flags and portraits
+- AI strategy
+- event log entries
+- event details
+- achievements
+- super-events where the formation changes world order
+- cleanup after tag switch, annexation, puppet transfer, civil war, or route failure
+
+Use scripted helpers for formation effects. Do not duplicate formation logic in events, decisions, focuses, scripted GUI buttons, and achievements. The decision can pay the cost and validate requirements, while a shared helper performs the identity change and logs the result.
+
+Hidden formables should still have implementation coverage. They need reveal events, hidden flags, visibility triggers, localisation, assets, AI rules, and cleanup.
+
+## Scripted GUI and animated event presentation
+
+Major event mechanics can use scripted GUI windows, decision-category interfaces, animated category art, animated leader portraits, or custom buttons when they make the system easier to play. Treat that UI as part of the event contract, not as decoration added later.
+
+When an event uses a custom interface, align these surfaces:
+
+- decision category or entry button
+- scripted GUI definition
+- scripted triggers and effects
+- costs and tooltips
+- animated and static sprites
+- localisation and scripted localisation
+- AI fallback behavior
+- event log and event details
+- cleanup and invalidation rules
+- documentation and asset manifest
+
+Every player-clickable GUI button that changes gameplay must validate the same requirements as a normal decision. It must show costs and missing requirements clearly. It must call scripted effects that can also be used by AI, decisions, focuses, and cleanup systems.
+
+Animated leader portraits, animated route emblems, glow effects, particles, and float effects should be used for major reveals, high-chaos escalation, hidden formables, supernatural leaders, or final transformations. Each animated asset needs a static fallback and manifest entry.
+
 ## Generated asset handling
 
 Use the `chaos-redux-event-assets` skill whenever an event task requires generated or processed visual assets.
@@ -592,47 +634,3 @@ Before closing an event task, verify:
 15. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
 
 
-## Formable nations as event surfaces
-
-When an event can create or empower countries, consider whether it should create formable nation routes. A formable can be a major event payoff, a late-game ambition, a hidden branch, a rare evolution reward, a country package route, or a post-crisis consolidation goal.
-
-Event implementation must keep formables aligned across:
-
-- event flags and route flags
-- decision category visibility
-- focus unlocks
-- scripted triggers for state control
-- scripted effects for formation
-- cosmetic tags and country names
-- flags and portraits
-- AI strategy
-- event log entries
-- event details
-- achievements
-- super-events where the formation changes world order
-- cleanup after tag switch, annexation, puppet transfer, civil war, or route failure
-
-Use scripted helpers for formation effects. Do not duplicate formation logic in events, decisions, focuses, scripted GUI buttons, and achievements. The decision can pay the cost and validate requirements, while a shared helper performs the identity change and logs the result.
-
-Hidden formables should still have implementation coverage. They need reveal events, hidden flags, visibility triggers, localisation, assets, AI rules, and cleanup.
-
-## Scripted GUI and animated event presentation
-
-Major event mechanics can use scripted GUI windows, decision-category interfaces, animated category art, animated leader portraits, or custom buttons when they make the system easier to play. Treat that UI as part of the event contract, not as decoration added later.
-
-When an event uses a custom interface, align these surfaces:
-
-- decision category or entry button
-- scripted GUI definition
-- scripted triggers and effects
-- costs and tooltips
-- animated and static sprites
-- localisation and scripted localisation
-- AI fallback behavior
-- event log and event details
-- cleanup and invalidation rules
-- documentation and asset manifest
-
-Every player-clickable GUI button that changes gameplay must validate the same requirements as a normal decision. It must show costs and missing requirements clearly. It must call scripted effects that can also be used by AI, decisions, focuses, and cleanup systems.
-
-Animated leader portraits, animated route emblems, glow effects, particles, and float effects should be used for major reveals, high-chaos escalation, hidden formables, supernatural leaders, or final transformations. Each animated asset needs a static fallback and manifest entry.

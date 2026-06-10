@@ -743,7 +743,7 @@ The note should include:
 - implementation notes
 - open questions
 
-## Improvement-loop super-event depth
+## 25. Improvement-loop super-event depth
 
 Improvement addenda can propose new super-events, but a super-event should still mark a real campaign threshold. Do not add one just because a route has a strong image. Use one when a formable changes regional order, a hidden route becomes public, a scripted GUI mechanic reaches a global milestone, a league or world threat emerges, or a defeat aftermath reshapes the campaign.
 
@@ -751,7 +751,7 @@ For formables, the super-event should reflect the formation method. A negotiated
 
 Animated portraits or animated scripted GUI assets can support a super-event-adjacent moment, but they are not replacements for the super-event package. The super-event still needs aligned text, quote, image, audio, trigger, docs, and spreadsheet entry when relevant.
 
-## 25. Final checklist
+## 26. Final checklist
 
 Before closing a super-event task, confirm:
 
@@ -788,28 +788,3 @@ Before closing a super-event task, confirm:
 31. No placeholder, default, mismatched, or wrong-format audio remains for completed super-events.
 32. Event docs are updated.
 33. Spreadsheet or event catalog is updated if relevant.
-
-
-## Super-events for formables and interface-driven mechanics
-
-A formable nation can justify a super-event when it changes the campaign order, resolves a long route, reveals a hidden identity, creates a new bloc, triggers a major war, or signals a high-chaos transformation. Do not use a super-event for every routine formation decision.
-
-A formable super-event package should define:
-
-- formation decision or focus route that triggers it
-- required state-control, route, ideology, chaos, or hidden-event condition
-- formed country name, tag or cosmetic tag, flag, leader, and faction state at trigger time
-- why this formation matters beyond the country itself
-- world reaction and regional reaction
-- quote direction that fits formation, sovereignty, union, empire, federation, restoration, or hidden-state revelation
-- image direction, including flag reveal, map room, proclamation, congress, coronation, cabinet, battlefield, or impossible-state tableau
-- audio mood
-- follow-up events, decisions, event log entry, achievements, and route unlocks
-
-If a formable reveal uses animated leader portraits or animated interface art, the super-event prompt should mention the visual relationship. The final super-event itself still needs image, text, quote, audio, trigger, docs, and spreadsheet alignment.
-
-## Animated presentation notes for super-event-adjacent assets
-
-Super-event images are usually static HOI4 presentation images. Animated assets can still support the surrounding route, such as an animated leader portrait after the reveal, a glowing decision category seal before the proclamation, or an animated scripted GUI panel for a world-order mechanic unlocked by the super-event.
-
-Use animated support assets when they reinforce the aftermath. Do not let animation replace the core super-event package.
