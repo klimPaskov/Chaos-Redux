@@ -75,7 +75,7 @@ Avoid obvious lines such as:
 - the coding agent should use valid syntax
 - the system should respect existing global settings
 
-Those are baseline system responsibilities. Include technical notes only when they prevent a likely mistake, explain non-obvious behavior, or define a unique rule for this event.
+Those are baseline system responsibilities. Include technical notes only when they prevent a likely mistake, explain non-obvious behavior, or define a unique rule for this event. Otherwise, its just noise.
 
 ## 3.2 Depth standard
 
@@ -747,6 +747,33 @@ Political identity should be dynamic when the content supports it. Focus routes,
 
 When planning alternate governments, do not use only generic ideology labels. Design specific in-world names, such as named councils, committees, directorates, juntas, congresses, restoration authorities, cult offices, leagues, syndicates, ministries, synods, communes, or military commands. These names should fit the country story, region, history, route, and ideological language.
 
+## Formable nations and formation routes
+
+When an event creates, transforms, releases, or empowers countries, check whether formable nations should be part of the design. A formable is a meaningful country identity that appears after a country satisfies territorial, political, event, focus, or hidden-route requirements. Do not treat formables as only a cosmetic rename.
+
+A formable design should define:
+
+- formable name and tag handling
+- whether it uses a new tag, an existing tag, a cosmetic tag, or a dynamic country name
+- required owned and controlled states
+- required cores, claims, subjects, puppets, allies, faction members, or occupied areas
+- alternate state sets for different borders or reduced maps
+- focus route or event route that reveals the formation
+- decision that performs the formation
+- hidden unlock conditions, if the formable is secret
+- ideology, leader, government, legitimacy, recognition, chaos tier, crisis, patron, or achievement gates
+- effects on cores, claims, compliance, resistance, subjects, puppets, factions, advisors, laws, technologies, and ideas
+- visible country identity after formation, including name, adjective, flag, leader, portrait, parties, ruling ideology, advisors, and focus tree access
+- post-formation ambitions, claims, diplomatic reactions, rivals, league or faction behavior, and failure states
+- AI willingness to pursue the formable and AI safety checks that prevent impossible or suicidal formation attempts
+- event log, event details, super-event, achievement, and asset implications
+
+Do not write vague lines such as `can form a greater country`. Define the concrete formation web. If the player must control this state, this state, and this state, name those states or name the scripted state group and explain what it contains. If the exact state ids are left to implementation, describe the intended geographic set clearly enough that the implementation agent can build a scripted trigger without guessing.
+
+Hidden formables should still be designed fully. The spec can hide player-facing names and spoilers, but the implementation handoff must describe the unlock route, required flags, reveal event, decision visibility, AI behavior, rewards, assets, and disqualifiers.
+
+Formation routes should interact with focus trees and decisions. A focus can reveal or prepare the claim, while a decision performs the formation after the map requirement is met. A decision can form the country directly, while later focuses stabilize it, core it, claim further territory, or resolve internal factions. Avoid giving a formable through a focus alone when the player should prove control over named land first.
+
 ## 3.13 Starting forces and reinforcement pathway standard
 
 When an event creates, releases, transforms, restores, or revives a country that is expected to fight, survive, defend itself, or matter militarily, the spec must define its starting forces. Newly appearing countries should not spawn as empty tags unless they are explicitly non-military administrative placeholders and the spec explains why.
@@ -830,7 +857,7 @@ A good effect package should do at least one meaningful thing:
 
 Effects should fit the event story. A desperate military measure should not only cost political power. A logistical crisis should interact with trains, fuel, depots, supply, equipment, routes, or tied-down units. A legitimacy crisis should affect stability, war support, recognition, internal factions, local support, or authority. A foreign intervention system should create influence, dependence, access, backlash, or diplomatic consequences.
 
-The spec should explain why a value is strong, weak, temporary, risky, or conditional. Do not make every effect huge, but do not hide a major event behind barely noticeable numbers.
+The spec should explain why a value is strong, weak, temporary, risky, or conditional. Do not make every effect huge, but do not hide a major event behind barely noticeable numbers. Special chaos countries usually do have absurd numbers, because the country itself is absurd and that justifies it.
 
 
 ## 4. What the specification should explore
@@ -937,6 +964,29 @@ Describe what the player sees, how it changes, and what visual assets are needed
 
 Map the UI states if the UI represents pressure, route choice, threat, stage, faction cohesion, recognition, contamination, loyalty, or any other living value.
 
+## Interactive mechanic UI and animated presentation in event specs
+
+When an event has an important mechanic, decide whether the decision category needs a richer scripted GUI or a separate mechanic window. The spec should define the player-facing interface when the system is important enough to manage visually.
+
+A mechanic UI spec should include:
+
+- where the UI appears, such as decision category header, attached scripted GUI, custom window, event-details panel, or country mechanic panel
+- what button opens or closes the window
+- what values, targets, meters, cards, lists, tabs, or map states the player sees
+- what buttons the player can click and what each costs
+- how unavailable buttons explain missing requirements
+- what scripted effects and scripted triggers own the button logic
+- how AI performs equivalent actions without relying on human-only clicks
+- how the UI cleans itself up after route change, tag change, annexation, civil war, peace, or event completion
+- what localisation and scripted localisation the UI needs
+- what static assets, animated sprites, hover states, selected states, locked states, warning states, and progress variants it needs
+
+The spec should not make an interactive window for every small modifier. Use custom UI when it improves readability, choice, atmosphere, or management of a living system.
+
+Animated presentation can be part of the spec. Use it for mechanics that benefit from motion, such as pressure rising, corruption spreading, a council activating, an occult meter pulsing, a patron influence network glowing, or a formable seal appearing after requirements are met. Animation should clarify the mechanic and improve presentation. It should not hide information or add noise.
+
+Leader portraits can have animated variants for major route reveals, high-chaos leaders, supernatural leaders, symbolic councils, final formables, or dramatic country transformations. The spec should say when the animated portrait appears, what static fallback exists, whether the portrait is sourced or generated, and how the animation remains period-appropriate and readable at leader-portrait size.
+
 ## 9. Super-event planning
 
 If the event needs a super-event, design the super-event as part of the event emotional and gameplay pacing.
@@ -962,6 +1012,25 @@ Keep the super-event tone specific to the event. Do not make every super-event f
 Do not fully research quotes, cultural remarks, or music inside this skill. Use `chaos-redux-super-events` for that work.
 
 The event spec should provide enough direction for `chaos-redux-super-events` to find real quotes, meaningful cultural remarks, and suitable audio.
+
+### Major-event defeat aftermath
+
+Some major events should also have a structured aftermath when the threat is beaten.
+
+Use a defeat aftermath package when all of these are true:
+
+- the defeated threat was global or near-global in reach
+- the campaign lasted long enough to feel like a world crisis
+- the cost in casualties, destruction, or political disruption was high enough that the world should not simply snap back to normal
+
+Typical aftermath content:
+
+- a defeat super-event or defeat-stage super-event effect
+- postwar treaties, compacts, or new world orders
+- recurring remembrance, reconstruction, or vigilance events
+- lasting ideas, tech-sharing groups, or diplomatic rules that exist because the world learned from the crisis
+
+Do not add a treaty/new world order after every contained or short-lived disaster. Those only make sense when the event genuinely reshaped the campaign.
 
 ## 10. Writing style
 
@@ -1351,6 +1420,19 @@ A good goal prompt should include:
 
 If the goal prompt is near 4000 characters, shorten it by pointing to files instead of repeating details.
 
+## Formation and UI questions for planning passes
+
+Before finishing a major event spec, ask:
+
+- Can any country created or empowered by the event form a larger state later?
+- Are there regional, ideological, hidden, or high-chaos formables that should be locked behind focuses, decisions, or events?
+- Does each formable have concrete map requirements and a clear post-formation identity?
+- Do formation rewards avoid free core spam, free war-goal spam, and instant runaway snowballing?
+- Does the decision category need a scripted GUI, progress meter, custom window, or animated presentation?
+- Are animated sprites, leader portraits, particles, glow, float loops, or button states planned where they would make the mechanic clearer?
+- Does the asset prompt include all static and animated UI pieces, plus fallbacks?
+- Does the goal prompt tell the implementation agent to verify formables, UI windows, animated sprites, and fallbacks?
+
 ## 20. Final response checklist
 
 The final response should include:
@@ -1486,65 +1568,3 @@ Reject the draft if it has any of these problems:
 The spec should be ambitious, detailed, researched, and usable. Do not stop at a conservative minimum when the idea supports more.
 
 
-## Formable nations and formation routes
-
-When an event creates, transforms, releases, or empowers countries, check whether formable nations should be part of the design. A formable is a meaningful country identity that appears after a country satisfies territorial, political, event, focus, or hidden-route requirements. Do not treat formables as only a cosmetic rename.
-
-A formable design should define:
-
-- formable name and tag handling
-- whether it uses a new tag, an existing tag, a cosmetic tag, or a dynamic country name
-- required owned and controlled states
-- required cores, claims, subjects, puppets, allies, faction members, or occupied areas
-- alternate state sets for different borders or reduced maps
-- focus route or event route that reveals the formation
-- decision that performs the formation
-- hidden unlock conditions, if the formable is secret
-- ideology, leader, government, legitimacy, recognition, chaos tier, crisis, patron, or achievement gates
-- effects on cores, claims, compliance, resistance, subjects, puppets, factions, advisors, laws, technologies, and ideas
-- visible country identity after formation, including name, adjective, flag, leader, portrait, parties, ruling ideology, advisors, and focus tree access
-- post-formation ambitions, claims, diplomatic reactions, rivals, league or faction behavior, and failure states
-- AI willingness to pursue the formable and AI safety checks that prevent impossible or suicidal formation attempts
-- event log, event details, super-event, achievement, and asset implications
-
-Do not write vague lines such as `can form a greater country`. Define the concrete formation web. If the player must control this state, this state, and this state, name those states or name the scripted state group and explain what it contains. If the exact state ids are left to implementation, describe the intended geographic set clearly enough that the implementation agent can build a scripted trigger without guessing.
-
-Hidden formables should still be designed fully. The spec can hide player-facing names and spoilers, but the implementation handoff must describe the unlock route, required flags, reveal event, decision visibility, AI behavior, rewards, assets, and disqualifiers.
-
-Formation routes should interact with focus trees and decisions. A focus can reveal or prepare the claim, while a decision performs the formation after the map requirement is met. A decision can form the country directly, while later focuses stabilize it, core it, claim further territory, or resolve internal factions. Avoid giving a formable through a focus alone when the player should prove control over named land first.
-
-## Interactive mechanic UI and animated presentation in event specs
-
-When an event has an important mechanic, decide whether the decision category needs a richer scripted GUI or a separate mechanic window. The spec should define the player-facing interface when the system is important enough to manage visually.
-
-A mechanic UI spec should include:
-
-- where the UI appears, such as decision category header, attached scripted GUI, custom window, event-details panel, or country mechanic panel
-- what button opens or closes the window
-- what values, targets, meters, cards, lists, tabs, or map states the player sees
-- what buttons the player can click and what each costs
-- how unavailable buttons explain missing requirements
-- what scripted effects and scripted triggers own the button logic
-- how AI performs equivalent actions without relying on human-only clicks
-- how the UI cleans itself up after route change, tag change, annexation, civil war, peace, or event completion
-- what localisation and scripted localisation the UI needs
-- what static assets, animated sprites, hover states, selected states, locked states, warning states, and progress variants it needs
-
-The spec should not make an interactive window for every small modifier. Use custom UI when it improves readability, choice, atmosphere, or management of a living system.
-
-Animated presentation can be part of the spec. Use it for mechanics that benefit from motion, such as pressure rising, corruption spreading, a council activating, an occult meter pulsing, a patron influence network glowing, or a formable seal appearing after requirements are met. Animation should clarify the mechanic and improve presentation. It should not hide information or add noise.
-
-Leader portraits can have animated variants for major route reveals, high-chaos leaders, supernatural leaders, symbolic councils, final formables, or dramatic country transformations. The spec should say when the animated portrait appears, what static fallback exists, whether the portrait is sourced or generated, and how the animation remains period-appropriate and readable at leader-portrait size.
-
-## Formation and UI questions for planning passes
-
-Before finishing a major event spec, ask:
-
-- Can any country created or empowered by the event form a larger state later?
-- Are there regional, ideological, hidden, or high-chaos formables that should be locked behind focuses, decisions, or events?
-- Does each formable have concrete map requirements and a clear post-formation identity?
-- Do formation rewards avoid free core spam, free war-goal spam, and instant runaway snowballing?
-- Does the decision category need a scripted GUI, progress meter, custom window, or animated presentation?
-- Are animated sprites, leader portraits, particles, glow, float loops, or button states planned where they would make the mechanic clearer?
-- Does the asset prompt include all static and animated UI pieces, plus fallbacks?
-- Does the goal prompt tell the implementation agent to verify formables, UI windows, animated sprites, and fallbacks?

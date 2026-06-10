@@ -77,7 +77,7 @@ Use `chaosx_repo_explorer` when at least one of these is true:
 - the task spans several systems and the edit order is uncertain
 - the correct Chaos Redux pattern or vanilla precedent is unclear
 - a named spec, prompt, source file, classification, sprite, tag, localisation key, or helper appears missing and needs recovery evidence
-- the feature has enough cross-surface risk that a file map and validation plan will prevent missed work
+- the feature has enough cross-surface risk that a file map and meaningful validation plan will prevent missed work
 
 Do not spawn `chaosx_repo_explorer` for small or already bounded work, including:
 
@@ -182,10 +182,12 @@ The handoff should include:
 - changed ids, keys, tags, helper names, or state groups
 - before and after behavior
 - why the change is safe and bounded
-- validation run
-- skipped validation and why
+- meaningful validation run, limited to task-specific checks that affect confidence
+- skipped meaningful validation and why
 - remaining issues or design gaps
 - any follow-up the parent must implement
+
+Do not fill handoffs with passing boilerplate checks that only restate AGENTS.md rules. Basic syntax hygiene can be done internally unless it found a problem or materially changed the patch.
 
 If a patch touches localisation, list the keys changed. If it touches decisions or focuses, list affected ids. If it touches scripted helpers, list helper names and call sites. If it touches country setup, list tags and state ids or state groups.
 

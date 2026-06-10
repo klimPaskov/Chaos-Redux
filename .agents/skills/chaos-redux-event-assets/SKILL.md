@@ -154,7 +154,7 @@ For generated or sourced one-person leader portraits, the asset handoff must ide
 
 ### Fictional leader portraits
 
-Fictional leaders, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits may use `$imagegen`.
+Fictional leaders, invented councils, collective bodies, supernatural leaders, and symbolic regime portraits must use `$imagegen`.
 
 Generated leader portraits should follow HOI4 leader portrait conventions: 156x210 final DDS unless an existing sprite uses another size, bust or upper-torso framing, strong face or governing-body focal point, subdued painterly finish, period-appropriate uniform or civilian clothing, transparent or HOI4-compatible portrait background as required by the existing asset pattern, and no text, labels, watermarks, modern UI, or meme-like exaggeration.
 
@@ -176,8 +176,6 @@ This skill includes reference images that show how different Chaos Redux asset t
 
 Before generating, sourcing, processing, or wiring an asset, inspect the relevant reference folder for that asset type. Use the examples to match style, framing, contrast, readability, scale, texture, and HOI4 presentation.
 
-Use Linux project paths, not Windows UNC paths:
-
 ```text
 ~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas
 ~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images
@@ -188,6 +186,7 @@ Use Linux project paths, not Windows UNC paths:
 ~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
 ~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
 ~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
+~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/special_projects
 ```
 
 Reference mapping:
@@ -205,7 +204,7 @@ Reference mapping:
 
 If a relevant reference folder exists, do not generate, source, crop, process, or wire new artwork until you have inspected it.
 
-Do not copy reference assets directly unless the user explicitly allows it. Use them as style and formatting guidance.
+Never copy reference assets directly. Use them as style and formatting guidance.
 
 If the needed asset type has no matching reference folder, inspect the closest relevant folder and existing Chaos Redux or vanilla assets before choosing a style.
 
@@ -213,24 +212,23 @@ If the needed asset type has no matching reference folder, inspect the closest r
 
 Do not create core artwork from simple shapes, placeholders, contact sheets, layout-only mockups, empty UI boxes, or generated charts. Final art must be real generated, sourced, or user-provided artwork, not circles, rectangles, lines, gradients, geometric diagrams, or other primitive-shape stand-ins.
 
-For super-event images, this rule is strict: final art must be a real scene, archival image, painted illustration, or generated documentary-style image. Do not use symbolic diagrams, mandala/circle constructions, flat icons, abstract geometry, title cards, or UI-like compositions as the final super-event image unless the user explicitly requests that exact visual approach and the exception is documented.
+For super-event images, this rule is strict: final art must be a real scene, archival image, painted illustration, or generated documentary-style image. Do not use symbolic diagrams, flat icons, abstract geometry, title cards, or UI-like compositions as the final super-event image unless the user explicitly requests that exact visual approach and the exception is documented.
 
 Use `$imagegen` for generated artwork and follow the `$imagegen` skill workflow for the source image.
 
-Generated artwork must be real source art that can be processed into the final game asset. Do not use contact sheets, review boards, or layout drafts as final source art.
+Generated artwork must be real source art that can be processed into the final game asset. Final assets must be clean: must not have sticking artifacts, an icon is centered in the image, etc. Do not use contact sheets, review boards, or layout drafts as final source art.
 
 ## 5.1 Icon creation rules
 
 Small gameplay icons must be readable at their final in-game size.
 
-- Use transparent backgrounds for asset types that are transparent in vanilla, especially officer corps spirit icons and small symbolic interface icons.
+- Use transparent backgrounds for asset types that are transparent in vanilla, especially idea and decision icons and small symbolic interface icons.
 - Keep unused pixels fully transparent. Do not leave a square opaque fill behind icons unless the asset type explicitly uses a painted frame or backdrop.
-- Give the icon silhouette a dark or black outline and a subtle drop shadow when the icon is displayed over variable UI backgrounds.
+- Give the icon silhouette a dark or black outline and a subtle drop shadow when the icon is displayed over variable UI backgrounds. Do not leave some chroma green outline on the icon.
 - Avoid tiny interior detail that disappears at 45x45 or 64x64. Favor one clear subject, strong value contrast, and a centered silhouette.
-- Officer corps spirit icons specifically must be 45x45, transparent, unframed, and visually similar to vanilla officer corps spirit icons rather than national spirit cards.
 - Avoid fake checkerboard pixels, white halos, white outlines, oversized medallion fills, and square opaque backdrops.
 
-For every generated icon, follow the `$imagegen` skill's transparent image workflow. This skill must not provide its own transparency cleanup method. Preserve the original generated image, create a processed PNG preview, convert to DDS, and validate the final appearance over a checker background before treating the icon as complete.
+For every generated icon, follow the `$imagegen` skill's transparent image workflow. Preserve the original generated image, create a processed PNG preview, convert to DDS, and validate the final appearance over a checker background before treating the icon as complete.
 
 The final icon should have transparent unused canvas, no fake checker or matte pixels, no transparent holes inside the painted subject, a slight black outline, a subtle drop shadow, and a centered subject that remains readable at final size.
 
@@ -265,6 +263,12 @@ For every asset package:
 22. Report all created files, proposed sprite names, final paths, blocked assets, and any handoff uncertainty.
 
 Do not mark assets complete until the DDS files exist, the manifest is written, and the main agent has enough handoff information to wire every sprite without guessing.
+
+## Asset depth from improvement addenda
+
+When an improvement addendum asks for richer presentation, the asset handoff should name the visual states instead of asking for generic polish. A good asset request says what the player sees before activation, while active, when locked, when dangerous, when complete, and when the route has failed.
+
+For scripted GUI, plan asset families. A panel usually needs a background, header, button states, value icons, warning indicators, progress frames, locked overlays, selected overlays, hover states, and any animated glow, particle, float, or pulse layers. The main agent owns `.gui` and `.gfx` wiring, but the asset package must provide clear sprite names, sizes, frame counts, static fallbacks, and contact sheets.
 
 ## 7. Asset package structure
 
@@ -328,8 +332,6 @@ Each asset entry should include:
 
 Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `handed_off`, `wired`, `complete`, `needs_user_review`, or `blocked` as asset statuses.
 
-For large focus trees that deliberately reuse branch-level icon sprites instead of unique art for every focus, create a separate reuse ledger under the asset package. The ledger must be based on the actual focus file, state the real focus count, map each branch sprite to its final DDS and reuse rationale, and either list every focus or provide branch counts that can be verified from the tree. Do not treat branch-level reuse as complete unless the `.gfx` sprites are wired and the manifest links to that ledger.
-
 ## 9. Standard HOI4 asset sizes
 
 Use these sizes unless the event spec or an existing repo pattern gives a better project-specific requirement.
@@ -370,7 +372,7 @@ Recommended filename prefixes:
 - achievement icons: `achievement_`
 - leader portraits: `leader_`
 
-For event-specific assets, include the event id or slug where useful.
+For event-specific assets, include the event id or slug where useful. For example, all idea assets related to an event should go into one folder of that event.
 
 ## 11. Image generation prompt rules
 
@@ -392,7 +394,7 @@ Do not rely on text inside generated images. Generated text is unreliable.
 
 Prefer strong symbols, clear silhouettes, and readable composition.
 
-For transparent icon prompts, explicitly request a transparent canvas, no fake checkerboard, no white rim, no white outline, no glow, no sticker border, no opaque square background, and a clean silhouette suitable for HOI4 UI.
+For transparent icon prompts, explicitly request a transparent canvas, no fake checkerboard, no white rim, no white/colored outline, no glow, no sticker border, no opaque square background, and a clean silhouette suitable for HOI4 UI.
 
 ## 12. Internet source image rules
 
@@ -608,8 +610,8 @@ Generate the completed achievement icon first with `$imagegen`.
 
 Then create:
 
-- grey variant
-- not-eligible variant
+- grey variant (simply black and white)
+- not-eligible variant (the same as the grey variant, but with the red cross in the center)
 
 The variants may be created after the completed icon exists.
 
@@ -637,13 +639,11 @@ Required flag sizes:
 
 HOI4 flag TGAs must use the same origin/header convention as vanilla flags. Validate with `file`; completed flag TGAs should read as Targa image data at the correct size and must not end with `- top`. If a flag displays upside down in-game while the artwork looks correct in an image viewer, fix the TGA encoding/origin on the flag files themselves. Do not add custom UI sprites, scripted-localisation routing, DDS display copies, or other workarounds for flag orientation.
 
-When converting a top-origin TGA to the vanilla-style bottom-origin convention, preserve the visible artwork: flip the stored rows, clear the TGA top-origin bit, and compare the decoded result against the original. For example, on a temporary output: `convert input.tga -flip output.tga`, clear byte 17 bit `0x20`, then verify `compare -metric AE input.tga output.tga null:` returns `0`. After replacement, rerun `file output.tga` and confirm the `- top` marker is gone.
-
 Avoid overly detailed symbols.
 
 Avoid generated text unless the design absolutely requires it and the final output is manually checked.
 
-Use `$imagegen` for fictional flags and user-provided or internet source images for historical or real-world flags when appropriate.
+Always use `$imagegen` for fictional flags and user-provided or internet source images for historical or real-world flags.
 
 For existing countries that already have game-provided or repository-approved base flags, do not replace the no-suffix base flag as part of an ideology pass. Keep the base flag unchanged, or restore it from the approved prior asset if an asset pass damaged it, unless the user explicitly asks for that base flag to be redone or the country receives a deliberate focus/event/cosmetic-tag transformation. Ideology variants should be separate assets for `_communism`, `_democratic`, `_fascism`, and `_neutrality`, not mutations of the base flag with one small shape, a palette swap, a color filter, a vertical flip, or a copied emblem.
 
@@ -691,6 +691,21 @@ Target size:
 
 Inspect the closest relevant reference folder and existing Chaos Redux portraits before generating or processing fictional leader portraits.
 
+## Animated leader portraits
+
+Leader portraits can be animated for special routes, high-chaos leaders, supernatural leaders, rare formables, major transformations, or dramatic council reveals. They should not be required for ordinary advisors or every normal country leader.
+
+Animated leader portrait packages must include:
+
+- static fallback portrait
+- animated sheet or frame source
+- final DDS files
+- final sprite names
+- character or leader key that will use the portrait
+- source mode and source documentation
+- whether the leader is real, fictional, symbolic, collective, supernatural, or alternate-history
+- note on motion type, such as glow, smoke, flicker, eye-light, flag shadow, slow breathing, office light, map projection, or particle drift
+
 ## 22. UI panels and custom windows
 
 For UI panels, dossier windows, ledgers, investigation boards, and similar assets, separate artwork from functional UI.
@@ -716,6 +731,32 @@ Do not let generated art decide exact interactive layout.
 
 The implementation must still follow HOI4 UI rules and existing repo patterns.
 
+## Decision category and scripted GUI visual packs
+
+For a decision category with a scripted GUI or mechanic window, the asset handoff should cover the full interface state set.
+
+Useful assets include:
+
+- category icon
+- category header plate
+- background panel
+- tab buttons
+- normal, hover, selected, locked, disabled, and warning button states
+- progress bars and fill variants
+- meter frames
+- target cards
+- status seals
+- warning overlays
+- animated glow overlays
+- animated particle overlays
+- animated float emblems
+- static fallback for every animated element
+- tooltip icon set
+- close and open buttons
+- mechanic-specific leader, council, or envoy portrait
+
+The asset prompt should state which sprites are decorative and which represent mechanic state. State-driven sprites need clear names that match the mechanic value or route state.
+
 ## 23. Progression-state variants
 
 Progression-state variants may include:
@@ -734,6 +775,35 @@ Progression-state variants may include:
 - bar-fill
 
 Progression-state variants should use the same target size as the base asset.
+
+## Formable nation asset coverage
+
+Every formable nation needs visible identity assets.
+
+Asset planning should cover:
+
+- formable flag in normal, medium, and small sizes
+- ideology variants where relevant
+- cosmetic-tag flags where relevant
+- leader portrait or council portrait
+- animated leader portrait when the formable is a rare dramatic route
+- focus icons for the formation route
+- decision icon for the formation decision
+- decision category or scripted GUI assets if formation progress is managed visually
+- news, report, or super-event image if the formation is globally important
+- faction emblem if the formable creates a league, empire, federation, bloc, mandate, compact, or coalition
+- achievement icon if the formable has achievement hooks
+
+Historical or culturally attested formable symbols need source review. Fictional, alternate-history, supernatural, and high-chaos variants may use generated art with clear manifest notes.
+
+
+## Animated sprites, scripted GUI assets, and animated portraits
+
+Use `chaos-redux-frame-animation` for every final animated visual asset. Some Chaos Redux mechanics should have animated visual layers when motion improves readability, atmosphere, or feedback. Examples include floating seals, glowing route emblems, particle drift, meter pulses, warning frames, active-button glows, occult pressure effects, sponsor influence networks, and final formable proclamations.
+
+Animated leader portraits should be handled as major identity assets. Real people require sourced base images. Fictional or impossible leaders can be generated. The asset handoff must say whether the animation is subtle, such as breathing light or smoke, or symbolic, such as eye glow, map shadow, glitch, or spectral overlay. The portrait should still read clearly at in-game size.
+
+Final animated assets must be built from planned source frames. Do not create final animation by taking one still image and shifting, scaling, rotating, warping, blurring, recoloring, brightening, or pulsing it with a script. Local scripts may normalize, align, crop, resize, assemble sheets, create previews, and convert frames after the real frames exist.
 
 ## 24. DDS conversion
 
@@ -834,84 +904,6 @@ Record:
 - whether implementation can continue without it
 
 Do not invent a substitute asset unless the user explicitly approves it.
-
-## Asset depth from improvement addenda
-
-When an improvement addendum asks for richer presentation, the asset handoff should name the visual states instead of asking for generic polish. A good asset request says what the player sees before activation, while active, when locked, when dangerous, when complete, and when the route has failed.
-
-For scripted GUI, plan asset families. A panel usually needs a background, header, button states, value icons, warning indicators, progress frames, locked overlays, selected overlays, hover states, and any animated glow, particle, float, or pulse layers. The main agent owns `.gui` and `.gfx` wiring, but the asset package must provide clear sprite names, sizes, frame counts, static fallbacks, and contact sheets.
-
-## Animated sprites, scripted GUI assets, and animated portraits
-
-Use `chaos-redux-frame-animation` for every final animated visual asset. Some Chaos Redux mechanics should have animated visual layers when motion improves readability, atmosphere, or feedback. Examples include floating seals, glowing route emblems, particle drift, meter pulses, warning frames, active-button glows, occult pressure effects, sponsor influence networks, and final formable proclamations.
-
-Animated leader portraits should be handled as major identity assets. Real people require sourced base images. Fictional or impossible leaders can be generated. The asset handoff must say whether the animation is subtle, such as breathing light or smoke, or symbolic, such as eye glow, map shadow, glitch, or spectral overlay. The portrait should still read clearly at in-game size.
-
-Final animated assets must be built from planned source frames. Do not create final animation by taking one still image and shifting, scaling, rotating, warping, blurring, recoloring, brightening, or pulsing it with a script. Local scripts may normalize, align, crop, resize, assemble sheets, create previews, and convert frames after the real frames exist.
-
-## Decision category and scripted GUI visual packs
-
-For a decision category with a scripted GUI or mechanic window, the asset handoff should cover the full interface state set.
-
-Useful assets include:
-
-- category icon
-- category header plate
-- background panel
-- tab buttons
-- normal, hover, selected, locked, disabled, and warning button states
-- progress bars and fill variants
-- meter frames
-- target cards
-- status seals
-- warning overlays
-- animated glow overlays
-- animated particle overlays
-- animated float emblems
-- static fallback for every animated element
-- tooltip icon set
-- close and open buttons
-- mechanic-specific leader, council, or envoy portrait
-
-The asset prompt should state which sprites are decorative and which represent mechanic state. State-driven sprites need clear names that match the mechanic value or route state.
-
-## Animated leader portraits
-
-Leader portraits can be animated for special routes, high-chaos leaders, supernatural leaders, rare formables, major transformations, or dramatic council reveals. They should not be required for ordinary advisors or every normal country leader.
-
-Animated leader portrait packages must include:
-
-- static fallback portrait
-- animated sheet or frame source
-- final DDS files
-- final sprite names
-- character or leader key that will use the portrait
-- source mode and source documentation
-- whether the leader is real, fictional, symbolic, collective, supernatural, or alternate-history
-- note on motion type, such as glow, smoke, flicker, eye-light, flag shadow, slow breathing, office light, map projection, or particle drift
-
-For real historical people, use sourced historical imagery. Animation should be subtle and should not create fake speech, modern deepfake behavior, or misleading modern footage. For fictional or symbolic leaders, generated animation assets are allowed when they match HOI4 style and the route tone.
-
-## Formable nation asset coverage
-
-Every formable nation needs visible identity assets unless it intentionally reuses an existing identity.
-
-Asset planning should cover:
-
-- formable flag in normal, medium, and small sizes
-- ideology variants where relevant
-- cosmetic-tag flags where relevant
-- leader portrait or council portrait
-- animated leader portrait when the formable is a rare dramatic route
-- focus icons for the formation route
-- decision icon for the formation decision
-- decision category or scripted GUI assets if formation progress is managed visually
-- news, report, or super-event image if the formation is globally important
-- faction emblem if the formable creates a league, empire, federation, bloc, mandate, compact, or coalition
-- achievement icon if the formable has achievement hooks
-
-Historical or culturally attested formable symbols need source review. Fictional, alternate-history, supernatural, and high-chaos variants may use generated art with clear manifest notes.
-
 
 ## 29. Final checklist
 

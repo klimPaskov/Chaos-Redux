@@ -425,18 +425,13 @@ Detailed implementation notes live in `docs/systems/event_clusters.md`.
 
 ## Triggerable Scenarios
 
-The settings UI can open a separate movable Triggerable Scenarios window. This window uses generated log-style entries rather than hardcoded scenario buttons, and the list can be sorted by ID or name in either direction.
+The settings UI can open a separate movable Triggerable Scenarios window. This window uses generated log-style entries, and the list can be sorted by ID or name in either direction.
 
 Each scenario has a type control and a four-stop intensity slider. The selected values are stored before launch and are read by the scenario effects when the player presses **Launch Scenario**.
 
-Current entries:
+All current entries can be found in the event catalog spreadsheet.
 
-- **Zombie Apocalypse**: type controls outbreak structure, while intensity controls outbreak count, starting states, spawned divisions, and early pressure.
-- **Army of Clones**: type switches between the standard clone army and the stronger Aryan variant, while intensity controls starting territory, divisions, equipment, army strength, and pressure on neighboring countries.
-- **Soviet Collapse**: type switches between ordinary republics and chaos republics, while intensity adds scaled starting armies, manpower, and equipment for the breakaways.
-- **Final Silence**: type switches between nuclear and thermonuclear payloads. Intensity is fixed so the scenario keeps the canonical four-wave Final Silence sequence.
-
-Detailed implementation notes live in `docs/systems/triggerable_scenarios.md`.
+TODO: add more detailed info on scenarios
 
 ---
 
