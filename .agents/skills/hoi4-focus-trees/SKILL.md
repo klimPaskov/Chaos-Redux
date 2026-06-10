@@ -297,7 +297,7 @@ Factions should not form too easily. Define minimum membership, crisis condition
 
 ## 5.10 Mechanic presentation, validity, and shared-tree rules
 
-Special mechanics must be visible somewhere the player can understand them. A mechanic can appear in a decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, event detail window, focus tooltip, national spirit tooltip, event log entry, or a combination of these.
+Special mechanics must be visible somewhere the player can understand them. A mechanic can appear in a decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, focus tooltip, national spirit tooltip, or a combination of these.
 
 When a mechanic is important enough for a custom scripted GUI, consider visual presentation beyond static text. Useful presentation can include progress bars, meter fill variants, state icons, status frames, warning frames, selected and locked variants, animated frames, or frame-by-frame visual changes that make the mechanic feel alive. The visuals should clarify the mechanic, not clutter it.
 
@@ -814,7 +814,7 @@ A focus tree task is complete only when:
 - special mechanic values are changed by relevant focus paths
 - balance-of-power or equivalent internal struggle mechanics are used when appropriate
 - event-created factions have goals, membership rules, shared mechanics, AI behavior, rewards, and success or failure states
-- special mechanics have visible presentation through decision headers, scripted GUI, progress meters, tooltips, event details, event logs, or spirits
+- special mechanics have visible presentation through decision headers, scripted GUI, progress meters, tooltips, or spirits
 - important custom GUI mechanics consider progress variants, status frames, warning frames, selected or locked variants, and frame animations where useful
 - AI routes respect validity and avoid impossible branches
 - shared trees are adapted per country and do not read or play identically

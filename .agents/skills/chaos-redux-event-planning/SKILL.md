@@ -444,7 +444,7 @@ For every special mechanic, the completion report should list mechanic values, w
 
 ### Mechanic presentation, faction outcomes, validity, and tuning
 
-Every special mechanic should define where the player sees it: decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, event detail window, focus tooltip, national spirit tooltip, event log, or another clear presentation surface. Important mechanic values should not exist only as hidden variables.
+Every special mechanic should define where the player sees it: decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, focus tooltip, national spirit tooltip, or another clear presentation surface. Important mechanic values should not exist only as hidden variables.
 
 When a special mechanic uses a scripted GUI, consider visual presentation beyond static text. Useful designs can include progress bars, meter fill variants, state icons, status frames, warning frames, selected or locked variants, animated frames, or frame-by-frame visual changes that make the mechanic feel alive. The visual layer should make the mechanic easier to understand.
 
@@ -598,19 +598,17 @@ When an event has evolutions, the spec must say how each evolution enters play. 
 
 Use two separate entry-path concepts when the event supports both.
 
-**Active-event evolution** means the event has already fired and an evolution unlocks while one or more actors from that event still exist or the event system is still active. The spec must define what changes immediately for the active actors: focus paths, decision families, national spirits, unit growth, targeting rules, AI strategy, faction behavior, event log entries, super-event eligibility, and cleanup. The event should not need to fire again for the active actor to receive the evolution content.
+**Active-event evolution** means the event has already fired and an evolution unlocks while one or more actors from that event still exist or the event system is still active. The spec must define what changes immediately for the active actors: focus paths, decision families, national spirits, unit growth, targeting rules, AI strategy, faction behavior, super-event eligibility, and cleanup. The event should not need to fire again for the active actor to receive the evolution content.
 
-**Pre-fire evolved opening** means the event has not fired yet, but the world state, chaos tier, previous evolution memory, or other allowed event trigger lets the first firing start in a more evolved form. The spec must define the changed opening package: number of actors, target selection, starting ideas, initial units, first decisions, opening events, AI plan, and what is recorded in the event log.
+**Pre-fire evolved opening** means the event has not fired yet, but the world state, chaos tier, previous evolution memory, or other allowed event trigger lets the first firing start in a more evolved form. The spec must define the changed opening package: number of actors, target selection, starting ideas, initial units, first decisions, opening events, AI plan.
 
-If both entry paths exist, write both explicitly. If only one entry path exists, say so and explain why. For example, an event may have an active evolution that unlocks a focus path for an already spawned country, while a later first firing may start with multiple spawned countries because the campaign is already unstable enough for an evolved opening.
+If both entry paths exist, write both explicitly under one evolution. For example, an event may have an active evolution that unlocks a focus path for an already spawned country, while a later first firing may start with multiple spawned countries.
 
-Triggerable scenarios are separate from normal random-event firing, evolutions, and Chaos Meter progression. A triggerable scenario must be fireable directly from its setup control. Do not give it prerequisites such as required chaos tier, required chaos value, prior event firing, evolution unlock, date gate, global flag, or campaign state unless the user explicitly asks for a scenario to be locked. Triggerable scenarios exist to create instant chaos from setup controls, intensity sliders, or scenario options.
+Each chaos tier can have only one evolution stage. The maximum amount of evolutions is 5.
 
 Good evolutions can include:
 
 - the same kind of crisis becoming easier to recognize and harder to stop
-- breakaways learning from earlier breakaways
-- depots, officers, or railways changing behavior before declarations happen
 - foreign liaison networks appearing
 - old historical movements returning in changed form
 - new custom tags appearing that did not exist in vanilla
@@ -625,7 +623,7 @@ Each evolution should define:
 - what makes it more likely
 - what new player-facing content appears
 - what new incidents or variants it unlocks
-- what event log title should represent it
+- what evolution log title should represent it
 - how it interacts with chaos tier without being only a chaos-tier lock
 - how it can be contained, spread, or escalate
 
@@ -766,7 +764,7 @@ A formable design should define:
 - visible country identity after formation, including name, adjective, flag, leader, portrait, parties, ruling ideology, advisors, and focus tree access
 - post-formation ambitions, claims, diplomatic reactions, rivals, league or faction behavior, and failure states
 - AI willingness to pursue the formable and AI safety checks that prevent impossible or suicidal formation attempts
-- event log, event details, super-event, achievement, and asset implications
+- super-event, achievement, and asset implications
 
 Do not write vague lines such as `can form a greater country`. Define the concrete formation web. If the player must control this state, this state, and this state, name those states or name the scripted state group and explain what it contains. If the exact state ids are left to implementation, describe the intended geographic set clearly enough that the implementation agent can build a scripted trigger without guessing.
 
@@ -1005,7 +1003,7 @@ When planning a super-event, define:
 - what quote direction would fit
 - what cultural remark direction would fit
 - what audio mood would fit
-- whether it needs follow-up events, decisions, focus routes, or event log entries
+- whether it needs follow-up events, decisions, or focus routes
 
 Keep the super-event tone specific to the event. Do not make every super-event feel like the same apocalypse with a different image.
 
