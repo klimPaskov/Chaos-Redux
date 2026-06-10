@@ -83,7 +83,7 @@ Baseline progression can use whatever state, flags, variables, decisions, or eve
 For actual evolutions, the usual pattern is:
 
 1. the evolution condition becomes available from the current campaign state
-2. the evolved incident, track, or milestone fires through dynamic pacing
+2. the evolved incident, track, or milestone fires through dynamic pacing (an evolution never happens instantly, it uses MTTH. It can take a good amount of time before an evolution happens, the base should be like 90 days, but it could be more or less, depending on the evolution. Some happen instantly, for events that haven't fired yet for example, which just makes the initial firing more intense)
 3. set the shared evolution context variables
 4. record the evolution log entry through the shared pipeline
 5. unlock or adjust the new behavior, tag, decision set, focus branch, or rare variant
@@ -140,7 +140,6 @@ The normal contract is:
 5. update the matching super-event text, image, and audio wiring
 6. stop or gate incompatible future systems and branches
 7. document the end-state in the event doc, and spreadsheet
-
 
 ## Triggerable scenarios
 
@@ -427,7 +426,7 @@ If the event can produce a terminal scenario:
 - keep the world-end flagging explicit and centralized
 - make sure the terminal branch is distinguishable from ordinary major-event escalation
 - gate later random events, branches, or systems that should no longer operate after the terminal state
-- make the event log, docs, and spreadsheet, all agree on what the terminal branch actually is
+- make the docs and spreadsheet, all agree on what the terminal branch actually is
 
 If the branch is dramatic but not actually terminal, treat it as a major escalation evolution or super-event instead of world-end.
 
@@ -552,8 +551,6 @@ Event implementation must keep formables aligned across:
 - cosmetic tags and country names
 - flags and portraits
 - AI strategy
-- event log entries
-- event details
 - achievements
 - super-events where the formation changes world order
 - cleanup after tag switch, annexation, puppet transfer, civil war, or route failure
@@ -575,7 +572,6 @@ When an event uses a custom interface, align these surfaces:
 - animated and static sprites
 - localisation and scripted localisation
 - AI fallback behavior
-- event log and event details
 - cleanup and invalidation rules
 - documentation and asset manifest
 
@@ -623,14 +619,13 @@ Before closing an event task, verify:
 4. Shared effects, triggers, and constants are updated if needed.
 5. Event-name and debug-name mappings are updated.
 6. Event log actor mapping is updated if needed.
-7. Event details window content is updated if the event appears there.
-8. Evolution logging and preview wiring are updated if relevant.
-9. Triggerable scenario registry, launch gates, type controls, intensity controls, localisation, documentation, and bypass cleanup are updated if relevant.
-10. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
-11. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
-12. `docs/events/` is updated.
-13. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
-14. If assets are required, `chaos-redux-event-assets` has been used.
-15. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
+7. Evolution logging and preview wiring are updated if relevant.
+8. Triggerable scenario registry, launch gates, type controls, intensity controls, localisation, documentation, and bypass cleanup are updated if relevant.
+9. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
+10. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
+11. `docs/events/` is updated.
+12. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
+13. If assets are required, `chaos-redux-event-assets` has been used.
+14. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
 
 
