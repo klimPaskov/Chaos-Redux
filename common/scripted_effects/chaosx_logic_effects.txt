@@ -1355,6 +1355,10 @@ record_events_log_evolution_entry = {
         limit = { NOT = { has_variable = events_log_evolution_tier } }
         set_temp_variable = { events_log_evolution_tier = 0 }
     }
+    if = {
+        limit = { NOT = { has_variable = events_log_evolution_has_actor } }
+        set_temp_variable = { events_log_evolution_has_actor = 0 }
+    }
 
     set_temp_variable = { events_log_evolution_event_type_value = constant:event_system_event_type.unknown }
     if = {
@@ -1410,7 +1414,14 @@ record_events_log_evolution_entry = {
     }
 
     if = {
-        limit = { has_event_target = events_log_evolution_actor }
+        limit = {
+            has_event_target = events_log_evolution_actor
+            check_variable = {
+                var = events_log_evolution_has_actor
+                value = 0
+                compare = greater_than
+            }
+        }
         event_target:events_log_evolution_actor = {
             add_to_array = {
                 array = global.events_log_evolution_actor_entries
@@ -1436,6 +1447,8 @@ record_events_log_evolution_entry = {
             index = 0
         }
     }
+
+    set_temp_variable = { events_log_evolution_has_actor = 0 }
 
     every_country = {
         limit = {

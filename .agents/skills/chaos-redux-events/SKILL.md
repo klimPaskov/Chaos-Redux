@@ -103,6 +103,7 @@ Then:
 - gate the milestone with `is_current_evolution_enabled = yes`
 - call `record_events_log_evolution_entry = yes`
 - If a helper sets a `*_recorded` flag or unlocks follow-up content, set the shared evolution context before its `limit` and include `is_current_evolution_enabled = yes` in that same limit. Disabled evolutions must not set recorded flags that later stages, decisions, reports, or focus branches read.
+- When a logged evolution has an actor, save the country as `events_log_evolution_actor` and set `events_log_evolution_has_actor = 1` immediately before `record_events_log_evolution_entry = yes`. Regular event targets cannot be manually cleared and can leak through an effect chain, so no-actor records must rely on the shared logger's default `events_log_evolution_has_actor = 0` behavior instead of raw `has_event_target`.
 
 Implementation design rules:
 
