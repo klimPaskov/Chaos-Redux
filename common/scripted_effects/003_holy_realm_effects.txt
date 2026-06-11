@@ -375,6 +375,30 @@ holy_realm_refresh_sangha_of_nations_status = {
 	}
 }
 
+holy_realm_start_lotus_bridge_watch = {
+	if = {
+		limit = {
+			has_event_target = holy_realm_lotus_bridge_target
+			event_target:holy_realm_lotus_bridge_target = { exists = yes }
+		}
+		event_target:holy_realm_lotus_bridge_target = {
+			clr_country_flag = holy_realm_lotus_bridge_protected_target
+		}
+	}
+	clr_country_flag = holy_realm_lotus_bridge_watch_started
+	clr_country_flag = holy_realm_lotus_bridge_watch_valid
+	clr_country_flag = holy_realm_lotus_bridge_capital_fell
+	set_country_flag = holy_realm_lotus_bridge_watch_started
+	set_country_flag = holy_realm_lotus_bridge_watch_valid
+	save_global_event_target_as = holy_realm_lotus_bridge_actor
+	FROM = {
+		save_global_event_target_as = holy_realm_lotus_bridge_target
+		set_country_flag = holy_realm_lotus_bridge_protected_target
+		add_stability = constant:holy_realm_buddhahood.lotus_bridge_target_stability_gain
+		add_war_support = constant:holy_realm_buddhahood.lotus_bridge_target_war_support_gain
+	}
+}
+
 holy_realm_complete_concentration_sequence = {
 	holy_realm_ensure_buddhahood_counters = yes
 	clr_country_flag = holy_realm_concentration_intention
