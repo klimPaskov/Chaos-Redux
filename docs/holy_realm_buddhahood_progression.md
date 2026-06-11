@@ -125,7 +125,7 @@ Super-event presentation uses these wired slots:
 - `The Final Silence` terminal: slot 9, `GFX_super_event_final_silence_thermonuclear`, `music/super_event_final_silence_thermonuclear.ogg`, `sound/chaosx_super_event_final_silence_thermonuclear.wav`.
 - `Powers of the Awakened`: slot 61, `GFX_super_event_powers_of_the_awakened`, `music/super_event_powers_of_the_awakened.ogg`, `sound/chaosx_super_event_powers_of_the_awakened.wav`.
 
-The `Powers of the Awakened` super-event currently uses `gfx/super_events/super_event_powers_of_the_awakened.dds`, copied from the existing Buddha Mandate image as a safe placeholder. Replace it with bespoke art when the final super-event image package is produced.
+The `Powers of the Awakened` super-event uses bespoke generated monochrome battlefield art at `gfx/super_events/super_event_powers_of_the_awakened.dds`. Source, prompt, processed PNG, and handoff notes live under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
 
 The audio source and rights record is in `docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md`. The `Powers of the Awakened` recording is CC BY 3.0 and requires attribution; the terminal Final Silence recording remains the only medium-confidence public-domain-chain item in the current package.
 
@@ -142,7 +142,6 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 
 ## Future Plans
 
-- Replace `gfx/super_events/super_event_powers_of_the_awakened.dds` with bespoke `Powers of the Awakened` super-event art.
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add stage-specific mandala and portrait animation assets for Dhyana and Buddhahood.
 - Expand `holy_realm_false_buddha_schism_pressure` beyond the current debate/suppression decision pair if the route needs a full rival cult country or portrait-stage evolution.
