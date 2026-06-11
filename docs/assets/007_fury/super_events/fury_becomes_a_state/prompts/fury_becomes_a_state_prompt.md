@@ -4,7 +4,7 @@ Mode: built-in `image_gen`
 
 Generated source:
 
-- `/home/klim/.codex/generated_images/019eb255-44bd-7bc0-afe9-bf0926396ed1/ig_08b0c8a532faac0d016a29af3918448191a1f1d04d58b7c13d.png`
+- `/home/klim/.codex/generated_images/019eb255-44bd-7bc0-afe9-bf0926396ed1/ig_071d063d6e57d225016a2abf9b1c348191b9f702c8a03717d4.png`
 
 Workspace files:
 
@@ -12,18 +12,22 @@ Workspace files:
 - `docs/assets/007_fury/super_events/fury_becomes_a_state/processed_png/fury_becomes_a_state.png`
 - `gfx/super_events/fury_becomes_a_state.dds`
 
+Direction:
+
+This image must show Fury as a rogue country overtaken by violent, mysterious rage. Do not return to map rooms, desks, ledgers, route strings, or war-office planning imagery for this asset.
+
 Prompt:
 
 ```text
 Use case: historical-scene
-Asset type: Hearts of Iron IV mod super-event image, final source art for 457x328 crop
-Primary request: Create a dramatic super-event illustration for a fictional event called Fury Becomes a State.
-Scene/backdrop: a small 1930s capital war room at night, with clerks, officers, maps, rifles, filing cabinets, depot ledgers, and a city outside under mobilization lights.
-Subject: a minor state's war office transforming into a state-scale war machine; files and map pins dominate the foreground, columns preparing beyond the windows, no single leader portrait.
-Style/medium: painterly historical crisis illustration suitable for a strategy game event panel, grounded and serious, not fantasy.
-Composition/framing: wide landscape composition for a 457x328 crop, strong central desk and wall map, readable at small size.
-Lighting/mood: amber lamps, harsh shadows, cold smoky window light, tense institutional urgency.
-Color palette: charcoal, muted olive, brass, paper white, restrained red map pins.
+Asset type: Hearts of Iron IV mod super-event image source, final source art for 457x328 crop
+Primary request: Create a dramatic super-event illustration for a fictional event called Fury Becomes a State, where a minor country goes rogue and attacks neighbors under mysterious rage.
+Scene/backdrop: a 1930s border capital street during mobilization, firelight, smoke, crowds fleeing, soldiers pushing through barricades toward the frontier, no command room.
+Subject: the Fury country as a living outbreak of political rage: an enraged officer and infantry column at the center, faces lit by unnatural red-orange fire, civilians recoiling, government building burning behind them.
+Style/medium: painterly historical crisis illustration suitable for a HOI4 super-event, period-authentic 1936-1945 clothing and weapons, grounded but ominous, supernatural rage implied through lighting and expressions rather than monsters.
+Composition/framing: wide landscape composition for 457x328, strong central officer and marching column, readable at small size, no map table.
+Lighting/mood: violent amber firelight, smoke, harsh shadows, panic, unstoppable momentum.
+Color palette: charcoal, dirty olive, ember orange, deep red, ash gray.
 Text: none.
-Constraints: no readable text, no letters, no numbers, no logos, no watermarks, no UI frame, no real national symbols, no gore.
+Constraints: no maps, no war rooms, no desks, no ledgers, no readable text, no letters, no numbers, no logos, no watermarks, no UI frame, no real national symbols, no gore, no modern weapons or clothing.
 ```

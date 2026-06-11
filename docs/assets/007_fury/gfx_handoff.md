@@ -2,6 +2,8 @@
 
 `interface/007_fury.gfx` registers the final Fury idea, decision, decision-category, and key focus branch sprites. The super-event sprites are registered in `interface/chaosx_super_events.gfx` so slots `59` and `60` use the final filenames.
 
+Report, news, and super-event images should present Fury as a rogue-country rage outbreak. Avoid map rooms, command desks, ledgers, route strings, globes, and war-office planning imagery for future replacements.
+
 UI icon sources, processed PNGs, and the contact sheet are recorded in `docs/assets/007_fury/ui_icons/manifest.md`.
 
 The final major-Fury super-event image is wired at `gfx/super_events/fury_becomes_a_state.dds`. Its generated source and processed PNG live under `docs/assets/007_fury/super_events/fury_becomes_a_state/`. Slot `59` already returns `GFX_super_event_fury_becomes_a_state`.

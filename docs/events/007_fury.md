@@ -174,7 +174,7 @@ Current wiring uses stable Fury-specific assets:
 - world-end super-event audio: ID `60`, `music/super_event_world_in_fury.ogg`, `sound/chaosx_super_event_world_in_fury.wav`
 - achievement icons: final filenames registered in `interface/chaosx_achievements.gfx`
 
-Final Fury art and audio use stable gameplay IDs.
+Final Fury art and audio use stable gameplay IDs. Report, news, and super-event images use street-level Fury outbreak imagery: rogue soldiers, civilians fleeing, smoke, burning streets, and sudden neighbor-war panic. They should not be replaced with map rooms, command desks, ledgers, route strings, globes, or war-office planning scenes.
 
 Recommended final asset paths:
 
