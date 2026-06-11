@@ -258,7 +258,7 @@ holy_realm_advance_dhyana_depth = {
 				compare = greater_than_or_equals
 			}
 			capital_scope = { is_controlled_by = ROOT }
-			any_enemy_country = { is_holy_realm_chaos_enemy = yes }
+			any_enemy_country = { is_special_chaos_country = yes }
 		}
 		set_country_flag = holy_realm_four_dhyanas_under_fire_ready
 	}
@@ -291,7 +291,7 @@ holy_realm_record_teaching_success = {
 		}
 		add_to_variable = { holy_realm_one_becomes_many_missions = 1 }
 		if = {
-			limit = { any_enemy_country = { is_holy_realm_chaos_enemy = yes } }
+			limit = { any_enemy_country = { is_special_chaos_country = yes } }
 			set_country_flag = holy_realm_one_becomes_many_chaos_war_mission
 		}
 		if = {
@@ -348,7 +348,7 @@ holy_realm_refresh_sangha_of_nations_status = {
 			limit = { NOT = { is_holy_realm_country = yes } }
 			if = {
 				limit = {
-					NOT = { is_holy_realm_chaos_enemy = yes }
+					NOT = { is_special_chaos_country = yes }
 					NOT = { is_subject_of = PREV }
 				}
 				PREV = { add_to_variable = { holy_realm_sangha_valid_members = 1 } }
@@ -467,7 +467,7 @@ holy_realm_spend_buddha_power_charge = {
 holy_realm_mark_sun_moon_crisis_proof = {
 	set_temp_variable = { holy_realm_sun_moon_chaos_source_count = 0 }
 	every_country = {
-		limit = { is_holy_realm_chaos_enemy = yes }
+		limit = { is_special_chaos_country = yes }
 		ROOT = { add_to_temp_variable = { holy_realm_sun_moon_chaos_source_count = 1 } }
 	}
 	if = {
@@ -1123,7 +1123,7 @@ holy_realm_try_record_pattern_of_suffering_evolution = {
 			OR = {
 				holy_realm_chaos_at_least_chaos_tier = yes
 				has_global_flag = world_end
-				any_country = { is_holy_realm_chaos_enemy = yes }
+				any_country = { is_special_chaos_country = yes }
 			}
 		}
 		holy_realm_record_pattern_of_suffering_evolution = yes
@@ -1686,6 +1686,18 @@ holy_realm_form_country = {
 	set_global_flag = holy_realm_hook_atlantis_betrayal_target_reserved
 	holy_realm_ensure_counters = yes
 	save_global_event_target_as = holy_realm_country
+	if = {
+		limit = { tag = TIB }
+		set_country_flag = holy_realm_origin_tibet
+	}
+	else_if = {
+		limit = { tag = BHU }
+		set_country_flag = holy_realm_origin_bhutan
+	}
+	else_if = {
+		limit = { tag = NEP }
+		set_country_flag = holy_realm_origin_nepal
+	}
 	set_cosmetic_tag = THR
 	load_focus_tree = {
 		tree = THR_focus
@@ -1884,7 +1896,7 @@ holy_realm_on_country_capitulation = {
 	if = {
 		limit = {
 			FROM = { is_holy_realm_country = yes }
-			is_holy_realm_chaos_enemy = yes
+			is_special_chaos_country = yes
 		}
 		FROM = {
 			set_country_flag = holy_realm_helped_defeat_chaos_country

@@ -270,7 +270,7 @@ Frequently-needed companion files:
 - `common/ai_templates/*.txt`
 - and possibly more. Some events truly can touch all systems.
 
-If the event creates or manages non-standard countries (like special chaos countries and non-human countries), then account for that as well. Events interact with each other, so events that usually affect normal countries (like black plague or mass panic), shouldn't for example affect zombie or alien countries.
+If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.
 
 When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
 
@@ -638,4 +638,3 @@ Before closing an event task, verify:
 12. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
 13. If assets are required, `chaos-redux-event-assets` has been used.
 14. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
-
