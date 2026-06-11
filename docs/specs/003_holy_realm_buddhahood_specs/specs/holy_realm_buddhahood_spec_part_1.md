@@ -159,7 +159,7 @@ The event must connect with the shared world-threat framework. The Holy Realm sh
 
 The event should respect global random-event registration, event log naming, debug naming, event details, evolution details, super-event slots, and event catalog alignment.
 
-The strongest anti-chaos effects must only apply against countries that are tagged or classified as chaos threats. The implementation should define a reusable trigger such as `is_holy_realm_chaos_enemy = yes` if an equivalent does not already exist. This trigger should include zombies, aliens, Great Revolution style chaos countries, and future chaos-country sources. It should exclude ordinary countries unless they have a specific chaos-source flag.
+The strongest anti-chaos effects must only apply against countries that are tagged or classified as chaos threats. Use the shared `is_special_chaos_country = yes` trigger for this classification. If future event work creates another chaos country, it should extend that shared trigger instead of creating a Holy Realm-specific wrapper. Ordinary countries remain excluded unless the shared trigger classifies them as a chaos country.
 
 ## High-level event map
 
