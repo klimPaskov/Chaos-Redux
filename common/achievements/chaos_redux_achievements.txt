@@ -6,6 +6,7 @@
 # - The mod achievement UI resolves icon art from gfx/achievements/<achievement_id>*.dds.
 
 @HOLY_REALM_SANGHA_OF_NATIONS_DAYS = 180
+@HOLY_REALM_LOTUS_BRIDGE_DAYS = 180
 
 unique_id = chaos_redux_achievements
 
@@ -1813,7 +1814,19 @@ holy_realm_lotus_bridge = {
 		custom_override_tooltip = {
 			tooltip = holy_realm_lotus_bridge_tooltip
 			is_holy_realm_country = yes
-			has_country_flag = holy_realm_lotus_bridge_achievement_ready
+			has_country_flag = holy_realm_power_lotus_bridge_used
+			has_country_flag = holy_realm_lotus_bridge_watch_valid
+			has_country_flag = {
+				flag = holy_realm_lotus_bridge_watch_started
+				days > @HOLY_REALM_LOTUS_BRIDGE_DAYS
+			}
+			has_event_target = holy_realm_lotus_bridge_target
+			event_target:holy_realm_lotus_bridge_target = {
+				exists = yes
+				has_country_flag = holy_realm_lotus_bridge_protected_target
+				capital_scope = { is_controlled_by = PREV }
+			}
+			NOT = { has_country_flag = holy_realm_lotus_bridge_capital_fell }
 		}
 	}
 }
