@@ -321,7 +321,7 @@ Focus directions:
 
 Mechanics:
 
-- allows Fury-on-Fury targeting after ordinary AI neighbors are exhausted.
+- allows Fury-on-Fury targeting after ordinary valid neighbors are exhausted.
 - grants momentum from defeating another Fury.
 - increases overextension and instability.
 - disables pact cooperation.
@@ -366,7 +366,7 @@ Focus directions:
 
 Mechanical effects:
 
-- enables simultaneous declarations on all valid AI neighbors.
+- enables simultaneous declarations on all valid neighbors.
 - increases weekly unit quality.
 - adds temporary multi-front supply support.
 - raises overextension sharply.

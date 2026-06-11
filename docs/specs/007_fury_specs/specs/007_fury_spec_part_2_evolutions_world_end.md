@@ -177,7 +177,7 @@ Working log name: `All Borders at Once`.
 
 ### Role
 
-The third evolution turns Fury from sequential local conquest into broad border rupture. Three Fury actors can appear. Each Fury country is stronger and can declare on all valid AI neighbors at once.
+The third evolution turns Fury from sequential local conquest into broad border rupture. Three Fury actors can appear. Each Fury country is stronger and can declare on all valid neighbors at once.
 
 ### Possible conditions
 
@@ -206,7 +206,7 @@ If Fury actors already exist, Evolution III should:
 - improve weekly units and starting stockpiles.
 - unlock all-neighbor declaration logic.
 - unlock high-chaos focus branches.
-- allow Fury actors to attack all valid AI neighbors at once.
+- allow Fury actors to attack all valid neighbors at once.
 - strengthen occupation and coring tools to keep the loop moving.
 - increase overextension sharply to keep the system from becoming a free win.
 - raise anti-Fury response availability.
@@ -225,13 +225,10 @@ Opening rules:
 
 ### All-neighbor declaration rules
 
-Evolution III Fury declares on every valid AI neighbor at once.
+Evolution III Fury declares on every valid neighbor at once.
 
 Valid targets still exclude:
 
-- players.
-- player subjects.
-- player faction members.
 - countries already in direct player wars if transfer logic would interfere.
 - targets that would create an immediate world war unless the terminal branch is active.
 
@@ -268,7 +265,7 @@ The terminal branch should require:
 - no existing world-end state.
 - world-end chaos threshold.
 - at least one active Fury actor.
-- a main Fury actor that is major, continent-dominant, or has no valid continental AI neighbors.
+- a main Fury actor that is major, continent-dominant, or has no valid continental neighbors.
 - the relevant world-end focus or no-neighbor branch completed.
 - enough eligible AI minors in other continents to spread the pattern, or a visible blocked outcome if too few exist.
 
@@ -298,7 +295,7 @@ Priority order:
 1. continents with many small AI minors.
 2. continents without an active Fury actor.
 3. continents with high war density.
-4. continents where a Fury actor can reach valid AI targets.
+4. continents where a Fury actor can reach valid targets.
 5. continents near the main Fury faction's strategic path.
 
 After each continent has at least one Fury actor or no safe candidate, the branch can create additional Fury actors if the terminal state demands more pressure.
@@ -326,17 +323,17 @@ Current implementation note: the terminal starter leaves any prior faction, crea
 
 ### Terminal targeting rules
 
-The world-end branch may eventually threaten player countries, but this should be a terminal state with clear warning. It must not happen through the ordinary first-neighbor loop.
+The world-end branch may eventually threaten player countries beyond the ordinary neighbor loop, but this should be a terminal state with clear warning. The ordinary neighbor loop can still target player-controlled countries when they meet normal target gates.
 
 Terminal target rules:
 
-- AI targets are prioritized first.
-- player-linked shield can be relaxed only after the world-end super-event and a delay.
+- ordinary valid targets can be AI or player-controlled countries.
+- terminal out-of-neighbor threats still use warning and delay before direct player pressure.
 - the player should receive warning events and response tools.
 - Fury does not give the player the Fury package even if the player is in the faction through unusual modded conditions.
 - subject and faction logic must avoid stealing player-controlled peace outcomes.
 
-Current implementation note: `chaosx.nr7.50` warns all player countries and `fury_player_warning_grace_active` marks the grace period. Ordinary target selection still excludes player-linked countries through `fury_is_valid_target`. After the grace flag expires, world-end actors that have no valid AI neighbor can use `fury_terminal_can_threaten_player_linked_country` through `fury_try_terminal_player_target`, which sends `chaosx.nr7.52` before the direct terminal war declaration.
+Current implementation note: `chaosx.nr7.50` warns all player countries and `fury_player_warning_grace_active` marks the grace period. Ordinary target selection can hit player-controlled countries that meet the normal target gates. After the grace flag expires, world-end actors that have no valid neighbor can use `fury_terminal_can_threaten_player_linked_country` through `fury_try_terminal_player_target`, which sends `chaosx.nr7.52` before the direct terminal war declaration.
 
 ### World-end failure and defeat
 

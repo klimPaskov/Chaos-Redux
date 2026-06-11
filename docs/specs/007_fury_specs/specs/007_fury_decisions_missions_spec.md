@@ -56,7 +56,7 @@ Role: sets the next target if no active Fury war exists.
 Availability:
 
 - Fury actor has no active target.
-- at least one valid AI neighbor exists.
+- at least one valid neighbor exists.
 - overextension is below a hard danger threshold or Evolution III is active.
 - not in no-neighbor state.
 
@@ -372,7 +372,7 @@ Role: designates another Fury country as a future target.
 
 Availability:
 
-- no smaller valid AI neighbors remain or hostile scenario type allows early rivalry.
+- no smaller valid neighbors remain or hostile scenario type allows early rivalry.
 - both countries are Fury actors.
 
 Costs:

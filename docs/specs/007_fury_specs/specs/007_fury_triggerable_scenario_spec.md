@@ -30,7 +30,7 @@ Opening effects:
 - Fury actors join a shared Fury faction after setup or after first declaration.
 - Fury Pact Cohesion starts above neutral.
 - cooperation focus branch is unlocked.
-- Fury actors avoid attacking each other while valid non-Fury AI targets exist.
+- Fury actors avoid attacking each other while valid non-Fury targets exist.
 - shared war table decisions are available.
 - world-end branch is easier to reach if a main Fury actor becomes dominant.
 
@@ -42,7 +42,7 @@ AI behavior:
 
 ### Hostile Fury
 
-Every Fury actor treats every non-player neighbor as prey. Fury actors can eventually target one another.
+Every Fury actor treats every valid neighbor as prey. Fury actors can eventually target one another.
 
 Opening effects:
 
@@ -54,7 +54,7 @@ Opening effects:
 
 AI behavior:
 
-- Fury countries prefer ordinary weak AI targets first.
+- Fury countries prefer ordinary weak targets first.
 - if two Fury countries meet, rivalry pressure rises.
 - the winner of a Fury-on-Fury war can inherit momentum.
 
@@ -64,7 +64,7 @@ The scenario uses the standard four-stop intensity slider.
 
 | Intensity | Fury actors | Opening strength | Evolutions | Targeting behavior | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Low | 1 | baseline starting package | none forced | one weaker AI neighbor at a time | closest to ordinary Fury event |
+| Low | 1 | baseline starting package | none forced | one weaker eligible neighbor at a time | closest to ordinary Fury event |
 | Medium | 3 if eligible | stronger baseline package | Evolution I behavior enabled | one target at a time, cooperation or rivalry type active | spreads pressure across several regions |
 | High | 6 if eligible | Evolution II style package | Evolution II enabled | two or more Fury actors can coordinate or compete | strong scenario challenge |
 | Maximum | at least 10 if eligible | Evolution III style package | Evolution III enabled | all-neighbor declaration after short setup, or immediately if scenario setting says so | fulfills requested ten-minor setup |

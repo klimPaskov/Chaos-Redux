@@ -27,9 +27,9 @@ Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-red
 - Put Fury in the Wars cluster.
 - Select a dynamic small mainland AI minor with few states.
 - Exclude player countries from Fury selection.
-- Exclude player countries, player subjects, and player faction members from ordinary target selection.
+- Allow ordinary Fury target selection to choose AI or player-controlled countries when they meet the normal target gates.
 - Give Fury a national spirit, shared focus tree, decisions, weekly units, and dynamic target loop.
-- Fury attacks weaker AI neighbors without warning.
+- Fury attacks weaker eligible neighbors without warning.
 - Fury repeats after victory until no valid neighbor remains or Fury capitulates.
 - Fire a news event when Fury defeats its first neighbor.
 - Fire a super-event when the first Fury country becomes a major.

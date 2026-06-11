@@ -6,7 +6,7 @@ Event 007 Fury is a repeatable Wars-cluster event that transforms a safe AI mino
 
 1. `chaosx.nr7.1` selects an eligible AI minor through `fury_can_be_selected`.
 2. The selected country receives `fury_national_fury`, the shared `fury_focus_tree`, starting Fury variables, starting units, equipment, and a self-scheduled weekly event loop.
-3. `chaosx.nr7.10` scores every valid neighboring AI target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
+3. `chaosx.nr7.10` scores every valid neighboring target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
 4. `chaosx.nr7.20` runs only on active Fury actors every seven days. It reinforces the actor, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
 5. `chaosx.nr7.30` records the first conquest and fires `chaosx.news.7007`.
 6. Fury cleanup clears the actor state if the country capitulates or loses controlled territory.
@@ -21,12 +21,12 @@ Fury selection excludes:
 - capitulated countries
 - countries linked to the player by overlord or faction relationships
 - countries with an island capital
-- countries without any valid AI neighbor target
+- countries without any valid neighbor target
 - countries that recently failed as Fury
 
 Ordinary Fury selection prefers safe one-state AI minors, then broadens to two-state and three-state mainland-capital candidates before using the general safe selector. Ordinary random firing keeps one active Fury actor; Evolution II raises that cap to two and Evolution III raises it to three. The triggerable scenario and terminal world-end branch use separate setup paths.
 
-Ordinary targets use the same player-link exclusion and must not be subjects, Fury actors, allies, subjects of the Fury actor, or countries already at war with the Fury actor.
+Ordinary targets can be AI or player-controlled countries. Target validity does not exclude a country for being player-controlled or player-linked; targets must not be subjects, Fury actors, allies, subjects of the Fury actor, or countries already at war with the Fury actor.
 
 ## Variables and Flags
 
@@ -78,7 +78,7 @@ Fury actors use `fury_war_office_category`.
 Non-Fury responders use `anti_fury_response_category` after the major-Fury threshold or terminal Fury state.
 
 - `anti_fury_border_watch`: pays command power and rifles to start `anti_fury_border_watch_mission`.
-- `anti_fury_send_emergency_aid`: sends rifles, support equipment, and trains to one current non-player-linked Fury target, then starts `anti_fury_aid_route_mission`.
+- `anti_fury_send_emergency_aid`: sends rifles, support equipment, and trains to one current Fury target, then starts `anti_fury_aid_route_mission`.
 - `anti_fury_firebreak_staff_talks`: spends command power and army experience for defensive planning and containment tracking.
 - `anti_fury_start_supply_denial`: pays rifles and command authority to start `anti_fury_supply_denial_mission`.
 - `anti_fury_recognition_denial`: lowers Fury pact cohesion and adds containment pressure.
@@ -132,7 +132,7 @@ When it begins, the branch:
 - saves the starting actor as `fury_world_end_leader`
 - creates `The World in Fury` faction and brings all active Fury actors into it
 - applies `fury_world_in_fury` to terminal actors
-- warns all player countries before terminal Fury rules can threaten them directly, then keeps `fury_is_valid_target` player-excluding and uses the separate `fury_terminal_can_threaten_player_linked_country` helper after the grace period
+- warns all player countries before terminal Fury rules can threaten them directly; ordinary neighbor targeting can already hit player-controlled countries that meet normal target gates, while the separate `fury_terminal_can_threaten_player_linked_country` helper handles post-grace terminal threats outside the ordinary neighbor scan
 - seeds Fury actors across unrepresented continents first, then fills to `fury_balance.world_end_required_actor_count` when enough safe AI minors exist
 - unlocks terminal reserve sharing through `fury_share_terminal_reserves` and `fury_assign_terminal_fronts`
 - fires super-event slot `60` with `GFX_super_event_world_in_fury`
