@@ -243,6 +243,7 @@ Core files to check:
 - `events/<ID>_my_event.txt`
 - `common/on_actions/chaosx_on_actions_system.txt`
 - `common/scripted_effects/chaosx_logic_effects.txt`
+- `common/scripted_effects/chaosx_events_log_effects.txt`
 - `localisation/english/chaosx_event_names_l_english.yml`
 - `localisation/english/chaosx_events_l_english.yml`
 - `common/scripted_localisation/chaosx_scripted_localisation_debug.txt`
@@ -320,6 +321,13 @@ If you add a new reusable dynamic scripted effect (an effect that could be gener
 
 Events must appear in Chaos Redux’s event log, wire the full log contract in the same change.
 
+Script ownership:
+
+- Put history/evolution recording, actor sanitizing, default actor mapping, Event Details catalog rows, event-detail evolution previews, and History/Evolutions/Events tab rebuild logic in `common/scripted_effects/chaosx_events_log_effects.txt`.
+- Keep random selection, fired-event handlers, timers, and event type accounting in `common/scripted_effects/chaosx_logic_effects.txt`; those effects should call the shared Event Logs recorders rather than defining log arrays themselves.
+- Keep settings controls and generic event firing helpers in `common/scripted_effects/chaosx_settings_effects.txt`. Do not add new event-log history/evolution display logic there unless the settings window itself is changing.
+- Keep button click routing in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`, and layout changes in `interface/chaosx_events_log_popup.gui`.
+
 Required name plumbing:
 
 - add or update visible event-name loc in `localisation/english/chaosx_event_names_l_english.yml`
@@ -328,16 +336,18 @@ Required name plumbing:
 
 Required actor plumbing when a flag should appear:
 
-- update `events_log_set_default_actor_for_current_event` in `common/scripted_effects/chaosx_logic_effects.txt`
+- update `events_log_set_default_actor_for_current_event` in `common/scripted_effects/chaosx_events_log_effects.txt`
 - use a default actor only when the event should show a meaningful actor before or without a fired history row
 - if fired history should override the default actor, keep the history-context flow intact
+- for random-event history rows, remember that the generic fired-event handler records the row before the target event's `immediate` block runs; if the actor is created or refreshed inside that event, move that preparation into a shared pre-fire helper and call it before `record_events_log_history_entry`
+- for evolution rows with actors, save the country as `events_log_evolution_actor` and set `events_log_evolution_has_actor = 1` immediately before `record_events_log_evolution_entry = yes`; no-actor entries should let the shared logger default `events_log_evolution_has_actor` to `0`
 
 Required detail-view plumbing:
 
 - update the event-details text selectors in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - update the actual user-facing text in `localisation/english/chaosx_gui_l_english.yml`
 - if new generic event-log behavior is needed, wire it through:
-  - `common/scripted_effects/chaosx_settings_effects.txt`
+  - `common/scripted_effects/chaosx_events_log_effects.txt`
   - `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
   - `interface/chaosx_events_log_popup.gui`
 
@@ -351,7 +361,8 @@ Core files:
 
 - `common/script_constants/event_cluster_constants.txt`
 - `common/scripted_effects/chaosx_event_cluster_effects.txt`
-- `common/scripted_effects/chaosx_settings_effects.txt` when log/settings view state changes
+- `common/scripted_effects/chaosx_events_log_effects.txt` when event-log view state changes
+- `common/scripted_effects/chaosx_settings_effects.txt` when settings controls or generic event firing helpers change
 - `common/scripted_guis/chaosx_scripted_gui_events_log.txt` when cluster log UI behavior changes
 - `interface/chaosx_events_log_popup.gui` when cluster list/details layout changes
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
@@ -627,5 +638,4 @@ Before closing an event task, verify:
 12. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
 13. If assets are required, `chaos-redux-event-assets` has been used.
 14. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
-
 
