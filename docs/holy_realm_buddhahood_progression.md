@@ -62,6 +62,8 @@ After Buddhahood, the `Powers of the Awakened` decision category appears. Powers
 
 Valid chaos enemies include zombie outbreak countries, weaponized zombie countries, Great Revolution chaos states, alien or nonhuman chaos polities, and countries explicitly marked with chaos-country flags. Ordinary countries are intentionally excluded.
 
+AI power use is tuned through `holy_realm_ai` script constants. The AI reserves charge when low, prioritizes current chaos war enemies and major chaos sources, and gives `Touching the Sun and Moon` its strongest push during world-collapse or major-crisis conditions. `Lotus Bridge` remains a lower-weight relief power for protected friendly targets rather than a chaos-enemy attack.
+
 The implemented powers are:
 
 - One Becomes Many
@@ -162,5 +164,6 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add animated frame-sheet variants for the Mandala states and stage-specific portrait variants for Dhyana and Buddhahood.
+- Build the missing post-Buddhahood focus upgrade branch for `Read the Pattern of Suffering`, `Powers Are Not Toys`, `One Becomes Many`, `Path Through Walls`, `Lotus Bridge`, `Vanishing from Sight`, `Seated in the Sky`, and `Touch the Sun and Moon`.
 - Expand `holy_realm_false_buddha_schism_pressure` beyond the current debate/suppression decision pair if the route needs a full rival cult country or portrait-stage evolution.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.
