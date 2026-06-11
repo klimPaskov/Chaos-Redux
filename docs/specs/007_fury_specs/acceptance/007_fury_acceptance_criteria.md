@@ -16,7 +16,7 @@ Implementation passes only if:
 
 - player countries cannot become Fury through ordinary random event.
 - player countries cannot become Fury through triggerable scenario setup.
-- ordinary target selection excludes player countries, player subjects, and player faction members.
+- ordinary target selection can choose AI or player-controlled countries when they meet normal target gates.
 - pure island minors with no practical land neighbor are excluded.
 - candidate selection prefers one-state AI minors and broadens only when needed.
 - special chaos or non-standard countries are excluded unless explicitly allowed.
@@ -28,7 +28,7 @@ Implementation passes only if:
 - selected Fury country receives the Fury package.
 - weekly reinforcement exists and cleans up.
 - first target is selected dynamically.
-- Fury declares on a weaker AI neighbor without warning.
+- Fury declares on a weaker eligible neighbor without warning.
 - first conquest news fires when the first neighbor is defeated.
 - conquest settlement adds compliance and overextension.
 - coring requires decisions, compliance, control, and concrete costs.

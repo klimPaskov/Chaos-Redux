@@ -15,9 +15,9 @@ Pass or fail requirements:
 - Event 007 replaces obsolete expansionism with Fury.
 - Type is minor repeatable and cluster is Wars.
 - Fury selects dynamic small mainland AI minors only. Player is never Fury.
-- Ordinary targets exclude player, player subjects, and player faction members.
+- Ordinary Fury targets can be AI or player-controlled countries when they meet the normal target gates.
 - Fury receives idea, shared focus tree, decisions, weekly units, and dynamic target loop.
-- Fury attacks weaker AI neighbors, repeats after victory, stops on capitulation or no valid neighbors.
+- Fury attacks weaker eligible neighbors, repeats after victory, stops on capitulation or no valid neighbors.
 - First conquest news exists.
 - Fury-major super-event exists.
 - Compliance and coring decisions exist with concrete costs beyond political power.

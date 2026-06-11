@@ -57,7 +57,7 @@ Target score should combine several factors.
 | Occupation | conquered land, resistance, overextension | no conquered land |
 | Cooperation | pact type and another Fury exists | hostile type or no Fury partner |
 | Rivalry | hostile type, rival Fury nearby | pact type with high cohesion |
-| No-neighbor | no valid AI neighbors | target exists |
+| No-neighbor | no valid neighbors | target exists |
 | World-end | terminal eligible | chaos threshold not met or world-end disabled |
 
 ## Weekly unit scaling
