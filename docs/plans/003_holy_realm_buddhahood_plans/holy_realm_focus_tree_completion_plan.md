@@ -8,7 +8,7 @@ This plan covers the gap between the current `THR_focus` implementation and the 
 
 `common/national_focus/003_holy_realm.txt` contains 73 `THR_` focus ids and a working older Holy Realm route built around refuge survival, Bodhisattva/Arhat stages, Mandala expansion, restraint versus Final Silence, and regional conquest/registration. It also hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
 
-The current tree does not yet implement the spec as a Buddhahood-first 72-focus route family. The required route list is in `docs/specs/tbd_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`, especially the coverage table at lines 302-320.
+The current tree does not yet implement the spec as a Buddhahood-first 72-focus route family. The required route list is in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`, especially the coverage table at lines 302-320.
 
 ## Missing Route Architecture
 

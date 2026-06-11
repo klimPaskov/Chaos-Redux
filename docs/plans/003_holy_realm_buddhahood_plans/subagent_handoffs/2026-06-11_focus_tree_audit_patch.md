@@ -5,8 +5,8 @@
 Changed files:
 
 - `common/national_focus/003_holy_realm.txt`
-- `docs/plans/tbd_holy_realm_buddhahood_plans/holy_realm_focus_tree_completion_plan.md`
-- `docs/plans/tbd_holy_realm_buddhahood_plans/subagent_handoffs/2026-06-11_focus_tree_audit_patch.md`
+- `docs/plans/003_holy_realm_buddhahood_plans/holy_realm_focus_tree_completion_plan.md`
+- `docs/plans/003_holy_realm_buddhahood_plans/subagent_handoffs/2026-06-11_focus_tree_audit_patch.md`
 
 Changed focus ids:
 
@@ -96,4 +96,4 @@ Skipped meaningful validation:
 
 - The current tree should not be considered complete for the active Buddhahood goal. It has enough total focuses, but route families required by the spec are missing, merged into older mechanics, or decision-only.
 - The patch did not alter branch design, rewards, AI, localisation tone, or icon coverage beyond the filter-priority placement fix.
-- Completion plan path: `docs/plans/tbd_holy_realm_buddhahood_plans/holy_realm_focus_tree_completion_plan.md`.
+- Completion plan path: `docs/plans/003_holy_realm_buddhahood_plans/holy_realm_focus_tree_completion_plan.md`.
