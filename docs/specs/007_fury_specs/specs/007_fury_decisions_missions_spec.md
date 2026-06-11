@@ -118,11 +118,11 @@ Effects:
 
 ## Decision family: finite reinforcement reserve control
 
-Reserve-spawned units should be automatic only while the hidden reinforcement reserve pool has units remaining. Every reserve spawn consumes that pool, and the weekly loop only draws at a slow cadence. When the pool reaches zero, free weekly spawning stops completely. Decisions can change quality, source, strain, or add a limited reserve refill, but no decision may create an uncapped unit loop. All scripted reserve grants share the same 100-division per-actor cap, and repeatable reserve decisions must use long cooldowns so the cap cannot be filled instantly.
+Reserve-spawned units should be automatic only while the hidden reinforcement reserve pool has units remaining. Every reserve spawn consumes that pool, and the weekly loop draws one unit per weekly tick. When the pool reaches zero, free weekly spawning stops completely. Decisions can also create direct reinforcement waves, but no decision may create an uncapped weekly unit loop. All scripted weekly reserve grants share the same 100-division per-actor cap.
 
 ### Open the Depots
 
-Role: consumes equipment to improve upcoming reserve-spawned units or add a small capped reserve refill.
+Role: consumes equipment to create an extra direct reinforcement wave.
 
 Costs:
 
@@ -133,7 +133,7 @@ Costs:
 
 Effects:
 
-- a small capped reserve refill is added on a long cooldown.
+- an extra reinforcement wave spawns immediately.
 - increases overextension or supply strain.
 - AI uses when at war and equipment reserve is high.
 

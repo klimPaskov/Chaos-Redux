@@ -274,26 +274,6 @@ fury_add_triggerable_scenario_reinforcement_reserve = {
 	fury_add_reinforcement_reserve = yes
 }
 
-fury_add_focus_small_reinforcement_reserve = {
-	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.focus_small_reserve_refill }
-	fury_add_reinforcement_reserve = yes
-}
-
-fury_add_focus_medium_reinforcement_reserve = {
-	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.focus_medium_reserve_refill }
-	fury_add_reinforcement_reserve = yes
-}
-
-fury_add_focus_large_reinforcement_reserve = {
-	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.focus_large_reserve_refill }
-	fury_add_reinforcement_reserve = yes
-}
-
-fury_add_depot_decision_reinforcement_reserve = {
-	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.depot_decision_reserve_refill }
-	fury_add_reinforcement_reserve = yes
-}
-
 fury_spawn_starting_units = {
 	fury_prepare_spawn_count = yes
 	fury_unlock_column_equipment = yes
@@ -340,7 +320,7 @@ fury_prepare_weekly_unit_count = {
 	clamp_temp_variable = { var = fury_weekly_unit_count min = 0 max = constant:fury_units.weekly_spawn_units_per_tick }
 }
 
-fury_spawn_weekly_units = {
+fury_spawn_weekly_reserve_units = {
 	fury_prepare_weekly_unit_count = yes
 	if = {
 		limit = { check_variable = { fury_weekly_unit_count > 0 } }
@@ -353,6 +333,68 @@ fury_spawn_weekly_units = {
 				count = fury_weekly_unit_count
 				owner = ROOT
 			}
+		}
+	}
+}
+
+fury_prepare_direct_spawn_count = {
+	set_temp_variable = { fury_direct_spawn_count = constant:fury_units.direct_spawn_base_units }
+	set_temp_variable = { fury_direct_momentum_units = fury_momentum }
+	divide_temp_variable = { fury_direct_momentum_units = constant:fury_units.direct_spawn_momentum_divisor }
+	round_temp_variable = fury_direct_momentum_units
+	add_to_temp_variable = { fury_direct_spawn_count = fury_direct_momentum_units }
+	set_temp_variable = { fury_direct_state_units = num_of_controlled_states }
+	divide_temp_variable = { fury_direct_state_units = constant:fury_units.direct_spawn_state_divisor }
+	round_temp_variable = fury_direct_state_units
+	add_to_temp_variable = { fury_direct_spawn_count = fury_direct_state_units }
+	if = {
+		limit = { has_country_flag = fury_evolution_i_applied }
+		add_to_temp_variable = { fury_direct_spawn_count = constant:fury_units.direct_spawn_evolution_i_bonus }
+	}
+	if = {
+		limit = { has_country_flag = fury_evolution_iii_applied }
+		add_to_temp_variable = { fury_direct_spawn_count = constant:fury_units.direct_spawn_evolution_iii_bonus }
+	}
+	if = {
+		limit = { has_country_flag = fury_triggerable_scenario_actor }
+		add_to_temp_variable = { fury_direct_spawn_count = constant:fury_units.direct_spawn_scenario_bonus }
+	}
+	if = {
+		limit = { fury_occupation_pressure_high = yes }
+		subtract_from_temp_variable = { fury_direct_spawn_count = constant:fury_occupation.weekly_high_unit_penalty }
+	}
+	if = {
+		limit = { fury_occupation_pressure_extreme = yes }
+		subtract_from_temp_variable = { fury_direct_spawn_count = constant:fury_occupation.weekly_extreme_unit_penalty }
+	}
+	round_temp_variable = fury_direct_spawn_count
+	clamp_temp_variable = { var = fury_direct_spawn_count min = 1 max = constant:fury_units.direct_spawn_max_units }
+}
+
+fury_spawn_weekly_units = {
+	fury_prepare_direct_spawn_count = yes
+	fury_unlock_column_equipment = yes
+	set_temp_variable = { fury_spawn_count = fury_direct_spawn_count }
+	fury_add_scaled_stockpile = yes
+	random_controlled_state = {
+		limit = { is_controlled_by = ROOT }
+		create_unit = {
+			division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.20"
+			count = fury_direct_spawn_count
+			owner = ROOT
+		}
+	}
+}
+
+fury_spawn_depot_decision_units = {
+	fury_prepare_direct_spawn_count = yes
+	fury_unlock_column_equipment = yes
+	random_controlled_state = {
+		limit = { is_controlled_by = ROOT }
+		create_unit = {
+			division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.15"
+			count = fury_direct_spawn_count
+			owner = ROOT
 		}
 	}
 }
@@ -713,7 +755,7 @@ fury_weekly_actor_tick = {
 	fury_update_occupation_pressure = yes
 	fury_track_player_containment_links = yes
 	fury_try_start_world_end = yes
-	fury_spawn_weekly_units = yes
+	fury_spawn_weekly_reserve_units = yes
 	add_to_variable = { fury_momentum = constant:fury_balance.weekly_momentum_gain }
 	if = {
 		limit = { has_war = yes }

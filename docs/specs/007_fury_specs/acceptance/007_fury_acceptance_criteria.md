@@ -26,10 +26,10 @@ Implementation passes only if:
 Implementation passes only if:
 
 - selected Fury country receives the Fury package.
-- weekly reinforcement uses a finite hidden reserve pool, consumes at a slow cadence, and cleans up.
+- weekly reinforcement uses a finite hidden reserve pool, consumes one reserve unit per weekly tick, and cleans up.
 - each Fury actor's scripted reinforcement reserve is capped at 100 total divisions granted.
 - weekly free spawning stops completely when the reserve pool reaches zero.
-- every focus, decision, event, evolution, conquest reward, scenario setup, and world-end refill source is capped.
+- focus and decision unit rewards are one-time direct spawns, not sources for the weekly reserve loop.
 - first target is selected dynamically.
 - Fury declares on a weaker eligible neighbor without warning.
 - first conquest news fires when the first neighbor is defeated.
@@ -86,7 +86,7 @@ Implementation passes only if:
 - scenario excludes player.
 - scenario launch reads selected type and intensity at confirmation.
 - scenario intensity changes initial army size and reserve pool size, not infinite weekly spawning.
-- triggerable scenario actors still use the same per-actor 100 reserve cap and slow weekly draw cadence.
+- triggerable scenario actors still use the same per-actor 100 reserve cap and one-unit weekly draw cadence.
 - scenario setup bypass flags are cleared after setup.
 
 ## Super-events and news

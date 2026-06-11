@@ -154,7 +154,7 @@ Mechanical role:
 - improves compliance growth.
 - unlocks coring decisions.
 - reduces resistance damage.
-- slows capped reserve draw or quality slightly because administrators are diverted to occupation work.
+- slows weekly reserve quality slightly because administrators are diverted to occupation work.
 - improves conquered factory use.
 
 Tradeoff:
@@ -163,7 +163,7 @@ Tradeoff:
 
 ## Army of the March branch
 
-This branch improves the finite reinforcement reserve system without making it a free infinite reward. Focus rewards may improve template quality, initial stockpiles, reserve draw efficiency, or add small capped reserve refills, but they must not create direct free divisions or an uncapped weekly division loop. All scripted reserve grants must respect the 100-division per-actor cap.
+This branch improves Fury's army without making the weekly reinforcement loop infinite. Focus rewards may improve template quality, initial stockpiles, reserve draw efficiency, or create direct one-time reinforcement waves, but they must not create an uncapped weekly division loop. Scripted weekly reserve grants must respect the 100-division per-actor cap.
 
 ### Focus groups
 
@@ -180,16 +180,16 @@ This branch improves the finite reinforcement reserve system without making it a
 Use varied rewards:
 
 - templates.
-- capped reserve refills.
+- direct one-time reinforcement waves.
 - army XP.
 - equipment stockpiles.
 - support equipment.
 - trucks or trains when logistics path is chosen.
 - commander or officer corps spirit when appropriate.
 - temporary attack modifiers tied to current wars.
-- decisions that convert occupied depots into capped reserve refills.
+- decisions that convert occupied depots into direct reinforcement waves.
 
-Avoid repeating `add two infantry divisions` in many focuses. Each unit focus should name what institution creates the unit or reserve refill, and every refill must be capped by script constants. No focus may create an infinite free-unit source.
+Avoid repeating `add two infantry divisions` in many focuses. Each unit focus should name what institution creates the unit or reinforcement wave. No focus may create an infinite free-unit source.
 
 ## Expansion branch
 
@@ -443,7 +443,7 @@ AI should avoid:
 - pact focuses in hostile type.
 - rivalry focuses in pact type unless pact cohesion collapsed.
 - coring focuses when it controls no occupied territory.
-- unit-spam or reserve-refill focuses when manpower, equipment, and capped reserve allowance are exhausted.
+- unit-spawn focuses when manpower and equipment are exhausted.
 
 ## Localisation tone
 

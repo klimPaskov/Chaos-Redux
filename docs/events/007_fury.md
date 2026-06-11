@@ -7,7 +7,7 @@ Event 007 Fury is a repeatable Wars-cluster event that transforms safe AI minors
 1. Each `chaosx.nr7.1` firing selects a fresh eligible AI minor through `fury_can_be_selected`; existing Fury actors are excluded, so repeat firings create additional Fury countries instead of reapplying Fury to the previous actor.
 2. The selected country receives `fury_national_fury`, the shared `fury_focus_tree`, starting Fury variables, the base support-equipment and engineer-company unlocks required by the Fury Column template, starting units, equipment, a hidden finite reinforcement reserve, and a self-scheduled weekly event loop.
 3. `chaosx.nr7.10` scores every valid neighboring target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
-4. `chaosx.nr7.20` runs only on active Fury actors every seven days. Every fourth weekly tick it draws one division from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
+4. `chaosx.nr7.20` runs only on active Fury actors every seven days. Each weekly tick draws one division from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
 5. `chaosx.nr7.30` records the first conquest and fires `chaosx.news.7007`.
 6. Fury cleanup clears the actor state if the country capitulates or loses controlled territory.
 
@@ -39,7 +39,7 @@ Ordinary targets can be AI or player-controlled countries. Target validity does 
 - `fury_momentum`: escalation strength and target pressure.
 - `fury_reinforcement_reserve_pool`: hidden finite reserve pool consumed by weekly spawning.
 - `fury_reinforcement_reserve_total_granted`: hidden lifetime reserve counter capped at 100 divisions per Fury actor.
-- `fury_reinforcement_spawn_tick`: hidden weekly cadence counter; reserve spawning only creates a division every fourth weekly tick.
+- `fury_reinforcement_spawn_tick`: hidden weekly cadence counter; reserve spawning creates one division per weekly tick while reserve remains.
 - `fury_overextension`: occupation strain.
 - `fury_compliance_drive`: settlement and coring pressure.
 - `fury_reach`: no-neighbor recovery pressure.
@@ -66,7 +66,7 @@ Ordinary targets can be AI or player-controlled countries. Target validity does 
 Fury actors use `fury_war_office_category`.
 
 - `fury_select_new_target`: selects and attacks a new valid neighbor.
-- `fury_open_forward_depots`: spends command power and infantry equipment for a small capped reinforcement reserve refill on a 42-day cooldown.
+- `fury_open_forward_depots`: spends command power and infantry equipment to spawn an extra reinforcement wave and increase Fury Momentum.
 - `fury_register_occupation_settlement`: spends command power, rifles, and support equipment to mark a non-core controlled state for settlement.
 - `fury_count_captured_registers`: spends command power, rifles, and support equipment to mark a new occupied state for administrative register work.
 - `fury_rail_registry_survey`: spends trains and support equipment to mark a registered state as rail-ready and lower occupation pressure.
