@@ -9,6 +9,8 @@
 @HOLY_REALM_MANDALA_DEVELOPMENT_COOLDOWN_DAYS = 220
 @HOLY_REALM_CONCENTRATION_SEQUENCE_DAYS = 30
 @HOLY_REALM_CONCENTRATION_COOLDOWN_DAYS = 45
+@HOLY_REALM_ONE_BECOMES_MANY_DAYS = 180
+@HOLY_REALM_SUN_MOON_VICTORY_WINDOW_DAYS = 365
 @holy_realm_ai_peace_branch_factor = 4
 @holy_realm_ai_peace_letter_factor = 0.8
 @holy_realm_ai_regional_peace_letter_factor = 0.4
@@ -2147,10 +2149,9 @@ holy_realm_buddha_powers_category = {
 		complete_effect = {
 			holy_realm_spend_buddha_power_charge = yes
 			set_country_flag = holy_realm_power_one_becomes_many_used
-			set_temp_variable = { holy_realm_power_window_days = constant:holy_realm_buddhahood.one_becomes_many_days }
 			set_country_flag = {
 				flag = holy_realm_power_one_becomes_many_active
-				days = holy_realm_power_window_days
+				days = @HOLY_REALM_ONE_BECOMES_MANY_DAYS
 			}
 			set_variable = { holy_realm_one_becomes_many_missions = 0 }
 			FROM = {
@@ -2297,10 +2298,9 @@ holy_realm_buddha_powers_category = {
 			}
 			if = {
 				limit = { FROM = { has_war_with = ROOT } }
-				set_temp_variable = { holy_realm_power_window_days = constant:holy_realm_buddhahood.sun_moon_victory_window_days }
 				set_country_flag = {
 					flag = holy_realm_sun_moon_victory_window
-					days = holy_realm_power_window_days
+					days = @HOLY_REALM_SUN_MOON_VICTORY_WINDOW_DAYS
 				}
 			}
 			FROM = {
