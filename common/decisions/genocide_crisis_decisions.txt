@@ -18,8 +18,12 @@
 @GENOCIDE_RAIL_ARMY_XP_COST_NEG = -5
 @GENOCIDE_RECORDS_COMMAND_POWER_COST = 10
 @GENOCIDE_RECORDS_COMMAND_POWER_COST_NEG = -10
-@GENOCIDE_GULAG_COMMAND_POWER_COST = 20
-@GENOCIDE_GULAG_COMMAND_POWER_COST_NEG = -20
+@GENOCIDE_GULAG_POLITICAL_POWER_COST = 20
+@GENOCIDE_GULAG_POLITICAL_POWER_COST_NEG = -20
+@GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER = 19
+@GENOCIDE_GULAG_COMMAND_POWER_COST = 5
+@GENOCIDE_GULAG_COMMAND_POWER_COST_NEG = -5
+@GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER = 4
 @GENOCIDE_GULAG_ARMY_XP_COST = 5
 @GENOCIDE_GULAG_ARMY_XP_COST_NEG = -5
 
@@ -817,7 +821,12 @@ gulag_and_mass_repression_system = {
 		icon = GFX_decision_oppression
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
-		cost = constant:genocide_decision_cost.build_gulag
+		ai_hint_pp_cost = @GENOCIDE_GULAG_POLITICAL_POWER_COST
+		custom_cost_trigger = {
+			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
+			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
+		}
+		custom_cost_text = sov_gulag_network_cost
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
 			OR = {
@@ -842,7 +851,8 @@ gulag_and_mass_repression_system = {
 		available = {
 			original_tag = SOV
 			has_government = communism
-			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST
+			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
+			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
 			FROM = {
 				NOT = { gulag_labor_camp_network > 0 }
 				OR = {
@@ -853,6 +863,7 @@ gulag_and_mass_repression_system = {
 			}
 		}
 		complete_effect = {
+			add_political_power = @GENOCIDE_GULAG_POLITICAL_POWER_COST_NEG
 			add_command_power = @GENOCIDE_GULAG_COMMAND_POWER_COST_NEG
 			genocide_build_gulag_network_in_from = yes
 		}
@@ -967,7 +978,12 @@ gulag_and_mass_repression_system = {
 		icon = GFX_decision_oppression
 		state_target = any_controlled_state
 		on_map_mode = map_and_decisions_view
-		cost = constant:genocide_decision_cost.soviet_purge_administrators
+		ai_hint_pp_cost = @GENOCIDE_GULAG_POLITICAL_POWER_COST
+		custom_cost_trigger = {
+			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
+			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
+		}
+		custom_cost_text = sov_gulag_network_cost
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
 			OR = {
@@ -991,10 +1007,8 @@ gulag_and_mass_repression_system = {
 		available = {
 			original_tag = SOV
 			has_government = communism
-			custom_trigger_tooltip = {
-				tooltip = genocide_requires_security_command_power_tt
-				command_power > @GENOCIDE_SECURITY_COMMAND_POWER_COST
-			}
+			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
+			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
 			FROM = {
 				OR = {
 					gulag_labor_camp_network > 0
@@ -1004,7 +1018,8 @@ gulag_and_mass_repression_system = {
 			}
 		}
 		complete_effect = {
-			add_command_power = @GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG
+			add_political_power = @GENOCIDE_GULAG_POLITICAL_POWER_COST_NEG
+			add_command_power = @GENOCIDE_GULAG_COMMAND_POWER_COST_NEG
 			genocide_soviet_purge_camp_administrators_in_from = yes
 		}
 		ai_will_do = { base = constant:genocide_ai_weight.soviet_deportation }
