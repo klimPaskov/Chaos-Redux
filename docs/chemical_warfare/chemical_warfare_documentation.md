@@ -16,6 +16,15 @@ Chemical warfare is implemented as one connected gameplay package:
 
 The system rewards preparation and logistics while making repeated chemical use politically costly.
 
+## Genocide Crisis Restricted Site Bridge
+
+The genocide crisis system can consume restricted nerve-agent stockpiles through `genocide_restricted_chemical_site_escalation`.
+
+- Gate: existing sarin or soman technology/special-project completion and a matching cylinder stockpile.
+- Target: an already responsible extermination, gulag, or experiment site.
+- Effects: consumes sarin or soman cylinders, applies `chem_apply_state_contamination`, registers immediate and monthly hidden deaths through the Chaos Meter Deaths pipeline, and marks the state with restricted chemical evidence.
+- Condemnation: the action does not use the immediate public chemical-attack condemnation path. Extra condemnation is added through the genocide discovery calculation if enemy forces uncover the site.
+
 ## System Structure and Behavior
 
 - Chemical support companies are type-specific (chlorine, phosgene, mustard, lewisite, sarin, soman).

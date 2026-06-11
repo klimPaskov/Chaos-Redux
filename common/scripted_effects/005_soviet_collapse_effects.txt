@@ -58,6 +58,50 @@ soviet_collapse_clamp_crisis_components = {
     clamp_variable = { var = soviet_collapse_old_movement_pressure min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 }
 
+soviet_collapse_apply_genocide_gulag_repression_memory = {
+	if = {
+		limit = { NOT = { has_variable = soviet_collapse_gulag_repression_memory } }
+		set_variable = { soviet_collapse_gulag_repression_memory = 0 }
+	}
+	add_to_variable = { soviet_collapse_gulag_repression_memory = constant:genocide_soviet_collapse.memory_gain }
+	if = {
+		limit = {
+			has_variable = soviet_collapse_total_collapse_threat
+			has_variable = soviet_collapse_moscow_authority
+			has_variable = soviet_collapse_military_obedience
+			has_variable = soviet_collapse_republic_confidence
+			has_variable = soviet_collapse_old_movement_pressure
+			has_variable = soviet_collapse_foreign_appetite
+		}
+		add_to_variable = { soviet_collapse_old_movement_pressure = constant:genocide_soviet_collapse.old_movement_grievance_gain }
+		add_to_variable = { soviet_collapse_foreign_appetite = constant:genocide_soviet_collapse.foreign_appetite_gain }
+		if = {
+			limit = {
+				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+				check_variable = {
+					var = soviet_collapse_total_collapse_threat
+					value = constant:genocide_soviet_collapse.max_suppression_threat
+					compare = less_than
+				}
+			}
+			add_to_variable = { soviet_collapse_moscow_authority = constant:genocide_soviet_collapse.authority_gain }
+			add_to_variable = { soviet_collapse_military_obedience = constant:genocide_soviet_collapse.obedience_gain }
+			subtract_from_variable = { soviet_collapse_republic_confidence = constant:genocide_soviet_collapse.republic_confidence_loss }
+			if = {
+				limit = { has_variable = soviet_collapse_progressive_release_pressure }
+				subtract_from_variable = { soviet_collapse_progressive_release_pressure = constant:genocide_soviet_collapse.release_pressure_loss }
+				clamp_variable = {
+					var = soviet_collapse_progressive_release_pressure
+					min = constant:soviet_collapse_baseline.component_min
+					max = constant:soviet_collapse_baseline.component_max
+				}
+			}
+		}
+		soviet_collapse_clamp_crisis_components = yes
+		soviet_collapse_recalculate_total_threat = yes
+	}
+}
+
 soviet_collapse_build_capital_railway_to_this_state = {
     if = {
         limit = {
