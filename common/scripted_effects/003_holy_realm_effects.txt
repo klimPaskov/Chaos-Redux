@@ -5,6 +5,7 @@
 
 @HOLY_REALM_CHAOS_REDUCTION_COOLDOWN_DAYS = 720
 @HOLY_REALM_MANDALA_PEACEKEEPING_COOLDOWN_DAYS = 365
+@HOLY_REALM_SANGHA_OF_NATIONS_DAYS = 180
 
 holy_realm_ensure_counters = {
 	if = {
@@ -151,6 +152,13 @@ holy_realm_add_mandala_reach = {
 	}
 	add_to_variable = { mandala_reach = holy_realm_adjusted_delta }
 	clamp_variable = { var = mandala_reach min = 0 max = 100 }
+}
+
+holy_realm_add_sangha_cohesion = {
+	holy_realm_ensure_buddhahood_counters = yes
+	add_to_variable = { sangha_cohesion = holy_realm_sangha_delta }
+	clamp_variable = { var = sangha_cohesion min = 0 max = 100 }
+	holy_realm_refresh_sangha_of_nations_status = yes
 }
 
 holy_realm_add_final_silence_pressure = {
@@ -302,6 +310,68 @@ holy_realm_record_ash_mercy_mission = {
 			}
 		}
 		set_country_flag = holy_realm_mercy_in_ashes_achievement_ready
+	}
+}
+
+holy_realm_refresh_sangha_of_nations_status = {
+	holy_realm_ensure_buddhahood_counters = yes
+	set_variable = { holy_realm_sangha_valid_members = 0 }
+	set_variable = { holy_realm_sangha_invalid_members = 0 }
+	if = {
+		limit = {
+			has_country_flag = holy_realm_mandala_of_nations_leader
+			is_faction_leader = yes
+			is_in_faction = yes
+		}
+		every_faction_member = {
+			limit = { NOT = { is_holy_realm_country = yes } }
+			if = {
+				limit = {
+					NOT = { is_holy_realm_chaos_enemy = yes }
+					NOT = { is_subject_of = PREV }
+				}
+				PREV = { add_to_variable = { holy_realm_sangha_valid_members = 1 } }
+			}
+			else = {
+				PREV = { add_to_variable = { holy_realm_sangha_invalid_members = 1 } }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = holy_realm_mandala_of_nations_leader
+			is_faction_leader = yes
+			check_variable = {
+				var = holy_realm_sangha_valid_members
+				value = constant:holy_realm_buddhahood.sangha_of_nations_members_required
+				compare = greater_than_or_equals
+			}
+			check_variable = { holy_realm_sangha_invalid_members < 1 }
+			check_variable = {
+				var = sangha_cohesion
+				value = constant:holy_realm_buddhahood.sangha_of_nations_cohesion_required
+				compare = greater_than_or_equals
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = holy_realm_sangha_of_nations_watch_started } }
+			set_country_flag = holy_realm_sangha_of_nations_watch_started
+		}
+		set_country_flag = holy_realm_sangha_of_nations_watch_valid
+		if = {
+			limit = {
+				has_country_flag = {
+					flag = holy_realm_sangha_of_nations_watch_started
+					days > @HOLY_REALM_SANGHA_OF_NATIONS_DAYS
+				}
+			}
+			set_country_flag = holy_realm_sangha_of_nations_achievement_ready
+		}
+	}
+	else = {
+		clr_country_flag = holy_realm_sangha_of_nations_watch_started
+		clr_country_flag = holy_realm_sangha_of_nations_watch_valid
+		clr_country_flag = holy_realm_sangha_of_nations_achievement_ready
 	}
 }
 
@@ -981,6 +1051,7 @@ holy_realm_establish_mandala_of_nations = {
 	every_faction_member = {
 		holy_realm_apply_mandala_peace_vow = yes
 	}
+	holy_realm_refresh_sangha_of_nations_status = yes
 }
 
 holy_realm_mandala_of_nations_member_joined = {
@@ -1001,6 +1072,8 @@ holy_realm_mandala_of_nations_member_joined = {
 			holy_realm_add_mandala_reach = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.sangha_member_join_cohesion_gain }
+			holy_realm_add_sangha_cohesion = yes
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
 			holy_realm_add_chaos = yes
