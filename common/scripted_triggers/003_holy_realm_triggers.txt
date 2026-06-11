@@ -225,6 +225,26 @@ holy_realm_buddha_power_target_valid = {
 	FROM = { is_holy_realm_chaos_enemy = yes }
 }
 
+holy_realm_buddha_power_ai_reserve_charge = {
+	check_variable = { meditation_charge < constant:holy_realm_ai.buddha_power_reserve_charge }
+}
+
+holy_realm_buddha_power_target_current_war = {
+	FROM = { has_war_with = ROOT }
+}
+
+holy_realm_buddha_power_target_major_chaos = {
+	FROM = { holy_realm_chaos_source_controls_major_capital = yes }
+}
+
+holy_realm_buddha_power_sun_moon_crisis_target = {
+	OR = {
+		holy_realm_chaos_at_least_world_collapse = yes
+		holy_realm_buddha_power_target_current_war = yes
+		holy_realm_buddha_power_target_major_chaos = yes
+	}
+}
+
 holy_realm_lotus_bridge_target_valid = {
 	is_holy_realm_country = yes
 	FROM = {
