@@ -8,8 +8,8 @@ UI icon sources, processed PNGs, and the contact sheet are recorded in `docs/ass
 
 The Fury country-leader flame overlay is registered in `interface/007_fury.gfx`:
 
-- `GFX_fury_leader_flame_overlay_animated` -> `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds`
-- `GFX_fury_leader_flame_overlay_static` -> `gfx/interface/fury/fury_leader_flame_overlay_static.dds`
+- `GFX_fury_leader_flame_overlay_animated` -> `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
+- `GFX_fury_leader_flame_overlay_static` -> `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
 
 The scripted GUI containers are in `interface/007_fury_leader_overlay.gui`, with visibility and parent-window binding in `common/scripted_guis/007_fury_scripted_guis.txt`. The diplomacy overlay uses `selected_country_context` and `parent_window_name = countrydiplomacyview`, so it appears when the selected diplomacy country is a Fury actor. The overlay position uses the summed vanilla coordinates for `country_info` -> `diplomacy_tab_top` -> `leader_portrait`. The politics overlay uses `player_context` and `parent_window_name = countrypoliticsview`, so tag-switch/debug views of a Fury actor also show the burn loop on the country leader portrait.
 

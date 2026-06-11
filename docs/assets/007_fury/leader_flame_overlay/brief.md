@@ -23,8 +23,8 @@
   - sheet: `docs/assets/007_fury/leader_flame_overlay/sheets/fury_leader_flame_overlay_sheet.png`
   - static: `docs/assets/007_fury/leader_flame_overlay/sheets/fury_leader_flame_overlay_static.png`
 - Final DDS paths:
-  - sheet: `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds`
-  - static: `gfx/interface/fury/fury_leader_flame_overlay_static.dds`
+  - sheet: `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
+  - static: `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
 - Preview paths:
   - contact sheet: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_contact.png`
   - review gif: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_preview.gif`
