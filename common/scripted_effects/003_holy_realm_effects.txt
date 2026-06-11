@@ -280,6 +280,31 @@ holy_realm_record_teaching_success = {
 	}
 }
 
+holy_realm_record_ash_mercy_mission = {
+	holy_realm_ensure_buddhahood_counters = yes
+	if = {
+		limit = { NOT = { has_variable = holy_realm_ash_mercy_missions } }
+		set_variable = { holy_realm_ash_mercy_missions = 0 }
+	}
+	add_to_variable = { holy_realm_ash_mercy_missions = 1 }
+	if = {
+		limit = { check_variable = { holy_realm_ash_mercy_under_threat > 0 } }
+		set_country_flag = holy_realm_ash_mercy_under_threat_mission
+	}
+	if = {
+		limit = {
+			has_country_flag = holy_realm_ash_mercy_under_threat_mission
+			check_variable = { defilements < constant:holy_realm_buddhahood.defilements_threshold }
+			check_variable = {
+				var = holy_realm_ash_mercy_missions
+				value = constant:holy_realm_buddhahood.ash_mercy_missions_required
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = holy_realm_mercy_in_ashes_achievement_ready
+	}
+}
+
 holy_realm_complete_concentration_sequence = {
 	holy_realm_ensure_buddhahood_counters = yes
 	clr_country_flag = holy_realm_concentration_intention
@@ -1874,6 +1899,14 @@ holy_realm_complete_terminal_final_silence = {
 	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
 	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 	holy_realm_add_chaos = yes
+	if = {
+		limit = {
+			NOT = { has_country_flag = holy_realm_capital_sanctuary_recently_fallen }
+			capital_scope = { is_controlled_by = ROOT }
+			check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+		}
+		set_country_flag = holy_realm_final_silence_world_end_achievement_ready
+	}
 	holy_realm_refresh_world_threat_source = yes
 }
 
@@ -1891,6 +1924,15 @@ holy_realm_complete_nonterminal_final_silence = {
 	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.major_mercy_loss }
 	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
 	holy_realm_add_chaos = yes
+	if = {
+		limit = {
+			NOT = { has_global_flag = world_end_final_silence }
+			has_country_flag = holy_realm_empty_seat_leader
+			is_faction_leader = yes
+			num_faction_members > 3
+		}
+		set_country_flag = holy_realm_empty_seat_achievement_ready
+	}
 	holy_realm_refresh_world_threat_source = yes
 }
 

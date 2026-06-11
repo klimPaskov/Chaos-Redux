@@ -6,6 +6,25 @@
 # ============================================================================
 
 on_actions = {
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { is_holy_realm_country = yes }
+					FROM = { is_holy_realm_country = yes }
+					FROM.FROM = { is_capital = yes }
+				}
+				FROM = {
+					set_temp_variable = { holy_realm_capital_fall_days = constant:holy_realm_buddhahood.capital_sanctuary_recent_fall_days }
+					set_country_flag = {
+						flag = holy_realm_capital_sanctuary_recently_fallen
+						days = holy_realm_capital_fall_days
+					}
+				}
+			}
+		}
+	}
+
 	on_declare_war = {
 		effect = {
 			if = {
