@@ -12,8 +12,8 @@
 | world-end super-event audio | audio ID `60` | `music/super_event_world_in_fury.ogg` / `sound/chaosx_super_event_world_in_fury.wav` | final `The World in Fury` audio track |
 | Fury War Office category | `fury_war_office_category` | final Fury-specific DDS | `gfx/interface/decisions/fury/decision_category_fury_war_office.dds` |
 | Anti-Fury category | `anti_fury_response_category` | final Fury-specific DDS | `gfx/interface/decisions/fury/decision_category_anti_fury.dds` |
-| Fury country leader overlay | `GFX_fury_leader_flame_overlay_animated` | generated 8-frame flame loop | `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds` |
-| Fury country leader overlay fallback | `GFX_fury_leader_flame_overlay_static` | generated static fallback frame | `gfx/interface/fury/fury_leader_flame_overlay_static.dds` |
+| Fury country leader overlay | `GFX_fury_leader_flame_overlay_animated` | generated 8-frame flame loop | `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds` |
+| Fury country leader overlay fallback | `GFX_fury_leader_flame_overlay_static` | generated static fallback frame | `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds` |
 | achievements | `achievement_fury_*` | final Fury-specific DDS triplets generated from Fury super-event art | `gfx/achievements/achievement_fury_*.dds` |
 
 ## Final Sprite Records

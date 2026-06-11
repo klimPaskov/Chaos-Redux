@@ -176,8 +176,8 @@ Current wiring uses stable Fury-specific assets:
 - world-end super-event image: `GFX_super_event_world_in_fury`, backed by generated final art at `gfx/super_events/super_event_world_in_fury.dds`
 - world-end super-event audio: ID `60`, `music/super_event_world_in_fury.ogg`, `sound/chaosx_super_event_world_in_fury.wav`
 - achievement icons: final filenames registered in `interface/chaosx_achievements.gfx`
-- Fury leader overlay: `GFX_fury_leader_flame_overlay_animated`, backed by an 8-frame looping sheet at `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds`
-- Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/fury/fury_leader_flame_overlay_static.dds`
+- Fury leader overlay: `GFX_fury_leader_flame_overlay_animated`, backed by an 8-frame looping sheet at `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
+- Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
 
 Final Fury art and audio use stable gameplay IDs. Report, news, and super-event images use street-level Fury outbreak imagery: rogue soldiers, civilians fleeing, smoke, burning streets, and sudden neighbor-war panic. They should not be replaced with map rooms, command desks, ledgers, route strings, globes, or war-office planning scenes.
 
@@ -199,8 +199,8 @@ Recommended final asset paths:
 - `sound/chaosx_super_event_fury_becomes_a_state.wav`
 - `music/super_event_world_in_fury.ogg`
 - `sound/chaosx_super_event_world_in_fury.wav`
-- `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds`
-- `gfx/interface/fury/fury_leader_flame_overlay_static.dds`
+- `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
+- `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
 - `gfx/achievements/achievement_fury_*`
 
 ## Validation Notes

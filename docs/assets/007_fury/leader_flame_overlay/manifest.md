@@ -14,8 +14,8 @@
 - Processed frame PNGs: `docs/assets/007_fury/leader_flame_overlay/processed_png/fury_leader_flame_overlay_000.png` through `fury_leader_flame_overlay_007.png`
 - Sheet PNG: `docs/assets/007_fury/leader_flame_overlay/sheets/fury_leader_flame_overlay_sheet.png`
 - Static fallback PNG: `docs/assets/007_fury/leader_flame_overlay/sheets/fury_leader_flame_overlay_static.png`
-- Final sheet DDS: `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds`
-- Final static DDS: `gfx/interface/fury/fury_leader_flame_overlay_static.dds`
+- Final sheet DDS: `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
+- Final static DDS: `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
 - Contact sheet: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_contact.png`
 - Review GIF: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_preview.gif`
 - Target size: `156x210`

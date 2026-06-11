@@ -7,13 +7,13 @@ Implemented in `interface/007_fury.gfx`:
 ```txt
 spriteType = {
 	name = "GFX_fury_leader_flame_overlay_static"
-	texturefile = "gfx/interface/fury/fury_leader_flame_overlay_static.dds"
+	texturefile = "gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds"
 	alwaystransparent = yes
 }
 
 frameAnimatedSpriteType = {
 	name = "GFX_fury_leader_flame_overlay_animated"
-	texturefile = "gfx/interface/fury/fury_leader_flame_overlay_sheet.dds"
+	texturefile = "gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds"
 	noOfFrames = 8
 	animation_rate_fps = 8
 	looping = yes
