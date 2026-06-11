@@ -5,6 +5,8 @@
 # - All achievements are available as any country.
 # - The mod achievement UI resolves icon art from gfx/achievements/<achievement_id>*.dds.
 
+@HOLY_REALM_SANGHA_OF_NATIONS_DAYS = 180
+
 unique_id = chaos_redux_achievements
 
 #############################
@@ -1742,7 +1744,22 @@ holy_realm_sangha_of_nations = {
 		custom_override_tooltip = {
 			tooltip = holy_realm_sangha_of_nations_tooltip
 			is_holy_realm_country = yes
-			has_country_flag = holy_realm_sangha_of_nations_achievement_ready
+			has_country_flag = holy_realm_sangha_of_nations_watch_valid
+			has_country_flag = {
+				flag = holy_realm_sangha_of_nations_watch_started
+				days > @HOLY_REALM_SANGHA_OF_NATIONS_DAYS
+			}
+			check_variable = {
+				var = holy_realm_sangha_valid_members
+				value = constant:holy_realm_buddhahood.sangha_of_nations_members_required
+				compare = greater_than_or_equals
+			}
+			check_variable = { holy_realm_sangha_invalid_members < 1 }
+			check_variable = {
+				var = sangha_cohesion
+				value = constant:holy_realm_buddhahood.sangha_of_nations_cohesion_required
+				compare = greater_than_or_equals
+			}
 		}
 	}
 }
