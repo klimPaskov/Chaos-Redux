@@ -17,7 +17,7 @@ Fury transforms an existing AI minor. It does not require a new hardcoded countr
 | Focus tree | shared Fury tree loaded for Fury actor |
 | Decisions | Fury War Office category |
 | Ideas | National Fury and route upgrades |
-| Units | dynamic starting and weekly units |
+| Units | dynamic starting units and finite reserve-spawned reinforcements |
 | Cores | gained through decisions after compliance and control |
 | AI | aggressive expansion AI with target safety rules |
 | Event log actor | selected Fury country |
@@ -62,7 +62,7 @@ The implementation may keep the original leader for simplicity if the route does
 | Improvised Command | weak candidates | compensates tiny army, creates planning weakness |
 | Fury Overextension | after conquest | administrative strain |
 | Compliance Drive | after occupation branch | captured land absorption |
-| Hardened Fury | Evolution I | stronger unit growth and war planning |
+| Hardened Fury | Evolution I | stronger capped reserve quality and war planning |
 | Fury Pact Command | pact branch | cooperation with other Fury actors |
 | Rival Fury Doctrine | hostile branch | war against other Fury actors |
 | World Fury | terminal branch | world-end package |
@@ -82,7 +82,7 @@ The implementation may keep the original leader for simplicity if the route does
 
 | Template | Use | Source |
 | --- | --- | --- |
-| Fury Column | baseline attack | starting and weekly growth |
+| Fury Column | baseline attack | starting package and finite reserve growth |
 | Capital Guard | capital defense | starting package |
 | Border Runner | low-supply fronts | terrain or supply branch |
 | Depot Cadre | garrison and occupation | occupation branch |
@@ -94,9 +94,23 @@ Templates should be small and dynamically improved by focus progress. Avoid gian
 
 ## Reinforcement pathways
 
+Fury reinforcement is finite. Every actor has a hidden reserve pool. Weekly spawns draw from that pool and stop completely at zero. Fury can still recruit normally through the base game.
+
+Allowed reinforcement sources:
+
+- initial army package.
+- starting hidden reserve pool.
+- capped focus reserve refills.
+- capped decision reserve refills.
+- capped conquest or depot rewards.
+- capped scenario setup reserve size.
+- capped evolution reserve modifiers.
+
+No reinforcement pathway may create an uncapped weekly division loop.
+
 Fury gains units through:
 
-- weekly automatic pulse.
+- finite weekly reserve pulse.
 - opening package.
 - focus rewards.
 - depot decisions.
@@ -148,7 +162,7 @@ If pact or world-end branch creates a faction:
 ## Compatibility notes
 
 - Fury should not replace systems for non-human or special chaos countries.
-- Fury should not target players in baseline.
+- Player countries cannot become Fury through ordinary selection or scenario setup, but they can become Fury targets when they pass the same normal target gates as any other neighbor.
 - Fury should not steal player-occupied states during settlement.
 - Fury should not load its tree on a player country through normal selection.
 - If another event creates a small AI country, that country can later become Fury after cooldown if safe.

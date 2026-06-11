@@ -15,7 +15,7 @@
 | Triggerable scenario | `The World in Fury`, see separate scenario spec |
 | Main fantasy | A tiny state starts moving faster than the map can explain |
 
-Fury is a repeatable war pressure event where one small AI country becomes an expansion actor. It receives a special idea, a shared Fury focus tree, a decision system, weekly units, and a target-selection loop. It declares war on a weaker eligible neighbor without warning. After the first neighbor falls, it chooses another weaker neighbor. This loop continues until it has no valid land neighbors left, it becomes contained, or it capitulates.
+Fury is a repeatable war pressure event where one small AI country becomes an expansion actor. It receives a special idea, a shared Fury focus tree, a decision system, an initial army package, a finite hidden reinforcement reserve, and a target-selection loop. It declares war on a weaker eligible neighbor without warning. After the first neighbor falls, it chooses another weaker neighbor. This loop continues until it has no valid land neighbors left, it becomes contained, or it capitulates.
 
 Fury should be readable as a strange war event, not as a normal focus-tree claim branch. The selected country is still the same country on the map. Its name and flag can remain familiar at first, but its behavior changes visibly through national spirits, decisions, focus tree content, news, and later faction identity.
 
@@ -31,7 +31,7 @@ The event should create tension without giving the player a free expansion tool.
 
 Fury is not a generic random war.
 
-A random war picks an attacker and a defender. Fury creates an actor with memory, growth, occupation tools, coring pressure, military reinforcement, a focus tree, and evolving behavior. The country becomes a campaign problem until it is stopped or until it runs out of nearby targets.
+A random war picks an attacker and a defender. Fury creates an actor with memory, growth, occupation tools, coring pressure, capped military reinforcement, a focus tree, and evolving behavior. The country becomes a campaign problem until it is stopped or until it runs out of nearby targets.
 
 Fury is not a formable country by default.
 
@@ -39,7 +39,7 @@ The selected state does not become a new hardcoded tag. It becomes a Fury actor 
 
 Fury is not a player reward.
 
-The player can fight Fury, contain Fury, manipulate Fury indirectly, or trigger the custom challenge scenario. The player does not receive Fury weekly units or the Fury focus tree from ordinary random play.
+The player can fight Fury, contain Fury, manipulate Fury indirectly, or trigger the custom challenge scenario. The player does not receive the Fury package, finite reinforcement reserve, or the Fury focus tree from ordinary random play.
 
 ## Baseline event loop
 
@@ -48,7 +48,7 @@ The baseline loop has seven steps.
 1. Select an eligible AI minor with a mainland capital, few states, and at least one weaker eligible land neighbor.
 2. Apply the Fury package.
 3. Give a starting army package and first stockpile support.
-4. Start weekly Fury reinforcement.
+4. Start finite weekly Fury reinforcement from a hidden reserve pool.
 5. Pick one weaker eligible neighbor and declare war without warning.
 6. When that neighbor is defeated, run conquest settlement and fire the first-conquest news if this is the first victory.
 7. Pick the next weaker neighbor, or enter the no-neighbor branch if no valid target remains.
@@ -120,10 +120,7 @@ Baseline Fury attacks one target at a time.
 
 The target must be:
 
-- AI-controlled.
-- not a player country.
-- not a player subject.
-- not in the player's faction.
+- AI or player-controlled when normal target gates allow it.
 - not already capitulated.
 - not already at war with Fury.
 - a land neighbor of Fury or a directly connected strait neighbor when the event has no pure land target.
@@ -173,7 +170,7 @@ Baseline division families:
 
 | Template family | Role | Notes |
 | --- | --- | --- |
-| Fury Columns | small infantry assault units | baseline weekly and opening unit |
+| Fury Columns | small infantry assault units | baseline opening unit and reserve-spawned reinforcement |
 | Border Runners | low-supply infantry with speed support | used in rough terrain or low supply states |
 | Capital Guard | defensive unit for capital and depot states | limits instant collapse |
 | Depot Cadres | support-heavy garrison and occupation unit | appears after first conquest or occupation branch |
@@ -189,11 +186,23 @@ Starting strength bands:
 
 These are design bands. The implementation should use constants and dynamic variables rather than hardcoding the same number for every country.
 
-### Weekly reinforcement
+### Hidden reinforcement reserve
 
-Fury receives weekly divisions while it is active and not capitulated. This is the main repeatable pressure.
+Fury must not receive infinite free weekly divisions. Each Fury actor receives a hidden finite reinforcement reserve pool when selected. Weekly reinforcement consumes that pool. When the pool reaches zero, weekly free spawning stops completely for that actor. Fury can still recruit normally through the base game.
 
-Weekly reinforcement should scale from:
+The reserve pool should use script constants for:
+
+- baseline pool size.
+- weekly draw amount.
+- per-evolution quality and pool-size modifiers.
+- scenario intensity pool-size modifiers.
+- conquest refill caps.
+- focus, decision, and evolution refill caps.
+- maximum reserve clamp.
+
+No decision, focus, event, evolution, or scenario setting may create an uncapped unit loop.
+
+Weekly reinforcement draw should scale from:
 
 - Fury momentum.
 - number of owned states.
@@ -201,15 +210,16 @@ Weekly reinforcement should scale from:
 - active war count.
 - current evolution.
 - current scenario intensity.
-- manpower and equipment reserves.
+- hidden reinforcement reserve remaining.
+- manpower and equipment availability.
 - overextension.
 - supply status.
 - whether Fury has completed military branch focuses.
 - whether Fury has other Fury partners.
 
-Baseline weekly growth should be modest but persistent. Evolution I increases quality and amount. Evolution III makes growth stronger and supports multiple simultaneous wars.
+Baseline Fury should have a small initial force and a small reserve pool. Evolution I increases unit quality and reserve size, but remains capped. Evolution II creates two Fury countries, so each individual reserve pool should be smaller than if only one Fury existed. Evolution III creates three Fury countries and stronger openings, but weekly spawning remains capped. The World in Fury scenario intensity changes initial army size and reserve pool size, not infinite spawning.
 
-Weekly reinforcement should not be a free infinite loop. Overextension, equipment shortages, low manpower, high resistance, and capital threat should reduce quality or pause the best units.
+Limited extra reserves may come from focuses, conquest rewards, decisions, evolutions, scenario setup, or world-end setup, but every refill must be capped by script constants and must respect the maximum reserve clamp. Overextension, equipment shortages, low manpower, high resistance, and capital threat should reduce quality, reduce weekly draw, or pause the best units. They are brakes on a finite reserve, not substitutes for a cap.
 
 ## Fury values
 

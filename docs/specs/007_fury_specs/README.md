@@ -2,7 +2,7 @@
 
 This package turns Event ID `7`, `Fury`, into a source specification pack for Chaos Redux.
 
-Fury replaces the old expansionism placeholder with a dynamic repeatable war event. A small AI country is taken by a fast expansion system, receives a weekly military build-up, attacks weaker eligible neighbors, absorbs territory through compliance and coring work, and either burns out or grows into a continental threat.
+Fury replaces the old expansionism placeholder with a dynamic repeatable war event. A small AI country is taken by a fast expansion system, receives an initial army and finite hidden reinforcement reserve, attacks weaker eligible neighbors, absorbs territory through compliance and coring work, and either burns out or grows into a continental threat.
 
 ## Package map
 
@@ -29,9 +29,9 @@ Fury replaces the old expansionism placeholder with a dynamic repeatable war eve
 
 - Fury is AI-selected only in random and triggerable setup.
 - The player is never granted the Fury package by this event.
-- Baseline target selection avoids player countries, player subjects, and player faction members.
+- Baseline target selection can choose AI or player-controlled countries when normal target gates allow it; player exclusion applies to Fury actor selection.
 - Fury candidates are dynamic small mainland minors with few states and a valid land-neighbor target.
-- Weekly units, coring, war declarations, target choice, and AI behavior scale dynamically.
+- Initial units, finite reserve-spawned reinforcements, coring, war declarations, target choice, and AI behavior scale dynamically.
 - Baseline Fury fights one weaker neighbor at a time.
 - Evolution II allows two Fury actors and cooperation mechanics.
 - Evolution III allows three Fury actors and all-neighbor declarations.
