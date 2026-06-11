@@ -163,7 +163,7 @@ Tradeoff:
 
 ## Army of the March branch
 
-This branch improves the finite reinforcement reserve system without making it a free infinite reward. Focus rewards may improve template quality, initial stockpiles, reserve draw efficiency, or add capped reserve refills, but they must not create an uncapped weekly division loop.
+This branch improves the finite reinforcement reserve system without making it a free infinite reward. Focus rewards may improve template quality, initial stockpiles, reserve draw efficiency, or add small capped reserve refills, but they must not create direct free divisions or an uncapped weekly division loop. All scripted reserve grants must respect the 100-division per-actor cap.
 
 ### Focus groups
 
@@ -180,14 +180,14 @@ This branch improves the finite reinforcement reserve system without making it a
 Use varied rewards:
 
 - templates.
-- capped reserve refills or one-time units.
+- capped reserve refills.
 - army XP.
 - equipment stockpiles.
 - support equipment.
 - trucks or trains when logistics path is chosen.
 - commander or officer corps spirit when appropriate.
 - temporary attack modifiers tied to current wars.
-- decisions that convert occupied depots into capped reserve refills or one-time units.
+- decisions that convert occupied depots into capped reserve refills.
 
 Avoid repeating `add two infantry divisions` in many focuses. Each unit focus should name what institution creates the unit or reserve refill, and every refill must be capped by script constants. No focus may create an infinite free-unit source.
 

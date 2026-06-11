@@ -28,7 +28,7 @@ Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-red
 - Select a dynamic small mainland AI minor with few states.
 - Exclude player countries from Fury selection.
 - Allow ordinary Fury target selection to choose AI or player-controlled countries when they meet the normal target gates.
-- Give Fury a national spirit, shared focus tree, decisions, an initial army package, a finite hidden reinforcement reserve, and dynamic target loop.
+- Give Fury a national spirit, shared focus tree, decisions, an initial army package, a finite hidden reinforcement reserve capped at 100 scripted divisions per actor, and dynamic target loop.
 - Fury attacks weaker eligible neighbors without warning.
 - Fury repeats after victory until no valid neighbor remains or Fury capitulates.
 - Fire a news event when Fury defeats its first neighbor.
@@ -57,7 +57,7 @@ Implement scenario `The World in Fury`.
 - Medium creates 5 when safe.
 - High creates 9 when safe.
 - Maximum creates up to 16 when enough safe AI minors exist.
-- intensity controls initial army size, reserve pool size, and evolution setup. It must not create infinite spawning.
+- intensity controls initial army size, reserve pool size, and evolution setup. It must not create instant mass spawning or infinite spawning.
 - type controls pact or hostile behavior.
 - scenario has no normal chaos or prior-event prerequisite.
 

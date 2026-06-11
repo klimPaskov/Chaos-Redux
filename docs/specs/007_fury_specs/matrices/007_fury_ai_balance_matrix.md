@@ -62,7 +62,7 @@ Target score should combine several factors.
 
 ## Finite reinforcement reserve scaling
 
-Weekly units should be dynamic, but they must draw from a hidden finite reinforcement reserve pool. When that pool reaches zero, free weekly spawning stops completely and the Fury actor must rely on normal recruitment or later capped reserve refills.
+Weekly units must draw from a hidden finite reinforcement reserve pool. When that pool reaches zero, free weekly spawning stops completely and the Fury actor must rely on normal recruitment or later capped reserve refills. Scripted reserve grants are capped at 100 total divisions per Fury actor.
 
 Suggested inputs:
 
@@ -77,13 +77,13 @@ Suggested inputs:
 - pact aid bonus.
 - terminal branch bonus.
 
-Growth should be visible but controlled by script constants for pool sizes, draw amounts, evolution multipliers, scenario multipliers, conquest refill caps, and maximum reserve clamps.
+Growth should be visible but controlled by script constants for pool sizes, draw cadence, draw amounts, evolution multipliers, scenario multipliers, conquest refill caps, decision cooldowns, and maximum reserve clamps. The current implementation draws one reserve division every fourth weekly tick, and the depot refill decision adds only two reserve divisions on a 42-day cooldown, so a full 100-division reserve takes years to build or spend.
 
 Examples of scaling direction:
 
 | State | Weekly result |
 | --- | --- |
-| Baseline, one war, low overextension | one small Fury Column while reserve remains |
+| Baseline, one war, low overextension | one small Fury Column every fourth weekly tick while reserve remains |
 | Hardened Fury | stronger reserve-spawned columns and a larger capped pool |
 | Evolution II multi-actor opening | smaller per-actor pools because two Fury actors exist |
 | Evolution III multi-front | stronger openings and capped multi-front reserve draw |
@@ -96,7 +96,7 @@ Exploit protection:
 
 - No focus, decision, event, evolution, scenario, or terminal branch may add uncapped reserve.
 - Weekly spawning must check reserve remaining before creating units.
-- Every refill must use script constants and respect the maximum reserve clamp.
+- Every refill must use script constants and respect the 100-division reserve cap.
 - Cleanup must clear reserve variables when Fury actor state ends.
 
 ## Overextension brakes
@@ -165,7 +165,7 @@ Momentum should not be permanent. It should decay slowly when Fury is at peace a
 | Fury attacks a protected player-linked puppet early | target rules exclude subjects, allies, and countries already at war with the Fury actor |
 | Player lets Fury conquer then steals settlement | settlement avoids player-controlled or player-occupied states |
 | Fury grants instant cores | coring requires decisions, compliance, control, and resources |
-| Weekly units become infinite | hidden reserve pool is finite; weekly spawns consume it; every refill is capped and cleanup clears reserve state |
+| Weekly units become infinite | hidden reserve pool is finite; weekly spawns consume it slowly; every refill is capped by the 100-division per-actor reserve limit and cleanup clears reserve state |
 | Maximum-spread scenario selects majors to hit count | fallback broadens minor criteria but does not select majors unless explicitly redesigned later |
 | AI declares impossible wars | target score checks faction, strength, subject status, current wars, and supply |
 | World-end branch fires too early | requires major or no-neighbor success, high chaos, and focus or branch state |
