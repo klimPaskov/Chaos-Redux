@@ -21,10 +21,10 @@ Fury selection excludes:
 - capitulated countries
 - countries linked to the player by overlord or faction relationships
 - countries with an island capital
-- countries without any valid neighbor target
+- countries without at least two valid neighbor targets
 - countries that recently failed as Fury
 
-Ordinary Fury selection prefers safe one-state AI minors, then broadens to two-state and three-state mainland-capital candidates before using the general safe selector. Repeat random firings choose fresh eligible actors instead of reapplying Fury to an existing Fury country. Evolution II and Evolution III can still force additional actors when their setup needs them. The triggerable scenario and terminal world-end branch use separate setup paths.
+Ordinary Fury selection prefers safe one-state AI minors, then broadens to two-state and three-state mainland-capital candidates before using the general safe selector. Repeat random firings choose fresh eligible actors instead of reapplying Fury to an existing Fury country. Evolution II and Evolution III can still force additional actors when their setup needs them. The triggerable scenario and terminal world-end branch use separate setup paths, but their safe actor seeding still reuses the same two-valid-neighbor gate.
 
 Ordinary targets can be AI or player-controlled countries. Target validity does not exclude a country for being player-controlled or player-linked; targets must not be subjects, Fury actors, allies, subjects of the Fury actor, or countries already at war with the Fury actor.
 
