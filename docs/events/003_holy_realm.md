@@ -17,10 +17,10 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
 
 1. `chaosx.nr3.1` redirects the event to Tibet if possible. If Tibet no longer exists, it can redirect only to Bhutan or Nepal. If none of those tags exists as a valid normal country, event selection treats the event as unavailable.
 2. `chaosx.nr3.2` offers the spec formation choices: leave the monastery outside government, invite the figure into government, restrict the gatherings, or proclaim the mandate immediately.
-3. A formed Realm sets cosmetic tag `THR`, loads `THR_focus`, initializes counters, adds immediate Holy Realm cores on Bhutan and Nepal, records the refuge evolution, opens decisions, and broadcasts an ambiguous refuge news item.
+3. A formed Realm sets cosmetic tag `THR`, loads `THR_focus`, initializes counters, adds immediate Holy Realm cores on Bhutan and Nepal, opens decisions, and broadcasts an ambiguous refuge news item.
 4. Refuge policy is remembered through `chaosx.nr3.4`: open roads, register names, or close passes.
 5. Bhutan, Nepal, and Tibet can receive a Himalayan unity invitation through `chaosx.nr3.3`.
-6. The focus tree drives the major stages. Evolutions are gates: they record that a spiritual or political stage has been reached, unlock the next focus path, and alter later text and AI willingness. Heavy mechanics are attached to focuses, decisions, and event choices inside those paths rather than to the evolution setter itself.
+6. The focus tree drives the major stages through country flags and focus prerequisites. Evolutions are reserved for special crises or transformations rather than normal stage advancement.
    - `THR_bodhisattva_accepts_seal` fires the Bodhisattva stage.
    - `THR_arhats_take_office` creates the Arhat Administration.
    - `THR_buddha_mandate` is localised as the Unshaken Seat and marks the focus prerequisite for Buddhahood.
@@ -38,9 +38,9 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
 The Holy Realm extends existing Chaos Redux systems rather than creating parallel ones:
 
 - Chaos Meter: early refuge, mercy, mediation, restrained Arhat, and renunciation content can reduce chaos modestly through `add_chaos_meter_value`; administrative control, coercive pacification, Divine Sovereignty, final warnings, Mandala Break, and Final Silence raise chaos. Stage unlock effects do not add chaos by themselves.
-- Evolutions: milestones record to the shared event-log evolution pipeline as evolution type `3` and act as focus-path gates. If a Holy Realm evolution is disabled from the event-details UI, the matching focus path is treated as unlocked without requiring that stage log.
+- Evolutions: four special tracks record to the shared event-log evolution pipeline as evolution type `3`: Pattern of Suffering, False Buddha Schism, Relic Mandala, and Wrathful Protection. Normal stage advancement is handled by country flags and focus prerequisites, not event-log evolution rows.
 - Focus tags: every Holy Realm focus has a `# THR FOCUS TAGS:` comment with area, tone, chaos requirement, system, and path-role metadata for audits. The focus tree also exposes custom sorting filters for Holy Realm Peace, Final Silence Pressure, and Mandala Integration. The custom filters follow gameplay role rather than raw tag presence: peaceful refuge, restraint, diplomacy, and defensive preparation appear under Holy Realm Peace; focuses that alter or gate the Final Silence pressure system appear under Final Silence Pressure; territorial register, conquest, and coring focuses appear under Mandala Integration.
-- Event logs: event ID 3 has a dedicated event-detail description and six Holy Realm evolution preview entries covering Mountain Refuge, Bodhisattva, Arhat Administration, Buddha Mandate, Divine Sovereignty, and Final Doctrine path gates. The evolution list row shows the short evolution name and chaos tier; the detailed panes keep the evolution stage.
+- Event logs: event ID 3 has a dedicated event-detail description and four Holy Realm evolution preview entries covering the Pattern of Suffering, False Buddha Schism, Relic Mandala, and Wrathful Protection. The evolution list row shows the short evolution name and chaos tier; the detailed panes keep the evolution stage.
 - Super events: values `7`, `8`, `9`, `10`, `11`, `51`, and `61` display The Awakened One, non-terminal Final Silence, terminal Final Silence, Mandala Breaks, Divine Sovereignty, Mandala of Nations, and Powers of the Awakened.
 - World-end scenarios: terminal Final Silence sets `world_end`, `world_end_final_silence`, and `world_end_final_silence_completed`; non-terminal Final Silence sets `holy_realm_final_silence_nonterminal_completed` without ending the world. Interruption sets `world_end_final_silence_interrupted` and clears the active world-end flag.
 - Settings: Final Silence is blocked by `world_end_disabled`.

@@ -136,6 +136,15 @@ Super-event presentation uses these wired slots:
 
 The `Powers of the Awakened` super-event uses bespoke generated monochrome battlefield art at `gfx/super_events/super_event_powers_of_the_awakened.dds`. Source, prompt, processed PNG, and handoff notes live under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
 
+The event-log evolution pane tracks four authored Buddhahood evolutions rather than the ordinary stage ladder:
+
+- `Pattern of Suffering`: recorded after repeated successful teaching under chaos or world-end pressure.
+- `False Buddha Schism`: recorded when high Defilements corrupt a Buddhahood attempt and the schism pressure begins.
+- `Relic Mandala`: recorded after Mandala Reach or Sangha membership proves the Realm's sacred network outside the mountains.
+- `Wrathful Protection`: recorded when the Sun and Moon crisis is answered through awakened anti-chaos protection.
+
+Baseline states such as Mountain Refuge, Bodhisattva, Arhat Administration, Buddha Mandate, Divine Sovereignty, and Final Silence remain focus and country-flag stages. They do not create event-log evolution rows.
+
 The audio source and rights record is in `docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md`. The `Powers of the Awakened` recording is CC BY 3.0 and requires attribution; the terminal Final Silence recording remains the only medium-confidence public-domain-chain item in the current package.
 
 The Buddhahood achievement icon package is tracked under `docs/assets/003_holy_realm_buddhahood/achievement_icons/`, with package notes in `docs/assets/003_holy_realm_buddhahood/manifest.md` and `.gfx` handoff details in `docs/assets/003_holy_realm_buddhahood/gfx_handoff.md`. The final completed, grey, and not-eligible DDS triplets live in `gfx/achievements/holy_realm_*.dds` and are registered in `interface/chaosx_achievements.gfx`.
