@@ -93,6 +93,30 @@ A good parent prompt to an asset subagent includes the event id, asset list, ass
 
 Choose the source mode based on asset type.
 
+### Scene-first and mood-first selection rule
+
+Do not default event art to maps, cartographic overlays, arrows, staff tables, conference rooms, or generic war-room compositions unless that is the strongest visual for the specific asset.
+
+For Chaos Redux, many event visuals should focus on the actor, force, symbol, ritual, creature, crowd, machine, government, army, leader, or strange condition behind the event. The image should usually make the event feel active and dangerous, not merely show that territory changed.
+
+Prefer visuals that show:
+
+- a country, movement, army, cult, council, machine, plague, or supernatural force as the subject
+- people, banners, ruins, storms, fires, shadows, masks, relics, halls, crowds, weapons, monuments, or rituals
+- obsession, wrath, zeal, panic, corruption, transformation, prophecy, dread, awe, or other event-specific mood
+- fantasy, surreal, mythic, occult, symbolic, or unexplained elements when the event concept supports them
+- a clear subject and strong atmosphere over neutral geography
+
+Avoid making the main visual read like:
+
+- a map has changed
+- borders have shifted
+- officers are discussing an expansion route
+- the art is mainly a strategic diagram with decoration
+- the scene is a generic command table without a strong event identity
+
+Maps may still appear as secondary props when useful, but they should rarely be the main visual idea for fictional, alternate-history, high-chaos, supernatural, symbolic, or strange event assets.
+
 ### Use `$imagegen` for generated symbolic or fictional assets
 
 Use Codex's official `$imagegen` skill by default for:

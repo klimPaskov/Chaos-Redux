@@ -77,6 +77,28 @@ Avoid obvious lines such as:
 
 Those are baseline system responsibilities. Include technical notes only when they prevent a likely mistake, explain non-obvious behavior, or define a unique rule for this event. Otherwise, its just noise.
 
+### Tone and presentation standard
+
+Event descriptions, report text, news text, focus descriptions, decision descriptions, super-event setup, and route flavour should start from the event actor and the force driving the event.
+
+Do not default to bland map-summary writing.
+
+Avoid making the core tone of an event feel like:
+
+- borders have shifted
+- the map has changed
+- a region has been redrawn
+- a front has moved across a map
+- commanders are standing around a table
+
+Those facts can appear when they matter, but they should not be the emotional center of the writing.
+
+Prefer writing that makes the event feel alive. Lead with the country, movement, leader, cult, army, force, plague, machine, ritual, or strange condition that is acting. Describe what has become frightening, unnatural, obsessive, rogue, fanatical, inspired, corrupted, possessed, or transformed when the concept supports that tone.
+
+Chaos Redux does not need every event to read like a grounded military report. When a concept benefits from mystery, fantasy, surrealism, myth, occult signs, prophecy, impossible resolve, strange energy, or unclear public rumours, the spec should use that direction clearly.
+
+Use map and territorial facts as consequences, not as the main flavour. The player should feel what has broken loose before reading a dry summary of which borders changed.
+
 ## 3.2 Depth standard
 
 The specification should be as deep as the event idea deserves.

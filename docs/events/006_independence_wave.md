@@ -1,17 +1,5 @@
 # Event 006: Independence Wave
 
-## Current documentation correction
-
-Current source-of-truth map: `docs/plans/006_independence_wave_plans/source_of_truth_map.md`.
-
-As of the 2026-06-05 user correction, Kuban (`KUB`) and Altai (`ALT`) are not part of the currently accepted Event 006 expansion direction. Earlier documentation and handoffs that framed them as implemented Event 006 high-chaos package carriers are superseded for source-of-truth purposes and should be treated as historical tranche notes, not current requested scope.
-
-The currently accepted new-country lane is niche Independence Wave releases in underrepresented regions, especially Africa and South America. `ASN` Asante, `KBN` Kanem-Bornu, `DFR` Darfur, `ZUL` Zulu, `PLM` Palmares, `AYM` Aymara Highland Congress, and `MAP` Mapuche Land Congress use unique imagegen-regenerated flags. The shared `independence_wave_liberation_provisional_tree` remains generic; country identity is carried through decisions, spirits, route flags, claim targets, event details, and localisation instead of country-specific stacked focus blocks.
-
-`MAP` Mapuche Land Congress is a separate accepted local-polity package, not part of the generic niche lane and not a Chile cosmetic fallback. It uses a real custom tag, custom country/history/localisation setup, unique upright flags, Event 006 package decisions, and the same shared Liberation Provisional Tree as other Event 006 releases.
-
-The current wrap-up target is technical playability and urgent functional closure, not implementing every optional package, route variant, portrait, animation, or spreadsheet detail. Report and news event image GFX files now exist, and current Event 006 report/news texture references resolve; those assets are no longer a completion blocker. Remaining report/news work is limited to optional future variants if later routes need more visual specificity.
-
 ## Current implementation
 
 Independence Wave is now routed as an Event 006 origin system instead of a generic release button. The active base pass compiles inactive candidates through one `every_possible_country` scan, validates each release against a live host, reserves a host-owned survival state before each release attempt, skips candidates that would consume every host-owned state, and stops releasing once the current chaos-tier target is reached. The event recipient is not a responsible actor and is not treated as a special host. A host can enter the resolver through war and instability pressure, surrender pressure, or a peripheral-colonial pressure gate where it owns and controls a non-capital candidate-cored state that is not one of the host's own cores. The target is now rolled inside the configured tier band: baseline waves aim for 3-5 releases, Evo I for 4-6, Evo II for 5-7, Evo III for 6-9, Evo IV for 8-12, and Evo V for 10-16, with host survival and valid candidates still allowed to reduce the actual count.
