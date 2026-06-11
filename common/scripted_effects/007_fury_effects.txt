@@ -76,6 +76,22 @@ fury_sync_evolution_unlocks = {
 	}
 }
 
+fury_prepare_random_event_fire = {
+	fury_sync_evolution_unlocks = yes
+	if = {
+		limit = { has_global_flag = fury_evolution_iii_unlocked }
+		fury_ensure_actor_count_three = yes
+	}
+	else_if = {
+		limit = { has_global_flag = fury_evolution_ii_unlocked }
+		fury_ensure_actor_count_two = yes
+	}
+	else_if = {
+		limit = { NOT = { any_country = { has_country_flag = fury_actor } } }
+		fury_select_ordinary_actor = yes
+	}
+}
+
 fury_select_ordinary_actor = {
 	if = {
 		limit = { any_country = { fury_can_be_selected_one_state = yes } }
