@@ -95,11 +95,11 @@ The route now records achievement-ready flags without adding daily or monthly sc
 - `holy_realm_final_silence_world_end_achievement_ready` is set by terminal Final Silence only if the capital is controlled, has not recently fallen, and global Chaos is above 1000.
 - `holy_realm_empty_seat_achievement_ready` is set by non-terminal Final Silence when the Empty Seat remains faction leader with at least three surviving faction members.
 - `holy_realm_mercy_in_ashes_achievement_ready` is set after five tracked relief/refugee missions while Defilements remain below 20, with at least one credit from a threatened-capital or defensive-interposition mission.
+- `holy_realm_sangha_of_nations_watch_started` records when the Mandala of Nations has at least eight non-chaos, non-puppet members and Sangha Cohesion is at least 70. The achievement checks that the watch has remained valid for 180 days.
 
-The achievement file now defines all 12 Buddhahood achievement ids from the spec. Three ids are intentionally gated behind future readiness flags because their underlying systems are not yet implemented:
+The achievement file now defines all 12 Buddhahood achievement ids from the spec. Two ids are intentionally gated behind future readiness flags because their underlying systems are not yet implemented:
 
 - `holy_realm_false_buddha_debate_achievement_ready` for `Debate the Pretender`.
-- `holy_realm_sangha_of_nations_achievement_ready` for `Sangha of Nations`.
 - `holy_realm_lotus_bridge_achievement_ready` for `Lotus Bridge`.
 
 Two achievement definitions use the strongest currently available route evidence rather than a dedicated new subsystem:
@@ -147,5 +147,5 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add stage-specific mandala and portrait animation assets for Dhyana and Buddhahood.
 - Expand `holy_realm_false_buddha_schism_pressure` into the full False Buddha Schism evolution.
-- Implement the False Buddha debate, Sangha Compact cohesion history, and Lotus Bridge protected-relief-route systems so their achievement-ready flags can be set from gameplay.
+- Implement the False Buddha debate and Lotus Bridge protected-relief-route systems so their achievement-ready flags can be set from gameplay.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.
