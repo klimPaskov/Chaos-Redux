@@ -91,6 +91,21 @@ The route now records achievement-ready flags without adding daily or monthly sc
 - `holy_realm_power_one_becomes_many_active` opens a timed mission window. Teaching successes during that window count toward `holy_realm_one_becomes_many_achievement_ready`.
 - `holy_realm_ordinary_conquest_abuse` is set when the Realm declares war on a normal non-chaos country.
 - `holy_realm_helped_defeat_chaos_country`, `holy_realm_wall_river_sky_achievement_ready`, and `holy_realm_sun_moon_achievement_ready` are set from capitulation outcomes involving chaos enemies.
+- `holy_realm_capital_sanctuary_recently_fallen` is a timed 180-day flag set from `on_state_control_changed` when the capital sanctuary falls.
+- `holy_realm_final_silence_world_end_achievement_ready` is set by terminal Final Silence only if the capital is controlled, has not recently fallen, and global Chaos is above 1000.
+- `holy_realm_empty_seat_achievement_ready` is set by non-terminal Final Silence when the Empty Seat remains faction leader with at least three surviving faction members.
+- `holy_realm_mercy_in_ashes_achievement_ready` is set after five tracked relief/refugee missions while Defilements remain below 20, with at least one credit from a threatened-capital or defensive-interposition mission.
+
+The achievement file now defines all 12 Buddhahood achievement ids from the spec. Three ids are intentionally gated behind future readiness flags because their underlying systems are not yet implemented:
+
+- `holy_realm_false_buddha_debate_achievement_ready` for `Debate the Pretender`.
+- `holy_realm_sangha_of_nations_achievement_ready` for `Sangha of Nations`.
+- `holy_realm_lotus_bridge_achievement_ready` for `Lotus Bridge`.
+
+Two achievement definitions use the strongest currently available route evidence rather than a dedicated new subsystem:
+
+- `No Empire of the Wheel` treats `Vow Against Annihilation` plus final-doctrine renunciation as the clean-route equivalent.
+- `The Sun and Moon Were Within Reach` currently requires activation during world-collapse chaos pressure and a 365-day anti-chaos victory; the separate "two chaos sources or major capital" proof is not yet tracked.
 
 ## UI And Assets
 
@@ -115,6 +130,8 @@ The `Powers of the Awakened` super-event currently uses `gfx/super_events/super_
 
 The audio source and rights record is in `docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md`. The `Powers of the Awakened` recording is CC BY 3.0 and requires attribution; the terminal Final Silence recording remains the only medium-confidence public-domain-chain item in the current package.
 
+The Buddhahood achievement icon package is tracked under `docs/assets/003_holy_realm_buddhahood/achievement_icons/`, with package notes in `docs/assets/003_holy_realm_buddhahood/manifest.md` and `.gfx` handoff details in `docs/assets/003_holy_realm_buddhahood/gfx_handoff.md`. The final completed, grey, and not-eligible DDS triplets live in `gfx/achievements/holy_realm_*.dds` and are registered in `interface/chaosx_achievements.gfx`.
+
 The new decision category reuses `GFX_decision_category_holy_mandala`; the new decisions use existing generic decision icons. Future bespoke art should use:
 
 - Folder: `gfx/interface/decisions/holy_realm/`
@@ -130,5 +147,5 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add stage-specific mandala and portrait animation assets for Dhyana and Buddhahood.
 - Expand `holy_realm_false_buddha_schism_pressure` into the full False Buddha Schism evolution.
-- Add achievement rows for the new Buddhahood and Buddha-power milestones.
+- Implement the False Buddha debate, Sangha Compact cohesion history, and Lotus Bridge protected-relief-route systems so their achievement-ready flags can be set from gameplay.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.
