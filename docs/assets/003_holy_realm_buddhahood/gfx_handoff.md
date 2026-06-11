@@ -8,6 +8,30 @@ The achievement package originally did not edit any `.gfx` files. Achievement sp
 | --- | --- | --- | --- |
 | `Powers of the Awakened` | `GFX_super_event_powers_of_the_awakened` | `gfx/super_events/super_event_powers_of_the_awakened.dds` | Existing sprite path preserved; copied Buddha Mandate placeholder replaced with bespoke generated monochrome super-event art. |
 
+## Holy Mandala Static GUI States
+
+The decision-category Mandala panel now uses static fallback states. These are registered in `interface/003_holy_realm.gfx` and selected by `GetHolyRealmMandalaSprite` in `common/scripted_localisation/003_holy_realm_scripted_localisation.txt`.
+
+| State | Sprite alias | DDS |
+| --- | --- | --- |
+| Dormant | `GFX_holy_realm_mandala_dormant` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant.dds` |
+| Teaching | `GFX_holy_realm_mandala_teaching` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_teaching.dds` |
+| Meditation | `GFX_holy_realm_mandala_meditation` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation.dds` |
+| Awakened | `GFX_holy_realm_mandala_awakened` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened.dds` |
+| Wrathful | `GFX_holy_realm_mandala_wrathful` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_wrathful.dds` |
+| Final Silence | `GFX_holy_realm_mandala_final_silence` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence.dds` |
+| Empty Seat | `GFX_holy_realm_mandala_empty` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty.dds` |
+
+Review assets:
+
+- Processed PNGs: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/mandala_static_contact_sheet.png`
+
+Remaining animation handoff:
+
+- These static states do not replace the final animated frame-sheet package from the asset spec.
+- Future animation should preserve the sprite naming pattern by adding `_animated` variants, for example `GFX_holy_realm_mandala_awakened_animated`, with static fallbacks left in place.
+
 ## Completed DDS triplets
 
 | Achievement id | Base DDS | Grey DDS | Not-eligible DDS | Proposed sprite alias |
