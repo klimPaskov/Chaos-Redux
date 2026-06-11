@@ -146,12 +146,15 @@ These are defined in:
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
 ## Interactions with existing systems
-- Event record insertion remains in `record_events_log_history_entry` from `chaosx_logic_effects.txt`.
-- Opening/tab switching/state values are handled by `chaosx_settings_effects.txt` and `chaosx_scripted_gui_events_log.txt`.
+- `common/scripted_effects/chaosx_events_log_effects.txt` owns Event Logs history/evolution record insertion, actor sanitizing, default actor mapping, popup state, tab rebuilds, shared event-details rebuilds, and event-detail evolution preview rows.
+- `common/scripted_effects/chaosx_logic_effects.txt` still owns random-event selection, type handling, timers, and the fired-event handlers that call the Event Logs recorders.
+- `common/scripted_effects/chaosx_settings_effects.txt` still owns settings controls and event firing helpers, but should not collect new Event Logs history/evolution display logic.
+- Scripted GUI click routing stays in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`.
 - Event-name localisation reuses existing `chaosx.event_name.*` keys.
 - Shared event-details metadata also derives from:
   - `global.events_log_history_*` for fired/log/actor context,
   - `global.events_log_evolution_*` for the latest reached evolution stage.
+- If a history row should show an actor, make sure the actor already exists before the fired-event handler records the row. Event immediates run after the generic log recorder for normal random firing, so actor preparation may need to happen in a pre-fire helper.
 
 ## Future extensions
 - Add per-country actor filter.

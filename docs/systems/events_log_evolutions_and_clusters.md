@@ -118,6 +118,7 @@ Generic evolution-disable contract:
 ## UI assets and wiring
 GUI files touched:
 - `interface/chaosx_events_log_popup.gui`
+- `common/scripted_effects/chaosx_events_log_effects.txt`
 - `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `localisation/english/chaosx_gui_l_english.yml`
