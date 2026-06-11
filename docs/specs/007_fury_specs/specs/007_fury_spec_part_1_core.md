@@ -188,7 +188,7 @@ These are design bands. The implementation should use constants and dynamic vari
 
 ### Hidden reinforcement reserve
 
-Fury must not receive infinite free weekly divisions. Each Fury actor receives a hidden finite reinforcement reserve pool when selected. Weekly reinforcement consumes that pool at a slow cadence. When the pool reaches zero, weekly free spawning stops completely for that actor. Fury can still recruit normally through the base game. Scripted reserve grants are capped at 100 total divisions per Fury actor.
+Fury must not receive infinite free weekly divisions. Each Fury actor receives a hidden finite reinforcement reserve pool when selected. Weekly reinforcement consumes one unit from that pool each weekly tick. When the pool reaches zero, weekly free spawning stops completely for that actor. Fury can still recruit normally through the base game. Scripted weekly reserve grants are capped at 100 total divisions per Fury actor.
 
 The reserve pool should use script constants for:
 
@@ -197,16 +197,17 @@ The reserve pool should use script constants for:
 - per-evolution quality and pool-size modifiers.
 - scenario intensity pool-size modifiers.
 - conquest refill caps.
-- focus, decision, and evolution refill caps.
+- evolution and scenario refill caps.
+- direct focus and decision reward sizing.
 - maximum 100-division reserve clamp.
 
 No decision, focus, event, evolution, or scenario setting may create an uncapped unit loop.
 
-Weekly reinforcement draw should stay slow enough that the reserve cannot appear instantly. The current implementation creates one small Fury Column every fourth weekly tick while reserve remains. Momentum, country size, evolution state, scenario intensity, decisions, and focuses may add capped reserve or improve quality, but they must not directly multiply weekly free divisions.
+Weekly reinforcement draw should stay finite rather than unlimited. The current implementation creates one small Fury Column every weekly tick while reserve remains. Momentum, country size, evolution state, scenario intensity, decisions, and focuses may affect direct reward waves or unit quality, but they must not directly multiply weekly free divisions.
 
 Baseline Fury should have a small initial force and a small reserve pool. Evolution I increases unit quality and reserve size, but remains capped. Evolution II creates two Fury countries, so each individual reserve pool should be smaller than if only one Fury existed. Evolution III creates three Fury countries and stronger openings, but weekly spawning remains capped. The World in Fury scenario intensity changes initial army size and reserve pool size, not infinite spawning.
 
-Limited extra reserves may come from focuses, conquest rewards, decisions, evolutions, scenario setup, or world-end setup, but every refill must be capped by script constants and must respect the maximum reserve clamp. Overextension, equipment shortages, low manpower, high resistance, and capital threat should reduce quality, reduce weekly draw, or pause the best units. They are brakes on a finite reserve, not substitutes for a cap.
+Limited extra weekly reserves may come from evolutions, scenario setup, or world-end setup, but every weekly reserve refill must be capped by script constants and must respect the maximum reserve clamp. Focuses and decisions may still create direct one-time reinforcement waves. Overextension, equipment shortages, low manpower, high resistance, and capital threat should reduce quality, reduce weekly draw, or pause the best units. They are brakes on a finite reserve, not substitutes for a cap.
 
 ## Fury values
 
