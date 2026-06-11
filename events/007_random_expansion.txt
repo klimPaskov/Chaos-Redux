@@ -1,194 +1,210 @@
 add_namespace = chaosx.nr7
 
-##############################################################################################################
-#    ##    ## ########     ########
-#    ###   ## ##     ##    ##    ##
-#    ####  ## ##     ##        ##
-#    ## ## ## ########        ##
-#    ##  #### ##   ##        ##
-#    ##   ### ##    ##       ##
-#    ##    ## ##     ##      ##
-##############################################################################################################
-#   ######
-#   #     #   ##   #    # #####   ####  #    #    ###### #    # #####    ##   #    #  ####  #  ####  #    #
-#   #     #  #  #  ##   # #    # #    # ##  ##    #       #  #  #    #  #  #  ##   # #      # #    # ##   #
-#   ######  #    # # #  # #    # #    # # ## #    #####    ##   #    # #    # # #  #  ####  # #    # # #  #
-#   #   #   ###### #  # # #    # #    # #    #    #        ##   #####  ###### #  # #      # # #    # #  # #
-#   #    #  #    # #   ## #    # #    # #    #    #       #  #  #      #    # #   ## #    # # #    # #   ##
-#   #     # #    # #    # #####   ####  #    #    ###### #    # #      #    # #    #  ####  #  ####  #    #
-
-##############################################################################################################
+# ============================================================================
+# CHAOS REDUX - EVENT 007 FURY
+# ============================================================================
+# Fury turns safe AI minors into repeatable aggressive war states. The runtime
+# loop is self-scheduled per Fury actor, avoiding a global weekly on_action scan.
+# ============================================================================
 
 country_event = {
-    id = chaosx.nr7.1
-    title = chaosx.nr7.1.t
+	id = chaosx.nr7.1
+	title = chaosx.nr7.1.t
+	hide_window = yes
+	is_triggered_only = yes
 
-    hidden = yes
-    is_triggered_only = yes
-
-    immediate = {
-        random_country = {
-            limit = { all_owned_state = { is_island_state = no } }
-            country_event = { id = chaosx.nr7.2 days = 1 }
-        }
-    }
+	immediate = {
+		fury_sync_evolution_unlocks = yes
+		if = {
+			limit = { has_global_flag = fury_evolution_iii_unlocked }
+			fury_ensure_actor_count_three = yes
+		}
+		else_if = {
+			limit = { has_global_flag = fury_evolution_ii_unlocked }
+			fury_ensure_actor_count_two = yes
+		}
+		else_if = {
+			limit = { NOT = { any_country = { has_country_flag = fury_actor } } }
+			fury_select_ordinary_actor = yes
+		}
+	}
 }
 
-##############################################################################################################
+country_event = {
+	id = chaosx.nr7.2
+	title = chaosx.nr7.2.t
+	desc = chaosx.nr7.2.d
+	picture = GFX_report_event_fury_war_office
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr7.2.a
+		ai_chance = { base = 100 }
+	}
+}
 
 country_event = {
-    id = chaosx.nr7.2
-    title = chaosx.nr7.2.t
-    desc = chaosx.nr7.2.d
-    picture = GFX_report_event_chinese_army_training
+	id = chaosx.nr7.10
+	title = chaosx.nr7.10.t
+	hide_window = yes
+	is_triggered_only = yes
 
-    is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { fury_actor_can_continue = yes }
+			fury_choose_next_target = yes
+			if = {
+				limit = { has_country_flag = fury_has_current_target }
+				fury_declare_on_current_target = yes
+			}
+			else = {
+				set_country_flag = fury_no_valid_neighbors
+			}
+		}
+		else = {
+			fury_cleanup_actor = yes
+		}
+	}
+}
 
-    immediate = {
-        hidden_effect = {
-            clear_variable = num_neighbors
-            clear_array = selected_neighbors
-            every_neighbor_country = {
-                limit = { NOT = { is_in_array = { ROOT.selected_neighbors = THIS.id } } }
-                random_select_amount = 4
-                add_to_variable = { ROOT.num_neighbors = 1 }
-                add_to_array = { ROOT.selected_neighbors = THIS.id }
-            }
-            log = "Number of neighbors [ROOT.GetName] has: [?num_neighbors|.0]"
-        }
-    }
+country_event = {
+	id = chaosx.nr7.20
+	title = chaosx.nr7.20.t
+	hide_window = yes
+	is_triggered_only = yes
 
-    option = {
-        name = chaosx.nr7.2.a
-        add_war_support = 0.10
-        ai_chance = {
-            factor = 10
-            # modifier = {
-            #     add = 50
-            #     var:selected_neighbors^0 = {
-            #         is_major = no
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^0 = {
-            #         has_war = yes
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^0 = { num_divisions < ROOT.num_divisions }
-            # }
-        }
-        # var:selected_neighbors^0 = {
-        #     ROOT = {
-        #         declare_war_on = {
-        #             type = annex_everything
-        #             target = PREV
-        #         }
-        #     }
-        # }
-    }
-    option = {
-        name = chaosx.nr7.2.b
-        add_war_support = 0.10
-        ai_chance = {
-            factor = 10
-            # modifier = {
-            #     add = 50
-            #     var:selected_neighbors^1 = {
-            #         is_major = no
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^1 = {
-            #         has_war = yes
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^1 = { num_divisions < ROOT.num_divisions }
-            # }
-        }
-        # var:selected_neighbors^1 = {
-        #     ROOT = {
-        #         declare_war_on = {
-        #             type = annex_everything
-        #             target = PREV
-        #         }
-        #     }
-        # }
-        trigger = {
-            check_variable = { num_neighbors > 1 }
-        }
-    }
-    option = {
-        name = chaosx.nr7.2.c
-        add_war_support = 0.10
-        ai_chance = {
-            factor = 10
-            # modifier = {
-            #     add = 50
-            #     var:selected_neighbors^2 = {
-            #         is_major = no
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^2 = {
-            #         has_war = yes
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^2 = { num_divisions < ROOT.num_divisions }
-            # }
-        }
-        # var:selected_neighbors^2 = {
-        #     ROOT = {
-        #         declare_war_on = {
-        #             type = annex_everything
-        #             target = PREV
-        #         }
-        #     }
-        # }
-        trigger = {
-            check_variable = { num_neighbors > 2 }
-        }
-    }
-    option = {
-        name = chaosx.nr7.2.e
-        add_war_support = 0.10
-        ai_chance = {
-            factor = 10
-            # modifier = {
-            #     add = 50
-            #     var:selected_neighbors^3 = {
-            #         is_major = no
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^3 = {
-            #         has_war = yes
-            #     }
-            # }
-            # modifier = {
-            #     add = 20
-            #     var:selected_neighbors^3 = { num_divisions < ROOT.num_divisions }
-            # }
-        }
-        # var:selected_neighbors^3 = {
-        #     ROOT = {
-        #         declare_war_on = {
-        #             type = annex_everything
-        #             target = PREV
-        #         }
-        #     }
-        # }
-        trigger = {
-            check_variable = { num_neighbors > 3 }
-        }
-    }
+	immediate = {
+		if = {
+			limit = { fury_actor_can_continue = yes }
+			fury_weekly_actor_tick = yes
+			country_event = { id = chaosx.nr7.20 days = 7 }
+		}
+		else = {
+			fury_cleanup_actor = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr7.30
+	title = chaosx.nr7.30.t
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				fury_actor_can_continue = yes
+				NOT = { has_country_flag = fury_first_conquest_recorded }
+				num_of_controlled_states > 1
+			}
+			set_country_flag = fury_first_conquest_recorded
+			set_global_flag = fury_first_conquest_recorded_global
+			add_to_variable = { fury_momentum = constant:fury_balance.first_conquest_momentum }
+			add_to_variable = { fury_compliance_drive = constant:fury_balance.first_conquest_compliance_drive }
+			fury_record_first_conquest_settlement = yes
+			save_event_target_as = fury_news_actor
+			news_event = { id = chaosx.news.7007 days = 1 }
+			fury_check_major_super_event = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr7.40
+	title = chaosx.nr7.40.t
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		fury_sync_evolution_unlocks = yes
+		if = {
+			limit = {
+				has_country_flag = fury_actor
+				has_global_flag = fury_evolution_i_unlocked
+				NOT = { has_country_flag = fury_evolution_i_applied }
+			}
+			fury_apply_evolution_i = yes
+		}
+		if = {
+			limit = {
+				has_country_flag = fury_actor
+				has_global_flag = fury_evolution_ii_unlocked
+			}
+			fury_ensure_actor_count_two = yes
+		}
+		if = {
+			limit = {
+				has_country_flag = fury_actor
+				has_global_flag = fury_evolution_iii_unlocked
+			}
+			fury_ensure_actor_count_three = yes
+			fury_declare_all_valid_neighbors = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr7.50
+	title = chaosx.nr7.50.t
+	desc = chaosx.nr7.50.d
+	picture = GFX_report_event_fury_war_office
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr7.50.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr7.51
+	title = chaosx.nr7.51.t
+	desc = chaosx.nr7.51.d
+	picture = GFX_report_event_fury_war_office
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr7.51.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr7.52
+	title = chaosx.nr7.52.t
+	desc = chaosx.nr7.52.d
+	picture = GFX_report_event_fury_war_office
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr7.52.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr7.53
+	title = chaosx.nr7.53.t
+	desc = chaosx.nr7.53.d
+	picture = GFX_report_event_fury_war_office
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr7.53.a
+	}
+}
+
+news_event = {
+	id = chaosx.news.7007
+	title = chaosx.news.7007.t
+	desc = chaosx.news.7007.d
+	picture = GFX_news_event_fury_first_conquest
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.news.7007.a
+	}
 }

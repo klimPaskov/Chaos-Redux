@@ -186,7 +186,7 @@ initialize_event_categories = {
     # Repeatable events (start at weight 1000, recover over time with diminishing caps)
     add_to_array = { global.repeatable_events = 4 }   # RAND WAR
     add_to_array = { global.repeatable_events = 6 }   # INDP WAVE
-    add_to_array = { global.repeatable_events = 7 }   # RAND EXPANSION
+    add_to_array = { global.repeatable_events = 7 }   # FURY
     add_to_array = { global.repeatable_events = 8 }   # +WORLD TENSION
     add_to_array = { global.repeatable_events = 9 }   # WHITE PEACE
     add_to_array = { global.repeatable_events = 13 }  # NATURAL DISASTERS
@@ -1034,7 +1034,15 @@ events_log_set_default_actor_for_current_event = {
         SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
         set_temp_variable = { events_log_default_has_actor = 1 }
     }
-    else_if = {
+	else_if = {
+		limit = {
+			check_variable = { event_id = 7 }
+			has_event_target = fury_latest_actor
+		}
+		event_target:fury_latest_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
         limit = { check_variable = { event_id = 23 } }
         SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
         set_temp_variable = { events_log_default_has_actor = 1 }

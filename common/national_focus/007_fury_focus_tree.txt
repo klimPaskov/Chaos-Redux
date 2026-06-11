@@ -1,0 +1,1099 @@
+@fury_focus_short = 5
+@fury_focus_medium = 7
+@fury_focus_long = 9
+@fury_threat_small = 2
+@fury_threat_medium = 4
+
+# ============================================================================
+# CHAOS REDUX - EVENT 007 FURY FOCUS TREE
+# ============================================================================
+# Shared AI tree loaded onto countries transformed by Event 007.
+# ============================================================================
+
+focus_tree = {
+	id = fury_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 30
+			is_fury_actor = yes
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 1000 y = 100 }
+	initial_show_position = { x = 10 y = 0 }
+
+	focus = {
+		id = fury_open_the_war_office
+		icon = GFX_goal_fury_war_office
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 0
+		cost = @fury_focus_short
+		completion_reward = {
+			add_war_support = constant:fury_focus_reward.war_support_small
+			add_command_power = constant:fury_focus_reward.command_power_small
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_small }
+			add_ideas = fury_national_fury
+		}
+		ai_will_do = { base = 30 }
+	}
+
+	focus = {
+		id = fury_war_office_without_a_door
+		icon = GFX_goal_generic_political_pressure
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 1
+		cost = @fury_focus_short
+		prerequisite = { focus = fury_open_the_war_office }
+		completion_reward = {
+			set_country_flag = fury_war_office_unlocked
+			add_command_power = constant:fury_focus_reward.command_power_medium
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_small }
+			custom_effect_tooltip = fury_war_office_without_a_door_tt
+		}
+		ai_will_do = { base = 28 }
+	}
+
+	focus = {
+		id = fury_count_the_rifles
+		icon = GFX_goal_generic_army_artillery
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 2
+		cost = @fury_focus_short
+		prerequisite = { focus = fury_war_office_without_a_door }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_focus_reward.infantry_stockpile_large }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_focus_reward.support_stockpile_medium }
+			fury_spawn_weekly_units = yes
+		}
+		ai_will_do = {
+			base = 20
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = fury_capital_guard
+		icon = GFX_goal_generic_construct_military
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 2
+		cost = @fury_focus_short
+		prerequisite = { focus = fury_war_office_without_a_door }
+		completion_reward = {
+			add_stability = constant:fury_focus_reward.stability_small
+			add_manpower = constant:fury_focus_reward.manpower_small
+			add_command_power = constant:fury_focus_reward.command_power_small
+			fury_spawn_weekly_units = yes
+		}
+		ai_will_do = { base = 16 }
+	}
+
+	focus = {
+		id = fury_first_target_files
+		icon = GFX_goal_fury_target_files
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 3
+		cost = @fury_focus_short
+		prerequisite = { focus = fury_count_the_rifles }
+		prerequisite = { focus = fury_capital_guard }
+		completion_reward = {
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_medium }
+			fury_choose_next_target = yes
+			custom_effect_tooltip = fury_first_target_files_tt
+			country_event = { id = chaosx.nr7.10 days = 1 }
+		}
+		ai_will_do = {
+			base = 24
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = fury_first_war_office_orders
+		icon = GFX_goal_generic_major_war
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 4
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_first_target_files }
+		completion_reward = {
+			set_country_flag = fury_first_war_orders_unlocked
+			add_army_experience = constant:fury_focus_reward.army_xp_small
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_small }
+			if = {
+				limit = {
+					NOT = { has_war = yes }
+					any_neighbor_country = { fury_is_valid_target = yes }
+				}
+				fury_declare_on_current_target = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = fury_field_columns
+		icon = GFX_goal_generic_army_doctrines
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 5
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_first_war_office_orders }
+		completion_reward = {
+			add_army_experience = constant:fury_focus_reward.army_xp_medium
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_small }
+			add_manpower = constant:fury_focus_reward.manpower_medium
+		}
+		ai_will_do = {
+			base = 14
+			modifier = { factor = 1.4 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = fury_depot_cadres
+		icon = GFX_goal_generic_construct_mil_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 3
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_field_columns }
+		completion_reward = {
+			set_country_flag = fury_depot_cadres_unlocked
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_focus_reward.infantry_stockpile_medium }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_focus_reward.support_stockpile_small }
+			fury_spawn_depot_decision_units = yes
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = fury_storm_columns
+		icon = GFX_goal_generic_position_armies
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 5
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_field_columns }
+		completion_reward = {
+			set_country_flag = fury_storm_columns_unlocked
+			add_army_experience = constant:fury_focus_reward.army_xp_medium
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 2 has_country_flag = fury_evolution_i_applied }
+		}
+	}
+
+	focus = {
+		id = fury_forward_depots
+		icon = GFX_goal_fury_depots
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 4
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_depot_cadres }
+		prerequisite = { focus = fury_storm_columns }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:fury_focus_reward.truck_stockpile_medium }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_focus_reward.train_stockpile_small }
+			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_small }
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	focus = {
+		id = fury_logistics_under_movement
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 3
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_forward_depots }
+		completion_reward = {
+			set_country_flag = fury_logistics_under_movement_unlocked
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:fury_focus_reward.truck_stockpile_large }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_focus_reward.train_stockpile_medium }
+			subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+			clamp_variable = { var = fury_overextension min = 0 }
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 1.6 check_variable = { var = fury_overextension value = 3 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_officer_tables
+		icon = GFX_goal_generic_army_doctrines
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 5
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_forward_depots }
+		completion_reward = {
+			add_command_power = constant:fury_focus_reward.command_power_large
+			add_army_experience = constant:fury_focus_reward.army_xp_large
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_small }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = fury_one_border_at_a_time
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 8
+		y = 5
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_first_war_office_orders }
+		completion_reward = {
+			set_country_flag = fury_one_border_route
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_medium }
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_small }
+		}
+		ai_will_do = {
+			base = 16
+			modifier = { factor = 0 has_country_flag = fury_evolution_iii_applied }
+		}
+	}
+
+	focus = {
+		id = fury_weak_neighbor_doctrine
+		icon = GFX_goal_generic_attack_allies
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
+		x = 8
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_one_border_at_a_time }
+		completion_reward = {
+			set_country_flag = fury_weak_neighbor_doctrine_unlocked
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_large }
+			add_army_experience = constant:fury_focus_reward.army_xp_small
+		}
+		ai_will_do = {
+			base = 15
+			modifier = { factor = 1.5 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = fury_capital_first_plans
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
+		x = 7
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_weak_neighbor_doctrine }
+		completion_reward = {
+			set_country_flag = fury_capital_first_plans_unlocked
+			add_command_power = constant:fury_focus_reward.command_power_medium
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_small }
+		}
+		ai_will_do = { base = 13 }
+	}
+
+	focus = {
+		id = fury_cut_the_rail_before_the_war
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INDUSTRY }
+		x = 9
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_weak_neighbor_doctrine }
+		completion_reward = {
+			set_country_flag = fury_rail_cutting_unlocked
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:fury_focus_reward.truck_stockpile_medium }
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_small }
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = fury_the_next_neighbor
+		icon = GFX_goal_generic_major_war
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 8
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_capital_first_plans }
+		prerequisite = { focus = fury_cut_the_rail_before_the_war }
+		completion_reward = {
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
+			fury_choose_next_target = yes
+			if = {
+				limit = {
+					NOT = { has_war = yes }
+					has_country_flag = fury_has_current_target
+				}
+				fury_declare_on_current_target = yes
+			}
+		}
+		ai_will_do = {
+			base = 14
+			modifier = { factor = 2 NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = fury_occupation_registers
+		icon = GFX_goal_fury_occupation_registers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 5
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_first_war_office_orders }
+		completion_reward = {
+			add_ideas = fury_compliance_drive
+			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_small }
+			subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+			clamp_variable = { var = fury_overextension min = 0 }
+		}
+		ai_will_do = {
+			base = 16
+			modifier = { factor = 2 check_variable = { var = fury_overextension value = 3 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_census_of_taken_states
+		icon = GFX_goal_fury_occupation_registers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 11
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_occupation_registers }
+		completion_reward = {
+			set_country_flag = fury_occupation_registers_unlocked
+			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_small }
+			random_controlled_state = {
+				limit = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					NOT = { is_core_of = ROOT }
+					NOT = { has_state_flag = fury_settlement_registered }
+				}
+				set_state_flag = fury_settlement_registered
+				add_compliance = constant:fury_focus_reward.compliance_state_small
+			}
+		}
+		ai_will_do = {
+			base = 13
+			modifier = { factor = 2 any_controlled_state = { NOT = { is_core_of = ROOT } } }
+		}
+	}
+
+	focus = {
+		id = fury_new_registry_offices
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_occupation_registers }
+		completion_reward = {
+			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_medium }
+			add_stability = constant:fury_focus_reward.stability_small
+			add_command_power = constant:fury_focus_reward.command_power_small
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 1.8 check_variable = { var = fury_overextension value = 4 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_rail_and_registry
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_census_of_taken_states }
+		prerequisite = { focus = fury_new_registry_offices }
+		completion_reward = {
+			set_country_flag = fury_rail_registry_unlocked
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_focus_reward.train_stockpile_small }
+			subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+			clamp_variable = { var = fury_overextension min = 0 }
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 2 check_variable = { var = fury_overextension value = 4 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_garrison_the_names
+		icon = GFX_goal_generic_defence
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		x = 11
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_rail_and_registry }
+		completion_reward = {
+			set_country_flag = fury_garrison_names_unlocked
+			add_manpower = constant:fury_focus_reward.manpower_medium
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_focus_reward.infantry_stockpile_medium }
+			subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+			clamp_variable = { var = fury_overextension min = 0 }
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 2 check_variable = { var = fury_overextension value = 5 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_conquest_coring
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_STABILITY }
+		x = 13
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_rail_and_registry }
+		completion_reward = {
+			random_controlled_state = {
+				limit = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					NOT = { is_core_of = ROOT }
+					NOT = { has_state_flag = fury_settlement_registered }
+				}
+				set_state_flag = fury_settlement_registered
+				add_compliance = constant:fury_focus_reward.compliance_state_small
+			}
+			add_command_power = constant:fury_focus_reward.command_power_medium
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 1.8 any_controlled_state = { has_state_flag = fury_settlement_registered } }
+		}
+	}
+
+	focus = {
+		id = fury_core_by_administration
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 9
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_garrison_the_names }
+		prerequisite = { focus = fury_conquest_coring }
+		mutually_exclusive = { focus = fury_core_by_march }
+		completion_reward = {
+			set_country_flag = fury_admin_coring_unlocked
+			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_medium }
+			subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_medium }
+			clamp_variable = { var = fury_overextension min = 0 }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 2 check_variable = { var = fury_overextension value = 4 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_core_by_march
+		icon = GFX_goal_generic_forceful_treaty
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 14
+		y = 9
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_garrison_the_names }
+		prerequisite = { focus = fury_conquest_coring }
+		mutually_exclusive = { focus = fury_core_by_administration }
+		completion_reward = {
+			set_country_flag = fury_march_coring_unlocked
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+			add_war_support = constant:fury_focus_reward.war_support_small
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.8 has_country_flag = fury_evolution_i_applied }
+			modifier = { factor = 0 check_variable = { var = fury_overextension value = 6 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_second_war_table
+		icon = GFX_goal_fury_pact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 16
+		y = 5
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_first_war_office_orders }
+		mutually_exclusive = { focus = fury_rival_column }
+		available = {
+			OR = {
+				has_global_flag = fury_evolution_ii_unlocked
+				has_country_flag = fury_evolution_ii_applied
+				AND = {
+					has_global_flag = fury_triggerable_scenario_pact
+					any_other_country = { is_fury_actor = yes }
+				}
+			}
+		}
+		completion_reward = {
+			set_country_flag = fury_evolution_ii_applied
+			set_global_flag = fury_pact_formed
+			set_country_flag = fury_cooperation_route
+			set_country_flag = fury_pact_member
+			add_ideas = fury_pact_command
+			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 0 has_country_flag = fury_rival_route }
+			modifier = { factor = 2 has_global_flag = fury_triggerable_scenario_pact }
+			modifier = { factor = 0 has_global_flag = fury_triggerable_scenario_hostile }
+		}
+	}
+
+	focus = {
+		id = fury_the_other_fire_answers
+		icon = GFX_goal_generic_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 16
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_second_war_table }
+		completion_reward = {
+			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
+			every_other_country = {
+				limit = { is_fury_actor = yes }
+				add_opinion_modifier = { target = ROOT modifier = improved_relations }
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = fury_shared_war_tables
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 15
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_the_other_fire_answers }
+		completion_reward = {
+			add_command_power = constant:fury_focus_reward.command_power_medium
+			add_army_experience = constant:fury_focus_reward.army_xp_medium
+			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
+		}
+		ai_will_do = { base = 9 }
+	}
+
+	focus = {
+		id = fury_partition_before_victory
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 17
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_the_other_fire_answers }
+		completion_reward = {
+			set_country_flag = fury_partition_plans_unlocked
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_medium }
+			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 1.5 any_other_country = { is_fury_actor = yes } }
+		}
+	}
+
+	focus = {
+		id = fury_joint_cadre_transfers
+		icon = GFX_goal_generic_army_artillery
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 16
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_shared_war_tables }
+		prerequisite = { focus = fury_partition_before_victory }
+		completion_reward = {
+			add_manpower = constant:fury_focus_reward.manpower_medium
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_focus_reward.infantry_stockpile_medium }
+			every_other_country = {
+				limit = { is_fury_actor = yes has_country_flag = fury_pact_member }
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_focus_reward.infantry_stockpile_small }
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = fury_fury_pact_command
+		icon = GFX_goal_generic_alliance
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 16
+		y = 9
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_joint_cadre_transfers }
+		completion_reward = {
+			add_ideas = fury_pact_command
+			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_medium }
+			set_country_flag = fury_pact_command_unlocked
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 0 has_country_flag = fury_rival_route }
+		}
+	}
+
+	focus = {
+		id = fury_rival_column
+		icon = GFX_goal_fury_rivalry
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ARMY_XP }
+		x = 20
+		y = 5
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_first_war_office_orders }
+		mutually_exclusive = { focus = fury_second_war_table }
+		available = {
+			OR = {
+				has_global_flag = fury_evolution_ii_unlocked
+				has_country_flag = fury_evolution_ii_applied
+				AND = {
+					has_global_flag = fury_triggerable_scenario_hostile
+					any_other_country = { is_fury_actor = yes }
+				}
+			}
+		}
+			completion_reward = {
+				set_country_flag = fury_evolution_ii_applied
+				set_country_flag = fury_rival_route
+				add_ideas = fury_rival_doctrine
+				add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_small }
+			}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 0 has_country_flag = fury_cooperation_route }
+			modifier = { factor = 2 has_global_flag = fury_triggerable_scenario_hostile }
+			modifier = { factor = 0 has_global_flag = fury_triggerable_scenario_pact }
+		}
+	}
+
+	focus = {
+		id = fury_no_second_fury
+		icon = GFX_goal_generic_dangerous_deal
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ARMY_XP }
+		x = 20
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_rival_column }
+		completion_reward = {
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+			fury_declare_on_rival_actor = yes
+		}
+		ai_will_do = {
+			base = 9
+			modifier = { factor = 2 any_other_country = { is_fury_actor = yes NOT = { is_in_faction_with = ROOT } } }
+		}
+	}
+
+	focus = {
+		id = fury_claim_the_same_map
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 19
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_no_second_fury }
+		completion_reward = {
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_medium }
+			add_army_experience = constant:fury_focus_reward.army_xp_medium
+			set_country_flag = fury_rival_map_claims
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	focus = {
+		id = fury_absorb_the_rival_fire
+		icon = GFX_goal_fury_rivalry
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_MANPOWER }
+		x = 21
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_no_second_fury }
+		completion_reward = {
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
+			add_manpower = constant:fury_focus_reward.manpower_medium
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = fury_last_fury_standing
+		icon = GFX_goal_generic_major_war
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ANNEXATION }
+		x = 20
+		y = 8
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_claim_the_same_map }
+		prerequisite = { focus = fury_absorb_the_rival_fire }
+		completion_reward = {
+			set_country_flag = fury_last_fury_standing_candidate
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_large }
+		}
+		ai_will_do = {
+			base = 7
+			modifier = { factor = 0 has_country_flag = fury_cooperation_route }
+		}
+	}
+
+	focus = {
+		id = fury_hardened_doctrine
+		icon = GFX_goal_generic_army_doctrines
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 0
+		y = 5
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_first_war_office_orders }
+		available = {
+			OR = {
+				has_global_flag = fury_evolution_i_unlocked
+				has_country_flag = fury_evolution_i_applied
+			}
+		}
+		bypass = { has_country_flag = fury_evolution_i_applied }
+		completion_reward = {
+			fury_apply_evolution_i = yes
+		}
+		ai_will_do = {
+			base = 16
+			modifier = { factor = 0 NOT = { has_global_flag = fury_evolution_i_unlocked } }
+		}
+	}
+
+	focus = {
+		id = fury_harden_the_columns
+		icon = GFX_goal_generic_army_doctrines
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 0
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_hardened_doctrine }
+		completion_reward = {
+			add_army_experience = constant:fury_focus_reward.army_xp_medium
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
+			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:fury_focus_reward.artillery_stockpile_medium }
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	focus = {
+		id = fury_depot_officers_without_leave
+		icon = GFX_goal_generic_construct_mil_factory
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		x = -1
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_harden_the_columns }
+		completion_reward = {
+			set_country_flag = fury_depot_officers_unlocked
+			add_command_power = constant:fury_focus_reward.command_power_medium
+			fury_spawn_depot_decision_units = yes
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = fury_forced_march_tables
+		icon = GFX_goal_generic_position_armies
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 1
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_harden_the_columns }
+		completion_reward = {
+			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_small }
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = fury_occupation_as_recruitment
+		icon = GFX_focus_generic_manpower
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		x = 0
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_depot_officers_without_leave }
+		prerequisite = { focus = fury_forced_march_tables }
+		completion_reward = {
+			add_manpower = constant:fury_focus_reward.manpower_large
+			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_small }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 1.5 check_variable = { var = fury_overextension value = 4 compare = less_than } }
+		}
+	}
+
+	focus = {
+		id = fury_all_borders
+		icon = GFX_goal_fury_all_borders
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 24
+		y = 5
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_first_war_office_orders }
+		available = {
+			OR = {
+				has_global_flag = fury_evolution_iii_unlocked
+				has_country_flag = fury_evolution_iii_applied
+			}
+		}
+		bypass = { has_country_flag = fury_evolution_iii_applied }
+		completion_reward = {
+			set_country_flag = fury_evolution_iii_applied
+			fury_declare_all_valid_neighbors = yes
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_medium }
+		}
+		ai_will_do = {
+			base = 18
+			modifier = { factor = 0 NOT = { has_global_flag = fury_evolution_iii_unlocked } }
+		}
+	}
+
+	focus = {
+		id = fury_three_war_offices
+		icon = GFX_goal_generic_intelligence_exchange
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		x = 24
+		y = 6
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_all_borders }
+		completion_reward = {
+			add_command_power = constant:fury_focus_reward.command_power_large
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_large }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+		}
+		ai_will_do = { base = 12 }
+	}
+
+	focus = {
+		id = fury_storms_on_all_fronts
+		icon = GFX_goal_generic_major_war
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 23
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_three_war_offices }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_focus_reward.infantry_stockpile_large }
+			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:fury_focus_reward.artillery_stockpile_large }
+			fury_spawn_weekly_units = yes
+		}
+		ai_will_do = {
+			base = 11
+			modifier = { factor = 1.5 has_war = yes }
+		}
+	}
+
+	focus = {
+		id = fury_no_target_is_first
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 25
+		y = 7
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_three_war_offices }
+		completion_reward = {
+			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_large }
+			fury_declare_all_valid_neighbors = yes
+		}
+		ai_will_do = {
+			base = 12
+			modifier = { factor = 1.5 any_neighbor_country = { fury_is_valid_target = yes } }
+		}
+	}
+
+	focus = {
+		id = fury_all_roads_are_front_roads
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		x = 24
+		y = 8
+		cost = @fury_focus_medium
+		prerequisite = { focus = fury_storms_on_all_fronts }
+		prerequisite = { focus = fury_no_target_is_first }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:fury_focus_reward.truck_stockpile_large }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_focus_reward.train_stockpile_medium }
+			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_medium }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	focus = {
+		id = fury_the_last_neighbor_has_fallen
+		icon = GFX_goal_generic_demand_territory
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 10
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_the_next_neighbor }
+		prerequisite = { focus = fury_core_by_administration focus = fury_core_by_march }
+		available = {
+			OR = {
+				has_country_flag = fury_no_valid_neighbors
+				num_of_controlled_states > constant:fury_balance.major_super_event_state_threshold
+			}
+		}
+		completion_reward = {
+			set_country_flag = fury_world_end_candidate
+			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_medium }
+			add_named_threat = { threat = @fury_threat_small name = fury_the_last_neighbor_has_fallen_threat }
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 3 has_country_flag = fury_no_valid_neighbors }
+			modifier = { factor = 0 check_variable = { var = fury_overextension value = 7 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_carry_the_orders_overseas
+		icon = GFX_goal_fury_world_end
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INDUSTRY }
+		x = 9
+		y = 11
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_the_last_neighbor_has_fallen }
+		completion_reward = {
+			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_large }
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:fury_focus_reward.convoy_stockpile_medium }
+			set_country_flag = fury_overseas_orders_unlocked
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = fury_no_valid_neighbors }
+		}
+	}
+
+	focus = {
+		id = fury_continental_ignitions
+		icon = GFX_goal_fury_world_end
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ANNEXATION }
+		x = 11
+		y = 11
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_the_last_neighbor_has_fallen }
+		completion_reward = {
+			set_country_flag = fury_continental_ignitions_unlocked
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
+			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_medium }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 2 has_country_flag = fury_world_end_candidate }
+		}
+	}
+
+	focus = {
+		id = fury_main_fury_pact
+		icon = GFX_goal_fury_pact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 12
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_carry_the_orders_overseas }
+		prerequisite = { focus = fury_continental_ignitions }
+		completion_reward = {
+			set_country_flag = fury_main_pact_candidate
+			set_global_flag = fury_pact_formed
+			set_country_flag = fury_pact_member
+			add_ideas = fury_pact_command
+			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_medium }
+		}
+		ai_will_do = {
+			base = 4
+			modifier = { factor = 0 has_country_flag = fury_rival_route }
+		}
+	}
+
+	focus = {
+		id = fury_world_in_fury
+		icon = GFX_goal_fury_world_end
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 13
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_main_fury_pact }
+		available = {
+			has_country_flag = fury_world_end_candidate
+			OR = {
+				has_country_flag = fury_no_neutral_map_unlocked
+				is_major = yes
+				num_of_controlled_states > constant:fury_balance.world_end_actor_state_threshold
+				NOT = { any_neighbor_country = { fury_is_valid_target = yes } }
+			}
+		}
+		completion_reward = {
+			set_global_flag = fury_world_end_candidate
+			add_named_threat = { threat = @fury_threat_medium name = fury_world_in_fury_threat }
+			custom_effect_tooltip = fury_world_in_fury_candidate_tt
+			fury_try_start_world_end = yes
+		}
+		ai_will_do = {
+			base = 3
+			modifier = { factor = 2 has_global_flag = fury_evolution_iii_unlocked }
+			modifier = { factor = 0 check_variable = { var = fury_overextension value = 7 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = fury_no_neutral_map
+		icon = GFX_goal_generic_attack_allies
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 14
+		cost = @fury_focus_long
+		prerequisite = { focus = fury_world_in_fury }
+		completion_reward = {
+			set_country_flag = fury_no_neutral_map_unlocked
+			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
+			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_medium }
+			add_named_threat = { threat = @fury_threat_small name = fury_no_neutral_map_threat }
+		}
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 0 NOT = { has_global_flag = fury_world_end_candidate } }
+		}
+	}
+}

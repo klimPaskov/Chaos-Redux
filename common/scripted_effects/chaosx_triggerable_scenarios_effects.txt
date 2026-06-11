@@ -32,6 +32,10 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.nuclear }
 	}
 	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_fury_type } }
+		set_variable = { triggerable_scenarios_fury_type = constant:fury_scenario_type.pact }
+	}
+	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -74,6 +78,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.final_silence_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.world_in_fury
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.world_in_fury_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -111,6 +123,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.world_in_fury
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.world_in_fury_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.zombie_apocalypse
 		}
 		add_to_array = {
@@ -130,6 +150,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.zombie_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.world_in_fury
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.world_in_fury_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -160,6 +188,14 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.world_in_fury
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.world_in_fury_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -226,6 +262,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.final_silence_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.world_in_fury
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.world_in_fury_name
 		}
 	}
 }
@@ -373,6 +417,14 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.chaos_republics }
 		}
 	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.world_in_fury } }
+		subtract_from_variable = { triggerable_scenarios_fury_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_fury_type < constant:fury_scenario_type.pact } }
+			set_variable = { triggerable_scenarios_fury_type = constant:fury_scenario_type.hostile }
+		}
+	}
 	else = {
 		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
 		if = {
@@ -406,6 +458,14 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_soviet_collapse_type > constant:triggerable_scenario_soviet_collapse_type.chaos_republics } }
 			set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.normal_republics }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.world_in_fury } }
+		add_to_variable = { triggerable_scenarios_fury_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_fury_type > constant:fury_scenario_type.hostile } }
+			set_variable = { triggerable_scenarios_fury_type = constant:fury_scenario_type.pact }
 		}
 	}
 	else = {
@@ -464,6 +524,16 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		trigger_final_silence_scenario = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.world_in_fury
+				compare = equals
+			}
+		}
+		trigger_world_in_fury_scenario = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }

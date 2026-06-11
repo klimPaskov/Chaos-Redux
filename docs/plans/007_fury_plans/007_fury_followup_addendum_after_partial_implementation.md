@@ -2,23 +2,33 @@
 
 ## Purpose
 
-Event 007 Fury has a working baseline: actor selection, Fury actor package, self-scheduled weekly loop, target selection, first-conquest news `chaosx.news.7007`, decisions, shared focus skeleton, triggerable scenario `The World in Fury`, event-log detail mapping, ten achievement definitions with placeholder DDS triplets, slot `59` super-event text/image wiring, and docs/assets manifests.
+Event 007 Fury has a full implementation surface: actor selection, Fury actor package, self-scheduled weekly loop, scored target selection, first-conquest news `chaosx.news.7007`, decisions and missions, a 52-focus shared tree, triggerable scenario `The World in Fury`, event-log detail mapping, ten achievement definitions, final Fury-specific asset triplets, major slot `59` super-event wiring, terminal slot `60` world-end wiring, and docs/assets manifests.
 
 Recent patches also fixed the old news-id conflict, slot `59` image sprite wiring, decision cost gate mismatches, cooperation/rivalry mutual exclusion, settlement control and compliance gates, depot reward dumping, `var:fury_current_target` war declaration, evolution unlock flag sync, Evolution I misapplication, and the world-end focus setting only `fury_world_end_candidate`.
 
-The feature is still incomplete. The current implementation is a safe skeleton, not the full Event 007 design. This addendum turns the remaining audit blockers into an implementation plan that can be executed without rereading every prior audit.
+This addendum is retained as the implementation checklist and audit ledger for the Fury buildout. Its phase requirements have been implemented or explicitly bounded below, with final completion judged by the current audit reports and validation evidence rather than this document alone.
 
-No broad new premise is needed. The next work should deepen the existing Fury loop: target choice, occupation strain, focus routes, anti-Fury missions, terminal world-end escalation, achievements, and final presentation.
+No broad new premise is queued from this addendum. Future work should come from focused audit findings or live-session balance evidence.
+
+Implementation progress note:
+
+- Phase 1 has been implemented as a 52-focus shared tree with route gates, localisation, icons, AI weights, and focus-auditor fixes for evolved/scenario actors.
+- Phase 2 has been implemented with scored neighbor handling covering size, industry, divisions, manpower, war state, faction state, major status, rough terrain, supply nodes, Fury momentum, overextension, target preparation, evolution state, and last-target churn.
+- Phase 3 has been implemented for occupation pressure, garrison capacity, register work, rail registry work, crisis mission, and two coring methods.
+- Phase 4 has been implemented with terminal eligibility, visible seed blocking, world-end flags, Fury-only faction setup, continent-first seeding, player warning/grace, a terminal-only player-linked targeting helper, terminal reserve decisions, world-threat integration, slot `60` super-event text/final image/audio wiring, defeat cleanup for the Fury threat source, and three-continent world-end achievement tracking.
+- Phase 5 has been implemented as a staged anti-Fury response surface with Border Watch, Emergency Aid, Firebreak Staff Talks, Supply Denial, Recognition Denial, and mission failure checks tied to capital, border, and active-war pressure.
+- Phase 6 has been implemented with achievement tracking tied to containment contribution, scenario intensity/type, all-safe-candidate Maximum fallback, Fury-on-Fury war declarations, major-Fury defeat, no-coring containment, and terminal world-end defeat.
+- Phase 7 has been implemented with final report/news/UI/focus/idea/decision/category/achievement/super-event assets, sourced audio, quote/audio ledgers, and GFX registrations.
 
 ## Prior addendum status
 
-No prior addendum exists under `docs/plans/007_fury_plans/` at the time of this pass. This file is the active Fury follow-up plan. If accepted, either implement it directly or promote the accepted design into `docs/specs/007_fury_specs/` before another improvement-loop pass for Fury.
+No prior addendum exists under `docs/plans/007_fury_plans/` at the time of this pass. This file remains as the Fury follow-up audit ledger; new Fury expansion work should come from focused audit findings or live-session balance evidence.
 
 ## Implementation phases
 
 ### Phase 1: Expand Fury into a real shared focus tree
 
-Current blocker: the shared tree has 13 focuses and only sketches the routes promised by `docs/specs/007_fury_specs/specs/007_fury_focus_tree_spec.md`.
+Current status: the shared tree has been expanded into a 52-focus route tree with opening, army, expansion, occupation, cooperation, rivalry, evolution, and world-end branches. Key branch icons are wired through `interface/007_fury.gfx`.
 
 Replace the skeleton with a compact but real shared tree of roughly 35 to 45 focuses. Do not bulk-generate filler. The tree should keep the existing `fury_focus_tree` id and preserve existing focus ids where they already unlock implemented systems, but add route depth around them.
 
@@ -65,7 +75,7 @@ Acceptance for this phase:
 
 ### Phase 2: Replace simplified target selection with scored target handling
 
-Current blocker: target selection exists but is simplified. It needs to behave like an aggressive but bounded AI war machine, not a random neighbor picker.
+Current status: target selection uses scored neighbor handling, no-player ordinary target gates, stale-target cleanup, Evolution III all-neighbor declarations, and a separate terminal-only player-linked target helper.
 
 Add a target-scoring layer around the existing `fury_choose_next_target`, `fury_declare_on_current_target`, and `fury_declare_all_valid_neighbors` helpers.
 
@@ -119,7 +129,7 @@ Acceptance for this phase:
 
 ### Phase 3: Deepen occupation, settlement, and overextension gameplay
 
-Current blocker: conquest and settlement exist, but the loop lacks deep occupation and overextension gameplay.
+Current status: occupation pressure, garrison capacity, register work, rail registry work, crisis mission, and two coring methods are implemented.
 
 Turn occupation into a pressure system around state groups, compliance work, garrison capacity, and administrative method.
 
@@ -172,7 +182,7 @@ Acceptance for this phase:
 
 ### Phase 4: Implement the terminal World in Fury branch
 
-Current blocker: the focus currently sets only `fury_world_end_candidate`; terminal world-end branch lacks continent seeding, faction setup, player warnings, world-end flags, and world-threat integration.
+Current status: the focus calls `fury_try_start_world_end`, which checks terminal eligibility, counts safe seed candidates, starts the terminal branch when enough safe AI minors remain, or reports `fury_world_end_seed_blocked` when seeding cannot be done safely. The branch sets world-end/world-threat flags, creates `The World in Fury` faction, seeds other continents first, warns players, fires slot `60`, adds terminal reserve decisions, keeps post-grace player-linked targeting behind the terminal-only `fury_terminal_can_threaten_player_linked_country` helper, and reports terminal defeat through `chaosx.nr7.53`.
 
 Implement terminal escalation as a separate branch from the triggerable scenario. Keep the scenario `The World in Fury` as manual setup; the world-end branch is a campaign state.
 
@@ -186,7 +196,7 @@ Create a scripted trigger such as `can_start_fury_world_end = yes` that requires
 - the scoped actor has `fury_world_end_candidate`
 - actor is major, controls at least `constant:fury_balance.world_end_actor_state_threshold` states, or has no valid continental AI neighbors
 - overextension below `constant:fury_occupation.overextension_extreme_gate` or a completed world-end preparation focus that pays the cost
-- enough safe AI candidates on other continents or a documented blocked outcome that delays terminal branch rather than using a fallback
+- enough safe AI candidates on other continents or a documented blocked outcome that delays terminal branch rather than selecting unsafe countries
 
 Required opening effect:
 
@@ -251,7 +261,7 @@ Acceptance for this phase:
 
 ### Phase 5: Replace the anti-Fury button with a mission layer
 
-Current blocker: anti-Fury response is one decision, not a mission layer.
+Current status: anti-Fury response is a staged decision and mission layer with Border Watch, Emergency Aid, Firebreak Staff Talks, Supply Denial, and Recognition Denial.
 
 Keep `anti_fury_response_category`, but turn it into a staged response surface that appears only after `fury_major_super_event_fired` or `fury_world_end_active`.
 
@@ -292,7 +302,7 @@ Acceptance for this phase:
 
 ### Phase 6: Make achievements depend on real systems
 
-Current blocker: achievements exist but several depend on shallow or missing systems.
+Current status: achievements are wired to Fury containment, anti-Fury mission contribution, scenario intensity/type, all-safe-candidate Maximum fallback, major-Fury, pact, no-neighbor, coring, Fury-on-Fury war declarations, factionless major containment, and world-end outcome flags. Completion audits cleared the remaining scenario-state and ordinary-selection blockers after the implementation patches.
 
 Update achievement tracking after Phases 3 to 5 so achievements are earned through actual Fury systems.
 
@@ -300,11 +310,11 @@ Required tracking changes:
 
 - `achievement_fury_firebreak_holds` should require Border Watch mission success, capital held, and Fury defeated or deterred.
 - `achievement_fury_pact_breaker_path` should require at least two Fury pact members and defeat of pact leader or faction dissolution.
-- `achievement_fury_ten_fires` should support maximum scenario if fewer than ten safe actors exist only if a clear global flag records `fury_triggerable_scenario_all_safe_candidates_used`; otherwise it should require ten.
+- `achievement_fury_ten_fires` supports the Maximum scenario if ten actors spawn or if `fury_triggerable_scenario_used_every_safe_candidate` records that every safe eligible candidate was used before ten actors could be created.
 - `achievement_fury_last_neighbor_path` should require Fury no-neighbor state before world-end begins, not merely cleanup after the no-neighbor flag was set.
 - `achievement_fury_world_without_fury` should require terminal Phase 4: world-end super-event fired, at least three continent seeds or every safe continent attempted, world-threat source cleared, and all Fury actors defeated.
 - `achievement_fury_rivals_burn` should require a recorded Fury-on-Fury war and defeat of both involved actors.
-- `achievement_fury_major_without_faction_path` should record the player's factionless status at war start and at Fury capitulation, not only at cleanup time.
+- `achievement_fury_major_without_faction_path` is recorded while a factionless player is at war with a major Fury actor, and the achievement also requires the player to be outside any faction at completion.
 - `achievement_fury_no_cores_path` should require Fury first conquest plus no `fury_coring_completed` before final containment.
 
 Acceptance for this phase:
@@ -316,34 +326,33 @@ Acceptance for this phase:
 
 ### Phase 7: Final assets, audio, and documentation alignment
 
-Current blocker: final assets and audio are placeholders.
+Current status: Fury-specific report, news, idea, decision, key focus, achievement, major-super-event, and world-end super-event assets are wired. The major-Fury and World in Fury super-event audio tracks are sourced and documented.
 
-This phase can be queued if the next tranche is gameplay-only, but completion cannot be claimed until it is done.
+This phase was not queued; final Fury-specific assets, audio, source notes, and registrations are implemented.
 
 Asset families:
 
-- report image for Fury start or War Office report
-- news image for `chaosx.news.7007`
-- major-Fury super-event image for slot `59` or chosen slot
-- World in Fury terminal super-event image if Phase 4 is implemented
-- Fury decision category icon and decision icons
-- idea icons for `fury_national_fury`, `fury_hardened_fury`, `fury_overextension`, `fury_compliance_drive`, `fury_pact_command`, `fury_rival_doctrine`, `fury_world_fury` if added, and `anti_fury_border_watch`
-- focus icon family for War Office, depots, target files, occupation registers, pact, rivalry, all borders, and world-end
-- ten achievement triplets replacing copied placeholders
+- report image for Fury start or War Office report: final DDS at `gfx/event_pictures/fury/fury_war_office.dds`
+- news image for `chaosx.news.7007`: final DDS at `gfx/event_pictures/fury/fury_first_conquest.dds`
+- major-Fury super-event image: generated final art is wired at `gfx/super_events/fury_becomes_a_state.dds`; source and processed PNGs live under `docs/assets/007_fury/super_events/fury_becomes_a_state/`.
+- World in Fury terminal super-event image: generated final art is wired at `gfx/super_events/super_event_world_in_fury.dds`; source and processed PNGs live under `docs/assets/007_fury/super_events/world_in_fury/`.
+- Fury decision category icon and decision icons: final DDS files under `gfx/interface/decisions/fury/`
+- idea icons: final DDS files under `gfx/interface/ideas/fury/`
+- key focus icon family for War Office, depots, target files, occupation registers, pact, rivalry, all borders, and world-end: final DDS files under `gfx/interface/goals/fury/`
+- ten achievement triplets: final DDS files under `gfx/achievements/`
 - optional faction emblem for Fury Pact
 - optional generated institutional council portrait if the War Directorate leader route is implemented
 
 Audio:
 
-- major-Fury super-event must receive a unique verified final track and documented audio id.
-- World in Fury terminal super-event must receive a unique verified final track if Phase 4 is implemented.
-- Existing Independence Wave audio reuse must remain documented as placeholder and cannot be claimed final.
+- major-Fury super-event audio is wired as ID `59` with `music/fury_becomes_a_state.ogg` and `sound/chaosx_super_event_fury_becomes_a_state.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
+- World in Fury terminal super-event audio is wired as ID `60` with `music/super_event_world_in_fury.ogg` and `sound/chaosx_super_event_world_in_fury.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
 
 Documentation and spreadsheet:
 
 - Promote accepted route/focus/decision/world-end changes into `docs/specs/007_fury_specs/`.
 - Update `docs/events/007_fury.md` with final mechanics, not implementation history.
-- Update `docs/assets/007_fury/manifest.md` and `gfx_handoff.md` with final assets or clearly listed placeholders.
+- Update `docs/assets/007_fury/manifest.md` and `gfx_handoff.md` with final assets.
 - Update triggerable scenario docs if scenario flags/achievement handling changes.
 - Update the event catalog workbook after implementation facts are final.
 
@@ -373,7 +382,7 @@ The main agent should expect to touch these surfaces if this addendum is accepte
 - `common/scripted_guis/chaosx_scripted_gui_settings.txt` only if scenario UI state changes
 - `interface/chaosx_super_events.gfx`
 - `interface/chaosx_achievements.gfx`
-- new or existing Fury `.gfx` file for idea, decision, and focus placeholders
+- `interface/007_fury.gfx`
 - `localisation/english/007_random_expansion_l_english.yml`
 - `localisation/english/chaosx_achievements_l_english.yml`
 - `localisation/english/chaosx_gui_l_english.yml`
@@ -428,7 +437,7 @@ If any of Phases 1 to 5 are skipped, do not mark Event 007 complete. Report the 
 
 ## Promotion note
 
-If accepted, fold the implemented portions of this addendum into the matching source specs:
+Accepted portions are represented in the current implementation, event docs, and touched source specs. Keep this section as a map for future spec maintenance:
 
 - Focus route changes into `docs/specs/007_fury_specs/specs/007_fury_focus_tree_spec.md`.
 - Decision and mission changes into `docs/specs/007_fury_specs/specs/007_fury_decisions_missions_spec.md`.
@@ -437,4 +446,4 @@ If accepted, fold the implemented portions of this addendum into the matching so
 - AI and balance tuning into `docs/specs/007_fury_specs/matrices/007_fury_ai_balance_matrix.md`.
 - Final pass/fail criteria into `docs/specs/007_fury_specs/acceptance/007_fury_acceptance_criteria.md`.
 
-Until that promotion or implementation happens, this file should remain under `docs/plans/007_fury_plans/` as the active unresolved follow-up addendum.
+This file remains under `docs/plans/007_fury_plans/` as the audit ledger for implemented Fury follow-up work and bounded caveats.
