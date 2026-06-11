@@ -25,7 +25,7 @@ Pass or fail requirements:
 - Evolution II supports two Fury actors and cooperation.
 - Evolution III supports three Fury actors and all-neighbor declarations.
 - Triggerable scenario `The World in Fury` has Low, Medium, High, Maximum intensity and Fury Pact or Hostile Fury type.
-- Maximum creates at least ten Fury actors when enough safe AI minors exist.
+- Maximum creates up to sixteen dispersed Fury actors when enough safe AI minors exist.
 - World-end branch spreads Fury to other continents and joins them to the main Fury faction.
 - Assets, achievements, AI, docs, event log, event details, and spreadsheet row are aligned.
 - Keep iterating until the goal is implemented to the fullest extent. Do not claim completion until the implementation satisfies the spec or every blocker is reported clearly.

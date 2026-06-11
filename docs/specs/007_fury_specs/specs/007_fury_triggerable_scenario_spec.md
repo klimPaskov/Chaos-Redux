@@ -148,7 +148,7 @@ At Maximum intensity and world-end escalation, the player can eventually face Fu
 
 ### Low
 
-- one Fury actor.
+- two Fury actors.
 - baseline weekly units.
 - no forced cooperation.
 - one target at a time.
@@ -156,7 +156,7 @@ At Maximum intensity and world-end escalation, the player can eventually face Fu
 
 ### Medium
 
-- three Fury actors if safe.
+- five Fury actors if safe.
 - stronger initial units.
 - Hardened Fury features available.
 - target selection remains sequential.
@@ -164,7 +164,7 @@ At Maximum intensity and world-end escalation, the player can eventually face Fu
 
 ### High
 
-- six Fury actors if safe.
+- nine Fury actors if safe.
 - Evolution II features available.
 - cooperation or rivalry branches unlock.
 - anti-Fury response can appear earlier.
@@ -172,11 +172,11 @@ At Maximum intensity and world-end escalation, the player can eventually face Fu
 
 ### Maximum
 
-- at least ten Fury actors if enough eligible AI minors exist.
+- up to sixteen Fury actors if enough eligible AI minors exist.
 - Evolution III features available.
 - all-neighbor declarations become valid.
 - stronger starting stockpiles and units.
-- target distribution tries to cover multiple continents.
+- target distribution makes repeated continent passes before any global fallback.
 - anti-Fury response and world threat state can appear quickly.
 
 ## Scenario achievements
@@ -199,10 +199,10 @@ The implementation is correct when:
 - scenario detail panel shows name, type options, and intensity impact.
 - confirmation reads current intensity and type.
 - launch excludes player.
-- Low creates one Fury actor when safe.
-- Medium creates three Fury actors when safe.
-- High creates six Fury actors when safe.
-- Maximum creates at least ten Fury actors when safe.
+- Low creates two Fury actors when safe.
+- Medium creates five Fury actors when safe.
+- High creates nine Fury actors when safe.
+- Maximum creates up to sixteen Fury actors when safe.
 - pact type creates cooperation or faction behavior.
 - hostile type prevents pact behavior and enables rivalry.
 - scenario setup flags are cleaned after launch.

@@ -100,7 +100,7 @@ Description direction: Survive and defeat a Maximum intensity World in Fury scen
 Unlock conditions:
 
 - player launches `The World in Fury` at Maximum intensity.
-- at least ten Fury actors are created, or every safe eligible actor is created if the world has fewer than ten.
+- the full Maximum Fury spread is created, or every safe eligible actor is created if the world has fewer safe candidates.
 - player is never Fury.
 - all Fury actors are defeated.
 - no Fury actor remains a faction leader.

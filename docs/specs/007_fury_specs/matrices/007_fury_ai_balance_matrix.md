@@ -154,12 +154,12 @@ Momentum should not be permanent. It should decay slowly when Fury is at peace a
 | Player becomes Fury | random and scenario setup exclude player |
 | Player farms Fury units by tag switching | achievements disqualify player-as-Fury, ordinary player path not supported |
 | Player uses Fury as free ally | Fury faction membership excludes player by default |
-| Fury attacks player-linked weak puppet early | target rules exclude player subjects and player faction |
+| Fury attacks a protected player-linked puppet early | target rules exclude subjects, allies, and countries already at war with the Fury actor |
 | Player lets Fury conquer then steals settlement | settlement avoids player-controlled or player-occupied states |
 | Fury grants instant cores | coring requires decisions, compliance, control, and resources |
 | Weekly units become infinite | overextension, equipment, manpower, and cleanup limits |
-| Ten-Fury scenario selects majors to hit count | fallback broadens minor criteria but does not select majors unless explicitly redesigned later |
-| AI declares impossible wars | target score checks faction, strength, player link, and supply |
+| Maximum-spread scenario selects majors to hit count | fallback broadens minor criteria but does not select majors unless explicitly redesigned later |
+| AI declares impossible wars | target score checks faction, strength, subject status, current wars, and supply |
 | World-end branch fires too early | requires major or no-neighbor success, high chaos, and focus or branch state |
 
 ## AI containment behavior
@@ -169,7 +169,7 @@ AI neighbors should react if Fury becomes threatening.
 | Actor group | Response |
 | --- | --- |
 | Direct neighbor | border watch, defense weighting, aid requests |
-| Regional power | emergency aid to target, guarantees if not player-linked |
+| Regional power | emergency aid to target and guarantees when the diplomatic state allows it |
 | Major power | staff talks after major-Fury threshold, aid if Fury near interests |
 | Fury target | capital defense and emergency mobilization |
 | Fury pact member | aid weaker partner if pact cohesion is high |
@@ -217,5 +217,5 @@ Fury should be beatable.
 | Evolution I active | stronger units and hardened branch unlock |
 | Evolution II active | second Fury can spawn and pact or rivalry branch unlocks |
 | Evolution III active | three Fury actors and all-neighbor declarations are available |
-| Maximum scenario | ten Fury actors are created when enough safe candidates exist |
+| Maximum scenario | up to sixteen dispersed Fury actors are created when enough safe candidates exist |
 | World-end branch | other continents get Fury actors that join main Fury faction |
