@@ -52,7 +52,10 @@ holy_realm_has_arhat_stage = {
 }
 
 holy_realm_has_buddha_mandate = {
-	has_country_flag = holy_realm_stage_buddha_mandate
+	OR = {
+		has_country_flag = holy_realm_stage_buddha_mandate
+		has_country_flag = holy_realm_buddhahood_attained
+	}
 }
 
 holy_realm_has_divine_sovereignty = {
@@ -151,6 +154,79 @@ holy_realm_chaos_at_least_world_collapse = {
 			compare = greater_than_or_equals
 		}
 	}
+}
+
+is_holy_realm_chaos_enemy = {
+	exists = yes
+	NOT = { is_holy_realm_country = yes }
+	OR = {
+		is_zombie_outbreak_country = yes
+		is_weaponized_zombie_outbreak_country = yes
+		tag = REV
+		original_tag = REV
+		tag = ZIN
+		has_country_flag = communist_rebel_state
+		has_country_flag = communist_state_control_rebel
+		has_country_flag = chaos_country
+		has_country_flag = chaos_realm
+		has_country_flag = chaosx_chaos_country
+		has_country_flag = weaponized_zombie_outbreak_country
+		has_cosmetic_tag = ZZZ_weaponized_wendigo
+	}
+}
+
+holy_realm_can_become_buddha = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	has_country_flag = holy_realm_focus_unshaken_seat
+	NOT = { holy_realm_has_buddha_mandate = yes }
+	check_variable = {
+		var = bodhi_progress
+		value = constant:holy_realm_buddhahood.bodhi_max
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = dhyana_depth
+		value = constant:holy_realm_buddhahood.dhyana_max
+		compare = greater_than_or_equals
+	}
+	check_variable = { defilements < constant:holy_realm_buddhahood.defilements_threshold }
+	check_variable = {
+		var = teaching_successes
+		value = constant:holy_realm_buddhahood.teaching_successes_required
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = crisis_teaching_successes
+		value = constant:holy_realm_buddhahood.crisis_teaching_successes_required
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_attempt_buddhahood = {
+	is_holy_realm_country = yes
+	has_country_flag = holy_realm_focus_unshaken_seat
+	NOT = { holy_realm_has_buddha_mandate = yes }
+	check_variable = {
+		var = bodhi_progress
+		value = constant:holy_realm_buddhahood.bodhi_max
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power = {
+	is_holy_realm_country = yes
+	holy_realm_has_buddha_mandate = yes
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.buddha_power_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_buddha_power_target_valid = {
+	is_holy_realm_country = yes
+	FROM = { is_holy_realm_chaos_enemy = yes }
 }
 
 holy_realm_bhutan_conquest_target_valid = {
@@ -482,9 +558,11 @@ holy_realm_has_most_factories_in_world = {
 holy_realm_can_start_final_silence = {
 	is_holy_realm_country = yes
 	holy_realm_is_sovereign = yes
+	holy_realm_has_buddha_mandate = yes
 	holy_realm_final_path_unlocked = yes
 	holy_realm_final_doctrine_is_armed = yes
 	holy_realm_final_doctrine_balance_final_dominant = yes
+	has_country_flag = holy_realm_buddha_power_demonstrated
 	has_country_flag = holy_realm_memory_ministry_of_release
 	has_country_flag = holy_realm_warning_world_marked_as_wound
 	date > 1944.12.31

@@ -23,6 +23,57 @@ holy_realm_ensure_counters = {
 		limit = { NOT = { has_variable = final_silence_pressure } }
 		set_variable = { final_silence_pressure = constant:holy_realm_counter.final_silence_pressure_start }
 	}
+	holy_realm_ensure_buddhahood_counters = yes
+}
+
+holy_realm_ensure_buddhahood_counters = {
+	if = {
+		limit = { NOT = { has_variable = bodhi_progress } }
+		set_variable = { bodhi_progress = constant:holy_realm_buddhahood.bodhi_start }
+	}
+	if = {
+		limit = { NOT = { has_variable = dhyana_depth } }
+		set_variable = { dhyana_depth = constant:holy_realm_buddhahood.dhyana_start }
+	}
+	if = {
+		limit = { NOT = { has_variable = compassion } }
+		set_variable = { compassion = constant:holy_realm_buddhahood.compassion_start }
+	}
+	if = {
+		limit = { NOT = { has_variable = detachment } }
+		set_variable = { detachment = constant:holy_realm_buddhahood.detachment_start }
+	}
+	if = {
+		limit = { NOT = { has_variable = defilements } }
+		set_variable = { defilements = constant:holy_realm_buddhahood.defilements_start }
+	}
+	if = {
+		limit = { NOT = { has_variable = meditation_charge } }
+		set_variable = { meditation_charge = constant:holy_realm_buddhahood.meditation_charge_start }
+	}
+	if = {
+		limit = { NOT = { has_variable = world_suffering } }
+		set_variable = { world_suffering = global.chaos_meter_value }
+	}
+	if = {
+		limit = { NOT = { has_variable = sangha_cohesion } }
+		set_variable = { sangha_cohesion = spiritual_legitimacy }
+	}
+	if = {
+		limit = { NOT = { has_variable = teaching_successes } }
+		set_variable = { teaching_successes = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = crisis_teaching_successes } }
+		set_variable = { crisis_teaching_successes = 0 }
+	}
+	clamp_variable = { var = bodhi_progress min = 0 max = constant:holy_realm_buddhahood.bodhi_max }
+	clamp_variable = { var = dhyana_depth min = 0 max = constant:holy_realm_buddhahood.dhyana_max }
+	clamp_variable = { var = compassion min = 0 max = 100 }
+	clamp_variable = { var = detachment min = 0 max = 100 }
+	clamp_variable = { var = defilements min = 0 max = 100 }
+	clamp_variable = { var = meditation_charge min = 0 max = constant:holy_realm_buddhahood.meditation_charge_max }
+	clamp_variable = { var = sangha_cohesion min = 0 max = 100 }
 }
 
 holy_realm_add_spiritual_legitimacy = {
@@ -121,6 +172,103 @@ holy_realm_add_final_silence_pressure = {
 	}
 	add_to_variable = { final_silence_pressure = holy_realm_adjusted_delta }
 	clamp_variable = { var = final_silence_pressure min = 0 max = 100 }
+}
+
+holy_realm_add_bodhi_progress = {
+	holy_realm_ensure_buddhahood_counters = yes
+	add_to_variable = { bodhi_progress = holy_realm_bodhi_delta }
+	clamp_variable = { var = bodhi_progress min = 0 max = constant:holy_realm_buddhahood.bodhi_max }
+}
+
+holy_realm_add_meditation_charge = {
+	holy_realm_ensure_buddhahood_counters = yes
+	add_to_variable = { meditation_charge = holy_realm_meditation_delta }
+	clamp_variable = { var = meditation_charge min = 0 max = constant:holy_realm_buddhahood.meditation_charge_max }
+}
+
+holy_realm_add_detachment = {
+	holy_realm_ensure_buddhahood_counters = yes
+	add_to_variable = { detachment = holy_realm_detachment_delta }
+	clamp_variable = { var = detachment min = 0 max = 100 }
+}
+
+holy_realm_add_compassion = {
+	holy_realm_ensure_buddhahood_counters = yes
+	add_to_variable = { compassion = holy_realm_compassion_delta }
+	clamp_variable = { var = compassion min = 0 max = 100 }
+}
+
+holy_realm_add_defilements = {
+	holy_realm_ensure_buddhahood_counters = yes
+	add_to_variable = { defilements = holy_realm_defilements_delta }
+	clamp_variable = { var = defilements min = 0 max = 100 }
+}
+
+holy_realm_advance_dhyana_depth = {
+	holy_realm_ensure_buddhahood_counters = yes
+	if = {
+		limit = { check_variable = { dhyana_depth < constant:holy_realm_buddhahood.dhyana_max } }
+		add_to_variable = { dhyana_depth = 1 }
+	}
+	clamp_variable = { var = dhyana_depth min = 0 max = constant:holy_realm_buddhahood.dhyana_max }
+}
+
+holy_realm_record_teaching_success = {
+	holy_realm_ensure_buddhahood_counters = yes
+	add_to_variable = { teaching_successes = 1 }
+	set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_teaching_gain }
+	holy_realm_add_bodhi_progress = yes
+	set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+	holy_realm_add_compassion = yes
+	set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+	holy_realm_add_defilements = yes
+	if = {
+		limit = {
+			OR = {
+				holy_realm_chaos_at_least_chaos_tier = yes
+				has_global_flag = world_end
+			}
+		}
+		add_to_variable = { crisis_teaching_successes = 1 }
+		set_country_flag = holy_realm_crisis_teaching_success_recorded
+	}
+}
+
+holy_realm_complete_concentration_sequence = {
+	holy_realm_ensure_buddhahood_counters = yes
+	clr_country_flag = holy_realm_concentration_intention
+	clr_country_flag = holy_realm_concentration_energy
+	clr_country_flag = holy_realm_concentration_mind
+	clr_country_flag = holy_realm_concentration_investigation
+	set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_meditation_gain }
+	holy_realm_add_bodhi_progress = yes
+	set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_complete_charge_gain }
+	holy_realm_add_meditation_charge = yes
+	set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+	holy_realm_add_detachment = yes
+	if = {
+		limit = {
+			check_variable = { meditation_charge > constant:holy_realm_buddhahood.dhyana_charge_cost }
+			check_variable = { dhyana_depth < constant:holy_realm_buddhahood.dhyana_max }
+		}
+		set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.dhyana_charge_cost }
+		multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+		holy_realm_add_meditation_charge = yes
+		holy_realm_advance_dhyana_depth = yes
+	}
+}
+
+holy_realm_spend_buddha_power_charge = {
+	holy_realm_ensure_buddhahood_counters = yes
+	set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.buddha_power_charge_cost }
+	multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+	holy_realm_add_meditation_charge = yes
+	set_country_flag = holy_realm_buddha_power_demonstrated
+	set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.power_defilement_loss }
+	holy_realm_add_defilements = yes
+	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_buddhahood.power_chaos_loss }
+	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+	holy_realm_add_chaos = yes
 }
 
 holy_realm_grant_mandala_bureau_agency = {
@@ -465,6 +613,7 @@ holy_realm_cleanup_final_warning_target_memory = {
 
 holy_realm_advance_bodhisattva_bhumi = {
 	holy_realm_ensure_counters = yes
+	holy_realm_record_teaching_success = yes
 	if = {
 		limit = { NOT = { has_variable = bodhisattva_bhumi } }
 		set_variable = { bodhisattva_bhumi = 0 }
@@ -1098,6 +1247,7 @@ holy_realm_set_stage_buddha_mandate = {
 	clr_country_flag = holy_realm_stage_bodhisattva
 	clr_country_flag = holy_realm_stage_arhat_administration
 	set_country_flag = holy_realm_stage_buddha_mandate
+	set_country_flag = holy_realm_buddhahood_attained
 	clr_country_flag = holy_realm_stage_divine_sovereignty
 	clr_country_flag = holy_realm_stage_final_silence
 	set_party_name = {
@@ -1113,6 +1263,56 @@ holy_realm_set_stage_buddha_mandate = {
 	holy_realm_record_evolution = yes
 	holy_realm_apply_buddha_mandate_expansion_unlocks = yes
 	holy_realm_try_form_master_idea = yes
+}
+
+holy_realm_attain_buddhahood = {
+	if = {
+		limit = { NOT = { holy_realm_has_buddha_mandate = yes } }
+		holy_realm_set_stage_buddha_mandate = yes
+		remove_ideas = holy_realm_arhat_administration
+		add_ideas = holy_realm_buddha_mandate
+		holy_realm_try_form_master_idea = yes
+		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.buddha_mandate }
+		holy_realm_show_super_event = yes
+		news_event = { id = chaosx.news.82 days = 2 }
+		country_event = { id = chaosx.nr3.31 days = 12 }
+		every_other_country = {
+			limit = {
+				exists = yes
+				NOT = { is_holy_realm_country = yes }
+				OR = {
+					is_major = yes
+					is_ai = no
+				}
+			}
+			country_event = { id = chaosx.nr3.71 days = 2 }
+		}
+	}
+}
+
+holy_realm_try_attain_buddhahood = {
+	holy_realm_ensure_buddhahood_counters = yes
+	set_country_flag = holy_realm_focus_unshaken_seat
+	set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_focus_gain }
+	holy_realm_add_bodhi_progress = yes
+	if = {
+		limit = { holy_realm_can_become_buddha = yes }
+		holy_realm_attain_buddhahood = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = bodhi_progress
+				value = constant:holy_realm_buddhahood.bodhi_max
+				compare = greater_than_or_equals
+			}
+			check_variable = { defilements > constant:holy_realm_buddhahood.false_buddha_defilements }
+		}
+		set_country_flag = holy_realm_false_buddha_schism_pressure
+		add_stability = -0.05
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+		holy_realm_add_compassion_drift = yes
+	}
 }
 
 holy_realm_set_stage_divine_sovereignty = {
@@ -1169,6 +1369,7 @@ holy_realm_form_country = {
 	set_global_flag = holy_realm_hook_teutonic_order_contact_reserved
 	set_global_flag = holy_realm_hook_final_crusade_contrast_reserved
 	set_global_flag = holy_realm_hook_atlantis_betrayal_target_reserved
+	holy_realm_ensure_counters = yes
 	save_global_event_target_as = holy_realm_country
 	set_cosmetic_tag = THR
 	load_focus_tree = {
