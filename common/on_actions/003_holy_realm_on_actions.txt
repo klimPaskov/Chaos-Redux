@@ -6,6 +6,30 @@
 # ============================================================================
 
 on_actions = {
+	on_declare_war = {
+		effect = {
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					FROM = {
+						NOT = { is_holy_realm_country = yes }
+						NOT = { is_holy_realm_chaos_enemy = yes }
+					}
+				}
+				set_country_flag = holy_realm_ordinary_conquest_abuse
+			}
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					FROM = { is_holy_realm_chaos_enemy = yes }
+				}
+				clr_country_flag = holy_realm_current_chaos_war_walls_used
+				clr_country_flag = holy_realm_current_chaos_war_water_used
+				clr_country_flag = holy_realm_current_chaos_war_sky_used
+			}
+		}
+	}
+
 	on_capitulation = {
 		effect = {
 			holy_realm_on_country_capitulation = yes
