@@ -2356,7 +2356,10 @@ soviet_collapse_spawn_breakaway_guard_unit_batch_safe = {
 
 soviet_collapse_spawn_breakaway_guard_units_safe = {
     soviet_collapse_spawn_breakaway_guard_unit_batch_safe = yes
-    set_country_flag = soviet_collapse_breakaway_initial_forces_spawned
+	if = {
+		limit = { num_divisions > 0 }
+		set_country_flag = soviet_collapse_breakaway_initial_forces_spawned
+	}
 }
 
 soviet_collapse_spawn_one_breakaway_field_brigade_unit_safe = {
@@ -2428,7 +2431,10 @@ soviet_collapse_spawn_breakaway_field_brigade_unit_batch_safe = {
 
 soviet_collapse_spawn_breakaway_field_brigade_units_safe = {
     soviet_collapse_spawn_breakaway_field_brigade_unit_batch_safe = yes
-    set_country_flag = soviet_collapse_breakaway_initial_forces_spawned
+	if = {
+		limit = { num_divisions > 0 }
+		set_country_flag = soviet_collapse_breakaway_initial_forces_spawned
+	}
 }
 
 soviet_collapse_spawn_one_breakaway_line_division_unit_safe = {
@@ -2500,7 +2506,10 @@ soviet_collapse_spawn_breakaway_line_division_unit_batch_safe = {
 
 soviet_collapse_spawn_breakaway_line_division_units_safe = {
     soviet_collapse_spawn_breakaway_line_division_unit_batch_safe = yes
-    set_country_flag = soviet_collapse_breakaway_initial_forces_spawned
+	if = {
+		limit = { num_divisions > 0 }
+		set_country_flag = soviet_collapse_breakaway_initial_forces_spawned
+	}
 }
 
 soviet_collapse_spawn_breakaway_field_units_safe = {
@@ -3238,47 +3247,54 @@ soviet_collapse_free_terminal_soviet_subjects = {
     }
 }
 
+soviet_collapse_ensure_breakaway_has_minimum_initial_units = {
+	if = {
+		limit = {
+			NOT = { tag = SOV }
+			is_soviet_collapse_breakaway_country = yes
+			num_divisions < constant:soviet_collapse_breakaway_support.minimum_fielded_units
+			OR = {
+				any_owned_state = { is_owned_by = ROOT }
+				any_controlled_state = { is_controlled_by = ROOT }
+			}
+		}
+		clr_country_flag = soviet_collapse_breakaway_initial_forces_spawned
+		soviet_collapse_ensure_emergency_republican_templates = yes
+		set_temp_variable = { soviet_collapse_breakaway_guard_unit_count = constant:soviet_collapse_breakaway_support.minimum_guard_units }
+		set_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.minimum_field_units }
+		add_manpower = constant:soviet_collapse_breakaway_support.base_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_breakaway_support.base_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_support.base_support_equipment }
+		add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:soviet_collapse_breakaway_support.base_artillery_equipment }
+		if = {
+			limit = {
+				OR = {
+					num_of_controlled_states > constant:soviet_collapse_breakaway_support.dynamic_major_state_gate
+					num_of_factories > constant:soviet_collapse_breakaway_support.dynamic_major_factory_gate
+				}
+			}
+			add_to_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.major_field_units_bonus }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					num_of_controlled_states > constant:soviet_collapse_breakaway_support.dynamic_strong_state_gate
+					num_of_factories > constant:soviet_collapse_breakaway_support.dynamic_strong_factory_gate
+				}
+			}
+			add_to_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.regional_field_units_bonus }
+		}
+		clamp_temp_variable = { var = soviet_collapse_breakaway_field_unit_count min = constant:soviet_collapse_breakaway_support.minimum_field_units max = constant:soviet_collapse_breakaway_support.dynamic_field_unit_cap }
+		soviet_collapse_spawn_breakaway_guard_units_safe = yes
+		soviet_collapse_spawn_breakaway_field_units_safe = yes
+	}
+}
+
 soviet_collapse_ensure_terminal_breakaway_has_units = {
-    if = {
-        limit = {
-            NOT = { tag = SOV }
-            has_global_flag = soviet_collapse_terminal_collapse_in_progress
-            NOT = { has_country_flag = soviet_collapse_breakaway_initial_forces_spawned }
-            num_divisions < constant:soviet_collapse_breakaway_support.minimum_fielded_units
-            OR = {
-                any_owned_state = { is_owned_by = ROOT }
-                any_controlled_state = { is_controlled_by = ROOT }
-            }
-        }
-        soviet_collapse_ensure_emergency_republican_templates = yes
-        set_temp_variable = { soviet_collapse_breakaway_guard_unit_count = constant:soviet_collapse_breakaway_support.minimum_guard_units }
-        set_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.minimum_field_units }
-        add_manpower = constant:soviet_collapse_breakaway_support.base_manpower
-        add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_breakaway_support.base_infantry_equipment }
-        add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_breakaway_support.base_support_equipment }
-        add_equipment_to_stockpile = { type = artillery_equipment_1 amount = constant:soviet_collapse_breakaway_support.base_artillery_equipment }
-        if = {
-            limit = {
-                OR = {
-                    num_of_controlled_states > constant:soviet_collapse_breakaway_support.dynamic_major_state_gate
-                    num_of_factories > constant:soviet_collapse_breakaway_support.dynamic_major_factory_gate
-                }
-            }
-            add_to_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.major_field_units_bonus }
-        }
-        else_if = {
-            limit = {
-                OR = {
-                    num_of_controlled_states > constant:soviet_collapse_breakaway_support.dynamic_strong_state_gate
-                    num_of_factories > constant:soviet_collapse_breakaway_support.dynamic_strong_factory_gate
-                }
-            }
-            add_to_temp_variable = { soviet_collapse_breakaway_field_unit_count = constant:soviet_collapse_breakaway_support.regional_field_units_bonus }
-        }
-        clamp_temp_variable = { var = soviet_collapse_breakaway_field_unit_count min = constant:soviet_collapse_breakaway_support.minimum_field_units max = constant:soviet_collapse_breakaway_support.dynamic_field_unit_cap }
-        soviet_collapse_spawn_breakaway_guard_units_safe = yes
-        soviet_collapse_spawn_breakaway_field_units_safe = yes
-    }
+	if = {
+		limit = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+		soviet_collapse_ensure_breakaway_has_minimum_initial_units = yes
+	}
 }
 
 soviet_collapse_release_scope_from_soviet_collapse_owner = {
@@ -4926,6 +4942,7 @@ soviet_collapse_apply_breakaway_setup_package = {
         }
         soviet_collapse_spawn_breakaway_field_units_safe = yes
     }
+	soviet_collapse_ensure_breakaway_has_minimum_initial_units = yes
     if = {
         limit = {
             NOT = { has_country_flag = soviet_collapse_internal_republic_news_reported }
