@@ -29,9 +29,9 @@ Implemented in `interface/007_fury_leader_overlay.gui` and `common/scripted_guis
 
 - `fury_diplomacy_leader_overlay_scripted_gui`
   - context: `selected_country_context`
-  - parent: `diplomacy_tab_top_instance`
+  - parent: `countrydiplomacyview`
   - visible when selected country `is_fury_actor = yes`
-  - position matches vanilla `countrydiplomacyview.gui` `leader_portrait` at `x = 20`, `y = 10`, `scale = 0.74`
+  - position matches vanilla `countrydiplomacyview.gui` `leader_portrait` via summed parent coordinates at `x = 20`, `y = 170`, `scale = 0.74`
 - `fury_politics_leader_overlay_scripted_gui`
   - context: `player_context`
   - parent: `countrypoliticsview`
