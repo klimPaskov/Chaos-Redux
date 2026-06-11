@@ -75,7 +75,7 @@ Acceptance for this phase:
 
 ### Phase 2: Replace simplified target selection with scored target handling
 
-Current status: target selection uses scored neighbor handling, no-player ordinary target gates, stale-target cleanup, Evolution III all-neighbor declarations, and a separate terminal-only player-linked target helper.
+Current status: target selection uses scored neighbor handling, stale-target cleanup, Evolution III all-neighbor declarations, and a split rule where player-linked countries cannot become Fury actors but can be Fury targets under normal target rules.
 
 Add a target-scoring layer around the existing `fury_choose_next_target`, `fury_declare_on_current_target`, and `fury_declare_all_valid_neighbors` helpers.
 
@@ -124,7 +124,7 @@ Acceptance for this phase:
 - Fury target choice is deterministic enough to audit through variables and dynamic scoring.
 - A strong protected neighbor is not selected just because it borders Fury.
 - All-neighbor declarations filter every target individually.
-- No ordinary path targets the player or player-linked countries.
+- The player and player-linked countries cannot become Fury actors, but they can be selected as Fury targets when the normal target rules allow it.
 - No stale `fury_current_target` survives target death, subject changes, faction changes, or Fury cleanup.
 
 ### Phase 3: Deepen occupation, settlement, and overextension gameplay
@@ -310,7 +310,7 @@ Required tracking changes:
 
 - `achievement_fury_firebreak_holds` should require Border Watch mission success, capital held, and Fury defeated or deterred.
 - `achievement_fury_pact_breaker_path` should require at least two Fury pact members and defeat of pact leader or faction dissolution.
-- `achievement_fury_ten_fires` supports the Maximum scenario if ten actors spawn or if `fury_triggerable_scenario_used_every_safe_candidate` records that every safe eligible candidate was used before ten actors could be created.
+- `achievement_fury_ten_fires` supports the Maximum scenario if the current maximum actor count spawns or if `fury_triggerable_scenario_used_every_safe_candidate` records that every safe eligible candidate was used before the maximum count could be created.
 - `achievement_fury_last_neighbor_path` should require Fury no-neighbor state before world-end begins, not merely cleanup after the no-neighbor flag was set.
 - `achievement_fury_world_without_fury` should require terminal Phase 4: world-end super-event fired, at least three continent seeds or every safe continent attempted, world-threat source cleared, and all Fury actors defeated.
 - `achievement_fury_rivals_burn` should require a recorded Fury-on-Fury war and defeat of both involved actors.
@@ -402,7 +402,7 @@ Before the main agent can claim Fury complete, run task-specific validation and 
 
 - Focus route coverage table: each route family in Phase 1 maps to implemented focus ids, rewards, AI logic, and localisation.
 - Decision/mission audit: every decision family in Phases 2, 3, and 5 has costs, visibility, availability, AI, cleanup, success/failure where relevant, and no duplicate passive missions.
-- Target safety audit: ordinary target selection excludes player/player-linked countries and all-neighbor declarations still filter each target.
+- Target safety audit: actor selection excludes player/player-linked countries, target selection permits them only through normal target validity, and all-neighbor declarations still filter each target.
 - World-end audit: terminal branch sets required flags, seeds other continents, creates/strengthens Fury faction, triggers super-event, warns player, and does not conflate with triggerable scenario.
 - Overextension audit: high and extreme overextension influence weekly units, target selection, focus AI, occupation missions, and coring.
 - Achievement audit: each achievement is tied to implemented systems, with player-as-Fury disqualification and scenario type/intensity checks intact.
@@ -417,7 +417,7 @@ Recommended scenario checks:
 - Fury with no valid local targets enters no-neighbor state but does not start world-end without eligibility.
 - Evolution II pact creates cooperation route and blocks rivalry route.
 - Evolution II hostile route permits Fury-on-Fury path only under intended conditions.
-- Evolution III all-neighbor declaration filters invalid and player-linked targets.
+- Evolution III all-neighbor declaration filters invalid targets while allowing player-linked targets that satisfy normal target rules.
 - Major-Fury threshold unlocks anti-Fury response missions.
 - World-end branch seeds other continents and warns the player before terminal target relaxation.
 - Maximum scenario creates ten actors when safe candidates exist and records actor count correctly.

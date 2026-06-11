@@ -76,10 +76,10 @@ Implementation passes only if:
 - scenario name is `The World in Fury`.
 - scenario has Low, Medium, High, and Maximum intensity.
 - scenario has Fury Pact and Hostile Fury type options.
-- Low creates one Fury actor when safe.
-- Medium creates three Fury actors when safe.
-- High creates six Fury actors when safe.
-- Maximum creates at least ten Fury actors when enough safe candidates exist.
+- Low creates two Fury actors when safe.
+- Medium creates five Fury actors when safe.
+- High creates nine Fury actors when safe.
+- Maximum creates up to sixteen Fury actors when enough safe candidates exist.
 - scenario excludes player.
 - scenario launch reads selected type and intensity at confirmation.
 - scenario setup bypass flags are cleared after setup.

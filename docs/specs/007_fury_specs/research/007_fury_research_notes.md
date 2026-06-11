@@ -26,7 +26,7 @@ No external factual claim is required for the core idea because Fury is a fictio
 - Evolution III adds three Fury countries, stronger power, and all-neighbor declarations.
 - Triggerable scenario named `The World in Fury`.
 - Scenario intensity controls number of Fury countries and spawned units.
-- Maximum intensity creates at least ten Fury minors when possible.
+- Maximum intensity creates up to sixteen dispersed Fury minors when possible.
 - Scenario type can be pact or hostile.
 - World-end branch was unspecified, so this package proposes a terminal branch where Fury spreads to other continents and joins the main Fury faction.
 

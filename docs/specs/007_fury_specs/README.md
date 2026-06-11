@@ -36,7 +36,7 @@ Fury replaces the old expansionism placeholder with a dynamic repeatable war eve
 - Evolution II allows two Fury actors and cooperation mechanics.
 - Evolution III allows three Fury actors and all-neighbor declarations.
 - The custom triggerable scenario is named `The World in Fury`, has the normal four intensity stops, excludes the player, and has pact or hostile type choices.
-- Maximum intensity creates at least ten Fury minors when enough eligible AI countries exist.
+- Maximum intensity creates up to sixteen dispersed Fury minors when enough eligible AI countries exist.
 - A news event marks the first conquest.
 - A super-event marks a Fury country becoming a major.
 - A terminal world-end branch can spread Fury to other continents and bind new Fury countries to the main Fury faction.
