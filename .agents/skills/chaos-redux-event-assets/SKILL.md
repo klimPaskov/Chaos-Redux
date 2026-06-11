@@ -232,6 +232,29 @@ For every generated icon, follow the `$imagegen` skill's transparent image workf
 
 The final icon should have transparent unused canvas, no fake checker or matte pixels, no transparent holes inside the painted subject, a slight black outline, a subtle drop shadow, and a centered subject that remains readable at final size.
 
+## 5.2 Icon type separation rules
+
+Focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons are separate asset types.
+
+Never treat focus, idea, and decision icons as interchangeable.
+
+Do not create focus icons first and then satisfy idea icons or decision icons by resizing, cropping, shrinking, recoloring, padding, or lightly editing the focus icon. This is not a valid asset workflow.
+
+Each icon type must have its own asset-type-specific brief, reference inspection, source artwork, prompt or source choice, crop, target size, filename prefix, manifest entry, and final DDS output.
+
+Shared visual themes are allowed only when every icon is still designed for its own in-game use:
+
+- focus icons should read as full HOI4 focus art at 94x86 with focus-tree style detail and composition
+- idea and national spirit icons should read as compact 64x64 symbolic spirit art without borrowing the full focus icon frame
+- decision icons should read clearly at 32x32 with simpler shapes, stronger silhouettes, and less interior detail
+- decision category icons should be designed for the category button or scripted GUI surface, not derived from a focus icon
+- officer corps spirit icons should follow the vanilla officer corps spirit look and 45x45 transparent style
+- achievement icons should follow achievement presentation rules and variant rules
+
+If a mechanic needs matching focus, idea, and decision visuals, build them as a coordinated icon family. A coordinated family can share subject matter, symbols, colors, and lore cues, but each member still needs separate source art or a separate generated output designed for its target size and UI role.
+
+The manifest must record the exact asset type for every icon and should note when icons are part of a coordinated family. Do not mark an icon complete if it only exists as a resized version of another icon type.
+
 ## 6. Required asset workflow
 
 For every asset package:
@@ -239,28 +262,29 @@ For every asset package:
 1. Read the event spec, asset prompt, or implementation task.
 2. Identify every required visual asset.
 3. Group assets by usage type.
-4. Assign each asset a stable filename.
-5. Assign each asset a sprite name if it needs one.
-6. Identify the target size.
-7. Identify the intended in-game use.
-8. Inspect the matching reference folder from section 4 before generating, sourcing, processing, or wiring the asset.
-9. Decide the source mode for each asset:
+4. Split focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons into separate asset-type work items. Never satisfy one icon type by resizing or lightly editing another icon type.
+5. Assign each asset a stable filename.
+6. Assign each asset a sprite name if it needs one.
+7. Identify the target size.
+8. Identify the intended in-game use.
+9. Inspect the matching reference folder from section 4 before generating, sourcing, processing, or wiring the asset.
+10. Decide the source mode for each asset:
    - `$imagegen`
    - internet source image
    - user-provided source image
-10. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
-11. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
-12. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
-13. For user-provided assets, record that the image was provided by the user.
-14. Save the original generated, sourced, or provided image as a source PNG.
-15. Crop and resize the image to the target size.
-16. Save a processed PNG preview.
-17. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
-18. Move the DDS into the correct mod folder.
-19. Create or update the asset manifest.
-20. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
-21. Update event docs or asset docs when the parent prompt grants that documentation scope.
-22. Report all created files, proposed sprite names, final paths, blocked assets, and any handoff uncertainty.
+11. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
+12. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
+13. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
+14. For user-provided assets, record that the image was provided by the user.
+15. Save the original generated, sourced, or provided image as a source PNG.
+16. Crop and resize the image to the target size.
+17. Save a processed PNG preview.
+18. Convert the processed PNG to DDS 32 bit unsigned BGRB 8.8.8.8.
+19. Move the DDS into the correct mod folder.
+20. Create or update the asset manifest.
+21. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
+22. Update event docs or asset docs when the parent prompt grants that documentation scope.
+23. Report all created files, proposed sprite names, final paths, blocked assets, and any handoff uncertainty.
 
 Do not mark assets complete until the DDS files exist, the manifest is written, and the main agent has enough handoff information to wire every sprite without guessing.
 
@@ -532,6 +556,8 @@ Use `idea_` filename prefix.
 
 These icons usually do not need the full focus icon frame.
 
+Do not derive idea or national spirit icons from focus icons. They must be designed as 64x64 spirit-style icons from their own prompt or source art, even when they share a theme with a focus.
+
 Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
 
 Follow the `$imagegen` skill's transparent image workflow when the icon should have a transparent background.
@@ -562,6 +588,8 @@ Use `goal_` filename prefix.
 
 Do not make focus icons look like generic generated thumbnails.
 
+Do not create a focus icon as the master artwork for idea icons, decision icons, or other smaller icon types. A focus icon can share a theme with those icons, but it must remain a separate focus-specific asset.
+
 Every focus icon should support the focus tree's story, ideology, or gameplay purpose.
 
 Use `$imagegen` for the base artwork unless the user provides or requests a specific source image.
@@ -589,6 +617,8 @@ Target size:
 ```
 
 Use `decision_` filename prefix.
+
+Do not derive decision icons from focus icons or idea icons. They must be composed for 32x32 readability from their own prompt or source art.
 
 Decision category icons may use:
 
@@ -924,4 +954,5 @@ Before finishing, confirm:
 13. Docs are updated where relevant.
 14. The event implementation or parent handoff knows which sprite names to use.
 15. No final asset remains only in a temporary folder.
-16. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, and has no transform-only final motion.
+16. Focus, idea, national spirit, officer corps spirit, decision, decision category, achievement, and tech icons were treated as separate asset types. No idea or decision icon is only a resized, cropped, recolored, padded, or lightly edited focus icon.
+17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, and has no transform-only final motion.
