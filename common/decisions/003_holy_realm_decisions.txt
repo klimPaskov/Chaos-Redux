@@ -7,6 +7,8 @@
 @HOLY_REALM_MANDALA_ARBITRATION_COOLDOWN_DAYS = 240
 @HOLY_REALM_MANDALA_OBSERVER_COOLDOWN_DAYS = 180
 @HOLY_REALM_MANDALA_DEVELOPMENT_COOLDOWN_DAYS = 220
+@HOLY_REALM_CONCENTRATION_SEQUENCE_DAYS = 30
+@HOLY_REALM_CONCENTRATION_COOLDOWN_DAYS = 45
 @holy_realm_ai_peace_branch_factor = 4
 @holy_realm_ai_peace_letter_factor = 0.8
 @holy_realm_ai_regional_peace_letter_factor = 0.4
@@ -1912,6 +1914,296 @@ holy_realm_bodhisattva_category = {
 				check_variable = { mandala_reach > 70 }
 			}
 		}
+	}
+
+	THR_begin_concentration_sequence = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.concentration_vow_cost
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_dharma_teachings_unlocked
+			NOT = { has_country_flag = holy_realm_concentration_cooldown }
+			NOT = { has_country_flag = holy_realm_concentration_intention }
+			NOT = { has_country_flag = holy_realm_concentration_energy }
+			NOT = { has_country_flag = holy_realm_concentration_mind }
+			NOT = { has_country_flag = holy_realm_concentration_investigation }
+			check_variable = { dhyana_depth < constant:holy_realm_buddhahood.dhyana_max }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_dharma_teachings_unlocked
+		}
+		complete_effect = {
+			holy_realm_ensure_buddhahood_counters = yes
+			set_country_flag = {
+				flag = holy_realm_concentration_intention
+				days = @HOLY_REALM_CONCENTRATION_SEQUENCE_DAYS
+			}
+		}
+		ai_will_do = { factor = 2 }
+	}
+
+	THR_hold_intention = {
+		icon = generic_political_discourse
+		cost = 0
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_intention
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_intention
+		}
+		complete_effect = {
+			clr_country_flag = holy_realm_concentration_intention
+			set_country_flag = {
+				flag = holy_realm_concentration_energy
+				days = @HOLY_REALM_CONCENTRATION_SEQUENCE_DAYS
+			}
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
+			holy_realm_add_meditation_charge = yes
+		}
+		ai_will_do = { factor = 3 }
+	}
+
+	THR_hold_energy = {
+		icon = generic_political_discourse
+		cost = 0
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_energy
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_energy
+		}
+		complete_effect = {
+			clr_country_flag = holy_realm_concentration_energy
+			set_country_flag = {
+				flag = holy_realm_concentration_mind
+				days = @HOLY_REALM_CONCENTRATION_SEQUENCE_DAYS
+			}
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
+			holy_realm_add_meditation_charge = yes
+		}
+		ai_will_do = { factor = 3 }
+	}
+
+	THR_hold_mind = {
+		icon = generic_political_discourse
+		cost = 0
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_mind
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_mind
+		}
+		complete_effect = {
+			clr_country_flag = holy_realm_concentration_mind
+			set_country_flag = {
+				flag = holy_realm_concentration_investigation
+				days = @HOLY_REALM_CONCENTRATION_SEQUENCE_DAYS
+			}
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
+			holy_realm_add_meditation_charge = yes
+		}
+		ai_will_do = { factor = 3 }
+	}
+
+	THR_hold_investigation = {
+		icon = generic_political_discourse
+		cost = 0
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_investigation
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_concentration_investigation
+		}
+		complete_effect = {
+			holy_realm_complete_concentration_sequence = yes
+			set_country_flag = {
+				flag = holy_realm_concentration_cooldown
+				days = @HOLY_REALM_CONCENTRATION_COOLDOWN_DAYS
+			}
+		}
+		ai_will_do = { factor = 3 }
+	}
+
+	THR_realize_buddhahood_beneath_seat = {
+		icon = generic_political_discourse
+		cost = 0
+		fire_only_once = yes
+		available = {
+			holy_realm_can_become_buddha = yes
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_focus_unshaken_seat
+			NOT = { holy_realm_has_buddha_mandate = yes }
+		}
+		complete_effect = {
+			holy_realm_attain_buddhahood = yes
+		}
+		ai_will_do = { factor = 10 }
+	}
+}
+
+holy_realm_buddha_powers_category = {
+	THR_buddha_power_one_becomes_many = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.buddha_power_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_trigger = { holy_realm_buddha_power_target_valid = yes }
+		available = { holy_realm_can_use_buddha_power = yes }
+		visible = { holy_realm_has_buddha_mandate = yes }
+		complete_effect = {
+			holy_realm_spend_buddha_power_charge = yes
+			set_country_flag = holy_realm_power_one_becomes_many_used
+			FROM = {
+				add_stability = constant:holy_realm_buddhahood.power_target_stability_loss
+				add_war_support = constant:holy_realm_buddhahood.power_target_war_support_loss
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	THR_buddha_power_passing_through_walls = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.buddha_power_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_trigger = { holy_realm_buddha_power_target_valid = yes }
+		available = { holy_realm_can_use_buddha_power = yes }
+		visible = { holy_realm_has_buddha_mandate = yes }
+		complete_effect = {
+			holy_realm_spend_buddha_power_charge = yes
+			set_country_flag = holy_realm_power_walls_used
+			FROM = {
+				add_timed_idea = {
+					idea = holy_realm_power_walls_unsealed
+					days = constant:holy_realm_buddhahood.power_target_organization_loss_days
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	THR_buddha_power_walking_on_water = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.buddha_power_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_trigger = { holy_realm_buddha_power_target_valid = yes }
+		available = { holy_realm_can_use_buddha_power = yes }
+		visible = { holy_realm_has_buddha_mandate = yes }
+		complete_effect = {
+			holy_realm_spend_buddha_power_charge = yes
+			set_country_flag = holy_realm_power_water_used
+			FROM = {
+				add_timed_idea = {
+					idea = holy_realm_power_waters_crossed
+					days = constant:holy_realm_buddhahood.power_target_supply_loss_days
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	THR_buddha_power_vanishing_from_sight = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.buddha_power_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_trigger = { holy_realm_buddha_power_target_valid = yes }
+		available = { holy_realm_can_use_buddha_power = yes }
+		visible = { holy_realm_has_buddha_mandate = yes }
+		complete_effect = {
+			holy_realm_spend_buddha_power_charge = yes
+			set_country_flag = holy_realm_power_vanish_used
+			FROM = {
+				add_timed_idea = {
+					idea = holy_realm_power_vanished_sight
+					days = constant:holy_realm_buddhahood.power_target_intel_loss_days
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	THR_buddha_power_seated_in_sky = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.buddha_power_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_trigger = { holy_realm_buddha_power_target_valid = yes }
+		available = { holy_realm_can_use_buddha_power = yes }
+		visible = { holy_realm_has_buddha_mandate = yes }
+		complete_effect = {
+			holy_realm_spend_buddha_power_charge = yes
+			set_country_flag = holy_realm_power_sky_used
+			FROM = {
+				add_timed_idea = {
+					idea = holy_realm_power_sky_seated
+					days = constant:holy_realm_buddhahood.power_target_organization_loss_days
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	THR_buddha_power_touching_sun_moon = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.buddha_power_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_trigger = { holy_realm_buddha_power_target_valid = yes }
+		available = { holy_realm_can_use_buddha_power = yes }
+		visible = { holy_realm_has_buddha_mandate = yes }
+		complete_effect = {
+			holy_realm_spend_buddha_power_charge = yes
+			set_country_flag = holy_realm_power_sun_moon_used
+			FROM = {
+				add_timed_idea = {
+					idea = holy_realm_power_sun_moon_touched
+					days = constant:holy_realm_buddhahood.power_target_industry_loss_days
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	THR_buddha_power_extinction_defilements = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.buddha_power_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_trigger = { holy_realm_buddha_power_target_valid = yes }
+		available = { holy_realm_can_use_buddha_power = yes }
+		visible = { holy_realm_has_buddha_mandate = yes }
+		complete_effect = {
+			holy_realm_spend_buddha_power_charge = yes
+			set_country_flag = holy_realm_power_defilements_used
+			FROM = {
+				add_timed_idea = {
+					idea = holy_realm_power_defilements_extinguished
+					days = constant:holy_realm_buddhahood.power_target_extinction_days
+				}
+				add_command_power = constant:holy_realm_buddhahood.power_target_command_loss
+			}
+		}
+		ai_will_do = { factor = 1 }
 	}
 }
 
