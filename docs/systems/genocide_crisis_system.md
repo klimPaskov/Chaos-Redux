@@ -84,6 +84,8 @@ The `Camps and Genocide` category has the lowest priority and appears only when 
 
 When a valid existing concentration camp can be upgraded, `genocide_show_hidden_decisions` reveals the extermination-camp upgrade decision and `genocide_hide_hidden_decisions` hides it again. The reveal decision remains available while valid upgrade targets exist, but the category disappears when the country has no existing concentration camps, no eligible upgrade targets, or no special decision to take.
 
+Soviet gulag and mass-repression decisions use their own player toggle. `sov_show_gulag_decisions` reveals eligible gulag actions through `genocide_gulag_decisions_visible`, while `sov_hide_gulag_decisions` hides them again. AI-controlled Soviet Union bypasses this player-facing toggle and evaluates the gulag decisions as always expanded.
+
 ## Evidence And Foreign Observers
 
 Foreign-observer pressure is context-based. Domestic repression inside closed or authoritarian states does not automatically create a foreign evidence problem. Foreign pressure requires conditions such as occupied foreign camp systems, non-core target populations, diplomatic visibility, enemy or democratic exposure, or discovered sites.
@@ -132,12 +134,10 @@ AI behavior is split between decision weights and broad AI strategy:
 
 Camp deaths use the shared deaths system, reduce real state population, and appear in the Deaths tab as:
 
-- From concentration camps:
-- Extermination camp
-- Gulag repression
+- From camps and forced labor
 - Biowarfare outbreak, for Japan's biowarfare-linked experiment sites
 
-The country summary folds those deaths into the existing occupation-repression total so the current Deaths tab layout remains stable.
+The country summary folds concentration-camp, extermination-camp, and gulag repression deaths into the same camps-and-forced-labor total.
 
 ### Condemnation
 
