@@ -79,16 +79,16 @@ fury_sync_evolution_unlocks = {
 fury_prepare_random_event_fire = {
 	fury_sync_evolution_unlocks = yes
 	if = {
+		limit = { any_country = { fury_can_be_selected = yes } }
+		fury_select_ordinary_actor = yes
+	}
+	if = {
 		limit = { has_global_flag = fury_evolution_iii_unlocked }
 		fury_ensure_actor_count_three = yes
 	}
 	else_if = {
 		limit = { has_global_flag = fury_evolution_ii_unlocked }
 		fury_ensure_actor_count_two = yes
-	}
-	else_if = {
-		limit = { NOT = { any_country = { has_country_flag = fury_actor } } }
-		fury_select_ordinary_actor = yes
 	}
 }
 
@@ -130,6 +130,7 @@ fury_apply_package = {
 	fury_initialize_actor_variables = yes
 	add_ideas = fury_national_fury
 	load_focus_tree = fury_focus_tree
+	save_event_target_as = fury_random_event_prepared_actor
 	save_global_event_target_as = fury_latest_actor
 	if = {
 		limit = {

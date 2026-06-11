@@ -1,10 +1,10 @@
 # Event 007: Fury
 
-Event 007 Fury is a repeatable Wars-cluster event that transforms a safe AI minor into an aggressive border-war actor.
+Event 007 Fury is a repeatable Wars-cluster event that transforms safe AI minors into aggressive border-war actors.
 
 ## Runtime Flow
 
-1. `chaosx.nr7.1` selects an eligible AI minor through `fury_can_be_selected`.
+1. Each `chaosx.nr7.1` firing selects a fresh eligible AI minor through `fury_can_be_selected`; existing Fury actors are excluded, so repeat firings create additional Fury countries instead of reapplying Fury to the previous actor.
 2. The selected country receives `fury_national_fury`, the shared `fury_focus_tree`, starting Fury variables, the base support-equipment and engineer-company unlocks required by the Fury Column template, starting units, equipment, a hidden finite reinforcement reserve, and a self-scheduled weekly event loop.
 3. `chaosx.nr7.10` scores every valid neighboring target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
 4. `chaosx.nr7.20` runs only on active Fury actors every seven days. It draws from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
