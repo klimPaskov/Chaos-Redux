@@ -923,6 +923,159 @@ cr_no_more_flags_needed = {
 	}
 }
 
+#############################
+# EVENT 007 - FURY
+#############################
+
+achievement_fury_fuse_cut = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_fuse_cut_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_containment_contributor
+			has_global_flag = fury_defeated_before_first_conquest
+		}
+	}
+}
+
+achievement_fury_no_minor_major = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_no_minor_major_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_containment_contributor
+			has_global_flag = fury_first_conquest_recorded_global
+			has_global_flag = fury_all_actors_defeated
+			NOT = { has_global_flag = fury_major_super_event_fired }
+		}
+	}
+}
+
+achievement_fury_firebreak = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_firebreak_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_firebreak_holds
+			has_global_flag = fury_all_actors_defeated
+			capital_scope = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+		}
+	}
+}
+
+achievement_fury_pact_breaker = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_pact_breaker_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_pact_breaker_path
+			has_global_flag = fury_pact_formed
+			has_global_flag = fury_all_actors_defeated
+		}
+	}
+}
+
+achievement_fury_ten_fires = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_ten_fires_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_containment_contributor
+			has_global_flag = fury_triggerable_scenario_maximum
+			has_global_flag = fury_all_actors_defeated
+			OR = {
+				check_variable = {
+					var = global.fury_triggerable_scenario_actor_count
+					value = constant:fury_scenario_actor_count.maximum
+					compare = greater_than_or_equals
+				}
+				has_global_flag = fury_triggerable_scenario_used_every_safe_candidate
+			}
+		}
+	}
+}
+
+achievement_fury_last_neighbor = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_last_neighbor_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_last_neighbor_path
+			has_global_flag = fury_all_actors_defeated
+			NOT = { has_global_flag = fury_world_end_active }
+			capital_scope = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+		}
+	}
+}
+
+achievement_fury_world_without_fury = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_world_without_fury_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_containment_contributor
+			has_global_flag = fury_world_end_active
+			has_global_flag = fury_world_end_three_continents_seeded
+			has_global_flag = fury_world_end_defeated
+			has_global_flag = fury_all_actors_defeated
+		}
+	}
+}
+
+achievement_fury_rivals_burn = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_rivals_burn_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_containment_contributor
+			has_global_flag = fury_triggerable_scenario_hostile
+			has_global_flag = fury_actor_fought_actor
+			has_global_flag = fury_all_actors_defeated
+		}
+	}
+}
+
+achievement_fury_major_without_faction = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_major_without_faction_tooltip
+			NOT = { is_fury_actor = yes }
+			is_in_faction = no
+			has_country_flag = achievement_fury_major_without_faction_path
+			has_global_flag = fury_major_defeated
+			has_global_flag = fury_all_actors_defeated
+		}
+	}
+}
+
+achievement_fury_no_cores = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_fury_no_cores_tooltip
+			NOT = { is_fury_actor = yes }
+			has_country_flag = achievement_fury_no_cores_path
+			has_global_flag = fury_all_actors_defeated
+			NOT = { has_global_flag = fury_coring_completed }
+		}
+	}
+}
+
 01_world_collapse_ahead_of_schedule_achievement = {
 	possible = {
 		custom_override_tooltip = {

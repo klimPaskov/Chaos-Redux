@@ -270,7 +270,7 @@ The terminal branch should require:
 - at least one active Fury actor.
 - a main Fury actor that is major, continent-dominant, or has no valid continental AI neighbors.
 - the relevant world-end focus or no-neighbor branch completed.
-- enough eligible AI minors in other continents to spread the pattern, or a documented fallback if too few exist.
+- enough eligible AI minors in other continents to spread the pattern, or a visible blocked outcome if too few exist.
 
 ### World-end opening effects
 
@@ -284,8 +284,10 @@ When the branch starts:
 6. make seeded Fury actors join the main Fury faction.
 7. give seeded Fury actors a stronger evolved opening.
 8. unlock world-end focus branch for all Fury actors.
-9. enable terminal targeting rules.
+9. warn player countries before any terminal player threat can be enabled.
 10. fire the world-end super-event.
+
+Current implementation note: `fury_try_start_world_end` and `fury_start_world_end` provide the first terminal starter. The branch sets `world_end`, `world_end_fury`, `fury_world_end_active`, `world_threat_source_fury`, creates `The World in Fury`, seeds safe AI Fury actors across unrepresented continents first, fills toward the required terminal actor count, and reports `fury_world_end_seed_blocked` if the safe seed pool is insufficient.
 
 ### Continental spread
 
@@ -320,6 +322,8 @@ Faction behavior:
 - Fury members do not accept ordinary peace with target states while terminal state is active.
 - Fury members can compete for conquered land, but the main Fury actor remains faction leader unless defeated.
 
+Current implementation note: the terminal starter leaves any prior faction, creates `The World in Fury`, adds active and seeded Fury actors to the leader's faction, and flags them with `fury_pact_member` and `fury_world_end_actor`. Terminal actors can use `fury_share_terminal_reserves` to move manpower and equipment to another terminal Fury actor, and `fury_assign_terminal_fronts` to raise pact cohesion, target preparation, momentum, and overextension relief across the terminal pact.
+
 ### Terminal targeting rules
 
 The world-end branch may eventually threaten player countries, but this should be a terminal state with clear warning. It must not happen through the ordinary first-neighbor loop.
@@ -331,6 +335,8 @@ Terminal target rules:
 - the player should receive warning events and response tools.
 - Fury does not give the player the Fury package even if the player is in the faction through unusual modded conditions.
 - subject and faction logic must avoid stealing player-controlled peace outcomes.
+
+Current implementation note: `chaosx.nr7.50` warns all player countries and `fury_player_warning_grace_active` marks the grace period. Ordinary target selection still excludes player-linked countries through `fury_is_valid_target`. After the grace flag expires, world-end actors that have no valid AI neighbor can use `fury_terminal_can_threaten_player_linked_country` through `fury_try_terminal_player_target`, which sends `chaosx.nr7.52` before the direct terminal war declaration.
 
 ### World-end failure and defeat
 
@@ -360,6 +366,8 @@ Quote direction: real historical or literary quote about unchecked expansion, fo
 
 Button direction: cold and short. Example direction: `The map keeps moving`.
 
+Current implementation note: slot `59` uses generated final image art at `gfx/super_events/fury_becomes_a_state.dds`, with source and processed PNGs under `docs/assets/007_fury/super_events/fury_becomes_a_state/`. Its final sourced audio uses ID `59`, `music/fury_becomes_a_state.ogg`, and `sound/chaosx_super_event_fury_becomes_a_state.wav`; source and license details are recorded in `docs/super_events/super_event_audio_packages.md`.
+
 ### Super-event 2: The World in Fury
 
 Role: world-end reveal.
@@ -373,6 +381,8 @@ Image direction: global map room with multiple small flags, radio operators, dis
 Quote direction: real quote about war spreading through imitation, the end of order, or the logic of force. Use super-event research workflow.
 
 Button direction: short and terminal. Example direction: `Every border is a front`.
+
+Current implementation note: slot `60` uses generated final image art at `gfx/super_events/super_event_world_in_fury.dds`, with source and processed PNGs under `docs/assets/007_fury/super_events/world_in_fury/`. Its final sourced audio uses ID `60`, `music/super_event_world_in_fury.ogg`, and `sound/chaosx_super_event_world_in_fury.wav`; source and license details are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 ### Optional super-event 3: Fury defeated after terminal branch
 

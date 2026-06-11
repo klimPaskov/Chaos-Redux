@@ -1,0 +1,342 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 007 FURY TRIGGERS
+# ============================================================================
+# Selection, targeting, actor-state, and decision gates for Event 007.
+# ============================================================================
+
+is_fury_actor = {
+	has_country_flag = fury_actor
+}
+
+fury_is_player_linked_country = {
+	OR = {
+		is_ai = no
+		overlord = { is_ai = no }
+		any_allied_country = { is_ai = no }
+	}
+}
+
+fury_can_be_selected = {
+	exists = yes
+	is_ai = yes
+	is_major = no
+	is_subject = no
+	uses_normal_civilian_systems = yes
+	NOT = { has_capitulated = yes }
+	NOT = { any_enemy_country = { is_ai = no } }
+	NOT = { has_country_flag = fury_actor }
+	NOT = { has_country_flag = fury_recent_actor }
+	NOT = { fury_is_player_linked_country = yes }
+	capital_scope = { is_island_state = no }
+	any_neighbor_country = { fury_is_valid_target = yes }
+}
+
+fury_can_be_selected_one_state = {
+	fury_can_be_selected = yes
+	num_of_controlled_states < constant:fury_target_score.one_state_max
+}
+
+fury_can_be_selected_two_state = {
+	fury_can_be_selected = yes
+	num_of_controlled_states < constant:fury_target_score.two_state_max
+}
+
+fury_can_be_selected_three_state = {
+	fury_can_be_selected = yes
+	num_of_controlled_states < constant:fury_target_score.three_state_max
+}
+
+fury_actor_can_continue = {
+	has_country_flag = fury_actor
+	exists = yes
+	NOT = { has_capitulated = yes }
+	num_of_controlled_states > 0
+}
+
+fury_world_end_basic_readiness = {
+	is_fury_actor = yes
+	has_country_flag = fury_world_end_candidate
+	has_global_flag = fury_world_end_candidate
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_final.min
+		compare = greater_than_or_equals
+	}
+	OR = {
+		has_country_flag = fury_no_neutral_map_unlocked
+		is_major = yes
+		num_of_controlled_states > constant:fury_balance.world_end_actor_state_threshold
+		NOT = { any_neighbor_country = { fury_is_valid_target = yes } }
+	}
+	OR = {
+		NOT = { fury_occupation_pressure_extreme = yes }
+		has_country_flag = fury_no_neutral_map_unlocked
+	}
+}
+
+fury_world_end_safe_seed_candidate = {
+	fury_can_be_selected = yes
+	NOT = { has_global_flag = fury_triggerable_scenario_launch_active }
+}
+
+fury_is_valid_target = {
+	exists = yes
+	is_ai = yes
+	is_subject = no
+	uses_normal_civilian_systems = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = fury_actor }
+	NOT = { fury_is_player_linked_country = yes }
+	NOT = { is_subject_of = ROOT }
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = {
+		AND = {
+			is_major = yes
+			ROOT = {
+				is_major = no
+				NOT = { has_global_flag = fury_world_end_active }
+			}
+		}
+	}
+	ROOT = {
+		OR = {
+			has_country_flag = fury_evolution_iii_applied
+			has_global_flag = fury_world_end_active
+			NOT = { fury_occupation_pressure_extreme = yes }
+		}
+	}
+	ROOT = { can_declare_war_on = PREV }
+}
+
+fury_terminal_can_threaten_player_linked_country = {
+	exists = yes
+	has_global_flag = fury_world_end_active
+	has_global_flag = fury_terminal_player_warning_issued
+	NOT = { has_global_flag = fury_player_warning_grace_active }
+	fury_is_player_linked_country = yes
+	uses_normal_civilian_systems = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = fury_actor }
+	NOT = { is_subject_of = ROOT }
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { has_war_with = ROOT }
+	ROOT = {
+		has_country_flag = fury_world_end_actor
+		can_declare_war_on = PREV
+	}
+}
+
+fury_has_terminal_player_target = {
+	has_global_flag = fury_world_end_active
+	has_global_flag = fury_terminal_player_warning_issued
+	NOT = { has_global_flag = fury_player_warning_grace_active }
+	any_country = { fury_terminal_can_threaten_player_linked_country = yes }
+}
+
+fury_candidate_passes_score_gate = {
+	check_variable = {
+		var = fury_target_score
+		value = constant:fury_target_score.minimum_score
+		compare = greater_than_or_equals
+	}
+}
+
+fury_is_valid_rival_actor_target = {
+	exists = yes
+	is_ai = yes
+	is_fury_actor = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_in_faction_with = ROOT }
+	NOT = { has_war_with = ROOT }
+	ROOT = { can_declare_war_on = PREV }
+}
+
+fury_has_current_valid_target = {
+	has_country_flag = fury_has_current_target
+	var:fury_current_target = {
+		exists = yes
+		NOT = { has_capitulated = yes }
+		NOT = { has_war_with = ROOT }
+		fury_is_valid_target = yes
+	}
+}
+
+can_pay_fury_reinforcement_cost = {
+	command_power > constant:fury_decision_cost.reinforcement_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.reinforcement_equipment_gate }
+}
+
+can_pay_fury_target_cost = {
+	command_power > constant:fury_decision_cost.target_cp_gate
+}
+
+can_pay_fury_settlement_cost = {
+	command_power > constant:fury_decision_cost.settlement_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.settlement_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.settlement_support_gate }
+}
+
+can_pay_fury_core_cost = {
+	command_power > constant:fury_decision_cost.core_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.core_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.core_support_gate }
+}
+
+fury_occupation_pressure_high = {
+	check_variable = {
+		var = fury_occupation_pressure
+		value = constant:fury_occupation.overextension_high_gate
+		compare = greater_than
+	}
+}
+
+fury_occupation_pressure_extreme = {
+	check_variable = {
+		var = fury_occupation_pressure
+		value = constant:fury_occupation.overextension_extreme_gate
+		compare = greater_than
+	}
+}
+
+fury_has_registered_settlement_state = {
+	any_controlled_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		has_state_flag = fury_settlement_registered
+		NOT = { is_core_of = ROOT }
+	}
+}
+
+fury_has_any_registered_settlement_state = {
+	any_owned_state = {
+		has_state_flag = fury_settlement_registered
+		NOT = { is_core_of = ROOT }
+	}
+}
+
+fury_has_admin_core_candidate = {
+	has_country_flag = fury_admin_coring_unlocked
+	any_controlled_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		has_state_flag = fury_settlement_registered
+		NOT = { has_state_flag = fury_integration_failed_recently }
+		NOT = { is_core_of = ROOT }
+		compliance > constant:fury_occupation.compliance_admin_gate
+	}
+}
+
+fury_has_march_core_candidate = {
+	has_country_flag = fury_march_coring_unlocked
+	any_controlled_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		has_state_flag = fury_settlement_registered
+		NOT = { is_core_of = ROOT }
+		compliance > constant:fury_occupation.compliance_march_gate
+	}
+}
+
+can_pay_fury_registers_cost = {
+	command_power > constant:fury_decision_cost.registers_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.registers_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.registers_support_gate }
+}
+
+can_pay_fury_rail_registry_cost = {
+	command_power > constant:fury_decision_cost.rail_registry_cp_gate
+	has_equipment = { train_equipment > constant:fury_decision_cost.rail_registry_train_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.rail_registry_support_gate }
+}
+
+can_pay_fury_admin_core_cost = {
+	command_power > constant:fury_decision_cost.admin_core_cp_gate
+	has_manpower > constant:fury_decision_cost.admin_core_manpower_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.admin_core_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.admin_core_support_gate }
+}
+
+can_pay_fury_march_core_cost = {
+	command_power > constant:fury_decision_cost.march_core_cp_gate
+	has_manpower > constant:fury_decision_cost.march_core_manpower_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.march_core_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.march_core_support_gate }
+}
+
+can_pay_fury_cooperation_cost = {
+	command_power > constant:fury_decision_cost.cooperation_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.cooperation_equipment_gate }
+}
+
+can_pay_fury_rivalry_cost = {
+	command_power > constant:fury_decision_cost.rivalry_cp_gate
+}
+
+can_pay_fury_survey_cost = {
+	command_power > constant:fury_decision_cost.survey_cp_gate
+}
+
+can_pay_fury_terminal_reserves_cost = {
+	command_power > constant:fury_decision_cost.terminal_reserves_cp_gate
+	has_manpower > constant:fury_decision_cost.terminal_reserves_manpower_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.terminal_reserves_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.terminal_reserves_support_gate }
+}
+
+can_pay_fury_terminal_fronts_cost = {
+	command_power > constant:fury_decision_cost.terminal_fronts_cp_gate
+	has_army_experience > constant:fury_decision_cost.terminal_fronts_army_xp_gate
+}
+
+can_pay_anti_fury_border_watch_cost = {
+	command_power > constant:fury_decision_cost.anti_fury_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.anti_fury_equipment_gate }
+}
+
+can_pay_anti_fury_emergency_aid_cost = {
+	command_power > constant:fury_decision_cost.anti_fury_aid_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.anti_fury_aid_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.anti_fury_aid_support_gate }
+	has_equipment = { train_equipment > constant:fury_decision_cost.anti_fury_aid_train_gate }
+}
+
+can_pay_anti_fury_staff_talks_cost = {
+	command_power > constant:fury_decision_cost.anti_fury_staff_cp_gate
+	has_army_experience > constant:fury_decision_cost.anti_fury_staff_army_xp_gate
+}
+
+can_pay_anti_fury_supply_denial_cost = {
+	command_power > constant:fury_decision_cost.anti_fury_denial_cp_gate
+	has_equipment = { infantry_equipment > constant:fury_decision_cost.anti_fury_denial_equipment_gate }
+}
+
+can_pay_anti_fury_recognition_denial_cost = {
+	command_power > constant:fury_decision_cost.anti_fury_recognition_cp_gate
+}
+
+anti_fury_response_visible = {
+	is_fury_actor = no
+	OR = {
+		has_global_flag = fury_major_super_event_fired
+		has_global_flag = fury_world_end_active
+	}
+	OR = {
+		any_neighbor_country = { is_fury_actor = yes }
+		is_major = yes
+	}
+}
+
+anti_fury_has_active_target_to_aid = {
+	any_country = {
+		is_fury_actor = yes
+		has_country_flag = fury_has_current_target
+		var:fury_current_target = {
+			exists = yes
+			NOT = { has_capitulated = yes }
+			NOT = { fury_is_player_linked_country = yes }
+		}
+	}
+}
