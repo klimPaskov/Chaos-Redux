@@ -11,11 +11,11 @@
 | Status target | Reworked |
 | Cluster | Wars |
 | Player selection | Player countries are excluded from becoming Fury |
-| Baseline target safety | Player countries, player subjects, and player faction members are excluded from ordinary Fury target selection |
+| Baseline target safety | Player countries are valid Fury targets when they meet the normal target gates; player countries are excluded only from Fury actor selection |
 | Triggerable scenario | `The World in Fury`, see separate scenario spec |
 | Main fantasy | A tiny state starts moving faster than the map can explain |
 
-Fury is a repeatable war pressure event where one small AI country becomes an expansion actor. It receives a special idea, a shared Fury focus tree, a decision system, weekly units, and a target-selection loop. It declares war on a weaker AI neighbor without warning. After the first neighbor falls, it chooses another weaker neighbor. This loop continues until it has no valid land neighbors left, it becomes contained, or it capitulates.
+Fury is a repeatable war pressure event where one small AI country becomes an expansion actor. It receives a special idea, a shared Fury focus tree, a decision system, weekly units, and a target-selection loop. It declares war on a weaker eligible neighbor without warning. After the first neighbor falls, it chooses another weaker neighbor. This loop continues until it has no valid land neighbors left, it becomes contained, or it capitulates.
 
 Fury should be readable as a strange war event, not as a normal focus-tree claim branch. The selected country is still the same country on the map. Its name and flag can remain familiar at first, but its behavior changes visibly through national spirits, decisions, focus tree content, news, and later faction identity.
 
@@ -25,7 +25,7 @@ The first player-facing impression should be simple.
 
 A minor country that should not matter starts winning wars too quickly. Observers cannot agree whether it is a coup, a mass mobilization, a staff-office obsession, or a country losing all sense of limit. The player sees the first warning through a report event or news note only after the first conquest, unless the player is close to the region or has intelligence access.
 
-The event should create tension without giving the player a free expansion tool. Fury must never select the player as the Fury actor. The ordinary Fury loop must avoid declaring on the player and direct player dependents. If Fury reaches a terminal world-end branch, the player can eventually be threatened, but only after clear warning and world-end presentation.
+The event should create tension without giving the player a free expansion tool. Fury must never select the player as the Fury actor. The ordinary Fury loop can declare on a player country when that country is a valid target; the player exclusion applies to Fury actor selection, not Fury target selection.
 
 ## What Fury is not
 
@@ -45,11 +45,11 @@ The player can fight Fury, contain Fury, manipulate Fury indirectly, or trigger 
 
 The baseline loop has seven steps.
 
-1. Select an eligible AI minor with a mainland capital, few states, and at least one weaker AI land neighbor.
+1. Select an eligible AI minor with a mainland capital, few states, and at least one weaker eligible land neighbor.
 2. Apply the Fury package.
 3. Give a starting army package and first stockpile support.
 4. Start weekly Fury reinforcement.
-5. Pick one weaker AI neighbor and declare war without warning.
+5. Pick one weaker eligible neighbor and declare war without warning.
 6. When that neighbor is defeated, run conquest settlement and fire the first-conquest news if this is the first victory.
 7. Pick the next weaker neighbor, or enter the no-neighbor branch if no valid target remains.
 
@@ -79,7 +79,7 @@ A candidate should normally meet all of these conditions.
 | Mainland presence | Capital must have a land route or direct land neighbor candidate. Pure island states are excluded |
 | Alive and sovereign | Must exist, must not be capitulated, must not be a subject unless the scenario type explicitly allows subject breakage |
 | Normal country | Exclude special chaos countries that should not behave like normal states |
-| Valid target | Must have at least one weaker AI neighbor that is not player-linked |
+| Valid target | Must have at least one eligible neighbor. Player-controlled countries can count as targets, but cannot become Fury actors. |
 | No fresh cooldown | Must not have recently been Fury, defeated Fury, or blocked by a local Fury cooldown |
 | Focus suitability | Prefer countries with generic or light trees so the shared Fury tree can be loaded cleanly |
 
@@ -90,7 +90,7 @@ If the normal selector cannot find enough valid candidates, broaden in this orde
 1. Allow two-state mainland minors.
 2. Allow three-state mainland minors.
 3. Allow weak coastal mainland minors with land neighbors.
-4. Allow isolated small mainland minors that can reach a target through a direct strait if the target is AI and not player-linked.
+4. Allow isolated small mainland minors that can reach a target through a direct strait if the target passes the normal target gates.
 5. Abort if no safe target can be built.
 
 Do not broaden into player countries. Do not use islands that have no practical neighbor. Do not select majors simply because there are no minors left.
@@ -134,11 +134,11 @@ The target must be:
 
 Fury prefers targets in this order.
 
-1. Small AI neighbor with one or two states.
-2. Weakened AI neighbor already at war elsewhere.
-3. AI neighbor that lost divisions recently.
-4. AI neighbor that owns claims or cores near the Fury country.
-5. Larger AI neighbor only if Fury momentum is high.
+1. Small eligible neighbor with one or two states.
+2. Weakened eligible neighbor already at war elsewhere.
+3. Eligible neighbor that lost divisions recently.
+4. Eligible neighbor that owns claims or cores near the Fury country.
+5. Larger eligible neighbor only if Fury momentum is high.
 6. Major or major-backed target only in late Fury state or world-end state.
 
 The implementation should avoid targets that pull half the world into an early local war unless that is the purpose of an evolution or the world-end branch.

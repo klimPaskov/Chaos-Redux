@@ -2,7 +2,7 @@
 
 This package turns Event ID `7`, `Fury`, into a source specification pack for Chaos Redux.
 
-Fury replaces the old expansionism placeholder with a dynamic repeatable war event. A small AI country is taken by a fast expansion system, receives a weekly military build-up, attacks weaker AI neighbors, absorbs territory through compliance and coring work, and either burns out or grows into a continental threat.
+Fury replaces the old expansionism placeholder with a dynamic repeatable war event. A small AI country is taken by a fast expansion system, receives a weekly military build-up, attacks weaker eligible neighbors, absorbs territory through compliance and coring work, and either burns out or grows into a continental threat.
 
 ## Package map
 

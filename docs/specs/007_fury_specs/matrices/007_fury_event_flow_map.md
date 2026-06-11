@@ -5,7 +5,7 @@ Eligible AI minor found
   apply Fury package
   load shared tree
   start weekly unit pulse
-  pick weaker AI neighbor
+  pick weaker eligible neighbor
   declare war without warning
     if Fury loses
       cleanup and defeat log
