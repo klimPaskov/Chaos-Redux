@@ -7,7 +7,7 @@ Event 007 Fury is a repeatable Wars-cluster event that transforms safe AI minors
 1. Each `chaosx.nr7.1` firing selects a fresh eligible AI minor through `fury_can_be_selected`; existing Fury actors are excluded, so repeat firings create additional Fury countries instead of reapplying Fury to the previous actor.
 2. The selected country receives `fury_national_fury`, the shared `fury_focus_tree`, starting Fury variables, the base support-equipment and engineer-company unlocks required by the Fury Column template, starting units, equipment, a hidden finite reinforcement reserve, and a self-scheduled weekly event loop.
 3. `chaosx.nr7.10` scores every valid neighboring target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
-4. `chaosx.nr7.20` runs only on active Fury actors every seven days. It draws from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
+4. `chaosx.nr7.20` runs only on active Fury actors every seven days. Every fourth weekly tick it draws one division from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
 5. `chaosx.nr7.30` records the first conquest and fires `chaosx.news.7007`.
 6. Fury cleanup clears the actor state if the country capitulates or loses controlled territory.
 
@@ -24,7 +24,7 @@ Fury selection excludes:
 - countries without any valid neighbor target
 - countries that recently failed as Fury
 
-Ordinary Fury selection prefers safe one-state AI minors, then broadens to two-state and three-state mainland-capital candidates before using the general safe selector. Ordinary random firing keeps one active Fury actor; Evolution II raises that cap to two and Evolution III raises it to three. The triggerable scenario and terminal world-end branch use separate setup paths.
+Ordinary Fury selection prefers safe one-state AI minors, then broadens to two-state and three-state mainland-capital candidates before using the general safe selector. Repeat random firings choose fresh eligible actors instead of reapplying Fury to an existing Fury country. Evolution II and Evolution III can still force additional actors when their setup needs them. The triggerable scenario and terminal world-end branch use separate setup paths.
 
 Ordinary targets can be AI or player-controlled countries. Target validity does not exclude a country for being player-controlled or player-linked; targets must not be subjects, Fury actors, allies, subjects of the Fury actor, or countries already at war with the Fury actor.
 
@@ -36,8 +36,10 @@ Ordinary targets can be AI or player-controlled countries. Target validity does 
 - `fury_failed_target_scans`: count of consecutive scans that found no valid scored target.
 - `fury_target_preparation`: preparation value raised by focus route choices and read by target scoring.
 - `fury_last_target_id`: last declared target country ID, used for audit and future churn prevention.
-- `fury_momentum`: reinforcement quality and escalation strength.
-- hidden reinforcement reserve variable: finite reserve pool consumed by weekly spawning and capped refill effects.
+- `fury_momentum`: escalation strength and target pressure.
+- `fury_reinforcement_reserve_pool`: hidden finite reserve pool consumed by weekly spawning.
+- `fury_reinforcement_reserve_total_granted`: hidden lifetime reserve counter capped at 100 divisions per Fury actor.
+- `fury_reinforcement_spawn_tick`: hidden weekly cadence counter; reserve spawning only creates a division every fourth weekly tick.
 - `fury_overextension`: occupation strain.
 - `fury_compliance_drive`: settlement and coring pressure.
 - `fury_reach`: no-neighbor recovery pressure.
@@ -64,7 +66,7 @@ Ordinary targets can be AI or player-controlled countries. Target validity does 
 Fury actors use `fury_war_office_category`.
 
 - `fury_select_new_target`: selects and attacks a new valid neighbor.
-- `fury_open_forward_depots`: spends command power and infantry equipment for a capped reinforcement reserve refill or reserve-spawn quality boost.
+- `fury_open_forward_depots`: spends command power and infantry equipment for a small capped reinforcement reserve refill on a 42-day cooldown.
 - `fury_register_occupation_settlement`: spends command power, rifles, and support equipment to mark a non-core controlled state for settlement.
 - `fury_count_captured_registers`: spends command power, rifles, and support equipment to mark a new occupied state for administrative register work.
 - `fury_rail_registry_survey`: spends trains and support equipment to mark a registered state as rail-ready and lower occupation pressure.
@@ -120,6 +122,7 @@ Disabled evolutions do not record entries because the record effects require the
 
 - Type: `Fury Pact` or `Hostile Fury`.
 - Intensity: Low 2 actors, Medium 5 actors, High 9 actors, Maximum up to 16 actors when enough safe AI minors exist.
+- Intensity changes the starting package and capped hidden reserve bonus. It never changes weekly spawning into an uncapped loop.
 - Actor selection makes repeated continent passes before using a global fallback, so the scenario starts dispersed instead of concentrating nearby minors.
 - Player countries and player-linked countries remain excluded from becoming Fury actors; after launch they can still become Fury targets when normal target gates allow it.
 - Hostile Fury attempts Fury-on-Fury declarations in addition to neighbor wars, which supports the rival-fires achievement route.

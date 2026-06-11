@@ -24,6 +24,9 @@ fury_initialize_actor_variables = {
 	set_variable = { fury_occupation_pressure = 0 }
 	set_variable = { fury_garrison_capacity = 0 }
 	set_variable = { fury_registered_state_count = 0 }
+	set_variable = { fury_reinforcement_reserve_pool = 0 }
+	set_variable = { fury_reinforcement_reserve_total_granted = 0 }
+	set_variable = { fury_reinforcement_spawn_tick = 0 }
 }
 
 fury_sync_evolution_unlocks = {
@@ -189,10 +192,113 @@ fury_prepare_spawn_count = {
 	round_temp_variable = fury_spawn_count
 }
 
+fury_ensure_reinforcement_reserve_variables = {
+	if = {
+		limit = { NOT = { has_variable = fury_reinforcement_reserve_pool } }
+		set_variable = { fury_reinforcement_reserve_pool = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = fury_reinforcement_reserve_total_granted } }
+		set_variable = { fury_reinforcement_reserve_total_granted = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = fury_reinforcement_spawn_tick } }
+		set_variable = { fury_reinforcement_spawn_tick = 0 }
+	}
+}
+
+fury_clamp_reinforcement_reserve = {
+	fury_ensure_reinforcement_reserve_variables = yes
+	clamp_variable = { var = fury_reinforcement_reserve_pool min = 0 max = constant:fury_units.reserve_lifetime_cap }
+	clamp_variable = { var = fury_reinforcement_reserve_total_granted min = 0 max = constant:fury_units.reserve_lifetime_cap }
+	clamp_variable = { var = fury_reinforcement_spawn_tick min = 0 }
+}
+
+fury_prepare_initial_reserve_count = {
+	set_temp_variable = { fury_initial_reserve_count = constant:fury_units.reserve_initial_baseline }
+	if = {
+		limit = { num_of_controlled_states < 3 }
+		set_temp_variable = { fury_initial_reserve_count = constant:fury_units.reserve_initial_weak }
+	}
+	if = {
+		limit = { has_country_flag = fury_evolution_i_applied }
+		set_temp_variable = { fury_initial_reserve_count = constant:fury_units.reserve_initial_hardened }
+	}
+	if = {
+		limit = { has_country_flag = fury_evolution_iii_applied }
+		set_temp_variable = { fury_initial_reserve_count = constant:fury_units.reserve_initial_evolution_three }
+	}
+	round_temp_variable = fury_initial_reserve_count
+}
+
+fury_add_reinforcement_reserve = {
+	fury_ensure_reinforcement_reserve_variables = yes
+	round_temp_variable = fury_reinforcement_reserve_add
+	if = {
+		limit = { check_variable = { fury_reinforcement_reserve_add > 0 } }
+		set_temp_variable = { fury_reinforcement_reserve_room = constant:fury_units.reserve_lifetime_cap }
+		subtract_from_temp_variable = { fury_reinforcement_reserve_room = fury_reinforcement_reserve_total_granted }
+		if = {
+			limit = { check_variable = { fury_reinforcement_reserve_room > 0 } }
+			if = {
+				limit = { check_variable = { fury_reinforcement_reserve_add > fury_reinforcement_reserve_room } }
+				set_temp_variable = { fury_reinforcement_reserve_add = fury_reinforcement_reserve_room }
+			}
+			add_to_variable = { fury_reinforcement_reserve_pool = fury_reinforcement_reserve_add }
+			add_to_variable = { fury_reinforcement_reserve_total_granted = fury_reinforcement_reserve_add }
+			fury_clamp_reinforcement_reserve = yes
+		}
+	}
+}
+
+fury_add_initial_reinforcement_reserve = {
+	fury_prepare_initial_reserve_count = yes
+	set_temp_variable = { fury_reinforcement_reserve_add = fury_initial_reserve_count }
+	fury_add_reinforcement_reserve = yes
+}
+
+fury_add_triggerable_scenario_reinforcement_reserve = {
+	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.reserve_scenario_low_bonus }
+	if = {
+		limit = { check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.medium } }
+		set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.reserve_scenario_medium_bonus }
+	}
+	else_if = {
+		limit = { check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.high } }
+		set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.reserve_scenario_high_bonus }
+	}
+	else_if = {
+		limit = { check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.reserve_scenario_maximum_bonus }
+	}
+	fury_add_reinforcement_reserve = yes
+}
+
+fury_add_focus_small_reinforcement_reserve = {
+	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.focus_small_reserve_refill }
+	fury_add_reinforcement_reserve = yes
+}
+
+fury_add_focus_medium_reinforcement_reserve = {
+	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.focus_medium_reserve_refill }
+	fury_add_reinforcement_reserve = yes
+}
+
+fury_add_focus_large_reinforcement_reserve = {
+	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.focus_large_reserve_refill }
+	fury_add_reinforcement_reserve = yes
+}
+
+fury_add_depot_decision_reinforcement_reserve = {
+	set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_units.depot_decision_reserve_refill }
+	fury_add_reinforcement_reserve = yes
+}
+
 fury_spawn_starting_units = {
 	fury_prepare_spawn_count = yes
 	fury_unlock_column_equipment = yes
 	fury_add_scaled_stockpile = yes
+	fury_add_initial_reinforcement_reserve = yes
 	random_controlled_state = {
 		limit = { is_controlled_by = ROOT }
 		create_unit = {
@@ -204,62 +310,49 @@ fury_spawn_starting_units = {
 }
 
 fury_prepare_weekly_unit_count = {
-	set_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_base_units }
-	set_temp_variable = { fury_weekly_momentum_units = fury_momentum }
-	divide_temp_variable = { fury_weekly_momentum_units = constant:fury_units.weekly_momentum_divisor }
-	round_temp_variable = fury_weekly_momentum_units
-	add_to_temp_variable = { fury_weekly_unit_count = fury_weekly_momentum_units }
-	set_temp_variable = { fury_weekly_state_units = num_of_controlled_states }
-	divide_temp_variable = { fury_weekly_state_units = constant:fury_units.weekly_state_divisor }
-	round_temp_variable = fury_weekly_state_units
-	add_to_temp_variable = { fury_weekly_unit_count = fury_weekly_state_units }
+	fury_ensure_reinforcement_reserve_variables = yes
+	set_temp_variable = { fury_weekly_unit_count = 0 }
 	if = {
-		limit = { has_country_flag = fury_evolution_i_applied }
-		add_to_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_evolution_i_bonus }
+		limit = { check_variable = { fury_reinforcement_reserve_pool > 0 } }
+		add_to_variable = { fury_reinforcement_spawn_tick = 1 }
+		if = {
+			limit = {
+				check_variable = {
+					var = fury_reinforcement_spawn_tick
+					value = constant:fury_units.weekly_spawn_interval_ticks
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_spawn_units_per_tick }
+			if = {
+				limit = { check_variable = { fury_weekly_unit_count > fury_reinforcement_reserve_pool } }
+				set_temp_variable = { fury_weekly_unit_count = fury_reinforcement_reserve_pool }
+			}
+			subtract_from_variable = { fury_reinforcement_reserve_pool = fury_weekly_unit_count }
+			set_variable = { fury_reinforcement_spawn_tick = 0 }
+			fury_clamp_reinforcement_reserve = yes
+		}
 	}
-	if = {
-		limit = { has_country_flag = fury_evolution_iii_applied }
-		add_to_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_evolution_iii_bonus }
-	}
-	if = {
-		limit = { has_country_flag = fury_triggerable_scenario_actor }
-		add_to_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_scenario_bonus }
-	}
-	if = {
-		limit = { fury_occupation_pressure_high = yes }
-		subtract_from_temp_variable = { fury_weekly_unit_count = constant:fury_occupation.weekly_high_unit_penalty }
-	}
-	if = {
-		limit = { fury_occupation_pressure_extreme = yes }
-		subtract_from_temp_variable = { fury_weekly_unit_count = constant:fury_occupation.weekly_extreme_unit_penalty }
+	else = {
+		set_variable = { fury_reinforcement_spawn_tick = 0 }
 	}
 	round_temp_variable = fury_weekly_unit_count
-	clamp_temp_variable = { var = fury_weekly_unit_count min = 1 max = 8 }
+	clamp_temp_variable = { var = fury_weekly_unit_count min = 0 max = constant:fury_units.weekly_spawn_units_per_tick }
 }
 
 fury_spawn_weekly_units = {
 	fury_prepare_weekly_unit_count = yes
-	fury_unlock_column_equipment = yes
-	fury_add_weekly_stockpile = yes
-	random_controlled_state = {
-		limit = { is_controlled_by = ROOT }
-		create_unit = {
-			division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.20"
-			count = fury_weekly_unit_count
-			owner = ROOT
-		}
-	}
-}
-
-fury_spawn_depot_decision_units = {
-	fury_prepare_weekly_unit_count = yes
-	fury_unlock_column_equipment = yes
-	random_controlled_state = {
-		limit = { is_controlled_by = ROOT }
-		create_unit = {
-			division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.15"
-			count = fury_weekly_unit_count
-			owner = ROOT
+	if = {
+		limit = { check_variable = { fury_weekly_unit_count > 0 } }
+		fury_unlock_column_equipment = yes
+		fury_add_weekly_stockpile = yes
+		random_controlled_state = {
+			limit = { is_controlled_by = ROOT }
+			create_unit = {
+				division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.20"
+				count = fury_weekly_unit_count
+				owner = ROOT
+			}
 		}
 	}
 }
@@ -806,6 +899,9 @@ fury_cleanup_actor = {
 	clear_variable = fury_occupation_pressure
 	clear_variable = fury_garrison_capacity
 	clear_variable = fury_registered_state_count
+	clear_variable = fury_reinforcement_reserve_pool
+	clear_variable = fury_reinforcement_reserve_total_granted
+	clear_variable = fury_reinforcement_spawn_tick
 	clear_variable = fury_momentum
 	clear_variable = fury_overextension
 	clear_variable = fury_compliance_drive
@@ -1691,6 +1787,7 @@ fury_apply_triggerable_scenario_actor_package = {
 		limit = { check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
 		set_country_flag = fury_evolution_iii_applied
 	}
+	fury_add_triggerable_scenario_reinforcement_reserve = yes
 	add_to_temp_variable = { fury_triggerable_actor_count = 1 }
 }
 

@@ -188,7 +188,7 @@ These are design bands. The implementation should use constants and dynamic vari
 
 ### Hidden reinforcement reserve
 
-Fury must not receive infinite free weekly divisions. Each Fury actor receives a hidden finite reinforcement reserve pool when selected. Weekly reinforcement consumes that pool. When the pool reaches zero, weekly free spawning stops completely for that actor. Fury can still recruit normally through the base game.
+Fury must not receive infinite free weekly divisions. Each Fury actor receives a hidden finite reinforcement reserve pool when selected. Weekly reinforcement consumes that pool at a slow cadence. When the pool reaches zero, weekly free spawning stops completely for that actor. Fury can still recruit normally through the base game. Scripted reserve grants are capped at 100 total divisions per Fury actor.
 
 The reserve pool should use script constants for:
 
@@ -198,24 +198,11 @@ The reserve pool should use script constants for:
 - scenario intensity pool-size modifiers.
 - conquest refill caps.
 - focus, decision, and evolution refill caps.
-- maximum reserve clamp.
+- maximum 100-division reserve clamp.
 
 No decision, focus, event, evolution, or scenario setting may create an uncapped unit loop.
 
-Weekly reinforcement draw should scale from:
-
-- Fury momentum.
-- number of owned states.
-- number of controlled non-core states.
-- active war count.
-- current evolution.
-- current scenario intensity.
-- hidden reinforcement reserve remaining.
-- manpower and equipment availability.
-- overextension.
-- supply status.
-- whether Fury has completed military branch focuses.
-- whether Fury has other Fury partners.
+Weekly reinforcement draw should stay slow enough that the reserve cannot appear instantly. The current implementation creates one small Fury Column every fourth weekly tick while reserve remains. Momentum, country size, evolution state, scenario intensity, decisions, and focuses may add capped reserve or improve quality, but they must not directly multiply weekly free divisions.
 
 Baseline Fury should have a small initial force and a small reserve pool. Evolution I increases unit quality and reserve size, but remains capped. Evolution II creates two Fury countries, so each individual reserve pool should be smaller than if only one Fury existed. Evolution III creates three Fury countries and stronger openings, but weekly spawning remains capped. The World in Fury scenario intensity changes initial army size and reserve pool size, not infinite spawning.
 

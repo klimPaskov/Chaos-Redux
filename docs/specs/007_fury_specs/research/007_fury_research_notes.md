@@ -14,7 +14,7 @@ No external factual claim is required for the core idea because Fury is a fictio
 - Non-island and few-state selection.
 - AI country selection only.
 - Player should not receive the Fury power package.
-- Fury gets an initial army package and finite hidden reinforcement reserve; weekly reserve-spawned divisions consume that reserve and stop at zero.
+- Fury gets an initial army package and finite hidden reinforcement reserve; reserve-spawned divisions consume that reserve slowly and stop at zero. Scripted reserve grants are capped at 100 total divisions per actor.
 - Fury attacks weaker neighbors without warning.
 - Fury repeats wars until no valid neighbor remains or it capitulates.
 - News when first neighbor falls.
