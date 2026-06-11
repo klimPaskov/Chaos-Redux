@@ -27,9 +27,9 @@ fury_initialize_actor_variables = {
 }
 
 fury_sync_evolution_unlocks = {
-	set_temp_variable = { events_log_evolution_event_id = 7 }
-	set_temp_variable = { events_log_evolution_type = 7 }
-	set_temp_variable = { events_log_evolution_stage = 1 }
+	set_temp_variable = { events_log_evolution_event_id = constant:fury_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:fury_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:fury_event_log.hardened_stage }
 	if = {
 		limit = {
 			check_variable = {
@@ -44,7 +44,7 @@ fury_sync_evolution_unlocks = {
 	else = {
 		clr_global_flag = fury_evolution_i_unlocked
 	}
-	set_temp_variable = { events_log_evolution_stage = 2 }
+	set_temp_variable = { events_log_evolution_stage = constant:fury_event_log.two_fires_stage }
 	if = {
 		limit = {
 			check_variable = {
@@ -59,7 +59,7 @@ fury_sync_evolution_unlocks = {
 	else = {
 		clr_global_flag = fury_evolution_ii_unlocked
 	}
-	set_temp_variable = { events_log_evolution_stage = 3 }
+	set_temp_variable = { events_log_evolution_stage = constant:fury_event_log.all_borders_stage }
 	if = {
 		limit = {
 			check_variable = {
@@ -975,11 +975,11 @@ fury_record_evolution_i = {
 		set_global_flag = fury_evolution_i_recorded
 		save_event_target_as = events_log_evolution_actor
 		set_temp_variable = { events_log_evolution_has_actor = 1 }
-		set_temp_variable = { events_log_evolution_event_id = 7 }
+		set_temp_variable = { events_log_evolution_event_id = constant:fury_event_log.event_id }
 		set_temp_variable = { events_log_evolution_event_type = constant:event_system_event_type.repeatable }
-		set_temp_variable = { events_log_evolution_stage = 1 }
-		set_temp_variable = { events_log_evolution_tier = 1 }
-		set_temp_variable = { events_log_evolution_type = 7 }
+		set_temp_variable = { events_log_evolution_stage = constant:fury_event_log.hardened_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:fury_event_log.hardened_tier }
+		set_temp_variable = { events_log_evolution_type = constant:fury_event_log.evolution_type }
 		record_events_log_evolution_entry = yes
 	}
 }
@@ -996,11 +996,11 @@ fury_record_evolution_ii = {
 			event_target:fury_latest_actor = { save_event_target_as = events_log_evolution_actor }
 			set_temp_variable = { events_log_evolution_has_actor = 1 }
 		}
-		set_temp_variable = { events_log_evolution_event_id = 7 }
+		set_temp_variable = { events_log_evolution_event_id = constant:fury_event_log.event_id }
 		set_temp_variable = { events_log_evolution_event_type = constant:event_system_event_type.repeatable }
-		set_temp_variable = { events_log_evolution_stage = 2 }
-		set_temp_variable = { events_log_evolution_tier = 2 }
-		set_temp_variable = { events_log_evolution_type = 7 }
+		set_temp_variable = { events_log_evolution_stage = constant:fury_event_log.two_fires_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:fury_event_log.two_fires_tier }
+		set_temp_variable = { events_log_evolution_type = constant:fury_event_log.evolution_type }
 		record_events_log_evolution_entry = yes
 	}
 }
@@ -1017,11 +1017,11 @@ fury_record_evolution_iii = {
 			event_target:fury_latest_actor = { save_event_target_as = events_log_evolution_actor }
 			set_temp_variable = { events_log_evolution_has_actor = 1 }
 		}
-		set_temp_variable = { events_log_evolution_event_id = 7 }
+		set_temp_variable = { events_log_evolution_event_id = constant:fury_event_log.event_id }
 		set_temp_variable = { events_log_evolution_event_type = constant:event_system_event_type.repeatable }
-		set_temp_variable = { events_log_evolution_stage = 3 }
-		set_temp_variable = { events_log_evolution_tier = 3 }
-		set_temp_variable = { events_log_evolution_type = 7 }
+		set_temp_variable = { events_log_evolution_stage = constant:fury_event_log.all_borders_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:fury_event_log.all_borders_tier }
+		set_temp_variable = { events_log_evolution_type = constant:fury_event_log.evolution_type }
 		record_events_log_evolution_entry = yes
 	}
 }
