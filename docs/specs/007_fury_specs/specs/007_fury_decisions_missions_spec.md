@@ -83,7 +83,7 @@ Availability:
 
 - target selected.
 - Fury controls a border state or has a direct land border.
-- target is AI and not player-linked.
+- target is valid under the Fury target rules and has a direct land border.
 
 Costs:
 

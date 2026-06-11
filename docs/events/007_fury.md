@@ -118,7 +118,8 @@ Disabled evolutions do not record entries because the record effects require the
 `The World in Fury` is registered as triggerable scenario `#005`.
 
 - Type: `Fury Pact` or `Hostile Fury`.
-- Intensity: Low 1 actor, Medium 3 actors, High 6 actors, Maximum up to 10 actors when enough safe AI minors exist.
+- Intensity: Low 2 actors, Medium 5 actors, High 9 actors, Maximum up to 16 actors when enough safe AI minors exist.
+- Actor selection makes repeated continent passes before using a global fallback, so the scenario starts dispersed instead of concentrating nearby minors.
 - Player countries and player-linked countries remain excluded.
 - Hostile Fury attempts Fury-on-Fury declarations in addition to neighbor wars, which supports the rival-fires achievement route.
 
