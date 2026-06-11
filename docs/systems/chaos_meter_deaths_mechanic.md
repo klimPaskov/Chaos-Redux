@@ -24,6 +24,7 @@ Deaths are currently registered from:
 3. Chemical contamination application and monthly chemical contamination state effects.
 4. Biowarfare contamination application (anthrax/plague/tularemia/smallpox) and monthly outbreak state effects.
 5. Nuclear and thermonuclear strikes.
+6. Genocide crisis camp, gulag, experiment-site, biowarfare experiment-site, and restricted chemical site monthly processing.
 
 Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
 
@@ -70,6 +71,17 @@ Biowarfare helper:
 Chemical helper:
 
 - `chem_register_state_civilian_deaths`
+
+Genocide crisis helpers:
+
+- `genocide_apply_monthly_concentration_state_effects`
+- `genocide_apply_monthly_extermination_state_effects`
+- `genocide_apply_monthly_gulag_state_effects`
+- `genocide_apply_monthly_experiment_site_effects`
+- `genocide_apply_monthly_biowarfare_experiment_site_effects`
+- `genocide_apply_monthly_restricted_chemical_site_effects`
+
+These helpers route state population loss through the same Chaos Meter Deaths pipeline used by chemical and biological contamination systems.
 
 ## Icons and GFX Wiring
 

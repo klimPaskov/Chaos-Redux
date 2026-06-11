@@ -2,7 +2,7 @@
 
 ## Overview
 
-The genocide crisis system models hidden state repression, forced labor, extermination sites, gulag networks, discovery, foreign response, and tribunal pressure. It is built around two separate layers:
+The genocide crisis system models hidden state repression, forced labor, extermination sites, gulag networks, experiment-linked atrocity sites, restricted chemical site escalation, discovery, foreign response, and tribunal pressure. It is built around two separate layers:
 
 1. Internal damage while the responsible regime controls or operates the site.
 2. External condemnation only after enemy discovery or survivor evidence reaches foreign countries.
@@ -66,12 +66,12 @@ Gulag labor camp networks represent Soviet forced labor and mass repression. The
 1. Startup initializes country variables and quiet historical concentration camp buildings for fascist Germany, fascist Japan, and communist Soviet Union without registering active death-producing sites on day one.
 2. Construction, decisions, or country-specific AI build camp, extermination, forced labor, or gulag sites after escalation. AI countries build concentration camps through the construction system, not through generic construction decisions.
 3. Each created state stores `genocide_responsible_country = ROOT`.
-4. Each active camp state is registered into `global.genocide_active_camp_states`.
+4. Each active camp, experiment, or restricted chemical site is registered into `global.genocide_active_camp_states`.
 5. The existing Chaos Meter monthly pulse runs `genocide_monthly_global_pulse`.
-6. Only registered states that still have active camp buildings are processed.
-7. Monthly camp deaths reduce real state population through the Chaos Meter deaths pipeline. When deaths happen in occupied territory, the state owner receives the registered death total while the occupier remains the responsible country for evidence and condemnation.
+6. Only registered states that still have active camp buildings, experiment-site flags, or an active restricted chemical site flag are processed.
+7. Monthly camp and experiment-site deaths reduce real state population through the Chaos Meter deaths pipeline. When deaths happen in occupied territory, the state owner receives the registered death total while the occupier remains the responsible country for evidence and condemnation.
 8. Responsible countries accumulate hidden crisis variables such as `genocide_escalation`, `genocide_deaths`, `genocide_visibility`, `genocide_resistance_pressure`, `genocide_refugee_pressure`, and `hidden_atrocity_score`.
-9. Internal crisis events require meaningful escalation, hidden evidence, deaths, camp infrastructure, or repeated decisions; ideology alone is not enough.
+9. Active camp processing does not roll recurring internal report, leak, refugee, or sabotage popups. Internal pressure is represented through variables, state modifiers, decisions, and later discovery.
 10. If enemy forces take a state with undiscovered atrocity evidence, `on_state_control_changed` attempts discovery.
 11. Discovery marks the state, calculates condemnation based on site type and repeat discoveries, and applies condemnation to the stored responsible country.
 12. The first discovery fires the discoverer event and responsible-country event. Extermination discoveries fire the global news event once.
@@ -86,9 +86,9 @@ When a valid existing concentration camp can be upgraded, `genocide_show_hidden_
 
 ## Evidence And Foreign Observers
 
-Foreign-observer pressure is context-based. Domestic repression inside closed or authoritarian states does not automatically create a foreign evidence problem. Foreign pressure requires conditions such as occupied foreign camp systems, non-core target populations, diplomatic visibility, enemy or democratic exposure, discovered sites, or a leak that actually reaches outside observers.
+Foreign-observer pressure is context-based. Domestic repression inside closed or authoritarian states does not automatically create a foreign evidence problem. Foreign pressure requires conditions such as occupied foreign camp systems, non-core target populations, diplomatic visibility, enemy or democratic exposure, or discovered sites.
 
-This means Soviet internal repression does not normally ask the player to hide evidence from foreign observers. If the Soviet Union operates camp infrastructure in occupied foreign territory, the foreign-observer chain can still apply. Japanese actions in occupied China are treated as occupation atrocities and local evidence unless visibility, leaks, diplomacy, or foreign-population context raises the pressure enough.
+This means Soviet internal repression does not normally ask the player to hide evidence from foreign observers. If the Soviet Union operates camp infrastructure in occupied foreign territory, the foreign-observer chain can still apply. Japanese actions in occupied China are treated as occupation atrocities and local evidence unless visibility, diplomacy, or foreign-population context raises the pressure enough.
 
 ## Evidence Destruction
 
@@ -100,15 +100,29 @@ The evidence-destruction decisions are state-targeted and require:
 
 Success removes camp buildings and marks the state as a destroyed atrocity site, reducing later condemnation. Failure marks the state with failed cover-up evidence, increasing later condemnation. Both paths create additional deaths and leave discoverable state evidence.
 
-Internal report and leak pacing is throttled by escalation thresholds, hidden evidence thresholds, death thresholds, decision counts, camp-site counts, and cooldown flags. Early 1936 stays quiet unless a country actually expands the system. Historical quiet camps are not registered into monthly deaths, leaks, reports, discovery pressure, or player popups until escalated into active camp infrastructure.
+Historical quiet camps are not registered into monthly deaths, discovery pressure, or player popups until escalated into active camp infrastructure.
+
+## Country-Specific Branches
+
+Fascist Germany has direct wartime decisions after 1939 for occupied Poland camp administration, camp expansion, extermination-site escalation after 1940 when the Auschwitz area is controlled, extermination-policy intensification after 1941, and prisoner transfers into Mengele-linked experiment sites. These decisions use the existing camp, Deaths, discovery, and Mengele autonomy systems rather than a separate event pool.
+
+Japan's forced-labor, reprisal, and prisoner-experimentation decisions require an active war with the configured Chinese target bloc and a controlled Chinese or Manchurian target state. Japan's biowarfare-linked experiment sites register into monthly processing and use the existing biowarfare Deaths reason and contamination helpers.
+
+The Soviet Union uses gulag expansion, deportations, food confiscation, camp-administrator purges, forced-labor quotas, and evidence destruction. Gulag, deportation, famine, purge, and labor-quota actions call a Soviet Collapse bridge when the Union Crisis is active: early repression can strengthen Moscow Authority and Military Obedience, but it also adds Old Movement and foreign grievance pressure. The bridge stops giving suppression relief at the high-threat band so it cannot block Union Unmade or mandatory terminal collapse.
+
+## Restricted Chemical Site Escalation
+
+Restricted chemical escalation is a state-targeted camp decision for countries with sarin or soman capability through existing technologies or special projects and enough matching cylinder stockpile. The target must already be an active extermination, gulag, or experiment site with stored responsibility.
+
+The action consumes sarin or soman cylinders, applies existing state contamination through `chem_apply_state_contamination`, creates immediate hidden deaths, registers the site for monthly processing, and leaves `genocide_restricted_chemical_site` evidence. It does not fire the public chemical-attack condemnation path immediately; condemnation is added later if enemy forces discover the site.
 
 ## Country AI
 
 AI behavior is split between decision weights and broad AI strategy:
 
-- Germany is weighted toward concentration camps, occupied Poland, extermination camps, deportation logistics, and retreat cover-ups when fascist and at war.
-- Japan is weighted toward forced labor camps, occupation reprisals, and prisoner experimentation when it controls Chinese or Manchurian target regions. Biowarfare experimentation connects to the existing biological contamination effects.
-- The Soviet Union is weighted toward gulag expansion, deportations, famine pressure, and record destruction in remote or borderland gulag target states.
+- Germany is weighted toward occupied Poland camp administration, extermination escalation, experiment-site transfers, deportation logistics, and retreat cover-ups when fascist and at war.
+- Japan is weighted toward forced labor camps, occupation reprisals, and prisoner experimentation only during a war with the configured Chinese target bloc while it controls Chinese or Manchurian target regions. Biowarfare experimentation connects to the existing biological contamination effects.
+- The Soviet Union is weighted toward gulag expansion, deportations, famine pressure, camp-administrator purges, forced-labor quotas, and evidence destruction in remote or borderland gulag target states.
 
 `common/ai_strategy/genocide_crisis_ai_strategy.txt` adjusts broad behavior for active and exposed crisis regimes, including army-building, cautious concentration camp construction, and reduced appetite for additional wars after high condemnation. Germany has a small pre-1939 construction weight capped at a few early camps, then stronger wartime and occupied-territory weights only after 1939 or meaningful escalation.
 
@@ -121,6 +135,7 @@ Camp deaths use the shared deaths system, reduce real state population, and appe
 - From concentration camps:
 - Extermination camp
 - Gulag repression
+- Biowarfare outbreak, for Japan's biowarfare-linked experiment sites
 
 The country summary folds those deaths into the existing occupation-repression total so the current Deaths tab layout remains stable.
 

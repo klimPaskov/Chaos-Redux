@@ -293,7 +293,7 @@ The list updates instantly when condemnation changes.
 
 ### Deaths System
 
-Strategic bombing, chemical and biological attacks, outbreaks, nuclear strikes, and military casualties all feed a shared global deaths tracker.
+Strategic bombing, chemical and biological attacks, outbreaks, nuclear strikes, genocide-crisis site processing, and military casualties all feed a shared global deaths tracker.
 
 - Death sources reduce real state population, not only recruitable manpower.
 - Population losses are scaled by state population, local conditions, and the kind of attack, so dense and poorly protected areas suffer more heavily.
@@ -739,7 +739,7 @@ What the player does:
 
 ## Camps and Genocide Mechanics
 
-The camp and genocide crisis system models state repression, forced labor, extermination sites, gulag networks, evidence destruction, discovery, foreign response, and tribunal pressure.
+The camp and genocide crisis system models state repression, forced labor, extermination sites, gulag networks, experiment-linked atrocity sites, restricted chemical site escalation, evidence destruction, discovery, foreign response, and tribunal pressure.
 
 The key rule is separation between hidden internal damage and external condemnation:
 
@@ -756,21 +756,23 @@ The system uses three state buildings:
 - `extermination_camp`: systematic killing and the highest discovery condemnation.
 - `gulag_labor_camp_network`: Soviet forced labor and mass repression.
 
-Concentration camps are available in the normal construction interface at a low construction cost. Historical Germany, Japan, and the Soviet Union can begin with quiet concentration camp infrastructure already present, but those sites do not enter the active death, leak, or discovery loop until later escalation. Extermination camps and gulag networks are created through decisions and effects. Scripted creation stores `genocide_responsible_country` on the state, so discovery targets the country that built or operated the site instead of the country that finds it.
+Concentration camps are available in the normal construction interface at a low construction cost. Historical Germany, Japan, and the Soviet Union can begin with quiet concentration camp infrastructure already present, but those sites do not enter the active death or discovery loop until later escalation. Extermination camps and gulag networks are created through decisions and effects. Scripted creation stores `genocide_responsible_country` on the state, so discovery targets the country that built or operated the site instead of the country that finds it.
 
 ### Crisis Decisions and AI
 
 The generic crisis category covers upgrades from existing concentration camps into extermination camps. It is the lowest-priority decision category and appears only when a country has an eligible existing camp and an actual special decision available beyond the show/hide controls.
 
-The generic category no longer builds concentration camps by decision. Most operational genocide behavior is AI-driven or handled by country-specific categories, while the player-facing generic category reveals or hides only the eligible extermination-camp upgrade decision.
+The generic category no longer builds concentration camps by decision. Most operational genocide behavior is AI-driven or handled by country-specific categories, while the player-facing generic category reveals or hides eligible extermination-camp, Germany, and restricted chemical site decisions.
 
-Foreign-observer evidence pressure depends on context: occupied foreign territory, non-core target populations, diplomatic visibility, leaks, or discoveries. Domestic repression inside a closed authoritarian state does not automatically create foreign-observer pressure.
+Foreign-observer evidence pressure depends on context: occupied foreign territory, non-core target populations, diplomatic visibility, or discoveries. Domestic repression inside a closed authoritarian state does not automatically create foreign-observer pressure.
 
 Country-specific categories handle:
 
-- Germany: concentration camps, occupied Poland escalation, extermination camps, deportation logistics, and retreat cover-ups.
-- Japan: forced labor camps, anti-partisan reprisals, prisoner experimentation, occupation records, and biological warfare links.
-- Soviet Union: gulag expansion, deportations, famine pressure, and record destruction.
+- Germany: wartime camp administration, occupied Poland escalation, extermination camps, Mengele-linked experiment sites, deportation logistics, and retreat cover-ups.
+- Japan: forced labor camps, anti-partisan reprisals, prisoner experimentation, occupation evidence destruction, and biological warfare links during the China war.
+- Soviet Union: gulag expansion, deportations, famine pressure, camp-administrator purges, forced-labor quotas, evidence destruction, and a mechanical Soviet Collapse bridge.
+
+Restricted chemical site escalation uses existing sarin/soman tech, special-project, stockpile, contamination, Deaths, and discovery systems. It creates hidden camp evidence and delayed condemnation instead of firing public chemical-attack condemnation immediately.
 
 AI weights make fascist Germany, imperial Japan, and communist Soviet Union the primary users under historical or radicalized conditions. A separate AI strategy package adjusts broad behavior for active and exposed crisis regimes.
 
