@@ -6,6 +6,13 @@ Report, news, and super-event images should present Fury as a rogue-country rage
 
 UI icon sources, processed PNGs, and the contact sheet are recorded in `docs/assets/007_fury/ui_icons/manifest.md`.
 
+The Fury country-leader flame overlay is registered in `interface/007_fury.gfx`:
+
+- `GFX_fury_leader_flame_overlay_animated` -> `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds`
+- `GFX_fury_leader_flame_overlay_static` -> `gfx/interface/fury/fury_leader_flame_overlay_static.dds`
+
+The scripted GUI containers are in `interface/007_fury_leader_overlay.gui`, with visibility and parent-window binding in `common/scripted_guis/007_fury_scripted_guis.txt`. The diplomacy overlay uses `selected_country_context` and `parent_window_name = diplomacy_tab_top_instance`, so it appears when the selected diplomacy country is a Fury actor. The politics overlay uses `player_context` and `parent_window_name = countrypoliticsview`, so tag-switch/debug views of a Fury actor also show the burn loop on the country leader portrait.
+
 The final major-Fury super-event image is wired at `gfx/super_events/fury_becomes_a_state.dds`. Its generated source and processed PNG live under `docs/assets/007_fury/super_events/fury_becomes_a_state/`. Slot `59` already returns `GFX_super_event_fury_becomes_a_state`.
 
 The final world-end super-event image is wired at `gfx/super_events/super_event_world_in_fury.dds`. Its generated source and processed PNG live under `docs/assets/007_fury/super_events/world_in_fury/`. Slot `60` already returns `GFX_super_event_world_in_fury`.

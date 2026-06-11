@@ -1,0 +1,38 @@
+# Fury Leader Flame Overlay Animation Brief
+
+- Asset name: `fury_leader_flame_overlay`
+- In-game use: decorative looping supernatural fire overlay for Fury country leaders
+- Gameplay surface: HOI4 country leader portrait overlay on or around a `156x210` portrait
+- Target frame size: `156x210`
+- Frame count: `8`
+- Sheet size: `1248x210`
+- Static fallback sprite name: `GFX_fury_leader_flame_overlay_static`
+- Animated sprite name: `GFX_fury_leader_flame_overlay_animated`
+- Frame rate: `8 fps`
+- Looping: `yes`
+- Play on show: `yes`
+- Anchor point: `bottom-center`
+- Source mode: generated per-frame source art with built-in `image_gen`, flat chroma-key background, local background removal to alpha PNG
+- Subject class: fictional, symbolic, supernatural UI overlay
+- Reference inspection:
+  - closest Chaos Redux style references: `.agents/skills/chaos-redux-event-assets/assets/super_event_images/super_event_angel_directorate.png`
+  - closest fire reference: `.agents/skills/chaos-redux-event-assets/assets/special_projects/sp_land_flamethrower_tank.png`
+  - local animated sprite precedent: `interface/chaosx_techtree.gfx`
+  - vanilla animated sprite precedent: `~/projects/Hearts of Iron IV/interface/countrystateview.gfx`
+- Final PNG paths:
+  - sheet: `docs/assets/007_fury/leader_flame_overlay/sheets/fury_leader_flame_overlay_sheet.png`
+  - static: `docs/assets/007_fury/leader_flame_overlay/sheets/fury_leader_flame_overlay_static.png`
+- Final DDS paths:
+  - sheet: `gfx/interface/fury/fury_leader_flame_overlay_sheet.dds`
+  - static: `gfx/interface/fury/fury_leader_flame_overlay_static.dds`
+- Preview paths:
+  - contact sheet: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_contact.png`
+  - review gif: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_preview.gif`
+- Target `.gfx` file: `interface/007_fury.gfx`
+- Target `.gui` file: parent will decide during wiring
+- Visual direction:
+  - transparent-background flame overlay that hugs the lower edge and side edges of a leader portrait
+  - central face area stays mostly visible
+  - orange, ember-red, and dark smoke-brown tones only at the edges
+  - strong silhouette at portrait size without becoming a full opaque frame
+  - WW2/HOI4 supernatural rage tone rather than modern game VFX
