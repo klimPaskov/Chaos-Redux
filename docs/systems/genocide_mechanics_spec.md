@@ -1,5 +1,9 @@
 # Camps, Genocide Crisis, AI Behavior, and Discovery-Based Condemnation System
 
+## Current Implementation Note
+
+This is the original source concept for the implemented `genocide_crisis` system. The current implementation lives in `docs/systems/genocide_crisis_system.md` and uses the existing `genocide_crisis` file family, active-state monthly processing through `global.genocide_active_camp_states`, and physical discovery through state control or defeat hooks. Older references in this concept to domestic leak popups, random report events, or Soviet archive/document reveal content are superseded: internal pressure now stays mechanical through variables, decisions, state modifiers, Deaths integration, and concrete discovery.
+
 ## Purpose
 
 This system adds a dark state-repression and atrocity mechanic to Chaos Redux. A country can use it, but it should create deaths, population loss, internal instability, and long-term consequences.
@@ -62,12 +66,12 @@ Effects:
 - Reduces compliance growth
 - Slightly increases local output
 - Increases very slightly hidden atrocity score
-- Can trigger domestic leaks, sabotage, refugee, and resistance events (the more camps exist, and depends on the country's stability. So, for example, countries with strong stability and high party popularity would never really have those events)
+- Can create domestic pressure variables, sabotage pressure, refugee pressure, and resistance pressure without recurring random popup events.
 ```
 
 ### Design Notes
 
-Concentration camps should not create automatic global condemnation. They should create hidden atrocity score. Condemnation should rise once the camps are discovered by an enemy occupier or through a specific exposure event (firing once on first discovery, on subsequent discoveries don't fire an event, as it would become spammy. Add a cooldown).
+Concentration camps should not create automatic global condemnation. They should create hidden atrocity score. Condemnation should rise once the camps are discovered by an enemy occupier or by concrete aftermath logic. First discovery can fire a bounded event; subsequent discoveries should mainly update variables and condemnation without spam.
 
 ## Extermination Camps
 
@@ -636,7 +640,7 @@ Soviet AI priority:
 
 ## World Reaction After Discovery
 
-This system should connect directly to the existing Chaos Redux condemnation system, but only after camps or records are exposed.
+This system should connect directly to the existing Chaos Redux condemnation system, but only after physical camp evidence is discovered or defeat/tribunal logic exposes the state record.
 
 ### Condemnation Thresholds
 
