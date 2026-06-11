@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Event 007 Fury has a full implementation surface: actor selection, Fury actor package, self-scheduled weekly loop, scored target selection, first-conquest news `chaosx.news.7007`, decisions and missions, a 52-focus shared tree, triggerable scenario `The World in Fury`, event-log detail mapping, ten achievement definitions, final Fury-specific asset triplets, major slot `59` super-event wiring, terminal slot `60` world-end wiring, and docs/assets manifests.
+Event 007 Fury has a full implementation surface: actor selection, Fury actor package, finite reserve-aware weekly loop, scored target selection, first-conquest news `chaosx.news.7007`, decisions and missions, a 52-focus shared tree, triggerable scenario `The World in Fury`, event-log detail mapping, ten achievement definitions, final Fury-specific asset triplets, major slot `59` super-event wiring, terminal slot `60` world-end wiring, and docs/assets manifests.
 
 Recent patches also fixed the old news-id conflict, slot `59` image sprite wiring, decision cost gate mismatches, cooperation/rivalry mutual exclusion, settlement control and compliance gates, depot reward dumping, `var:fury_current_target` war declaration, evolution unlock flag sync, Evolution I misapplication, and the world-end focus setting only `fury_world_end_candidate`.
 
@@ -37,7 +37,7 @@ Required route families:
 | Route family | Existing anchor | New focus groups to add | Mechanical purpose |
 | --- | --- | --- | --- |
 | Opening trunk | `fury_open_the_war_office`, `fury_count_the_rifles`, `fury_capital_guard` | `fury_war_office_without_a_door`, `fury_first_war_office_orders` | establish the War Office, unlock category, create first-war readiness without generic PP rewards |
-| Army of the March | `fury_field_columns`, `fury_forward_depots` | `fury_depot_cadres`, `fury_storm_columns`, `fury_logistics_under_movement`, `fury_officer_tables` | vary templates, weekly unit quality, trains/trucks/support equipment use, commander or army XP rewards |
+| Army of the March | `fury_field_columns`, `fury_forward_depots` | `fury_depot_cadres`, `fury_storm_columns`, `fury_logistics_under_movement`, `fury_officer_tables` | vary templates, capped reserve-spawned unit quality, trains/trucks/support equipment use, commander or army XP rewards |
 | Expansion | `fury_first_target_files`, `fury_all_borders` | `fury_one_border_at_a_time`, `fury_weak_neighbor_doctrine`, `fury_capital_first_plans`, `fury_cut_the_rail_before_the_war`, `fury_the_next_neighbor` | improve target scoring, target-prep decisions, capital focus, no-war spam safety |
 | Occupation and integration | `fury_occupation_registers`, `fury_conquest_coring` | `fury_census_of_taken_states`, `fury_new_registry_offices`, `fury_rail_and_registry`, `fury_garrison_the_names`, `fury_core_by_administration`, `fury_core_by_march` | make overextension and coring a living occupation loop |
 | Cooperation | `fury_second_war_table` | `fury_the_other_fire_answers`, `fury_shared_war_tables`, `fury_partition_before_victory`, `fury_joint_cadre_transfers`, `fury_fury_pact_command` | deepen pact route and shared aid |
@@ -49,7 +49,7 @@ Required route families:
 Focus rewards must be varied:
 
 - decision and mission unlocks for target prep, depot conversion, border watch, settlement, and world-end preparation.
-- template upgrades and route-specific units only where they are not repeated free-unit dumps.
+- template upgrades and route-specific units only where they draw from finite reserves, are one-time awards, or use capped reserve refills.
 - equipment, support equipment, trucks, trains, army XP, command power, rail repair, supply support, garrison cadres, compliance, and overextension changes.
 - staged idea lifecycle: `fury_national_fury`, `fury_hardened_fury`, `fury_overextension`, `fury_compliance_drive`, `fury_pact_command`, `fury_rival_doctrine`, and a new terminal idea `fury_world_fury` if Phase 4 is implemented.
 
@@ -96,7 +96,7 @@ Required script constants:
 - `fury_target_score.target_at_war_bonus`
 - `fury_target_score.faction_penalty`
 - `fury_target_score.terrain_supply_penalty`
-- `fury_target_score.player_link_blocker`
+- `fury_target_score.protected_target_penalty`
 - `fury_target_score.overextension_penalty`
 - `fury_target_score.momentum_bonus`
 - `fury_target_score.evolution_i_bonus`
@@ -105,13 +105,13 @@ Required script constants:
 
 Target scoring rules:
 
-- Always exclude player countries, player subjects, player faction members, Fury actors, subjects, allies, and countries already at war with Fury through normal loop.
+- Always exclude Fury actors, subjects, allies, and countries already at war with Fury through the normal loop; player-controlled countries can be valid targets when they pass the same gates.
 - Prefer one-state and low-industry AI minors.
 - Penalize faction-backed targets, bad supply approach, rough terrain, target military strength, and high Fury overextension.
 - Use `fury_momentum` and evolution state to widen the target set gradually.
 - Evolution III all-neighbor declarations must still run each target through the score gate.
 - Do not let ordinary target selection attack a local major unless Fury has reached major threshold or terminal state.
-- Keep player-linked targeting relaxed only for terminal Phase 4 and only after warnings.
+- Keep special terminal player-linked targeting separate from the ordinary neighbor scan and gated behind warnings.
 
 Decision and focus integration:
 
@@ -168,7 +168,7 @@ Decision and mission families to add:
 Weekly loop integration:
 
 - Weekly tick should recalculate or update occupation pressure from non-core controlled states, active wars, supply problems, and registered states.
-- High overextension should weaken weekly unit quality, slow target selection, and push AI into occupation focuses.
+- High overextension should weaken reserve-spawned unit quality or draw, slow target selection, and push AI into occupation focuses.
 - Extreme overextension should block ordinary target selection unless Evolution III or terminal state explicitly overrides it with extra penalties.
 - Coring and compliance should reduce overextension and pressure, not just add cores.
 
@@ -176,7 +176,7 @@ Acceptance for this phase:
 
 - Settlement is no longer a one-click state marker plus core button.
 - Coring has two methods with different gates and costs.
-- Overextension affects target selection, weekly units, focus AI, and mission availability.
+- Overextension affects target selection, finite reserve spawning, focus AI, and mission availability.
 - Fury can stall or fail through occupation pressure without requiring a hidden rollback.
 - State flags are cleaned when Fury actor cleanup runs, when state is cored, or when ownership/control becomes invalid.
 
@@ -272,7 +272,7 @@ Required non-Fury systems:
 | Border Watch | timed mission | direct Fury neighbors | supplied divisions in border states, capital controlled | defense bonus, target deterrence, achievement path | Fury confidence rises |
 | Emergency Aid to Target | decision plus mission | regional powers, majors, player near Fury | equipment, support equipment, convoys/trains, current Fury target exists | target receives aid, Fury momentum gain reduced if target survives | equipment partly lost, target morale/war support hit |
 | Firebreak Staff Talks | decision | neighbors, regional powers, majors | CP, army XP, relations/faction compatibility | temporary anti-Fury planning idea, AI defense weight | no direct failure, cooldown and cost |
-| Supply Denial | timed mission | countries bordering Fury or target | hold rail/supply hubs, commit divisions | Fury weekly unit quality reduced temporarily | overextension pressure on target rises |
+| Supply Denial | timed mission | countries bordering Fury or target | hold rail/supply hubs, commit divisions | Fury reserve-spawned unit quality or draw reduced temporarily | overextension pressure on target rises |
 | Recognition Denial | decision | majors/regional powers | PP as small diplomatic cost plus spy/convoy/relations gate | lowers `fury_pact_cohesion` or delays pact aid | Fury pact cohesion rises if ignored during terminal |
 
 Required values:
@@ -404,7 +404,7 @@ Before the main agent can claim Fury complete, run task-specific validation and 
 - Decision/mission audit: every decision family in Phases 2, 3, and 5 has costs, visibility, availability, AI, cleanup, success/failure where relevant, and no duplicate passive missions.
 - Target safety audit: actor selection excludes player/player-linked countries, target selection permits them only through normal target validity, and all-neighbor declarations still filter each target.
 - World-end audit: terminal branch sets required flags, seeds other continents, creates/strengthens Fury faction, triggers super-event, warns player, and does not conflate with triggerable scenario.
-- Overextension audit: high and extreme overextension influence weekly units, target selection, focus AI, occupation missions, and coring.
+- Overextension audit: high and extreme overextension influence finite reserve spawning, target selection, focus AI, occupation missions, and coring.
 - Achievement audit: each achievement is tied to implemented systems, with player-as-Fury disqualification and scenario type/intensity checks intact.
 - Localisation audit: new focus, decision, mission, idea, event, achievement, tooltip, cost, scenario, and super-event keys exist and avoid implementation-history phrasing.
 - Asset audit: every placeholder is either replaced or explicitly reported as placeholder/blocker.

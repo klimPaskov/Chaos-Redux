@@ -28,7 +28,7 @@ Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-red
 - Select a dynamic small mainland AI minor with few states.
 - Exclude player countries from Fury selection.
 - Allow ordinary Fury target selection to choose AI or player-controlled countries when they meet the normal target gates.
-- Give Fury a national spirit, shared focus tree, decisions, weekly units, and dynamic target loop.
+- Give Fury a national spirit, shared focus tree, decisions, an initial army package, a finite hidden reinforcement reserve, and dynamic target loop.
 - Fury attacks weaker eligible neighbors without warning.
 - Fury repeats after victory until no valid neighbor remains or Fury capitulates.
 - Fire a news event when Fury defeats its first neighbor.
@@ -40,9 +40,9 @@ Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-red
 
 Implement:
 
-- Evolution I, Hardened Fury, with stronger starting and weekly units, better idea, and unlocked focus paths.
+- Evolution I, Hardened Fury, with stronger starting units, better reserve-spawned unit quality, a larger capped reserve pool, better idea, and unlocked focus paths.
 - Evolution II, Two Fires, with two Fury actors and cooperation or rivalry mechanics.
-- Evolution III, All Borders at Once, with three Fury actors, stronger units, and all-neighbor declarations.
+- Evolution III, All Borders at Once, with three Fury actors, stronger openings, capped reserve-spawned units, and all-neighbor declarations.
 
 Each evolution needs active-event behavior and pre-fire opening behavior.
 
@@ -53,11 +53,11 @@ Implement scenario `The World in Fury`.
 - four intensity stops.
 - type choices: Fury Pact and Hostile Fury.
 - player always excluded.
-- Low creates 1 Fury actor.
-- Medium creates 3 when safe.
-- High creates 6 when safe.
-- Maximum creates at least 10 when enough safe AI minors exist.
-- intensity controls units and evolution setup.
+- Low creates 2 when safe.
+- Medium creates 5 when safe.
+- High creates 9 when safe.
+- Maximum creates up to 16 when enough safe AI minors exist.
+- intensity controls initial army size, reserve pool size, and evolution setup. It must not create infinite spawning.
 - type controls pact or hostile behavior.
 - scenario has no normal chaos or prior-event prerequisite.
 

@@ -14,7 +14,7 @@ No external factual claim is required for the core idea because Fury is a fictio
 - Non-island and few-state selection.
 - AI country selection only.
 - Player should not receive the Fury power package.
-- Fury gets weekly divisions.
+- Fury gets an initial army package and finite hidden reinforcement reserve; weekly reserve-spawned divisions consume that reserve and stop at zero.
 - Fury attacks weaker neighbors without warning.
 - Fury repeats wars until no valid neighbor remains or it capitulates.
 - News when first neighbor falls.
@@ -25,7 +25,7 @@ No external factual claim is required for the core idea because Fury is a fictio
 - Evolution II adds two Fury countries and cooperation mechanics.
 - Evolution III adds three Fury countries, stronger power, and all-neighbor declarations.
 - Triggerable scenario named `The World in Fury`.
-- Scenario intensity controls number of Fury countries and spawned units.
+- Scenario intensity controls number of Fury countries, initial army size, and reserve pool size.
 - Maximum intensity creates up to sixteen dispersed Fury minors when possible.
 - Scenario type can be pact or hostile.
 - World-end branch was unspecified, so this package proposes a terminal branch where Fury spreads to other continents and joins the main Fury faction.

@@ -18,8 +18,8 @@ Scope: Event 007 Fury localisation and scripted-visible text only.
 
 - Before: the triggerable scenario descriptions used `safe AI minors`.
 - After: they use `eligible non-player minor countries` / `eligible minors`, matching the actual exclusion rules without using internal selection wording.
-- Before: the event details body described `scaled stockpiles` and a `weekly reinforcement loop`.
-- After: it describes `stockpiles scaled to its size` and `recurring reinforcement waves`, keeping the same behavior but avoiding implementation-facing wording.
+- Before: the event details body described `scaled stockpiles` and a recurring reinforcement process.
+- After: it describes `stockpiles scaled to its size` and finite reserve-spawned reinforcement waves, keeping the same behavior but avoiding implementation-facing wording.
 - Before: the event details body said Fury seeks `valid AI neighbors`.
 - Superseded wording note: the event-details text now says Fury seeks `valid neighboring targets`; player and player-linked countries are excluded from becoming Fury actors, but they can be valid Fury targets when normal target rules allow it.
 
