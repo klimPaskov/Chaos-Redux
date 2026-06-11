@@ -1,6 +1,12 @@
-# Holy Realm Buddhahood Achievement Icon GFX Handoff
+# Holy Realm Buddhahood GFX Handoff
 
-This package does not edit any `.gfx` files. The following stable lowercase asset names are ready for later wiring under the existing achievement sprite pattern.
+The achievement package originally did not edit any `.gfx` files. Achievement sprites are wired under the existing achievement sprite pattern. The `Powers of the Awakened` super-event image now reuses the already registered super-event sprite and texture path.
+
+## Super-Event Images
+
+| Super-event | Sprite alias | DDS | Notes |
+| --- | --- | --- | --- |
+| `Powers of the Awakened` | `GFX_super_event_powers_of_the_awakened` | `gfx/super_events/super_event_powers_of_the_awakened.dds` | Existing sprite path preserved; copied Buddha Mandate placeholder replaced with bespoke generated monochrome super-event art. |
 
 ## Completed DDS triplets
 
