@@ -8,15 +8,23 @@
 
 genocide_crisis_category = {
 	visible = {
-		NOT = { original_tag = SOV }
 		OR = {
-			genocide_country_has_german_holocaust_target = yes
-			genocide_country_has_extermination_upgrade_target = yes
-			genocide_country_has_restricted_chemical_site_target = yes
-			check_variable = { genocide_concentration_sites > 0 }
-			check_variable = { genocide_extermination_sites > 0 }
-			check_variable = { genocide_escalation > 0 }
-			check_variable = { genocide_decisions_taken > 0 }
+			AND = {
+				NOT = { original_tag = SOV }
+				OR = {
+					genocide_country_has_german_holocaust_target = yes
+					genocide_country_has_extermination_upgrade_target = yes
+					genocide_country_has_restricted_chemical_site_target = yes
+					check_variable = { genocide_concentration_sites > 0 }
+					check_variable = { genocide_extermination_sites > 0 }
+					check_variable = { genocide_escalation > 0 }
+					check_variable = { genocide_decisions_taken > 0 }
+				}
+			}
+			AND = {
+				original_tag = SOV
+				genocide_country_has_restricted_chemical_site_target = yes
+			}
 		}
 	}
 	icon = GFX_decision_category_chaos_doom

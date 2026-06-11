@@ -186,7 +186,7 @@ The dynamic modifiers and ideas use existing `GFX_idea_jews_massacre` / `generic
 ## Future Plans and Suggestions
 
 - Add a dedicated event-log view for discovered camp evidence, separate from ordinary news popups.
-- Add country-specific German escalation decisions tied to SS archives, occupied Europe, and the existing Auschwitz/Mengele chain.
+- Add deeper German follow-up decisions for occupied Europe and the existing Auschwitz/Mengele chain.
 - Add Japanese prisoner-transfer variants that depend on the exact biological agent researched.
 - Add Soviet paranoia or purge variables if a later Soviet internal-politics system exists.
 - Add postwar tribunal outcomes that can remove leaders, force ideology changes, or create reparations decisions after defeat.
