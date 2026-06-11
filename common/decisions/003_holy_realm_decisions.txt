@@ -1568,7 +1568,7 @@ holy_realm_mandala_category = {
 		cost = 200
 		fire_only_once = yes
 		available = {
-			holy_realm_can_start_final_silence = yes
+			holy_realm_can_begin_final_silence_ritual = yes
 		}
 		visible = {
 			is_holy_realm_country = yes
@@ -2187,21 +2187,15 @@ holy_realm_buddha_powers_category = {
 		icon = generic_political_discourse
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
-		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
-		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_extinguish_defilements = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			subtract_from_variable = { meditation_charge = constant:holy_realm_buddhahood.meditation_charge_max }
 			set_country_flag = holy_realm_power_defilements_used
-			FROM = {
-				add_timed_idea = {
-					idea = holy_realm_power_defilements_extinguished
-					days = constant:holy_realm_buddhahood.power_target_extinction_days
-				}
-				add_command_power = constant:holy_realm_buddhahood.power_target_command_loss
-			}
+			set_country_flag = holy_realm_final_silence_extinction_rite_completed
+			add_stability = 0.03
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.power_defilement_loss }
+			holy_realm_add_defilements = yes
 		}
 		ai_will_do = { factor = 1 }
 	}
