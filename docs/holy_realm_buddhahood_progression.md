@@ -42,7 +42,7 @@ Tuning is centralized in `common/script_constants/003_holy_realm_constants.txt` 
    - `holy_realm_focus_unshaken_seat`
    - sovereignty and no previous Buddhahood
 6. If Bodhi is complete while Defilements remain severe, the route records `holy_realm_false_buddha_schism_pressure` and applies a stability hit.
-7. Buddhahood sets `holy_realm_buddhahood_attained`, uses the existing Buddha stage effect, applies the Buddha idea, and shows the existing Buddha super-event slot.
+7. Buddhahood sets `holy_realm_buddhahood_attained`, uses the existing Buddha stage effect, applies the Buddha idea, and shows `The Awakened One` super-event slot.
 
 ## Meditation Fallback
 
@@ -72,7 +72,7 @@ The implemented powers are:
 - Touching the Sun and Moon
 - Extinction of Defilements
 
-Using any ordinary power sets `holy_realm_buddha_power_demonstrated`. `Extinction of Defilements` is a self-targeted rite rather than an enemy debuff: it requires full Meditation Charge, Dhyana Depth 4, Defilements below 10, Buddhahood, and one previous anti-chaos power display. Completing it sets `holy_realm_final_silence_extinction_rite_completed`.
+Using any ordinary power sets `holy_realm_buddha_power_demonstrated`. The first Buddha power also shows the `Powers of the Awakened` super-event once per campaign. `Extinction of Defilements` is a self-targeted rite rather than an enemy debuff: it requires full Meditation Charge, Dhyana Depth 4, Defilements below 10, Buddhahood, and one previous anti-chaos power display. Completing it sets `holy_realm_final_silence_extinction_rite_completed`.
 
 ## Final Silence Split
 
@@ -80,7 +80,7 @@ Final Silence now has a ritual gate and an outcome gate.
 
 The ritual can begin when the Holy Realm has Buddhahood, the final doctrine path, Final Silence armed and dominant in the doctrine balance, a controlled capital, no active False Buddha Schism, a previous anti-chaos power display, and the Extinction of Defilements rite.
 
-If global Chaos is above 1000 and no other world-end is active or disabled, completion sets the terminal Final Silence world-end flags. If the world-end gate is not met, completion instead records `holy_realm_final_silence_nonterminal_completed`, changes the leader name to `The Empty Seat`, and leaves the world alive for reconstruction play.
+If global Chaos is above 1000 and no other world-end is active or disabled, completion sets the terminal Final Silence world-end flags and shows the terminal `The Final Silence` super-event. If the world-end gate is not met, completion instead records `holy_realm_final_silence_nonterminal_completed`, changes the leader name to `The Empty Seat`, shows the non-terminal `The Final Silence` super-event, and leaves the world alive for reconstruction play.
 
 ## Achievement Tracking Hooks
 
@@ -104,7 +104,18 @@ The Holy Mandala decision GUI reuses `holy_realm_mandala_category_scripted_gui` 
 - Defilements
 - Chaos and Final Silence Pressure
 
-No new sprite files are required for this tranche. The new decision category reuses `GFX_decision_category_holy_mandala`; the new decisions use existing generic decision icons. Future bespoke art should use:
+Super-event presentation uses these wired slots:
+
+- `The Awakened One`: slot 7, `GFX_super_event_buddha_mandate`, `music/super_event_buddha_mandate.ogg`, `sound/chaosx_super_event_buddha_mandate.wav`.
+- `The Final Silence` non-terminal: slot 8, `GFX_super_event_final_silence`, `music/super_event_final_silence.ogg`, `sound/chaosx_super_event_final_silence.wav`.
+- `The Final Silence` terminal: slot 9, `GFX_super_event_final_silence_thermonuclear`, `music/super_event_final_silence_thermonuclear.ogg`, `sound/chaosx_super_event_final_silence_thermonuclear.wav`.
+- `Powers of the Awakened`: slot 61, `GFX_super_event_powers_of_the_awakened`, `music/super_event_powers_of_the_awakened.ogg`, `sound/chaosx_super_event_powers_of_the_awakened.wav`.
+
+The `Powers of the Awakened` super-event currently uses `gfx/super_events/super_event_powers_of_the_awakened.dds`, copied from the existing Buddha Mandate image as a safe placeholder. Replace it with bespoke art when the final super-event image package is produced.
+
+The audio source and rights record is in `docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md`. The `Powers of the Awakened` recording is CC BY 3.0 and requires attribution; the terminal Final Silence recording remains the only medium-confidence public-domain-chain item in the current package.
+
+The new decision category reuses `GFX_decision_category_holy_mandala`; the new decisions use existing generic decision icons. Future bespoke art should use:
 
 - Folder: `gfx/interface/decisions/holy_realm/`
 - GFX file: `interface/003_holy_realm.gfx`
@@ -115,7 +126,8 @@ No new sprite files are required for this tranche. The new decision category reu
 
 ## Future Plans
 
-- Replace the reused Buddha Mandate super-event copy with the spec's `The Awakened One` presentation once quote and licensed audio research are complete.
+- Replace `gfx/super_events/super_event_powers_of_the_awakened.dds` with bespoke `Powers of the Awakened` super-event art.
+- Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add stage-specific mandala and portrait animation assets for Dhyana and Buddhahood.
 - Expand `holy_realm_false_buddha_schism_pressure` into the full False Buddha Schism evolution.
 - Add achievement rows for the new Buddhahood and Buddha-power milestones.
