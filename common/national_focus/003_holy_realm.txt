@@ -16,11 +16,25 @@
 @holy_realm_ai_chaos_tier_final_factor = 3
 @holy_realm_ai_totalen_chaos_final_factor = 4
 @holy_realm_ai_world_collapse_final_factor = 8
+@holy_realm_ai_teaching_path_factor = 3
+@holy_realm_ai_meditation_path_factor = 3
+@holy_realm_ai_governance_path_factor = 2
+@holy_realm_ai_protector_regent_threat_factor = 3
+@holy_realm_ai_pilgrim_assembly_peace_factor = 2
 
 search_filter_prios = {
 	FOCUS_FILTER_THR_PEACE = 120
 	FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE = 121
 	FOCUS_FILTER_THR_MANDALA_INTEGRATION = 122
+	FOCUS_FILTER_HOLY_REALM_BODHI = 123
+	FOCUS_FILTER_HOLY_REALM_TEACHING = 124
+	FOCUS_FILTER_HOLY_REALM_MEDITATION = 125
+	FOCUS_FILTER_HOLY_REALM_GOVERNANCE = 126
+	FOCUS_FILTER_HOLY_REALM_SANCTUARY = 127
+	FOCUS_FILTER_HOLY_REALM_COMPACT = 128
+	FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS = 129
+	FOCUS_FILTER_HOLY_REALM_NIRVANA = 130
+	FOCUS_FILTER_HOLY_REALM_HIDDEN = 131
 }
 
 focus_tree = {
@@ -167,7 +181,7 @@ focus_tree = {
 	focus = {
 		id = THR_first_doctrine_suffering
 		icon = GFX_focus_smiling_buddha
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE FOCUS_FILTER_HOLY_REALM_BODHI }
 		x = 20
 		y = 3
 		cost = @thr_focus_cost_short
@@ -183,6 +197,449 @@ focus_tree = {
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
 			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MEDITATION
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_MEDITATION_CHARGE, THR_TAG_UNLOCK
+	# role = THR_TAG_BRANCH_ENTRY
+	focus = {
+		id = THR_sit_beneath_prayer_flags
+		icon = GFX_focus_smiling_buddha
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
+		x = 9
+		y = 3
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_first_doctrine_suffering }
+		available = {
+			holy_realm_bodhisattva_path_unlocked = yes
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_sit_beneath_prayer_flags
+			set_country_flag = holy_realm_meditation_path_unlocked
+			custom_effect_tooltip = THR_sit_beneath_prayer_flags_effect_tt
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
+			holy_realm_add_meditation_charge = yes
+			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_meditation_gain }
+			holy_realm_add_bodhi_progress = yes
+			set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+			holy_realm_add_detachment = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_meditation_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MEDITATION
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_MEDITATION_CHARGE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_first_quiet
+		icon = GFX_focus_smiling_buddha
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
+		x = 9
+		y = 4
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_sit_beneath_prayer_flags }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_first_quiet_ready_tt
+				check_variable = { dhyana_depth > 0 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_first_quiet
+			custom_effect_tooltip = THR_quiet_focus_effect_tt
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
+			holy_realm_add_meditation_charge = yes
+			set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+			holy_realm_add_detachment = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_meditation_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MEDITATION
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_MEDITATION_CHARGE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_second_quiet
+		icon = GFX_focus_smiling_buddha
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
+		x = 9
+		y = 5
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_first_quiet }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_second_quiet_ready_tt
+				check_variable = { dhyana_depth > 1 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_second_quiet
+			custom_effect_tooltip = THR_quiet_focus_effect_tt
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
+			holy_realm_add_meditation_charge = yes
+			set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+			holy_realm_add_detachment = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_meditation_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MEDITATION
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_MEDITATION_CHARGE
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_third_quiet
+		icon = GFX_focus_smiling_buddha
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
+		x = 9
+		y = 6
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_second_quiet }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_third_quiet_ready_tt
+				check_variable = { dhyana_depth > 2 }
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_third_quiet
+			custom_effect_tooltip = THR_quiet_focus_effect_tt
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
+			holy_realm_add_meditation_charge = yes
+			set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+			holy_realm_add_detachment = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_meditation_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_MEDITATION
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_MEDITATION_CHARGE, THR_TAG_UNLOCK
+	# role = THR_TAG_BRANCH_GATE
+	focus = {
+		id = THR_fourth_quiet
+		icon = GFX_focus_smiling_buddha
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
+		x = 9
+		y = 7
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_third_quiet }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_fourth_quiet_ready_tt
+				check_variable = {
+					var = dhyana_depth
+					value = constant:holy_realm_buddhahood.dhyana_max
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_fourth_quiet
+			custom_effect_tooltip = THR_fourth_quiet_effect_tt
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_complete_charge_gain }
+			holy_realm_add_meditation_charge = yes
+			set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+			holy_realm_add_detachment = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.power_defilement_loss }
+			holy_realm_add_defilements = yes
+			if = {
+				limit = {
+					capital_scope = { is_controlled_by = ROOT }
+					any_enemy_country = { is_special_chaos_country = yes }
+				}
+				set_country_flag = holy_realm_four_dhyanas_under_fire_ready
+			}
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_meditation_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_GOVERNANCE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_SPIRITUAL_LEGITIMACY, THR_TAG_TEACHING
+	# role = THR_TAG_BRANCH_GATE, THR_TAG_MUTUALLY_EXCLUSIVE
+	focus = {
+		id = THR_council_of_abbots
+		icon = GFX_focus_generic_self_management
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 18
+		y = 4
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_first_doctrine_suffering }
+		mutually_exclusive = { focus = THR_name_protector_regent }
+		mutually_exclusive = { focus = THR_seat_pilgrim_assembly }
+		completion_reward = {
+			set_country_flag = holy_realm_governance_council_of_abbots
+			set_party_name = {
+				ideology = neutrality
+				name = THR_party_abbots
+				long_name = THR_party_abbots_long
+			}
+			custom_effect_tooltip = THR_council_of_abbots_effect_tt
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_governance_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_GOVERNANCE
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_DEFENSE, THR_TAG_DEFILEMENTS
+	# role = THR_TAG_BRANCH_GATE, THR_TAG_MUTUALLY_EXCLUSIVE
+	focus = {
+		id = THR_name_protector_regent
+		icon = GFX_focus_generic_home_defense
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_SANCTUARY }
+		x = 20
+		y = 4
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_first_doctrine_suffering }
+		mutually_exclusive = { focus = THR_council_of_abbots }
+		mutually_exclusive = { focus = THR_seat_pilgrim_assembly }
+		completion_reward = {
+			set_country_flag = holy_realm_governance_protector_regent
+			set_party_name = {
+				ideology = neutrality
+				name = THR_party_protector
+				long_name = THR_party_protector_long
+			}
+			custom_effect_tooltip = THR_name_protector_regent_effect_tt
+			add_war_support = 0.08
+			add_command_power = 50
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_governance_path_factor
+			modifier = {
+				factor = @holy_realm_ai_protector_regent_threat_factor
+				any_enemy_country = { is_special_chaos_country = yes }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_GOVERNANCE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_REFUGE, THR_TAG_COMPACT, THR_TAG_COMPASSION
+	# role = THR_TAG_BRANCH_GATE, THR_TAG_MUTUALLY_EXCLUSIVE
+	focus = {
+		id = THR_seat_pilgrim_assembly
+		icon = GFX_focus_generic_league_of_nations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_COMPACT }
+		x = 22
+		y = 4
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_first_doctrine_suffering }
+		mutually_exclusive = { focus = THR_council_of_abbots }
+		mutually_exclusive = { focus = THR_name_protector_regent }
+		completion_reward = {
+			set_country_flag = holy_realm_governance_pilgrim_assembly
+			set_party_name = {
+				ideology = neutrality
+				name = THR_party_pilgrims
+				long_name = THR_party_pilgrims_long
+			}
+			custom_effect_tooltip = THR_seat_pilgrim_assembly_effect_tt
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_governance_path_factor
+			modifier = {
+				factor = @holy_realm_ai_pilgrim_assembly_peace_factor
+				holy_realm_chaos_below_peace_focus_ceiling = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_TEACHING
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_TEACHING, THR_TAG_UNLOCK
+	# role = THR_TAG_BRANCH_ENTRY
+	focus = {
+		id = THR_send_first_envoys
+		icon = GFX_focus_generic_diplomatic_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 27
+		y = 3
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_bodhisattva_accepts_seal }
+		available = {
+			holy_realm_bodhisattva_path_unlocked = yes
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_send_first_envoys
+			set_country_flag = holy_realm_dharma_teachings_unlocked
+			custom_effect_tooltip = THR_send_first_envoys_effect_tt
+			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_focus_gain }
+			holy_realm_add_bodhi_progress = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_teaching_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_TEACHING
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_TEACHING, THR_TAG_MANDALA_REACH
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_translation_houses
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 27
+		y = 4
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_send_first_envoys }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_translation_houses
+			custom_effect_tooltip = THR_translation_houses_effect_tt
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_teaching_gain }
+			holy_realm_add_bodhi_progress = yes
+			capital_scope = {
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_teaching_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_TEACHING
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_TEACHING, THR_TAG_CHAOS_RESPONSE
+	# role = THR_TAG_BRANCH_GATE
+	focus = {
+		id = THR_teach_under_bombardment
+		icon = GFX_focus_generic_support_the_left_right
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 28
+		y = 5
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_translation_houses }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_teach_under_bombardment_ready_tt
+				OR = {
+					holy_realm_chaos_at_least_chaos_tier = yes
+					has_global_flag = world_end
+					any_enemy_country = { is_special_chaos_country = yes }
+				}
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_teach_under_bombardment
+			set_country_flag = holy_realm_teaching_bombardment_missions_unlocked
+			custom_effect_tooltip = THR_teach_under_bombardment_effect_tt
+			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_teaching_gain }
+			holy_realm_add_bodhi_progress = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_teaching_path_factor
+			modifier = {
+				factor = @holy_realm_ai_totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_TEACHING
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_TEACHING, THR_TAG_UNLOCK
+	# role = THR_TAG_BRANCH_GATE
+	focus = {
+		id = THR_many_lamps_one_flame
+		icon = GFX_goal_THR_mercy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 27
+		y = 6
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_teach_under_bombardment }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_many_lamps_teaching_ready_tt
+				check_variable = {
+					var = teaching_successes
+					value = constant:holy_realm_buddhahood.teaching_successes_required
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = crisis_teaching_successes
+					value = constant:holy_realm_buddhahood.crisis_teaching_successes_required
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_many_lamps_one_flame
+			custom_effect_tooltip = THR_many_lamps_one_flame_effect_tt
+			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_focus_gain }
+			holy_realm_add_bodhi_progress = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_teaching_path_factor
 		}
 	}
 
@@ -467,6 +924,9 @@ focus_tree = {
 		prerequisite = { focus = THR_refuge_foundries }
 		prerequisite = { focus = THR_vow_keeper_regiments }
 		prerequisite = { focus = THR_quiet_envoys }
+		prerequisite = { focus = THR_many_lamps_one_flame }
+		prerequisite = { focus = THR_fourth_quiet }
+		prerequisite = { focus = THR_council_of_abbots focus = THR_name_protector_regent focus = THR_seat_pilgrim_assembly }
 		available = {
 			holy_realm_arhat_path_unlocked = yes
 		}
