@@ -306,6 +306,12 @@ holy_realm_complete_concentration_sequence = {
 
 holy_realm_spend_buddha_power_charge = {
 	holy_realm_ensure_buddhahood_counters = yes
+	if = {
+		limit = { NOT = { has_country_flag = holy_realm_buddha_power_super_event_shown } }
+		set_country_flag = holy_realm_buddha_power_super_event_shown
+		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.powers_of_the_awakened }
+		holy_realm_show_super_event = yes
+	}
 	set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.buddha_power_charge_cost }
 	multiply_temp_variable = { holy_realm_meditation_delta = -1 }
 	holy_realm_add_meditation_charge = yes
@@ -1222,6 +1228,15 @@ holy_realm_show_super_event = {
 		}
 		set_variable = { global.current_super_event_audio_id = 51 }
 	}
+	else_if = {
+		limit = { check_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.powers_of_the_awakened } }
+		set_global_flag = {
+			flag = super_event_visible
+			days = 30
+			value = 61
+		}
+		set_variable = { global.current_super_event_audio_id = 61 }
+	}
 	every_country = {
 		limit = { is_ai = no }
 		play_current_super_event_audio = yes
@@ -1815,14 +1830,14 @@ holy_realm_prepare_final_silence = {
 		limit = { holy_realm_uses_thermonuclear_final_silence = yes }
 		set_global_flag = world_end_final_silence_thermonuclear
 		set_country_flag = holy_realm_thermonuclear_doctrine
-		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_thermonuclear }
+		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_terminal }
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_thermonuclear_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_thermonuclear }
 	}
 	else = {
 		clr_global_flag = world_end_final_silence_thermonuclear
-		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence }
+		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_terminal }
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_normal }
@@ -1854,7 +1869,7 @@ holy_realm_complete_terminal_final_silence = {
 	set_global_flag = holy_realm_global_warning
 	set_country_leader_name = { name = "The Empty Seat" }
 	set_country_flag = holy_realm_empty_seat_leader
-	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence }
+	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_terminal }
 	holy_realm_show_super_event = yes
 	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
 	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
@@ -1871,7 +1886,7 @@ holy_realm_complete_nonterminal_final_silence = {
 	clr_country_flag = holy_realm_final_doctrine_armed
 	clr_country_flag = holy_realm_final_warning_sent
 	holy_realm_cleanup_final_warning_target_memory = yes
-	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence }
+	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_nonterminal }
 	holy_realm_show_super_event = yes
 	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.major_mercy_loss }
 	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
