@@ -94,14 +94,14 @@ Templates should be small and dynamically improved by focus progress. Avoid gian
 
 ## Reinforcement pathways
 
-Fury reinforcement is finite. Every actor has a hidden reserve pool. Weekly spawns draw from that pool at a slow cadence and stop completely at zero. Fury can still recruit normally through the base game. Scripted reserve grants are capped at 100 total divisions per Fury actor.
+Fury weekly reinforcement is finite. Every actor has a hidden reserve pool. Weekly spawns draw from that pool once per week and stop completely at zero. Fury can still recruit normally through the base game. Scripted weekly reserve grants are capped at 100 total divisions per Fury actor.
 
 Allowed reinforcement sources:
 
 - initial army package.
 - starting hidden reserve pool.
-- capped focus reserve refills.
-- capped decision reserve refills.
+- direct focus reinforcement waves.
+- direct decision reinforcement waves.
 - capped conquest or depot rewards.
 - capped scenario setup reserve size.
 - capped evolution reserve modifiers.
@@ -112,6 +112,8 @@ Fury gains units through:
 
 - finite weekly reserve pulse.
 - opening package.
+- focus rewards.
+- depot decisions.
 - normal base-game recruitment.
 - pact aid.
 - rival absorption.
