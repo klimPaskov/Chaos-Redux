@@ -1777,6 +1777,40 @@ holy_realm_prepare_final_silence = {
 	holy_realm_refresh_world_threat_source = yes
 }
 
+holy_realm_complete_terminal_final_silence = {
+	holy_realm_set_stage_final_silence = yes
+	set_country_flag = holy_realm_final_silence_terminal_completed
+	set_global_flag = world_end
+	set_global_flag = world_end_final_silence
+	set_global_flag = world_end_final_silence_completed
+	set_global_flag = holy_realm_global_warning
+	set_country_leader_name = { name = "The Empty Seat" }
+	set_country_flag = holy_realm_empty_seat_leader
+	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence }
+	holy_realm_show_super_event = yes
+	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
+	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
+	holy_realm_add_chaos = yes
+	holy_realm_refresh_world_threat_source = yes
+}
+
+holy_realm_complete_nonterminal_final_silence = {
+	holy_realm_set_stage_final_silence = yes
+	set_country_flag = holy_realm_final_silence_nonterminal_completed
+	set_global_flag = holy_realm_final_silence_nonterminal_completed
+	set_country_leader_name = { name = "The Empty Seat" }
+	set_country_flag = holy_realm_empty_seat_leader
+	clr_country_flag = holy_realm_final_doctrine_armed
+	clr_country_flag = holy_realm_final_warning_sent
+	holy_realm_cleanup_final_warning_target_memory = yes
+	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence }
+	holy_realm_show_super_event = yes
+	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.major_mercy_loss }
+	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+	holy_realm_add_chaos = yes
+	holy_realm_refresh_world_threat_source = yes
+}
+
 holy_realm_interrupt_final_silence = {
 	if = {
 		limit = { has_global_flag = world_end_final_silence }

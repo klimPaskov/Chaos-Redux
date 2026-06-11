@@ -72,7 +72,15 @@ The implemented powers are:
 - Touching the Sun and Moon
 - Extinction of Defilements
 
-Using any power sets `holy_realm_buddha_power_demonstrated`. Final Silence requires this flag in addition to the existing Final Silence gates and `global.chaos_meter_value > 1000`.
+Using any ordinary power sets `holy_realm_buddha_power_demonstrated`. `Extinction of Defilements` is a self-targeted rite rather than an enemy debuff: it requires full Meditation Charge, Dhyana Depth 4, Defilements below 10, Buddhahood, and one previous anti-chaos power display. Completing it sets `holy_realm_final_silence_extinction_rite_completed`.
+
+## Final Silence Split
+
+Final Silence now has a ritual gate and an outcome gate.
+
+The ritual can begin when the Holy Realm has Buddhahood, the final doctrine path, Final Silence armed and dominant in the doctrine balance, a controlled capital, no active False Buddha Schism, a previous anti-chaos power display, and the Extinction of Defilements rite.
+
+If global Chaos is above 1000 and no other world-end is active or disabled, completion sets the terminal Final Silence world-end flags. If the world-end gate is not met, completion instead records `holy_realm_final_silence_nonterminal_completed`, changes the leader name to `The Empty Seat`, and leaves the world alive for reconstruction play.
 
 ## UI And Assets
 
