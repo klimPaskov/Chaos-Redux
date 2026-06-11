@@ -9,7 +9,7 @@ Use this skill for loop improvement of Chaos Redux events and event-adjacent sys
 
 This skill writes expansion specs. It is not a checklist and it is not a code patch skill. The structure of each addendum should follow the mechanic. Some addenda need a route map. Some need a country package matrix. Some need a UI description. Some need a short design note that changes one decision category. The output should be open in form and concrete in content.
 
-The improvement loop absorbs the old mechanic-expander role. Do not route new work to a separate mechanic-expander subagent. Use this skill directly, or use the `chaosx_improvement_loop_planner` subagent when the parent agent wants a plan-writing helper.
+Use the `chaosx_improvement_loop_planner` subagent when the parent agent wants a plan-writing helper.
 
 ## Event loop improvement role
 
