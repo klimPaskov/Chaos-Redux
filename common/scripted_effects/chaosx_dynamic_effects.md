@@ -162,6 +162,7 @@ Use this whenever a threat-specific system changes whether its own source flag s
 - `world_threat_source_zombies`
 - `world_threat_source_holy_realm`
 - `world_threat_source_mengele`
+- `world_threat_source_fury`
 
 Future threats should follow the same pattern:
 

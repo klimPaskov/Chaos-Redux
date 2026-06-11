@@ -1,0 +1,602 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 007 FURY DECISIONS
+# ============================================================================
+# Fury War Office and anti-Fury response actions.
+# ============================================================================
+
+@fury_decision_ai_low = 2
+@fury_decision_ai_medium = 5
+@fury_decision_ai_high = 10
+@fury_garrison_names_days = 70
+@fury_restore_registers_days = 45
+@fury_terminal_share_reserves_days = 45
+@fury_terminal_assign_fronts_days = 60
+@anti_fury_border_watch_days = 90
+@anti_fury_aid_route_days = 60
+@anti_fury_supply_denial_days = 70
+
+fury_war_office_category = {
+	fury_select_new_target = {
+		icon = GFX_decision_fury_target
+		visible = { is_fury_actor = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_war = yes }
+				NOT = { fury_occupation_pressure_extreme = yes }
+				any_neighbor_country = { fury_is_valid_target = yes }
+				can_pay_fury_target_cost = yes
+				check_variable = { var = fury_overextension value = 5 compare = less_than }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_target_cost = yes } }
+		custom_cost_text = fury_target_cost_text
+		custom_effect_tooltip = fury_select_new_target_tt
+		days_re_enable = 14
+		complete_effect = {
+			add_command_power = constant:fury_decision_cost.target_cp_spend
+			fury_choose_next_target = yes
+			fury_declare_on_current_target = yes
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_high
+			modifier = { factor = 2 NOT = { has_war = yes } }
+			modifier = { factor = 0 fury_occupation_pressure_high = yes }
+		}
+	}
+
+	fury_open_forward_depots = {
+		icon = GFX_decision_fury_depots
+		visible = { is_fury_actor = yes }
+		available = { hidden_trigger = { can_pay_fury_reinforcement_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_reinforcement_cost = yes } }
+		custom_cost_text = fury_reinforcement_cost_text
+		custom_effect_tooltip = fury_open_forward_depots_tt
+		days_re_enable = 21
+		complete_effect = {
+			hidden_effect = { fury_decision_pay_reinforcement_cost = yes }
+			fury_spawn_depot_decision_units = yes
+			add_to_variable = { fury_momentum = 1 }
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	fury_register_occupation_settlement = {
+		icon = GFX_decision_fury_settlement
+		visible = {
+			is_fury_actor = yes
+			any_controlled_state = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				NOT = { is_core_of = ROOT }
+				NOT = { has_state_flag = fury_settlement_registered }
+			}
+		}
+		available = { hidden_trigger = { can_pay_fury_settlement_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_settlement_cost = yes } }
+		custom_cost_text = fury_settlement_cost_text
+		custom_effect_tooltip = fury_register_occupation_settlement_tt
+		days_re_enable = 35
+		complete_effect = {
+			hidden_effect = { fury_decision_pay_settlement_cost = yes }
+			add_to_variable = { fury_compliance_drive = 1 }
+			add_ideas = fury_compliance_drive
+			random_controlled_state = {
+				limit = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					NOT = { is_core_of = ROOT }
+					NOT = { has_state_flag = fury_settlement_registered }
+				}
+				set_state_flag = fury_settlement_registered
+				add_compliance = constant:fury_balance.settlement_compliance_gain
+			}
+			fury_update_occupation_pressure = yes
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 check_variable = { var = fury_overextension value = 4 compare = greater_than } }
+		}
+	}
+
+	fury_count_captured_registers = {
+		icon = GFX_decision_fury_settlement
+		visible = {
+			is_fury_actor = yes
+			has_country_flag = fury_occupation_registers_unlocked
+			any_controlled_state = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				NOT = { is_core_of = ROOT }
+				NOT = { has_state_flag = fury_settlement_registered }
+			}
+		}
+		available = { hidden_trigger = { can_pay_fury_registers_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_registers_cost = yes } }
+		custom_cost_text = fury_registers_cost_text
+		custom_effect_tooltip = fury_count_captured_registers_tt
+		days_re_enable = 28
+		complete_effect = {
+			hidden_effect = { fury_count_captured_registers_effect = yes }
+			custom_effect_tooltip = fury_count_captured_registers_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 fury_occupation_pressure_high = yes }
+		}
+	}
+
+	fury_rail_registry_survey = {
+		icon = GFX_decision_fury_depots
+		visible = {
+			is_fury_actor = yes
+			has_country_flag = fury_rail_registry_unlocked
+			any_controlled_state = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				has_state_flag = fury_settlement_registered
+				NOT = { has_state_flag = fury_rail_registry_complete }
+				NOT = { is_core_of = ROOT }
+			}
+		}
+		available = { hidden_trigger = { can_pay_fury_rail_registry_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_rail_registry_cost = yes } }
+		custom_cost_text = fury_rail_registry_cost_text
+		custom_effect_tooltip = fury_rail_registry_survey_tt
+		days_re_enable = 42
+		complete_effect = {
+			hidden_effect = { fury_rail_registry_survey_effect = yes }
+			custom_effect_tooltip = fury_rail_registry_survey_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 fury_occupation_pressure_high = yes }
+		}
+	}
+
+	fury_garrison_the_names_mission = {
+		icon = GFX_decision_fury_coring
+		days_mission_timeout = @fury_garrison_names_days
+		is_good = no
+		fire_only_once = no
+		activation = {
+			is_fury_actor = yes
+			has_country_flag = fury_garrison_names_unlocked
+			fury_has_any_registered_settlement_state = yes
+			NOT = { has_country_flag = fury_garrison_names_recently_resolved }
+		}
+		available = {
+			OR = {
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				any_owned_state = {
+					has_state_flag = fury_settlement_registered
+					NOT = { is_controlled_by = ROOT }
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_fury_actor = yes }
+				NOT = { fury_has_any_registered_settlement_state = yes }
+			}
+		}
+		complete_effect = { fury_garrison_the_names_failure = yes }
+		timeout_effect = { fury_garrison_the_names_success = yes }
+	}
+
+	fury_core_state_by_administration = {
+		icon = GFX_decision_fury_coring
+		visible = {
+			is_fury_actor = yes
+			fury_has_admin_core_candidate = yes
+		}
+		available = {
+			hidden_trigger = {
+				can_pay_fury_admin_core_cost = yes
+				NOT = { fury_occupation_pressure_extreme = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_admin_core_cost = yes } }
+		custom_cost_text = fury_admin_core_cost_text
+		custom_effect_tooltip = fury_core_state_by_administration_tt
+		days_re_enable = 70
+		complete_effect = {
+			hidden_effect = { fury_complete_admin_core = yes }
+			custom_effect_tooltip = fury_core_state_by_administration_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 fury_occupation_pressure_high = yes }
+		}
+	}
+
+	fury_core_state_by_march = {
+		icon = GFX_decision_fury_coring
+		visible = {
+			is_fury_actor = yes
+			fury_has_march_core_candidate = yes
+		}
+		available = { hidden_trigger = { can_pay_fury_march_core_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_march_core_cost = yes } }
+		custom_cost_text = fury_march_core_cost_text
+		custom_effect_tooltip = fury_core_state_by_march_tt
+		days_re_enable = 56
+		complete_effect = {
+			hidden_effect = { fury_complete_march_core = yes }
+			custom_effect_tooltip = fury_core_state_by_march_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_low
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0 fury_occupation_pressure_extreme = yes }
+		}
+	}
+
+	fury_restore_the_registers_mission = {
+		icon = GFX_decision_fury_coring
+		days_mission_timeout = @fury_restore_registers_days
+		is_good = no
+		fire_only_once = no
+		activation = {
+			is_fury_actor = yes
+			has_country_flag = fury_occupation_crisis_active
+			fury_has_any_registered_settlement_state = yes
+			NOT = { has_country_flag = fury_restore_registers_recently_resolved }
+		}
+		available = {
+			OR = {
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				any_owned_state = {
+					has_state_flag = fury_settlement_registered
+					NOT = { is_controlled_by = ROOT }
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_fury_actor = yes }
+				NOT = { fury_has_any_registered_settlement_state = yes }
+			}
+		}
+		complete_effect = { fury_restore_the_registers_failure = yes }
+		timeout_effect = { fury_restore_the_registers_success = yes }
+	}
+
+	fury_form_war_table = {
+		icon = GFX_decision_fury_terminal_fronts
+		visible = {
+			is_fury_actor = yes
+			has_country_flag = fury_evolution_ii_applied
+			NOT = { has_country_flag = fury_rival_route }
+			any_other_country = { is_fury_actor = yes }
+		}
+		available = { hidden_trigger = { can_pay_fury_cooperation_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_cooperation_cost = yes } }
+		custom_cost_text = fury_cooperation_cost_text
+		custom_effect_tooltip = fury_form_war_table_tt
+		days_re_enable = 45
+		complete_effect = {
+			add_command_power = constant:fury_decision_cost.cooperation_cp_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.cooperation_equipment }
+			set_global_flag = fury_pact_formed
+			set_country_flag = fury_cooperation_route
+			set_country_flag = fury_pact_member
+			add_ideas = fury_pact_command
+			add_to_variable = { fury_pact_cohesion = 2 }
+			every_other_country = {
+				limit = { is_fury_actor = yes }
+				set_country_flag = fury_pact_member
+				add_opinion_modifier = { target = ROOT modifier = improved_relations }
+			}
+		}
+		ai_will_do = { base = @fury_decision_ai_low }
+	}
+
+	fury_mark_rival_column = {
+		icon = GFX_decision_fury_terminal_fronts
+		visible = {
+			is_fury_actor = yes
+			has_country_flag = fury_evolution_ii_applied
+			NOT = { has_country_flag = fury_cooperation_route }
+			any_other_country = { is_fury_actor = yes }
+		}
+		available = { hidden_trigger = { can_pay_fury_rivalry_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_rivalry_cost = yes } }
+		custom_cost_text = fury_rivalry_cost_text
+		custom_effect_tooltip = fury_mark_rival_column_tt
+		days_re_enable = 45
+		complete_effect = {
+			add_command_power = constant:fury_decision_cost.rivalry_cp_spend
+			set_country_flag = fury_rival_route
+			add_ideas = fury_rival_doctrine
+			add_to_variable = { fury_momentum = 1 }
+			every_other_country = {
+				limit = { is_fury_actor = yes }
+				add_opinion_modifier = { target = ROOT modifier = same_ruling_party }
+			}
+		}
+		ai_will_do = { base = @fury_decision_ai_low }
+	}
+
+	fury_survey_beyond_the_border = {
+		icon = GFX_decision_fury_target
+		visible = {
+			is_fury_actor = yes
+			has_country_flag = fury_no_valid_neighbors
+		}
+		available = { hidden_trigger = { can_pay_fury_survey_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_survey_cost = yes } }
+		custom_cost_text = fury_survey_cost_text
+		custom_effect_tooltip = fury_survey_beyond_the_border_tt
+		days_re_enable = 42
+		complete_effect = {
+			add_command_power = constant:fury_decision_cost.survey_cp_spend
+			add_to_variable = { fury_reach = 1 }
+			add_to_variable = { fury_failed_target_scans = 1 }
+			clr_country_flag = fury_no_valid_neighbors
+			country_event = { id = chaosx.nr7.10 days = 3 }
+		}
+		ai_will_do = { base = @fury_decision_ai_low }
+	}
+
+	fury_share_terminal_reserves = {
+		icon = GFX_decision_fury_terminal_reserves
+		visible = {
+			is_fury_actor = yes
+			has_country_flag = fury_world_end_actor
+			has_global_flag = fury_world_end_active
+			any_other_country = {
+				is_fury_actor = yes
+				has_country_flag = fury_world_end_actor
+			}
+		}
+		available = { hidden_trigger = { can_pay_fury_terminal_reserves_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_terminal_reserves_cost = yes } }
+		custom_cost_text = fury_terminal_reserves_cost_text
+		custom_effect_tooltip = fury_share_terminal_reserves_tt
+		days_re_enable = @fury_terminal_share_reserves_days
+		complete_effect = {
+			hidden_effect = { fury_share_terminal_reserves_effect = yes }
+			custom_effect_tooltip = fury_share_terminal_reserves_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 fury_occupation_pressure_high = yes }
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	fury_assign_terminal_fronts = {
+		icon = GFX_decision_fury_terminal_fronts
+		visible = {
+			is_fury_actor = yes
+			has_country_flag = fury_world_end_actor
+			has_global_flag = fury_world_end_active
+		}
+		available = { hidden_trigger = { can_pay_fury_terminal_fronts_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_fury_terminal_fronts_cost = yes } }
+		custom_cost_text = fury_terminal_fronts_cost_text
+		custom_effect_tooltip = fury_assign_terminal_fronts_tt
+		days_re_enable = @fury_terminal_assign_fronts_days
+		complete_effect = {
+			hidden_effect = { fury_assign_terminal_fronts_effect = yes }
+			custom_effect_tooltip = fury_assign_terminal_fronts_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_low
+			modifier = { factor = 2 NOT = { has_war = yes } }
+			modifier = { factor = 2 has_country_flag = fury_no_valid_neighbors }
+		}
+	}
+}
+
+anti_fury_response_category = {
+	anti_fury_border_watch = {
+		icon = GFX_decision_anti_fury_response
+		visible = {
+			anti_fury_response_visible = yes
+			any_neighbor_country = { is_fury_actor = yes }
+			NOT = { has_country_flag = anti_fury_border_watch_active }
+		}
+		available = { hidden_trigger = { can_pay_anti_fury_border_watch_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_border_watch_cost = yes } }
+		custom_cost_text = anti_fury_border_watch_cost_text
+		custom_effect_tooltip = anti_fury_border_watch_tt
+		days_re_enable = 120
+		complete_effect = {
+			hidden_effect = {
+				anti_fury_pay_border_watch_cost = yes
+				set_country_flag = anti_fury_border_watch_active
+				activate_mission = anti_fury_border_watch_mission
+			}
+			custom_effect_tooltip = anti_fury_border_watch_start_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 any_neighbor_country = { is_fury_actor = yes has_war = yes } }
+		}
+	}
+
+	anti_fury_border_watch_mission = {
+		icon = GFX_decision_anti_fury_response
+		days_mission_timeout = @anti_fury_border_watch_days
+		is_good = no
+		fire_only_once = no
+		activation = {
+			has_country_flag = anti_fury_border_watch_active
+			any_neighbor_country = { is_fury_actor = yes }
+		}
+		available = {
+			OR = {
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				any_neighbor_country = {
+					is_fury_actor = yes
+					has_war_with = ROOT
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				is_fury_actor = yes
+				NOT = { any_neighbor_country = { is_fury_actor = yes } }
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = anti_fury_border_watch_active
+		}
+		complete_effect = { anti_fury_border_watch_failure = yes }
+		timeout_effect = { anti_fury_border_watch_success = yes }
+	}
+
+	anti_fury_send_emergency_aid = {
+		icon = GFX_decision_anti_fury_response
+		visible = {
+			anti_fury_response_visible = yes
+			anti_fury_has_active_target_to_aid = yes
+			NOT = { has_country_flag = anti_fury_aid_route_active }
+		}
+		available = { hidden_trigger = { can_pay_anti_fury_emergency_aid_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_emergency_aid_cost = yes } }
+		custom_cost_text = anti_fury_emergency_aid_cost_text
+		custom_effect_tooltip = anti_fury_send_emergency_aid_tt
+		days_re_enable = 120
+		complete_effect = {
+			hidden_effect = {
+				anti_fury_send_emergency_aid_effect = yes
+				activate_mission = anti_fury_aid_route_mission
+			}
+			custom_effect_tooltip = anti_fury_send_emergency_aid_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_low
+			modifier = { factor = 2 is_major = yes }
+			modifier = { factor = 0 NOT = { anti_fury_has_active_target_to_aid = yes } }
+		}
+	}
+
+	anti_fury_aid_route_mission = {
+		icon = GFX_decision_anti_fury_response
+		days_mission_timeout = @anti_fury_aid_route_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = anti_fury_aid_route_active }
+		available = {
+			capital_scope = { NOT = { is_controlled_by = ROOT } }
+		}
+		cancel_trigger = {
+			OR = {
+				is_fury_actor = yes
+				NOT = { any_country = { is_fury_actor = yes } }
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = anti_fury_aid_route_active
+		}
+		complete_effect = { anti_fury_aid_route_failure = yes }
+		timeout_effect = { anti_fury_aid_route_success = yes }
+	}
+
+	anti_fury_firebreak_staff_talks = {
+		icon = GFX_decision_anti_fury_response
+		visible = {
+			anti_fury_response_visible = yes
+			NOT = { has_country_flag = anti_fury_staff_talks_active }
+		}
+		available = { hidden_trigger = { can_pay_anti_fury_staff_talks_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_staff_talks_cost = yes } }
+		custom_cost_text = anti_fury_staff_talks_cost_text
+		custom_effect_tooltip = anti_fury_firebreak_staff_talks_tt
+		days_re_enable = 140
+		complete_effect = {
+			hidden_effect = { anti_fury_staff_talks_effect = yes }
+			custom_effect_tooltip = anti_fury_firebreak_staff_talks_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_medium
+			modifier = { factor = 2 any_neighbor_country = { is_fury_actor = yes } }
+		}
+	}
+
+	anti_fury_start_supply_denial = {
+		icon = GFX_decision_anti_fury_response
+		visible = {
+			anti_fury_response_visible = yes
+			any_neighbor_country = { is_fury_actor = yes }
+			NOT = { has_country_flag = anti_fury_supply_denial_active }
+		}
+		available = { hidden_trigger = { can_pay_anti_fury_supply_denial_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_supply_denial_cost = yes } }
+		custom_cost_text = anti_fury_supply_denial_cost_text
+		custom_effect_tooltip = anti_fury_start_supply_denial_tt
+		days_re_enable = 120
+		complete_effect = {
+			hidden_effect = {
+				anti_fury_pay_supply_denial_cost = yes
+				set_country_flag = anti_fury_supply_denial_active
+				activate_mission = anti_fury_supply_denial_mission
+			}
+			custom_effect_tooltip = anti_fury_start_supply_denial_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_low
+			modifier = { factor = 2 any_neighbor_country = { is_fury_actor = yes has_war = yes } }
+		}
+	}
+
+	anti_fury_supply_denial_mission = {
+		icon = GFX_decision_anti_fury_response
+		days_mission_timeout = @anti_fury_supply_denial_days
+		is_good = no
+		fire_only_once = no
+		activation = {
+			has_country_flag = anti_fury_supply_denial_active
+			any_neighbor_country = { is_fury_actor = yes }
+		}
+		available = {
+			OR = {
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				any_neighbor_country = {
+					is_fury_actor = yes
+					has_war_with = ROOT
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				is_fury_actor = yes
+				NOT = { any_neighbor_country = { is_fury_actor = yes } }
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = anti_fury_supply_denial_active
+		}
+		complete_effect = { anti_fury_supply_denial_failure = yes }
+		timeout_effect = { anti_fury_supply_denial_success = yes }
+	}
+
+	anti_fury_recognition_denial = {
+		icon = GFX_decision_anti_fury_response
+		visible = {
+			anti_fury_response_visible = yes
+			OR = {
+				is_major = yes
+				any_neighbor_country = { is_fury_actor = yes }
+			}
+		}
+		available = { hidden_trigger = { can_pay_anti_fury_recognition_denial_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_recognition_denial_cost = yes } }
+		custom_cost_text = anti_fury_recognition_denial_cost_text
+		custom_effect_tooltip = anti_fury_recognition_denial_tt
+		days_re_enable = 120
+		complete_effect = {
+			hidden_effect = { anti_fury_recognition_denial_effect = yes }
+			custom_effect_tooltip = anti_fury_recognition_denial_effect_tt
+		}
+		ai_will_do = {
+			base = @fury_decision_ai_low
+			modifier = { factor = 2 is_major = yes }
+		}
+	}
+}

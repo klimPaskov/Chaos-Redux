@@ -294,6 +294,19 @@ Effects:
 - reduces overextension more than harsh path.
 - AI uses when not under severe military pressure.
 
+## Implemented occupation pressure loop
+
+The current implementation uses the following concrete state and country surfaces:
+
+- `fury_occupation_pressure` is recalculated during the scoped Fury weekly actor loop from non-core controlled states, active wars, resistance, registered states, rail registry completion, and `fury_garrison_capacity`.
+- High pressure adds `fury_overextension`, weakens weekly unit generation, and raises occupation decision priority.
+- Extreme pressure sets `fury_occupation_crisis_active`, blocks ordinary target selection unless Evolution III or terminal Fury overrides it, and activates `fury_restore_the_registers_mission`.
+- `fury_count_captured_registers` starts administrative register work on a non-core controlled state.
+- `fury_rail_registry_survey` marks a registered state with `fury_rail_registry_complete` and reduces pressure.
+- `fury_garrison_the_names_mission` is a timed hold mission; success lowers pressure and improves compliance, while failure raises resistance and overextension.
+- `fury_core_state_by_administration` requires `fury_admin_coring_unlocked`, high compliance, and no recent integration failure.
+- `fury_core_state_by_march` requires `fury_march_coring_unlocked`, lower compliance, and pays higher manpower/equipment/stability cost.
+
 ## Decision family: Fury cooperation
 
 Available when Evolution II is active and pact type is enabled.
@@ -346,6 +359,8 @@ Effects:
 - reduces risk of Fury-on-Fury war.
 - improves postwar settlement.
 - reduces pact cohesion if both want same capital.
+
+Current implemented cooperation decisions are `fury_form_war_table`, `fury_share_terminal_reserves`, and `fury_assign_terminal_fronts`. The terminal reserve decision spends command power, manpower, rifles, and support stores to supply another `fury_world_end_actor`; the terminal fronts decision spends command power and army experience to raise pact cohesion, target preparation, momentum, and overextension relief across terminal Fury actors.
 
 ## Decision family: Fury rivalry
 
@@ -502,6 +517,36 @@ Effects:
 - temporary defense planning against Fury.
 - unlocks shared anti-Fury AI weights.
 - does not create a full anti-Fury faction unless world-end is active.
+
+### Supply Denial
+
+Role: timed mission started by countries bordering Fury.
+
+Costs:
+
+- command power.
+- infantry equipment.
+
+Effects:
+
+- starts `anti_fury_supply_denial_mission`.
+- success raises containment pressure, raises neighboring Fury overextension, and lowers Fury momentum.
+- failure relieves some neighboring Fury pressure.
+
+### Recognition Denial
+
+Role: diplomatic refusal after Fury becomes a visible major threat.
+
+Costs:
+
+- command power.
+
+Effects:
+
+- lowers one Fury pact cohesion record.
+- raises containment pressure and contribution tracking.
+
+Current implemented anti-Fury decisions are `anti_fury_border_watch`, `anti_fury_send_emergency_aid`, `anti_fury_firebreak_staff_talks`, `anti_fury_start_supply_denial`, and `anti_fury_recognition_denial`. Border Watch, Emergency Aid, and Supply Denial each start a timed mission rather than resolving as a single instant bonus.
 
 ## Missions
 

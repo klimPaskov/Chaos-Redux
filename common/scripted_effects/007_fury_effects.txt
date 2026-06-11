@@ -1,0 +1,1773 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 007 FURY EFFECTS
+# ============================================================================
+# Runtime helpers for Fury actors, target loops, evolutions, decisions, and the
+# triggerable World in Fury scenario.
+# ============================================================================
+
+@fury_world_end_seed_check_cooldown_days = 21
+@fury_player_warning_grace_days = 45
+@fury_garrison_names_recently_resolved_days = 75
+@fury_restore_registers_recently_resolved_days = 60
+@fury_recent_actor_cooldown_days = 365
+
+fury_initialize_actor_variables = {
+	set_variable = { fury_momentum = constant:fury_balance.starting_momentum }
+	set_variable = { fury_overextension = constant:fury_balance.starting_overextension }
+	set_variable = { fury_compliance_drive = constant:fury_balance.starting_compliance_drive }
+	set_variable = { fury_reach = constant:fury_balance.starting_reach }
+	set_variable = { fury_pact_cohesion = constant:fury_balance.starting_pact_cohesion }
+	set_variable = { fury_occupation_pressure = 0 }
+	set_variable = { fury_garrison_capacity = 0 }
+	set_variable = { fury_registered_state_count = 0 }
+}
+
+fury_sync_evolution_unlocks = {
+	set_temp_variable = { events_log_evolution_event_id = 7 }
+	set_temp_variable = { events_log_evolution_type = 7 }
+	set_temp_variable = { events_log_evolution_stage = 1 }
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_1.min
+				compare = greater_than_or_equals
+			}
+			is_current_evolution_enabled = yes
+		}
+		set_global_flag = fury_evolution_i_unlocked
+	}
+	else = {
+		clr_global_flag = fury_evolution_i_unlocked
+	}
+	set_temp_variable = { events_log_evolution_stage = 2 }
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_2.min
+				compare = greater_than_or_equals
+			}
+			is_current_evolution_enabled = yes
+		}
+		set_global_flag = fury_evolution_ii_unlocked
+	}
+	else = {
+		clr_global_flag = fury_evolution_ii_unlocked
+	}
+	set_temp_variable = { events_log_evolution_stage = 3 }
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_3.min
+				compare = greater_than_or_equals
+			}
+			is_current_evolution_enabled = yes
+		}
+		set_global_flag = fury_evolution_iii_unlocked
+	}
+	else = {
+		clr_global_flag = fury_evolution_iii_unlocked
+	}
+}
+
+fury_select_ordinary_actor = {
+	if = {
+		limit = { any_country = { fury_can_be_selected_one_state = yes } }
+		random_country = {
+			limit = { fury_can_be_selected_one_state = yes }
+			fury_apply_package = yes
+		}
+	}
+	else_if = {
+		limit = { any_country = { fury_can_be_selected_two_state = yes } }
+		random_country = {
+			limit = { fury_can_be_selected_two_state = yes }
+			fury_apply_package = yes
+		}
+	}
+	else_if = {
+		limit = { any_country = { fury_can_be_selected_three_state = yes } }
+		random_country = {
+			limit = { fury_can_be_selected_three_state = yes }
+			fury_apply_package = yes
+		}
+	}
+	else = {
+		random_country = {
+			limit = { fury_can_be_selected = yes }
+			fury_apply_package = yes
+		}
+	}
+}
+
+fury_apply_package = {
+	set_country_flag = fury_actor
+	set_country_flag = fury_weekly_loop_active
+	set_global_flag = fury_actor_created
+	clr_country_flag = fury_no_valid_neighbors
+	fury_initialize_actor_variables = yes
+	add_ideas = fury_national_fury
+	load_focus_tree = fury_focus_tree
+	save_global_event_target_as = fury_latest_actor
+	if = {
+		limit = {
+			has_global_flag = fury_evolution_i_unlocked
+			NOT = { has_global_flag = fury_triggerable_scenario_launch_active }
+		}
+		fury_apply_evolution_i = yes
+	}
+	fury_create_division_template = yes
+	fury_spawn_starting_units = yes
+	country_event = { id = chaosx.nr7.2 days = 1 }
+	country_event = { id = chaosx.nr7.10 days = 2 }
+	country_event = { id = chaosx.nr7.20 days = 7 }
+}
+
+fury_create_division_template = {
+	division_template = {
+		name = "Fury Column"
+		regiments = {
+			infantry = { x = 0 y = 0 }
+			infantry = { x = 0 y = 1 }
+			infantry = { x = 0 y = 2 }
+			infantry = { x = 1 y = 0 }
+			infantry = { x = 1 y = 1 }
+			infantry = { x = 1 y = 2 }
+		}
+		support = {
+			engineer = { x = 0 y = 0 }
+		}
+	}
+}
+
+fury_prepare_spawn_count = {
+	set_temp_variable = { fury_spawn_count = constant:fury_units.baseline_start_units }
+	if = {
+		limit = { num_of_controlled_states < 3 }
+		set_temp_variable = { fury_spawn_count = constant:fury_units.weak_start_units }
+	}
+	if = {
+		limit = { has_country_flag = fury_evolution_i_applied }
+		set_temp_variable = { fury_spawn_count = constant:fury_units.hardened_start_units }
+	}
+	if = {
+		limit = { has_country_flag = fury_evolution_iii_applied }
+		set_temp_variable = { fury_spawn_count = constant:fury_units.evolution_three_start_units }
+	}
+	round_temp_variable = fury_spawn_count
+}
+
+fury_spawn_starting_units = {
+	fury_prepare_spawn_count = yes
+	capital_scope = {
+		create_unit = {
+			division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.25"
+			count = fury_spawn_count
+			owner = ROOT
+		}
+	}
+	fury_add_scaled_stockpile = yes
+}
+
+fury_prepare_weekly_unit_count = {
+	set_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_base_units }
+	set_temp_variable = { fury_weekly_momentum_units = fury_momentum }
+	divide_temp_variable = { fury_weekly_momentum_units = constant:fury_units.weekly_momentum_divisor }
+	round_temp_variable = fury_weekly_momentum_units
+	add_to_temp_variable = { fury_weekly_unit_count = fury_weekly_momentum_units }
+	set_temp_variable = { fury_weekly_state_units = num_of_controlled_states }
+	divide_temp_variable = { fury_weekly_state_units = constant:fury_units.weekly_state_divisor }
+	round_temp_variable = fury_weekly_state_units
+	add_to_temp_variable = { fury_weekly_unit_count = fury_weekly_state_units }
+	if = {
+		limit = { has_country_flag = fury_evolution_i_applied }
+		add_to_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_evolution_i_bonus }
+	}
+	if = {
+		limit = { has_country_flag = fury_evolution_iii_applied }
+		add_to_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_evolution_iii_bonus }
+	}
+	if = {
+		limit = { has_country_flag = fury_triggerable_scenario_actor }
+		add_to_temp_variable = { fury_weekly_unit_count = constant:fury_units.weekly_scenario_bonus }
+	}
+	if = {
+		limit = { fury_occupation_pressure_high = yes }
+		subtract_from_temp_variable = { fury_weekly_unit_count = constant:fury_occupation.weekly_high_unit_penalty }
+	}
+	if = {
+		limit = { fury_occupation_pressure_extreme = yes }
+		subtract_from_temp_variable = { fury_weekly_unit_count = constant:fury_occupation.weekly_extreme_unit_penalty }
+	}
+	round_temp_variable = fury_weekly_unit_count
+	clamp_temp_variable = { var = fury_weekly_unit_count min = 1 max = 8 }
+}
+
+fury_spawn_weekly_units = {
+	fury_prepare_weekly_unit_count = yes
+	capital_scope = {
+		create_unit = {
+			division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.20"
+			count = fury_weekly_unit_count
+			owner = ROOT
+		}
+	}
+	fury_add_weekly_stockpile = yes
+}
+
+fury_spawn_depot_decision_units = {
+	fury_prepare_weekly_unit_count = yes
+	capital_scope = {
+		create_unit = {
+			division = "name = \"Fury Column\" division_template = \"Fury Column\" start_experience_factor = 0.15"
+			count = fury_weekly_unit_count
+			owner = ROOT
+		}
+	}
+}
+
+fury_add_scaled_stockpile = {
+	set_temp_variable = { fury_equipment_gain = fury_spawn_count }
+	multiply_temp_variable = { fury_equipment_gain = constant:fury_units.infantry_equipment_per_unit }
+	round_temp_variable = fury_equipment_gain
+	add_equipment_to_stockpile = { type = infantry_equipment amount = fury_equipment_gain }
+	set_temp_variable = { fury_support_gain = fury_spawn_count }
+	multiply_temp_variable = { fury_support_gain = constant:fury_units.support_equipment_per_unit }
+	round_temp_variable = fury_support_gain
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = fury_support_gain }
+	set_temp_variable = { fury_artillery_gain = fury_spawn_count }
+	multiply_temp_variable = { fury_artillery_gain = constant:fury_units.artillery_per_unit }
+	round_temp_variable = fury_artillery_gain
+	add_equipment_to_stockpile = { type = artillery_equipment_1 amount = fury_artillery_gain }
+	set_temp_variable = { fury_manpower_gain = fury_spawn_count }
+	multiply_temp_variable = { fury_manpower_gain = constant:fury_units.manpower_per_unit }
+	round_temp_variable = fury_manpower_gain
+	add_manpower = fury_manpower_gain
+}
+
+fury_add_weekly_stockpile = {
+	set_temp_variable = { fury_spawn_count = fury_weekly_unit_count }
+	fury_add_scaled_stockpile = yes
+}
+
+fury_score_current_target_candidate = {
+	set_variable = { fury_target_score = constant:fury_target_score.base_neighbor }
+	if = {
+		limit = { num_of_controlled_states < constant:fury_target_score.one_state_max }
+		add_to_variable = { fury_target_score = constant:fury_target_score.one_state_bonus }
+	}
+	else_if = {
+		limit = { num_of_controlled_states < constant:fury_target_score.two_state_max }
+		add_to_variable = { fury_target_score = constant:fury_target_score.two_state_bonus }
+	}
+	if = {
+		limit = { num_of_factories < constant:fury_target_score.weak_factory_max }
+		add_to_variable = { fury_target_score = constant:fury_target_score.weak_industry_bonus }
+	}
+	if = {
+		limit = { num_divisions < constant:fury_target_score.low_division_max }
+		add_to_variable = { fury_target_score = constant:fury_target_score.low_division_bonus }
+	}
+	else_if = {
+		limit = { num_divisions > constant:fury_target_score.high_division_min }
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.high_division_penalty }
+	}
+	ROOT = { set_variable = { fury_actor_divisions_for_target_score = num_divisions } }
+	set_variable = { fury_target_relative_divisions = num_divisions }
+	subtract_from_variable = { fury_target_relative_divisions = ROOT.fury_actor_divisions_for_target_score }
+	if = {
+		limit = {
+			check_variable = {
+				var = fury_target_relative_divisions
+				value = 0
+				compare = greater_than
+			}
+		}
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.stronger_than_fury_penalty }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = fury_target_relative_divisions
+				value = 0
+				compare = less_than
+			}
+		}
+		add_to_variable = { fury_target_score = constant:fury_target_score.weaker_than_fury_bonus }
+	}
+	clear_variable = fury_target_relative_divisions
+	ROOT = { clear_variable = fury_actor_divisions_for_target_score }
+	if = {
+		limit = { has_manpower < constant:fury_target_score.low_manpower_gate }
+		add_to_variable = { fury_target_score = constant:fury_target_score.low_manpower_bonus }
+	}
+	else_if = {
+		limit = { has_manpower > constant:fury_target_score.high_manpower_gate }
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.high_manpower_penalty }
+	}
+	if = {
+		limit = { has_war = yes }
+		add_to_variable = { fury_target_score = constant:fury_target_score.target_at_war_bonus }
+	}
+	if = {
+		limit = { is_in_faction = yes }
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.faction_penalty }
+	}
+	if = {
+		limit = { is_major = yes }
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.major_penalty }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_terrain = mountain
+				has_terrain = jungle
+				has_terrain = marsh
+			}
+		}
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.rough_terrain_penalty }
+	}
+	if = {
+		limit = { num_of_supply_nodes < constant:fury_target_score.weak_supply_node_gate }
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.weak_supply_penalty }
+	}
+	if = {
+		limit = {
+			ROOT = {
+				check_variable = {
+					var = fury_last_target_id
+					value = PREV.id
+					compare = equals
+				}
+			}
+		}
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.last_target_churn_penalty }
+	}
+	if = {
+		limit = {
+			has_equipment = { infantry_equipment > constant:fury_target_score.high_equipment_gate }
+			ROOT = {
+				NOT = { has_equipment = { infantry_equipment > constant:fury_target_score.high_equipment_gate } }
+			}
+		}
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.target_equipment_depth_penalty }
+	}
+	if = {
+		limit = {
+			ROOT = {
+				check_variable = {
+					var = fury_overextension
+					value = constant:fury_target_score.overextension_high
+					compare = greater_than
+				}
+			}
+		}
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.overextension_penalty }
+	}
+	if = {
+		limit = {
+			ROOT = {
+				check_variable = {
+					var = fury_overextension
+					value = constant:fury_target_score.overextension_extreme
+					compare = greater_than
+				}
+			}
+		}
+		subtract_from_variable = { fury_target_score = constant:fury_target_score.overextension_penalty }
+	}
+	if = {
+		limit = {
+			ROOT = {
+				check_variable = {
+					var = fury_momentum
+					value = 0
+					compare = greater_than
+				}
+			}
+		}
+		add_to_variable = { fury_target_score = constant:fury_target_score.momentum_bonus }
+	}
+	if = {
+		limit = {
+			ROOT = {
+				check_variable = {
+					var = fury_target_preparation
+					value = 0
+					compare = greater_than
+				}
+			}
+		}
+		set_variable = { fury_target_preparation_score = ROOT.fury_target_preparation }
+		multiply_variable = {
+			var = fury_target_preparation_score
+			value = constant:fury_target_score.preparation_bonus
+		}
+		add_to_variable = { fury_target_score = fury_target_preparation_score }
+		clear_variable = fury_target_preparation_score
+	}
+	if = {
+		limit = { ROOT = { has_country_flag = fury_evolution_i_applied } }
+		add_to_variable = { fury_target_score = constant:fury_target_score.evolution_i_bonus }
+	}
+	if = {
+		limit = { ROOT = { has_country_flag = fury_evolution_iii_applied } }
+		add_to_variable = { fury_target_score = constant:fury_target_score.evolution_iii_bonus }
+	}
+}
+
+fury_choose_next_target = {
+	clr_country_flag = fury_has_current_target
+	clear_variable = fury_current_target
+	set_variable = { fury_best_target_score = 0 }
+	every_neighbor_country = {
+		limit = { fury_is_valid_target = yes }
+		fury_score_current_target_candidate = yes
+		if = {
+			limit = {
+				fury_candidate_passes_score_gate = yes
+				check_variable = {
+					var = fury_target_score
+					value = ROOT.fury_best_target_score
+					compare = greater_than
+				}
+			}
+			ROOT = {
+				set_variable = { fury_current_target = PREV.id }
+				set_variable = { fury_best_target_score = PREV.fury_target_score }
+				set_country_flag = fury_has_current_target
+			}
+		}
+		clear_variable = fury_target_score
+	}
+	if = {
+		limit = { has_country_flag = fury_has_current_target }
+		set_variable = { fury_failed_target_scans = 0 }
+		clr_country_flag = fury_no_valid_neighbors
+	}
+	else = {
+		add_to_variable = { fury_failed_target_scans = 1 }
+		set_country_flag = fury_no_valid_neighbors
+	}
+}
+
+fury_choose_rival_actor_target = {
+	clr_country_flag = fury_has_current_target
+	clear_variable = fury_current_target
+	set_variable = { fury_best_target_score = 0 }
+	every_other_country = {
+		limit = { fury_is_valid_rival_actor_target = yes }
+		set_variable = { fury_target_score = constant:fury_target_score.base_neighbor }
+		add_to_variable = { fury_target_score = constant:fury_target_score.rival_actor_bonus }
+		if = {
+			limit = {
+				check_variable = {
+					var = fury_target_score
+					value = ROOT.fury_best_target_score
+					compare = greater_than
+				}
+			}
+			ROOT = {
+				set_variable = { fury_current_target = PREV.id }
+				set_variable = { fury_best_target_score = PREV.fury_target_score }
+				set_country_flag = fury_has_current_target
+			}
+		}
+		clear_variable = fury_target_score
+	}
+}
+
+fury_choose_terminal_player_target = {
+	clr_country_flag = fury_has_current_target
+	clear_variable = fury_current_target
+	random_country = {
+		limit = { fury_terminal_can_threaten_player_linked_country = yes }
+		save_global_event_target_as = fury_terminal_player_target
+		set_country_flag = fury_terminal_player_target_marked
+		ROOT = {
+			set_variable = { fury_current_target = PREV.id }
+			set_country_flag = fury_has_current_target
+			set_global_flag = fury_terminal_player_threatened
+		}
+	}
+	if = {
+		limit = { has_country_flag = fury_has_current_target }
+		set_variable = { fury_failed_target_scans = 0 }
+		clr_country_flag = fury_no_valid_neighbors
+	}
+}
+
+fury_try_terminal_player_target = {
+	if = {
+		limit = {
+			has_global_flag = fury_world_end_active
+			has_country_flag = fury_world_end_actor
+			NOT = { has_war = yes }
+			NOT = { any_neighbor_country = { fury_is_valid_target = yes } }
+			fury_has_terminal_player_target = yes
+		}
+		fury_choose_terminal_player_target = yes
+		if = {
+			limit = { has_country_flag = fury_has_current_target }
+			every_country = {
+				limit = { is_ai = no }
+				country_event = { id = chaosx.nr7.52 }
+			}
+			fury_declare_on_current_target = yes
+			add_to_variable = { fury_momentum = constant:fury_terminal.terminal_player_threat_momentum }
+		}
+	}
+}
+
+fury_declare_on_current_target = {
+	if = {
+		limit = { has_country_flag = fury_has_current_target }
+		set_variable = { fury_last_target_id = fury_current_target }
+		declare_war_on = {
+			type = annex_everything
+			target = var:fury_current_target
+		}
+		clr_country_flag = fury_no_valid_neighbors
+		add_to_variable = { fury_momentum = 1 }
+	}
+}
+
+fury_declare_all_valid_neighbors = {
+	every_neighbor_country = {
+		limit = { fury_is_valid_target = yes }
+		fury_score_current_target_candidate = yes
+		if = {
+			limit = { fury_candidate_passes_score_gate = yes }
+			ROOT = {
+				declare_war_on = {
+					type = annex_everything
+					target = PREV
+				}
+			}
+		}
+		clear_variable = fury_target_score
+	}
+}
+
+fury_declare_on_rival_actor = {
+	fury_choose_rival_actor_target = yes
+	if = {
+		limit = { has_country_flag = fury_has_current_target }
+		fury_declare_on_current_target = yes
+		set_global_flag = fury_actor_fought_actor
+	}
+}
+
+fury_track_player_containment_links = {
+	every_country = {
+		limit = {
+			is_ai = no
+			NOT = { is_fury_actor = yes }
+			has_war_with = ROOT
+		}
+		set_country_flag = achievement_fury_containment_contributor
+		if = {
+			limit = {
+				is_in_faction = no
+				ROOT = { is_major = yes }
+			}
+			set_country_flag = achievement_fury_major_without_faction_path
+		}
+	}
+}
+
+fury_weekly_actor_tick = {
+	fury_sync_evolution_unlocks = yes
+	country_event = { id = chaosx.nr7.40 hours = 1 }
+	fury_update_occupation_pressure = yes
+	fury_track_player_containment_links = yes
+	fury_try_start_world_end = yes
+	fury_spawn_weekly_units = yes
+	add_to_variable = { fury_momentum = constant:fury_balance.weekly_momentum_gain }
+	if = {
+		limit = { has_war = yes }
+		add_to_variable = { fury_overextension = constant:fury_balance.weekly_overextension_war_gain }
+	}
+	else = {
+		subtract_from_variable = { fury_overextension = constant:fury_balance.weekly_overextension_peace_loss }
+		clamp_variable = { var = fury_overextension min = 0 }
+	}
+	if = {
+		limit = {
+			has_country_flag = fury_has_current_target
+			var:fury_current_target = { OR = { has_capitulated = yes NOT = { has_war_with = ROOT } } }
+		}
+		country_event = { id = chaosx.nr7.30 hours = 6 }
+		country_event = { id = chaosx.nr7.10 days = 2 }
+	}
+	if = {
+		limit = {
+			NOT = { has_war = yes }
+			NOT = { any_neighbor_country = { fury_is_valid_target = yes } }
+		}
+		set_country_flag = fury_no_valid_neighbors
+	}
+	fury_try_terminal_player_target = yes
+}
+
+fury_update_occupation_pressure = {
+	set_variable = { fury_registered_state_count = 0 }
+	set_variable = { fury_occupation_pressure = fury_overextension }
+	every_controlled_state = {
+		limit = {
+			NOT = { is_core_of = ROOT }
+		}
+		ROOT = { add_to_variable = { fury_occupation_pressure = constant:fury_occupation.overextension_per_conquered_state } }
+		if = {
+			limit = { has_state_flag = fury_settlement_registered }
+			ROOT = {
+				add_to_variable = { fury_registered_state_count = 1 }
+				subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.registered_state_relief }
+			}
+		}
+		if = {
+			limit = { has_state_flag = fury_rail_registry_complete }
+			ROOT = { subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.rail_registry_bonus } }
+		}
+		if = {
+			limit = { resistance > 30 }
+			ROOT = { add_to_variable = { fury_occupation_pressure = constant:fury_occupation.resistance_failure_pressure } }
+		}
+	}
+	if = {
+		limit = { has_war = yes }
+		add_to_variable = { fury_occupation_pressure = constant:fury_occupation.overextension_per_active_war }
+	}
+	set_variable = { fury_garrison_capacity = num_divisions }
+	multiply_variable = {
+		var = fury_garrison_capacity
+		value = constant:fury_occupation.garrison_capacity_per_unit
+	}
+	subtract_from_variable = { fury_occupation_pressure = fury_garrison_capacity }
+	clamp_variable = { var = fury_occupation_pressure min = 0 }
+	if = {
+		limit = { fury_occupation_pressure_high = yes }
+		add_ideas = fury_overextension
+	}
+	else = {
+		remove_ideas = fury_overextension
+	}
+	if = {
+		limit = { fury_occupation_pressure_extreme = yes }
+		set_country_flag = fury_occupation_crisis_active
+	}
+	else = {
+		clr_country_flag = fury_occupation_crisis_active
+	}
+}
+
+fury_record_first_conquest_settlement = {
+	set_variable = { fury_new_settlement_count = 0 }
+	every_controlled_state = {
+		limit = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+			NOT = { is_core_of = ROOT }
+			NOT = { has_state_flag = fury_settlement_registered }
+		}
+		set_state_flag = fury_settlement_registered
+		set_state_flag = fury_settlement_admin_path
+		add_compliance = constant:fury_balance.settlement_compliance_gain
+		ROOT = { add_to_variable = { fury_new_settlement_count = 1 } }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = fury_new_settlement_count
+				value = 0
+				compare = greater_than
+			}
+		}
+		set_variable = { fury_first_conquest_overextension = fury_new_settlement_count }
+		multiply_variable = {
+			var = fury_first_conquest_overextension
+			value = constant:fury_occupation.overextension_per_conquered_state
+		}
+		add_to_variable = { fury_overextension = fury_first_conquest_overextension }
+		clear_variable = fury_first_conquest_overextension
+	}
+	fury_update_occupation_pressure = yes
+	clear_variable = fury_new_settlement_count
+}
+
+fury_cleanup_actor = {
+	if = {
+		limit = { NOT = { has_country_flag = fury_first_conquest_recorded } }
+		set_global_flag = fury_defeated_before_first_conquest
+	}
+	if = {
+		limit = { is_major = yes }
+		set_global_flag = fury_major_defeated
+	}
+	every_country = {
+		limit = {
+			is_ai = no
+			NOT = { is_fury_actor = yes }
+			OR = {
+				has_war_with = ROOT
+				has_country_flag = achievement_fury_border_watch_completed
+			}
+		}
+		set_country_flag = achievement_fury_containment_contributor
+		if = {
+			limit = {
+				has_country_flag = achievement_fury_border_watch_completed
+			}
+			set_country_flag = achievement_fury_firebreak_holds
+		}
+		if = {
+			limit = {
+				is_in_faction = no
+				ROOT = { is_major = yes }
+			}
+			set_country_flag = achievement_fury_major_without_faction_path
+		}
+		if = {
+			limit = {
+				has_global_flag = fury_pact_formed
+				ROOT = { has_country_flag = fury_pact_member }
+			}
+			set_country_flag = achievement_fury_pact_breaker_path
+		}
+		if = {
+			limit = {
+				ROOT = { has_country_flag = fury_no_valid_neighbors }
+			}
+			set_country_flag = achievement_fury_last_neighbor_path
+		}
+		if = {
+			limit = {
+				ROOT = { has_country_flag = fury_first_conquest_recorded }
+				NOT = { has_global_flag = fury_coring_completed }
+			}
+			set_country_flag = achievement_fury_no_cores_path
+		}
+	}
+	set_country_flag = { flag = fury_recent_actor days = @fury_recent_actor_cooldown_days }
+	clr_country_flag = fury_actor
+	clr_country_flag = fury_weekly_loop_active
+	clr_country_flag = fury_has_current_target
+	clr_country_flag = fury_no_valid_neighbors
+	clr_country_flag = fury_world_end_actor
+	remove_ideas = fury_national_fury
+	remove_ideas = fury_hardened_fury
+	remove_ideas = fury_compliance_drive
+	remove_ideas = fury_pact_command
+	remove_ideas = fury_rival_doctrine
+	remove_ideas = fury_world_in_fury
+	clear_variable = fury_current_target
+	clear_variable = fury_last_target_id
+	clear_variable = fury_best_target_score
+	clear_variable = fury_failed_target_scans
+	clear_variable = fury_target_preparation
+	clear_variable = fury_occupation_pressure
+	clear_variable = fury_garrison_capacity
+	clear_variable = fury_registered_state_count
+	clear_variable = fury_momentum
+	clear_variable = fury_overextension
+	clear_variable = fury_compliance_drive
+	clear_variable = fury_reach
+	clear_variable = fury_pact_cohesion
+	clr_country_flag = fury_occupation_crisis_active
+	clr_country_flag = fury_garrison_names_active
+	clr_country_flag = fury_garrison_names_recently_resolved
+	clr_country_flag = fury_restore_registers_active
+	clr_country_flag = fury_restore_registers_recently_resolved
+	every_state = {
+		limit = {
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				AND = {
+					NOT = { owner = { is_fury_actor = yes } }
+					NOT = { controller = { is_fury_actor = yes } }
+				}
+			}
+			OR = {
+				has_state_flag = fury_settlement_registered
+				has_state_flag = fury_settlement_admin_path
+				has_state_flag = fury_settlement_march_path
+				has_state_flag = fury_integration_failed_recently
+				has_state_flag = fury_rail_registry_complete
+			}
+		}
+		clr_state_flag = fury_settlement_registered
+		clr_state_flag = fury_settlement_admin_path
+		clr_state_flag = fury_settlement_march_path
+		clr_state_flag = fury_integration_failed_recently
+		clr_state_flag = fury_rail_registry_complete
+	}
+	if = {
+		limit = { NOT = { any_country = { is_fury_actor = yes } } }
+		set_global_flag = fury_all_actors_defeated
+		if = {
+			limit = { has_global_flag = fury_world_end_active }
+			set_global_flag = fury_world_end_defeated
+			clr_global_flag = world_threat_source_fury
+			if = {
+				limit = { NOT = { has_global_flag = fury_world_end_defeat_reported } }
+				set_global_flag = fury_world_end_defeat_reported
+				every_country = {
+					limit = { is_ai = no }
+					country_event = { id = chaosx.nr7.53 hours = 6 }
+				}
+			}
+			if = {
+				limit = { has_event_target = fury_terminal_player_target }
+				clear_global_event_target = fury_terminal_player_target
+			}
+			refresh_world_threat_state = yes
+		}
+		every_country = {
+			limit = { is_fury_actor = no }
+			clr_country_flag = anti_fury_border_watch_active
+			clr_country_flag = anti_fury_aid_route_active
+			clr_country_flag = anti_fury_supply_denial_active
+			clr_country_flag = anti_fury_staff_talks_active
+			clr_country_flag = fury_terminal_player_target_marked
+			remove_ideas = anti_fury_border_watch
+			remove_ideas = anti_fury_emergency_aid
+			remove_ideas = anti_fury_staff_talks
+			remove_ideas = anti_fury_supply_denial
+		}
+	}
+}
+
+fury_apply_evolution_i = {
+	set_country_flag = fury_evolution_i_applied
+	remove_ideas = fury_national_fury
+	add_ideas = fury_hardened_fury
+	add_to_variable = { fury_momentum = 3 }
+	add_to_variable = { fury_reach = 1 }
+	fury_record_evolution_i = yes
+}
+
+fury_ensure_actor_count_two = {
+	set_temp_variable = { fury_actor_count = 0 }
+	every_country = {
+		limit = { has_country_flag = fury_actor }
+		add_to_temp_variable = { fury_actor_count = 1 }
+	}
+	while_loop_effect = {
+		limit = {
+			check_variable = { fury_actor_count < 2 }
+			any_country = { fury_can_be_selected = yes }
+		}
+		if = {
+			limit = { any_country = { fury_can_be_selected_one_state = yes } }
+			random_country = {
+				limit = { fury_can_be_selected_one_state = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+		else_if = {
+			limit = { any_country = { fury_can_be_selected_two_state = yes } }
+			random_country = {
+				limit = { fury_can_be_selected_two_state = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+		else_if = {
+			limit = { any_country = { fury_can_be_selected_three_state = yes } }
+			random_country = {
+				limit = { fury_can_be_selected_three_state = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+		else = {
+			random_country = {
+				limit = { fury_can_be_selected = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+	}
+	every_country = {
+		limit = { has_country_flag = fury_actor }
+		set_country_flag = fury_evolution_ii_applied
+	}
+	fury_record_evolution_ii = yes
+}
+
+fury_ensure_actor_count_three = {
+	fury_ensure_actor_count_two = yes
+	set_temp_variable = { fury_actor_count = 0 }
+	every_country = {
+		limit = { has_country_flag = fury_actor }
+		add_to_temp_variable = { fury_actor_count = 1 }
+	}
+	while_loop_effect = {
+		limit = {
+			check_variable = { fury_actor_count < 3 }
+			any_country = { fury_can_be_selected = yes }
+		}
+		if = {
+			limit = { any_country = { fury_can_be_selected_one_state = yes } }
+			random_country = {
+				limit = { fury_can_be_selected_one_state = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				set_country_flag = fury_evolution_iii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+		else_if = {
+			limit = { any_country = { fury_can_be_selected_two_state = yes } }
+			random_country = {
+				limit = { fury_can_be_selected_two_state = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				set_country_flag = fury_evolution_iii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+		else_if = {
+			limit = { any_country = { fury_can_be_selected_three_state = yes } }
+			random_country = {
+				limit = { fury_can_be_selected_three_state = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				set_country_flag = fury_evolution_iii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+		else = {
+			random_country = {
+				limit = { fury_can_be_selected = yes }
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				set_country_flag = fury_evolution_iii_applied
+				add_to_temp_variable = { fury_actor_count = 1 }
+			}
+		}
+	}
+	every_country = {
+		limit = { has_country_flag = fury_actor }
+		set_country_flag = fury_evolution_iii_applied
+	}
+	fury_record_evolution_iii = yes
+}
+
+fury_record_evolution_i = {
+	if = {
+		limit = {
+			has_global_flag = fury_evolution_i_unlocked
+			NOT = { has_global_flag = fury_evolution_i_recorded }
+		}
+		set_global_flag = fury_evolution_i_recorded
+		save_event_target_as = events_log_evolution_actor
+		set_temp_variable = { events_log_evolution_has_actor = 1 }
+		set_temp_variable = { events_log_evolution_event_id = 7 }
+		set_temp_variable = { events_log_evolution_event_type = constant:event_system_event_type.repeatable }
+		set_temp_variable = { events_log_evolution_stage = 1 }
+		set_temp_variable = { events_log_evolution_tier = 1 }
+		set_temp_variable = { events_log_evolution_type = 7 }
+		record_events_log_evolution_entry = yes
+	}
+}
+
+fury_record_evolution_ii = {
+	if = {
+		limit = {
+			has_global_flag = fury_evolution_ii_unlocked
+			NOT = { has_global_flag = fury_evolution_ii_recorded }
+		}
+		set_global_flag = fury_evolution_ii_recorded
+		if = {
+			limit = { has_event_target = fury_latest_actor }
+			event_target:fury_latest_actor = { save_event_target_as = events_log_evolution_actor }
+			set_temp_variable = { events_log_evolution_has_actor = 1 }
+		}
+		set_temp_variable = { events_log_evolution_event_id = 7 }
+		set_temp_variable = { events_log_evolution_event_type = constant:event_system_event_type.repeatable }
+		set_temp_variable = { events_log_evolution_stage = 2 }
+		set_temp_variable = { events_log_evolution_tier = 2 }
+		set_temp_variable = { events_log_evolution_type = 7 }
+		record_events_log_evolution_entry = yes
+	}
+}
+
+fury_record_evolution_iii = {
+	if = {
+		limit = {
+			has_global_flag = fury_evolution_iii_unlocked
+			NOT = { has_global_flag = fury_evolution_iii_recorded }
+		}
+		set_global_flag = fury_evolution_iii_recorded
+		if = {
+			limit = { has_event_target = fury_latest_actor }
+			event_target:fury_latest_actor = { save_event_target_as = events_log_evolution_actor }
+			set_temp_variable = { events_log_evolution_has_actor = 1 }
+		}
+		set_temp_variable = { events_log_evolution_event_id = 7 }
+		set_temp_variable = { events_log_evolution_event_type = constant:event_system_event_type.repeatable }
+		set_temp_variable = { events_log_evolution_stage = 3 }
+		set_temp_variable = { events_log_evolution_tier = 3 }
+		set_temp_variable = { events_log_evolution_type = 7 }
+		record_events_log_evolution_entry = yes
+	}
+}
+
+fury_check_major_super_event = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = fury_major_super_event_fired }
+			num_of_controlled_states > constant:fury_balance.major_super_event_state_threshold
+		}
+		set_global_flag = fury_major_super_event_fired
+		save_event_target_as = fury_super_event_actor
+		set_temp_variable = { fury_super_event_visible_days = constant:fury_balance.major_super_event_visible_days }
+		set_global_flag = { flag = super_event_visible days = fury_super_event_visible_days value = constant:fury_super_event.major_state }
+		set_variable = { global.current_super_event_audio_id = constant:fury_super_event.major_audio_id }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+fury_prepare_world_end_seed_requirements = {
+	set_temp_variable = { fury_world_end_safe_seed_candidates = 0 }
+	set_temp_variable = { fury_world_end_existing_actor_count = 0 }
+	every_country = {
+		limit = { fury_world_end_safe_seed_candidate = yes }
+		add_to_temp_variable = { fury_world_end_safe_seed_candidates = 1 }
+	}
+	every_country = {
+		limit = { is_fury_actor = yes }
+		add_to_temp_variable = { fury_world_end_existing_actor_count = 1 }
+	}
+	set_temp_variable = { fury_world_end_needed_seed_count = constant:fury_balance.world_end_required_actor_count }
+	subtract_from_temp_variable = { fury_world_end_needed_seed_count = fury_world_end_existing_actor_count }
+	clamp_temp_variable = { var = fury_world_end_needed_seed_count min = 0 }
+}
+
+fury_try_start_world_end = {
+	if = {
+		limit = {
+			fury_world_end_basic_readiness = yes
+			NOT = { has_global_flag = fury_world_end_seed_check_cooldown }
+		}
+		fury_prepare_world_end_seed_requirements = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = fury_world_end_safe_seed_candidates
+					value = fury_world_end_needed_seed_count
+					compare = greater_than_or_equals
+				}
+			}
+			fury_start_world_end = yes
+		}
+		else = {
+			set_global_flag = { flag = fury_world_end_seed_check_cooldown days = @fury_world_end_seed_check_cooldown_days }
+			set_global_flag = fury_world_end_seed_blocked
+			if = {
+				limit = { NOT = { has_global_flag = fury_world_end_seed_blocked_reported } }
+				set_global_flag = fury_world_end_seed_blocked_reported
+				every_country = {
+					limit = { is_ai = no }
+					country_event = { id = chaosx.nr7.51 hours = 6 }
+				}
+			}
+		}
+	}
+}
+
+fury_start_world_end = {
+	set_global_flag = world_end
+	set_global_flag = world_end_fury
+	set_global_flag = fury_world_end_active
+	set_global_flag = fury_world_end_started
+	set_global_flag = fury_terminal_player_warning_issued
+	clr_global_flag = fury_world_end_seed_blocked
+	set_global_flag = world_threat_source_fury
+	set_global_flag = { flag = fury_player_warning_grace_active days = @fury_player_warning_grace_days }
+	refresh_world_threat_state = yes
+	save_global_event_target_as = fury_world_end_leader
+	if = {
+		limit = { is_in_faction = yes }
+		leave_faction = yes
+	}
+	set_rule = { can_create_factions = yes }
+	create_faction = fury_world_in_fury_faction
+	add_ideas = fury_world_in_fury
+	set_country_flag = fury_world_end_actor
+	set_country_flag = fury_pact_member
+	set_country_flag = achievement_fury_world_end_leader
+	set_variable = { global.fury_world_end_actor_count = 0 }
+	set_variable = { global.fury_world_end_seed_count = 0 }
+	every_country = {
+		limit = { is_fury_actor = yes }
+		fury_register_world_end_actor = yes
+	}
+		fury_seed_world_end_continental_fronts = yes
+	while_loop_effect = {
+		limit = {
+			check_variable = { global.fury_world_end_actor_count < constant:fury_balance.world_end_required_actor_count }
+			any_country = { fury_world_end_safe_seed_candidate = yes }
+		}
+		random_country = {
+			limit = { fury_world_end_safe_seed_candidate = yes }
+			fury_apply_world_end_seed_package = yes
+		}
+		}
+	fury_count_world_end_actor_continents = yes
+		set_temp_variable = { fury_super_event_visible_days = constant:fury_balance.major_super_event_visible_days }
+	set_global_flag = { flag = super_event_visible days = fury_super_event_visible_days value = constant:fury_super_event.world_end_state }
+	set_variable = { global.current_super_event_audio_id = constant:fury_super_event.world_end_audio_id }
+	every_country = {
+		limit = { is_ai = no }
+		set_country_flag = achievement_fury_world_end_witness
+		set_country_flag = fury_player_terminal_warning_received
+		country_event = { id = chaosx.nr7.50 hours = 6 }
+		play_current_super_event_audio = yes
+	}
+}
+
+fury_count_world_end_actor_continents = {
+	clr_global_flag = fury_world_end_three_continents_seeded
+	set_temp_variable = { fury_world_end_continent_count = 0 }
+	if = { limit = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = europe } } } add_to_temp_variable = { fury_world_end_continent_count = 1 } }
+	if = { limit = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = middle_east } } } add_to_temp_variable = { fury_world_end_continent_count = 1 } }
+	if = { limit = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = asia } } } add_to_temp_variable = { fury_world_end_continent_count = 1 } }
+	if = { limit = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = africa } } } add_to_temp_variable = { fury_world_end_continent_count = 1 } }
+	if = { limit = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = australia } } } add_to_temp_variable = { fury_world_end_continent_count = 1 } }
+	if = { limit = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = north_america } } } add_to_temp_variable = { fury_world_end_continent_count = 1 } }
+	if = { limit = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = south_america } } } add_to_temp_variable = { fury_world_end_continent_count = 1 } }
+	if = {
+		limit = {
+			check_variable = {
+				var = fury_world_end_continent_count
+				value = 2
+				compare = greater_than
+			}
+		}
+		set_global_flag = fury_world_end_three_continents_seeded
+	}
+	clear_variable = fury_world_end_continent_count
+}
+
+fury_register_world_end_actor = {
+	set_country_flag = fury_world_end_actor
+	set_country_flag = fury_pact_member
+	add_ideas = fury_world_in_fury
+	add_to_variable = { global.fury_world_end_actor_count = 1 }
+	if = {
+		limit = {
+			NOT = { tag = event_target:fury_world_end_leader }
+		}
+		if = {
+			limit = { is_in_faction = yes }
+			leave_faction = yes
+		}
+		event_target:fury_world_end_leader = { add_to_faction = ROOT }
+	}
+}
+
+fury_apply_world_end_seed_package = {
+	fury_apply_package = yes
+	set_country_flag = fury_world_end_seeded_actor
+	if = {
+		limit = { NOT = { has_country_flag = fury_evolution_i_applied } }
+		fury_apply_evolution_i = yes
+	}
+	set_country_flag = fury_evolution_ii_applied
+	set_country_flag = fury_evolution_iii_applied
+	fury_register_world_end_actor = yes
+	add_to_variable = { global.fury_world_end_seed_count = 1 }
+	country_event = { id = chaosx.nr7.10 days = 1 }
+}
+
+fury_seed_world_end_continental_fronts = {
+	random_country = {
+		limit = {
+			fury_world_end_safe_seed_candidate = yes
+			capital_scope = { is_on_continent = europe }
+			NOT = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = europe } } }
+		}
+		fury_apply_world_end_seed_package = yes
+	}
+	random_country = {
+		limit = {
+			fury_world_end_safe_seed_candidate = yes
+			capital_scope = { is_on_continent = middle_east }
+			NOT = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = middle_east } } }
+		}
+		fury_apply_world_end_seed_package = yes
+	}
+	random_country = {
+		limit = {
+			fury_world_end_safe_seed_candidate = yes
+			capital_scope = { is_on_continent = asia }
+			NOT = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = asia } } }
+		}
+		fury_apply_world_end_seed_package = yes
+	}
+	random_country = {
+		limit = {
+			fury_world_end_safe_seed_candidate = yes
+			capital_scope = { is_on_continent = africa }
+			NOT = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = africa } } }
+		}
+		fury_apply_world_end_seed_package = yes
+	}
+	random_country = {
+		limit = {
+			fury_world_end_safe_seed_candidate = yes
+			capital_scope = { is_on_continent = australia }
+			NOT = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = australia } } }
+		}
+		fury_apply_world_end_seed_package = yes
+	}
+	random_country = {
+		limit = {
+			fury_world_end_safe_seed_candidate = yes
+			capital_scope = { is_on_continent = north_america }
+			NOT = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = north_america } } }
+		}
+		fury_apply_world_end_seed_package = yes
+	}
+	random_country = {
+		limit = {
+			fury_world_end_safe_seed_candidate = yes
+			capital_scope = { is_on_continent = south_america }
+			NOT = { any_country = { is_fury_actor = yes capital_scope = { is_on_continent = south_america } } }
+		}
+		fury_apply_world_end_seed_package = yes
+	}
+}
+
+fury_decision_pay_reinforcement_cost = {
+	add_command_power = constant:fury_decision_cost.reinforcement_cp_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.reinforcement_equipment }
+}
+
+fury_decision_pay_settlement_cost = {
+	add_command_power = constant:fury_decision_cost.settlement_cp_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.settlement_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.settlement_support }
+}
+
+fury_decision_pay_core_cost = {
+	add_command_power = constant:fury_decision_cost.core_cp_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.core_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.core_support }
+}
+
+fury_decision_pay_registers_cost = {
+	add_command_power = constant:fury_decision_cost.registers_cp_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.registers_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.registers_support }
+}
+
+fury_decision_pay_rail_registry_cost = {
+	add_command_power = constant:fury_decision_cost.rail_registry_cp_spend
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_decision_cost.rail_registry_trains }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.rail_registry_support }
+}
+
+fury_decision_pay_admin_core_cost = {
+	add_command_power = constant:fury_decision_cost.admin_core_cp_spend
+	add_manpower = constant:fury_decision_cost.admin_core_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.admin_core_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.admin_core_support }
+}
+
+fury_decision_pay_march_core_cost = {
+	add_command_power = constant:fury_decision_cost.march_core_cp_spend
+	add_manpower = constant:fury_decision_cost.march_core_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.march_core_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.march_core_support }
+	add_stability = constant:fury_decision_cost.march_core_stability
+}
+
+fury_count_captured_registers_effect = {
+	fury_decision_pay_registers_cost = yes
+	add_to_variable = { fury_compliance_drive = 1 }
+	random_controlled_state = {
+		limit = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+			NOT = { is_core_of = ROOT }
+			NOT = { has_state_flag = fury_settlement_registered }
+		}
+		set_state_flag = fury_settlement_registered
+		set_state_flag = fury_settlement_admin_path
+		add_compliance = constant:fury_occupation.register_compliance_gain
+	}
+	fury_update_occupation_pressure = yes
+}
+
+fury_rail_registry_survey_effect = {
+	fury_decision_pay_rail_registry_cost = yes
+	random_controlled_state = {
+		limit = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+			has_state_flag = fury_settlement_registered
+			NOT = { has_state_flag = fury_rail_registry_complete }
+			NOT = { is_core_of = ROOT }
+		}
+		set_state_flag = fury_rail_registry_complete
+		add_compliance = constant:fury_occupation.rail_registry_compliance_gain
+	}
+	fury_update_occupation_pressure = yes
+}
+
+fury_garrison_the_names_success = {
+	clr_country_flag = fury_garrison_names_active
+	set_country_flag = achievement_fury_garrison_names_completed
+	set_country_flag = { flag = fury_garrison_names_recently_resolved days = @fury_garrison_names_recently_resolved_days }
+	subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.garrison_success_pressure_reduction }
+	subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
+	clamp_variable = { var = fury_occupation_pressure min = 0 }
+	clamp_variable = { var = fury_overextension min = 0 }
+	every_controlled_state = {
+		limit = {
+			has_state_flag = fury_settlement_registered
+			NOT = { is_core_of = ROOT }
+		}
+		add_compliance = constant:fury_occupation.register_compliance_gain
+	}
+}
+
+fury_garrison_the_names_failure = {
+	clr_country_flag = fury_garrison_names_active
+	set_country_flag = { flag = fury_garrison_names_recently_resolved days = @fury_garrison_names_recently_resolved_days }
+	add_to_variable = { fury_overextension = constant:fury_occupation.garrison_failure_pressure }
+	add_to_variable = { fury_occupation_pressure = constant:fury_occupation.garrison_failure_pressure }
+	random_controlled_state = {
+		limit = {
+			has_state_flag = fury_settlement_registered
+			NOT = { is_core_of = ROOT }
+		}
+		set_state_flag = fury_integration_failed_recently
+		add_resistance = constant:fury_occupation.resistance_failure_pressure
+	}
+}
+
+fury_restore_the_registers_success = {
+	clr_country_flag = fury_restore_registers_active
+	set_country_flag = { flag = fury_restore_registers_recently_resolved days = @fury_restore_registers_recently_resolved_days }
+	subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.restore_registers_pressure_reduction }
+	subtract_from_variable = { fury_overextension = constant:fury_occupation.core_overextension_reduction }
+	clamp_variable = { var = fury_occupation_pressure min = 0 }
+	clamp_variable = { var = fury_overextension min = 0 }
+	every_controlled_state = {
+		limit = {
+			has_state_flag = fury_settlement_registered
+			NOT = { is_core_of = ROOT }
+		}
+		clr_state_flag = fury_integration_failed_recently
+		add_compliance = constant:fury_occupation.rail_registry_compliance_gain
+	}
+	fury_update_occupation_pressure = yes
+}
+
+fury_restore_the_registers_failure = {
+	clr_country_flag = fury_restore_registers_active
+	set_country_flag = { flag = fury_restore_registers_recently_resolved days = @fury_restore_registers_recently_resolved_days }
+	add_to_variable = { fury_overextension = constant:fury_occupation.garrison_failure_pressure }
+	add_to_variable = { fury_occupation_pressure = constant:fury_occupation.garrison_failure_pressure }
+	random_controlled_state = {
+		limit = {
+			has_state_flag = fury_settlement_registered
+			NOT = { is_core_of = ROOT }
+		}
+		set_state_flag = fury_integration_failed_recently
+		add_resistance = constant:fury_occupation.resistance_failure_pressure
+	}
+}
+
+fury_complete_admin_core = {
+	fury_decision_pay_admin_core_cost = yes
+	random_controlled_state = {
+		limit = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+			has_state_flag = fury_settlement_registered
+			NOT = { has_state_flag = fury_integration_failed_recently }
+			NOT = { is_core_of = ROOT }
+			compliance > constant:fury_occupation.compliance_admin_gate
+		}
+		add_core_of = ROOT
+		clr_state_flag = fury_settlement_registered
+		clr_state_flag = fury_settlement_admin_path
+		clr_state_flag = fury_settlement_march_path
+		clr_state_flag = fury_integration_failed_recently
+		clr_state_flag = fury_rail_registry_complete
+	}
+	set_global_flag = fury_coring_completed
+	set_country_flag = fury_cored_settlement_state
+	add_to_variable = { fury_compliance_drive = 1 }
+	subtract_from_variable = { fury_overextension = constant:fury_occupation.core_overextension_reduction }
+	subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.admin_core_pressure_reduction }
+	clamp_variable = { var = fury_overextension min = 0 }
+	clamp_variable = { var = fury_occupation_pressure min = 0 }
+	fury_update_occupation_pressure = yes
+}
+
+fury_complete_march_core = {
+	fury_decision_pay_march_core_cost = yes
+	random_controlled_state = {
+		limit = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+			has_state_flag = fury_settlement_registered
+			NOT = { is_core_of = ROOT }
+			compliance > constant:fury_occupation.compliance_march_gate
+		}
+		add_core_of = ROOT
+		clr_state_flag = fury_settlement_registered
+		clr_state_flag = fury_settlement_admin_path
+		clr_state_flag = fury_settlement_march_path
+		clr_state_flag = fury_integration_failed_recently
+		clr_state_flag = fury_rail_registry_complete
+	}
+	set_global_flag = fury_coring_completed
+	set_country_flag = fury_cored_settlement_state
+	add_to_variable = { fury_momentum = 1 }
+	subtract_from_variable = { fury_overextension = constant:fury_occupation.core_overextension_reduction }
+	subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.march_core_pressure_reduction }
+	clamp_variable = { var = fury_overextension min = 0 }
+	clamp_variable = { var = fury_occupation_pressure min = 0 }
+	fury_update_occupation_pressure = yes
+}
+
+fury_pay_terminal_reserves_cost = {
+	add_command_power = constant:fury_decision_cost.terminal_reserves_cp_spend
+	add_manpower = constant:fury_decision_cost.terminal_reserves_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.terminal_reserves_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.terminal_reserves_support }
+}
+
+fury_pay_terminal_fronts_cost = {
+	add_command_power = constant:fury_decision_cost.terminal_fronts_cp_spend
+	add_army_experience = constant:fury_decision_cost.terminal_fronts_army_xp
+}
+
+fury_share_terminal_reserves_effect = {
+	fury_pay_terminal_reserves_cost = yes
+	add_to_variable = { fury_pact_cohesion = constant:fury_terminal.reserve_cohesion_gain }
+	subtract_from_variable = { fury_overextension = constant:fury_terminal.reserve_overextension_relief }
+	clamp_variable = { var = fury_overextension min = 0 }
+	random_country = {
+		limit = {
+			is_fury_actor = yes
+			has_country_flag = fury_world_end_actor
+			NOT = { tag = ROOT }
+		}
+		add_manpower = constant:fury_terminal.reserve_target_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_terminal.reserve_target_infantry }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_terminal.reserve_target_support }
+		add_to_variable = { fury_pact_cohesion = constant:fury_terminal.reserve_cohesion_gain }
+		subtract_from_variable = { fury_overextension = constant:fury_terminal.reserve_overextension_relief }
+		clamp_variable = { var = fury_overextension min = 0 }
+	}
+}
+
+fury_assign_terminal_fronts_effect = {
+	fury_pay_terminal_fronts_cost = yes
+	add_to_variable = { fury_pact_cohesion = constant:fury_terminal.fronts_cohesion_gain }
+	every_country = {
+		limit = {
+			is_fury_actor = yes
+			has_country_flag = fury_world_end_actor
+		}
+		add_to_variable = { fury_target_preparation = constant:fury_terminal.fronts_target_preparation }
+		add_to_variable = { fury_momentum = constant:fury_terminal.fronts_momentum_gain }
+		subtract_from_variable = { fury_overextension = constant:fury_terminal.fronts_overextension_relief }
+		clamp_variable = { var = fury_overextension min = 0 }
+	}
+}
+
+anti_fury_pay_border_watch_cost = {
+	add_command_power = constant:fury_decision_cost.anti_fury_cp_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_equipment }
+}
+
+anti_fury_pay_emergency_aid_cost = {
+	add_command_power = constant:fury_decision_cost.anti_fury_aid_cp_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_aid_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.anti_fury_aid_support }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_decision_cost.anti_fury_aid_trains }
+}
+
+anti_fury_pay_staff_talks_cost = {
+	add_command_power = constant:fury_decision_cost.anti_fury_staff_cp_spend
+	add_army_experience = constant:fury_decision_cost.anti_fury_staff_army_xp
+}
+
+anti_fury_pay_supply_denial_cost = {
+	add_command_power = constant:fury_decision_cost.anti_fury_denial_cp_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_denial_equipment }
+}
+
+anti_fury_pay_recognition_denial_cost = {
+	add_command_power = constant:fury_decision_cost.anti_fury_recognition_cp_spend
+}
+
+anti_fury_border_watch_success = {
+	clr_country_flag = anti_fury_border_watch_active
+	set_country_flag = anti_fury_border_watch_success
+	set_country_flag = achievement_fury_border_watch_completed
+	add_ideas = anti_fury_border_watch
+	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.border_watch_response_pressure }
+	random_neighbor_country = {
+		limit = { is_fury_actor = yes }
+		subtract_from_variable = { fury_momentum = constant:fury_anti_response.border_watch_fury_momentum_penalty }
+		clamp_variable = { var = fury_momentum min = 0 }
+	}
+}
+
+anti_fury_border_watch_failure = {
+	clr_country_flag = anti_fury_border_watch_active
+	random_neighbor_country = {
+		limit = { is_fury_actor = yes }
+		add_to_variable = { fury_momentum = constant:fury_anti_response.border_watch_failure_momentum }
+	}
+}
+
+anti_fury_send_emergency_aid_effect = {
+	anti_fury_pay_emergency_aid_cost = yes
+	set_country_flag = anti_fury_aid_route_active
+	add_ideas = anti_fury_emergency_aid
+	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.emergency_aid_response_pressure }
+	random_country = {
+		limit = {
+			is_fury_actor = yes
+			has_country_flag = fury_has_current_target
+			var:fury_current_target = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				NOT = { fury_is_player_linked_country = yes }
+			}
+		}
+		var:fury_current_target = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_anti_response.emergency_aid_target_equipment }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_anti_response.emergency_aid_target_support }
+		}
+		subtract_from_variable = { fury_momentum = constant:fury_anti_response.emergency_aid_fury_momentum_penalty }
+		clamp_variable = { var = fury_momentum min = 0 }
+	}
+}
+
+anti_fury_aid_route_success = {
+	clr_country_flag = anti_fury_aid_route_active
+	set_country_flag = anti_fury_aid_route_success
+	set_country_flag = achievement_fury_containment_contributor
+}
+
+anti_fury_aid_route_failure = {
+	clr_country_flag = anti_fury_aid_route_active
+	random_country = {
+		limit = { is_fury_actor = yes }
+		add_to_variable = { fury_momentum = constant:fury_anti_response.border_watch_failure_momentum }
+	}
+}
+
+anti_fury_staff_talks_effect = {
+	anti_fury_pay_staff_talks_cost = yes
+	set_country_flag = anti_fury_staff_talks_active
+	set_country_flag = achievement_fury_containment_contributor
+	add_ideas = anti_fury_staff_talks
+	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.staff_talks_response_pressure }
+}
+
+anti_fury_supply_denial_success = {
+	clr_country_flag = anti_fury_supply_denial_active
+	set_country_flag = anti_fury_supply_denial_success
+	set_country_flag = achievement_fury_containment_contributor
+	add_ideas = anti_fury_supply_denial
+	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.supply_denial_pressure }
+	random_neighbor_country = {
+		limit = { is_fury_actor = yes }
+		add_to_variable = { fury_overextension = constant:fury_anti_response.supply_denial_fury_penalty }
+		subtract_from_variable = { fury_momentum = constant:fury_anti_response.supply_denial_fury_penalty }
+		clamp_variable = { var = fury_momentum min = 0 }
+	}
+}
+
+anti_fury_supply_denial_failure = {
+	clr_country_flag = anti_fury_supply_denial_active
+	random_neighbor_country = {
+		limit = { is_fury_actor = yes }
+		subtract_from_variable = { fury_overextension = constant:fury_anti_response.supply_denial_failure_overextension }
+		clamp_variable = { var = fury_overextension min = 0 }
+	}
+}
+
+anti_fury_recognition_denial_effect = {
+	anti_fury_pay_recognition_denial_cost = yes
+	set_country_flag = achievement_fury_containment_contributor
+	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.recognition_denial_pressure }
+	random_country = {
+		limit = { is_fury_actor = yes }
+		subtract_from_variable = { fury_pact_cohesion = constant:fury_anti_response.recognition_denial_pact_penalty }
+		clamp_variable = { var = fury_pact_cohesion min = 0 }
+	}
+}
+
+fury_prepare_triggerable_scenario_actor_count = {
+	set_temp_variable = { fury_triggerable_actor_goal = constant:fury_scenario_actor_count.medium }
+	if = { limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low } } set_temp_variable = { fury_triggerable_actor_goal = constant:fury_scenario_actor_count.low } }
+	else_if = { limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high } } set_temp_variable = { fury_triggerable_actor_goal = constant:fury_scenario_actor_count.high } }
+	else_if = { limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } } set_temp_variable = { fury_triggerable_actor_goal = constant:fury_scenario_actor_count.maximum } }
+}
+
+fury_apply_triggerable_scenario_actor_package = {
+	fury_apply_package = yes
+	set_country_flag = fury_triggerable_scenario_actor
+	set_global_flag = fury_triggerable_scenario_actor_created
+	if = {
+		limit = {
+			OR = {
+				check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.medium }
+				check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.high }
+				check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum }
+			}
+		}
+		fury_apply_evolution_i = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.high }
+				check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum }
+			}
+		}
+		set_country_flag = fury_evolution_ii_applied
+	}
+	if = {
+		limit = { check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_country_flag = fury_evolution_iii_applied
+	}
+	add_to_temp_variable = { fury_triggerable_actor_count = 1 }
+}
+
+trigger_world_in_fury_scenario = {
+	fury_prepare_triggerable_scenario_actor_count = yes
+	set_global_flag = fury_triggerable_scenario_launched
+	set_global_flag = fury_triggerable_scenario_launch_active
+	set_variable = { global.fury_triggerable_scenario_intensity = triggerable_scenarios_intensity }
+	set_variable = { global.fury_triggerable_scenario_type = triggerable_scenarios_fury_type }
+	clr_global_flag = fury_triggerable_scenario_maximum
+	clr_global_flag = fury_triggerable_scenario_pact
+	clr_global_flag = fury_triggerable_scenario_hostile
+	clr_global_flag = fury_triggerable_scenario_used_every_safe_candidate
+	clr_global_flag = fury_triggerable_scenario_short_of_maximum
+	if = {
+		limit = { check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_global_flag = fury_triggerable_scenario_maximum
+	}
+	if = {
+		limit = { check_variable = { global.fury_triggerable_scenario_type = constant:fury_scenario_type.hostile } }
+		set_global_flag = fury_triggerable_scenario_hostile
+	}
+	else = {
+		set_global_flag = fury_triggerable_scenario_pact
+	}
+	set_temp_variable = { fury_triggerable_actor_count = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { fury_triggerable_actor_count < fury_triggerable_actor_goal }
+			any_country = {
+				fury_can_be_selected = yes
+				num_of_controlled_states < constant:fury_target_score.one_state_max
+			}
+		}
+		random_country = {
+			limit = {
+				fury_can_be_selected = yes
+				num_of_controlled_states < constant:fury_target_score.one_state_max
+			}
+			fury_apply_triggerable_scenario_actor_package = yes
+		}
+	}
+	while_loop_effect = {
+		limit = {
+			check_variable = { fury_triggerable_actor_count < fury_triggerable_actor_goal }
+			any_country = {
+				fury_can_be_selected = yes
+				num_of_controlled_states < constant:fury_target_score.two_state_max
+			}
+		}
+		random_country = {
+			limit = {
+				fury_can_be_selected = yes
+				num_of_controlled_states < constant:fury_target_score.two_state_max
+			}
+			fury_apply_triggerable_scenario_actor_package = yes
+		}
+	}
+	while_loop_effect = {
+		limit = {
+			check_variable = { fury_triggerable_actor_count < fury_triggerable_actor_goal }
+			any_country = { fury_can_be_selected = yes }
+		}
+		random_country = {
+			limit = { fury_can_be_selected = yes }
+			fury_apply_triggerable_scenario_actor_package = yes
+		}
+	}
+	set_variable = { global.fury_triggerable_scenario_actor_count = fury_triggerable_actor_count }
+	if = {
+		limit = {
+			check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum }
+			check_variable = {
+				var = fury_triggerable_actor_count
+				value = constant:fury_scenario_actor_count.maximum
+				compare = less_than
+			}
+			NOT = { any_country = { fury_can_be_selected = yes } }
+		}
+		set_global_flag = fury_triggerable_scenario_used_every_safe_candidate
+		set_global_flag = fury_triggerable_scenario_short_of_maximum
+	}
+	if = {
+		limit = { check_variable = { global.fury_triggerable_scenario_type = constant:fury_scenario_type.pact } }
+		set_global_flag = fury_pact_formed
+		random_country = {
+			limit = { has_country_flag = fury_triggerable_scenario_actor }
+			create_faction = "The Fury Pact"
+			save_global_event_target_as = fury_pact_leader
+		}
+		every_country = {
+			limit = {
+				has_country_flag = fury_triggerable_scenario_actor
+				NOT = { tag = event_target:fury_pact_leader }
+			}
+			event_target:fury_pact_leader = { add_to_faction = PREV }
+			set_country_flag = fury_pact_member
+		}
+	}
+	else = {
+		every_country = {
+			limit = { has_country_flag = fury_triggerable_scenario_actor }
+			if = {
+				limit = { check_variable = { global.fury_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+				fury_declare_all_valid_neighbors = yes
+				fury_declare_on_rival_actor = yes
+			}
+			else = {
+				country_event = { id = chaosx.nr7.10 days = 1 }
+			}
+		}
+	}
+	clr_global_flag = fury_triggerable_scenario_launch_active
+}

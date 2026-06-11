@@ -281,6 +281,38 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: 2:03.860 final cue.
 - Notes: front and tail silence trimmed with short fades for the one-state or near-rump host-survival reveal.
 
+## Fury
+
+### Fury Becomes a State
+
+- Super-event ID: `59`
+- Music file: `music/fury_becomes_a_state.ogg`
+- Sound-channel file: `sound/chaosx_super_event_fury_becomes_a_state.wav`
+- Sound definition: `chaosx_super_event_fury_becomes_a_state_track`
+- Source title: `Symphony No. 9 in E minor "From the New World", Op. 95: IV. Allegro con fuoco`
+- Composer / creator: Antonín Dvořák.
+- Performer / recording: Musopen source recording hosted on Wikimedia Commons.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Antonin_Dvorak_-_symphony_no._9_in_e_minor_%27from_the_new_world%27,_op._95_-_iv._allegro_con_fuoco.ogg>
+- Source file: `docs/super_events/source_audio/dvorak_new_world_iv_musopen_original.ogg`
+- License: Wikimedia Commons lists the file as public-domain music from Musopen with attribution requested to Musopen, and states that redistribution, derivative work, commercial use, and all other use are permitted with proper attribution.
+- Duration: 2:30 final cue.
+- Conversion notes: first two and a half minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; OGG and WAV are rendered from the same source.
+
+### The World in Fury
+
+- Super-event ID: `60`
+- Music file: `music/super_event_world_in_fury.ogg`
+- Sound-channel file: `sound/chaosx_super_event_world_in_fury.wav`
+- Sound definition: `chaosx_super_event_world_in_fury_track`
+- Source title: `The Planets, Op. 32: I. Mars, the Bringer of War`
+- Composer / creator: Gustav Holst.
+- Performer / recording: Skidmore College Orchestra recording from Musopen, hosted on Wikimedia Commons.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Gustav_Holst_-_the_planets,_op._32_-_i._mars,_the_bringer_of_war.ogg>
+- Source file: `docs/super_events/source_audio/holst_mars_musopen_original.ogg`
+- License: Wikimedia Commons lists the file as public-domain music from Musopen with attribution requested to Musopen, and states that redistribution, derivative work, commercial use, and all other use are permitted with proper attribution.
+- Duration: 3:00 final cue.
+- Conversion notes: first three minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; OGG and WAV are rendered from the same source.
+
 ## Mengele
 
 ### The Angel of Death Leaves the Camp
