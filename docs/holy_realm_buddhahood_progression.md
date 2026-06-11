@@ -101,10 +101,11 @@ The route now records achievement-ready flags without adding daily or monthly sc
 
 The achievement file now defines all 12 Buddhahood achievement ids from the spec with gameplay-facing unlock conditions.
 
-Two achievement definitions use the strongest currently available route evidence rather than a dedicated new subsystem:
+One achievement definition uses the strongest currently available route evidence rather than a dedicated new subsystem:
 
 - `No Empire of the Wheel` treats `Vow Against Annihilation` plus final-doctrine renunciation as the clean-route equivalent.
-- `The Sun and Moon Were Within Reach` currently requires activation during world-collapse chaos pressure and a 365-day anti-chaos victory; the separate "two chaos sources or major capital" proof is not yet tracked.
+
+`The Sun and Moon Were Within Reach` now records `holy_realm_sun_moon_crisis_proof` when Touching the Sun and Moon is activated during world-collapse chaos while at least two active chaos enemies exist, or while the targeted chaos source is a major or controls a major capital.
 
 ## UI And Assets
 

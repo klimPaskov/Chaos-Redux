@@ -461,6 +461,37 @@ holy_realm_spend_buddha_power_charge = {
 	holy_realm_add_chaos = yes
 }
 
+holy_realm_mark_sun_moon_crisis_proof = {
+	set_temp_variable = { holy_realm_sun_moon_chaos_source_count = 0 }
+	every_country = {
+		limit = { is_holy_realm_chaos_enemy = yes }
+		ROOT = { add_to_temp_variable = { holy_realm_sun_moon_chaos_source_count = 1 } }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = holy_realm_sun_moon_chaos_source_count
+				value = 2
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = holy_realm_sun_moon_multiple_chaos_sources
+	}
+	if = {
+		limit = { FROM = { holy_realm_chaos_source_controls_major_capital = yes } }
+		set_country_flag = holy_realm_sun_moon_major_capital_source
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = holy_realm_sun_moon_multiple_chaos_sources
+				has_country_flag = holy_realm_sun_moon_major_capital_source
+			}
+		}
+		set_country_flag = holy_realm_sun_moon_crisis_proof
+	}
+}
+
 holy_realm_grant_mandala_bureau_agency = {
 	if = {
 		limit = { has_intelligence_agency = no }
