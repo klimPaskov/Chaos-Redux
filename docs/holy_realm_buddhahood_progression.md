@@ -32,8 +32,12 @@ Tuning is centralized in `common/script_constants/003_holy_realm_constants.txt` 
 1. Holy Realm formation initializes the older Mandala counters and the Buddhahood counters.
 2. Existing Bodhisattva bhumi advancements also record teaching success, add Bodhi, improve Compassion, and reduce Defilements.
 3. Teaching success during major chaos pressure records `crisis_teaching_successes`.
-4. `THR_buddha_mandate` is localized as `The Unshaken Seat` and marks `holy_realm_focus_unshaken_seat`.
-5. Buddhahood requires:
+4. The focus tree exposes the main gates before `THR_buddha_mandate`:
+   - Teaching route: `THR_send_first_envoys`, `THR_translation_houses`, `THR_teach_under_bombardment`, and `THR_many_lamps_one_flame`. `Many Lamps, One Flame` requires `teaching_successes >= 12` and `crisis_teaching_successes >= 1`.
+   - Meditation route: `THR_sit_beneath_prayer_flags`, `THR_first_quiet`, `THR_second_quiet`, `THR_third_quiet`, and `THR_fourth_quiet`. Each quiet focus requires the corresponding `dhyana_depth` milestone from the concentration sequence.
+   - Governance route: exactly one of `THR_council_of_abbots`, `THR_name_protector_regent`, or `THR_seat_pilgrim_assembly`.
+5. `THR_buddha_mandate` is localized as `The Unshaken Seat`, requires those route gates in addition to the existing Arhat path prerequisites, and marks `holy_realm_focus_unshaken_seat`.
+6. Buddhahood requires:
    - `bodhi_progress >= 108`
    - `dhyana_depth >= 4`
    - `defilements < 20`
@@ -41,8 +45,8 @@ Tuning is centralized in `common/script_constants/003_holy_realm_constants.txt` 
    - `crisis_teaching_successes >= 1`
    - `holy_realm_focus_unshaken_seat`
    - sovereignty and no previous Buddhahood
-6. If Bodhi is complete while Defilements remain severe, the route records `holy_realm_false_buddha_schism_pressure` and applies a stability hit.
-7. Buddhahood sets `holy_realm_buddhahood_attained`, uses the existing Buddha stage effect, applies the Buddha idea, and shows `The Awakened One` super-event slot.
+7. If Bodhi is complete while Defilements remain severe, the route records `holy_realm_false_buddha_schism_pressure` and applies a stability hit.
+8. Buddhahood sets `holy_realm_buddhahood_attained`, uses the existing Buddha stage effect, applies the Buddha idea, and shows `The Awakened One` super-event slot.
 
 ## Meditation Fallback
 

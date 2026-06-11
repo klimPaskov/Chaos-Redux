@@ -6,17 +6,27 @@ This plan covers the gap between the current `THR_focus` implementation and the 
 
 ## Current State
 
-`common/national_focus/003_holy_realm.txt` contains 73 `THR_` focus ids and a working older Holy Realm route built around refuge survival, Bodhisattva/Arhat stages, Mandala expansion, restraint versus Final Silence, and regional conquest/registration. It also hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
+`common/national_focus/003_holy_realm.txt` contains 85 `THR_` focus ids and a working older Holy Realm route built around refuge survival, Bodhisattva/Arhat stages, Mandala expansion, restraint versus Final Silence, and regional conquest/registration. It also hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
 
-The current tree does not yet implement the spec as a Buddhahood-first 72-focus route family. The required route list is in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`, especially the coverage table at lines 302-320.
+The current tree still does not fully implement the accepted Buddhahood-first route family. The required route list is in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`, especially the coverage table at lines 302-320.
+
+## Implemented Tranche - 2026-06-11
+
+The first route-lock tranche is implemented in `common/national_focus/003_holy_realm.txt`:
+
+- Teaching route: `THR_send_first_envoys`, `THR_translation_houses`, `THR_teach_under_bombardment`, and `THR_many_lamps_one_flame`. `Many Lamps, One Flame` reads `teaching_successes` and `crisis_teaching_successes`.
+- Meditation route: `THR_sit_beneath_prayer_flags`, `THR_first_quiet`, `THR_second_quiet`, `THR_third_quiet`, and `THR_fourth_quiet`. The quiet focuses read `dhyana_depth`.
+- Governance route family: `THR_council_of_abbots`, `THR_name_protector_regent`, and `THR_seat_pilgrim_assembly` are mutually exclusive route choices and set governance flags.
+- `THR_buddha_mandate` requires the completed teaching gate, fourth quiet gate, and one governance choice in addition to the older Arhat/industry/military/diplomacy prerequisites.
+- Holy Realm-specific focus filters now cover Bodhi, Teaching, Meditation, Governance, Sanctuary, Compact, Anti-Chaos, Nirvana, and Hidden branches.
 
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
 
-1. Teaching route: add a visible path from the Bodhisattva vow through mission-slot, foreign teaching, crisis teaching, and `Many Lamps, One Flame` gates. It should read `teaching_successes` and `crisis_teaching_successes`, not only unlock `THR_hold_dharma_teaching`.
-2. Meditation route: add a visible Dhyana path from Mandala/seat preparation through four Dhyana milestones. It should interact with `THR_begin_concentration_sequence`, `THR_hold_*`, `dhyana_depth`, and `meditation_charge`.
-3. Governance route family: add the three promised governance choices: Council of Abbots, Protector Regent, and Pilgrim Assembly. They should change party/leader/advisor or route flags and affect later teaching, defense, and refugee/compact tools.
+1. Teaching route follow-up: add more downstream teaching payoffs and mission-slot variety beyond the route-lock chain.
+2. Meditation route follow-up: add later Dhyana payoffs, stronger interaction with `meditation_charge`, and visible post-Buddhahood meditation use beyond the route-lock chain.
+3. Governance route follow-up: let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools.
 4. Sanctuary logistics: reshape existing generic whole-country construction focuses into named sanctuary logistics: granaries, pilgrimage roads, clinics, workshops, storehouses, and supply support for allies/compact members.
 5. Guardian military: turn `THR_vow_keeper_regiments` and support nodes into a defensive guardian route with temple guards, pilgrimage escorts, mountain pass detachments, and anti-chaos defensive doctrine.
 6. Sangha Compact diplomacy: either rename and formalize the current `Mandala of Nations` as the accepted compact equivalent, or add a separate Sangha Compact lane with membership rules, cohesion, shared decisions, refusal/exit risks, and anti-puppet clauses.
