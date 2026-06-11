@@ -17,7 +17,7 @@ Pass or fail requirements:
 - Fury selects dynamic small mainland AI minors only. Player is never Fury.
 - Ordinary Fury targets can be AI or player-controlled countries when they meet the normal target gates.
 - Fury receives idea, shared focus tree, decisions, initial army, finite hidden reinforcement reserve, and dynamic target loop.
-- Weekly free unit spawning consumes the hidden reserve and stops completely at zero; every refill source is capped.
+- Weekly free unit spawning consumes the hidden reserve slowly and stops completely at zero; every refill source is capped, repeatable refill decisions use long cooldowns, and the scripted reserve cap is 100 total divisions per Fury actor.
 - Fury attacks weaker eligible neighbors, repeats after victory, stops on capitulation or no valid neighbors.
 - First conquest news exists.
 - Fury-major super-event exists.
