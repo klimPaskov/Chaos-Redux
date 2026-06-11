@@ -136,7 +136,7 @@ Narrative role: the state turns public life into mobilization.
 Mechanical role:
 
 - raises manpower.
-- improves weekly unit volume.
+- improves normal recruitment and capped reserve-spawned unit quality.
 - consumes stability or war support.
 - unlocks missions that require holding capital, depots, or rail hubs.
 - supports coring through population registration rather than harsh occupation.
@@ -154,7 +154,7 @@ Mechanical role:
 - improves compliance growth.
 - unlocks coring decisions.
 - reduces resistance damage.
-- lowers weekly unit volume slightly because administrators are diverted to occupation work.
+- slows capped reserve draw or quality slightly because administrators are diverted to occupation work.
 - improves conquered factory use.
 
 Tradeoff:
@@ -163,15 +163,15 @@ Tradeoff:
 
 ## Army of the March branch
 
-This branch improves the weekly unit loop without making it a free infinite reward.
+This branch improves the finite reinforcement reserve system without making it a free infinite reward. Focus rewards may improve template quality, initial stockpiles, reserve draw efficiency, or add capped reserve refills, but they must not create an uncapped weekly division loop.
 
 ### Focus groups
 
 | Group | Purpose | Unlocks |
 | --- | --- | --- |
-| Fury Columns | baseline infantry growth | better template and weekly quality |
-| Depot Cadres | captured depot use | garrison units and equipment capture |
-| Storm Columns | evolved assault force | stronger units after Evolution I or III |
+| Fury Columns | baseline infantry growth | better template and capped reserve draw quality |
+| Depot Cadres | captured depot use | capped garrison reserve refills and equipment capture |
+| Storm Columns | evolved assault force | stronger capped reserve-spawned units after Evolution I or III |
 | Logistics Under Movement | supply survival | supply grace, trains, truck costs, rail repair decisions |
 | Officer Tables | command layer | commanders, army XP, planning speed, AI aggression |
 
@@ -180,16 +180,16 @@ This branch improves the weekly unit loop without making it a free infinite rewa
 Use varied rewards:
 
 - templates.
-- units.
+- capped reserve refills or one-time units.
 - army XP.
 - equipment stockpiles.
 - support equipment.
 - trucks or trains when logistics path is chosen.
 - commander or officer corps spirit when appropriate.
 - temporary attack modifiers tied to current wars.
-- decisions that convert occupied depots into units.
+- decisions that convert occupied depots into capped reserve refills or one-time units.
 
-Avoid repeating `add two infantry divisions` in many focuses. Each unit focus should name what institution creates the unit.
+Avoid repeating `add two infantry divisions` in many focuses. Each unit focus should name what institution creates the unit or reserve refill, and every refill must be capped by script constants. No focus may create an infinite free-unit source.
 
 ## Expansion branch
 
@@ -233,7 +233,7 @@ Effects:
 - enables reach buildup.
 - unlocks overseas or other-continent seed decisions only if world-end conditions are near.
 - raises the chance of the world-end branch if global chaos threshold is met.
-- otherwise creates a contained Fury state with reduced weekly units and internal overextension problems.
+- otherwise creates a contained Fury state with reduced reserve-spawned unit quality and internal overextension problems.
 
 The no-neighbor path should be a threshold, not automatic world-end. It becomes terminal only under world-end conditions.
 
@@ -347,7 +347,7 @@ Focus directions:
 Mechanical effects:
 
 - upgrades templates.
-- increases weekly unit amount slightly.
+- increases reserve pool size or weekly draw quality slightly, within a capped maximum.
 - improves occupation-to-recruitment conversion.
 - unlocks higher target confidence.
 - raises overextension if too many wars continue.
@@ -367,7 +367,7 @@ Focus directions:
 Mechanical effects:
 
 - enables simultaneous declarations on all valid neighbors.
-- increases weekly unit quality.
+- increases reserve-spawned unit quality while the finite pool lasts.
 - adds temporary multi-front supply support.
 - raises overextension sharply.
 - unlocks strongest anti-Fury response for neighbors.
@@ -402,7 +402,7 @@ Suggested focus filter taxonomy:
 | Filter | Focus families |
 | --- | --- |
 | Fury Command | opening trunk, internal branch, War Directorate |
-| Fury Army | Army of the March, templates, weekly unit support |
+| Fury Army | Army of the March, templates, finite reserve support |
 | Fury Expansion | target selection, war declarations, no-neighbor path |
 | Fury Occupation | compliance, integration, coring, garrisons |
 | Fury Pact | cooperation branch |
@@ -415,7 +415,7 @@ Suggested focus filter taxonomy:
 | Idea | Start or unlock | Starting role | Mitigation or upgrade | Failure path | Final forms |
 | --- | --- | --- | --- | --- | --- |
 | National Fury | start | makes tiny country dangerous | Hardened Fury, Continental Fury | collapses after defeat | removed or upgraded |
-| Improvised Command | start if weak candidate | better early units but poor planning | War Directorate or Officer Tables | command failure events | removed or converted |
+| Improvised Command | start if weak candidate | better early units and small reserve but poor planning | War Directorate or Officer Tables | command failure events | removed or converted |
 | Fury Overextension | gained after conquest | shows strain | Compliance Administration, Rail and Registry | internal stall or collapse | controlled occupation or collapse |
 | Compliance Drive | occupation branch | absorbs captured states | Core by Administration | resistance if harsh route | regional cores |
 | Fury Pact Command | cooperation branch | shared Fury coordination | Pact Command focuses | pact dispute | world-end pact command |
@@ -428,7 +428,7 @@ Baseline Fury AI should prioritize:
 
 1. opening trunk.
 2. first war support.
-3. Army of the March if it lacks divisions.
+3. Army of the March if it lacks divisions and still has reserve potential or capped refill focuses available.
 4. Expansion branch if it is winning.
 5. Occupation branch if overextension is high.
 6. Cooperation branch if another Fury exists and type is pact.
@@ -443,7 +443,7 @@ AI should avoid:
 - pact focuses in hostile type.
 - rivalry focuses in pact type unless pact cohesion collapsed.
 - coring focuses when it controls no occupied territory.
-- unit-spam focuses when manpower and equipment are exhausted.
+- unit-spam or reserve-refill focuses when manpower, equipment, and capped reserve allowance are exhausted.
 
 ## Localisation tone
 

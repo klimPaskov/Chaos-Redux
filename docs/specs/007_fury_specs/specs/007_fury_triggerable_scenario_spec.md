@@ -64,12 +64,14 @@ The scenario uses the standard four-stop intensity slider.
 
 | Intensity | Fury actors | Opening strength | Evolutions | Targeting behavior | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Low | 1 | baseline starting package | none forced | one weaker eligible neighbor at a time | closest to ordinary Fury event |
-| Medium | 3 if eligible | stronger baseline package | Evolution I behavior enabled | one target at a time, cooperation or rivalry type active | spreads pressure across several regions |
-| High | 6 if eligible | Evolution II style package | Evolution II enabled | two or more Fury actors can coordinate or compete | strong scenario challenge |
-| Maximum | at least 10 if eligible | Evolution III style package | Evolution III enabled | all-neighbor declaration after short setup, or immediately if scenario setting says so | fulfills requested ten-minor setup |
+| Low | 2 if eligible | baseline starting package and small reserve pool | none forced | one weaker eligible neighbor at a time | local challenge across two regions |
+| Medium | 5 if eligible | stronger baseline package and capped reserve pool | Evolution I behavior enabled | one target at a time, cooperation or rivalry type active | spreads pressure across several regions |
+| High | 9 if eligible | Evolution II style package and smaller per-actor pools | Evolution II enabled | two or more Fury actors can coordinate or compete | strong dispersed scenario challenge |
+| Maximum | up to 16 if eligible | Evolution III style package and capped reserve pools | Evolution III enabled | all-neighbor declaration after short setup, or immediately if scenario setting says so | global dispersed pressure |
 
-If the world has fewer than ten safe eligible AI minors at Maximum, selection broadens through the candidate fallback order until ten are found. The player remains excluded. If ten still cannot be found, use every safe eligible candidate and record in scenario details that the world did not have enough safe candidates.
+If the world has fewer than sixteen safe eligible AI minors at Maximum, selection broadens through the candidate fallback order until sixteen are found. The player remains excluded. If sixteen still cannot be found, use every safe eligible candidate and record in scenario details that the world did not have enough safe candidates.
+
+Intensity changes the number of actors, initial army size, and hidden finite reserve pool size. It must not create uncapped weekly spawning. Every Fury actor still consumes its own reserve pool, and weekly free spawning stops for that actor once the pool reaches zero.
 
 ## Candidate distribution
 
@@ -117,10 +119,10 @@ Intensity text direction:
 
 | Intensity | Player-facing impact text |
 | --- | --- |
-| Low | One small AI country receives the Fury package and begins the normal loop |
-| Medium | Several AI minors begin Fury with stronger units and the first evolution pattern |
-| High | Many Fury actors appear with cooperation or rivalry behavior |
-| Maximum | At least ten AI minors become Fury when the world has enough safe candidates, with stronger forces and all-neighbor pressure |
+| Low | Two small AI countries receive the Fury package and begin the normal loop when safe |
+| Medium | Five dispersed AI minors begin Fury with stronger openings and the first evolution pattern when safe |
+| High | Nine dispersed Fury actors appear with cooperation or rivalry behavior when safe |
+| Maximum | Up to sixteen AI minors become Fury when the world has enough safe candidates, with stronger openings and all-neighbor pressure |
 
 ## Scenario type labels
 
@@ -135,21 +137,21 @@ Suggested UI labels:
 
 The scenario must never select the player as Fury.
 
-Ordinary scenario target selection should also avoid:
+Scenario setup selection should also avoid:
 
 - player country.
 - player subjects.
 - player faction members.
 - countries in direct player wars when settlement could interfere.
 
-At Maximum intensity and world-end escalation, the player can eventually face Fury through terminal warning logic, not through setup selection.
+After scenario launch, ordinary Fury target selection can still choose player-controlled countries when normal target gates allow it. At Maximum intensity and world-end escalation, the player can also eventually face Fury through terminal warning logic, but never through setup selection as a Fury actor.
 
 ## Balance by intensity
 
 ### Low
 
 - two Fury actors.
-- baseline weekly units.
+- small initial army package and small finite reserve pool.
 - no forced cooperation.
 - one target at a time.
 - suitable for a local challenge.
@@ -157,7 +159,7 @@ At Maximum intensity and world-end escalation, the player can eventually face Fu
 ### Medium
 
 - five Fury actors if safe.
-- stronger initial units.
+- stronger initial army and capped reserve pools.
 - Hardened Fury features available.
 - target selection remains sequential.
 - pact or hostile type visible.
@@ -168,14 +170,14 @@ At Maximum intensity and world-end escalation, the player can eventually face Fu
 - Evolution II features available.
 - cooperation or rivalry branches unlock.
 - anti-Fury response can appear earlier.
-- weekly units stronger.
+- each actor receives a smaller capped reserve pool than a single-Fury evolved opening.
 
 ### Maximum
 
 - up to sixteen Fury actors if enough eligible AI minors exist.
 - Evolution III features available.
 - all-neighbor declarations become valid.
-- stronger starting stockpiles and units.
+- stronger starting stockpiles, initial armies, and capped reserve pools.
 - target distribution makes repeated continent passes before any global fallback.
 - anti-Fury response and world threat state can appear quickly.
 
@@ -207,3 +209,4 @@ The implementation is correct when:
 - hostile type prevents pact behavior and enables rivalry.
 - scenario setup flags are cleaned after launch.
 - ordinary Fury random event behavior is not permanently changed by scenario launch.
+- scenario intensity changes initial army size and capped hidden reserve pool size, never an infinite weekly unit loop.

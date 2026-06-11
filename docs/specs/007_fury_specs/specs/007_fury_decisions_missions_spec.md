@@ -9,7 +9,7 @@ The category exists for Fury countries and is primarily AI-used because random F
 The category controls:
 
 - target preparation.
-- weekly reinforcement modifiers.
+- finite reinforcement reserve controls.
 - depot conversion.
 - occupation and compliance.
 - coring.
@@ -41,7 +41,7 @@ Decision tooltips should reference these values through scripted localisation wh
 
 | Value | Use in decisions |
 | --- | --- |
-| Fury Momentum | cost reduction for target preparation, stronger weekly units |
+| Fury Momentum | cost reduction for target preparation, better reserve-spawned unit quality while reserve remains |
 | Fury Overextension | blocks new wars if too high, raises integration costs |
 | Compliance Drive | improves coring and occupation decisions |
 | Fury Reach | unlocks no-neighbor and world-end decisions |
@@ -114,15 +114,15 @@ Effects:
 
 - temporary attack bonus toward capital area.
 - increases AI focus on target victory points.
-- no direct free units.
+- no direct uncapped units.
 
-## Decision family: weekly reinforcement control
+## Decision family: finite reinforcement reserve control
 
-Weekly units should be automatic, but decisions can change quality, source, or strain.
+Reserve-spawned units should be automatic only while the hidden reinforcement reserve pool has units remaining. Every weekly spawn consumes that pool. When the pool reaches zero, free weekly spawning stops completely. Decisions can change quality, source, strain, or add a limited reserve refill, but no decision may create an uncapped unit loop.
 
 ### Open the Depots
 
-Role: consumes equipment to improve upcoming weekly units.
+Role: consumes equipment to improve upcoming reserve-spawned units or add a small capped reserve refill.
 
 Costs:
 
@@ -133,31 +133,31 @@ Costs:
 
 Effects:
 
-- next several weekly units spawn at higher strength.
+- next several reserve-spawned units arrive at higher strength, or a small capped reserve refill is added.
 - increases overextension or supply strain.
 - AI uses when at war and equipment reserve is high.
 
 ### Empty the Training Yards
 
-Role: raises more units quickly with lower quality.
+Role: draws more of the finite reserve quickly with lower quality.
 
 Costs:
 
 - manpower.
 - stability.
 - infantry equipment.
-- training penalty for spawned units.
+- training penalty for reserve-spawned units.
 
 Effects:
 
-- increases next weekly count.
+- increases next weekly draw from the existing pool or adds a capped emergency refill.
 - units arrive undertrained.
 - raises overextension.
 - AI uses when losing a war or when Evolution III has multiple fronts.
 
 ### Depot Cadre Conversion
 
-Role: turns occupied depot work into garrison or support units.
+Role: turns occupied depot work into capped garrison reserve or support units.
 
 Availability:
 
@@ -173,7 +173,7 @@ Costs:
 
 Effects:
 
-- spawns garrison units.
+- spawns one-time garrison units or adds a capped garrison reserve refill.
 - improves compliance drive.
 - reduces resistance damage in selected states.
 
@@ -299,7 +299,7 @@ Effects:
 The current implementation uses the following concrete state and country surfaces:
 
 - `fury_occupation_pressure` is recalculated during the scoped Fury weekly actor loop from non-core controlled states, active wars, resistance, registered states, rail registry completion, and `fury_garrison_capacity`.
-- High pressure adds `fury_overextension`, weakens weekly unit generation, and raises occupation decision priority.
+- High pressure adds `fury_overextension`, weakens reserve-spawned unit quality or draw, and raises occupation decision priority.
 - Extreme pressure sets `fury_occupation_crisis_active`, blocks ordinary target selection unless Evolution III or terminal Fury overrides it, and activates `fury_restore_the_registers_mission`.
 - `fury_count_captured_registers` starts administrative register work on a non-core controlled state.
 - `fury_rail_registry_survey` marks a registered state with `fury_rail_registry_complete` and reduces pressure.
@@ -554,7 +554,7 @@ Missions should ask countries to act on the map, not passively wait.
 
 | Mission | Owner | Objective | Duration direction | Success | Failure |
 | --- | --- | --- | --- | --- | --- |
-| Guard the Fury Capital | Fury | keep capital supplied and controlled while at war | medium | stronger weekly units | weaker reinforcements and momentum loss |
+| Guard the Fury Capital | Fury | keep capital supplied and controlled while at war | medium | stronger reserve-spawned units while reserve remains | weaker reinforcements and momentum loss |
 | Secure the First Depot Belt | Fury | control named depot or rail states near first target | medium | better settlement and unit quality | overextension rises |
 | Hold the New Registers | Fury | keep newly conquered state group under control | long | compliance gain and coring unlock | resistance and overextension |
 | Border Watch | non-Fury neighbor | place supplied divisions in border states | medium | defense bonus and target deterrence | Fury target score rises |
@@ -606,4 +606,4 @@ Decision cleanup must remove:
 - anti-Fury missions after the Fury major threat ends.
 - scenario setup flags after launch.
 
-No decision should remain visible for a dead target, player-linked target, or invalid state group.
+No decision should remain visible for a dead target, protected invalid target, or invalid state group.

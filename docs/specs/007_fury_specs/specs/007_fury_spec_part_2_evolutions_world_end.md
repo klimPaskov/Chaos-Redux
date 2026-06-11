@@ -54,7 +54,7 @@ Pre-fire evolved opening can occur when:
 If a Fury actor already exists, Evolution I should:
 
 - upgrade `National Fury` into `Hardened Fury`.
-- improve weekly unit quality and slightly increase weekly amount.
+- improve reserve-spawned unit quality and slightly increase the capped reserve pool.
 - unlock hardened military focuses.
 - unlock depot seizure decisions.
 - unlock better target-preparation decisions.
@@ -68,7 +68,7 @@ If Fury has not fired yet in the current active cycle, the first Fury opens with
 
 - a stronger starting army.
 - better template families.
-- slightly larger equipment stockpile.
+- slightly larger equipment stockpile and capped hidden reserve pool.
 - the `Hardened Fury` idea at start.
 - first expansion branch focuses unlocked earlier.
 - higher chance to choose a target with two states rather than only one.
@@ -203,7 +203,7 @@ If Fury actors already exist, Evolution III should:
 
 - select up to three total Fury actors.
 - upgrade all active Fury ideas.
-- improve weekly units and starting stockpiles.
+- improve reserve-spawned unit quality and starting stockpiles within capped pools.
 - unlock all-neighbor declaration logic.
 - unlock high-chaos focus branches.
 - allow Fury actors to attack all valid neighbors at once.
@@ -473,7 +473,7 @@ Failure routes:
 | --- | --- | --- |
 | Quick defeat | Fury loses first war or capitulates early | remove Fury package |
 | Overextension stall | resistance, supply, and non-core land exceed momentum | pause target selection, raise internal crisis |
-| Target reversal | target survives and counterattacks | Fury loses momentum and weekly unit quality |
+| Target reversal | target survives and counterattacks | Fury loses momentum and reserve-spawned unit quality |
 | Fury civil fracture | high overextension with hostile Fury type | chance of an internal collapse event or splinter penalties |
 | Pact dispute | multiple Fury actors compete for same region | cohesion loss or rivalry branch |
 | Terminal defeat | all Fury actors destroyed after world-end | aftermath package |
@@ -484,7 +484,7 @@ A Fury defeat should not erase the event from history. It should remain and shou
 
 Cleanup must cover:
 
-- weekly unit pulse flags.
+- finite reserve pulse flags and reserve variables.
 - Fury ideas.
 - Fury decisions and active missions.
 - target event targets.

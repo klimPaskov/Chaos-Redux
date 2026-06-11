@@ -4,7 +4,7 @@
 Eligible AI minor found
   apply Fury package
   load shared tree
-  start weekly unit pulse
+  start finite reserve pulse
   pick weaker eligible neighbor
   declare war without warning
     if Fury loses
@@ -34,7 +34,7 @@ Eligible AI minor found
 ```text
 Evolution I
   stronger idea
-  better starting and weekly units
+  better starting and capped reserve-spawned units
   hardened focus branch
 
 Evolution II
@@ -56,10 +56,11 @@ The World in Fury scenario
   read intensity and type
   exclude player
   select safe AI minors
-  Low gives 1 Fury
-  Medium gives 3 Fury actors when safe
-  High gives 6 Fury actors when safe
-  Maximum gives at least 10 Fury actors when safe
+  Low gives 2 Fury actors when safe
+  Medium gives 5 Fury actors when safe
+  High gives 9 Fury actors when safe
+  Maximum gives up to 16 Fury actors when safe
+  intensity changes initial armies and capped reserve pools
   Pact type enables cooperation
   Hostile type enables rivalry
 ```

@@ -11,7 +11,7 @@ The balance target is:
 - major-Fury threshold only when it wins several wars.
 - world-end branch only after major success and high chaos.
 - no player access to Fury growth.
-- no ordinary player-target declarations.
+- no uncapped free-division loop.
 - real ways for AI and player-adjacent countries to contain Fury.
 
 ## Target scoring factors
@@ -38,7 +38,7 @@ Target score should combine several factors.
 | --- | --- |
 | First war active | finish the target, prioritize capital and supply |
 | Winning war | keep pressure, avoid unrelated wars |
-| Losing war | use emergency units, guard capital, reduce target ambitions |
+| Losing war | use capped emergency reserve tools, guard capital, reduce target ambitions |
 | First conquest complete | settlement, compliance, next target |
 | Overextension high | occupation branch, pause new targets, core first ring |
 | No target exists | next target decision or no-neighbor path |
@@ -60,13 +60,13 @@ Target score should combine several factors.
 | No-neighbor | no valid neighbors | target exists |
 | World-end | terminal eligible | chaos threshold not met or world-end disabled |
 
-## Weekly unit scaling
+## Finite reinforcement reserve scaling
 
-Weekly units should be dynamic.
+Weekly units should be dynamic, but they must draw from a hidden finite reinforcement reserve pool. When that pool reaches zero, free weekly spawning stops completely and the Fury actor must rely on normal recruitment or later capped reserve refills.
 
 Suggested inputs:
 
-- base weekly unit value by evolution.
+- base reserve pool size and weekly draw amount by evolution.
 - country size and industry.
 - active war count.
 - manpower and equipment reserve.
@@ -77,19 +77,27 @@ Suggested inputs:
 - pact aid bonus.
 - terminal branch bonus.
 
-Growth should be visible but controlled.
+Growth should be visible but controlled by script constants for pool sizes, draw amounts, evolution multipliers, scenario multipliers, conquest refill caps, and maximum reserve clamps.
 
 Examples of scaling direction:
 
 | State | Weekly result |
 | --- | --- |
-| Baseline, one war, low overextension | one small Fury Column most weeks |
-| Hardened Fury | one stronger column and occasional extra support |
-| Evolution III multi-front | two or more units, mixed quality |
-| High overextension | weaker units or skipped high-quality spawns |
+| Baseline, one war, low overextension | one small Fury Column while reserve remains |
+| Hardened Fury | stronger reserve-spawned columns and a larger capped pool |
+| Evolution II multi-actor opening | smaller per-actor pools because two Fury actors exist |
+| Evolution III multi-front | stronger openings and capped multi-front reserve draw |
+| High overextension | weaker units, reduced draw, or skipped high-quality spawns |
 | Equipment shortage | understrength units or no storm units |
-| Pact aid active | a limited extra unit or equipment package |
-| Terminal branch | strong weekly growth with high overextension pressure |
+| Pact aid active | a limited extra unit, equipment package, or capped reserve transfer |
+| Terminal branch | strong capped reserve pool with high overextension pressure |
+
+Exploit protection:
+
+- No focus, decision, event, evolution, scenario, or terminal branch may add uncapped reserve.
+- Weekly spawning must check reserve remaining before creating units.
+- Every refill must use script constants and respect the maximum reserve clamp.
+- Cleanup must clear reserve variables when Fury actor state ends.
 
 ## Overextension brakes
 
@@ -108,7 +116,7 @@ Overextension rises from:
 Overextension effects:
 
 - slower target selection.
-- weaker weekly units.
+- weaker reserve-spawned units or slower capped draw.
 - higher resistance.
 - lower stability.
 - AI shifts to occupation branch.
@@ -157,7 +165,7 @@ Momentum should not be permanent. It should decay slowly when Fury is at peace a
 | Fury attacks a protected player-linked puppet early | target rules exclude subjects, allies, and countries already at war with the Fury actor |
 | Player lets Fury conquer then steals settlement | settlement avoids player-controlled or player-occupied states |
 | Fury grants instant cores | coring requires decisions, compliance, control, and resources |
-| Weekly units become infinite | overextension, equipment, manpower, and cleanup limits |
+| Weekly units become infinite | hidden reserve pool is finite; weekly spawns consume it; every refill is capped and cleanup clears reserve state |
 | Maximum-spread scenario selects majors to hit count | fallback broadens minor criteria but does not select majors unless explicitly redesigned later |
 | AI declares impossible wars | target score checks faction, strength, subject status, current wars, and supply |
 | World-end branch fires too early | requires major or no-neighbor success, high chaos, and focus or branch state |
@@ -186,7 +194,7 @@ Chaos should affect intensity and probability, not act as a simple wall.
 | Low | rare, one Fury, weak opening |
 | Medium | ordinary Fury, first conquest more possible |
 | High | Evolution I and II more likely |
-| Very high | multiple Fury actors and stronger weekly units |
+| Very high | multiple Fury actors and stronger capped reserve-spawned units |
 | Terminal threshold | world-end branch can become eligible after Fury success |
 
 ## Failure state balance
@@ -211,10 +219,10 @@ Fury should be beatable.
 | Uruguay-like mainland minor | can use land-neighbor logic, not treated as island |
 | Pure island minor | excluded if no land neighbor exists |
 | Player one-state minor | not selected |
-| Player subject neighbor | not targeted in ordinary loop |
+| Player-controlled neighbor | can be targeted only when normal target gates allow it |
 | Fury wins first war | news fires and settlement runs |
-| Fury loses first war | cleanup runs and no weekly units remain |
-| Evolution I active | stronger units and hardened branch unlock |
+| Fury loses first war | cleanup runs and no reserve-spawned units remain |
+| Evolution I active | stronger reserve-spawned units and hardened branch unlock |
 | Evolution II active | second Fury can spawn and pact or rivalry branch unlocks |
 | Evolution III active | three Fury actors and all-neighbor declarations are available |
 | Maximum scenario | up to sixteen dispersed Fury actors are created when enough safe candidates exist |

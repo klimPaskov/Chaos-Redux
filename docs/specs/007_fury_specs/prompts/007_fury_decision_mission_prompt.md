@@ -13,7 +13,7 @@ The category must support:
 
 - target selection.
 - target preparation.
-- weekly reinforcement modifiers.
+- finite reserve reinforcement controls.
 - depot conversion.
 - conquest settlement.
 - compliance and coring.
@@ -63,11 +63,11 @@ AI rules:
 
 - choose next target when valid.
 - prepare target when at war readiness is low.
-- use emergency units if losing.
+- use capped emergency reserve tools if losing.
 - use occupation and coring when overextension is high.
 - cooperate in pact type.
 - use rivalry in hostile type.
-- avoid impossible or player-linked targets.
+- avoid impossible targets and protected invalid targets.
 
 ## Cleanup
 

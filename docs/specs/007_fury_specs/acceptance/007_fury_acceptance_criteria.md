@@ -26,7 +26,9 @@ Implementation passes only if:
 Implementation passes only if:
 
 - selected Fury country receives the Fury package.
-- weekly reinforcement exists and cleans up.
+- weekly reinforcement uses a finite hidden reserve pool and cleans up.
+- weekly free spawning stops completely when the reserve pool reaches zero.
+- every focus, decision, event, evolution, conquest reward, scenario setup, and world-end refill source is capped.
 - first target is selected dynamically.
 - Fury declares on a weaker eligible neighbor without warning.
 - first conquest news fires when the first neighbor is defeated.
@@ -40,7 +42,7 @@ Implementation passes only if:
 
 Implementation passes only if:
 
-- Evolution I upgrades unit quality, weekly units, idea, and focus content.
+- Evolution I upgrades unit quality, reserve size, idea, and focus content within capped limits.
 - Evolution II allows two Fury actors and cooperation or rivalry mechanics.
 - Evolution III allows three Fury actors and all-neighbor declarations.
 - active-event evolution affects existing Fury actors immediately.
@@ -82,6 +84,7 @@ Implementation passes only if:
 - Maximum creates up to sixteen Fury actors when enough safe candidates exist.
 - scenario excludes player.
 - scenario launch reads selected type and intensity at confirmation.
+- scenario intensity changes initial army size and reserve pool size, not infinite weekly spawning.
 - scenario setup bypass flags are cleared after setup.
 
 ## Super-events and news
@@ -137,4 +140,4 @@ Implementation passes only if:
 
 ## Simplification rule
 
-The implementation is incomplete if any requested surface is omitted without reporting it. This includes missing evolutions, missing scenario type, missing maximum ten-Fury setup, missing focus branches, missing coring decisions, missing super-event direction, missing AI, missing documentation, or missing asset handoff.
+The implementation is incomplete if any requested surface is omitted without reporting it. This includes missing evolutions, missing scenario type, missing maximum-spread setup, missing finite reinforcement reserve caps, missing focus branches, missing coring decisions, missing super-event direction, missing AI, missing documentation, or missing asset handoff.
