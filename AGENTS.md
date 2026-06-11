@@ -276,7 +276,7 @@ A goal can never be marked complete unless it is actually complete.
 
 For every goal, especially large event, mechanic, focus-tree, country-package, balance, UI, or asset goals, completion requires evidence. The agent must finish the requested implementation, update all related files, run or document the required checks, and report any blocker or simplification.
 
-Validation reporting must be useful. Run basic syntax hygiene internally when helpful, but do not spend the final report listing checks that only restate mandatory AGENTS.md rules, such as unsupported operator checks or brackets balance or BOM encoding checks, etc. I don't care about things such as: `Validation passed: diff whitespace check, brace balance on touched scripts, no unsupported <=/>=, localisation BOM intact.` Mention validation only when it is task-specific, could realistically fail, found a problem, changed the implementation, or gives the user useful evidence. Leave passing boilerplate checks out of the user-facing report.
+Validation reporting must be useful. Run basic syntax hygiene internally when helpful, but do not spend the final report listing checks that only restate mandatory AGENTS.md rules, such as unsupported operator checks or brackets balance or BOM encoding checks, etc. I don't care about things such as: `Validation passed: diff whitespace check, brace balance on touched scripts, no unsupported <=/>=, localisation BOM intact, git diff --check passed, no remaining X references, workspace clean.` Mention validation only when it is task-specific, could realistically fail, found a problem, changed the implementation, or gives the user useful evidence. Leave passing boilerplate checks out of the user-facing report.
 
 Do not claim completion when:
 
