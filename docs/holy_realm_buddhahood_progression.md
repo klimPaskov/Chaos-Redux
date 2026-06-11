@@ -97,10 +97,9 @@ The route now records achievement-ready flags without adding daily or monthly sc
 - `holy_realm_mercy_in_ashes_achievement_ready` is set after five tracked relief/refugee missions while Defilements remain below 20, with at least one credit from a threatened-capital or defensive-interposition mission.
 - `holy_realm_sangha_of_nations_watch_started` records when the Mandala of Nations has at least eight non-chaos, non-puppet members and Sangha Cohesion is at least 70. The achievement checks that the watch has remained valid for 180 days.
 - `holy_realm_lotus_bridge_watch_started` records the protected target for the Lotus Bridge relief power. The achievement checks that the saved target still exists, keeps its capital, and has remained protected for 180 days.
+- `holy_realm_false_buddha_schism_triggered`, `holy_realm_false_buddha_debate_resolved`, and `holy_realm_false_buddha_suppressed` distinguish the False Buddha Schism paths. `Debate the Pretender` requires the debate path and rejects suppression.
 
-The achievement file now defines all 12 Buddhahood achievement ids from the spec. One id is intentionally gated behind a future readiness flag because its underlying system is not yet implemented:
-
-- `holy_realm_false_buddha_debate_achievement_ready` for `Debate the Pretender`.
+The achievement file now defines all 12 Buddhahood achievement ids from the spec with gameplay-facing unlock conditions.
 
 Two achievement definitions use the strongest currently available route evidence rather than a dedicated new subsystem:
 
@@ -146,6 +145,5 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 - Replace `gfx/super_events/super_event_powers_of_the_awakened.dds` with bespoke `Powers of the Awakened` super-event art.
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add stage-specific mandala and portrait animation assets for Dhyana and Buddhahood.
-- Expand `holy_realm_false_buddha_schism_pressure` into the full False Buddha Schism evolution.
-- Implement the False Buddha debate system so its achievement-ready flag can be set from gameplay.
+- Expand `holy_realm_false_buddha_schism_pressure` beyond the current debate/suppression decision pair if the route needs a full rival cult country or portrait-stage evolution.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.

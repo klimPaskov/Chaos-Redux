@@ -206,10 +206,29 @@ holy_realm_add_compassion = {
 	clamp_variable = { var = compassion min = 0 max = 100 }
 }
 
+holy_realm_trigger_false_buddha_schism = {
+	if = {
+		limit = { NOT = { has_country_flag = holy_realm_false_buddha_schism_resolved } }
+		set_country_flag = holy_realm_false_buddha_schism_pressure
+		set_country_flag = holy_realm_false_buddha_schism_triggered
+	}
+}
+
 holy_realm_add_defilements = {
 	holy_realm_ensure_buddhahood_counters = yes
 	add_to_variable = { defilements = holy_realm_defilements_delta }
 	clamp_variable = { var = defilements min = 0 max = 100 }
+	if = {
+		limit = {
+			check_variable = { defilements > constant:holy_realm_buddhahood.false_buddha_defilements }
+			check_variable = {
+				var = bodhi_progress
+				value = constant:holy_realm_buddhahood.bodhi_max
+				compare = greater_than_or_equals
+			}
+		}
+		holy_realm_trigger_false_buddha_schism = yes
+	}
 	if = {
 		limit = {
 			check_variable = { defilements > constant:holy_realm_buddhahood.false_buddha_defilements }
@@ -1491,7 +1510,7 @@ holy_realm_try_attain_buddhahood = {
 			}
 			check_variable = { defilements > constant:holy_realm_buddhahood.false_buddha_defilements }
 		}
-		set_country_flag = holy_realm_false_buddha_schism_pressure
+		holy_realm_trigger_false_buddha_schism = yes
 		add_stability = -0.05
 		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 		holy_realm_add_compassion_drift = yes

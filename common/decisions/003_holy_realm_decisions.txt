@@ -2066,6 +2066,74 @@ holy_realm_bodhisattva_category = {
 	}
 }
 
+holy_realm_false_buddha_category = {
+	THR_debate_false_buddha_pretender = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.false_buddha_debate_cost
+		days_remove = constant:holy_realm_decision.diplomacy_days
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_false_buddha_schism_pressure
+			check_variable = { spiritual_legitimacy > 40 }
+			check_variable = { detachment > 20 }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_false_buddha_schism_pressure
+		}
+		complete_effect = {
+			holy_realm_trigger_false_buddha_schism = yes
+			clr_country_flag = holy_realm_false_buddha_schism_pressure
+			set_country_flag = holy_realm_false_buddha_schism_resolved
+			set_country_flag = holy_realm_false_buddha_debate_resolved
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_debate_defilement_loss }
+			holy_realm_add_defilements = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.false_buddha_debate_compassion_gain }
+			holy_realm_add_compassion = yes
+			add_stability = 0.03
+			if = {
+				limit = { NOT = { has_country_flag = holy_realm_false_buddha_suppressed } }
+				set_country_flag = holy_realm_false_buddha_debate_achievement_ready
+			}
+		}
+		ai_will_do = { factor = 4 }
+	}
+
+	THR_suppress_false_buddha_pretender = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.false_buddha_suppression_cost
+		days_remove = constant:holy_realm_decision.warning_days
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_false_buddha_schism_pressure
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_false_buddha_schism_pressure
+		}
+		complete_effect = {
+			holy_realm_trigger_false_buddha_schism = yes
+			clr_country_flag = holy_realm_false_buddha_schism_pressure
+			set_country_flag = holy_realm_false_buddha_schism_resolved
+			set_country_flag = holy_realm_false_buddha_suppressed
+			clr_country_flag = holy_realm_false_buddha_debate_achievement_ready
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_suppression_defilement_gain }
+			holy_realm_add_defilements = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.false_buddha_suppression_compassion_loss }
+			holy_realm_add_compassion = yes
+			add_stability = -0.03
+			add_war_support = 0.04
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 2
+				check_variable = { compassion_drift > 40 }
+			}
+		}
+	}
+}
+
 holy_realm_buddha_powers_category = {
 	THR_buddha_power_one_becomes_many = {
 		icon = generic_political_discourse
