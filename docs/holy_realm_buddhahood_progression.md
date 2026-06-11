@@ -82,6 +82,16 @@ The ritual can begin when the Holy Realm has Buddhahood, the final doctrine path
 
 If global Chaos is above 1000 and no other world-end is active or disabled, completion sets the terminal Final Silence world-end flags. If the world-end gate is not met, completion instead records `holy_realm_final_silence_nonterminal_completed`, changes the leader name to `The Empty Seat`, and leaves the world alive for reconstruction play.
 
+## Achievement Tracking Hooks
+
+The route now records achievement-ready flags without adding daily or monthly scans:
+
+- `holy_realm_defilements_exceeded_clean_buddhahood_limit` is set if Defilements exceed 50 after Bodhi reaches 75.
+- `holy_realm_four_dhyanas_under_fire_ready` is set when Dhyana Depth 4 is reached while the capital is controlled and a chaos enemy is at war with the Realm.
+- `holy_realm_power_one_becomes_many_active` opens a timed mission window. Teaching successes during that window count toward `holy_realm_one_becomes_many_achievement_ready`.
+- `holy_realm_ordinary_conquest_abuse` is set when the Realm declares war on a normal non-chaos country.
+- `holy_realm_helped_defeat_chaos_country`, `holy_realm_wall_river_sky_achievement_ready`, and `holy_realm_sun_moon_achievement_ready` are set from capitulation outcomes involving chaos enemies.
+
 ## UI And Assets
 
 The Holy Mandala decision GUI reuses `holy_realm_mandala_category_scripted_gui` and now displays:

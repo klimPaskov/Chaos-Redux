@@ -202,6 +202,17 @@ holy_realm_add_defilements = {
 	holy_realm_ensure_buddhahood_counters = yes
 	add_to_variable = { defilements = holy_realm_defilements_delta }
 	clamp_variable = { var = defilements min = 0 max = 100 }
+	if = {
+		limit = {
+			check_variable = { defilements > constant:holy_realm_buddhahood.false_buddha_defilements }
+			check_variable = {
+				var = bodhi_progress
+				value = 75
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = holy_realm_defilements_exceeded_clean_buddhahood_limit
+	}
 }
 
 holy_realm_advance_dhyana_depth = {
@@ -211,6 +222,18 @@ holy_realm_advance_dhyana_depth = {
 		add_to_variable = { dhyana_depth = 1 }
 	}
 	clamp_variable = { var = dhyana_depth min = 0 max = constant:holy_realm_buddhahood.dhyana_max }
+	if = {
+		limit = {
+			check_variable = {
+				var = dhyana_depth
+				value = constant:holy_realm_buddhahood.dhyana_max
+				compare = greater_than_or_equals
+			}
+			capital_scope = { is_controlled_by = ROOT }
+			any_enemy_country = { is_holy_realm_chaos_enemy = yes }
+		}
+		set_country_flag = holy_realm_four_dhyanas_under_fire_ready
+	}
 }
 
 holy_realm_record_teaching_success = {
@@ -231,6 +254,29 @@ holy_realm_record_teaching_success = {
 		}
 		add_to_variable = { crisis_teaching_successes = 1 }
 		set_country_flag = holy_realm_crisis_teaching_success_recorded
+	}
+	if = {
+		limit = { has_country_flag = holy_realm_power_one_becomes_many_active }
+		if = {
+			limit = { NOT = { has_variable = holy_realm_one_becomes_many_missions } }
+			set_variable = { holy_realm_one_becomes_many_missions = 0 }
+		}
+		add_to_variable = { holy_realm_one_becomes_many_missions = 1 }
+		if = {
+			limit = { any_enemy_country = { is_holy_realm_chaos_enemy = yes } }
+			set_country_flag = holy_realm_one_becomes_many_chaos_war_mission
+		}
+		if = {
+			limit = {
+				has_country_flag = holy_realm_one_becomes_many_chaos_war_mission
+				check_variable = {
+					var = holy_realm_one_becomes_many_missions
+					value = constant:holy_realm_buddhahood.one_becomes_many_missions_required
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = holy_realm_one_becomes_many_achievement_ready
+		}
 	}
 }
 
@@ -1566,6 +1612,28 @@ holy_realm_integrate_state_from_protectorate_event_target = {
 }
 
 holy_realm_on_country_capitulation = {
+	if = {
+		limit = {
+			FROM = { is_holy_realm_country = yes }
+			is_holy_realm_chaos_enemy = yes
+		}
+		FROM = {
+			set_country_flag = holy_realm_helped_defeat_chaos_country
+			if = {
+				limit = {
+					has_country_flag = holy_realm_current_chaos_war_walls_used
+					has_country_flag = holy_realm_current_chaos_war_water_used
+					has_country_flag = holy_realm_current_chaos_war_sky_used
+					NOT = { has_country_flag = holy_realm_buddha_power_used_against_normal_country }
+				}
+				set_country_flag = holy_realm_wall_river_sky_achievement_ready
+			}
+			if = {
+				limit = { has_country_flag = holy_realm_sun_moon_victory_window }
+				set_country_flag = holy_realm_sun_moon_achievement_ready
+			}
+		}
+	}
 	if = {
 		limit = {
 			FROM = { is_holy_realm_country = yes }
