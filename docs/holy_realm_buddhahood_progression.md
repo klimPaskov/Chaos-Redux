@@ -107,6 +107,7 @@ The achievement file now defines all 12 Buddhahood achievement ids from the spec
 
 The Holy Mandala decision GUI reuses `holy_realm_mandala_category_scripted_gui` and now displays:
 
+- a central static Mandala state image selected by `GetHolyRealmMandalaSprite`
 - Spiritual Legitimacy
 - Bodhi
 - Dhyana
@@ -114,6 +115,17 @@ The Holy Mandala decision GUI reuses `holy_realm_mandala_category_scripted_gui` 
 - Meditation Charge
 - Defilements
 - Chaos and Final Silence Pressure
+- clickable Refuge, Arhats, Diplomacy, Doctrine, and Ledger tabs for contextual route text
+
+The static Mandala states are registered in `interface/003_holy_realm.gfx`:
+
+- `GFX_holy_realm_mandala_dormant`
+- `GFX_holy_realm_mandala_teaching`
+- `GFX_holy_realm_mandala_meditation`
+- `GFX_holy_realm_mandala_awakened`
+- `GFX_holy_realm_mandala_wrathful`
+- `GFX_holy_realm_mandala_final_silence`
+- `GFX_holy_realm_mandala_empty`
 
 Super-event presentation uses these wired slots:
 
@@ -140,6 +152,6 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 ## Future Plans
 
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
-- Add stage-specific mandala and portrait animation assets for Dhyana and Buddhahood.
+- Add animated frame-sheet variants for the Mandala states and stage-specific portrait variants for Dhyana and Buddhahood.
 - Expand `holy_realm_false_buddha_schism_pressure` beyond the current debate/suppression decision pair if the route needs a full rival cult country or portrait-stage evolution.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.

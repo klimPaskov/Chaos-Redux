@@ -1,6 +1,6 @@
-# 003 Holy Realm Buddhahood Achievement Icon Manifest
+# 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icon asset package only.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, and Mandala GUI static fallback assets.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -11,10 +11,40 @@ Reference inspection completed:
 Source mode:
 - `$imagegen` for generated completed-state source art.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
+- Local ImageMagick procedural composition for static Mandala GUI fallback states.
 
 DDS conversion note:
 - Local conversion used `convert -define dds:compression=none`.
 - Final DDS files were validated for existence and `64x64` dimensions after export.
+
+## Static Mandala GUI Fallbacks
+
+These assets are static fallback states for the Holy Mandala decision-category scripted GUI. They are not animation frame sheets and should not be treated as the final animated Mandala package described by the asset specification.
+
+Reference inspection completed:
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/interface/countrydecisionview.gui`
+- `~/projects/Hearts of Iron IV/interface/core.gfx`
+
+| State | Sprite alias | Processed PNG | Final DDS | In-game use |
+| --- | --- | --- | --- | --- |
+| Dormant | `GFX_holy_realm_mandala_dormant` | `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_dormant.png` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant.dds` | Early or locked Mandala state |
+| Teaching | `GFX_holy_realm_mandala_teaching` | `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_teaching.png` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_teaching.dds` | Teaching missions, Bodhi, or Dharma teachings unlocked |
+| Meditation | `GFX_holy_realm_mandala_meditation` | `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_meditation.png` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation.dds` | Dhyana progress or active concentration sequence |
+| Awakened | `GFX_holy_realm_mandala_awakened` | `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_awakened.png` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened.dds` | Buddhahood attained |
+| Wrathful | `GFX_holy_realm_mandala_wrathful` | `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_wrathful.png` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_wrathful.dds` | Wrathful protection, Sun and Moon crisis proof, or equivalent emergency power state |
+| Final Silence | `GFX_holy_realm_mandala_final_silence` | `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_final_silence.png` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence.dds` | Armed Final Silence, terminal world-end, or final stage |
+| Empty Seat | `GFX_holy_realm_mandala_empty` | `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_empty.png` | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty.dds` | Non-terminal Final Silence or Empty Seat aftermath |
+
+Contact sheet: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/mandala_static_contact_sheet.png`
+
+Validation:
+- All processed PNGs are `420x420`.
+- All final DDS files are `420x420`.
+- `interface/003_holy_realm.gfx` registers all seven static sprites.
+- `common/scripted_localisation/003_holy_realm_scripted_localisation.txt` selects the active sprite through `GetHolyRealmMandalaSprite`.
 
 ## Assets
 
