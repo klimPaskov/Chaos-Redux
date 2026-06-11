@@ -10,6 +10,10 @@
 @fury_garrison_names_recently_resolved_days = 75
 @fury_restore_registers_recently_resolved_days = 60
 @fury_recent_actor_cooldown_days = 365
+@fury_major_super_event_visible_days = 10
+@fury_major_super_event_state = 59
+@fury_world_end_super_event_visible_days = 10
+@fury_world_end_super_event_state = 60
 
 fury_initialize_actor_variables = {
 	set_variable = { fury_momentum = constant:fury_balance.starting_momentum }
@@ -1030,8 +1034,7 @@ fury_check_major_super_event = {
 		}
 		set_global_flag = fury_major_super_event_fired
 		save_event_target_as = fury_super_event_actor
-		set_temp_variable = { fury_super_event_visible_days = constant:fury_balance.major_super_event_visible_days }
-		set_global_flag = { flag = super_event_visible days = fury_super_event_visible_days value = constant:fury_super_event.major_state }
+		set_global_flag = { flag = super_event_visible days = @fury_major_super_event_visible_days value = @fury_major_super_event_state }
 		set_variable = { global.current_super_event_audio_id = constant:fury_super_event.major_audio_id }
 		every_country = {
 			limit = { is_ai = no }
@@ -1115,7 +1118,7 @@ fury_start_world_end = {
 		limit = { is_fury_actor = yes }
 		fury_register_world_end_actor = yes
 	}
-		fury_seed_world_end_continental_fronts = yes
+	fury_seed_world_end_continental_fronts = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { global.fury_world_end_actor_count < constant:fury_balance.world_end_required_actor_count }
@@ -1125,10 +1128,9 @@ fury_start_world_end = {
 			limit = { fury_world_end_safe_seed_candidate = yes }
 			fury_apply_world_end_seed_package = yes
 		}
-		}
+	}
 	fury_count_world_end_actor_continents = yes
-		set_temp_variable = { fury_super_event_visible_days = constant:fury_balance.major_super_event_visible_days }
-	set_global_flag = { flag = super_event_visible days = fury_super_event_visible_days value = constant:fury_super_event.world_end_state }
+	set_global_flag = { flag = super_event_visible days = @fury_world_end_super_event_visible_days value = @fury_world_end_super_event_state }
 	set_variable = { global.current_super_event_audio_id = constant:fury_super_event.world_end_audio_id }
 	every_country = {
 		limit = { is_ai = no }
@@ -1458,7 +1460,7 @@ fury_pay_terminal_reserves_cost = {
 
 fury_pay_terminal_fronts_cost = {
 	add_command_power = constant:fury_decision_cost.terminal_fronts_cp_spend
-	add_army_experience = constant:fury_decision_cost.terminal_fronts_army_xp
+	army_experience = constant:fury_decision_cost.terminal_fronts_army_xp
 }
 
 fury_share_terminal_reserves_effect = {
@@ -1510,7 +1512,7 @@ anti_fury_pay_emergency_aid_cost = {
 
 anti_fury_pay_staff_talks_cost = {
 	add_command_power = constant:fury_decision_cost.anti_fury_staff_cp_spend
-	add_army_experience = constant:fury_decision_cost.anti_fury_staff_army_xp
+	army_experience = constant:fury_decision_cost.anti_fury_staff_army_xp
 }
 
 anti_fury_pay_supply_denial_cost = {
