@@ -13,12 +13,24 @@ genocide_state_has_active_camps = {
 	}
 }
 
+genocide_state_requires_monthly_processing = {
+	OR = {
+		genocide_state_has_active_camps = yes
+		has_state_flag = genocide_auschwitz_experiment_site
+		has_state_flag = genocide_ss_laboratory_site
+		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+		has_state_flag = genocide_restricted_chemical_site_active
+	}
+}
+
 genocide_state_has_atrocity_evidence = {
 	OR = {
 		genocide_state_has_active_camps = yes
 		has_state_flag = genocide_destroyed_atrocity_site
 		has_state_flag = genocide_auschwitz_experiment_site
 		has_state_flag = genocide_ss_laboratory_site
+		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+		has_state_flag = genocide_restricted_chemical_site
 	}
 }
 
@@ -59,7 +71,7 @@ genocide_country_has_active_camps = {
 
 genocide_country_has_registered_active_camps = {
 	any_controlled_state = {
-		genocide_state_has_active_camps = yes
+		genocide_state_requires_monthly_processing = yes
 		has_variable = genocide_responsible_country
 		NOT = { has_state_flag = genocide_historical_quiet_camp }
 	}
@@ -86,7 +98,7 @@ genocide_state_has_foreign_population_context = {
 
 genocide_country_has_occupied_foreign_camp_system = {
 	any_controlled_state = {
-		genocide_state_has_active_camps = yes
+		genocide_state_requires_monthly_processing = yes
 		genocide_state_has_foreign_population_context = yes
 	}
 }
@@ -230,6 +242,26 @@ genocide_country_has_extermination_upgrade_target = {
 	any_controlled_state = {
 		concentration_camp > 0
 		NOT = { extermination_camp > 0 }
+	}
+}
+
+genocide_country_is_german_holocaust_actor = {
+	original_tag = GER
+	has_government = fascism
+	OR = {
+		has_war = yes
+		has_idea = radical_hardliner_support
+		has_doctrine = extermination_columns
+		has_completed_subdoctrine = extermination_columns
+		has_country_flag = genocide_extreme_doctrine_unlocked
+	}
+}
+
+genocide_country_has_german_holocaust_target = {
+	genocide_country_is_german_holocaust_actor = yes
+	date > 1939.12.31
+	any_controlled_state = {
+		genocide_state_is_german_occupied_poland_target = yes
 	}
 }
 
@@ -383,11 +415,11 @@ genocide_state_is_german_occupied_poland_target = {
 		is_core_of = SIL
 		is_core_of = UKR
 	}
-	is_controlled_by = GER
+	is_controlled_by = ROOT
 }
 
 genocide_state_is_japanese_occupation_target = {
-	is_controlled_by = JAP
+	is_controlled_by = ROOT
 	OR = {
 		is_core_of = CHI
 		is_core_of = PRC
@@ -396,6 +428,13 @@ genocide_state_is_japanese_occupation_target = {
 		is_core_of = MAN
 	}
 	NOT = { is_core_of = JAP }
+}
+
+genocide_country_has_japanese_china_occupation_target = {
+	original_tag = JAP
+	has_government = fascism
+	has_war_with_chinese_country = yes
+	any_controlled_state = { genocide_state_is_japanese_occupation_target = yes }
 }
 
 genocide_country_has_biowarfare_atrocity_capacity = {
@@ -409,7 +448,7 @@ genocide_country_has_biowarfare_atrocity_capacity = {
 }
 
 genocide_state_is_soviet_gulag_target = {
-	is_controlled_by = SOV
+	is_controlled_by = ROOT
 	OR = {
 		state = 644
 		state = 874
@@ -417,5 +456,44 @@ genocide_state_is_soviet_gulag_target = {
 		state = 516
 		state = 581
 		state = 582
+	}
+}
+
+genocide_country_has_restricted_chemical_site_capacity = {
+	OR = {
+		AND = {
+			OR = {
+				has_tech = sarin
+				is_special_project_completed = sp:sp_cw_sarin_program
+			}
+			has_equipment = { chemical_sarin_payload_cylinder_1 > constant:genocide_chemical_bridge.sarin_cylinder_gate }
+		}
+		AND = {
+			OR = {
+				has_tech = soman
+				is_special_project_completed = sp:sp_cw_soman_program
+			}
+			has_equipment = { chemical_soman_payload_cylinder_1 > constant:genocide_chemical_bridge.soman_cylinder_gate }
+		}
+	}
+}
+
+genocide_state_is_restricted_chemical_site_target = {
+	is_controlled_by = ROOT
+	has_variable = genocide_responsible_country
+	NOT = { has_state_flag = genocide_restricted_chemical_site_active }
+	OR = {
+		extermination_camp > 0
+		gulag_labor_camp_network > 0
+		has_state_flag = genocide_auschwitz_experiment_site
+		has_state_flag = genocide_ss_laboratory_site
+		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+	}
+}
+
+genocide_country_has_restricted_chemical_site_target = {
+	genocide_country_has_restricted_chemical_site_capacity = yes
+	any_controlled_state = {
+		genocide_state_is_restricted_chemical_site_target = yes
 	}
 }

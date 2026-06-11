@@ -40,6 +40,8 @@ Each report can increase or reduce `mengele_autonomy`, affect SS archive control
 
 Higher permission levels increase experiment deaths, hidden atrocity score, discovery condemnation, coup pressure, and the number of laboratory units spawned if the Directorate appears. Bypass permission is reached by rewarding abnormal laboratory results, hiding the child-guard warning, silencing dissenting files, or accepting new facility demands.
 
+Genocide crisis decisions can also mark active German camp states as Mengele-linked experiment sites through `germany_transfer_prisoners_to_experiment_site`. Those states are registered into the monthly genocide pulse, use the shared Deaths population-loss pipeline, and add experiment-site condemnation if discovered.
+
 ## Facility Demands
 
 When coup pressure is above the warning threshold and the demand is not on cooldown, `germany_mengele.17` can fire. Accepting instantly adds one `biowarfare_facility` to a suitable controlled state, preferring Auschwitz/Kielce (`88`, province `9412`), then Krakow (`89`, province `11411`), Brandenburg (`64`, province `3499`), and Sud-Hannover (`60`, province `3561`). Acceptance raises autonomy, condemnation, chaos, and permission to bypass. It can also make one hidden Directorate special project available for research without completing the project. Refusal reduces autonomy and costs political power.
