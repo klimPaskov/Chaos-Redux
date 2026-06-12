@@ -84,6 +84,8 @@ Arhat Administration and Buddha Mandate are mid-game power spikes. They unlock s
 
 The guardian branch now runs through `THR_vow_keeper_regiments`, `THR_shelters_under_stone` as Fortress Without Hatred, `THR_quiet_mobilization` as Mountain Pass Detachments, `THR_mountain_artillery_mandalas` as The Bell and Rifle, and `THR_unbroken_pass` as the anti-chaos defensive capstone. The capstone requires real chaos pressure, a recent capital-sanctuary fall, or Chaos Tier pressure and applies the Last-Pass Mobilization idea without opening ordinary conquest tools.
 
+The sanctuary logistics branch now names its map work directly: `THR_count_mountain_roads` is Pilgrimage Roads, `THR_monastic_labor_vows` is Monastery Workshops, and the follow-up focuses `THR_mountain_granaries`, `THR_snowline_clinics`, and `THR_storehouses_for_world` add granaries, clinics, supply nodes, support equipment, and compact infrastructure aid.
+
 The Mandala of Nations is the peaceful Sangha Compact route. Its goals are completed through decision-based acts of kindness:
 
 - `THR_mandala_open_refuge_corridors`
