@@ -351,13 +351,13 @@ Super-event audio:
   - image: `gfx/super_events/super_event_powers_of_the_awakened.dds`
 - Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
-Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The scripted GUI surface is disabled for now, so the player sees the Holy Realm through focus tree, decisions, events, super events, national spirits, achievements, and event log entries until the replacement UI is implemented.
+Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The live scripted GUI surface is the compact `holy_realm_mandala_category_scripted_gui` attached to `holy_realm_mandala_category`; it displays the current mandala state, core Buddhahood counters, route text, and clickable tab flags inside the decision category.
 
 The Holy Mandala decision category includes routine actions for high-pass storehouses, relief caravans, civil-register scribes, snow-line signal posts, second refuge registration, Arhat road audits, Mandala border courts, foreign target audits, global final warnings, and internal non-return shelters. These decisions unlock from the existing focus and stage flags, and they move Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, local infrastructure, manpower, command resources, or foreign opinion instead of acting as simple flavour buttons.
 
 The Vow and Final Silence Balance of Power includes both Vow-leaning and Final-Silence-leaning choices before the final path is fully open. Guarded Silence Clause and Last-Resort Register provide small early pressure toward Final Silence without arming the final path. Peace decisions move the balance more slowly than before, so repeated doctrine work is needed to dominate the balance instead of one or two routine decisions ending the struggle.
 
-The former Mandala Panel package paths are not loaded while the scripted GUI is disabled. Use the replacement UI pass to reintroduce those assets under stable names after the new design is provided.
+The larger standalone Mandala Panel remains future UI work. Use the replacement UI pass to expand the compact category GUI into a richer panel under stable sprite and scripted-GUI names rather than disabling the current category surface.
 
 Future visual interaction pass:
 
