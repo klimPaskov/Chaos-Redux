@@ -394,7 +394,6 @@ Remaining clean asset needs:
 
 - dedicated thermonuclear Final Silence super-event art if the shared terminal Final Silence texture should be split later
 - Vow against Annihilation capstone super-event art if that optional spec super event is implemented later
-- animated Mandala frame sheet for the wrathful state
 - animated leader portrait frame sheets if the static fallback stage portraits should be upgraded to animation
 - final custom report-event pictures if the current Holy Realm report-event DDS files are only temporary art
 - dedicated custom balance-of-power icons for the Vow, Final Silence, and doctrine-balance category if the current Holy Realm art should be replaced

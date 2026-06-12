@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/final-silence/empty-seat animation assets, and leader portrait static fallback assets.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, and leader portrait static fallback assets.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -14,6 +14,7 @@ Source mode:
 - `$imagegen` for the Teaching Mandala animation source frames.
 - `$imagegen` for the Meditation Mandala animation source frames.
 - `$imagegen` for the awakened Mandala animation source frames.
+- `$imagegen` for the Wrathful Mandala animation source frames.
 - `$imagegen` for the Final Silence Mandala animation source frames.
 - `$imagegen` for the Empty Seat Mandala animation source frames.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
@@ -28,6 +29,7 @@ DDS conversion note:
 - Teaching Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
 - Meditation Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Awakened Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
+- Wrathful Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Final Silence Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Empty Seat Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
 - Leader portrait fallback DDS files were validated for existence and `156x210` dimensions after export.
@@ -276,6 +278,62 @@ Frame source notes:
 | 009 | evening calm | `source_frames/holy_realm_mandala_awakened_009_source.png` |
 | 010 | return close | `source_frames/holy_realm_mandala_awakened_010_source.png` |
 | 011 | seam frame | `source_frames/holy_realm_mandala_awakened_011_source.png` |
+
+## Wrathful Mandala Animation
+
+This asset is the frame-sheet package for the chaos-emergency Holy Mandala decision-category scripted GUI state.
+
+Reference inspection completed:
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/interface/theatreselector.gfx`
+- `interface/007_fury.gfx`
+- `.agents/skills/chaos-redux-event-assets/assets/decisions/`
+
+| Field | Value |
+| --- | --- |
+| Asset name | `holy_realm_mandala_wrathful` |
+| Asset type | animated scripted GUI state sprite |
+| Intended in-game use | Wrathful Protection, Sun and Moon crisis proof, or Touching Sun and Moon power central Mandala state in `holy_realm_mandala_category_scripted_gui` |
+| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/source_frames/` |
+| Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/processed_frames/` |
+| Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/sheets/holy_realm_mandala_wrathful_sheet.png` |
+| Final sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_wrathful_animated.dds` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_wrathful.dds` |
+| Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/previews/holy_realm_mandala_wrathful_preview.gif` |
+| Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/previews/holy_realm_mandala_wrathful_contact.png` |
+| Target size | `420x420` per frame |
+| Frame count | `12` |
+| Sheet size | `5040x420` |
+| Animation rate | `8` FPS |
+| Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Anchor point | center |
+| Static sprite | `GFX_holy_realm_mandala_wrathful` |
+| Animated sprite | `GFX_holy_realm_mandala_wrathful_animated` |
+| `.gfx` file | `interface/003_holy_realm.gfx` |
+| GUI files | `interface/chaosx_decisions.gui`, `common/scripted_guis/chaosx_scripted_guis.txt` |
+| Scripted localisation | `GetHolyRealmMandalaSprite` returns the animated sprite for Wrathful Protection, Sun and Moon crisis proof, or Touching Sun and Moon use after completed Empty Seat states and active Final Silence states |
+| Prompt record | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/notes/source_prompts.md` |
+| Asset status | `complete` |
+
+Frame source notes:
+
+| Frame | Motion state | Source PNG |
+| --- | --- | --- |
+| 000 | sealed ember | `source_frames/holy_realm_mandala_wrathful_000_source.png` |
+| 001 | warning wake | `source_frames/holy_realm_mandala_wrathful_001_source.png` |
+| 002 | first containment | `source_frames/holy_realm_mandala_wrathful_002_source.png` |
+| 003 | sunward flare | `source_frames/holy_realm_mandala_wrathful_003_source.png` |
+| 004 | moonward answer | `source_frames/holy_realm_mandala_wrathful_004_source.png` |
+| 005 | crossed ward | `source_frames/holy_realm_mandala_wrathful_005_source.png` |
+| 006 | wrathful peak | `source_frames/holy_realm_mandala_wrathful_006_source.png` |
+| 007 | held shield | `source_frames/holy_realm_mandala_wrathful_007_source.png` |
+| 008 | force recedes | `source_frames/holy_realm_mandala_wrathful_008_source.png` |
+| 009 | ember spiral | `source_frames/holy_realm_mandala_wrathful_009_source.png` |
+| 010 | sealed return | `source_frames/holy_realm_mandala_wrathful_010_source.png` |
+| 011 | seam frame | `source_frames/holy_realm_mandala_wrathful_011_source.png` |
 
 ## Final Silence Mandala Animation
 
