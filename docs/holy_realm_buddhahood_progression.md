@@ -62,7 +62,7 @@ The four hold decisions must be completed while the sequence flags are active. E
 
 ## Buddha Powers
 
-After Buddhahood, the `Powers of the Awakened` decision category appears. Powers spend Meditation Charge and target only countries passing `is_special_chaos_country`.
+After Buddhahood, the `Powers of the Awakened` decision category appears. Powers spend distinct Meditation Charge costs, use individual cooldown flags, and target only countries passing `is_special_chaos_country`.
 
 Valid chaos targets are read from the shared special-chaos-country classifier. Ordinary countries are intentionally excluded unless that shared trigger classifies them as a chaos country.
 

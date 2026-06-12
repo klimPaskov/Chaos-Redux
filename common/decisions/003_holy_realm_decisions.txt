@@ -12,6 +12,8 @@
 @HOLY_REALM_CONCENTRATION_COOLDOWN_DAYS = 45
 @HOLY_REALM_ONE_BECOMES_MANY_DAYS = 180
 @HOLY_REALM_SUN_MOON_VICTORY_WINDOW_DAYS = 365
+@HOLY_REALM_BUDDHA_POWER_STANDARD_COOLDOWN_DAYS = 90
+@HOLY_REALM_BUDDHA_POWER_MAJOR_COOLDOWN_DAYS = 180
 @HOLY_REALM_MANDALA_JOINT_DEFENSE_FACTION_INITIATIVE = 1
 @HOLY_REALM_MANDALA_JOINT_DEFENSE_POWER_PROJECTION = 85
 @HOLY_REALM_PILGRIMAGE_ESCORT_DIVISION_FLOOR = 1
@@ -2619,16 +2621,23 @@ holy_realm_buddha_powers_category = {
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
 		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_root_trigger = { holy_realm_can_use_buddha_power_one_becomes_many = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_use_buddha_power_one_becomes_many = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.power_one_becomes_many_charge_cost }
+			multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+			holy_realm_add_meditation_charge = yes
+			holy_realm_apply_buddha_power_common_effects = yes
 			set_country_flag = holy_realm_power_one_becomes_many_used
 			set_country_flag = {
 				flag = holy_realm_power_one_becomes_many_active
 				days = @HOLY_REALM_ONE_BECOMES_MANY_DAYS
+			}
+			set_country_flag = {
+				flag = holy_realm_power_one_becomes_many_cooldown
+				days = @HOLY_REALM_BUDDHA_POWER_STANDARD_COOLDOWN_DAYS
 			}
 			set_variable = { holy_realm_one_becomes_many_missions = 0 }
 			FROM = {
@@ -2650,13 +2659,20 @@ holy_realm_buddha_powers_category = {
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
 		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_root_trigger = { holy_realm_can_use_buddha_power_passing_through_walls = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_use_buddha_power_passing_through_walls = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.power_passing_through_walls_charge_cost }
+			multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+			holy_realm_add_meditation_charge = yes
+			holy_realm_apply_buddha_power_common_effects = yes
 			set_country_flag = holy_realm_power_walls_used
+			set_country_flag = {
+				flag = holy_realm_power_walls_cooldown
+				days = @HOLY_REALM_BUDDHA_POWER_STANDARD_COOLDOWN_DAYS
+			}
 			if = {
 				limit = { FROM = { has_war_with = ROOT } }
 				set_country_flag = holy_realm_current_chaos_war_walls_used
@@ -2682,13 +2698,20 @@ holy_realm_buddha_powers_category = {
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
 		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_root_trigger = { holy_realm_can_use_buddha_power_walking_on_water = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_use_buddha_power_walking_on_water = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.power_walking_on_water_charge_cost }
+			multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+			holy_realm_add_meditation_charge = yes
+			holy_realm_apply_buddha_power_common_effects = yes
 			set_country_flag = holy_realm_power_water_used
+			set_country_flag = {
+				flag = holy_realm_power_water_cooldown
+				days = @HOLY_REALM_BUDDHA_POWER_STANDARD_COOLDOWN_DAYS
+			}
 			if = {
 				limit = { FROM = { has_war_with = ROOT } }
 				set_country_flag = holy_realm_current_chaos_war_water_used
@@ -2714,14 +2737,21 @@ holy_realm_buddha_powers_category = {
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
 		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_root_trigger = { holy_realm_can_use_buddha_power_lotus_bridge = yes }
 		target_trigger = { holy_realm_lotus_bridge_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_use_buddha_power_lotus_bridge = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.power_lotus_bridge_charge_cost }
+			multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+			holy_realm_add_meditation_charge = yes
+			holy_realm_apply_buddha_power_common_effects = yes
 			set_country_flag = holy_realm_power_water_used
 			set_country_flag = holy_realm_power_lotus_bridge_used
+			set_country_flag = {
+				flag = holy_realm_power_lotus_bridge_cooldown
+				days = @HOLY_REALM_BUDDHA_POWER_STANDARD_COOLDOWN_DAYS
+			}
 			holy_realm_start_lotus_bridge_watch = yes
 		}
 		ai_will_do = {
@@ -2737,13 +2767,20 @@ holy_realm_buddha_powers_category = {
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
 		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_root_trigger = { holy_realm_can_use_buddha_power_vanishing_from_sight = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_use_buddha_power_vanishing_from_sight = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.power_vanishing_from_sight_charge_cost }
+			multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+			holy_realm_add_meditation_charge = yes
+			holy_realm_apply_buddha_power_common_effects = yes
 			set_country_flag = holy_realm_power_vanish_used
+			set_country_flag = {
+				flag = holy_realm_power_vanish_cooldown
+				days = @HOLY_REALM_BUDDHA_POWER_STANDARD_COOLDOWN_DAYS
+			}
 			FROM = {
 				add_timed_idea = {
 					idea = holy_realm_power_vanished_sight
@@ -2765,13 +2802,20 @@ holy_realm_buddha_powers_category = {
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
 		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_root_trigger = { holy_realm_can_use_buddha_power_seated_in_sky = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_use_buddha_power_seated_in_sky = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.power_seated_in_sky_charge_cost }
+			multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+			holy_realm_add_meditation_charge = yes
+			holy_realm_apply_buddha_power_common_effects = yes
 			set_country_flag = holy_realm_power_sky_used
+			set_country_flag = {
+				flag = holy_realm_power_sky_cooldown
+				days = @HOLY_REALM_BUDDHA_POWER_MAJOR_COOLDOWN_DAYS
+			}
 			if = {
 				limit = { FROM = { has_war_with = ROOT } }
 				set_country_flag = holy_realm_current_chaos_war_sky_used
@@ -2797,13 +2841,20 @@ holy_realm_buddha_powers_category = {
 		cost = constant:holy_realm_decision.buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
 		target_array = global.enabled_countries_list
-		target_root_trigger = { holy_realm_can_use_buddha_power = yes }
+		target_root_trigger = { holy_realm_can_use_buddha_power_touching_sun_moon = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power = yes }
+		available = { holy_realm_can_use_buddha_power_touching_sun_moon = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			holy_realm_spend_buddha_power_charge = yes
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.power_touching_sun_moon_charge_cost }
+			multiply_temp_variable = { holy_realm_meditation_delta = -1 }
+			holy_realm_add_meditation_charge = yes
+			holy_realm_apply_buddha_power_common_effects = yes
 			set_country_flag = holy_realm_power_sun_moon_used
+			set_country_flag = {
+				flag = holy_realm_power_sun_moon_cooldown
+				days = @HOLY_REALM_BUDDHA_POWER_MAJOR_COOLDOWN_DAYS
+			}
 			if = {
 				limit = { holy_realm_chaos_at_least_world_collapse = yes }
 				set_country_flag = holy_realm_sun_moon_global_crisis_activation
@@ -2843,7 +2894,7 @@ holy_realm_buddha_powers_category = {
 		available = { holy_realm_can_extinguish_defilements = yes }
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
-			subtract_from_variable = { meditation_charge = constant:holy_realm_buddhahood.meditation_charge_max }
+			subtract_from_variable = { meditation_charge = constant:holy_realm_buddhahood.power_extinction_defilements_charge_cost }
 			set_country_flag = holy_realm_power_defilements_used
 			set_country_flag = holy_realm_final_silence_extinction_rite_completed
 			add_stability = 0.03
