@@ -139,6 +139,7 @@ The Holy Mandala decision GUI reuses `holy_realm_mandala_category_scripted_gui` 
 The Mandala states are registered in `interface/003_holy_realm.gfx`:
 
 - `GFX_holy_realm_mandala_dormant`
+- `GFX_holy_realm_mandala_dormant_animated`
 - `GFX_holy_realm_mandala_teaching`
 - `GFX_holy_realm_mandala_teaching_animated`
 - `GFX_holy_realm_mandala_meditation`
@@ -184,7 +185,7 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 ## Future Plans
 
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
-- Add animated frame-sheet variants for the remaining Mandala states and leader portrait stages. Static fallback Mandala and leader portrait stage DDS files are already wired; teaching, meditation, awakened, and Final Silence Mandala states have animated frame sheets.
+- Add animated frame-sheet variants for the remaining Mandala states and leader portrait stages. Static fallback Mandala and leader portrait stage DDS files are already wired; dormant, teaching, meditation, awakened, and Final Silence Mandala states have animated frame sheets.
 - Add deeper power-specific decision upgrades if later balance passes show the focus lattice needs more than route flags and Meditation Charge rewards.
 - Expand `holy_realm_false_buddha_echo_abroad` into a full rival cult country or portrait-stage return chain if the exiled echo route needs a later foreign crisis.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.
