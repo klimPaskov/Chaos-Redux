@@ -280,7 +280,10 @@ holy_realm_has_open_teaching_slot = {
 			check_variable = { active_teaching_missions < constant:holy_realm_decision.teaching_slot_awakened }
 		}
 		AND = {
-			has_country_flag = holy_realm_teaching_network_expanded
+			OR = {
+				has_country_flag = holy_realm_teaching_network_expanded
+				has_country_flag = holy_realm_governance_teaching_examiners
+			}
 			NOT = { holy_realm_buddha_path_unlocked = yes }
 			NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
 			NOT = { has_country_flag = holy_realm_focus_one_becomes_many }
@@ -288,6 +291,7 @@ holy_realm_has_open_teaching_slot = {
 		}
 		AND = {
 			NOT = { has_country_flag = holy_realm_teaching_network_expanded }
+			NOT = { has_country_flag = holy_realm_governance_teaching_examiners }
 			NOT = { holy_realm_buddha_path_unlocked = yes }
 			NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
 			NOT = { has_country_flag = holy_realm_focus_one_becomes_many }
@@ -324,6 +328,10 @@ holy_realm_sangha_compact_candidate_valid = {
 		AND = {
 			FROM = { has_country_flag = holy_realm_governance_pilgrim_assembly }
 			has_stability < 0.45
+		}
+		AND = {
+			FROM = { has_country_flag = holy_realm_governance_refuge_courts }
+			has_stability < 0.55
 		}
 	}
 }
