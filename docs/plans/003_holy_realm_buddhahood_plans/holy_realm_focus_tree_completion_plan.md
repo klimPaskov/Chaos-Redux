@@ -26,6 +26,7 @@ The second route-lock tranche is implemented in `common/national_focus/003_holy_
 - Anti-chaos powers branch: `THR_powers_are_not_toys`, `THR_one_becomes_many_focus`, `THR_path_through_walls`, `THR_lotus_bridge_focus`, and `THR_touch_sun_moon_focus` add focus-gated power pacing and route flags.
 - Disciplined power use: `holy_realm_power_restraint_doctrine` lowers ordinary Buddha power Meditation Charge cost from `20` to `15` while keeping the existing `is_special_chaos_country` target gate.
 - Final sequence alignment: `THR_doctrine_last_war` is localized as `The Last Wheel` and requires `THR_show_the_powers`; `THR_witnesses_gather` and `THR_extinction_of_defilements_focus` gate `THR_final_silence`; `THR_empty_seat` covers the non-terminal aftermath focus.
+- Empty Seat aftermath: `THR_witnesses_keep_the_record` follows `THR_empty_seat` and makes taught countries, Mandala mission hosts, observer hosts, development hosts, and valid compact members react to the non-terminal Final Silence outcome.
 
 The third route-lock tranche is implemented in `common/national_focus/003_holy_realm.txt` and the shared Schism-resolution helpers:
 
@@ -99,7 +100,7 @@ Implement these as focus-tree work, not only as decisions:
 6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection, anti-puppet clauses, and a crisis-only joint defense act. Remaining future-depth work is member refusal/exit events.
 7. Expansion/liberation: lower borderland and regional integration focuses now use pilgrimage, petition, corridor, and protection-ledger framing, while `THR_world_is_a_border` remains the explicit high-chaos coercive capstone. Remaining future-depth work is route-specific liberation events or refusal outcomes if later audits need more reactivity.
 8. Anti-chaos powers follow-up: dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses are implemented. Remaining future-depth work is only power-specific decision upgrades if balance requires more than route flags and charge/virtue rewards.
-9. Final Silence follow-up: add more aftermath mechanics behind `THR_empty_seat` and stronger witness reactions from taught countries or compact members.
+9. Final Silence follow-up: `THR_witnesses_keep_the_record` now adds aftermath mechanics behind `THR_empty_seat` and turns taught countries, Mandala-contact states, and valid compact members into Empty Seat witnesses. Remaining future-depth work is only event-text variants or longer reconstruction chains if later audits need more reactivity.
 10. Hidden Schism follow-up: branch visibility and all four outcome focuses are implemented. Remaining work is only future-depth material, such as making `holy_realm_false_buddha_echo_abroad` return through a foreign crisis if that route needs a later incident.
 
 ## Recommended Implementation Order
