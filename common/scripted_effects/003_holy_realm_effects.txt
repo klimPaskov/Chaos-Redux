@@ -585,7 +585,7 @@ holy_realm_complete_concentration_sequence = {
 	}
 }
 
-holy_realm_spend_buddha_power_charge = {
+holy_realm_apply_buddha_power_common_effects = {
 	holy_realm_ensure_buddhahood_counters = yes
 	if = {
 		limit = { NOT = { has_country_flag = holy_realm_buddha_power_super_event_shown } }
@@ -593,15 +593,6 @@ holy_realm_spend_buddha_power_charge = {
 		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.powers_of_the_awakened }
 		holy_realm_show_super_event = yes
 	}
-	if = {
-		limit = { has_country_flag = holy_realm_power_restraint_doctrine }
-		set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.buddha_power_disciplined_charge_cost }
-	}
-	else = {
-		set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.buddha_power_charge_cost }
-	}
-	multiply_temp_variable = { holy_realm_meditation_delta = -1 }
-	holy_realm_add_meditation_charge = yes
 	set_country_flag = holy_realm_buddha_power_demonstrated
 	set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.power_defilement_loss }
 	holy_realm_add_defilements = yes
