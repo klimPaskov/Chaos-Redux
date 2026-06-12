@@ -15,6 +15,9 @@
 @HOLY_REALM_MANDALA_JOINT_DEFENSE_POWER_PROJECTION = 85
 @HOLY_REALM_PILGRIMAGE_ESCORT_DIVISION_FLOOR = 1
 @HOLY_REALM_PILGRIMAGE_ROUTE_GUARDED_DAYS = 365
+@HOLY_REALM_FALSE_BUDDHA_ECHO_AI_FACTOR = 0.7
+@HOLY_REALM_FALSE_BUDDHA_ECHO_PRESSURE_FACTOR = 2
+@HOLY_REALM_FALSE_BUDDHA_ECHO_REACH_FACTOR = 1.5
 @holy_realm_ai_peace_branch_factor = 4
 @holy_realm_ai_peace_letter_factor = 0.8
 @holy_realm_ai_regional_peace_letter_factor = 0.4
@@ -2515,6 +2518,58 @@ holy_realm_false_buddha_category = {
 			modifier = {
 				factor = 2
 				check_variable = { compassion_drift > 40 }
+			}
+		}
+	}
+
+	THR_answer_false_buddha_echo_abroad = {
+		icon = generic_political_discourse
+		cost = constant:holy_realm_decision.false_buddha_echo_abroad_cost
+		days_remove = constant:holy_realm_decision.false_buddha_echo_abroad_days
+		target_array = global.enabled_countries_list
+		target_root_trigger = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_false_buddha_echo_abroad
+			check_variable = { mandala_reach > constant:holy_realm_buddhahood.false_buddha_echo_reach_required }
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				uses_normal_civilian_systems = yes
+				NOT = { is_holy_realm_country = yes }
+				NOT = { is_special_chaos_country = yes }
+				NOT = { has_country_flag = holy_realm_false_buddha_echo_contained_host }
+				OR = {
+					has_country_flag = holy_realm_bodhisattva_recent_visit
+					has_country_flag = holy_realm_mandala_mission
+					has_country_flag = holy_realm_bodhisattva_collapse_visit
+					has_stability < constant:holy_realm_buddhahood.false_buddha_echo_instability_threshold
+					has_war = yes
+				}
+			}
+		}
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_false_buddha_echo_abroad
+			check_variable = { mandala_reach > constant:holy_realm_buddhahood.false_buddha_echo_reach_required }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_false_buddha_echo_abroad
+		}
+		complete_effect = {
+			set_country_flag = holy_realm_memory_answered_false_buddha_echo_abroad
+			FROM = { country_event = { id = chaosx.nr3.131 days = 2 } }
+		}
+		ai_will_do = {
+			factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_AI_FACTOR
+			modifier = {
+				factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_PRESSURE_FACTOR
+				check_variable = { defilements > constant:holy_realm_buddhahood.false_buddha_defilements }
+			}
+			modifier = {
+				factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_REACH_FACTOR
+				check_variable = { mandala_reach > constant:holy_realm_buddhahood.false_buddha_echo_high_reach }
 			}
 		}
 	}
