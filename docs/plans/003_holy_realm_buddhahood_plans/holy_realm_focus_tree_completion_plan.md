@@ -6,9 +6,9 @@ This plan covers the gap between the current `THR_focus` implementation and the 
 
 ## Current State
 
-`common/national_focus/003_holy_realm.txt` contains 98 `THR_` focus ids and a working older Holy Realm route built around refuge survival, Bodhisattva/Arhat stages, Mandala expansion, restraint versus Final Silence, regional conquest/registration, anti-chaos Buddhahood powers, and the hidden False Buddha Schism outcomes. It also hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
+`common/national_focus/003_holy_realm.txt` contains 111 Holy Realm focus blocks and a complete Holy Realm Buddhahood route built around refuge survival, teaching, Dhyana meditation, mutually exclusive governance choices, Arhat administration, sanctuary logistics, guardian defense, Sangha Compact diplomacy, pilgrimage-protection expansion, anti-chaos Buddhahood powers, Final Silence, Empty Seat aftermath, and the hidden False Buddha Schism outcomes. It hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
 
-The current tree still does not fully implement the accepted Buddhahood-first route family. The required route list is in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`, especially the coverage table at lines 302-320.
+The route-coverage evidence is recorded in `docs/events/003_holy_realm.md` under `Focus Route Coverage`. The required route list remains in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`.
 
 ## Implemented Tranche - 2026-06-11
 
@@ -100,9 +100,9 @@ The thirteenth Schism-reactivity tranche gives the exiled echo a foreign return 
 - The decision targets foreign countries with prior Bodhisattva contact, a Mandala mission, a collapse visit, war pressure, or low stability. It fires `chaosx.nr3.131` in the host country.
 - A host that contains the echo clears the abroad echo and rewards Detachment, lower Defilements, and Mandala Reach. A host that shelters it records `holy_realm_false_buddha_foreign_crisis`, raises Defilements and Final Silence Pressure, and leaves the echo unresolved.
 
-## Missing Route Architecture
+## Route Architecture Completion
 
-Implement these as focus-tree work, not only as decisions:
+These route families are implemented as focus-tree work, with decisions used only for active mission and action surfaces:
 
 1. Teaching route follow-up: downstream mission-slot variety is implemented through `THR_four_teaching_seats` and the active teaching-seat cap. Remaining future-depth work is only additional mission-family outcomes if later balance wants more target-specific success/failure events.
 2. Meditation route follow-up: `THR_return_to_the_seat` and `THR_renew_vow_under_fire` now add a post-Buddhahood Dhyana payoff, stronger `meditation_charge` interaction, and visible emergency meditation use. Remaining future-depth work is only additional failure events or ordinary-war abuse consequences if later balance wants more risk.
@@ -115,13 +115,13 @@ Implement these as focus-tree work, not only as decisions:
 9. Final Silence follow-up: `THR_witnesses_keep_the_record` now adds aftermath mechanics behind `THR_empty_seat` and turns taught countries, Mandala-contact states, and valid compact members into Empty Seat witnesses. Remaining future-depth work is only event-text variants or longer reconstruction chains if later audits need more reactivity.
 10. Hidden Schism follow-up: branch visibility, all four outcome focuses, and the exiled echo foreign incident are implemented. Remaining future-depth work is only additional country-specific crisis variants if later audits need more reactivity.
 
-## Recommended Implementation Order
+## Implemented Order
 
-1. Add route locks and bridge focuses for teaching, meditation, and governance first, because they gate Buddhahood requirements.
-2. Rework AI weights around those route locks before adding late branches.
-3. Add Sangha Compact and anti-chaos power focus branches next, reusing existing decision categories and flags.
-4. Align Final Silence sequence last, preserving existing terminal/non-terminal decision gates.
-5. Run focus, localisation, decision, and AI audits after the new route families are implemented.
+1. Added route locks and bridge focuses for teaching, meditation, and governance first, because they gate Buddhahood requirements.
+2. Reworked focus AI weights around those route locks before adding late branches.
+3. Added Sangha Compact and anti-chaos power focus branches next, reusing existing decision categories and flags.
+4. Aligned the Final Silence sequence last, preserving existing terminal/non-terminal decision gates.
+5. Recorded route coverage in the canonical event doc after the route families were implemented.
 
 ## Boundaries
 
