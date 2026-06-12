@@ -62,11 +62,18 @@ The seventh sanctuary-logistics tranche makes the economic support route map-fac
 - `THR_snowline_clinics` adds support equipment, infrastructure, stability, Compassion, and relief Chaos reduction.
 - `THR_storehouses_for_world` adds a supply node, Command Power, and, when the Mandala of Nations exists, compact-member infrastructure aid and Sangha Cohesion.
 
+The eighth teaching-depth tranche adds staged mission capacity:
+
+- `THR_four_teaching_seats` branches after `THR_many_lamps_one_flame`, expands active teaching mission capacity from three to four, and opens late foreign teaching tools.
+- `holy_realm_has_open_teaching_slot`, `holy_realm_start_teaching_mission_slot`, and `holy_realm_finish_teaching_mission_slot` make teaching missions occupy a timed seat until their decision timer expires.
+- Translation House work now stages distant visits and foreign officer teaching. Teach under Bombardment stages collapsing-capital visits. `THR_four_teaching_seats` stages follow-up letters, Mandala missions, foreign pilgrims, and sympathetic-government support.
+- Buddhahood, One Becomes Many, or the One Becomes Many focus raises the active teaching cap to five.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
 
-1. Teaching route follow-up: add more downstream teaching payoffs and mission-slot variety beyond the route-lock chain.
+1. Teaching route follow-up: downstream mission-slot variety is implemented through `THR_four_teaching_seats` and the active teaching-seat cap. Remaining future-depth work is only additional mission-family outcomes if later balance wants more target-specific success/failure events.
 2. Meditation route follow-up: add later Dhyana payoffs, stronger interaction with `meditation_charge`, and visible post-Buddhahood meditation use beyond the route-lock chain.
 3. Governance route follow-up: let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools.
 4. Sanctuary logistics: implemented as Pilgrimage Roads, Monastery Workshops, Mountain Granaries, Snowline Clinics, and Storehouses for the World. Remaining future-depth work is only state-group specificity if a later map pass wants named Himalayan subregions instead of all controlled states.
