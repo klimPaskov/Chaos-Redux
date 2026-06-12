@@ -41,6 +41,12 @@ The fourth route-integration tranche formalizes the existing Mandala of Nations 
 - `THR_mandala_demand_anti_puppet_clauses` adds the requested anti-puppet compact action, removes hard-invalid members, refreshes member validity, and improves Sangha Cohesion.
 - `holy_realm_apply_sangha_governance_bonus` makes Council, Protector Regent, and Pilgrim Assembly choices alter compact actions: Council adds political capacity/cohesion, the Assembly adds refugee manpower/cohesion, and the Regent adds command capacity while straining cohesion and raising Defilements.
 
+The fifth anti-chaos power tranche expands the post-Buddhahood power branch:
+
+- `THR_read_pattern_suffering` gives Pattern of Suffering its own route focus, tied to the existing evolution, chaos enemies, or teaching evidence.
+- `THR_vanishing_from_sight_focus` and `THR_seated_in_sky_focus` give Vanishing from Sight and Seated in the Sky dedicated focus payoffs.
+- `THR_touch_sun_moon_focus` now requires the full named-power lattice: Pattern, One Becomes Many, Path through Walls, Lotus Bridge, Vanishing from Sight, and Seated in the Sky.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -52,7 +58,7 @@ Implement these as focus-tree work, not only as decisions:
 5. Guardian military: turn `THR_vow_keeper_regiments` and support nodes into a defensive guardian route with temple guards, pilgrimage escorts, mountain pass detachments, and anti-chaos defensive doctrine.
 6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection, and anti-puppet clauses. Remaining future-depth work is member refusal/exit events and crisis-specific shared defense missions.
 7. Expansion/liberation: replace broad ordinary annexation/registration rhetoric with the spec's pilgrimage and liberation framing where appropriate. Keep hard conquest as a corrupted/high-chaos route if retained.
-8. Anti-chaos powers follow-up: add dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses if the route needs one focus per named power rather than grouped power lanes.
+8. Anti-chaos powers follow-up: dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses are implemented. Remaining future-depth work is only power-specific decision upgrades if balance requires more than route flags and charge/virtue rewards.
 9. Final Silence follow-up: add more aftermath mechanics behind `THR_empty_seat` and stronger witness reactions from taught countries or compact members.
 10. Hidden Schism follow-up: branch visibility and all four outcome focuses are implemented. Remaining work is only future-depth material, such as making `holy_realm_false_buddha_echo_abroad` return through a foreign crisis if that route needs a later incident.
 
