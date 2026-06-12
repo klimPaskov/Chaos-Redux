@@ -27,10 +27,37 @@ Review assets:
 - Processed PNGs: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/mandala_static_contact_sheet.png`
 
+## Holy Mandala Awakened Animation
+
+The Buddhahood-complete Mandala state uses an animated frame sheet while preserving the static awakened DDS as its fallback.
+
+| Field | Value |
+| --- | --- |
+| Static sprite alias | `GFX_holy_realm_mandala_awakened` |
+| Animated sprite alias | `GFX_holy_realm_mandala_awakened_animated` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened.dds` |
+| Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds` |
+| Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/sheets/holy_realm_mandala_awakened_sheet.png` |
+| Frame size | `420x420` |
+| Frame count | `12` |
+| Sheet size | `5040x420` |
+| FPS | `8` |
+| Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Target `.gfx` | `interface/003_holy_realm.gfx` |
+| Target GUI | `interface/chaosx_decisions.gui` and `common/scripted_guis/chaosx_scripted_guis.txt` |
+| State gate | `GetHolyRealmMandalaSprite` returns the animated sprite when `holy_realm_has_buddha_mandate = yes` |
+| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/interface/core.gfx`, `interface/007_fury.gfx` |
+
+Review assets:
+
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/processed_frames/`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_contact.png`
+
 Remaining animation handoff:
 
-- These static states do not replace the final animated frame-sheet package from the asset spec.
-- Future animation should preserve the sprite naming pattern by adding `_animated` variants, for example `GFX_holy_realm_mandala_awakened_animated`, with static fallbacks left in place.
+- Dormant, teaching, meditation, wrathful, final-silence, and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
 
 ## Holy Realm Static Leader Portrait Stages
 
