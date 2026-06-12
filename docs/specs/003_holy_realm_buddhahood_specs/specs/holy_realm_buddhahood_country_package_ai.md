@@ -20,13 +20,13 @@ If the event transforms an existing country, use cosmetic tags, leaders, advisor
 | State | Trigger | Name direction | Leader direction |
 | --- | --- | --- | --- |
 | Ordinary target | Before event | Existing country name | Existing leader |
-| Holy Realm | Event reveal | Holy Realm or origin-specific holy name | Bodhisattva leader |
+| Holy Realm | Event reveal | The Holy Realm, regardless of Tibet, Bhutan, or Nepal origin | Bodhisattva leader |
 | Great Bodhisattva Realm | Bodhi high and Dhyana 3 | More sacred but not final | Great Bodhisattva portrait |
 | Awakened Realm | Buddhahood | The Awakened Realm or The Holy Mandala | Buddha portrait |
 | Empty Seat | Final Silence aftermath | Realm of the Empty Seat or Silent Mandala | Empty Seat council or successor |
 | False Mandala | Schism route | False Mandala or Worldly Mandala | False Buddha or Protector Regent |
 
-Ideology-specific names should exist for democratic, neutrality, fascism, and communism if the country can switch ideology. If the event locks ideology, cosmetic names and party names should still reflect route identity.
+The base event-reveal identity must not branch into Tibet-, Bhutan-, or Nepal-specific Holy Realm names. Ideology-specific names should exist for democratic, neutrality, fascism, and communism if the country can switch ideology. If the event locks ideology, cosmetic names and party names should still reflect route identity.
 
 ## Leader and portrait plan
 
