@@ -50,7 +50,7 @@ Tuning is centralized in `common/script_constants/003_holy_realm_constants.txt` 
 
 ## Meditation Sequence
 
-The meditation route uses a concentration sequence:
+The meditation route uses a concentration sequence because HOI4 scripted GUI exposes click effects, visibility, scripted properties, and tooltips, but does not provide a reliable continuous held-mouse timer for a 180-second channel. The implemented sequence preserves the required visible commitment without turning meditation into an instant purchase:
 
 1. `Begin the Concentration Vow`
 2. `Hold Intention`
@@ -58,7 +58,7 @@ The meditation route uses a concentration sequence:
 4. `Hold Mind`
 5. `Hold Investigation`
 
-The four hold decisions must be completed while the sequence flags are active. Completion grants Bodhi, Detachment, Meditation Charge, and can advance Dhyana if enough Meditation Charge is present.
+The four hold decisions must be completed while the sequence flags are active. The animated Dhyana Seal icon and meditation Mandala state mark the active vow. Completion grants Bodhi, Detachment, Meditation Charge, and can advance Dhyana if enough Meditation Charge is present.
 
 ## Buddha Powers
 
@@ -135,6 +135,8 @@ The Holy Mandala decision GUI reuses `holy_realm_mandala_category_scripted_gui` 
 - Defilements
 - Chaos and Final Silence Pressure
 - clickable Refuge, Arhats, Diplomacy, Doctrine, and Ledger tabs for contextual route text
+
+The panel is attached to `holy_realm_mandala_category` through the decision-category scripted GUI path. Its interface container is `holy_realm_mandala_category_container` in `interface/chaosx_decisions.gui`; its scripted behavior is in `common/scripted_guis/chaosx_scripted_guis.txt`. A separate full-screen replacement panel can deepen presentation later, but the required live Mandala panel surface is the current decision-category GUI.
 
 The Mandala states are registered in `interface/003_holy_realm.gfx`:
 
