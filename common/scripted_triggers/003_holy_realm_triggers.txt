@@ -256,6 +256,59 @@ holy_realm_lotus_bridge_target_valid = {
 	}
 }
 
+holy_realm_sangha_compact_alignment_valid = {
+	OR = {
+		has_defensive_war = yes
+		any_enemy_country = { is_special_chaos_country = yes }
+		any_neighbor_country = { is_special_chaos_country = yes }
+		has_country_flag = holy_realm_bodhisattva_recent_visit
+		has_country_flag = holy_realm_mandala_observer_recent
+		has_country_flag = holy_realm_mandala_development_recent_country
+		has_country_flag = holy_realm_mandala_mission
+	}
+}
+
+holy_realm_sangha_compact_candidate_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	is_in_faction = no
+	has_offensive_war = no
+	NOT = { is_holy_realm_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_war_with = FROM }
+	NOT = { has_country_flag = holy_realm_peace_letter_blocked }
+	OR = {
+		holy_realm_sangha_compact_alignment_valid = yes
+		AND = {
+			FROM = { has_country_flag = holy_realm_governance_pilgrim_assembly }
+			has_stability < 0.45
+		}
+	}
+}
+
+holy_realm_sangha_compact_member_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	has_offensive_war = no
+	NOT = { is_holy_realm_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	holy_realm_sangha_compact_alignment_valid = yes
+}
+
+holy_realm_sangha_compact_member_hard_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	has_offensive_war = no
+	NOT = { is_holy_realm_country = yes }
+	NOT = { is_special_chaos_country = yes }
+}
+
 holy_realm_bhutan_conquest_target_valid = {
 	BHU = {
 		exists = yes
