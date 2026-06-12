@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, and leader portrait static fallback assets.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, leader portrait static fallback assets, and the Buddha Mandate leader portrait animation.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -17,6 +17,7 @@ Source mode:
 - `$imagegen` for the Wrathful Mandala animation source frames.
 - `$imagegen` for the Final Silence Mandala animation source frames.
 - `$imagegen` for the Empty Seat Mandala animation source frames.
+- `$imagegen` for the Buddha Mandate leader portrait animation source frames.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
 - Local ImageMagick procedural composition for static Mandala GUI fallback states.
 - Local ImageMagick stage treatment for static leader portrait fallbacks derived from the existing fictional Holy Realm leader portrait.
@@ -33,6 +34,7 @@ DDS conversion note:
 - Final Silence Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Empty Seat Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
 - Leader portrait fallback DDS files were validated for existence and `156x210` dimensions after export.
+- Buddha Mandate portrait animation sheet DDS was validated for existence and `1248x210` dimensions after export.
 
 ## Static Mandala GUI Fallbacks
 
@@ -443,9 +445,59 @@ Frame source notes:
 | 006 | still seat | `source_frames/holy_realm_mandala_empty_006_source.png` |
 | 007 | seam frame | `source_frames/holy_realm_mandala_empty_007_source.png` |
 
+## Buddha Mandate Leader Portrait Animation
+
+This animated frame sheet is the live Buddhahood and Buddha Mandate leader portrait sprite. The existing static Buddha Mandate DDS remains registered as the fallback.
+
+Reference inspection completed:
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
+- `interface/007_fury.gfx`
+- `interface/007_fury_leader_overlay.gui`
+
+| Field | Value |
+| --- | --- |
+| Asset name | `portrait_THR_buddha_mandate` |
+| Asset type | animated leader portrait sprite |
+| Intended in-game use | Buddhahood and Buddha Mandate leader portrait stage |
+| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/source_frames/` |
+| Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/processed_frames/` |
+| Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/sheets/portrait_THR_buddha_mandate_sheet.png` |
+| Final sheet DDS | `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds` |
+| Static fallback DDS | `gfx/leaders/THR/portrait_THR_buddha_mandate.dds` |
+| Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/previews/portrait_THR_buddha_mandate_preview.gif` |
+| Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/previews/portrait_THR_buddha_mandate_contact.png` |
+| Target size | `156x210` per frame |
+| Frame count | `8` |
+| Sheet size | `1248x210` |
+| Animation rate | `8` FPS |
+| Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Static sprite | `GFX_portrait_THR_buddha_mandate` |
+| Animated sprite | `GFX_portrait_THR_buddha_mandate_animated` |
+| `.gfx` file | `interface/chaosx_characters.gfx` |
+| Gameplay wiring | `holy_realm_set_stage_buddha_mandate` sets the country leader portrait to the animated sprite |
+| Event details wiring | `GetEventsLogSelectedEvolutionImage` returns the animated sprite for Holy Realm evolution stage 4 |
+| Prompt record | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/notes/source_prompts.md` |
+| Asset status | `complete` |
+
+Frame source notes:
+
+| Frame | Motion state | Source PNG |
+| --- | --- | --- |
+| 000 | resting radiance | `source_frames/portrait_THR_buddha_mandate_000_source.png` |
+| 001 | first breath | `source_frames/portrait_THR_buddha_mandate_001_source.png` |
+| 002 | crown ignition | `source_frames/portrait_THR_buddha_mandate_002_source.png` |
+| 003 | awakened eyes | `source_frames/portrait_THR_buddha_mandate_003_source.png` |
+| 004 | full mandate | `source_frames/portrait_THR_buddha_mandate_004_source.png` |
+| 005 | compassionate settling | `source_frames/portrait_THR_buddha_mandate_005_source.png` |
+| 006 | quiet jewel echo | `source_frames/portrait_THR_buddha_mandate_006_source.png` |
+| 007 | return to rest | `source_frames/portrait_THR_buddha_mandate_007_source.png` |
+
 ## Static Leader Portrait Fallbacks
 
-These assets provide visible stage changes for the existing Holy Realm leader portrait aliases. They are static DDS fallbacks derived from the existing fictional `GFX_portrait_THR_godly_figure` source and do not replace the animated portrait frame-sheet package requested by the full asset spec.
+These assets provide visible stage changes for the existing Holy Realm leader portrait aliases. They are static DDS fallbacks derived from the existing fictional `GFX_portrait_THR_godly_figure` source. The Buddha Mandate stage also has an animated frame-sheet package recorded above.
 
 Reference inspection completed:
 - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`

@@ -223,9 +223,37 @@ Review assets:
 - Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_preview.gif`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_contact.png`
 
+## Holy Realm Buddha Mandate Leader Portrait Animation
+
+The Buddhahood-stage leader portrait uses an animated frame sheet while preserving the static Buddha Mandate DDS as its fallback.
+
+| Field | Value |
+| --- | --- |
+| Static sprite alias | `GFX_portrait_THR_buddha_mandate` |
+| Animated sprite alias | `GFX_portrait_THR_buddha_mandate_animated` |
+| Static fallback DDS | `gfx/leaders/THR/portrait_THR_buddha_mandate.dds` |
+| Animated sheet DDS | `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds` |
+| Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/sheets/portrait_THR_buddha_mandate_sheet.png` |
+| Frame size | `156x210` |
+| Frame count | `8` |
+| Sheet size | `1248x210` |
+| FPS | `8` |
+| Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Target `.gfx` | `interface/chaosx_characters.gfx` |
+| Gameplay use | `holy_realm_set_stage_buddha_mandate` sets the country leader portrait to the animated sprite |
+| Event-details use | Holy Realm evolution stage 4 returns the animated portrait sprite |
+| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `interface/007_fury.gfx` |
+
+Review assets:
+
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/processed_frames/`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/previews/portrait_THR_buddha_mandate_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/previews/portrait_THR_buddha_mandate_contact.png`
+
 ## Holy Realm Static Leader Portrait Stages
 
-The existing stage aliases in `interface/chaosx_characters.gfx` now point to separate static DDS files. These are static fallbacks derived from the existing fictional Holy Realm leader portrait and do not replace animated portrait frame sheets.
+The existing stage aliases in `interface/chaosx_characters.gfx` now point to separate static DDS files. These are static fallbacks derived from the existing fictional Holy Realm leader portrait.
 
 | Stage | Sprite alias | DDS |
 | --- | --- | --- |
@@ -246,7 +274,7 @@ Review assets:
 
 Remaining animation handoff:
 
-- Future animation should preserve the sprite naming pattern by adding `_animated` variants where the target surface supports a frame sheet.
+- The Empty Seat portrait remains the required leader portrait animation still to be completed.
 
 ## Completed DDS triplets
 

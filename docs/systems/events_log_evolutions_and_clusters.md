@@ -141,7 +141,7 @@ Sprites currently used:
 - `GFX_portrait_THR_refuge_bodhisattva`
 - `GFX_portrait_THR_bodhisattva_pramudita`
 - `GFX_portrait_THR_arhat_administration`
-- `GFX_portrait_THR_buddha_mandate`
+- `GFX_portrait_THR_buddha_mandate_animated`
 - `GFX_portrait_THR_divine_sovereignty`
 - `GFX_portrait_THR_final_silence`
 
