@@ -679,18 +679,26 @@ holy_realm_mandala_category = {
 			available = {
 				is_holy_realm_country = yes
 				has_country_flag = holy_realm_dharma_teachings_unlocked
+				custom_trigger_tooltip = {
+					tooltip = holy_realm_teaching_slot_available_tt
+					holy_realm_has_open_teaching_slot = yes
+				}
 			}
 			visible = {
 				is_holy_realm_country = yes
 				has_country_flag = holy_realm_dharma_teachings_unlocked
 			}
 			complete_effect = {
+				holy_realm_start_teaching_mission_slot = yes
 				random_list = {
 					35 = { country_event = { id = chaosx.nr3.110 hours = 6 } }
 					25 = { country_event = { id = chaosx.nr3.111 hours = 6 } }
 					25 = { country_event = { id = chaosx.nr3.112 hours = 6 } }
 					15 = { country_event = { id = chaosx.nr3.113 hours = 6 } }
 				}
+			}
+			remove_effect = {
+				holy_realm_finish_teaching_mission_slot = yes
 			}
 		ai_will_do = { factor = 2 }
 	}
@@ -1654,6 +1662,10 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 32 }
 			OR = {
 				NOT = { has_variable = bodhisattva_bhumi }
@@ -1665,6 +1677,7 @@ holy_realm_bodhisattva_category = {
 			has_country_flag = holy_realm_dharma_teachings_unlocked
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			set_country_flag = holy_realm_bodhisattva_mission_refuge_memory
 			holy_realm_advance_bodhisattva_bhumi = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
@@ -1678,6 +1691,9 @@ holy_realm_bodhisattva_category = {
 				set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
 				holy_realm_add_chaos = yes
 			}
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 2 }
 	}
@@ -1698,6 +1714,10 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 42 }
 		}
 		visible = {
@@ -1705,10 +1725,14 @@ holy_realm_bodhisattva_category = {
 			has_country_flag = holy_realm_dharma_teachings_unlocked
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			FROM = { country_event = { id = chaosx.nr3.120 days = 2 } }
 			set_country_flag = holy_realm_memory_bodhisattva_neighbor_visit
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -1730,18 +1754,28 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_focus_translation_houses
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 50 }
 			check_variable = { mandala_reach > 35 }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_focus_translation_houses
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			FROM = { country_event = { id = chaosx.nr3.121 days = 3 } }
 			set_country_flag = holy_realm_memory_bodhisattva_distant_visit
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 0.5 }
 	}
@@ -1774,20 +1808,30 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_bombardment_missions_unlocked
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 60 }
 			check_variable = { mandala_reach > 45 }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_bombardment_missions_unlocked
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			FROM = { country_event = { id = chaosx.nr3.122 days = 2 } }
 			set_country_flag = holy_realm_memory_bodhisattva_collapse_visit
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_spiritual_legitimacy = yes
 			set_temp_variable = { holy_realm_ash_mercy_under_threat = 1 }
 			holy_realm_record_ash_mercy_mission = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 0.4 }
 	}
@@ -1799,6 +1843,10 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 38 }
 		}
 		visible = {
@@ -1806,6 +1854,7 @@ holy_realm_bodhisattva_category = {
 			has_country_flag = holy_realm_dharma_teachings_unlocked
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			add_stability = 0.02
 			add_manpower = 45000
 			holy_realm_advance_bodhisattva_bhumi = yes
@@ -1815,6 +1864,9 @@ holy_realm_bodhisattva_category = {
 			holy_realm_add_compassion_drift = yes
 			set_temp_variable = { holy_realm_ash_mercy_under_threat = 0 }
 			holy_realm_record_ash_mercy_mission = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 1.2 }
 	}
@@ -1826,19 +1878,29 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_focus_translation_houses
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 48 }
 			check_variable = { mandala_reach > 30 }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_focus_translation_houses
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			army_experience = 50
 			add_command_power = 35
 			holy_realm_advance_bodhisattva_bhumi = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 0.8 }
 	}
@@ -1862,16 +1924,26 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 48 }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			FROM = { country_event = { id = chaosx.nr3.123 days = 2 } }
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_spiritual_legitimacy = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 0.8 }
 	}
@@ -1896,14 +1968,21 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 62 }
 			check_variable = { mandala_reach > 48 }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			FROM = {
 				set_country_flag = holy_realm_mandala_mission
 				add_opinion_modifier = {
@@ -1913,6 +1992,9 @@ holy_realm_bodhisattva_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 0.5 }
 	}
@@ -1924,13 +2006,20 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 45 }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			add_stability = 0.01
 			add_manpower = 25000
 			set_country_flag = holy_realm_memory_foreign_pilgrims
@@ -1938,6 +2027,9 @@ holy_realm_bodhisattva_category = {
 			holy_realm_add_spiritual_legitimacy = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -1959,15 +2051,25 @@ holy_realm_bodhisattva_category = {
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
 			check_variable = { spiritual_legitimacy > 72 }
 			check_variable = { mandala_reach > 58 }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_teaching_network_expanded
 		}
 		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
 			FROM = { country_event = { id = chaosx.nr3.124 days = 2 } }
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = {
 			factor = 0.15

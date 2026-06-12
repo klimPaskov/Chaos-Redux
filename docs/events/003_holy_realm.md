@@ -22,7 +22,7 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
 5. Bhutan, Nepal, and Tibet can receive a Himalayan unity invitation through `chaosx.nr3.3`.
 6. The focus tree drives the major stages through country flags and focus prerequisites. Evolutions are reserved for special crises or transformations rather than normal stage advancement.
    - `THR_bodhisattva_accepts_seal` fires the Bodhisattva stage.
-   - `THR_send_first_envoys`, `THR_translation_houses`, `THR_teach_under_bombardment`, and `THR_many_lamps_one_flame` expose the teaching route and require successful teaching missions, including a crisis teaching success, before the Unshaken Seat.
+   - `THR_send_first_envoys`, `THR_translation_houses`, `THR_teach_under_bombardment`, and `THR_many_lamps_one_flame` expose the teaching route and require successful teaching missions, including a crisis teaching success, before the Unshaken Seat. `THR_four_teaching_seats` expands the teaching network after the requirement gate and reveals late foreign teaching tools.
    - `THR_sit_beneath_prayer_flags`, `THR_first_quiet`, `THR_second_quiet`, `THR_third_quiet`, and `THR_fourth_quiet` expose the Dhyana route and require the concentration sequence to raise `dhyana_depth`.
    - `THR_council_of_abbots`, `THR_name_protector_regent`, and `THR_seat_pilgrim_assembly` are the mutually exclusive early governance choices before the Unshaken Seat.
    - `THR_arhats_take_office` creates the Arhat Administration.
@@ -85,6 +85,8 @@ Arhat Administration and Buddha Mandate are mid-game power spikes. They unlock s
 The guardian branch now runs through `THR_vow_keeper_regiments`, `THR_shelters_under_stone` as Fortress Without Hatred, `THR_quiet_mobilization` as Mountain Pass Detachments, `THR_mountain_artillery_mandalas` as The Bell and Rifle, and `THR_unbroken_pass` as the anti-chaos defensive capstone. The capstone requires real chaos pressure, a recent capital-sanctuary fall, or Chaos Tier pressure and applies the Last-Pass Mobilization idea without opening ordinary conquest tools.
 
 The sanctuary logistics branch now names its map work directly: `THR_count_mountain_roads` is Pilgrimage Roads, `THR_monastic_labor_vows` is Monastery Workshops, and the follow-up focuses `THR_mountain_granaries`, `THR_snowline_clinics`, and `THR_storehouses_for_world` add granaries, clinics, supply nodes, support equipment, and compact infrastructure aid.
+
+The teaching route uses active teaching seats to keep the Bodhisattva category paced. Basic Dharma teaching work can run up to three timed teaching missions at once. `THR_four_teaching_seats` raises the cap to four and reveals late follow-up letters, foreign pilgrimage, Mandala missions, and sympathetic-government support. Buddhahood, One Becomes Many, or the One Becomes Many focus raises the cap to five.
 
 The Mandala of Nations is the peaceful Sangha Compact route. Its goals are completed through decision-based acts of kindness:
 

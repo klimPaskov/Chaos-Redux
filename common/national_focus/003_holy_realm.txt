@@ -17,6 +17,7 @@
 @holy_realm_ai_totalen_chaos_final_factor = 4
 @holy_realm_ai_world_collapse_final_factor = 8
 @holy_realm_ai_teaching_path_factor = 3
+@holy_realm_ai_teaching_crisis_factor = 2
 @holy_realm_ai_meditation_path_factor = 3
 @holy_realm_ai_governance_path_factor = 2
 @holy_realm_ai_protector_regent_threat_factor = 3
@@ -640,6 +641,42 @@ focus_tree = {
 		}
 		ai_will_do = {
 			factor = @holy_realm_ai_teaching_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_TEACHING
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_BODHI, THR_TAG_TEACHING, THR_TAG_UNLOCK
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_four_teaching_seats
+		icon = GFX_goal_THR_diplomacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 29
+		y = 7
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_many_lamps_one_flame }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_four_teaching_seats
+			set_country_flag = holy_realm_teaching_network_expanded
+			custom_effect_tooltip = THR_four_teaching_seats_effect_tt
+			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_focus_gain }
+			holy_realm_add_bodhi_progress = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+			add_command_power = constant:holy_realm_focus_reward.teaching_network_command_power
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_teaching_path_factor
+			modifier = {
+				factor = @holy_realm_ai_teaching_crisis_factor
+				OR = {
+					holy_realm_chaos_at_least_chaos_tier = yes
+					any_enemy_country = { is_special_chaos_country = yes }
+				}
+			}
 		}
 	}
 

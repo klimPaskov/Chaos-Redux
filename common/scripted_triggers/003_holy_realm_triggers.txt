@@ -256,6 +256,34 @@ holy_realm_lotus_bridge_target_valid = {
 	}
 }
 
+holy_realm_has_open_teaching_slot = {
+	OR = {
+		NOT = { has_variable = active_teaching_missions }
+		AND = {
+			OR = {
+				holy_realm_buddha_path_unlocked = yes
+				has_country_flag = holy_realm_power_one_becomes_many_active
+				has_country_flag = holy_realm_focus_one_becomes_many
+			}
+			check_variable = { active_teaching_missions < constant:holy_realm_decision.teaching_slot_awakened }
+		}
+		AND = {
+			has_country_flag = holy_realm_teaching_network_expanded
+			NOT = { holy_realm_buddha_path_unlocked = yes }
+			NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
+			NOT = { has_country_flag = holy_realm_focus_one_becomes_many }
+			check_variable = { active_teaching_missions < constant:holy_realm_decision.teaching_slot_expanded }
+		}
+		AND = {
+			NOT = { has_country_flag = holy_realm_teaching_network_expanded }
+			NOT = { holy_realm_buddha_path_unlocked = yes }
+			NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
+			NOT = { has_country_flag = holy_realm_focus_one_becomes_many }
+			check_variable = { active_teaching_missions < constant:holy_realm_decision.teaching_slot_base }
+		}
+	}
+}
+
 holy_realm_sangha_compact_alignment_valid = {
 	OR = {
 		has_defensive_war = yes
