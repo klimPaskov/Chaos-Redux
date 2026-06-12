@@ -421,6 +421,29 @@ holy_realm_record_teaching_success = {
 	holy_realm_try_record_pattern_of_suffering_evolution = yes
 }
 
+holy_realm_start_teaching_mission_slot = {
+	holy_realm_ensure_buddhahood_counters = yes
+	if = {
+		limit = { NOT = { has_variable = active_teaching_missions } }
+		set_variable = { active_teaching_missions = 0 }
+	}
+	add_to_variable = { active_teaching_missions = 1 }
+}
+
+holy_realm_finish_teaching_mission_slot = {
+	if = {
+		limit = { has_variable = active_teaching_missions }
+		add_to_variable = { active_teaching_missions = -1 }
+	}
+	if = {
+		limit = {
+			has_variable = active_teaching_missions
+			check_variable = { active_teaching_missions < 0 }
+		}
+		set_variable = { active_teaching_missions = 0 }
+	}
+}
+
 holy_realm_record_ash_mercy_mission = {
 	holy_realm_ensure_buddhahood_counters = yes
 	if = {
