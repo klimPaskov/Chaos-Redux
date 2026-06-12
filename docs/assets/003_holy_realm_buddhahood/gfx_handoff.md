@@ -27,6 +27,34 @@ Review assets:
 - Processed PNGs: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/mandala_static_contact_sheet.png`
 
+## Holy Mandala Meditation Animation
+
+The active concentration and Dhyana-progress Mandala state uses an animated frame sheet while preserving the static meditation DDS as its fallback.
+
+| Field | Value |
+| --- | --- |
+| Static sprite alias | `GFX_holy_realm_mandala_meditation` |
+| Animated sprite alias | `GFX_holy_realm_mandala_meditation_animated` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation.dds` |
+| Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds` |
+| Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/sheets/holy_realm_mandala_meditation_sheet.png` |
+| Frame size | `420x420` |
+| Frame count | `12` |
+| Sheet size | `5040x420` |
+| FPS | `8` |
+| Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Target `.gfx` | `interface/003_holy_realm.gfx` |
+| Target GUI | `interface/chaosx_decisions.gui` and `common/scripted_guis/chaosx_scripted_guis.txt` |
+| State gate | `GetHolyRealmMandalaSprite` returns the animated sprite for concentration-step flags or any positive `dhyana_depth` before higher-priority states |
+| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/interface/core.gfx`, `interface/007_fury.gfx` |
+
+Review assets:
+
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/processed_frames/`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/previews/holy_realm_mandala_meditation_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/previews/holy_realm_mandala_meditation_contact.png`
+
 ## Holy Mandala Awakened Animation
 
 The Buddhahood-complete Mandala state uses an animated frame sheet while preserving the static awakened DDS as its fallback.
@@ -85,7 +113,7 @@ Review assets:
 
 Remaining animation handoff:
 
-- Dormant, teaching, meditation, wrathful, and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
+- Dormant, teaching, wrathful, and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
 
 ## Holy Realm Static Leader Portrait Stages
 

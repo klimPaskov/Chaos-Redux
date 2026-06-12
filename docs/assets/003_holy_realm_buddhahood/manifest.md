@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and awakened/final-silence animation assets, and leader portrait static fallback assets.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and meditation/awakened/final-silence animation assets, and leader portrait static fallback assets.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -10,6 +10,7 @@ Reference inspection completed:
 
 Source mode:
 - `$imagegen` for generated completed-state source art.
+- `$imagegen` for the Meditation Mandala animation source frames.
 - `$imagegen` for the awakened Mandala animation source frames.
 - `$imagegen` for the Final Silence Mandala animation source frames.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
@@ -20,6 +21,7 @@ DDS conversion note:
 - Local conversion used `convert -define dds:compression=none`.
 - Achievement DDS files were validated for existence and `64x64` dimensions after export.
 - Mandala fallback DDS files were validated for existence and `420x420` dimensions after export.
+- Meditation Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Awakened Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Final Silence Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Leader portrait fallback DDS files were validated for existence and `156x210` dimensions after export.
@@ -52,6 +54,62 @@ Validation:
 - All final DDS files are `420x420`.
 - `interface/003_holy_realm.gfx` registers all seven static sprites.
 - `common/scripted_localisation/003_holy_realm_scripted_localisation.txt` selects the active sprite through `GetHolyRealmMandalaSprite`.
+
+## Meditation Mandala Animation
+
+This asset is the frame-sheet package for the concentration-sequence and Dhyana-progress Holy Mandala decision-category scripted GUI state.
+
+Reference inspection completed:
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/interface/core.gfx`
+- `interface/007_fury.gfx`
+- `.agents/skills/chaos-redux-event-assets/assets/decisions/`
+
+| Field | Value |
+| --- | --- |
+| Asset name | `holy_realm_mandala_meditation` |
+| Asset type | animated scripted GUI state sprite |
+| Intended in-game use | Active concentration sequence or Dhyana progress central Mandala state in `holy_realm_mandala_category_scripted_gui` |
+| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/source_frames/` |
+| Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/processed_frames/` |
+| Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/sheets/holy_realm_mandala_meditation_sheet.png` |
+| Final sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation.dds` |
+| Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/previews/holy_realm_mandala_meditation_preview.gif` |
+| Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/previews/holy_realm_mandala_meditation_contact.png` |
+| Target size | `420x420` per frame |
+| Frame count | `12` |
+| Sheet size | `5040x420` |
+| Animation rate | `8` FPS |
+| Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Anchor point | center |
+| Static sprite | `GFX_holy_realm_mandala_meditation` |
+| Animated sprite | `GFX_holy_realm_mandala_meditation_animated` |
+| `.gfx` file | `interface/003_holy_realm.gfx` |
+| GUI files | `interface/chaosx_decisions.gui`, `common/scripted_guis/chaosx_scripted_guis.txt` |
+| Scripted localisation | `GetHolyRealmMandalaSprite` returns the animated sprite for concentration-step flags or any positive `dhyana_depth` before higher-priority states |
+| Prompt record | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/notes/source_prompts.md` |
+| Asset status | `complete` |
+
+Frame source notes:
+
+| Frame | Motion state | Source PNG |
+| --- | --- | --- |
+| 000 | resting breath | `source_frames/holy_realm_mandala_meditation_000_source.png` |
+| 001 | first inhale | `source_frames/holy_realm_mandala_meditation_001_source.png` |
+| 002 | gathered attention | `source_frames/holy_realm_mandala_meditation_002_source.png` |
+| 003 | second inhale | `source_frames/holy_realm_mandala_meditation_003_source.png` |
+| 004 | held concentration | `source_frames/holy_realm_mandala_meditation_004_source.png` |
+| 005 | bright stillness | `source_frames/holy_realm_mandala_meditation_005_source.png` |
+| 006 | settled stillness | `source_frames/holy_realm_mandala_meditation_006_source.png` |
+| 007 | first exhale | `source_frames/holy_realm_mandala_meditation_007_source.png` |
+| 008 | returning attention | `source_frames/holy_realm_mandala_meditation_008_source.png` |
+| 009 | low breath | `source_frames/holy_realm_mandala_meditation_009_source.png` |
+| 010 | final quiet | `source_frames/holy_realm_mandala_meditation_010_source.png` |
+| 011 | seam frame | `source_frames/holy_realm_mandala_meditation_011_source.png` |
 
 ## Awakened Mandala Animation
 
