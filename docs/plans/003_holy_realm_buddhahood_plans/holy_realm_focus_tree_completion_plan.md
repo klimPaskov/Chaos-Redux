@@ -33,6 +33,14 @@ The third route-lock tranche is implemented in `common/national_focus/003_holy_r
 - Schism refresh: `holy_realm_trigger_false_buddha_schism` marks the focus tree layout dirty after recording the evolution so the branch can appear in a live session.
 - Shared outcomes: the existing debate and suppression decisions now call the same scripted effects used by the focus branch. Exile ends immediate pressure while leaving `holy_realm_false_buddha_echo_abroad`; absorption is Totalen Chaos-gated and records `holy_realm_corrupted_buddhahood_route`.
 
+The fourth route-integration tranche formalizes the existing Mandala of Nations as the Sangha Compact implementation:
+
+- `thr_joining_rule_mandala_peace_only` now uses `holy_realm_sangha_compact_candidate_valid`, blocking special chaos countries, puppet/subject entrants, majors, existing faction members, offensive-war states, and countries without a chaos threat, teaching history, observer/development contact, or Pilgrim Assembly humanitarian opening.
+- `holy_realm_mandala_of_nations_member_joined` rejects invalid members and applies a Sangha Cohesion loss instead of letting them count toward the achievement/watch state.
+- `holy_realm_refresh_sangha_of_nations_status` counts only `holy_realm_sangha_compact_member_valid` members toward the eight-member high-cohesion requirement.
+- `THR_mandala_demand_anti_puppet_clauses` adds the requested anti-puppet compact action, removes hard-invalid members, refreshes member validity, and improves Sangha Cohesion.
+- `holy_realm_apply_sangha_governance_bonus` makes Council, Protector Regent, and Pilgrim Assembly choices alter compact actions: Council adds political capacity/cohesion, the Assembly adds refugee manpower/cohesion, and the Regent adds command capacity while straining cohesion and raising Defilements.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -42,7 +50,7 @@ Implement these as focus-tree work, not only as decisions:
 3. Governance route follow-up: let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools.
 4. Sanctuary logistics: reshape existing generic whole-country construction focuses into named sanctuary logistics: granaries, pilgrimage roads, clinics, workshops, storehouses, and supply support for allies/compact members.
 5. Guardian military: turn `THR_vow_keeper_regiments` and support nodes into a defensive guardian route with temple guards, pilgrimage escorts, mountain pass detachments, and anti-chaos defensive doctrine.
-6. Sangha Compact diplomacy: either rename and formalize the current `Mandala of Nations` as the accepted compact equivalent, or add a separate Sangha Compact lane with membership rules, cohesion, shared decisions, refusal/exit risks, and anti-puppet clauses.
+6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection, and anti-puppet clauses. Remaining future-depth work is member refusal/exit events and crisis-specific shared defense missions.
 7. Expansion/liberation: replace broad ordinary annexation/registration rhetoric with the spec's pilgrimage and liberation framing where appropriate. Keep hard conquest as a corrupted/high-chaos route if retained.
 8. Anti-chaos powers follow-up: add dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses if the route needs one focus per named power rather than grouped power lanes.
 9. Final Silence follow-up: add more aftermath mechanics behind `THR_empty_seat` and stronger witness reactions from taught countries or compact members.

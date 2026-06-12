@@ -24,30 +24,39 @@ thr_joining_rule_mandala_peace_only = {
 	}
 
 	trigger = {
-		is_major = no
-		is_in_faction = no
-		has_offensive_war = no
-		NOT = { has_war_with = FROM }
-		NOT = { has_country_flag = holy_realm_peace_letter_blocked }
+		holy_realm_sangha_compact_candidate_valid = yes
 	}
 
 	ai_will_do = {
 		base = 0.1
 		modifier = {
+			factor = 0
+			NOT = { holy_realm_sangha_compact_candidate_valid = yes }
+		}
+		modifier = {
+			factor = 3
+			any_enemy_country = { is_special_chaos_country = yes }
+		}
+		modifier = {
 			factor = 2
-			has_war = no
+			any_neighbor_country = { is_special_chaos_country = yes }
 		}
 		modifier = {
-			factor = 0
-			is_major = yes
+			factor = 2
+			has_country_flag = holy_realm_bodhisattva_recent_visit
 		}
 		modifier = {
-			factor = 0
-			is_in_faction = yes
+			factor = 1.5
+			has_country_flag = holy_realm_mandala_observer_recent
 		}
 		modifier = {
-			factor = 0
-			has_offensive_war = yes
+			factor = 1.5
+			has_country_flag = holy_realm_mandala_development_recent_country
+		}
+		modifier = {
+			factor = 1.5
+			FROM = { has_country_flag = holy_realm_governance_pilgrim_assembly }
+			has_stability < 0.45
 		}
 	}
 }
