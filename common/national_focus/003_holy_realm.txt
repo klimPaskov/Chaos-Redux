@@ -2264,6 +2264,45 @@ focus_tree = {
 	}
 
 	# THR FOCUS TAGS:
+	# area = THR_TAG_FINAL_SILENCE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_EMPTY_SEAT, THR_TAG_COMPACT, THR_TAG_TEACHING, THR_TAG_AFTERMATH
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_witnesses_keep_the_record
+		icon = GFX_focus_generic_diplomatic_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_NIRVANA FOCUS_FILTER_HOLY_REALM_COMPACT FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 18
+		y = 16
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_empty_seat }
+		available = {
+			has_country_flag = holy_realm_final_silence_nonterminal_completed
+			has_country_flag = holy_realm_focus_empty_seat
+			OR = {
+				has_global_flag = holy_realm_mandala_of_nations_formed
+				check_variable = {
+					var = teaching_successes
+					value = constant:holy_realm_buddhahood.empty_seat_witnesses_required
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_witnesses_keep_the_record
+			custom_effect_tooltip = THR_witnesses_keep_the_record_effect_tt
+			holy_realm_empty_seat_gather_witnesses = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_peace_branch_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
 	# area = THR_TAG_POLITICAL
 	# tone = THR_TAG_PEACEFUL
 	# chaos = THR_TAG_NO_CHAOS_GATE

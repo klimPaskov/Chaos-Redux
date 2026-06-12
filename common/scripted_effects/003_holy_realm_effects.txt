@@ -2325,6 +2325,56 @@ holy_realm_complete_nonterminal_final_silence = {
 	holy_realm_refresh_world_threat_source = yes
 }
 
+holy_realm_empty_seat_gather_witnesses = {
+	holy_realm_ensure_buddhahood_counters = yes
+	if = {
+		limit = { NOT = { has_country_flag = holy_realm_empty_seat_witness_record_completed } }
+		set_country_flag = holy_realm_empty_seat_witness_record_completed
+		set_variable = { holy_realm_empty_seat_witnesses = 0 }
+		holy_realm_refresh_sangha_of_nations_status = yes
+		every_possible_country = {
+			limit = {
+				exists = yes
+				uses_normal_civilian_systems = yes
+				NOT = { is_holy_realm_country = yes }
+				OR = {
+					has_country_flag = holy_realm_bodhisattva_recent_visit
+					has_country_flag = holy_realm_mandala_mission
+					has_country_flag = holy_realm_mandala_observer_recent
+					has_country_flag = holy_realm_mandala_development_recent_country
+					AND = {
+						is_in_faction_with = ROOT
+						holy_realm_sangha_compact_member_valid = yes
+					}
+				}
+			}
+			set_country_flag = holy_realm_empty_seat_witness
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = holy_realm_empty_seat_witness_opinion
+			}
+			add_stability = constant:holy_realm_buddhahood.empty_seat_witness_stability_gain
+			if = {
+				limit = { is_in_faction_with = ROOT }
+				add_war_support = constant:holy_realm_buddhahood.empty_seat_witness_war_support_gain
+			}
+			ROOT = { add_to_variable = { holy_realm_empty_seat_witnesses = 1 } }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = holy_realm_empty_seat_witnesses
+					value = constant:holy_realm_buddhahood.empty_seat_witnesses_required
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = holy_realm_empty_seat_witnesses_gathered
+			set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.empty_seat_witness_sangha_cohesion_gain }
+			holy_realm_add_sangha_cohesion = yes
+		}
+	}
+}
+
 holy_realm_interrupt_final_silence = {
 	if = {
 		limit = { has_global_flag = world_end_final_silence }
