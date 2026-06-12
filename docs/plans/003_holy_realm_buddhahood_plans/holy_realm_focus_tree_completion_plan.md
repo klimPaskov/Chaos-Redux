@@ -80,6 +80,12 @@ The tenth governance-depth tranche gives each governance choice a later route ho
 - `THR_regent_pass_watch` gives Protector Regent governance a defensive follow-up with Command Power, support equipment, capital-pass fortification, anti-air, and a small Defilements cost.
 - `THR_pilgrim_refuge_courts` lets Pilgrim Assembly governance widen the low-stability humanitarian compact path and adds refugee manpower, Mandala Reach, and Sangha Cohesion.
 
+The eleventh expansion-framing tranche separates pilgrimage protection from coercive conquest:
+
+- The lower borderland branch now uses player-facing pilgrimage, petition, corridor, and protection-ledger language instead of broad ordinary annexation or submission language.
+- `THR_letters_beyond_passes` records `holy_realm_pilgrimage_protection_route` for audit and future decision/event hooks.
+- `THR_world_is_a_border` remains the explicit high-chaos coercive capstone, so hard expansion is still available only as a darker route rather than the default branch identity.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -90,7 +96,7 @@ Implement these as focus-tree work, not only as decisions:
 4. Sanctuary logistics: implemented as Pilgrimage Roads, Monastery Workshops, Mountain Granaries, Snowline Clinics, and Storehouses for the World. Remaining future-depth work is only state-group specificity if a later map pass wants named Himalayan subregions instead of all controlled states.
 5. Guardian military: `THR_vow_keeper_regiments` and its support nodes now form a defensive guardian route with Fortress Without Hatred, Mountain Pass Detachments, The Bell and Rifle, and The Unbroken Pass. Remaining future-depth work is pilgrimage escort mission integration and optional Temple Guard naming if the unit template needs a second non-mountaineer identity.
 6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection, and anti-puppet clauses. Remaining future-depth work is member refusal/exit events and crisis-specific shared defense missions.
-7. Expansion/liberation: replace broad ordinary annexation/registration rhetoric with the spec's pilgrimage and liberation framing where appropriate. Keep hard conquest as a corrupted/high-chaos route if retained.
+7. Expansion/liberation: lower borderland and regional integration focuses now use pilgrimage, petition, corridor, and protection-ledger framing, while `THR_world_is_a_border` remains the explicit high-chaos coercive capstone. Remaining future-depth work is route-specific liberation events or refusal outcomes if later audits need more reactivity.
 8. Anti-chaos powers follow-up: dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses are implemented. Remaining future-depth work is only power-specific decision upgrades if balance requires more than route flags and charge/virtue rewards.
 9. Final Silence follow-up: add more aftermath mechanics behind `THR_empty_seat` and stronger witness reactions from taught countries or compact members.
 10. Hidden Schism follow-up: branch visibility and all four outcome focuses are implemented. Remaining work is only future-depth material, such as making `holy_realm_false_buddha_echo_abroad` return through a foreign crisis if that route needs a later incident.
