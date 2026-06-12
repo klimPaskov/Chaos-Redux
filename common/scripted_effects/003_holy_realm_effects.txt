@@ -5,6 +5,8 @@
 
 @HOLY_REALM_CHAOS_REDUCTION_COOLDOWN_DAYS = 720
 @HOLY_REALM_MANDALA_PEACEKEEPING_COOLDOWN_DAYS = 365
+@HOLY_REALM_SANGHA_OF_NATIONS_WATCH_DAYS = 180
+@HOLY_REALM_LOTUS_BRIDGE_WATCH_DAYS = 180
 
 holy_realm_ensure_counters = {
 	if = {
@@ -510,10 +512,9 @@ holy_realm_refresh_sangha_of_nations_status = {
 		if = {
 			limit = { NOT = { has_country_flag = holy_realm_sangha_of_nations_watch_started } }
 			set_country_flag = holy_realm_sangha_of_nations_watch_started
-			set_temp_variable = { holy_realm_watch_days = constant:holy_realm_buddhahood.sangha_of_nations_watch_days }
 			set_country_flag = {
 				flag = holy_realm_sangha_of_nations_watch_maturing
-				days = holy_realm_watch_days
+				days = @HOLY_REALM_SANGHA_OF_NATIONS_WATCH_DAYS
 			}
 		}
 		set_country_flag = holy_realm_sangha_of_nations_watch_valid
@@ -546,10 +547,9 @@ holy_realm_start_lotus_bridge_watch = {
 	clr_country_flag = holy_realm_lotus_bridge_watch_valid
 	clr_country_flag = holy_realm_lotus_bridge_capital_fell
 	set_country_flag = holy_realm_lotus_bridge_watch_started
-	set_temp_variable = { holy_realm_watch_days = constant:holy_realm_buddhahood.lotus_bridge_watch_days }
 	set_country_flag = {
 		flag = holy_realm_lotus_bridge_watch_maturing
-		days = holy_realm_watch_days
+		days = @HOLY_REALM_LOTUS_BRIDGE_WATCH_DAYS
 	}
 	set_country_flag = holy_realm_lotus_bridge_watch_valid
 	save_global_event_target_as = holy_realm_lotus_bridge_actor
