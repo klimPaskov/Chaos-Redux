@@ -2,21 +2,22 @@
 
 ## Purpose
 
-Create the animated leader portrait frame sheet for The Holy Realm after Buddhahood and the Buddha Mandate stage. The static country-leader portrait remains available as the fallback, while the animated sprite provides the required frame-sheet asset package for scripted UI and portrait swap wiring.
+Create the animated leader portrait frame sheet for The Holy Realm after Buddhahood and the Buddha Mandate stage. The static country-leader portrait is generated from the same new portrait package, while the animated sprite provides the required frame-sheet asset package for event-log and UI presentation surfaces.
 
 ## Visual Direction
 
 - Fictional sacred leader portrait, not a real historical religious figure.
-- Match the existing Buddha Mandate fallback: frontal golden mask, jeweled crown, pale background, calm awakened expression.
-- Animation reads as controlled awakening: halo breathing, crown jewel glints, eye-light changes, and subtle gold aura variation.
+- Use new Buddha Mandate portrait source art: frontal golden mask, jeweled crown, temple shadows, calm awakened expression.
+- Animation reads as controlled awakening: very subtle halo breathing, crown jewel glints, eye-light changes, and gold aura variation across more frames.
+- Do not rely on a simple vignette, transform, zoom, warp, or color-filter pulse from one still image.
 - No readable text, letters, numbers, flags, maps, blood, gore, explosions, weapons, or modern UI.
 - Keep the head centered and readable at `156x210`.
 
 ## Technical Targets
 
-- Source frames: separate generated PNGs, one per planned frame.
+- Source frames: 16 generated PNGs split from a generated 4x4 animation source sheet.
 - Processed frames: `156x210` PNGs.
-- Final frame sheet: `1248x210` DDS, 8 horizontal frames.
+- Final frame sheet: `2496x210` DDS, 16 horizontal frames.
 - Static fallback: `gfx/leaders/THR/portrait_THR_buddha_mandate.dds`.
 - Animated sprite: `GFX_portrait_THR_buddha_mandate_animated`.
 
