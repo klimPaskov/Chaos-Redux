@@ -2198,6 +2198,65 @@ holy_realm_bodhisattva_category = {
 		ai_will_do = { factor = 3 }
 	}
 
+	THR_renew_vow_under_fire = {
+		icon = generic_protection
+		cost = constant:holy_realm_decision.renew_vow_under_fire_cost
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_awakened_meditation_seat
+			holy_realm_chaos_threatens_realm_or_compact = yes
+			capital_scope = { is_controlled_by = ROOT }
+			check_variable = {
+				var = dhyana_depth
+				value = constant:holy_realm_buddhahood.dhyana_max
+				compare = greater_than_or_equals
+			}
+			command_power > constant:holy_realm_decision.renew_vow_under_fire_command_power
+			has_equipment = { support_equipment > constant:holy_realm_decision.renew_vow_under_fire_support_equipment }
+			NOT = { has_country_flag = holy_realm_renew_vow_under_fire_cooldown }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_awakened_meditation_seat
+		}
+		complete_effect = {
+			custom_effect_tooltip = THR_renew_vow_under_fire_effect_tt
+			set_temp_variable = { holy_realm_command_power_spend = constant:holy_realm_decision.renew_vow_under_fire_command_power }
+			multiply_temp_variable = { holy_realm_command_power_spend = -1 }
+			add_command_power = holy_realm_command_power_spend
+			set_temp_variable = { holy_realm_support_equipment_spend = constant:holy_realm_decision.renew_vow_under_fire_support_equipment }
+			multiply_temp_variable = { holy_realm_support_equipment_spend = -1 }
+			add_equipment_to_stockpile = {
+				type = support_equipment_1
+				amount = holy_realm_support_equipment_spend
+			}
+			add_stability = constant:holy_realm_buddhahood.renew_vow_under_fire_stability_cost
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.renew_vow_under_fire_charge_gain }
+			holy_realm_add_meditation_charge = yes
+			set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+			holy_realm_add_detachment = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+			holy_realm_add_defilements = yes
+			set_country_flag = holy_realm_wrathful_protection_meditation_ready
+			holy_realm_record_wrathful_protection_evolution = yes
+			set_country_flag = {
+				flag = holy_realm_renew_vow_under_fire_cooldown
+				days = @HOLY_REALM_CONCENTRATION_COOLDOWN_DAYS
+			}
+		}
+		ai_will_do = {
+			factor = 1.5
+			modifier = {
+				factor = @holy_realm_ai_totalen_chaos_final_factor
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+			modifier = {
+				factor = @holy_realm_ai_world_collapse_final_factor
+				holy_realm_chaos_at_least_world_collapse = yes
+			}
+		}
+	}
+
 	THR_realize_buddhahood_beneath_seat = {
 		icon = generic_political_discourse
 		cost = 0
