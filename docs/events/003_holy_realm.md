@@ -393,13 +393,15 @@ Super-event audio:
   - image: `gfx/super_events/super_event_powers_of_the_awakened.dds`
 - Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
-Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The live scripted GUI surface is the compact `holy_realm_mandala_category_scripted_gui` attached to `holy_realm_mandala_category`; it displays the current mandala state, core Buddhahood counters, route text, and clickable tab flags inside the decision category.
+Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The live scripted GUI surface is `holy_realm_mandala_category_scripted_gui` attached to `holy_realm_mandala_category`; it uses `holy_realm_mandala_category_container` in `interface/chaosx_decisions.gui` to display the current mandala state, core Buddhahood counters, route text, and clickable tab flags inside the decision category.
 
 The Holy Mandala decision category includes routine actions for high-pass storehouses, relief caravans, civil-register scribes, snow-line signal posts, second refuge registration, Arhat road audits, Mandala border courts, foreign target audits, global final warnings, and internal non-return shelters. These decisions unlock from the existing focus and stage flags, and they move Spiritual Legitimacy, Compassion Drift, Mandala Reach, Final Silence Pressure, local infrastructure, manpower, command resources, or foreign opinion instead of acting as simple flavour buttons.
 
 The Vow and Final Silence Balance of Power includes both Vow-leaning and Final-Silence-leaning choices before the final path is fully open. Guarded Silence Clause and Last-Resort Register provide small early pressure toward Final Silence without arming the final path. Peace decisions move the balance more slowly than before, so repeated doctrine work is needed to dominate the balance instead of one or two routine decisions ending the struggle.
 
-The larger standalone Mandala Panel remains future UI work. Use the replacement UI pass to expand the compact category GUI into a richer panel under stable sprite and scripted-GUI names rather than disabling the current category surface.
+A larger full-screen Mandala panel remains future presentation work. The replacement UI pass should expand the current decision-category GUI under stable sprite and scripted-GUI names rather than disabling it or moving gameplay validation out of the existing decisions.
+
+The three-minute Dhyana Seal mouse-hold concept is implemented as the accepted concentration sequence because the available HOI4 scripted GUI model provides click effects, visibility, scripted properties, and tooltips rather than a reliable continuous held-button timer. The active implementation uses `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation`, with the animated Dhyana Seal icon and meditation Mandala state showing the vow while the timed sequence flags remain active.
 
 Future visual interaction pass:
 
