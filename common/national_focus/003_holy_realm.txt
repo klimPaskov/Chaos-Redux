@@ -2406,6 +2406,50 @@ focus_tree = {
 	}
 
 	# THR FOCUS TAGS:
+	# area = THR_TAG_MILITARY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_CHAOS_GATE
+	# systems = THR_TAG_DEFENSE, THR_TAG_CHAOS_RESPONSE, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_CAPSTONE
+	focus = {
+		id = THR_unbroken_pass
+		icon = GFX_goal_generic_fortify_city
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_SANCTUARY }
+		x = 21
+		y = 9
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_shelters_under_stone }
+		prerequisite = { focus = THR_quiet_mobilization }
+		prerequisite = { focus = THR_mountain_artillery_mandalas }
+		available = {
+			OR = {
+				any_enemy_country = { is_special_chaos_country = yes }
+				holy_realm_chaos_at_least_chaos_tier = yes
+				has_country_flag = holy_realm_capital_sanctuary_recently_fallen
+			}
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_unbroken_pass
+			set_country_flag = holy_realm_memory_unbroken_pass
+			custom_effect_tooltip = THR_unbroken_pass_effect_tt
+			add_ideas = holy_realm_last_pass_mobilization
+			add_command_power = constant:holy_realm_buddhahood.power_sky_command_gain
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_teaching_path_factor
+			modifier = {
+				factor = @holy_realm_ai_protector_regent_threat_factor
+				any_enemy_country = { is_special_chaos_country = yes }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
 	# area = THR_TAG_DIPLOMACY
 	# tone = THR_TAG_PEACEFUL
 	# chaos = THR_TAG_LOW_CHAOS
