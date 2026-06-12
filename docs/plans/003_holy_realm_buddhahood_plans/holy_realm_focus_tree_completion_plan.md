@@ -54,6 +54,14 @@ The sixth guardian-route tranche reframes and caps the existing military support
 - `THR_mountain_artillery_mandalas` is now `The Bell and Rifle`, framing artillery as guardian support rather than conquest.
 - `THR_unbroken_pass` is the anti-chaos defensive capstone, gated by chaos pressure, active special-chaos enemies, or a recent capital-sanctuary fall, and applies `holy_realm_last_pass_mobilization`.
 
+The seventh sanctuary-logistics tranche makes the economic support route map-facing:
+
+- `THR_count_mountain_roads` is now player-facing `Pilgrimage Roads`, retaining its infrastructure and listening-post work.
+- `THR_monastic_labor_vows` is now `Monastery Workshops`, retaining its civilian workshop and infrastructure role.
+- `THR_mountain_granaries` adds high-valley infrastructure and a supply node behind the road route.
+- `THR_snowline_clinics` adds support equipment, infrastructure, stability, Compassion, and relief Chaos reduction.
+- `THR_storehouses_for_world` adds a supply node, Command Power, and, when the Mandala of Nations exists, compact-member infrastructure aid and Sangha Cohesion.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -61,7 +69,7 @@ Implement these as focus-tree work, not only as decisions:
 1. Teaching route follow-up: add more downstream teaching payoffs and mission-slot variety beyond the route-lock chain.
 2. Meditation route follow-up: add later Dhyana payoffs, stronger interaction with `meditation_charge`, and visible post-Buddhahood meditation use beyond the route-lock chain.
 3. Governance route follow-up: let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools.
-4. Sanctuary logistics: reshape existing generic whole-country construction focuses into named sanctuary logistics: granaries, pilgrimage roads, clinics, workshops, storehouses, and supply support for allies/compact members.
+4. Sanctuary logistics: implemented as Pilgrimage Roads, Monastery Workshops, Mountain Granaries, Snowline Clinics, and Storehouses for the World. Remaining future-depth work is only state-group specificity if a later map pass wants named Himalayan subregions instead of all controlled states.
 5. Guardian military: `THR_vow_keeper_regiments` and its support nodes now form a defensive guardian route with Fortress Without Hatred, Mountain Pass Detachments, The Bell and Rifle, and The Unbroken Pass. Remaining future-depth work is pilgrimage escort mission integration and optional Temple Guard naming if the unit template needs a second non-mountaineer identity.
 6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection, and anti-puppet clauses. Remaining future-depth work is member refusal/exit events and crisis-specific shared defense missions.
 7. Expansion/liberation: replace broad ordinary annexation/registration rhetoric with the spec's pilgrimage and liberation framing where appropriate. Keep hard conquest as a corrupted/high-chaos route if retained.
