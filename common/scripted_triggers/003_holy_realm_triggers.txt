@@ -206,23 +206,76 @@ holy_realm_can_attempt_buddhahood = {
 holy_realm_can_use_buddha_power = {
 	is_holy_realm_country = yes
 	holy_realm_has_buddha_mandate = yes
-	OR = {
-		AND = {
-			has_country_flag = holy_realm_power_restraint_doctrine
-			check_variable = {
-				var = meditation_charge
-				value = constant:holy_realm_buddhahood.buddha_power_disciplined_charge_cost
-				compare = greater_than_or_equals
-			}
-		}
-		AND = {
-			NOT = { has_country_flag = holy_realm_power_restraint_doctrine }
-			check_variable = {
-				var = meditation_charge
-				value = constant:holy_realm_buddhahood.buddha_power_charge_cost
-				compare = greater_than_or_equals
-			}
-		}
+}
+
+holy_realm_can_use_buddha_power_one_becomes_many = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
+	NOT = { has_country_flag = holy_realm_power_one_becomes_many_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_one_becomes_many_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_passing_through_walls = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_walls_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_passing_through_walls_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_walking_on_water = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_water_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_walking_on_water_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_lotus_bridge = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_lotus_bridge_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_lotus_bridge_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_vanishing_from_sight = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_vanish_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_vanishing_from_sight_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_seated_in_sky = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_sky_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_seated_in_sky_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_touching_sun_moon = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_sun_moon_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_touching_sun_moon_charge_cost
+		compare = greater_than_or_equals
 	}
 }
 
@@ -705,7 +758,7 @@ holy_realm_can_extinguish_defilements = {
 	check_variable = { defilements < constant:holy_realm_buddhahood.final_silence_defilements_gate }
 	check_variable = {
 		var = meditation_charge
-		value = constant:holy_realm_buddhahood.meditation_charge_max
+		value = constant:holy_realm_buddhahood.power_extinction_defilements_charge_cost
 		compare = greater_than_or_equals
 	}
 	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
