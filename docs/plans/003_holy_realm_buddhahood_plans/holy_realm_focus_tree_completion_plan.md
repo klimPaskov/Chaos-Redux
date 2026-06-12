@@ -88,6 +88,12 @@ The eleventh expansion-framing tranche separates pilgrimage protection from coer
 - `THR_letters_beyond_passes` records `holy_realm_pilgrimage_protection_route` for audit and future decision/event hooks.
 - `THR_world_is_a_border` remains the explicit high-chaos coercive capstone, so hard expansion is still available only as a darker route rather than the default branch identity.
 
+The twelfth guardian-mission tranche ties the guardian route to an active pilgrimage escort objective:
+
+- `THR_vow_keeper_regiments` now unlocks `THR_bodhisattva_guard_pilgrimage_route`.
+- The escort mission is a state-targeted timed mission for controlled core, protected, integrated, Himalayan, or low-infrastructure route states. It consumes an active teaching seat, spends Command Power and support equipment, requires at least two divisions in the selected state, and succeeds only if the route remains controlled and guarded through the timer.
+- Success marks the route guarded for later pacing, adds route infrastructure, and rewards Bodhi, Compassion, Sangha Cohesion, Mandala Reach, and Army Experience. Failure or cancellation raises Defilements and lowers Sangha Cohesion.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -96,7 +102,7 @@ Implement these as focus-tree work, not only as decisions:
 2. Meditation route follow-up: `THR_return_to_the_seat` and `THR_renew_vow_under_fire` now add a post-Buddhahood Dhyana payoff, stronger `meditation_charge` interaction, and visible emergency meditation use. Remaining future-depth work is only additional failure events or ordinary-war abuse consequences if later balance wants more risk.
 3. Governance route follow-up: `THR_abbot_examiners`, `THR_regent_pass_watch`, and `THR_pilgrim_refuge_courts` now let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools. Remaining future-depth work is only route-specific failure events or AI balance tuning if later audits show one governance route dominates.
 4. Sanctuary logistics: implemented as Pilgrimage Roads, Monastery Workshops, Mountain Granaries, Snowline Clinics, and Storehouses for the World. Remaining future-depth work is only state-group specificity if a later map pass wants named Himalayan subregions instead of all controlled states.
-5. Guardian military: `THR_vow_keeper_regiments` and its support nodes now form a defensive guardian route with Fortress Without Hatred, Mountain Pass Detachments, The Bell and Rifle, and The Unbroken Pass. Remaining future-depth work is pilgrimage escort mission integration and optional Temple Guard naming if the unit template needs a second non-mountaineer identity.
+5. Guardian military: `THR_vow_keeper_regiments` and its support nodes now form a defensive guardian route with Fortress Without Hatred, Mountain Pass Detachments, The Bell and Rifle, The Unbroken Pass, and the active `Guard the Pilgrimage Route` timed escort mission. Remaining future-depth work is only optional Temple Guard naming if the unit template needs a second non-mountaineer identity.
 6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection notices, member exit notices, anti-puppet clauses, and a crisis-only joint defense act. Remaining future-depth work is only deeper member-specific diplomatic aftermath if later audits need more reactivity.
 7. Expansion/liberation: lower borderland and regional integration focuses now use pilgrimage, petition, corridor, and protection-ledger framing, while `THR_world_is_a_border` remains the explicit high-chaos coercive capstone. Remaining future-depth work is route-specific liberation events or refusal outcomes if later audits need more reactivity.
 8. Anti-chaos powers follow-up: dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses are implemented. Remaining future-depth work is only power-specific decision upgrades if balance requires more than route flags and charge/virtue rewards.
