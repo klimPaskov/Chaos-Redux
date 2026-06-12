@@ -103,22 +103,36 @@ This file records restored, sourced, and converted super-event audio assets used
 - Performer / recording: Hariharan; Wikimedia Commons source file credited to the Internet Archive item `BuddhamSaranamGacchami`.
 - Source URL: <https://commons.wikimedia.org/wiki/File:Buddham_Saranam_Gacchami_-_Male_Voice,_with_Female_Chorus.oga>
 - License: CC0 1.0 Universal Public Domain Dedication.
-- Duration: 1:59.5 restored cue.
-- Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
+- Duration: 2:30 processed cue.
+- Conversion notes: first `150` seconds retained with fade-in and fade-out from the researched Holy Realm Buddhahood audio package.
+
+### Powers of the Awakened
+
+- Super-event ID: `61`
+- Music file: `music/super_event_powers_of_the_awakened.ogg`
+- Sound-channel file: `sound/chaosx_super_event_powers_of_the_awakened.wav`
+- Sound definition: `chaosx_super_event_powers_of_the_awakened_track`
+- Source title: `Bhikkhu Pāṭimokkha Pali`
+- Composer / creator: traditional Pali monastic chant; recording uploaded by Wikimedia Commons account `Tevaprapas` / `พระวินัยธร`.
+- Performer / recording: Buddhist monks chanting on Uposatha Day at Wat Khung Taphao, Uttaradit Province, Thailand.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Bhikkhu_P%C4%81%E1%B9%ADimokkha_Pali.ogg>
+- License: Creative Commons Attribution 3.0 Unported.
+- Duration: 2:15 processed cue.
+- Conversion notes: starts at `01:00`, retains `135` seconds, and adds fade-in and fade-out. Attribution, license link, and modification notice are required.
 
 ### Final Silence
 
-- Super-event IDs: `8`, `9`
-- Music files: `music/super_event_final_silence.ogg`; `music/super_event_final_silence_thermonuclear.ogg`
-- Sound-channel files: `sound/chaosx_super_event_final_silence.wav`; `sound/chaosx_super_event_final_silence_thermonuclear.wav`
-- Sound definitions: `chaosx_super_event_final_silence_track`; `chaosx_super_event_final_silence_thermonuclear_track`
-- Source title: `Requiem Mass in D minor, K. 626: VII. Lacrimosa`
-- Composer / creator: Wolfgang Amadeus Mozart.
-- Performer / recording: IMSLP source recording hosted on Wikimedia Commons.
-- Source URL: <https://commons.wikimedia.org/wiki/File:PMLP02751-S002-07-Mozart_Requiem_Mass.ogg>
-- License: Creative Commons Attribution-ShareAlike 3.0.
-- Duration: 1:59.501 restored cue.
-- Conversion notes: restored the pre-placeholder track while retaining the stable file paths. `music/super_event_final_silence_thermonuclear.ogg` and `sound/chaosx_super_event_final_silence_thermonuclear.wav` are path-stable duplicates of the normal Final Silence cue by explicit user request.
+- Super-event ID: `8`
+- Music file: `music/super_event_final_silence.ogg`
+- Sound-channel file: `sound/chaosx_super_event_final_silence.wav`
+- Sound definition: `chaosx_super_event_final_silence_track`
+- Source title: `Bore Xinjing (Heart Sutra) in Mandarin recited by a Chinese Buddhist layperson 2`
+- Composer / creator: Heart Sutra text is ancient scripture; recording by Nyarlathotep1001.
+- Performer / recording: Chinese Buddhist layperson recitation per Wikimedia Commons source page.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Bore_Xinjing_%E8%88%AC%E8%8B%A5%E5%BF%83%E7%BB%8F_(Heart_Sutra)_in_Mandarin_recited_by_a_Chinese_Buddhist_layperson_2.ogg>
+- License: CC0 1.0 Universal Public Domain Dedication.
+- Duration: 2:08.661 processed cue.
+- Conversion notes: full source retained with fade-in and fade-out. No attribution is required by CC0; courtesy credit is recommended.
 
 ### Thermonuclear Final Silence
 
@@ -126,13 +140,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_final_silence_thermonuclear.ogg`
 - Sound-channel file: `sound/chaosx_super_event_final_silence_thermonuclear.wav`
 - Sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
-- Source title: `Requiem Mass in D minor, K. 626: VII. Lacrimosa`
-- Composer / creator: Wolfgang Amadeus Mozart.
-- Performer / recording: IMSLP source recording hosted on Wikimedia Commons.
-- Source URL: <https://commons.wikimedia.org/wiki/File:PMLP02751-S002-07-Mozart_Requiem_Mass.ogg>
-- License: Creative Commons Attribution-ShareAlike 3.0.
-- Duration: 1:59.501 restored cue.
-- Notes: exact reuse of the normal Final Silence recording, approved by the user for this super-event pair.
+- Source title: `Shikanotoone new`
+- Composer / creator: `Shika no Tōne`, performed by Araki Kodō III; denoised derivative by Torsodog.
+- Performer / recording: Araki Kodō III.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Shikanotoone_new.ogg>
+- License: Wikimedia Commons presents the file as public-domain / Public Domain Mark 1.0, with a rights rationale for an early Japanese recording and public-domain denoised derivative.
+- Duration: 2:15 processed cue.
+- Notes: starts at `01:50`, retains `135` seconds, and adds fade-in and fade-out. This is the package's medium-confidence public-domain-chain cue; replace it if the project requires only explicit modern license grants.
 
 ### The Mandala Breaks
 
