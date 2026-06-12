@@ -401,7 +401,7 @@ The Vow and Final Silence Balance of Power includes both Vow-leaning and Final-S
 
 A larger full-screen Mandala panel remains future presentation work. The replacement UI pass should expand the current decision-category GUI under stable sprite and scripted-GUI names rather than disabling it or moving gameplay validation out of the existing decisions.
 
-The three-minute Dhyana Seal mouse-hold concept is implemented as the accepted concentration sequence because the available HOI4 scripted GUI model provides click effects, visibility, scripted properties, and tooltips rather than a reliable continuous held-button timer. The active implementation uses `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation`, with the animated Dhyana Seal icon and meditation Mandala state showing the vow while the timed sequence flags remain active.
+The three-minute Dhyana Seal mouse-hold concept is implemented as the accepted concentration sequence because the available HOI4 scripted GUI model provides click effects, visibility, scripted properties, and tooltips rather than a reliable continuous held-button timer. The active implementation uses `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation`, with each hold step running as a timed, paid beat under the animated Dhyana Seal icon while the timed sequence flags remain active.
 
 Future visual interaction pass:
 

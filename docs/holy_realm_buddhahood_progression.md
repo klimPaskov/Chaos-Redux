@@ -58,7 +58,7 @@ The meditation route uses a concentration sequence because HOI4 scripted GUI exp
 4. `Hold Mind`
 5. `Hold Investigation`
 
-The four hold decisions must be completed while the sequence flags are active. The animated Dhyana Seal icon and meditation Mandala state mark the active vow. Completion grants Bodhi, Detachment, Meditation Charge, and can advance Dhyana if enough Meditation Charge is present.
+The four hold decisions must be completed while the sequence flags are active. Each hold beat is a timed decision with its own Political Power cost, so the fallback remains a visible commitment rather than an instant purchase. The animated Dhyana Seal icon and meditation Mandala state mark the active vow. Completion grants Bodhi, Detachment, Meditation Charge, and can advance Dhyana if enough Meditation Charge is present.
 
 ## Buddha Powers
 
