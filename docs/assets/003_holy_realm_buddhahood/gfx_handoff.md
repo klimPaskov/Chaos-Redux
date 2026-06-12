@@ -27,6 +27,34 @@ Review assets:
 - Processed PNGs: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/mandala_static_contact_sheet.png`
 
+## Holy Mandala Dormant Animation
+
+The locked, early, or otherwise inactive Mandala state uses an animated frame sheet while preserving the static dormant DDS as its fallback.
+
+| Field | Value |
+| --- | --- |
+| Static sprite alias | `GFX_holy_realm_mandala_dormant` |
+| Animated sprite alias | `GFX_holy_realm_mandala_dormant_animated` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant.dds` |
+| Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant_animated.dds` |
+| Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/sheets/holy_realm_mandala_dormant_sheet.png` |
+| Frame size | `420x420` |
+| Frame count | `8` |
+| Sheet size | `3360x420` |
+| FPS | `8` |
+| Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Target `.gfx` | `interface/003_holy_realm.gfx` |
+| Target GUI | `interface/chaosx_decisions.gui` and `common/scripted_guis/chaosx_scripted_guis.txt` |
+| State gate | `GetHolyRealmMandalaSprite` returns the animated sprite as the always-available fallback after all higher-priority Mandala states fail |
+| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/interface/core.gfx`, `interface/007_fury.gfx` |
+
+Review assets:
+
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/processed_frames/`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/previews/holy_realm_mandala_dormant_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/previews/holy_realm_mandala_dormant_contact.png`
+
 ## Holy Mandala Teaching Animation
 
 The Dharma teaching and Bodhi-progress Mandala state uses an animated frame sheet while preserving the static teaching DDS as its fallback.
@@ -141,7 +169,7 @@ Review assets:
 
 Remaining animation handoff:
 
-- Dormant, wrathful, and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
+- Wrathful and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
 
 ## Holy Realm Static Leader Portrait Stages
 
