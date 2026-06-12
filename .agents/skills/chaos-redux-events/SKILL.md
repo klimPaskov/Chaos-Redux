@@ -303,6 +303,7 @@ Touch the relevant systems in the same change:
 - ideas or dynamic modifiers if the event creates persistent gameplay state
 - AI strategies or templates if the event changes how AI should respond
 - special-country exclusions if the event touches broad civilian, political, migration, or ideology systems
+- shared country classification when the event creates or manages chaos countries: register every such country in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt`, document it in `common/scripted_triggers/chaosx_dynamic_triggers.md`, and also register/document it in `is_actual_nonhuman_country` when it is actually nonhuman
 - and much more
 
 When a decision, focus, or event option grants a one-time package through a shared helper effect, make the helper idempotent with a country/global flag and keep availability triggers aligned with that flag. Reused helper effects should be safe to call from later follow-up branches without duplicating manpower, equipment, PP, XP, or pressure adjustments.
