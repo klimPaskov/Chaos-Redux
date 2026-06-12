@@ -294,6 +294,8 @@ Event pictures:
 
 Achievement icons:
 
+Legacy Holy Realm achievement triplets:
+
 - `29_the_lamps_remain_lit_achievement`
 - `30_mandala_of_nations_achievement`
 - `31_mountain_circle_by_vow_achievement`
@@ -301,7 +303,22 @@ Achievement icons:
 - `33_register_without_edges_achievement`
 - `34_empty_mandala_achievement`
 
-These use complete placeholder DDS triplets in `gfx/achievements/` until final achievement art is supplied.
+Buddhahood achievement triplets:
+
+- `holy_realm_no_empire_of_the_wheel`
+- `holy_realm_four_dhyanas_under_fire`
+- `holy_realm_one_becomes_many`
+- `holy_realm_wall_river_sky`
+- `holy_realm_empty_seat`
+- `holy_realm_final_silence_world_end`
+- `holy_realm_no_false_buddha`
+- `holy_realm_debate_the_pretender`
+- `holy_realm_sangha_of_nations`
+- `holy_realm_mercy_in_the_ashes`
+- `holy_realm_sun_and_moon`
+- `holy_realm_lotus_bridge`
+
+Each achievement uses completed, grey, and not-eligible DDS files in `gfx/achievements/`. Source PNGs, processed PNGs, contact sheets, and final paths for the Buddhahood achievement set are recorded in `docs/assets/003_holy_realm_buddhahood/manifest.md`.
 
 Super-event art:
 
