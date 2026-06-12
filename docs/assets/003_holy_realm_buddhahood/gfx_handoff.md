@@ -32,6 +32,31 @@ Remaining animation handoff:
 - These static states do not replace the final animated frame-sheet package from the asset spec.
 - Future animation should preserve the sprite naming pattern by adding `_animated` variants, for example `GFX_holy_realm_mandala_awakened_animated`, with static fallbacks left in place.
 
+## Holy Realm Static Leader Portrait Stages
+
+The existing stage aliases in `interface/chaosx_characters.gfx` now point to separate static DDS files. These are static fallbacks derived from the existing fictional Holy Realm leader portrait and do not replace animated portrait frame sheets.
+
+| Stage | Sprite alias | DDS |
+| --- | --- | --- |
+| Refuge Bodhisattva | `GFX_portrait_THR_refuge_bodhisattva` | `gfx/leaders/THR/portrait_THR_refuge_bodhisattva.dds` |
+| Pramudita Bodhisattva | `GFX_portrait_THR_bodhisattva_pramudita` | `gfx/leaders/THR/portrait_THR_bodhisattva_pramudita.dds` |
+| Acala Bodhisattva | `GFX_portrait_THR_bodhisattva_acala` | `gfx/leaders/THR/portrait_THR_bodhisattva_acala.dds` |
+| Dharmamegha Bodhisattva | `GFX_portrait_THR_bodhisattva_dharmamegha` | `gfx/leaders/THR/portrait_THR_bodhisattva_dharmamegha.dds` |
+| Arhat Administration | `GFX_portrait_THR_arhat_administration` | `gfx/leaders/THR/portrait_THR_arhat_administration.dds` |
+| Buddha Mandate | `GFX_portrait_THR_buddha_mandate` | `gfx/leaders/THR/portrait_THR_buddha_mandate.dds` |
+| Divine Sovereignty | `GFX_portrait_THR_divine_sovereignty` | `gfx/leaders/THR/portrait_THR_divine_sovereignty.dds` |
+| Final Silence | `GFX_portrait_THR_final_silence` | `gfx/leaders/THR/portrait_THR_final_silence.dds` |
+
+Review assets:
+
+- Source PNG: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_godly_figure_source.png`
+- Processed PNGs: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/leader_portrait_static_contact_sheet.png`
+
+Remaining animation handoff:
+
+- Future animation should preserve the sprite naming pattern by adding `_animated` variants where the target surface supports a frame sheet.
+
 ## Completed DDS triplets
 
 | Achievement id | Base DDS | Grey DDS | Not-eligible DDS | Proposed sprite alias |
