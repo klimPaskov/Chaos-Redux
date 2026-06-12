@@ -48,9 +48,9 @@ Tuning is centralized in `common/script_constants/003_holy_realm_constants.txt` 
 7. If Bodhi is complete while Defilements remain severe, the route records `holy_realm_false_buddha_schism_pressure` and applies a stability hit.
 8. Buddhahood sets `holy_realm_buddhahood_attained`, uses the existing Buddha stage effect, applies the Buddha idea, and shows `The Awakened One` super-event slot.
 
-## Meditation Fallback
+## Meditation Sequence
 
-HOI4 decisions do not support literal three-minute mouse holding, so the implemented fallback is a concentration sequence:
+The meditation route uses a concentration sequence:
 
 1. `Begin the Concentration Vow`
 2. `Hold Intention`
@@ -181,6 +181,8 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 - GFX file: `interface/003_holy_realm.gfx`
 - Suggested icon names:
   - `GFX_decision_holy_realm_concentration_vow`
+  - `GFX_decision_holy_realm_dhyana_seal`
+  - `GFX_decision_holy_realm_dhyana_seal_animated`
   - `GFX_decision_holy_realm_buddha_power`
   - `GFX_decision_category_holy_realm_buddha_powers`
 
