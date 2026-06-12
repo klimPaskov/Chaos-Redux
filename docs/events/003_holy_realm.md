@@ -98,8 +98,9 @@ The Mandala of Nations is the peaceful Sangha Compact route. Its goals are compl
 - `THR_mandala_white_flag_congress`
 - `THR_mandala_open_granaries`
 - `THR_mandala_demand_anti_puppet_clauses`
+- `THR_mandala_joint_defense_of_passes`
 
-The first three acts reduce chaos modestly and complete visible faction goals that add faction initiative and power projection. Anti-puppet clauses enforce the compact's independence rule, remove hard-invalid members, and improve Sangha Cohesion without being a faction goal. Additional valid countries joining the Mandala of Nations reduce chaos once per country. Governance choices alter compact work: the Council of Abbots adds political capacity and cohesion, the Pilgrim Assembly adds refugee manpower and stronger cohesion, and the Protector Regent adds command capacity while raising Defilements and slightly straining cohesion.
+The first three acts reduce chaos modestly and complete visible faction goals that add faction initiative and power projection. Anti-puppet clauses enforce the compact's independence rule, remove hard-invalid members, and improve Sangha Cohesion without being a kindness goal. Joint Defense of the Passes is the crisis defense act: it appears only during a true chaos threat to the Realm, its neighbors, or the compact, spends command capacity and support equipment, strengthens compact initiative, and sends defensive support to valid compact members. Additional valid countries joining the Mandala of Nations reduce chaos once per country. Governance choices alter compact work: the Council of Abbots adds political capacity and cohesion, the Pilgrim Assembly adds refugee manpower and stronger cohesion, and the Protector Regent adds command capacity while raising Defilements and slightly straining cohesion.
 
 After formation, the same decision category opens active Mandala work:
 

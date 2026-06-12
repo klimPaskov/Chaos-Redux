@@ -11,6 +11,8 @@
 @HOLY_REALM_CONCENTRATION_COOLDOWN_DAYS = 45
 @HOLY_REALM_ONE_BECOMES_MANY_DAYS = 180
 @HOLY_REALM_SUN_MOON_VICTORY_WINDOW_DAYS = 365
+@HOLY_REALM_MANDALA_JOINT_DEFENSE_FACTION_INITIATIVE = 1
+@HOLY_REALM_MANDALA_JOINT_DEFENSE_POWER_PROJECTION = 85
 @holy_realm_ai_peace_branch_factor = 4
 @holy_realm_ai_peace_letter_factor = 0.8
 @holy_realm_ai_regional_peace_letter_factor = 0.4
@@ -487,6 +489,68 @@ holy_realm_mandala_category = {
 				modifier = {
 					factor = 0.5
 					has_country_flag = holy_realm_governance_protector_regent
+				}
+			}
+		}
+
+		THR_mandala_joint_defense_of_passes = {
+			icon = generic_protection
+			cost = constant:holy_realm_decision.mandala_joint_defense_cost
+			fire_only_once = yes
+			days_remove = constant:holy_realm_decision.refuge_days
+			available = {
+				is_holy_realm_country = yes
+				has_country_flag = holy_realm_mandala_of_nations_leader
+				is_faction_leader = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+				holy_realm_chaos_threatens_realm_or_compact = yes
+				command_power > constant:holy_realm_decision.mandala_joint_defense_command_power
+				has_equipment = { support_equipment > constant:holy_realm_decision.mandala_joint_defense_support_equipment }
+			}
+			visible = {
+				is_holy_realm_country = yes
+				has_global_flag = holy_realm_mandala_of_nations_formed
+				NOT = { has_country_flag = holy_realm_mandala_joint_defense_completed }
+			}
+			complete_effect = {
+				custom_effect_tooltip = THR_mandala_joint_defense_of_passes_effect_tt
+				set_country_flag = holy_realm_mandala_joint_defense_completed
+				set_temp_variable = { holy_realm_command_power_spend = constant:holy_realm_decision.mandala_joint_defense_command_power }
+				multiply_temp_variable = { holy_realm_command_power_spend = -1 }
+				add_command_power = holy_realm_command_power_spend
+				set_temp_variable = { holy_realm_support_equipment_spend = constant:holy_realm_decision.mandala_joint_defense_support_equipment }
+				multiply_temp_variable = { holy_realm_support_equipment_spend = -1 }
+				add_equipment_to_stockpile = {
+					type = support_equipment_1
+					amount = holy_realm_support_equipment_spend
+				}
+				add_faction_power_projection = @HOLY_REALM_MANDALA_JOINT_DEFENSE_POWER_PROJECTION
+				add_faction_initiative = @HOLY_REALM_MANDALA_JOINT_DEFENSE_FACTION_INITIATIVE
+				every_faction_member = {
+					limit = {
+						NOT = { is_holy_realm_country = yes }
+						holy_realm_sangha_compact_member_valid = yes
+					}
+					add_stability = constant:holy_realm_buddhahood.sangha_joint_defense_member_stability
+					add_war_support = constant:holy_realm_buddhahood.sangha_joint_defense_member_war_support
+					add_equipment_to_stockpile = {
+						type = support_equipment_1
+						amount = constant:holy_realm_buddhahood.sangha_joint_defense_member_support_equipment
+					}
+				}
+				set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.sangha_joint_defense_cohesion_gain }
+				holy_realm_add_sangha_cohesion = yes
+				holy_realm_apply_sangha_governance_bonus = yes
+			}
+			ai_will_do = {
+				factor = 2
+				modifier = {
+					factor = 2
+					has_country_flag = holy_realm_governance_protector_regent
+				}
+				modifier = {
+					factor = 1.5
+					holy_realm_chaos_at_least_totalen_chaos = yes
 				}
 			}
 		}
