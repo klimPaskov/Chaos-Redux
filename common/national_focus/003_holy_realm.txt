@@ -2311,6 +2311,122 @@ focus_tree = {
 	}
 
 	# THR FOCUS TAGS:
+	# area = THR_TAG_ECONOMY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_REFUGE, THR_TAG_SUPPLY, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_mountain_granaries
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_SANCTUARY }
+		x = 9
+		y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_count_mountain_roads }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_mountain_granaries
+			set_country_flag = holy_realm_memory_mountain_granaries
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			random_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			add_stability = constant:holy_realm_focus_reward.sanctuary_logistics_stability
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ECONOMY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_REFUGE, THR_TAG_COMPASSION, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_snowline_clinics
+		icon = GFX_goal_generic_construct_civ_factory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_SANCTUARY }
+		x = 13
+		y = 8
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_monastic_labor_vows }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_snowline_clinics
+			set_country_flag = holy_realm_memory_snowline_clinics
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:holy_realm_focus_reward.sanctuary_clinic_support_equipment
+			}
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_stability = constant:holy_realm_focus_reward.sanctuary_logistics_stability
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
+			holy_realm_add_chaos = yes
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_ECONOMY
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_LOW_CHAOS
+	# systems = THR_TAG_REFUGE, THR_TAG_COMPACT, THR_TAG_SUPPLY
+	# role = THR_TAG_BRANCH_CAPSTONE
+	focus = {
+		id = THR_storehouses_for_world
+		icon = GFX_goal_generic_construct_infrastructure
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_SANCTUARY FOCUS_FILTER_HOLY_REALM_COMPACT }
+		x = 11
+		y = 9
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_mountain_granaries }
+		prerequisite = { focus = THR_snowline_clinics }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_storehouses_for_world
+			set_country_flag = holy_realm_memory_storehouses_for_world
+			custom_effect_tooltip = THR_storehouses_for_world_effect_tt
+			add_command_power = constant:holy_realm_focus_reward.sanctuary_storehouse_command_power
+			random_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = supply_node level = 1 instant_build = yes }
+			}
+			if = {
+				limit = { has_global_flag = holy_realm_mandala_of_nations_formed }
+				every_faction_member = {
+					limit = {
+						NOT = { is_holy_realm_country = yes }
+						holy_realm_sangha_compact_member_hard_valid = yes
+					}
+					random_controlled_state = {
+						limit = { infrastructure < 5 }
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					}
+				}
+				set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.sangha_granary_cohesion_gain }
+				holy_realm_add_sangha_cohesion = yes
+			}
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+			holy_realm_add_mandala_reach = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_pilgrim_assembly_peace_factor
+			modifier = {
+				factor = 2
+				has_global_flag = holy_realm_mandala_of_nations_formed
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
 	# area = THR_TAG_MILITARY
 	# tone = THR_TAG_PEACEFUL
 	# chaos = THR_TAG_NO_CHAOS_GATE
