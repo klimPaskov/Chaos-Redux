@@ -125,4 +125,4 @@ These route families are implemented as focus-tree work, with decisions used onl
 
 ## Boundaries
 
-Do not remove the existing Holy Realm mechanics wholesale. Reuse the existing Buddhahood decisions, Mandala GUI, Buddha powers, Final Silence gates, and achievement hooks. The missing work is focus-route visibility, branch pacing, route interaction, and AI behavior.
+Do not remove the existing Holy Realm mechanics wholesale. The completed route work reuses the existing Buddhahood decisions, Mandala GUI, Buddha powers, Final Silence gates, and achievement hooks while adding the focus-route visibility, branch pacing, route interaction, and AI behavior required by the Buddhahood focus-tree spec.
