@@ -412,11 +412,11 @@ Future visual interaction pass:
 - Show recent value changes as short ledger rows so players can see which focus, decision, or teaching event moved a value.
 - Let doctrine memory slots display the most important hidden choices: open refuge, false attainment response, peace letters accepted/refused, vow chosen, sealed ledger read, or Final Silence armed.
 
-Remaining clean asset needs:
+Optional replacement-art wishlist:
 
 - dedicated thermonuclear Final Silence super-event art if the shared terminal Final Silence texture should be split later
 - Vow against Annihilation capstone super-event art if that optional spec super event is implemented later
-- final custom report-event pictures if the current Holy Realm report-event DDS files are only temporary art
+- alternate report-event pictures if the current Holy Realm report-event DDS files should be replaced for a later art pass
 - dedicated custom balance-of-power icons for the Vow, Final Silence, and doctrine-balance category if the current Holy Realm art should be replaced
 
 ## Failure And Off-Ramps
