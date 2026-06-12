@@ -250,6 +250,28 @@ Review assets:
 - Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_preview.gif`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_contact.png`
 
+## Holy Realm Buddha Power Decision Icons
+
+The named Buddha powers and repeated Dharma teaching decisions use custom static decision icons.
+
+| Sprite alias | DDS | Gameplay use |
+| --- | --- | --- |
+| `GFX_decision_holy_realm_power_one_becomes_many` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_one_becomes_many.dds` | `THR_buddha_power_one_becomes_many` |
+| `GFX_decision_holy_realm_power_passing_through_walls` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_passing_through_walls.dds` | `THR_buddha_power_passing_through_walls` |
+| `GFX_decision_holy_realm_power_walking_on_water` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_walking_on_water.dds` | `THR_buddha_power_walking_on_water` |
+| `GFX_decision_holy_realm_power_lotus_bridge` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_lotus_bridge.dds` | `THR_buddha_power_lotus_bridge` |
+| `GFX_decision_holy_realm_power_vanishing_from_sight` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_vanishing_from_sight.dds` | `THR_buddha_power_vanishing_from_sight` |
+| `GFX_decision_holy_realm_power_seated_in_sky` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_seated_in_sky.dds` | `THR_buddha_power_seated_in_sky` |
+| `GFX_decision_holy_realm_power_touching_sun_moon` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_touching_sun_moon.dds` | `THR_buddha_power_touching_sun_moon` |
+| `GFX_decision_holy_realm_power_extinction_defilements` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_extinction_defilements.dds` | `THR_buddha_power_extinction_defilements` |
+| `GFX_decision_holy_realm_dharma_teaching` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_dharma_teaching.dds` | `THR_hold_dharma_teaching`, `THR_bodhisattva_hold_teachings_for_refugees`, and `THR_bodhisattva_teach_foreign_officers` |
+
+Review assets:
+
+- Source PNGs: `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/`
+- Processed PNGs: `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/decision_icons/decision_icons_contact_sheet.png`
+
 ## Holy Realm Buddha Mandate Leader Portrait Animation
 
 The Buddhahood-stage leader portrait uses an animated frame sheet while preserving the static Buddha Mandate DDS as its fallback.
@@ -318,6 +340,7 @@ The existing stage aliases in `interface/chaosx_characters.gfx` now point to sep
 | Dharmamegha Bodhisattva | `GFX_portrait_THR_bodhisattva_dharmamegha` | `gfx/leaders/THR/portrait_THR_bodhisattva_dharmamegha.dds` |
 | Arhat Administration | `GFX_portrait_THR_arhat_administration` | `gfx/leaders/THR/portrait_THR_arhat_administration.dds` |
 | Buddha Mandate | `GFX_portrait_THR_buddha_mandate` | `gfx/leaders/THR/portrait_THR_buddha_mandate.dds` |
+| False Buddha | `GFX_portrait_THR_false_buddha` | `gfx/leaders/THR/portrait_THR_false_buddha.dds` |
 | Divine Sovereignty | `GFX_portrait_THR_divine_sovereignty` | `gfx/leaders/THR/portrait_THR_divine_sovereignty.dds` |
 | Final Silence | `GFX_portrait_THR_final_silence` | `gfx/leaders/THR/portrait_THR_final_silence.dds` |
 | Empty Seat | `GFX_portrait_THR_empty_seat` | `gfx/leaders/THR/portrait_THR_empty_seat.dds` |
@@ -325,6 +348,7 @@ The existing stage aliases in `interface/chaosx_characters.gfx` now point to sep
 Review assets:
 
 - Source PNG: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_godly_figure_source.png`
+- False Buddha source PNG: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_false_buddha_source.png`
 - Processed PNGs: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/leader_portrait_static_contact_sheet.png`
 
