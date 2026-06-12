@@ -140,13 +140,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Music file: `music/super_event_final_silence_thermonuclear.ogg`
 - Sound-channel file: `sound/chaosx_super_event_final_silence_thermonuclear.wav`
 - Sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
-- Source title: `Shikanotoone new`
-- Composer / creator: `Shika no Tōne`, performed by Araki Kodō III; denoised derivative by Torsodog.
-- Performer / recording: Araki Kodō III.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Shikanotoone_new.ogg>
-- License: Wikimedia Commons presents the file as public-domain / Public Domain Mark 1.0, with a rights rationale for an early Japanese recording and public-domain denoised derivative.
-- Duration: 2:15 processed cue.
-- Notes: starts at `01:50`, retains `135` seconds, and adds fade-in and fade-out. This is the package's medium-confidence public-domain-chain cue; replace it if the project requires only explicit modern license grants.
+- Source title: `Bore Xinjing (Heart Sutra) in Mandarin recited by a Chinese Buddhist layperson`
+- Composer / creator: Heart Sutra text is ancient scripture; recording by Nyarlathotep1001.
+- Performer / recording: Chinese Buddhist layperson recitation per Wikimedia Commons source page.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Bore_Xinjing_%E8%88%AC%E8%8B%A5%E5%BF%83%E7%BB%8F_(Heart_Sutra)_in_Mandarin_recited_by_a_Chinese_Buddhist_layperson.ogg>
+- License: CC0 1.0 Universal Public Domain Dedication.
+- Duration: 2:13 processed cue.
+- Notes: full source retained, timestamp-resampled for clean conversion, and faded in and out. No attribution is required by CC0; courtesy credit is recommended.
 
 ### The Mandala Breaks
 
