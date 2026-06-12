@@ -1004,6 +1004,43 @@ focus_tree = {
 	}
 
 	# THR FOCUS TAGS:
+	# area = THR_TAG_MEDITATION
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_MEDITATION_CHARGE, THR_TAG_DETACHMENT, THR_TAG_UNLOCK
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_return_to_the_seat
+		icon = GFX_focus_smiling_buddha
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_MEDITATION FOCUS_FILTER_HOLY_REALM_NIRVANA }
+		x = 18
+		y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_the_awakened_one }
+		available = {
+			holy_realm_has_buddha_mandate = yes
+		}
+		completion_reward = {
+			set_country_flag = holy_realm_focus_return_to_the_seat
+			set_country_flag = holy_realm_awakened_meditation_seat
+			custom_effect_tooltip = THR_return_to_the_seat_effect_tt
+			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.awakened_seat_charge_gain }
+			holy_realm_add_meditation_charge = yes
+			set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.detachment_stage_gain }
+			holy_realm_add_detachment = yes
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_meditation_path_factor
+			modifier = {
+				factor = @holy_realm_ai_totalen_chaos_final_factor
+				holy_realm_chaos_threatens_realm_or_compact = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
 	# area = THR_TAG_ANTI_CHAOS
 	# tone = THR_TAG_AMBIGUOUS
 	# chaos = THR_TAG_CHAOS_GATE

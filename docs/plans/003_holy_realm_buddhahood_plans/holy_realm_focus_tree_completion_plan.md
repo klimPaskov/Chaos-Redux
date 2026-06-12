@@ -69,12 +69,17 @@ The eighth teaching-depth tranche adds staged mission capacity:
 - Translation House work now stages distant visits and foreign officer teaching. Teach under Bombardment stages collapsing-capital visits. `THR_four_teaching_seats` stages follow-up letters, Mandala missions, foreign pilgrims, and sympathetic-government support.
 - Buddhahood, One Becomes Many, or the One Becomes Many focus raises the active teaching cap to five.
 
+The ninth meditation-depth tranche extends Dhyana after Buddhahood:
+
+- `THR_return_to_the_seat` branches from `The Awakened One`, adds a post-Buddhahood meditation payoff, and unlocks the emergency vow loop.
+- `THR_renew_vow_under_fire` requires the awakened meditation seat, the fourth Dhyana, capital control, a true chaos threat to the Realm, a neighbor, or a compact ally, Command Power, and support equipment. It restores Meditation Charge faster than the standard concentration sequence, adds Detachment, lowers Defilements, and records Wrathful Protection readiness.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
 
 1. Teaching route follow-up: downstream mission-slot variety is implemented through `THR_four_teaching_seats` and the active teaching-seat cap. Remaining future-depth work is only additional mission-family outcomes if later balance wants more target-specific success/failure events.
-2. Meditation route follow-up: add later Dhyana payoffs, stronger interaction with `meditation_charge`, and visible post-Buddhahood meditation use beyond the route-lock chain.
+2. Meditation route follow-up: `THR_return_to_the_seat` and `THR_renew_vow_under_fire` now add a post-Buddhahood Dhyana payoff, stronger `meditation_charge` interaction, and visible emergency meditation use. Remaining future-depth work is only additional failure events or ordinary-war abuse consequences if later balance wants more risk.
 3. Governance route follow-up: let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools.
 4. Sanctuary logistics: implemented as Pilgrimage Roads, Monastery Workshops, Mountain Granaries, Snowline Clinics, and Storehouses for the World. Remaining future-depth work is only state-group specificity if a later map pass wants named Himalayan subregions instead of all controlled states.
 5. Guardian military: `THR_vow_keeper_regiments` and its support nodes now form a defensive guardian route with Fortress Without Hatred, Mountain Pass Detachments, The Bell and Rifle, and The Unbroken Pass. Remaining future-depth work is pilgrimage escort mission integration and optional Temple Guard naming if the unit template needs a second non-mountaineer identity.
