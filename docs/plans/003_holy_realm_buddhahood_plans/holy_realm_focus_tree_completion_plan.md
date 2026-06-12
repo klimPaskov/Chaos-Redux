@@ -74,13 +74,19 @@ The ninth meditation-depth tranche extends Dhyana after Buddhahood:
 - `THR_return_to_the_seat` branches from `The Awakened One`, adds a post-Buddhahood meditation payoff, and unlocks the emergency vow loop.
 - `THR_renew_vow_under_fire` requires the awakened meditation seat, the fourth Dhyana, capital control, a true chaos threat to the Realm, a neighbor, or a compact ally, Command Power, and support equipment. It restores Meditation Charge faster than the standard concentration sequence, adds Detachment, lowers Defilements, and records Wrathful Protection readiness.
 
+The tenth governance-depth tranche gives each governance choice a later route hook:
+
+- `THR_abbot_examiners` lets Council of Abbots governance open the fourth active teaching seat before `THR_four_teaching_seats`, adding teaching-route Bodhi and Compassion.
+- `THR_regent_pass_watch` gives Protector Regent governance a defensive follow-up with Command Power, support equipment, capital-pass fortification, anti-air, and a small Defilements cost.
+- `THR_pilgrim_refuge_courts` lets Pilgrim Assembly governance widen the low-stability humanitarian compact path and adds refugee manpower, Mandala Reach, and Sangha Cohesion.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
 
 1. Teaching route follow-up: downstream mission-slot variety is implemented through `THR_four_teaching_seats` and the active teaching-seat cap. Remaining future-depth work is only additional mission-family outcomes if later balance wants more target-specific success/failure events.
 2. Meditation route follow-up: `THR_return_to_the_seat` and `THR_renew_vow_under_fire` now add a post-Buddhahood Dhyana payoff, stronger `meditation_charge` interaction, and visible emergency meditation use. Remaining future-depth work is only additional failure events or ordinary-war abuse consequences if later balance wants more risk.
-3. Governance route follow-up: let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools.
+3. Governance route follow-up: `THR_abbot_examiners`, `THR_regent_pass_watch`, and `THR_pilgrim_refuge_courts` now let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools. Remaining future-depth work is only route-specific failure events or AI balance tuning if later audits show one governance route dominates.
 4. Sanctuary logistics: implemented as Pilgrimage Roads, Monastery Workshops, Mountain Granaries, Snowline Clinics, and Storehouses for the World. Remaining future-depth work is only state-group specificity if a later map pass wants named Himalayan subregions instead of all controlled states.
 5. Guardian military: `THR_vow_keeper_regiments` and its support nodes now form a defensive guardian route with Fortress Without Hatred, Mountain Pass Detachments, The Bell and Rifle, and The Unbroken Pass. Remaining future-depth work is pilgrimage escort mission integration and optional Temple Guard naming if the unit template needs a second non-mountaineer identity.
 6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection, and anti-puppet clauses. Remaining future-depth work is member refusal/exit events and crisis-specific shared defense missions.

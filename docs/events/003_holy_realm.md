@@ -88,6 +88,8 @@ The sanctuary logistics branch now names its map work directly: `THR_count_mount
 
 The teaching route uses active teaching seats to keep the Bodhisattva category paced. Basic Dharma teaching work can run up to three timed teaching missions at once. `THR_four_teaching_seats` raises the cap to four and reveals late follow-up letters, foreign pilgrimage, Mandala missions, and sympathetic-government support. Buddhahood, One Becomes Many, or the One Becomes Many focus raises the cap to five.
 
+Governance choices now have later route-specific follow-up focuses. `THR_abbot_examiners` lets Council of Abbots governance open the fourth active teaching seat before the wider teaching network is complete. `THR_regent_pass_watch` turns Protector Regent governance into capital-pass defenses, support equipment, and command capacity at the cost of a small Defilements increase. `THR_pilgrim_refuge_courts` lets Pilgrim Assembly governance widen the low-stability humanitarian compact path and adds refugee manpower, Mandala Reach, and Sangha Cohesion.
+
 The meditation route now continues after awakening. `THR_return_to_the_seat` adds a post-Buddhahood Dhyana payoff and unlocks `THR_renew_vow_under_fire`. That emergency decision is visible from the awakened meditation seat, requires the fourth Dhyana, a controlled capital, and a real chaos threat to the Realm, a neighbor, or a compact ally. It spends Command Power, support equipment, and a small amount of Stability to restore Meditation Charge faster, add Detachment, reduce Defilements, and record Wrathful Protection readiness.
 
 The Mandala of Nations is the peaceful Sangha Compact route. Its goals are completed through decision-based acts of kindness:
