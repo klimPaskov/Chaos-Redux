@@ -245,6 +245,8 @@ Decision category icons:
 - `GFX_holy_realm_mandala_meditation_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`
 - `GFX_holy_realm_mandala_awakened_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`
 - `GFX_holy_realm_mandala_final_silence_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`
+- `GFX_decision_holy_realm_dhyana_seal`: `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds`
+- `GFX_decision_holy_realm_dhyana_seal_animated`: `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`
 - vanilla `GFX_decision_category_generic_political_actions` for Letters of Peace and Authority
 - vanilla `GFX_faction_logo_generic_democratic` for the Mandala of Nations faction logo until custom faction art exists
 
