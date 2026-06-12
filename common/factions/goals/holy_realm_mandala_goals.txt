@@ -7,6 +7,7 @@
 @thr_mandala_goal_projection_medium = 110
 @thr_mandala_goal_projection_long = 170
 @thr_mandala_goal_initiative_reward = 1
+@thr_mandala_goal_projection_defense = 120
 
 faction_manifest_holy_realm_mandala_peace = {
 	name = faction_manifest_thr_mandala_peace_name
@@ -121,5 +122,36 @@ faction_goal_thr_open_granaries = {
 
 	ai_will_do = {
 		base = 5
+	}
+}
+
+faction_goal_thr_joint_defense_of_passes = {
+	name = faction_goal_thr_joint_defense_of_passes_name
+	description = faction_goal_thr_joint_defense_of_passes_desc
+	category = medium_term
+	group = FOCUS_FILTER_WAR_SUPPORT
+
+	visible = {
+		ROOT = {
+			has_faction_template = faction_template_holy_realm_mandala_of_nations
+		}
+	}
+
+	available = {
+		has_country_flag = holy_realm_mandala_of_nations_leader
+		holy_realm_chaos_threatens_realm_or_compact = yes
+	}
+
+	completed = {
+		has_country_flag = holy_realm_mandala_joint_defense_completed
+	}
+
+	complete_effect = {
+		add_faction_power_projection = @thr_mandala_goal_projection_defense
+		add_faction_initiative = @thr_mandala_goal_initiative_reward
+	}
+
+	ai_will_do = {
+		base = 6
 	}
 }
