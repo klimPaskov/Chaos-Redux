@@ -85,7 +85,7 @@ The scenario UI reuses existing Chaos Redux and vanilla UI assets:
 - `yearslider_rightbutton`
 - `GFX_report_event_holy_realm_final_silence`
 - `GFX_super_event_final_silence`
-- `GFX_super_event_final_silence_thermonuclear`
+- `GFX_super_event_final_silence_terminal`
 
 No dedicated scenario art is required for this pass. Future custom entry icons can be added as stable scenario-specific sprites in `interface/chaosx.gfx`.
 

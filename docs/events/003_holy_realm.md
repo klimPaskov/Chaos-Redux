@@ -352,7 +352,7 @@ Super-event art:
   - referenced as `GFX_super_event_final_silence`
   - registered in `interface/chaosx_super_events.gfx`
 - `gfx/super_events/super_event_the_final_silence.dds`
-  - referenced as `GFX_super_event_final_silence_thermonuclear`
+  - referenced as `GFX_super_event_final_silence_terminal`
   - registered in `interface/chaosx_super_events.gfx`; currently shares the terminal Final Silence texture
 - `gfx/super_events/super_event_the_mandala_breaks.dds`
   - referenced as `GFX_super_event_mandala_breaks`

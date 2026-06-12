@@ -1,5 +1,9 @@
 # Holy Realm Buddhahood Focus Tree Audit And Patch Handoff
 
+## Superseded Status
+
+This handoff records the first focus-tree audit before the later Holy Realm Buddhahood route implementation tranches. Its route-gap findings were resolved or replaced by subsequent work recorded in [holy_realm_focus_tree_completion_plan.md](/home/klim/projects/chaos_redux/docs/plans/003_holy_realm_buddhahood_plans/holy_realm_focus_tree_completion_plan.md) and the current route coverage table in [003_holy_realm.md](/home/klim/projects/chaos_redux/docs/events/003_holy_realm.md). Keep the original findings below as historical context for what the first audit saw, not as the current focus-tree completion state.
+
 ## Patch Summary
 
 Changed files:
@@ -57,7 +61,7 @@ Localisation keys and icon ids changed:
 
 ## Localisation And Reward Mismatches
 
-- All current focus ids have title and description localisation in `localisation/english/003_the_holy_realm_l_english.yml`; only the tree id `THR_focus_desc` is absent from the mechanical key check.
+- At audit time, all then-current focus ids had title and description localisation in `localisation/english/003_the_holy_realm_l_english.yml`, while the tree id `THR_focus_desc` was absent from the mechanical key check. That tree description key has since been added.
 - `THR_buddha_mandate` is localized as `The Unshaken Seat`, matching `docs/holy_realm_buddhahood_progression.md:35`, but the focus itself only fires event `chaosx.nr3.30`; the actual Buddhahood conditions live in the decision/event layer.
 - `THR_mandala_of_nations` localisation describes a coalition of refusal and witnessed peace, but the spec asks for a Sangha Compact route with stricter membership/cohesion/failure mechanics.
 - Several expansion focus names and descriptions use register/mandala/world-border language while rewards grant ordinary annexation war goals and claims, which conflicts with the spec's liberation/sanctuary framing.
@@ -84,7 +88,7 @@ Meaningful validation run:
 
 - Compared `search_filter_prios` placement against the offline National focus wiki and vanilla `common/national_focus/generic.txt`; root-level placement is the supported pattern.
 - Counted current `THR_` focus ids: 73 focus ids, but route coverage remains incomplete against the required Buddhahood route family list.
-- Checked focus localisation coverage for current `THR_` focus ids: all focus titles/descriptions are present; only `THR_focus_desc` is absent.
+- Checked focus localisation coverage for then-current `THR_` focus ids: all focus titles/descriptions were present; `THR_focus_desc` was the only absent key at that time and has since been added.
 - Checked `localisation/english/003_the_holy_realm_l_english.yml` encoding: UTF-8 with BOM.
 
 Skipped meaningful validation:
