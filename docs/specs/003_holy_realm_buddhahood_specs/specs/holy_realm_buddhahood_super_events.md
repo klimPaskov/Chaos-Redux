@@ -1,6 +1,6 @@
 # Holy Realm Super-Event Specification
 
-This event has three planned super-events. The super-event research agent must find real quotes and usable audio. The spec does not claim final quote or music selection.
+This event has three planned super-events. The super-event research agent must find real quotes and usable audio. Final implemented quote sources are recorded in `docs/super_events/super_event_quote_sources.md`; final audio candidates and licensing notes are recorded in `docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md`.
 
 ## Super-event 1: The Awakened One
 
