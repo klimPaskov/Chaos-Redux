@@ -1,10 +1,10 @@
 # chaosx_dynamic_triggers
 
-This file documents reusable dynamic scripted triggers from `common/scripted_effects/chaosx_dynamic_triggers.txt`. The point of these triggers is to keep complex variable/meta logic centralized so events can call one reusable block instead of duplicating large script chunks.
+This file documents reusable dynamic scripted triggers from `common/scripted_triggers/chaosx_dynamic_triggers.txt`. The point of these triggers is to keep complex trigger logic centralized so events can call one reusable block instead of duplicating large script chunks.
 
 ## Reuse guidance
 
-Before adding new dynamic logic, check this file and reuse an existing effect if it already matches the behavior. If no effect matches, create a new one in `chaosx_dynamic_effects.txt` and document it here in the same change with: purpose, scope, inputs, defaults, outputs, side effects, and example usage.
+Before adding new dynamic trigger logic, check this file and reuse an existing trigger if it already matches the behavior. If no trigger matches, create a new one in `chaosx_dynamic_triggers.txt` and document it here in the same change with: purpose, scope, inputs, defaults, outputs, side effects, and example usage.
 
 ## Table of contents
 
@@ -26,7 +26,7 @@ Current coverage includes:
 - `REV` and countries with original tag `REV`
 - communist rebel-state flags
 - `ZIN`
-- `THR` / countries using the `The Holy Realm` cosmetic tag
+- countries using the `The Holy Realm` cosmetic tag
 
 ## is_actual_nonhuman_country
 
