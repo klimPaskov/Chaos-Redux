@@ -55,9 +55,37 @@ Review assets:
 - Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_preview.gif`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_contact.png`
 
+## Holy Mandala Final Silence Animation
+
+The armed Final Silence ritual state uses an animated frame sheet while preserving the static Final Silence DDS as its fallback.
+
+| Field | Value |
+| --- | --- |
+| Static sprite alias | `GFX_holy_realm_mandala_final_silence` |
+| Animated sprite alias | `GFX_holy_realm_mandala_final_silence_animated` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence.dds` |
+| Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds` |
+| Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/sheets/holy_realm_mandala_final_silence_sheet.png` |
+| Frame size | `420x420` |
+| Frame count | `12` |
+| Sheet size | `5040x420` |
+| FPS | `8` |
+| Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Target `.gfx` | `interface/003_holy_realm.gfx` |
+| Target GUI | `interface/chaosx_decisions.gui` and `common/scripted_guis/chaosx_scripted_guis.txt` |
+| State gate | `GetHolyRealmMandalaSprite` returns the animated sprite for armed or active Final Silence states |
+| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/interface/core.gfx`, `interface/007_fury.gfx` |
+
+Review assets:
+
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/processed_frames/`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_contact.png`
+
 Remaining animation handoff:
 
-- Dormant, teaching, meditation, wrathful, final-silence, and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
+- Dormant, teaching, meditation, wrathful, and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
 
 ## Holy Realm Static Leader Portrait Stages
 
