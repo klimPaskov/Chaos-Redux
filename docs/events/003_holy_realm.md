@@ -82,6 +82,8 @@ Early identity and refuge focuses use short costs so the Realm becomes active qu
 
 Arhat Administration and Buddha Mandate are mid-game power spikes. They unlock stronger administration, compliance and construction tools, Arhat oversight, Mandala diplomacy, the Mandala Bureau intelligence agency, military organization, doctrine branches, faster industry, stronger vow-keeper forces, and accelerated nuclear preparation if the player later enters the final doctrine route. The expansion route adds strong regional tools but carries Compassion Drift, foreign suspicion, refusal records, and high-chaos locks rather than free world conquest. Acceptance of letters is intentionally rare; major powers and faction members cannot accept.
 
+The guardian branch now runs through `THR_vow_keeper_regiments`, `THR_shelters_under_stone` as Fortress Without Hatred, `THR_quiet_mobilization` as Mountain Pass Detachments, `THR_mountain_artillery_mandalas` as The Bell and Rifle, and `THR_unbroken_pass` as the anti-chaos defensive capstone. The capstone requires real chaos pressure, a recent capital-sanctuary fall, or Chaos Tier pressure and applies the Last-Pass Mobilization idea without opening ordinary conquest tools.
+
 The Mandala of Nations is the peaceful Sangha Compact route. Its goals are completed through decision-based acts of kindness:
 
 - `THR_mandala_open_refuge_corridors`

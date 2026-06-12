@@ -47,6 +47,13 @@ The fifth anti-chaos power tranche expands the post-Buddhahood power branch:
 - `THR_vanishing_from_sight_focus` and `THR_seated_in_sky_focus` give Vanishing from Sight and Seated in the Sky dedicated focus payoffs.
 - `THR_touch_sun_moon_focus` now requires the full named-power lattice: Pattern, One Becomes Many, Path through Walls, Lotus Bridge, Vanishing from Sight, and Seated in the Sky.
 
+The sixth guardian-route tranche reframes and caps the existing military support branch:
+
+- `THR_shelters_under_stone` is now the player-facing `Fortress Without Hatred`, matching the fort and anti-air sanctuary defense role.
+- `THR_quiet_mobilization` is now `Mountain Pass Detachments`, matching the defensive reserve and pass-watch role.
+- `THR_mountain_artillery_mandalas` is now `The Bell and Rifle`, framing artillery as guardian support rather than conquest.
+- `THR_unbroken_pass` is the anti-chaos defensive capstone, gated by chaos pressure, active special-chaos enemies, or a recent capital-sanctuary fall, and applies `holy_realm_last_pass_mobilization`.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -55,7 +62,7 @@ Implement these as focus-tree work, not only as decisions:
 2. Meditation route follow-up: add later Dhyana payoffs, stronger interaction with `meditation_charge`, and visible post-Buddhahood meditation use beyond the route-lock chain.
 3. Governance route follow-up: let Council of Abbots, Protector Regent, and Pilgrim Assembly affect later teaching, defense, refugee, and compact tools.
 4. Sanctuary logistics: reshape existing generic whole-country construction focuses into named sanctuary logistics: granaries, pilgrimage roads, clinics, workshops, storehouses, and supply support for allies/compact members.
-5. Guardian military: turn `THR_vow_keeper_regiments` and support nodes into a defensive guardian route with temple guards, pilgrimage escorts, mountain pass detachments, and anti-chaos defensive doctrine.
+5. Guardian military: `THR_vow_keeper_regiments` and its support nodes now form a defensive guardian route with Fortress Without Hatred, Mountain Pass Detachments, The Bell and Rifle, and The Unbroken Pass. Remaining future-depth work is pilgrimage escort mission integration and optional Temple Guard naming if the unit template needs a second non-mountaineer identity.
 6. Sangha Compact diplomacy: the current `Mandala of Nations` is now formalized as the accepted compact equivalent with membership rules, cohesion checks, shared decisions, invalid-member rejection, and anti-puppet clauses. Remaining future-depth work is member refusal/exit events and crisis-specific shared defense missions.
 7. Expansion/liberation: replace broad ordinary annexation/registration rhetoric with the spec's pilgrimage and liberation framing where appropriate. Keep hard conquest as a corrupted/high-chaos route if retained.
 8. Anti-chaos powers follow-up: dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses are implemented. Remaining future-depth work is only power-specific decision upgrades if balance requires more than route flags and charge/virtue rewards.
