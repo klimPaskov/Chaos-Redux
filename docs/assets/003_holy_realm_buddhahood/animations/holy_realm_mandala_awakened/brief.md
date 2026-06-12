@@ -1,0 +1,50 @@
+# Holy Realm Mandala Awakened Animation Brief
+
+- Asset name: `holy_realm_mandala_awakened`
+- Related event: `003_holy_realm_buddhahood`
+- In-game use: animated awakened-state mandala for the Holy Realm decision-category scripted GUI panel
+- Gameplay surface: `decision_category` scripted GUI
+- Existing GUI target:
+  - `interface/chaosx_decisions.gui` -> `holy_realm_mandala_category_container` -> `holy_realm_mandala_core`
+  - `common/scripted_guis/chaosx_scripted_guis.txt` -> `holy_realm_mandala_category_scripted_gui`
+- Existing static fallback sprite: `GFX_holy_realm_mandala_awakened`
+- Animated sprite to hand off: `GFX_holy_realm_mandala_awakened_animated`
+- Static fallback DDS: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened.dds`
+- Final animated sheet DDS: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`
+- Target `.gfx` file for handoff: `interface/003_holy_realm.gfx`
+- Frame size: `420x420`
+- Frame count: `12`
+- Sheet size: `5040x420`
+- FPS: `8`
+- Looping: `yes`
+- `play_on_show`: `yes`
+- Anchor: `center`
+- Subject type: symbolic and supernatural UI art
+- Source mode: `$imagegen` per frame, followed by local deterministic normalization, sheet assembly, preview creation, and DDS conversion
+- Visual direction:
+  - sacred wheel and lotus mandala
+  - subtle Himalayan silhouette behind the lower ring
+  - awakened state with calm gold light, pale ivory core, and restrained ember sparks
+  - readable at `420x420` and at GUI `scale = 0.52`
+  - no text, no faces, no maps, no modern UI, no modern props
+- Motion plan:
+  - frame-to-frame changes come from generated source variation
+  - animated elements are lotus light petals, lamp sparks, and slight sacred ring geometry shifts
+  - no transform-only glow pulse, blur pulse, or scripted offset animation
+- Reference inspection completed:
+  - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+  - `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+  - `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+  - `interface/003_holy_realm.gfx`
+  - `interface/chaosx_decisions.gui`
+  - `common/scripted_guis/chaosx_scripted_guis.txt`
+  - `common/scripted_localisation/003_holy_realm_scripted_localisation.txt`
+  - `.agents/skills/chaos-redux-event-assets/assets/decisions/decision_category_generic_communism.png`
+  - `.agents/skills/chaos-redux-event-assets/assets/decisions/decision_usa_congress.png`
+  - `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_awakened.png`
+- Working package paths:
+  - source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/source_frames/`
+  - processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/processed_frames/`
+  - sheet PNG: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/sheets/holy_realm_mandala_awakened_sheet.png`
+  - preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_preview.gif`
+  - contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_contact.png`
