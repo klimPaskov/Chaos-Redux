@@ -223,7 +223,7 @@ Holy Realm achievements are registered in `common/achievements/chaos_redux_achie
 
 Holy Realm-specific sprite names are registered in `interface/003_holy_realm.gfx`, `interface/chaosx_achievements.gfx`, and `interface/chaosx_super_events.gfx`. Report-event, focus, idea, decision category, achievement, and super-event files use their normal Chaos Redux folders.
 
-Leader stage portrait aliases are registered in `interface/chaosx_characters.gfx`. The static fallback portrait DDS files live in `gfx/leaders/THR/`, with source/processed review files and contact sheet under `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/`. The Buddha Mandate stage also has the animated sprite `GFX_portrait_THR_buddha_mandate_animated` backed by `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds`, and the Empty Seat aftermath has `GFX_portrait_THR_empty_seat_animated` backed by `gfx/leaders/THR/portrait_THR_empty_seat_animated.dds`.
+Leader stage portrait aliases are registered in `interface/chaosx_characters.gfx`. The static fallback portrait DDS files live in `gfx/leaders/THR/`, with source/processed review files and contact sheet under `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/`. Country leader portrait effects use the static aliases. The Buddha Mandate stage also has the animated sprite `GFX_portrait_THR_buddha_mandate_animated` backed by `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds`, and the Empty Seat aftermath has `GFX_portrait_THR_empty_seat_animated` backed by `gfx/leaders/THR/portrait_THR_empty_seat_animated.dds` for event-log and UI presentation surfaces.
 
 The Holy Mandala scripted GUI is intentionally compact and attached only to the decision category. It does not replace the focus tree, the balance-of-power screen, or the Bodhisattva mission category.
 
@@ -313,8 +313,8 @@ Decision icons:
 Leader portraits:
 
 - Stage portraits are registered in `interface/chaosx_characters.gfx` and stored under `gfx/leaders/THR/`.
-- `GFX_portrait_THR_buddha_mandate_animated` is used for Buddhahood and Buddha Mandate.
-- `GFX_portrait_THR_empty_seat_animated` is used for the Empty Seat aftermath.
+- `GFX_portrait_THR_buddha_mandate` is the country leader portrait for Buddhahood and Buddha Mandate; `GFX_portrait_THR_buddha_mandate_animated` is used on animated presentation surfaces.
+- `GFX_portrait_THR_empty_seat` is the country leader portrait for the Empty Seat aftermath; `GFX_portrait_THR_empty_seat_animated` is used on animated presentation surfaces.
 - `GFX_portrait_THR_false_buddha` uses `gfx/leaders/THR/portrait_THR_false_buddha.dds` while the False Buddha Schism is active and remains on the absorbed-shadow route.
 
 Idea icons use a separate folder and sprite set, not focus icons. Placeholder DDS files are registered under `gfx/interface/ideas/holy_realm/` until final custom idea art is provided:
