@@ -167,9 +167,37 @@ Review assets:
 - Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_preview.gif`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_contact.png`
 
+## Holy Mandala Empty Seat Animation
+
+The non-terminal Final Silence afterstate and Empty Seat achievement-ready Mandala state uses an animated frame sheet while preserving the static empty-seat DDS as its fallback.
+
+| Field | Value |
+| --- | --- |
+| Static sprite alias | `GFX_holy_realm_mandala_empty` |
+| Animated sprite alias | `GFX_holy_realm_mandala_empty_animated` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty.dds` |
+| Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty_animated.dds` |
+| Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/sheets/holy_realm_mandala_empty_sheet.png` |
+| Frame size | `420x420` |
+| Frame count | `8` |
+| Sheet size | `3360x420` |
+| FPS | `8` |
+| Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Target `.gfx` | `interface/003_holy_realm.gfx` |
+| Target GUI | `interface/chaosx_decisions.gui` and `common/scripted_guis/chaosx_scripted_guis.txt` |
+| State gate | `GetHolyRealmMandalaSprite` returns the animated sprite for non-terminal Final Silence completion or Empty Seat achievement readiness |
+| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/interface/theatreselector.gfx`, `interface/007_fury.gfx` |
+
+Review assets:
+
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/processed_frames/`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_contact.png`
+
 Remaining animation handoff:
 
-- Wrathful and empty-seat Mandala states still use static fallback sprites unless their own `_animated` frame sheets are produced.
+- Wrathful Mandala state still uses a static fallback sprite unless its own `_animated` frame sheet is produced.
 
 ## Holy Realm Static Leader Portrait Stages
 

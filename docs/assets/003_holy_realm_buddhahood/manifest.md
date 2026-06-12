@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/final-silence animation assets, and leader portrait static fallback assets.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/final-silence/empty-seat animation assets, and leader portrait static fallback assets.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -15,6 +15,7 @@ Source mode:
 - `$imagegen` for the Meditation Mandala animation source frames.
 - `$imagegen` for the awakened Mandala animation source frames.
 - `$imagegen` for the Final Silence Mandala animation source frames.
+- `$imagegen` for the Empty Seat Mandala animation source frames.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
 - Local ImageMagick procedural composition for static Mandala GUI fallback states.
 - Local ImageMagick stage treatment for static leader portrait fallbacks derived from the existing fictional Holy Realm leader portrait.
@@ -28,6 +29,7 @@ DDS conversion note:
 - Meditation Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Awakened Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
 - Final Silence Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
+- Empty Seat Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
 - Leader portrait fallback DDS files were validated for existence and `156x210` dimensions after export.
 
 ## Static Mandala GUI Fallbacks
@@ -330,6 +332,58 @@ Frame source notes:
 | 009 | pale bell | `source_frames/holy_realm_mandala_final_silence_009_source.png` |
 | 010 | return close | `source_frames/holy_realm_mandala_final_silence_010_source.png` |
 | 011 | seam frame | `source_frames/holy_realm_mandala_final_silence_011_source.png` |
+
+## Empty Seat Mandala Animation
+
+This asset is the frame-sheet package for the empty-seat afterstate in the Holy Mandala decision-category scripted GUI.
+
+Reference inspection completed:
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/interface/theatreselector.gfx`
+- `interface/007_fury.gfx`
+- `.agents/skills/chaos-redux-event-assets/assets/decisions/`
+
+| Field | Value |
+| --- | --- |
+| Asset name | `holy_realm_mandala_empty` |
+| Asset type | animated scripted GUI state sprite |
+| Intended in-game use | Empty-seat afterstate for non-terminal Final Silence completion or Empty Seat achievement readiness in `holy_realm_mandala_category_scripted_gui` |
+| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/source_frames/` |
+| Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/processed_frames/` |
+| Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/sheets/holy_realm_mandala_empty_sheet.png` |
+| Final sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty_animated.dds` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty.dds` |
+| Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_preview.gif` |
+| Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_contact.png` |
+| Target size | `420x420` per frame |
+| Frame count | `8` |
+| Sheet size | `3360x420` |
+| Animation rate | `8` FPS |
+| Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Anchor point | center |
+| Static sprite | `GFX_holy_realm_mandala_empty` |
+| Animated sprite | `GFX_holy_realm_mandala_empty_animated` |
+| `.gfx` file | `interface/003_holy_realm.gfx` |
+| GUI files | `interface/chaosx_decisions.gui`, `common/scripted_guis/chaosx_scripted_guis.txt` |
+| Scripted localisation | `GetHolyRealmMandalaSprite` returns the animated sprite for non-terminal Final Silence completion or Empty Seat achievement readiness before active Final Silence, wrathful, awakened, meditation, teaching, and dormant states |
+| Prompt record | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/notes/source_prompts.md` |
+| Asset status | `complete` |
+
+Frame source notes:
+
+| Frame | Motion state | Source PNG |
+| --- | --- | --- |
+| 000 | empty rest | `source_frames/holy_realm_mandala_empty_000_source.png` |
+| 001 | dust ring | `source_frames/holy_realm_mandala_empty_001_source.png` |
+| 002 | hollow centre breath | `source_frames/holy_realm_mandala_empty_002_source.png` |
+| 003 | ash halo | `source_frames/holy_realm_mandala_empty_003_source.png` |
+| 004 | quiet absence peak | `source_frames/holy_realm_mandala_empty_004_source.png` |
+| 005 | fading vow | `source_frames/holy_realm_mandala_empty_005_source.png` |
+| 006 | still seat | `source_frames/holy_realm_mandala_empty_006_source.png` |
+| 007 | seam frame | `source_frames/holy_realm_mandala_empty_007_source.png` |
 
 ## Static Leader Portrait Fallbacks
 

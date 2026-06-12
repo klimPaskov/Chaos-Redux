@@ -90,7 +90,8 @@ Implementation coverage:
 - `GFX_holy_realm_mandala_meditation_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/`.
 - `GFX_holy_realm_mandala_awakened_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/`.
 - `GFX_holy_realm_mandala_final_silence_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/`.
-- The remaining Mandala animated sprites in this table are `GFX_holy_realm_mandala_wrathful_animated` and `GFX_holy_realm_mandala_empty_animated`; each still requires its own source-frame package before it can be wired as a final animation asset.
+- `GFX_holy_realm_mandala_empty_animated` is delivered as an 8-frame `3360x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/`.
+- The remaining Mandala animated sprite in this table is `GFX_holy_realm_mandala_wrathful_animated`; it still requires its own source-frame package before it can be wired as a final animation asset.
 
 Central mandala visual direction:
 
