@@ -61,6 +61,7 @@ The Holy Realm extends existing Chaos Redux systems rather than creating paralle
 - AI: peaceful Holy Realm strategies prioritize defense, infrastructure, legitimacy, and low-chaos paths. Once Chaos Tier begins, peace-route focus and letter weights are suppressed, the Final Silence entry becomes available, and Totalen Chaos or World Collapse heavily multiplies Final Silence preparation and launch weights. Expansionist AI sends letters and pressures weak neighbors only before high chaos closes the peace-letter route, with forced integration weighted toward strong, prepared, high-chaos states. Final Silence remains locked behind Buddhahood, the armed final doctrine, doctrine dominance, the Extinction of Defilements rite, capital control, schism state, sovereignty, Chaos Meter state, and world-end settings.
 - Mandala of Nations: `THR_mandala_of_nations` creates the `faction_template_holy_realm_mandala_of_nations` faction as the Sangha Compact implementation, sets peaceful faction rules, adds goals, applies the Mandala Peace Vow to members, and reduces chaos when valid countries join. Entrants must be non-chaos, non-puppet, minor countries with a crisis, chaos threat, teaching history, observer/development contact, or Pilgrim Assembly humanitarian opening. Invalid joins are rejected and reduce Sangha Cohesion. Members receive a `can_not_declare_war` rule while inside the faction, so the peaceful coalition cannot declare offensive wars.
 - Compact refusal and exit notices: invalid entrants fire `chaosx.nr3.128` for the rejected country and `chaosx.nr3.129` for the Holy Realm before they are removed. A member leaving after receiving the Mandala Peace Vow fires `chaosx.nr3.130` for the Holy Realm, clears the vow, and refreshes valid compact status without adding a polling hook.
+- Identity formables: `THR_form_great_mandala` applies the `THR_GREAT_MANDALA` cosmetic tag only after Buddhahood, the Refusal of Empires, low Defilements, no ordinary-conquest disqualifier, and either a stable Mandala of Nations or protected sanctuary corridor. `THR_form_silent_mandala` applies `THR_SILENT_MANDALA` only after non-terminal Final Silence, the Empty Seat focus, an intact compact, and no active Schism. Both tags remain registered in `is_special_chaos_country`; neither is treated as an actual nonhuman country.
 - Doctrine balance: the built-in balance of power uses `common/bop/003_holy_realm_bop.txt`, with Vow and Final Silence sides. It gives range modifiers, stores current doctrine pressure flags, and is moved by decisions, focuses, and teaching events. Final Silence launch now requires the Final Silence side to dominate the balance.
 - Bodhisattva bhumi system: `holy_realm_advance_bodhisattva_bhumi` advances up to ten bhumis, refreshes the leader portrait, and swaps leader traits through `holy_realm_bodhisattva_pramudita`, `holy_realm_bodhisattva_vimala`, `holy_realm_bodhisattva_acala`, and `holy_realm_bodhisattva_dharmamegha`.
 
@@ -226,6 +227,15 @@ Leader stage portrait aliases are registered in `interface/chaosx_characters.gfx
 
 The Holy Mandala scripted GUI is intentionally compact and attached only to the decision category. It does not replace the focus tree, the balance-of-power screen, or the Bodhisattva mission category.
 
+Placeholder cosmetic-identity flags currently copy the base Holy Realm flag and can be replaced later without changing script identifiers:
+
+- `gfx/flags/THR_GREAT_MANDALA.tga`
+- `gfx/flags/medium/THR_GREAT_MANDALA.tga`
+- `gfx/flags/small/THR_GREAT_MANDALA.tga`
+- `gfx/flags/THR_SILENT_MANDALA.tga`
+- `gfx/flags/medium/THR_SILENT_MANDALA.tga`
+- `gfx/flags/small/THR_SILENT_MANDALA.tga`
+
 Imported package asset folders reserved for the later replacement UI:
 
 - `gfx/holy_realm/mandala_panel/`
@@ -244,7 +254,7 @@ Focus icons:
 - `GFX_goal_THR_pacification`
 - `GFX_goal_THR_final`
 
-The remaining Holy Realm focuses intentionally use unique vanilla/generic icons so no two focus icons repeat. If more custom focus icons are desired, the highest-value replacements would be:
+The remaining Holy Realm focuses use vanilla/generic icons where no custom replacement exists. If more custom focus icons are desired, the highest-value replacements would be:
 
 - `goal_holy_realm_expansion_letters.dds`: sealed white letter over mountain passes, for the expansion-letter branch.
 - `goal_holy_realm_himalayan_mandala.dds`: circular Himalaya/pass mandala, for Bhutan/Nepal/Tibet integration.
