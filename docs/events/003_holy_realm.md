@@ -243,6 +243,7 @@ Decision category icons:
 - `GFX_decision_category_final_ledger`: `gfx/interface/decisions/holy_realm/decision_category_final_ledger.dds`
 - `GFX_decision_category_holy_doctrine_balance`: vanilla `gfx/interface/decisions/decision_category_generic_political_actions.dds`
 - `GFX_holy_realm_mandala_awakened_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`
+- `GFX_holy_realm_mandala_final_silence_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`
 - vanilla `GFX_decision_category_generic_political_actions` for Letters of Peace and Authority
 - vanilla `GFX_faction_logo_generic_democratic` for the Mandala of Nations faction logo until custom faction art exists
 
@@ -392,7 +393,7 @@ Remaining clean asset needs:
 
 - dedicated thermonuclear Final Silence super-event art if the shared terminal Final Silence texture should be split later
 - Vow against Annihilation capstone super-event art if that optional spec super event is implemented later
-- animated Mandala frame sheets for dormant, teaching, meditation, wrathful, final-silence, and empty-seat states
+- animated Mandala frame sheets for dormant, teaching, meditation, wrathful, and empty-seat states
 - animated leader portrait frame sheets if the static fallback stage portraits should be upgraded to animation
 - final custom report-event pictures if the current Holy Realm report-event DDS files are only temporary art
 - dedicated custom balance-of-power icons for the Vow, Final Silence, and doctrine-balance category if the current Holy Realm art should be replaced
