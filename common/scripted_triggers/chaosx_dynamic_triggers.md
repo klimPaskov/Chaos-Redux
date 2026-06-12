@@ -20,7 +20,7 @@ Country-scope trigger. Returns true for system actors and special scenario count
 
 Current coverage includes:
 
-- `ZZZ`
+- `ZZZ` / original `ZZZ` outbreak countries
 - dynamic zombie outbreak countries
 - weaponized zombie outbreak countries
 - `REV` and countries with original tag `REV`
@@ -35,7 +35,7 @@ Country-scope trigger. Returns true only for countries that should currently be 
 
 Current coverage includes:
 
-- `ZZZ`
+- `ZZZ` / original `ZZZ` outbreak countries
 - dynamic zombie outbreak countries
 - weaponized zombie outbreak countries
 - Wendigo outbreak flags or the Wendigo cosmetic tag
