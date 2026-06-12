@@ -6446,6 +6446,112 @@ soviet_collapse_apply_internal_compact_common_front_payoff = {
     }
 }
 
+soviet_collapse_calculate_foreign_sponsor_support_scale = {
+    set_temp_variable = { soviet_collapse_foreign_sponsor_support_scale = 0 }
+    set_temp_variable = { soviet_collapse_foreign_sponsor_factory_power = num_of_civilian_factories }
+    add_to_temp_variable = { soviet_collapse_foreign_sponsor_factory_power = num_of_military_factories }
+    if = {
+        limit = {
+            check_variable = {
+                var = soviet_collapse_foreign_sponsor_factory_power
+                value = constant:soviet_collapse_foreign_intervention.sponsor_support_scale_regional_factories
+                compare = greater_than_or_equals
+            }
+        }
+        add_to_temp_variable = { soviet_collapse_foreign_sponsor_support_scale = constant:soviet_collapse_foreign_intervention.sponsor_support_scale_regional_bonus }
+    }
+    if = {
+        limit = {
+            check_variable = {
+                var = soviet_collapse_foreign_sponsor_factory_power
+                value = constant:soviet_collapse_foreign_intervention.sponsor_support_scale_major_factories
+                compare = greater_than_or_equals
+            }
+        }
+        add_to_temp_variable = { soviet_collapse_foreign_sponsor_support_scale = constant:soviet_collapse_foreign_intervention.sponsor_support_scale_major_bonus }
+    }
+    if = {
+        limit = {
+            num_divisions > constant:soviet_collapse_foreign_intervention.sponsor_support_scale_large_divisions
+        }
+        add_to_temp_variable = { soviet_collapse_foreign_sponsor_support_scale = constant:soviet_collapse_foreign_intervention.sponsor_support_scale_army_bonus }
+    }
+    clamp_temp_variable = {
+        var = soviet_collapse_foreign_sponsor_support_scale
+        min = constant:soviet_collapse_baseline.component_min
+        max = constant:soviet_collapse_foreign_intervention.sponsor_support_scale_cap
+    }
+}
+
+soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = {
+    soviet_collapse_calculate_foreign_sponsor_support_scale = yes
+    if = {
+        limit = {
+            check_variable = {
+                var = soviet_collapse_foreign_sponsor_support_scale
+                value = constant:soviet_collapse_baseline.component_min
+                compare = greater_than
+            }
+        }
+        FROM = {
+            add_to_variable = { soviet_collapse_republic_institution_strength = soviet_collapse_foreign_sponsor_support_scale }
+            add_to_variable = { soviet_collapse_independence_resilience = soviet_collapse_foreign_sponsor_support_scale }
+            soviet_collapse_clamp_republic_country_components = yes
+        }
+    }
+}
+
+soviet_collapse_scale_foreign_influence_delta_for_target_strength = {
+    multiply_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.foreign_influence_gain_factor }
+    if = {
+        limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
+        multiply_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.foreign_influence_regional_target_factor }
+    }
+    if = {
+        limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
+        multiply_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.foreign_influence_major_target_factor }
+    }
+    if = {
+        limit = {
+            FROM = {
+                OR = {
+                    num_of_civilian_factories > constant:soviet_collapse_foreign_intervention.priority_target_civilian_factories
+                    num_of_military_factories > constant:soviet_collapse_foreign_intervention.priority_target_military_factories
+                }
+            }
+        }
+        multiply_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.foreign_influence_industrial_target_factor }
+    }
+    if = {
+        limit = {
+            FROM = { num_divisions > constant:soviet_collapse_foreign_intervention.priority_target_divisions }
+        }
+        multiply_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.foreign_influence_military_target_factor }
+    }
+    if = {
+        limit = {
+            FROM = {
+                check_variable = {
+                    var = soviet_collapse_independence_resilience
+                    value = constant:soviet_collapse_foreign_intervention.priority_target_institution_strength
+                    compare = greater_than_or_equals
+                }
+            }
+        }
+        multiply_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.foreign_influence_resilient_target_factor }
+    }
+    if = {
+        limit = {
+            check_variable = {
+                var = soviet_collapse_influence_delta
+                value = constant:soviet_collapse_influence_war.foreign_influence_minimum_gain
+                compare = less_than
+            }
+        }
+        set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.foreign_influence_minimum_gain }
+    }
+}
+
 soviet_collapse_apply_foreign_influence_delta = {
     if = {
         limit = { NOT = { has_variable = soviet_collapse_menu_selected_target_influence } }
@@ -6473,9 +6579,9 @@ soviet_collapse_apply_foreign_influence_delta = {
             set_variable = { soviet_collapse_dynamic_sponsor_country = constant:soviet_collapse_baseline.component_min }
         }
     }
+    soviet_collapse_scale_foreign_influence_delta_for_target_strength = yes
     if = {
         limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
-        add_to_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.major_target_priority_influence_bonus }
         FROM = {
             add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.major_target_priority_resilience_bonus }
             add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.major_target_priority_patronage_risk_relief }
@@ -6489,6 +6595,20 @@ soviet_collapse_apply_foreign_influence_delta = {
         }
         if = {
             limit = {
+                check_variable = { var = soviet_collapse_selected_foreign_patron_country value = ROOT.id compare = equals }
+            }
+            add_to_variable = { soviet_collapse_selected_foreign_patron_influence = soviet_collapse_influence_delta }
+            clamp_variable = { var = soviet_collapse_selected_foreign_patron_influence min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
+        }
+        set_temp_variable = { soviet_collapse_current_sponsor_influence_for_target = soviet_collapse_influence_delta }
+        if = {
+            limit = {
+                check_variable = { var = soviet_collapse_selected_foreign_patron_country value = ROOT.id compare = equals }
+            }
+            set_temp_variable = { soviet_collapse_current_sponsor_influence_for_target = soviet_collapse_selected_foreign_patron_influence }
+        }
+        if = {
+            limit = {
                 check_variable = { var = soviet_collapse_dynamic_sponsor_country value = ROOT.id compare = equals }
             }
             add_to_variable = { soviet_collapse_dynamic_sponsor_influence = soviet_collapse_influence_delta }
@@ -6498,24 +6618,14 @@ soviet_collapse_apply_foreign_influence_delta = {
                 check_variable = { var = soviet_collapse_dynamic_sponsor_influence value = constant:soviet_collapse_influence_war.influence_positive_floor compare = less_than_or_equals }
             }
             set_variable = { soviet_collapse_dynamic_sponsor_country = ROOT.id }
-            set_variable = { soviet_collapse_dynamic_sponsor_influence = soviet_collapse_influence_delta }
+            set_variable = { soviet_collapse_dynamic_sponsor_influence = soviet_collapse_current_sponsor_influence_for_target }
         }
         else_if = {
             limit = {
-                check_variable = { var = soviet_collapse_influence_delta value = soviet_collapse_dynamic_sponsor_influence compare = greater_than }
+                check_variable = { var = soviet_collapse_current_sponsor_influence_for_target value = soviet_collapse_dynamic_sponsor_influence compare = greater_than }
             }
             set_variable = { soviet_collapse_dynamic_sponsor_country = ROOT.id }
-            set_variable = { soviet_collapse_dynamic_sponsor_influence = soviet_collapse_influence_delta }
-        }
-        if = {
-            limit = {
-                check_variable = { var = soviet_collapse_selected_foreign_patron_country value = ROOT.id compare = equals }
-            }
-            add_to_variable = { soviet_collapse_selected_foreign_patron_influence = soviet_collapse_influence_delta }
-            if = {
-                limit = { has_variable = soviet_collapse_selected_foreign_patron_influence }
-                clamp_variable = { var = soviet_collapse_selected_foreign_patron_influence min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
-            }
+            set_variable = { soviet_collapse_dynamic_sponsor_influence = soviet_collapse_current_sponsor_influence_for_target }
         }
     }
     if = {
@@ -6939,10 +7049,11 @@ soviet_collapse_apply_foreign_recognition_aid = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.recognition_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.recognition_progress }
-        add_to_variable = { soviet_collapse_influence_recognition_total = constant:soviet_collapse_influence_war.recognition_influence }
+        add_to_variable = { soviet_collapse_influence_recognition_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_decision_gain }
         soviet_collapse_add_republic_decision_recovery_progress = yes
         soviet_collapse_update_foreign_investment_stage_ideas = yes
@@ -6985,10 +7096,11 @@ soviet_collapse_apply_foreign_liaison_aid = {
     if = { limit = { has_government = neutrality } FROM = { add_popularity = { ideology = neutrality popularity = constant:soviet_collapse_foreign_intervention.liaison_ideology_popularity } } }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.liaison_ideology_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress }
-        add_to_variable = { soviet_collapse_influence_ideology_total = constant:soviet_collapse_influence_war.liaison_ideology_influence }
+        add_to_variable = { soviet_collapse_influence_ideology_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.liaison_patronage_risk }
         add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.institution_decision_gain }
         soviet_collapse_add_republic_decision_recovery_progress = yes
@@ -7021,13 +7133,14 @@ soviet_collapse_apply_foreign_armaments_aid = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.armaments_arms_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
         add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_foreign_intervention.armaments_target_infantry_equipment producer = ROOT }
         add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.armaments_target_support_equipment producer = ROOT }
         add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_foreign_intervention.armaments_depot_control }
-        add_to_variable = { soviet_collapse_influence_arms_total = constant:soviet_collapse_influence_war.armaments_arms_influence }
+        add_to_variable = { soviet_collapse_influence_arms_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.armaments_logistics_influence }
         add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.depot_focus_gain }
         soviet_collapse_add_republic_decision_recovery_progress = yes
@@ -7062,14 +7175,15 @@ soviet_collapse_apply_foreign_adviser_aid = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.advisers_volunteer_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
         army_experience = constant:soviet_collapse_foreign_intervention.advisers_target_army_xp
         add_command_power = constant:soviet_collapse_foreign_intervention.advisers_target_command_power
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.advisers_recognition_progress }
-        add_to_variable = { soviet_collapse_influence_advisers_total = constant:soviet_collapse_influence_war.advisers_volunteer_influence }
-        add_to_variable = { soviet_collapse_influence_volunteers_total = constant:soviet_collapse_influence_war.advisers_volunteer_influence }
+        add_to_variable = { soviet_collapse_influence_advisers_total = soviet_collapse_influence_delta }
+        add_to_variable = { soviet_collapse_influence_volunteers_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.advisers_patronage_risk }
         add_to_variable = { soviet_collapse_republic_institution_strength = constant:soviet_collapse_republic_idea.military_focus_gain }
         soviet_collapse_add_republic_decision_recovery_progress = yes
@@ -7104,12 +7218,13 @@ soviet_collapse_apply_foreign_intelligence_aid = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.intelligence_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
         add_to_variable = { soviet_collapse_depot_control = constant:soviet_collapse_foreign_intervention.intelligence_depot_control }
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.intelligence_recognition_progress }
-        add_to_variable = { soviet_collapse_influence_intelligence_total = constant:soviet_collapse_influence_war.intelligence_influence }
+        add_to_variable = { soviet_collapse_influence_intelligence_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.intelligence_logistics_influence }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.intelligence_patronage_risk }
         soviet_collapse_add_republic_decision_recovery_progress = yes
@@ -7147,12 +7262,19 @@ soviet_collapse_apply_foreign_volunteer_aid = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.volunteers_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
         soviet_collapse_mark_foreign_volunteer_aid_recipient = yes
         soviet_collapse_ensure_emergency_republican_templates = yes
         set_temp_variable = { soviet_collapse_foreign_volunteer_unit_count = constant:soviet_collapse_foreign_intervention.volunteers_target_unit_count }
+        add_to_temp_variable = { soviet_collapse_foreign_volunteer_unit_count = soviet_collapse_foreign_sponsor_support_scale }
+        clamp_temp_variable = {
+            var = soviet_collapse_foreign_volunteer_unit_count
+            min = constant:soviet_collapse_foreign_intervention.volunteers_target_unit_count
+            max = constant:soviet_collapse_foreign_intervention.volunteers_target_unit_count_cap
+        }
         if = {
             limit = {
                 check_variable = { var = soviet_collapse_foreign_volunteer_unit_count value = 0 compare = greater_than }
@@ -7162,7 +7284,7 @@ soviet_collapse_apply_foreign_volunteer_aid = {
             soviet_collapse_spawn_breakaway_field_brigade_unit_batch_safe = yes
         }
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.volunteers_recognition_progress }
-        add_to_variable = { soviet_collapse_influence_volunteers_total = constant:soviet_collapse_influence_war.volunteers_influence }
+        add_to_variable = { soviet_collapse_influence_volunteers_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.volunteers_patronage_risk }
         soviet_collapse_add_republic_decision_recovery_progress = yes
         soviet_collapse_update_foreign_investment_stage_ideas = yes
@@ -7196,12 +7318,13 @@ soviet_collapse_apply_foreign_trade_aid = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.trade_industry_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         add_stability = constant:soviet_collapse_foreign_intervention.trade_target_stability
         add_political_power = constant:soviet_collapse_foreign_intervention.trade_target_political_power
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.trade_recognition_progress }
-        add_to_variable = { soviet_collapse_influence_industry_total = constant:soviet_collapse_influence_war.trade_industry_influence }
+        add_to_variable = { soviet_collapse_influence_industry_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.trade_logistics_influence }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.trade_patronage_risk }
         soviet_collapse_add_republic_decision_recovery_progress = yes
@@ -7244,6 +7367,7 @@ soviet_collapse_apply_foreign_civilian_construction_aid = {
     calculate_economy_scaled_factory_grant = yes
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.civilian_construction_industry_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
@@ -7265,7 +7389,7 @@ soviet_collapse_apply_foreign_civilian_construction_aid = {
         random_owned_controlled_state = {
             add_building_construction = { type = infrastructure level = 1 instant_build = yes }
         }
-        add_to_variable = { soviet_collapse_influence_industry_total = constant:soviet_collapse_influence_war.civilian_construction_industry_influence }
+        add_to_variable = { soviet_collapse_influence_industry_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.civilian_construction_logistics_influence }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.civilian_construction_patronage_risk }
         soviet_collapse_add_republic_decision_recovery_progress = yes
@@ -7306,6 +7430,7 @@ soviet_collapse_apply_foreign_military_construction_aid = {
     calculate_economy_scaled_factory_grant = yes
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.military_construction_arms_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
@@ -7327,7 +7452,7 @@ soviet_collapse_apply_foreign_military_construction_aid = {
         random_owned_controlled_state = {
             add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
         }
-        add_to_variable = { soviet_collapse_influence_arms_total = constant:soviet_collapse_influence_war.military_construction_arms_influence }
+        add_to_variable = { soviet_collapse_influence_arms_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_industry_total = constant:soviet_collapse_influence_war.military_construction_industry_influence }
         add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.military_construction_logistics_influence }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.military_construction_patronage_risk }
@@ -7366,9 +7491,10 @@ soviet_collapse_apply_foreign_press_network_aid = {
     if = { limit = { has_government = neutrality } FROM = { add_popularity = { ideology = neutrality popularity = constant:soviet_collapse_foreign_intervention.press_network_ideology_popularity } } }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.press_network_ideology_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
-        add_to_variable = { soviet_collapse_influence_ideology_total = constant:soviet_collapse_influence_war.press_network_ideology_influence }
+        add_to_variable = { soviet_collapse_influence_ideology_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_recognition_total = constant:soviet_collapse_influence_war.press_network_recognition_influence }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.press_network_patronage_risk }
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.liaison_recognition_progress }
@@ -7404,12 +7530,13 @@ soviet_collapse_apply_foreign_aid_corridor = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.aid_corridor_logistics_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
         set_country_flag = soviet_collapse_foreign_aid_corridor_open
         add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:soviet_collapse_foreign_intervention.intelligence_trains producer = ROOT }
-        add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.aid_corridor_logistics_influence }
+        add_to_variable = { soviet_collapse_influence_logistics_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_arms_total = constant:soviet_collapse_influence_war.aid_corridor_arms_influence }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.aid_corridor_patronage_risk }
         soviet_collapse_add_republic_decision_recovery_progress = yes
@@ -7443,9 +7570,10 @@ soviet_collapse_apply_foreign_league_conference = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.conference_recognition_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
-        add_to_variable = { soviet_collapse_influence_recognition_total = constant:soviet_collapse_influence_war.conference_recognition_influence }
+        add_to_variable = { soviet_collapse_influence_recognition_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.conference_independence_resilience }
         add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_influence_war.conference_league_influence }
         add_to_variable = { soviet_collapse_recognition_progress = constant:soviet_collapse_foreign_intervention.recognition_progress }
@@ -7485,13 +7613,14 @@ soviet_collapse_apply_foreign_league_logistics_aid = {
     }
     set_temp_variable = { soviet_collapse_influence_delta = constant:soviet_collapse_influence_war.league_logistics_influence }
     soviet_collapse_apply_foreign_influence_delta = yes
+    soviet_collapse_apply_foreign_sponsor_scaled_republic_bonus = yes
     FROM = {
         soviet_collapse_mark_foreign_general_aid_recipient = yes
         soviet_collapse_mark_foreign_major_aid_recipient = yes
         set_country_flag = soviet_collapse_league_logistics_channel_open
         add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_foreign_intervention.league_logistics_infantry_equipment producer = ROOT }
         add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_foreign_intervention.league_logistics_support_equipment producer = ROOT }
-        add_to_variable = { soviet_collapse_influence_logistics_total = constant:soviet_collapse_influence_war.league_logistics_influence }
+        add_to_variable = { soviet_collapse_influence_logistics_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_arms_total = constant:soviet_collapse_influence_war.league_logistics_arms_influence }
         add_to_variable = { soviet_collapse_independence_resilience = constant:soviet_collapse_influence_war.league_logistics_independence_resilience }
         add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_influence_war.league_logistics_league_influence }
@@ -7693,7 +7822,7 @@ soviet_collapse_apply_foreign_protection_treaty = {
         set_country_flag = soviet_collapse_foreign_protection_treaty_signed
         set_variable = { soviet_collapse_foreign_protection_treaty_sponsor_country = ROOT.id }
         add_stability = constant:soviet_collapse_puppet_pressure.protection_treaty_stability
-        add_to_variable = { soviet_collapse_influence_recognition_total = constant:soviet_collapse_influence_war.protection_treaty_influence }
+        add_to_variable = { soviet_collapse_influence_recognition_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.protection_treaty_patronage_risk }
         soviet_collapse_update_foreign_investment_stage_ideas = yes
     }
@@ -7730,8 +7859,8 @@ soviet_collapse_apply_foreign_adviser_privileges = {
         set_country_flag = soviet_collapse_foreign_adviser_privileges_granted
         set_variable = { soviet_collapse_foreign_adviser_privileges_sponsor_country = ROOT.id }
         add_command_power = constant:soviet_collapse_puppet_pressure.adviser_privileges_command_power
-        add_to_variable = { soviet_collapse_influence_advisers_total = constant:soviet_collapse_influence_war.adviser_privileges_influence }
-        add_to_variable = { soviet_collapse_influence_volunteers_total = constant:soviet_collapse_influence_war.adviser_privileges_influence }
+        add_to_variable = { soviet_collapse_influence_advisers_total = soviet_collapse_influence_delta }
+        add_to_variable = { soviet_collapse_influence_volunteers_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.adviser_privileges_patronage_risk }
         soviet_collapse_update_foreign_investment_stage_ideas = yes
     }
@@ -7767,7 +7896,7 @@ soviet_collapse_apply_foreign_client_cabinet = {
         soviet_collapse_mark_foreign_dependency_recipient = yes
         set_country_flag = soviet_collapse_foreign_client_cabinet_installed
         add_stability = constant:soviet_collapse_puppet_pressure.client_cabinet_stability
-        add_to_variable = { soviet_collapse_influence_ideology_total = constant:soviet_collapse_influence_war.client_cabinet_influence }
+        add_to_variable = { soviet_collapse_influence_ideology_total = soviet_collapse_influence_delta }
         add_to_variable = { soviet_collapse_influence_patronage_risk = constant:soviet_collapse_influence_war.client_cabinet_patronage_risk }
         soviet_collapse_update_foreign_investment_stage_ideas = yes
     }
