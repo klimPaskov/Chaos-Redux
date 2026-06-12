@@ -94,6 +94,12 @@ The twelfth guardian-mission tranche ties the guardian route to an active pilgri
 - The escort mission is a state-targeted timed mission for controlled core, protected, integrated, Himalayan, or low-infrastructure route states. It consumes an active teaching seat, spends Command Power and support equipment, requires at least two divisions in the selected state, and succeeds only if the route remains controlled and guarded through the timer.
 - Success marks the route guarded for later pacing, adds route infrastructure, and rewards Bodhi, Compassion, Sangha Cohesion, Mandala Reach, and Army Experience. Failure or cancellation raises Defilements and lowers Sangha Cohesion.
 
+The thirteenth Schism-reactivity tranche gives the exiled echo a foreign return path:
+
+- `THR_answer_false_buddha_echo_abroad` appears after `THR_exile_the_echo` has left `holy_realm_false_buddha_echo_abroad` active.
+- The decision targets foreign countries with prior Bodhisattva contact, a Mandala mission, a collapse visit, war pressure, or low stability. It fires `chaosx.nr3.131` in the host country.
+- A host that contains the echo clears the abroad echo and rewards Detachment, lower Defilements, and Mandala Reach. A host that shelters it records `holy_realm_false_buddha_foreign_crisis`, raises Defilements and Final Silence Pressure, and leaves the echo unresolved.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -107,7 +113,7 @@ Implement these as focus-tree work, not only as decisions:
 7. Expansion/liberation: lower borderland and regional integration focuses now use pilgrimage, petition, corridor, and protection-ledger framing, while `THR_world_is_a_border` remains the explicit high-chaos coercive capstone. Remaining future-depth work is route-specific liberation events or refusal outcomes if later audits need more reactivity.
 8. Anti-chaos powers follow-up: dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses are implemented. Remaining future-depth work is only power-specific decision upgrades if balance requires more than route flags and charge/virtue rewards.
 9. Final Silence follow-up: `THR_witnesses_keep_the_record` now adds aftermath mechanics behind `THR_empty_seat` and turns taught countries, Mandala-contact states, and valid compact members into Empty Seat witnesses. Remaining future-depth work is only event-text variants or longer reconstruction chains if later audits need more reactivity.
-10. Hidden Schism follow-up: branch visibility and all four outcome focuses are implemented. Remaining work is only future-depth material, such as making `holy_realm_false_buddha_echo_abroad` return through a foreign crisis if that route needs a later incident.
+10. Hidden Schism follow-up: branch visibility, all four outcome focuses, and the exiled echo foreign incident are implemented. Remaining future-depth work is only additional country-specific crisis variants if later audits need more reactivity.
 
 ## Recommended Implementation Order
 

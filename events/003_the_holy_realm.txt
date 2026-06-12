@@ -1,5 +1,10 @@
 add_namespace = chaosx.nr3
 
+@HOLY_REALM_FALSE_BUDDHA_ECHO_CONTAINED_AI_CHANCE = 70
+@HOLY_REALM_FALSE_BUDDHA_ECHO_SHELTERED_AI_CHANCE = 30
+@HOLY_REALM_FALSE_BUDDHA_ECHO_CONTACT_FACTOR = 2
+@HOLY_REALM_FALSE_BUDDHA_ECHO_INSTABILITY_FACTOR = 2
+
 ###############################################################################################################
 #    ##    ## ########      #######
 #    ###   ## ##     ##    ##     ##
@@ -1594,6 +1599,92 @@ country_event = {
     option = {
         name = chaosx.nr3.130.a
         custom_effect_tooltip = chaosx_nr3_130_a_tt
+    }
+}
+
+country_event = {
+    id = chaosx.nr3.131
+    title = chaosx.nr3.131.t
+    desc = chaosx.nr3.131.d
+    picture = GFX_report_event_holy_realm_buddha
+    is_triggered_only = yes
+
+    trigger = {
+        FROM = {
+            is_holy_realm_country = yes
+            has_country_flag = holy_realm_false_buddha_echo_abroad
+        }
+        NOT = { is_holy_realm_country = yes }
+        NOT = { is_special_chaos_country = yes }
+    }
+
+    option = {
+        name = chaosx.nr3.131.a
+        ai_chance = {
+            base = @HOLY_REALM_FALSE_BUDDHA_ECHO_CONTAINED_AI_CHANCE
+            modifier = {
+                factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_CONTACT_FACTOR
+                has_country_flag = holy_realm_mandala_mission
+            }
+            modifier = {
+                factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_CONTACT_FACTOR
+                has_country_flag = holy_realm_bodhisattva_recent_visit
+            }
+            modifier = {
+                factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_INSTABILITY_FACTOR
+                NOT = { has_stability < constant:holy_realm_buddhahood.false_buddha_echo_instability_threshold }
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_131_a_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_false_buddha_echo_contained_host
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_quiet_envoys_opinion
+            }
+            add_stability = constant:holy_realm_buddhahood.false_buddha_echo_target_stability_gain
+            FROM = {
+                clr_country_flag = holy_realm_false_buddha_echo_abroad
+                set_country_flag = holy_realm_false_buddha_echo_contained_abroad
+                set_temp_variable = { holy_realm_detachment_delta = constant:holy_realm_buddhahood.false_buddha_echo_detachment_gain }
+                holy_realm_add_detachment = yes
+                set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_echo_defilement_loss }
+                holy_realm_add_defilements = yes
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+                holy_realm_add_mandala_reach = yes
+            }
+        }
+    }
+
+    option = {
+        name = chaosx.nr3.131.b
+        ai_chance = {
+            base = @HOLY_REALM_FALSE_BUDDHA_ECHO_SHELTERED_AI_CHANCE
+            modifier = {
+                factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_INSTABILITY_FACTOR
+                has_stability < constant:holy_realm_buddhahood.false_buddha_echo_instability_threshold
+            }
+            modifier = {
+                factor = @HOLY_REALM_FALSE_BUDDHA_ECHO_INSTABILITY_FACTOR
+                has_war = yes
+            }
+        }
+        custom_effect_tooltip = chaosx_nr3_131_b_tt
+        hidden_effect = {
+            set_country_flag = holy_realm_false_buddha_echo_sheltered_host
+            add_opinion_modifier = {
+                target = FROM
+                modifier = holy_realm_condemned_opinion
+            }
+            add_stability = constant:holy_realm_buddhahood.false_buddha_echo_target_stability_loss
+            FROM = {
+                set_country_flag = holy_realm_false_buddha_foreign_crisis
+                set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_echo_defilement_gain }
+                holy_realm_add_defilements = yes
+                set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.false_buddha_echo_final_pressure_gain }
+                holy_realm_add_final_silence_pressure = yes
+            }
+        }
     }
 }
 
