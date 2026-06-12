@@ -143,7 +143,7 @@ Sprites currently used:
 - `GFX_portrait_THR_arhat_administration`
 - `GFX_portrait_THR_buddha_mandate_animated`
 - `GFX_portrait_THR_divine_sovereignty`
-- `GFX_portrait_THR_final_silence`
+- `GFX_portrait_THR_empty_seat_animated`
 
 New art required:
 - None for the current event/evolution detail implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage; stages without an authored mapping keep the wide text body.
