@@ -278,6 +278,18 @@ Decision category icons:
 - vanilla `GFX_decision_category_generic_political_actions` for Letters of Peace and Authority
 - vanilla `GFX_faction_logo_generic_democratic` for the Mandala of Nations faction logo until custom faction art exists
 
+Custom Buddha power and teaching decision icons:
+
+- `GFX_decision_holy_realm_power_one_becomes_many`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_one_becomes_many.dds`
+- `GFX_decision_holy_realm_power_passing_through_walls`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_passing_through_walls.dds`
+- `GFX_decision_holy_realm_power_walking_on_water`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_walking_on_water.dds`
+- `GFX_decision_holy_realm_power_lotus_bridge`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_lotus_bridge.dds`
+- `GFX_decision_holy_realm_power_vanishing_from_sight`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_vanishing_from_sight.dds`
+- `GFX_decision_holy_realm_power_seated_in_sky`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_seated_in_sky.dds`
+- `GFX_decision_holy_realm_power_touching_sun_moon`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_touching_sun_moon.dds`
+- `GFX_decision_holy_realm_power_extinction_defilements`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_extinction_defilements.dds`
+- `GFX_decision_holy_realm_dharma_teaching`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_dharma_teaching.dds`
+
 Balance of power icons:
 
 - `GFX_bop_THR_vow_against_annihilation_side`: currently uses the Holy Realm mercy art.
@@ -297,6 +309,13 @@ Decision icons:
 - Forced integration uses vanilla `border_war`.
 - Staged coring uses vanilla `generic_form_nation` and `generic_nationalism`.
 - Final doctrine decisions use vanilla `generic_scorched_earth`.
+
+Leader portraits:
+
+- Stage portraits are registered in `interface/chaosx_characters.gfx` and stored under `gfx/leaders/THR/`.
+- `GFX_portrait_THR_buddha_mandate_animated` is used for Buddhahood and Buddha Mandate.
+- `GFX_portrait_THR_empty_seat_animated` is used for the Empty Seat aftermath.
+- `GFX_portrait_THR_false_buddha` uses `gfx/leaders/THR/portrait_THR_false_buddha.dds` while the False Buddha Schism is active and remains on the absorbed-shadow route.
 
 Idea icons use a separate folder and sprite set, not focus icons. Placeholder DDS files are registered under `gfx/interface/ideas/holy_realm/` until final custom idea art is provided:
 

@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, Dhyana Seal decision icon animation, leader portrait static fallback assets, and the Buddha Mandate and Empty Seat leader portrait animations.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, Dhyana Seal decision icon animation, Buddha power decision icons, leader portrait static fallback assets, and the Buddha Mandate, Empty Seat, and False Buddha leader portrait assets.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -20,6 +20,7 @@ Source mode:
 - `$imagegen` for the Buddha Mandate leader portrait animation source frames.
 - `$imagegen` for the Empty Seat leader portrait animation source frames.
 - `$imagegen` for the Dhyana Seal decision icon animation source frames.
+- `$imagegen` for the Buddha power decision icon sheet, Extinction of Defilements decision icon, and False Buddha portrait source art.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
 - Local ImageMagick procedural composition for static Mandala GUI fallback states.
 - Local ImageMagick stage treatment for static leader portrait fallbacks derived from the existing fictional Holy Realm leader portrait.
@@ -41,6 +42,8 @@ DDS conversion note:
 - Empty Seat portrait animation sheet DDS was validated for existence and `1248x210` dimensions after export.
 - Dhyana Seal static decision icon DDS was validated for existence and `96x96` dimensions after export.
 - Dhyana Seal animation sheet DDS was validated for existence and `768x96` dimensions after export.
+- Buddha power and Dharma teaching decision icon DDS files were validated for existence and `32x32` dimensions after export.
+- False Buddha portrait DDS was validated for existence and `156x210` dimensions after export.
 
 ## Static Mandala GUI Fallbacks
 
@@ -500,6 +503,38 @@ Frame source notes:
 | 006 | settling seal | `source_frames/holy_realm_dhyana_seal_006_source.png` |
 | 007 | return breath | `source_frames/holy_realm_dhyana_seal_007_source.png` |
 
+## Buddha Power Decision Icons
+
+These assets provide compact custom decision icons for the named Buddha powers and repeated Dharma teaching decisions.
+
+Reference inspection completed:
+- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `interface/003_holy_realm.gfx`
+- `common/decisions/003_holy_realm_decisions.txt`
+
+| Decision icon | Sprite alias | Source PNG | Processed PNG | Final DDS |
+| --- | --- | --- | --- | --- |
+| One Becomes Many | `GFX_decision_holy_realm_power_one_becomes_many` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_one_becomes_many_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_one_becomes_many.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_one_becomes_many.dds` |
+| Passing Through Walls | `GFX_decision_holy_realm_power_passing_through_walls` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_passing_through_walls_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_passing_through_walls.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_passing_through_walls.dds` |
+| Walking on Water | `GFX_decision_holy_realm_power_walking_on_water` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_walking_on_water_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_walking_on_water.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_walking_on_water.dds` |
+| Lotus Bridge | `GFX_decision_holy_realm_power_lotus_bridge` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_lotus_bridge_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_lotus_bridge.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_lotus_bridge.dds` |
+| Vanishing From Sight | `GFX_decision_holy_realm_power_vanishing_from_sight` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_vanishing_from_sight_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_vanishing_from_sight.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_vanishing_from_sight.dds` |
+| Seated in Sky | `GFX_decision_holy_realm_power_seated_in_sky` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_seated_in_sky_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_seated_in_sky.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_seated_in_sky.dds` |
+| Touching Sun and Moon | `GFX_decision_holy_realm_power_touching_sun_moon` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_touching_sun_moon_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_touching_sun_moon.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_touching_sun_moon.dds` |
+| Extinction of Defilements | `GFX_decision_holy_realm_power_extinction_defilements` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_power_extinction_defilements_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_power_extinction_defilements.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_extinction_defilements.dds` |
+| Dharma Teaching | `GFX_decision_holy_realm_dharma_teaching` | `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/decision_holy_realm_dharma_teaching_source.png` | `docs/assets/003_holy_realm_buddhahood/decision_icons/processed_png/decision_holy_realm_dharma_teaching.png` | `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_dharma_teaching.dds` |
+
+Source sheet: `docs/assets/003_holy_realm_buddhahood/decision_icons/source_png/holy_realm_decision_icon_sheet_source.png`
+
+Contact sheet: `docs/assets/003_holy_realm_buddhahood/decision_icons/decision_icons_contact_sheet.png`
+
+Validation:
+- All processed PNGs are `32x32`.
+- All final DDS files are `32x32`.
+- `interface/003_holy_realm.gfx` registers every sprite alias in the table.
+- `common/decisions/003_holy_realm_decisions.txt` references these aliases for Buddha power and teaching decisions.
+
 ## Buddha Mandate Leader Portrait Animation
 
 This animated frame sheet is the live Buddhahood and Buddha Mandate leader portrait sprite. The existing static Buddha Mandate DDS remains registered as the fallback.
@@ -618,11 +653,12 @@ Reference inspection completed:
 | Dharmamegha Bodhisattva | `GFX_portrait_THR_bodhisattva_dharmamegha` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_bodhisattva_dharmamegha.png` | `gfx/leaders/THR/portrait_THR_bodhisattva_dharmamegha.dds` | Tenth-bhumi leader stage |
 | Arhat Administration | `GFX_portrait_THR_arhat_administration` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_arhat_administration.png` | `gfx/leaders/THR/portrait_THR_arhat_administration.dds` | Arhat Administration stage |
 | Buddha Mandate | `GFX_portrait_THR_buddha_mandate` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_buddha_mandate.png` | `gfx/leaders/THR/portrait_THR_buddha_mandate.dds` | Buddhahood and Buddha Mandate stage |
+| False Buddha | `GFX_portrait_THR_false_buddha` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_false_buddha.png` | `gfx/leaders/THR/portrait_THR_false_buddha.dds` | False Buddha Schism pressure and absorbed-shadow route |
 | Divine Sovereignty | `GFX_portrait_THR_divine_sovereignty` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_divine_sovereignty.png` | `gfx/leaders/THR/portrait_THR_divine_sovereignty.dds` | Divine Sovereignty stage |
 | Final Silence | `GFX_portrait_THR_final_silence` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_final_silence.png` | `gfx/leaders/THR/portrait_THR_final_silence.dds` | Final Silence preparation fallback |
 | Empty Seat | `GFX_portrait_THR_empty_seat` | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/processed_frames/portrait_THR_empty_seat_000.png` | `gfx/leaders/THR/portrait_THR_empty_seat.dds` | Final Silence aftermath and Empty Seat leader fallback |
 
-Source PNG: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_godly_figure_source.png`
+Source PNGs: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_godly_figure_source.png` and `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_false_buddha_source.png`
 
 Contact sheet: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/leader_portrait_static_contact_sheet.png`
 
