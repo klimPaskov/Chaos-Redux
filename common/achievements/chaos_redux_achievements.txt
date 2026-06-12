@@ -5,9 +5,6 @@
 # - All achievements are available as any country.
 # - The mod achievement UI resolves icon art from gfx/achievements/<achievement_id>*.dds.
 
-@HOLY_REALM_SANGHA_OF_NATIONS_DAYS = 180
-@HOLY_REALM_LOTUS_BRIDGE_DAYS = 180
-
 unique_id = chaos_redux_achievements
 
 #############################
@@ -1749,10 +1746,8 @@ holy_realm_sangha_of_nations = {
 			tooltip = holy_realm_sangha_of_nations_tooltip
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_sangha_of_nations_watch_valid
-			has_country_flag = {
-				flag = holy_realm_sangha_of_nations_watch_started
-				days > @HOLY_REALM_SANGHA_OF_NATIONS_DAYS
-			}
+			has_country_flag = holy_realm_sangha_of_nations_watch_started
+			NOT = { has_country_flag = holy_realm_sangha_of_nations_watch_maturing }
 			check_variable = {
 				var = holy_realm_sangha_valid_members
 				value = constant:holy_realm_buddhahood.sangha_of_nations_members_required
@@ -1820,10 +1815,8 @@ holy_realm_lotus_bridge = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_power_lotus_bridge_used
 			has_country_flag = holy_realm_lotus_bridge_watch_valid
-			has_country_flag = {
-				flag = holy_realm_lotus_bridge_watch_started
-				days > @HOLY_REALM_LOTUS_BRIDGE_DAYS
-			}
+			has_country_flag = holy_realm_lotus_bridge_watch_started
+			NOT = { has_country_flag = holy_realm_lotus_bridge_watch_maturing }
 			has_event_target = holy_realm_lotus_bridge_target
 			event_target:holy_realm_lotus_bridge_target = {
 				exists = yes
