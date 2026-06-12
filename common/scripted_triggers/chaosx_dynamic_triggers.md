@@ -23,7 +23,8 @@ Current coverage includes:
 - `ZZZ`
 - dynamic zombie outbreak countries
 - weaponized zombie outbreak countries
-- Wendigo outbreak flags or the Wendigo cosmetic tag
+- `REV` and countries with original tag `REV`
+- communist rebel-state flags
 - `ZIN`
 - `THR` / countries using the `The Holy Realm` cosmetic tag
 
@@ -36,4 +37,5 @@ Current coverage includes:
 - `ZZZ`
 - dynamic zombie outbreak countries
 - weaponized zombie outbreak countries
+- Wendigo outbreak flags or the Wendigo cosmetic tag
 - `ZIN`
