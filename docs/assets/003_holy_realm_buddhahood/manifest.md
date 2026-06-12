@@ -12,6 +12,7 @@ Source mode:
 - `$imagegen` for generated completed-state source art.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
 - Local ImageMagick procedural composition for static Mandala GUI fallback states.
+- Local ImageMagick stage treatment for static leader portrait fallbacks derived from the existing fictional Holy Realm leader portrait.
 
 DDS conversion note:
 - Local conversion used `convert -define dds:compression=none`.
@@ -45,6 +46,36 @@ Validation:
 - All final DDS files are `420x420`.
 - `interface/003_holy_realm.gfx` registers all seven static sprites.
 - `common/scripted_localisation/003_holy_realm_scripted_localisation.txt` selects the active sprite through `GetHolyRealmMandalaSprite`.
+
+## Static Leader Portrait Fallbacks
+
+These assets provide visible stage changes for the existing Holy Realm leader portrait aliases. They are static DDS fallbacks derived from the existing fictional `GFX_portrait_THR_godly_figure` source and do not replace the animated portrait frame-sheet package requested by the full asset spec.
+
+Reference inspection completed:
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/interface/_leader_portraits.gfx`
+- `interface/chaosx_characters.gfx`
+
+| Stage | Sprite alias | Processed PNG | Final DDS | In-game use |
+| --- | --- | --- | --- | --- |
+| Refuge Bodhisattva | `GFX_portrait_THR_refuge_bodhisattva` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_refuge_bodhisattva.png` | `gfx/leaders/THR/portrait_THR_refuge_bodhisattva.dds` | Initial Holy Realm refuge leader stage |
+| Pramudita Bodhisattva | `GFX_portrait_THR_bodhisattva_pramudita` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_bodhisattva_pramudita.png` | `gfx/leaders/THR/portrait_THR_bodhisattva_pramudita.dds` | Early Bodhisattva and protectorate leader stage |
+| Acala Bodhisattva | `GFX_portrait_THR_bodhisattva_acala` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_bodhisattva_acala.png` | `gfx/leaders/THR/portrait_THR_bodhisattva_acala.dds` | High-bhumi immovable leader stage |
+| Dharmamegha Bodhisattva | `GFX_portrait_THR_bodhisattva_dharmamegha` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_bodhisattva_dharmamegha.png` | `gfx/leaders/THR/portrait_THR_bodhisattva_dharmamegha.dds` | Tenth-bhumi leader stage |
+| Arhat Administration | `GFX_portrait_THR_arhat_administration` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_arhat_administration.png` | `gfx/leaders/THR/portrait_THR_arhat_administration.dds` | Arhat Administration stage |
+| Buddha Mandate | `GFX_portrait_THR_buddha_mandate` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_buddha_mandate.png` | `gfx/leaders/THR/portrait_THR_buddha_mandate.dds` | Buddhahood and Buddha Mandate stage |
+| Divine Sovereignty | `GFX_portrait_THR_divine_sovereignty` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_divine_sovereignty.png` | `gfx/leaders/THR/portrait_THR_divine_sovereignty.dds` | Divine Sovereignty stage |
+| Final Silence | `GFX_portrait_THR_final_silence` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_final_silence.png` | `gfx/leaders/THR/portrait_THR_final_silence.dds` | Final Silence and Empty Seat aftermath portrait stage |
+
+Source PNG: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_godly_figure_source.png`
+
+Contact sheet: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/leader_portrait_static_contact_sheet.png`
+
+Validation:
+- All processed PNGs are `156x210`.
+- All final DDS files are `156x210`.
+- `interface/chaosx_characters.gfx` points each existing Holy Realm stage alias at its matching DDS.
 
 ## Assets
 
