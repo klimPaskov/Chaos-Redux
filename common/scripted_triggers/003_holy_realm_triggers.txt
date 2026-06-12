@@ -194,10 +194,23 @@ holy_realm_can_attempt_buddhahood = {
 holy_realm_can_use_buddha_power = {
 	is_holy_realm_country = yes
 	holy_realm_has_buddha_mandate = yes
-	check_variable = {
-		var = meditation_charge
-		value = constant:holy_realm_buddhahood.buddha_power_charge_cost
-		compare = greater_than_or_equals
+	OR = {
+		AND = {
+			has_country_flag = holy_realm_power_restraint_doctrine
+			check_variable = {
+				var = meditation_charge
+				value = constant:holy_realm_buddhahood.buddha_power_disciplined_charge_cost
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			NOT = { has_country_flag = holy_realm_power_restraint_doctrine }
+			check_variable = {
+				var = meditation_charge
+				value = constant:holy_realm_buddhahood.buddha_power_charge_cost
+				compare = greater_than_or_equals
+			}
+		}
 	}
 }
 
