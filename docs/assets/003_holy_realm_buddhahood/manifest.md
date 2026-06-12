@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, and Mandala GUI static fallback assets.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback assets, and leader portrait static fallback assets.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -16,7 +16,9 @@ Source mode:
 
 DDS conversion note:
 - Local conversion used `convert -define dds:compression=none`.
-- Final DDS files were validated for existence and `64x64` dimensions after export.
+- Achievement DDS files were validated for existence and `64x64` dimensions after export.
+- Mandala fallback DDS files were validated for existence and `420x420` dimensions after export.
+- Leader portrait fallback DDS files were validated for existence and `156x210` dimensions after export.
 
 ## Static Mandala GUI Fallbacks
 
