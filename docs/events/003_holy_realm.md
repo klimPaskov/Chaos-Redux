@@ -204,7 +204,7 @@ Holy Realm achievements are registered in `common/achievements/chaos_redux_achie
 
 Holy Realm-specific sprite names are registered in `interface/003_holy_realm.gfx`, `interface/chaosx_achievements.gfx`, and `interface/chaosx_super_events.gfx`. Report-event, focus, idea, decision category, achievement, and super-event files use their normal Chaos Redux folders.
 
-Leader stage portrait aliases are registered in `interface/chaosx_characters.gfx`. The static fallback portrait DDS files live in `gfx/leaders/THR/`, with source/processed review files and contact sheet under `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/`.
+Leader stage portrait aliases are registered in `interface/chaosx_characters.gfx`. The static fallback portrait DDS files live in `gfx/leaders/THR/`, with source/processed review files and contact sheet under `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/`. The Buddha Mandate stage also has the animated sprite `GFX_portrait_THR_buddha_mandate_animated` backed by `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds`.
 
 The Holy Mandala scripted GUI is intentionally compact and attached only to the decision category. It does not replace the focus tree, the balance-of-power screen, or the Bodhisattva mission category.
 
@@ -394,7 +394,7 @@ Remaining clean asset needs:
 
 - dedicated thermonuclear Final Silence super-event art if the shared terminal Final Silence texture should be split later
 - Vow against Annihilation capstone super-event art if that optional spec super event is implemented later
-- animated leader portrait frame sheets if the static fallback stage portraits should be upgraded to animation
+- Empty Seat leader portrait frame sheet
 - final custom report-event pictures if the current Holy Realm report-event DDS files are only temporary art
 - dedicated custom balance-of-power icons for the Vow, Final Silence, and doctrine-balance category if the current Holy Realm art should be replaced
 
