@@ -187,7 +187,7 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 ## Future Plans
 
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
-- Add the Empty Seat leader portrait frame-sheet variant. Static fallback Mandala and leader portrait stage DDS files are already wired; all Mandala states and the Buddha Mandate leader portrait have animated frame sheets.
+- Static fallback Mandala and leader portrait stage DDS files are wired; all Mandala states plus the Buddha Mandate and Empty Seat leader portraits have animated frame sheets.
 - Add deeper power-specific decision upgrades if later balance passes show the focus lattice needs more than route flags and Meditation Charge rewards.
 - Expand `holy_realm_false_buddha_echo_abroad` into a full rival cult country or portrait-stage return chain if the exiled echo route needs a later foreign crisis.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.

@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, leader portrait static fallback assets, and the Buddha Mandate leader portrait animation.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, leader portrait static fallback assets, and the Buddha Mandate and Empty Seat leader portrait animations.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -18,6 +18,7 @@ Source mode:
 - `$imagegen` for the Final Silence Mandala animation source frames.
 - `$imagegen` for the Empty Seat Mandala animation source frames.
 - `$imagegen` for the Buddha Mandate leader portrait animation source frames.
+- `$imagegen` for the Empty Seat leader portrait animation source frames.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
 - Local ImageMagick procedural composition for static Mandala GUI fallback states.
 - Local ImageMagick stage treatment for static leader portrait fallbacks derived from the existing fictional Holy Realm leader portrait.
@@ -35,6 +36,8 @@ DDS conversion note:
 - Empty Seat Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
 - Leader portrait fallback DDS files were validated for existence and `156x210` dimensions after export.
 - Buddha Mandate portrait animation sheet DDS was validated for existence and `1248x210` dimensions after export.
+- Empty Seat portrait static DDS was validated for existence and `156x210` dimensions after export.
+- Empty Seat portrait animation sheet DDS was validated for existence and `1248x210` dimensions after export.
 
 ## Static Mandala GUI Fallbacks
 
@@ -495,9 +498,59 @@ Frame source notes:
 | 006 | quiet jewel echo | `source_frames/portrait_THR_buddha_mandate_006_source.png` |
 | 007 | return to rest | `source_frames/portrait_THR_buddha_mandate_007_source.png` |
 
+## Empty Seat Leader Portrait Animation
+
+This animated frame sheet is the live Final Silence aftermath and Empty Seat leader portrait sprite. The package also adds a dedicated static Empty Seat DDS fallback.
+
+Reference inspection completed:
+- `paradox_wiki/Portrait modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
+- `interface/chaosx_characters.gfx`
+
+| Field | Value |
+| --- | --- |
+| Asset name | `portrait_THR_empty_seat` |
+| Asset type | animated leader portrait sprite with static fallback |
+| Intended in-game use | Final Silence aftermath and Empty Seat leader state |
+| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/source_frames/` |
+| Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/processed_frames/` |
+| Static fallback DDS | `gfx/leaders/THR/portrait_THR_empty_seat.dds` |
+| Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/sheets/portrait_THR_empty_seat_sheet.png` |
+| Final sheet DDS | `gfx/leaders/THR/portrait_THR_empty_seat_animated.dds` |
+| Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/previews/portrait_THR_empty_seat_preview.gif` |
+| Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/previews/portrait_THR_empty_seat_contact.png` |
+| Target size | `156x210` per frame |
+| Frame count | `8` |
+| Sheet size | `1248x210` |
+| Animation rate | `8` FPS |
+| Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Static sprite | `GFX_portrait_THR_empty_seat` |
+| Animated sprite | `GFX_portrait_THR_empty_seat_animated` |
+| `.gfx` file | `interface/chaosx_characters.gfx` |
+| Gameplay wiring | `holy_realm_set_stage_final_silence` sets the country leader portrait to the animated sprite |
+| Event details wiring | `GetEventsLogSelectedEvolutionImage` returns the animated sprite for Holy Realm evolution stage 6 |
+| Prompt record | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/notes/source_prompts.md` |
+| Asset status | `complete` |
+
+Frame source notes:
+
+| Frame | Motion state | Source PNG |
+| --- | --- | --- |
+| 000 | still seat | `source_frames/portrait_THR_empty_seat_000_source.png` |
+| 001 | first dust | `source_frames/portrait_THR_empty_seat_001_source.png` |
+| 002 | bell echo | `source_frames/portrait_THR_empty_seat_002_source.png` |
+| 003 | hollow halo | `source_frames/portrait_THR_empty_seat_003_source.png` |
+| 004 | absence peak | `source_frames/portrait_THR_empty_seat_004_source.png` |
+| 005 | witness quiet | `source_frames/portrait_THR_empty_seat_005_source.png` |
+| 006 | fading bell | `source_frames/portrait_THR_empty_seat_006_source.png` |
+| 007 | return to stillness | `source_frames/portrait_THR_empty_seat_007_source.png` |
+
 ## Static Leader Portrait Fallbacks
 
-These assets provide visible stage changes for the existing Holy Realm leader portrait aliases. They are static DDS fallbacks derived from the existing fictional `GFX_portrait_THR_godly_figure` source. The Buddha Mandate stage also has an animated frame-sheet package recorded above.
+These assets provide visible stage changes for the existing Holy Realm leader portrait aliases. The original stage fallbacks are derived from the existing fictional `GFX_portrait_THR_godly_figure` source. The Buddha Mandate and Empty Seat stages also have animated frame-sheet packages recorded above.
 
 Reference inspection completed:
 - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
@@ -514,7 +567,8 @@ Reference inspection completed:
 | Arhat Administration | `GFX_portrait_THR_arhat_administration` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_arhat_administration.png` | `gfx/leaders/THR/portrait_THR_arhat_administration.dds` | Arhat Administration stage |
 | Buddha Mandate | `GFX_portrait_THR_buddha_mandate` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_buddha_mandate.png` | `gfx/leaders/THR/portrait_THR_buddha_mandate.dds` | Buddhahood and Buddha Mandate stage |
 | Divine Sovereignty | `GFX_portrait_THR_divine_sovereignty` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_divine_sovereignty.png` | `gfx/leaders/THR/portrait_THR_divine_sovereignty.dds` | Divine Sovereignty stage |
-| Final Silence | `GFX_portrait_THR_final_silence` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_final_silence.png` | `gfx/leaders/THR/portrait_THR_final_silence.dds` | Final Silence and Empty Seat aftermath portrait stage |
+| Final Silence | `GFX_portrait_THR_final_silence` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_final_silence.png` | `gfx/leaders/THR/portrait_THR_final_silence.dds` | Final Silence preparation fallback |
+| Empty Seat | `GFX_portrait_THR_empty_seat` | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/processed_frames/portrait_THR_empty_seat_000.png` | `gfx/leaders/THR/portrait_THR_empty_seat.dds` | Final Silence aftermath and Empty Seat leader fallback |
 
 Source PNG: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/portrait_THR_godly_figure_source.png`
 
