@@ -80,9 +80,19 @@ The implemented powers are:
 
 Using any ordinary power sets `holy_realm_buddha_power_demonstrated`. The first Buddha power also shows the `Powers of the Awakened` super-event once per campaign. `Extinction of Defilements` is a self-targeted rite rather than an enemy debuff: it requires full Meditation Charge, Dhyana Depth 4, Defilements below 10, Buddhahood, and one previous anti-chaos power display. Completing it sets `holy_realm_final_silence_extinction_rite_completed`.
 
+The post-Buddhahood focus branch exposes and paces the powers:
+
+- `THR_the_awakened_one` requires realized Buddhahood and adds charge/detachment.
+- `THR_show_the_powers` requires a demonstrated Buddha power against a valid chaos country.
+- `THR_powers_are_not_toys` requires Detachment and sets `holy_realm_power_restraint_doctrine`, reducing ordinary Buddha power Meditation Charge cost from 20 to 15.
+- `THR_one_becomes_many_focus`, `THR_path_through_walls`, and `THR_lotus_bridge_focus` turn demonstrated powers into route payoffs for teaching, chaos-front movement, and compact relief.
+- `THR_touch_sun_moon_focus` is the anti-chaos capstone and can record crisis-proof during World Collapse.
+
 ## Final Silence Split
 
-Final Silence now has a ritual gate and an outcome gate.
+Final Silence has a ritual gate and an outcome gate.
+
+The final focus sequence uses `THR_doctrine_last_war` as the Last Wheel, then requires `THR_witnesses_gather`, the Extinction of Defilements Buddha-power rite, and `THR_extinction_of_defilements_focus` before `THR_final_silence`.
 
 The ritual can begin when the Holy Realm has Buddhahood, the final doctrine path, Final Silence armed and dominant in the doctrine balance, a controlled capital, no active False Buddha Schism, a previous anti-chaos power display, and the Extinction of Defilements rite.
 
@@ -90,7 +100,7 @@ If global Chaos is above 1000 and no other world-end is active or disabled, comp
 
 ## Achievement Tracking Hooks
 
-The route now records achievement-ready flags without adding daily or monthly scans:
+The route records achievement-ready flags without adding daily or monthly scans:
 
 - `holy_realm_defilements_exceeded_clean_buddhahood_limit` is set if Defilements exceed 50 after Bodhi reaches 75.
 - `holy_realm_four_dhyanas_under_fire_ready` is set when Dhyana Depth 4 is reached while the capital is controlled and a chaos enemy is at war with the Realm.
@@ -168,6 +178,6 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add animated frame-sheet variants for the Mandala states and stage-specific portrait variants for Dhyana and Buddhahood.
-- Build the missing post-Buddhahood focus upgrade branch for `Read the Pattern of Suffering`, `Powers Are Not Toys`, `One Becomes Many`, `Path Through Walls`, `Lotus Bridge`, `Vanishing from Sight`, `Seated in the Sky`, and `Touch the Sun and Moon`.
+- Add remaining dedicated power focuses for `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` if the route needs one focus for every named power rather than the current grouped anti-chaos branch.
 - Expand `holy_realm_false_buddha_schism_pressure` beyond the current debate/suppression decision pair if the route needs a full rival cult country or portrait-stage evolution.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.

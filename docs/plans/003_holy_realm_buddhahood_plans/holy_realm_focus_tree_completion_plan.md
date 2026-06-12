@@ -6,7 +6,7 @@ This plan covers the gap between the current `THR_focus` implementation and the 
 
 ## Current State
 
-`common/national_focus/003_holy_realm.txt` contains 85 `THR_` focus ids and a working older Holy Realm route built around refuge survival, Bodhisattva/Arhat stages, Mandala expansion, restraint versus Final Silence, and regional conquest/registration. It also hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
+`common/national_focus/003_holy_realm.txt` contains 94 `THR_` focus ids and a working older Holy Realm route built around refuge survival, Bodhisattva/Arhat stages, Mandala expansion, restraint versus Final Silence, and regional conquest/registration. It also hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
 
 The current tree still does not fully implement the accepted Buddhahood-first route family. The required route list is in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`, especially the coverage table at lines 302-320.
 
@@ -20,6 +20,13 @@ The first route-lock tranche is implemented in `common/national_focus/003_holy_r
 - `THR_buddha_mandate` requires the completed teaching gate, fourth quiet gate, and one governance choice in addition to the older Arhat/industry/military/diplomacy prerequisites.
 - Holy Realm-specific focus filters now cover Bodhi, Teaching, Meditation, Governance, Sanctuary, Compact, Anti-Chaos, Nirvana, and Hidden branches.
 
+The second route-lock tranche is implemented in `common/national_focus/003_holy_realm.txt` and the shared power charge logic:
+
+- Post-Buddhahood sequence: `THR_the_awakened_one` and `THR_show_the_powers` make Buddhahood and the first anti-chaos power display visible in the tree.
+- Anti-chaos powers branch: `THR_powers_are_not_toys`, `THR_one_becomes_many_focus`, `THR_path_through_walls`, `THR_lotus_bridge_focus`, and `THR_touch_sun_moon_focus` add focus-gated power pacing and route flags.
+- Disciplined power use: `holy_realm_power_restraint_doctrine` lowers ordinary Buddha power Meditation Charge cost from `20` to `15` while keeping the existing `is_special_chaos_country` target gate.
+- Final sequence alignment: `THR_doctrine_last_war` is localized as `The Last Wheel` and requires `THR_show_the_powers`; `THR_witnesses_gather` and `THR_extinction_of_defilements_focus` gate `THR_final_silence`; `THR_empty_seat` covers the non-terminal aftermath focus.
+
 ## Missing Route Architecture
 
 Implement these as focus-tree work, not only as decisions:
@@ -31,8 +38,8 @@ Implement these as focus-tree work, not only as decisions:
 5. Guardian military: turn `THR_vow_keeper_regiments` and support nodes into a defensive guardian route with temple guards, pilgrimage escorts, mountain pass detachments, and anti-chaos defensive doctrine.
 6. Sangha Compact diplomacy: either rename and formalize the current `Mandala of Nations` as the accepted compact equivalent, or add a separate Sangha Compact lane with membership rules, cohesion, shared decisions, refusal/exit risks, and anti-puppet clauses.
 7. Expansion/liberation: replace broad ordinary annexation/registration rhetoric with the spec's pilgrimage and liberation framing where appropriate. Keep hard conquest as a corrupted/high-chaos route if retained.
-8. Anti-chaos powers: add a focus lane that upgrades or gates the implemented Buddha powers after Buddhahood. The current powers exist as decisions but not as a focus branch.
-9. Final Silence: keep the existing late branch but add visible spec sequence alignment: Awakened One, Show the Powers, Last Wheel, Witnesses Gather, Extinction of Defilements, Final Silence, Empty Seat.
+8. Anti-chaos powers follow-up: add dedicated `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` focuses if the route needs one focus per named power rather than grouped power lanes.
+9. Final Silence follow-up: add more aftermath mechanics behind `THR_empty_seat` and stronger witness reactions from taught countries or compact members.
 10. Hidden Schism: expose a hidden focus branch only when False Buddha Schism flags are active. Current debate/suppression decisions exist, but the focus route is absent.
 
 ## Recommended Implementation Order
