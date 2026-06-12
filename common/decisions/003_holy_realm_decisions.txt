@@ -8,6 +8,7 @@
 @HOLY_REALM_MANDALA_OBSERVER_COOLDOWN_DAYS = 180
 @HOLY_REALM_MANDALA_DEVELOPMENT_COOLDOWN_DAYS = 220
 @HOLY_REALM_CONCENTRATION_SEQUENCE_DAYS = 30
+@HOLY_REALM_CONCENTRATION_HOLD_DAYS = 5
 @HOLY_REALM_CONCENTRATION_COOLDOWN_DAYS = 45
 @HOLY_REALM_ONE_BECOMES_MANY_DAYS = 180
 @HOLY_REALM_SUN_MOON_VICTORY_WINDOW_DAYS = 365
@@ -408,10 +409,38 @@ holy_realm_mandala_category = {
 			}
 			complete_effect = {
 				set_country_flag = holy_realm_mandala_kindness_granaries_completed
-				every_owned_state = {
+				random_owned_controlled_state = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
 					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+					set_state_flag = {
+						flag = holy_realm_mandala_development_recent
+						days = @HOLY_REALM_MANDALA_MEMBER_RELIEF_COOLDOWN_DAYS
+					}
+				}
+				random_owned_controlled_state = {
+					limit = {
+						is_controlled_by = ROOT
+						NOT = { has_state_flag = holy_realm_mandala_development_recent }
+					}
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+					set_state_flag = {
+						flag = holy_realm_mandala_development_recent
+						days = @HOLY_REALM_MANDALA_MEMBER_RELIEF_COOLDOWN_DAYS
+					}
+				}
+				random_owned_controlled_state = {
+					limit = {
+						is_controlled_by = ROOT
+						NOT = { has_state_flag = holy_realm_mandala_development_recent }
+					}
+					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+					set_state_flag = {
+						flag = holy_realm_mandala_development_recent
+						days = @HOLY_REALM_MANDALA_MEMBER_RELIEF_COOLDOWN_DAYS
+					}
 				}
 				every_faction_member = {
 					limit = {
@@ -954,22 +983,25 @@ holy_realm_mandala_category = {
 	THR_assign_arhat_to_army = {
 		icon = generic_colonial_administration
 		cost = constant:holy_realm_decision.arhat_audit_cost
+		fire_only_once = yes
 		days_remove = constant:holy_realm_decision.arhat_days
 		available = {
 			is_holy_realm_country = yes
 			holy_realm_arhat_path_unlocked = yes
+			NOT = { has_country_flag = holy_realm_memory_arhat_army_commissars }
 		}
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_arhat_path_unlocked = yes
+			NOT = { has_country_flag = holy_realm_memory_arhat_army_commissars }
 		}
-			complete_effect = {
-				set_country_flag = holy_realm_memory_arhat_army_commissars
-				army_experience = 150
-				add_command_power = 75
-				add_war_support = 0.05
-				holy_realm_spawn_vow_keeper_mountaineers = yes
-				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+		complete_effect = {
+			set_country_flag = holy_realm_memory_arhat_army_commissars
+			army_experience = 150
+			add_command_power = 75
+			add_war_support = 0.05
+			holy_realm_spawn_vow_keeper_mountaineers = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_compassion_drift = yes
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
@@ -1346,7 +1378,9 @@ holy_realm_mandala_category = {
 		target_trigger = {
 			FROM = {
 				exists = yes
+				uses_normal_civilian_systems = yes
 				NOT = { is_holy_realm_country = yes }
+				NOT = { is_special_chaos_country = yes }
 				NOT = { is_subject_of = ROOT }
 				NOT = { is_in_faction_with = ROOT }
 				NOT = { has_country_flag = holy_realm_mandala_protectorate }
@@ -2311,7 +2345,8 @@ holy_realm_bodhisattva_category = {
 
 	THR_hold_intention = {
 		icon = GFX_decision_holy_realm_dhyana_seal_animated
-		cost = 0
+		cost = constant:holy_realm_decision.concentration_hold_cost
+		days_remove = @HOLY_REALM_CONCENTRATION_HOLD_DAYS
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_concentration_intention
@@ -2334,7 +2369,8 @@ holy_realm_bodhisattva_category = {
 
 	THR_hold_energy = {
 		icon = GFX_decision_holy_realm_dhyana_seal_animated
-		cost = 0
+		cost = constant:holy_realm_decision.concentration_hold_cost
+		days_remove = @HOLY_REALM_CONCENTRATION_HOLD_DAYS
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_concentration_energy
@@ -2357,7 +2393,8 @@ holy_realm_bodhisattva_category = {
 
 	THR_hold_mind = {
 		icon = GFX_decision_holy_realm_dhyana_seal_animated
-		cost = 0
+		cost = constant:holy_realm_decision.concentration_hold_cost
+		days_remove = @HOLY_REALM_CONCENTRATION_HOLD_DAYS
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_concentration_mind
@@ -2380,7 +2417,8 @@ holy_realm_bodhisattva_category = {
 
 	THR_hold_investigation = {
 		icon = GFX_decision_holy_realm_dhyana_seal_animated
-		cost = 0
+		cost = constant:holy_realm_decision.concentration_hold_cost
+		days_remove = @HOLY_REALM_CONCENTRATION_HOLD_DAYS
 		available = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_concentration_investigation
