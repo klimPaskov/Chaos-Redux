@@ -1187,6 +1187,166 @@ focus_tree = {
 	}
 
 	# THR FOCUS TAGS:
+	# area = THR_TAG_HIDDEN
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_HIDDEN
+	# systems = THR_TAG_DEFILEMENTS, THR_TAG_EVENT_MEMORY, THR_TAG_ACHIEVEMENT
+	# role = THR_TAG_HIDDEN_BRANCH, THR_TAG_MUTUALLY_EXCLUSIVE
+	focus = {
+		id = THR_debate_the_pretender_focus
+		icon = GFX_focus_generic_diplomatic_treaty
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 44
+		y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_the_awakened_one }
+		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
+		available = {
+			OR = {
+				has_country_flag = holy_realm_false_buddha_debate_resolved
+				AND = {
+					has_country_flag = holy_realm_false_buddha_schism_pressure
+					check_variable = { spiritual_legitimacy > 40 }
+					check_variable = { detachment > 20 }
+				}
+			}
+		}
+		mutually_exclusive = { focus = THR_exile_the_echo }
+		mutually_exclusive = { focus = THR_break_false_mandala }
+		mutually_exclusive = { focus = THR_absorb_the_shadow }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_debate_the_pretender
+			custom_effect_tooltip = THR_debate_the_pretender_focus_effect_tt
+			holy_realm_resolve_false_buddha_by_debate = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_teaching_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_HIDDEN
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_HIDDEN
+	# systems = THR_TAG_DEFILEMENTS, THR_TAG_MANDALA_REACH, THR_TAG_EVENT_MEMORY
+	# role = THR_TAG_HIDDEN_BRANCH, THR_TAG_MUTUALLY_EXCLUSIVE
+	focus = {
+		id = THR_exile_the_echo
+		icon = GFX_focus_generic_national_security
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_THR_MANDALA_INTEGRATION }
+		x = 46
+		y = 10
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_the_awakened_one }
+		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
+		available = {
+			has_country_flag = holy_realm_false_buddha_schism_pressure
+			NOT = { has_country_flag = holy_realm_false_buddha_schism_resolved }
+			check_variable = { mandala_reach > 35 }
+		}
+		mutually_exclusive = { focus = THR_debate_the_pretender_focus }
+		mutually_exclusive = { focus = THR_break_false_mandala }
+		mutually_exclusive = { focus = THR_absorb_the_shadow }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_exile_the_echo
+			custom_effect_tooltip = THR_exile_the_echo_effect_tt
+			holy_realm_exile_false_buddha_echo = yes
+		}
+		ai_will_do = {
+			factor = 0.8
+			modifier = {
+				factor = 2
+				check_variable = { mandala_reach > 55 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_HIDDEN
+	# tone = THR_TAG_COERCIVE
+	# chaos = THR_TAG_HIDDEN
+	# systems = THR_TAG_DEFILEMENTS, THR_TAG_EVENT_MEMORY, THR_TAG_CHAOS_INCREASE
+	# role = THR_TAG_HIDDEN_BRANCH, THR_TAG_MUTUALLY_EXCLUSIVE
+	focus = {
+		id = THR_break_false_mandala
+		icon = GFX_goal_THR_pacification
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
+		x = 44
+		y = 11
+		cost = @thr_focus_cost_medium
+		prerequisite = { focus = THR_the_awakened_one }
+		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
+		available = {
+			OR = {
+				has_country_flag = holy_realm_false_buddha_suppressed
+				has_country_flag = holy_realm_false_buddha_schism_pressure
+			}
+		}
+		mutually_exclusive = { focus = THR_debate_the_pretender_focus }
+		mutually_exclusive = { focus = THR_exile_the_echo }
+		mutually_exclusive = { focus = THR_absorb_the_shadow }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_break_false_mandala
+			custom_effect_tooltip = THR_break_false_mandala_effect_tt
+			holy_realm_resolve_false_buddha_by_suppression = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.7
+			modifier = {
+				factor = 2
+				check_variable = { compassion_drift > 40 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_HIDDEN
+	# tone = THR_TAG_FINALIST
+	# chaos = THR_TAG_EXTREME_CHAOS
+	# systems = THR_TAG_DEFILEMENTS, THR_TAG_MEDITATION_CHARGE, THR_TAG_FINAL_SILENCE_PRESSURE
+	# role = THR_TAG_HIDDEN_BRANCH, THR_TAG_MUTUALLY_EXCLUSIVE
+	focus = {
+		id = THR_absorb_the_shadow
+		icon = GFX_goal_THR_final
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_HOLY_REALM_NIRVANA }
+		x = 46
+		y = 11
+		cost = @thr_focus_cost_long
+		prerequisite = { focus = THR_the_awakened_one }
+		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
+		available = {
+			has_country_flag = holy_realm_false_buddha_schism_pressure
+			NOT = { has_country_flag = holy_realm_false_buddha_schism_resolved }
+			custom_trigger_tooltip = {
+				tooltip = THR_absorb_the_shadow_ready_tt
+				holy_realm_chaos_at_least_totalen_chaos = yes
+			}
+		}
+		mutually_exclusive = { focus = THR_debate_the_pretender_focus }
+		mutually_exclusive = { focus = THR_exile_the_echo }
+		mutually_exclusive = { focus = THR_break_false_mandala }
+		completion_reward = {
+			set_country_flag = holy_realm_focus_absorb_the_shadow
+			custom_effect_tooltip = THR_absorb_the_shadow_effect_tt
+			holy_realm_absorb_false_buddha_shadow = yes
+			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.coercive_gain }
+			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
+			holy_realm_add_chaos = yes
+		}
+		ai_will_do = {
+			factor = 0.1
+			modifier = {
+				factor = 5
+				holy_realm_chaos_at_least_world_collapse = yes
+				check_variable = { final_silence_pressure > 70 }
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
 	# area = THR_TAG_DIPLOMACY
 	# tone = THR_TAG_PEACEFUL
 	# chaos = THR_TAG_LOW_CHAOS

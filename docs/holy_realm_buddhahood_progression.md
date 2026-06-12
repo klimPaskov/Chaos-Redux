@@ -114,6 +114,7 @@ The route records achievement-ready flags without adding daily or monthly scans:
 - `holy_realm_sangha_of_nations_watch_started` records when the Mandala of Nations has at least eight non-chaos, non-puppet members and Sangha Cohesion is at least 70. The achievement checks that the watch has remained valid for 180 days.
 - `holy_realm_lotus_bridge_watch_started` records the protected target for the Lotus Bridge relief power. The achievement checks that the saved target still exists, keeps its capital, and has remained protected for 180 days.
 - `holy_realm_false_buddha_schism_triggered`, `holy_realm_false_buddha_debate_resolved`, and `holy_realm_false_buddha_suppressed` distinguish the False Buddha Schism paths. `Debate the Pretender` requires the debate path and rejects suppression.
+- The False Buddha Schism also opens a conditional focus branch after the evolution has been recorded. `THR_debate_the_pretender_focus` mirrors the clean debate path, `THR_exile_the_echo` removes the immediate pressure while leaving an abroad echo, `THR_break_false_mandala` mirrors suppression and raises chaos, and `THR_absorb_the_shadow` is a Totalen Chaos shortcut that raises Meditation Charge and Final Silence Pressure while recording a corrupted Buddhahood route.
 
 The achievement file now defines all 12 Buddhahood achievement ids from the spec with gameplay-facing unlock conditions. `No Empire of the Wheel` uses the spec's allowed equivalent clean-route focus path: `Vow Against Annihilation`, Final Silence renunciation, no ordinary offensive conquest abuse, and a recorded anti-chaos victory.
 
@@ -179,5 +180,5 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add animated frame-sheet variants for the Mandala states and stage-specific portrait variants for Dhyana and Buddhahood.
 - Add remaining dedicated power focuses for `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` if the route needs one focus for every named power rather than the current grouped anti-chaos branch.
-- Expand `holy_realm_false_buddha_schism_pressure` beyond the current debate/suppression decision pair if the route needs a full rival cult country or portrait-stage evolution.
+- Expand `holy_realm_false_buddha_echo_abroad` into a full rival cult country or portrait-stage return chain if the exiled echo route needs a later foreign crisis.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.
