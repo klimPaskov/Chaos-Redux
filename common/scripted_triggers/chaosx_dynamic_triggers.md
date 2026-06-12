@@ -27,6 +27,7 @@ Current coverage includes:
 - communist rebel-state flags
 - `ZIN`
 - countries using the `The Holy Realm` cosmetic tag
+- countries using the `The Great Mandala` or `The Silent Mandala` Holy Realm identity cosmetic tags
 
 ## is_actual_nonhuman_country
 

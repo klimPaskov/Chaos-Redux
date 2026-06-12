@@ -1932,6 +1932,34 @@ holy_realm_apply_crisis_rescue_if_needed = {
 	}
 }
 
+holy_realm_form_great_mandala = {
+	set_cosmetic_tag = THR_GREAT_MANDALA
+	set_country_flag = holy_realm_great_mandala_formed
+	set_country_flag = holy_realm_post_formation_stabilization_unlocked
+	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+	holy_realm_add_spiritual_legitimacy = yes
+	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
+	holy_realm_add_mandala_reach = yes
+	if = {
+		limit = { has_global_flag = holy_realm_mandala_of_nations_formed }
+		set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.sangha_congress_cohesion_gain }
+		holy_realm_add_sangha_cohesion = yes
+	}
+	holy_realm_refresh_world_threat_source = yes
+}
+
+holy_realm_form_silent_mandala = {
+	set_cosmetic_tag = THR_SILENT_MANDALA
+	set_country_flag = holy_realm_silent_mandala_formed
+	set_country_flag = holy_realm_post_formation_stabilization_unlocked
+	set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.empty_seat_witness_sangha_cohesion_gain }
+	holy_realm_add_sangha_cohesion = yes
+	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.small_peace_loss }
+	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_mercy_doctrine }
+	holy_realm_add_chaos = yes
+	holy_realm_refresh_world_threat_source = yes
+}
+
 holy_realm_setup_mandala_protectorate_country = {
 	set_country_flag = holy_realm_mandala_protectorate
 	set_cosmetic_tag = holy_realm_mandala_protectorate

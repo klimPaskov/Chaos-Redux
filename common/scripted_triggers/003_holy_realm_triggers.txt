@@ -2,6 +2,9 @@
 # - Scripted triggers for the Holy Realm formation route, stage gates, doctrine
 #   memory, foreign containment, and Final Silence world-end conditions.
 
+@HOLY_REALM_GREAT_MANDALA_MIN_FACTION_MEMBERS = 3
+@HOLY_REALM_SILENT_MANDALA_MIN_FACTION_MEMBERS = 1
+
 is_holy_realm_country = {
 	has_country_flag = holy_realm_active
 }
@@ -398,6 +401,72 @@ holy_realm_has_sangha_compact_candidate = {
 	any_country = {
 		holy_realm_sangha_compact_candidate_valid = yes
 	}
+}
+
+holy_realm_has_great_mandala_compact_basis = {
+	has_global_flag = holy_realm_mandala_of_nations_formed
+	is_faction_leader = yes
+	num_faction_members > @HOLY_REALM_GREAT_MANDALA_MIN_FACTION_MEMBERS
+	check_variable = {
+		var = sangha_cohesion
+		value = constant:holy_realm_buddhahood.great_mandala_cohesion_required
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_controls_protected_sanctuary_corridor = {
+	322 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	323 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	324 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	601 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	985 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+}
+
+holy_realm_can_form_great_mandala = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	has_country_flag = holy_realm_buddhahood_attained
+	has_country_flag = holy_realm_focus_refusal_of_empires
+	check_variable = { defilements < constant:holy_realm_buddhahood.defilements_threshold }
+	OR = {
+		holy_realm_has_great_mandala_compact_basis = yes
+		holy_realm_controls_protected_sanctuary_corridor = yes
+	}
+	has_offensive_war = no
+	NOT = { has_country_flag = holy_realm_great_mandala_formed }
+	NOT = { has_country_flag = holy_realm_silent_mandala_formed }
+	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
+	NOT = { has_country_flag = holy_realm_focus_world_is_a_border }
+	NOT = { has_country_flag = holy_realm_memory_world_is_a_border }
+	NOT = { has_country_flag = holy_realm_world_asked_to_kneel_unlocked }
+}
+
+holy_realm_can_form_silent_mandala = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	has_country_flag = holy_realm_final_silence_nonterminal_completed
+	has_country_flag = holy_realm_focus_empty_seat
+	has_global_flag = holy_realm_mandala_of_nations_formed
+	is_faction_leader = yes
+	num_faction_members > @HOLY_REALM_SILENT_MANDALA_MIN_FACTION_MEMBERS
+	NOT = { has_country_flag = holy_realm_silent_mandala_formed }
+	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
+	NOT = { has_global_flag = world_end_final_silence }
 }
 
 holy_realm_sangha_compact_member_valid = {
