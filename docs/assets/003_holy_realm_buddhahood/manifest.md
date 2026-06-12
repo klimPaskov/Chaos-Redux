@@ -17,9 +17,9 @@ Source mode:
 - `$imagegen` for the Wrathful Mandala animation source frames.
 - `$imagegen` for the Final Silence Mandala animation source frames.
 - `$imagegen` for the Empty Seat Mandala animation source frames.
-- `$imagegen` for the Buddha Mandate leader portrait 4x4 animation source sheet and split source frames.
-- `$imagegen` for the Empty Seat leader portrait 4x4 animation source sheet and split source frames.
-- `$imagegen` for the static Holy Realm stage leader portrait 4x2 source sheet and split source PNGs.
+- `$imagegen` for the Buddha Mandate leader portrait 4x4 animation source sheet, generated as transformed edits of `portrait_THR_godly_figure.dds`.
+- `$imagegen` for the Empty Seat leader portrait 4x4 animation source sheet, generated as a vacant-relic transformation of `portrait_THR_godly_figure.dds`.
+- `$imagegen` for the static Holy Realm stage leader portrait 4x2 source sheet, generated as transformed variants of `portrait_THR_godly_figure.dds`.
 - `$imagegen` for the Dhyana Seal decision icon animation source frames.
 - `$imagegen` for the Buddha power decision icon sheet, Extinction of Defilements decision icon, and False Buddha portrait source art.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
@@ -654,7 +654,7 @@ Frame source notes:
 
 ## Static Leader Portrait Fallbacks
 
-These assets provide visible stage changes for the existing Holy Realm leader portrait aliases. Refuge Bodhisattva, Pramudita, Acala, Dharmamegha, Arhat Administration, False Buddha, Divine Sovereignty, and Final Silence are split from a generated 4x2 static portrait source sheet. Buddha Mandate and Empty Seat use frame 000 of their new portrait animation packages for the static country-leader DDS files.
+These assets provide visible stage changes for the existing Holy Realm leader portrait aliases. Refuge Bodhisattva, Pramudita, Acala, Dharmamegha, Arhat Administration, False Buddha, Divine Sovereignty, and Final Silence are split from a generated 4x2 static portrait source sheet that uses `portrait_THR_godly_figure.dds` as its imagegen identity/edit anchor. Buddha Mandate and Empty Seat use frame 000 of their generated portrait animation packages, which also use the same source portrait as their identity anchor.
 
 Reference inspection completed:
 - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
@@ -674,7 +674,7 @@ Reference inspection completed:
 | Final Silence | `GFX_portrait_THR_final_silence` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_final_silence.png` | `gfx/leaders/THR/portrait_THR_final_silence.dds` | Final Silence preparation fallback |
 | Empty Seat | `GFX_portrait_THR_empty_seat` | `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/portrait_THR_empty_seat.png` | `gfx/leaders/THR/portrait_THR_empty_seat.dds` | Final Silence aftermath and Empty Seat leader fallback |
 
-Source PNGs: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/`, with prompt and panel order recorded in `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_prompts.md`. Buddha Mandate and Empty Seat source frames are recorded in their animation packages above.
+Source PNGs: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/`, with the converted reference image, prompt, and panel order recorded in `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_prompts.md`. Buddha Mandate and Empty Seat source frames are recorded in their animation packages above.
 
 Contact sheet: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/leader_portrait_static_contact_sheet.png`
 
