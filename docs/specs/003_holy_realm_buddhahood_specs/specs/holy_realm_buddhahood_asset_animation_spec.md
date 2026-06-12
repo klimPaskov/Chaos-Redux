@@ -51,7 +51,7 @@ Required portraits:
 | Teacher of Four Directions | Generated | Required | Optional | Slight aura, more pilgrim symbols |
 | Great Bodhisattva | Generated | Required | Optional | Mandala shadow, no generated text |
 | Buddha leader | Generated symbolic fictional | Required | Required | Calm luminous figure, not a caricature |
-| Empty Seat successor | Generated symbolic | Required | Optional animated | Empty throne, lotus, bell, or council silhouette |
+| Empty Seat successor | Generated symbolic | Required | Required | Empty throne, lotus, bell, or council silhouette |
 | False Buddha | Generated symbolic | Required if schism implemented | Optional | Cracked mandala or excessive light |
 
 Animated portrait guidance:
@@ -85,6 +85,7 @@ Each needs a static fallback without `_animated`.
 
 Implementation coverage:
 
+- `GFX_portrait_THR_buddha_mandate_animated` is delivered as an 8-frame `1248x210` sheet at `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/`. The static fallback remains `GFX_portrait_THR_buddha_mandate`.
 - `GFX_holy_realm_mandala_dormant_animated` is delivered as an 8-frame `3360x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/`.
 - `GFX_holy_realm_mandala_teaching_animated` is delivered as an 8-frame `3360x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_teaching_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/`.
 - `GFX_holy_realm_mandala_meditation_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/`.
