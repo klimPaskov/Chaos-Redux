@@ -223,6 +223,33 @@ Review assets:
 - Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_preview.gif`
 - Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_contact.png`
 
+## Holy Realm Dhyana Seal Decision Icon Animation
+
+The concentration sequence uses an animated Dhyana Seal decision icon while preserving a static seal DDS as fallback.
+
+| Field | Value |
+| --- | --- |
+| Static sprite alias | `GFX_decision_holy_realm_dhyana_seal` |
+| Animated sprite alias | `GFX_decision_holy_realm_dhyana_seal_animated` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds` |
+| Animated sheet DDS | `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds` |
+| Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/sheets/holy_realm_dhyana_seal_sheet.png` |
+| Frame size | `96x96` |
+| Frame count | `8` |
+| Sheet size | `768x96` |
+| FPS | `8` |
+| Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Target `.gfx` | `interface/003_holy_realm.gfx` |
+| Gameplay use | `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation` use the animated sprite as their decision icon |
+| Wiring precedent | `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `interface/003_holy_realm.gfx` |
+
+Review assets:
+
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/processed_frames/`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_contact.png`
+
 ## Holy Realm Buddha Mandate Leader Portrait Animation
 
 The Buddhahood-stage leader portrait uses an animated frame sheet while preserving the static Buddha Mandate DDS as its fallback.

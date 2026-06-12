@@ -1,6 +1,6 @@
 # 003 Holy Realm Buddhahood Asset Manifest
 
-Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, leader portrait static fallback assets, and the Buddha Mandate and Empty Seat leader portrait animations.
+Package scope: Holy Realm Buddhahood achievement icons, super-event handoffs, Mandala GUI static fallback and dormant/teaching/meditation/awakened/wrathful/final-silence/empty-seat animation assets, Dhyana Seal decision icon animation, leader portrait static fallback assets, and the Buddha Mandate and Empty Seat leader portrait animations.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
@@ -19,6 +19,7 @@ Source mode:
 - `$imagegen` for the Empty Seat Mandala animation source frames.
 - `$imagegen` for the Buddha Mandate leader portrait animation source frames.
 - `$imagegen` for the Empty Seat leader portrait animation source frames.
+- `$imagegen` for the Dhyana Seal decision icon animation source frames.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
 - Local ImageMagick procedural composition for static Mandala GUI fallback states.
 - Local ImageMagick stage treatment for static leader portrait fallbacks derived from the existing fictional Holy Realm leader portrait.
@@ -38,6 +39,8 @@ DDS conversion note:
 - Buddha Mandate portrait animation sheet DDS was validated for existence and `1248x210` dimensions after export.
 - Empty Seat portrait static DDS was validated for existence and `156x210` dimensions after export.
 - Empty Seat portrait animation sheet DDS was validated for existence and `1248x210` dimensions after export.
+- Dhyana Seal static decision icon DDS was validated for existence and `96x96` dimensions after export.
+- Dhyana Seal animation sheet DDS was validated for existence and `768x96` dimensions after export.
 
 ## Static Mandala GUI Fallbacks
 
@@ -447,6 +450,55 @@ Frame source notes:
 | 005 | fading vow | `source_frames/holy_realm_mandala_empty_005_source.png` |
 | 006 | still seat | `source_frames/holy_realm_mandala_empty_006_source.png` |
 | 007 | seam frame | `source_frames/holy_realm_mandala_empty_007_source.png` |
+
+## Dhyana Seal Decision Icon Animation
+
+This animated frame sheet is the concentration-sequence decision icon package. The static Dhyana Seal DDS remains available as the fallback.
+
+Reference inspection completed:
+- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `interface/003_holy_realm.gfx`
+- `common/decisions/003_holy_realm_decisions.txt`
+
+| Field | Value |
+| --- | --- |
+| Asset name | `holy_realm_dhyana_seal` |
+| Asset type | animated decision icon sprite with static fallback |
+| Intended in-game use | `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation` |
+| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/source_frames/` |
+| Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/processed_frames/` |
+| Static fallback DDS | `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds` |
+| Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/sheets/holy_realm_dhyana_seal_sheet.png` |
+| Final sheet DDS | `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds` |
+| Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_preview.gif` |
+| Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_contact.png` |
+| Target size | `96x96` per frame |
+| Frame count | `8` |
+| Sheet size | `768x96` |
+| Animation rate | `8` FPS |
+| Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
+| Static sprite | `GFX_decision_holy_realm_dhyana_seal` |
+| Animated sprite | `GFX_decision_holy_realm_dhyana_seal_animated` |
+| `.gfx` file | `interface/003_holy_realm.gfx` |
+| Gameplay wiring | Concentration sequence and four hold-step decisions use the animated sprite as their icon |
+| Prompt record | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/notes/source_prompts.md` |
+| Asset status | `complete` |
+
+Frame source notes:
+
+| Frame | Motion state | Source PNG |
+| --- | --- | --- |
+| 000 | closed breath | `source_frames/holy_realm_dhyana_seal_000_source.png` |
+| 001 | first inhale | `source_frames/holy_realm_dhyana_seal_001_source.png` |
+| 002 | petal opening | `source_frames/holy_realm_dhyana_seal_002_source.png` |
+| 003 | held attention | `source_frames/holy_realm_dhyana_seal_003_source.png` |
+| 004 | Dhyana peak | `source_frames/holy_realm_dhyana_seal_004_source.png` |
+| 005 | soft release | `source_frames/holy_realm_dhyana_seal_005_source.png` |
+| 006 | settling seal | `source_frames/holy_realm_dhyana_seal_006_source.png` |
+| 007 | return breath | `source_frames/holy_realm_dhyana_seal_007_source.png` |
 
 ## Buddha Mandate Leader Portrait Animation
 
