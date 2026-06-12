@@ -27,7 +27,7 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
    - `THR_council_of_abbots`, `THR_name_protector_regent`, and `THR_seat_pilgrim_assembly` are the mutually exclusive early governance choices before the Unshaken Seat.
    - `THR_arhats_take_office` creates the Arhat Administration.
    - `THR_buddha_mandate` is localised as the Unshaken Seat and marks the focus prerequisite for Buddhahood.
-   - `THR_the_awakened_one`, `THR_show_the_powers`, `THR_powers_are_not_toys`, `THR_one_becomes_many_focus`, `THR_path_through_walls`, `THR_lotus_bridge_focus`, and `THR_touch_sun_moon_focus` form the post-Buddhahood anti-chaos power branch.
+   - `THR_the_awakened_one`, `THR_show_the_powers`, `THR_powers_are_not_toys`, `THR_read_pattern_suffering`, `THR_one_becomes_many_focus`, `THR_path_through_walls`, `THR_lotus_bridge_focus`, `THR_vanishing_from_sight_focus`, `THR_seated_in_sky_focus`, and `THR_touch_sun_moon_focus` form the post-Buddhahood anti-chaos power branch.
    - `THR_debate_the_pretender_focus`, `THR_exile_the_echo`, `THR_break_false_mandala`, and `THR_absorb_the_shadow` are hidden until the False Buddha Schism evolution has triggered. They resolve the Schism through teaching, exile, suppression, or high-chaos absorption.
    - `THR_throne_without_body` and `THR_doctrine_last_war`, localised as the Last Wheel, open Divine Sovereignty and the locked final doctrine path after the powers have been shown.
    - `THR_witnesses_gather`, `THR_extinction_of_defilements_focus`, and `THR_final_silence` expose the final ritual gates, while Final Silence completion remains handled by the ritual decision gate.

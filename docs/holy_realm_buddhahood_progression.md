@@ -85,8 +85,10 @@ The post-Buddhahood focus branch exposes and paces the powers:
 - `THR_the_awakened_one` requires realized Buddhahood and adds charge/detachment.
 - `THR_show_the_powers` requires a demonstrated Buddha power against a valid chaos country.
 - `THR_powers_are_not_toys` requires Detachment and sets `holy_realm_power_restraint_doctrine`, reducing ordinary Buddha power Meditation Charge cost from 20 to 15.
+- `THR_read_pattern_suffering` records the Pattern of Suffering route from teaching evidence, chaos-front pressure, or the existing evolution.
 - `THR_one_becomes_many_focus`, `THR_path_through_walls`, and `THR_lotus_bridge_focus` turn demonstrated powers into route payoffs for teaching, chaos-front movement, and compact relief.
-- `THR_touch_sun_moon_focus` is the anti-chaos capstone and can record crisis-proof during World Collapse.
+- `THR_vanishing_from_sight_focus` and `THR_seated_in_sky_focus` give the stealth and emergency sky-display powers their own route payoffs before the capstone.
+- `THR_touch_sun_moon_focus` is the anti-chaos capstone and now requires the full named-power lattice before it can complete.
 
 ## Final Silence Split
 
@@ -179,6 +181,6 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 
 - Consider replacing the terminal Final Silence audio if the project wants only explicit modern license grants and no public-domain-chain ambiguity.
 - Add animated frame-sheet variants for the Mandala states and stage-specific portrait variants for Dhyana and Buddhahood.
-- Add remaining dedicated power focuses for `Read the Pattern of Suffering`, `Vanishing from Sight`, and `Seated in the Sky` if the route needs one focus for every named power rather than the current grouped anti-chaos branch.
+- Add deeper power-specific decision upgrades if later balance passes show the focus lattice needs more than route flags and Meditation Charge rewards.
 - Expand `holy_realm_false_buddha_echo_abroad` into a full rival cult country or portrait-stage return chain if the exiled echo route needs a later foreign crisis.
 - Audit the focus tree for a dedicated visual route around `The Unshaken Seat`, rather than relying on the existing focus id.
