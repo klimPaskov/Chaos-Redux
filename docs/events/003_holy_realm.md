@@ -370,7 +370,6 @@ Future visual interaction pass:
 
 Remaining clean asset needs:
 
-- final achievement icons for `29_the_lamps_remain_lit_achievement`, `30_mandala_of_nations_achievement`, `31_mountain_circle_by_vow_achievement`, `32_mandate_without_a_sword_achievement`, `33_register_without_edges_achievement`, and `34_empty_mandala_achievement`
 - dedicated thermonuclear Final Silence super-event art if the shared terminal Final Silence texture should be split later
 - Vow against Annihilation capstone super-event art if that optional spec super event is implemented later
 - stage-composited leader portraits for Bodhisattva, Buddha Mandate, Divine Sovereignty, Final Silence, and Mandala Break if the actual country leader portrait should change in the politics view
