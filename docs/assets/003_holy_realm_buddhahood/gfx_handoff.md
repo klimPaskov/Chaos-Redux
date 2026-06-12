@@ -330,7 +330,7 @@ Review assets:
 
 ## Holy Realm Static Leader Portrait Stages
 
-The existing stage aliases in `interface/chaosx_characters.gfx` point to separate static DDS files. Refuge Bodhisattva, Pramudita, Acala, Dharmamegha, Arhat Administration, False Buddha, Divine Sovereignty, and Final Silence are sourced from a generated 4x2 static portrait sheet. Buddha Mandate and Empty Seat static fallbacks come from frame 000 of their animation packages.
+The existing stage aliases in `interface/chaosx_characters.gfx` point to separate static DDS files. Refuge Bodhisattva, Pramudita, Acala, Dharmamegha, Arhat Administration, False Buddha, Divine Sovereignty, and Final Silence are sourced from a generated 4x2 static portrait sheet that uses `portrait_THR_godly_figure.dds` as the identity/edit anchor. Buddha Mandate and Empty Seat static fallbacks come from frame 000 of their animation packages, which also use the same source portrait as their identity anchor.
 
 | Stage | Sprite alias | DDS |
 | --- | --- | --- |
@@ -347,7 +347,7 @@ The existing stage aliases in `interface/chaosx_characters.gfx` point to separat
 
 Review assets:
 
-- Static source sheet and split sources: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/`
+- Static reference, source sheet, and split sources: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_png/`
 - Static source prompt/order record: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/source_prompts.md`
 - Buddha Mandate and Empty Seat static fallbacks: frame 000 from their animation packages, copied into `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/`
 - Processed PNGs: `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/processed_png/`
