@@ -13,6 +13,8 @@
 @HOLY_REALM_SUN_MOON_VICTORY_WINDOW_DAYS = 365
 @HOLY_REALM_MANDALA_JOINT_DEFENSE_FACTION_INITIATIVE = 1
 @HOLY_REALM_MANDALA_JOINT_DEFENSE_POWER_PROJECTION = 85
+@HOLY_REALM_PILGRIMAGE_ESCORT_DIVISION_FLOOR = 1
+@HOLY_REALM_PILGRIMAGE_ROUTE_GUARDED_DAYS = 365
 @holy_realm_ai_peace_branch_factor = 4
 @holy_realm_ai_peace_letter_factor = 0.8
 @holy_realm_ai_regional_peace_letter_factor = 0.4
@@ -2105,6 +2107,129 @@ holy_realm_bodhisattva_category = {
 			holy_realm_finish_teaching_mission_slot = yes
 		}
 		ai_will_do = { factor = 1 }
+	}
+
+	THR_bodhisattva_guard_pilgrimage_route = {
+		icon = generic_army
+		cost = constant:holy_realm_decision.pilgrimage_escort_cost
+		days_remove = constant:holy_realm_decision.pilgrimage_escort_days
+		state_target = any_controlled_state
+		target_root_trigger = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_guardian_escort_missions_unlocked
+		}
+		target_trigger = {
+			FROM = {
+				is_fully_controlled_by = ROOT
+				OR = {
+					is_core_of = ROOT
+					has_state_flag = holy_realm_protected_state
+					has_state_flag = holy_realm_integrated_mandala_state
+					holy_realm_himalayan_core_state = yes
+					infrastructure < constant:holy_realm_decision.pilgrimage_route_max_infrastructure
+				}
+				NOT = { has_state_flag = holy_realm_pilgrimage_route_guarded }
+			}
+		}
+		available = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_guardian_escort_missions_unlocked
+			custom_trigger_tooltip = {
+				tooltip = holy_realm_teaching_slot_available_tt
+				holy_realm_has_open_teaching_slot = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_guard_pilgrimage_route_divisions_tt
+				FROM = {
+					ROOT = {
+						divisions_in_state = { state = PREV size > @HOLY_REALM_PILGRIMAGE_ESCORT_DIVISION_FLOOR }
+					}
+				}
+			}
+			command_power > constant:holy_realm_decision.pilgrimage_escort_command_power
+			has_equipment = { support_equipment > constant:holy_realm_decision.pilgrimage_escort_support_equipment }
+		}
+		visible = {
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_dharma_teachings_unlocked
+			has_country_flag = holy_realm_guardian_escort_missions_unlocked
+		}
+		cancel_trigger = {
+			NOT = { FROM = { is_fully_controlled_by = ROOT } }
+		}
+		complete_effect = {
+			holy_realm_start_teaching_mission_slot = yes
+			set_temp_variable = { holy_realm_command_power_spend = constant:holy_realm_decision.pilgrimage_escort_command_power }
+			multiply_temp_variable = { holy_realm_command_power_spend = -1 }
+			add_command_power = holy_realm_command_power_spend
+			set_temp_variable = { holy_realm_support_equipment_spend = constant:holy_realm_decision.pilgrimage_escort_support_equipment }
+			multiply_temp_variable = { holy_realm_support_equipment_spend = -1 }
+			add_equipment_to_stockpile = {
+				type = support_equipment_1
+				amount = holy_realm_support_equipment_spend
+			}
+			set_country_flag = holy_realm_pilgrimage_route_escort_active
+		}
+		remove_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
+			clr_country_flag = holy_realm_pilgrimage_route_escort_active
+			if = {
+				limit = {
+					FROM = {
+						is_fully_controlled_by = ROOT
+						ROOT = {
+							divisions_in_state = { state = PREV size > @HOLY_REALM_PILGRIMAGE_ESCORT_DIVISION_FLOOR }
+						}
+					}
+				}
+				custom_effect_tooltip = THR_bodhisattva_guard_pilgrimage_route_success_tt
+				set_country_flag = holy_realm_memory_guarded_pilgrimage_route
+				FROM = {
+					set_state_flag = {
+						flag = holy_realm_pilgrimage_route_guarded
+						days = @HOLY_REALM_PILGRIMAGE_ROUTE_GUARDED_DAYS
+					}
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
+				army_experience = constant:holy_realm_focus_reward.pilgrimage_escort_experience
+				set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_meditation_gain }
+				holy_realm_add_bodhi_progress = yes
+				set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+				holy_realm_add_compassion = yes
+				set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_sangha_cohesion = yes
+				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_mandala_reach = yes
+			}
+			else = {
+				custom_effect_tooltip = THR_bodhisattva_guard_pilgrimage_route_failure_tt
+				set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_counter.small_gain }
+				holy_realm_add_defilements = yes
+				set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_counter.small_loss }
+				holy_realm_add_sangha_cohesion = yes
+			}
+		}
+		cancel_effect = {
+			holy_realm_finish_teaching_mission_slot = yes
+			clr_country_flag = holy_realm_pilgrimage_route_escort_active
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_defilements = yes
+			set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_sangha_cohesion = yes
+		}
+		ai_will_do = {
+			factor = 1.1
+			modifier = {
+				factor = 2
+				has_war = yes
+			}
+			modifier = {
+				factor = 2
+				holy_realm_chaos_threatens_realm_or_compact = yes
+			}
+		}
 	}
 
 	THR_bodhisattva_support_sympathetic_government = {
