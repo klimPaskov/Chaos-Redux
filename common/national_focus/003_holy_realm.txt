@@ -496,6 +496,104 @@ focus_tree = {
 	}
 
 	# THR FOCUS TAGS:
+	# area = THR_TAG_GOVERNANCE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_TEACHING, THR_TAG_BODHI, THR_TAG_UNLOCK
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_abbot_examiners
+		icon = GFX_focus_generic_self_management
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_TEACHING }
+		x = 18
+		y = 5
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_council_of_abbots }
+		completion_reward = {
+			set_country_flag = holy_realm_governance_teaching_examiners
+			custom_effect_tooltip = THR_abbot_examiners_effect_tt
+			add_political_power = constant:holy_realm_buddhahood.governance_council_political_gain
+			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_teaching_gain }
+			holy_realm_add_bodhi_progress = yes
+			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
+			holy_realm_add_compassion = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_governance_path_factor
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_GOVERNANCE
+	# tone = THR_TAG_AMBIGUOUS
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_DEFENSE, THR_TAG_SANCTUARY, THR_TAG_DEFILEMENTS
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_regent_pass_watch
+		icon = GFX_focus_generic_home_defense
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_SANCTUARY }
+		x = 20
+		y = 5
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_name_protector_regent }
+		completion_reward = {
+			set_country_flag = holy_realm_governance_pass_watch
+			custom_effect_tooltip = THR_regent_pass_watch_effect_tt
+			add_command_power = constant:holy_realm_buddhahood.governance_protector_command_gain
+			add_equipment_to_stockpile = {
+				type = support_equipment_1
+				amount = constant:holy_realm_focus_reward.governance_pass_watch_support_equipment
+			}
+			capital_scope = {
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+			}
+			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.governance_protector_defilement_gain }
+			holy_realm_add_defilements = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_governance_path_factor
+			modifier = {
+				factor = @holy_realm_ai_protector_regent_threat_factor
+				holy_realm_chaos_threatens_realm_or_compact = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
+	# area = THR_TAG_GOVERNANCE
+	# tone = THR_TAG_PEACEFUL
+	# chaos = THR_TAG_NO_CHAOS_GATE
+	# systems = THR_TAG_REFUGE, THR_TAG_COMPACT, THR_TAG_MANDALA_REACH
+	# role = THR_TAG_BRANCH_SUPPORT
+	focus = {
+		id = THR_pilgrim_refuge_courts
+		icon = GFX_focus_generic_league_of_nations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_COMPACT }
+		x = 22
+		y = 5
+		cost = @thr_focus_cost_short
+		prerequisite = { focus = THR_seat_pilgrim_assembly }
+		completion_reward = {
+			set_country_flag = holy_realm_governance_refuge_courts
+			custom_effect_tooltip = THR_pilgrim_refuge_courts_effect_tt
+			add_manpower = constant:holy_realm_buddhahood.governance_pilgrim_refuge_manpower_gain
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_mandala_reach = yes
+			set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.governance_pilgrim_sangha_cohesion_gain }
+			holy_realm_add_sangha_cohesion = yes
+		}
+		ai_will_do = {
+			factor = @holy_realm_ai_governance_path_factor
+			modifier = {
+				factor = @holy_realm_ai_pilgrim_assembly_peace_factor
+				holy_realm_chaos_below_peace_focus_ceiling = yes
+			}
+		}
+	}
+
+	# THR FOCUS TAGS:
 	# area = THR_TAG_TEACHING
 	# tone = THR_TAG_PEACEFUL
 	# chaos = THR_TAG_NO_CHAOS_GATE
