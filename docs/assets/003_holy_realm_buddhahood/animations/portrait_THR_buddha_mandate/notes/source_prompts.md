@@ -1,16 +1,28 @@
 # Buddha Mandate Portrait Source Prompts
 
-Generation mode: `$imagegen`, one source PNG per planned frame.
+Generation mode: `$imagegen`, one generated 4x4 animation source sheet split into sixteen source-frame PNGs.
 
-All prompts required a fictional sacred Buddha Mandate leader portrait, not a real person; vertical composition for a `156x210` UI crop; a frontal golden Tibetan-style deity-mask figure with jeweled crown, pale background, centered face and crown, no readable text, no letters, no numbers, no flags, no maps, no weapons, no blood, no gore, and no modern UI.
+Source sheet prompt:
+
+> Create a production-ready 4x4 animation source sheet for a Hearts of Iron IV fictional leader portrait. Subject: The Holy Realm Buddha Mandate, a newly born cosmic false Buddha sovereign, serene but uncanny, frontal three-quarter leader portrait, saffron and deep crimson robes, gold ritual crown, pearl and bronze ornaments, faint mandala halo, Himalayan temple shadows behind him. Sixteen separate hand-painted source frames arranged in a clean 4 columns x 4 rows grid, no gutters or labels, each panel is a distinct freshly drawn portrait frame with the same camera, pose, crop, costume, and identity. The animation should be a very subtle breathing mandala pulse: tiny changes in halo intensity, robe highlights, jewel glints, eyelid light, and candle reflections only; no big vignette, no simple color filter, no zooming, no warped duplicate look. Dark detailed painterly realism suitable for a strategy game leader portrait, crisp face and crown, high contrast, no text, no UI, no watermark.
+
+Generated source sheet archived at `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/source_frames/portrait_THR_buddha_mandate_generated_source_sheet.png`.
 
 | Frame | Prompt emphasis |
 | --- | --- |
-| 000 | Resting radiance; low halo, subdued crown jewels, delicate gold dust at edges. |
-| 001 | First breath; halo slightly brighter behind the crown, warm light on brow and cheeks. |
-| 002 | Crown ignition; top jewel and side ornaments glint with controlled gold-white light. |
-| 003 | Awakened eyes; soft pale-gold eye light and brighter forehead jewel. |
-| 004 | Full mandate; peak halo density, strongest warm gold aura, readable face. |
-| 005 | Compassionate settling; aura softens and lower ornaments regain shadow detail. |
-| 006 | Quiet jewel echo; glints recede, halo becomes pale and thin, eyes return toward normal. |
-| 007 | Return to rest; halo dims close to frame 000 intensity, jewels quiet. |
+| 000 | Resting radiance; low halo, subdued crown jewels. |
+| 001 | First breath; slightly brighter crown-side halo. |
+| 002 | Lamp reflection; warmer cheek and robe highlights. |
+| 003 | Crown shimmer; restrained glints on crown ornaments. |
+| 004 | Forehead jewel; controlled light at the center jewel. |
+| 005 | Mandala intake; denser halo texture behind crown. |
+| 006 | Eye glint; subtle eyelid and eye-light change. |
+| 007 | Golden crest; halo reaches a restrained crest. |
+| 008 | Full mandate; strongest subtle jewel and halo light. |
+| 009 | Settling breath; facial light softens. |
+| 010 | Robe echo; saffron highlights quiet down. |
+| 011 | Jewel recession; crown glints recede. |
+| 012 | Mandala thinning; halo texture lowers. |
+| 013 | Temple darkening; background shadows return. |
+| 014 | Quiet jewel echo; eye and forehead light approach rest. |
+| 015 | Return to rest; halo dims close to frame 000 intensity. |
