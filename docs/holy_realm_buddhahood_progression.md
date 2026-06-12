@@ -159,7 +159,7 @@ Super-event presentation uses these wired slots:
 
 - `The Awakened One`: slot 7, `GFX_super_event_buddha_mandate`, `music/super_event_buddha_mandate.ogg`, `sound/chaosx_super_event_buddha_mandate.wav`.
 - `The Final Silence` non-terminal: slot 8, `GFX_super_event_final_silence`, `music/super_event_final_silence.ogg`, `sound/chaosx_super_event_final_silence.wav`.
-- `The Final Silence` terminal: slot 9, `GFX_super_event_final_silence_thermonuclear`, `music/super_event_final_silence_thermonuclear.ogg`, `sound/chaosx_super_event_final_silence_thermonuclear.wav`.
+- `The Final Silence` terminal: slot 9, `GFX_super_event_final_silence_terminal`, `music/super_event_final_silence_thermonuclear.ogg`, `sound/chaosx_super_event_final_silence_thermonuclear.wav`.
 - `Powers of the Awakened`: slot 61, `GFX_super_event_powers_of_the_awakened`, `music/super_event_powers_of_the_awakened.ogg`, `sound/chaosx_super_event_powers_of_the_awakened.wav`.
 
 The `Powers of the Awakened` super-event uses bespoke generated monochrome battlefield art at `gfx/super_events/super_event_powers_of_the_awakened.dds`. Source, prompt, processed PNG, and handoff notes live under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
