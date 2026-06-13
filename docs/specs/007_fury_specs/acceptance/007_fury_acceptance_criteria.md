@@ -18,7 +18,7 @@ Implementation passes only if:
 - player countries cannot become Fury through triggerable scenario setup.
 - ordinary target selection can choose AI or player-controlled countries when they meet normal target gates.
 - pure island minors with no practical land neighbor are excluded.
-- candidate selection prefers one-state AI minors and broadens only when needed.
+- ordinary and evolution actor selection chooses randomly from the full eligible AI-country pool.
 - special chaos or non-standard countries are excluded unless explicitly allowed.
 
 ## Fury gameplay loop
