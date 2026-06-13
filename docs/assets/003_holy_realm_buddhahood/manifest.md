@@ -20,12 +20,13 @@ Source mode:
 - `$imagegen` for the Buddha Mandate leader portrait individual key-state frames, generated as transformed versions of `portrait_THR_godly_figure.dds`.
 - `$imagegen` for the Empty Seat leader portrait individual key-state frames, generated as a vacant-relic transformation of `portrait_THR_godly_figure.dds`.
 - `$imagegen` for the static Holy Realm stage leader portrait 4x2 source sheet, generated as transformed variants of `portrait_THR_godly_figure.dds`.
-- `$imagegen` for the Dhyana Seal decision icon animation source frames.
+- `$imagegen` for the Dhyana Seal decision icon seed frame and final 12-panel animation-source grid.
 - `$imagegen` for the Buddha power decision icon sheet, Extinction of Defilements decision icon, and False Buddha portrait source art.
 - Local ImageMagick processing for 64x64 resize, tonal cleanup, grey variant creation, not-eligible red-cross variant creation, contact sheet assembly, and DDS conversion.
 - Local ImageMagick procedural composition for static Mandala GUI fallback states.
 - Local ImageMagick processing for static leader portrait source-sheet splitting, `156x210` resize/crop, contact sheet assembly, and DDS conversion.
 - Buddha Mandate and Empty Seat static leader portraits are copied from frame 000 of their new generated portrait animation packages.
+- `.tools/convert_to_dds.py` for the rebuilt Dhyana Seal static fallback and animated sheet DDS export.
 
 DDS conversion note:
 - Local conversion used `convert -define dds:compression=none`.
@@ -43,7 +44,7 @@ DDS conversion note:
 - Empty Seat portrait static DDS was validated for existence and `156x210` dimensions after export.
 - Empty Seat portrait animation sheet DDS was validated for existence and `2496x210` dimensions after export.
 - Dhyana Seal static decision icon DDS was validated for existence and `96x96` dimensions after export.
-- Dhyana Seal animation sheet DDS was validated for existence and `768x96` dimensions after export.
+- Dhyana Seal animation sheet DDS was validated for existence and `1152x96` dimensions after export.
 - Buddha power and Dharma teaching decision icon DDS files were validated for existence and `32x32` dimensions after export.
 - False Buddha portrait DDS was validated for existence and `156x210` dimensions after export.
 
@@ -481,8 +482,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_contact.png` |
 | Target size | `96x96` per frame |
-| Frame count | `8` |
-| Sheet size | `768x96` |
+| Frame count | `12` |
+| Sheet size | `1152x96` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Static sprite | `GFX_decision_holy_realm_dhyana_seal` |
@@ -496,14 +497,21 @@ Frame source notes:
 
 | Frame | Motion state | Source PNG |
 | --- | --- | --- |
-| 000 | closed breath | `source_frames/holy_realm_dhyana_seal_000_source.png` |
+| 000 | quiet rest | `source_frames/holy_realm_dhyana_seal_000_source.png` |
 | 001 | first inhale | `source_frames/holy_realm_dhyana_seal_001_source.png` |
-| 002 | petal opening | `source_frames/holy_realm_dhyana_seal_002_source.png` |
-| 003 | held attention | `source_frames/holy_realm_dhyana_seal_003_source.png` |
-| 004 | Dhyana peak | `source_frames/holy_realm_dhyana_seal_004_source.png` |
-| 005 | soft release | `source_frames/holy_realm_dhyana_seal_005_source.png` |
-| 006 | settling seal | `source_frames/holy_realm_dhyana_seal_006_source.png` |
-| 007 | return breath | `source_frames/holy_realm_dhyana_seal_007_source.png` |
+| 002 | ember lift | `source_frames/holy_realm_dhyana_seal_002_source.png` |
+| 003 | petal wake | `source_frames/holy_realm_dhyana_seal_003_source.png` |
+| 004 | deeper inhale | `source_frames/holy_realm_dhyana_seal_004_source.png` |
+| 005 | held stillness | `source_frames/holy_realm_dhyana_seal_005_source.png` |
+| 006 | peak stillness | `source_frames/holy_realm_dhyana_seal_006_source.png` |
+| 007 | held peak | `source_frames/holy_realm_dhyana_seal_007_source.png` |
+| 008 | soft release | `source_frames/holy_realm_dhyana_seal_008_source.png` |
+| 009 | settling glow | `source_frames/holy_realm_dhyana_seal_009_source.png` |
+| 010 | quiet return | `source_frames/holy_realm_dhyana_seal_010_source.png` |
+| 011 | seam frame | `source_frames/holy_realm_dhyana_seal_011_source.png` |
+
+Wiring note:
+- The rebuilt animated DDS keeps the existing file path and sprite alias. `interface/003_holy_realm.gfx` declares `noOfFrames = 12` for `GFX_decision_holy_realm_dhyana_seal_animated`.
 
 ## Buddha Power Decision Icons
 
