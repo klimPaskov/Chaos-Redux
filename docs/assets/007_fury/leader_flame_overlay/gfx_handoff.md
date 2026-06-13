@@ -32,7 +32,7 @@ Implemented in `interface/007_fury_leader_overlay.gui` and `common/scripted_guis
   - parent token: `selected_country_view_diplomacy`
   - scripted GUI visibility: `is_fury_actor = yes`
   - icon-level visibility: `fury_diplomacy_leader_flame_overlay_visible = { is_fury_actor = yes }`
-  - position matches the diplomacy `leader_portrait` placement at `x = 20`, `y = 160`, `scale = 0.74`
+  - position matches the vanilla diplomacy `leader_portrait` placement inside `diplomacy_tab_top` at `x = 20`, `y = 10`, `scale = 0.74`
 
 ## Validation
 
