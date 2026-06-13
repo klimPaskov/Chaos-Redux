@@ -117,7 +117,7 @@ Use varied costs that fit the action:
 - army XP
 - navy XP
 - air XP
-- command power
+- command power (can't be expensive, command power costs must be conservative. A decision can't cost more than 60 command power)
 - political power only when the action is genuinely bureaucratic or political
 - infantry equipment
 - support equipment

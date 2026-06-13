@@ -1,13 +1,13 @@
 ---
 name: chaos-redux-event-planning
-description: Use when turning a rough Chaos Redux event idea into a detailed event specification before implementation.
+description: Use when expanding Chaos Redux event ideas into detailed specifications before implementation.
 ---
 
 # Chaos Redux Event Planning
 
 Use this skill to design or expand events for the Hearts of Iron IV mod Chaos Redux (https://github.com/klimPaskov/Chaos-Redux).
 
-This skill creates event specifications. It does not implement code. Implementation belongs to `chaos-redux-events`. Visual asset generation and processing belongs to `chaos-redux-event-assets`. Super-event quote, remark, music, and presentation research belongs to `chaos-redux-super-events`.
+This skill creates event specifications. It does not implement code. Implementation belongs to `chaos-redux-events`. Visual asset generation and processing belongs to `chaos-redux-event-assets`. Animated sprite planning, frame-sheet requirements, animated portrait packages, and animation handoff details belong to `chaos-redux-frame-animation` when motion is needed. Super-event quote, remark, music, and presentation research belongs to `chaos-redux-super-events`.
 
 ## 1. Required reading
 
@@ -16,6 +16,7 @@ Before writing the event specification, use the following as the design baseline
 - `AGENTS.md`
 - `chaos-redux-events`
 - `chaos-redux-event-assets` when the event needs visual assets
+- `chaos-redux-frame-animation` when the event has animated sprites, animated UI, animated route emblems, animated portraits, warning pulses, hover loops, glow loops, float loops, particle loops, or frame-by-frame presentation needs
 - `chaos-redux-super-events` when the event needs a super-event
 - `hoi4-focus-trees` or the current focus-tree skill when the event needs focus trees
 - `hoi4-decisions-missions` when the event needs decisions, missions, timed objectives, influence actions, or decision-driven mechanics
@@ -988,6 +989,8 @@ Map the UI states if the UI represents pressure, route choice, threat, stage, fa
 
 When an event has an important mechanic, decide whether the decision category needs a richer scripted GUI or a separate mechanic window. The spec should define the player-facing interface when the system is important enough to manage visually.
 
+For major events, important decision categories, custom mechanic windows, formable routes, high-chaos route reveals, active crisis meters, special leader transformations, faction boards, patron influence networks, or occult and supernatural systems, run an animation planning pass by default. The pass must either define useful animated sprites or state why static presentation is better for that exact surface. Do not skip the question simply because static assets are easier.
+
 A mechanic UI spec should include:
 
 - where the UI appears, such as decision category header, attached scripted GUI, custom window, event-details panel, or country mechanic panel
@@ -1000,12 +1003,19 @@ A mechanic UI spec should include:
 - how the UI cleans itself up after route change, tag change, annexation, civil war, peace, or event completion
 - what localisation and scripted localisation the UI needs
 - what static assets, animated sprites, hover states, selected states, locked states, warning states, and progress variants it needs
+- what animated state communicates, such as available action, rising pressure, critical danger, selected target, active ritual, foreign influence spread, reform momentum, hidden route reveal, route corruption, or completion
+- which animation surfaces are state-driven and which are decorative
+- which static fallback appears when animation is disabled, unsupported, not yet produced, or hidden by route state
 
 The spec should not make an interactive window for every small modifier. Use custom UI when it improves readability, choice, atmosphere, or management of a living system.
 
-Animated presentation can be part of the spec. Use it for mechanics that benefit from motion, such as pressure rising, corruption spreading, a council activating, an occult meter pulsing, a patron influence network glowing, or a formable seal appearing after requirements are met. Animation should clarify the mechanic and improve presentation. It should not hide information or add noise.
+Animated presentation should be planned more often than static-only presentation for mechanics that feel alive. Use it for pressure rising, corruption spreading, a council activating, an occult meter pulsing, a patron influence network glowing, a formable seal becoming available, a faction board entering crisis mode, a route emblem changing after a focus, or a warning frame appearing near failure. Animation should clarify the mechanic and improve presentation. It should not hide information or add noise.
 
-Leader portraits can have animated variants for major route reveals, high-chaos leaders, supernatural leaders, symbolic councils, final formables, or dramatic country transformations. The spec should say when the animated portrait appears, what static fallback exists, whether the portrait is sourced or generated, and how the animation remains period-appropriate and readable at leader-portrait size.
+Animation is especially useful when the player needs to notice a changed state without reading a long tooltip. Good default candidates include decision category seals, category headers, scripted GUI buttons, meter frames, status cards, selected target cards, warning borders, hidden route seals, formable progress emblems, faction cohesion panels, patron influence nodes, and high-chaos route emblems.
+
+For each planned animated asset, the spec should define the in-game use, target surface, state logic, frame count expectation, loop behavior, static fallback, source mode, asset handoff owner, and proposed sprite names when they are known. The final animation must follow `chaos-redux-frame-animation`, meaning real source frames, a frame sheet, a static fallback, a preview GIF for review only, and a `.gfx` handoff. Do not describe a GIF, filter pulse, recolour loop, shifted still image, or transform-only mockup as the final game animation.
+
+Leader portraits can have animated variants for major route reveals, high-chaos leaders, supernatural leaders, symbolic councils, final formables, or dramatic country transformations. The spec should say when the animated portrait appears, what static fallback exists, whether the portrait is sourced or generated, what state or route controls it, what removes or replaces it, and how the animation remains period-appropriate and readable at leader-portrait size.
 
 ## 9. Super-event planning
 
@@ -1118,12 +1128,14 @@ Consider whether the event needs:
 - faction emblems
 - flags for every new country, modified country identity, ideology variant, focus-route variant, puppet identity, and major cosmetic transformation
 - UI
+- animated decision category seals, mechanic-window elements, warning pulses, route emblems, hover loops, selected states, glow loops, float loops, particle loops, and animated leader portraits when motion clarifies the mechanic
 - progression-state variants
+- static fallbacks for every animated UI piece, route emblem, icon, or portrait
 - country-selection, event-log, or custom-window graphics when relevant
 
-Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, sprite handoff notes, and manifests belong to `chaos-redux-event-assets`. Final `.gfx` wiring belongs to the main implementation agent unless a parent prompt explicitly grants that scope.
+Asset generation, sourcing, cropping, resizing, DDS conversion, file placement, sprite handoff notes, and manifests belong to `chaos-redux-event-assets`. Animated frame planning and frame-sheet handoff requirements belong to `chaos-redux-frame-animation`. Final `.gfx` wiring belongs to the main implementation agent unless a parent prompt explicitly grants that scope.
 
-This skill should define what assets are needed, what they should represent, and what source mode they require.
+This skill should define what assets are needed, what they should represent, what source mode they require, and which visible states should be animated. If a major mechanic has no animated sprite plan, the spec should explain why the static presentation is stronger.
 
 Historical or real-world assets need special care. Historical flags, historical symbols, and real leader portraits should be sourced from reliable references and converted to HOI4 style rather than generated. Generated art is appropriate for fictional flags, fictional leaders, symbolic council portraits, invented high-chaos identities, idea icons, focus icons, decision icons, achievements, faction emblems, UI art, and fictional or alternate-history report/news/super-event images unless the user says otherwise.
 
@@ -1174,7 +1186,9 @@ The asset prompt should include:
 - country package asset coverage, including base flags, ideology flags, focus-route flags, cosmetic flags, leaders, portraits, and faction emblems
 - suggested filenames
 - suggested sprite names
+- suggested static fallback sprite names and animated sprite names when animation is planned
 - whether each asset is for an event, report event, news event, super-event, decision, idea, focus, achievement, flag, leader portrait, faction emblem, or UI element
+- animation brief needs for every animated asset, including state logic, frame count target, target frame size, expected sheet size, frames per second, loop behavior, `play_on_show` expectation, static fallback, source mode, and target `.gfx` or `.gui` surface when known
 - achievement icon list with completed icon directions for every achievement
 - manifest requirements
 - source mode, including whether a flag, symbol, or portrait must be sourced historically instead of generated
@@ -1186,7 +1200,7 @@ It must also state the relevant reference folder from the list above when a matc
 
 Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated. prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for real historical people, real photographed events, and real archival artifacts. Historical flags and historically attested symbols should be sourced and documented, then converted to HOI4 flag sizes. Fictional, supernatural, invented, or alternate-history flags can use `$imagegen` through `chaos-redux-event-assets` when appropriate.
 
-Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state.
+Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state. If any visible identity state is important enough to feel like a reveal, crisis mode, high-chaos form, completed formable, or living mechanic state, the asset prompt should usually include an animated sprite or animated portrait plan plus a static fallback.
 
 ## 15. HOI4 asset size reference
 
@@ -1435,7 +1449,7 @@ A good goal prompt should include:
 - the achievement prompt file path
 - the required skills or docs to follow
 - the top design non-negotiables
-- the requirement to create all required assets, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
+- the requirement to create all required static and animated assets, static fallbacks, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
 - the requirement to provide a concrete completion report
 
 If the goal prompt is near 4000 characters, shorten it by pointing to files instead of repeating details.
@@ -1449,9 +1463,11 @@ Before finishing a major event spec, ask:
 - Does each formable have concrete map requirements and a clear post-formation identity?
 - Do formation rewards avoid free core spam, free war-goal spam, and instant runaway snowballing?
 - Does the decision category need a scripted GUI, progress meter, custom window, or animated presentation?
-- Are animated sprites, leader portraits, particles, glow, float loops, or button states planned where they would make the mechanic clearer?
-- Does the asset prompt include all static and animated UI pieces, plus fallbacks?
-- Does the goal prompt tell the implementation agent to verify formables, UI windows, animated sprites, and fallbacks?
+- Has every important mechanic, formable route, high-chaos route, hidden reveal, faction board, patron network, crisis meter, and major transformation received an animation planning pass?
+- Are animated sprites, leader portraits, particles, glow, float loops, warning pulses, selected states, hover states, or button states planned where they would make the mechanic clearer?
+- If a major surface stays static, does the spec explain why motion would add clutter instead of clarity?
+- Does the asset prompt include all static and animated UI pieces, frame-sheet needs, sprite names, state logic, and fallbacks?
+- Does the goal prompt tell the implementation agent to verify formables, UI windows, animated sprites, frame-sheet handoffs, and fallbacks?
 
 ## 20. Final response checklist
 
@@ -1467,6 +1483,8 @@ The final response should include:
 - repo context inspected
 - event cluster role defined when relevant
 - assets defined when needed, including country identity assets
+- animation planning pass completed for important mechanics, custom UI, formables, route reveals, high-chaos states, and major leader transformations
+- animated sprite and animated portrait needs mapped with static fallbacks, state logic, and `chaos-redux-frame-animation` handoff expectations when relevant
 - historical flags, real symbols, and real leader portraits marked for sourced asset work when relevant
 - super-event direction defined when needed
 - country package matrices created for new or modified countries when relevant
@@ -1575,6 +1593,8 @@ Reject the draft if it has any of these problems:
 - achievements that unlock too easily or only reward the obvious route
 - achievements without conditions, disqualifiers, icon directions, or tracking notes
 - missing asset handoff for required assets
+- major mechanic, formable, hidden reveal, high-chaos route, scripted GUI, or dramatic leader transformation with no animation planning pass and no reason for staying static
+- animated asset plan that lacks static fallback, state logic, frame-sheet handoff, target surface, sprite names, or `chaos-redux-frame-animation` ownership
 - missing asset coverage for country names, cosmetic identities, ideology flags, focus-route flags, leader changes, portraits, faction emblems, decisions, focuses, ideas, achievements, and UI where relevant
 - missing AI route matrix for major events, country-creation events, or foreign-influence systems
 - missing super-event handoff for required super-events
