@@ -186,294 +186,124 @@ export_chaosx_settings_config_to_log = {
 		set_variable = { settings_chaos_deaths_details_sort_order = 1 }
 	}
 
-	log = " "
-	log = "CHAOS_REDUX_SETTINGS_CONFIG_START"
-	log = "format = chaos_redux_settings_config_v1"
-	log = "note = configuration export only; fired history and runtime progress counters are omitted"
-
-	log = "section = core"
+	set_temp_variable = { settings_export_event_system_current_country = 0 }
 	if = {
 		limit = { has_country_flag = events_activated }
-		log = "event_system.current_country = enabled"
+		set_temp_variable = { settings_export_event_system_current_country = 1 }
 	}
-	else = {
-		log = "event_system.current_country = disabled"
-	}
+	set_temp_variable = { settings_export_force_trigger_mode = 0 }
 	if = {
 		limit = { has_country_flag = force_trigger_mode_enabled }
-		log = "trigger_events.force_trigger_mode = enabled"
+		set_temp_variable = { settings_export_force_trigger_mode = 1 }
 	}
-	else = {
-		log = "trigger_events.force_trigger_mode = disabled"
-	}
+	set_temp_variable = { settings_export_logic_log_lines = 0 }
 	if = {
 		limit = { has_global_flag = settings_logic_log_lines_enabled }
-		log = "event_system.logic_log_lines = enabled"
+		set_temp_variable = { settings_export_logic_log_lines = 1 }
 	}
-	else = {
-		log = "event_system.logic_log_lines = disabled"
-	}
+	set_temp_variable = { settings_export_world_end_scenarios = 1 }
 	if = {
 		limit = { has_global_flag = world_end_disabled }
-		log = "world_end_scenarios = disabled"
+		set_temp_variable = { settings_export_world_end_scenarios = 0 }
 	}
-	else = {
-		log = "world_end_scenarios = enabled"
-	}
-
-	log = "section = trigger_events_settings"
-	log = "trigger_events.selected_event_id = [?settings_selected_event_id|.0]"
-	log = "trigger_events.event_id_filter = [?settings_event_id_filter|.0]"
-	log = "trigger_events.event_id_increment_mode = [?settings_events_increment_mode|.0]"
-	log = "trigger_events.selected_cluster_id = [?settings_selected_cluster_id|.0]"
-
-	log = "section = timer_settings"
-	log = "timer.min_days_setting = [?settings_timer_min_days|.0]"
-	log = "timer.max_days_setting = [?settings_timer_max_days|.0]"
-	log = "timer.min_decrement_cap_setting = [?settings_timer_min_decrement_cap|.0]"
-	log = "timer.max_decrement_cap_setting = [?settings_timer_max_decrement_cap|.0]"
-	log = "timer.increment_mode = [?settings_timer_increment_mode|.0]"
-	log = "timer.applied_min_days = [?timer_min_days|.0]"
-	log = "timer.applied_max_days = [?timer_max_days|.0]"
-	log = "timer.applied_min_decrement_cap = [?timer_min_decrement_cap|.0]"
-	log = "timer.applied_max_decrement_cap = [?timer_max_decrement_cap|.0]"
+	set_temp_variable = { settings_export_timer_window = 0 }
 	if = {
 		limit = { has_country_flag = timer_window_enabled }
-		log = "timer.window = enabled"
+		set_temp_variable = { settings_export_timer_window = 1 }
 	}
-	else = {
-		log = "timer.window = disabled"
-	}
-
-	log = "section = tag_management_settings"
-	log = "tag_management.selected_tag_index = [?settings_selected_tag_index|.0]"
-	log = "tag_management.tag_increment_mode = [?settings_tag_increment_mode|.0]"
-	log = "tag_management.country_filter = [?settings_country_filter|.0]"
-	log = "tag_management.continent_sort = [?settings_continent_sort|.0]"
-	if = {
-		limit = { has_variable = settings_current_selected_country }
-		var:settings_current_selected_country = {
-			log = "tag_management.selected_country = [This.GetTag] # [This.GetName]"
-		}
-	}
-	else = {
-		log = "tag_management.selected_country = none"
-	}
+	set_temp_variable = { settings_export_auto_enable_on_switch = 0 }
 	if = {
 		limit = { has_global_flag = settings_auto_enable_on_switch }
-		log = "tag_management.auto_enable_on_switch = enabled"
+		set_temp_variable = { settings_export_auto_enable_on_switch = 1 }
 	}
-	else = {
-		log = "tag_management.auto_enable_on_switch = disabled"
-	}
+	set_temp_variable = { settings_export_disable_previous_tag = 0 }
 	if = {
 		limit = { has_global_flag = settings_disable_previous_tag }
-		log = "tag_management.disable_previous_tag_on_switch = enabled"
+		set_temp_variable = { settings_export_disable_previous_tag = 1 }
 	}
-	else = {
-		log = "tag_management.disable_previous_tag_on_switch = disabled"
-	}
+	set_temp_variable = { settings_export_tag_management_map_sync = 0 }
 	if = {
 		limit = { has_country_flag = tag_management_map_sync_active }
-		log = "tag_management.map_sync = enabled"
+		set_temp_variable = { settings_export_tag_management_map_sync = 1 }
 	}
-	else = {
-		log = "tag_management.map_sync = disabled"
-	}
-
-	log = "section = country_event_system_enablement"
-	for_loop_effect = {
-		start = 0
-		end = global.countries^num
-		value = settings_export_country_index
-
-		set_temp_variable = { settings_export_country = global.countries^settings_export_country_index }
-		var:settings_export_country = {
-			if = {
-				limit = { has_country_flag = events_activated }
-				log = "country_event_system.[This.GetTag] = enabled # [This.GetName]"
-			}
-			else = {
-				log = "country_event_system.[This.GetTag] = disabled # [This.GetName]"
-			}
-		}
-	}
-
-	log = "section = chaos_meter_settings"
-	log = "chaos_meter.value_setting = [?settings_chaos_meter_value|.0]"
-	log = "chaos_meter.tier_setting = [?settings_chaos_tier|.0]"
-	log = "chaos_meter.increment_mode = [?settings_chaos_increment_mode|.0]"
-	log = "chaos_meter.history_sort_mode = [?settings_chaos_history_sort_mode|.0]"
-	log = "chaos_meter.history_filter_type = [?settings_chaos_history_filter_type|.0]"
+	set_temp_variable = { settings_export_chaos_meter_history_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = chaos_meter_history_sort_descending }
-		log = "chaos_meter.history_sort_order = descending"
+		set_temp_variable = { settings_export_chaos_meter_history_sort_order = 1 }
 	}
-	else = {
-		log = "chaos_meter.history_sort_order = ascending"
-	}
+	set_temp_variable = { settings_export_air_cleanliness = 1 }
 	if = {
 		limit = { has_global_flag = settings_air_cleanliness_disabled }
-		log = "chaos_meter.air_cleanliness = disabled"
+		set_temp_variable = { settings_export_air_cleanliness = 0 }
 	}
-	else = {
-		log = "chaos_meter.air_cleanliness = enabled"
-	}
+	set_temp_variable = { settings_export_chaos_meter_condemnation_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = chaos_meter_condemnation_sort_descending }
-		log = "chaos_meter.condemnation_sort_order = descending"
+		set_temp_variable = { settings_export_chaos_meter_condemnation_sort_order = 1 }
 	}
-	else = {
-		log = "chaos_meter.condemnation_sort_order = ascending"
-	}
-	log = "chaos_meter.deaths_sort_mode = [?settings_chaos_deaths_sort_mode|.0]"
-	log = "chaos_meter.deaths_filter_type = [?settings_chaos_deaths_filter_type|.0]"
+	set_temp_variable = { settings_export_chaos_meter_deaths_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = chaos_meter_deaths_sort_descending }
-		log = "chaos_meter.deaths_sort_order = descending"
+		set_temp_variable = { settings_export_chaos_meter_deaths_sort_order = 1 }
 	}
-	else = {
-		log = "chaos_meter.deaths_sort_order = ascending"
-	}
-	log = "chaos_meter.deaths_details_sort_mode = [?settings_chaos_deaths_details_sort_mode|.0]"
-	log = "chaos_meter.deaths_details_filter_type = [?settings_chaos_deaths_details_filter_type|.0]"
-	if = {
-		limit = { check_variable = { settings_chaos_deaths_details_sort_order > 0 } }
-		log = "chaos_meter.deaths_details_sort_order = descending"
-	}
-	else = {
-		log = "chaos_meter.deaths_details_sort_order = ascending"
-	}
+	set_temp_variable = { settings_export_chaos_meter_deaths = 1 }
 	if = {
 		limit = { has_global_flag = settings_chaos_deaths_disabled }
-		log = "chaos_meter.deaths = disabled"
+		set_temp_variable = { settings_export_chaos_meter_deaths = 0 }
 	}
-	else = {
-		log = "chaos_meter.deaths = enabled"
-	}
+	set_temp_variable = { settings_export_chaos_meter = 1 }
 	if = {
 		limit = { has_global_flag = settings_chaos_meter_disabled }
-		log = "chaos_meter = disabled"
+		set_temp_variable = { settings_export_chaos_meter = 0 }
 	}
-	else = {
-		log = "chaos_meter = enabled"
-	}
-
-	log = "section = advanced_settings"
-	log = "advanced.recovery_rate_setting = [?global.settings_recovery_rate|.0]"
-	log = "advanced.cap_reduction_setting = [?global.settings_cap_reduction|.2]"
-	log = "advanced.major_weight_per_minor_setting = [?global.settings_major_weight_per_minor|.0]"
-	log = "advanced.event_weight_setting = [?global.settings_event_weight|.0]"
-	log = "advanced.timer_modifier_setting = [?global.settings_timer_modifier|.2]"
-	log = "advanced.increment_mode = [?settings_advanced_increment_mode|.0]"
-	log = "advanced.applied_recovery_rate = [?global.minor_event_recovery_rate|.0]"
-	log = "advanced.applied_cap_reduction = [?global.reduce_cap_factor|.2]"
-	log = "advanced.applied_major_weight_per_minor = [?global.major_event_weight_per_minor|.0]"
-	log = "advanced.applied_event_weight = [?global.default_event_weight|.0]"
-
-	log = "section = miscellaneous_settings"
-	log = "super_event_audio.mode = [?settings_super_event_audio_mode|.0]"
-	log = "super_event_audio.volume = [?settings_super_event_audio_volume|.0]"
+	set_temp_variable = { settings_export_non_ai_crisis_pressure = 0 }
 	if = {
 		limit = { has_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled }
-		log = "non_ai_crisis_pressure = enabled"
+		set_temp_variable = { settings_export_non_ai_crisis_pressure = 1 }
 	}
-	else = {
-		log = "non_ai_crisis_pressure = disabled"
-	}
-
-	log = "section = triggerable_scenario_settings"
-	log = "scenarios.selected = [?triggerable_scenarios_selected|.0]"
-	log = "scenarios.intensity = [?triggerable_scenarios_intensity|.0]"
-	log = "scenarios.zombie_type = [?triggerable_scenarios_zombie_type|.0]"
-	log = "scenarios.clone_type = [?triggerable_scenarios_clone_type|.0]"
-	log = "scenarios.soviet_collapse_type = [?triggerable_scenarios_soviet_collapse_type|.0]"
-	log = "scenarios.final_silence_type = [?triggerable_scenarios_final_silence_type|.0]"
-	log = "scenarios.fury_type = [?triggerable_scenarios_fury_type|.0]"
-	log = "scenarios.sort_mode = [?triggerable_scenarios_sort_mode|.0]"
+	set_temp_variable = { settings_export_scenarios_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = triggerable_scenarios_sort_descending }
-		log = "scenarios.sort_order = descending"
+		set_temp_variable = { settings_export_scenarios_sort_order = 1 }
 	}
-	else = {
-		log = "scenarios.sort_order = ascending"
-	}
-
-	log = "section = event_log_view_preferences"
-	log = "event_logs.history_sort_mode = [?settings_events_log_sort_mode|.0]"
-	log = "event_logs.history_filter_type = [?settings_events_log_filter_type|.0]"
+	set_temp_variable = { settings_export_event_logs_history_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = events_log_sort_descending }
-		log = "event_logs.history_sort_order = descending"
+		set_temp_variable = { settings_export_event_logs_history_sort_order = 1 }
 	}
-	else = {
-		log = "event_logs.history_sort_order = ascending"
-	}
-	log = "event_logs.evolution_sort_mode = [?settings_events_log_evolution_sort_mode|.0]"
-	log = "event_logs.evolution_filter_type = [?settings_events_log_evolution_filter_type|.0]"
+	set_temp_variable = { settings_export_event_logs_evolution_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = events_log_evolution_sort_descending }
-		log = "event_logs.evolution_sort_order = descending"
+		set_temp_variable = { settings_export_event_logs_evolution_sort_order = 1 }
 	}
-	else = {
-		log = "event_logs.evolution_sort_order = ascending"
-	}
-	log = "event_logs.events_sort_mode = [?settings_events_log_events_sort_mode|.0]"
-	log = "event_logs.events_filter_type = [?settings_events_log_events_filter_type|.0]"
+	set_temp_variable = { settings_export_event_logs_events_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = events_log_events_sort_descending }
-		log = "event_logs.events_sort_order = descending"
+		set_temp_variable = { settings_export_event_logs_events_sort_order = 1 }
 	}
-	else = {
-		log = "event_logs.events_sort_order = ascending"
-	}
-	log = "event_logs.cluster_sort_mode = [?settings_events_log_cluster_sort_mode|.0]"
-	log = "event_logs.cluster_filter_type = [?settings_events_log_cluster_filter_type|.0]"
+	set_temp_variable = { settings_export_event_logs_cluster_sort_order = 0 }
 	if = {
 		limit = { has_country_flag = events_log_cluster_sort_descending }
-		log = "event_logs.cluster_sort_order = descending"
-	}
-	else = {
-		log = "event_logs.cluster_sort_order = ascending"
+		set_temp_variable = { settings_export_event_logs_cluster_sort_order = 1 }
 	}
 
-	log = "section = event_enablement"
-	for_loop_effect = {
-		start = 0
-		end = global.all_events^num
-		value = settings_export_event_index
-
-		set_temp_variable = { event_id = global.all_events^settings_export_event_index }
-		get_event_type = yes
-		if = {
-			limit = { is_in_array = { global.disabled_events = event_id } }
-			log = "event.[?event_id|.0] = disabled # [GetEventName] | [GetEventType]"
-		}
-		else = {
-			log = "event.[?event_id|.0] = enabled # [GetEventName] | [GetEventType]"
-		}
-	}
-
-	log = "section = event_cluster_enablement"
+	clear_temp_array = settings_export_cluster_id_entries
+	clear_temp_array = settings_export_cluster_enabled_entries
 	for_loop_effect = {
 		start = 0
 		end = global.event_clusters^num
 		value = settings_export_cluster_index
 
 		set_temp_variable = { event_cluster_id = global.event_clusters^settings_export_cluster_index }
-		get_event_cluster_type = yes
-		get_event_cluster_unlock_tier = yes
 		get_event_cluster_enabled_state = yes
-		if = {
-			limit = { check_variable = { event_cluster_enabled_state > 0 } }
-			log = "event_cluster.[?event_cluster_id|.0] = enabled # type=[?event_cluster_type_value|.0] unlock_tier=[?event_cluster_unlock_tier|.0]"
-		}
-		else = {
-			log = "event_cluster.[?event_cluster_id|.0] = disabled # type=[?event_cluster_type_value|.0] unlock_tier=[?event_cluster_unlock_tier|.0]"
-		}
+		add_to_temp_array = { settings_export_cluster_id_entries = event_cluster_id }
+		add_to_temp_array = { settings_export_cluster_enabled_entries = event_cluster_enabled_state }
 	}
 
-	log = "section = evolution_enablement"
+	clear_temp_array = settings_export_evolution_event_id_entries
+	clear_temp_array = settings_export_evolution_type_entries
+	clear_temp_array = settings_export_evolution_stage_entries
+	clear_temp_array = settings_export_evolution_enabled_entries
 	for_loop_effect = {
 		start = 0
 		end = global.all_events^num
@@ -494,18 +324,20 @@ export_chaosx_settings_config_to_log = {
 
 			set_temp_variable = { event_id = global.all_events^settings_export_evolution_event_index }
 			set_temp_variable = { settings_export_evolution_type = global.events_log_event_detail_evolution_type_entries^settings_export_evolution_index }
-			set_temp_variable = { settings_export_evolution_tier = global.events_log_event_detail_evolution_tier_entries^settings_export_evolution_index }
 			set_temp_variable = { settings_export_evolution_stage = global.events_log_event_detail_evolution_stage_entries^settings_export_evolution_index }
 			set_temp_variable = { settings_export_evolution_enabled = global.events_log_event_detail_evolution_enabled_entries^settings_export_evolution_index }
-			if = {
-				limit = { check_variable = { settings_export_evolution_enabled > 0 } }
-				log = "evolution.event_[?event_id|.0].type_[?settings_export_evolution_type|.0].stage_[?settings_export_evolution_stage|.0] = enabled # tier=[?settings_export_evolution_tier|.0]"
-			}
-			else = {
-				log = "evolution.event_[?event_id|.0].type_[?settings_export_evolution_type|.0].stage_[?settings_export_evolution_stage|.0] = disabled # tier=[?settings_export_evolution_tier|.0]"
-			}
+			add_to_temp_array = { settings_export_evolution_event_id_entries = event_id }
+			add_to_temp_array = { settings_export_evolution_type_entries = settings_export_evolution_type }
+			add_to_temp_array = { settings_export_evolution_stage_entries = settings_export_evolution_stage }
+			add_to_temp_array = { settings_export_evolution_enabled_entries = settings_export_evolution_enabled }
 		}
 	}
+
+	set_temp_variable = { settings_export_country_index = 0 }
+	set_temp_variable = { settings_export_event_index = 0 }
+	set_temp_variable = { settings_export_cluster_index = 0 }
+	set_temp_variable = { settings_export_evolution_index = 0 }
+	log = "[GetChaosxSettingsExportPayload]"
 
 	clear_array = global.events_log_open_event_detail_entries
 	if = {
@@ -534,9 +366,6 @@ export_chaosx_settings_config_to_log = {
 		clear_array = global.events_log_event_detail_evolution_stage_entries
 		clear_array = global.events_log_event_detail_evolution_enabled_entries
 	}
-
-	log = "CHAOS_REDUX_SETTINGS_CONFIG_END"
-	log = " "
 }
 
 
