@@ -181,7 +181,9 @@ Current wiring uses stable Fury-specific assets:
 
 Final Fury art and audio use stable gameplay IDs. Report, news, and super-event images use street-level Fury outbreak imagery: rogue soldiers, civilians fleeing, smoke, burning streets, and sudden neighbor-war panic. They should not be replaced with map rooms, command desks, ledgers, route strings, globes, or war-office planning scenes.
 
-The leader overlay is a scripted GUI presentation layer, not a replacement country portrait. `common/scripted_guis/007_fury_scripted_guis.txt` gates the flame icon itself, so it appears only when the selected diplomacy country is a Fury actor. `interface/007_fury_leader_overlay.gui` attaches the overlay to the vanilla diplomacy leader portrait position without editing vanilla GUI files.
+The leader overlay is a scripted GUI presentation layer, not a replacement country portrait. `common/scripted_guis/007_fury_scripted_guis.txt` gates the flame icon itself, so it appears only when the active diplomacy target is a Fury actor. `interface/007_fury_leader_overlay.gui` attaches the overlay to the vanilla diplomacy leader portrait position without editing vanilla GUI files.
+
+Fury idea tuning keeps the strongest light modifiers at 25%: `fury_compliance_drive` grants +25% compliance growth and +25% resistance decay, while Hardened Fury, Rival Doctrine, and Anti-Fury Supply Denial use 25% values for their formerly lighter 5% positive modifiers.
 
 Recommended final asset paths:
 
