@@ -1,23 +1,28 @@
-# Holy Realm Teaching Mandala Source Prompts
+# Holy Realm Mandala Teaching Source Prompts
 
-Generated source frames were created as independent frame art for a true frame-sheet animation. All prompts required a centered `420x420` game UI mandala icon, deep near-black green background, green-gold teaching geometry, no readable text, no letters, no glyphs, no UI labels, and no crop shift.
+Generation mode: `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs.
 
-| Frame | Prompt Focus |
-| --- | --- |
-| 000 | Resting lesson state with soft gold center and green teaching rings. |
-| 001 | Lamp-opening beat with a subtle saffron center aura. |
-| 002 | Thin green-gold teaching rays extending along mandala axes. |
-| 003 | Abstract scripture/page-like outer glow without readable symbols. |
-| 004 | Peak teaching pulse with brighter gold star geometry and teal-green rings. |
-| 005 | Compassion ring rolling outward while rays soften. |
-| 006 | Return-breath dim toward the resting state. |
-| 007 | Loop-seam frame nearly matching frame 000 with faint afterglow. |
+Common visual direction:
 
-## Processing
+Centered sacred mandala wheel for The Holy Realm teaching state, hand-painted green enamel, warm gold rim detail, saffron lamp-like center, and restrained teal accents on a deep charcoal green-black background. The composition must stay centered, with a large outer ring, inner sacred geometry, lotus filigree, and compassionate instruction mood. The animation should read as a slow teaching-breath loop, not a wrathful, final-silence, empty-seat, dormant, or fully awakened state.
 
-- Source frames: `source_frames/holy_realm_mandala_teaching_000_source.png` through `source_frames/holy_realm_mandala_teaching_007_source.png`
-- Processed frames: `processed_frames/holy_realm_mandala_teaching_000.png` through `processed_frames/holy_realm_mandala_teaching_007.png`
-- Sheet: `sheets/holy_realm_mandala_teaching_sheet.png`
-- DDS: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_teaching_animated.dds`
-- Preview: `previews/holy_realm_mandala_teaching_preview.gif`
-- Contact sheet: `previews/holy_realm_mandala_teaching_contact.png`
+Frame deltas:
+
+| Frame | Motion state | Prompt delta |
+| --- | --- | --- |
+| 000 | resting lesson | Lowest lamp glow with soft green teaching rings. |
+| 001 | first opening | Center slightly warmer than rest. |
+| 002 | gathered word | Inner spokes and gold teaching lines become clearer. |
+| 003 | second opening | Lotus petals brighten with calm saffron light. |
+| 004 | compassionate ring | Outer ring shows a gentle green-gold halo. |
+| 005 | scripture hush | Abstract page-like rim light appears with no readable symbols. |
+| 006 | near-peak lesson | Gold and green tones reach a calm fuller brightness. |
+| 007 | luminous instruction | Central lamp is the brightest point of the loop without flashing. |
+| 008 | held transmission | Brightness stays full while rays soften slightly. |
+| 009 | first settling | Outer halo relaxes and geometry calms. |
+| 010 | soft return | Teaching lines and petals dim toward the resting state. |
+| 011 | after-teaching breath | Lamp center stays warm but reduced. |
+| 012 | final hush | Very close to the resting frame with a faint residual afterglow. |
+| 013 | near-rest | Dim calm center with only a trace of compassionate light. |
+| 014 | seam preparation | Almost the same calm level as frame 000. |
+| 015 | seam frame | Resting lesson immediately before frame 000. |

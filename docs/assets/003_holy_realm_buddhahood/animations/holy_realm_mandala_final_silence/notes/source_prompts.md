@@ -1,26 +1,28 @@
-# Holy Realm Final Silence Mandala Source Prompts
+# Holy Realm Mandala Final Silence Source Prompts
 
-Generation mode: `$imagegen`, one source PNG per planned animation frame.
+Generation mode: `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs.
 
 Common visual direction:
 
-Dark sacred mandala interface icon for a Hearts of Iron IV scripted GUI, centered symmetrical Tibetan-Buddhist inspired geometric wheel, empty seat at the center represented by a pale hollow ring and absent throne space, charcoal black field, pale ivory and muted violet-silver linework, sparse dust motes, extinguished lamp atmosphere, no people, no faces, no map, no text, no letters, no numbers, no modern UI, no gore, no explosion, no flame spectacle. The image must stay centered, readable at 420x420, and suitable as one frame in a quiet looping animation.
+Centered sacred mandala wheel for The Holy Realm final silence state, black-charcoal field, pale hollow center, muted violet-silver sacred linework, and extinguished-lamp dust. The composition must stay centered, with a large sparse outer ring, inward-withdrawing sacred geometry, and terminal ritual stillness. The animation should read as a slow withdrawal loop, not an empty-seat afterimage, awakened radiance, dormant seal, or wrathful alarm.
 
 Frame deltas:
 
 | Frame | Motion state | Prompt delta |
 | --- | --- | --- |
-| 000 | last bell | The outer ring is steady and thin; a soft pale center remains visible. |
-| 001 | held breath | Slightly brighter inner ring, with dust held motionless around the center. |
-| 002 | lamps dim | Overall light recedes, outer spokes fade by a small amount. |
-| 003 | ring closes | Inner halo thickens subtly around the empty center. |
-| 004 | no report | Outer geometry grows sparse, with a calm black field beyond the ring. |
-| 005 | empty center | Center hollow appears clearest, with no figure or throne inside it. |
-| 006 | witnessless | Linework is balanced but subdued, as if all observers have withdrawn. |
-| 007 | last echo | Small star points on the outer ring glint once, still restrained. |
-| 008 | fading wheel | Outer spokes soften and the wheel seems to sink into shadow. |
-| 009 | pale bell | A muted ivory pulse sits only at the central hollow ring. |
-| 010 | return close | Geometry returns toward the first frame with low, even contrast. |
-| 011 | seam frame | Nearly matches frame 000 for a smooth loop, with no dramatic new element. |
-
-Generated source frames are stored in `source_frames/`. Processed `420x420` frames are stored in `processed_frames/`, with sheet and preview outputs under `sheets/` and `previews/`.
+| 000 | last bell | Lowest terminal light with a faint hollow center. |
+| 001 | held breath | Inner ring slightly brighter while the field stays spare. |
+| 002 | dimming lamps | Outer spokes soften and light recedes. |
+| 003 | tightening hush | Hollow center grows clearer and colder. |
+| 004 | ring closure | Linework thins and the sacred wheel narrows. |
+| 005 | no report | Field looks darkest while geometry remains legible. |
+| 006 | empty witness | Center is clearest and coldest in the loop. |
+| 007 | held silence | Dust hangs with almost no remaining glow. |
+| 008 | first echo | Thin outer rim returns slightly. |
+| 009 | pale wheel | Spokes and outer lines become more readable again. |
+| 010 | low bell | Muted violet returns around the center. |
+| 011 | near-rest hush | Almost back to the resting frame with even low contrast. |
+| 012 | final quiet | Minimal dust and low ring light. |
+| 013 | near-rest | Very close to the resting frame with a trace of hollow light. |
+| 014 | seam preparation | Almost the same calm level as frame 000. |
+| 015 | seam frame | Resting final silence state immediately before frame 000. |

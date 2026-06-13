@@ -1,25 +1,20 @@
 # Holy Realm Mandala Final Silence Frame Plan
 
-Global prompt lock:
-
-- centered sparse sacred wheel and empty-seat mandala on a dark charcoal-black field
-- same camera, same scale, same framing, same anchor
-- pale ivory center ring, muted violet-silver outer geometry, subtle extinguished-lamp dust
-- Final Silence state should feel spare, cold, reverent, and terminal
-- keep the outer ring fully inside the `420x420` frame with comfortable margin
-- no readable text, no face-like shapes, no modern interface motifs
-
 | Frame | Motion state | Visual change | Prompt delta | Anchor note | Loop note |
 | --- | --- | --- | --- | --- | --- |
-| `000` | last bell | stable sparse rings, faint center light, little dust | base Final Silence mandala, lowest movement | center locked to static fallback | start state |
-| `001` | held breath | center ring brightens slightly, outer wheel thins | first inward withdrawal | center locked | easing in |
-| `002` | lamps dim | lotus geometry recedes, dust motes become visible | dimming petals and pale ash motes | center locked | easing in |
-| `003` | ring closes | inner ring tightens visually, outer spokes fade | silver ring narrowing toward empty center | center locked | easing in |
-| `004` | no report | darkest field, geometry still legible | radio-static silence as sacred geometry | center locked | mid-descent |
-| `005` | empty center | center is clearest and coldest, outer ring almost silent | empty-seat stillness, cold ivory disk | center locked | peak silence |
-| `006` | witnessless | dust suspended, nearly no glow | held silence after peak | center locked | peak variation |
-| `007` | last echo | a thin rim returns, geometry breathes once | slight return of outer line | center locked | easing out |
-| `008` | fading wheel | spokes and star lines become readable again | faint wheel outline returning | center locked | easing out |
-| `009` | pale bell | center light softens, muted violet returns | gentle pale-violet ring | center locked | near rest |
-| `010` | return close | geometry nearly matches frame `000`, dust nearly still | almost-rest state | center locked | close to start |
-| `011` | seam frame | near-identical to frame `000` with tiny mote difference | rest state matching frame `000` | center locked | loops cleanly into `000` |
+| 000 | last bell | base sparse wheel, faint hollow center | lowest terminal light | centered | loop start |
+| 001 | held breath | center ring brightens slightly | first inward withdrawal | centered | easing in |
+| 002 | dimming lamps | outer spokes soften | light recedes | centered | rising |
+| 003 | tightening hush | hollow center grows clearer | colder inner ring | centered | rising |
+| 004 | ring closure | linework thins and darkens | narrower sacred wheel | centered | rising |
+| 005 | no report | field looks darkest while geometry stays legible | black-violet hush | centered | peak begins |
+| 006 | empty witness | center is clearest and coldest | peak silence | centered | peak |
+| 007 | held silence | dust hangs with almost no glow | witnessless hold | centered | peak hold |
+| 008 | first echo | a thin rim returns slightly | exhale begins | centered | easing out |
+| 009 | pale wheel | spokes and outer lines become more readable | faint return linework | centered | falling |
+| 010 | low bell | center softens and muted violet returns | gentle return | centered | falling |
+| 011 | near-rest hush | almost back to frame 000 | low even contrast | centered | return |
+| 012 | final quiet | minimal dust and low ring light | prepare seam | centered | near loop end |
+| 013 | near-rest | visually close to frame 000 | seam approach | centered | near loop end |
+| 014 | seam preparation | thin pale ring with low hollow center | almost resting | centered | loops cleanly |
+| 015 | seam frame | resting final-silence state close to frame 000 | terminal transition | centered | loops into 000 |

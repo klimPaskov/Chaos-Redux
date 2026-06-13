@@ -1,50 +1,57 @@
 # Holy Realm Mandala Final Silence Animation Brief
 
-- Asset name: `holy_realm_mandala_final_silence`
-- Related event: `003_holy_realm_buddhahood`
-- In-game use: animated Final Silence ritual-state mandala for the Holy Realm decision-category scripted GUI panel
-- Gameplay surface: `decision_category` scripted GUI
-- Existing GUI target:
-  - `interface/chaosx_decisions.gui` -> `holy_realm_mandala_category_container` -> `holy_realm_mandala_core`
-  - `common/scripted_guis/chaosx_scripted_guis.txt` -> `holy_realm_mandala_category_scripted_gui`
-- Existing static fallback sprite: `GFX_holy_realm_mandala_final_silence`
-- Animated sprite to hand off: `GFX_holy_realm_mandala_final_silence_animated`
+Asset name: `holy_realm_mandala_final_silence`
+
+In-game use: animated final-silence-state mandala for the Holy Realm decision-category scripted GUI panel.
+
+Gameplay surface:
+- `interface/chaosx_decisions.gui`: `holy_realm_mandala_category_container` / `holy_realm_mandala_core`
+- `common/scripted_guis/chaosx_scripted_guis.txt`: `holy_realm_mandala_category_scripted_gui`
+- `common/scripted_localisation/003_holy_realm_scripted_localisation.txt`: `GetHolyRealmMandalaSprite`
+
+Target:
+- Frame size: `420x420`
+- Frame count: `16`
+- Sheet size: `6720x420`
+- FPS: `8`
+- Loop: `looping = yes`
+- Play on show: `play_on_show = yes`
+- Anchor: center
+
+Sprite names:
+- Static fallback sprite: `GFX_holy_realm_mandala_final_silence`
+- Animated sprite: `GFX_holy_realm_mandala_final_silence_animated`
+
+File targets:
 - Static fallback DDS: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence.dds`
 - Final animated sheet DDS: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`
-- Target `.gfx` file for handoff: `interface/003_holy_realm.gfx`
-- Frame size: `420x420`
-- Frame count: `12`
-- Sheet size: `5040x420`
-- FPS: `8`
-- Looping: `yes`
-- `play_on_show`: `yes`
-- Anchor: `center`
-- Subject type: symbolic, supernatural, state-driven UI art
-- Source mode: `$imagegen` per frame, followed by local deterministic normalization, sheet assembly, preview creation, and DDS conversion
-- Visual direction:
-  - sparse sacred wheel and empty-seat mandala
-  - dark charcoal-black field with pale ivory and muted violet-silver geometry
-  - light withdraws inward toward an empty center rather than flaring outward
-  - faint extinguished-lamp dust, no fire spectacle
-  - readable at `420x420` and at GUI `scale = 0.52`
-  - no text, no faces, no maps, no modern UI, no modern props
-- Motion plan:
-  - frame-to-frame changes come from generated source variation
-  - animated elements are thinning rings, fading lotus geometry, small dust motes, and the empty center's slow closing stillness
-  - no transform-only glow pulse, blur pulse, or scripted offset animation
-- Reference inspection completed:
-  - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
-  - `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
-  - `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
-  - `interface/003_holy_realm.gfx`
-  - `interface/chaosx_decisions.gui`
-  - `common/scripted_guis/chaosx_scripted_guis.txt`
-  - `common/scripted_localisation/003_holy_realm_scripted_localisation.txt`
-  - `.agents/skills/chaos-redux-event-assets/assets/decisions/`
-  - `docs/assets/003_holy_realm_buddhahood/mandala_static_fallbacks/processed_png/holy_realm_mandala_final_silence.png`
-- Working package paths:
-  - source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/source_frames/`
-  - processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/processed_frames/`
-  - sheet PNG: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/sheets/holy_realm_mandala_final_silence_sheet.png`
-  - preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_preview.gif`
-  - contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_contact.png`
+- Target `.gfx`: `interface/003_holy_realm.gfx`
+
+Source mode:
+- `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs.
+- Local processing only resizes, normalizes, sheets, previews, and converts frames.
+
+Subject classification: symbolic and supernatural route-state UI art.
+
+Reference inspected:
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
+- `~/projects/Hearts of Iron IV/interface/core.gfx`
+- `interface/007_fury.gfx`
+- `interface/003_holy_realm.gfx`
+- `.agents/skills/chaos-redux-event-assets/assets/decisions/`
+- `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/`
+
+Visual direction:
+- Centered final-silence mandala with black field, muted violet-silver linework, pale hollow center, and extinguished-lamp dust.
+- Subtle withdrawal loop matching the meditation package cadence: light recedes inward, holds in absence, and returns only enough for a clean seam.
+- Terminal ritual stillness, not vacancy after the fact, combat alarm, teaching warmth, or serene awakened light.
+- No text, faces, maps, modern UI, explosive effects, or generated symbols that read as letters.
+
+Package paths:
+- Source frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/source_frames/`
+- Processed frames: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/processed_frames/`
+- Sheet PNG: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/sheets/holy_realm_mandala_final_silence_sheet.png`
+- Preview GIF: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_preview.gif`
+- Contact sheet: `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_contact.png`

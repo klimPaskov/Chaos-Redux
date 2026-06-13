@@ -32,13 +32,13 @@ DDS conversion note:
 - Local conversion used `convert -define dds:compression=none`.
 - Achievement DDS files were validated for existence and `64x64` dimensions after export.
 - Mandala fallback DDS files were validated for existence and `420x420` dimensions after export.
-- Dormant Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
-- Teaching Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
-- Meditation Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
-- Awakened Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
-- Wrathful Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
-- Final Silence Mandala animation sheet DDS was validated for existence and `5040x420` dimensions after export.
-- Empty Seat Mandala animation sheet DDS was validated for existence and `3360x420` dimensions after export.
+- Dormant Mandala animation sheet DDS was validated for existence and `6720x420` dimensions after export.
+- Teaching Mandala animation sheet DDS was validated for existence and `6720x420` dimensions after export.
+- Meditation Mandala animation sheet DDS was validated for existence and `6720x420` dimensions after export.
+- Awakened Mandala animation sheet DDS was validated for existence and `6720x420` dimensions after export.
+- Wrathful Mandala animation sheet DDS was validated for existence and `6720x420` dimensions after export.
+- Final Silence Mandala animation sheet DDS was validated for existence and `6720x420` dimensions after export.
+- Empty Seat Mandala animation sheet DDS was validated for existence and `6720x420` dimensions after export.
 - Leader portrait fallback DDS files were validated for existence and `156x210` dimensions after export.
 - Buddha Mandate portrait animation sheet DDS was validated for existence and `2496x210` dimensions after export.
 - Empty Seat portrait static DDS was validated for existence and `156x210` dimensions after export.
@@ -104,8 +104,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/previews/holy_realm_mandala_dormant_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/previews/holy_realm_mandala_dormant_contact.png` |
 | Target size | `420x420` per frame |
-| Frame count | `8` |
-| Sheet size | `3360x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
@@ -147,7 +147,7 @@ Reference inspection completed:
 | Asset name | `holy_realm_mandala_teaching` |
 | Asset type | animated scripted GUI state sprite |
 | Intended in-game use | Dharma teaching, Bodhi progress, or teaching-success central Mandala state in `holy_realm_mandala_category_scripted_gui` |
-| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source mode | `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/processed_frames/` |
 | Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/sheets/holy_realm_mandala_teaching_sheet.png` |
@@ -156,8 +156,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/previews/holy_realm_mandala_teaching_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/previews/holy_realm_mandala_teaching_contact.png` |
 | Target size | `420x420` per frame |
-| Frame count | `8` |
-| Sheet size | `3360x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
@@ -199,7 +199,7 @@ Reference inspection completed:
 | Asset name | `holy_realm_mandala_meditation` |
 | Asset type | animated scripted GUI state sprite |
 | Intended in-game use | Active concentration sequence or Dhyana progress central Mandala state in `holy_realm_mandala_category_scripted_gui` |
-| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source mode | `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/processed_frames/` |
 | Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/sheets/holy_realm_mandala_meditation_sheet.png` |
@@ -259,7 +259,7 @@ Reference inspection completed:
 | Asset name | `holy_realm_mandala_awakened` |
 | Asset type | animated scripted GUI state sprite |
 | Intended in-game use | Buddhahood-complete central Mandala state in `holy_realm_mandala_category_scripted_gui` |
-| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source mode | `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/processed_frames/` |
 | Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/sheets/holy_realm_mandala_awakened_sheet.png` |
@@ -268,8 +268,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/previews/holy_realm_mandala_awakened_contact.png` |
 | Target size | `420x420` per frame |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
@@ -315,7 +315,7 @@ Reference inspection completed:
 | Asset name | `holy_realm_mandala_wrathful` |
 | Asset type | animated scripted GUI state sprite |
 | Intended in-game use | Wrathful Protection, Sun and Moon crisis proof, or Touching Sun and Moon power central Mandala state in `holy_realm_mandala_category_scripted_gui` |
-| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source mode | `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/processed_frames/` |
 | Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/sheets/holy_realm_mandala_wrathful_sheet.png` |
@@ -324,8 +324,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/previews/holy_realm_mandala_wrathful_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/previews/holy_realm_mandala_wrathful_contact.png` |
 | Target size | `420x420` per frame |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
@@ -371,7 +371,7 @@ Reference inspection completed:
 | Asset name | `holy_realm_mandala_final_silence` |
 | Asset type | animated scripted GUI state sprite |
 | Intended in-game use | Final Silence ritual central Mandala state in `holy_realm_mandala_category_scripted_gui` |
-| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source mode | `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/processed_frames/` |
 | Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/sheets/holy_realm_mandala_final_silence_sheet.png` |
@@ -380,8 +380,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/previews/holy_realm_mandala_final_silence_contact.png` |
 | Target size | `420x420` per frame |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
@@ -427,7 +427,7 @@ Reference inspection completed:
 | Asset name | `holy_realm_mandala_empty` |
 | Asset type | animated scripted GUI state sprite |
 | Intended in-game use | Empty-seat afterstate for non-terminal Final Silence completion or Empty Seat achievement readiness in `holy_realm_mandala_category_scripted_gui` |
-| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source mode | `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/processed_frames/` |
 | Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/sheets/holy_realm_mandala_empty_sheet.png` |
@@ -436,8 +436,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/previews/holy_realm_mandala_empty_contact.png` |
 | Target size | `420x420` per frame |
-| Frame count | `8` |
-| Sheet size | `3360x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
@@ -478,7 +478,7 @@ Reference inspection completed:
 | Asset name | `holy_realm_dhyana_seal` |
 | Asset type | animated decision icon sprite with static fallback |
 | Intended in-game use | `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation` |
-| Source mode | `$imagegen`, one generated source PNG per planned frame |
+| Source mode | `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/processed_frames/` |
 | Static fallback DDS | `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds` |
