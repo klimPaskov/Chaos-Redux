@@ -76,7 +76,10 @@ focus_tree = {
 				holy_realm_add_chaos = yes
 				every_owned_state = {
 					limit = { is_controlled_by = ROOT }
-					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					if = {
+						limit = { infrastructure < 4 }
+						add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					}
 					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 				}
 		}
@@ -104,7 +107,10 @@ focus_tree = {
 				every_owned_state = {
 					limit = { is_controlled_by = ROOT }
 					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
-					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					if = {
+						limit = { infrastructure < 5 }
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					}
 				}
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 				holy_realm_add_spiritual_legitimacy = yes
@@ -147,7 +153,10 @@ focus_tree = {
 						}
 					}
 					add_building_construction = { type = anti_air_building level = 2 instant_build = yes }
-					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					if = {
+						limit = { infrastructure < 5 }
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					}
 				}
 		}
 	}
@@ -212,7 +221,7 @@ focus_tree = {
 		icon = GFX_focus_smiling_buddha
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 9
-		y = 3
+		y = 4
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_first_doctrine_suffering }
 		available = {
@@ -245,7 +254,7 @@ focus_tree = {
 		icon = GFX_focus_smiling_buddha
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 9
-		y = 4
+		y = 5
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_sit_beneath_prayer_flags }
 		available = {
@@ -280,7 +289,7 @@ focus_tree = {
 		icon = GFX_focus_smiling_buddha
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 9
-		y = 5
+		y = 6
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_first_quiet }
 		available = {
@@ -315,7 +324,7 @@ focus_tree = {
 		icon = GFX_focus_smiling_buddha
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 9
-		y = 6
+		y = 7
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_second_quiet }
 		available = {
@@ -350,7 +359,7 @@ focus_tree = {
 		icon = GFX_focus_smiling_buddha
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 9
-		y = 7
+		y = 8
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_third_quiet }
 		available = {
@@ -395,7 +404,7 @@ focus_tree = {
 		id = THR_council_of_abbots
 		icon = GFX_focus_generic_self_management
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_TEACHING }
-		x = 18
+		x = 21
 		y = 4
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_first_doctrine_suffering }
@@ -429,7 +438,7 @@ focus_tree = {
 		id = THR_name_protector_regent
 		icon = GFX_focus_generic_home_defense
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_SANCTUARY }
-		x = 20
+		x = 23
 		y = 4
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_first_doctrine_suffering }
@@ -467,7 +476,7 @@ focus_tree = {
 		id = THR_seat_pilgrim_assembly
 		icon = GFX_focus_generic_league_of_nations
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_COMPACT }
-		x = 22
+		x = 25
 		y = 4
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_first_doctrine_suffering }
@@ -505,7 +514,7 @@ focus_tree = {
 		id = THR_abbot_examiners
 		icon = GFX_focus_generic_self_management
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_TEACHING }
-		x = 18
+		x = 21
 		y = 5
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_council_of_abbots }
@@ -533,7 +542,7 @@ focus_tree = {
 		id = THR_regent_pass_watch
 		icon = GFX_focus_generic_home_defense
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_SANCTUARY }
-		x = 20
+		x = 23
 		y = 5
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_name_protector_regent }
@@ -571,7 +580,7 @@ focus_tree = {
 		id = THR_pilgrim_refuge_courts
 		icon = GFX_focus_generic_league_of_nations
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_GOVERNANCE FOCUS_FILTER_HOLY_REALM_COMPACT }
-		x = 22
+		x = 25
 		y = 5
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_seat_pilgrim_assembly }
@@ -752,7 +761,7 @@ focus_tree = {
 		id = THR_four_teaching_seats
 		icon = GFX_goal_THR_diplomacy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_TEACHING }
-		x = 29
+		x = 27
 		y = 7
 		cost = @thr_focus_cost_short
 		prerequisite = { focus = THR_many_lamps_one_flame }
@@ -818,7 +827,10 @@ focus_tree = {
 					is_controlled_by = ROOT
 					is_core_of = ROOT
 				}
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 			}
 			country_event = { id = chaosx.nr3.111 days = 1 }
@@ -1054,7 +1066,7 @@ focus_tree = {
 		icon = GFX_goal_THR_buddha
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 17
-		y = 8
+		y = 9
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_labs_snow_line }
 		prerequisite = { focus = THR_refuge_foundries }
@@ -1083,7 +1095,7 @@ focus_tree = {
 		icon = GFX_goal_THR_buddha
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_BODHI FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 16
-		y = 9
+		y = 10
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_buddha_mandate }
 		available = {
@@ -1113,7 +1125,7 @@ focus_tree = {
 		icon = GFX_focus_smiling_buddha
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_MEDITATION FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 18
-		y = 10
+		y = 11
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_the_awakened_one }
 		available = {
@@ -1150,7 +1162,7 @@ focus_tree = {
 		icon = GFX_goal_THR_pacification
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 16
-		y = 10
+		y = 11
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_the_awakened_one }
 		available = {
@@ -1188,7 +1200,7 @@ focus_tree = {
 		icon = GFX_goal_THR_mercy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 16
-		y = 11
+		y = 12
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_show_the_powers }
 		available = {
@@ -1224,7 +1236,7 @@ focus_tree = {
 		icon = GFX_goal_THR_diplomacy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_TEACHING }
 		x = 14
-		y = 12
+		y = 13
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_powers_are_not_toys }
 		available = {
@@ -1257,7 +1269,7 @@ focus_tree = {
 		icon = GFX_focus_generic_national_security
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS }
 		x = 16
-		y = 12
+		y = 13
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_powers_are_not_toys }
 		available = {
@@ -1293,7 +1305,7 @@ focus_tree = {
 		icon = GFX_focus_generic_league_of_nations
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_COMPACT }
 		x = 18
-		y = 12
+		y = 13
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_powers_are_not_toys }
 		available = {
@@ -1326,10 +1338,10 @@ focus_tree = {
 		id = THR_read_pattern_suffering
 		icon = GFX_goal_generic_intelligence_exchange
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_TEACHING }
-		x = 13
-		y = 12
+		x = 14
+		y = 14
 		cost = @thr_focus_cost_medium
-		prerequisite = { focus = THR_powers_are_not_toys }
+		prerequisite = { focus = THR_one_becomes_many_focus }
 		available = {
 			OR = {
 				has_country_flag = holy_realm_evolution_pattern_of_suffering_recorded
@@ -1370,7 +1382,7 @@ focus_tree = {
 		icon = GFX_focus_generic_military_mission
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 20
-		y = 12
+		y = 13
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_powers_are_not_toys }
 		available = {
@@ -1408,7 +1420,7 @@ focus_tree = {
 		icon = GFX_focus_generic_air_defense
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AIRFORCE FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_MEDITATION }
 		x = 20
-		y = 13
+		y = 14
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_powers_are_not_toys }
 		available = {
@@ -1447,7 +1459,7 @@ focus_tree = {
 		icon = GFX_focus_wonderweapons
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 16
-		y = 13
+		y = 15
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_read_pattern_suffering }
 		prerequisite = { focus = THR_one_becomes_many_focus }
@@ -1493,7 +1505,7 @@ focus_tree = {
 		icon = GFX_focus_generic_diplomatic_treaty
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_HOLY_REALM_TEACHING }
 		x = 44
-		y = 10
+		y = 11
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_the_awakened_one }
 		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
@@ -1531,7 +1543,7 @@ focus_tree = {
 		icon = GFX_focus_generic_national_security
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_THR_MANDALA_INTEGRATION }
 		x = 46
-		y = 10
+		y = 11
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_the_awakened_one }
 		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
@@ -1568,7 +1580,7 @@ focus_tree = {
 		icon = GFX_goal_THR_pacification
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 44
-		y = 11
+		y = 12
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_the_awakened_one }
 		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
@@ -1609,7 +1621,7 @@ focus_tree = {
 		icon = GFX_goal_THR_final
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL FOCUS_FILTER_HOLY_REALM_HIDDEN FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 46
-		y = 11
+		y = 12
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_the_awakened_one }
 		allow_branch = { has_country_flag = holy_realm_false_buddha_schism_triggered }
@@ -1653,7 +1665,7 @@ focus_tree = {
 		icon = GFX_goal_THR_mercy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 10
-		y = 9
+		y = 11
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_buddha_mandate }
 		available = {
@@ -1696,8 +1708,8 @@ focus_tree = {
 		id = THR_white_flags_foreign_roads
 		icon = GFX_focus_generic_league_of_nations
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE }
-		x = 14
-		y = 10
+		x = 8
+		y = 13
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_lamps_remain_lit }
 		available = {
@@ -1739,7 +1751,7 @@ focus_tree = {
 		icon = GFX_goal_THR_mercy
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER FOCUS_FILTER_POLITICAL FOCUS_FILTER_THR_PEACE FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 10
-		y = 11
+		y = 14
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_white_flags_foreign_roads }
 		available = {
@@ -1843,7 +1855,7 @@ focus_tree = {
 		icon = GFX_focus_generic_monarchy_1
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 24
-		y = 9
+		y = 11
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_buddha_mandate }
 		available = {
@@ -1895,7 +1907,7 @@ focus_tree = {
 		icon = GFX_goal_THR_final
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE FOCUS_FILTER_HOLY_REALM_NIRVANA FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS }
 		x = 18
-		y = 13
+		y = 15
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_witnesses_gather }
 		available = {
@@ -1933,7 +1945,7 @@ focus_tree = {
 		icon = GFX_focus_generic_diplomatic_treaty
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE FOCUS_FILTER_HOLY_REALM_COMPACT FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 18
-		y = 11
+		y = 14
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_doctrine_last_war }
 		available = {
@@ -1979,7 +1991,7 @@ focus_tree = {
 		icon = GFX_focus_wonderweapons
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 24
-		y = 10
+		y = 12
 		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_throne_without_body }
 		prerequisite = { focus = THR_show_the_powers }
@@ -2033,7 +2045,7 @@ focus_tree = {
 		icon = GFX_focus_rocketry
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 22
-		y = 11
+		y = 13
 		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_doctrine_last_war }
 		available = {
@@ -2091,7 +2103,7 @@ focus_tree = {
 		icon = GFX_focus_generic_national_security
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 26
-		y = 11
+		y = 13
 		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_doctrine_last_war }
 		available = {
@@ -2135,7 +2147,7 @@ focus_tree = {
 		icon = GFX_focus_generic_conspiracy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 24
-		y = 12
+		y = 14
 		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_reactors_prayer_wheels }
 		prerequisite = { focus = THR_all_roads_end_silence }
@@ -2210,7 +2222,7 @@ focus_tree = {
 		icon = GFX_goal_THR_final
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE FOCUS_FILTER_HOLY_REALM_NIRVANA }
 		x = 24
-		y = 14
+		y = 18
 		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_no_one_leaves_mandala }
 		prerequisite = { focus = THR_ministry_of_release }
@@ -2275,8 +2287,8 @@ focus_tree = {
 		id = THR_empty_seat
 		icon = GFX_goal_THR_final
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_NIRVANA FOCUS_FILTER_HOLY_REALM_COMPACT }
-		x = 18
-		y = 15
+		x = 24
+		y = 19
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_final_silence }
 		available = {
@@ -2306,8 +2318,8 @@ focus_tree = {
 		id = THR_witnesses_keep_the_record
 		icon = GFX_focus_generic_diplomatic_treaty
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_NIRVANA FOCUS_FILTER_HOLY_REALM_COMPACT FOCUS_FILTER_HOLY_REALM_TEACHING }
-		x = 18
-		y = 16
+		x = 24
+		y = 20
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_empty_seat }
 		available = {
@@ -2390,7 +2402,10 @@ focus_tree = {
 			every_owned_state = {
 				limit = { is_controlled_by = ROOT }
 				set_state_flag = holy_realm_protected_state
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
@@ -2515,7 +2530,10 @@ focus_tree = {
 				add_political_power = 150
 				every_owned_state = {
 					limit = { is_controlled_by = ROOT }
-					add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					if = {
+						limit = { infrastructure < 4 }
+						add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+					}
 					add_building_construction = { type = radar_station level = 1 instant_build = yes }
 				}
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
@@ -2544,7 +2562,10 @@ focus_tree = {
 			every_owned_state = {
 				limit = { is_controlled_by = ROOT }
 				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_compassion_drift = yes
@@ -2565,7 +2586,7 @@ focus_tree = {
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_SANCTUARY }
 		x = 9
-		y = 8
+		y = 9
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_count_mountain_roads }
 		completion_reward = {
@@ -2573,7 +2594,10 @@ focus_tree = {
 			set_country_flag = holy_realm_memory_mountain_granaries
 			every_owned_state = {
 				limit = { is_controlled_by = ROOT }
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 			}
 			random_owned_state = {
 				limit = { is_controlled_by = ROOT }
@@ -2596,7 +2620,7 @@ focus_tree = {
 		icon = GFX_goal_generic_construct_civ_factory
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_SANCTUARY }
 		x = 13
-		y = 8
+		y = 9
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_monastic_labor_vows }
 		completion_reward = {
@@ -2608,7 +2632,10 @@ focus_tree = {
 			}
 			every_owned_state = {
 				limit = { is_controlled_by = ROOT }
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				if = {
+					limit = { infrastructure < 5 }
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				}
 			}
 			add_stability = constant:holy_realm_focus_reward.sanctuary_logistics_stability
 			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
@@ -2630,7 +2657,7 @@ focus_tree = {
 		icon = GFX_goal_generic_construct_infrastructure
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_HOLY_REALM_SANCTUARY FOCUS_FILTER_HOLY_REALM_COMPACT }
 		x = 11
-		y = 9
+		y = 10
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_mountain_granaries }
 		prerequisite = { focus = THR_snowline_clinics }
@@ -2820,7 +2847,7 @@ focus_tree = {
 		icon = GFX_goal_generic_positive_trade_relations
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE }
 		x = 6
-		y = 10
+		y = 12
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_lamps_remain_lit }
 		available = {
@@ -2852,7 +2879,7 @@ focus_tree = {
 		icon = GFX_focus_generic_treaty
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE }
 		x = 10
-		y = 10
+		y = 12
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_lamps_remain_lit }
 		available = {
@@ -2884,7 +2911,7 @@ focus_tree = {
 		icon = GFX_focus_generic_manpower
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER FOCUS_FILTER_THR_PEACE }
 		x = 4
-		y = 11
+		y = 13
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_permit_foreign_pilgrimage }
 		available = {
@@ -2921,8 +2948,8 @@ focus_tree = {
 		id = THR_mandala_of_nations
 		icon = GFX_goal_generic_alliance
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE }
-		x = 8
-		y = 11
+		x = 6
+		y = 14
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_permit_foreign_pilgrimage }
 		available = {
@@ -2961,7 +2988,7 @@ focus_tree = {
 		icon = GFX_goal_generic_political_pressure
 		search_filters = { FOCUS_FILTER_POLITICAL }
 		x = 12
-		y = 11
+		y = 14
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_letters_to_war_tired focus = THR_no_more_peace_delegations }
 		completion_reward = {
@@ -3060,7 +3087,7 @@ focus_tree = {
 		icon = GFX_focus_generic_pope
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 22
-		y = 12
+		y = 15
 		cost = @thr_focus_cost_two_weeks
 		prerequisite = { focus = THR_no_one_leaves_mandala }
 		available = {
@@ -3120,7 +3147,7 @@ focus_tree = {
 		icon = GFX_goal_generic_secret_weapon
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 26
-		y = 12
+		y = 15
 		cost = @thr_focus_cost_two_weeks
 		prerequisite = { focus = THR_no_one_leaves_mandala }
 		available = {
@@ -3178,7 +3205,7 @@ focus_tree = {
 		icon = GFX_goal_generic_forceful_treaty
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 22
-		y = 13
+		y = 16
 		cost = @thr_focus_cost_two_weeks
 		prerequisite = { focus = THR_last_human_signature }
 		available = {
@@ -3242,7 +3269,7 @@ focus_tree = {
 		icon = GFX_sp_thermo_nuclear_bomb
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 26
-		y = 13
+		y = 17
 		cost = @thr_focus_cost_major
 		prerequisite = { focus = THR_sermon_without_translation }
 		prerequisite = { focus = THR_last_human_signature }
@@ -3319,7 +3346,7 @@ focus_tree = {
 		icon = GFX_focus_generic_anti_fascist_diplomacy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 8
-		y = 12
+		y = 15
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_vow_against_annihilation }
 		available = {
@@ -3347,7 +3374,7 @@ focus_tree = {
 		icon = GFX_focus_generic_balkan_diplomacy
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 10
-		y = 12
+		y = 15
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_vow_against_annihilation }
 		available = {
@@ -3380,7 +3407,7 @@ focus_tree = {
 		icon = GFX_focus_generic_africa_liberation
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER FOCUS_FILTER_THR_PEACE }
 		x = 12
-		y = 12
+		y = 15
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_vow_against_annihilation }
 		available = {
@@ -3412,7 +3439,7 @@ focus_tree = {
 		icon = GFX_focus_generic_africa_defense
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER FOCUS_FILTER_THR_PEACE }
 		x = 10
-		y = 13
+		y = 16
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_peace_without_ownership }
 		prerequisite = { focus = THR_world_still_burns }
@@ -3446,7 +3473,7 @@ focus_tree = {
 		icon = GFX_focus_generic_steel
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 2
-		y = 9
+		y = 12
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_throne_without_body }
 		available = {
@@ -3494,7 +3521,7 @@ focus_tree = {
 		icon = GFX_focus_generic_railroad
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 0
-		y = 10
+		y = 13
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_lamps_entered_register }
 		available = {
@@ -3528,7 +3555,7 @@ focus_tree = {
 		icon = GFX_focus_generic_strike_at_democracy1
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 2
-		y = 10
+		y = 13
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_lamps_entered_register }
 		available = {
@@ -3568,7 +3595,7 @@ focus_tree = {
 		icon = GFX_focus_generic_license_production
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER FOCUS_FILTER_POLITICAL FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 0
-		y = 11
+		y = 14
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_seal_roads_from_panic }
 		available = {
@@ -3603,7 +3630,7 @@ focus_tree = {
 		icon = GFX_goal_THR_final
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_THR_FINAL_SILENCE_PRESSURE }
 		x = 2
-		y = 11
+		y = 14
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_no_more_peace_delegations }
 		available = {
@@ -3745,7 +3772,10 @@ focus_tree = {
 							limit_to_border = yes
 						}
 					}
-					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					if = {
+						limit = { infrastructure < 5 }
+						add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					}
 				}
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 				holy_realm_add_mandala_reach = yes

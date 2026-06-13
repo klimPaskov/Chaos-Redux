@@ -7,17 +7,18 @@ Create the animated `96x96` Dhyana Seal button/icon required by the Buddhahood G
 ## Visual Direction
 
 - Sacred seal icon for meditation and Dhyana concentration, not a character portrait.
-- Blue-violet lotus seal with a pale inner orb, thin gold rim, and restrained breath-like glow.
+- Carved blue-violet lotus shrine medallion with worn enamel petals, a pale inner flame-orb, aged gold trim, and restrained breath-like glow.
+- Must read as painted relic art rather than concentric shape design or flat vector geometry.
 - Reads clearly at `96x96`.
 - No readable text, letters, numbers, flags, maps, weapons, blood, gore, faces, people, monsters, or modern UI.
 - Calm meditation state, distinct from wrathful red, teaching green-gold, and Final Silence black.
 
 ## Technical Targets
 
-- Source frames: separate generated PNGs, one per planned frame.
+- Source frames: twelve generated source frames, sliced from one consistent `$imagegen` animation-source grid after direct edit attempts drifted too far.
 - Processed frames: `96x96` PNGs.
 - Static fallback DDS: `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds`.
-- Final frame sheet: `768x96` DDS, 8 horizontal frames.
+- Final frame sheet: `1152x96` DDS, 12 horizontal frames.
 - Animated sprite: `GFX_decision_holy_realm_dhyana_seal_animated`.
 
 ## Required Outputs

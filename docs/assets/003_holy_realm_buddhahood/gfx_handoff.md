@@ -235,13 +235,18 @@ The concentration sequence uses an animated Dhyana Seal decision icon while pres
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/sheets/holy_realm_dhyana_seal_sheet.png` |
 | Frame size | `96x96` |
-| Frame count | `8` |
-| Sheet size | `768x96` |
+| Frame count | `12` |
+| Sheet size | `1152x96` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |
 | Gameplay use | `THR_begin_concentration_sequence`, `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind`, and `THR_hold_investigation` use the animated sprite as their decision icon |
 | Wiring precedent | `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `interface/003_holy_realm.gfx` |
+
+Parent wiring:
+
+- Keep both existing sprite names and DDS paths unchanged.
+- `interface/003_holy_realm.gfx` now declares `noOfFrames = 12` for `GFX_decision_holy_realm_dhyana_seal_animated`.
 
 Review assets:
 
