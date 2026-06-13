@@ -17,8 +17,8 @@ Source mode:
 - `$imagegen` for the Wrathful Mandala animation source frames.
 - `$imagegen` for the Final Silence Mandala animation source frames.
 - `$imagegen` for the Empty Seat Mandala animation source frames.
-- `$imagegen` for the Buddha Mandate leader portrait 4x4 animation source sheet, generated as transformed edits of `portrait_THR_godly_figure.dds`.
-- `$imagegen` for the Empty Seat leader portrait 4x4 animation source sheet, generated as a vacant-relic transformation of `portrait_THR_godly_figure.dds`.
+- `$imagegen` for the Buddha Mandate leader portrait individual key-state frames, generated as transformed versions of `portrait_THR_godly_figure.dds`.
+- `$imagegen` for the Empty Seat leader portrait individual key-state frames, generated as a vacant-relic transformation of `portrait_THR_godly_figure.dds`.
 - `$imagegen` for the static Holy Realm stage leader portrait 4x2 source sheet, generated as transformed variants of `portrait_THR_godly_figure.dds`.
 - `$imagegen` for the Dhyana Seal decision icon animation source frames.
 - `$imagegen` for the Buddha power decision icon sheet, Extinction of Defilements decision icon, and False Buddha portrait source art.
@@ -553,7 +553,7 @@ Reference inspection completed:
 | Asset name | `portrait_THR_buddha_mandate` |
 | Asset type | animated leader portrait sprite |
 | Intended in-game use | Buddhahood and Buddha Mandate presentation portrait stage |
-| Source mode | `$imagegen`, one generated 4x4 source sheet split into sixteen source-frame PNGs |
+| Source mode | `$imagegen`, eight individual key-state portraits expanded into sixteen playback source-frame files by mirrored ordering |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/processed_frames/` |
 | Final sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/sheets/portrait_THR_buddha_mandate_sheet.png` |
@@ -564,7 +564,7 @@ Reference inspection completed:
 | Target size | `156x210` per frame |
 | Frame count | `16` |
 | Sheet size | `2496x210` |
-| Animation rate | `8` FPS |
+| Animation rate | `4` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Static sprite | `GFX_portrait_THR_buddha_mandate` |
 | Animated sprite | `GFX_portrait_THR_buddha_mandate_animated` |
@@ -586,14 +586,14 @@ Frame source notes:
 | 005 | mandala intake | `source_frames/portrait_THR_buddha_mandate_005_source.png` |
 | 006 | eye glint | `source_frames/portrait_THR_buddha_mandate_006_source.png` |
 | 007 | golden crest | `source_frames/portrait_THR_buddha_mandate_007_source.png` |
-| 008 | full mandate | `source_frames/portrait_THR_buddha_mandate_008_source.png` |
-| 009 | settling breath | `source_frames/portrait_THR_buddha_mandate_009_source.png` |
-| 010 | robe echo | `source_frames/portrait_THR_buddha_mandate_010_source.png` |
-| 011 | jewel recession | `source_frames/portrait_THR_buddha_mandate_011_source.png` |
-| 012 | mandala thinning | `source_frames/portrait_THR_buddha_mandate_012_source.png` |
-| 013 | temple darkening | `source_frames/portrait_THR_buddha_mandate_013_source.png` |
-| 014 | quiet jewel echo | `source_frames/portrait_THR_buddha_mandate_014_source.png` |
-| 015 | return to rest | `source_frames/portrait_THR_buddha_mandate_015_source.png` |
+| 008 | mirrored eye glint | `source_frames/portrait_THR_buddha_mandate_008_source.png` |
+| 009 | mirrored mandala intake | `source_frames/portrait_THR_buddha_mandate_009_source.png` |
+| 010 | mirrored forehead jewel | `source_frames/portrait_THR_buddha_mandate_010_source.png` |
+| 011 | mirrored crown shimmer | `source_frames/portrait_THR_buddha_mandate_011_source.png` |
+| 012 | mirrored lamp reflection | `source_frames/portrait_THR_buddha_mandate_012_source.png` |
+| 013 | mirrored first breath | `source_frames/portrait_THR_buddha_mandate_013_source.png` |
+| 014 | resting radiance return | `source_frames/portrait_THR_buddha_mandate_014_source.png` |
+| 015 | rest hold | `source_frames/portrait_THR_buddha_mandate_015_source.png` |
 
 ## Empty Seat Leader Portrait Animation
 
@@ -610,7 +610,7 @@ Reference inspection completed:
 | Asset name | `portrait_THR_empty_seat` |
 | Asset type | animated leader portrait sprite with static fallback |
 | Intended in-game use | Final Silence aftermath and Empty Seat leader state |
-| Source mode | `$imagegen`, one generated 4x4 source sheet split into sixteen source-frame PNGs |
+| Source mode | `$imagegen`, eight individual key-state portraits expanded into sixteen playback source-frame files by mirrored ordering |
 | Source frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/source_frames/` |
 | Processed frames | `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/processed_frames/` |
 | Static fallback DDS | `gfx/leaders/THR/portrait_THR_empty_seat.dds` |
@@ -621,7 +621,7 @@ Reference inspection completed:
 | Target size | `156x210` per frame |
 | Frame count | `16` |
 | Sheet size | `2496x210` |
-| Animation rate | `8` FPS |
+| Animation rate | `4` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Static sprite | `GFX_portrait_THR_empty_seat` |
 | Animated sprite | `GFX_portrait_THR_empty_seat_animated` |
@@ -643,14 +643,14 @@ Frame source notes:
 | 005 | ash intake | `source_frames/portrait_THR_empty_seat_005_source.png` |
 | 006 | bell echo | `source_frames/portrait_THR_empty_seat_006_source.png` |
 | 007 | mandala crest | `source_frames/portrait_THR_empty_seat_007_source.png` |
-| 008 | absence peak | `source_frames/portrait_THR_empty_seat_008_source.png` |
-| 009 | witness quiet | `source_frames/portrait_THR_empty_seat_009_source.png` |
-| 010 | seat shadow | `source_frames/portrait_THR_empty_seat_010_source.png` |
-| 011 | fading bell | `source_frames/portrait_THR_empty_seat_011_source.png` |
-| 012 | smoke thinning | `source_frames/portrait_THR_empty_seat_012_source.png` |
-| 013 | arch return | `source_frames/portrait_THR_empty_seat_013_source.png` |
-| 014 | last ember | `source_frames/portrait_THR_empty_seat_014_source.png` |
-| 015 | return to stillness | `source_frames/portrait_THR_empty_seat_015_source.png` |
+| 008 | mirrored bell echo | `source_frames/portrait_THR_empty_seat_008_source.png` |
+| 009 | mirrored ash intake | `source_frames/portrait_THR_empty_seat_009_source.png` |
+| 010 | mirrored hollow ring | `source_frames/portrait_THR_empty_seat_010_source.png` |
+| 011 | mirrored cushion glint | `source_frames/portrait_THR_empty_seat_011_source.png` |
+| 012 | mirrored lamp ember | `source_frames/portrait_THR_empty_seat_012_source.png` |
+| 013 | mirrored first dust | `source_frames/portrait_THR_empty_seat_013_source.png` |
+| 014 | still seat return | `source_frames/portrait_THR_empty_seat_014_source.png` |
+| 015 | stillness hold | `source_frames/portrait_THR_empty_seat_015_source.png` |
 
 ## Static Leader Portrait Fallbacks
 

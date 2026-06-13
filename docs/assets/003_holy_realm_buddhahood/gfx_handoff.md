@@ -286,12 +286,14 @@ The Buddhahood-stage presentation portrait uses an animated frame sheet while pr
 | Frame size | `156x210` |
 | Frame count | `16` |
 | Sheet size | `2496x210` |
-| FPS | `8` |
+| FPS | `4` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/chaosx_characters.gfx` |
 | Gameplay use | `holy_realm_set_stage_buddha_mandate` sets the country leader portrait to the static sprite |
 | Event-details use | Holy Realm evolution stage 4 returns the animated portrait sprite |
 | Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `interface/007_fury.gfx` |
+
+Source mode: `$imagegen`, eight individual key-state portraits expanded into sixteen playback frames by mirrored ordering.
 
 Review assets:
 
@@ -314,12 +316,14 @@ The Final Silence aftermath presentation portrait uses a dedicated Empty Seat fr
 | Frame size | `156x210` |
 | Frame count | `16` |
 | Sheet size | `2496x210` |
-| FPS | `8` |
+| FPS | `4` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/chaosx_characters.gfx` |
 | Gameplay use | `holy_realm_set_stage_final_silence` sets the country leader portrait to the static sprite |
 | Event-details use | Holy Realm evolution stage 6 returns the animated portrait sprite |
 | Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `interface/chaosx_characters.gfx` |
+
+Source mode: `$imagegen`, eight individual key-state portraits expanded into sixteen playback frames by mirrored ordering.
 
 Review assets:
 

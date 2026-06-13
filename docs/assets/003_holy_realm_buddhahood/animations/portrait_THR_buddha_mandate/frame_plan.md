@@ -1,6 +1,6 @@
 # Buddha Mandate Portrait Frame Plan
 
-The loop uses sixteen generated source frames split from a generated animation source sheet. Motion must come from separate drawn frame states, not from transform-only processing, simple vignettes, zooms, warps, or color filters over one still image.
+The loop uses eight individually generated key-state source portraits expanded into sixteen playback frames by mirrored ordering. Motion comes from separate drawn key states, not from transform-only processing, simple vignettes, zooms, warps, or color filters over one still image.
 
 | Frame | State | Notes |
 | --- | --- | --- |
@@ -12,14 +12,14 @@ The loop uses sixteen generated source frames split from a generated animation s
 | 5 | Mandala intake | Mandala ring grows denser behind the crown. |
 | 6 | Eye glint | Eye light increases by a small step, still readable at portrait size. |
 | 7 | Golden crest | Halo reaches a controlled crest, with no heavy vignette. |
-| 8 | Full mandate | Jewel and halo light peak subtly; robe shadows remain detailed. |
-| 9 | Settling breath | Face light softens and lower ornaments regain shadow. |
-| 10 | Robe echo | Saffron robe highlights move into a quieter gold state. |
-| 11 | Jewel recession | Crown glints recede from the peak. |
-| 12 | Mandala thinning | Halo texture thins while the head alignment stays steady. |
-| 13 | Temple darkening | Background shadows return and lamp reflections lower. |
-| 14 | Quiet jewel echo | Eye and forehead light return toward rest. |
-| 15 | Return to rest | Halo dims close to frame 0 intensity while preserving alignment. |
+| 8 | Mirrored eye glint | Returns through key state 6 for a slower descent from the crest. |
+| 9 | Mirrored mandala intake | Returns through key state 5 with the halo texture lowering. |
+| 10 | Mirrored forehead jewel | Returns through key state 4 with the central jewel still readable. |
+| 11 | Mirrored crown shimmer | Returns through key state 3 as crown glints recede. |
+| 12 | Mirrored lamp reflection | Returns through key state 2 with lower cheek and robe highlights. |
+| 13 | Mirrored first breath | Returns through key state 1 with the halo near rest. |
+| 14 | Resting radiance | Returns to key state 0. |
+| 15 | Rest hold | Holds key state 0 for a softer loop seam. |
 
 ## Processing
 

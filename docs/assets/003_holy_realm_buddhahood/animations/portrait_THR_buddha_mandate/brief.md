@@ -8,16 +8,16 @@ Create the animated leader portrait frame sheet for The Holy Realm after Buddhah
 
 - Fictional sacred leader portrait, not a real historical religious figure.
 - Use new Buddha Mandate portrait source art: frontal golden mask, jeweled crown, temple shadows, calm awakened expression.
-- Animation reads as controlled awakening: very subtle halo breathing, crown jewel glints, eye-light changes, and gold aura variation across more frames.
+- Animation reads as controlled awakening: very subtle halo breathing, crown jewel glints, eye-light changes, and gold aura variation across a slower frame loop.
 - Do not rely on a simple vignette, transform, zoom, warp, or color-filter pulse from one still image.
 - No readable text, letters, numbers, flags, maps, blood, gore, explosions, weapons, or modern UI.
 - Keep the head centered and readable at `156x210`.
 
 ## Technical Targets
 
-- Source frames: 16 generated PNGs split from a generated 4x4 animation source sheet.
+- Source frames: 8 separately generated key-state PNGs expanded into 16 playback source-frame files by mirrored ordering.
 - Processed frames: `156x210` PNGs.
-- Final frame sheet: `2496x210` DDS, 16 horizontal frames.
+- Final frame sheet: `2496x210` DDS, 16 horizontal frames at 4 FPS.
 - Static fallback: `gfx/leaders/THR/portrait_THR_buddha_mandate.dds`.
 - Animated sprite: `GFX_portrait_THR_buddha_mandate_animated`.
 
