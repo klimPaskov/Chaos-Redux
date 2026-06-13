@@ -30,7 +30,8 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 ## Events tab behavior
 - Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event.
 - Event rows show `ID`, `Type`, `Weight`, `Fired`, and enabled state on the top line; the event name is kept alone on the second line.
-- Sort options: `By Event ID`, `By Fired`, `By Weight`, `By Type`.
+- Filter options: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`.
+- Sort options: `By Event ID`, `By Fired`, `By Weight`. `By Fired` hides events with zero logged firings.
 - The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
 
 ## Evolutions tab behavior
