@@ -28,8 +28,9 @@ frameAnimatedSpriteType = {
 Implemented in `interface/007_fury_leader_overlay.gui` and `common/scripted_guis/007_fury_scripted_guis.txt`.
 
 - `fury_diplomacy_leader_overlay_scripted_gui`
-  - context: `selected_country_context`
-  - parent: `countrydiplomacyview`
+  - context: `diplomacy_target_context`
+  - parent token: `selected_country_view_diplomacy`
+  - scripted GUI visibility: `is_fury_actor = yes`
   - icon-level visibility: `fury_diplomacy_leader_flame_overlay_visible = { is_fury_actor = yes }`
   - position matches vanilla `countrydiplomacyview.gui` `leader_portrait` via summed parent coordinates at `x = 20`, `y = 170`, `scale = 0.74`
 
@@ -40,4 +41,4 @@ Implemented in `interface/007_fury_leader_overlay.gui` and `common/scripted_guis
 - Sheet DDS: `1248x210`, `srgba`.
 - Static DDS: `156x210`, `srgba`.
 - Review GIF exists for visual loop inspection.
-- No other leader surface is wired; the animated flame icon is visible only when the selected-country diplomacy scope is a Fury actor.
+- No other leader surface is wired; the animated flame icon is visible only when the active diplomacy target scope is a Fury actor.
