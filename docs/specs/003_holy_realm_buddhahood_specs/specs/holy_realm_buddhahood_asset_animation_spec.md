@@ -73,28 +73,28 @@ Required central animated sprites:
 
 | Sprite | Frames | Sheet size | State |
 | --- | --- | --- | --- |
-| `GFX_holy_realm_mandala_dormant_animated` | 8 | 3360x420 | Locked or early state |
-| `GFX_holy_realm_mandala_teaching_animated` | 8 | 3360x420 | Teaching missions active |
-| `GFX_holy_realm_mandala_meditation_animated` | 12 | 5040x420 | Three-minute vow active |
-| `GFX_holy_realm_mandala_awakened_animated` | 12 | 5040x420 | Buddhahood complete |
-| `GFX_holy_realm_mandala_wrathful_animated` | 12 | 5040x420 | Chaos emergency |
-| `GFX_holy_realm_mandala_final_silence_animated` | 12 | 5040x420 | Final Silence ritual |
-| `GFX_holy_realm_mandala_empty_animated` | 8 | 3360x420 | After Final Silence |
+| `GFX_holy_realm_mandala_dormant_animated` | 16 | 6720x420 | Locked or early state |
+| `GFX_holy_realm_mandala_teaching_animated` | 16 | 6720x420 | Teaching missions active |
+| `GFX_holy_realm_mandala_meditation_animated` | 16 | 6720x420 | Three-minute vow active |
+| `GFX_holy_realm_mandala_awakened_animated` | 16 | 6720x420 | Buddhahood complete |
+| `GFX_holy_realm_mandala_wrathful_animated` | 16 | 6720x420 | Chaos emergency |
+| `GFX_holy_realm_mandala_final_silence_animated` | 16 | 6720x420 | Final Silence ritual |
+| `GFX_holy_realm_mandala_empty_animated` | 16 | 6720x420 | After Final Silence |
 
 Each needs a static fallback without `_animated`.
 
 Implementation coverage:
 
-- `GFX_portrait_THR_buddha_mandate_animated` is delivered as an 8-frame `1248x210` sheet at `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/`. The static fallback remains `GFX_portrait_THR_buddha_mandate`.
-- `GFX_portrait_THR_empty_seat_animated` is delivered as an 8-frame `1248x210` sheet at `gfx/leaders/THR/portrait_THR_empty_seat_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/`. The static fallback is `GFX_portrait_THR_empty_seat`.
-- `GFX_decision_holy_realm_dhyana_seal_animated` is delivered as an 8-frame `768x96` sheet at `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/`. The static fallback is `GFX_decision_holy_realm_dhyana_seal`.
-- `GFX_holy_realm_mandala_dormant_animated` is delivered as an 8-frame `3360x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/`.
-- `GFX_holy_realm_mandala_teaching_animated` is delivered as an 8-frame `3360x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_teaching_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/`.
-- `GFX_holy_realm_mandala_meditation_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/`.
-- `GFX_holy_realm_mandala_awakened_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/`.
-- `GFX_holy_realm_mandala_wrathful_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_wrathful_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/`.
-- `GFX_holy_realm_mandala_final_silence_animated` is delivered as a 12-frame `5040x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/`.
-- `GFX_holy_realm_mandala_empty_animated` is delivered as an 8-frame `3360x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/`.
+- `GFX_portrait_THR_buddha_mandate_animated` is delivered as a 16-frame `2496x210` sheet at `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/`. The static fallback remains `GFX_portrait_THR_buddha_mandate`.
+- `GFX_portrait_THR_empty_seat_animated` is delivered as a 16-frame `2496x210` sheet at `gfx/leaders/THR/portrait_THR_empty_seat_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/`. The static fallback is `GFX_portrait_THR_empty_seat`.
+- `GFX_decision_holy_realm_dhyana_seal_animated` is delivered as a 12-frame `1152x96` sheet at `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/`. The static fallback is `GFX_decision_holy_realm_dhyana_seal`.
+- `GFX_holy_realm_mandala_dormant_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/`.
+- `GFX_holy_realm_mandala_teaching_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_teaching_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/`.
+- `GFX_holy_realm_mandala_meditation_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/`.
+- `GFX_holy_realm_mandala_awakened_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/`.
+- `GFX_holy_realm_mandala_wrathful_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_wrathful_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/`.
+- `GFX_holy_realm_mandala_final_silence_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/`.
+- `GFX_holy_realm_mandala_empty_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/`.
 - All required central Mandala animated sprites in this table have source-frame packages and wired DDS frame sheets.
 
 Central mandala visual direction:
@@ -109,9 +109,9 @@ Central mandala visual direction:
 
 Target size: 96x96.
 
-Frames: 8.
+Frames: 12.
 
-Sheet size: 768x96.
+Sheet size: 1152x96.
 
 States:
 
