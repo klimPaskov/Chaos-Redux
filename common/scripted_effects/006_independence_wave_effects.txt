@@ -103,13 +103,13 @@ independence_wave_prepare_release_count = {
 		limit = { has_global_flag = { flag = chaos_tier value = 2 } }
 		set_temp_variable = { independence_wave_release_count_min = constant:independence_wave_release_count.evo_2_min }
 		set_temp_variable = { independence_wave_release_count_max_exclusive = constant:independence_wave_release_count.evo_2_max_exclusive }
-		set_variable = { global.independence_wave_release_scale_stage = constant:independence_wave_event_log.rising_cascade_stage }
+		set_variable = { global.independence_wave_release_scale_stage = constant:independence_wave_event_log.rising_chaos_stage }
 	}
 	if = {
 		limit = { has_global_flag = { flag = chaos_tier value = 3 } }
 		set_temp_variable = { independence_wave_release_count_min = constant:independence_wave_release_count.evo_3_min }
 		set_temp_variable = { independence_wave_release_count_max_exclusive = constant:independence_wave_release_count.evo_3_max_exclusive }
-		set_variable = { global.independence_wave_release_scale_stage = constant:independence_wave_event_log.old_names_stage }
+		set_variable = { global.independence_wave_release_scale_stage = constant:independence_wave_event_log.chaos_tier_stage }
 	}
 	if = {
 		limit = { has_global_flag = { flag = chaos_tier value = 4 } }
@@ -6406,10 +6406,10 @@ independence_wave_record_tier_evolution_log_entry = {
 			NOT = { has_global_flag = independence_wave_release_scale_evolution_check_cooldown }
 			NOT = { has_global_flag = independence_wave_evolution_rising_cascade_milestone_logged }
 			has_global_flag = { flag = chaos_tier value = 2 }
-			check_variable = { var = global.independence_wave_release_scale_stage value = constant:independence_wave_event_log.rising_cascade_stage compare = equals }
+			check_variable = { var = global.independence_wave_release_scale_stage value = constant:independence_wave_event_log.rising_chaos_stage compare = equals }
 		}
 		set_temp_variable = { events_log_evolution_tier = 2 }
-		set_temp_variable = { events_log_evolution_stage = constant:independence_wave_event_log.rising_cascade_stage }
+		set_temp_variable = { events_log_evolution_stage = constant:independence_wave_event_log.rising_chaos_stage }
 		independence_wave_roll_release_scale_evolution_entry = yes
 		if = {
 			limit = { has_country_flag = independence_wave_release_scale_evolution_roll_succeeded }
@@ -6423,10 +6423,10 @@ independence_wave_record_tier_evolution_log_entry = {
 			NOT = { has_global_flag = independence_wave_release_scale_evolution_check_cooldown }
 			NOT = { has_global_flag = independence_wave_evolution_old_names_milestone_logged }
 			has_global_flag = { flag = chaos_tier value = 3 }
-			check_variable = { var = global.independence_wave_release_scale_stage value = constant:independence_wave_event_log.old_names_stage compare = equals }
+			check_variable = { var = global.independence_wave_release_scale_stage value = constant:independence_wave_event_log.chaos_tier_stage compare = equals }
 		}
 		set_temp_variable = { events_log_evolution_tier = 3 }
-		set_temp_variable = { events_log_evolution_stage = constant:independence_wave_event_log.old_names_stage }
+		set_temp_variable = { events_log_evolution_stage = constant:independence_wave_event_log.chaos_tier_stage }
 		independence_wave_roll_release_scale_evolution_entry = yes
 		if = {
 			limit = { has_country_flag = independence_wave_release_scale_evolution_roll_succeeded }
