@@ -28,7 +28,7 @@ Pairs are checked with:
 - target is not a subject of the aggressor
 - Calm World does not pair a major country against a non-major country; major-minor pairings open once the chaos tier has advanced beyond Calm World
 
-Compatible special countries use `chaosx_is_random_war_compatible_special_country`. It currently includes existing Chaos Redux special-country markers and Holy Realm compatibility.
+Compatible special countries use the shared `is_special_chaos_country` trigger. It includes existing Chaos Redux special-country markers, Holy Realm compatibility, and Germany Mengele civil-war or post-coup state markers.
 
 ## War Contagion
 

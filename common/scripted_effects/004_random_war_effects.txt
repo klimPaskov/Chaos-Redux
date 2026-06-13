@@ -161,8 +161,8 @@ random_war_save_pair_from_current_target = {
 		if = {
 			limit = {
 				OR = {
-					chaosx_is_random_war_compatible_special_country = yes
-					event_target:random_war_aggressor = { chaosx_is_random_war_compatible_special_country = yes }
+					is_special_chaos_country = yes
+					event_target:random_war_aggressor = { is_special_chaos_country = yes }
 				}
 			}
 			set_temp_variable = { random_war_pair_special_involved = 1 }
@@ -182,7 +182,7 @@ random_war_try_select_special_aggressor_pair = {
 		random_country = {
 			limit = {
 				random_war_country_can_be_aggressor = yes
-				chaosx_is_random_war_compatible_special_country = yes
+				is_special_chaos_country = yes
 				any_other_country = { random_war_target_valid_for_prev_aggressor = yes }
 			}
 			save_event_target_as = random_war_aggressor
@@ -207,14 +207,14 @@ random_war_try_select_special_target_pair = {
 			limit = {
 				random_war_country_can_be_aggressor = yes
 				any_other_country = {
-					chaosx_is_random_war_compatible_special_country = yes
+					is_special_chaos_country = yes
 					random_war_target_valid_for_prev_aggressor = yes
 				}
 			}
 			save_event_target_as = random_war_aggressor
 			random_other_country = {
 				limit = {
-					chaosx_is_random_war_compatible_special_country = yes
+					is_special_chaos_country = yes
 					random_war_target_valid_for_prev_aggressor = yes
 				}
 				random_war_save_pair_from_current_target = yes
@@ -404,7 +404,7 @@ random_war_select_chain_next_pair = {
 					random_other_country = {
 						limit = {
 							random_war_target_valid_for_prev_aggressor = yes
-							chaosx_is_random_war_compatible_special_country = yes
+							is_special_chaos_country = yes
 							NOT = { has_country_flag = random_war_chain_member }
 						}
 						random_war_save_pair_from_current_target = yes
@@ -490,8 +490,8 @@ random_war_select_chain_closure_pair = {
 				if = {
 					limit = {
 						OR = {
-							chaosx_is_random_war_compatible_special_country = yes
-							event_target:random_war_chain_origin = { chaosx_is_random_war_compatible_special_country = yes }
+							is_special_chaos_country = yes
+							event_target:random_war_chain_origin = { is_special_chaos_country = yes }
 						}
 					}
 					set_temp_variable = { random_war_pair_special_involved = 1 }
