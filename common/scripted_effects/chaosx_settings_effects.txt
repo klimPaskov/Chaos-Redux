@@ -576,21 +576,21 @@ export_chaosx_settings_config_to_log = {
 	clear_array = settings_export_cluster_id_entries
 	clear_array = settings_export_cluster_value_entries
 	clear_array = settings_export_evolution_event_id_entries
-		clear_array = settings_export_evolution_type_entries
-		clear_array = settings_export_evolution_stage_entries
-		clear_array = settings_export_evolution_value_entries
-		clear_array = settings_export_sorted_event_id_entries
-		clear_array = settings_export_sorted_event_value_entries
-		clear_array = settings_export_sorted_cluster_id_entries
-		clear_array = settings_export_sorted_cluster_value_entries
-		clear_array = settings_export_sorted_evolution_event_id_entries
-		clear_array = settings_export_sorted_evolution_type_entries
-		clear_array = settings_export_sorted_evolution_stage_entries
-		clear_array = settings_export_sorted_evolution_value_entries
+	clear_array = settings_export_evolution_type_entries
+	clear_array = settings_export_evolution_stage_entries
+	clear_array = settings_export_evolution_value_entries
+	clear_array = settings_export_sorted_event_id_entries
+	clear_array = settings_export_sorted_event_value_entries
+	clear_array = settings_export_sorted_cluster_id_entries
+	clear_array = settings_export_sorted_cluster_value_entries
+	clear_array = settings_export_sorted_evolution_event_id_entries
+	clear_array = settings_export_sorted_evolution_type_entries
+	clear_array = settings_export_sorted_evolution_stage_entries
+	clear_array = settings_export_sorted_evolution_value_entries
 
-		set_temp_variable = { settings_export_scalar_key = 1 }
-		set_temp_variable = { settings_export_scalar_value = settings_export_event_system_enabled }
-		settings_export_add_scalar_row = yes
+	set_temp_variable = { settings_export_scalar_key = 1 }
+	set_temp_variable = { settings_export_scalar_value = settings_export_event_system_enabled }
+	settings_export_add_scalar_row = yes
 	set_temp_variable = { settings_export_scalar_key = 2 }
 	set_temp_variable = { settings_export_scalar_value = settings_export_force_trigger_mode }
 	settings_export_add_scalar_row = yes
@@ -850,6 +850,16 @@ export_chaosx_settings_config_to_log = {
 
 			set_temp_variable = { event_id = global.all_events^settings_export_evolution_event_index }
 			set_temp_variable = { settings_export_evolution_type = global.events_log_event_detail_evolution_type_entries^settings_export_evolution_index }
+			if = {
+				limit = {
+					check_variable = {
+						var = settings_export_evolution_type
+						value = constant:independence_wave_event_log.evolution_type
+						compare = equals
+					}
+				}
+				set_temp_variable = { settings_export_evolution_type = constant:independence_wave_event_log.event_id }
+			}
 			set_temp_variable = { settings_export_evolution_stage = global.events_log_event_detail_evolution_stage_entries^settings_export_evolution_index }
 			set_temp_variable = { settings_export_evolution_enabled = global.events_log_event_detail_evolution_enabled_entries^settings_export_evolution_index }
 			add_to_array = {
@@ -868,35 +878,37 @@ export_chaosx_settings_config_to_log = {
 				array = settings_export_evolution_value_entries
 				value = settings_export_evolution_enabled
 			}
-			}
 		}
+	}
 
-		settings_export_sort_event_rows_by_id = yes
-		settings_export_sort_cluster_rows_by_id = yes
-		settings_export_sort_evolution_rows_by_id = yes
+	settings_export_sort_event_rows_by_id = yes
+	settings_export_sort_cluster_rows_by_id = yes
+	settings_export_sort_evolution_rows_by_id = yes
 
-		log = "[GetChaosxSettingsExportPayload]"
+	log = "CHAOS REDUX SETTINGS EXPORT START"
+	log = "[GetChaosxSettingsExportPayload]"
+	log = "CHAOS REDUX SETTINGS EXPORT END"
 
-		clear_array = settings_export_scalar_key_entries
-		clear_array = settings_export_scalar_value_entries
-		clear_array = settings_export_event_id_entries
+	clear_array = settings_export_scalar_key_entries
+	clear_array = settings_export_scalar_value_entries
+	clear_array = settings_export_event_id_entries
 	clear_array = settings_export_event_value_entries
 	clear_array = settings_export_cluster_id_entries
 	clear_array = settings_export_cluster_value_entries
 	clear_array = settings_export_evolution_event_id_entries
-		clear_array = settings_export_evolution_type_entries
-		clear_array = settings_export_evolution_stage_entries
-		clear_array = settings_export_evolution_value_entries
-		clear_array = settings_export_sorted_event_id_entries
-		clear_array = settings_export_sorted_event_value_entries
-		clear_array = settings_export_sorted_cluster_id_entries
-		clear_array = settings_export_sorted_cluster_value_entries
-		clear_array = settings_export_sorted_evolution_event_id_entries
-		clear_array = settings_export_sorted_evolution_type_entries
-		clear_array = settings_export_sorted_evolution_stage_entries
-		clear_array = settings_export_sorted_evolution_value_entries
+	clear_array = settings_export_evolution_type_entries
+	clear_array = settings_export_evolution_stage_entries
+	clear_array = settings_export_evolution_value_entries
+	clear_array = settings_export_sorted_event_id_entries
+	clear_array = settings_export_sorted_event_value_entries
+	clear_array = settings_export_sorted_cluster_id_entries
+	clear_array = settings_export_sorted_cluster_value_entries
+	clear_array = settings_export_sorted_evolution_event_id_entries
+	clear_array = settings_export_sorted_evolution_type_entries
+	clear_array = settings_export_sorted_evolution_stage_entries
+	clear_array = settings_export_sorted_evolution_value_entries
 
-		clear_array = global.events_log_open_event_detail_entries
+	clear_array = global.events_log_open_event_detail_entries
 	if = {
 		limit = {
 			has_country_flag = events_log_event_details_open
