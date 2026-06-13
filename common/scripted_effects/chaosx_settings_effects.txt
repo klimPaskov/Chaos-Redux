@@ -1359,22 +1359,25 @@ select_random_event_id = {
 
 # Fire event by ID
 fire_event_by_id = {
-    set_temp_variable = { event_id = settings_selected_event_id }
-    fire_event_by_temp_id_no_cluster = yes
-    log = "CHAOS REDUX SETTINGS: Manually triggered event ID [?settings_selected_event_id]"
+	set_temp_variable = { event_id = settings_selected_event_id }
+	fire_event_by_temp_id_no_cluster = yes
+	if = {
+		limit = { check_variable = { event_fire_dispatched > 0 } }
+		log = "CHAOS REDUX SETTINGS: Manually triggered event ID [?settings_selected_event_id|.0]"
+	}
 }
 
 
 # Fire selected event
 fire_selected_event = {
-    meta_effect = {
-        text = {
-            country_event = {
-                id = chaosx.nr[EVENT_ID].1
-            }
-        }
-        EVENT_ID = "[?settings_selected_event_id]"
-    }
+	meta_effect = {
+		text = {
+			country_event = {
+				id = chaosx.nr[EVENT_ID].1
+			}
+		}
+		EVENT_ID = "[?settings_selected_event_id|.0]"
+	}
 }
 
 # Update last fired event display
@@ -4159,20 +4162,21 @@ fire_event_by_temp_id = {
 }
 
 fire_event_by_temp_id_no_cluster = {
-    # Input: temp variable `event_id`
-    set_temp_variable = { event_single_fire_allowed = 1 }
+	# Input: temp variable `event_id`
+	set_temp_variable = { event_single_fire_allowed = 1 }
+	set_temp_variable = { event_fire_dispatched = 0 }
 
 	if = {
 		limit = { check_variable = { event_id = 4 } }
 		random_war_setup_context = yes
-        if = {
-            limit = {
-                check_variable = {
-                    var = random_war_context_ready
-                    value = 1
-                    compare = less_than
-                }
-            }
+		if = {
+			limit = {
+				check_variable = {
+					var = random_war_context_ready
+					value = 1
+					compare = less_than
+				}
+			}
 			set_temp_variable = { event_single_fire_allowed = 0 }
 		}
 	}
@@ -4190,45 +4194,49 @@ fire_event_by_temp_id_no_cluster = {
 	}
 
 	if = {
-        limit = {
-            check_variable = {
-                var = event_single_fire_allowed
-                value = 0
-                compare = greater_than
-            }
-        }
-        get_event_type = yes
+		limit = {
+			check_variable = {
+				var = event_single_fire_allowed
+				value = 0
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { event_fire_record_id = event_id }
 
-        if = {
-            limit = { check_variable = { event_type = constant:event_system_event_type.major } }
-            on_major_event_fired = yes
-        }
-        else_if = {
-            limit = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
-            on_repeatable_event_fired = yes
-        }
-        else_if = {
-            limit = { check_variable = { event_type = constant:event_system_event_type.fire_once } }
-            on_fire_once_event_fired = yes
-        }
+		if = {
+			limit = { check_variable = { event_fire_record_id = 4 } }
+			random_war_fire_current_context = yes
+		}
+		else = {
+			meta_effect = {
+				text = {
+					country_event = {
+						id = chaosx.nr[EVENT_ID].1
+					}
+				}
+				EVENT_ID = "[?event_fire_record_id|.0]"
+			}
+		}
 
-        if = {
-            limit = { check_variable = { event_id = 4 } }
-            random_war_fire_current_context = yes
-        }
-        else = {
-            meta_effect = {
-                text = {
-                    country_event = {
-                        id = chaosx.nr[EVENT_ID].1
-                    }
-                }
-                EVENT_ID = "[?event_id]"
-            }
-        }
+		set_temp_variable = { event_fire_dispatched = 1 }
+		set_temp_variable = { event_id = event_fire_record_id }
+		get_event_type = yes
 
-        update_last_fired_event_display = yes
-    }
+		if = {
+			limit = { check_variable = { event_type = constant:event_system_event_type.major } }
+			on_major_event_fired = yes
+		}
+		else_if = {
+			limit = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+			on_repeatable_event_fired = yes
+		}
+		else_if = {
+			limit = { check_variable = { event_type = constant:event_system_event_type.fire_once } }
+			on_fire_once_event_fired = yes
+		}
+
+		update_last_fired_event_display = yes
+	}
 }
 
 # ============================================================================
