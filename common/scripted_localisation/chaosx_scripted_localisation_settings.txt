@@ -23,6 +23,98 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetChaosxSettingsExportPayload
+	text = {
+		trigger = {
+			always = yes
+			set_temp_variable = { settings_export_loc_scalar_index = 0 }
+			set_temp_variable = { settings_export_loc_event_index = 0 }
+			set_temp_variable = { settings_export_loc_cluster_index = 0 }
+			set_temp_variable = { settings_export_loc_evolution_index = 0 }
+		}
+		localization_key = chaosx.settings.export.payload
+	}
+}
+
+defined_text = {
+	name = GetChaosxSettingsExportScalarRows
+	text = {
+		trigger = {
+			NOT = { check_variable = { settings_export_loc_scalar_index < settings_export_scalar_key_entries^num } }
+			set_temp_variable = { settings_export_loc_scalar_index = 0 }
+		}
+		localization_key = chaosx.settings.export.empty
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { settings_export_scalar_key = settings_export_scalar_key_entries^settings_export_loc_scalar_index }
+			set_temp_variable = { settings_export_scalar_value = settings_export_scalar_value_entries^settings_export_loc_scalar_index }
+			add_to_temp_variable = { settings_export_loc_scalar_index = 1 }
+		}
+		localization_key = "chaosx.settings.export.scalar.[?settings_export_scalar_key|.0]"
+	}
+}
+
+defined_text = {
+	name = GetChaosxSettingsExportEventRows
+	text = {
+		trigger = {
+			NOT = { check_variable = { settings_export_loc_event_index < settings_export_event_id_entries^num } }
+			set_temp_variable = { settings_export_loc_event_index = 0 }
+		}
+		localization_key = chaosx.settings.export.empty
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { settings_export_event_id = settings_export_event_id_entries^settings_export_loc_event_index }
+			set_temp_variable = { settings_export_event_value = settings_export_event_value_entries^settings_export_loc_event_index }
+			add_to_temp_variable = { settings_export_loc_event_index = 1 }
+		}
+		localization_key = chaosx.settings.export.event_row
+	}
+}
+
+defined_text = {
+	name = GetChaosxSettingsExportClusterRows
+	text = {
+		trigger = {
+			NOT = { check_variable = { settings_export_loc_cluster_index < settings_export_cluster_id_entries^num } }
+			set_temp_variable = { settings_export_loc_cluster_index = 0 }
+		}
+		localization_key = chaosx.settings.export.empty
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { settings_export_cluster_id = settings_export_cluster_id_entries^settings_export_loc_cluster_index }
+			set_temp_variable = { settings_export_cluster_value = settings_export_cluster_value_entries^settings_export_loc_cluster_index }
+			add_to_temp_variable = { settings_export_loc_cluster_index = 1 }
+		}
+		localization_key = chaosx.settings.export.cluster_row
+	}
+}
+
+defined_text = {
+	name = GetChaosxSettingsExportEvolutionRows
+	text = {
+		trigger = {
+			NOT = { check_variable = { settings_export_loc_evolution_index < settings_export_evolution_event_id_entries^num } }
+			set_temp_variable = { settings_export_loc_evolution_index = 0 }
+		}
+		localization_key = chaosx.settings.export.empty
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { settings_export_evolution_event_id = settings_export_evolution_event_id_entries^settings_export_loc_evolution_index }
+			set_temp_variable = { settings_export_evolution_type = settings_export_evolution_type_entries^settings_export_loc_evolution_index }
+			set_temp_variable = { settings_export_evolution_stage = settings_export_evolution_stage_entries^settings_export_loc_evolution_index }
+			set_temp_variable = { settings_export_evolution_value = settings_export_evolution_value_entries^settings_export_loc_evolution_index }
+			add_to_temp_variable = { settings_export_loc_evolution_index = 1 }
+		}
+		localization_key = chaosx.settings.export.evolution_row
+	}
+}
+
+defined_text = {
     name = GetSettingsButtonText
     text = {
         trigger = { always = yes }
