@@ -75,7 +75,7 @@ A candidate should normally meet all of these conditions.
 | --- | --- |
 | AI control | Must not be controlled by a human player |
 | Minor status | Must not be a major at selection |
-| Few states | Prefer one owned and controlled state. Allow two or three only if needed for candidate scarcity |
+| Few states | Keep Fury focused on minor countries, but do not rank valid candidates by state count during ordinary actor selection |
 | Mainland presence | Capital must have a land route or direct land neighbor candidate. Pure island states are excluded |
 | Alive and sovereign | Must exist, must not be capitulated, must not be a subject unless the scenario type explicitly allows subject breakage |
 | Normal country | Exclude special chaos countries that should not behave like normal states |
@@ -83,15 +83,9 @@ A candidate should normally meet all of these conditions.
 | No fresh cooldown | Must not have recently been Fury, defeated Fury, or blocked by a local Fury cooldown |
 | Focus suitability | Prefer countries with generic or light trees so the shared Fury tree can be loaded cleanly |
 
-### Fallback candidate broadening
+### Candidate randomness
 
-If the normal selector cannot find enough valid candidates, broaden in this order.
-
-1. Allow two-state mainland minors.
-2. Allow three-state mainland minors.
-3. Allow weak coastal mainland minors with land neighbors.
-4. Allow isolated small mainland minors that can reach a target through a direct strait if the target passes the normal target gates.
-5. Abort if no safe target can be built.
+Ordinary Fury actor selection should use one eligible pool and choose a random country from it. It should not sort candidates by state count, industry, region, or perceived suitability once they pass the safe-selection gate.
 
 Do not broaden into player countries. Do not use islands that have no practical neighbor. Do not select majors simply because there are no minors left.
 
