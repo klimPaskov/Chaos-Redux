@@ -501,6 +501,7 @@ For every super-event audio package:
 3. Download the selected audio from its legitimate source.
 4. Preserve the downloaded source file under an appropriate docs or source-audio path when practical.
 5. Convert the final in-game file to game-ready `.ogg`.
+   Game-ready super-event `.ogg` files must be 44.1 kHz / 44100 Hz.
 6. Place the final `.ogg` in the correct mod audio folder, normally `music/` for super-event music-channel playback.
 7. Add or update `music/chaosx_super_event_music.asset` definitions for every dynamic volume variant that the current audio helper can call.
 8. Add or update `music/chaosx_super_event_music.txt` so the station includes a representative entry for every final super-event track.
@@ -587,6 +588,7 @@ If metadata cannot identify the author, title, source, license, or duration, and
 Before finishing any super-event task, confirm:
 
 - the final `.ogg` exists
+- the final `.ogg` is 44.1 kHz / 44100 Hz
 - the file is in the correct folder
 - the selected track is between 1 and 2 minutes long, or the exception is documented
 - the music definitions point to the correct `.ogg`
