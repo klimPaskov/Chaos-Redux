@@ -166,6 +166,277 @@ settings_export_add_scalar_row = {
 	}
 }
 
+settings_export_sort_event_rows_by_id = {
+	clear_array = settings_export_sorted_event_id_entries
+	clear_array = settings_export_sorted_event_value_entries
+
+	set_temp_variable = { settings_export_sort_source_count = settings_export_event_id_entries^num }
+	set_temp_variable = { settings_export_sort_sorted_count = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { settings_export_sort_sorted_count < settings_export_sort_source_count } }
+
+		set_temp_variable = { settings_export_sort_best_index = -1 }
+		set_temp_variable = { settings_export_sort_scan_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { settings_export_sort_scan_index < settings_export_sort_source_count } }
+			if = {
+				limit = {
+					check_variable = {
+						var = settings_export_event_id_entries^settings_export_sort_scan_index
+						value = 0
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { settings_export_sort_candidate_id = settings_export_event_id_entries^settings_export_sort_scan_index }
+				if = {
+					limit = { check_variable = { settings_export_sort_best_index < 0 } }
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_id = settings_export_sort_candidate_id }
+				}
+				else_if = {
+					limit = { check_variable = { settings_export_sort_candidate_id < settings_export_sort_best_id } }
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_id = settings_export_sort_candidate_id }
+				}
+			}
+			add_to_temp_variable = { settings_export_sort_scan_index = 1 }
+		}
+
+		if = {
+			limit = { check_variable = { settings_export_sort_best_index > -1 } }
+			add_to_array = {
+				array = settings_export_sorted_event_id_entries
+				value = settings_export_event_id_entries^settings_export_sort_best_index
+			}
+			add_to_array = {
+				array = settings_export_sorted_event_value_entries
+				value = settings_export_event_value_entries^settings_export_sort_best_index
+			}
+			set_variable = { settings_export_event_id_entries^settings_export_sort_best_index = -1 }
+			add_to_temp_variable = { settings_export_sort_sorted_count = 1 }
+		}
+		else = {
+			set_temp_variable = { settings_export_sort_sorted_count = settings_export_sort_source_count }
+		}
+	}
+
+	clear_array = settings_export_event_id_entries
+	clear_array = settings_export_event_value_entries
+	for_loop_effect = {
+		start = 0
+		end = settings_export_sorted_event_id_entries^num
+		value = settings_export_sort_copy_index
+		add_to_array = {
+			array = settings_export_event_id_entries
+			value = settings_export_sorted_event_id_entries^settings_export_sort_copy_index
+		}
+		add_to_array = {
+			array = settings_export_event_value_entries
+			value = settings_export_sorted_event_value_entries^settings_export_sort_copy_index
+		}
+	}
+
+	clear_array = settings_export_sorted_event_id_entries
+	clear_array = settings_export_sorted_event_value_entries
+}
+
+settings_export_sort_cluster_rows_by_id = {
+	clear_array = settings_export_sorted_cluster_id_entries
+	clear_array = settings_export_sorted_cluster_value_entries
+
+	set_temp_variable = { settings_export_sort_source_count = settings_export_cluster_id_entries^num }
+	set_temp_variable = { settings_export_sort_sorted_count = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { settings_export_sort_sorted_count < settings_export_sort_source_count } }
+
+		set_temp_variable = { settings_export_sort_best_index = -1 }
+		set_temp_variable = { settings_export_sort_scan_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { settings_export_sort_scan_index < settings_export_sort_source_count } }
+			if = {
+				limit = {
+					check_variable = {
+						var = settings_export_cluster_id_entries^settings_export_sort_scan_index
+						value = 0
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { settings_export_sort_candidate_id = settings_export_cluster_id_entries^settings_export_sort_scan_index }
+				if = {
+					limit = { check_variable = { settings_export_sort_best_index < 0 } }
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_id = settings_export_sort_candidate_id }
+				}
+				else_if = {
+					limit = { check_variable = { settings_export_sort_candidate_id < settings_export_sort_best_id } }
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_id = settings_export_sort_candidate_id }
+				}
+			}
+			add_to_temp_variable = { settings_export_sort_scan_index = 1 }
+		}
+
+		if = {
+			limit = { check_variable = { settings_export_sort_best_index > -1 } }
+			add_to_array = {
+				array = settings_export_sorted_cluster_id_entries
+				value = settings_export_cluster_id_entries^settings_export_sort_best_index
+			}
+			add_to_array = {
+				array = settings_export_sorted_cluster_value_entries
+				value = settings_export_cluster_value_entries^settings_export_sort_best_index
+			}
+			set_variable = { settings_export_cluster_id_entries^settings_export_sort_best_index = -1 }
+			add_to_temp_variable = { settings_export_sort_sorted_count = 1 }
+		}
+		else = {
+			set_temp_variable = { settings_export_sort_sorted_count = settings_export_sort_source_count }
+		}
+	}
+
+	clear_array = settings_export_cluster_id_entries
+	clear_array = settings_export_cluster_value_entries
+	for_loop_effect = {
+		start = 0
+		end = settings_export_sorted_cluster_id_entries^num
+		value = settings_export_sort_copy_index
+		add_to_array = {
+			array = settings_export_cluster_id_entries
+			value = settings_export_sorted_cluster_id_entries^settings_export_sort_copy_index
+		}
+		add_to_array = {
+			array = settings_export_cluster_value_entries
+			value = settings_export_sorted_cluster_value_entries^settings_export_sort_copy_index
+		}
+	}
+
+	clear_array = settings_export_sorted_cluster_id_entries
+	clear_array = settings_export_sorted_cluster_value_entries
+}
+
+settings_export_sort_evolution_rows_by_id = {
+	clear_array = settings_export_sorted_evolution_event_id_entries
+	clear_array = settings_export_sorted_evolution_type_entries
+	clear_array = settings_export_sorted_evolution_stage_entries
+	clear_array = settings_export_sorted_evolution_value_entries
+
+	set_temp_variable = { settings_export_sort_source_count = settings_export_evolution_event_id_entries^num }
+	set_temp_variable = { settings_export_sort_sorted_count = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { settings_export_sort_sorted_count < settings_export_sort_source_count } }
+
+		set_temp_variable = { settings_export_sort_best_index = -1 }
+		set_temp_variable = { settings_export_sort_scan_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { settings_export_sort_scan_index < settings_export_sort_source_count } }
+			if = {
+				limit = {
+					check_variable = {
+						var = settings_export_evolution_event_id_entries^settings_export_sort_scan_index
+						value = 0
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { settings_export_sort_candidate_event_id = settings_export_evolution_event_id_entries^settings_export_sort_scan_index }
+				set_temp_variable = { settings_export_sort_candidate_type = settings_export_evolution_type_entries^settings_export_sort_scan_index }
+				set_temp_variable = { settings_export_sort_candidate_stage = settings_export_evolution_stage_entries^settings_export_sort_scan_index }
+				if = {
+					limit = { check_variable = { settings_export_sort_best_index < 0 } }
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_event_id = settings_export_sort_candidate_event_id }
+					set_temp_variable = { settings_export_sort_best_type = settings_export_sort_candidate_type }
+					set_temp_variable = { settings_export_sort_best_stage = settings_export_sort_candidate_stage }
+				}
+				else_if = {
+					limit = { check_variable = { settings_export_sort_candidate_event_id < settings_export_sort_best_event_id } }
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_event_id = settings_export_sort_candidate_event_id }
+					set_temp_variable = { settings_export_sort_best_type = settings_export_sort_candidate_type }
+					set_temp_variable = { settings_export_sort_best_stage = settings_export_sort_candidate_stage }
+				}
+				else_if = {
+					limit = {
+						check_variable = { settings_export_sort_candidate_event_id = settings_export_sort_best_event_id }
+						check_variable = { settings_export_sort_candidate_type < settings_export_sort_best_type }
+					}
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_event_id = settings_export_sort_candidate_event_id }
+					set_temp_variable = { settings_export_sort_best_type = settings_export_sort_candidate_type }
+					set_temp_variable = { settings_export_sort_best_stage = settings_export_sort_candidate_stage }
+				}
+				else_if = {
+					limit = {
+						check_variable = { settings_export_sort_candidate_event_id = settings_export_sort_best_event_id }
+						check_variable = { settings_export_sort_candidate_type = settings_export_sort_best_type }
+						check_variable = { settings_export_sort_candidate_stage < settings_export_sort_best_stage }
+					}
+					set_temp_variable = { settings_export_sort_best_index = settings_export_sort_scan_index }
+					set_temp_variable = { settings_export_sort_best_event_id = settings_export_sort_candidate_event_id }
+					set_temp_variable = { settings_export_sort_best_type = settings_export_sort_candidate_type }
+					set_temp_variable = { settings_export_sort_best_stage = settings_export_sort_candidate_stage }
+				}
+			}
+			add_to_temp_variable = { settings_export_sort_scan_index = 1 }
+		}
+
+		if = {
+			limit = { check_variable = { settings_export_sort_best_index > -1 } }
+			add_to_array = {
+				array = settings_export_sorted_evolution_event_id_entries
+				value = settings_export_evolution_event_id_entries^settings_export_sort_best_index
+			}
+			add_to_array = {
+				array = settings_export_sorted_evolution_type_entries
+				value = settings_export_evolution_type_entries^settings_export_sort_best_index
+			}
+			add_to_array = {
+				array = settings_export_sorted_evolution_stage_entries
+				value = settings_export_evolution_stage_entries^settings_export_sort_best_index
+			}
+			add_to_array = {
+				array = settings_export_sorted_evolution_value_entries
+				value = settings_export_evolution_value_entries^settings_export_sort_best_index
+			}
+			set_variable = { settings_export_evolution_event_id_entries^settings_export_sort_best_index = -1 }
+			add_to_temp_variable = { settings_export_sort_sorted_count = 1 }
+		}
+		else = {
+			set_temp_variable = { settings_export_sort_sorted_count = settings_export_sort_source_count }
+		}
+	}
+
+	clear_array = settings_export_evolution_event_id_entries
+	clear_array = settings_export_evolution_type_entries
+	clear_array = settings_export_evolution_stage_entries
+	clear_array = settings_export_evolution_value_entries
+	for_loop_effect = {
+		start = 0
+		end = settings_export_sorted_evolution_event_id_entries^num
+		value = settings_export_sort_copy_index
+		add_to_array = {
+			array = settings_export_evolution_event_id_entries
+			value = settings_export_sorted_evolution_event_id_entries^settings_export_sort_copy_index
+		}
+		add_to_array = {
+			array = settings_export_evolution_type_entries
+			value = settings_export_sorted_evolution_type_entries^settings_export_sort_copy_index
+		}
+		add_to_array = {
+			array = settings_export_evolution_stage_entries
+			value = settings_export_sorted_evolution_stage_entries^settings_export_sort_copy_index
+		}
+		add_to_array = {
+			array = settings_export_evolution_value_entries
+			value = settings_export_sorted_evolution_value_entries^settings_export_sort_copy_index
+		}
+	}
+
+	clear_array = settings_export_sorted_evolution_event_id_entries
+	clear_array = settings_export_sorted_evolution_type_entries
+	clear_array = settings_export_sorted_evolution_stage_entries
+	clear_array = settings_export_sorted_evolution_value_entries
+}
+
 export_chaosx_settings_config_to_log = {
 	initialize_triggerable_scenarios_settings = yes
 	if = {
@@ -305,13 +576,21 @@ export_chaosx_settings_config_to_log = {
 	clear_array = settings_export_cluster_id_entries
 	clear_array = settings_export_cluster_value_entries
 	clear_array = settings_export_evolution_event_id_entries
-	clear_array = settings_export_evolution_type_entries
-	clear_array = settings_export_evolution_stage_entries
-	clear_array = settings_export_evolution_value_entries
+		clear_array = settings_export_evolution_type_entries
+		clear_array = settings_export_evolution_stage_entries
+		clear_array = settings_export_evolution_value_entries
+		clear_array = settings_export_sorted_event_id_entries
+		clear_array = settings_export_sorted_event_value_entries
+		clear_array = settings_export_sorted_cluster_id_entries
+		clear_array = settings_export_sorted_cluster_value_entries
+		clear_array = settings_export_sorted_evolution_event_id_entries
+		clear_array = settings_export_sorted_evolution_type_entries
+		clear_array = settings_export_sorted_evolution_stage_entries
+		clear_array = settings_export_sorted_evolution_value_entries
 
-	set_temp_variable = { settings_export_scalar_key = 1 }
-	set_temp_variable = { settings_export_scalar_value = settings_export_event_system_enabled }
-	settings_export_add_scalar_row = yes
+		set_temp_variable = { settings_export_scalar_key = 1 }
+		set_temp_variable = { settings_export_scalar_value = settings_export_event_system_enabled }
+		settings_export_add_scalar_row = yes
 	set_temp_variable = { settings_export_scalar_key = 2 }
 	set_temp_variable = { settings_export_scalar_value = settings_export_force_trigger_mode }
 	settings_export_add_scalar_row = yes
@@ -589,23 +868,35 @@ export_chaosx_settings_config_to_log = {
 				array = settings_export_evolution_value_entries
 				value = settings_export_evolution_enabled
 			}
+			}
 		}
-	}
 
-	log = "[GetChaosxSettingsExportPayload]"
+		settings_export_sort_event_rows_by_id = yes
+		settings_export_sort_cluster_rows_by_id = yes
+		settings_export_sort_evolution_rows_by_id = yes
 
-	clear_array = settings_export_scalar_key_entries
-	clear_array = settings_export_scalar_value_entries
-	clear_array = settings_export_event_id_entries
+		log = "[GetChaosxSettingsExportPayload]"
+
+		clear_array = settings_export_scalar_key_entries
+		clear_array = settings_export_scalar_value_entries
+		clear_array = settings_export_event_id_entries
 	clear_array = settings_export_event_value_entries
 	clear_array = settings_export_cluster_id_entries
 	clear_array = settings_export_cluster_value_entries
 	clear_array = settings_export_evolution_event_id_entries
-	clear_array = settings_export_evolution_type_entries
-	clear_array = settings_export_evolution_stage_entries
-	clear_array = settings_export_evolution_value_entries
+		clear_array = settings_export_evolution_type_entries
+		clear_array = settings_export_evolution_stage_entries
+		clear_array = settings_export_evolution_value_entries
+		clear_array = settings_export_sorted_event_id_entries
+		clear_array = settings_export_sorted_event_value_entries
+		clear_array = settings_export_sorted_cluster_id_entries
+		clear_array = settings_export_sorted_cluster_value_entries
+		clear_array = settings_export_sorted_evolution_event_id_entries
+		clear_array = settings_export_sorted_evolution_type_entries
+		clear_array = settings_export_sorted_evolution_stage_entries
+		clear_array = settings_export_sorted_evolution_value_entries
 
-	clear_array = global.events_log_open_event_detail_entries
+		clear_array = global.events_log_open_event_detail_entries
 	if = {
 		limit = {
 			has_country_flag = events_log_event_details_open
