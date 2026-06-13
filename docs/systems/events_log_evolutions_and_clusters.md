@@ -48,11 +48,11 @@ Evolution rows use the specific stage title for that milestone, such as `Triangu
 
 ## Events tab sorting and filtering
 Events tab supports:
-- Filter: `All`, `Enabled`, `Disabled`
-- Sort mode: `By Event ID`, `By Fired`, `By Weight`, `By Type`
+- Filter: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`
+- Sort mode: `By Event ID`, `By Fired`, `By Weight`
 - Sort order: `Ascending`, `Descending`
 
-Sorting uses deterministic tie-breaking by event id.
+`By Fired` shows only events with at least one logged firing. Sorting uses deterministic tie-breaking by event id.
 
 ## Clusters tab sorting and filtering
 Clusters tab supports:

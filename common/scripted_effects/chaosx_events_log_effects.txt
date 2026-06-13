@@ -2804,14 +2804,14 @@ cycle_events_log_events_sort_mode_prev = {
         subtract_from_variable = { settings_events_log_events_sort_mode = 1 }
     }
     else = {
-        set_variable = { settings_events_log_events_sort_mode = 3 }
+        set_variable = { settings_events_log_events_sort_mode = 2 }
     }
     rebuild_events_log_events_view = yes
 }
 
 cycle_events_log_events_sort_mode_next = {
     if = {
-        limit = { check_variable = { settings_events_log_events_sort_mode < 3 } }
+        limit = { check_variable = { settings_events_log_events_sort_mode < 2 } }
         add_to_variable = { settings_events_log_events_sort_mode = 1 }
     }
     else = {
@@ -2837,14 +2837,14 @@ cycle_events_log_events_filter_prev = {
         subtract_from_variable = { settings_events_log_events_filter_type = 1 }
     }
     else = {
-        set_variable = { settings_events_log_events_filter_type = 2 }
+        set_variable = { settings_events_log_events_filter_type = 5 }
     }
     rebuild_events_log_events_view = yes
 }
 
 cycle_events_log_events_filter_next = {
     if = {
-        limit = { check_variable = { settings_events_log_events_filter_type < 2 } }
+        limit = { check_variable = { settings_events_log_events_filter_type < 5 } }
         add_to_variable = { settings_events_log_events_filter_type = 1 }
     }
     else = {
@@ -2931,7 +2931,7 @@ rebuild_events_log_events_view = {
         set_variable = { settings_events_log_events_sort_mode = 0 }
     }
     if = {
-        limit = { check_variable = { settings_events_log_events_sort_mode > 3 } }
+        limit = { check_variable = { settings_events_log_events_sort_mode > 2 } }
         set_variable = { settings_events_log_events_sort_mode = 0 }
     }
     if = {
@@ -2943,7 +2943,7 @@ rebuild_events_log_events_view = {
         set_variable = { settings_events_log_events_filter_type = 0 }
     }
     if = {
-        limit = { check_variable = { settings_events_log_events_filter_type > 2 } }
+        limit = { check_variable = { settings_events_log_events_filter_type > 5 } }
         set_variable = { settings_events_log_events_filter_type = 0 }
     }
     if = {
@@ -2982,6 +2982,7 @@ rebuild_events_log_events_view = {
             limit = { is_in_array = { global.disabled_events = event_id } }
             set_temp_variable = { events_log_events_is_enabled = 0 }
         }
+        get_event_type = yes
 
         set_temp_variable = { events_log_events_include = 1 }
         if = {
@@ -2998,10 +2999,30 @@ rebuild_events_log_events_view = {
             }
             set_temp_variable = { events_log_events_include = 0 }
         }
+        else_if = {
+            limit = {
+                check_variable = { settings_events_log_events_filter_type = 3 }
+                NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+            }
+            set_temp_variable = { events_log_events_include = 0 }
+        }
+        else_if = {
+            limit = {
+                check_variable = { settings_events_log_events_filter_type = 4 }
+                NOT = { check_variable = { event_type = constant:event_system_event_type.fire_once } }
+            }
+            set_temp_variable = { events_log_events_include = 0 }
+        }
+        else_if = {
+            limit = {
+                check_variable = { settings_events_log_events_filter_type = 5 }
+                NOT = { check_variable = { event_type = constant:event_system_event_type.major } }
+            }
+            set_temp_variable = { events_log_events_include = 0 }
+        }
 
         if = {
             limit = { check_variable = { events_log_events_include > 0 } }
-            get_event_type = yes
 
             set_temp_variable = { events_log_events_unique_flag = 0 }
             if = {
@@ -3034,7 +3055,17 @@ rebuild_events_log_events_view = {
                 }
                 add_to_temp_variable = { events_log_events_history_scan_index = 1 }
             }
+            if = {
+                limit = {
+                    check_variable = { settings_events_log_events_sort_mode = 1 }
+                    check_variable = { events_log_events_fired_count < 1 }
+                }
+                set_temp_variable = { events_log_events_include = 0 }
+            }
+        }
 
+        if = {
+            limit = { check_variable = { events_log_events_include > 0 } }
             set_temp_variable = { events_log_events_live_weight = 0 }
             if = {
                 limit = {
@@ -3118,10 +3149,6 @@ rebuild_events_log_events_view = {
                 else_if = {
                     limit = { check_variable = { settings_events_log_events_sort_mode = 2 } }
                     set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_weight_entries^events_log_events_scan_index }
-                }
-                else_if = {
-                    limit = { check_variable = { settings_events_log_events_sort_mode = 3 } }
-                    set_temp_variable = { events_log_events_candidate_metric = temp_events_log_events_source_event_type_entries^events_log_events_scan_index }
                 }
 
                 if = {
@@ -3222,8 +3249,8 @@ initialize_events_log_settings = {
     set_variable = { settings_events_log_filter_type = 0 } # 0 = all, 1 = major, 2 = repeatable, 3 = fire-once
     set_variable = { settings_events_log_evolution_sort_mode = 0 } # 0 = index, 1 = tier, 2 = stage, 3 = actor
     set_variable = { settings_events_log_evolution_filter_type = 0 } # 0 = all, 1 = major, 2 = minor
-    set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired, 2 = weight, 3 = type
-    set_variable = { settings_events_log_events_filter_type = 0 } # 0 = all, 1 = enabled, 2 = disabled
+    set_variable = { settings_events_log_events_sort_mode = 0 } # 0 = event id, 1 = fired, 2 = weight
+    set_variable = { settings_events_log_events_filter_type = 0 } # 0 = all, 1 = enabled, 2 = disabled, 3 = repeatable, 4 = fire-once, 5 = major
     set_variable = { settings_events_log_cluster_sort_mode = 0 } # 0 = cluster id, 1 = type, 2 = roll, 3 = fired
     set_variable = { settings_events_log_cluster_filter_type = 0 } # 0 = all, 1 = available, 2 = unavailable, 3 = enabled, 4 = disabled
     clr_country_flag = events_log_sort_descending
