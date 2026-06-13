@@ -75,7 +75,7 @@ A candidate should normally meet all of these conditions.
 | --- | --- |
 | AI control | Must not be controlled by a human player |
 | Minor status | Must not be a major at selection |
-| Few states | Keep Fury focused on minor countries, but do not rank valid candidates by state count during ordinary actor selection |
+| Few states | Keep Fury focused on minor countries and weight smaller candidates higher during ordinary actor selection |
 | Mainland presence | Capital must have a land route or direct land neighbor candidate. Pure island states are excluded |
 | Alive and sovereign | Must exist, must not be capitulated, must not be a subject unless the scenario type explicitly allows subject breakage |
 | Normal country | Exclude special chaos countries that should not behave like normal states |
@@ -85,7 +85,7 @@ A candidate should normally meet all of these conditions.
 
 ### Candidate randomness
 
-Ordinary Fury actor selection should use one eligible pool and choose a random country from it. It should not sort candidates by state count, industry, region, or perceived suitability once they pass the safe-selection gate.
+Ordinary Fury actor selection should use one eligible pool and choose a weighted random country from it. Every safe eligible minor should remain possible, but the lottery should favor one-state and two-state countries, weak industry, low fielded armies, low manpower, and several valid neighboring targets. Stronger eligible minors should keep a base chance while losing relative weight for more states, more factories, and larger armies.
 
 Do not broaden into player countries. Do not use islands that have no practical neighbor. Do not select majors simply because there are no minors left.
 
