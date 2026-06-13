@@ -9,16 +9,16 @@ Create the dedicated Empty Seat leader portrait package for The Holy Realm after
 - Fictional symbolic portrait, not a real person and not a generated historical leader.
 - Vertical `156x210` leader portrait composition.
 - Empty throne, lotus cushion, bell, black-gold mandala arch, pale ash light, no visible person.
-- Quiet aftermath: stillness, ash dust, candle or halo breathing, no spectacle.
+- Quiet aftermath: stillness, ash dust, candle or halo breathing, no spectacle, slower than the previous pulse.
 - Do not rely on a simple vignette, transform, zoom, warp, or color-filter pulse from one still image.
 - No readable text, letters, numbers, flags, maps, weapons, blood, gore, explosions, or modern UI.
 
 ## Technical Targets
 
-- Source frames: 16 generated PNGs split from a generated 4x4 animation source sheet.
+- Source frames: 8 separately generated key-state PNGs expanded into 16 playback source-frame files by mirrored ordering.
 - Processed frames: `156x210` PNGs.
 - Static fallback DDS: `gfx/leaders/THR/portrait_THR_empty_seat.dds`.
-- Final frame sheet: `2496x210` DDS, 16 horizontal frames.
+- Final frame sheet: `2496x210` DDS, 16 horizontal frames at 4 FPS.
 - Animated sprite: `GFX_portrait_THR_empty_seat_animated`.
 
 ## Required Outputs
