@@ -1146,8 +1146,8 @@ focus_tree = {
 		x = 14
 		y = 11
 		cost = @thr_focus_cost_medium
-		prerequisite = { focus = THR_the_awakened_one }
 		available = {
+			has_completed_focus = THR_the_awakened_one
 			custom_trigger_tooltip = {
 				tooltip = THR_show_the_powers_ready_tt
 				has_country_flag = holy_realm_buddha_power_demonstrated
@@ -1184,9 +1184,12 @@ focus_tree = {
 		x = 18
 		y = 15
 		cost = @thr_focus_cost_medium
-		prerequisite = { focus = THR_lamps_remain_lit focus = THR_throne_without_body }
 		available = {
 			has_completed_focus = THR_the_awakened_one
+			OR = {
+				has_completed_focus = THR_lamps_remain_lit
+				has_completed_focus = THR_throne_without_body
+			}
 			custom_trigger_tooltip = {
 				tooltip = THR_powers_are_not_toys_ready_tt
 				check_variable = {
@@ -1691,8 +1694,8 @@ focus_tree = {
 		id = THR_white_flags_foreign_roads
 		icon = GFX_focus_generic_league_of_nations
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE }
-		x = 14
-		y = 16
+		x = 10
+		y = 15
 		cost = @thr_focus_cost_long
 		prerequisite = { focus = THR_lamps_remain_lit }
 		available = {
@@ -1976,9 +1979,9 @@ focus_tree = {
 		x = 24
 		y = 15
 		cost = @thr_focus_cost_major
-		prerequisite = { focus = THR_throne_without_body }
-		prerequisite = { focus = THR_show_the_powers }
 		available = {
+			has_completed_focus = THR_throne_without_body
+			has_completed_focus = THR_show_the_powers
 			custom_trigger_tooltip = {
 				tooltip = THR_chaos_tier_focus_tt
 				holy_realm_chaos_at_least_chaos_tier = yes
@@ -2828,8 +2831,8 @@ focus_tree = {
 		id = THR_letters_to_war_tired
 		icon = GFX_focus_generic_treaty
 		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_THR_PEACE }
-		x = 10
-		y = 15
+		x = 14
+		y = 16
 		cost = @thr_focus_cost_medium
 		prerequisite = { focus = THR_lamps_remain_lit }
 		available = {
@@ -2915,8 +2918,10 @@ focus_tree = {
 				holy_realm_establish_mandala_of_nations = yes
 				set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.mandala_of_nations }
 				holy_realm_show_super_event = yes
-				add_faction_initiative = 2
-				add_faction_power_projection = 100
+				hidden_effect = {
+					add_faction_initiative = 2
+					add_faction_power_projection = 100
+				}
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.large_gain }
 				holy_realm_add_mandala_reach = yes
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
