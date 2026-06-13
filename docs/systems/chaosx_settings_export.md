@@ -2,16 +2,15 @@
 
 The Save Settings button calls `export_chaosx_settings_config_to_log` from `common/scripted_effects/chaosx_settings_effects.txt`.
 
-The export writes technical records to `logs/variable_dumps/chaos_redux_settings_export.log` using `print_variables`. `game.log` only receives start and end markers. The export records are intentionally parser-oriented:
+The export writes technical records to `game.log` between `CHAOS REDUX SETTINGS EXPORT START` and `CHAOS REDUX SETTINGS EXPORT END` markers. The engine prefixes every `log` call in `game.log`; the record payload after that prefix is intentionally parser-oriented:
 
 - scalar settings use `token=value`
-- countries use `country_event_system.<TAG>=1`
 - events use `event.<event_id>=0|1`
 - event clusters use `event_cluster.<cluster_id>=0|1`
 - evolutions use `evolution.<event_id>.<type>.<stage>=0|1`
 
-Only countries with the event system enabled are written. Missing countries should be treated as disabled by default.
+The export does not write country identities, selected country tags, or per-country event-system lists. `event_system.enabled` is the generic current-scope event-system setting that a future importer should apply to its own active scope.
 
 The export does not include event-history status such as fired counts, unique counts, actor history, dates, or status-log totals.
 
-The export avoids recursive scripted localisation and oversized single-line `game.log` payloads because those can crash the engine when the full event/evolution registry is expanded.
+The export avoids `print_variables`, recursive scripted localisation, and oversized single-line payloads because those paths either dump unrelated engine state or can crash the engine when the full event/evolution registry is expanded.
