@@ -28,6 +28,8 @@ Current coverage includes:
 - `ZIN`
 - countries using the `The Holy Realm` cosmetic tag
 - countries using the `The Great Mandala` or `The Silent Mandala` Holy Realm identity cosmetic tags
+- countries with the Holy Realm active marker
+- Germany Mengele civil-war and post-coup state markers
 
 ## is_actual_nonhuman_country
 

@@ -218,7 +218,7 @@ Later evolutions can include special Chaos Redux countries that are safe for nor
 Use a compatibility marker or scripted trigger, for example:
 
 - `chaosx_can_join_random_war`
-- `chaosx_is_random_war_compatible_special_country = yes`
+- `is_special_chaos_country = yes`
 
 Use three simple roles:
 
