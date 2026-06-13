@@ -6,7 +6,7 @@
 - Event id: `007`
 - Event slug: `fury`
 - Asset type: animated scripted GUI leader portrait overlay
-- In-game use: decorative flame loop shown over Fury country leader portraits
+- In-game use: decorative flame loop shown over selected Fury country leader portraits in the diplomacy tab
 - Source mode: `$imagegen`, built-in tool
 - Source prompt: generated as an 8-frame horizontal HOI4-style supernatural fire overlay sheet on a flat `#00ff00` chroma-key background; flame tongues rise from the lower and side edges of a `156x210` leader portrait while keeping the central face area clear; no text, symbols, modern UI, checkerboard, watermark, shadows, or full opaque border.
 - Source PNG sheet: `docs/assets/007_fury/leader_flame_overlay/source_png/fury_leader_flame_overlay_source_sheet.png`

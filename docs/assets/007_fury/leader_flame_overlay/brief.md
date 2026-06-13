@@ -1,8 +1,8 @@
 # Fury Leader Flame Overlay Animation Brief
 
 - Asset name: `fury_leader_flame_overlay`
-- In-game use: decorative looping supernatural fire overlay for Fury country leaders
-- Gameplay surface: HOI4 country leader portrait overlay on or around a `156x210` portrait
+- In-game use: decorative looping supernatural fire overlay for selected Fury country leaders in the diplomacy tab
+- Gameplay surface: HOI4 selected-country diplomacy leader portrait overlay on or around a `156x210` portrait
 - Target frame size: `156x210`
 - Frame count: `8`
 - Sheet size: `1248x210`
@@ -29,7 +29,7 @@
   - contact sheet: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_contact.png`
   - review gif: `docs/assets/007_fury/leader_flame_overlay/previews/fury_leader_flame_overlay_preview.gif`
 - Target `.gfx` file: `interface/007_fury.gfx`
-- Target `.gui` file: parent will decide during wiring
+- Target `.gui` file: `interface/007_fury_leader_overlay.gui`
 - Visual direction:
   - transparent-background flame overlay that hugs the lower edge and side edges of a leader portrait
   - central face area stays mostly visible

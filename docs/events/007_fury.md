@@ -181,7 +181,7 @@ Current wiring uses stable Fury-specific assets:
 
 Final Fury art and audio use stable gameplay IDs. Report, news, and super-event images use street-level Fury outbreak imagery: rogue soldiers, civilians fleeing, smoke, burning streets, and sudden neighbor-war panic. They should not be replaced with map rooms, command desks, ledgers, route strings, globes, or war-office planning scenes.
 
-The leader overlay is a scripted GUI presentation layer, not a replacement country portrait. `common/scripted_guis/007_fury_scripted_guis.txt` shows it on selected Fury countries in the diplomacy leader panel, and on the politics country leader portrait when the current country itself has Fury. `interface/007_fury_leader_overlay.gui` attaches the overlay to the vanilla leader portrait positions without editing vanilla GUI files.
+The leader overlay is a scripted GUI presentation layer, not a replacement country portrait. `common/scripted_guis/007_fury_scripted_guis.txt` shows it only on selected Fury countries in the diplomacy leader panel. `interface/007_fury_leader_overlay.gui` attaches the overlay to the vanilla diplomacy leader portrait position without editing vanilla GUI files.
 
 Recommended final asset paths:
 
