@@ -30,7 +30,7 @@ Implemented in `interface/007_fury_leader_overlay.gui` and `common/scripted_guis
 - `fury_diplomacy_leader_overlay_scripted_gui`
   - context: `selected_country_context`
   - parent: `countrydiplomacyview`
-  - visible when selected country `is_fury_actor = yes`
+  - icon-level visibility: `fury_diplomacy_leader_flame_overlay_visible = { is_fury_actor = yes }`
   - position matches vanilla `countrydiplomacyview.gui` `leader_portrait` via summed parent coordinates at `x = 20`, `y = 170`, `scale = 0.74`
 
 ## Validation
@@ -40,4 +40,4 @@ Implemented in `interface/007_fury_leader_overlay.gui` and `common/scripted_guis
 - Sheet DDS: `1248x210`, `srgba`.
 - Static DDS: `156x210`, `srgba`.
 - Review GIF exists for visual loop inspection.
-- No other leader surface is wired; the animated flame is mounted only on the selected-country diplomacy surface.
+- No other leader surface is wired; the animated flame icon is visible only when the selected-country diplomacy scope is a Fury actor.
