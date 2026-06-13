@@ -95,10 +95,110 @@ fury_prepare_random_event_fire = {
 	}
 }
 
-fury_select_ordinary_actor = {
-	random_country = {
+fury_prepare_actor_selection_weight = {
+	set_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.base_weight }
+	if = {
+		limit = { num_of_controlled_states < constant:fury_target_score.one_state_max }
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.one_state_bonus }
+	}
+	else_if = {
+		limit = { num_of_controlled_states < constant:fury_target_score.two_state_max }
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.two_state_bonus }
+	}
+	else_if = {
+		limit = { num_of_controlled_states < constant:fury_target_score.three_state_max }
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.three_state_bonus }
+	}
+	if = {
+		limit = { num_of_factories < constant:fury_target_score.weak_factory_max }
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.weak_industry_bonus }
+	}
+	if = {
+		limit = { num_divisions < constant:fury_target_score.low_division_max }
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.low_division_bonus }
+	}
+	if = {
+		limit = { has_manpower < constant:fury_target_score.low_manpower_gate }
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.low_manpower_bonus }
+	}
+	if = {
+		limit = {
+			any_neighbor_country = {
+				count = constant:fury_actor_selection.three_valid_neighbors_count
+				fury_is_valid_target = yes
+			}
+		}
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.three_valid_neighbors_bonus }
+	}
+	if = {
+		limit = {
+			any_neighbor_country = {
+				count = constant:fury_actor_selection.five_valid_neighbors_count
+				fury_is_valid_target = yes
+			}
+		}
+		add_to_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.five_valid_neighbors_bonus }
+	}
+	if = {
+		limit = { num_of_controlled_states > constant:fury_actor_selection.strong_state_gate }
+		subtract_from_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.strong_state_penalty }
+	}
+	if = {
+		limit = { num_of_factories > constant:fury_actor_selection.strong_factory_gate }
+		subtract_from_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.strong_factory_penalty }
+	}
+	if = {
+		limit = { num_divisions > constant:fury_target_score.high_division_min }
+		subtract_from_temp_variable = { fury_actor_selection_weight = constant:fury_actor_selection.high_division_penalty }
+	}
+	round_temp_variable = fury_actor_selection_weight
+	clamp_temp_variable = {
+		var = fury_actor_selection_weight
+		min = constant:fury_actor_selection.min_weight
+		max = constant:fury_actor_selection.max_weight
+	}
+}
+
+fury_add_current_country_to_actor_selection_pool = {
+	fury_prepare_actor_selection_weight = yes
+	set_temp_variable = { fury_actor_pool_weight_remaining = fury_actor_selection_weight }
+	while_loop_effect = {
+		limit = { check_variable = { fury_actor_pool_weight_remaining > 0 } }
+		add_to_temp_array = { fury_actor_selection_pool = THIS }
+		add_to_temp_variable = { fury_actor_selection_pool_count = 1 }
+		subtract_from_temp_variable = { fury_actor_pool_weight_remaining = 1 }
+	}
+	set_temp_variable = { fury_actor_pool_weight_remaining = 0 }
+	set_temp_variable = { fury_actor_selection_weight = 0 }
+}
+
+fury_select_weighted_actor_candidate = {
+	clear_temp_array = fury_actor_selection_pool
+	set_temp_variable = { fury_actor_selection_pool_count = 0 }
+	set_temp_variable = { fury_weighted_actor_selected = 0 }
+	every_country = {
 		limit = { fury_can_be_selected = yes }
-		fury_apply_package = yes
+		fury_add_current_country_to_actor_selection_pool = yes
+	}
+	if = {
+		limit = { check_variable = { fury_actor_selection_pool_count > 0 } }
+		random_scope_in_array = {
+			array = fury_actor_selection_pool
+			save_event_target_as = fury_weighted_actor_candidate
+			set_temp_variable = { fury_weighted_actor_selected = 1 }
+		}
+	}
+	clear_temp_array = fury_actor_selection_pool
+	set_temp_variable = { fury_actor_selection_pool_count = 0 }
+	set_temp_variable = { fury_actor_pool_weight_remaining = 0 }
+	set_temp_variable = { fury_actor_selection_weight = 0 }
+}
+
+fury_select_ordinary_actor = {
+	fury_select_weighted_actor_candidate = yes
+	if = {
+		limit = { check_variable = { fury_weighted_actor_selected > 0 } }
+		event_target:fury_weighted_actor_candidate = { fury_apply_package = yes }
 	}
 }
 
@@ -1011,10 +1111,13 @@ fury_ensure_actor_count_two = {
 			check_variable = { fury_actor_count < 2 }
 			any_country = { fury_can_be_selected = yes }
 		}
-		random_country = {
-			limit = { fury_can_be_selected = yes }
-			fury_apply_package = yes
-			set_country_flag = fury_evolution_ii_applied
+		fury_select_weighted_actor_candidate = yes
+		if = {
+			limit = { check_variable = { fury_weighted_actor_selected > 0 } }
+			event_target:fury_weighted_actor_candidate = {
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+			}
 			add_to_temp_variable = { fury_actor_count = 1 }
 		}
 	}
@@ -1037,11 +1140,14 @@ fury_ensure_actor_count_three = {
 			check_variable = { fury_actor_count < 3 }
 			any_country = { fury_can_be_selected = yes }
 		}
-		random_country = {
-			limit = { fury_can_be_selected = yes }
-			fury_apply_package = yes
-			set_country_flag = fury_evolution_ii_applied
-			set_country_flag = fury_evolution_iii_applied
+		fury_select_weighted_actor_candidate = yes
+		if = {
+			limit = { check_variable = { fury_weighted_actor_selected > 0 } }
+			event_target:fury_weighted_actor_candidate = {
+				fury_apply_package = yes
+				set_country_flag = fury_evolution_ii_applied
+				set_country_flag = fury_evolution_iii_applied
+			}
 			add_to_temp_variable = { fury_actor_count = 1 }
 		}
 	}
@@ -1210,9 +1316,10 @@ fury_start_world_end = {
 			check_variable = { global.fury_world_end_actor_count < constant:fury_balance.world_end_required_actor_count }
 			any_country = { fury_world_end_safe_seed_candidate = yes }
 		}
-		random_country = {
-			limit = { fury_world_end_safe_seed_candidate = yes }
-			fury_apply_world_end_seed_package = yes
+		fury_select_weighted_actor_candidate = yes
+		if = {
+			limit = { check_variable = { fury_weighted_actor_selected > 0 } }
+			event_target:fury_weighted_actor_candidate = { fury_apply_world_end_seed_package = yes }
 		}
 	}
 	fury_count_world_end_actor_continents = yes
@@ -2128,9 +2235,10 @@ trigger_world_in_fury_scenario = {
 			check_variable = { fury_triggerable_actor_count < fury_triggerable_actor_goal }
 			any_country = { fury_can_be_selected = yes }
 		}
-		random_country = {
-			limit = { fury_can_be_selected = yes }
-			fury_apply_triggerable_scenario_actor_package = yes
+		fury_select_weighted_actor_candidate = yes
+		if = {
+			limit = { check_variable = { fury_weighted_actor_selected > 0 } }
+			event_target:fury_weighted_actor_candidate = { fury_apply_triggerable_scenario_actor_package = yes }
 		}
 	}
 	set_variable = { global.fury_triggerable_scenario_actor_count = fury_triggerable_actor_count }

@@ -4,7 +4,7 @@ Event 007 Fury is a repeatable Wars-cluster event that transforms safe AI minors
 
 ## Runtime Flow
 
-1. Each `chaosx.nr7.1` firing selects a fresh eligible AI minor through `fury_can_be_selected`; existing Fury actors are excluded, so repeat firings create additional Fury countries instead of reapplying Fury to the previous actor.
+1. Each `chaosx.nr7.1` firing selects a fresh eligible AI minor through `fury_can_be_selected`; existing Fury actors are excluded, so repeat firings create additional Fury countries instead of reapplying Fury to the previous actor. The selection lottery keeps every eligible minor possible while weighting weak, low-state, low-industry, neighbor-rich countries higher.
 2. The selected country receives `fury_national_fury`, the shared `fury_focus_tree`, starting Fury variables, the base support-equipment and engineer-company unlocks required by the Fury Column template, starting units, equipment, a hidden finite reinforcement reserve, and a self-scheduled weekly event loop.
 3. `chaosx.nr7.10` scores every valid neighboring target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
 4. `chaosx.nr7.20` runs only on active Fury actors every seven days. Each weekly tick draws one division from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
@@ -24,7 +24,7 @@ Fury selection excludes:
 - countries without at least two valid neighbor targets
 - countries that recently failed as Fury
 
-Ordinary Fury selection chooses randomly from the full `fury_can_be_selected` pool instead of ranking candidates by state count or perceived eligibility. Repeat random firings choose fresh eligible actors instead of reapplying Fury to an existing Fury country. Evolution II and Evolution III use the same random eligible pool when their setup needs additional actors. The triggerable scenario and terminal world-end branch use separate setup paths, but their safe actor seeding still reuses the same two-valid-neighbor gate.
+Ordinary Fury selection uses a weighted random pool built from every `fury_can_be_selected` country. Every eligible minor receives a base chance, then gains weight for one-, two-, or three-state size, weak industry, low divisions, low manpower, and several valid neighboring targets. Stronger minors remain possible but lose relative weight when they have more states, more factories, or a larger field army. Repeat random firings choose fresh eligible actors instead of reapplying Fury to an existing Fury country. Evolution II, Evolution III, triggerable scenario fallback filling, and terminal world-end fallback seeding use the same weighted eligible pool when their setup needs additional actors.
 
 Ordinary targets can be AI or player-controlled countries. Target validity does not exclude a country for being player-controlled or player-linked; targets must not be subjects, Fury actors, allies, subjects of the Fury actor, or countries already at war with the Fury actor.
 
