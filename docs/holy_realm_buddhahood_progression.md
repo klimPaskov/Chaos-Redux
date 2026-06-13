@@ -167,8 +167,8 @@ The `Powers of the Awakened` super-event uses bespoke generated monochrome battl
 The event-log evolution pane tracks four authored Buddhahood evolutions rather than the ordinary stage ladder:
 
 - `Pattern of Suffering`: recorded after repeated successful teaching under chaos or world-end pressure.
-- `False Buddha Schism`: recorded when high Defilements corrupt a Buddhahood attempt and the schism pressure begins.
 - `Relic Mandala`: recorded after Mandala Reach or Sangha membership proves the Realm's sacred network outside the mountains.
+- `False Buddha Schism`: recorded when high Defilements corrupt a Buddhahood attempt and the schism pressure begins.
 - `Wrathful Protection`: recorded when the Sun and Moon crisis is answered through awakened anti-chaos protection.
 
 Baseline states such as Mountain Refuge, Bodhisattva, Arhat Administration, Buddha Mandate, Divine Sovereignty, and Final Silence remain focus and country-flag stages. They do not create event-log evolution rows.
