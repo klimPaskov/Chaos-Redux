@@ -4,7 +4,7 @@ Generation mode: `$imagegen`, one source PNG per planned animation frame.
 
 Common visual direction:
 
-Centered sacred mandala wheel for The Holy Realm meditation state, blue-violet and lavender linework on a deep charcoal navy background, matching a calm concentration/Dhyana UI state. The composition must stay centered, with a large outer violet ring, inner blue ring, eight thin radial spokes, subtle star geometry, and a pale lavender inner orb. The animation should read as a slow concentration-breath loop, not a combat, chaos emergency, or world-end state.
+Centered sacred mandala wheel for The Holy Realm meditation state, hand-painted blue-violet enamel and carved rim detail on a deep charcoal navy background, matching a calm concentration/Dhyana UI state. The composition must stay centered, with a large outer violet ring, inner blue ring, lotus-petal filigree, subtle star geometry, and a pale lavender inner pearl. The animation should read as a slow concentration-breath loop, not a combat, chaos emergency, world-end state, primitive-shape diagram, or filter-only glow.
 
 Frame deltas:
 
@@ -15,12 +15,14 @@ Frame deltas:
 | 002 | gathered attention | Star geometry and blue spokes sharpen and brighten. |
 | 003 | second inhale | Inner ring expands slightly and violet edge strengthens. |
 | 004 | held concentration | Orb is bright and stable with a soft aura. |
-| 005 | bright stillness | Highest controlled meditation glow. |
-| 006 | settled stillness | Near-peak glow begins to soften. |
-| 007 | first exhale | Inner ring narrows and spokes dim slightly. |
-| 008 | returning attention | Spokes and orb return toward base intensity. |
-| 009 | low breath | Violet ring softens and the orb lowers to near-rest glow while keeping scale stable. |
-| 010 | final quiet | Geometry nearly matches the resting frame. |
-| 011 | seam frame | Almost matches frame 000 for a smooth loop. |
-
-Frame 009 was regenerated once because the first generated version reduced the mandala scale too much for a clean loop.
+| 005 | near-peak stillness | Central pearl is the brightest so far, with visible blue-violet spoke highlights. |
+| 006 | quiet peak | Pearl and nearby star geometry reach the brightest point of the loop without becoming a warning flash. |
+| 007 | peak hold | Central pearl remains bright while ring light softens slightly. |
+| 008 | first exhale | Central pearl is still luminous but gently softening. |
+| 009 | soft exhale | Inner pearl is modestly dimmer and star lines are quieter. |
+| 010 | returning attention | Pearl is closer to rest and blue-violet spokes are low but readable. |
+| 011 | low breath | Inner pearl is dim but alive, with faint reflected lavender light. |
+| 012 | final quiet | Very close to the resting frame, with only a tiny residual pearl glow. |
+| 013 | near-rest | Dim calm center with faint lavender breath left in the inner ring. |
+| 014 | seam preparation | Almost the same calm level as frame 000; dim center, low spoke light, no flare. |
+| 015 | seam frame | Resting breath immediately before frame 000; visually close to the first frame for a smooth loop. |

@@ -85,8 +85,9 @@ Reference inspection completed:
 - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
-- `~/projects/Hearts of Iron IV/interface/core.gfx`
-- `interface/007_fury.gfx`
+- `~/projects/Hearts of Iron IV/interface/menubar.gfx`
+- `~/projects/Hearts of Iron IV/interface/theatreselector.gfx`
+- `interface/003_holy_realm.gfx`
 - `.agents/skills/chaos-redux-event-assets/assets/decisions/`
 
 | Field | Value |
@@ -207,8 +208,8 @@ Reference inspection completed:
 | Preview GIF | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/previews/holy_realm_mandala_meditation_preview.gif` |
 | Contact sheet | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/previews/holy_realm_mandala_meditation_contact.png` |
 | Target size | `420x420` per frame |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | Animation rate | `8` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
@@ -229,13 +230,17 @@ Frame source notes:
 | 002 | gathered attention | `source_frames/holy_realm_mandala_meditation_002_source.png` |
 | 003 | second inhale | `source_frames/holy_realm_mandala_meditation_003_source.png` |
 | 004 | held concentration | `source_frames/holy_realm_mandala_meditation_004_source.png` |
-| 005 | bright stillness | `source_frames/holy_realm_mandala_meditation_005_source.png` |
-| 006 | settled stillness | `source_frames/holy_realm_mandala_meditation_006_source.png` |
-| 007 | first exhale | `source_frames/holy_realm_mandala_meditation_007_source.png` |
-| 008 | returning attention | `source_frames/holy_realm_mandala_meditation_008_source.png` |
-| 009 | low breath | `source_frames/holy_realm_mandala_meditation_009_source.png` |
-| 010 | final quiet | `source_frames/holy_realm_mandala_meditation_010_source.png` |
-| 011 | seam frame | `source_frames/holy_realm_mandala_meditation_011_source.png` |
+| 005 | near-peak stillness | `source_frames/holy_realm_mandala_meditation_005_source.png` |
+| 006 | quiet peak | `source_frames/holy_realm_mandala_meditation_006_source.png` |
+| 007 | peak hold | `source_frames/holy_realm_mandala_meditation_007_source.png` |
+| 008 | first exhale | `source_frames/holy_realm_mandala_meditation_008_source.png` |
+| 009 | soft exhale | `source_frames/holy_realm_mandala_meditation_009_source.png` |
+| 010 | returning attention | `source_frames/holy_realm_mandala_meditation_010_source.png` |
+| 011 | low breath | `source_frames/holy_realm_mandala_meditation_011_source.png` |
+| 012 | final quiet | `source_frames/holy_realm_mandala_meditation_012_source.png` |
+| 013 | near-rest | `source_frames/holy_realm_mandala_meditation_013_source.png` |
+| 014 | seam preparation | `source_frames/holy_realm_mandala_meditation_014_source.png` |
+| 015 | seam frame | `source_frames/holy_realm_mandala_meditation_015_source.png` |
 
 ## Awakened Mandala Animation
 

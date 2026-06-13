@@ -150,7 +150,9 @@ Recommended frame plan table:
 
 For loops, the first and last frames must connect cleanly. Either repeat the first frame at the end only in the GIF preview, or make the final frame visually close enough to frame 000 that the loop does not pop.
 
-Frame count should usually stay small unless the animation needs more frames. Prefer 4 to 12 frames for small GUI loops. Larger portrait or super-event-adjacent loops may use more frames only when the target surface and performance cost are acceptable.
+Use enough real source frames for the motion to be smooth. More sprites are better than a choppy loop when the target surface and texture size can reasonably support them, especially for subtle pulses, breathing light, drifting particles, animated portraits, and slow UI state changes.
+
+Do not be lazy with frame count. Do not choose a small number of frames just to finish faster, and do not hide a rough low-frame loop behind filters, transforms, or opacity tricks. If a low frame count is used, the brief must justify it with the target size, performance cost, or intentionally stepped motion.
 
 ## 9. Generation rules
 

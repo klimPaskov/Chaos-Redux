@@ -46,7 +46,7 @@ The locked, early, or otherwise inactive Mandala state uses an animated frame sh
 | Target `.gfx` | `interface/003_holy_realm.gfx` |
 | Target GUI | `interface/chaosx_decisions.gui` and `common/scripted_guis/chaosx_scripted_guis.txt` |
 | State gate | `GetHolyRealmMandalaSprite` returns the animated sprite as the always-available fallback after all higher-priority Mandala states fail |
-| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/interface/core.gfx`, `interface/007_fury.gfx` |
+| Wiring precedent | `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`, `~/projects/Hearts of Iron IV/interface/menubar.gfx`, `~/projects/Hearts of Iron IV/interface/theatreselector.gfx`, `interface/003_holy_realm.gfx` |
 
 Review assets:
 
@@ -95,8 +95,8 @@ The active concentration and Dhyana-progress Mandala state uses an animated fram
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/sheets/holy_realm_mandala_meditation_sheet.png` |
 | Frame size | `420x420` |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |

@@ -11,8 +11,8 @@ Gameplay surface:
 
 Target:
 - Frame size: `420x420`
-- Frame count: `12`
-- Sheet size: `5040x420`
+- Frame count: `16`
+- Sheet size: `6720x420`
 - FPS: `8`
 - Loop: `looping = yes`
 - Play on show: `play_on_show = yes`
@@ -37,15 +37,15 @@ Reference inspected:
 - `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/Scripted GUI modding - Hearts of Iron 4 Wiki.md`
-- `~/projects/Hearts of Iron IV/interface/core.gfx`
-- `interface/007_fury.gfx`
+- `~/projects/Hearts of Iron IV/interface/menubar.gfx`
+- `~/projects/Hearts of Iron IV/interface/theatreselector.gfx`
 - `interface/003_holy_realm.gfx`
 - `.agents/skills/chaos-redux-event-assets/assets/decisions/`
 
 Visual direction:
-- Centered blue-violet sacred mandala wheel, matching the static fallback composition.
-- Slow concentration-breath loop: inner orb brightens, settles, then returns.
-- Calm luminous geometry, not a combat or world-end state.
+- Centered blue-violet sacred mandala wheel with hand-painted enamel, carved rim detail, lotus filigree, and incense-textured shadow.
+- Slow concentration-breath loop: inner pearl brightens, settles, and returns across many small steps.
+- Calm luminous generated artwork, not a combat state, world-end state, primitive-shape diagram, or filter-only glow.
 - No text, faces, maps, modern UI, explosive effects, flames, gore, or generated symbols that read as letters.
 
 Package paths:
