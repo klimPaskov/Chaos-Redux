@@ -1,23 +1,28 @@
-# Holy Realm Dormant Mandala Source Prompts
+# Holy Realm Mandala Dormant Source Prompts
 
-Generated source frames were created as independent frame art for a true frame-sheet animation. All prompts required a centered `420x420` game UI mandala icon, deep near-black green background, teal-grey sacred geometry, a dim closed center, no readable text, no letters, no glyphs, no UI labels, no gold activation, no red crisis tones, and no crop shift.
+Generation mode: `$imagegen`, one generated 4x4 animation-source grid sliced into sixteen source-frame PNGs.
 
-| Frame | Prompt Focus |
-| --- | --- |
-| 000 | Sealed rest with very low glow. |
-| 001 | First cold-teal breath on the outer ring. |
-| 002 | Marginally clearer inner star lines. |
-| 003 | Muted locked-center pulse, regenerated to remove side artifacts. |
-| 004 | Quiet peak on outer ring and axes. |
-| 005 | Fading seal, regenerated to remove side artifacts. |
-| 006 | Stone stillness with darkened center. |
-| 007 | Loop seam, regenerated to remove side artifacts. |
+Common visual direction:
 
-## Processing
+Centered sacred mandala wheel for The Holy Realm dormant state, hand-painted teal-grey enamel and weathered stone-metal rim detail on a deep charcoal green-black background, matching a sealed-potential HOI4 decision-category scripted GUI state. The composition must stay centered, with a large outer ring, inner star geometry, dim closed center, restrained lotus-petal filigree, and soft incense-shadow texture. The animation should read as a slow sealed breath loop, not a teaching, awakened, wrathful, final-silence, or empty-seat state.
 
-- Source frames: `source_frames/holy_realm_mandala_dormant_000_source.png` through `source_frames/holy_realm_mandala_dormant_007_source.png`
-- Processed frames: `processed_frames/holy_realm_mandala_dormant_000.png` through `processed_frames/holy_realm_mandala_dormant_007.png`
-- Sheet: `sheets/holy_realm_mandala_dormant_sheet.png`
-- DDS: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant_animated.dds`
-- Preview: `previews/holy_realm_mandala_dormant_preview.gif`
-- Contact sheet: `previews/holy_realm_mandala_dormant_contact.png`
+Frame deltas:
+
+| Frame | Motion state | Prompt delta |
+| --- | --- | --- |
+| 000 | sealed rest | Lowest calm inner light, fully closed center. |
+| 001 | first breath | Outer rim slightly brighter than rest. |
+| 002 | listening lines | Inner star geometry a little clearer and cooler. |
+| 003 | gathered hush | Dim inner ring light gathers around the closed center. |
+| 004 | early pulse | Lotus filigree and rim details catch a faint teal sheen. |
+| 005 | held seal | Ring glow steadies with no flare or opening. |
+| 006 | quiet peak | Brightest sealed-potential state of the loop without activation. |
+| 007 | peak hold | Same restrained brightness with the center still closed. |
+| 008 | first release | Outer glow gently softens while geometry stays aligned. |
+| 009 | cooling lines | Star geometry dims slightly and returns toward stone stillness. |
+| 010 | deep watch | Center darkens again while the ring remains readable. |
+| 011 | low breath | Near-rest with only a faint residual teal edge. |
+| 012 | final quiet | Very close to the resting frame with almost no inner light. |
+| 013 | near-rest | Dim calm center with only a trace of sealed breath. |
+| 014 | seam preparation | Almost the same calm level as frame 000. |
+| 015 | seam frame | Resting dormant state immediately before frame 000. |

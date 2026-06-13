@@ -39,8 +39,8 @@ The locked, early, or otherwise inactive Mandala state uses an animated frame sh
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_dormant_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/sheets/holy_realm_mandala_dormant_sheet.png` |
 | Frame size | `420x420` |
-| Frame count | `8` |
-| Sheet size | `3360x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |
@@ -67,8 +67,8 @@ The Dharma teaching and Bodhi-progress Mandala state uses an animated frame shee
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_teaching_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/sheets/holy_realm_mandala_teaching_sheet.png` |
 | Frame size | `420x420` |
-| Frame count | `8` |
-| Sheet size | `3360x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |
@@ -123,8 +123,8 @@ The Buddhahood-complete Mandala state uses an animated frame sheet while preserv
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/sheets/holy_realm_mandala_awakened_sheet.png` |
 | Frame size | `420x420` |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |
@@ -151,8 +151,8 @@ The armed Final Silence ritual state uses an animated frame sheet while preservi
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/sheets/holy_realm_mandala_final_silence_sheet.png` |
 | Frame size | `420x420` |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |
@@ -179,8 +179,8 @@ The Wrathful Protection, Sun and Moon crisis proof, and Touching Sun and Moon Ma
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_wrathful_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/sheets/holy_realm_mandala_wrathful_sheet.png` |
 | Frame size | `420x420` |
-| Frame count | `12` |
-| Sheet size | `5040x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |
@@ -207,8 +207,8 @@ The non-terminal Final Silence afterstate and Empty Seat achievement-ready Manda
 | Animated sheet DDS | `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_empty_animated.dds` |
 | Sheet PNG | `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/sheets/holy_realm_mandala_empty_sheet.png` |
 | Frame size | `420x420` |
-| Frame count | `8` |
-| Sheet size | `3360x420` |
+| Frame count | `16` |
+| Sheet size | `6720x420` |
 | FPS | `8` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/003_holy_realm.gfx` |

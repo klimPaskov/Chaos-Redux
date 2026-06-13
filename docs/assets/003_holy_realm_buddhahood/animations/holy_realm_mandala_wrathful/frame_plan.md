@@ -1,26 +1,20 @@
-# Holy Realm Wrathful Mandala Frame Plan
+# Holy Realm Mandala Wrathful Frame Plan
 
 | Frame | Motion state | Visual change | Prompt delta | Anchor note | Loop note |
 | --- | --- | --- | --- | --- | --- |
-| 000 | sealed ember | Base wrathful Mandala, lowest heat | Red-orange emergency Mandala at rest | Centered | Opens the loop |
-| 001 | warning wake | Outer ring warms and the red axes sharpen | Slightly brighter outer alarm ring | Centered | Eases upward |
-| 002 | first containment | Inner ring gathers pressure around the central light | Containment force gathers inward | Centered | Rising |
-| 003 | sunward flare | One side of the wheel flashes like restrained solar heat | Controlled solar flare within the ring | Centered | Rising |
-| 004 | moonward answer | Opposite side cools into pale red-white counterlight | Counterbalancing lunar response, still wrathful | Centered | Rising |
-| 005 | crossed ward | Star lines and cardinal axes lock into a warning cross | Protective lattice sharpens | Centered | Near peak |
-| 006 | wrathful peak | Full crisis pressure, brightest red-orange ring | Strongest controlled alarm, no flames outside the wheel | Centered | Peak |
-| 007 | held shield | Peak light holds while the centre stays stable | Shielded central disc, pressure contained | Centered | Held peak |
-| 008 | force recedes | Outer heat begins to fall back into the ring | Ring glow recedes, geometry remains sharp | Centered | Falling |
-| 009 | ember spiral | Red ash and heat settle along the inner ring | Low ember motion inside the Mandala | Centered | Falling |
-| 010 | sealed return | Almost back to base, red axes remain faintly hot | Return toward sealed ember | Centered | Near rest |
-| 011 | seam | Close to frame 000 with low residual heat | Seam frame matching sealed ember | Centered | Connects cleanly to frame 000 |
-
-## Prompt Invariants
-
-- Square `420x420` game UI source frame.
-- One centered Holy Realm Mandala, same camera and same scale in every frame.
-- Dark charcoal background with red-orange wrathful containment palette.
-- Clear sacred wheel, concentric rings, faint star geometry, red cardinal axes, and stable central light.
-- No readable text, letters, numbers, glyph inscriptions, UI labels, or watermark.
-- No faces, people, deity figures, monsters, flags, weapons, maps, blood, gore, or scenes outside the Mandala.
-- No extra symbols outside the Mandala and no off-centre duplicate discs.
+| 000 | sealed ember | base wrathful mandala, low heat | lowest alarm light | centered | loop start |
+| 001 | warning wake | outer ring warms slightly | first red-orange breath | centered | easing in |
+| 002 | gathered pressure | inner ring tightens around the center | clearer containment | centered | rising |
+| 003 | sharpened axes | warning lines and petals brighten | stronger protective lattice | centered | rising |
+| 004 | sunward stir | one quadrant shows contained hot light | controlled asymmetry within ring | centered | rising |
+| 005 | moonward answer | counterlight balances the first flare | restrained opposing ward | centered | peak begins |
+| 006 | near-peak shield | whole ring glows with disciplined heat | fuller alarm state | centered | peak approach |
+| 007 | wrathful fullness | brightest emergency state of the loop | strongest contained alarm | centered | peak |
+| 008 | held ward | light remains high while the center stays stable | peak hold | centered | peak hold |
+| 009 | first recession | outer heat relaxes slightly | exhale begins | centered | easing out |
+| 010 | ember lattice | ring cools but lines remain sharp | lower protective pressure | centered | falling |
+| 011 | inward ash | residual ember-light gathers near the center | contained afterheat | centered | falling |
+| 012 | final control | almost back to rest | prepare seam | centered | near loop end |
+| 013 | near-rest | visually close to frame 000 | seam approach | centered | near loop end |
+| 014 | seam preparation | low red-orange ring and faint hot axes | almost resting | centered | loops cleanly |
+| 015 | seam frame | resting wrathful state close to frame 000 | ember transition | centered | loops into 000 |

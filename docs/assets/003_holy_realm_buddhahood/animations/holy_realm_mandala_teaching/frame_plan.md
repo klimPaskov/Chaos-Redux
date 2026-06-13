@@ -1,14 +1,20 @@
-# Holy Realm Teaching Mandala Frame Plan
+# Holy Realm Mandala Teaching Frame Plan
 
-All frames are generated as independent source art and processed into a single horizontal frame sheet. The sequence loops back to frame 000 without a visible jump.
-
-| Frame | Beat | Visual Notes |
-| --- | --- | --- |
-| 000 | Resting lesson | Static-like mandala, soft gold center, green teaching rings visible. |
-| 001 | Lamp opens | Center warms and a subtle saffron lamp aura appears. |
-| 002 | Teaching rays | Thin green-gold rays extend outward from the center. |
-| 003 | Scripture glow | Outer ring brightens with abstract page-like light, no readable symbols. |
-| 004 | Peak lesson | Gold star geometry and teal rings reach their brightest teaching pulse. |
-| 005 | Compassion ring | A calm green halo rolls outward and rays soften. |
-| 006 | Return breath | Center dims toward the resting state while geometry remains aligned. |
-| 007 | Loop seam | Nearly matches frame 000, retaining a faint afterglow for a smooth loop. |
+| Frame | Motion state | Visual change | Prompt delta | Anchor note | Loop note |
+| --- | --- | --- | --- | --- | --- |
+| 000 | resting lesson | base green-gold mandala, soft lamp center | lowest teaching light | centered | loop start |
+| 001 | first opening | center warms slightly | first saffron breath | centered | easing in |
+| 002 | gathered word | inner spokes brighten | clearer teaching lines | centered | rising |
+| 003 | second opening | lotus petals catch warm light | gentler outward teaching | centered | rising |
+| 004 | compassionate ring | outer ring brightens softly | calm compassion halo | centered | rising |
+| 005 | scripture hush | page-like light gathers at the rim without text | abstract instruction glow | centered | peak begins |
+| 006 | near-peak lesson | gold and green tones reach calm fullness | fuller mandala light | centered | peak approach |
+| 007 | luminous instruction | brightest central lamp state without flare | controlled peak lesson | centered | peak |
+| 008 | held transmission | glow remains full while rays soften | peak hold | centered | peak hold |
+| 009 | first settling | outer halo relaxes | exhale begins | centered | easing out |
+| 010 | soft return | spokes and petals dim slightly | quieter compassion | centered | falling |
+| 011 | after-teaching breath | lamp center still warm but lower | lingering lesson | centered | falling |
+| 012 | final hush | almost back to rest | prepare seam | centered | near loop end |
+| 013 | near-rest | visually close to frame 000 | seam approach | centered | near loop end |
+| 014 | seam preparation | low lamp and faint green ring | almost resting | centered | loops cleanly |
+| 015 | seam frame | resting lesson immediately before frame 000 | teaching transition | centered | loops into 000 |
