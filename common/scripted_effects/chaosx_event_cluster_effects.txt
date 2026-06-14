@@ -12,6 +12,10 @@
 # load_event_cluster_members.
 # ============================================================================
 
+@event_cluster_wars_cooldown_days = 120
+@event_cluster_liberations_cooldown_days = 90
+@event_cluster_diplomatic_panic_cooldown_days = 120
+
 initialize_event_cluster_system = {
     clear_array = global.event_clusters
     clear_array = global.event_cluster_type_entries
@@ -858,15 +862,7 @@ event_cluster_get_next_member_cooldown_days = {
 
 event_cluster_schedule_next_pending_member = {
     event_cluster_get_next_member_cooldown_days = yes
-    meta_effect = {
-        text = {
-            country_event = {
-                id = chaosx.event_clusters.2
-                days = [DAYS]
-            }
-        }
-        DAYS = "[?event_cluster_next_member_delay_days|.0]"
-    }
+    country_event = { id = chaosx.event_clusters.2 days = event_cluster_next_member_delay_days }
 }
 
 event_cluster_clear_pending_member_queue = {
@@ -1037,16 +1033,7 @@ mark_event_cluster_fired_state = {
                 compare = equals
             }
         }
-        set_temp_variable = { event_cluster_wars_cooldown_days = constant:event_cluster_wars.cooldown_days }
-        meta_effect = {
-            text = {
-                set_global_flag = {
-                    flag = event_cluster_wars_cooldown
-                    days = [COOLDOWN_DAYS]
-                }
-            }
-            COOLDOWN_DAYS = "[?event_cluster_wars_cooldown_days|.0]"
-        }
+        set_global_flag = { flag = event_cluster_wars_cooldown days = @event_cluster_wars_cooldown_days }
     }
 	if = {
 		limit = {
@@ -1056,16 +1043,7 @@ mark_event_cluster_fired_state = {
 				compare = equals
 			}
 		}
-		set_temp_variable = { event_cluster_liberations_cooldown_days = constant:event_cluster_liberations.cooldown_days }
-		meta_effect = {
-			text = {
-				set_global_flag = {
-					flag = event_cluster_liberations_cooldown
-					days = [COOLDOWN_DAYS]
-				}
-			}
-			COOLDOWN_DAYS = "[?event_cluster_liberations_cooldown_days|.0]"
-		}
+		set_global_flag = { flag = event_cluster_liberations_cooldown days = @event_cluster_liberations_cooldown_days }
 	}
 	if = {
 		limit = {
@@ -1075,16 +1053,7 @@ mark_event_cluster_fired_state = {
 				compare = equals
 			}
 		}
-		set_temp_variable = { event_cluster_diplomatic_panic_cooldown_days = constant:event_cluster_diplomatic_panic.cooldown_days }
-		meta_effect = {
-			text = {
-				set_global_flag = {
-					flag = event_cluster_diplomatic_panic_cooldown
-					days = [COOLDOWN_DAYS]
-				}
-			}
-			COOLDOWN_DAYS = "[?event_cluster_diplomatic_panic_cooldown_days|.0]"
-		}
+		set_global_flag = { flag = event_cluster_diplomatic_panic_cooldown days = @event_cluster_diplomatic_panic_cooldown_days }
 	}
 }
 
