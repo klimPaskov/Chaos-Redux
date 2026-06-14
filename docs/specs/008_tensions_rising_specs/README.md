@@ -27,6 +27,6 @@ This package contains the source specification and implementation handoff prompt
 
 ## Core design summary
 
-Event 8 stays Minor Repeatable. Its baseline Calm World form raises world tension by `+10` and only fires while world tension is below `100%`. Its evolved forms add chaos, can fire at max world tension, temporarily accelerate event pressure through a capped timer pulse, damage relations between plausible rivals, and generate delayed reports. Stage IV adds `+50` chaos and `+100` world tension as the strongest non-terminal pressure packet.
+Event 8 stays Minor Repeatable. Its baseline Calm World form raises world tension by `+100` and only fires while world tension is below `100%`. Its evolved forms add chaos, can fire at max world tension, temporarily accelerate event pressure through a capped timer pulse, damage relations between plausible rivals, and generate delayed reports. Stage IV adds `+50` chaos and `+1000` world tension as the strongest non-terminal pressure packet.
 
 No super-event, world-end scenario, country package, focus tree, or formable is included.

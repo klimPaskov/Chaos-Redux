@@ -14,11 +14,11 @@ Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-
 ## Required behavior
 
 - Event ID remains `8` and type remains Minor Repeatable.
-- Baseline Calm World firing: `+10` world tension and only fires while world tension is below `100%`.
-- Stage I at Gathering Storm: `+10 chaos`, `+10` world tension, can fire at `100%` WT, adds light hidden side effects.
-- Stage II: `+15 chaos`, `+20` world tension, stronger hidden side effects.
-- Stage III: `+25 chaos`, `+50` world tension, heavy hidden side effects.
-- Stage IV: `+50 chaos`, `+100` world tension, severe hidden side effects.
+- Baseline Calm World firing: `+100` world tension and only fires while world tension is below `100%`.
+- Stage I at Gathering Storm: `+10 chaos`, `+100` world tension, can fire at `100%` WT, adds light hidden side effects.
+- Stage II: `+15 chaos`, `+200` world tension, stronger hidden side effects.
+- Stage III: `+25 chaos`, `+500` world tension, heavy hidden side effects.
+- Stage IV: `+50 chaos`, `+1000` world tension, severe hidden side effects.
 - No super-event or world-end scenario. Never set `world_end` from Event 8.
 
 ## Hidden systems

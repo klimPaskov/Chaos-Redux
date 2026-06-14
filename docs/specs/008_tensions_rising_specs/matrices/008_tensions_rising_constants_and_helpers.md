@@ -23,11 +23,11 @@ Recommended script constant category names:
 
 | Key | Value |
 | --- | ---: |
-| `baseline` | 10 |
-| `stage_1` | 10 |
-| `stage_2` | 20 |
-| `stage_3` | 50 |
-| `stage_4` | 100 |
+| `baseline` | 100 |
+| `stage_1` | 100 |
+| `stage_2` | 200 |
+| `stage_3` | 500 |
+| `stage_4` | 1000 |
 
 ### `tensions_rising_chaos_gain`
 

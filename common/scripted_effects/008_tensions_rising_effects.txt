@@ -7,10 +7,10 @@
 # ============================================================================
 
 # These caps equal each packet divided by the minimum world-tension slice.
-@TENSIONS_RISING_WORLD_TENSION_10_MAX_RECIPIENTS = 100
-@TENSIONS_RISING_WORLD_TENSION_20_MAX_RECIPIENTS = 200
-@TENSIONS_RISING_WORLD_TENSION_50_MAX_RECIPIENTS = 500
 @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS = 1000
+@TENSIONS_RISING_WORLD_TENSION_200_MAX_RECIPIENTS = 2000
+@TENSIONS_RISING_WORLD_TENSION_500_MAX_RECIPIENTS = 5000
+@TENSIONS_RISING_WORLD_TENSION_1000_MAX_RECIPIENTS = 10000
 @TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS = 120
 @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS = 150
 @TENSIONS_RISING_AI_POSTURE_STAGE_1_DAYS = 45
@@ -120,11 +120,11 @@ apply_tensions_rising_distributed_world_tension = {
 		if = {
 			limit = {
 				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_4 }
-				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_1000_MAX_RECIPIENTS }
 			}
 			every_country = {
 				limit = { is_tensions_rising_world_tension_source_country = yes }
-				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_1000_MAX_RECIPIENTS
 				add_named_threat = {
 					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
 					name = tensions_rising_global_panic_threat
@@ -134,11 +134,11 @@ apply_tensions_rising_distributed_world_tension = {
 		else_if = {
 			limit = {
 				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_3 }
-				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_50_MAX_RECIPIENTS }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_500_MAX_RECIPIENTS }
 			}
 			every_country = {
 				limit = { is_tensions_rising_world_tension_source_country = yes }
-				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_50_MAX_RECIPIENTS
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_500_MAX_RECIPIENTS
 				add_named_threat = {
 					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
 					name = tensions_rising_global_panic_threat
@@ -148,11 +148,11 @@ apply_tensions_rising_distributed_world_tension = {
 		else_if = {
 			limit = {
 				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_2 }
-				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_20_MAX_RECIPIENTS }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_200_MAX_RECIPIENTS }
 			}
 			every_country = {
 				limit = { is_tensions_rising_world_tension_source_country = yes }
-				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_20_MAX_RECIPIENTS
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_200_MAX_RECIPIENTS
 				add_named_threat = {
 					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
 					name = tensions_rising_global_panic_threat
@@ -165,11 +165,11 @@ apply_tensions_rising_distributed_world_tension = {
 					check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.baseline }
 					check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_1 }
 				}
-				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_10_MAX_RECIPIENTS }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS }
 			}
 			every_country = {
 				limit = { is_tensions_rising_world_tension_source_country = yes }
-				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_10_MAX_RECIPIENTS
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS
 				add_named_threat = {
 					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
 					name = tensions_rising_global_panic_threat

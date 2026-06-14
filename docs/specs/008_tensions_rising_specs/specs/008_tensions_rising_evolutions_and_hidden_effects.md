@@ -23,7 +23,7 @@ If Event 8 first fires at a high chaos tier, it should start at the highest allo
 
 | Field | Baseline | Stage I | Stage II | Stage III | Stage IV |
 | --- | --- | --- | --- | --- | --- |
-| World tension | `+10` | `+10` | `+20` | `+50` | `+100` |
+| World tension | `+100` | `+100` | `+200` | `+500` | `+1000` |
 | Chaos | none | `+10` | `+15` | `+25` | `+50` |
 | WT cap rule | requires WT < 100 | can fire at WT 100 | can fire at WT 100 | can fire at WT 100 | can fire at WT 100 |
 | Timer pulse | none | light | medium | heavy | severe |

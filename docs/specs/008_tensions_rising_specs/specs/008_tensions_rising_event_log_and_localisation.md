@@ -28,7 +28,7 @@ Suggested draft:
 
 ### Visible effect text
 
-- Calm/baseline: `World tension increases by 10.`
+- Calm/baseline: `World tension increases by 100.`
 - Evolved stages: show both chaos and world tension. Do not show exact hidden relation-pair math in the option.
 
 ## Evolved popup text variants

@@ -1,21 +1,21 @@
 # Event 008 Catalog Row Note
 
-The uploaded workbook `chaos_redux_events_catalog.xlsx` was inspected during planning.
+The workbook `chaos_redux_events_catalog.xlsx` was inspected after implementation.
 
-Current uploaded row finding:
+Current row finding:
 
 | Field | Value seen in workbook |
 | --- | --- |
 | ID | 8 |
-| Event Name | Tensions rising |
-| Details | Increase world tension by 5. |
+| Event Name | Tensions Rising |
+| Details | Value-neutral event-detail text describing world-tension pressure, timer pacing, timed opinion penalties, AI readiness ideas, delayed reports, and achievement tracking. |
 | Type | Minor Repeatable |
-| Status | To Be Reworked |
+| Status | Implemented |
 
-Planning decision:
+Implementation decision:
 
-The workbook row is stale for this rework. The user’s prompt is treated as the source of truth and changes the baseline to `+10` world tension with four evolved chaos/world tension stages.
+The source of truth sets the baseline to `+100` world tension with four evolved chaos/world tension stages. The workbook row does not duplicate these numeric packets, so the `10x` world-tension tuning is represented in script constants, option-tooltip localisation, and source docs rather than in catalog cells.
 
 Spreadsheet action:
 
-No workbook changes were made in this planning task. After implementation and localisation are final, use the spreadsheet worker to update the row so catalog details, event-detail text, evolution details, and cluster details match in-game wording.
+No workbook changes were needed for the `10x` tuning pass because the current Event 8 catalog row contains no stale numeric packet values.
