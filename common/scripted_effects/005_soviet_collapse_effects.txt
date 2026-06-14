@@ -11926,9 +11926,78 @@ soviet_collapse_repair_caucasus_regional_faction_leader_flags = {
 
 soviet_collapse_invite_baltic_regional_partners = {
 	save_event_target_as = soviet_collapse_baltic_league_actor
-	if = { limit = { LIT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no NOT = { tag = event_target:soviet_collapse_baltic_league_actor } NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor } } } add_to_faction = LIT LIT = { soviet_collapse_join_baltic_regional_faction = yes } }
-	if = { limit = { LAT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no NOT = { tag = event_target:soviet_collapse_baltic_league_actor } NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor } } } add_to_faction = LAT LAT = { soviet_collapse_join_baltic_regional_faction = yes } }
-	if = { limit = { EST = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no NOT = { tag = event_target:soviet_collapse_baltic_league_actor } NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor } } } add_to_faction = EST EST = { soviet_collapse_join_baltic_regional_faction = yes } }
+	if = {
+		limit = {
+			LIT = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				is_in_faction = no
+				NOT = { tag = event_target:soviet_collapse_baltic_league_actor }
+				NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor }
+			}
+			NOT = {
+				any_country = {
+					is_in_faction_with = event_target:soviet_collapse_baltic_league_actor
+					has_war_with = LIT
+				}
+			}
+		}
+		add_to_faction = LIT
+		LIT = {
+			if = {
+				limit = { is_in_faction_with = event_target:soviet_collapse_baltic_league_actor }
+				soviet_collapse_join_baltic_regional_faction = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			LAT = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				is_in_faction = no
+				NOT = { tag = event_target:soviet_collapse_baltic_league_actor }
+				NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor }
+			}
+			NOT = {
+				any_country = {
+					is_in_faction_with = event_target:soviet_collapse_baltic_league_actor
+					has_war_with = LAT
+				}
+			}
+		}
+		add_to_faction = LAT
+		LAT = {
+			if = {
+				limit = { is_in_faction_with = event_target:soviet_collapse_baltic_league_actor }
+				soviet_collapse_join_baltic_regional_faction = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			EST = {
+				exists = yes
+				has_country_flag = soviet_collapse_breakaway
+				is_in_faction = no
+				NOT = { tag = event_target:soviet_collapse_baltic_league_actor }
+				NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor }
+			}
+			NOT = {
+				any_country = {
+					is_in_faction_with = event_target:soviet_collapse_baltic_league_actor
+					has_war_with = EST
+				}
+			}
+		}
+		add_to_faction = EST
+		EST = {
+			if = {
+				limit = { is_in_faction_with = event_target:soviet_collapse_baltic_league_actor }
+				soviet_collapse_join_baltic_regional_faction = yes
+			}
+		}
+	}
 }
 
 soviet_collapse_invite_caucasus_regional_partners = {
@@ -11940,8 +12009,24 @@ soviet_collapse_invite_caucasus_regional_partners = {
 			is_in_faction = no
 			NOT = { has_war_with = event_target:soviet_collapse_caucasus_league_actor }
 		}
-		event_target:soviet_collapse_caucasus_league_actor = { add_to_faction = PREV }
-		soviet_collapse_join_caucasus_regional_faction = yes
+		save_event_target_as = soviet_collapse_caucasus_league_candidate
+		event_target:soviet_collapse_caucasus_league_actor = {
+			if = {
+				limit = {
+					NOT = {
+						any_country = {
+							is_in_faction_with = event_target:soviet_collapse_caucasus_league_actor
+							has_war_with = event_target:soviet_collapse_caucasus_league_candidate
+						}
+					}
+				}
+				add_to_faction = PREV
+			}
+		}
+		if = {
+			limit = { is_in_faction_with = event_target:soviet_collapse_caucasus_league_actor }
+			soviet_collapse_join_caucasus_regional_faction = yes
+		}
 	}
 }
 
@@ -11954,8 +12039,24 @@ soviet_collapse_invite_central_asian_regional_partners = {
 			is_in_faction = no
 			NOT = { has_war_with = event_target:soviet_collapse_central_asian_league_actor }
 		}
-		event_target:soviet_collapse_central_asian_league_actor = { add_to_faction = PREV }
-		soviet_collapse_join_central_asian_regional_faction = yes
+		save_event_target_as = soviet_collapse_central_asian_league_candidate
+		event_target:soviet_collapse_central_asian_league_actor = {
+			if = {
+				limit = {
+					NOT = {
+						any_country = {
+							is_in_faction_with = event_target:soviet_collapse_central_asian_league_actor
+							has_war_with = event_target:soviet_collapse_central_asian_league_candidate
+						}
+					}
+				}
+				add_to_faction = PREV
+			}
+		}
+		if = {
+			limit = { is_in_faction_with = event_target:soviet_collapse_central_asian_league_actor }
+			soviet_collapse_join_central_asian_regional_faction = yes
+		}
 	}
 }
 
@@ -11969,13 +12070,29 @@ soviet_collapse_join_existing_central_asian_league = {
 			NOT = { has_war_with = event_target:soviet_collapse_central_asian_league_joiner }
 			event_target:soviet_collapse_central_asian_league_joiner = { is_in_faction = no }
 		}
-		soviet_collapse_repair_central_asian_regional_faction_leader_flags = yes
 		save_event_target_as = soviet_collapse_central_asian_league_actor
-		event_target:soviet_collapse_central_asian_league_joiner = {
-			event_target:soviet_collapse_central_asian_league_actor = { add_to_faction = PREV }
-			soviet_collapse_join_central_asian_regional_faction = yes
+		if = {
+			limit = {
+				NOT = {
+					any_country = {
+						is_in_faction_with = event_target:soviet_collapse_central_asian_league_actor
+						has_war_with = event_target:soviet_collapse_central_asian_league_joiner
+					}
+				}
+			}
+			event_target:soviet_collapse_central_asian_league_joiner = {
+				event_target:soviet_collapse_central_asian_league_actor = { add_to_faction = PREV }
+				if = {
+					limit = { is_in_faction_with = event_target:soviet_collapse_central_asian_league_actor }
+					soviet_collapse_join_central_asian_regional_faction = yes
+				}
+			}
+			if = {
+				limit = { event_target:soviet_collapse_central_asian_league_joiner = { is_in_faction_with = event_target:soviet_collapse_central_asian_league_actor } }
+				soviet_collapse_repair_central_asian_regional_faction_leader_flags = yes
+				set_global_flag = soviet_collapse_central_asian_league_announced
+			}
 		}
-		set_global_flag = soviet_collapse_central_asian_league_announced
 	}
 }
 
@@ -12003,13 +12120,29 @@ soviet_collapse_join_existing_caucasus_league = {
 			NOT = { has_war_with = event_target:soviet_collapse_caucasus_league_joiner }
 			event_target:soviet_collapse_caucasus_league_joiner = { is_in_faction = no }
 		}
-		soviet_collapse_repair_caucasus_regional_faction_leader_flags = yes
 		save_event_target_as = soviet_collapse_caucasus_league_actor
-		event_target:soviet_collapse_caucasus_league_joiner = {
-			event_target:soviet_collapse_caucasus_league_actor = { add_to_faction = PREV }
-			soviet_collapse_join_caucasus_regional_faction = yes
+		if = {
+			limit = {
+				NOT = {
+					any_country = {
+						is_in_faction_with = event_target:soviet_collapse_caucasus_league_actor
+						has_war_with = event_target:soviet_collapse_caucasus_league_joiner
+					}
+				}
+			}
+			event_target:soviet_collapse_caucasus_league_joiner = {
+				event_target:soviet_collapse_caucasus_league_actor = { add_to_faction = PREV }
+				if = {
+					limit = { is_in_faction_with = event_target:soviet_collapse_caucasus_league_actor }
+					soviet_collapse_join_caucasus_regional_faction = yes
+				}
+			}
+			if = {
+				limit = { event_target:soviet_collapse_caucasus_league_joiner = { is_in_faction_with = event_target:soviet_collapse_caucasus_league_actor } }
+				soviet_collapse_repair_caucasus_regional_faction_leader_flags = yes
+				set_global_flag = soviet_collapse_caucasus_league_announced
+			}
 		}
-		set_global_flag = soviet_collapse_caucasus_league_announced
 	}
 }
 
@@ -12445,8 +12578,24 @@ soviet_collapse_invite_free_republics_league_partners = {
 			NOT = { tag = event_target:soviet_collapse_free_republics_league_actor }
 			NOT = { has_war_with = event_target:soviet_collapse_free_republics_league_actor }
 		}
-		event_target:soviet_collapse_free_republics_league_actor = { add_to_faction = PREV }
-		soviet_collapse_join_free_republics_league = yes
+		save_event_target_as = soviet_collapse_free_republics_league_candidate
+		event_target:soviet_collapse_free_republics_league_actor = {
+			if = {
+				limit = {
+					NOT = {
+						any_country = {
+							is_in_faction_with = event_target:soviet_collapse_free_republics_league_actor
+							has_war_with = event_target:soviet_collapse_free_republics_league_candidate
+						}
+					}
+				}
+				add_to_faction = PREV
+			}
+		}
+		if = {
+			limit = { is_in_faction_with = event_target:soviet_collapse_free_republics_league_actor }
+			soviet_collapse_join_free_republics_league = yes
+		}
 	}
 }
 
