@@ -1,29 +1,26 @@
 # Event 008: Cluster and Achievement Matrix
 
-## Proposed cluster: Diplomatic Panic
+## Cluster: Diplomatic Panic
 
-This cluster is optional but recommended. It gives Event 8 a way to create a wider diplomatic incident without turning it into a direct war event.
+`Diplomatic Panic` is a small catalogue wrapper for the diplomatic-panic identity of Event 8.
 
 ### Cluster identity
 
-- **Cluster ID:** implementation should choose the next available stable ID.
+- **Cluster ID:** implementation should choose the next available stable ID if the cluster is implemented.
 - **Cluster name:** Diplomatic Panic.
 - **Cluster type:** Repeatable.
-- **Unlock:** Rising Chaos or Event 8 Stage II.
+- **Unlock:** Calm World.
 - **Cooldown:** moderate to long, this cluster should be notable, not constant.
 
-### Member plan
+### Current member plan
 
 | Event | Role | Member severity | Stage gate | Notes |
 | --- | --- | --- | --- | --- |
-| 8 Tensions Rising | required | core | Stage II+ | always applies Event 8 effects |
-| 10 Spirit of War/Peace | optional | mood | Stage II+ | if implemented and available, shows public mood split |
-| 11 Secret Alliance | optional | intrigue | Stage II+ | if implemented and valid, secret-diplomacy echo |
-| 4 Random War | indirect only | high | Stage III+ | do not make it a member unless cluster system supports cross-cluster safety, temporarily raise its weight instead |
+| 8 Tensions Rising | required | medium | Calm World | for now one member, applies normal Event 8 effects |
 
 ### Cluster story
 
-A Diplomatic Panic firing should feel like several departments reacting to the same set of rumours. It should count as one global pacing incident while still applying member effects through the cluster pipeline.
+A Diplomatic Panic firing should read as one Event 8 diplomatic-panic incident in the cluster surface. It counts as one global pacing incident and applies Event 8 effects.
 
 ## Achievement matrix
 
@@ -60,26 +57,15 @@ A Diplomatic Panic firing should feel like several departments reacting to the s
 **Why it is interesting:** rewards a specific hidden follow-up and peaceful naval/trade posture.  
 **Icon direction:** marine insurance ledger, ship silhouette, red wax seal, no text.
 
-### `achievement_tensions_red_line`
-
-**Title:** The Red Line Disappears  
-**Visibility:** visible  
-**Difficulty:** medium-hard  
-**Eligible player:** any country.  
-**Unlock:** Witness the first Event 8 Stage IV super-event while no world-end scenario is active.  
-**Disqualifier:** world-end already active.  
-**Why it is interesting:** marks seeing the event’s final non-terminal form.  
-**Icon direction:** a broken red cord across a dark embassy window.
-
 ### `achievement_tensions_one_denial`
 
 **Title:** One Denial Too Many  
 **Visibility:** hidden  
 **Difficulty:** hard  
 **Eligible player:** any country.  
-**Unlock:** A Secret Alliance or Random War event fires within 120 days after Event 8 applies relation damage.  
+**Unlock:** If an approved existing diplomatic or war-adjacent event hook exists, it fires within 120 days after Event 8 applies relation damage. Queue if no approved hook exists.
 **Disqualifier:** none beyond invalid tracking, implementation should avoid false positives from unrelated history if possible.  
-**Why it is interesting:** rewards observing the hidden event-ecosystem connection.  
+**Why it is interesting:** rewards observing Event 8 feeding later tension through approved existing systems.
 **Icon direction:** denied stamp over sealed cable, no readable generated text.
 
 ### `achievement_tensions_blackout`

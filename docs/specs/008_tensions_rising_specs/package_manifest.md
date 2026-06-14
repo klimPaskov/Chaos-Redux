@@ -12,7 +12,6 @@ Generated package files:
 - `prompts/008_tensions_rising_goal_prompt.md`
 - `prompts/008_tensions_rising_localisation_audit_prompt.md`
 - `prompts/008_tensions_rising_scripted_system_prompt.md`
-- `prompts/008_tensions_rising_super_event_prompt.md`
 - `research/008_tensions_rising_catalog_row.md`
 - `research/008_tensions_rising_context_digest.md`
 - `specs/008_tensions_rising_event_log_and_localisation.md`
@@ -20,3 +19,6 @@ Generated package files:
 - `specs/008_tensions_rising_spec.md`
 
 No gameplay files, localisation files, assets, or spreadsheets were modified by this planning task.
+
+
+`Diplomatic Panic` current note: for now one member, Event 8 `Tensions Rising`, with medium member severity.

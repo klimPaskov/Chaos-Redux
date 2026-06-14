@@ -1,6 +1,6 @@
 # Event 008: Tensions Rising
 
-Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In calm campaigns it is a straightforward world-tension incident; once the Chaos Meter reaches evolved tiers, the same report becomes a staged global panic system with direct chaos gain, relation damage, timer pressure, delayed reports, AI posture pressure, achievements, event-log evolution rows, and a one-time non-terminal super-event.
+Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In calm campaigns it is a straightforward world-tension incident; once the Chaos Meter reaches evolved tiers, the same report becomes a staged diplomatic-pressure system with direct chaos gain, relation damage, timer pressure, delayed reports, AI posture pressure, achievements, and event-log evolution rows.
 
 ## Runtime Flow
 
@@ -9,7 +9,7 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 3. The main popup keeps its description to flavour text. The dynamic mechanical summary appears on the option tooltip, and the actual scripted effect runs inside that option's hidden effect block.
 4. `get_tensions_rising_stage` maps the current Chaos Meter tier to Stage I-IV. Calm world stays at baseline stage `0`.
 5. Baseline firings distribute `+10` world tension across existing non-placeholder countries and update the global highest-world-tension tracker.
-6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, distribute the staged world-tension packet, add the staged chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, update achievement tracking, and trigger the Stage IV super-event if it has not already appeared.
+6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, distribute the staged world-tension packet, add the staged chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, and update achievement tracking.
 
 ## Stage Values
 
@@ -19,7 +19,7 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 | Stage I | Gathering Storm | `+10` | `+10` | light relation and timer pressure |
 | Stage II | Rising Chaos | `+20` | `+15` | broader relation shocks and delayed reports |
 | Stage III | Chaos Tier | `+50` | `+25` | heavy relation pressure and Thin Wire tracking |
-| Stage IV | Totalen Chaos | `+100` | `+50` | strongest pressure and first-fire super-event |
+| Stage IV | Totalen Chaos | `+100` | `+50` | strongest indirect pressure |
 
 The world tension trigger uses HOI4's documented `0-1` `threat` scale. The full-tension gate is centralized as `constant:tensions_rising_gate.full_world_tension`. World-tension packets are distributed through `apply_tensions_rising_distributed_world_tension`; each selected existing non-placeholder country receives an equal named-threat slice. The recipient count is capped only when an all-country split would fall below `0.1` world-tension percentage points.
 
@@ -57,30 +57,19 @@ These ideas nudge diplomacy, readiness, and defensive behavior without creating 
 
 The event-log detail body is `chaosx.events_log.window.event_details.tensions_rising`. The Diplomatic Fever evolution type uses `constant:tensions_rising_event_log.evolution_type`, records one milestone for each reached stage, and exposes stage title/body text through the history, evolution view, event-detail preview, and selected-evolution panes.
 
-`Diplomatic Panic` is registered as repeatable event cluster `constant:event_cluster_id.diplomatic_panic`. Its current member list is intentionally small: Event 8 is the required member with medium danger and a Tier II minimum. Cluster history and settings surfaces use `chaosx.event_cluster.diplomatic_panic.name` and `chaosx.events_log.window.cluster_details.description.diplomatic_panic`.
+`Diplomatic Panic` is registered as repeatable event cluster `constant:event_cluster_id.diplomatic_panic`. Its current member list is intentionally small: Event 8 is the required member with medium danger and a Calm World minimum. Cluster history and settings surfaces use `chaosx.event_cluster.diplomatic_panic.name` and `chaosx.events_log.window.cluster_details.description.diplomatic_panic`.
 
 ## Super-Event
 
-Stage IV can trigger the one-time non-terminal super-event `The Red Line Disappears`.
-
-- Super-event slot: `62`
-- Image sprite: `GFX_super_event_tensions_red_line`
-- Image file: `gfx/super_events/super_event_tensions_red_line.dds`
-- Music file: `music/super_event_008_red_line_disappears.ogg`
-- Sound-channel file: `sound/chaosx_super_event_008_red_line_disappears.wav`
-- Sound definition: `chaosx_super_event_008_red_line_disappears_track`
-- Quote/title/description scripted localisation: `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
-
-The branch sets `tensions_rising_stage_4_super_event_seen` and does not set `world_end`.
+Event 008 has no super-event branch. Stage IV remains a strong non-terminal evolution stage, but it does not set `super_event_visible`, does not set a super-event audio id, and does not set `world_end`.
 
 ## Achievements
 
-Event 008 adds six achievements:
+Event 008 adds five achievements:
 
 - `achievement_tensions_thin_wire`: remain at peace through the Stage III+ full-world-tension watch.
 - `achievement_tensions_only_headlines`: see three Stage II+ Event 8 firings while the world has no active wars.
 - `achievement_tensions_insurance_market`: receive the insurance follow-up while at peace with at least `30` convoys.
-- `achievement_tensions_red_line`: witness the first Stage IV super-event before any world-end scenario is active.
 - `achievement_tensions_one_denial`: receive the denial follow-up during the active relation-damage window.
 - `achievement_tensions_blackout`: have at least ten active Event 8 timed opinion modifiers at once.
 
@@ -89,14 +78,12 @@ Achievement icons are generated final DDS triplets under `gfx/achievements/` and
 ## Assets
 
 - Report image: `GFX_report_event_tensions_rising`, backed by `gfx/event_pictures/report_event_tensions_rising.dds`
-- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered for news surfaces; hidden delayed report events use the report image.
-- Super-event image: `GFX_super_event_tensions_red_line`, backed by `gfx/super_events/super_event_tensions_red_line.dds`
+- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered as an available news asset; hidden delayed report events use the report image.
 - Achievement source, processed PNGs, contact sheet, and DDS manifest: `docs/assets/008_tensions_rising/`
-- Super-event audio source and attribution: `docs/super_events/008_tensions_rising_super_event_research.md` and `docs/super_events/super_event_audio_packages.md`
 
 ## Boundary Rules
 
-Event 008 does not add direct war goals, declare wars, create countries, load focus trees, add cores, create formables, or start a world-end scenario. Its pressure stays indirect: world tension, chaos, temporary timer compression, timed opinion damage, delayed reports, AI posture ideas, event-log milestones, cluster history, achievements, and the non-terminal Stage IV super-event.
+Event 008 does not add direct war goals, declare wars, create countries, load focus trees, add cores, create formables, fire a super-event, or start a world-end scenario. Its pressure stays indirect: world tension, chaos, temporary timer compression, timed opinion damage, delayed reports, AI posture ideas, event-log milestones, cluster history, and achievements.
 
 ## Future Plans
 

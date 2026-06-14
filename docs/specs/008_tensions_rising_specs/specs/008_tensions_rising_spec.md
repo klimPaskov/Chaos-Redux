@@ -6,7 +6,7 @@
 **Event name:** `Tensions Rising`  
 **Type:** Minor Repeatable  
 **Status:** To Be Reworked  
-**Recommended cluster:** Proposed `Diplomatic Panic` cluster, not yet accepted as implemented  
+**Cluster handling:** `Diplomatic Panic` may be kept, with for now one member at medium severity
 **World-end scenario:** None
 
 `Tensions Rising` is the small headline that makes the rest of the world feel less stable. It does not release a country, start a focus tree, create a formable, or end the world. It is a pressure event that makes the ordinary Chaos Redux timer and diplomatic memory feel alive: early it nudges world tension upward, later it becomes a ritual of public denials, secret cables, mobilization scares, poisoned relations, insurance spikes, propaganda opportunism, and exhausted general staffs.
@@ -67,7 +67,7 @@ The track has four stages, matching the user-provided progression:
 | I | Cable Traffic Flood | Gathering Storm | `+10` | `+10` | Yes | light timer pulse, one or two diplomatic shocks, optional delayed report |
 | II | The Accusation Market | Rising Chaos | `+20` | `+15` | Yes | stronger timer pulse, multiple opinion shocks, temporary pressure spirits |
 | III | General Staffs Stop Sleeping | Chaos Tier | `+50` | `+25` | Yes | heavy timer pulse, war-plan fever, near-miss follow-ups |
-| IV | The Permanent Alert | Totalen Chaos | `+100` | `+50` | Yes | severe timer pulse, broad relation damage, first-firing super-event |
+| IV | The Permanent Alert | Totalen Chaos | `+100` | `+50` | Yes | severe timer pulse, broad relation damage, delayed reports |
 
 The evolution should be recorded when the stage becomes active or first manifests. Event detail text should preview the evolved behavior in broad terms, but it should not reveal the full random headline list or exact pair-selection math.
 
@@ -162,7 +162,6 @@ At Totalen Chaos, tension is no longer a metric. It is the climate. This stage m
 
 - Apply a severe Tension Pulse with a hard cap and replacement logic so repeated firings do not create an infinite acceleration exploit.
 - Apply five to eight relation shocks, with some weighted toward globally meaningful pairs.
-- First Stage IV firing triggers a one-time non-terminal super-event recommendation: **The Red Line Disappears**.
 - Strong chance of delayed news follow-up.
 - Temporary AI strategy should treat the world as “permanent alert”: more hostile posture, more sensitivity to guarantees and rival alliances, higher interest in existing war-preparation decisions, but no forced war.
 
@@ -267,48 +266,29 @@ Only one delayed follow-up should be scheduled from a single event firing unless
 | Fleets Keep Radio Silence | III–IV | news | may increase naval-war-adjacent event weights if such hooks exist |
 | One Denial Too Many | II–IV | report event | may add an extra relation hit if the same pair is valid |
 | Border Lamps | III–IV | report event | points to border rivals without starting war |
-| The Last Normal Briefing | IV | news or super-event prelude | one-time pre-super-event flavour if Stage IV first firing is not immediately super-evented |
+| The Last Normal Briefing | IV | report event | one-time Stage IV flavour report |
 
 ## Cluster design
 
-The event can live without a cluster, but a cluster makes it more integrated.
+Event 8 does not require a cluster. If the `Diplomatic Panic` cluster is kept, treat it as a small catalogue wrapper for the diplomatic-panic identity of the event.
 
-Recommended new cluster: **Diplomatic Panic**
+Current cluster: **Diplomatic Panic**
 
-### Cluster purpose
+### Current membership
 
-The cluster represents cases where an Event 8 firing causes related diplomatic events to fire as one wider panic package. This should not replace the existing `Wars` cluster. `Diplomatic Panic` is about conditions before open war.
-
-### Membership proposal
-
-| Member | Role | Notes |
-| --- | --- | --- |
-| Event 8: Tensions Rising | required | source event, always applies its normal effects |
-| Event 10: Spirit of War/Peace | optional | if implemented and relevant, can be pulled in as public mood reaction |
-| Event 11: Secret Alliance | optional | if implemented and available, can become a quiet follow-up |
-| Event 4: Random War | optional indirect link only | do not move it out of the Wars cluster, Stage III/IV can temporarily raise its selection pressure instead |
-| Event 7: Fury | no direct member by default | only connect through general chaos/timer pressure unless a future Fury plan needs it |
+| Member | Role | Member severity | Notes |
+| --- | --- | --- | --- |
+| Event 8: Tensions Rising | required | medium | for now one member, applies normal Event 8 effects |
 
 ### Cluster unlock and chance
 
-- Recommended unlock: Rising Chaos or Stage II.
-- Stage I should not normally fire the cluster.
-- Stage II has a low chance.
-- Stage III has a moderate chance.
-- Stage IV has a high chance, still capped by cluster cooldown.
+- Recommended unlock: Calm World.
+- Stage I+ can use a conservative cluster roll if the existing cluster system needs one.
+- Cluster cooldown should be moderate to long so the Clusters tab does not become spammed by this event.
 
-## Super-event recommendation
+## Stage IV presentation
 
-`Tensions Rising` does not need a super-event for every firing. The first Stage IV firing is large enough to deserve one.
-
-Working super-event title: **The Red Line Disappears**  
-Alternative title: **The Whole Map Holds Its Breath**  
-Role: global escalation, not world-end  
-Trigger: first Stage IV Event 8 firing, provided no world-end scenario is active and no previous Stage IV Event 8 super-event has been shown.
-
-### Super-event tone
-
-The super-event should not show battlefields. It should show a world that has stopped pretending tension can still be measured: embassy windows lit at night, telegraph rooms, sealed dispatch bags, newspapers bundled outside locked gates, civil servants crossing dark courtyards, and military staff waiting outside closed doors.
+Stage IV should stay within the normal event-log, evolution, option-tooltip, delayed-report, and achievement surfaces. It does not trigger a super-event.
 
 ### What it communicates
 
@@ -325,8 +305,7 @@ The event is a minor repeatable, but it can still support achievements because t
 | `achievement_tensions_thin_wire` | The Thin Wire | visible | hard | survive 180 days at `100%` world tension after Stage III+ without entering a player war |
 | `achievement_tensions_only_headlines` | Only Headlines | hidden | very hard | see three Stage II+ Event 8 firings while the world has no active wars |
 | `achievement_tensions_insurance_market` | The Insurance Market Knows | visible | medium | trigger the neutral-port insurance follow-up while owning a convoy pool and staying out of war |
-| `achievement_tensions_red_line` | The Red Line Disappears | visible | medium-hard | witness the Stage IV super-event without a world-end scenario active |
-| `achievement_tensions_one_denial` | One Denial Too Many | hidden | hard | have a Secret Alliance or Random War event occur within 120 days after Event 8 relation damage |
+| `achievement_tensions_one_denial` | One Denial Too Many | hidden | hard | have an approved existing diplomatic or war-adjacent follow-up event occur within 120 days after Event 8 relation damage |
 | `achievement_tensions_blackout` | Diplomatic Blackout | visible | hard | have ten distinct Event 8 timed opinion modifiers active globally at once |
 
 Achievement implementation should be careful. The player should not unlock achievements just because Event 8 fires once.
@@ -360,9 +339,8 @@ The event needs a small but complete asset family.
 | --- | --- | --- | --- | --- |
 | `report_event_tensions_rising` | report event image | 210x176 | generated staged-documentary, or sourced generic period diplomatic material if available | desks, cables, newspapers, embassy lamps, no readable text |
 | `news_event_tensions_red_line` | news image | 397x153 B&W | generated period press image | crowds outside embassy gates, bundled newspapers, police line, no readable text |
-| `super_event_tensions_red_line` | super-event image | 457x328 | generated | dark embassies/telegraph rooms/world ministries, central composition, no battlefield |
-| achievement icons | achievements | 64x64 | generated icons | thin wire, blackout embassy, insurance ledger, red line, denial stamp |
-| optional event-detail pulse | small animated UI/state accent | existing size/pattern | generated icon frames if UI supports it | subtle telegraph pulse or red line shimmer, static fallback required |
+| achievement icons | achievements | 64x64 | generated icons | thin wire, blackout embassy, insurance ledger, denial stamp |
+| optional event-detail pulse | small animated UI/state accent | existing size/pattern | generated icon frames if UI supports it | subtle telegraph pulse, static fallback required |
 
 No country flags, leader portraits, focus icons, country portraits, or formable seals are required because this event does not create a country or focus tree.
 
@@ -381,7 +359,7 @@ Event 8 should appear in:
 - evolution detail previews
 - evolution history when each stage is recorded
 - delayed report/news history if those subevents are logged
-- optional cluster history if `Diplomatic Panic` is implemented
+- cluster history if `Diplomatic Panic` is implemented
 
 The event’s default actor is global. Evolution rows do not need a country actor unless a follow-up report intentionally names a pair. Avoid storing broad global event targets for relation pairs when regular event targets or generic reports are enough.
 
@@ -393,21 +371,21 @@ Recommended event detail summary:
 
 Recommended evolution detail summary:
 
-> “The Diplomatic Fever track turns public tension into a pacing force. Later stages add direct chaos, larger tension packets, temporary incident-timer pressure, timed relation damage, and delayed diplomatic reports. The final stage can trigger a one-time non-terminal super-event.”
+> “The Diplomatic Fever track turns public tension into a pacing force. Later stages add direct chaos, larger tension packets, temporary incident-timer pressure, timed relation damage, and delayed diplomatic reports. The final stage is the strongest non-terminal pressure packet.”
 
 ## Balance and exploit limits
 
 - Relation damage must be timed.
 - Timer pulse must be capped.
 - Same-strength pulse must not stack additively.
-- Stage IV super-event must be one-time.
+- Stage IV must not trigger a super-event or world-end branch.
 - Delayed reports should not recursively schedule more Event 8 firings.
 - The event must not create direct war goals.
 - Any temporary AI war-plan pressure must use existing valid route and target checks.
 
 ## Open implementation decisions
 
-1. Whether to implement `Diplomatic Panic` immediately or leave it as a documented future cluster.
+1. Whether to implement `Diplomatic Panic` immediately or leave it as a small queued note.
 2. Whether relation-pair delayed reports should name exact countries or remain generic. Generic is safer and easier to de-duplicate.
 3. Whether the timer pulse should modify daily decrement or next timer roll compression. The correct answer depends on the current event timer implementation.
 4. Whether the workbook should be updated in the same implementation pass or after localisation is final. The spreadsheet worker should use in-game localisation as source-of-truth.

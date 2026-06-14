@@ -38,16 +38,6 @@ Avoid generic war-room map tables as the main subject. Maps can appear as second
 - Direction: bundled newspapers outside embassy gates, guarded entrance, dark city street, anxious crowd, no readable text
 - Suggested sprite: `GFX_news_event_tensions_red_line`
 
-### Super-event image
-
-- Asset name: `super_event_tensions_red_line`
-- Type: super-event image
-- Target: 457x328
-- Source mode: generated
-- Direction: strong central composition of embassies/telegraph rooms/world ministries at night, lights in many windows, sealed cables, no battlefield, no readable generated text, no modern props
-- Suggested sprite: `GFX_super_event_tensions_red_line`
-
-
 ### Achievement icons
 
 Create completed 64x64 achievement icons for:
@@ -55,9 +45,8 @@ Create completed 64x64 achievement icons for:
 1. `achievement_tensions_thin_wire`  -  taut telegraph wire over dark map.
 2. `achievement_tensions_only_headlines`  -  stacked newspapers under silent clock, no readable text.
 3. `achievement_tensions_insurance_market`  -  marine insurance ledger and ship silhouette, no readable text.
-4. `achievement_tensions_red_line`  -  broken red cord across dark embassy window.
-5. `achievement_tensions_one_denial`  -  denied stamp motif over sealed cable, no readable text.
-6. `achievement_tensions_blackout`  -  blacked-out embassy facade with ten lit windows.
+4. `achievement_tensions_one_denial`  -  denied stamp motif over sealed cable, no readable text.
+5. `achievement_tensions_blackout`  -  blacked-out embassy facade with ten lit windows.
 
 Target: 64x64 each. Produce grey and not-eligible variants if the current achievement pipeline requires them.
 
@@ -68,7 +57,7 @@ Only produce this if the current Event Log UI has an accepted sprite surface for
 - Asset name: `tensions_rising_wire_pulse`
 - Type: small animated UI accent
 - Static fallback required: `tensions_rising_wire_pulse_static`
-- Direction: subtle telegraph-wire pulse or red-line shimmer, state-driven, not distracting
+- Direction: subtle telegraph-wire pulse, state-driven, not distracting
 - Must follow frame-animation rules: real source frames, processed frames, contact sheet, GIF preview for review only, final static fallback, frame sheet or sequence handoff, no transform-only animation
 - If no accepted UI surface exists, mark this asset `not_needed` rather than inventing a GUI surface.
 
@@ -78,7 +67,6 @@ Inspect the matching Chaos Redux reference folders before generation or processi
 
 - report event images: `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
 - news event images: `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/super_event_images`
 - decisions: `.agents/skills/chaos-redux-event-assets/assets/decisions`
 - achievements: `.agents/skills/chaos-redux-event-assets/assets/achievements`
 
