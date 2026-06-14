@@ -39,7 +39,7 @@ DDS conversion note:
 | Target size | `156x210` per frame |
 | Frame count | `66` |
 | Sheet size | `10296x210` |
-| Animation rate | `4` FPS |
+| Animation rate | `1` FPS |
 | Loop behavior | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Anchor point | center |
 | Static sprite | `GFX_soviet_collapse_evolution_portraits` |

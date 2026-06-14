@@ -1,6 +1,6 @@
 # Soviet Collapse Evolution Portrait Frame Plan
 
-Frame timing: 4 FPS. Each frame is one existing Soviet Collapse portrait DDS copied into `156x210` PNG form and placed into the horizontal sheet. The first frame is also the static fallback.
+Frame timing: 1 FPS. Each frame is one existing Soviet Collapse portrait DDS copied into `156x210` PNG form and placed into the horizontal sheet. The first frame is also the static fallback.
 
 | Frame | Tag | Source DDS | Source note |
 | --- | --- | --- | --- |
